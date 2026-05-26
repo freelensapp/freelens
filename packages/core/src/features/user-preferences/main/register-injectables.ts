@@ -12,14 +12,6 @@ import setupSyncOpenAtLoginWithOsInjectable from "./sync-open-at-login-with-os.i
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(loadUserPreferencesStorageInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(setupSyncOpenAtLoginWithOsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(loadUserPreferencesStorageInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(setupSyncOpenAtLoginWithOsInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

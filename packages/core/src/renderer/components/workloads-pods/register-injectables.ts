@@ -6,62 +6,26 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import { registerInjectables as registerColumnsInjectables } from "./columns/register-injectables";
-import podContainerMetricsInjectable from "./container-metrics.injectable";
 import getPodByIdInjectable from "./get-pod-by-id.injectable";
 import getPodsByOwnerIdInjectable from "./get-pods-by-owner-id.injectable";
 import loadPodsFromAllNamespacesInjectable from "./load-pods-from-all-namespaces.injectable";
+import podContainerMetricsInjectable from "./container-metrics.injectable";
 import podMetricsInjectable from "./metrics.injectable";
+import podStoreInjectable from "./store.injectable";
 import podsRouteComponentInjectable from "./pods-route-component.injectable";
 import podsSidebarItemInjectable from "./pods-sidebar-items.injectable";
-import podStoreInjectable from "./store.injectable";
+import { registerInjectables as registerColumnsInjectables } from "./columns/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(getPodByIdInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getPodsByOwnerIdInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(loadPodsFromAllNamespacesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(podContainerMetricsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(podMetricsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(podStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(podsRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(podsSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerColumnsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(getPodByIdInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getPodsByOwnerIdInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(loadPodsFromAllNamespacesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(podContainerMetricsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(podMetricsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(podStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(podsRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(podsSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerColumnsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

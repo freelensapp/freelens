@@ -16,34 +16,10 @@ import trayIconInjectable from "./tray-icon.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(getTrayIconPathInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(normalTrayIconInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(reactiveTrayMenuIconInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(startReactiveTrayMenuIconInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(stopReactiveTrayMenuIconInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(trayIconInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(getTrayIconPathInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(normalTrayIconInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(reactiveTrayMenuIconInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(startReactiveTrayMenuIconInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(stopReactiveTrayMenuIconInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(trayIconInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

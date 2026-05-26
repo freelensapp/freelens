@@ -12,14 +12,6 @@ import networkPoliciesRouteInjectable from "./network-policies-route.injectable"
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(navigateToNetworkPoliciesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(networkPoliciesRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(navigateToNetworkPoliciesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(networkPoliciesRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

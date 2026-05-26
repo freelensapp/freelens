@@ -17,39 +17,11 @@ import weblinkVerificationsInjectable from "./weblink-verifications.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(currentVersionWeblinkStoreMigrationInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(loadWeblinkStorageInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(setupSyncingOfWeblinksInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(stopValidatingWeblinksInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(validateWeblinkInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(weblinkVerificationStartableStoppableInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(weblinkVerificationsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(currentVersionWeblinkStoreMigrationInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(loadWeblinkStorageInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(setupSyncingOfWeblinksInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(stopValidatingWeblinksInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(validateWeblinkInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(weblinkVerificationStartableStoppableInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(weblinkVerificationsInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

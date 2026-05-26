@@ -20,54 +20,14 @@ import { registerInjectables as registerWeblinksInjectables } from "./weblinks/r
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    registerClusterInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerExtensionsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerFavoritesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerHotbarInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerLicensesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerPersistentStorageInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerPreferencesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerUserPreferencesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerVarsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerWeblinksInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { registerClusterInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerExtensionsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerFavoritesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerHotbarInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerLicensesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerPersistentStorageInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerPreferencesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerUserPreferencesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerVarsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerWeblinksInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -11,9 +11,5 @@ import createResourceStackInjectable from "./create-resource-stack.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(createResourceStackInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(createResourceStackInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

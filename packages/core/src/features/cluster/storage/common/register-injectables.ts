@@ -8,36 +8,16 @@
 
 import addClusterInjectable from "./add.injectable";
 import clustersInjectable from "./clusters.injectable";
-import getClusterByIdInjectable from "./get-by-id.injectable";
-import clustersStateInjectable from "./state.injectable";
 import clustersPersistentStorageInjectable from "./storage.injectable";
+import clustersStateInjectable from "./state.injectable";
+import getClusterByIdInjectable from "./get-by-id.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(addClusterInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(clustersInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(clustersPersistentStorageInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(clustersStateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getClusterByIdInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(addClusterInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(clustersInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(clustersPersistentStorageInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(clustersStateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getClusterByIdInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

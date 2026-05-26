@@ -6,20 +6,12 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import requestKubeObjectPatchInjectable from "./request-patch.injectable";
 import requestKubeObjectCreationInjectable from "./request-update.injectable";
+import requestKubeObjectPatchInjectable from "./request-patch.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(requestKubeObjectCreationInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestKubeObjectPatchInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(requestKubeObjectCreationInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestKubeObjectPatchInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

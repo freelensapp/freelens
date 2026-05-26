@@ -16,34 +16,10 @@ import stacklightPrometheusProviderInjectable from "./stacklight-provider.inject
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(helm14PrometheusProviderInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(helmPrometheusProviderInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(lensPrometheusProviderInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(openshiftPrometheusProviderInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(operatorPrometheusProviderInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(stacklightPrometheusProviderInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(helm14PrometheusProviderInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(helmPrometheusProviderInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(lensPrometheusProviderInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(openshiftPrometheusProviderInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(operatorPrometheusProviderInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(stacklightPrometheusProviderInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -11,9 +11,5 @@ import setupIpcMainHandlersInjectable from "./setup-ipc-main-handlers.injectable
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(setupIpcMainHandlersInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(setupIpcMainHandlersInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

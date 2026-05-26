@@ -22,64 +22,16 @@ import { registerInjectables as registerVerticalPodAutoscalersInjectables } from
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    registerConfigMapsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerHorizontalPodAutoscalersInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerLeasesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerLimitRangesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerMutatingWebhookConfigurationsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerPodDisruptionBudgetsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerPriorityClassesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerResourceQuotasInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerRuntimeClassesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerSecretsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerValidatingWebhookConfigurationsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerVerticalPodAutoscalersInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { registerConfigMapsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerHorizontalPodAutoscalersInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerLeasesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerLimitRangesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerMutatingWebhookConfigurationsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerPodDisruptionBudgetsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerPriorityClassesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerResourceQuotasInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerRuntimeClassesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerSecretsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerValidatingWebhookConfigurationsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerVerticalPodAutoscalersInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

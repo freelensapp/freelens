@@ -17,39 +17,11 @@ import { registerInjectables as registerWelcomeInjectables } from "./welcome/reg
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    registerAddClusterInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerCatalogInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerClusterInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerClusterViewInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerEntitySettingsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerExtensionsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerWelcomeInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { registerAddClusterInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerCatalogInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerClusterInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerClusterViewInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerEntitySettingsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerExtensionsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerWelcomeInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

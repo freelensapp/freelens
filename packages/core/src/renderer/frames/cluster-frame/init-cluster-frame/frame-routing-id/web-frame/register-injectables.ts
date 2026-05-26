@@ -11,9 +11,5 @@ import webFrameInjectable from "./web-frame.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(webFrameInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(webFrameInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

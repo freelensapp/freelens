@@ -6,24 +6,14 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import { separator1, separator2, separator3 } from "./separators.injectable";
+import { separator1 } from "./separators.injectable";
+import { separator2 } from "./separators.injectable";
+import { separator3 } from "./separators.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(separator1);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(separator2);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(separator3);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(separator1); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(separator2); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(separator3); } catch (e) { /* Ignore duplicate registration */ }
 }

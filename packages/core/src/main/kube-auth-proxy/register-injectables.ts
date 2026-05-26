@@ -14,24 +14,8 @@ import { registerInjectables as registerWaitUntilPortIsUsedInjectables } from ".
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(createKubeAuthProxyInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(freeLensK8sProxyPathInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(kubeAuthProxyCertificateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerWaitUntilPortIsUsedInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(createKubeAuthProxyInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(freeLensK8sProxyPathInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(kubeAuthProxyCertificateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerWaitUntilPortIsUsedInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

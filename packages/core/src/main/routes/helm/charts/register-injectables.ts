@@ -14,24 +14,8 @@ import listHelmChartsRouteInjectable from "./list-route.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(getHelmChartReadmeRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getHelmChartRouteValuesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getHelmChartVersionsRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(listHelmChartsRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(getHelmChartReadmeRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getHelmChartRouteValuesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getHelmChartVersionsRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(listHelmChartsRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

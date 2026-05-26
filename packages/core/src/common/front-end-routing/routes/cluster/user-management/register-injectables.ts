@@ -16,34 +16,10 @@ import { registerInjectables as registerServiceAccountsInjectables } from "./ser
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    registerClusterRoleBindingsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerClusterRolesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerPodSecurityPoliciesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerRoleBindingsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerRolesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerServiceAccountsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { registerClusterRoleBindingsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerClusterRolesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerPodSecurityPoliciesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerRoleBindingsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerRolesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerServiceAccountsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

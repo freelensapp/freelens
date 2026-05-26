@@ -7,61 +7,25 @@
  */
 
 import browseAllColumnsInjectable from "./browse-all.injectable";
-import defaultCategoryColumnsInjectable from "./default-category.injectable";
 import customCategoryColumnsRegistratorInjectable from "./extensions-registrator.injectable";
+import defaultCategoryColumnsInjectable from "./default-category.injectable";
 import getCategoryColumnsInjectable from "./get.injectable";
+import getColumnsForCategoryInjectable from "./specific-category.injectable";
 import kubernetesApiVersionColumnInjectable from "./kubernetes-api-version.injectable";
 import kubernetesDistributionColumnInjectable from "./kubernetes-distribution.injectable";
 import namedCategoryColumnInjectable from "./named-category.injectable";
 import renderNamedCategoryColumnCellInjectable from "./render-named-category-column-cell.injectable";
-import getColumnsForCategoryInjectable from "./specific-category.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(browseAllColumnsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(customCategoryColumnsRegistratorInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(defaultCategoryColumnsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getCategoryColumnsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getColumnsForCategoryInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(kubernetesApiVersionColumnInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(kubernetesDistributionColumnInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(namedCategoryColumnInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(renderNamedCategoryColumnCellInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(browseAllColumnsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(customCategoryColumnsRegistratorInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(defaultCategoryColumnsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getCategoryColumnsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getColumnsForCategoryInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(kubernetesApiVersionColumnInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(kubernetesDistributionColumnInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(namedCategoryColumnInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(renderNamedCategoryColumnCellInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

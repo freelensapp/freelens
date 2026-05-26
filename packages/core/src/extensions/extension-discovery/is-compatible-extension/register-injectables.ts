@@ -11,9 +11,5 @@ import isCompatibleExtensionInjectable from "./is-compatible-extension.injectabl
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(isCompatibleExtensionInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(isCompatibleExtensionInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

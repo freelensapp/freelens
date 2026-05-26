@@ -12,14 +12,6 @@ import { registerInjectables as registerExecFileWithInputInjectables } from "./e
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(callForKubeResourcesByManifestInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerExecFileWithInputInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(callForKubeResourcesByManifestInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerExecFileWithInputInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

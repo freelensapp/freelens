@@ -13,19 +13,7 @@ import customResourcesSidebarItemInjectable from "./sidebar-item.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(customResourcesRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(customResourcesRouteParametersInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(customResourcesSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(customResourcesRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(customResourcesRouteParametersInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(customResourcesSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

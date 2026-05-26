@@ -13,19 +13,7 @@ import portForwardsSidebarItemInjectable from "./port-forwards-sidebar-item.inje
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(portForwardsRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(portForwardsRouteParametersInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(portForwardsSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(portForwardsRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(portForwardsRouteParametersInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(portForwardsSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

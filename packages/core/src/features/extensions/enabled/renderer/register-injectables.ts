@@ -7,27 +7,13 @@
  */
 
 import loadEnabledExtensionsStorageInjectable from "./load-storage.injectable";
-import {
-  enabledExtensionsPersistentStorageVersionInitializationInjectable,
-  enabledExtensionsPersistentStorageVersionStateInjectable,
-} from "./storage-version.injectable";
+import { enabledExtensionsPersistentStorageVersionInitializationInjectable } from "./storage-version.injectable";
+import { enabledExtensionsPersistentStorageVersionStateInjectable } from "./storage-version.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(enabledExtensionsPersistentStorageVersionInitializationInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(enabledExtensionsPersistentStorageVersionStateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(loadEnabledExtensionsStorageInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(enabledExtensionsPersistentStorageVersionInitializationInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(enabledExtensionsPersistentStorageVersionStateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(loadEnabledExtensionsStorageInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

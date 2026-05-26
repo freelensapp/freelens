@@ -11,9 +11,5 @@ import navigateToUrlInjectable from "./navigate-to-url.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(navigateToUrlInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(navigateToUrlInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

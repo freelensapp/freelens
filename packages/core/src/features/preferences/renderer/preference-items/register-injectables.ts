@@ -6,68 +6,28 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import { registerInjectables as registerApplicationInjectables } from "./application/register-injectables";
 import currentPreferenceTabCompositeInjectable from "./current-preference-tab-composite.injectable";
 import currentPreferenceTabIdInjectable from "./current-preference-tab-id.injectable";
-import { registerInjectables as registerEditorInjectables } from "./editor/register-injectables";
 import extensionsPreferenceTabGroupInjectable from "./extensions-preference-tab-group.injectable";
 import generalPreferenceTabGroupInjectable from "./general-preference-tab-group.injectable";
-import { registerInjectables as registerKubernetesInjectables } from "./kubernetes/register-injectables";
 import preferencesCompositeInjectable from "./preferences-composite.injectable";
+import { registerInjectables as registerApplicationInjectables } from "./application/register-injectables";
+import { registerInjectables as registerEditorInjectables } from "./editor/register-injectables";
+import { registerInjectables as registerKubernetesInjectables } from "./kubernetes/register-injectables";
 import { registerInjectables as registerProxyInjectables } from "./proxy/register-injectables";
 import { registerInjectables as registerTerminalInjectables } from "./terminal/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(currentPreferenceTabCompositeInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(currentPreferenceTabIdInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(extensionsPreferenceTabGroupInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(generalPreferenceTabGroupInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(preferencesCompositeInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerApplicationInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerEditorInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerKubernetesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerProxyInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerTerminalInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(currentPreferenceTabCompositeInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(currentPreferenceTabIdInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(extensionsPreferenceTabGroupInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(generalPreferenceTabGroupInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(preferencesCompositeInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerApplicationInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerEditorInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerKubernetesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerProxyInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerTerminalInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

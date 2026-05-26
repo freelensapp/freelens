@@ -7,25 +7,13 @@
  */
 
 import releaseDetailsClusterFrameChildComponentInjectable from "./release-details-cluster-frame-child-component.injectable";
-import { registerInjectables as registerReleaseDetailsModelInjectables } from "./release-details-model/register-injectables";
 import targetHelmReleaseInjectable from "./target-helm-release.injectable";
+import { registerInjectables as registerReleaseDetailsModelInjectables } from "./release-details-model/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(releaseDetailsClusterFrameChildComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(targetHelmReleaseInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerReleaseDetailsModelInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(releaseDetailsClusterFrameChildComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(targetHelmReleaseInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerReleaseDetailsModelInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

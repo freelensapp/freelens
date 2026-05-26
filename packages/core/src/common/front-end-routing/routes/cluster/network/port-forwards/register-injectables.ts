@@ -12,14 +12,6 @@ import portForwardsRouteInjectable from "./port-forwards-route.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(navigateToPortForwardsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(portForwardsRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(navigateToPortForwardsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(portForwardsRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

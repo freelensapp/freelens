@@ -11,9 +11,5 @@ import getKubeApiFromPathInjectable from "./get-kube-api-from-path.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(getKubeApiFromPathInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(getKubeApiFromPathInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

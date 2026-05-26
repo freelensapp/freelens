@@ -13,55 +13,19 @@ import navigateToPreferencesInjectable from "./navigate-to-preferences.injectabl
 import navigateToProxyPreferencesInjectable from "./navigate-to-proxy-preferences.injectable";
 import navigateToTerminalPreferencesInjectable from "./navigate-to-terminal-preferences.injectable";
 import preferencesCatalogEntityInjectable from "./preferences-catalog-entity.injectable";
-import preferencesRouteInjectable from "./preferences-route.injectable";
 import preferencesRouteForLegacyExtensionsInjectable from "./preferences-route-for-legacy-extensions.injectable";
+import preferencesRouteInjectable from "./preferences-route.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(navigateToApplicationPreferencesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(navigateToEditorPreferencesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(navigateToKubernetesPreferencesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(navigateToPreferencesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(navigateToProxyPreferencesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(navigateToTerminalPreferencesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(preferencesCatalogEntityInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(preferencesRouteForLegacyExtensionsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(preferencesRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(navigateToApplicationPreferencesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(navigateToEditorPreferencesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(navigateToKubernetesPreferencesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(navigateToPreferencesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(navigateToProxyPreferencesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(navigateToTerminalPreferencesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(preferencesCatalogEntityInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(preferencesRouteForLegacyExtensionsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(preferencesRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

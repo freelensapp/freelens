@@ -12,14 +12,6 @@ import initRootFrameInjectable from "./init-root-frame.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(broadcastThatRootFrameIsRenderedInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(initRootFrameInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(broadcastThatRootFrameIsRenderedInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(initRootFrameInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

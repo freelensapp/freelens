@@ -12,14 +12,6 @@ import navigateToHelmReleasesInjectable from "./navigate-to-helm-releases.inject
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(helmReleasesRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(navigateToHelmReleasesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(helmReleasesRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(navigateToHelmReleasesInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

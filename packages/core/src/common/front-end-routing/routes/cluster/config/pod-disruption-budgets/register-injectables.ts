@@ -12,14 +12,6 @@ import podDisruptionBudgetsRouteInjectable from "./pod-disruption-budgets-route.
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(navigateToPodDisruptionBudgetsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(podDisruptionBudgetsRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(navigateToPodDisruptionBudgetsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(podDisruptionBudgetsRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

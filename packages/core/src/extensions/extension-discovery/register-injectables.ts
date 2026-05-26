@@ -7,25 +7,13 @@
  */
 
 import extensionDiscoveryInjectable from "./extension-discovery.injectable";
-import { registerInjectables as registerIsCompatibleExtensionInjectables } from "./is-compatible-extension/register-injectables";
 import stopWatchingExtensionsOnQuitInjectable from "./stop-watching-extensions-on-quit.injectable";
+import { registerInjectables as registerIsCompatibleExtensionInjectables } from "./is-compatible-extension/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(extensionDiscoveryInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(stopWatchingExtensionsOnQuitInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerIsCompatibleExtensionInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(extensionDiscoveryInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(stopWatchingExtensionsOnQuitInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerIsCompatibleExtensionInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

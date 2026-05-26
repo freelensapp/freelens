@@ -11,9 +11,5 @@ import directoryForDownloadsInjectable from "./directory-for-downloads.injectabl
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(directoryForDownloadsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(directoryForDownloadsInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

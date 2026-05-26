@@ -11,9 +11,5 @@ import extensionInstallationStateStoreInjectable from "./extension-installation-
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(extensionInstallationStateStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(extensionInstallationStateStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

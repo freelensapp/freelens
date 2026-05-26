@@ -12,14 +12,6 @@ import { registerInjectables as registerOpenDeepLinkForUrlInjectables } from "./
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(lensProtocolRouterMainInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerOpenDeepLinkForUrlInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(lensProtocolRouterMainInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerOpenDeepLinkForUrlInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

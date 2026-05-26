@@ -6,32 +6,16 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import requestHelmChartsInjectable from "./request-charts.injectable";
 import requestHelmChartReadmeInjectable from "./request-readme.injectable";
 import requestHelmChartValuesInjectable from "./request-values.injectable";
 import requestHelmChartVersionsInjectable from "./request-versions.injectable";
+import requestHelmChartsInjectable from "./request-charts.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(requestHelmChartReadmeInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestHelmChartValuesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestHelmChartVersionsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestHelmChartsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(requestHelmChartReadmeInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestHelmChartValuesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestHelmChartVersionsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestHelmChartsInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

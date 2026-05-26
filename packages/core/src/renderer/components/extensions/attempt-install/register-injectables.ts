@@ -14,24 +14,8 @@ import unpackExtensionInjectable from "./unpack-extension.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(attemptInstallInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(createTempFilesAndValidateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getExtensionDestFolderInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(unpackExtensionInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(attemptInstallInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(createTempFilesAndValidateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getExtensionDestFolderInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(unpackExtensionInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

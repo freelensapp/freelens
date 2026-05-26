@@ -13,19 +13,7 @@ import { registerInjectables as registerTopBarInjectables } from "./top-bar/regi
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(extensionSidebarItemRegistratorInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerSidebarStorageInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerTopBarInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(extensionSidebarItemRegistratorInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerSidebarStorageInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerTopBarInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

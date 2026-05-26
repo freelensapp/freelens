@@ -11,9 +11,5 @@ import modifyTerminalShellEnvInjectable from "./modify-terminal-shell-env.inject
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(modifyTerminalShellEnvInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(modifyTerminalShellEnvInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

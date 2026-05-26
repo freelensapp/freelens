@@ -7,31 +7,15 @@
  */
 
 import NodeMenuInjectable from "./node-menu.injectable";
-import podAttachMenuInjectable from "./pod-attach-menu.injectable";
 import PodLogsMenuInjectable from "./pod-logs-menu.injectable";
 import PodShellMenuInjectable from "./pod-shell-menu.injectable";
+import podAttachMenuInjectable from "./pod-attach-menu.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(NodeMenuInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(PodLogsMenuInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(PodShellMenuInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(podAttachMenuInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(NodeMenuInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(PodLogsMenuInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(PodShellMenuInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(podAttachMenuInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

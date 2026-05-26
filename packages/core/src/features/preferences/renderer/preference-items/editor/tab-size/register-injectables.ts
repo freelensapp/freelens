@@ -11,9 +11,5 @@ import tabSizePreferenceBlockInjectable from "./tab-size-preference-block.inject
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(tabSizePreferenceBlockInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(tabSizePreferenceBlockInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

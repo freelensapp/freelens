@@ -6,38 +6,18 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import helmChartVersionsInjectable from "./versions.injectable";
 import helmChartsInjectable from "./helm-charts.injectable";
 import requestVersionsOfHelmChartForInjectable from "./request-versions.injectable";
 import requestVersionsOfHelmChartInjectable from "./request-versions-of-chart-for-release.injectable";
 import selectedHelmChartInjectable from "./selected-helm-chart.injectable";
-import helmChartVersionsInjectable from "./versions.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(helmChartVersionsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(helmChartsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestVersionsOfHelmChartForInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestVersionsOfHelmChartInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(selectedHelmChartInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(helmChartVersionsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(helmChartsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestVersionsOfHelmChartForInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestVersionsOfHelmChartInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(selectedHelmChartInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

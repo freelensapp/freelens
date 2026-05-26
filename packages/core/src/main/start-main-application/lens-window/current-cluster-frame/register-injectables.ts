@@ -6,26 +6,14 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import currentClusterFrameInjectable from "./current-cluster-frame.injectable";
 import currentClusterFrameClusterIdStateInjectable from "./current-cluster-frame-cluster-id-state.injectable";
+import currentClusterFrameInjectable from "./current-cluster-frame.injectable";
 import currentVisibleClusterListenerInjectable from "./listener.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(currentClusterFrameClusterIdStateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(currentClusterFrameInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(currentVisibleClusterListenerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(currentClusterFrameClusterIdStateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(currentClusterFrameInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(currentVisibleClusterListenerInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

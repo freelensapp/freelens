@@ -11,9 +11,5 @@ import watchForGeneralEntityNavigationInjectable from "./watch-for-general-entit
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(watchForGeneralEntityNavigationInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(watchForGeneralEntityNavigationInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

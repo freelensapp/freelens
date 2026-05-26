@@ -13,19 +13,7 @@ import mutatingWebhookConfigurationsSidebarItemInjectable from "./mutating-webho
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(mutatingWebhookConfigurationStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(mutatingWebhookConfigurationsRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(mutatingWebhookConfigurationsSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(mutatingWebhookConfigurationStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(mutatingWebhookConfigurationsRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(mutatingWebhookConfigurationsSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

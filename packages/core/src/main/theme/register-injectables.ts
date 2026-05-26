@@ -13,19 +13,7 @@ import { registerInjectables as registerSyncThemeFromOsInjectables } from "./syn
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(operatingSystemThemeInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(operatingSystemThemeStateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerSyncThemeFromOsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(operatingSystemThemeInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(operatingSystemThemeStateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerSyncThemeFromOsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

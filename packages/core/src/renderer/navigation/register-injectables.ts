@@ -18,44 +18,12 @@ import setupLoggingForNavigationInjectable from "./setup-logging-for-navigation.
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(createPageParamInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(focusWindowInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(isActiveRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(matchRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(matchedClusterIdInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(navigateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(navigationChannelListenerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(setupLoggingForNavigationInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(createPageParamInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(focusWindowInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(isActiveRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(matchRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(matchedClusterIdInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(navigateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(navigationChannelListenerInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(setupLoggingForNavigationInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -8,30 +8,14 @@
 
 import clusterFrameComponentRegistratorInjectable from "./cluster-frame-component-registrator.injectable";
 import clusterFrameLayoutChildComponentInjectable from "./cluster-frame-layout-child-component.injectable";
-import { registerInjectables as registerInitClusterFrameInjectables } from "./init-cluster-frame/register-injectables";
 import startUrlInjectable from "./start-url.injectable";
+import { registerInjectables as registerInitClusterFrameInjectables } from "./init-cluster-frame/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(clusterFrameComponentRegistratorInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(clusterFrameLayoutChildComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(startUrlInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerInitClusterFrameInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(clusterFrameComponentRegistratorInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(clusterFrameLayoutChildComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(startUrlInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerInitClusterFrameInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

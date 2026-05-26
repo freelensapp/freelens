@@ -6,6 +6,7 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import fileSystemSeparatorInjectable from "./separator.injectable";
 import getAbsolutePathInjectable from "./get-absolute-path.injectable";
 import getBasenameOfPathInjectable from "./get-basename.injectable";
 import getDirnameOfPathInjectable from "./get-dirname.injectable";
@@ -15,59 +16,18 @@ import joinPathsInjectable from "./join-paths.injectable";
 import parsePathInjectable from "./parse.injectable";
 import resolvePathInjectable from "./resolve-path.injectable";
 import resolveTildeInjectable from "./resolve-tilde.injectable";
-import fileSystemSeparatorInjectable from "./separator.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(fileSystemSeparatorInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getAbsolutePathInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getBasenameOfPathInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getDirnameOfPathInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getRelativePathInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(isLogicalChildPathInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(joinPathsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(parsePathInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(resolvePathInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(resolveTildeInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(fileSystemSeparatorInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getAbsolutePathInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getBasenameOfPathInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getDirnameOfPathInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getRelativePathInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(isLogicalChildPathInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(joinPathsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(parsePathInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(resolvePathInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(resolveTildeInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -11,9 +11,5 @@ import { registerInjectables as registerImplementationsInjectables } from "./imp
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    registerImplementationsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { registerImplementationsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -6,10 +6,11 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import bootstrapInjectable from "./bootstrap.injectable";
+import storesAndApisCanBeCreatedInjectable from "./stores-apis-can-be-created.injectable";
 import { registerInjectables as registerApiInjectables } from "./api/register-injectables";
 import { registerInjectables as registerAppPathsInjectables } from "./app-paths/register-injectables";
 import { registerInjectables as registerBeforeFrameStartsInjectables } from "./before-frame-starts/register-injectables";
-import bootstrapInjectable from "./bootstrap.injectable";
 import { registerInjectables as registerCatalogInjectables } from "./catalog/register-injectables";
 import { registerInjectables as registerCertificateInjectables } from "./certificate/register-injectables";
 import { registerInjectables as registerClusterInjectables } from "./cluster/register-injectables";
@@ -35,7 +36,6 @@ import { registerInjectables as registerRemoteHelpersInjectables } from "./remot
 import { registerInjectables as registerRoutesInjectables } from "./routes/register-injectables";
 import { registerInjectables as registerSearchStoreInjectables } from "./search-store/register-injectables";
 import { registerInjectables as registerStartFrameInjectables } from "./start-frame/register-injectables";
-import storesAndApisCanBeCreatedInjectable from "./stores-apis-can-be-created.injectable";
 import { registerInjectables as registerThemesInjectables } from "./themes/register-injectables";
 import { registerInjectables as registerUtilsInjectables } from "./utils/register-injectables";
 import { registerInjectables as registerWindowInjectables } from "./window/register-injectables";
@@ -43,169 +43,37 @@ import { registerInjectables as registerWindowInjectables } from "./window/regis
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(bootstrapInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(storesAndApisCanBeCreatedInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerApiInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerAppPathsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerBeforeFrameStartsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerCatalogInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerCertificateInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerClusterInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerClusterEnumerationInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerClusterFrameContextInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerCommonInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerComponentsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerExtensionLoaderInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerFetchInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerFramesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerInitializersInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerIpcInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerK8sInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerKubeObjectInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerKubeWatchApiInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerKubectlInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerLoggerInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerMonacoInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerNavigationInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerPortForwardInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerProtocolHandlerInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerRemoteHelpersInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerRoutesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerSearchStoreInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerStartFrameInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerThemesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerUtilsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerWindowInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(bootstrapInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(storesAndApisCanBeCreatedInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerApiInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerAppPathsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerBeforeFrameStartsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerCatalogInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerCertificateInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerClusterInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerClusterEnumerationInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerClusterFrameContextInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerCommonInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerComponentsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerExtensionLoaderInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerFetchInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerFramesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerInitializersInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerIpcInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerK8sInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerKubeObjectInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerKubeWatchApiInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerKubectlInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerLoggerInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerMonacoInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerNavigationInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerPortForwardInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerProtocolHandlerInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerRemoteHelpersInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerRoutesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerSearchStoreInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerStartFrameInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerThemesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerUtilsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerWindowInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

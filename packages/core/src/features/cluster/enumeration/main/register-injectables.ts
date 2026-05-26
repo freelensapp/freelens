@@ -14,24 +14,8 @@ import getClusterByIdListenerInjectable from "./get-cluster-by-id-channel-listen
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(getAllClustersInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getAllClustersListenerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getClusterByIdInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getClusterByIdListenerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(getAllClustersInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getAllClustersListenerInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getClusterByIdInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getClusterByIdListenerInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

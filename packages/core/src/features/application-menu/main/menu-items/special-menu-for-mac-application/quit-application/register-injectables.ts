@@ -11,9 +11,5 @@ import quitApplicationMenuItemInjectable from "./quit-application-menu-item.inje
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(quitApplicationMenuItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(quitApplicationMenuItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

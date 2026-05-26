@@ -13,19 +13,7 @@ import requestPatchKubeResourceInjectable from "./request-patch-kube-resource.in
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(editResourceModelInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestKubeResourceInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestPatchKubeResourceInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(editResourceModelInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestKubeResourceInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestPatchKubeResourceInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

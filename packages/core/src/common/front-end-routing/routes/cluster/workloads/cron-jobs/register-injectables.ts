@@ -12,14 +12,6 @@ import navigateToCronJobsInjectable from "./navigate-to-cron-jobs.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(cronJobsRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(navigateToCronJobsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(cronJobsRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(navigateToCronJobsInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

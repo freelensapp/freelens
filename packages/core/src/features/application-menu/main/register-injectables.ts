@@ -10,52 +10,20 @@ import applicationMenuItemCompositeInjectable from "./application-menu-item-comp
 import applicationMenuItemRegistratorInjectable from "./application-menu-item-registrator.injectable";
 import applicationMenuItemsInjectable from "./application-menu-items.injectable";
 import applicationMenuReactivityInjectable from "./application-menu-reactivity.injectable";
-import { registerInjectables as registerMenuItemsInjectables } from "./menu-items/register-injectables";
 import populateApplicationMenuInjectable from "./populate-application-menu.injectable";
 import startApplicationMenuInjectable from "./start-application-menu.injectable";
 import stopApplicationMenuInjectable from "./stop-application-menu.injectable";
+import { registerInjectables as registerMenuItemsInjectables } from "./menu-items/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(applicationMenuItemCompositeInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(applicationMenuItemRegistratorInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(applicationMenuItemsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(applicationMenuReactivityInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(populateApplicationMenuInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(startApplicationMenuInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(stopApplicationMenuInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerMenuItemsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(applicationMenuItemCompositeInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(applicationMenuItemRegistratorInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(applicationMenuItemsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(applicationMenuReactivityInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(populateApplicationMenuInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(startApplicationMenuInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(stopApplicationMenuInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerMenuItemsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

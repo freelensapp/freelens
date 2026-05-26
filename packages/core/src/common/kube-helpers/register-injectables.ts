@@ -12,14 +12,6 @@ import loadValidatedClusterConfigInjectable from "./load-validated-config-from-f
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(loadConfigFromFileInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(loadValidatedClusterConfigInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(loadConfigFromFileInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(loadValidatedClusterConfigInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

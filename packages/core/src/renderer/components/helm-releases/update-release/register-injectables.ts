@@ -11,9 +11,5 @@ import updateReleaseInjectable from "./update-release.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(updateReleaseInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(updateReleaseInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

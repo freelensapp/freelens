@@ -23,69 +23,17 @@ import setupWeblinkContextMenuOpenInjectable from "./setup-weblink-context-menu-
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(configureImmerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(configureMobxInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(listenUnloadInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(loadMonacoThemesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(refreshAccessibilityOnCrdChangesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(setupAutoCrdApiCreationsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(setupAutoRegistrationInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(setupCurrentClusterBroadcastInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(setupKubernetesClusterCatalogAddMenuListenerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(setupKubernetesClusterContextMenuOpenInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(setupLensProxyCertificateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(setupRootMacClassnameInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(setupWeblinkContextMenuOpenInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(configureImmerInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(configureMobxInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(listenUnloadInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(loadMonacoThemesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(refreshAccessibilityOnCrdChangesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(setupAutoCrdApiCreationsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(setupAutoRegistrationInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(setupCurrentClusterBroadcastInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(setupKubernetesClusterCatalogAddMenuListenerInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(setupKubernetesClusterContextMenuOpenInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(setupLensProxyCertificateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(setupRootMacClassnameInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(setupWeblinkContextMenuOpenInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

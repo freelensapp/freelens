@@ -11,9 +11,5 @@ import registratorForPreferenceItemsInjectable from "./registrator-for-preferenc
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(registratorForPreferenceItemsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(registratorForPreferenceItemsInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -13,19 +13,7 @@ import registerIpcListenersInjectable from "./register-ipc-listeners.injectable"
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(legacyOnChannelListenInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(listNamespacesForbiddenHandlerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(registerIpcListenersInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(legacyOnChannelListenInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(listNamespacesForbiddenHandlerInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(registerIpcListenersInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

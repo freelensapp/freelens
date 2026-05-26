@@ -19,49 +19,13 @@ import { registerInjectables as registerWithOrphanPromiseInjectables } from "./w
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(binaryNameInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(bundledBinaryPathInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getLatestVersionInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(openLinkInBrowserInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(platformSpecificVersionInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(randomBytesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerSyncBoxInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerWithErrorLoggingInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerWithOrphanPromiseInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(binaryNameInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(bundledBinaryPathInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getLatestVersionInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(openLinkInBrowserInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(platformSpecificVersionInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(randomBytesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerSyncBoxInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerWithErrorLoggingInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerWithOrphanPromiseInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

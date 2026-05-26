@@ -12,14 +12,6 @@ import preferenceTabIsActiveInjectable from "./preference-tab-is-active.injectab
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(navigateToPreferenceTabInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(preferenceTabIsActiveInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(navigateToPreferenceTabInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(preferenceTabIsActiveInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

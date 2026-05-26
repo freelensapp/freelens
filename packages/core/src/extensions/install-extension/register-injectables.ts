@@ -13,19 +13,7 @@ import installExtensionInjectable from "./install-extension.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(extensionPackageRootDirectoryInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(forkPnpmInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(installExtensionInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(extensionPackageRootDirectoryInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(forkPnpmInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(installExtensionInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

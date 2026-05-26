@@ -6,26 +6,14 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import windowControlsTopBarItemInjectable from "./window-controls-top-bar-item.injectable";
 import { registerInjectables as registerCloseWindowInjectables } from "./close-window/register-injectables";
 import { registerInjectables as registerMaximizeWindowInjectables } from "./maximize-window/register-injectables";
-import windowControlsTopBarItemInjectable from "./window-controls-top-bar-item.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(windowControlsTopBarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerCloseWindowInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerMaximizeWindowInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(windowControlsTopBarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerCloseWindowInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerMaximizeWindowInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

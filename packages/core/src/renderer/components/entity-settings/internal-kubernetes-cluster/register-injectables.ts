@@ -16,34 +16,10 @@ import terminalKubernetesClusterEntitySettingsInjectable from "./terminal-settin
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(generalKubernetesClusterEntitySettingsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(metricsKubernetesClusterEntitySettingsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(namespaceKubernetesClusterEntitySettingsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(nodeShellKubernetesClusterEntitySettingsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(proxyKubernetesClusterEntitySettingsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(terminalKubernetesClusterEntitySettingsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(generalKubernetesClusterEntitySettingsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(metricsKubernetesClusterEntitySettingsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(namespaceKubernetesClusterEntitySettingsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(nodeShellKubernetesClusterEntitySettingsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(proxyKubernetesClusterEntitySettingsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(terminalKubernetesClusterEntitySettingsInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -12,14 +12,6 @@ import navigateToHorizontalPodAutoscalersInjectable from "./navigate-to-horizont
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(horizontalPodAutoscalersRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(navigateToHorizontalPodAutoscalersInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(horizontalPodAutoscalersRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(navigateToHorizontalPodAutoscalersInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

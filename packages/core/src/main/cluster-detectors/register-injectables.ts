@@ -17,39 +17,11 @@ import requestClusterVersionInjectable from "./request-cluster-version.injectabl
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(clusterDistributionDetectorInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(clusterIdDetectorFactoryInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(clusterLastSeenDetectorInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(clusterNodeCountDetectorInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(clusterVersionDetectorInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(detectClusterMetadataInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestClusterVersionInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(clusterDistributionDetectorInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(clusterIdDetectorFactoryInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(clusterLastSeenDetectorInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(clusterNodeCountDetectorInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(clusterVersionDetectorInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(detectClusterMetadataInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestClusterVersionInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

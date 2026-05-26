@@ -11,9 +11,5 @@ import directoryForUserDataInjectable from "./directory-for-user-data.injectable
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(directoryForUserDataInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(directoryForUserDataInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

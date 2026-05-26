@@ -7,31 +7,15 @@
  */
 
 import getHorizontalPodAutoscalerMetrics from "./get-metrics.injectable";
+import horizontalPodAutoscalerStoreInjectable from "./store.injectable";
 import horizontalPodAutoscalersRouteComponentInjectable from "./route-component.injectable";
 import horizontalPodAutoscalersSidebarItemInjectable from "./sidebar-item.injectable";
-import horizontalPodAutoscalerStoreInjectable from "./store.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(getHorizontalPodAutoscalerMetrics);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(horizontalPodAutoscalerStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(horizontalPodAutoscalersRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(horizontalPodAutoscalersSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(getHorizontalPodAutoscalerMetrics); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(horizontalPodAutoscalerStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(horizontalPodAutoscalersRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(horizontalPodAutoscalersSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

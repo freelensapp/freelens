@@ -17,39 +17,11 @@ import statefulsetMenuInjectable from "./statefulset-menu.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(cronJobMenuInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(daemonsetMenuInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(deploymentMenuInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(jobMenuInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(replicaSetMenuInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(serviceAccountMenuInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(statefulsetMenuInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(cronJobMenuInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(daemonsetMenuInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(deploymentMenuInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(jobMenuInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(replicaSetMenuInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(serviceAccountMenuInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(statefulsetMenuInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

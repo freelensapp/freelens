@@ -12,14 +12,6 @@ import navigateToLicensesInjectable from "./navigate-to-licenses.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(licensesRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(navigateToLicensesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(licensesRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(navigateToLicensesInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -11,9 +11,5 @@ import { registerInjectables as registerFontsInjectables } from "./fonts/registe
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    registerFontsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { registerFontsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

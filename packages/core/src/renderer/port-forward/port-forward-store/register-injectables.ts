@@ -12,14 +12,6 @@ import requestActivePortForwardInjectable from "./request-active-port-forward.in
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(portForwardStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestActivePortForwardInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(portForwardStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestActivePortForwardInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

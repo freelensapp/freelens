@@ -6,26 +6,14 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import serviceStoreInjectable from "./store.injectable";
 import servicesRouteComponentInjectable from "./services-route-component.injectable";
 import servicesSidebarItemInjectable from "./services-sidebar-item.injectable";
-import serviceStoreInjectable from "./store.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(serviceStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(servicesRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(servicesSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(serviceStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(servicesRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(servicesSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -13,19 +13,7 @@ import { registerInjectables as registerWelcomeMenuItemsInjectables } from "./we
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(defaultWelcomeRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(newVersionNotificationInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerWelcomeMenuItemsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(defaultWelcomeRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(newVersionNotificationInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerWelcomeMenuItemsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

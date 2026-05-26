@@ -12,14 +12,6 @@ import { registerInjectables as registerOperationSystemActionsInjectables } from
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(editMenuItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerOperationSystemActionsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(editMenuItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerOperationSystemActionsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -11,9 +11,5 @@ import extensionInstallRegistryPreferenceBlockInjectable from "./extension-insta
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(extensionInstallRegistryPreferenceBlockInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(extensionInstallRegistryPreferenceBlockInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

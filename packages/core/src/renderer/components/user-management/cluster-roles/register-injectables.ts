@@ -6,32 +6,16 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import { registerInjectables as registerAddDialogInjectables } from "./add-dialog/register-injectables";
+import clusterRoleStoreInjectable from "./store.injectable";
 import clusterRolesRouteComponentInjectable from "./cluster-roles-route-component.injectable";
 import clusterRolesSidebarItemInjectable from "./cluster-roles-sidebar-item.injectable";
-import clusterRoleStoreInjectable from "./store.injectable";
+import { registerInjectables as registerAddDialogInjectables } from "./add-dialog/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(clusterRoleStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(clusterRolesRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(clusterRolesSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerAddDialogInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(clusterRoleStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(clusterRolesRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(clusterRolesSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerAddDialogInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

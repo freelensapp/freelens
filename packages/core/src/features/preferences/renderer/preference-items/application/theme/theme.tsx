@@ -43,6 +43,50 @@ const NonInjectedTheme = observer(({ state, themes }: Dependencies) => {
         onChange={(value) => (state.colorTheme = value?.value ?? defaultColorThemePreference)}
         themeName="lens"
       />
+
+      <div style={{ marginTop: "16px" }}>
+        <SubTitle title="Accent Color" />
+        <label style={{ display: "flex", alignItems: "center", gap: "12px", cursor: "pointer" }}>
+          <input
+            type="color"
+            value={state.customAccentColor || "#531cb3"}
+            onChange={(e) => {
+              state.customAccentColor = e.target.value;
+            }}
+            style={{
+              width: "40px",
+              height: "40px",
+              border: "none",
+              borderRadius: "8px",
+              cursor: "pointer",
+              padding: 0,
+            }}
+          />
+          <span style={{ color: "var(--textColorSecondary)", fontSize: "13px" }}>
+            {state.customAccentColor
+              ? `Custom (${state.customAccentColor})`
+              : "Default (click to customize)"}
+          </span>
+          {state.customAccentColor && (
+            <button
+              onClick={() => {
+                state.customAccentColor = undefined;
+              }}
+              style={{
+                background: "none",
+                border: "1px solid var(--borderColor)",
+                borderRadius: "4px",
+                padding: "4px 8px",
+                cursor: "pointer",
+                fontSize: "12px",
+                color: "var(--textColorSecondary)",
+              }}
+            >
+              Reset
+            </button>
+          )}
+        </label>
+      </div>
     </section>
   );
 });

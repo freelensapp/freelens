@@ -13,19 +13,7 @@ import requestSetClusterAsDeletingInjectable from "./request-set-as-deleting.inj
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(requestClearClusterAsDeletingInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestDeleteClusterInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestSetClusterAsDeletingInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(requestClearClusterAsDeletingInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestDeleteClusterInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestSetClusterAsDeletingInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

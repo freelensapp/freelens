@@ -12,14 +12,6 @@ import { observableHistoryInjectable } from "./observable-history.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(historyInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(observableHistoryInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(historyInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(observableHistoryInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

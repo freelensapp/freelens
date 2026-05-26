@@ -15,29 +15,9 @@ import emitClusterVisibilityInjectable from "./emit-cluster-visibility.injectabl
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(clusterFrameHandlerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(clusterManagerRootFrameChildComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(clusterViewRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(clusterViewRouteParametersInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(emitClusterVisibilityInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(clusterFrameHandlerInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(clusterManagerRootFrameChildComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(clusterViewRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(clusterViewRouteParametersInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(emitClusterVisibilityInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

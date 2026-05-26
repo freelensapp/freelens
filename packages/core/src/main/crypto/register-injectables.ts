@@ -11,9 +11,5 @@ import randomUUIDInjectable from "./random-uuid.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(randomUUIDInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(randomUUIDInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

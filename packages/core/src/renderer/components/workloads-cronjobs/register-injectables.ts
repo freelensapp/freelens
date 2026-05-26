@@ -6,38 +6,18 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import cronJobStoreInjectable from "./store.injectable";
 import cronJobTriggerDialogClusterFrameChildComponentInjectable from "./cron-job-trigger-dialog-cluster-frame-child-component.injectable";
 import cronJobsRouteComponentInjectable from "./cron-jobs-route-component.injectable";
 import cronJobsSidebarItemInjectable from "./sidebar-item.injectable";
-import cronJobStoreInjectable from "./store.injectable";
 import { registerInjectables as registerTriggerDialogInjectables } from "./trigger-dialog/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(cronJobStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(cronJobTriggerDialogClusterFrameChildComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(cronJobsRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(cronJobsSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerTriggerDialogInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(cronJobStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(cronJobTriggerDialogClusterFrameChildComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(cronJobsRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(cronJobsSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerTriggerDialogInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

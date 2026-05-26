@@ -12,14 +12,6 @@ import showDockForFirstOpenedWindowInjectable from "./show-dock-for-first-opened
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(hideDockForLastClosedWindowInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(showDockForFirstOpenedWindowInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(hideDockForLastClosedWindowInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(showDockForFirstOpenedWindowInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

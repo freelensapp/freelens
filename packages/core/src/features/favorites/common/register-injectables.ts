@@ -6,20 +6,12 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import favoritesStateInjectable from "./state.injectable";
 import favoritesPersistentStorageInjectable from "./storage.injectable";
+import favoritesStateInjectable from "./state.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(favoritesPersistentStorageInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(favoritesStateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(favoritesPersistentStorageInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(favoritesStateInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

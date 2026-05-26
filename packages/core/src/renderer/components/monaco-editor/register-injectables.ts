@@ -12,14 +12,6 @@ import { registerInjectables as registerMonacoThemesInjectables } from "./monaco
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(getEditorHeightFromLinesCountInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerMonacoThemesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(getEditorHeightFromLinesCountInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerMonacoThemesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

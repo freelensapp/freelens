@@ -12,14 +12,6 @@ import extensionShouldBeEnabledForClusterFrameInjectable from "./extension-shoul
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(extensionEntryPointNameInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(extensionShouldBeEnabledForClusterFrameInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(extensionEntryPointNameInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(extensionShouldBeEnabledForClusterFrameInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

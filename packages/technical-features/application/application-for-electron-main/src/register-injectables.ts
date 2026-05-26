@@ -13,19 +13,7 @@ import whenAppIsReadyInjectable from "./start-application/when-app-is-ready.inje
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(electronAppInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(startElectronApplicationInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(whenAppIsReadyInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(electronAppInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(startElectronApplicationInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(whenAppIsReadyInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

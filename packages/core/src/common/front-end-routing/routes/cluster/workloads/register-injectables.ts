@@ -19,49 +19,13 @@ import { registerInjectables as registerStatefulsetsInjectables } from "./statef
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    registerCronJobsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerDaemonsetsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerDeploymentsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerJobsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerOverviewInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerPodsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerReplicasetsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerReplicationControllersInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerStatefulsetsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { registerCronJobsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerDaemonsetsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerDeploymentsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerJobsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerOverviewInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerPodsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerReplicasetsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerReplicationControllersInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerStatefulsetsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

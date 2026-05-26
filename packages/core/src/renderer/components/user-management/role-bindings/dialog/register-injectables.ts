@@ -13,19 +13,7 @@ import roleBindingDialogStateInjectable from "./state.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(closeRoleBindingDialogInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(openRoleBindingDialogInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(roleBindingDialogStateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(closeRoleBindingDialogInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(openRoleBindingDialogInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(roleBindingDialogStateInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

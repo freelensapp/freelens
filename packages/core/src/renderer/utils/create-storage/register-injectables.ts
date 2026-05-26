@@ -14,24 +14,8 @@ import storageSaveDelayInjectable from "./storage-save-delay.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(createStorageInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(initializeStateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(lensLocalStorageStateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(storageSaveDelayInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(createStorageInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(initializeStateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(lensLocalStorageStateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(storageSaveDelayInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

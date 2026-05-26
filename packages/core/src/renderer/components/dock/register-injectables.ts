@@ -18,44 +18,12 @@ import { registerInjectables as registerUpgradeChartInjectables } from "./upgrad
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    registerCreateResourceInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerDockInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerDockTabStoreInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerEditResourceInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerInstallChartInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerLogsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerTerminalInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerUpgradeChartInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { registerCreateResourceInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerDockInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerDockTabStoreInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerEditResourceInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerInstallChartInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerLogsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerTerminalInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerUpgradeChartInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

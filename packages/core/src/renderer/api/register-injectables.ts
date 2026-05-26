@@ -6,32 +6,16 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import { registerInjectables as registerCatalogInjectables } from "./catalog/register-injectables";
 import createTerminalApiInjectable from "./create-terminal-api.injectable";
 import defaultWebsocketApiParamsInjectable from "./default-websocket-api-params.injectable";
+import { registerInjectables as registerCatalogInjectables } from "./catalog/register-injectables";
 import { registerInjectables as registerHelpersInjectables } from "./helpers/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(createTerminalApiInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(defaultWebsocketApiParamsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerCatalogInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerHelpersInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(createTerminalApiInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(defaultWebsocketApiParamsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerCatalogInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerHelpersInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

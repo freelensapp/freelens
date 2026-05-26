@@ -11,9 +11,5 @@ import directoryForTempInjectable from "./directory-for-temp.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(directoryForTempInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(directoryForTempInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

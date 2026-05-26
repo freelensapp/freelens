@@ -8,78 +8,30 @@
 
 import appPathsInjectable from "./app-paths.injectable";
 import appPathsStateInjectable from "./app-paths-state.injectable";
+import directoryForLogsInjectable from "./directory-for-logs.injectable";
+import pathToPnpmCliInjectable from "./path-to-pnpm-cli.injectable";
 import { registerInjectables as registerDirectoryForBinariesInjectables } from "./directory-for-binaries/register-injectables";
 import { registerInjectables as registerDirectoryForDownloadsInjectables } from "./directory-for-downloads/register-injectables";
 import { registerInjectables as registerDirectoryForExesInjectables } from "./directory-for-exes/register-injectables";
 import { registerInjectables as registerDirectoryForKubeConfigsInjectables } from "./directory-for-kube-configs/register-injectables";
 import { registerInjectables as registerDirectoryForKubectlBinariesInjectables } from "./directory-for-kubectl-binaries/register-injectables";
-import directoryForLogsInjectable from "./directory-for-logs.injectable";
 import { registerInjectables as registerDirectoryForTempInjectables } from "./directory-for-temp/register-injectables";
 import { registerInjectables as registerDirectoryForUserDataInjectables } from "./directory-for-user-data/register-injectables";
 import { registerInjectables as registerGetCustomKubeConfigDirectoryInjectables } from "./get-custom-kube-config-directory/register-injectables";
-import pathToPnpmCliInjectable from "./path-to-pnpm-cli.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(appPathsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(appPathsStateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(directoryForLogsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(pathToPnpmCliInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerDirectoryForBinariesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerDirectoryForDownloadsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerDirectoryForExesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerDirectoryForKubeConfigsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerDirectoryForKubectlBinariesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerDirectoryForTempInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerDirectoryForUserDataInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerGetCustomKubeConfigDirectoryInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(appPathsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(appPathsStateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(directoryForLogsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(pathToPnpmCliInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerDirectoryForBinariesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerDirectoryForDownloadsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerDirectoryForExesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerDirectoryForKubeConfigsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerDirectoryForKubectlBinariesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerDirectoryForTempInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerDirectoryForUserDataInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerGetCustomKubeConfigDirectoryInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

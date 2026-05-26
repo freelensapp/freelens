@@ -6,32 +6,16 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import addQuotaDialogOpenStateInjectable from "./open-state.injectable";
 import closeAddQuotaDialogInjectable from "./close.injectable";
 import isAddQuotaDialogOpenInjectable from "./is-open.injectable";
 import openAddQuotaDialogInjectable from "./open.injectable";
-import addQuotaDialogOpenStateInjectable from "./open-state.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(addQuotaDialogOpenStateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(closeAddQuotaDialogInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(isAddQuotaDialogOpenInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(openAddQuotaDialogInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(addQuotaDialogOpenStateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(closeAddQuotaDialogInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(isAddQuotaDialogOpenInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(openAddQuotaDialogInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

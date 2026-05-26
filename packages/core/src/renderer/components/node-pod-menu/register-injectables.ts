@@ -11,9 +11,5 @@ import { registerInjectables as registerNodePodMenuItemsInjectables } from "./no
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    registerNodePodMenuItemsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { registerNodePodMenuItemsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

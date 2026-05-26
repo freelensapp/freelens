@@ -13,19 +13,7 @@ import systemThemeTypeUpdateListenerInjectable from "./update-listener.injectabl
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(initializeSystemThemeTypeInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(requestInitialSystemThemeTypeInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(systemThemeTypeUpdateListenerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(initializeSystemThemeTypeInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(requestInitialSystemThemeTypeInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(systemThemeTypeUpdateListenerInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

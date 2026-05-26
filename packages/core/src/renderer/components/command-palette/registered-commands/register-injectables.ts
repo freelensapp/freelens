@@ -12,14 +12,6 @@ import registeredCommandsInjectable from "./registered-commands.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(internalCommandsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(registeredCommandsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(internalCommandsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(registeredCommandsInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

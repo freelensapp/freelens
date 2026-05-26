@@ -13,19 +13,7 @@ import openDeploymentScaleDialogInjectable from "./open.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(deploymentScaleDialogClusterFrameChildComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(deploymentScaleDialogStateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(openDeploymentScaleDialogInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(deploymentScaleDialogClusterFrameChildComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(deploymentScaleDialogStateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(openDeploymentScaleDialogInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

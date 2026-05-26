@@ -12,14 +12,6 @@ import terminalFontPreferencePresenterInjectable from "./terminal-font-options.i
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(terminalFontFamilyPreferenceItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(terminalFontPreferencePresenterInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(terminalFontFamilyPreferenceItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(terminalFontPreferencePresenterInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

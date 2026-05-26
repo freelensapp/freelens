@@ -6,32 +6,16 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import { registerInjectables as registerWorkloadOverviewDetailsInjectables } from "./workload-overview-details/register-injectables";
-import { registerInjectables as registerWorkloadsInjectables } from "./workloads/register-injectables";
 import workloadsOverviewRouteComponentInjectable from "./workloads-overview-route-component.injectable";
 import workloadsOverviewSidebarItemInjectable from "./workloads-overview-sidebar-item.injectable";
+import { registerInjectables as registerWorkloadOverviewDetailsInjectables } from "./workload-overview-details/register-injectables";
+import { registerInjectables as registerWorkloadsInjectables } from "./workloads/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(workloadsOverviewRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(workloadsOverviewSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerWorkloadOverviewDetailsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerWorkloadsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(workloadsOverviewRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(workloadsOverviewSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerWorkloadOverviewDetailsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerWorkloadsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

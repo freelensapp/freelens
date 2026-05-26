@@ -12,14 +12,6 @@ import secretsRouteInjectable from "./secrets-route.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(navigateToSecretsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(secretsRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(navigateToSecretsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(secretsRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -7,25 +7,13 @@
  */
 
 import closeCronJobTriggerDialogInjectable from "./close.injectable";
-import openCronJobTriggerDialogInjectable from "./open.injectable";
 import cronJobTriggerDialogStateInjectable from "./state.injectable";
+import openCronJobTriggerDialogInjectable from "./open.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(closeCronJobTriggerDialogInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(cronJobTriggerDialogStateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(openCronJobTriggerDialogInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(closeCronJobTriggerDialogInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(cronJobTriggerDialogStateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(openCronJobTriggerDialogInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

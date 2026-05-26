@@ -14,24 +14,8 @@ import { registerInjectables as registerTrayMenuItemInjectables } from "./tray-m
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    registerElectronTrayInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerMenuIconInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerReactiveTrayMenuItemsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerTrayMenuItemInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { registerElectronTrayInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerMenuIconInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerReactiveTrayMenuItemsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerTrayMenuItemInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

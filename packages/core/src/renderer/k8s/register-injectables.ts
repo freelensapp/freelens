@@ -8,36 +8,16 @@
 
 import apiBaseHostHeaderInjectable from "./api-base-host-header.injectable";
 import apiBaseServerAddressInjectable from "./api-base-server-address.injectable";
-import apiKubeInjectable from "./api-kube.injectable";
 import apiKubeGetInjectable from "./api-kube-get.injectable";
+import apiKubeInjectable from "./api-kube.injectable";
 import apiKubePatchInjectable from "./api-kube-patch.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(apiBaseHostHeaderInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(apiBaseServerAddressInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(apiKubeGetInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(apiKubeInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(apiKubePatchInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(apiBaseHostHeaderInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(apiBaseServerAddressInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(apiKubeGetInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(apiKubeInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(apiKubePatchInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

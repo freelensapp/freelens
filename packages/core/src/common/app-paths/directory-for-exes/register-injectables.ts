@@ -11,9 +11,5 @@ import directoryForExesInjectable from "./directory-for-exes.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(directoryForExesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(directoryForExesInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

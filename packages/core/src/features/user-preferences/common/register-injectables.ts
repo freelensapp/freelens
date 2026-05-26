@@ -6,100 +6,38 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import {
-  getClusterPageMenuOrderInjectable,
-  resetClusterPageMenuOrderInjectable,
-} from "./cluster-page-menu-order.injectable";
 import httpsProxyConfigurationInjectable from "./https-proxy.injectable";
 import isTableColumnHiddenInjectable from "./is-table-column-hidden.injectable";
 import kubeconfigSyncsInjectable from "./kubeconfig-syncs.injectable";
 import lensColorThemePreferenceInjectable from "./lens-color-theme.injectable";
-import userPreferenceDescriptorsInjectable from "./preference-descriptors.injectable";
 import resetThemeInjectable from "./reset-theme.injectable";
-import userShellSettingInjectable from "./shell-setting.injectable";
-import userPreferencesStateInjectable from "./state.injectable";
-import userPreferencesPersistentStorageInjectable from "./storage.injectable";
 import terminalConfigInjectable from "./terminal-config.injectable";
 import terminalCopyOnSelectInjectable from "./terminal-copy-on-select.injectable";
 import terminalThemePreferenceInjectable from "./terminal-theme.injectable";
 import toggleTableColumnVisibilityInjectable from "./toggle-table-column-visibility.injectable";
+import userPreferenceDescriptorsInjectable from "./preference-descriptors.injectable";
+import userPreferencesPersistentStorageInjectable from "./storage.injectable";
+import userPreferencesStateInjectable from "./state.injectable";
+import userShellSettingInjectable from "./shell-setting.injectable";
+import { getClusterPageMenuOrderInjectable } from "./cluster-page-menu-order.injectable";
+import { resetClusterPageMenuOrderInjectable } from "./cluster-page-menu-order.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(getClusterPageMenuOrderInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(httpsProxyConfigurationInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(isTableColumnHiddenInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(kubeconfigSyncsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(lensColorThemePreferenceInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(resetClusterPageMenuOrderInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(resetThemeInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(terminalConfigInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(terminalCopyOnSelectInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(terminalThemePreferenceInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(toggleTableColumnVisibilityInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(userPreferenceDescriptorsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(userPreferencesPersistentStorageInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(userPreferencesStateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(userShellSettingInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(getClusterPageMenuOrderInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(httpsProxyConfigurationInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(isTableColumnHiddenInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(kubeconfigSyncsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(lensColorThemePreferenceInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(resetClusterPageMenuOrderInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(resetThemeInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(terminalConfigInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(terminalCopyOnSelectInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(terminalThemePreferenceInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(toggleTableColumnVisibilityInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(userPreferenceDescriptorsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(userPreferencesPersistentStorageInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(userPreferencesStateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(userShellSettingInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

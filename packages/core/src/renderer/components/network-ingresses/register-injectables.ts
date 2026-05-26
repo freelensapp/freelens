@@ -7,61 +7,25 @@
  */
 
 import ingressClassMenuInjectable from "./ingress-class-menu.injectable";
-import ingressClassesRouteComponentInjectable from "./ingress-class-route-component.injectable";
-import { ingressClassSetDefaultInjectable } from "./ingress-class-set-default.injectable";
 import ingressClassStoreInjectable from "./ingress-class-store.injectable";
+import ingressClassesRouteComponentInjectable from "./ingress-class-route-component.injectable";
 import ingressClassesSidebarItemInjectable from "./ingress-classes-sidebar-item.injectable";
+import ingressMetricsInjectable from "./metrics.injectable";
 import ingressStoreInjectable from "./ingress-store.injectable";
 import ingressesRouteComponentInjectable from "./ingresses-route-component.injectable";
 import ingressesSidebarItemInjectable from "./ingresses-sidebar-items.injectable";
-import ingressMetricsInjectable from "./metrics.injectable";
+import { ingressClassSetDefaultInjectable } from "./ingress-class-set-default.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(ingressClassMenuInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(ingressClassSetDefaultInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(ingressClassStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(ingressClassesRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(ingressClassesSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(ingressMetricsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(ingressStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(ingressesRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(ingressesSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(ingressClassMenuInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(ingressClassSetDefaultInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(ingressClassStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(ingressClassesRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(ingressClassesSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(ingressMetricsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(ingressStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(ingressesRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(ingressesSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

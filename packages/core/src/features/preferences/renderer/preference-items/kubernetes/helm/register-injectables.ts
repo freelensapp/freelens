@@ -13,19 +13,7 @@ import { registerInjectables as registerHelmServerSideInjectables } from "./helm
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(helmGroupPreferenceItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerHelmPathToBinaryInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerHelmServerSideInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(helmGroupPreferenceItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerHelmPathToBinaryInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerHelmServerSideInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

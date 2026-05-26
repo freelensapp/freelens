@@ -6,26 +6,14 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import { registerInjectables as registerImplementationsInjectables } from "./implementations/register-injectables";
 import workloadOverviewDetailRegistratorInjectable from "./workload-overview-detail-registrator.injectable";
 import workloadOverviewDetailsInjectable from "./workload-overview-details.injectable";
+import { registerInjectables as registerImplementationsInjectables } from "./implementations/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(workloadOverviewDetailRegistratorInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(workloadOverviewDetailsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerImplementationsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(workloadOverviewDetailRegistratorInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(workloadOverviewDetailsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerImplementationsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

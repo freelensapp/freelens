@@ -6,26 +6,14 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import { registerInjectables as registerImplementationsInjectables } from "./implementations/register-injectables";
 import trayMenuItemRegistratorInjectable from "./tray-menu-item-registrator.injectable";
 import trayMenuItemsInjectable from "./tray-menu-items.injectable";
+import { registerInjectables as registerImplementationsInjectables } from "./implementations/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(trayMenuItemRegistratorInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(trayMenuItemsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerImplementationsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(trayMenuItemRegistratorInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(trayMenuItemsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerImplementationsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

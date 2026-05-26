@@ -6,32 +6,16 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import loadEnabledExtensionsStorageInjectable from "./load-storage.injectable";
-import enabledExtensionsPersistentStorageVersionStateInjectable from "./storage-version.injectable";
-import enabledExtensionsPersistentStorageVersionChannelHandler from "./storage-version-handler.injectable";
 import enabledExtensionsMigrationV650Injectable from "./v0.1.0-migration.injectable";
+import enabledExtensionsPersistentStorageVersionChannelHandler from "./storage-version-handler.injectable";
+import enabledExtensionsPersistentStorageVersionStateInjectable from "./storage-version.injectable";
+import loadEnabledExtensionsStorageInjectable from "./load-storage.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(enabledExtensionsMigrationV650Injectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(enabledExtensionsPersistentStorageVersionChannelHandler);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(enabledExtensionsPersistentStorageVersionStateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(loadEnabledExtensionsStorageInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(enabledExtensionsMigrationV650Injectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(enabledExtensionsPersistentStorageVersionChannelHandler); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(enabledExtensionsPersistentStorageVersionStateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(loadEnabledExtensionsStorageInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

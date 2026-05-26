@@ -7,55 +7,23 @@
  */
 
 import activeEntitySettingsTabInjectable from "./active-tabs.injectable";
+import catalogEntitySettingItemsInjectable from "./settings.injectable";
 import currentCatalogEntityForSettingsInjectable from "./current-entity.injectable";
 import entitySettingExtensionRegistratorInjectable from "./extension-registrator.injectable";
-import hasCatalogEntitySettingItemsInjectable from "./has-settings.injectable";
-import { registerInjectables as registerInternalKubernetesClusterInjectables } from "./internal-kubernetes-cluster/register-injectables";
 import entitySettingsRouteComponentInjectable from "./route-component.injectable";
 import entitySettingsRouteParametersInjectable from "./route-parameters.injectable";
-import catalogEntitySettingItemsInjectable from "./settings.injectable";
+import hasCatalogEntitySettingItemsInjectable from "./has-settings.injectable";
+import { registerInjectables as registerInternalKubernetesClusterInjectables } from "./internal-kubernetes-cluster/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(activeEntitySettingsTabInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(catalogEntitySettingItemsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(currentCatalogEntityForSettingsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(entitySettingExtensionRegistratorInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(entitySettingsRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(entitySettingsRouteParametersInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(hasCatalogEntitySettingItemsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerInternalKubernetesClusterInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(activeEntitySettingsTabInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(catalogEntitySettingItemsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(currentCatalogEntityForSettingsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(entitySettingExtensionRegistratorInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(entitySettingsRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(entitySettingsRouteParametersInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(hasCatalogEntitySettingItemsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerInternalKubernetesClusterInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

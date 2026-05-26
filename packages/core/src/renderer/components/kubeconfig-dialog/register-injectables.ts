@@ -7,31 +7,15 @@
  */
 
 import kubeconfigDialogClusterFrameChildComponentInjectable from "./kubeconfig-dialog-cluster-frame-child-component.injectable";
+import kubeconfigDialogStateInjectable from "./state.injectable";
 import openKubeconfigDialogInjectable from "./open.injectable";
 import openServiceAccountKubeConfigDialogInjectable from "./open-service-account-kube-config-dialog.injectable";
-import kubeconfigDialogStateInjectable from "./state.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(kubeconfigDialogClusterFrameChildComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(kubeconfigDialogStateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(openKubeconfigDialogInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(openServiceAccountKubeConfigDialogInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(kubeconfigDialogClusterFrameChildComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(kubeconfigDialogStateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(openKubeconfigDialogInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(openServiceAccountKubeConfigDialogInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

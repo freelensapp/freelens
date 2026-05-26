@@ -61,6 +61,7 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
         state.terminalCopyOnSelect = descriptors.terminalCopyOnSelect.fromStore(preferences.terminalCopyOnSelect);
         state.terminalTheme = descriptors.terminalTheme.fromStore(preferences.terminalTheme);
         state.clusterPageMenuOrder = descriptors.clusterPageMenuOrder.fromStore(preferences.clusterPageMenuOrder);
+        state.customAccentColor = descriptors.customAccentColor.fromStore(preferences.customAccentColor);
       }),
       toJSON: () =>
         toJS({
@@ -88,6 +89,7 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
             terminalCopyOnSelect: descriptors.terminalCopyOnSelect.toStore(state.terminalCopyOnSelect),
             terminalTheme: descriptors.terminalTheme.toStore(state.terminalTheme),
             clusterPageMenuOrder: descriptors.clusterPageMenuOrder.toStore(state.clusterPageMenuOrder),
+            customAccentColor: descriptors.customAccentColor.toStore(state.customAccentColor),
           },
         }),
     });

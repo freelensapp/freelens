@@ -7,37 +7,17 @@
  */
 
 import appPathsRequestChannelListenerInjectable from "./app-paths-request-channel-listener.injectable";
+import setupAppPathsInjectable from "./setup-app-paths.injectable";
 import { registerInjectables as registerDirectoryForIntegrationTestingInjectables } from "./directory-for-integration-testing/register-injectables";
 import { registerInjectables as registerGetElectronAppPathInjectables } from "./get-electron-app-path/register-injectables";
 import { registerInjectables as registerSetElectronAppPathInjectables } from "./set-electron-app-path/register-injectables";
-import setupAppPathsInjectable from "./setup-app-paths.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(appPathsRequestChannelListenerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(setupAppPathsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerDirectoryForIntegrationTestingInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerGetElectronAppPathInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerSetElectronAppPathInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(appPathsRequestChannelListenerInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(setupAppPathsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerDirectoryForIntegrationTestingInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerGetElectronAppPathInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerSetElectronAppPathInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

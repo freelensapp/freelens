@@ -6,6 +6,7 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import viewMenuItemInjectable from "./view-menu-item.injectable";
 import { registerInjectables as registerGoBackInjectables } from "./go-back/register-injectables";
 import { registerInjectables as registerGoForwardInjectables } from "./go-forward/register-injectables";
 import { registerInjectables as registerNavigateToCatalogInjectables } from "./navigate-to-catalog/register-injectables";
@@ -13,49 +14,16 @@ import { registerInjectables as registerOpenCommandPaletteInjectables } from "./
 import { registerInjectables as registerOperationSystemActionsInjectables } from "./operation-system-actions/register-injectables";
 import { registerInjectables as registerReloadInjectables } from "./reload/register-injectables";
 import { registerInjectables as registerSeparatorsInjectables } from "./separators/register-injectables";
-import viewMenuItemInjectable from "./view-menu-item.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(viewMenuItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerGoBackInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerGoForwardInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerNavigateToCatalogInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerOpenCommandPaletteInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerOperationSystemActionsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerReloadInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerSeparatorsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(viewMenuItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerGoBackInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerGoForwardInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerNavigateToCatalogInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerOpenCommandPaletteInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerOperationSystemActionsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerReloadInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerSeparatorsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

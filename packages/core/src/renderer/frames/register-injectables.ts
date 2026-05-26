@@ -6,44 +6,20 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import { registerInjectables as registerClusterFrameInjectables } from "./cluster-frame/register-injectables";
 import frameApplicationRootInjectable from "./frame-application-root.injectable";
 import loadExtensionsInjectable from "./load-extensions.injectable";
-import { registerInjectables as registerRootFrameInjectables } from "./root-frame/register-injectables";
 import routingReactApplicationHocInjectable from "./routing-react-application-hoc.injectable";
 import themeProviderReactApplicationHocInjectable from "./theme-provider-react-application-hoc.injectable";
+import { registerInjectables as registerClusterFrameInjectables } from "./cluster-frame/register-injectables";
+import { registerInjectables as registerRootFrameInjectables } from "./root-frame/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(frameApplicationRootInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(loadExtensionsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(routingReactApplicationHocInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(themeProviderReactApplicationHocInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerClusterFrameInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerRootFrameInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(frameApplicationRootInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(loadExtensionsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(routingReactApplicationHocInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(themeProviderReactApplicationHocInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerClusterFrameInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerRootFrameInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -6,32 +6,16 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import { registerInjectables as registerAllowUntrustedCertificatesInjectables } from "./allow-untrusted-certificates/register-injectables";
-import { registerInjectables as registerHttpProxyUrlInjectables } from "./http-proxy-url/register-injectables";
 import proxyPreferencePageInjectable from "./proxy-preference-page.injectable";
 import proxyPreferenceTabInjectable from "./proxy-preference-tab.injectable";
+import { registerInjectables as registerAllowUntrustedCertificatesInjectables } from "./allow-untrusted-certificates/register-injectables";
+import { registerInjectables as registerHttpProxyUrlInjectables } from "./http-proxy-url/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(proxyPreferencePageInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(proxyPreferenceTabInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerAllowUntrustedCertificatesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerHttpProxyUrlInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(proxyPreferencePageInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(proxyPreferenceTabInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerAllowUntrustedCertificatesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerHttpProxyUrlInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

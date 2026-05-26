@@ -11,9 +11,5 @@ import requestLensProxyCertificateInjectable from "./request-lens-proxy-certific
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(requestLensProxyCertificateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(requestLensProxyCertificateInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

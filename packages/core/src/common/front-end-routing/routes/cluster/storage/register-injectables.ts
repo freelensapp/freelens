@@ -13,19 +13,7 @@ import { registerInjectables as registerStorageClassesInjectables } from "./stor
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    registerPersistentVolumeClaimsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerPersistentVolumesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerStorageClassesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { registerPersistentVolumeClaimsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerPersistentVolumesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerStorageClassesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

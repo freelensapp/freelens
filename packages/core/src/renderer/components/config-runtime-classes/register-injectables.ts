@@ -6,26 +6,14 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import runtimeClassStoreInjectable from "./store.injectable";
 import runtimeClassesRouteComponentInjectable from "./runtime-classes-route-component.injectable";
 import runtimeClassesSidebarItemInjectable from "./runtime-classes-sidebar-item.injectable";
-import runtimeClassStoreInjectable from "./store.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(runtimeClassStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(runtimeClassesRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(runtimeClassesSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(runtimeClassStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(runtimeClassesRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(runtimeClassesSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

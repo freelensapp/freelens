@@ -12,14 +12,6 @@ import getMetricProvidersRouteInjectable from "./get-metric-providers-route.inje
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(addMetricsRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getMetricProvidersRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(addMetricsRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getMetricProvidersRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

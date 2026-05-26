@@ -7,79 +7,31 @@
  */
 
 import apiBaseInjectable from "./api-base.injectable";
-import { registerInjectables as registerApiManagerInjectables } from "./api-manager/register-injectables";
 import createJsonApiInjectable from "./create-json-api.injectable";
-import createKubeApiInjectable from "./create-kube-api.injectable";
 import createKubeApiForClusterInjectable from "./create-kube-api-for-cluster.injectable";
 import createKubeApiForRemoteClusterInjectable from "./create-kube-api-for-remote-cluster.injectable";
-import createKubeJsonApiInjectable from "./create-kube-json-api.injectable";
+import createKubeApiInjectable from "./create-kube-api.injectable";
 import createKubeJsonApiForClusterInjectable from "./create-kube-json-api-for-cluster.injectable";
-import { registerInjectables as registerEndpointsInjectables } from "./endpoints/register-injectables";
-import { registerInjectables as registerKubeApiInjectables } from "./kube-api/register-injectables";
+import createKubeJsonApiInjectable from "./create-kube-json-api.injectable";
 import selectedFilterNamespacesInjectable from "./selected-filter-namespaces.injectable";
 import windowLocationInjectable from "./window-location.injectable";
+import { registerInjectables as registerApiManagerInjectables } from "./api-manager/register-injectables";
+import { registerInjectables as registerEndpointsInjectables } from "./endpoints/register-injectables";
+import { registerInjectables as registerKubeApiInjectables } from "./kube-api/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(apiBaseInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(createJsonApiInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(createKubeApiForClusterInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(createKubeApiForRemoteClusterInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(createKubeApiInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(createKubeJsonApiForClusterInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(createKubeJsonApiInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(selectedFilterNamespacesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(windowLocationInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerApiManagerInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerEndpointsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerKubeApiInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(apiBaseInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(createJsonApiInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(createKubeApiForClusterInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(createKubeApiForRemoteClusterInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(createKubeApiInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(createKubeJsonApiForClusterInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(createKubeJsonApiInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(selectedFilterNamespacesInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(windowLocationInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerApiManagerInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerEndpointsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerKubeApiInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

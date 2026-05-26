@@ -16,34 +16,10 @@ import watchKubeconfigFileChangesInjectable from "./watch-file-changes.injectabl
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(computeKubeconfigDiffInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(configToModelsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(diffChangedKubeconfigInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(kubeconfigSyncLoggerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(kubeconfigSyncManagerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(watchKubeconfigFileChangesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(computeKubeconfigDiffInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(configToModelsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(diffChangedKubeconfigInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(kubeconfigSyncLoggerInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(kubeconfigSyncManagerInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(watchKubeconfigFileChangesInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -13,19 +13,7 @@ import kubeconfigSyncPreferenceBlockInjectable from "./kubeconfig-sync-preferenc
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(discoverAllKubeconfigSyncKindsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(discoverKubeconfigSyncKindInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(kubeconfigSyncPreferenceBlockInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(discoverAllKubeconfigSyncKindsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(discoverKubeconfigSyncKindInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(kubeconfigSyncPreferenceBlockInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

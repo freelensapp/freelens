@@ -12,14 +12,6 @@ import { renderApplicationWhenApplicationIsReadyInjectable } from "./render-appl
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(renderApplicationWhenApplicationIsReadyInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(renderInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(renderApplicationWhenApplicationIsReadyInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(renderInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

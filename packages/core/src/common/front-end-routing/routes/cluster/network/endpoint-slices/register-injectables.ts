@@ -12,14 +12,6 @@ import navigateToEndpointSlicesInjectable from "./navigate-to-endpoint-slices.in
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(endpointSlicesRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(navigateToEndpointSlicesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(endpointSlicesRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(navigateToEndpointSlicesInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

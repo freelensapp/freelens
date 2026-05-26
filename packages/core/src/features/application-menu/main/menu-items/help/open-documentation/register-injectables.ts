@@ -11,9 +11,5 @@ import openDocumentationMenuItemInjectable from "./open-documentation-menu-item.
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(openDocumentationMenuItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(openDocumentationMenuItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

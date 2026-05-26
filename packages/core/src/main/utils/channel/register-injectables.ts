@@ -11,9 +11,5 @@ import { registerInjectables as registerIpcMainInjectables } from "./ipc-main/re
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    registerIpcMainInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { registerIpcMainInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

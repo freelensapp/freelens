@@ -12,14 +12,6 @@ import showLicensesWindowInjectable from "./show-licenses-window.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(openLicensesMenuItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(showLicensesWindowInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(openLicensesMenuItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(showLicensesWindowInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

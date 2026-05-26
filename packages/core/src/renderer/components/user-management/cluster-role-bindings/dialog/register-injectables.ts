@@ -7,31 +7,15 @@
  */
 
 import closeClusterRoleBindingDialogInjectable from "./close.injectable";
+import clusterRoleBindingDialogStateInjectable from "./state.injectable";
 import editClusterRoleBindingNameStateInjectable from "./edit-name-state.injectable";
 import openClusterRoleBindingDialogInjectable from "./open.injectable";
-import clusterRoleBindingDialogStateInjectable from "./state.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(closeClusterRoleBindingDialogInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(clusterRoleBindingDialogStateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(editClusterRoleBindingNameStateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(openClusterRoleBindingDialogInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(closeClusterRoleBindingDialogInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(clusterRoleBindingDialogStateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(editClusterRoleBindingNameStateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(openClusterRoleBindingDialogInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

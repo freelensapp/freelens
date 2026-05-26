@@ -11,9 +11,5 @@ import clusterApiUrlInjectable from "./api-url.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(clusterApiUrlInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(clusterApiUrlInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

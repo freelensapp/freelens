@@ -7,31 +7,15 @@
  */
 
 import persistentVolumeClaimMetricsInjectable from "./metrics.injectable";
+import persistentVolumeClaimStoreInjectable from "./store.injectable";
 import persistentVolumeClaimsRouteComponentInjectable from "./persistent-volume-claims-route-component.injectable";
 import persistentVolumeClaimsSidebarItemInjectable from "./persistent-volume-claims-sidebar-item.injectable";
-import persistentVolumeClaimStoreInjectable from "./store.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(persistentVolumeClaimMetricsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(persistentVolumeClaimStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(persistentVolumeClaimsRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(persistentVolumeClaimsSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(persistentVolumeClaimMetricsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(persistentVolumeClaimStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(persistentVolumeClaimsRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(persistentVolumeClaimsSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

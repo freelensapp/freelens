@@ -7,25 +7,13 @@
  */
 
 import readmeOfSelectedHelmChartInjectable from "./readme-of-selected-helm-chart.injectable";
-import { registerInjectables as registerVersionsInjectables } from "./versions/register-injectables";
 import versionsOfSelectedHelmChartInjectable from "./versions-of-selected-helm-chart.injectable";
+import { registerInjectables as registerVersionsInjectables } from "./versions/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(readmeOfSelectedHelmChartInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(versionsOfSelectedHelmChartInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerVersionsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(readmeOfSelectedHelmChartInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(versionsOfSelectedHelmChartInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerVersionsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

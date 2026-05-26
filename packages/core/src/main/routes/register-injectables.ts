@@ -17,39 +17,11 @@ import { registerInjectables as registerVersionsInjectables } from "./versions/r
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    registerFilesInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerHelmInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerKubeconfigRouteInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerMetricsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerPortForwardInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerResourceApplierInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerVersionsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { registerFilesInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerHelmInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerKubeconfigRouteInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerMetricsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerPortForwardInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerResourceApplierInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerVersionsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

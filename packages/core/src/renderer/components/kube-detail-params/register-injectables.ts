@@ -17,39 +17,11 @@ import toggleKubeDetailsPaneInjectable from "./toggle-details.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(getDetailsUrlInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getMaybeDetailsUrlInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(hideDetailsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(kubeDetailsUrlParamInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(kubeSelectedUrlParamInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(showDetailsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(toggleKubeDetailsPaneInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(getDetailsUrlInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getMaybeDetailsUrlInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(hideDetailsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(kubeDetailsUrlParamInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(kubeSelectedUrlParamInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(showDetailsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(toggleKubeDetailsPaneInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

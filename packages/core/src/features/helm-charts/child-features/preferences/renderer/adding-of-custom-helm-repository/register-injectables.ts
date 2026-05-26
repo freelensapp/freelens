@@ -7,37 +7,17 @@
  */
 
 import customHelmRepoInjectable from "./custom-helm-repo.injectable";
-import { registerInjectables as registerDialogVisibilityInjectables } from "./dialog-visibility/register-injectables";
-import { registerInjectables as registerHelmFileInputInjectables } from "./helm-file-input/register-injectables";
 import maximalCustomHelmRepoOptionsAreShownInjectable from "./maximal-custom-helm-repo-options-are-shown.injectable";
 import submitCustomHelmRepositoryInjectable from "./submit-custom-helm-repository.injectable";
+import { registerInjectables as registerDialogVisibilityInjectables } from "./dialog-visibility/register-injectables";
+import { registerInjectables as registerHelmFileInputInjectables } from "./helm-file-input/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(customHelmRepoInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(maximalCustomHelmRepoOptionsAreShownInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(submitCustomHelmRepositoryInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerDialogVisibilityInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerHelmFileInputInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(customHelmRepoInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(maximalCustomHelmRepoOptionsAreShownInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(submitCustomHelmRepositoryInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerDialogVisibilityInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerHelmFileInputInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

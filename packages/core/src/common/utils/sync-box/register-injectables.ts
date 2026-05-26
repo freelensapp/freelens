@@ -6,26 +6,14 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import syncBoxChannelListenerInjectable from "./channel-listener.injectable";
 import createSyncBoxInjectable from "./create-sync-box.injectable";
+import syncBoxChannelListenerInjectable from "./channel-listener.injectable";
 import syncBoxStateInjectable from "./sync-box-state.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(createSyncBoxInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(syncBoxChannelListenerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(syncBoxStateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(createSyncBoxInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(syncBoxChannelListenerInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(syncBoxStateInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

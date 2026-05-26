@@ -6,26 +6,14 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import configMapStoreInjectable from "./store.injectable";
 import configMapsRouteComponentInjectable from "./config-maps-route-component.injectable";
 import configMapsSidebarItemInjectable from "./sidebar-item.injectable";
-import configMapStoreInjectable from "./store.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(configMapStoreInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(configMapsRouteComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(configMapsSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(configMapStoreInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(configMapsRouteComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(configMapsSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

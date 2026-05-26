@@ -8,36 +8,16 @@
 
 import addWeblinkInjectable from "./add.injectable";
 import removeWeblinkInjectable from "./remove.injectable";
-import weblinksStateInjectable from "./state.injectable";
-import weblinksPersistentStorageInjectable from "./storage.injectable";
 import weblinksInjectable from "./weblinks.injectable";
+import weblinksPersistentStorageInjectable from "./storage.injectable";
+import weblinksStateInjectable from "./state.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(addWeblinkInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(removeWeblinkInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(weblinksInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(weblinksPersistentStorageInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(weblinksStateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(addWeblinkInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(removeWeblinkInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(weblinksInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(weblinksPersistentStorageInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(weblinksStateInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

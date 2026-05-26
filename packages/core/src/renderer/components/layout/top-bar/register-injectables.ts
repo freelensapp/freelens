@@ -14,24 +14,8 @@ import { registerInjectables as registerTopBarItemsInjectables } from "./top-bar
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(startTopbarStateSyncInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(topBarStateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerToggleMaximizeWindowInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerTopBarItemsInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(startTopbarStateSyncInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(topBarStateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerToggleMaximizeWindowInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerTopBarItemsInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

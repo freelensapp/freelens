@@ -12,14 +12,6 @@ import { registerInjectables as registerOpenAppContextMenuInjectables } from "./
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(contextMenuTopBarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerOpenAppContextMenuInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(contextMenuTopBarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerOpenAppContextMenuInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

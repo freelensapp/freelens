@@ -13,19 +13,7 @@ import weblinkCategoryInjectable from "./weblink.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(generalCategoryInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(kubernetesClusterCategoryInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(weblinkCategoryInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(generalCategoryInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(kubernetesClusterCategoryInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(weblinkCategoryInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

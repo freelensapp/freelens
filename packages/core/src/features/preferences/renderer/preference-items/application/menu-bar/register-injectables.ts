@@ -11,9 +11,5 @@ import menuBarPreferenceBlockInjectable from "./menu-bar-preference.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(menuBarPreferenceBlockInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(menuBarPreferenceBlockInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -16,34 +16,10 @@ import setupShellInjectable from "./setup-shell.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(computeShellEnvironmentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(computeUnixShellEnvironmentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(emitShellSyncFailedInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(processEnvInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(processExecPathInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(setupShellInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(computeShellEnvironmentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(computeUnixShellEnvironmentInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(emitShellSyncFailedInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(processEnvInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(processExecPathInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(setupShellInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

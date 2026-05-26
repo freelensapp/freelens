@@ -6,64 +6,26 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import {
-  actionForCopy,
-  actionForCut,
-  actionForDelete,
-  actionForPaste,
-  actionForRedo,
-  actionForSelectAll,
-  actionForUndo,
-  separator1,
-  separator2,
-} from "./operation-system-actions.injectable";
+import { actionForCopy } from "./operation-system-actions.injectable";
+import { actionForCut } from "./operation-system-actions.injectable";
+import { actionForDelete } from "./operation-system-actions.injectable";
+import { actionForPaste } from "./operation-system-actions.injectable";
+import { actionForRedo } from "./operation-system-actions.injectable";
+import { actionForSelectAll } from "./operation-system-actions.injectable";
+import { actionForUndo } from "./operation-system-actions.injectable";
+import { separator1 } from "./operation-system-actions.injectable";
+import { separator2 } from "./operation-system-actions.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(actionForCopy);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(actionForCut);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(actionForDelete);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(actionForPaste);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(actionForRedo);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(actionForSelectAll);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(actionForUndo);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(separator1);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(separator2);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(actionForCopy); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(actionForCut); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(actionForDelete); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(actionForPaste); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(actionForRedo); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(actionForSelectAll); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(actionForUndo); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(separator1); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(separator2); } catch (e) { /* Ignore duplicate registration */ }
 }

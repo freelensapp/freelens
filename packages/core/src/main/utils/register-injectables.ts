@@ -6,38 +6,18 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import { registerInjectables as registerChannelInjectables } from "./channel/register-injectables";
 import commandLineArgumentsInjectable from "./command-line-arguments.injectable";
 import getPortFromStreamInjectable from "./get-port-from-stream.injectable";
+import { registerInjectables as registerChannelInjectables } from "./channel/register-injectables";
 import { registerInjectables as registerResolveSystemProxyInjectables } from "./resolve-system-proxy/register-injectables";
 import { registerInjectables as registerSyncBoxInjectables } from "./sync-box/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(commandLineArgumentsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getPortFromStreamInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerChannelInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerResolveSystemProxyInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerSyncBoxInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(commandLineArgumentsInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(getPortFromStreamInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerChannelInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerResolveSystemProxyInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerSyncBoxInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

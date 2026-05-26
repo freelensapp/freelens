@@ -11,9 +11,5 @@ import configSidebarItemInjectable from "./config-sidebar-item.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(configSidebarItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(configSidebarItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -12,14 +12,6 @@ import navigateToJobsInjectable from "./navigate-to-jobs.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(jobsRouteInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(navigateToJobsInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(jobsRouteInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(navigateToJobsInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

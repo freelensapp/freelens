@@ -13,19 +13,7 @@ import { registerInjectables as registerShellRequestAuthenticatorInjectables } f
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(kubeApiUpgradeRequestInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(shellApiRequestInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerShellRequestAuthenticatorInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(kubeApiUpgradeRequestInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(shellApiRequestInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { registerShellRequestAuthenticatorInjectables(di); } catch (e) { /* Ignore duplicate registration */ }
 }

@@ -6,58 +6,24 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import {
-  logDebugInjectable,
-  logErrorInjectable,
-  loggerInjectable,
-  logInfoInjectable,
-  logSillyInjectable,
-  logWarningInjectable,
-} from "./logger.injectable";
+import { logDebugInjectable } from "./logger.injectable";
+import { logErrorInjectable } from "./logger.injectable";
+import { logInfoInjectable } from "./logger.injectable";
+import { logSillyInjectable } from "./logger.injectable";
+import { logWarningInjectable } from "./logger.injectable";
+import { loggerInjectable } from "./logger.injectable";
 import { prefixedLoggerInjectable } from "./prefixed-logger.injectable";
 import { winstonLoggerInjectable } from "./winston-logger.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(logDebugInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(logErrorInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(logInfoInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(logSillyInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(logWarningInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(loggerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(prefixedLoggerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(winstonLoggerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(logDebugInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(logErrorInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(logInfoInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(logSillyInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(logWarningInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(loggerInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(prefixedLoggerInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(winstonLoggerInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

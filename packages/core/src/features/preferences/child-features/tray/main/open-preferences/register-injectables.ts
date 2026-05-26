@@ -11,9 +11,5 @@ import openPreferencesTrayItemInjectable from "./open-preferences-tray-item.inje
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(openPreferencesTrayItemInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(openPreferencesTrayItemInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

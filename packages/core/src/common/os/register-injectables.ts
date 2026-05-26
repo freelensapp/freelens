@@ -13,19 +13,7 @@ import tempDirectoryPathInjectable from "./temp-directory-path.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(homeDirectoryPathInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(kubeDirectoryPathInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(tempDirectoryPathInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(homeDirectoryPathInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(kubeDirectoryPathInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(tempDirectoryPathInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

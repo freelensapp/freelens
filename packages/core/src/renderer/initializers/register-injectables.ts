@@ -11,9 +11,5 @@ import addSyncEntriesInjectable from "./add-sync-entries.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(addSyncEntriesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(addSyncEntriesInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }

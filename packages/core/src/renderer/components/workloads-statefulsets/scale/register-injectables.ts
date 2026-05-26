@@ -6,26 +6,14 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import statefulSetDialogStateInjectable from "./dialog-state.injectable";
 import openStatefulSetScaleDialogInjectable from "./open-dialog.injectable";
+import statefulSetDialogStateInjectable from "./dialog-state.injectable";
 import statefulsetScaleDialogClusterFrameChildComponentInjectable from "./statefulset-scale-dialog-cluster-frame-child-component.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(openStatefulSetScaleDialogInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(statefulSetDialogStateInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(statefulsetScaleDialogClusterFrameChildComponentInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
+  try { di.register(openStatefulSetScaleDialogInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(statefulSetDialogStateInjectable); } catch (e) { /* Ignore duplicate registration */ }
+  try { di.register(statefulsetScaleDialogClusterFrameChildComponentInjectable); } catch (e) { /* Ignore duplicate registration */ }
 }
