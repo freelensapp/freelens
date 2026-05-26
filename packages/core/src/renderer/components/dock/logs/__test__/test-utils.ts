@@ -25,7 +25,7 @@ export function getDefaultOnePodLogTabData(overrides: Partial<LogTabData> = {}):
     namespace: dockerPod.getNs(),
     showPrevious: false,
     showTimestamps: false,
-    showWordWrap: false,
+    showWordWrap: true,
     ...overrides,
   };
 }
