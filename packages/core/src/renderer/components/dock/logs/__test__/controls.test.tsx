@@ -68,35 +68,42 @@ describe("LogControls", () => {
     });
   });
 
-  it("toggles timestamps through log viewer preferences", async () => {
-    const updateLogPreferencesSpy = jest.spyOn(model, "updateLogPreferences");
-
+  it("updates the saved timestamp preference when toggled", async () => {
     render(<LogControls model={model} />);
 
     await user.click(await screen.findByText("Show timestamps"));
 
-    expect(updateLogPreferencesSpy).toHaveBeenCalledWith({ showTimestamps: true });
+    expect(userPreferencesState.logViewerPreferences).toEqual({
+      showTimestamps: true,
+      showPrevious: false,
+      showWordWrap: true,
+    });
   });
 
-  it("toggles word wrap through log viewer preferences", async () => {
-    const updateLogPreferencesSpy = jest.spyOn(model, "updateLogPreferences");
-
+  it("updates the saved word wrap preference when toggled", async () => {
     render(<LogControls model={model} />);
 
     await user.click(await screen.findByText("Word wrap"));
 
-    expect(updateLogPreferencesSpy).toHaveBeenCalledWith({ showWordWrap: false });
+    expect(userPreferencesState.logViewerPreferences).toEqual({
+      showTimestamps: false,
+      showPrevious: false,
+      showWordWrap: false,
+    });
   });
 
-  it("toggles previous container through log viewer preferences and reloads logs", async () => {
-    const updateLogPreferencesSpy = jest.spyOn(model, "updateLogPreferences");
+  it("updates the saved previous-container preference before reloading logs", async () => {
     const reloadLogsSpy = jest.spyOn(model, "reloadLogs");
 
     render(<LogControls model={model} />);
 
     await user.click(await screen.findByText("Show previous terminated container"));
 
-    expect(updateLogPreferencesSpy).toHaveBeenCalledWith({ showPrevious: true });
-    expect(reloadLogsSpy).toHaveBeenCalled();
+    expect(userPreferencesState.logViewerPreferences).toEqual({
+      showTimestamps: false,
+      showPrevious: true,
+      showWordWrap: true,
+    });
+    expect(reloadLogsSpy).toHaveBeenCalledTimes(1);
   });
 });
