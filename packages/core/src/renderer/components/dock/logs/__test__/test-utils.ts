@@ -45,7 +45,7 @@ export function createMockLogTabViewModel(
     stopLoadingLogs: jest.fn(),
     getPodById: jest.fn(),
     getPodsByOwnerId: jest.fn(),
-    areLogsPresent: jest.fn(),
+    areLogsPresent: jest.fn(() => false),
     searchStore: new SearchStore(),
     downloadLogs: jest.fn(),
     downloadAllLogs: jest.fn(),
