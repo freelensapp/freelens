@@ -5,7 +5,12 @@
  */
 
 import { KubeApi } from "@freelensapp/kube-api";
-import { logErrorInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@freelensapp/logger";
+import {
+  logDebugInjectionToken,
+  logErrorInjectionToken,
+  logInfoInjectionToken,
+  logWarningInjectionToken,
+} from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import { Agent } from "https";
 import isDevelopmentInjectable from "../vars/is-development.injectable";
@@ -58,6 +63,7 @@ const createKubeApiForRemoteClusterInjectable = getInjectable({
   instantiate: (di): CreateKubeApiForRemoteCluster => {
     const isDevelopment = di.inject(isDevelopmentInjectable);
     const createKubeJsonApi = di.inject(createKubeJsonApiInjectable);
+    const logDebug = di.inject(logDebugInjectionToken);
     const logError = di.inject(logErrorInjectionToken);
     const logInfo = di.inject(logInfoInjectionToken);
     const logWarn = di.inject(logWarningInjectionToken);
@@ -122,6 +128,7 @@ const createKubeApiForRemoteClusterInjectable = getInjectable({
 
       return new KubeApi(
         {
+          logDebug,
           logError,
           logInfo,
           logWarn,
