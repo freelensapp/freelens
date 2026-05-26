@@ -7,6 +7,7 @@
 import { isDefined } from "@freelensapp/utilities";
 import assert from "assert";
 import { computed } from "mobx";
+import { defaultLogViewerPreferences } from "../../../../features/user-preferences/common/preferences-helpers";
 
 import type { ResourceDescriptor } from "@freelensapp/kube-api";
 import type { Pod, PodLogsQuery } from "@freelensapp/kube-object";
@@ -92,8 +93,12 @@ export class LogTabViewModel {
   };
 
   updateLogPreferences = (partialPreferences: Partial<LogViewerPreferences>) => {
+    // Update the current tab and the saved defaults for future log tabs only.
+    const logViewerPreferences =
+      this.dependencies.userPreferencesState.logViewerPreferences ?? defaultLogViewerPreferences;
+
     this.dependencies.userPreferencesState.logViewerPreferences = {
-      ...this.dependencies.userPreferencesState.logViewerPreferences,
+      ...logViewerPreferences,
       ...partialPreferences,
     };
 

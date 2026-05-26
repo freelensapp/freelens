@@ -41,6 +41,7 @@ const createLogsTab =
         },
         false,
       );
+      // Apply saved log preferences first so explicit tab data can override them.
       setLogTabData(id, {
         ...(userPreferencesState.logViewerPreferences ?? defaultLogViewerPreferences),
         ...data,
