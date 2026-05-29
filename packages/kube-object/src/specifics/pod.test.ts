@@ -503,19 +503,21 @@ describe("Pods", () => {
 
       assert(pod.status);
 
-      pod.status.ephemeralContainerStatuses = [{
-        image: "dummy",
-        imageID: "dummy",
-        name: "debugger",
-        ready: false,
-        restartCount: 0,
-        state: {
-          waiting: {
-            reason: "CrashLoopBackOff",
-            message: "too much foobar",
+      pod.status.ephemeralContainerStatuses = [
+        {
+          image: "dummy",
+          imageID: "dummy",
+          name: "debugger",
+          ready: false,
+          restartCount: 0,
+          state: {
+            waiting: {
+              reason: "CrashLoopBackOff",
+              message: "too much foobar",
+            },
           },
         },
-      }];
+      ];
 
       expect(pod.hasIssues()).toStrictEqual(true);
     });
