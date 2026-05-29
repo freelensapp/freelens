@@ -930,9 +930,15 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
 
   private hasGateReadinessIssues() {
     // Kubelet's Ready condition fails when any configured readiness gate is missing or not True.
+    const readinessGates = this.spec?.readinessGates;
+
+    if (!readinessGates?.length) {
+      return false;
+    }
+
     const conditionStatuses = new Map(this.getConditions().map(({ type, status }) => [type, status]));
 
-    for (const { conditionType } of this.spec?.readinessGates ?? []) {
+    for (const { conditionType } of readinessGates) {
       if (conditionStatuses.get(conditionType) !== "True") {
         return true;
       }
