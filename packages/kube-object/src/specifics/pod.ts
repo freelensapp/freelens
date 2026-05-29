@@ -574,7 +574,7 @@ export interface PodSpec {
   preemptionPolicy?: string;
   priority?: number;
   priorityClassName?: string;
-  readinessGates?: unknown[];
+  readinessGates?: PodReadinessGate[];
   restartPolicy?: "Always" | "OnFailure" | "Never";
   runtimeClassName?: string;
   schedulerName?: string;
@@ -600,12 +600,16 @@ export type PodConditionType =
   | "PodResizePending"
   | "PodResizeInProgress";
 
+export interface PodReadinessGate {
+  conditionType: string;
+}
+
 export interface PodCondition {
   lastProbeTime?: number;
   lastTransitionTime?: string;
   message?: string;
   reason?: string;
-  type: PodConditionType;
+  type: PodConditionType | string;
   status: string;
 }
 
@@ -833,19 +837,108 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
   }
 
   hasIssues() {
-    for (const { type, status } of this.getConditions()) {
-      if (type === "Ready" && status !== "True") {
-        return true;
-      }
+    // Mirror the kubelet's Ready inputs, but don't treat successfully completed containers as issues.
+    if (this.hasContainerIssues()) {
+      return true;
     }
 
-    for (const { state } of this.getContainerStatuses()) {
+    if (this.hasGateReadinessIssues()) {
+      return true;
+    }
+
+    return !(this.getStatusPhase() === "Running" || this.getStatusPhase() === "Succeeded");
+  }
+
+  private hasContainerIssues() {
+    const { containerStatuses = [], initContainerStatuses = [], ephemeralContainerStatuses = [] } = this.status ?? {};
+    const statusesByName = new Map<string, PodContainerStatus>();
+
+    // CrashLoopBackOff is an issue for any container status, including ephemeral containers.
+    // While checking regular/init statuses, also index them for the readiness checks below.
+    for (const status of initContainerStatuses) {
+      if (status.state?.waiting?.reason === "CrashLoopBackOff") {
+        return true;
+      }
+
+      statusesByName.set(status.name, status);
+    }
+
+    for (const status of containerStatuses) {
+      if (status.state?.waiting?.reason === "CrashLoopBackOff") {
+        return true;
+      }
+
+      statusesByName.set(status.name, status);
+    }
+
+    // Ephemeral containers do not contribute to ContainersReady, but they can still crash-loop.
+    for (const { state } of ephemeralContainerStatuses) {
       if (state?.waiting?.reason === "CrashLoopBackOff") {
         return true;
       }
     }
 
-    return this.getStatusPhase() !== "Running";
+    // Kubelet's ContainersReady checks restartable init containers and regular containers.
+    // Freelens differs by accepting unready containers that terminated successfully with exit code 0.
+    for (const { name, restartPolicy } of this.getInitContainers()) {
+      // Non-restartable init containers do not contribute to ContainersReady.
+      if (restartPolicy !== "Always") {
+        continue;
+      }
+
+      const status = statusesByName.get(name);
+
+      // Missing status means kubelet cannot report the container ready.
+      if (!status) {
+        return true;
+      }
+
+      if (status.ready) {
+        continue;
+      }
+
+      // Completed pipeline-style containers should not keep showing pod issues.
+      if (status.state?.terminated?.exitCode === 0) {
+        continue;
+      }
+
+      return true;
+    }
+
+    for (const { name } of this.getContainers()) {
+      const status = statusesByName.get(name);
+
+      // Missing status means kubelet cannot report the container ready.
+      if (!status) {
+        return true;
+      }
+
+      if (status.ready) {
+        continue;
+      }
+
+      // Completed pipeline-style containers should not keep showing pod issues.
+      if (status.state?.terminated?.exitCode === 0) {
+        continue;
+      }
+
+      return true;
+    }
+
+    return false;
+  }
+
+  private hasGateReadinessIssues() {
+    // Kubelet's Ready condition fails when any configured readiness gate is missing or not True.
+    const conditionStatuses = new Map(this.getConditions().map(({ type, status }) => [type, status]));
+
+    for (const { conditionType } of this.spec?.readinessGates ?? []) {
+      if (conditionStatuses.get(conditionType) !== "True") {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   getLivenessProbe(container: Container) {
