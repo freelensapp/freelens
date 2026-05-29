@@ -24,7 +24,6 @@ import type { SidebarItemRegistration } from "@freelensapp/cluster-sidebar";
 import type { CustomResourceDefinition } from "@freelensapp/kube-object";
 
 
-// Préfixe utilisé pour les IDs des items custom resource dans la sidebar
 export const sideBarItemCustomResourcePrefix = "sidebar-item-custom-resource-group";
 
 // ===============================
@@ -320,23 +319,13 @@ const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectab
     const navigateToCustomResources = di.inject(navigateToCustomResourcesInjectable);
     const customResourcesRoute = di.inject(customResourcesRouteInjectable);
     const pathParameters = di.inject(routePathParametersInjectable, customResourcesRoute);
-    // Préférences utilisateur pour la config YAML des groupes CRD
     const state = di.inject(userPreferencesStateInjectable);
 
     return computed(() => {
       try {
         const crdList = customResourceDefinitions.get();
-        console.log("CRD count:", crdList.length);
-        
-        // Organise les CRD en arbre selon la config YAML utilisateur (ou chaîne vide)
-        // Utilise la config YAML par défaut centralisée si la config utilisateur est vide
         const crdGroupConfig = state.crdGroup && state.crdGroup.trim() !== "" ? state.crdGroup : DEFAULT_CONFIG_YAML;
-        console.log("Using config:", crdGroupConfig ? "custom/default" : "none");
-        
         const { root } = organizeCrdsIntoTree(crdList, crdGroupConfig);
-        console.log("Tree root children:", root.children.size);
-        
-        // Génère récursivement les items de la sidebar
         const items = generateSidebarItemsRecursive(
           root,
           customResourcesSidebarItemInjectable.id,
@@ -347,7 +336,6 @@ const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectab
             pathParameters,
           },
         );
-        console.log("Generated sidebar items:", items.length);
         return items;
       } catch (error) {
         console.error("Error generating sidebar items:", error);

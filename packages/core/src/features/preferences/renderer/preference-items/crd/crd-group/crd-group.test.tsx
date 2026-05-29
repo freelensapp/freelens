@@ -255,6 +255,109 @@ describe("CrdGroup Component", () => {
     });
   });
 
+  describe("Initial state", () => {
+    it("initializes editor with DEFAULT_CONFIG_YAML when state.crdGroup is empty", () => {
+      mockUserPreferencesState.crdGroup = "";
+
+      render(<CrdGroup />);
+
+      const textarea = screen.getByTestId("monaco-editor-for-crd-group-config") as HTMLTextAreaElement;
+      expect(textarea.value).toBe(DEFAULT_CONFIG_YAML);
+    });
+
+    it("preserves existing state.crdGroup when it is non-empty", () => {
+      const customConfig = "MyGroup:\n  - my.pattern";
+      mockUserPreferencesState.crdGroup = customConfig;
+
+      render(<CrdGroup />);
+
+      const textarea = screen.getByTestId("monaco-editor-for-crd-group-config") as HTMLTextAreaElement;
+      expect(textarea.value).toBe(customConfig);
+    });
+  });
+
+  describe("Auto-save via useEffect", () => {
+    it("saves valid config to state immediately on change without blur", () => {
+      render(<CrdGroup />);
+
+      const textarea = screen.getByTestId("monaco-editor-for-crd-group-config") as HTMLTextAreaElement;
+      const newConfig = "InstantGroup:\n  - instant.pattern";
+
+      fireEvent.change(textarea, { target: { value: newConfig } });
+
+      expect(mockUserPreferencesState.crdGroup).toBe(newConfig);
+    });
+
+    it("does not update state when config is invalid", () => {
+      const originalConfig = "OriginalGroup:\n  - original.pattern";
+      mockUserPreferencesState.crdGroup = originalConfig;
+
+      render(<CrdGroup />);
+
+      fireEvent.change(
+        screen.getByTestId("monaco-editor-for-crd-group-config"),
+        { target: { value: "BadGroup: not-array-not-null" } },
+      );
+
+      expect(mockUserPreferencesState.crdGroup).toBe(originalConfig);
+    });
+  });
+
+  describe("Validation error messages", () => {
+    it("shows the correct error message for a string top-level value", () => {
+      render(<CrdGroup />);
+
+      fireEvent.change(
+        screen.getByTestId("monaco-editor-for-crd-group-config"),
+        { target: { value: 'BadGroup: "just-a-string"' } },
+      );
+
+      expect(screen.getByText(/must be an array, an object of sub-levels, or null/)).toBeInTheDocument();
+    });
+
+    it("shows the correct error message for an invalid sub-level value", () => {
+      render(<CrdGroup />);
+
+      fireEvent.change(
+        screen.getByTestId("monaco-editor-for-crd-group-config"),
+        { target: { value: "Group:\n  - Sub: not-an-array" } },
+      );
+
+      expect(screen.getByText(/must be an array or null/)).toBeInTheDocument();
+    });
+  });
+
+  describe("Merge info counts", () => {
+    it("reports zero user groups for empty config", () => {
+      render(<CrdGroup />);
+
+      const toggleElement = screen.getByTestId("drawer-param-toggler");
+      fireEvent.click(toggleElement);
+
+      fireEvent.change(
+        screen.getByTestId("monaco-editor-for-crd-group-config"),
+        { target: { value: "" } },
+      );
+
+      expect(screen.getByText(/Custom groups: 0/)).toBeInTheDocument();
+    });
+
+    it("counts overridden groups correctly when user redefines a default key", () => {
+      render(<CrdGroup />);
+
+      const toggleElement = screen.getByTestId("drawer-param-toggler");
+      fireEvent.click(toggleElement);
+
+      fireEvent.change(
+        screen.getByTestId("monaco-editor-for-crd-group-config"),
+        { target: { value: "GitOps:\n  - custom.gitops.io\nMyNewGroup:\n  - my.pattern" } },
+      );
+
+      expect(screen.getByText(/Custom groups: 2/)).toBeInTheDocument();
+      expect(screen.getByText(/Overridden groups: 1/)).toBeInTheDocument();
+    });
+  });
+
   describe("Edge Cases", () => {
     it("handles empty configuration", () => {
       render(<CrdGroup />);

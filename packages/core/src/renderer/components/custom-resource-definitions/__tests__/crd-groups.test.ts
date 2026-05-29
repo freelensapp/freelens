@@ -34,6 +34,14 @@ describe("CRD Groups - N-Level Hierarchy Support", () => {
       expect(parseGroupConfig("invalid yaml:[")).toBeNull();
     });
 
+    it("should return null for a YAML array at the root level", () => {
+      expect(parseGroupConfig("- item1\n- item2")).toBeNull();
+    });
+
+    it("should return null for a scalar YAML value", () => {
+      expect(parseGroupConfig("just-a-string")).toBeNull();
+    });
+
     it("should parse basic YAML configuration with 1 level", () => {
       const yamlConfig = `
 Kubernetes:
@@ -189,6 +197,10 @@ Main:
     it("should handle exact matches", () => {
       expect(matchesPattern("exact.match", "exact.match")).toBe(true);
     });
+
+    it("should not match when pattern is null", () => {
+      expect(matchesPattern("foo.bar.com", null as any)).toBe(false);
+    });
   });
 
   describe("getPatternSpecificity", () => {
@@ -253,6 +265,22 @@ Main:
     it("should return the default path if config is null", () => {
       const result = findGroupPath("test.group", null);
       expect(result).toEqual({ path: ["test.group"] });
+    });
+
+    it("should return the default path if config has no nodes", () => {
+      expect(findGroupPath("test.group", { nodes: [] })).toEqual({ path: ["test.group"] });
+    });
+
+    it("should prefer deeper path when two patterns have equal specificity", () => {
+      const yamlConfig = `
+Top:
+  - k8s.io
+  - Sub:
+    - k8s.io
+`;
+      const config = parseGroupConfig(yamlConfig);
+      const result = findGroupPath("resources.k8s.io", config);
+      expect(result.path.length).toBeGreaterThanOrEqual(2);
     });
 
     it("should match to top level group with direct pattern", () => {
@@ -360,6 +388,20 @@ Kubernetes:
   });
 
   describe("organizeCrdsIntoTree", () => {
+    it("should return an empty root for an empty CRD list", () => {
+      const { root } = organizeCrdsIntoTree([], "Kubernetes:\n  - k8s.io");
+      expect(root.children.size).toBe(0);
+    });
+
+    it("should place each CRD in its own group when config is empty", () => {
+      const crds = [createMockCrd("deployments", "apps.k8s.io"), createMockCrd("pods", "core.k8s.io")];
+      const { root } = organizeCrdsIntoTree(crds, "");
+
+      expect(root.children.size).toBe(2);
+      expect(root.children.has("deployments.apps.k8s.io")).toBe(true);
+      expect(root.children.has("pods.core.k8s.io")).toBe(true);
+    });
+
     it("should organize CRDs into a tree structure", () => {
       const yamlConfig = `
 Kubernetes:

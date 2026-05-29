@@ -46,83 +46,83 @@ interface Dependencies {
   state: UserPreferencesState;
 }
 
-// Default configuration is imported from default-config.ts
-
 const NonInjectedCrdGroup = observer(({ state }: Dependencies) => {
   const [crdGroup, setCrdGroup] = React.useState(state.crdGroup || "");
 
-  // Initial setup - set default configuration if empty
   React.useEffect(() => {
     if (!crdGroup.trim()) {
-      // If empty, set default
       setCrdGroup(DEFAULT_CONFIG_YAML);
     }
   }, []);
 
-  // Pure validation function that doesn't modify state
-  const isValidConfiguration = (value: string): boolean => {
-    if (!value.trim()) {
-      return true;
-    }
+  const [validationError, setValidationError] = React.useState<string | null>(null);
 
-    const [parsed, parseError] = tryParseYaml(value);
-
-    if (parseError) {
-      return false;
-    }
-
-    // Parse succeeded, now validate the structure more deeply
-    try {
-      // Check the structure
-      let valid = true;
-      Object.entries(parsed).forEach(([key, val]) => {
-        // Value can be null (to hide), an array of strings, or an object of sub-levels
-        if (val === null) {
-          // Valid - null is allowed
-        } else if (Array.isArray(val)) {
-          // Check that each element is either a string or an object of sub-levels
-          for (const item of val) {
-            if (typeof item === "string") {
-              // Valid - strings are allowed
-            } else if (typeof item === "object" && item !== null) {
-              // Check the structure of sub-levels
-              Object.entries(item).forEach(([subKey, subVal]) => {
-                if (subVal !== null && !Array.isArray(subVal)) {
-                  valid = false;
-                }
-              });
-            } else {
-              valid = false;
+  const validateStructure = (parsed: Record<string, any>): string | null => {
+    for (const [key, val] of Object.entries(parsed)) {
+      if (val === null) continue;
+      if (Array.isArray(val)) {
+        for (const item of val) {
+          if (typeof item === "string") continue;
+          if (typeof item === "object" && item !== null) {
+            for (const [subKey, subVal] of Object.entries(item)) {
+              if (subVal !== null && !Array.isArray(subVal)) {
+                return `The value for sub-level "${subKey}" in "${key}" must be an array or null`;
+              }
             }
+          } else {
+            return `Each element of "${key}" must be a string or an object of sub-levels`;
           }
-        } else if (typeof val === "object") {
-          // Check the structure of sub-levels
-          Object.entries(val).forEach(([subKey, subVal]) => {
-            if (subVal !== null && !Array.isArray(subVal)) {
-              valid = false;
-            }
-          });
-        } else {
-          valid = false;
         }
-      });
+      } else if (typeof val === "object") {
+        for (const [subKey, subVal] of Object.entries(val)) {
+          if (subVal !== null && !Array.isArray(subVal)) {
+            return `The value for sub-level "${subKey}" in "${key}" must be an array or null`;
+          }
+        }
+      } else {
+        return `The value for "${key}" must be an array, an object of sub-levels, or null`;
+      }
+    }
+    return null;
+  };
 
-      return valid;
-    } catch (error) {
+  const isValidConfiguration = (value: string): boolean => {
+    if (!value.trim()) return true;
+    const [parsed, parseError] = tryParseYaml(value);
+    if (parseError) return false;
+    try {
+      return validateStructure(parsed) === null;
+    } catch {
       return false;
     }
   };
 
-  // Auto-save effect - only save valid configurations
+  const validateConfiguration = (value: string): boolean => {
+    if (!value.trim()) {
+      setValidationError(null);
+      return true;
+    }
+    const [parsed, parseError] = tryParseYaml(value);
+    if (parseError) {
+      setValidationError(parseError);
+      return false;
+    }
+    try {
+      const structureError = validateStructure(parsed);
+      setValidationError(structureError);
+      return structureError === null;
+    } catch (error) {
+      setValidationError(`Validation error: ${error instanceof Error ? error.message : "Unknown error"}`);
+      return false;
+    }
+  };
+
   React.useEffect(() => {
     if (isValidConfiguration(crdGroup)) {
       state.crdGroup = crdGroup;
     }
   }, [crdGroup, state]);
 
-  const [validationError, setValidationError] = React.useState<string | null>(null);
-
-  // Common options for read-only Monaco editors
   const readOnlyEditorOptions = {
     minimap: { enabled: false },
     scrollBeyondLastLine: false,
@@ -143,153 +143,41 @@ const NonInjectedCrdGroup = observer(({ state }: Dependencies) => {
     selectOnLineNumbers: false,
   };
 
-  // Function to merge user config with default config
-  const getMergedConfig = React.useCallback(() => {
+  const mergedConfig = React.useMemo(() => {
     try {
-      // Parse default config
       const [defaultParsed] = tryParseYaml(DEFAULT_CONFIG_YAML);
-
-      // Parse user config
       const userConfig = crdGroup.trim();
-      if (!userConfig) {
-        return DEFAULT_CONFIG_YAML;
-      }
-
+      if (!userConfig) return DEFAULT_CONFIG_YAML;
       const [userParsed, error] = tryParseYaml(userConfig);
-      if (error || !userParsed) {
-        return DEFAULT_CONFIG_YAML; // Fallback to default if user config is invalid
+      if (error || !userParsed) return DEFAULT_CONFIG_YAML;
+      const merged: Record<string, any> = { ...userParsed };
+      for (const key of Object.keys(defaultParsed)) {
+        if (!(key in merged)) merged[key] = defaultParsed[key];
       }
-
-      // Smart merge: user config takes precedence, but preserve structure
-      const mergedConfig: Record<string, any> = {};
-
-      // First, add all user-defined groups
-      Object.keys(userParsed).forEach((key) => {
-        mergedConfig[key] = userParsed[key];
-      });
-
-      // Then, add default groups that are not overridden by user
-      Object.keys(defaultParsed).forEach((key) => {
-        if (!(key in mergedConfig)) {
-          mergedConfig[key] = defaultParsed[key];
-        }
-      });
-
-      return yaml.dump(mergedConfig, {
-        indent: 2,
-        lineWidth: -1,
-        noRefs: true,
-        sortKeys: false,
-      });
-    } catch (error) {
+      return yaml.dump(merged, { indent: 2, lineWidth: -1, noRefs: true, sortKeys: false });
+    } catch {
       return DEFAULT_CONFIG_YAML;
     }
   }, [crdGroup]);
 
-  // Function to get preview info about the merge
-  const getMergeInfo = React.useCallback(() => {
+  const mergeInfo = React.useMemo(() => {
     try {
       const [defaultParsed] = tryParseYaml(DEFAULT_CONFIG_YAML);
       const userConfig = crdGroup.trim();
-
-      if (!userConfig) {
-        return {
-          userGroups: 0,
-          defaultGroups: Object.keys(defaultParsed).length,
-          overriddenGroups: 0,
-        };
-      }
-
-      const [userParsed, error] = tryParseYaml(userConfig);
-      if (error || !userParsed) {
-        return {
-          userGroups: 0,
-          defaultGroups: Object.keys(defaultParsed).length,
-          overriddenGroups: 0,
-        };
-      }
-
-      const userGroupKeys = Object.keys(userParsed);
       const defaultGroupKeys = Object.keys(defaultParsed);
-      const overriddenGroups = userGroupKeys.filter((key) => defaultGroupKeys.includes(key));
-
+      if (!userConfig) return { userGroups: 0, defaultGroups: defaultGroupKeys.length, overriddenGroups: 0 };
+      const [userParsed, error] = tryParseYaml(userConfig);
+      if (error || !userParsed) return { userGroups: 0, defaultGroups: defaultGroupKeys.length, overriddenGroups: 0 };
+      const userGroupKeys = Object.keys(userParsed);
       return {
         userGroups: userGroupKeys.length,
         defaultGroups: defaultGroupKeys.length,
-        overriddenGroups: overriddenGroups.length,
+        overriddenGroups: userGroupKeys.filter((key) => defaultGroupKeys.includes(key)).length,
       };
-    } catch (error) {
-      return {
-        userGroups: 0,
-        defaultGroups: 0,
-        overriddenGroups: 0,
-      };
+    } catch {
+      return { userGroups: 0, defaultGroups: 0, overriddenGroups: 0 };
     }
   }, [crdGroup]);
-
-  const validateConfiguration = (value: string): boolean => {
-    if (!value.trim()) {
-      setValidationError(null);
-      return true;
-    }
-
-    const [parsed, parseError] = tryParseYaml(value);
-
-    if (parseError) {
-      setValidationError(parseError);
-      return false;
-    }
-
-    // Parse succeeded, now validate the structure more deeply
-    try {
-      // Check the structure
-      let valid = true;
-      Object.entries(parsed).forEach(([key, val]) => {
-        // Value can be null (to hide), an array of strings, or an object of sub-levels
-        if (val === null) {
-          // Valid - null is allowed
-        } else if (Array.isArray(val)) {
-          // Check that each element is either a string or an object of sub-levels
-          for (const item of val) {
-            if (typeof item === "string") {
-              // Valid - strings are allowed
-            } else if (typeof item === "object" && item !== null) {
-              // Check the structure of sub-levels
-              Object.entries(item).forEach(([subKey, subVal]) => {
-                if (subVal !== null && !Array.isArray(subVal)) {
-                  valid = false;
-                  setValidationError(`The value for sub-level "${subKey}" in "${key}" must be an array or null`);
-                }
-              });
-            } else {
-              valid = false;
-              setValidationError(`Each element of "${key}" must be a string or an object of sub-levels`);
-            }
-          }
-        } else if (typeof val === "object") {
-          // Check the structure of sub-levels
-          Object.entries(val).forEach(([subKey, subVal]) => {
-            if (subVal !== null && !Array.isArray(subVal)) {
-              valid = false;
-              setValidationError(`The value for sub-level "${subKey}" in "${key}" must be an array or null`);
-            }
-          });
-        } else {
-          valid = false;
-          setValidationError(`The value for "${key}" must be an array, an object of sub-levels, or null`);
-        }
-      });
-
-      if (valid) {
-        setValidationError(null);
-      }
-
-      return valid;
-    } catch (error) {
-      setValidationError(`Validation error: ${error instanceof Error ? error.message : "Unknown error"}`);
-      return false;
-    }
-  };
 
   return (
     <section className="crd-group-container">
@@ -352,7 +240,6 @@ Others:
             value={crdGroup}
             onChange={(value) => {
               setCrdGroup(value);
-              // Validate the configuration on change
               validateConfiguration(value);
             }}
             onError={(error) => {
@@ -396,16 +283,11 @@ Others:
           {/* Merge info */}
           <div className="merge-info">
             <strong>Merge information:</strong>
-            {(() => {
-              const info = getMergeInfo();
-              return (
-                <div className="info-details">
-                  • Custom groups: {info.userGroups}
-                  <br />• Default groups: {info.defaultGroups}
-                  <br />• Overridden groups: {info.overriddenGroups}
-                </div>
-              );
-            })()}
+            <div className="info-details">
+              • Custom groups: {mergeInfo.userGroups}
+              <br />• Default groups: {mergeInfo.defaultGroups}
+              <br />• Overridden groups: {mergeInfo.overriddenGroups}
+            </div>
           </div>
 
           <div className="config-grid">
@@ -432,7 +314,7 @@ Others:
               <MonacoEditor
                 id="crd-group-merged"
                 language="yaml"
-                value={getMergedConfig()}
+                value={mergedConfig}
                 readOnly
                 style={{
                   height: 200,

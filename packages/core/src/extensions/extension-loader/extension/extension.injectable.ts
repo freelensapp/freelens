@@ -31,7 +31,6 @@ const extensionInjectable = getInjectable({
         const reactionDisposer = disposer();
         const differencingRegistrator = injectableDifferencingRegistratorWith(childDi);
 
-        // Track previous state for each registrator separately
         const previousInjectablesMap = new Map<any, Injectable<any, any, any>[]>();
 
         return {
@@ -46,7 +45,6 @@ const extensionInjectable = getInjectable({
                   previousInjectablesMap.set(extensionRegistrator, injectables);
                 });
               } else {
-                // For computed injectables, we need to track state per reaction
                 const reactionKey = `${extensionRegistrator.toString()}-computed`;
                 reactionDisposer.push(
                   reaction(
