@@ -837,7 +837,11 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
   }
 
   hasIssues() {
-    // Mirror the kubelet's Ready inputs, but don't treat successfully completed containers as issues.
+    if (this.getStatusPhase() === "Succeeded") {
+      return false;
+    }
+
+    // Active pods can still have container or readiness-gate issues.
     if (this.hasContainerIssues()) {
       return true;
     }
@@ -846,7 +850,7 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
       return true;
     }
 
-    return !(this.getStatusPhase() === "Running" || this.getStatusPhase() === "Succeeded");
+    return this.getStatusPhase() !== "Running";
   }
 
   private hasContainerIssues() {

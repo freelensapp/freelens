@@ -551,5 +551,22 @@ describe("Pods", () => {
 
       expect(pod.hasIssues()).toStrictEqual(false);
     });
+
+    it("should return false if a succeeded pod has a readiness gate that is not ready", () => {
+      const pod = getDummyPod({ running: 1 });
+
+      assert(pod.status);
+
+      pod.status.phase = "Succeeded";
+      pod.spec.readinessGates = [{ conditionType: "example.com/ready" }];
+      pod.status.conditions.push({
+        type: "example.com/ready",
+        status: "False",
+        lastProbeTime: 1,
+        lastTransitionTime: "longer ago",
+      });
+
+      expect(pod.hasIssues()).toStrictEqual(false);
+    });
   });
 });
