@@ -532,6 +532,36 @@ describe("Pods", () => {
       expect(pod.hasIssues()).toStrictEqual(true);
     });
 
+    it("should return true if a current phase failed", () => {
+      const pod = getDummyPod({ running: 1 });
+
+      assert(pod.status);
+
+      pod.status.phase = "Failed";
+
+      expect(pod.hasIssues()).toStrictEqual(true);
+    });
+
+    it("should return true if a current phase is pending", () => {
+      const pod = getDummyPod({ running: 1 });
+
+      assert(pod.status);
+
+      pod.status.phase = "Pending";
+
+      expect(pod.hasIssues()).toStrictEqual(true);
+    });
+
+    it("should return true if a current phase is unknown", () => {
+      const pod = getDummyPod({ running: 1 });
+
+      assert(pod.status);
+
+      pod.status.phase = "Unknown";
+
+      expect(pod.hasIssues()).toStrictEqual(true);
+    });
+
     it("should return false if a current phase is running", () => {
       const pod = getDummyPod({ running: 1 });
 

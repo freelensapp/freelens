@@ -837,20 +837,28 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
   }
 
   hasIssues() {
-    if (this.getStatusPhase() === "Succeeded") {
+    const phase = this.getStatusPhase();
+
+    if (!phase) {
+      return true;
+    }
+
+    if (phase === "Succeeded") {
+      return false;
+    } else if (phase === "Failed" || phase === "Pending" || phase === "Unknown") {
+      return true;
+    } else {
+      // "Running" pods can still have container or readiness-gate issues.
+      if (this.hasContainerIssues()) {
+        return true;
+      }
+
+      if (this.hasGateReadinessIssues()) {
+        return true;
+      }
+
       return false;
     }
-
-    // Active pods can still have container or readiness-gate issues.
-    if (this.hasContainerIssues()) {
-      return true;
-    }
-
-    if (this.hasGateReadinessIssues()) {
-      return true;
-    }
-
-    return this.getStatusPhase() !== "Running";
   }
 
   private hasContainerIssues() {
