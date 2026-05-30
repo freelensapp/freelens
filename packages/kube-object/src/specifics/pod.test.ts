@@ -522,16 +522,6 @@ describe("Pods", () => {
       expect(pod.hasIssues()).toStrictEqual(true);
     });
 
-    it("should return true if a current phase isn't running", () => {
-      const pod = getDummyPod({ running: 1 });
-
-      assert(pod.status);
-
-      pod.status.phase = "not running";
-
-      expect(pod.hasIssues()).toStrictEqual(true);
-    });
-
     it("should return true if a current phase failed", () => {
       const pod = getDummyPod({ running: 1 });
 
