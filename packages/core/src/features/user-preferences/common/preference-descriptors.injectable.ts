@@ -12,12 +12,14 @@ import { defaultColorThemePreference } from "../../../common/vars";
 import currentTimezoneInjectable from "../../../common/vars/current-timezone.injectable";
 import {
   ClusterPageMenuOrder,
+  CustomThemeColors,
   defaultEditorConfig,
   defaultExtensionRegistryUrlLocation,
   defaultLogViewerPreferences,
   defaultPackageMirror,
   defaultTerminalConfig,
   getPreferenceDescriptor,
+  normalizeCustomThemeColors,
   packageMirrors,
 } from "./preferences-helpers";
 
@@ -52,6 +54,14 @@ const userPreferenceDescriptorsInjectable = getInjectable({
       colorTheme: getPreferenceDescriptor<string>({
         fromStore: (val) => val || defaultColorThemePreference,
         toStore: (val) => (!val || val === defaultColorThemePreference ? undefined : val),
+      }),
+      customThemeColors: getPreferenceDescriptor<Partial<CustomThemeColors>, CustomThemeColors>({
+        fromStore: normalizeCustomThemeColors,
+        toStore: (val) => {
+          const normalizedColors = normalizeCustomThemeColors(val);
+
+          return Object.keys(normalizedColors).length > 0 ? normalizedColors : undefined;
+        },
       }),
       terminalTheme: getPreferenceDescriptor<string>({
         fromStore: (val) => val || "",
