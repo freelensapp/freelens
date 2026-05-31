@@ -30,9 +30,26 @@ import type {
   KubeconfigSyncValue,
   LogViewerPreferences,
   TerminalConfig,
+  ThemeColorOverrides,
 } from "./preferences-helpers";
 
 export type PreferenceDescriptors = ReturnType<(typeof userPreferenceDescriptorsInjectable)["instantiate"]>;
+
+const themeColorValuePattern = /^#[0-9a-f]{6}$/i;
+
+const normalizeThemeColorOverrides = (overrides?: ThemeColorOverrides): ThemeColorOverrides => {
+  if (!overrides || typeof overrides !== "object" || Array.isArray(overrides)) {
+    return {};
+  }
+
+  return Object.fromEntries(
+    Object.entries(overrides)
+      .filter(
+        (entry): entry is [string, string] => typeof entry[1] === "string" && themeColorValuePattern.test(entry[1]),
+      )
+      .map(([key, value]) => [key, value.toLowerCase()]),
+  );
+};
 
 const userPreferenceDescriptorsInjectable = getInjectable({
   id: "user-preference-descriptors",
@@ -52,6 +69,14 @@ const userPreferenceDescriptorsInjectable = getInjectable({
       colorTheme: getPreferenceDescriptor<string>({
         fromStore: (val) => val || defaultColorThemePreference,
         toStore: (val) => (!val || val === defaultColorThemePreference ? undefined : val),
+      }),
+      themeColorOverrides: getPreferenceDescriptor<ThemeColorOverrides>({
+        fromStore: (val) => normalizeThemeColorOverrides(val),
+        toStore: (val) => {
+          const overrides = normalizeThemeColorOverrides(val);
+
+          return Object.keys(overrides).length > 0 ? overrides : undefined;
+        },
       }),
       terminalTheme: getPreferenceDescriptor<string>({
         fromStore: (val) => val || "",

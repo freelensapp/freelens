@@ -26,6 +26,8 @@ export interface LogViewerPreferences {
   showWordWrap: boolean;
 }
 
+export type ThemeColorOverrides = Record<string, string>;
+
 export const defaultLogViewerPreferences: LogViewerPreferences = {
   showTimestamps: false,
   showPrevious: false,

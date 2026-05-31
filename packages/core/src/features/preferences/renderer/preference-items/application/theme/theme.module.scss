@@ -1,0 +1,57 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+.customColors {
+  margin-top: 16px;
+}
+
+.customColors summary {
+  align-items: center;
+  color: var(--textColorAccent);
+  cursor: pointer;
+  display: inline-flex;
+  gap: 8px;
+}
+
+.customColorCount {
+  background: var(--badgeBackgroundColor);
+  border-radius: 999px;
+  color: var(--mainBackground);
+  font-size: 11px;
+  line-height: 1;
+  min-width: 18px;
+  padding: 4px 6px;
+  text-align: center;
+}
+
+.customColorGrid {
+  display: grid;
+  gap: 8px 16px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  margin: 12px 0;
+}
+
+.customColorRow {
+  align-items: center;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 32px minmax(0, 1fr) auto;
+}
+
+.customColorRow code {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.customColorInput {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  height: 32px;
+  padding: 0;
+  width: 32px;
+}
