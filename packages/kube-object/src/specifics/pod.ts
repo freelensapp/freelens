@@ -849,11 +849,20 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
       return true;
     } else {
       // "Running" pods can still have container or readiness-gate issues.
-      if (this.hasContainerIssues()) {
+      let podIsReady = false;
+
+      for (const { type, status } of this.getConditions()) {
+        if (type === "Ready") {
+          podIsReady = status === "True";
+          break;
+        }
+      }
+
+      if (this.hasContainerIssues(podIsReady)) {
         return true;
       }
 
-      if (this.hasGateReadinessIssues()) {
+      if (!podIsReady && this.hasGateReadinessIssues()) {
         return true;
       }
 
@@ -861,7 +870,7 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
     }
   }
 
-  private hasContainerIssues() {
+  private hasContainerIssues(podIsReady: boolean) {
     const { containerStatuses = [], initContainerStatuses = [], ephemeralContainerStatuses = [] } = this.status ?? {};
     const statusesByName = new Map<string, PodContainerStatus>();
 
@@ -884,10 +893,14 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
     }
 
     // Ephemeral containers do not contribute to ContainersReady, but they can still crash-loop.
-    for (const { state } of ephemeralContainerStatuses) {
-      if (state?.waiting?.reason === "CrashLoopBackOff") {
+    for (const status of ephemeralContainerStatuses) {
+      if (status.state?.waiting?.reason === "CrashLoopBackOff") {
         return true;
       }
+    }
+
+    if (podIsReady) {
+      return false;
     }
 
     // Kubelet's ContainersReady checks restartable init containers and regular containers.

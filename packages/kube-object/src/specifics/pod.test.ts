@@ -522,6 +522,60 @@ describe("Pods", () => {
       expect(pod.hasIssues()).toStrictEqual(true);
     });
 
+    it("should return true if an ephemeral container is in a crash loop back off even when containers are ready", () => {
+      const pod = getDummyPod({ running: 1 });
+
+      assert(pod.status);
+
+      pod.status.conditions.push({
+        type: "ContainersReady",
+        status: "True",
+        lastProbeTime: 1,
+        lastTransitionTime: "longer ago",
+      });
+      pod.status.ephemeralContainerStatuses = [
+        {
+          image: "dummy",
+          imageID: "dummy",
+          name: "debugger",
+          ready: false,
+          restartCount: 0,
+          state: {
+            waiting: {
+              reason: "CrashLoopBackOff",
+              message: "too much foobar",
+            },
+          },
+        },
+      ];
+
+      expect(pod.hasIssues()).toStrictEqual(true);
+    });
+
+    it("should return false if containers and pod readiness conditions are true", () => {
+      const pod = getDummyPod({ running: 1 });
+
+      assert(pod.status);
+
+      pod.spec.readinessGates = [{ conditionType: "example.com/ready" }];
+      pod.status.conditions.push(
+        {
+          type: "ContainersReady",
+          status: "True",
+          lastProbeTime: 1,
+          lastTransitionTime: "longer ago",
+        },
+        {
+          type: "Ready",
+          status: "True",
+          lastProbeTime: 1,
+          lastTransitionTime: "longer ago",
+        },
+      );
+
+      expect(pod.hasIssues()).toStrictEqual(false);
+    });
+
     it("should return true if a current phase failed", () => {
       const pod = getDummyPod({ running: 1 });
 
