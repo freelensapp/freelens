@@ -836,67 +836,54 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
     return this.spec?.affinity ?? {};
   }
 
- hasIssues() {
-  const phase = this.getStatusPhase();
+  hasIssues() {
+    const phase = this.getStatusPhase();
 
-  if (!phase) {
-    return true;
+    if (!phase) {
+      return true;
+    }
+
+    if (phase === "Succeeded") {
+      return false;
+    }
+
+    if (phase === "Failed" || phase === "Pending" || phase === "Unknown") {
+      return true;
+    }
+
+    // "Running" pods can still have container or readiness-gate issues.
+    if (this.hasCrashLoopingContainers()) {
+      return true;
+    }
+
+    const podIsReady = this.getConditions().some(({ type, status }) => type === "Ready" && status === "True");
+
+    if (!podIsReady) {
+      if (this.hasUnreadyContainers()) {
+        return true;
+      }
+
+      if (this.hasGateReadinessIssues()) {
+        return true;
+      }
+    }
+
+    return false;
   }
+  private hasCrashLoopingContainers() {
+    const { containerStatuses = [], initContainerStatuses = [], ephemeralContainerStatuses = [] } = this.status ?? {};
 
-  if (phase === "Succeeded") {
+    for (const status of [...initContainerStatuses, ...containerStatuses, ...ephemeralContainerStatuses]) {
+      if (status.state?.waiting?.reason === "CrashLoopBackOff") {
+        return true;
+      }
+    }
+
     return false;
   }
 
-  if (phase === "Failed" || phase === "Pending" || phase === "Unknown") {
-    return true;
-  }
-
-  // "Running" pods can still have container or readiness-gate issues.
-  if (this.hasCrashLoopingContainers()) {
-    return true;
-  }
-
-  const podIsReady = this.getConditions().some(
-    ({ type, status }) => type === "Ready" && status === "True",
-  );
-
-  if (!podIsReady) {
-    if (this.hasUnreadyContainers()) {
-      return true;
-    }
-
-    if (this.hasGateReadinessIssues()) {
-      return true;
-    }
-  }
-
-  return false;
-}
-  private hasCrashLoopingContainers() {
-  const {
-    containerStatuses = [],
-    initContainerStatuses = [],
-    ephemeralContainerStatuses = [],
-  } = this.status ?? {};
-
-  for (const status of [
-    ...initContainerStatuses,
-    ...containerStatuses,
-    ...ephemeralContainerStatuses,
-  ]) {
-    if (status.state?.waiting?.reason === "CrashLoopBackOff") {
-      return true;
-    }
-  }
-
-  return false;
-}
-
   private hasUnreadyContainers() {
-    const {
-      containerStatuses = [],
-      initContainerStatuses = [],
-    } = this.status ?? {};
+    const { containerStatuses = [], initContainerStatuses = [] } = this.status ?? {};
 
     const statusesByName = new Map<string, PodContainerStatus>();
 
