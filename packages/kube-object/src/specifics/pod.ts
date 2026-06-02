@@ -870,6 +870,7 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
 
     return false;
   }
+
   private hasCrashLoopingContainers() {
     const { containerStatuses = [], initContainerStatuses = [], ephemeralContainerStatuses = [] } = this.status ?? {};
 
