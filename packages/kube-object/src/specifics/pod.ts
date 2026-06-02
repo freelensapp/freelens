@@ -836,121 +836,107 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
     return this.spec?.affinity ?? {};
   }
 
-  hasIssues() {
-    const phase = this.getStatusPhase();
+ hasIssues() {
+  const phase = this.getStatusPhase();
 
-    if (!phase) {
+  if (!phase) {
+    return true;
+  }
+
+  if (phase === "Succeeded") {
+    return false;
+  }
+
+  if (phase === "Failed" || phase === "Pending" || phase === "Unknown") {
+    return true;
+  }
+
+  // "Running" pods can still have container or readiness-gate issues.
+  if (this.hasCrashLoopingContainers()) {
+    return true;
+  }
+
+  const podIsReady = this.getConditions().some(
+    ({ type, status }) => type === "Ready" && status === "True",
+  );
+
+  if (!podIsReady) {
+    if (this.hasUnreadyContainers()) {
       return true;
     }
 
-    if (phase === "Succeeded") {
-      return false;
-    } else if (phase === "Failed" || phase === "Pending" || phase === "Unknown") {
+    if (this.hasGateReadinessIssues()) {
       return true;
-    } else {
-      // "Running" pods can still have container or readiness-gate issues.
-      let podIsReady = false;
-
-      for (const { type, status } of this.getConditions()) {
-        if (type === "Ready") {
-          podIsReady = status === "True";
-          break;
-        }
-      }
-
-      if (this.hasContainerIssues(podIsReady)) {
-        return true;
-      }
-
-      if (!podIsReady && this.hasGateReadinessIssues()) {
-        return true;
-      }
-
-      return false;
     }
   }
 
-  private hasContainerIssues(podIsReady: boolean) {
-    const { containerStatuses = [], initContainerStatuses = [], ephemeralContainerStatuses = [] } = this.status ?? {};
+  return false;
+}
+  private hasCrashLoopingContainers() {
+  const {
+    containerStatuses = [],
+    initContainerStatuses = [],
+    ephemeralContainerStatuses = [],
+  } = this.status ?? {};
+
+  for (const status of [
+    ...initContainerStatuses,
+    ...containerStatuses,
+    ...ephemeralContainerStatuses,
+  ]) {
+    if (status.state?.waiting?.reason === "CrashLoopBackOff") {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+  private hasUnreadyContainers() {
+    const {
+      containerStatuses = [],
+      initContainerStatuses = [],
+    } = this.status ?? {};
+
     const statusesByName = new Map<string, PodContainerStatus>();
 
-    // CrashLoopBackOff is an issue for any container status, including ephemeral containers.
-    // While checking regular/init statuses, also index them for the readiness checks below.
     for (const status of initContainerStatuses) {
-      if (status.state?.waiting?.reason === "CrashLoopBackOff") {
-        return true;
-      }
-
       statusesByName.set(status.name, status);
     }
 
     for (const status of containerStatuses) {
-      if (status.state?.waiting?.reason === "CrashLoopBackOff") {
-        return true;
-      }
-
       statusesByName.set(status.name, status);
     }
 
-    // Ephemeral containers do not contribute to ContainersReady, but they can still crash-loop.
-    for (const status of ephemeralContainerStatuses) {
-      if (status.state?.waiting?.reason === "CrashLoopBackOff") {
-        return true;
-      }
-    }
-
-    if (podIsReady) {
-      return false;
-    }
-
-    // Kubelet's ContainersReady checks restartable init containers and regular containers.
-    // Freelens differs by accepting unready containers that terminated successfully with exit code 0.
     for (const { name, restartPolicy } of this.getInitContainers()) {
-      // Non-restartable init containers do not contribute to ContainersReady.
       if (restartPolicy !== "Always") {
         continue;
       }
 
-      const status = statusesByName.get(name);
-
-      // Missing status means kubelet cannot report the container ready.
-      if (!status) {
+      if (this.isContainerStatusUnready(statusesByName.get(name))) {
         return true;
       }
-
-      if (status.ready) {
-        continue;
-      }
-
-      // Completed pipeline-style containers should not keep showing pod issues.
-      if (status.state?.terminated?.exitCode === 0) {
-        continue;
-      }
-
-      return true;
     }
 
     for (const { name } of this.getContainers()) {
-      const status = statusesByName.get(name);
-
-      // Missing status means kubelet cannot report the container ready.
-      if (!status) {
+      if (this.isContainerStatusUnready(statusesByName.get(name))) {
         return true;
       }
-
-      if (status.ready) {
-        continue;
-      }
-
-      // Completed pipeline-style containers should not keep showing pod issues.
-      if (status.state?.terminated?.exitCode === 0) {
-        continue;
-      }
-
-      return true;
     }
 
     return false;
+  }
+
+  private isContainerStatusUnready(status?: PodContainerStatus) {
+    if (!status) {
+      return true;
+    }
+
+    if (status.ready) {
+      return false;
+    }
+
+    return status.state?.terminated?.exitCode !== 0;
   }
 
   private hasGateReadinessIssues() {
