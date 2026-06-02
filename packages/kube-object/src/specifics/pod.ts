@@ -872,14 +872,11 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
   }
 
   private hasCrashLoopingContainers() {
-    const { containerStatuses = [], initContainerStatuses = [], ephemeralContainerStatuses = [] } = this.status ?? {};
-
-    for (const status of [...initContainerStatuses, ...containerStatuses, ...ephemeralContainerStatuses]) {
-      if (status.state?.waiting?.reason === "CrashLoopBackOff") {
+    for (const { state } of this.getContainerStatuses()) {
+      if (state?.waiting?.reason === "CrashLoopBackOff") {
         return true;
       }
     }
-
     return false;
   }
 
