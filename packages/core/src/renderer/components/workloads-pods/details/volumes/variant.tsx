@@ -24,6 +24,7 @@ import { GcePersistentDisk } from "./variants/gce-persistent-disk";
 import { GitRepo } from "./variants/git-repo";
 import { GlusterFs } from "./variants/gluster-fs";
 import { HostPath } from "./variants/host-path";
+import { ImageVolume } from "./variants/image";
 import { IScsi } from "./variants/i-scsi";
 import { Local } from "./variants/local";
 import { NetworkFs } from "./variants/network-fs";
@@ -169,6 +170,13 @@ function renderVolumeVariant({ pod, volume }: VolumeVariantProps): VolumeVariant
     return {
       kind: "hostPath",
       element: <HostPath variant={volume.hostPath} pod={pod} volumeName={volume.name} />,
+    };
+  }
+
+  if (volume.image) {
+    return {
+      kind: "image",
+      element: <ImageVolume variant={volume.image} pod={pod} volumeName={volume.name} />,
     };
   }
 
