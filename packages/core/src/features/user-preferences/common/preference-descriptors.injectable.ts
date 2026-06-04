@@ -10,6 +10,7 @@ import { observable } from "mobx";
 import kubeDirectoryPathInjectable from "../../../common/os/kube-directory-path.injectable";
 import { defaultColorThemePreference } from "../../../common/vars";
 import currentTimezoneInjectable from "../../../common/vars/current-timezone.injectable";
+import { normalizeCustomThemeColors } from "./custom-theme-colors";
 import {
   ClusterPageMenuOrder,
   defaultEditorConfig,
@@ -52,6 +53,10 @@ const userPreferenceDescriptorsInjectable = getInjectable({
       colorTheme: getPreferenceDescriptor<string>({
         fromStore: (val) => val || defaultColorThemePreference,
         toStore: (val) => (!val || val === defaultColorThemePreference ? undefined : val),
+      }),
+      customThemeColors: getPreferenceDescriptor<Record<string, string> | undefined>({
+        fromStore: (val) => normalizeCustomThemeColors(val),
+        toStore: (val) => normalizeCustomThemeColors(val),
       }),
       terminalTheme: getPreferenceDescriptor<string>({
         fromStore: (val) => val || "",

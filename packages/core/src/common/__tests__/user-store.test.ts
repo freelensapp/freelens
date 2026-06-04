@@ -59,8 +59,50 @@ describe("user store tests", () => {
 
     it("correctly resets theme to default value", async () => {
       state.colorTheme = "some other theme";
+      state.customThemeColors = {
+        primary: "#123456",
+      };
       resetTheme();
       expect(state.colorTheme).toBe(defaultColorThemePreference);
+      expect(state.customThemeColors).toBeUndefined();
+    });
+
+    it("loads and stores custom theme colors as a global preference", async () => {
+      const writeJsonSync = di.inject(writeJsonSyncInjectable);
+      const readJsonSync = di.inject(readJsonSyncInjectable);
+
+      writeJsonSync("/some-directory-for-user-data/lens-user-store.json", {
+        preferences: {
+          customThemeColors: {
+            primary: "#123456",
+            ignored: "not-a-color",
+          },
+        },
+      });
+      writeJsonSync("/some-directory-for-user-data/kube_config", {});
+
+      di.inject(userPreferencesPersistentStorageInjectable).loadAndStartSyncing();
+
+      expect(state.customThemeColors).toEqual({
+        primary: "#123456",
+      });
+
+      state.customThemeColors = {
+        primary: "#abcdef",
+      };
+
+      expect(readJsonSync("/some-directory-for-user-data/lens-user-store.json")).toMatchObject({
+        preferences: {
+          customThemeColors: {
+            primary: "#abcdef",
+          },
+        },
+      });
+
+      state.customThemeColors = undefined;
+      expect(
+        readJsonSync("/some-directory-for-user-data/lens-user-store.json").preferences.customThemeColors,
+      ).toBeUndefined();
     });
 
     it("loads and stores persistentSearch as a global preference", async () => {

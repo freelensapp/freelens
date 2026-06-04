@@ -1,0 +1,49 @@
+.themeInput {
+  max-width: 320px;
+}
+
+.customColors {
+  margin-top: 24px;
+}
+
+.customColorsHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.customColorsHeader button {
+  margin-left: auto;
+}
+
+.colorGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 8px 16px;
+}
+
+.colorRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 40px 56px;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+}
+
+.colorName {
+  color: var(--textColorAccent);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.colorPicker {
+  width: 36px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--borderColor);
+  border-radius: 4px;
+  background: none;
+  cursor: pointer;
+}
