@@ -1,9 +1,9 @@
-# Claude Code – assistente on-demand via @claude
-# Posizione: .github/workflows/claude.yml (branch di default)
-# Richiede:
-#   - GitHub App "Claude" installata sul repo (https://github.com/apps/claude)
-#   - Secret CLAUDE_CODE_OAUTH_TOKEN (org-level, generato con `claude setup-token`)
-# Solo gli utenti con permesso write+ sul repo possono attivarlo (controllo interno all'action).
+# Claude Code – on-demand assistant via @claude
+# Location: .github/workflows/claude.yml (default branch)
+# Requires:
+#   - GitHub App "Claude" installed on the repo (https://github.com/apps/claude)
+#   - Secret CLAUDE_CODE_OAUTH_TOKEN (org-level, generated with `claude setup-token`)
+# Only users with write+ permission on the repo can trigger it (checked inside the action).
 
 name: Claude
 
