@@ -120,10 +120,12 @@ export interface ClusterPrometheusPreferences {
     prefix: string;
     /** When true, add "https:" prefix to service proxy path */
     https?: boolean;
-    /** Direct URL to Prometheus, bypasses K8s service proxy (e.g. for OpenShift) */
+    /** Direct URL to Prometheus, bypasses K8s service proxy (e.g. for OpenShift or Mimir) */
     directUrl?: string;
     /** Bearer token for authenticating to Prometheus (e.g. OpenShift service account token) */
     bearerToken?: string;
+    /** Additional HTTP headers sent with every metrics request (e.g. X-Scope-OrgID for Mimir) */
+    customHeaders?: Record<string, string>;
   };
   prometheusProvider?: {
     type: string;
