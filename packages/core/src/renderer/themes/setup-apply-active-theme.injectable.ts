@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
@@ -8,6 +8,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { reaction } from "mobx";
 import initializeSystemThemeTypeInjectable from "../../features/theme/system-type/renderer/initialize.injectable";
 import initUserStoreInjectable from "../../features/user-preferences/renderer/load-storage.injectable";
+import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
 import { beforeFrameStartsSecondInjectionToken } from "../before-frame-starts/tokens";
 import activeThemeInjectable from "./active.injectable";
 import applyLensThemeInjectable from "./apply-lens-theme.injectable";
@@ -18,8 +19,14 @@ const setupApplyActiveThemeInjectable = getInjectable({
     run: () => {
       const activeTheme = di.inject(activeThemeInjectable);
       const applyLensTheme = di.inject(applyLensThemeInjectable);
+      const userPreferencesState = di.inject(userPreferencesStateInjectable);
 
-      reaction(() => activeTheme.get(), applyLensTheme, {
+      reaction(
+        () => ({
+          theme: activeTheme.get(),
+          customColors: { ...(userPreferencesState.customThemeColors ?? {}) },
+        }),
+        ({ theme }) => applyLensTheme(theme),
         fireImmediately: true,
       });
     },

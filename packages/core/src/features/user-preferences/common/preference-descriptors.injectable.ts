@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
@@ -11,9 +11,11 @@ import kubeDirectoryPathInjectable from "../../../common/os/kube-directory-path.
 import { defaultColorThemePreference } from "../../../common/vars";
 import currentTimezoneInjectable from "../../../common/vars/current-timezone.injectable";
 import {
+  CustomThemeColors,
   ClusterPageMenuOrder,
   defaultEditorConfig,
   defaultExtensionRegistryUrlLocation,
+  normalizeCustomThemeColors,
   defaultLogViewerPreferences,
   defaultPackageMirror,
   defaultTerminalConfig,
@@ -52,6 +54,13 @@ const userPreferenceDescriptorsInjectable = getInjectable({
       colorTheme: getPreferenceDescriptor<string>({
         fromStore: (val) => val || defaultColorThemePreference,
         toStore: (val) => (!val || val === defaultColorThemePreference ? undefined : val),
+      }),
+      customThemeColors: getPreferenceDescriptor<Partial<CustomThemeColors>, CustomThemeColors>({
+        fromStore: normalizeCustomThemeColors,
+        toStore: (val) => {
+          const normalizedColors = normalizeCustomThemeColors(val);
+          return Object.keys(normalizedColors).length > 0 ? normalizedColors : undefined;
+        },
       }),
       terminalTheme: getPreferenceDescriptor<string>({
         fromStore: (val) => val || "",
