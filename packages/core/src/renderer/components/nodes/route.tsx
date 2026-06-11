@@ -45,6 +45,8 @@ enum columnId {
   disk = "disk",
   pods = "pods",
   instanceType = "instanceType",
+  nodeGroup = "nodeGroup",
+  capacityType = "capacityType",
   taints = "taints",
   roles = "roles",
   version = "version",
@@ -85,6 +87,26 @@ function getInstanceType(node: Node): string {
   const labels = node.metadata.labels ?? {};
 
   return labels["node.kubernetes.io/instance-type"] ?? labels["beta.kubernetes.io/instance-type"] ?? "";
+}
+
+function getNodeGroup(node: Node): string {
+  const labels = node.metadata.labels ?? {};
+
+  return (
+    labels["eks.amazonaws.com/nodegroup"] ??
+    labels["karpenter.sh/nodepool"] ??
+    labels["karpenter.k8s.aws/ec2nodeclass"] ??
+    ""
+  );
+}
+
+function getCapacityType(node: Node): string {
+  const labels = node.metadata.labels ?? {};
+  const capacityType =
+    labels["karpenter.sh/capacity-type"] ?? labels["eks.amazonaws.com/capacityType"] ?? labels["capacity-type"] ?? "";
+
+  // normalize EKS style "ON_DEMAND" to karpenter style "on-demand"
+  return capacityType.toLowerCase().replace(/_/g, "-");
 }
 
 function formatCores(cores: number): string {
@@ -373,6 +395,8 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
             [columnId.disk]: (node) => this.getLastMetricValues(node, ["fsUsage"]),
             [columnId.pods]: (node) => this.getNonTerminatedPods(node).length,
             [columnId.instanceType]: (node) => getInstanceType(node),
+            [columnId.nodeGroup]: (node) => getNodeGroup(node),
+            [columnId.capacityType]: (node) => getCapacityType(node),
             [columnId.taints]: (node) => node.getTaints().length,
             [columnId.roles]: (node) => node.getRoleLabels(),
             [columnId.version]: (node) => node.getKubeletVersion(),
@@ -389,6 +413,8 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
             (node) => node.getInternalIP(),
             (node) => node.getExternalIP(),
             (node) => getInstanceType(node),
+            (node) => getNodeGroup(node),
+            (node) => getCapacityType(node),
           ]}
           renderHeaderTitle="Nodes"
           renderTableHeader={[
@@ -402,6 +428,18 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
               className: "instanceType",
               sortBy: columnId.instanceType,
               id: columnId.instanceType,
+            },
+            {
+              title: "Node Group",
+              className: "nodeGroup",
+              sortBy: columnId.nodeGroup,
+              id: columnId.nodeGroup,
+            },
+            {
+              title: "Capacity",
+              className: "capacityType",
+              sortBy: columnId.capacityType,
+              id: columnId.capacityType,
             },
             { title: "Roles", className: "roles", sortBy: columnId.roles, id: columnId.roles },
             { title: "Taints", className: "taints", sortBy: columnId.taints, id: columnId.taints },
@@ -427,6 +465,8 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
               this.renderDiskUsage(node),
               this.renderPodsUsage(node),
               <WithTooltip>{getInstanceType(node)}</WithTooltip>,
+              <WithTooltip>{getNodeGroup(node)}</WithTooltip>,
+              <WithTooltip>{getCapacityType(node)}</WithTooltip>,
               <WithTooltip>{node.getRoleLabels()}</WithTooltip>,
               <>
                 <span id={tooltipId}>{taints.length}</span>
