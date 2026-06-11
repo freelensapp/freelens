@@ -44,6 +44,7 @@ enum columnId {
   memory = "memory",
   disk = "disk",
   pods = "pods",
+  instanceType = "instanceType",
   taints = "taints",
   roles = "roles",
   version = "version",
@@ -79,6 +80,12 @@ function bytesToUnitsAligned(bytes: number): string {
     return `${(bytes / 1024).toFixed(1)}Ki`;
   }
   return bytesToUnits(bytes, { precision: 1 }).replace(/B$/, "");
+}
+
+function getInstanceType(node: Node): string {
+  const labels = node.metadata.labels ?? {};
+
+  return labels["node.kubernetes.io/instance-type"] ?? labels["beta.kubernetes.io/instance-type"] ?? "";
 }
 
 function formatCores(cores: number): string {
@@ -337,6 +344,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
             [columnId.memory]: (node) => this.getLastMetricValues(node, ["memoryUsage"]),
             [columnId.disk]: (node) => this.getLastMetricValues(node, ["fsUsage"]),
             [columnId.pods]: (node) => this.getNonTerminatedPods(node).length,
+            [columnId.instanceType]: (node) => getInstanceType(node),
             [columnId.taints]: (node) => node.getTaints().length,
             [columnId.roles]: (node) => node.getRoleLabels(),
             [columnId.version]: (node) => node.getKubeletVersion(),
@@ -352,6 +360,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
             (node) => node.getNodeConditionText(),
             (node) => node.getInternalIP(),
             (node) => node.getExternalIP(),
+            (node) => getInstanceType(node),
           ]}
           renderHeaderTitle="Nodes"
           renderTableHeader={[
@@ -360,6 +369,12 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
             { title: "Memory", className: "memory", sortBy: columnId.memory, id: columnId.memory },
             { title: "Disk", className: "disk", sortBy: columnId.disk, id: columnId.disk },
             { title: "Pods", className: "pods", sortBy: columnId.pods, id: columnId.pods },
+            {
+              title: "Instance Type",
+              className: "instanceType",
+              sortBy: columnId.instanceType,
+              id: columnId.instanceType,
+            },
             { title: "Roles", className: "roles", sortBy: columnId.roles, id: columnId.roles },
             { title: "Taints", className: "taints", sortBy: columnId.taints, id: columnId.taints },
             { title: "Version", className: "version", sortBy: columnId.version, id: columnId.version },
@@ -383,6 +398,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
               this.renderMemoryUsage(node),
               this.renderDiskUsage(node),
               this.renderPodsUsage(node),
+              <WithTooltip>{getInstanceType(node)}</WithTooltip>,
               <WithTooltip>{node.getRoleLabels()}</WithTooltip>,
               <>
                 <span id={tooltipId}>{taints.length}</span>

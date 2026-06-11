@@ -92,6 +92,10 @@
       }
     }
 
+    &.instanceType {
+      flex: 0.8;
+    }
+
     &.schedulable {
       flex: 0.6;
     }
