@@ -53,7 +53,7 @@ class NonInjectedPodDetails extends React.Component<PodDetailsProps & Dependenci
     const { status, spec } = pod;
     const { podIP } = status ?? {};
     const podIPs = pod.getIPs();
-    const { nodeName } = spec ?? {};
+    const { nodeName, schedulerName } = spec ?? {};
     const nodeSelector = pod.getNodeSelectors();
     const { hostIP } = status ?? {};
     const hostIPs = pod.getHostIPs();
@@ -73,6 +73,9 @@ class NonInjectedPodDetails extends React.Component<PodDetailsProps & Dependenci
         </DrawerItem>
         <DrawerItem name="Node" hidden={!nodeName}>
           <LinkToNode name={nodeName} />
+        </DrawerItem>
+        <DrawerItem name="Scheduler" hidden={!schedulerName}>
+          {schedulerName}
         </DrawerItem>
         <DrawerItem name="Host IPs" hidden={!hostIPs.length && !hostIP} labelsOnly>
           {(hostIPs.length ? hostIPs : hostIP ? [hostIP] : []).map((label) => (
