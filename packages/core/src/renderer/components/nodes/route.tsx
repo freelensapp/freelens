@@ -199,7 +199,10 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
   }
 
   private renderUsage({ node, title, usage, capacity, requests, usageText, tooltipLines = [] }: UsageArgs) {
-    const hasBar = usage !== undefined && Number.isFinite(usage) && !!capacity;
+    const hasUsage = usage !== undefined && Number.isFinite(usage);
+    const hasRequests = requests !== undefined && requests > 0;
+    // requests come from pod specs, so the bar is still useful without any usage metrics
+    const hasBar = !!capacity && (hasUsage || hasRequests);
 
     if (!hasBar && !usageText) {
       return <span className="usageText">N/A</span>;
@@ -212,8 +215,8 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
         {hasBar && (
           <LineProgress
             max={capacity}
-            value={usage}
-            secondaryValue={requests !== undefined && requests > 0 ? requests : undefined}
+            value={hasUsage ? usage : 0}
+            secondaryValue={hasRequests ? requests : undefined}
           />
         )}
         {usageText && <span className="usageText">{usageText}</span>}
