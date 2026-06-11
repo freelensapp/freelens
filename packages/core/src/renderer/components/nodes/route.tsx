@@ -55,13 +55,12 @@ enum columnId {
   status = "status",
 }
 
-type MetricsTooltipFormatter = (metrics: [number, number]) => string;
-
 interface UsageArgs {
   node: Node;
   title: string;
-  metricNames: [keyof NodeMetricData, keyof NodeMetricData];
-  formatters: MetricsTooltipFormatter[];
+  usage?: number;
+  capacity?: number;
+  requests?: number;
   usageText?: string;
   tooltipLines?: string[];
 }
@@ -199,30 +198,28 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
     });
   }
 
-  private renderUsage({ node, title, metricNames, formatters, usageText, tooltipLines = [] }: UsageArgs) {
-    const metrics = this.getLastMetricValues(node, metricNames);
-    const hasMetrics = metrics.length >= 2 && metrics[1] != 0;
+  private renderUsage({ node, title, usage, capacity, requests, usageText, tooltipLines = [] }: UsageArgs) {
+    const hasBar = usage !== undefined && Number.isFinite(usage) && !!capacity;
 
-    if (!hasMetrics && !usageText) {
+    if (!hasBar && !usageText) {
       return <span className="usageText">N/A</span>;
     }
 
     const tooltipId = `node-${title.toLowerCase()}-usage-${node.getId()}`;
-    const lines = [...tooltipLines];
-
-    if (hasMetrics) {
-      const [usage, capacity] = metrics;
-
-      lines.unshift(`${title}: ${formatters.map((formatter) => formatter([usage, capacity])).join(", ")}`);
-    }
 
     return (
       <div className="metrics" id={tooltipId}>
-        {hasMetrics && <LineProgress max={metrics[1]} value={metrics[0]} />}
+        {hasBar && (
+          <LineProgress
+            max={capacity}
+            value={usage}
+            secondaryValue={requests !== undefined && requests > 0 ? requests : undefined}
+          />
+        )}
         {usageText && <span className="usageText">{usageText}</span>}
-        {lines.length > 0 && (
+        {tooltipLines.length > 0 && (
           <Tooltip targetId={tooltipId} preferredPositions={TooltipPosition.BOTTOM} style={{ whiteSpace: "pre-line" }}>
-            {lines.join("\n")}
+            {tooltipLines.join("\n")}
           </Tooltip>
         )}
       </div>
@@ -230,61 +227,85 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
   }
 
   renderCpuUsage(node: Node) {
-    const { cpu: usage } = this.props.nodeStore.getNodeKubeMetrics(node);
+    const [promUsage, promCapacity] = this.getLastMetricValues(node, ["cpuUsage", "cpuCapacity"]);
+    const { cpu: kubeUsage } = this.props.nodeStore.getNodeKubeMetrics(node);
     const { cpu: requests } = this.getNodeResourceRequests(node);
     const allocatable = cpuUnitsToNumber(node.status?.allocatable?.cpu ?? "") ?? 0;
     const podsLoaded = this.props.podStore.isLoaded;
 
+    // prefer prometheus metrics for the bar, fall back to metrics-server usage vs node allocatable
+    const usage = (promCapacity ? promUsage : kubeUsage) ?? NaN;
+    const capacity = promCapacity || allocatable;
+    const textUsage = Number.isFinite(kubeUsage) ? kubeUsage : usage;
+
+    const tooltipLines: string[] = [];
+
+    if (Number.isFinite(usage) && capacity) {
+      tooltipLines.push(`CPU: ${((usage * 100) / capacity).toFixed(2)}%, cores: ${formatCores(capacity)}`);
+    }
+    tooltipLines.push(`Usage: ${formatCores(textUsage)} cores`);
+    if (podsLoaded) {
+      tooltipLines.push(
+        `Requests: ${formatCores(requests)} cores${
+          allocatable
+            ? ` (${((requests * 100) / allocatable).toFixed(0)}% of allocatable ${formatCores(allocatable)})`
+            : ""
+        }`,
+      );
+    }
+
     return this.renderUsage({
       node,
       title: "CPU",
-      metricNames: ["cpuUsage", "cpuCapacity"],
-      formatters: [([usage, capacity]) => `${((usage * 100) / capacity).toFixed(2)}%`, ([, cap]) => `cores: ${cap}`],
-      usageText: podsLoaded ? `${formatCores(usage)} / ${formatCores(requests)}` : formatCores(usage),
-      tooltipLines: [
-        `Usage: ${formatCores(usage)} cores`,
-        ...(podsLoaded
-          ? [
-              `Requests: ${formatCores(requests)} cores${
-                allocatable
-                  ? ` (${((requests * 100) / allocatable).toFixed(0)}% of allocatable ${formatCores(allocatable)})`
-                  : ""
-              }`,
-            ]
-          : []),
-      ],
+      usage,
+      capacity,
+      requests: podsLoaded ? requests : undefined,
+      usageText: podsLoaded ? `${formatCores(textUsage)} / ${formatCores(requests)}` : formatCores(textUsage),
+      tooltipLines,
     });
   }
 
   renderMemoryUsage(node: Node) {
-    const { memory: usage } = this.props.nodeStore.getNodeKubeMetrics(node);
+    const [promUsage, promCapacity] = this.getLastMetricValues(node, [
+      "workloadMemoryUsage",
+      "memoryAllocatableCapacity",
+    ]);
+    const { memory: kubeUsage } = this.props.nodeStore.getNodeKubeMetrics(node);
     const { memory: requests } = this.getNodeResourceRequests(node);
     const allocatable = unitsToBytes(node.status?.allocatable?.memory ?? "") || 0;
     const podsLoaded = this.props.podStore.isLoaded;
 
+    // prefer prometheus metrics for the bar, fall back to metrics-server usage vs node allocatable
+    const usage = (promCapacity ? promUsage : kubeUsage) ?? NaN;
+    const capacity = promCapacity || allocatable;
+    const textUsage = Number.isFinite(kubeUsage) ? kubeUsage : usage;
+
+    const tooltipLines: string[] = [];
+
+    if (Number.isFinite(usage) && capacity) {
+      tooltipLines.push(`Memory: ${((usage * 100) / capacity).toFixed(2)}%, ${bytesToUnits(usage, { precision: 3 })}`);
+    }
+    tooltipLines.push(`Usage: ${bytesToUnits(textUsage, { precision: 3 })}`);
+    if (podsLoaded) {
+      tooltipLines.push(
+        `Requests: ${bytesToUnits(requests, { precision: 3 })}${
+          allocatable
+            ? ` (${((requests * 100) / allocatable).toFixed(0)}% of allocatable ${bytesToUnits(allocatable, { precision: 3 })})`
+            : ""
+        }`,
+      );
+    }
+
     return this.renderUsage({
       node,
       title: "Memory",
-      metricNames: ["workloadMemoryUsage", "memoryAllocatableCapacity"],
-      formatters: [
-        ([usage, capacity]) => `${((usage * 100) / capacity).toFixed(2)}%`,
-        ([usage]) => bytesToUnits(usage, { precision: 3 }),
-      ],
+      usage,
+      capacity,
+      requests: podsLoaded ? requests : undefined,
       usageText: podsLoaded
-        ? `${bytesToUnitsAligned(usage)} / ${bytesToUnitsAligned(requests)}`
-        : bytesToUnitsAligned(usage),
-      tooltipLines: [
-        `Usage: ${bytesToUnits(usage, { precision: 3 })}`,
-        ...(podsLoaded
-          ? [
-              `Requests: ${bytesToUnits(requests, { precision: 3 })}${
-                allocatable
-                  ? ` (${((requests * 100) / allocatable).toFixed(0)}% of allocatable ${bytesToUnits(allocatable, { precision: 3 })})`
-                  : ""
-              }`,
-            ]
-          : []),
-      ],
+        ? `${bytesToUnitsAligned(textUsage)} / ${bytesToUnitsAligned(requests)}`
+        : bytesToUnitsAligned(textUsage),
+      tooltipLines,
     });
   }
 
@@ -314,14 +335,18 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
   }
 
   renderDiskUsage(node: Node) {
+    const [usage, capacity] = this.getLastMetricValues(node, ["fsUsage", "fsSize"]);
+    const tooltipLines =
+      usage !== undefined && capacity
+        ? [`Disk: ${((usage * 100) / capacity).toFixed(2)}%, ${bytesToUnits(usage, { precision: 3 })}`]
+        : [];
+
     return this.renderUsage({
       node,
       title: "Disk",
-      metricNames: ["fsUsage", "fsSize"],
-      formatters: [
-        ([usage, capacity]) => `${((usage * 100) / capacity).toFixed(2)}%`,
-        ([usage]) => bytesToUnits(usage, { precision: 3 }),
-      ],
+      usage,
+      capacity,
+      tooltipLines,
     });
   }
 
