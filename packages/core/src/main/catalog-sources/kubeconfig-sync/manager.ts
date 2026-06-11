@@ -5,7 +5,7 @@
  */
 
 import { iter } from "@freelensapp/utilities";
-import { action, computed, makeObservable, observable, observe } from "mobx";
+import { action, computed, makeObservable, observable, reaction } from "mobx";
 
 import type { Logger } from "@freelensapp/logger";
 import type { Disposer } from "@freelensapp/utilities";
@@ -57,20 +57,26 @@ export class KubeconfigSyncManager {
     // This must be done so that c&p-ed clusters are visible
     this.startNewSync(this.dependencies.directoryForKubeConfigs);
 
-    for (const filePath of this.dependencies.kubeconfigSyncs.keys()) {
-      this.startNewSync(filePath);
+    this.syncListDisposer = reaction(
+      () => Array.from(this.dependencies.kubeconfigSyncs.keys()),
+      (currentPaths) => this.reconcile(currentPaths),
+      { fireImmediately: true, equals: arraysHaveSameMembers },
+    );
+  }
+
+  @action
+  private reconcile(currentPaths: string[]): void {
+    const desired = new Set([this.dependencies.directoryForKubeConfigs, ...currentPaths]);
+
+    for (const filePath of this.sources.keys()) {
+      if (!desired.has(filePath)) {
+        this.stopOldSync(filePath);
+      }
     }
 
-    this.syncListDisposer = observe(this.dependencies.kubeconfigSyncs, (change) => {
-      switch (change.type) {
-        case "add":
-          this.startNewSync(change.name);
-          break;
-        case "delete":
-          this.stopOldSync(change.name);
-          break;
-      }
-    });
+    for (const filePath of desired) {
+      this.startNewSync(filePath);
+    }
   }
 
   @action
@@ -118,4 +124,17 @@ export class KubeconfigSyncManager {
       files: Array.from(this.sources.keys()),
     });
   }
+}
+
+function arraysHaveSameMembers(a: readonly string[], b: readonly string[]): boolean {
+  if (a.length !== b.length) {
+    return false;
+  }
+  const set = new Set(a);
+  for (const value of b) {
+    if (!set.has(value)) {
+      return false;
+    }
+  }
+  return true;
 }
