@@ -273,6 +273,87 @@ When asked to implement a change on a PR:
 2. Describe what will change and why
 3. After confirmation, apply the changes with commits on the PR branch
 
+### Pushing Changes from Fork PRs
+
+When you have commits ready to push but the PR originates from a fork
+(different owner than `freelensapp`), you cannot push to the fork's
+repository. Instead:
+
+1. Create a new branch on `freelensapp/freelens` with the prefix `claude/`
+   followed by the original branch name.
+   Push to the `upstream` remote (not `origin`, which points to the fork):
+   ```bash
+   git checkout -b claude/<original-branch-name>
+   git push upstream claude/<original-branch-name>
+   ```
+
+2. Open a new PR from that branch with:
+   - A title that matches the original PR
+   - A description that references the original PR (e.g. "Fixes #NNN,
+     supersedes #NNN")
+
+3. Post a comment on the original PR:
+   - Explain that the fix has been implemented in a new PR
+   - Include a link to the new PR
+   - Mention that the original PR can be closed
+
+4. Close the original PR.
+
+### Closing PRs
+
+Claude may only close a PR when ALL of the following are true:
+
+1. The PR was created by Claude from a `claude/` branch, OR the PR is the
+   original fork PR that Claude's `claude/` branch supersedes (see
+   "Pushing Changes from Fork PRs" above).
+2. The close reason is explicitly explained in a comment on the PR.
+
+Claude MUST NOT close any PR that does not meet these conditions — even if
+asked. Instead, explain to the requester why the PR cannot be closed
+automatically and ask a human maintainer to close it manually.
+
+### Development Environment
+
+The GitHub Actions runner has a full Node.js + pnpm environment available.
+Dependencies are already installed (`pnpm install` has been run). The build
+step is skipped to save CI resources, but you can run build commands when
+needed for advanced tasks (e.g. type-checking, running tests).
+
+For fork PRs, the `origin` remote points to the contributor's fork. An
+`upstream` remote is configured pointing to `freelensapp/freelens`. Push
+new branches to `upstream` (never to `origin`) when the PR originates
+from a fork — this ensures the resulting PR is internal and CI workflows
+run automatically.
+
+The following CLI tools are explicitly allowed in the workflow:
+
+- `pnpm` (all subcommands) — for validation, formatting, and builds
+- `git` (all subcommands) — for viewing changes, creating branches,
+  committing, and pushing
+- `gh` (all subcommands) — for managing pull requests
+- `npx`, `node` — for running Node.js tools and scripts inline
+- `yq`, `jq` — for YAML and JSON processing
+- `grep`, `rg` (ripgrep), `find`, `xargs` — for searching and iterating
+- `sed`, `awk`, `cut`, `tr` — for text transformation
+- `sort`, `uniq` — for list processing
+- `cat`, `head`, `tail`, `wc` — for viewing and measuring files
+- `ls`, `tree` — for listing directory contents
+- `mkdir`, `touch`, `cp`, `mv`, `rm` — for file and directory operations
+- `tee`, `echo` — for pipeline debugging and scripting
+
+Before committing any changes, apply the same validation rules as human
+developers:
+
+- Run `pnpm biome check --write` to auto-format TypeScript/JavaScript and
+  HTML files (or `pnpm biome check` to check without writing).
+- Run `pnpm trunk check` to validate all other file types (or `trunk check`
+  if the trunk CLI is installed globally).
+- Run `pnpm build:di` if you added, moved, or renamed injectable files.
+- If unit tests fail on snapshot mismatches after your changes (or you are
+  explicitly asked to update them), run `pnpm test:unit:updatesnapshot` to
+  regenerate snapshots, review the diff, then commit the updated `.snap`
+  files.
+
 ## Getting Help
 
 - Check existing features for patterns

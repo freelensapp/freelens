@@ -29,12 +29,25 @@ jobs:
       (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
       (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude')) ||
       (github.event_name == 'issues' && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude')))
-    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runs-on: ubuntu-24.04-arm
+            arch: arm64
+
+    runs-on: ${{ matrix.runs-on }}
+    timeout-minutes: 30
+
+    env:
+      DO_NOT_TRACK: "1"
+      TURBOREPO_CACHE: ${{ github.workspace }}/.turbo
 
     permissions:
-      contents: read
-      pull-requests: read
-      issues: read
+      contents: write
+      pull-requests: write
+      issues: write
       id-token: write
       actions: read
 
@@ -46,9 +59,54 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
 
+      - name: Add upstream remote
+        if: github.event.pull_request.head.repo.full_name != github.repository
+        run: |
+          git remote add upstream ${{ github.server_url }}/${{ github.repository }}.git
+          git fetch upstream
+
+      - name: Setup node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Setup pnpm
+        run: corepack enable
+
+      - name: Get pnpm cache directory
+        shell: bash
+        run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
+
+      - name: Use pnpm cache
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.pnpm_cache_dir }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-node-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-node-
+
+      - name: Use Turborepo cache
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.TURBOREPO_CACHE }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-turborepo-${{ hashFiles('package.json', 'freelens/package.json', 'packages/**/package.json', 'pnpm-lock.yaml','turbo.json') }}
+          restore-keys: |
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-turborepo-
+
+      - name: Install pnpm dependencies
+        id: install-pnpm
+        run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
+        continue-on-error: true
+
+      - name: Install pnpm dependencies (retry)
+        if: steps.install-pnpm.outcome == 'failure'
+        run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
+
       - name: Run Claude Code
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           claude_args: |-
-            --max-turns 50
+            --max-turns 100
+            --allowedTools "Bash(pnpm:*)" "Bash(npx:*)" "Bash(node:*)" "Bash(git:*)" "Bash(gh:*)" "Bash(yq:*)" "Bash(jq:*)" "Bash(grep:*)" "Bash(rg:*)" "Bash(sed:*)" "Bash(awk:*)" "Bash(cut:*)" "Bash(tr:*)" "Bash(sort:*)" "Bash(uniq:*)" "Bash(cat:*)" "Bash(head:*)" "Bash(tail:*)" "Bash(wc:*)" "Bash(find:*)" "Bash(xargs:*)" "Bash(ls:*)" "Bash(tree:*)" "Bash(mkdir:*)" "Bash(touch:*)" "Bash(cp:*)" "Bash(mv:*)" "Bash(rm:*)" "Bash(tee:*)" "Bash(echo:*)"
