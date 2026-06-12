@@ -298,6 +298,38 @@ repository. Instead:
 
 4. Close the original PR.
 
+### Development Environment
+
+The GitHub Actions runner has a full Node.js + pnpm environment available.
+Dependencies are already installed (`pnpm install` has been run). The build
+step is skipped to save CI resources, but you can run build commands when
+needed for advanced tasks (e.g. type-checking, running tests).
+
+The following CLI tools are explicitly allowed in the workflow:
+
+- `pnpm` (all subcommands) — for validation, formatting, and builds
+- `git` (all subcommands) — for viewing changes, creating branches,
+  committing, and pushing
+- `gh` (all subcommands) — for managing pull requests
+- `npx`, `node` — for running Node.js tools and scripts inline
+- `yq`, `jq` — for YAML and JSON processing
+- `grep`, `rg` (ripgrep), `find`, `xargs` — for searching and iterating
+- `sed`, `awk`, `cut`, `tr` — for text transformation
+- `sort`, `uniq` — for list processing
+- `cat`, `head`, `tail`, `wc` — for viewing and measuring files
+- `ls`, `tree` — for listing directory contents
+- `mkdir`, `touch`, `cp`, `mv`, `rm` — for file and directory operations
+- `tee`, `echo` — for pipeline debugging and scripting
+
+Before committing any changes, apply the same validation rules as human
+developers:
+
+- Run `pnpm biome check --write` to auto-format TypeScript/JavaScript and
+  HTML files (or `pnpm biome check` to check without writing).
+- Run `pnpm trunk check` to validate all other file types (or `trunk check`
+  if the trunk CLI is installed globally).
+- Run `pnpm build:di` if you added, moved, or renamed injectable files.
+
 ## Getting Help
 
 - Check existing features for patterns
