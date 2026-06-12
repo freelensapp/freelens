@@ -126,8 +126,8 @@ jobs:
         id: prompt
         shell: bash
         run: |
-          PROMPT="${{ github.event.inputs.prompt }}"
-          if [[ "${{ github.event.inputs.create-pr }}" == "true" ]]; then
+          PROMPT=$(echo "$INPUT_PROMPT" | jq -r '.')
+          if [[ "$CREATE_PR" == "true" ]]; then
             PROMPT="${PROMPT}
 
           After making changes, create a new branch (prefix claude/) for the
@@ -137,6 +137,9 @@ jobs:
           echo "text<<EOF" >> "$GITHUB_OUTPUT"
           echo "$PROMPT" >> "$GITHUB_OUTPUT"
           echo "EOF" >> "$GITHUB_OUTPUT"
+        env:
+          INPUT_PROMPT: ${{ toJSON(github.event.inputs.prompt) }}
+          CREATE_PR: ${{ github.event.inputs.create-pr }}
 
       - name: Run Claude Code
         if: github.event_name != 'workflow_dispatch'
