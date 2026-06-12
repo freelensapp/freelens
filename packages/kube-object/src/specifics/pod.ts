@@ -482,6 +482,11 @@ export interface VsphereVolumeSource {
   storagePolicyID?: string;
 }
 
+export interface ImageVolumeSource {
+  reference?: string;
+  pullPolicy?: "Always" | "Never" | "IfNotPresent";
+}
+
 export interface ContainerStorageInterfaceSource {
   driver: string;
   /**
@@ -517,6 +522,7 @@ export interface PodVolumeVariants {
   gitRepo: GitRepoSource;
   glusterfs: GlusterFsSource;
   hostPath: HostPathSource;
+  image: ImageVolumeSource;
   iscsi: IScsiSource;
   local: LocalSource;
   nfs: NetworkFsSource;

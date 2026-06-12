@@ -1,3 +1,6 @@
-# Project Guidelines
+@AGENTS.md
 
-For this repository, use AGENTS.md as the canonical agent guide. Read AGENTS.md first for compatibility.
+# Agent Guide
+
+This project uses AGENTS.md as the canonical agent guide (imported above).
+Claude Code reads it via @AGENTS.md, while other agents read it directly.

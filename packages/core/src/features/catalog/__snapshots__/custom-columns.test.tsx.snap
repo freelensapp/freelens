@@ -494,6 +494,26 @@ exports[`custom category columns for catalog renders 1`] = `
               >
                 <div
                   class="Avatar rounded disabled avatar"
+                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                >
+                  WP
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="HotbarCell isDraggingOwner animateDown"
+            index="1"
+          >
+            <div
+              style="z-index: 11; position: absolute;"
+            >
+              <div
+                class="HotbarIcon contextMenuAvailable"
+              >
+                <div
+                  class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
                   style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
                 >
@@ -502,10 +522,6 @@ exports[`custom category columns for catalog renders 1`] = `
               </div>
             </div>
           </div>
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
-          />
           <div
             class="HotbarCell isDraggingOwner animateDown"
             index="2"
@@ -1128,6 +1144,26 @@ exports[`custom category columns for catalog when category is added using defaul
               >
                 <div
                   class="Avatar rounded disabled avatar"
+                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                >
+                  WP
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="HotbarCell isDraggingOwner animateDown"
+            index="1"
+          >
+            <div
+              style="z-index: 11; position: absolute;"
+            >
+              <div
+                class="HotbarIcon contextMenuAvailable"
+              >
+                <div
+                  class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
                   style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
                 >
@@ -1136,10 +1172,6 @@ exports[`custom category columns for catalog when category is added using defaul
               </div>
             </div>
           </div>
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
-          />
           <div
             class="HotbarCell isDraggingOwner animateDown"
             index="2"
@@ -1752,6 +1784,26 @@ exports[`custom category columns for catalog when category is added using defaul
               >
                 <div
                   class="Avatar rounded disabled avatar"
+                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                >
+                  WP
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="HotbarCell isDraggingOwner animateDown"
+            index="1"
+          >
+            <div
+              style="z-index: 11; position: absolute;"
+            >
+              <div
+                class="HotbarIcon contextMenuAvailable"
+              >
+                <div
+                  class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
                   style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
                 >
@@ -1760,10 +1812,6 @@ exports[`custom category columns for catalog when category is added using defaul
               </div>
             </div>
           </div>
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
-          />
           <div
             class="HotbarCell isDraggingOwner animateDown"
             index="2"
@@ -2362,6 +2410,26 @@ exports[`custom category columns for catalog when category is added using defaul
               >
                 <div
                   class="Avatar rounded disabled avatar"
+                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                >
+                  WP
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="HotbarCell isDraggingOwner animateDown"
+            index="1"
+          >
+            <div
+              style="z-index: 11; position: absolute;"
+            >
+              <div
+                class="HotbarIcon contextMenuAvailable"
+              >
+                <div
+                  class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
                   style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
                 >
@@ -2370,10 +2438,6 @@ exports[`custom category columns for catalog when category is added using defaul
               </div>
             </div>
           </div>
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
-          />
           <div
             class="HotbarCell isDraggingOwner animateDown"
             index="2"
@@ -2996,6 +3060,26 @@ exports[`custom category columns for catalog when category is added with custom 
               >
                 <div
                   class="Avatar rounded disabled avatar"
+                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                >
+                  WP
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="HotbarCell isDraggingOwner animateDown"
+            index="1"
+          >
+            <div
+              style="z-index: 11; position: absolute;"
+            >
+              <div
+                class="HotbarIcon contextMenuAvailable"
+              >
+                <div
+                  class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
                   style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
                 >
@@ -3004,10 +3088,6 @@ exports[`custom category columns for catalog when category is added with custom 
               </div>
             </div>
           </div>
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
-          />
           <div
             class="HotbarCell isDraggingOwner animateDown"
             index="2"
@@ -3558,6 +3638,26 @@ exports[`custom category columns for catalog when category is added with custom 
               >
                 <div
                   class="Avatar rounded disabled avatar"
+                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                >
+                  WP
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="HotbarCell isDraggingOwner animateDown"
+            index="1"
+          >
+            <div
+              style="z-index: 11; position: absolute;"
+            >
+              <div
+                class="HotbarIcon contextMenuAvailable"
+              >
+                <div
+                  class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
                   style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
                 >
@@ -3566,10 +3666,6 @@ exports[`custom category columns for catalog when category is added with custom 
               </div>
             </div>
           </div>
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
-          />
           <div
             class="HotbarCell isDraggingOwner animateDown"
             index="2"
@@ -4192,6 +4288,26 @@ exports[`custom category columns for catalog when category is added without defa
               >
                 <div
                   class="Avatar rounded disabled avatar"
+                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                >
+                  WP
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="HotbarCell isDraggingOwner animateDown"
+            index="1"
+          >
+            <div
+              style="z-index: 11; position: absolute;"
+            >
+              <div
+                class="HotbarIcon contextMenuAvailable"
+              >
+                <div
+                  class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
                   style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
                 >
@@ -4200,10 +4316,6 @@ exports[`custom category columns for catalog when category is added without defa
               </div>
             </div>
           </div>
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
-          />
           <div
             class="HotbarCell isDraggingOwner animateDown"
             index="2"
@@ -4740,6 +4852,26 @@ exports[`custom category columns for catalog when category is added without defa
               >
                 <div
                   class="Avatar rounded disabled avatar"
+                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                >
+                  WP
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="HotbarCell isDraggingOwner animateDown"
+            index="1"
+          >
+            <div
+              style="z-index: 11; position: absolute;"
+            >
+              <div
+                class="HotbarIcon contextMenuAvailable"
+              >
+                <div
+                  class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
                   style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
                 >
@@ -4748,10 +4880,6 @@ exports[`custom category columns for catalog when category is added without defa
               </div>
             </div>
           </div>
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
-          />
           <div
             class="HotbarCell isDraggingOwner animateDown"
             index="2"
