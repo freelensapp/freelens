@@ -58,7 +58,6 @@ lint:
       files:
         - sass
   enabled:
-    - pinact@4.1.0
     - actionlint@1.7.12
     - biome@2.4.16! # datasource=npm depName=@biomejs/biome
     - git-diff-check
@@ -74,6 +73,7 @@ lint:
     - grype
     - osv-scanner
     - oxipng
+    - pinact
     - renovate
     - svgo
     - trufflehog
