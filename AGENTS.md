@@ -279,6 +279,11 @@ When asked to implement a change on a PR:
 1. Propose the commit subject (as above)
 2. Describe what will change and why
 3. After confirmation, apply the changes with commits on the PR branch
+4. **One commit per fix** — when a review surfaces more than one issue or
+   the plan includes more than one fix, apply and commit each fix
+   separately. Do not batch multiple independent fixes into a single
+   commit. This keeps the history bisectable and makes each change easy
+   to revert individually.
 
 ### Branch Naming Conventions
 
