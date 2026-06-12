@@ -71,11 +71,11 @@ class NonInjectedPodDetails extends React.Component<PodDetailsProps & Dependenci
         <DrawerItem name="Status">
           <span className={cssNames("status", kebabCase(pod.getStatusMessage()))}>{pod.getStatusMessage()}</span>
         </DrawerItem>
+        <DrawerItem name="Scheduler" hidden={!schedulerName || schedulerName === "default-scheduler"}>
+          {schedulerName}
+        </DrawerItem>
         <DrawerItem name="Node" hidden={!nodeName}>
           <LinkToNode name={nodeName} />
-        </DrawerItem>
-        <DrawerItem name="Scheduler" hidden={!schedulerName}>
-          {schedulerName}
         </DrawerItem>
         <DrawerItem name="Host IPs" hidden={!hostIPs.length && !hostIP} labelsOnly>
           {(hostIPs.length ? hostIPs : hostIP ? [hostIP] : []).map((label) => (
