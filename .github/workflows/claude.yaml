@@ -52,4 +52,3 @@ jobs:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           claude_args: |-
             --max-turns 30
-          github_token: ${{ secrets.GITHUB_TOKEN }}
