@@ -39,11 +39,13 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Checkout PR branch
+      - name: Remove local branch to avoid claude-code-action collision
         if: github.event.issue.pull_request != null
         run: |
-          git fetch origin refs/pull/${{ github.event.issue.number }}/head
-          git checkout FETCH_HEAD
+          BRANCH=$(gh pr view ${{ github.event.issue.number }} --json headRefName -q .headRefName)
+          git branch -D "$BRANCH" 2>/dev/null || true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Run Claude Code
         uses: anthropics/claude-code-action@v1
