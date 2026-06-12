@@ -8,7 +8,7 @@ import { Pod } from "@freelensapp/kube-object";
 import autoBind from "auto-bind";
 import compact from "lodash/compact";
 import groupBy from "lodash/groupBy";
-import { computed } from "mobx";
+import { computed, makeObservable } from "mobx";
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
 
 import type { KubeEventApi } from "@freelensapp/kube-api";
@@ -30,6 +30,7 @@ export class EventStore extends KubeObjectStore<KubeEvent, KubeEventApi> {
     opts: KubeObjectStoreOptions = {},
   ) {
     super(dependencies, api, { limit: 1000, ...opts });
+    makeObservable(this);
     autoBind(this);
   }
 
