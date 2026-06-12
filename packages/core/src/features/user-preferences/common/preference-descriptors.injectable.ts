@@ -14,6 +14,7 @@ import {
   ClusterPageMenuOrder,
   defaultEditorConfig,
   defaultExtensionRegistryUrlLocation,
+  defaultLogViewerPreferences,
   defaultPackageMirror,
   defaultTerminalConfig,
   getPreferenceDescriptor,
@@ -27,6 +28,7 @@ import type {
   ExtensionRegistry,
   KubeconfigSyncEntry,
   KubeconfigSyncValue,
+  LogViewerPreferences,
   TerminalConfig,
 } from "./preferences-helpers";
 
@@ -102,6 +104,27 @@ const userPreferenceDescriptorsInjectable = getInjectable({
       hotbarAutoHide: getPreferenceDescriptor<boolean>({
         fromStore: (val) => val ?? false,
         toStore: (val) => (!val ? undefined : val),
+      }),
+      persistentSearch: getPreferenceDescriptor<boolean>({
+        fromStore: (val) => val ?? false,
+        toStore: (val) => (!val ? undefined : val),
+      }),
+      logViewerPreferences: getPreferenceDescriptor<Partial<LogViewerPreferences>, LogViewerPreferences>({
+        fromStore: (val) => ({
+          ...defaultLogViewerPreferences,
+          ...val,
+        }),
+        toStore: (val) => {
+          const storedValue: Partial<LogViewerPreferences> = {};
+
+          for (const key of Object.keys(defaultLogViewerPreferences) as (keyof LogViewerPreferences)[]) {
+            if (val[key] !== defaultLogViewerPreferences[key]) {
+              storedValue[key] = val[key];
+            }
+          }
+
+          return Object.keys(storedValue).length > 0 ? storedValue : undefined;
+        },
       }),
       terminalCopyOnSelect: getPreferenceDescriptor<boolean>({
         fromStore: (val) => val ?? false,

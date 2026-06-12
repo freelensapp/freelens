@@ -39,7 +39,7 @@ class WatchCount {
   public inc(store: SubscribableStore): number {
     const newCount = getOrInsert(this.#data, store, 0) + 1;
 
-    this.dependencies.logger.info(`[KUBE-WATCH-API]: inc() count for ${store.api.apiBase} is now ${newCount}`);
+    this.dependencies.logger.debug(`[KUBE-WATCH-API]: inc() count for ${store.api.apiBase} is now ${newCount}`);
     this.#data.set(store, newCount);
 
     return newCount;
@@ -58,7 +58,7 @@ class WatchCount {
       throw new Error(`Cannot dec count more times than it has been inc: ${store.api.kind}`);
     }
 
-    this.dependencies.logger.info(`[KUBE-WATCH-API]: dec() count for ${store.api.apiBase} is now ${newCount}`);
+    this.dependencies.logger.debug(`[KUBE-WATCH-API]: dec() count for ${store.api.apiBase} is now ${newCount}`);
     this.#data.set(store, newCount);
 
     return newCount;

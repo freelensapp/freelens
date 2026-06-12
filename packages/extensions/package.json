@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/extensions",
-  "version": "1.9.1-0",
+  "version": "1.10.0-0",
   "description": "Freelens - Free IDE for Kubernetes: extensions",
   "homepage": "https://freelens.app",
   "bugs": {
@@ -32,7 +32,7 @@
     "@freelensapp/core": "workspace:^"
   },
   "devDependencies": {
-    "@types/node": "~22.19.17",
+    "@types/node": "~24.12.4",
     "ts-loader": "^9.5.7",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
