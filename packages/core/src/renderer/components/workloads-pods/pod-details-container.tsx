@@ -90,7 +90,7 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
     const { pod, container, containerMetricsVisible, containerMetrics } = this.props;
 
     if (!pod || !container) return null;
-    const { name, image, imagePullPolicy, ports, volumeMounts, command, args, resources } = container;
+    const { name, image, imagePullPolicy, ports, volumeMounts, command, args, resources, resizePolicy } = container;
     const id = `pod-container-id-${pod}-${name}`;
     const targetContainerName = "targetContainerName" in container ? container.targetContainerName : undefined;
     const status = pod.getContainerStatuses().find((status) => status.name === container.name);
@@ -193,6 +193,13 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
           <DrawerItem name="Limits" labelsOnly>
             {limits.map(([key, value], index) => (
               <Badge key={index} label={`${key}=${value}`} />
+            ))}
+          </DrawerItem>
+        )}
+        {resizePolicy && resizePolicy.length > 0 && (
+          <DrawerItem name="Resize Policy" labelsOnly>
+            {resizePolicy.map(({ resourceName, restartPolicy }, index) => (
+              <Badge key={`${resourceName}-${restartPolicy}-${index}`} label={`${resourceName}=${restartPolicy}`} />
             ))}
           </DrawerItem>
         )}

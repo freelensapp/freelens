@@ -14,6 +14,11 @@ import type { SecurityContext } from "./security-context";
 import type { VolumeDevice } from "./volume-device";
 import type { VolumeMount } from "./volume-mount";
 
+export interface ContainerResizePolicy {
+  resourceName: "cpu" | "memory";
+  restartPolicy: "NotRequired" | "RestartContainer";
+}
+
 /**
  * A single application container that you want to run within a pod.
  */
@@ -121,6 +126,11 @@ export interface Container {
    * Resource requirements describes the compute resource requirements.
    */
   resources?: ResourceRequirements;
+
+  /**
+   * Resize policy for the container when cpu or memory resources are changed in-place.
+   */
+  resizePolicy?: ContainerResizePolicy[];
 
   /**
    * Restart policy for the container to manage the restart behavior of each

@@ -6,6 +6,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
+import { defaultColorThemePreference } from "../../../common/vars";
 import userPreferencesStateInjectable from "./state.injectable";
 
 export type LensColorThemePreference =
@@ -23,8 +24,7 @@ const lensColorThemePreferenceInjectable = getInjectable({
     const state = di.inject(userPreferencesStateInjectable);
 
     return computed((): LensColorThemePreference => {
-      // TODO: remove magic strings
-      if (state.colorTheme === "system") {
+      if (state.colorTheme === defaultColorThemePreference) {
         return {
           useSystemTheme: true,
         };

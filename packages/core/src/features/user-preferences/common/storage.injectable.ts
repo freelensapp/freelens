@@ -54,6 +54,8 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
         state.openAtLogin = descriptors.openAtLogin.fromStore(preferences.openAtLogin);
         state.showTrayIcon = descriptors.showTrayIcon.fromStore(preferences.showTrayIcon);
         state.hotbarAutoHide = descriptors.hotbarAutoHide.fromStore(preferences.hotbarAutoHide);
+        state.persistentSearch = descriptors.persistentSearch.fromStore(preferences.persistentSearch);
+        state.logViewerPreferences = descriptors.logViewerPreferences.fromStore(preferences.logViewerPreferences);
         state.shell = descriptors.shell.fromStore(preferences.shell);
         state.syncKubeconfigEntries = descriptors.syncKubeconfigEntries.fromStore(preferences.syncKubeconfigEntries);
         state.terminalConfig = descriptors.terminalConfig.fromStore(preferences.terminalConfig);
@@ -80,6 +82,8 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
             openAtLogin: descriptors.openAtLogin.toStore(state.openAtLogin),
             showTrayIcon: descriptors.showTrayIcon.toStore(state.showTrayIcon),
             hotbarAutoHide: descriptors.hotbarAutoHide.toStore(state.hotbarAutoHide),
+            persistentSearch: descriptors.persistentSearch.toStore(state.persistentSearch),
+            logViewerPreferences: descriptors.logViewerPreferences.toStore(state.logViewerPreferences),
             shell: descriptors.shell.toStore(state.shell),
             syncKubeconfigEntries: descriptors.syncKubeconfigEntries.toStore(state.syncKubeconfigEntries),
             terminalConfig: descriptors.terminalConfig.toStore(state.terminalConfig),
