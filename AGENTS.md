@@ -382,7 +382,7 @@ Format the footer line as:
 In a PR description, append the model information at the end of the body:
 
 ```text
-Model: `claude-sonnet-4-6`
+| Model: `claude-sonnet-4-6`
 ```
 
 If the system context does not provide a model ID, omit the model field rather
