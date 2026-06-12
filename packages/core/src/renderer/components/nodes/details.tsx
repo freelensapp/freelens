@@ -58,6 +58,7 @@ class NonInjectedNodeDetails extends React.Component<NodeDetailsProps & Dependen
     }
 
     const { nodeInfo, addresses } = node.status ?? {};
+    const providerID = node.spec?.providerID;
     const taints = node.getTaints();
     const childPods = podStore.getPodsByNode(node.getName());
 
@@ -70,6 +71,7 @@ class NonInjectedNodeDetails extends React.Component<NodeDetailsProps & Dependen
             ))}
           </DrawerItem>
         )}
+        {providerID && <DrawerItem name="Provider ID">{providerID}</DrawerItem>}
         {nodeInfo && (
           <>
             <DrawerItem name="OS">{`${nodeInfo.operatingSystem} (${nodeInfo.architecture})`}</DrawerItem>
