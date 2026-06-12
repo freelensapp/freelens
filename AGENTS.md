@@ -280,6 +280,22 @@ When asked to implement a change on a PR:
 2. Describe what will change and why
 3. After confirmation, apply the changes with commits on the PR branch
 
+### PR Title Conventions
+
+When creating a PR, use the following title conventions:
+
+- **Agent-related changes** — PRs whose changes are strictly related to coding
+  agent configuration (e.g. `AGENTS.md`, `.github/workflows/claude.yaml`, or
+  other files that govern how Claude operates in this repository) MUST use
+  the prefix `Claude: ` in the title.
+
+  Examples:
+  - `Claude: Add rule for PR title conventions in AGENTS.md`
+  - `Claude: Update claude.yaml workflow permissions`
+
+- **All other PRs** — do **not** use any prefix (no `fix:`, `feat:`, `chore:`,
+  etc.). Use plain, descriptive titles.
+
 ### Pushing Changes from Fork PRs
 
 When you have commits ready to push but the PR originates from a fork
