@@ -14,7 +14,7 @@ import type { InstallChartArgs } from "../../../helm/helm-service/install-helm-c
 
 const installChartArgsValidator = Joi.object<InstallChartArgs, true, InstallChartArgs>({
   chart: Joi.string().required(),
-  values: Joi.object().required().unknown(true),
+  values: Joi.string().required(),
   name: Joi.string(),
   namespace: Joi.string().required(),
   version: Joi.string().required(),

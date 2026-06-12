@@ -29,9 +29,11 @@ async function fetchDirectMetrics(
   cluster: Cluster,
   prometheusPrefix: string,
   directUrl: string,
+  requestMethod: "GET" | "POST",
   params: URLSearchParams,
 ): Promise<unknown> {
-  const url = `${directUrl.replace(/\/+$/, "")}${prometheusPrefix}/api/v1/query_range?${params.toString()}`;
+  const queryRangePath = `${directUrl.replace(/\/+$/, "")}${prometheusPrefix}/api/v1/query_range`;
+  const url = requestMethod === "GET" ? `${queryRangePath}?${params.toString()}` : queryRangePath;
   const headers: Record<string, string> = {};
   const bearerToken = cluster.preferences.prometheus?.bearerToken;
 
@@ -39,13 +41,18 @@ async function fetchDirectMetrics(
     headers.Authorization = `Bearer ${bearerToken}`;
   }
 
+  if (requestMethod === "POST") {
+    headers["Content-Type"] = "application/x-www-form-urlencoded;charset=UTF-8";
+  }
+
   const response = await proxyFetch(url, {
-    method: "GET",
+    method: requestMethod,
     headers,
+    body: requestMethod === "POST" ? params.toString() : undefined,
   });
 
   if (!response.ok) {
-    throw new Error(`Failed to GET ${url} for clusterId=${cluster.id}: ${response.statusText}`, {
+    throw new Error(`Failed to ${requestMethod} ${url} for clusterId=${cluster.id}: ${response.statusText}`, {
       cause: response,
     });
   }
@@ -62,6 +69,7 @@ const getMetricsInjectable = getInjectable({
 
     return async (cluster, prometheusPath, queryParams) => {
       const prometheusPrefix = cluster.preferences.prometheus?.prefix || "";
+      const requestMethod = cluster.preferences.prometheusRequestMethod === "GET" ? "GET" : "POST";
       const params = new URLSearchParams();
 
       for (const [key, value] of object.entries(queryParams)) {
@@ -71,14 +79,25 @@ const getMetricsInjectable = getInjectable({
       const directUrl = cluster.preferences.prometheus?.directUrl;
 
       if (directUrl) {
-        return fetchDirectMetrics(proxyFetch, cluster, prometheusPrefix, directUrl, params);
+        return fetchDirectMetrics(proxyFetch, cluster, prometheusPrefix, directUrl, requestMethod, params);
       }
 
-      const metricsPath = `/api/v1/namespaces/${prometheusPath}/proxy${prometheusPrefix}/api/v1/query_range?${params.toString()}`;
+      const queryRangePath = `/api/v1/namespaces/${prometheusPath}/proxy${prometheusPrefix}/api/v1/query_range`;
 
-      return k8sRequest(cluster, metricsPath, {
+      if (requestMethod === "GET") {
+        return k8sRequest(cluster, `${queryRangePath}?${params.toString()}`, {
+          timeout: 0,
+          method: "GET",
+        });
+      }
+
+      return k8sRequest(cluster, queryRangePath, {
         timeout: 0,
-        method: "GET",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+        },
+        body: params.toString(),
       });
     };
   },

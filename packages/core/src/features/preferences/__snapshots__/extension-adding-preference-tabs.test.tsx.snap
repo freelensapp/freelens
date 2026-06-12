@@ -230,13 +230,12 @@ exports[`preferences: extension adding preference tabs given in preferences, whe
                         class="Select__control css-13cymwt-control"
                       >
                         <div
-                          class="Select__value-container css-hlgwow"
+                          class="Select__value-container Select__value-container--has-value css-hlgwow"
                         >
                           <div
-                            class="Select__placeholder css-1jqq78o-placeholder"
-                            id="react-select-theme-input-placeholder"
+                            class="Select__single-value css-1dimb5e-singleValue"
                           >
-                            Select...
+                            Sync with computer
                           </div>
                           <div
                             class="Select__input-container css-19bb58m"
@@ -245,7 +244,6 @@ exports[`preferences: extension adding preference tabs given in preferences, whe
                             <input
                               aria-activedescendant=""
                               aria-autocomplete="list"
-                              aria-describedby="react-select-theme-input-placeholder"
                               aria-expanded="false"
                               aria-haspopup="true"
                               autocapitalize="none"

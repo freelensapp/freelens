@@ -7,7 +7,7 @@
  */
 
 import filterByNamespaceInjectable from "./filter-by-namespace.injectable";
-import isMultiSelectionKeyInjectable from "./is-selection-key.injectable";
+import isSelectionModifierKeyInjectable from "./is-selection-modifier-key.injectable";
 import namespaceSelectFilterModelInjectable from "./namespace-select-filter-model.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
@@ -19,7 +19,7 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
-    di.register(isMultiSelectionKeyInjectable);
+    di.register(isSelectionModifierKeyInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

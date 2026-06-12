@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/webpack",
-  "version": "1.8.2-0",
+  "version": "1.10.0-0",
   "private": false,
   "description": "Webpack configurations and scripts for Lens packages.",
   "homepage": "https://freelens.app",
@@ -47,7 +47,7 @@
     "webpack-node-externals": "^3.0.0"
   },
   "devDependencies": {
-    "@async-fn/jest": "^1.6.5",
+    "@async-fn/jest": "^1.7.0",
     "@freelensapp/jest": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@ogre-tools/test-utils": "^17.11.1",

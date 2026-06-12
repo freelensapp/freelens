@@ -24,6 +24,7 @@ import {
   getLegacyGlobalDiForExtensionApi,
 } from "@freelensapp/legacy-global-di";
 import {
+  logDebugInjectionToken,
   logErrorInjectionToken,
   loggerInjectionToken,
   logInfoInjectionToken,
@@ -63,6 +64,7 @@ const getKubeApiDeps = (): KubeApiDependencies => {
   const di = getLegacyGlobalDiForExtensionApi();
 
   return {
+    logDebug: di.inject(logDebugInjectionToken),
     logError: di.inject(logErrorInjectionToken),
     logInfo: di.inject(logInfoInjectionToken),
     logWarn: di.inject(logWarningInjectionToken),
