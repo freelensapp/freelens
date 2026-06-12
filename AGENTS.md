@@ -367,7 +367,8 @@ automatically and ask a human maintainer to close it manually.
 ### Model Information in Comments
 
 When operating via the GitHub Actions workflow, always include the model you are
-running on in the footer of your GitHub comment, alongside the job run link.
+running on in the footer of your GitHub comment and in the PR description when
+creating a pull request, alongside the job run link.
 Your system environment context states the model name explicitly (e.g.
 "You are powered by the model named Sonnet 4.6. The exact model ID is
 claude-sonnet-4-6."). Use the exact model ID from that statement.
@@ -376,6 +377,12 @@ Format the footer line as:
 
 ```text
 [View job run](...) | Model: `claude-sonnet-4-6`
+```
+
+In a PR description, append the model information at the end of the body:
+
+```text
+Model: `claude-sonnet-4-6`
 ```
 
 If the system context does not provide a model ID, omit the model field rather
