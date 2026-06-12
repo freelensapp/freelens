@@ -81,7 +81,6 @@ jobs:
         if: github.event.pull_request.head.repo.full_name != github.repository
         run: |
           git remote add upstream ${{ github.server_url }}/${{ github.repository }}.git
-          git fetch upstream
 
       - name: Setup node
         uses: actions/setup-node@v6

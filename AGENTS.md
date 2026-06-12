@@ -291,7 +291,7 @@ repository. Instead:
    Push to the `upstream` remote (not `origin`, which points to the fork):
    ```bash
    git checkout -b claude/<original-branch-name>
-   git push upstream claude/<original-branch-name>
+   git push --force-with-lease upstream claude/<original-branch-name>
    ```
 
 2. Open a new PR from that branch. The new PR MUST use the **exact same
