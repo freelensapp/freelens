@@ -32,8 +32,8 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: read
-      pull-requests: read
+      contents: write
+      pull-requests: write
       issues: read
       id-token: write
       actions: read
@@ -51,4 +51,4 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           claude_args: |-
-            --max-turns 30
+            --max-turns 100
