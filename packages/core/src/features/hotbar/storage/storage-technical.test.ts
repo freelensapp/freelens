@@ -147,7 +147,6 @@ describe("Hotbars technical tests", () => {
       });
     });
 
-    // TODO: By unclear reason, the first hotbar item is not set to welcome page
     describe("hotbar items", () => {
       it("initially creates default number of empty cells", () => {
         expect(activeHotbar.get()?.items?.length).toEqual(defaultHotbarCells);

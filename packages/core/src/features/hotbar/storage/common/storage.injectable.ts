@@ -8,6 +8,7 @@ import { iter } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { action, comparer } from "mobx";
 import catalogCatalogEntityInjectable from "../../../../common/catalog-entities/general-catalog-entities/implementations/catalog-catalog-entity.injectable";
+import welcomeCatalogEntityInjectable from "../../../../common/catalog-entities/general-catalog-entities/implementations/welcome-catalog-entity.injectable";
 import storeMigrationVersionInjectable from "../../../../common/vars/store-migration-version.injectable";
 import createPersistentStorageInjectable from "../../../persistent-storage/common/create.injectable";
 import persistentStorageMigrationsInjectable from "../../../persistent-storage/common/migrations.injectable";
@@ -30,6 +31,7 @@ const hotbarsPersistentStorageInjectable = getInjectable({
     const state = di.inject(hotbarsStateInjectable);
     const createPersistentStorage = di.inject(createPersistentStorageInjectable);
     const catalogCatalogEntity = di.inject(catalogCatalogEntityInjectable);
+    const welcomeCatalogEntity = di.inject(welcomeCatalogEntityInjectable);
     const activeHotbarId = di.inject(activeHotbarIdInjectable);
     const createHotbar = di.inject(createHotbarInjectable);
 
@@ -51,6 +53,13 @@ const hotbarsPersistentStorageInjectable = getInjectable({
           } = catalogCatalogEntity;
 
           hotbar.items[0] = {
+            entity: {
+              uid: welcomeCatalogEntity.metadata.uid,
+              name: welcomeCatalogEntity.metadata.name,
+              source: welcomeCatalogEntity.metadata.source,
+            },
+          };
+          hotbar.items[1] = {
             entity: {
               uid,
               name,
