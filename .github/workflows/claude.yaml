@@ -4,6 +4,10 @@
 #   - GitHub App "Claude" installed on the repo (https://github.com/apps/claude)
 #   - Secret CLAUDE_CODE_OAUTH_TOKEN (org-level, generated with `claude setup-token`)
 # Only users with write+ permission on the repo can trigger it (checked inside the action).
+#
+# Claude is constrained by its system prompt to only push to the PR branch
+# it was invoked on (never main). For defense in depth, enable branch
+# protection rules on the main branch (require PR + approvals).
 
 name: Claude
 
@@ -27,11 +31,11 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: read
-      pull-requests: read
-      issues: read
-      id-token: write
-      actions: read
+      contents: write # allow Claude to push commits to the PR branch
+      pull-requests: write # allow Claude to interact with PRs
+      issues: write # allow Claude to comment on issues/PRs
+      id-token: write # OIDC authentication for the Claude GitHub App
+      actions: read # optional: allow Claude to read CI logs
 
     steps:
       - name: Checkout repository
@@ -46,8 +50,8 @@ jobs:
         run: |
           BRANCH=$(gh pr view ${{ github.event.issue.number }} --json headRefName -q .headRefName)
           git branch -D "$BRANCH" 2>/dev/null || true
-          git fetch origin refs/pull/${{ github.event.issue.number }}/head
-          git checkout FETCH_HEAD
+          git fetch origin "refs/pull/${{ github.event.issue.number }}/head"
+          git checkout -b "$BRANCH" FETCH_HEAD
 
       - name: Run Claude Code
         uses: anthropics/claude-code-action@v1
