@@ -208,6 +208,71 @@ Uses pnpm workspaces for:
 8. **For main project TypeScript and HTML files:** run `biome check` directly (or `pnpm biome check` if `biome` is not installed locally)
 9. **For other file types:** use `trunk check` (or `pnpm trunk check` if `trunk` is not installed locally)
 
+## GitHub Actions (Claude Code Action) Rules
+
+When operating via the `claude.yaml` workflow (i.e., invoked from a PR comment,
+issue, or review), follow these rules:
+
+### Code Review
+
+When reviewing code and proposing fixes:
+
+1. **Show the diff first** — present every proposed change as a unified diff
+   block using the `diff` language tag:
+
+   ```diff
+   --- a/path/to/file.ts
+   +++ b/path/to/file.ts
+   @@ -10,7 +10,7 @@
+    const oldLine = "before";
+   -const changedLine = "after";
+   +const changedLine = "the fix";
+    const unchangedLine = "same";
+   ```
+
+   You can generate this from the terminal with:
+   ```bash
+   git diff -u -- path/to/file
+   ```
+
+   If the change spans multiple files, group them under a single commit
+   subject and show each file's diff sequentially.
+
+2. **Propose a commit subject first** — before any code change, output a
+   single line with the proposed commit subject:
+
+   ```text
+   **Proposed commit:** <prefix>: <short description>
+   ```
+
+   Use conventional commit prefixes matching this project's style:
+   `feat:`, `fix:`, `refactor:`, `chore:`, `docs:`, `test:`, `ci:`.
+
+   Wait for the user to confirm (or adjust) the subject before applying the
+   change.
+
+3. **Comment style:**
+   - Keep review comments concise and actionable
+   - Reference specific lines (file + line number) when pointing out issues
+   - Offer a concrete fix suggestion rather than just flagging a problem
+   - Use GitHub's `suggestion` block for small targeted fixes so the PR
+     author can accept the change with a single click:
+
+     ````suggestion
+     <same unified-diff format as shown above>
+     ````
+
+   - For larger multi-file changes, use `diff -u` blocks in a regular
+     comment instead, with the proposed commit subject shown first
+
+### Making Changes to a PR
+
+When asked to implement a change on a PR:
+
+1. Propose the commit subject (as above)
+2. Describe what will change and why
+3. After confirmation, apply the changes with commits on the PR branch
+
 ## Getting Help
 
 - Check existing features for patterns

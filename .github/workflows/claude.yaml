@@ -39,11 +39,12 @@ jobs:
       actions: read
 
     steps:
-      - name: Checkout repository
+      - name: Checkout Forked Code
         uses: actions/checkout@v6
         with:
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Run Claude Code
         uses: anthropics/claude-code-action@v1
@@ -51,3 +52,4 @@ jobs:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           claude_args: |-
             --max-turns 30
+          github_token: ${{ secrets.GITHUB_TOKEN }}
