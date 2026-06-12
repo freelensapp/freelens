@@ -140,16 +140,45 @@ jobs:
           INPUT_PROMPT: ${{ toJSON(github.event.inputs.prompt) }}
           CREATE_PR: ${{ github.event.inputs.create-pr }}
 
+      - name: Parse model from comment
+        id: parse-model
+        shell: bash
+        run: |
+          DEFAULT_MODEL="claude-sonnet-4-6"
+          COMMENT_TEXT="${COMMENT_BODY}${REVIEW_BODY}${ISSUE_BODY}"
+
+          # Extract [model:xxx] — take first match
+          MODEL_ALIAS=$(echo "$COMMENT_TEXT" \
+            | grep -oP '\[model:[^\]]+\]' \
+            | head -1 \
+            | sed 's/\[model://;s/\]//')
+
+          case "$MODEL_ALIAS" in
+            fable|fable-5|claude-fable-5)               MODEL_ID="claude-fable-5" ;;
+            opus|opus-4|opus-4.8|claude-opus-4-8)       MODEL_ID="claude-opus-4-8" ;;
+            sonnet|sonnet-4|sonnet-4.6|claude-sonnet-4-6) MODEL_ID="claude-sonnet-4-6" ;;
+            haiku|haiku-4|haiku-4.5)                    MODEL_ID="claude-haiku-4-5-20251001" ;;
+            "")                                          MODEL_ID="$DEFAULT_MODEL" ;;
+            *)                                           MODEL_ID="$MODEL_ALIAS" ;;
+          esac
+
+          echo "Resolved model: '${MODEL_ALIAS:-<none>}' -> $MODEL_ID"
+          echo "model=$MODEL_ID" >> "$GITHUB_OUTPUT"
+        env:
+          COMMENT_BODY: ${{ github.event.comment.body || '' }}
+          REVIEW_BODY: ${{ github.event.review.body || '' }}
+          ISSUE_BODY: ${{ github.event.issue.body || '' }}
+
       - name: Run Claude Code
         if: github.event_name != 'workflow_dispatch'
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           claude_args: |-
+            --model ${{ steps.parse-model.outputs.model }}
             --max-turns 100
             --allowedTools "Bash(pnpm:*)" "Bash(npx:*)" "Bash(node:*)" "Bash(git:*)" "Bash(gh:*)" "Bash(yq:*)" "Bash(jq:*)" "Bash(grep:*)" "Bash(rg:*)" "Bash(sed:*)" "Bash(awk:*)" "Bash(cut:*)" "Bash(tr:*)" "Bash(sort:*)" "Bash(uniq:*)" "Bash(cat:*)" "Bash(head:*)" "Bash(tail:*)" "Bash(wc:*)" "Bash(find:*)" "Bash(xargs:*)" "Bash(ls:*)" "Bash(tree:*)" "Bash(mkdir:*)" "Bash(touch:*)" "Bash(cp:*)" "Bash(mv:*)" "Bash(rm:*)" "Bash(tee:*)" "Bash(echo:*)"
-        env:
-          ANTHROPIC_MODEL: opusplan
+            --append-system-prompt-file AGENTS.md
 
       - name: Run Claude Code (workflow_dispatch)
         if: github.event_name == 'workflow_dispatch'
@@ -158,7 +187,7 @@ jobs:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           prompt: ${{ steps.prompt.outputs.text }}
           claude_args: |-
+            --model ${{ steps.parse-model.outputs.model }}
             --max-turns 100
             --allowedTools "Bash(pnpm:*)" "Bash(npx:*)" "Bash(node:*)" "Bash(git:*)" "Bash(gh:*)" "Bash(yq:*)" "Bash(jq:*)" "Bash(grep:*)" "Bash(rg:*)" "Bash(sed:*)" "Bash(awk:*)" "Bash(cut:*)" "Bash(tr:*)" "Bash(sort:*)" "Bash(uniq:*)" "Bash(cat:*)" "Bash(head:*)" "Bash(tail:*)" "Bash(wc:*)" "Bash(find:*)" "Bash(xargs:*)" "Bash(ls:*)" "Bash(tree:*)" "Bash(mkdir:*)" "Bash(touch:*)" "Bash(cp:*)" "Bash(mv:*)" "Bash(rm:*)" "Bash(tee:*)" "Bash(echo:*)"
-        env:
-          ANTHROPIC_MODEL: opusplan
+            --append-system-prompt-file AGENTS.md
