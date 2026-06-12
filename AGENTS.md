@@ -280,10 +280,11 @@ When you have commits ready to push but the PR originates from a fork
 repository. Instead:
 
 1. Create a new branch on `freelensapp/freelens` with the prefix `claude/`
-   followed by the original branch name:
+   followed by the original branch name.
+   Push to the `upstream` remote (not `origin`, which points to the fork):
    ```bash
    git checkout -b claude/<original-branch-name>
-   git push origin claude/<original-branch-name>
+   git push upstream claude/<original-branch-name>
    ```
 
 2. Open a new PR from that branch with:
@@ -298,12 +299,31 @@ repository. Instead:
 
 4. Close the original PR.
 
+### Closing PRs
+
+Claude may only close a PR when ALL of the following are true:
+
+1. The PR was created by Claude from a `claude/` branch, OR the PR is the
+   original fork PR that Claude's `claude/` branch supersedes (see
+   "Pushing Changes from Fork PRs" above).
+2. The close reason is explicitly explained in a comment on the PR.
+
+Claude MUST NOT close any PR that does not meet these conditions — even if
+asked. Instead, explain to the requester why the PR cannot be closed
+automatically and ask a human maintainer to close it manually.
+
 ### Development Environment
 
 The GitHub Actions runner has a full Node.js + pnpm environment available.
 Dependencies are already installed (`pnpm install` has been run). The build
 step is skipped to save CI resources, but you can run build commands when
 needed for advanced tasks (e.g. type-checking, running tests).
+
+For fork PRs, the `origin` remote points to the contributor's fork. An
+`upstream` remote is configured pointing to `freelensapp/freelens`. Push
+new branches to `upstream` (never to `origin`) when the PR originates
+from a fork — this ensures the resulting PR is internal and CI workflows
+run automatically.
 
 The following CLI tools are explicitly allowed in the workflow:
 
@@ -329,6 +349,10 @@ developers:
 - Run `pnpm trunk check` to validate all other file types (or `trunk check`
   if the trunk CLI is installed globally).
 - Run `pnpm build:di` if you added, moved, or renamed injectable files.
+- If unit tests fail on snapshot mismatches after your changes (or you are
+  explicitly asked to update them), run `pnpm test:unit:updatesnapshot` to
+  regenerate snapshots, review the diff, then commit the updated `.snap`
+  files.
 
 ## Getting Help
 

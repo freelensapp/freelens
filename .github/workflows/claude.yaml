@@ -59,6 +59,12 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref }}
           fetch-depth: 0
 
+      - name: Add upstream remote
+        if: github.event.pull_request.head.repo.full_name != github.repository
+        run: |
+          git remote add upstream ${{ github.server_url }}/${{ github.repository }}.git
+          git fetch upstream
+
       - name: Setup node
         uses: actions/setup-node@v6
         with:
@@ -104,5 +110,3 @@ jobs:
           claude_args: |-
             --max-turns 100
             --allowedTools "Bash(pnpm:*)" "Bash(npx:*)" "Bash(node:*)" "Bash(git:*)" "Bash(gh:*)" "Bash(yq:*)" "Bash(jq:*)" "Bash(grep:*)" "Bash(rg:*)" "Bash(sed:*)" "Bash(awk:*)" "Bash(cut:*)" "Bash(tr:*)" "Bash(sort:*)" "Bash(uniq:*)" "Bash(cat:*)" "Bash(head:*)" "Bash(tail:*)" "Bash(wc:*)" "Bash(find:*)" "Bash(xargs:*)" "Bash(ls:*)" "Bash(tree:*)" "Bash(mkdir:*)" "Bash(touch:*)" "Bash(cp:*)" "Bash(mv:*)" "Bash(rm:*)" "Bash(tee:*)" "Bash(echo:*)"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
