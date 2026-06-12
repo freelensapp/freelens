@@ -4,6 +4,11 @@
 #   - GitHub App "Claude" installed on the repo (https://github.com/apps/claude)
 #   - Secret CLAUDE_CODE_OAUTH_TOKEN (org-level, generated with `claude setup-token`)
 # Only users with write+ permission on the repo can trigger it (checked inside the action).
+#
+# Claude pushes commits via its own GitHub App token (independent of workflow
+# permissions). It is constrained by its system prompt to only push to the PR
+# branch it was invoked on. For defense in depth, enable branch protection
+# rules on the main branch (require PR + approvals).
 
 name: Claude
 
@@ -39,13 +44,16 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Remove local branch to avoid claude-code-action collision
+      - name: Checkout PR branch (workaround for claude-code-action not supporting PR events)
         if: github.event.issue.pull_request != null
-        run: |
-          BRANCH=$(gh pr view ${{ github.event.issue.number }} --json headRefName -q .headRefName)
-          git branch -D "$BRANCH" 2>/dev/null || true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH=$(gh pr view ${{ github.event.issue.number }} --json headRefName -q .headRefName)
+          git fetch origin "refs/pull/${{ github.event.issue.number }}/head"
+          # -B resets the branch pointer even if it already exists locally
+          # (handles the case where the PR head branch is also named "main")
+          git checkout -B "$BRANCH" FETCH_HEAD
 
       - name: Run Claude Code
         uses: anthropics/claude-code-action@v1
