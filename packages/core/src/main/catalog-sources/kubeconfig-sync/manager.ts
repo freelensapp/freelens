@@ -54,9 +54,6 @@ export class KubeconfigSyncManager {
   startSync(): void {
     this.dependencies.logger.info(`starting requested syncs`);
 
-    // This must be done so that c&p-ed clusters are visible
-    this.startNewSync(this.dependencies.directoryForKubeConfigs);
-
     this.syncListDisposer = reaction(
       () => Array.from(this.dependencies.kubeconfigSyncs.keys()),
       (currentPaths) => this.reconcile(currentPaths),
@@ -68,7 +65,7 @@ export class KubeconfigSyncManager {
   private reconcile(currentPaths: string[]): void {
     const desired = new Set([this.dependencies.directoryForKubeConfigs, ...currentPaths]);
 
-    for (const filePath of this.sources.keys()) {
+    for (const filePath of Array.from(this.sources.keys())) {
       if (!desired.has(filePath)) {
         this.stopOldSync(filePath);
       }
@@ -136,5 +133,5 @@ function arraysHaveSameMembers(a: readonly string[], b: readonly string[]): bool
       return false;
     }
   }
-  return true;
+  return set.size === a.length;
 }
