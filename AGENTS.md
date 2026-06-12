@@ -242,11 +242,12 @@ When reviewing code and proposing fixes:
    single line with the proposed commit subject:
 
    ```text
-   **Proposed commit:** <prefix>: <short description>
+   **Proposed commit:** <short description>
    ```
 
-   Use conventional commit prefixes matching this project's style:
-   `feat:`, `fix:`, `refactor:`, `chore:`, `docs:`, `test:`, `ci:`.
+   Do **not** use Conventional Commits prefixes (e.g. `fix:`, `feat:`,
+   `chore:`, `refactor:`, `docs:`, `test:`, `ci:`). This project prefers
+   plain, descriptive commit messages and PR titles without any prefix.
 
    Wait for the user to confirm (or adjust) the subject before applying the
    change.
@@ -255,6 +256,9 @@ When reviewing code and proposing fixes:
    - Keep review comments concise and actionable
    - Reference specific lines (file + line number) when pointing out issues
    - Offer a concrete fix suggestion rather than just flagging a problem
+   - Do **not** use emoji in any Markdown, comments, commit messages, or
+     PR descriptions. The only exception is emoji that already appears
+     inside code strings (e.g. application logs, user-facing messages).
    - Use GitHub's `suggestion` block for small targeted fixes so the PR
      author can accept the change with a single click:
 
