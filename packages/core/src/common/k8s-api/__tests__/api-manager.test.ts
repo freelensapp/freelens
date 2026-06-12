@@ -8,6 +8,7 @@ import { KubeApi } from "@freelensapp/kube-api";
 import { maybeKubeApiInjectable } from "@freelensapp/kube-api-specifics";
 import { KubeObject } from "@freelensapp/kube-object";
 import {
+  logDebugInjectionToken,
   logErrorInjectionToken,
   loggerInjectionToken,
   logInfoInjectionToken,
@@ -70,6 +71,7 @@ describe("ApiManager", () => {
       const fallbackApiBase = "/apis/extensions/v1beta1/foo";
       const kubeApi = new TestApi(
         {
+          logDebug: di.inject(logDebugInjectionToken),
           logError: di.inject(logErrorInjectionToken),
           logInfo: di.inject(logInfoInjectionToken),
           logWarn: di.inject(logWarningInjectionToken),
@@ -160,6 +162,7 @@ describe("ApiManager", () => {
               return Object.assign(
                 new KubeApi(
                   {
+                    logDebug: di.inject(logDebugInjectionToken),
                     logError: di.inject(logErrorInjectionToken),
                     logInfo: di.inject(logInfoInjectionToken),
                     logWarn: di.inject(logWarningInjectionToken),
