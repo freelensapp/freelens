@@ -41,9 +41,9 @@ jobs:
 
       - name: Checkout PR branch
         if: github.event.issue.pull_request != null
-        run: gh pr checkout ${{ github.event.issue.number }}
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git fetch origin refs/pull/${{ github.event.issue.number }}/head
+          git checkout FETCH_HEAD
 
       - name: Run Claude Code
         uses: anthropics/claude-code-action@v1
