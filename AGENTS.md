@@ -329,6 +329,10 @@ developers:
 - Run `pnpm trunk check` to validate all other file types (or `trunk check`
   if the trunk CLI is installed globally).
 - Run `pnpm build:di` if you added, moved, or renamed injectable files.
+- If unit tests fail on snapshot mismatches after your changes (or you are
+  explicitly asked to update them), run `pnpm test:unit:updatesnapshot` to
+  regenerate snapshots, review the diff, then commit the updated `.snap`
+  files.
 
 ## Getting Help
 
