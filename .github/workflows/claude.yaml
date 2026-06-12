@@ -42,18 +42,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
-          fetch-depth: 1
-
-      - name: Checkout PR branch (workaround for claude-code-action not supporting PR events)
-        if: github.event.issue.pull_request != null
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          BRANCH=$(gh pr view ${{ github.event.issue.number }} --json headRefName -q .headRefName)
-          git fetch origin "refs/pull/${{ github.event.issue.number }}/head"
-          # -B resets the branch pointer even if it already exists locally
-          # (handles the case where the PR head branch is also named "main")
-          git checkout -B "$BRANCH" FETCH_HEAD
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Run Claude Code
         uses: anthropics/claude-code-action@v1
