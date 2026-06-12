@@ -359,6 +359,23 @@ Claude MUST NOT close any PR that does not meet these conditions — even if
 asked. Instead, explain to the requester why the PR cannot be closed
 automatically and ask a human maintainer to close it manually.
 
+### Model Information in Comments
+
+When operating via the GitHub Actions workflow, always include the model you are
+running on in the footer of your GitHub comment, alongside the job run link.
+Your system environment context states the model name explicitly (e.g.
+"You are powered by the model named Sonnet 4.6. The exact model ID is
+claude-sonnet-4-6."). Use the exact model ID from that statement.
+
+Format the footer line as:
+
+```
+[View job run](...) | Model: `claude-sonnet-4-6`
+```
+
+If the system context does not provide a model ID, omit the model field rather
+than guessing.
+
 ### Development Environment
 
 The GitHub Actions runner has a full Node.js + pnpm environment available.
