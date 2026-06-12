@@ -7,9 +7,10 @@
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import { defaultColorThemePreference } from "../../../../../../common/vars";
+import { defaultAccentColor, defaultColorThemePreference } from "../../../../../../common/vars";
 import { SubTitle } from "../../../../../../renderer/components/layout/sub-title";
 import { Select } from "../../../../../../renderer/components/select";
+import { accentColorPresets } from "../../../../../../renderer/themes/accent-colors";
 import { lensThemeDeclarationInjectionToken } from "../../../../../../renderer/themes/declaration";
 import userPreferencesStateInjectable from "../../../../../user-preferences/common/state.injectable";
 
@@ -33,6 +34,13 @@ const NonInjectedTheme = observer(({ state, themes }: Dependencies) => {
     })),
   ];
 
+  const accentOptions = accentColorPresets.map((preset) => ({
+    value: preset.value,
+    label: preset.name,
+  }));
+
+  const currentAccent = state.customAccentColor || defaultAccentColor;
+
   return (
     <section id="appearance">
       <SubTitle title="Theme" />
@@ -42,6 +50,34 @@ const NonInjectedTheme = observer(({ state, themes }: Dependencies) => {
         value={state.colorTheme}
         onChange={(value) => (state.colorTheme = value?.value ?? defaultColorThemePreference)}
         themeName="lens"
+      />
+      <SubTitle title="Accent Color" />
+      <Select
+        id="accent-color-input"
+        options={accentOptions}
+        value={currentAccent}
+        onChange={(value) => {
+          const selected = value?.value ?? defaultAccentColor;
+
+          state.customAccentColor = selected === defaultAccentColor ? "" : selected;
+        }}
+        themeName="lens"
+        formatOptionLabel={(option) => (
+          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <span
+              style={{
+                display: "inline-block",
+                width: "14px",
+                height: "14px",
+                borderRadius: "50%",
+                backgroundColor: option.value,
+                border: "1px solid rgba(128,128,128,0.3)",
+                flexShrink: 0,
+              }}
+            />
+            <span>{option.label}</span>
+          </div>
+        )}
       />
     </section>
   );
