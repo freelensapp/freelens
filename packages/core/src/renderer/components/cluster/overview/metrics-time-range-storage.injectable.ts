@@ -10,7 +10,6 @@ import createStorageInjectable from "../../../utils/create-storage/create-storag
 export interface DurationMetricsTimeRange {
   /**
    * Duration in seconds (1h = 3600, 2h = 7200, etc.)
-   * null means custom time range
    */
   duration: number;
 

@@ -65,7 +65,6 @@ const NonInjectedVolumeClaimDiskChart = observer(
       <BarChart
         className="VolumeClaimDiskChart flex box grow column"
         name={`pvc-${object.getName()}-disk`}
-        timeLabelStep={10}
         options={memoryOptions}
         data={{ datasets }}
         minTime={minTime}

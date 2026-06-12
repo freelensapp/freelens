@@ -25,7 +25,6 @@ import type { ChartProps } from "./chart";
 
 export interface BarChartProps extends ChartProps {
   name?: string;
-  timeLabelStep?: number; // Minute labels appearance step
   minTime?: number; // Minimum timestamp (unix seconds) for x-axis
   maxTime?: number; // Maximum timestamp (unix seconds) for x-axis
 }
@@ -102,7 +101,6 @@ const NonInjectedBarChart = observer(
     name,
     data,
     className,
-    timeLabelStep = 10,
     minTime,
     maxTime,
     plugins,
@@ -249,11 +247,18 @@ const NonInjectedBarChart = observer(
         callbacks: {
           title([tooltip]: ChartTooltipItem[]) {
             const xLabel = tooltip?.xLabel;
-            const skipLabel = xLabel == null || new Date(xLabel).getTime() > Date.now();
 
-            if (skipLabel) return "";
+            if (xLabel == null) {
+              return "";
+            }
 
-            return String(xLabel);
+            const timestamp = parseBarChartTimestamp(getBarChartTickTimestamp(xLabel));
+
+            if (!Number.isFinite(timestamp) || timestamp > Date.now()) {
+              return "";
+            }
+
+            return moment(timestamp).format("MMM DD, HH:mm");
           },
           labelColor: ({ datasetIndex }) =>
             typeof datasetIndex === "number"

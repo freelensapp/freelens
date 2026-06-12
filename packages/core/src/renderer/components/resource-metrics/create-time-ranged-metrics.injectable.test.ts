@@ -42,7 +42,7 @@ describe("createTimeRangedMetricsInjectable", () => {
     nowMock.mockClear();
   });
 
-  it("forwards selected start/end/range and refreshes on a one-minute cadence", async () => {
+  it("forwards selected start/end/range without subscribing to an extra refresh clock", async () => {
     const di = getDiForUnitTesting();
     const request = jest.fn().mockResolvedValue({});
     const timestampsGet = jest.fn(() => ({ start: 2000, end: 2100, range: 100 }));
@@ -88,7 +88,7 @@ describe("createTimeRangedMetricsInjectable", () => {
       end: 2100,
       range: 100,
     });
-    expect(nowMock).toHaveBeenCalledWith(60 * 1000);
+    expect(nowMock).not.toHaveBeenCalled();
     expect(timestampsGet).toHaveBeenCalled();
     expect(asyncComputedMock).toHaveBeenCalledWith(
       expect.objectContaining({

@@ -141,7 +141,6 @@ const NonInjectedClusterMetrics = observer((props: Dependencies) => {
         name={`${metricNodeRole}-${metricType}`}
         options={options}
         data={{ datasets }}
-        timeLabelStep={5}
         showLegend={false}
         plugins={plugins}
         className={styles.chart}

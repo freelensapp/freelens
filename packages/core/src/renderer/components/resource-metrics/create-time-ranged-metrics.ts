@@ -6,7 +6,6 @@
 
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { asyncComputed } from "@ogre-tools/injectable-react";
-import { now } from "mobx-utils";
 import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
 
 import type { DiContainer, DiContainerForInjection, Injectable } from "@ogre-tools/injectable";
@@ -51,7 +50,6 @@ export const createTimeRangedMetricsInjectable = <Params, ObjectType, Value>({
 
       return asyncComputed<Value>({
         getValueFromObservedPromise: async () => {
-          now(60 * 1000);
           const { start, end, range } = selectedMetricsTimeRange.timestamps.get();
 
           return request({

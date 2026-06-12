@@ -125,4 +125,45 @@ describe("BarChart", () => {
     expect(tickCallback("1704499200000", 1, chartJsTicks)).toBe(moment(1_704_499_200_000).format("MMM DD"));
     expect(tickCallback("1704931200000", 2, chartJsTicks)).toBe(moment(1_704_931_200_000).format("MMM DD"));
   });
+
+  it("formats tooltip titles as readable dates and skips future timestamps", () => {
+    const di = getDiForUnitTesting();
+    const render = renderFor(di);
+
+    di.override(activeThemeInjectable, () =>
+      computed(
+        () =>
+          ({
+            colors: {
+              textColorPrimary: "#fff",
+              borderFaintColor: "#000",
+              chartStripesColor: "#111",
+            },
+          }) as never,
+      ),
+    );
+
+    render(
+      <BarChart
+        data={{
+          datasets: [
+            {
+              id: "dataset-id",
+              label: "Dataset",
+              borderColor: "#00a7a0",
+              data: [{ x: 1_710_000_000_000, y: "1" }],
+            },
+          ],
+        }}
+      />,
+    );
+
+    const options = chartMock.mock.calls[0][0].options;
+    const tooltipTitle = options.tooltips.callbacks.title;
+
+    expect(tooltipTitle([{ xLabel: "1710000000000" }])).toBe(moment(1_710_000_000_000).format("MMM DD, HH:mm"));
+    expect(tooltipTitle([{ xLabel: 1_710_000_000_000 }])).toBe(moment(1_710_000_000_000).format("MMM DD, HH:mm"));
+    expect(tooltipTitle([{ xLabel: "9999999999999" }])).toBe("");
+    expect(tooltipTitle([])).toBe("");
+  });
 });
