@@ -273,6 +273,31 @@ When asked to implement a change on a PR:
 2. Describe what will change and why
 3. After confirmation, apply the changes with commits on the PR branch
 
+### Pushing Changes from Fork PRs
+
+When you have commits ready to push but the PR originates from a fork
+(different owner than `freelensapp`), you cannot push to the fork's
+repository. Instead:
+
+1. Create a new branch on `freelensapp/freelens` with the prefix `claude/`
+   followed by the original branch name:
+   ```
+   git checkout -b claude/<original-branch-name>
+   git push origin claude/<original-branch-name>
+   ```
+
+2. Open a new PR from that branch with:
+   - A title that matches the original PR
+   - A description that references the original PR (e.g. "Fixes #NNN,
+     supersedes #NNN")
+
+3. Post a comment on the original PR:
+   - Explain that the fix has been implemented in a new PR
+   - Include a link to the new PR
+   - Mention that the original PR can be closed
+
+4. Close the original PR.
+
 ## Getting Help
 
 - Check existing features for patterns
