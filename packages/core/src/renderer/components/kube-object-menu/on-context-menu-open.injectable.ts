@@ -4,10 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { KubeObject } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { KubeObjectOnContextMenuOpenContext } from "../../kube-object/handler";
 import kubeObjectHandlersInjectable from "../../kube-object/handlers.injectable";
+
+import type { KubeObject } from "@freelensapp/kube-object";
+
+import type { KubeObjectOnContextMenuOpenContext } from "../../kube-object/handler";
 
 export type OnKubeObjectContextMenuOpen = (obj: KubeObject, ctx: KubeObjectOnContextMenuOpenContext) => void;
 

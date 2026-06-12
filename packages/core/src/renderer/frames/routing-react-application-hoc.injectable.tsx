@@ -4,12 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { reactApplicationHigherOrderComponentInjectionToken } from "@freelensapp/react-application";
 import { historyInjectionToken } from "@freelensapp/routing";
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
 import { Router } from "react-router";
-
-import { reactApplicationHigherOrderComponentInjectionToken } from "@freelensapp/react-application";
 
 const routingReactApplicationHocInjectable = getInjectable({
   id: "routing-react-application-hoc",

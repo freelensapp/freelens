@@ -5,6 +5,7 @@
  */
 
 import { getRequestChannel } from "@freelensapp/messaging";
+
 import type { ClusterId } from "../../../../common/cluster-types";
 
 export const clearClusterAsDeletingChannel = getRequestChannel<ClusterId, void>("clear-cluster-as-deleting");

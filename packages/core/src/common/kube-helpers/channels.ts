@@ -5,8 +5,10 @@
  */
 
 import { getRequestChannel } from "@freelensapp/messaging";
-import type { AsyncResult, Result } from "@freelensapp/utilities";
 import { getInjectionToken } from "@ogre-tools/injectable";
+
+import type { AsyncResult, Result } from "@freelensapp/utilities";
+
 import type { ClusterId } from "../cluster-types";
 
 export interface KubectlApplyAllArgs {

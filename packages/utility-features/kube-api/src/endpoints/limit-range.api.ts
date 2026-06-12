@@ -5,8 +5,9 @@
  */
 
 import { LimitRange } from "@freelensapp/kube-object";
-import type { DerivedKubeApiOptions, KubeApiDependencies } from "../kube-api";
 import { KubeApi } from "../kube-api";
+
+import type { DerivedKubeApiOptions, KubeApiDependencies } from "../kube-api";
 
 export class LimitRangeApi extends KubeApi<LimitRange> {
   constructor(deps: KubeApiDependencies, opts?: DerivedKubeApiOptions) {

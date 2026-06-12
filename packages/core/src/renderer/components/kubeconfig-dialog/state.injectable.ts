@@ -6,6 +6,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { observable } from "mobx";
+
 import type { KubeconfigDialogData } from "./kubeconfig-dialog";
 
 const kubeconfigDialogStateInjectable = getInjectable({

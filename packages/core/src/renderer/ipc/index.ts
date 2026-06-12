@@ -4,10 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { InstalledExtension, LensExtensionId } from "@freelensapp/legacy-extensions";
 import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
-import type { Location } from "history";
-import type { ClusterId, ClusterState } from "../../common/cluster-types";
 import { clusterSetFrameIdHandler, clusterStates } from "../../common/ipc/cluster";
 import { extensionDiscoveryStateChannel, extensionLoaderFromMainChannel } from "../../common/ipc/extension-handling";
 import {
@@ -18,6 +15,12 @@ import {
 } from "../../common/ipc/window";
 import { toJS } from "../../common/utils";
 import ipcRendererInjectable from "../utils/channel/ipc-renderer.injectable";
+
+import type { InstalledExtension, LensExtensionId } from "@freelensapp/legacy-extensions";
+
+import type { Location } from "history";
+
+import type { ClusterId, ClusterState } from "../../common/cluster-types";
 
 function requestMain(channel: string, ...args: any[]) {
   const di = getLegacyGlobalDiForExtensionApi();

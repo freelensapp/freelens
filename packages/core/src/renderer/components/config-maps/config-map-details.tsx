@@ -8,19 +8,21 @@ import "./config-map-details.scss";
 
 import { Button } from "@freelensapp/button";
 import { ConfigMap } from "@freelensapp/kube-object";
-import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
-import type { ShowNotification } from "@freelensapp/notifications";
 import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { autorun, makeObservable, observable } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import { DrawerTitle } from "../drawer";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { MonacoEditor } from "../monaco-editor";
-import type { ConfigMapStore } from "./store";
 import configMapStoreInjectable from "./store.injectable";
+
+import type { Logger } from "@freelensapp/logger";
+import type { ShowNotification } from "@freelensapp/notifications";
+
+import type { KubeObjectDetailsProps } from "../kube-object-details";
+import type { ConfigMapStore } from "./store";
 
 export interface ConfigMapDetailsProps extends KubeObjectDetailsProps<ConfigMap> {}
 

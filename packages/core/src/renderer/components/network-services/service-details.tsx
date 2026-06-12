@@ -6,48 +6,59 @@
 
 import "./service-details.scss";
 
-import { Service } from "@freelensapp/kube-object";
-import type { Logger } from "@freelensapp/logger";
+import { Icon } from "@freelensapp/icon";
+import { type PortStatus, Service } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { formatDuration } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
-import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
-import type { PortForwardStore } from "../../port-forward";
 import portForwardStoreInjectable from "../../port-forward/port-forward-store/port-forward-store.injectable";
-import { Badge } from "../badge";
+import { Badge, BadgeBoolean } from "../badge";
 import { DrawerItem, DrawerTitle } from "../drawer";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
-import type { EndpointsStore } from "../network-endpoints/store";
-import endpointsStoreInjectable from "../network-endpoints/store.injectable";
-import { ServiceDetailsEndpoint } from "./service-details-endpoint";
+import endpointSliceStoreInjectable from "../network-endpoint-slices/store.injectable";
+import { Table, TableCell, TableHead, TableRow } from "../table";
+import { WithTooltip } from "../with-tooltip";
+import { ServiceDetailsEndpointSlices } from "./service-details-endpoint-slices";
 import { ServicePortComponent } from "./service-port-component";
+
+import type { Logger } from "@freelensapp/logger";
+
+import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
+import type { PortForwardStore } from "../../port-forward";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
+import type { EndpointSliceStore } from "../network-endpoint-slices/store";
 
 export interface ServiceDetailsProps extends KubeObjectDetailsProps<Service> {}
 
 interface Dependencies {
   subscribeStores: SubscribeStores;
   portForwardStore: PortForwardStore;
-  endpointsStore: EndpointsStore;
+  endpointSliceStore: EndpointSliceStore;
   logger: Logger;
+}
+
+function getExternalProtocol(service: Service): string | undefined {
+  if (service.getPorts().find((s) => s.port === 443)) {
+    return "https";
+  }
+  if (service.getPorts().find((s) => s.port === 80)) {
+    return "http";
+  }
+  return;
 }
 
 @observer
 class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & Dependencies> {
   componentDidMount() {
-    const { object: service, subscribeStores, endpointsStore, portForwardStore } = this.props;
+    const { subscribeStores, endpointSliceStore, portForwardStore } = this.props;
 
-    disposeOnUnmount(this, [
-      subscribeStores([endpointsStore], {
-        namespaces: [service.getNs()],
-      }),
-      portForwardStore.watch(),
-    ]);
+    disposeOnUnmount(this, [subscribeStores([endpointSliceStore], {}), portForwardStore.watch()]);
   }
 
   render() {
-    const { object: service, endpointsStore } = this.props;
+    const { object: service, endpointSliceStore } = this.props;
 
     if (!service) {
       return null;
@@ -60,8 +71,17 @@ class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & De
     }
 
     const { spec } = service;
-    const endpoints = endpointsStore.getByName(service.getName(), service.getNs());
+    const endpointSlices = endpointSliceStore.getByOwnerReference(
+      service.apiVersion,
+      service.kind,
+      service.getName(),
+      service.getNs(),
+    );
     const externalIps = service.getExternalIps();
+    const selector = service.getSelector();
+    const externalProtocol = getExternalProtocol(service);
+    const ports = service.getPorts();
+    const loadBalancerStatus = service.getLoadBalancer();
 
     if (externalIps.length === 0 && spec?.externalName) {
       externalIps.push(spec.externalName);
@@ -69,19 +89,122 @@ class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & De
 
     return (
       <div className="ServicesDetails">
-        <DrawerItem name="Selector" labelsOnly>
-          {service.getSelector().map((selector) => (
-            <Badge key={selector} label={selector} />
-          ))}
-        </DrawerItem>
+        {selector && (
+          <DrawerItem name="Selector" labelsOnly>
+            {selector.map((selector) => (
+              <Badge key={selector} label={selector} />
+            ))}
+          </DrawerItem>
+        )}
 
         <DrawerItem name="Type">{spec.type}</DrawerItem>
-
         <DrawerItem name="Session Affinity">{spec.sessionAffinity}</DrawerItem>
+        <DrawerItem name="Internal Traffic Policy" hidden={!spec.internalTrafficPolicy}>
+          {spec.internalTrafficPolicy}
+        </DrawerItem>
+        <DrawerItem name="Traffic Distribution" hidden={!spec.trafficDistribution}>
+          {spec.trafficDistribution}
+        </DrawerItem>
+        <DrawerItem name="Topology Keys" hidden={!spec.topologyKeys}>
+          {spec.topologyKeys?.map((key) => (
+            <Badge key={key} label={key} />
+          ))}
+        </DrawerItem>
+        <DrawerItem name="Publish Not Ready Address" hidden={spec.publishNotReadyAddresses === undefined}>
+          <BadgeBoolean value={spec.publishNotReadyAddresses} />
+        </DrawerItem>
+
+        {spec.sessionAffinityConfig && (
+          <>
+            <DrawerTitle>Session Affinity Config</DrawerTitle>
+            <DrawerItem name="Client IP Timeout" hidden={!spec.sessionAffinityConfig.clientIP}>
+              {formatDuration((spec.sessionAffinityConfig.clientIP?.timeoutSeconds ?? 0) * 1000, false)}
+            </DrawerItem>
+          </>
+        )}
+
+        {spec.type === "LoadBalancer" && (
+          <>
+            <DrawerTitle>Load Balancer</DrawerTitle>
+            <DrawerItem
+              name="Allocate Load Balancer Node Ports"
+              hidden={spec.allocateLoadBalancerNodePorts === undefined}
+            >
+              <BadgeBoolean value={spec.allocateLoadBalancerNodePorts} />
+            </DrawerItem>
+            <DrawerItem name="Load Balancer IP" hidden={!spec.loadBalancerIP}>
+              {spec.loadBalancerIP}
+            </DrawerItem>
+            <DrawerItem name="Load Balancer Class" hidden={!spec.loadBalancerClass}>
+              {spec.loadBalancerClass}
+            </DrawerItem>
+            <DrawerItem name="External Traffic Policy" hidden={!spec.externalTrafficPolicy}>
+              {spec.externalTrafficPolicy}
+            </DrawerItem>
+            <DrawerItem name="Health Check Node Port" hidden={!spec.healthCheckNodePort}>
+              {spec.healthCheckNodePort}
+            </DrawerItem>
+
+            {loadBalancerStatus &&
+              loadBalancerStatus.ingress?.map((lb) => {
+                return (
+                  <>
+                    <div className="title flex gaps">
+                      <Icon small material="list" />
+                    </div>
+                    <DrawerItem name="Hostname" hidden={!lb.hostname}>
+                      {lb.hostname}
+                    </DrawerItem>
+                    <DrawerItem name="IP" hidden={!lb.ip}>
+                      {lb.ip}
+                    </DrawerItem>
+                    <DrawerItem name="IP Mode" hidden={!lb.ipMode}>
+                      {lb.ipMode}
+                    </DrawerItem>
+                    <DrawerItem name="Ports" hidden={!lb.ports}>
+                      <Table
+                        selectable
+                        tableId="loadBalancerStatusPorts"
+                        scrollable={false}
+                        sortable={{
+                          port: (portStatus: PortStatus) => portStatus.port,
+                          protocol: (portStatus: PortStatus) => portStatus.protocol,
+                        }}
+                        sortByDefault={{ sortBy: "port", orderBy: "asc" }}
+                        sortSyncWithUrl={false}
+                        className="box grow LoadBalancerStatusPorts"
+                      >
+                        <TableHead flat sticky={false}>
+                          <TableCell className="port" sortBy="port">
+                            Port
+                          </TableCell>
+                          <TableCell className="protocol" sortBy="protocol">
+                            Protocol
+                          </TableCell>
+                          <TableCell className="errorStatus">Error</TableCell>
+                        </TableHead>
+                        {lb.ports?.map((portStatus) => (
+                          <TableRow key={`${portStatus.port}-${portStatus.protocol}`} sortItem={portStatus} nowrap>
+                            <TableCell className="port">{portStatus.port}</TableCell>
+                            <TableCell className="protocol">{portStatus.protocol ?? "TCP"}</TableCell>
+                            <TableCell className="errorStatus">
+                              <WithTooltip>{portStatus.error}</WithTooltip>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </Table>
+                    </DrawerItem>
+                  </>
+                );
+              })}
+          </>
+        )}
 
         <DrawerTitle>Connection</DrawerTitle>
 
-        <DrawerItem name="Cluster IP">{spec.clusterIP}</DrawerItem>
+        <DrawerItem name="Cluster IP" hidden={!spec.clusterIP}>
+          {spec.clusterIP}
+        </DrawerItem>
 
         <DrawerItem name="Cluster IPs" hidden={!service.getClusterIps().length} labelsOnly>
           {service.getClusterIps().map((label) => (
@@ -89,39 +212,65 @@ class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & De
           ))}
         </DrawerItem>
 
-        <DrawerItem name="IP families" hidden={!service.getIpFamilies().length}>
-          {service.getIpFamilies().join(", ")}
-        </DrawerItem>
-
         <DrawerItem name="IP family policy" hidden={!service.getIpFamilyPolicy()}>
           {service.getIpFamilyPolicy()}
+        </DrawerItem>
+
+        <DrawerItem name="IP families" hidden={!service.getIpFamilies().length}>
+          {service.getIpFamilies().join(", ")}
         </DrawerItem>
 
         {externalIps.length > 0 && (
           <DrawerItem name="External IPs">
             {externalIps.map((ip) => (
-              <div key={ip}>{ip}</div>
+              <div key={ip}>
+                {externalProtocol ? (
+                  <a href={`${externalProtocol}://${ip}`} rel="noreferrer" target="_blank">
+                    {ip}
+                  </a>
+                ) : (
+                  ip
+                )}
+              </div>
             ))}
           </DrawerItem>
         )}
 
-        <DrawerItem name="Ports">
-          <div>
-            {service.getPorts().map((port) => (
-              <ServicePortComponent service={service} port={port} key={port.toString()} />
-            ))}
-          </div>
-        </DrawerItem>
-
-        {spec.type === "LoadBalancer" && spec.loadBalancerIP && (
-          <DrawerItem name="Load Balancer IP">{spec.loadBalancerIP}</DrawerItem>
+        {ports && ports.length > 0 && (
+          <DrawerItem name="Ports">
+            <div>
+              {service.getPorts().map((port) => (
+                <ServicePortComponent service={service} port={port} key={port.toString()} />
+              ))}
+            </div>
+          </DrawerItem>
         )}
 
-        {endpoints && (
+        {endpointSlices.length > 0 && (
           <>
-            <DrawerTitle>Endpoint</DrawerTitle>
-            <ServiceDetailsEndpoint endpoints={endpoints} />
+            <DrawerTitle>Endpoint Slices</DrawerTitle>
+            <ServiceDetailsEndpointSlices endpointSlices={endpointSlices} />
           </>
+        )}
+
+        {loadBalancerStatus?.conditions && (
+          <div className="ServiceConditions">
+            <DrawerTitle>Conditions</DrawerTitle>
+            {loadBalancerStatus?.conditions?.map((condition, idx) => (
+              <div className="condition" key={idx}>
+                <div className="title flex gaps">
+                  <Icon small material="list" />
+                </div>
+                <DrawerItem name="Last Transition Time">{condition.lastTransitionTime}</DrawerItem>
+                <DrawerItem name="Reason">{condition.reason}</DrawerItem>
+                <DrawerItem name="Status">{condition.status}</DrawerItem>
+                <DrawerItem name="Type" hidden={!condition.type}>
+                  {condition.type}
+                </DrawerItem>
+                <DrawerItem name="Message">{condition.message}</DrawerItem>
+              </div>
+            ))}
+          </div>
         )}
       </div>
     );
@@ -133,7 +282,7 @@ export const ServiceDetails = withInjectables<Dependencies, ServiceDetailsProps>
     ...props,
     subscribeStores: di.inject(subscribeStoresInjectable),
     portForwardStore: di.inject(portForwardStoreInjectable),
-    endpointsStore: di.inject(endpointsStoreInjectable),
+    endpointSliceStore: di.inject(endpointSliceStoreInjectable),
     logger: di.inject(loggerInjectionToken),
   }),
 });

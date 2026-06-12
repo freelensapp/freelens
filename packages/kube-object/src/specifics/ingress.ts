@@ -5,9 +5,11 @@
  */
 
 import { hasTypedProperty, isString, iter } from "@freelensapp/utilities";
-import type { RequireExactlyOne } from "type-fest";
-import type { NamespaceScopedMetadata, TypedLocalObjectReference } from "../api-types";
 import { KubeObject } from "../kube-object";
+
+import type { RequireExactlyOne } from "type-fest";
+
+import type { NamespaceScopedMetadata, TypedLocalObjectReference } from "../api-types";
 
 export interface ILoadBalancerIngress {
   hostname?: string;
@@ -125,9 +127,7 @@ export class Ingress extends KubeObject<NamespaceScopedMetadata, IngressStatus, 
   }
 
   getServiceNamePort(): ExtensionsBackend | undefined {
-    const {
-      spec: { backend, defaultBackend } = {},
-    } = this;
+    const { spec: { backend, defaultBackend } = {} } = this;
 
     const serviceName = defaultBackend?.service?.name ?? backend?.serviceName;
     const servicePort =
@@ -189,10 +189,7 @@ export interface ComputedIngressRoute {
 }
 
 export function computeRuleDeclarations(ingress: Ingress, rule: IngressRule): ComputedIngressRoute[] {
-  const {
-    host = "*",
-    http: { paths } = { paths: [] },
-  } = rule;
+  const { host = "*", http: { paths } = { paths: [] } } = rule;
   const protocol = (ingress.spec?.tls?.length ?? 0) === 0 ? "http" : "https";
 
   return paths.map(({ path = "/", backend }) => ({

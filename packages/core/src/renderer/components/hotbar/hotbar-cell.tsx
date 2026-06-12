@@ -6,9 +6,10 @@
 
 import "./hotbar-menu.scss";
 
-import type { StrictReactNode } from "@freelensapp/utilities";
 import { cssNames } from "@freelensapp/utilities";
 import React, { useState } from "react";
+
+import type { StrictReactNode } from "@freelensapp/utilities";
 
 export interface HotbarCellProps extends React.HTMLAttributes<HTMLDivElement> {
   children?: StrictReactNode;

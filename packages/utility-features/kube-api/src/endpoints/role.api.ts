@@ -4,10 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { RoleData } from "@freelensapp/kube-object";
 import { Role } from "@freelensapp/kube-object";
-import type { DerivedKubeApiOptions, KubeApiDependencies } from "../kube-api";
 import { KubeApi } from "../kube-api";
+
+import type { RoleData } from "@freelensapp/kube-object";
+
+import type { DerivedKubeApiOptions, KubeApiDependencies } from "../kube-api";
 
 export class RoleApi extends KubeApi<Role, RoleData> {
   constructor(deps: KubeApiDependencies, opts: DerivedKubeApiOptions = {}) {

@@ -4,12 +4,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { LensExtensionId } from "@freelensapp/legacy-extensions";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { IObservableMapInitialValues } from "mobx";
 import { action } from "mobx";
-import type { LensExtensionState } from "./state.injectable";
 import enabledExtensionsStateInjectable from "./state.injectable";
+
+import type { LensExtensionId } from "@freelensapp/legacy-extensions";
+
+import type { IObservableMapInitialValues } from "mobx";
+
+import type { LensExtensionState } from "./state.injectable";
 
 export type UpdateExtensionsState = (state: IObservableMapInitialValues<LensExtensionId, LensExtensionState>) => void;
 

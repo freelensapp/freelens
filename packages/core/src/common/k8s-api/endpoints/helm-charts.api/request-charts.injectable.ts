@@ -7,8 +7,9 @@
 import { isDefined } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import apiBaseInjectable from "../../api-base.injectable";
-import type { RawHelmChart } from "../helm-charts.api";
 import { HelmChart } from "../helm-charts.api";
+
+import type { RawHelmChart } from "../helm-charts.api";
 
 export type RequestHelmCharts = () => Promise<HelmChart[]>;
 export type RepoHelmChartList = Record<string, RawHelmChart[]>;

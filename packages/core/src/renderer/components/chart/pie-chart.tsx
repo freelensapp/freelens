@@ -5,17 +5,20 @@
  */
 
 import "./pie-chart.scss";
+
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { ChartOptions } from "chart.js";
 import ChartJS from "chart.js";
-import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import activeThemeInjectable from "../../themes/active.injectable";
+import { Chart } from "./chart";
+
+import type { ChartOptions } from "chart.js";
+import type { IComputedValue } from "mobx";
+
 import type { LensTheme } from "../../themes/lens-theme";
 import type { ChartProps } from "./chart";
-import { Chart } from "./chart";
 
 export interface PieChartProps extends ChartProps {}
 

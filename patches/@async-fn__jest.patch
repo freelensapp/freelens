@@ -1,0 +1,13 @@
+diff --git a/src/asyncFnForJest.d.ts b/src/asyncFnForJest.d.ts
+index 0ccd367f5efbc92cc3af579126bc2b1fd846187d..2a63827b5f807d40662ac62d0e9ff84ed569609e 100644
+--- a/src/asyncFnForJest.d.ts
++++ b/src/asyncFnForJest.d.ts
+@@ -13,7 +13,7 @@ declare module '@async-fn/jest' {
+ 
+       resolveSpecific: (
+         callFinder:
+-          | PartialDeep<Parameters<TToBeMocked>>
++          | PartialDeep<Parameters<TToBeMocked>, { recurseIntoArrays: true }>
+           | ((parameters: Parameters<TToBeMocked>) => boolean),
+         ...resolvedValue: TentativeTuple<
+           ReturnType<TToBeMocked> | Awaited<ReturnType<TToBeMocked>>

@@ -21,7 +21,7 @@
     background: var(--colorVague);
     color: var(--textColorSecondary);
     border-radius: $radius;
-    padding: .2em .4em;
+    padding: 0.2em 0.4em;
     margin-top: $margin;
   }
 
@@ -30,14 +30,9 @@
     margin-bottom: $margin;
 
     .StatusBrick {
-      background: var(--colorTerminated);
       margin-right: $margin;
 
       @include workloads-mixins.pod-status-bgs;
-
-      &.running:not(.ready) {
-        background-color: workloads-mixins.$pod-status-pending-color;
-      }
     }
   }
 

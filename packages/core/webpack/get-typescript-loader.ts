@@ -6,6 +6,7 @@
 
 import esbuild from "esbuild";
 import { once } from "lodash";
+
 import type { Options as TSLoaderOptions } from "ts-loader";
 
 const getTsLoader = (options: Partial<TSLoaderOptions>, testRegExp: RegExp) => ({

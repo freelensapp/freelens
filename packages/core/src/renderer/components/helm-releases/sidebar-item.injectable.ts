@@ -4,9 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getInjectable } from "@ogre-tools/injectable";
-
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
+import { getInjectable } from "@ogre-tools/injectable";
 import helmReleasesRouteInjectable from "../../../common/front-end-routing/routes/cluster/helm/releases/helm-releases-route.injectable";
 import navigateToHelmReleasesInjectable from "../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";

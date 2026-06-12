@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ReadStream } from "fs";
 import { getInjectable } from "@ogre-tools/injectable";
 import fsInjectable from "./fs.injectable";
+import type { ReadStream } from "fs";
 
 export interface CreateReadStreamOptions {
   mode?: number;

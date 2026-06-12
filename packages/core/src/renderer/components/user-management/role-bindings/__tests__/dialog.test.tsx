@@ -5,7 +5,6 @@
  */
 
 import { ClusterRole } from "@freelensapp/kube-object";
-import type { UserEvent } from "@testing-library/user-event";
 import userEvent from "@testing-library/user-event";
 import React from "react";
 import directoryForKubeConfigsInjectable from "../../../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
@@ -14,12 +13,15 @@ import { Cluster } from "../../../../../common/cluster/cluster";
 import hostedClusterInjectable from "../../../../cluster-frame-context/hosted-cluster.injectable";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
 import storesAndApisCanBeCreatedInjectable from "../../../../stores-apis-can-be-created.injectable";
-import type { DiRender } from "../../../test-utils/renderFor";
 import { renderFor } from "../../../test-utils/renderFor";
 import clusterRoleStoreInjectable from "../../cluster-roles/store.injectable";
-import type { OpenRoleBindingDialog } from "../dialog/open.injectable";
 import openRoleBindingDialogInjectable from "../dialog/open.injectable";
 import { RoleBindingDialog } from "../dialog/view";
+
+import type { UserEvent } from "@testing-library/user-event";
+
+import type { DiRender } from "../../../test-utils/renderFor";
+import type { OpenRoleBindingDialog } from "../dialog/open.injectable";
 
 describe("RoleBindingDialog tests", () => {
   let render: DiRender;

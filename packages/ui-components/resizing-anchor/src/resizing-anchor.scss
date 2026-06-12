@@ -26,7 +26,8 @@ body.resizing {
     transition: background 0.2s 0s;
   }
 
-  &:hover, &.resizing {
+  &:hover,
+  &.resizing {
     &::after {
       background: var(--blue);
       transition: background 0.2s 0.5s;

@@ -5,13 +5,15 @@
  */
 
 import { loggerInjectionToken } from "@freelensapp/logger";
-import type { AsyncResult } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { ReadYamlFile } from "../../../../common/fs/read-yaml-file.injectable";
 import readYamlFileInjectable from "../../../../common/fs/read-yaml-file.injectable";
-import type { HelmRepo } from "../../../../common/helm/helm-repo";
 import execHelmInjectable from "../../exec-helm/exec-helm.injectable";
 import getHelmEnvInjectable from "../../get-helm-env/get-helm-env.injectable";
+
+import type { AsyncResult } from "@freelensapp/utilities";
+
+import type { ReadYamlFile } from "../../../../common/fs/read-yaml-file.injectable";
+import type { HelmRepo } from "../../../../common/helm/helm-repo";
 
 interface HelmRepositoryFromYaml {
   name: string;
@@ -80,30 +82,20 @@ const getActiveHelmRepositoriesInjectable = getInjectable({
       const updateResult = await execHelm(["repo", "update"]);
 
       if (!updateResult.callWasSuccessful) {
-        if (!updateResult.error.stderr.includes(internalHelmErrorForNoRepositoriesFound)) {
+        if (updateResult.error.stderr.includes(internalHelmErrorForNoRepositoriesFound)) {
           return {
-            callWasSuccessful: false,
-            error: `Error updating Helm repositories: ${updateResult.error.stderr}`,
+            callWasSuccessful: true,
+            response: [],
           };
         }
-        const resultOfAddingDefaultRepository = await execHelm([
-          "repo",
-          "add",
-          "bitnami",
-          "https://charts.bitnami.com/bitnami",
-        ]);
-
-        if (!resultOfAddingDefaultRepository.callWasSuccessful) {
-          return {
-            callWasSuccessful: false,
-            error: `Error when adding default Helm repository: ${resultOfAddingDefaultRepository.error.stderr}`,
-          };
-        }
+        return {
+          callWasSuccessful: false,
+          error: `Error updating Helm repositories: ${updateResult.error.stderr}`,
+        };
       }
 
       return {
         callWasSuccessful: true,
-
         response: await getRepositories(repositoryConfigFilePath, helmRepositoryCacheDirPath),
       };
     };

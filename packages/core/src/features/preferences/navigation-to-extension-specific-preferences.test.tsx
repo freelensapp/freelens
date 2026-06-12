@@ -4,14 +4,19 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { RenderResult } from "@testing-library/react";
 import React from "react";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+
+import type { RenderResult } from "@testing-library/react";
+
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import "@testing-library/jest-dom";
-import type { Discover } from "@freelensapp/react-testing-library-discovery";
+
 import { discoverFor } from "@freelensapp/react-testing-library-discovery";
 import logErrorInjectable from "../../common/log-error.injectable";
+
+import type { Discover } from "@freelensapp/react-testing-library-discovery";
+
 import type { FakeExtensionOptions } from "../../renderer/components/test-utils/get-extension-fake";
 
 describe("preferences - navigation to extension specific preferences", () => {

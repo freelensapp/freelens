@@ -5,9 +5,11 @@
  */
 
 import { ReplicationController } from "@freelensapp/kube-object";
-import type { Scale } from "@freelensapp/kube-object";
-import type { DerivedKubeApiOptions, KubeApiDependencies, NamespacedResourceDescriptor } from "../kube-api";
 import { KubeApi } from "../kube-api";
+
+import type { Scale } from "@freelensapp/kube-object";
+
+import type { DerivedKubeApiOptions, KubeApiDependencies, NamespacedResourceDescriptor } from "../kube-api";
 
 export class ReplicationControllerApi extends KubeApi<ReplicationController> {
   constructor(deps: KubeApiDependencies, opts?: DerivedKubeApiOptions) {

@@ -6,26 +6,27 @@
 
 import "./view.scss";
 
-import { observer } from "mobx-react";
-import React from "react";
-
-import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { DialogProps } from "../../../dialog";
+import { observer } from "mobx-react";
+import React from "react";
 import { Dialog } from "../../../dialog";
 import { Input } from "../../../input";
 import { systemName } from "../../../input/input_validators";
-import type { ShowDetails } from "../../../kube-detail-params/show-details.injectable";
 import showDetailsInjectable from "../../../kube-detail-params/show-details.injectable";
 import { SubTitle } from "../../../layout/sub-title";
 import { NamespaceSelect } from "../../../namespaces/namespace-select";
 import { Wizard, WizardStep } from "../../../wizard";
-import type { ServiceAccountStore } from "../store";
 import serviceAccountStoreInjectable from "../store.injectable";
 import closeCreateServiceAccountDialogInjectable from "./close.injectable";
-import type { CreateServiceAccountDialogState } from "./state.injectable";
 import createServiceAccountDialogStateInjectable from "./state.injectable";
+
+import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
+
+import type { DialogProps } from "../../../dialog";
+import type { ShowDetails } from "../../../kube-detail-params/show-details.injectable";
+import type { ServiceAccountStore } from "../store";
+import type { CreateServiceAccountDialogState } from "./state.injectable";
 
 export interface CreateServiceAccountDialogProps extends Partial<DialogProps> {}
 

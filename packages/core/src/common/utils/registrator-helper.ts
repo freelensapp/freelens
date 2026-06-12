@@ -5,6 +5,7 @@
  */
 
 import { iter } from "@freelensapp/utilities";
+
 import type { DiContainerForInjection, Injectable } from "@ogre-tools/injectable";
 
 // Register new injectables and deregister removed injectables by id

@@ -6,8 +6,9 @@
 
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { asyncComputed } from "@ogre-tools/injectable-react";
-import type { HelmChart } from "../../../../common/k8s-api/endpoints/helm-charts.api";
 import requestHelmChartVersionsInjectable from "../../../../common/k8s-api/endpoints/helm-charts.api/request-versions.injectable";
+
+import type { HelmChart } from "../../../../common/k8s-api/endpoints/helm-charts.api";
 
 const versionsOfSelectedHelmChartInjectable = getInjectable({
   id: "versions-of-selected-helm-chart",

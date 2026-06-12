@@ -5,10 +5,12 @@
  */
 
 import "./wizard-layout.scss";
-import type { IClassName, StrictReactNode } from "@freelensapp/utilities";
+
 import { cssNames } from "@freelensapp/utilities";
 import { observer } from "mobx-react";
 import React from "react";
+
+import type { IClassName, StrictReactNode } from "@freelensapp/utilities";
 
 export interface WizardLayoutProps extends React.DOMAttributes<any> {
   className?: IClassName;

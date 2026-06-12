@@ -4,5 +4,5 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-export * from "./list-view";
 export * from "./details";
+export * from "./list-view";

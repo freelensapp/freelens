@@ -4,15 +4,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import { getPromiseStatus } from "@freelensapp/test-utils";
-import type { DiContainer } from "@ogre-tools/injectable";
-import type { BrowserWindow, Session, WebContents } from "electron";
 import logErrorInjectable from "../../../common/log-error.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import resolveSystemProxyFromElectronInjectable from "./resolve-system-proxy-from-electron.injectable";
 import resolveSystemProxyWindowInjectable from "./resolve-system-proxy-window.injectable";
+
+import type { AsyncFnMock } from "@async-fn/jest";
+import type { DiContainer } from "@ogre-tools/injectable";
+import type { BrowserWindow, Session, WebContents } from "electron";
 
 describe("technical: resolve-system-proxy-from-electron", () => {
   let resolveSystemProxyMock: AsyncFnMock<(url: string) => Promise<string>>;

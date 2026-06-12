@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/electron-userland/electron-builder/refs/heads/master/packages/app-builder-lib/scheme.json
 
-electronVersion: 35.2.1 # datasource=npm depName=electron
+electronVersion: 41.7.2 # datasource=npm depName=electron
 
 ## Run `pnpm electron-rebuild` instead
 npmRebuild: false
@@ -12,14 +12,11 @@ publish: []
 
 ## Files in app.asar
 files:
-  - static/**/*
-  - "!node_modules/@freelensapp/core/node_modules/**/*"
-  - "!node_modules/@freelensapp/core/src"
-  - "!node_modules/win-ca/pem/*"
-
-## Extra files added to unpacked resources
-extraResources:
-  - build/license.txt
+  - static
+  - "!node_modules/@freelensapp/*/src"
+  - "!node_modules/@freelensapp/core/build"
+  - "!node_modules/@freelensapp/core/static/build/library/fonts"
+  - "!node_modules/electron"
 
 ## Notarization
 afterSign: build/notarize.js
@@ -45,6 +42,7 @@ linux:
       to: ./${arch}/freelens-k8s-proxy
     - from: binaries/client/linux/${arch}/helm
       to: ./${arch}/helm
+  publish: null
 
 appImage:
   executableArgs:
@@ -53,7 +51,7 @@ appImage:
     - --enable-features=WaylandWindowDecorations
     - --disable-gpu-compositing
     - --no-sandbox
-  license: build/license.txt
+  license: static/build/license.txt
 
 deb:
   depends:
@@ -85,7 +83,7 @@ deb:
 ## Official Flatpak is built from the separate repository
 flatpak:
   useWaylandFlags: true
-  license: build/license.txt
+  license: static/build/license.txt
 
 ## Official Snap is built from the separate repository
 snap:
@@ -130,15 +128,17 @@ mac:
       to: ./${arch}/freelens-k8s-proxy
     - from: binaries/client/darwin/${arch}/helm
       to: ./${arch}/helm
+  publish: null
 
 pkg:
-  license: build/license.txt
+  license: static/build/license.txt
 
 ## For Windows targets
 win:
   appId: app.freelens.Freelens
   target:
     - nsis
+    - portable
   extraResources:
     - from: binaries/client/windows/${arch}/kubectl.exe
       to: ./${arch}/kubectl.exe
@@ -146,6 +146,10 @@ win:
       to: ./${arch}/freelens-k8s-proxy.exe
     - from: binaries/client/windows/${arch}/helm.exe
       to: ./${arch}/helm.exe
+  publish: null
+
+msi:
+  perMachine: false
 
 nsis:
   include: build/installer.nsh
@@ -153,4 +157,4 @@ nsis:
   allowElevation: true
   createStartMenuShortcut: true
   allowToChangeInstallationDirectory: true
-  license: build/license.txt
+  license: static/build/license.txt

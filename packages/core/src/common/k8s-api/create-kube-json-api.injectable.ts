@@ -4,22 +4,23 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { Agent } from "https";
-import type { JsonApiConfig, JsonApiDependencies } from "@freelensapp/json-api";
 import { KubeJsonApi } from "@freelensapp/kube-api";
 import { loggerInjectionToken } from "@freelensapp/logger";
-import type { RequestInit } from "@freelensapp/node-fetch";
 import { getInjectable } from "@ogre-tools/injectable";
+import { Agent } from "https";
+import packageJson from "../../../package.json";
 import lensProxyCertificateInjectable from "../certificate/lens-proxy-certificate.injectable";
-import fetchInjectable from "../fetch/fetch.injectable";
+import nodeFetchInjectable, { type NodeFetchRequestInit } from "../fetch/node-fetch.injectable";
 
-export type CreateKubeJsonApi = (config: JsonApiConfig, reqInit?: RequestInit) => KubeJsonApi;
+import type { JsonApiConfig, JsonApiDependencies } from "@freelensapp/json-api";
+
+export type CreateKubeJsonApi = (config: JsonApiConfig, reqInit?: NodeFetchRequestInit) => KubeJsonApi;
 
 const createKubeJsonApiInjectable = getInjectable({
   id: "create-kube-json-api",
   instantiate: (di): CreateKubeJsonApi => {
     const dependencies: JsonApiDependencies = {
-      fetch: di.inject(fetchInjectable),
+      fetch: di.inject(nodeFetchInjectable),
       logger: di.inject(loggerInjectionToken),
     };
     const lensProxyCert = di.inject(lensProxyCertificateInjectable);
@@ -33,6 +34,9 @@ const createKubeJsonApiInjectable = getInjectable({
 
           return {
             agent,
+            headers: {
+              "User-Agent": `Freelens/${packageJson.version}`,
+            },
           };
         };
       }

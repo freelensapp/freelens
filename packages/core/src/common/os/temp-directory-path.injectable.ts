@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { tmpdir } from "os";
 import { getInjectable } from "@ogre-tools/injectable";
+import { tmpdir } from "os";
 
 const tempDirectoryPathInjectable = getInjectable({
   id: "temp-directory-path",

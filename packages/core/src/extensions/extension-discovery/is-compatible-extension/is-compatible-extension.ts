@@ -4,8 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { LensExtensionManifest } from "@freelensapp/legacy-extensions";
 import semver from "semver";
+
+import type { LensExtensionManifest } from "@freelensapp/legacy-extensions";
 
 interface Dependencies {
   extensionApiVersion: string;

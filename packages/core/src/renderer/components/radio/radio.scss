@@ -21,7 +21,7 @@
       border: 1px solid var(--borderFaintColor);
       border-radius: $radius;
       text-align: center;
-      padding: math.round($padding * .7) $padding;
+      padding: math.round($padding * 0.7) $padding;
       white-space: nowrap;
       transition: 250ms color;
 
@@ -48,7 +48,7 @@
       }
 
       &:hover {
-        color: var(--textColorAccent)
+        color: var(--textColorAccent);
       }
 
       + .Radio {
@@ -88,7 +88,7 @@
         color: $tickColor;
       }
       ~ * {
-        opacity: .5;
+        opacity: 0.5;
         pointer-events: none;
       }
     }
@@ -118,7 +118,7 @@
     }
 
     + * {
-      margin-left: .5em;
+      margin-left: 0.5em;
     }
   }
 }

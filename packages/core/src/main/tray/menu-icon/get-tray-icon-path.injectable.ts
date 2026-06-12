@@ -9,6 +9,7 @@ import { camelCase, flow, upperFirst } from "lodash/fp";
 import joinPathsInjectable from "../../../common/path/join-paths.injectable";
 import isMacInjectable from "../../../common/vars/is-mac.injectable";
 import staticFilesDirectoryInjectable from "../../../common/vars/static-files-directory.injectable";
+
 const upperCamelCase = flow(camelCase, upperFirst);
 
 const getTrayIconPathInjectable = getInjectable({

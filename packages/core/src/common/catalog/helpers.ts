@@ -6,6 +6,7 @@
 
 import { hasOwnProperty, hasTypedProperty, isObject, isString, iter } from "@freelensapp/utilities";
 import GraphemeSplitter from "grapheme-splitter";
+
 import type { CatalogEntity } from "./catalog-entity";
 
 function getNameParts(name: string): string[] {

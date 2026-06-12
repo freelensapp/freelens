@@ -4,13 +4,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { PodApi, PodMetricsApi } from "@freelensapp/kube-api";
-import type { KubeObject, NamespaceScopedMetadata, Pod, PodMetrics } from "@freelensapp/kube-object";
 import { cpuUnitsToNumber, unitsToBytes } from "@freelensapp/utilities";
 import countBy from "lodash/countBy";
 import { observable } from "mobx";
-import type { KubeObjectStoreDependencies, KubeObjectStoreOptions } from "../../../common/k8s-api/kube-object.store";
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
+
+import type { PodApi, PodMetricsApi } from "@freelensapp/kube-api";
+import type { KubeObject, NamespaceScopedMetadata, Pod, PodMetrics } from "@freelensapp/kube-object";
+
+import type { KubeObjectStoreDependencies, KubeObjectStoreOptions } from "../../../common/k8s-api/kube-object.store";
 
 export interface PodStoreDependencies extends KubeObjectStoreDependencies {
   readonly podMetricsApi: PodMetricsApi;
@@ -65,16 +67,17 @@ export class PodStore extends KubeObjectStore<Pod, PodApi> {
   getPodKubeMetrics(pod: Pod) {
     const containers = pod.getContainers();
     const empty = { cpu: 0, memory: 0 };
-    const metrics = this.kubeMetrics.find((metric) => {
+    const metrics = this.kubeMetrics?.find((metric) => {
       return [metric.getName() === pod.getName(), metric.getNs() === pod.getNs()].every((v) => v);
     });
 
-    if (!metrics) return empty;
+    if (!metrics || !metrics.containers || !containers) return { cpu: NaN, memory: NaN };
 
     return containers.reduce((total, container) => {
-      const metric = metrics.containers.find((item) => item.name == container.name);
       let cpu = "0";
       let memory = "0";
+
+      const metric = metrics.containers?.find((item) => item.name == container.name);
 
       if (metric && metric.usage) {
         cpu = metric.usage.cpu || "0";

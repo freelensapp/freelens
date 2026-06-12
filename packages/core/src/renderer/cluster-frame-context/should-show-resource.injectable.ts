@@ -6,10 +6,11 @@
 
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { computed } from "mobx";
-import type { KubeApiResourceDescriptor } from "../../common/rbac";
 import { formatKubeApiResource } from "../../common/rbac";
 import { shouldShowResourceInjectionToken } from "../../features/cluster/showing-kube-resources/common/allowed-resources-injection-token";
 import hostedClusterInjectable from "./hosted-cluster.injectable";
+
+import type { KubeApiResourceDescriptor } from "../../common/rbac";
 
 const shouldShowResourceInjectable = getInjectable({
   id: "should-show-resource",

@@ -5,19 +5,21 @@
  */
 
 import { Icon } from "@freelensapp/icon";
-import type { CronJobApi } from "@freelensapp/kube-api";
 import { cronJobApiInjectable } from "@freelensapp/kube-api-specifics";
-import type { CronJob } from "@freelensapp/kube-object";
-import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
-import type { OpenConfirmDialog } from "../confirm-dialog/open.injectable";
 import openConfirmDialogInjectable from "../confirm-dialog/open.injectable";
-import type { KubeObjectMenuProps } from "../kube-object-menu";
 import { MenuItem } from "../menu";
-import type { OpenCronJobTriggerDialog } from "./trigger-dialog/open.injectable";
 import openCronJobTriggerDialogInjectable from "./trigger-dialog/open.injectable";
+
+import type { CronJobApi } from "@freelensapp/kube-api";
+import type { CronJob } from "@freelensapp/kube-object";
+import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
+
+import type { OpenConfirmDialog } from "../confirm-dialog/open.injectable";
+import type { KubeObjectMenuProps } from "../kube-object-menu";
+import type { OpenCronJobTriggerDialog } from "./trigger-dialog/open.injectable";
 
 export interface CronJobMenuProps extends KubeObjectMenuProps<CronJob> {}
 

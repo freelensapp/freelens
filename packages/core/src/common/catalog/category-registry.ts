@@ -5,9 +5,11 @@
  */
 
 import { getOrInsertMap, iter, strictSet } from "@freelensapp/utilities";
-import type { Disposer } from "@freelensapp/utilities";
 import { once } from "lodash";
 import { action, computed, makeObservable, observable } from "mobx";
+
+import type { Disposer } from "@freelensapp/utilities";
+
 import type { CatalogCategory, CatalogEntityData, CatalogEntityKindData } from "./catalog-entity";
 
 export type CategoryFilter = (category: CatalogCategory) => any;

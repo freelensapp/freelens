@@ -4,18 +4,21 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
-import type { Logger } from "@freelensapp/logger";
 import { disposer } from "@freelensapp/utilities";
 import { FitAddon } from "@xterm/addon-fit";
 import { WebLinksAddon } from "@xterm/addon-web-links";
 import { Terminal as XTerm } from "@xterm/xterm";
+import assert from "assert";
 import { clipboard } from "electron";
 import { once } from "lodash";
 import debounce from "lodash/debounce";
-import type { IComputedValue } from "mobx";
 import { reaction } from "mobx";
 import { TerminalChannels } from "../../../../common/terminal/channels";
+
+import type { Logger } from "@freelensapp/logger";
+
+import type { IComputedValue } from "mobx";
+
 import type { OpenLinkInBrowser } from "../../../../common/utils/open-link-in-browser.injectable";
 import type { TerminalFont } from "../../../../features/terminal/renderer/fonts/token";
 import type { TerminalConfig } from "../../../../features/user-preferences/common/preferences-helpers";
@@ -182,9 +185,7 @@ export class Terminal {
       // don't paste if user hasn't turned on the feature
       this.dependencies.terminalCopyOnSelect.get() &&
       // don't paste if the clipboard doesn't have text
-      clipboard
-        .availableFormats()
-        .includes("text/plain")
+      clipboard.availableFormats().includes("text/plain")
     ) {
       this.xterm.paste(clipboard.readText());
     }
@@ -199,14 +200,14 @@ export class Terminal {
   };
 
   setFontSize = (fontSize: number) => {
-    this.dependencies.logger.info(`[TERMINAL]: set fontSize to ${fontSize}`);
+    this.dependencies.logger.debug(`[TERMINAL]: set fontSize to ${fontSize}`);
 
     this.xterm.options.fontSize = fontSize;
     this.fit();
   };
 
   setFontFamily = (fontFamily: string) => {
-    this.dependencies.logger.info(`[TERMINAL]: set fontFamily to ${fontFamily}`);
+    this.dependencies.logger.debug(`[TERMINAL]: set fontFamily to ${fontFamily}`);
 
     this.xterm.options.fontFamily = fontFamily;
     this.fit();

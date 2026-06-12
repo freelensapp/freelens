@@ -7,14 +7,16 @@
 import "./endpoint-details.scss";
 
 import { Endpoints } from "@freelensapp/kube-object";
-import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 import { DrawerTitle } from "../drawer";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { EndpointSubsetList } from "./endpoint-subset-list";
+
+import type { Logger } from "@freelensapp/logger";
+
+import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 export interface EndpointsDetailsProps extends KubeObjectDetailsProps<Endpoints> {}
 

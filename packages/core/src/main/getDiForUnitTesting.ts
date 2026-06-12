@@ -11,8 +11,6 @@ import { loggerFeature } from "@freelensapp/logger";
 import { messagingFeature, testUtils as messagingTestUtils } from "@freelensapp/messaging";
 import { notificationsFeature } from "@freelensapp/notifications";
 import { randomFeature } from "@freelensapp/random";
-import type { GlobalOverride } from "@freelensapp/test-utils";
-import type { DiContainer } from "@ogre-tools/injectable";
 import { createContainer, isInjectable } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { chunk } from "lodash/fp";
@@ -22,9 +20,6 @@ import setupSyncingOfWeblinksInjectable from "../features/weblinks/main/setup-sy
 import { getOverrideFsWithFakes } from "../test-utils/override-fs-with-fakes";
 import spawnInjectable from "./child-process/spawn.injectable";
 import initializeClusterManagerInjectable from "./cluster/initialize-manager.injectable";
-import electronQuitAndInstallUpdateInjectable from "./electron-app/features/electron-quit-and-install-update.injectable";
-import electronUpdaterIsActiveInjectable from "./electron-app/features/electron-updater-is-active.injectable";
-import setUpdateOnQuitInjectable from "./electron-app/features/set-update-on-quit.injectable";
 import setupApplicationNameInjectable from "./electron-app/runnables/setup-application-name.injectable";
 import setupDeepLinkingInjectable from "./electron-app/runnables/setup-deep-linking.injectable";
 import setupDeviceShutdownInjectable from "./electron-app/runnables/setup-device-shutdown.injectable";
@@ -33,6 +28,11 @@ import setupMainWindowVisibilityAfterActivationInjectable from "./electron-app/r
 import waitUntilBundledExtensionsAreLoadedInjectable from "./start-main-application/lens-window/application-window/wait-until-bundled-extensions-are-loaded.injectable";
 import initializeExtensionsInjectable from "./start-main-application/runnables/initialize-extensions.injectable";
 import setupLensProxyInjectable from "./start-main-application/runnables/setup-lens-proxy.injectable";
+import setupSessionProxyBypassInjectable from "./start-main-application/runnables/setup-session-proxy-bypass.injectable";
+
+import type { GlobalOverride } from "@freelensapp/test-utils";
+
+import type { DiContainer } from "@ogre-tools/injectable";
 
 export function getDiForUnitTesting() {
   const environment = "main";
@@ -101,6 +101,7 @@ const overrideRunnablesHavingSideEffects = (di: DiContainer) => {
     initializeClusterManagerInjectable,
     setupIpcMainHandlersInjectable,
     setupLensProxyInjectable,
+    setupSessionProxyBypassInjectable,
     setupSyncingOfWeblinksInjectable,
   ].forEach((injectable) => {
     di.override(injectable, () => ({
@@ -122,8 +123,4 @@ const overrideElectronFeatures = (di: DiContainer) => {
       run: () => {},
     }));
   });
-
-  di.override(electronQuitAndInstallUpdateInjectable, () => () => {});
-  di.override(setUpdateOnQuitInjectable, () => () => {});
-  di.override(electronUpdaterIsActiveInjectable, () => false);
 };

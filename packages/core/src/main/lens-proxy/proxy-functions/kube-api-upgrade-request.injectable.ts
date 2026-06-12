@@ -4,15 +4,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ConnectionOptions } from "tls";
-import { connect } from "tls";
-import url from "url";
 import { getInjectable } from "@ogre-tools/injectable";
 import { chunk } from "lodash";
+import { connect } from "tls";
+import url from "url";
 import { apiKubePrefix } from "../../../common/vars";
 import clusterApiUrlInjectable from "../../../features/cluster/connections/main/api-url.injectable";
 import kubeAuthProxyServerInjectable from "../../cluster/kube-auth-proxy-server.injectable";
 import kubeAuthProxyCertificateInjectable from "../../kube-auth-proxy/kube-auth-proxy-certificate.injectable";
+import type { ConnectionOptions } from "tls";
+
 import type { LensProxyApiRequest } from "../lens-proxy";
 
 const skipRawHeaders = new Set(["Host", "Authorization"]);
@@ -33,8 +34,9 @@ const kubeApiUpgradeRequestInjectable = getInjectable({
         host: pUrl.hostname ?? undefined,
         ca: kubeAuthProxyCertificate.cert,
       };
+      const proxySocket = connect(connectOpts);
 
-      const proxySocket = connect(connectOpts, () => {
+      proxySocket.once("secureConnect", () => {
         proxySocket.write(`${req.method} ${pUrl.path} HTTP/1.1\r\n`);
         proxySocket.write(`Host: ${clusterApiUrl.host}\r\n`);
 
@@ -54,24 +56,33 @@ const kubeApiUpgradeRequestInjectable = getInjectable({
       socket.setKeepAlive(true);
       proxySocket.setTimeout(0);
       socket.setTimeout(0);
-
-      proxySocket.on("data", function (chunk) {
-        socket.write(chunk);
+      proxySocket.on("data", (chunk) => {
+        if (!socket.write(chunk)) {
+          proxySocket.pause();
+        }
       });
-      proxySocket.on("end", function () {
+      socket.on("drain", () => {
+        proxySocket.resume();
+      });
+      proxySocket.on("end", () => {
         socket.end();
       });
-      proxySocket.on("error", function () {
+      proxySocket.on("error", () => {
         socket.write(`HTTP/${req.httpVersion} 500 Connection error\r\n\r\n`);
         socket.end();
       });
-      socket.on("data", function (chunk) {
-        proxySocket.write(chunk);
+      socket.on("data", (chunk) => {
+        if (!proxySocket.write(chunk)) {
+          socket.pause();
+        }
       });
-      socket.on("end", function () {
+      proxySocket.on("drain", () => {
+        socket.resume();
+      });
+      socket.on("end", () => {
         proxySocket.end();
       });
-      socket.on("error", function () {
+      socket.on("error", () => {
         proxySocket.end();
       });
     },

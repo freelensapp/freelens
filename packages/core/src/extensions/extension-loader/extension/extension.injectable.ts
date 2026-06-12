@@ -4,12 +4,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { LegacyLensExtension } from "@freelensapp/legacy-extensions";
 import { disposer } from "@freelensapp/utilities";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { reaction, runInAction } from "mobx";
 import { injectableDifferencingRegistratorWith } from "../../../common/utils/registrator-helper";
 import { extensionRegistratorInjectionToken } from "../extension-registrator-injection-token";
+
+import type { LegacyLensExtension } from "@freelensapp/legacy-extensions";
 
 export interface Extension {
   register: () => void;

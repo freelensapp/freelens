@@ -5,7 +5,6 @@
  */
 
 import { Namespace } from "@freelensapp/kube-object";
-import type { DiContainer } from "@ogre-tools/injectable";
 import { observable } from "mobx";
 import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
@@ -13,8 +12,11 @@ import { Cluster } from "../../../common/cluster/cluster";
 import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import storesAndApisCanBeCreatedInjectable from "../../stores-apis-can-be-created.injectable";
-import type { NamespaceStore } from "./store";
 import namespaceStoreInjectable from "./store.injectable";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+
+import type { NamespaceStore } from "./store";
 
 function createNamespace(
   name: string,

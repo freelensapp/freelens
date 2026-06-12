@@ -5,9 +5,10 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { WriteFileOptions } from "fs-extra";
 import getDirnameOfPathInjectable from "../path/get-dirname.injectable";
 import fsInjectable from "./fs.injectable";
+
+import type { WriteFileOptions } from "fs-extra";
 
 export type WriteFile = (filePath: string, content: string | Buffer, opts?: WriteFileOptions) => Promise<void>;
 

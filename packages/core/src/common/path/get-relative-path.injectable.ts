@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import path from "path";
 import { getInjectable } from "@ogre-tools/injectable";
+import path from "path";
 
 export type GetRelativePath = (from: string, to: string) => string;
 

@@ -5,8 +5,10 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { IComputedValue } from "mobx";
 import extensionsInjectable from "./extensions.injectable";
+
+import type { IComputedValue } from "mobx";
+
 import type { LensMainExtension } from "./lens-main-extension";
 
 const mainExtensionsInjectable = getInjectable({

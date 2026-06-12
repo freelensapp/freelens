@@ -4,8 +4,17 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { isErrnoException } from "@freelensapp/utilities";
+import AwaitLock from "await-lock";
+import { ipcRenderer } from "electron";
 import { EventEmitter } from "events";
+import { makeObservable, observable, reaction, when } from "mobx";
+import { broadcastMessage, ipcMainHandle, ipcRendererOn } from "../../common/ipc";
+import { extensionDiscoveryStateChannel } from "../../common/ipc/extension-handling";
+import { toJS } from "../../common/utils";
+import { requestInitialExtensionDiscovery } from "../../renderer/ipc";
 import type { Stats } from "fs";
+
 import type {
   ExternalInstalledExtension,
   InstalledExtension,
@@ -13,10 +22,9 @@ import type {
   LensExtensionManifest,
 } from "@freelensapp/legacy-extensions";
 import type { Logger } from "@freelensapp/logger";
-import { isErrnoException } from "@freelensapp/utilities";
-import { ipcRenderer } from "electron";
-import { makeObservable, observable, reaction, when } from "mobx";
+
 import type TypedEventEmitter from "typed-emitter";
+
 import type { AccessPath } from "../../common/fs/access-path.injectable";
 import type { Copy } from "../../common/fs/copy.injectable";
 import type { EnsureDirectory } from "../../common/fs/ensure-dir.injectable";
@@ -25,18 +33,17 @@ import type { PathExists } from "../../common/fs/path-exists.injectable";
 import type { ReadDirectory } from "../../common/fs/read-directory.injectable";
 import type { ReadJson } from "../../common/fs/read-json-file.injectable";
 import type { RemovePath } from "../../common/fs/remove.injectable";
+import type { Stat } from "../../common/fs/stat.injectable";
 import type { Watch, Watcher } from "../../common/fs/watch/watch.injectable";
-import { broadcastMessage, ipcMainHandle, ipcRendererOn } from "../../common/ipc";
-import { extensionDiscoveryStateChannel } from "../../common/ipc/extension-handling";
 import type { GetBasenameOfPath } from "../../common/path/get-basename.injectable";
 import type { GetDirnameOfPath } from "../../common/path/get-dirname.injectable";
 import type { GetRelativePath } from "../../common/path/get-relative-path.injectable";
 import type { JoinPaths } from "../../common/path/join-paths.injectable";
-import { toJS } from "../../common/utils";
 import type { IsExtensionEnabled } from "../../features/extensions/enabled/common/is-enabled.injectable";
-import { requestInitialExtensionDiscovery } from "../../renderer/ipc";
 import type { ExtensionInstallationStateStore } from "../extension-installation-state-store/extension-installation-state-store";
 import type { ExtensionLoader } from "../extension-loader";
+import type { ForkPnpm } from "../install-extension/fork-pnpm.injectable";
+import type { InstallExtension } from "../install-extension/install-extension.injectable";
 
 interface Dependencies {
   readonly extensionLoader: ExtensionLoader;
@@ -47,13 +54,15 @@ interface Dependencies {
   readonly isProduction: boolean;
   readonly fileSystemSeparator: string;
   readonly homeDirectoryPath: string;
+  readonly directoryForUserData: string;
   isExtensionEnabled: IsExtensionEnabled;
   isCompatibleExtension: (manifest: LensExtensionManifest) => boolean;
-  installExtension: (name: string) => Promise<void>;
+  installExtension: InstallExtension;
   readJsonFile: ReadJson;
   pathExists: PathExists;
   removePath: RemovePath;
   lstat: LStat;
+  stat: Stat;
   watch: Watch;
   readDirectory: ReadDirectory;
   ensureDirectory: EnsureDirectory;
@@ -63,6 +72,7 @@ interface Dependencies {
   getBasenameOfPath: GetBasenameOfPath;
   getDirnameOfPath: GetDirnameOfPath;
   getRelativePath: GetRelativePath;
+  forkPnpm: ForkPnpm;
 }
 
 const logModule = "[EXTENSION-DISCOVERY]";
@@ -216,7 +226,10 @@ export class ExtensionDiscovery {
 
         if (extension) {
           // Install dependencies for the new extension
-          await this.dependencies.installExtension(extension.absolutePath);
+          await this.dependencies.installExtension({
+            name: extension.absolutePath,
+            packageJsonPath: this.packageJsonPath,
+          });
 
           this.extensions.set(extension.id, extension);
           this.dependencies.logger.info(`${logModule} Added extension ${extension.manifest.name}`);
@@ -298,10 +311,31 @@ export class ExtensionDiscovery {
 
     this.dependencies.logger.info(`${logModule} Uninstalling ${manifest.name}`);
 
+    const installLock = new AwaitLock();
+    await installLock.acquireAsync();
+
+    try {
+      const s = await this.dependencies.stat(this.packageJsonPath);
+      if (s.size == 0) {
+        try {
+          await this.dependencies.removePath(this.packageJsonPath);
+        } catch (error) {
+          this.dependencies.logger.error(`${logModule}: package.json has zero size and cannot be removed: ${error}`);
+        }
+      } else if (s.size > 0) {
+        await this.dependencies.forkPnpm("install", "--prefer-offline", "--prod", "--force");
+        await this.dependencies.forkPnpm("uninstall", "--force", manifest.name);
+      }
+    } catch (error) {
+      this.dependencies.logger.error(`${logModule}: pnpm failed: ${error}`);
+    }
+
     await this.removeSymlinkByPackageName(manifest.name);
 
     // fs.remove does nothing if the path doesn't exist anymore
     await this.dependencies.removePath(absolutePath);
+
+    installLock.release();
   }
 
   async load(): Promise<Map<LensExtensionId, InstalledExtension>> {

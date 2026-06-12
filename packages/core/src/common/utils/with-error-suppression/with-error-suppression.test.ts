@@ -4,10 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import { getPromiseStatus } from "@freelensapp/test-utils";
 import { withErrorSuppression } from "./with-error-suppression";
+
+import type { AsyncFnMock } from "@async-fn/jest";
 
 describe("with-error-suppression", () => {
   describe("given decorated sync function", () => {

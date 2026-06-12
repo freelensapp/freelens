@@ -4,16 +4,18 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncResult } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
+import requestHelmReleaseInjectable from "../../../../../features/helm-releases/renderer/request-helm-release.injectable";
+import requestListHelmReleasesInjectable from "../../../../../features/helm-releases/renderer/request-list-helm-releases.injectable";
+import { toHelmRelease } from "../../to-helm-release";
+
+import type { AsyncResult } from "@freelensapp/utilities";
+
 import type { HelmRelease } from "../../../../../common/k8s-api/endpoints/helm-releases.api";
 import type {
   GetHelmReleaseArgs,
   HelmReleaseDataWithResources,
 } from "../../../../../features/helm-releases/common/channels";
-import requestHelmReleaseInjectable from "../../../../../features/helm-releases/renderer/request-helm-release.injectable";
-import requestListHelmReleasesInjectable from "../../../../../features/helm-releases/renderer/request-list-helm-releases.injectable";
-import { toHelmRelease } from "../../to-helm-release";
 
 export interface DetailedHelmRelease {
   release: HelmRelease;

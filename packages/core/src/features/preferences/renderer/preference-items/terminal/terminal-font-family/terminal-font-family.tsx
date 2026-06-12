@@ -9,8 +9,9 @@ import { observer } from "mobx-react";
 import React from "react";
 import { SubTitle } from "../../../../../../renderer/components/layout/sub-title";
 import { Select } from "../../../../../../renderer/components/select";
-import type { TerminalFontPreferencePresenter } from "./terminal-font-options.injectable";
 import terminalFontPreferencePresenterInjectable from "./terminal-font-options.injectable";
+
+import type { TerminalFontPreferencePresenter } from "./terminal-font-options.injectable";
 
 interface Dependencies {
   model: TerminalFontPreferencePresenter;

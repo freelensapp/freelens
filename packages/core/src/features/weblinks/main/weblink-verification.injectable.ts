@@ -5,7 +5,6 @@
  */
 
 import { getStartableStoppable } from "@freelensapp/startable-stoppable";
-import type { Disposer } from "@freelensapp/utilities";
 import { delay, disposer } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { random } from "lodash";
@@ -14,6 +13,8 @@ import { WebLink } from "../../../common/catalog-entities";
 import weblinksInjectable from "../common/weblinks.injectable";
 import validateWeblinkInjectable from "./validate-weblink.injectable";
 import weblinkVerificationsInjectable from "./weblink-verifications.injectable";
+
+import type { Disposer } from "@freelensapp/utilities";
 
 const sixtyMinutes = 60 * 60 * 1000;
 

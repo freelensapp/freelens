@@ -2,12 +2,11 @@ name: Unit tests
 
 on:
   push:
-    branches-ignore:
-      - automated/*
-      - renovate/*
-  pull_request:
     branches:
       - main
+  pull_request:
+    branches:
+      - "*"
   workflow_dispatch: {}
 
 permissions:
@@ -15,55 +14,54 @@ permissions:
 
 jobs:
   test-unit:
-    name: unit tests on ${{ matrix.os }}
+    name: unit tests
 
     strategy:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-22.04
-            arch: x64
+          - runs-on: ubuntu-24.04-arm
+            arch: arm64
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.runs-on }}
     timeout-minutes: 60
 
-    steps:
-      - name: Add coreutils to PATH
-        if: runner.os == 'macOS'
-        run: echo "/usr/local/opt/coreutils/libexec/gnubin" >> $GITHUB_PATH
+    env:
+      DO_NOT_TRACK: "1"
+      TURBOREPO_CACHE: ${{ github.workspace }}/.turbo
 
+    steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
+          package-manager-cache: false
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        run: corepack enable
 
       - name: Get pnpm cache directory
         shell: bash
         run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
 
       - name: Use pnpm cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ env.pnpm_cache_dir }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-node-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ matrix.os }}-${{ matrix.arch }}-node-
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-node-
 
-      - name: Install dependencies (macOS)
-        id: install-deps-macos
-        if: runner.os == 'macOS'
-        run: timeout 300 brew install python-setuptools
-        continue-on-error: true
-
-      - name: Install dependencies (macOS) (retry)
-        if: runner.os == 'macOS' && steps.install-deps-macos.outcome == 'failure'
-        run: timeout 300 brew install python-setuptools
+      - name: Use Turborepo cache
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.TURBOREPO_CACHE }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-turborepo-${{ hashFiles('package.json', 'freelens/package.json', 'packages/**/package.json', 'pnpm-lock.yaml','turbo.json') }}
+          restore-keys: |
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-turborepo-
 
       - name: Install pnpm dependencies
         id: install-pnpm
@@ -80,16 +78,9 @@ jobs:
       - name: Run test units
         run: pnpm --color=always --stream test:unit
 
-      - name: Run Knip (development)
-        run: pnpm --color=always --stream knip:development
-
-      - name: Run Knip (production)
-        run: pnpm --color=always --stream knip:production
-
       - name: Clean after tests
         run: pnpm --color=always --parallel clean
 
       - name: Check untracked files
         shell: bash
-        run: for f in $(git ls-files --others --exclude-standard); do git diff --no-index --stat --exit-code /dev/null $f;
-          done
+        run: for f in $(git ls-files --others --exclude-standard); do git diff --no-index --stat --exit-code /dev/null $f; done

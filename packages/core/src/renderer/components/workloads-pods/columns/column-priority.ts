@@ -1,0 +1,16 @@
+export const COLUMN_PRIORITY = {
+  NAME: 120,
+  WARNING: 100,
+  NAMESPACE: 90,
+  CONTAINERS: 80,
+  CPU_USAGE: 70,
+  MEMORY_USAGE: 60,
+  RESTARTS: 50,
+  OWNERS: 40,
+  IP: 35,
+  NODE: 30,
+  QOS: 20,
+  AGE: 10,
+  STATUS: 5,
+  LOGS: 0,
+};

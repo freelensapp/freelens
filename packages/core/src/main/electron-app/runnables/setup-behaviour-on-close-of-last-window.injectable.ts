@@ -8,6 +8,7 @@ import { beforeElectronIsReadyInjectionToken } from "@freelensapp/application-fo
 import { runManySyncFor } from "@freelensapp/run-many";
 import { getInjectable } from "@ogre-tools/injectable";
 import isIntegrationTestingInjectable from "../../../common/vars/is-integration-testing.injectable";
+import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 import { afterQuitOfFrontEndInjectionToken } from "../../start-main-application/runnable-tokens/phases";
 import electronAppInjectable from "../electron-app.injectable";
 import isAutoUpdatingInjectable from "../features/is-auto-updating.injectable";
@@ -25,7 +26,10 @@ const setupBehaviourOnCloseOfLastWindowInjectable = getInjectable({
       app.on("window-all-closed", () => {
         runAfterQuitOfFrontEnd();
 
-        if (isIntegrationTesting || isAutoUpdating.get()) {
+        const userPreferencesState = di.inject(userPreferencesStateInjectable);
+        const showTray = userPreferencesState.showTrayIcon;
+
+        if (isIntegrationTesting || isAutoUpdating.get() || !showTray) {
           app.quit();
         }
       });

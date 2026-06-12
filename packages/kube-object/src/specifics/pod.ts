@@ -5,7 +5,10 @@
  */
 
 import { isDefined } from "@freelensapp/utilities";
+import { KubeObject } from "../kube-object";
+
 import type { RequireExactlyOne } from "type-fest";
+
 import type {
   Affinity,
   KubeObjectMetadata,
@@ -13,8 +16,17 @@ import type {
   NamespaceScopedMetadata,
   Toleration,
 } from "../api-types";
-import { KubeObject } from "../kube-object";
-import type { Container, ObjectFieldSelector, PodSecurityContext, Probe, ResourceFieldSelector } from "../types";
+import type {
+  Container,
+  ContainerWithType,
+  EphemeralContainer,
+  EphemeralContainerWithType,
+  ObjectFieldSelector,
+  PodSecurityContext,
+  Probe,
+  ResourceFieldSelector,
+  ResourceRequirements,
+} from "../types";
 import type { PersistentVolumeClaimSpec } from "./persistent-volume-claim";
 import type { SecretReference } from "./secret";
 
@@ -28,6 +40,9 @@ export interface PodLogsQuery {
   previous?: boolean;
 }
 
+/**
+ * The human-readable status of a Pod. Warning! This is not the same as Pod.status.phase.
+ */
 export enum PodStatusPhase {
   TERMINATED = "Terminated",
   FAILED = "Failed",
@@ -545,7 +560,7 @@ export interface PodSpec {
   containers?: Container[];
   dnsPolicy?: string;
   enableServiceLinks?: boolean;
-  ephemeralContainers?: unknown[];
+  ephemeralContainers?: EphemeralContainer[];
   hostAliases?: HostAlias[];
   hostIPC?: boolean;
   hostname?: string;
@@ -559,8 +574,8 @@ export interface PodSpec {
   preemptionPolicy?: string;
   priority?: number;
   priorityClassName?: string;
-  readinessGates?: unknown[];
-  restartPolicy?: string;
+  readinessGates?: PodReadinessGate[];
+  restartPolicy?: "Always" | "OnFailure" | "Never";
   runtimeClassName?: string;
   schedulerName?: string;
   securityContext?: PodSecurityContext;
@@ -573,6 +588,20 @@ export interface PodSpec {
   tolerations?: Toleration[];
   topologySpreadConstraints?: TopologySpreadConstraint[];
   volumes?: PodSpecVolume[];
+  resources?: ResourceRequirements;
+}
+
+export type PodConditionType =
+  | "PodScheduled"
+  | "Ready"
+  | "Initialized"
+  | "ContainersReady"
+  | "DisruptionTarget"
+  | "PodResizePending"
+  | "PodResizeInProgress";
+
+export interface PodReadinessGate {
+  conditionType: string;
 }
 
 export interface PodCondition {
@@ -580,24 +609,38 @@ export interface PodCondition {
   lastTransitionTime?: string;
   message?: string;
   reason?: string;
-  type: string;
+  type: PodConditionType | string;
   status: string;
 }
 
+export type PodPhase = "Pending" | "Running" | "Succeeded" | "Failed" | "Unknown";
+
+export interface PodIP {
+  ip: string;
+}
+
+export interface HostIP {
+  ip: string;
+}
+
 export interface PodStatus {
-  phase: string;
+  phase: PodPhase;
   conditions: PodCondition[];
-  hostIP: string;
+  message?: string;
+  reason?: string;
+  nominatedNodeName?: string;
+  hostIP?: string;
+  hostIPs?: HostIP[];
   podIP: string;
-  podIPs?: {
-    ip: string;
-  }[];
+  podIPs?: PodIP[];
   startTime: string;
   initContainerStatuses?: PodContainerStatus[];
   containerStatuses?: PodContainerStatus[];
-  qosClass?: string;
-  reason?: string;
+  qosClass?: "Guaranteed" | "Burstable" | "BestEffort";
+  ephemeralContainerStatuses?: PodContainerStatus[];
 }
+
+export type ContainersType = "containers" | "initContainers" | "ephemeralContainers";
 
 export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec> {
   static kind = "Pod";
@@ -610,36 +653,84 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
     return Object.keys(this.getAffinity()).length;
   }
 
-  getInitContainers() {
+  getInitContainers(): Container[] {
     return this.spec?.initContainers ?? [];
   }
 
-  getContainers() {
+  getInitContainersWithType(): ContainerWithType[] {
+    return (this.spec?.initContainers ?? []).map((c) => ({ ...c, type: "initContainers" }));
+  }
+
+  getEphemeralContainers(): Container[] {
+    return this.spec?.ephemeralContainers ?? [];
+  }
+
+  getEphemeralContainersWithType(): EphemeralContainerWithType[] {
+    return (this.spec?.ephemeralContainers ?? []).map((c) => ({ ...c, type: "ephemeralContainers" }));
+  }
+
+  getContainers(): Container[] {
     return this.spec?.containers ?? [];
   }
 
-  getAllContainers() {
-    return [...this.getContainers(), ...this.getInitContainers()];
+  getContainersWithType(): ContainerWithType[] {
+    return (this.spec?.containers ?? []).map((c) => ({ ...c, type: "containers" }));
   }
 
-  getRunningContainers() {
+  getAllContainers(): (Container | EphemeralContainer)[] {
+    return [...this.getContainers(), ...this.getInitContainers(), ...this.getEphemeralContainers()];
+  }
+
+  getAllContainersWithType(): (ContainerWithType | EphemeralContainerWithType)[] {
+    return [
+      ...this.getContainersWithType(),
+      ...this.getInitContainersWithType(),
+      ...this.getEphemeralContainersWithType(),
+    ];
+  }
+
+  getRunningContainers(): (Container | EphemeralContainer)[] {
+    const ephemeralContainers = this.getEphemeralContainers();
     const runningContainerNames = new Set(
       this.getContainerStatuses()
-        .filter(({ state }) => state?.running)
+        .filter(
+          ({ name, lastState, state }) =>
+            state?.running && !(ephemeralContainers.find((c) => c.name === name) && lastState?.terminated),
+        )
         .map(({ name }) => name),
     );
 
     return this.getAllContainers().filter(({ name }) => runningContainerNames.has(name));
   }
 
-  getContainerStatuses(includeInitContainers = true): PodContainerStatus[] {
-    const { containerStatuses = [], initContainerStatuses = [] } = this.status ?? {};
+  getRunningContainersWithType(): (ContainerWithType | EphemeralContainerWithType)[] {
+    const ephemeralContainers = this.getEphemeralContainers();
+    const runningContainerNames = new Set(
+      this.getContainerStatuses()
+        .filter(
+          ({ name, lastState, state }) =>
+            state?.running && !(ephemeralContainers.find((c) => c.name === name) && lastState?.terminated),
+        )
+        .map(({ name }) => name),
+    );
+
+    return this.getAllContainersWithType().filter(({ name }) => runningContainerNames.has(name));
+  }
+
+  getContainerStatuses(includeInitContainers = true, includeEphemeralContainers = true): PodContainerStatus[] {
+    const { containerStatuses = [], initContainerStatuses = [], ephemeralContainerStatuses = [] } = this.status ?? {};
+
+    let statuses = [...containerStatuses];
 
     if (includeInitContainers) {
-      return [...containerStatuses, ...initContainerStatuses];
+      statuses = statuses.concat(...initContainerStatuses);
     }
 
-    return [...containerStatuses];
+    if (includeEphemeralContainers) {
+      statuses = statuses.concat(...ephemeralContainerStatuses);
+    }
+
+    return statuses;
   }
 
   getRestartsCount(): number {
@@ -676,7 +767,7 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
         .filter(({ status }) => status === "True")
         .map(({ type }) => type),
     );
-    const isInGoodCondition = ["Initialized", "Ready"].every((condition) => trueConditionTypes.has(condition));
+    const isInGoodCondition = trueConditionTypes.has("Ready");
 
     if (reason === PodStatusPhase.EVICTED) {
       return PodStatusPhase.EVICTED;
@@ -704,7 +795,12 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
     }
 
     if (this.metadata.deletionTimestamp) {
-      return "Terminating";
+      const containerStatuses = this.getContainerStatuses?.() || [];
+      if (containerStatuses.some((status) => status.state?.running || status.state?.waiting)) {
+        return "Terminating";
+      } else if (this.metadata.finalizers?.length) {
+        return "Finalizing";
+      }
     }
 
     return this.getStatusPhase() || "Waiting";
@@ -741,19 +837,110 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
   }
 
   hasIssues() {
-    for (const { type, status } of this.getConditions()) {
-      if (type === "Ready" && status !== "True") {
+    const phase = this.getStatusPhase();
+
+    if (!phase) {
+      return true;
+    }
+
+    if (phase === "Succeeded") {
+      return false;
+    }
+
+    if (phase === "Failed" || phase === "Pending" || phase === "Unknown") {
+      return true;
+    }
+
+    // "Running" pods can still have container or readiness-gate issues.
+    if (this.hasCrashLoopingContainers()) {
+      return true;
+    }
+
+    const podIsReady = this.getConditions().some(({ type, status }) => type === "Ready" && status === "True");
+
+    if (!podIsReady) {
+      if (this.hasUnreadyContainers()) {
+        return true;
+      }
+
+      if (this.hasGateReadinessIssues()) {
         return true;
       }
     }
 
+    return false;
+  }
+
+  private hasCrashLoopingContainers() {
     for (const { state } of this.getContainerStatuses()) {
-      if (state?.waiting?.reason === "CrashLookBackOff") {
+      if (state?.waiting?.reason === "CrashLoopBackOff") {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private hasUnreadyContainers() {
+    const { containerStatuses = [], initContainerStatuses = [] } = this.status ?? {};
+
+    const statusesByName = new Map<string, PodContainerStatus>();
+
+    for (const status of initContainerStatuses) {
+      statusesByName.set(status.name, status);
+    }
+
+    for (const status of containerStatuses) {
+      statusesByName.set(status.name, status);
+    }
+
+    for (const { name, restartPolicy } of this.getInitContainers()) {
+      if (restartPolicy !== "Always") {
+        continue;
+      }
+
+      if (this.isContainerStatusUnready(statusesByName.get(name))) {
         return true;
       }
     }
 
-    return this.getStatusPhase() !== "Running";
+    for (const { name } of this.getContainers()) {
+      if (this.isContainerStatusUnready(statusesByName.get(name))) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  private isContainerStatusUnready(status?: PodContainerStatus) {
+    if (!status) {
+      return true;
+    }
+
+    if (status.ready) {
+      return false;
+    }
+
+    return status.state?.terminated?.exitCode !== 0;
+  }
+
+  private hasGateReadinessIssues() {
+    // Kubelet's Ready condition fails when any configured readiness gate is missing or not True.
+    const readinessGates = this.spec?.readinessGates;
+
+    if (!readinessGates?.length) {
+      return false;
+    }
+
+    const conditionStatuses = new Map(this.getConditions().map(({ type, status }) => [type, status]));
+
+    for (const { conditionType } of readinessGates) {
+      if (conditionStatuses.get(conditionType) !== "True") {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   getLivenessProbe(container: Container) {
@@ -831,5 +1018,11 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
     const podIPs = this.status?.podIPs ?? [];
 
     return podIPs.map((value) => value.ip);
+  }
+
+  getHostIPs(): string[] {
+    const hostIPs = this.status?.hostIPs ?? [];
+
+    return hostIPs.map((value) => value.ip);
   }
 }

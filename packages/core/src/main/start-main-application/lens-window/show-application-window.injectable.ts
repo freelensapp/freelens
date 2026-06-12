@@ -10,6 +10,7 @@ import focusApplicationInjectable from "../../electron-app/features/focus-applic
 import createFirstApplicationWindowInjectable from "./application-window/create-first-application-window.injectable";
 import getCurrentApplicationWindowInjectable from "./application-window/get-current-application-window.injectable";
 import splashWindowInjectable from "./splash-window/splash-window.injectable";
+
 const someIsTruthy = some(identity);
 
 const showApplicationWindowInjectable = getInjectable({

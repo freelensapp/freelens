@@ -5,9 +5,10 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { TerminalMessage } from "../../common/terminal/channels";
 import { TerminalChannels } from "../../common/terminal/channels";
 import isDevelopmentInjectable from "../../common/vars/is-development.injectable";
+
+import type { TerminalMessage } from "../../common/terminal/channels";
 
 export type DefaultWebsocketApiParams = ReturnType<typeof defaultWebsocketApiParamsInjectable.instantiate>;
 

@@ -4,19 +4,22 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { PassThrough } from "stream";
-import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import { Deployment, Pod } from "@freelensapp/kube-object";
+import { flushPromises } from "@freelensapp/test-utils";
+import { PassThrough } from "stream";
+import { DeploymentApi, NamespaceApi, PodApi } from "./endpoints";
+import { KubeJsonApi } from "./kube-json-api";
+import { createMockResponseFromStream, createMockResponseFromString } from "./mock-responses";
+
 import type { KubeJsonApiData, KubeJsonApiDataFor } from "@freelensapp/kube-object";
 import type { Logger } from "@freelensapp/logger";
 import type Fetch from "@freelensapp/node-fetch";
-import { flushPromises } from "@freelensapp/test-utils";
-import { DeploymentApi, NamespaceApi, PodApi } from "./endpoints";
+
+import type { AsyncFnMock } from "@async-fn/jest";
+
 import type { KubeApiWatchCallback } from "./kube-api";
-import { KubeJsonApi } from "./kube-json-api";
 import type { IKubeWatchEvent } from "./kube-watch-event";
-import { createMockResponseFromStream, createMockResponseFromString } from "./mock-responses";
 
 describe("KubeApi", () => {
   let fetchMock: AsyncFnMock<typeof Fetch>;
@@ -238,6 +241,7 @@ describe("KubeApi", () => {
 
     beforeEach(() => {
       api = new PodApi({
+        logDebug: logger.debug,
         logError: logger.error,
         logInfo: logger.info,
         logWarn: logger.error,
@@ -460,6 +464,7 @@ describe("KubeApi", () => {
 
     beforeEach(() => {
       api = new PodApi({
+        logDebug: logger.debug,
         logError: logger.error,
         logInfo: logger.info,
         logWarn: logger.error,
@@ -820,6 +825,7 @@ describe("KubeApi", () => {
 
     beforeEach(() => {
       api = new PodApi({
+        logDebug: logger.debug,
         logError: logger.error,
         logInfo: logger.info,
         logWarn: logger.error,
@@ -952,6 +958,7 @@ describe("KubeApi", () => {
 
     beforeEach(() => {
       api = new PodApi({
+        logDebug: logger.debug,
         logError: logger.error,
         logInfo: logger.info,
         logWarn: logger.error,
@@ -1085,6 +1092,7 @@ describe("KubeApi", () => {
 
     beforeEach(() => {
       api = new PodApi({
+        logDebug: logger.debug,
         logError: logger.error,
         logInfo: logger.info,
         logWarn: logger.error,

@@ -10,12 +10,13 @@
 
 import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import { loggerInjectionToken } from "@freelensapp/logger";
-import type { Disposer } from "@freelensapp/utilities";
 import { ipcMain, ipcRenderer, webContents } from "electron";
 import ipcRendererInjectable from "../../renderer/utils/channel/ipc-renderer.injectable";
 import clusterFramesInjectable from "../cluster-frames.injectable";
 import { toJS } from "../utils/toJS";
 import ipcMainInjectionToken from "./ipc-main-injection-token";
+
+import type { Disposer } from "@freelensapp/utilities";
 
 export const broadcastMainChannel = "ipc:broadcast-main";
 

@@ -4,18 +4,20 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import { Secret, SecretType } from "@freelensapp/kube-object";
 import { base64 } from "@freelensapp/utilities";
-import type { RenderResult } from "@testing-library/react";
 import { act } from "@testing-library/react";
 import React from "react";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
-import type { SecretStore } from "../config-secrets/store";
 import secretStoreInjectable from "../config-secrets/store.injectable";
 import { renderFor } from "../test-utils/renderFor";
 import { SecretKey } from "./secret-key";
+
+import type { AsyncFnMock } from "@async-fn/jest";
+import type { RenderResult } from "@testing-library/react";
+
+import type { SecretStore } from "../config-secrets/store";
 
 describe("SecretKey technical tests", () => {
   let loadSecretMock: AsyncFnMock<SecretStore["load"]>;

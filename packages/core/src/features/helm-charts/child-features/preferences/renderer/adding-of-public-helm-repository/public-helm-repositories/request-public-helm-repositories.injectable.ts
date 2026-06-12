@@ -7,24 +7,48 @@
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import { sortBy } from "lodash/fp";
-import proxyDownloadJsonInjectable from "../../../../../../../common/fetch/download-json/proxy.injectable";
-import { withTimeout } from "../../../../../../../common/fetch/timeout-controller";
+import downloadJsonViaChannelInjectable from "../../../../../../../renderer/fetch/download-json-via-channel-copy.injectable";
+
 import type { HelmRepo } from "../../../../../../../common/helm/helm-repo";
 
-const publicHelmReposUrl =
-  "https://github.com/lensapp/artifact-hub-repositories/releases/download/latest/repositories.json";
+const artifactsHubSearchUrl = "https://hub.helm.sh/api/chartsvc/v1/charts/search?q=";
+
+interface ArtifactsHubSearchResponse {
+  data: ArtifactsHubChartItem[];
+}
+
+interface ArtifactsHubChartItem {
+  id: string;
+  artifactHub: {
+    packageUrl: string;
+  };
+  attributes: {
+    description: string;
+    repo: {
+      name: string;
+      url: string;
+    };
+    relationships: {
+      latestChartVersion: {
+        data: {
+          version: string;
+          appVersion: string;
+        };
+      };
+    };
+  };
+}
 
 const requestPublicHelmRepositoriesInjectable = getInjectable({
   id: "request-public-helm-repositories",
 
   instantiate: (di) => {
-    const downloadJson = di.inject(proxyDownloadJsonInjectable);
+    const downloadJson = di.inject(downloadJsonViaChannelInjectable);
     const logger = di.inject(loggerInjectionToken);
 
     return async (): Promise<HelmRepo[]> => {
-      const controller = withTimeout(10_000);
-      const result = await downloadJson(publicHelmReposUrl, {
-        signal: controller.signal,
+      const result = await downloadJson(artifactsHubSearchUrl, {
+        timeout: 10_000,
       });
 
       if (!result.callWasSuccessful) {
@@ -33,7 +57,13 @@ const requestPublicHelmRepositoriesInjectable = getInjectable({
         return [];
       }
 
-      return sortBy((repo) => repo.name, result.response as HelmRepo[]);
+      const response = result.response as ArtifactsHubSearchResponse;
+      const repos = response.data.map((item) => item.attributes.repo);
+      const uniqueRepos = Array.from(
+        new Map(repos.map((repo) => [repo.name, { ...repo, cacheFilePath: "" }])).values(),
+      );
+
+      return sortBy((repo) => repo.name, uniqueRepos);
     };
   },
 

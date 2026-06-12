@@ -27,7 +27,7 @@ html {
     }
 
     &--is-disabled {
-      opacity: .75;
+      opacity: 0.75;
       cursor: not-allowed;
       pointer-events: none;
     }
@@ -52,8 +52,8 @@ html {
     }
 
     &__indicator {
-      padding: $padding *0.5;
-      opacity: .55;
+      padding: $padding * 0.5;
+      opacity: 0.55;
 
       &:hover {
         color: inherit;
@@ -113,7 +113,7 @@ html {
         cursor: not-allowed;
         background: none !important;
         color: inherit;
-        opacity: .75;
+        opacity: 0.75;
       }
 
       .Icon {
@@ -149,7 +149,8 @@ html {
     z-index: $zIndex-select-portal; // render at the top when used inside dialog
   }
 
-  .Select, .Select__menu {
+  .Select,
+  .Select__menu {
     &.theme-light {
       --select-menu-bgc: white;
       --select-option-selected-color: var(--textColorSecondary);

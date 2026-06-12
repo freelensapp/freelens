@@ -4,9 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AuthorizationV1Api, V1ResourceAttributes } from "@freelensapp/kubernetes-client-node";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
+
+import type { AuthorizationV1Api, V1ResourceAttributes } from "@freelensapp/kubernetes-client-node";
 
 /**
  * Requests the permissions for actions on the kube cluster
@@ -25,10 +26,12 @@ const createCanIInjectable = getInjectable({
     return (api) =>
       async (resourceAttributes: V1ResourceAttributes): Promise<boolean> => {
         try {
-          const { body } = await api.createSelfSubjectAccessReview({
-            apiVersion: "authorization.k8s.io/v1",
-            kind: "SelfSubjectAccessReview",
-            spec: { resourceAttributes },
+          const body = await api.createSelfSubjectAccessReview({
+            body: {
+              apiVersion: "authorization.k8s.io/v1",
+              kind: "SelfSubjectAccessReview",
+              spec: { resourceAttributes },
+            },
           });
 
           return body.status?.allowed ?? false;

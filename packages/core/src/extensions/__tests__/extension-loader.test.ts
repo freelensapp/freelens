@@ -5,17 +5,19 @@
  */
 
 import { delay } from "@freelensapp/utilities";
-import type { IpcRenderer } from "electron";
-import type { ObservableMap } from "mobx";
 import { runInAction } from "mobx";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import type { LensExtensionState } from "../../features/extensions/enabled/common/state.injectable";
 import enabledExtensionsStateInjectable from "../../features/extensions/enabled/common/state.injectable";
 import { getDiForUnitTesting } from "../../renderer/getDiForUnitTesting";
 import currentlyInClusterFrameInjectable from "../../renderer/routes/currently-in-cluster-frame.injectable";
 import ipcRendererInjectable from "../../renderer/utils/channel/ipc-renderer.injectable";
-import type { ExtensionLoader } from "../extension-loader";
 import extensionLoaderInjectable from "../extension-loader/extension-loader.injectable";
+
+import type { IpcRenderer } from "electron";
+import type { ObservableMap } from "mobx";
+
+import type { LensExtensionState } from "../../features/extensions/enabled/common/state.injectable";
+import type { ExtensionLoader } from "../extension-loader";
 
 const manifestPath = "manifest/path";
 const manifestPath2 = "manifest/path2";

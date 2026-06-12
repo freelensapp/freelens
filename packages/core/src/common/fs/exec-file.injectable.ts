@@ -4,10 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ExecFileException, ExecFileOptions } from "child_process";
-import { execFile } from "child_process";
-import type { AsyncResult } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
+import { execFile } from "child_process";
+import type { ExecFileException, ExecFileOptions } from "child_process";
+
+import type { AsyncResult } from "@freelensapp/utilities";
 
 export type ExecFileError = ExecFileException & { stderr: string };
 
@@ -46,7 +47,7 @@ const execFileInjectable = getInjectable({
           } else {
             resolve({
               callWasSuccessful: true,
-              response: stdout,
+              response: stdout.toString(),
             });
           }
         });

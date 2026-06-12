@@ -4,14 +4,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import { KubeApi, PodApi } from "@freelensapp/kube-api";
 import { podApiInjectable } from "@freelensapp/kube-api-specifics";
 import { Pod } from "@freelensapp/kube-object";
-import type { KubeStatusData } from "@freelensapp/kube-object";
 import { flushPromises } from "@freelensapp/test-utils";
-import type { DiContainer } from "@ogre-tools/injectable";
+// NOTE: this is fine because we are testing something that only exported
+import { PodsApi } from "../../../extensions/common-api/k8s-api";
 import setupAutoRegistrationInjectable from "../../../renderer/before-frame-starts/runnables/setup-auto-registration.injectable";
 import hostedClusterInjectable from "../../../renderer/cluster-frame-context/hosted-cluster.injectable";
 import { getDiForUnitTesting } from "../../../renderer/getDiForUnitTesting";
@@ -20,19 +19,22 @@ import storesAndApisCanBeCreatedInjectable from "../../../renderer/stores-apis-c
 import { createMockResponseFromString } from "../../../test-utils/mock-responses";
 import directoryForKubeConfigsInjectable from "../../app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
 import directoryForUserDataInjectable from "../../app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import type { Fetch } from "../../fetch/fetch.injectable";
-import fetchInjectable from "../../fetch/fetch.injectable";
-import type { CreateKubeApiForRemoteCluster } from "../create-kube-api-for-remote-cluster.injectable";
+import { Cluster } from "../../cluster/cluster";
+import nodeFetchInjectable from "../../fetch/node-fetch.injectable";
 import createKubeApiForRemoteClusterInjectable from "../create-kube-api-for-remote-cluster.injectable";
 import createKubeJsonApiInjectable from "../create-kube-json-api.injectable";
 
-// NOTE: this is fine because we are testing something that only exported
-import { PodsApi } from "../../../extensions/common-api/k8s-api";
-import { Cluster } from "../../cluster/cluster";
+import type { KubeStatusData } from "@freelensapp/kube-object";
+
+import type { AsyncFnMock } from "@async-fn/jest";
+import type { DiContainer } from "@ogre-tools/injectable";
+
+import type { NodeFetch } from "../../fetch/node-fetch.injectable";
+import type { CreateKubeApiForRemoteCluster } from "../create-kube-api-for-remote-cluster.injectable";
 
 describe("createKubeApiForRemoteCluster", () => {
   let createKubeApiForRemoteCluster: CreateKubeApiForRemoteCluster;
-  let fetchMock: AsyncFnMock<Fetch>;
+  let fetchMock: AsyncFnMock<NodeFetch>;
 
   beforeEach(() => {
     const di = getDiForUnitTesting();
@@ -52,7 +54,7 @@ describe("createKubeApiForRemoteCluster", () => {
     );
 
     fetchMock = asyncFn();
-    di.override(fetchInjectable, () => fetchMock);
+    di.override(nodeFetchInjectable, () => fetchMock);
 
     createKubeApiForRemoteCluster = di.inject(createKubeApiForRemoteClusterInjectable);
   });
@@ -144,7 +146,7 @@ describe("createKubeApiForRemoteCluster", () => {
 });
 
 describe("KubeApi", () => {
-  let fetchMock: AsyncFnMock<Fetch>;
+  let fetchMock: AsyncFnMock<NodeFetch>;
   let di: DiContainer;
 
   beforeEach(() => {
@@ -155,7 +157,7 @@ describe("KubeApi", () => {
     di.override(storesAndApisCanBeCreatedInjectable, () => true);
 
     fetchMock = asyncFn();
-    di.override(fetchInjectable, () => fetchMock);
+    di.override(nodeFetchInjectable, () => fetchMock);
 
     const createKubeJsonApi = di.inject(createKubeJsonApiInjectable);
 

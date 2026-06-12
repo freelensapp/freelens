@@ -4,7 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { loggerInjectionToken } from "@freelensapp/logger/dist";
 import { getInjectable } from "@ogre-tools/injectable";
+import * as semver from "semver";
+import getLatestVersionInjectable from "../../../../../../common/utils/get-latest-version.injectable";
+import openLinkInBrowserInjectable from "../../../../../../common/utils/open-link-in-browser.injectable";
 import appNameInjectable from "../../../../../../common/vars/app-name.injectable";
 import applicationCopyrightInjectable from "../../../../../../common/vars/application-copyright.injectable";
 import extensionApiVersionInjectable from "../../../../../../common/vars/extension-api-version.injectable";
@@ -24,8 +28,13 @@ const showAboutInjectable = getInjectable({
     const appName = di.inject(appNameInjectable);
     const productName = di.inject(productNameInjectable);
     const applicationCopyright = di.inject(applicationCopyrightInjectable);
+    const openLinkInBrowser = di.inject(openLinkInBrowserInjectable);
+    const logger = di.inject(loggerInjectionToken);
+    const getLatestVersion = di.inject(getLatestVersionInjectable);
 
-    return () => {
+    return async () => {
+      let newVersion: string | undefined;
+
       const appInfo = [
         `${appName}: ${buildVersion}`,
         `Extension API: ${extensionApiVersion}`,
@@ -37,7 +46,32 @@ const showAboutInjectable = getInjectable({
         applicationCopyright,
       ];
 
-      showMessagePopup(`${isWindows ? " ".repeat(2) : ""}${appName}`, productName, appInfo.join("\r\n"));
+      const buttons = ["Close"];
+
+      try {
+        const latestVersion = await getLatestVersion("@freelensapp/core");
+        if (latestVersion && semver.gt(latestVersion, buildVersion)) {
+          newVersion = latestVersion;
+          appInfo.push("", `Latest version: ${latestVersion}`);
+          buttons.push("Open Release Notes");
+        }
+      } catch (error) {
+        logger.error(`[SHOW-ABOUT]: Failed to check latest version: ${error}`);
+      }
+
+      const returnValue = await showMessagePopup(
+        `${isWindows ? " ".repeat(2) : ""}${appName}`,
+        productName,
+        appInfo.join("\r\n"),
+        {
+          type: newVersion ? "question" : "info",
+          buttons,
+        },
+      );
+
+      if (newVersion && returnValue.response === 1) {
+        await openLinkInBrowser(`https://github.com/freelensapp/freelens/releases/tag/v${newVersion}`);
+      }
     };
   },
 });

@@ -5,11 +5,14 @@
  */
 
 import { CoreV1Api } from "@freelensapp/kubernetes-client-node";
+
 import type { Logger } from "@freelensapp/logger";
 import type { PrometheusProvider, PrometheusService } from "@freelensapp/prometheus";
+
 import type { IComputedValue } from "mobx";
-import type { ClusterPrometheusPreferences } from "../../../common/cluster-types";
+
 import type { Cluster } from "../../../common/cluster/cluster";
+import type { ClusterPrometheusPreferences } from "../../../common/cluster-types";
 import type { GetPrometheusProviderByKind } from "../../prometheus/get-by-kind.injectable";
 import type { LoadProxyKubeconfig } from "../load-proxy-kubeconfig.injectable";
 
@@ -23,6 +26,7 @@ interface PrometheusServicePreferences {
   service: string;
   port: number;
   prefix: string;
+  https?: boolean;
 }
 
 interface Dependencies {
@@ -37,8 +41,10 @@ export interface ClusterPrometheusHandler {
   getPrometheusDetails(): Promise<PrometheusDetails>;
 }
 
-const ensurePrometheusPath = ({ service, namespace, port }: PrometheusService) =>
-  `${namespace}/services/${service}:${port}`;
+// Build the Kubernetes service-proxy path. If HTTPS is requested, use the
+// "https:" prefix before the service name per K8s API conventions.
+const ensurePrometheusPath = (service: PrometheusService, useHttps?: boolean) =>
+  `${service.namespace}/services/${useHttps ? "https:" : ""}${service.service}:${service.port}`;
 
 export const createClusterPrometheusHandler = (...args: [Dependencies, Cluster]): ClusterPrometheusHandler => {
   const [deps, cluster] = args;
@@ -111,7 +117,7 @@ export const createClusterPrometheusHandler = (...args: [Dependencies, Cluster])
 
   const getPrometheusDetails: ClusterPrometheusHandler["getPrometheusDetails"] = async () => {
     const service = await getPrometheusService();
-    const prometheusPath = ensurePrometheusPath(service);
+    const prometheusPath = ensurePrometheusPath(service, prometheus?.https);
     const provider = ensurePrometheusProvider(service);
 
     return { prometheusPath, provider };

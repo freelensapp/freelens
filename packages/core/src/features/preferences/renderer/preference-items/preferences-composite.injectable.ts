@@ -11,10 +11,11 @@ import { computed } from "mobx";
 import logErrorInjectable from "../../../../common/log-error.injectable";
 import { isShown } from "../../../../common/utils/composable-responsibilities/showable/showable";
 import { getCompositeFor } from "../../../../common/utils/composite/get-composite/get-composite";
-import type { PreferenceItemTypes } from "./preference-item-injection-token";
 import { preferenceItemInjectionToken } from "./preference-item-injection-token";
-import type { PreferenceTabsRoot } from "./preference-tab-root";
 import { preferenceTabsRoot } from "./preference-tab-root";
+
+import type { PreferenceItemTypes } from "./preference-item-injection-token";
+import type { PreferenceTabsRoot } from "./preference-tab-root";
 
 const preferencesCompositeInjectable = getInjectable({
   id: "preferences-composite",

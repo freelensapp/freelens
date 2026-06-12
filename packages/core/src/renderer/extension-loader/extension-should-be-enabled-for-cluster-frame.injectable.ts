@@ -7,10 +7,11 @@
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { asyncComputed } from "@ogre-tools/injectable-react";
 import { untracked } from "mobx";
-import type { KubernetesCluster } from "../../common/catalog-entities";
 import extensionIsEnabledForClusterInjectable from "../../extensions/extension-loader/extension-is-enabled-for-cluster.injectable";
-import type { LensRendererExtension } from "../../extensions/lens-renderer-extension";
 import activeKubernetesClusterInjectable from "../cluster-frame-context/active-kubernetes-cluster.injectable";
+
+import type { KubernetesCluster } from "../../common/catalog-entities";
+import type { LensRendererExtension } from "../../extensions/lens-renderer-extension";
 
 const extensionShouldBeEnabledForClusterFrameInjectable = getInjectable({
   id: "extension-should-be-enabled-for-cluster-frame",

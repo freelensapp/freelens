@@ -9,11 +9,9 @@ import "./add-helm-repo-dialog.scss";
 import { Button } from "@freelensapp/button";
 import { Icon } from "@freelensapp/icon";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IObservableValue } from "mobx";
 import { action } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import type { HelmRepo } from "../../../../../../common/helm/helm-repo";
 import { toJS } from "../../../../../../common/utils";
 import { Checkbox } from "../../../../../../renderer/components/checkbox";
 import { Input } from "../../../../../../renderer/components/input";
@@ -25,6 +23,10 @@ import hideDialogForAddingCustomHelmRepositoryInjectable from "./dialog-visibili
 import { HelmFileInput } from "./helm-file-input/helm-file-input";
 import maximalCustomHelmRepoOptionsAreShownInjectable from "./maximal-custom-helm-repo-options-are-shown.injectable";
 import submitCustomHelmRepositoryInjectable from "./submit-custom-helm-repository.injectable";
+
+import type { IObservableValue } from "mobx";
+
+import type { HelmRepo } from "../../../../../../common/helm/helm-repo";
 
 interface Dependencies {
   helmRepo: HelmRepo;

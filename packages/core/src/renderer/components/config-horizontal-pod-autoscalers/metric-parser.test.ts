@@ -5,9 +5,10 @@
  */
 
 import { HorizontalPodAutoscaler } from "@freelensapp/kube-object";
-import type { DiContainer } from "@ogre-tools/injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import getHorizontalPodAutoscalerMetrics from "./get-metrics.injectable";
+
+import type { DiContainer } from "@ogre-tools/injectable";
 
 const hpaV2 = {
   apiVersion: "autoscaling/v2",

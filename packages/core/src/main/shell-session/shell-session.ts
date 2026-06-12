@@ -4,20 +4,23 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { getOrInsertWith } from "@freelensapp/utilities";
 import os from "os";
 import path from "path";
+import { TerminalChannels, type TerminalMessage } from "../../common/terminal/channels";
+import { clearKubeconfigEnvVars } from "../utils/clear-kube-env-vars";
+
 import type { Logger } from "@freelensapp/logger";
-import { getOrInsertWith } from "@freelensapp/utilities";
+
 import type { IComputedValue } from "mobx";
 import type * as pty from "node-pty";
 import type WebSocket from "ws";
+
 import type { EmitAppEvent } from "../../common/app-event-bus/emit-event.injectable";
 import type { Cluster } from "../../common/cluster/cluster";
 import type { Stat } from "../../common/fs/stat.injectable";
-import { TerminalChannels, type TerminalMessage } from "../../common/terminal/channels";
 import type { ComputeShellEnvironment } from "../../features/shell-sync/main/compute-shell-environment.injectable";
 import type { Kubectl } from "../kubectl/kubectl";
-import { clearKubeconfigEnvVars } from "../utils/clear-kube-env-vars";
 import type { ShellSessionProcesses } from "./processes.injectable";
 import type { ShellSessionEnvs } from "./shell-envs.injectable";
 import type { SpawnPty } from "./spawn-pty.injectable";
@@ -231,16 +234,16 @@ export abstract class ShellSession {
         `[SHELL-SESSION]: shell has exited for ${this.terminalId} closed with exitcode=${exitCode}`,
       );
 
+      this.dependencies.shellSessionProcesses.delete(this.terminalId);
+
       // This might already be false because of the kill() within the websocket.on("close") handler
       if (this.running) {
         this.running = false;
 
-        if (exitCode > 0) {
-          this.send({ type: TerminalChannels.STDOUT, data: "Terminal will auto-close in 15 seconds ..." });
-          setTimeout(() => this.exit(), 15 * 1000);
-        } else {
-          this.exit();
-        }
+        this.send({
+          type: TerminalChannels.STDOUT,
+          data: `\n\x1b[0m\x1b[1m[Process exited with code ${exitCode}]`,
+        });
       }
     });
 
@@ -310,6 +313,10 @@ export abstract class ShellSession {
               error,
             );
           }
+        }
+
+        if (code !== WebSocketCloseEvent.AbnormalClosure && code !== WebSocketCloseEvent.GoingAway) {
+          this.dependencies.shellSessionProcesses.delete(this.terminalId);
         }
       });
 

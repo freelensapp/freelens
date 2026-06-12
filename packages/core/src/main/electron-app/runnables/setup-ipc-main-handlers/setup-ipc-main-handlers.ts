@@ -4,25 +4,31 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { IpcMainInvokeEvent } from "electron";
 import { BrowserWindow, Menu } from "electron";
-import type { IComputedValue, ObservableMap } from "mobx";
-import type { ClusterFrameInfo } from "../../../../common/cluster-frames.injectable";
-import type { ClusterId } from "../../../../common/cluster-types";
-import type { Cluster } from "../../../../common/cluster/cluster";
 import { broadcastMainChannel, broadcastMessage, ipcMainHandle, ipcMainOn } from "../../../../common/ipc";
-import { clusterSetFrameIdHandler, clusterStates } from "../../../../common/ipc/cluster";
+import {
+  clusterRefreshAccessibilityChannel,
+  clusterSetFrameIdHandler,
+  clusterStates,
+} from "../../../../common/ipc/cluster";
 import {
   windowActionHandleChannel,
   windowLocationChangedChannel,
   windowOpenAppMenuAsContextMenuChannel,
 } from "../../../../common/ipc/window";
+import { getApplicationMenuTemplate } from "../../../../features/application-menu/main/populate-application-menu.injectable";
+import { handleWindowAction, onLocationChange } from "../../../ipc/window";
+
+import type { IpcMainInvokeEvent } from "electron";
+import type { IComputedValue, ObservableMap } from "mobx";
+
+import type { Cluster } from "../../../../common/cluster/cluster";
+import type { ClusterFrameInfo } from "../../../../common/cluster-frames.injectable";
+import type { ClusterId } from "../../../../common/cluster-types";
 import type { Composite } from "../../../../common/utils/composite/get-composite/get-composite";
 import type { MenuItemRoot } from "../../../../features/application-menu/main/application-menu-item-composite.injectable";
 import type { ApplicationMenuItemTypes } from "../../../../features/application-menu/main/menu-items/application-menu-item-injection-token";
-import { getApplicationMenuTemplate } from "../../../../features/application-menu/main/populate-application-menu.injectable";
 import type { GetClusterById } from "../../../../features/cluster/storage/common/get-by-id.injectable";
-import { handleWindowAction, onLocationChange } from "../../../ipc/window";
 
 interface Dependencies {
   applicationMenuItemComposite: IComputedValue<Composite<ApplicationMenuItemTypes | MenuItemRoot>>;
@@ -30,6 +36,7 @@ interface Dependencies {
   pushCatalogToRenderer: () => void;
   clusterFrames: ObservableMap<string, ClusterFrameInfo>;
   clusters: IComputedValue<Cluster[]>;
+  refreshClusterAccessibility: (clusterId: ClusterId) => Promise<void>;
 }
 
 export const setupIpcMainHandlers = ({
@@ -38,6 +45,7 @@ export const setupIpcMainHandlers = ({
   pushCatalogToRenderer,
   clusterFrames,
   clusters,
+  refreshClusterAccessibility,
 }: Dependencies) => {
   ipcMainHandle(clusterSetFrameIdHandler, (event: IpcMainInvokeEvent, clusterId: ClusterId) => {
     const cluster = getClusterById(clusterId);
@@ -72,4 +80,9 @@ export const setupIpcMainHandlers = ({
       state: cluster.getState(),
     })),
   );
+
+  ipcMainHandle(clusterRefreshAccessibilityChannel, async (event, clusterId: ClusterId) => {
+    await refreshClusterAccessibility(clusterId);
+    return true;
+  });
 };

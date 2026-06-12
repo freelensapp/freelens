@@ -4,9 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Logger } from "@freelensapp/logger";
 import { iter, put, sortBySemverVersion } from "@freelensapp/utilities";
 import * as yaml from "js-yaml";
+
+import type { Logger } from "@freelensapp/logger";
+
 import type { ReadFile } from "../../common/fs/read-file.injectable";
 import type { Stat } from "../../common/fs/stat.injectable";
 import type { HelmRepo } from "../../common/helm/helm-repo";

@@ -6,6 +6,7 @@
 
 import { noop } from "lodash/fp";
 import { action, observable } from "mobx";
+
 import type { ForwardedPort } from "../port-forward-item";
 
 export interface PortForwardDialogOpenOptions {

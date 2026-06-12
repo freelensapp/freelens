@@ -3,38 +3,45 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
 
-import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
+import { flushPromises } from "@freelensapp/test-utils/dist";
+import { anyObject } from "jest-mock-extended/lib";
+import { PartialDeep } from "type-fest";
+import createAuthorizationApiInjectable from "../../common/cluster/create-authorization-api.injectable";
+import createCoreApiInjectable from "../../common/cluster/create-core-api.injectable";
+import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable";
+import broadcastMessageInjectable from "../../common/ipc/broadcast-message.injectable";
+import clusterConnectionInjectable from "../../main/cluster/cluster-connection.injectable";
+import detectClusterMetadataInjectable from "../../main/cluster-detectors/detect-cluster-metadata.injectable";
+import k8sRequestInjectable from "../../main/k8s-request.injectable";
+import createKubeAuthProxyInjectable from "../../main/kube-auth-proxy/create-kube-auth-proxy.injectable";
+import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+import addClusterInjectable from "./storage/common/add.injectable";
+
 import type {
   AuthorizationV1Api,
   CoreV1Api,
   V1APIGroupList,
   V1APIVersions,
-  V1NamespaceList,
   V1SelfSubjectAccessReview,
   V1SelfSubjectRulesReview,
 } from "@freelensapp/kubernetes-client-node";
-import { flushPromises } from "@freelensapp/test-utils";
-import { anyObject } from "jest-mock-extended";
-import type { PartialDeep } from "type-fest";
+
+import type { AsyncFnMock } from "@async-fn/jest";
+
 import type { Cluster } from "../../common/cluster/cluster";
-import createAuthorizationApiInjectable from "../../common/cluster/create-authorization-api.injectable";
-import createCoreApiInjectable from "../../common/cluster/create-core-api.injectable";
-import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable";
-import broadcastMessageInjectable from "../../common/ipc/broadcast-message.injectable";
-import type { DetectClusterMetadata } from "../../main/cluster-detectors/detect-cluster-metadata.injectable";
-import detectClusterMetadataInjectable from "../../main/cluster-detectors/detect-cluster-metadata.injectable";
 import type { ClusterConnection } from "../../main/cluster/cluster-connection.injectable";
-import clusterConnectionInjectable from "../../main/cluster/cluster-connection.injectable";
+import type { DetectClusterMetadata } from "../../main/cluster-detectors/detect-cluster-metadata.injectable";
 import type { K8sRequest } from "../../main/k8s-request.injectable";
-import k8sRequestInjectable from "../../main/k8s-request.injectable";
 import type { KubeAuthProxy } from "../../main/kube-auth-proxy/create-kube-auth-proxy.injectable";
-import createKubeAuthProxyInjectable from "../../main/kube-auth-proxy/create-kube-auth-proxy.injectable";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import type { Mocked } from "../../test-utils/mock-interface";
-import addClusterInjectable from "./storage/common/add.injectable";
 
 describe("Refresh Cluster Accessibility Technical Tests", () => {
   let builder: ApplicationBuilder;
@@ -502,20 +509,18 @@ const nonCoreApiResponse = {
 } as V1APIGroupList;
 
 const listNamespaceResponse = {
-  body: {
-    items: [
-      {
-        metadata: {
-          name: "default",
-        },
+  items: [
+    {
+      metadata: {
+        name: "default",
       },
-      {
-        metadata: {
-          name: "my-namespace",
-        },
+    },
+    {
+      metadata: {
+        name: "my-namespace",
       },
-    ],
-  } as PartialDeep<V1NamespaceList>,
+    },
+  ],
 } as Awaited<ReturnType<CoreV1Api["listNamespace"]>>;
 
 const coreApiKindsResponse = {
@@ -586,15 +591,13 @@ const discoveryK8sIoKindsResponse = {
 type CreateSelfSubjectRulesReviewRes = Awaited<ReturnType<AuthorizationV1Api["createSelfSubjectRulesReview"]>>;
 
 const defaultIncompletePermissions = {
-  body: {
-    status: {
-      incomplete: true,
-    },
-  } as PartialDeep<V1SelfSubjectRulesReview>,
+  status: {
+    incomplete: true,
+  },
 } as CreateSelfSubjectRulesReviewRes;
 
 const emptyPermissions = {
-  body: {
+  spec: {
     status: {
       resourceRules: [],
     },
@@ -602,7 +605,7 @@ const emptyPermissions = {
 } as CreateSelfSubjectRulesReviewRes;
 
 const defaultSingleListPermissions = {
-  body: {
+  spec: {
     status: {
       resourceRules: [
         {
@@ -616,7 +619,7 @@ const defaultSingleListPermissions = {
 } as CreateSelfSubjectRulesReviewRes;
 
 const defaultMultipleListPermissions = {
-  body: {
+  spec: {
     status: {
       resourceRules: [
         {

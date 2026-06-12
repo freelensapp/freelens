@@ -22,6 +22,10 @@
       @include table.table-cell-labels-offsets;
     }
 
+    &.age {
+      flex: 0.4;
+    }
+
     &.status {
       @include namespaces-mixins.namespaceStatus;
     }

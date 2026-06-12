@@ -20,7 +20,7 @@
   overflow: auto;
 
   &.modal {
-    background: color.adjust(#222, $alpha: -.5, $space: hsl);
+    background: color.adjust(#222, $alpha: -0.5, $space: hsl);
   }
 
   h5 {

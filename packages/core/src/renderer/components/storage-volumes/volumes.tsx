@@ -6,21 +6,23 @@
 
 import "./volumes.scss";
 
-import type { PersistentVolumeClaimApi, StorageClassApi } from "@freelensapp/kube-api";
 import { persistentVolumeClaimApiInjectable, storageClassApiInjectable } from "@freelensapp/kube-api-specifics";
 import { stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 import { Link } from "react-router-dom";
-import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
-import { KubeObjectListLayout } from "../kube-object-list-layout";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { KubeObjectAge } from "../kube-object/age";
+import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
-import type { PersistentVolumeStore } from "./store";
+import { WithTooltip } from "../with-tooltip";
 import persistentVolumeStoreInjectable from "./store.injectable";
+
+import type { PersistentVolumeClaimApi, StorageClassApi } from "@freelensapp/kube-api";
+
+import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
+import type { PersistentVolumeStore } from "./store";
 
 enum columnId {
   name = "name",
@@ -61,7 +63,6 @@ class NonInjectedPersistentVolumes extends React.Component<Dependencies> {
           renderHeaderTitle="Persistent Volumes"
           renderTableHeader={[
             { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
-            { className: "warning", showWithColumn: columnId.name },
             {
               title: "Storage Class",
               className: "storageClass",
@@ -82,18 +83,17 @@ class NonInjectedPersistentVolumes extends React.Component<Dependencies> {
             );
 
             return [
-              volume.getName(),
-              <KubeObjectStatusIcon key="icon" object={volume} />,
+              <WithTooltip>{volume.getName()}</WithTooltip>,
               <Link key="link" to={storageClassDetailsUrl} onClick={stopPropagation}>
-                {storageClassName}
+                <WithTooltip>{storageClassName}</WithTooltip>
               </Link>,
-              volume.getCapacity(),
+              <WithTooltip>{volume.getCapacity()}</WithTooltip>,
               claimRef && (
                 <Link
                   to={getDetailsUrl(persistentVolumeClaimApi.formatUrlForNotListing(claimRef))}
                   onClick={stopPropagation}
                 >
-                  {claimRef.name}
+                  <WithTooltip>{claimRef.name}</WithTooltip>
                 </Link>
               ),
               <KubeObjectAge key="age" object={volume} />,

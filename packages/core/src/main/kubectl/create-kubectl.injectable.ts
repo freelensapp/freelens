@@ -16,12 +16,14 @@ import baseBundledBinariesDirectoryInjectable from "../../common/vars/base-bundl
 import bundledKubectlVersionInjectable from "../../common/vars/bundled-kubectl-version.injectable";
 import normalizedPlatformInjectable from "../../common/vars/normalized-platform.injectable";
 import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
+import downloadBinaryInjectable from "../fetch/download-binary.injectable";
 import kubectlBinaryNameInjectable from "./binary-name.injectable";
 import bundledKubectlBinaryPathInjectable from "./bundled-binary-path.injectable";
-import type { KubectlDependencies } from "./kubectl";
 import { Kubectl } from "./kubectl";
 import kubectlDownloadingNormalizedArchInjectable from "./normalized-arch.injectable";
 import kubectlVersionMapInjectable from "./version-map.injectable";
+
+import type { KubectlDependencies } from "./kubectl";
 
 export type CreateKubectl = (version: string) => Kubectl;
 
@@ -40,6 +42,7 @@ const createKubectlInjectable = getInjectable({
       bundledKubectlVersion: di.inject(bundledKubectlVersionInjectable),
       kubectlVersionMap: di.inject(kubectlVersionMapInjectable),
       logger: di.inject(loggerInjectionToken),
+      downloadBinary: di.inject(downloadBinaryInjectable),
       getDirnameOfPath: di.inject(getDirnameOfPathInjectable),
       joinPaths: di.inject(joinPathsInjectable),
       getBasenameOfPath: di.inject(getBasenameOfPathInjectable),

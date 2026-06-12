@@ -5,8 +5,9 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { CatalogEntity, CatalogEntityContextMenuContext } from "./catalog-entity";
 import catalogCategoryRegistryInjectable from "./category-registry.injectable";
+
+import type { CatalogEntity, CatalogEntityContextMenuContext } from "./catalog-entity";
 
 export type VisitEntityContextMenu = (entity: CatalogEntity, context: CatalogEntityContextMenuContext) => void;
 

@@ -5,9 +5,10 @@
  */
 
 import { ingressClassApiInjectable } from "@freelensapp/kube-api-specifics";
-import type { IngressClass } from "@freelensapp/kube-object";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import ingressClassStoreInjectable from "./ingress-class-store.injectable";
+
+import type { IngressClass } from "@freelensapp/kube-object";
 
 export const ingressClassSetDefaultInjectable = getInjectable({
   id: "ingressClassSetDefaultInjectable",

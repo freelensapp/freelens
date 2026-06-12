@@ -7,6 +7,6 @@
 .VirtualList {
   > div > .list {
     /* Render scrollbar in content area, preventing to occupy extra space */
-    overflow-y: overlay!important;
+    overflow-y: overlay !important;
   }
 }

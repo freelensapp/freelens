@@ -4,22 +4,24 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { DiContainer } from "@ogre-tools/injectable";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { RenderResult } from "@testing-library/react";
 import { computed, runInAction } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import type { Route } from "../common/front-end-routing/front-end-route-injection-token";
 import { frontEndRouteInjectionToken } from "../common/front-end-routing/front-end-route-injection-token";
 import { navigateToRouteInjectionToken } from "../common/front-end-routing/navigate-to-route-injection-token";
-import type { ApplicationBuilder } from "../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../renderer/components/test-utils/get-application-builder";
 import currentPathInjectable from "../renderer/routes/current-path.injectable";
 import currentRouteInjectable from "../renderer/routes/current-route.injectable";
 import queryParametersInjectable from "../renderer/routes/query-parameters.injectable";
 import routePathParametersInjectable from "../renderer/routes/route-path-parameters.injectable";
 import { routeSpecificComponentInjectionToken } from "../renderer/routes/route-specific-component-injection-token";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+import type { RenderResult } from "@testing-library/react";
+
+import type { Route } from "../common/front-end-routing/front-end-route-injection-token";
+import type { ApplicationBuilder } from "../renderer/components/test-utils/get-application-builder";
 
 describe("navigating between routes", () => {
   let rendered: RenderResult;

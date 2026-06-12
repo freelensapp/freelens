@@ -1,6 +1,8 @@
-import { getMessageChannelListenerInjectable } from "@freelensapp/messaging";
-import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
-import { getMessageChannel } from "@freelensapp/messaging";
+import {
+  getMessageChannel,
+  getMessageChannelListenerInjectable,
+  sendMessageToChannelInjectionToken,
+} from "@freelensapp/messaging";
 import { reaction } from "mobx";
 import { computedChannelObserverInjectionToken } from "./computed-channel.injectable";
 

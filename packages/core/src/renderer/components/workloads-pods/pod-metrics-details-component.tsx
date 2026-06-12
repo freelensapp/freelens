@@ -4,14 +4,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Pod } from "@freelensapp/kube-object";
 import { type IAsyncComputed, withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
-import type { PodMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-pod-metrics.injectable";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { ResourceMetrics } from "../resource-metrics";
 import podMetricsInjectable from "./metrics.injectable";
 import { PodCharts, podMetricTabs } from "./pod-charts";
+
+import type { Pod } from "@freelensapp/kube-object";
+
+import type { PodMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-pod-metrics.injectable";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 interface Dependencies {
   metrics: IAsyncComputed<PodMetricData>;

@@ -22,13 +22,18 @@
     margin-right: 0;
   }
 
-  &.running:not(.ready) {
-    background-color: #ff9800a0;;
-    border: 1px solid var(--colorWarning);
+  &.container-ephemeral {
+    background-color: var(--colorInfo);
   }
 
   &.running {
     background-color: var(--colorOk);
+  }
+
+  &.restarted {
+    background-color: var(--colorOk);
+    outline: 1px solid var(--colorWarning);
+    outline-offset: 3px;
   }
 
   &.terminated {
@@ -44,5 +49,4 @@
     background-color: #ff980090;
     border: 1px solid var(--colorWarning);
   }
-
 }

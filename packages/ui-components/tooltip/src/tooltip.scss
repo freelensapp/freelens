@@ -4,9 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-
 .Tooltip {
-
   position: fixed;
   margin: 0 !important;
   background: var(--mainBackground);
@@ -15,12 +13,12 @@
   border-radius: 3px;
   color: var(--textColorAccent);
   white-space: normal;
-  padding: .5em;
+  padding: 0.5em;
   text-align: center;
   pointer-events: none;
   transition: opacity 150ms 150ms ease-in-out;
   z-index: 100000;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.24);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.24);
   left: 0;
   top: 0;
   opacity: 0;
@@ -37,7 +35,8 @@
 
   &.formatter {
     &.nowrap {
-      &, * {
+      &,
+      * {
         white-space: nowrap;
       }
     }

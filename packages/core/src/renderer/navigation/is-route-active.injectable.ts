@@ -5,8 +5,9 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { RouteProps } from "react-router";
 import matchRouteInjectable from "./match-route.injectable";
+
+import type { RouteProps } from "react-router";
 
 export type IsRouteActive = (route: string | string[] | RouteProps) => boolean;
 

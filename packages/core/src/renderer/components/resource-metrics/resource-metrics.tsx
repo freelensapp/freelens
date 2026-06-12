@@ -6,16 +6,19 @@
 
 import "./resource-metrics.scss";
 
-import type { KubeObject } from "@freelensapp/kube-object";
 import { Spinner } from "@freelensapp/spinner";
 import { cssNames } from "@freelensapp/utilities";
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import { isComputed } from "mobx";
 import { observer } from "mobx-react-lite";
 import React, { createContext, useState } from "react";
+import { Radio, RadioGroup } from "../radio";
+
+import type { KubeObject } from "@freelensapp/kube-object";
+
+import type { IAsyncComputed } from "@ogre-tools/injectable-react";
+
 import type { MetricData } from "../../../common/k8s-api/endpoints/metrics.api";
 import type { MetricsTab } from "../chart/options";
-import { Radio, RadioGroup } from "../radio";
 
 export type AtLeastOneMetricTab = [MetricsTab, ...MetricsTab[]];
 

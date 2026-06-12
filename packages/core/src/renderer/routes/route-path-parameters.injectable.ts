@@ -7,8 +7,9 @@
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import { matchPath } from "react-router";
-import type { Route } from "../../common/front-end-routing/front-end-route-injection-token";
 import currentPathInjectable from "./current-path.injectable";
+
+import type { Route } from "../../common/front-end-routing/front-end-route-injection-token";
 
 const routePathParametersInjectable = getInjectable({
   id: "route-path-parameters",

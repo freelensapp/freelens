@@ -7,9 +7,25 @@
 @use "../workloads/workloads-mixins";
 @use "../vars" as *;
 
+$pod-condition-colors: (
+  ContainersReady: var(--colorOk),
+  DisruptionTarget: var(--colorError),
+  Initialized: var(--colorOk),
+  PodReadyToStartContainers: var(--colorOk),
+  PodResizeInProgress: var(--colorWarning),
+  PodResizePending: var(--colorWarning),
+  PodScheduled: var(--colorOk),
+  Ready: var(--colorSuccess),
+);
+
 .PodDetails {
-  .status {
-    @include workloads-mixins.pod-status-colors;
+  .conditions {
+    @each $status, $color in $pod-condition-colors {
+      .#{$status} {
+        background: $color;
+        color: white;
+      }
+    }
   }
 
   .volume {

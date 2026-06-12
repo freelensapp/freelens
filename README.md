@@ -3,8 +3,12 @@
 <!-- markdownlint-disable MD013 -->
 
 [![Home](https://img.shields.io/badge/%F0%9F%8F%A0-freelens.app-02a7a0)](https://freelens.app)
-[![GitHub](https://img.shields.io/github/stars/freelensapp/freelens?style=flat&label=GitHub%20%E2%AD%90)](https://github.com/freelensapp/freelens)
-[![Discord](https://img.shields.io/badge/%E2%80%8E-Discord-5763f6?style=flat&logo=discord)](https://discord.com/channels/1344433118924374148/1344433119549329532)
+[![GitHub](https://img.shields.io/github/stars/freelensapp/freelens?style=flat&label=GitHub%20%E2%AD%90&logo=github)](https://github.com/freelensapp/freelens)
+[![Discord](https://img.shields.io/badge/dynamic/json?color=blue&label=Discord&style=flat&query=approximate_member_count&url=https%3A%2F%2Fdiscordapp.com%2Fapi%2Finvites%2F%2FNjKZERK95Y%3Fwith_counts%3Dtrue&logo=discord)](https://discord.gg/NjKZERK95Y)
+[![Subreddit](https://img.shields.io/reddit/subreddit-subscribers/freelens?style=flat&label=r%2Ffreelens&logo=reddit)](https://www.reddit.com/r/freelens/)
+[![Bounties on BountyHub](https://img.shields.io/badge/Bounties-on%20BountyHub-yellow)](https://bountyhub.dev/bounties?repo=freelens)
+[![DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/freelensapp/freelens)
+[![LFX Health Score](https://insights.linuxfoundation.org/api/badge/health-score?project=freelens)](https://insights.linuxfoundation.org/project/freelens)
 [![license](https://img.shields.io/github/license/freelensapp/freelens.svg)](https://github.com/freelensapp/freelens?tab=MIT-1-ov-file#readme)
 [![release](https://img.shields.io/github/v/release/freelensapp/freelens?display_name=tag&sort=semver)](https://github.com/freelensapp/freelens/releases/latest)
 [![Homebrew Cask Version](https://img.shields.io/homebrew/cask/v/freelens?label=homebrew)](https://formulae.brew.sh/cask/freelens#default)
@@ -37,7 +41,7 @@ download the right package for your system.
 
 ### macOS
 
-macOS 11 or later is required.
+macOS 12 or later is required.
 
 Download either the PKG (installer) or DMG (image) package from the
 [releases](https://github.com/freelensapp/freelens/releases) page. Both arm64
@@ -143,10 +147,22 @@ package page.
 
 Windows 10 or later is required.
 
-Download the EXE or MSI installers from the
+Download the EXE (NSIS) or MSI installers from the
 [releases](https://github.com/freelensapp/freelens/releases) page.
 
-Only the x64 (amd64) version of the Windows binaries is provided.
+Both the x64 (amd64) and arm64 versions of the Windows binaries are provided.
+However, an EXE installer (NSIS) itself is x86 binary only even if it installs
+arm64 application and then installs to `C:\Program Files (x86)\Freelens` path
+by default.
+
+The version of the MSI package has the last 4th digit always `0` and this is a
+limitation of this package format.
+
+#### Portable
+
+Download the Portable EXE from the
+[releases](https://github.com/freelensapp/freelens/releases) page. It is a
+self-contained executable that can be run without installation.
 
 #### WinGet
 
@@ -162,6 +178,11 @@ winget install Freelensapp.Freelens
 
 The `--silent` option is supported to suppress all UI.
 
+The `--scope user` or `--scope machine` option can be used to install it
+either to local user directory or to `C:\Program Files`.
+
+WinGet installs the application from EXE installer (NSIS).
+
 #### Scoop
 
 The package is available in the
@@ -175,25 +196,44 @@ scoop bucket add extras
 scoop install freelens
 ```
 
+Scoop uses MSI package to install the application.
+
 ## Development
 
-Read [DEVELOPMENT.md](DEVELOPMENT.md) to see how to build the application
-from source.
+Visit [Development](https://github.com/freelensapp/freelens/wiki/Development)
+wiki page to see how to build the application from source.
+Check out the [Freelens Docs](https://freelensapp.github.io/docs/) to contribute to development or create your own extension.
 
 ## Extensions
 
-Anyone can develop extensions for Freelens and many extensions previously used with Open Lens have already been converted.  
-Visit the [extensions page](https://github.com/freelensapp/freelens/wiki/Extensions) to see them and write in the [appropriate discussion](https://github.com/freelensapp/freelens/discussions/117) if you also want to propose yours.
+Anyone can develop extensions for Freelens and many extensions previously used
+with Open Lens have already been converted.
+Visit [Extensions](https://github.com/freelensapp/freelens/wiki/Extensions) wiki
+page to see them and write in the [appropriate
+discussion](https://github.com/freelensapp/freelens/discussions/117) if you
+also want to propose yours.
 
 ## Community
 
-Get updates about Freelens & keep in touch with our community  
+Get updates about Freelens & keep in touch with our community
 
 - Follow us on [LinkedIn](https://www.linkedin.com/company/freelensapp/)
+- Follow us on [Bluesky](https://bsky.app/profile/freelensapp.bsky.social)
+- Follow us on [X](https://x.com/freelensapp)
 - Join our [Discussions](https://github.com/freelensapp/freelens/discussions)
 - Chat on [Discord](https://discord.gg/NjKZERK95Y)
+- Discuss on [Reddit](https://www.reddit.com/r/freelens/)
+- Watch us on [YouTube](https://www.youtube.com/@Freelensapp)
 - Read our [Wiki](https://github.com/freelensapp/freelens/wiki)
 - Open an [Issue](https://github.com/freelensapp/freelens/issues)
+
+## Adopters
+
+Freelens is used by many individuals, companies, and organizations.
+
+We have created the [adopters](https://github.com/freelensapp/freelens/blob/main/ADOPTERS.md) file for anyone who would like to be part of the official list.
+
+Anyone is welcome to request to be added to the official list by opening a dedicated Pull Request.
 
 ## Contributing
 
@@ -204,8 +244,55 @@ Anyone is welcome to collaborate to advance the Freelens project. Read
 
 ## Expenses and Donations
 
-Anyone can support the Freelens project by making donations to cover maintenance costs and invest in its development.  
-For more information, see our dedicated page in our Wiki: [Expenses and Donations](https://github.com/freelensapp/freelens/wiki/Expenses-and-Donations)
+Anyone can support the Freelens project by making donations to cover
+maintenance costs and invest in its development.
+
+For more information, see our dedicated page in our Wiki: [Expenses and
+Donations](https://github.com/freelensapp/freelens/wiki/Expenses-and-Donations)
+
+## Fund an issue or earn money by developing
+
+Anyone who wishes can also make targeted donations, funding their preferred issues alone or with others via [BountyHub](https://www.bountyhub.dev/en/bounties?repo=freelens).
+
+At the same time, anyone who wishes can apply by doing PR to earn the bounty.
+
+Features are, in any case, decided democratically according to the community's wishes and overseen by the Freelens core team.
+
+For more information, see our dedicated page in our Wiki: [Fund an issue or earn money by developing](https://github.com/freelensapp/freelens/wiki/Fund-an-issue-or-earn-money-by-developing)
+
+## The Freelens Teams
+
+### Core Team
+
+Each member of the core team is focused on specific roles. You can contact us
+at any time according to them.
+
+- [Roberto Bandini](https://www.linkedin.com/in/bandiniroberto/) - [@robertobandini](https://github.com/robertobandini) - Founder<br/>
+General organization management, relationships, product management, community, marketing, freelens-ai extension
+- [Piotr Roszatycki](https://www.linkedin.com/in/piotr.roszatycki) - [@dex4er](https://github.com/dex4er) - Maintainer<br/>
+Development direction, architecture and release management, flux-cd extension, freelens-ai extension
+- [Mario Offertucci](https://www.linkedin.com/in/mario-offertucci-703113b6/) - [@mariomamo](https://github.com/mariomamo) - Maintainer<br/>
+UI, Docs, freelens-ai extension development management
+- [Leopoldo Capuano](https://www.linkedin.com/in/leo-capuano/) - [@leo-capvano](https://github.com/leo-capvano) - Maintainer<br/>
+GenAI solutions & freelens-ai extension development management
+
+### Release Engineering Team
+
+This team is responsible for driving Freelens releases forward, reviewing PRs, and making decisions about the architecture and technical roadmap under the supervision of the core team.
+
+- [Piotr Roszatycki](https://www.linkedin.com/in/piotr.roszatycki) - [@dex4er](https://github.com/dex4er) - Maintainer<br/>
+Release Engineering Team Lead
+- [Omar Alani](https://www.linkedin.com/in/omarluq/) - [@omarluq](https://github.com/omarluq) - Maintainer<br/>
+Release Engineering Team Member
+- [Matías Roje](https://www.linkedin.com/in/matias-roje-carrasco/) - [@MatiasRoje](https://github.com/MatiasRoje) - Maintainer<br/>
+Release Engineering Team Member
+
+The project is growing very quickly and everyone is welcome!
+
+If you also want to be part of it, visit the wiki page: [We want
+you!](https://github.com/freelensapp/freelens/wiki/We-want-you!).
+
+Or contact us at <freelens@freelens.app> for any questions or suggestions!
 
 ## License
 
@@ -214,7 +301,7 @@ Lens](https://github.com/lensapp/lens/tree/master), the core of [Lens
 Desktop](https://k8slens.dev), with the aim of carrying forward its
 open-source version.
 
-Copyright (c) 2024-2025 Freelens Authors.
+Copyright (c) 2024-2026 Freelens Authors.
 
 Copyright (c) 2022 OpenLens Authors.
 

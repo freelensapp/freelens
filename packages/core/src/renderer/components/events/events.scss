@@ -7,25 +7,31 @@
 @use "../vars" as *;
 
 .Events {
-  .Table {
-    .TableCell {
-      &.message {
-        flex-grow: 3;
+  .TableCell {
+    &.message {
+      flex-grow: 3;
 
-        &.warning {
-          color: var(--colorError);
-        }
+      &.warning {
+        color: var(--colorError);
       }
+    }
 
-      &.object {
-        flex-grow: 3;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
+    &.object {
+      flex-grow: 3;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
 
-      &.source {
-        flex-grow: 1.5;
-      }
+    &.source {
+      flex-grow: 1.5;
+    }
+
+    &.age {
+      flex-grow: 0.4;
+    }
+
+    &.last-seen {
+      flex-grow: 0.4;
     }
   }
 

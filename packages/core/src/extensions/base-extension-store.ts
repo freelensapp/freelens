@@ -4,16 +4,17 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
-import * as path from "path";
 import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import { getOrInsertWith } from "@freelensapp/utilities";
-import type { Options } from "conf";
+import assert from "assert";
+import * as path from "path";
 import directoryForUserDataInjectable from "../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import type { StaticThis } from "../common/utils/singleton";
 import createPersistentStorageInjectable, {
   type PersistentStorage,
 } from "../features/persistent-storage/common/create.injectable";
+
+import type { Options } from "conf";
+
 import type { Migrations } from "../features/persistent-storage/common/migrations.injectable";
 import type { PersistentStorageParams } from "./common-api/stores";
 import type { LensExtension } from "./lens-extension";
@@ -24,27 +25,35 @@ export interface ExtensionStoreParams<T extends object>
   cwd?: string;
 }
 
-export abstract class BaseExtensionStore<T extends object> {
-  private static readonly instances = new WeakMap<object, any>();
+export abstract class BaseExtensionStore<M extends object = any> {
+  private static readonly instances = new WeakMap<typeof BaseExtensionStore, object>();
 
-  /**
-   * @deprecated This is a form of global shared state. Just call `new Store(...)`
-   */
-  static createInstance<T, R extends any[]>(this: StaticThis<T, R>, ...args: R): T {
-    return getOrInsertWith(BaseExtensionStore.instances, this, () => new this(...args)) as T;
+  static createInstance<S extends BaseExtensionStore<M>, M extends object = any, A extends any[] = []>(...args: A): S {
+    return getOrInsertWith(BaseExtensionStore.instances, this, () => new (this as any)(...args));
   }
 
-  /**
-   * @deprecated This is a form of global shared state. Just call `new Store(...)`
-   */
-  static getInstance<T, R extends any[]>(this: StaticThis<T, R>, strict?: true): T;
-  static getInstance<T, R extends any[]>(this: StaticThis<T, R>, strict: false): T | undefined;
-  static getInstance<T, R extends any[]>(this: StaticThis<T, R>, strict = true): T | undefined {
+  static getInstance<S extends BaseExtensionStore<M>, M extends object = any>(strict?: true): S;
+  static getInstance<S extends BaseExtensionStore<M>, M extends object = any>(strict: false): S | undefined;
+  static getInstance<S extends BaseExtensionStore<M>, M extends object = any>(strict = true): S | undefined {
     if (!BaseExtensionStore.instances.has(this) && strict) {
       throw new TypeError(`instance of ${this.name} is not created`);
     }
 
-    return BaseExtensionStore.instances.get(this) as T | undefined;
+    return BaseExtensionStore.instances.get(this) as S | undefined;
+  }
+
+  static getInstanceOrCreate<S extends BaseExtensionStore<M>, M extends object = any, A extends any[] = []>(
+    ...args: A
+  ): S {
+    try {
+      return this.getInstance<S, M>();
+    } catch (e) {
+      if (e instanceof TypeError) {
+        return this.createInstance<S, M, A>(...args);
+      } else {
+        throw e;
+      }
+    }
   }
 
   protected persistentStorage?: PersistentStorage;
@@ -57,11 +66,8 @@ export abstract class BaseExtensionStore<T extends object> {
     } as const;
   })();
 
-  constructor(protected readonly rawParams: ExtensionStoreParams<T>) {}
+  constructor(protected readonly rawParams: ExtensionStoreParams<M>) {}
 
-  /**
-   * @deprecated This is a form of global shared state. Just call `new Store(...)`
-   */
   static resetInstance() {
     BaseExtensionStore.instances.delete(this);
   }
@@ -105,6 +111,6 @@ export abstract class BaseExtensionStore<T extends object> {
     );
   }
 
-  abstract fromStore(data: Partial<T>): void;
-  abstract toJSON(): T;
+  abstract fromStore(data: Partial<M>): void;
+  abstract toJSON(): M;
 }

@@ -5,11 +5,13 @@
  */
 
 import { getRandomIdInjectionToken } from "@freelensapp/random";
-import type { RenderResult } from "@testing-library/react";
 import { computed } from "mobx";
 import React from "react";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+
+import type { RenderResult } from "@testing-library/react";
+
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import type { FakeExtensionOptions } from "../../renderer/components/test-utils/get-extension-fake";
 
 describe("status-bar-items-originating-from-extensions", () => {

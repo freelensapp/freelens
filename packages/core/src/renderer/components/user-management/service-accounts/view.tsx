@@ -9,16 +9,17 @@ import "./view.scss";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import { KubeObjectListLayout } from "../../kube-object-list-layout";
-import { KubeObjectStatusIcon } from "../../kube-object-status-icon";
 import { KubeObjectAge } from "../../kube-object/age";
+import { KubeObjectListLayout } from "../../kube-object-list-layout";
 import { SiblingsInTabLayout } from "../../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../../namespaces/namespace-select-badge";
-import type { OpenCreateServiceAccountDialog } from "./create-dialog/open.injectable";
+import { WithTooltip } from "../../with-tooltip";
 import openCreateServiceAccountDialogInjectable from "./create-dialog/open.injectable";
 import { CreateServiceAccountDialog } from "./create-dialog/view";
-import type { ServiceAccountStore } from "./store";
 import serviceAccountStoreInjectable from "./store.injectable";
+
+import type { OpenCreateServiceAccountDialog } from "./create-dialog/open.injectable";
+import type { ServiceAccountStore } from "./store";
 
 enum columnId {
   name = "name",
@@ -52,13 +53,11 @@ class NonInjectedServiceAccounts extends React.Component<Dependencies> {
           renderHeaderTitle="Service Accounts"
           renderTableHeader={[
             { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
-            { className: "warning", showWithColumn: columnId.name },
             { title: "Namespace", className: "namespace", sortBy: columnId.namespace, id: columnId.namespace },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
           renderTableContents={(account) => [
-            account.getName(),
-            <KubeObjectStatusIcon key="icon" object={account} />,
+            <WithTooltip>{account.getName()}</WithTooltip>,
             <NamespaceSelectBadge key="namespace" namespace={account.getNs()} />,
             <KubeObjectAge key="age" object={account} />,
           ]}

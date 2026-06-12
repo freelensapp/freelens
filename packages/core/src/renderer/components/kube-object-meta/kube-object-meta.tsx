@@ -4,24 +4,39 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { NamespaceApi } from "@freelensapp/kube-api";
-import { namespaceApiInjectable } from "@freelensapp/kube-api-specifics";
-import type { KubeMetaField } from "@freelensapp/kube-object";
 import { KubeObject } from "@freelensapp/kube-object";
-import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import yaml from "js-yaml";
 import { observer } from "mobx-react";
 import React from "react";
 import { Link } from "react-router-dom";
-import type { ApiManager } from "../../../common/k8s-api/api-manager";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
-import { DrawerItem, DrawerItemLabels } from "../drawer";
-import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
+import { defaultYamlDumpOptions } from "../../../common/kube-helpers";
+import { DrawerItem, DrawerItemLabels, DrawerParamToggler } from "../drawer";
+import { DurationAbsoluteTimestamp } from "../events";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { KubeObjectAge } from "../kube-object/age";
+import { LinkToNamespace } from "../kube-object-link";
 import { LocaleDate } from "../locale-date";
+import { MonacoEditor } from "../monaco-editor";
+import { WithTooltip } from "../with-tooltip";
+
+import type { KubeMetaField } from "@freelensapp/kube-object";
+import type { Logger } from "@freelensapp/logger";
+
+import type { ApiManager } from "../../../common/k8s-api/api-manager";
+import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
+
+interface ManagedFieldsEntry {
+  manager: string;
+  operation: "Apply" | "Update";
+  apiVersion?: string;
+  time?: string;
+  fieldsType?: string;
+  fieldsV1?: unknown;
+  subresource?: string;
+}
 
 export interface KubeObjectMetaProps {
   object: KubeObject;
@@ -31,19 +46,21 @@ export interface KubeObjectMetaProps {
 interface Dependencies {
   getDetailsUrl: GetDetailsUrl;
   apiManager: ApiManager;
-  namespaceApi: NamespaceApi;
   logger: Logger;
 }
 
+function ManagedFieldEntryLabel({ entry }: { entry: ManagedFieldsEntry }) {
+  return (
+    <WithTooltip tooltip={entry.time && <DurationAbsoluteTimestamp timestamp={entry.time} />}>
+      {entry.manager}
+      {": "}
+      {entry.operation}
+    </WithTooltip>
+  );
+}
+
 const NonInjectedKubeObjectMeta = observer((props: Dependencies & KubeObjectMetaProps) => {
-  const {
-    apiManager,
-    getDetailsUrl,
-    object,
-    hideFields = ["uid", "resourceVersion", "selfLink"],
-    logger,
-    namespaceApi,
-  } = props;
+  const { apiManager, getDetailsUrl, object, hideFields = ["uid", "resourceVersion", "selfLink"], logger } = props;
 
   if (!object) {
     return null;
@@ -57,27 +74,47 @@ const NonInjectedKubeObjectMeta = observer((props: Dependencies & KubeObjectMeta
 
   const isHidden = (field: KubeMetaField) => hideFields.includes(field);
 
+  const isManagedFieldsEntry = (entry: unknown): entry is ManagedFieldsEntry => {
+    return (
+      typeof entry === "object" &&
+      entry !== null &&
+      "manager" in entry &&
+      typeof entry.manager === "string" &&
+      entry.manager.length > 0 &&
+      "operation" in entry &&
+      typeof entry.operation === "string" &&
+      entry.operation.length > 0
+    );
+  };
+
   const {
     selfLink,
-    metadata: { creationTimestamp },
+    metadata: { creationTimestamp, deletionTimestamp, managedFields },
   } = object;
   const ownerRefs = object.getOwnerRefs();
   const namespace = object.getNs();
-  const namespaceDetailsUrl = namespace ? getDetailsUrl(namespaceApi.formatUrlForNotListing({ name: namespace })) : "";
 
   return (
     <>
       <DrawerItem name="Created" hidden={isHidden("creationTimestamp") || !creationTimestamp}>
-        <KubeObjectAge object={object} compact={false} />
+        <KubeObjectAge object={object} compact={false} withTooltip={false} />
         {" ago "}
-        {creationTimestamp && <LocaleDate date={creationTimestamp} />}
+        {creationTimestamp && (
+          <>
+            {"("}
+            <LocaleDate date={creationTimestamp} />
+            {")"}
+          </>
+        )}
+      </DrawerItem>
+      <DrawerItem name="Deleted" hidden={isHidden("deletionTimestamp") || !deletionTimestamp}>
+        <DurationAbsoluteTimestamp timestamp={deletionTimestamp} />
       </DrawerItem>
       <DrawerItem name="Name" hidden={isHidden("name")}>
         {object.getName()}
-        <KubeObjectStatusIcon key="icon" object={object} />
       </DrawerItem>
       <DrawerItem name="Namespace" hidden={isHidden("namespace") || !namespace}>
-        <Link to={namespaceDetailsUrl}>{namespace}</Link>
+        <LinkToNamespace namespace={namespace} />
       </DrawerItem>
       <DrawerItem name="UID" hidden={isHidden("uid")}>
         {object.getId()}
@@ -101,6 +138,22 @@ const NonInjectedKubeObjectMeta = observer((props: Dependencies & KubeObjectMeta
           ))}
         </DrawerItem>
       )}
+      {managedFields && managedFields.length > 0 && (
+        <DrawerItem name="Managed Fields" hidden={isHidden("managedFields")}>
+          {managedFields.filter(isManagedFieldsEntry).map((entry) => (
+            <DrawerParamToggler
+              label={<ManagedFieldEntryLabel entry={entry} />}
+              key={`${entry.manager}-${entry.operation}`}
+            >
+              <MonacoEditor
+                readOnly
+                style={{ height: 200 }}
+                value={yaml.dump(entry.fieldsV1, defaultYamlDumpOptions)}
+              />
+            </DrawerParamToggler>
+          ))}
+        </DrawerItem>
+      )}
     </>
   );
 });
@@ -111,6 +164,5 @@ export const KubeObjectMeta = withInjectables<Dependencies, KubeObjectMetaProps>
     getDetailsUrl: di.inject(getDetailsUrlInjectable),
     apiManager: di.inject(apiManagerInjectable),
     logger: di.inject(loggerInjectionToken),
-    namespaceApi: di.inject(namespaceApiInjectable),
   }),
 });

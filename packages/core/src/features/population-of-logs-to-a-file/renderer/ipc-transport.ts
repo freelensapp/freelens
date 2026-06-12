@@ -5,9 +5,10 @@
  */
 
 import { setImmediate } from "timers";
+import TransportStream from "winston-transport";
+
 import type { LogEntry } from "winston";
 import type { TransportStreamOptions } from "winston-transport";
-import TransportStream from "winston-transport";
 
 interface IpcLogTransportOptions extends TransportStreamOptions {
   sendIpcLogMessage: (entry: LogEntry) => void;

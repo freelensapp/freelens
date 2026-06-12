@@ -4,13 +4,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import type { RenderResult } from "@testing-library/react";
 import React from "react";
+import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
+
+import type { AsyncFnMock } from "@async-fn/jest";
+import type { RenderResult } from "@testing-library/react";
+
 import type { KubernetesCluster } from "../../../common/catalog-entities";
 import type { ApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
-import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 import type { TestExtensionRenderer } from "../../../renderer/components/test-utils/get-extension-fake";
 
 describe("disable-cluster-pages-when-cluster-is-not-relevant", () => {

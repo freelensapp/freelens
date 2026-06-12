@@ -1,5 +1,6 @@
-import type { DiContainerForInjection } from "@ogre-tools/injectable";
 import { getInjectable, getInjectionToken } from "@ogre-tools/injectable";
+
+import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export interface RequestChannel<Request, Response> {
   id: string;
@@ -7,9 +8,10 @@ export interface RequestChannel<Request, Response> {
   _responseSignature?: Response;
 }
 
-export type RequestChannelHandler<Channel> = Channel extends RequestChannel<infer Request, infer Response>
-  ? (req: Request) => Promise<Response> | Response
-  : never;
+export type RequestChannelHandler<Channel> =
+  Channel extends RequestChannel<infer Request, infer Response>
+    ? (req: Request) => Promise<Response> | Response
+    : never;
 
 export interface RequestChannelListener<Channel> {
   id: string;

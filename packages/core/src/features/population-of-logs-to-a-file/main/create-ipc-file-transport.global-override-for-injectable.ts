@@ -6,8 +6,9 @@
 
 import { getGlobalOverride } from "@freelensapp/test-utils";
 import { noop } from "@freelensapp/utilities";
-import type { transports } from "winston";
 import createIpcFileLoggerTransportInjectable from "./create-ipc-file-transport.injectable";
+
+import type { transports } from "winston";
 
 export default getGlobalOverride(
   createIpcFileLoggerTransportInjectable,

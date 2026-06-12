@@ -6,14 +6,16 @@
 
 export * from "./aggregation-rule";
 export * from "./capabilities";
+export * from "./condition";
 export * from "./container";
 export * from "./container-port";
 export * from "./cross-version-object-reference";
 export * from "./env-from-source";
 export * from "./env-source";
+export * from "./env-var";
 export * from "./env-var-key-selector";
 export * from "./env-var-source";
-export * from "./env-var";
+export * from "./ephemeral-container";
 export * from "./exec-action";
 export * from "./handler";
 export * from "./http-get-action";

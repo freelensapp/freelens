@@ -6,18 +6,20 @@
 
 import "./priority-classes.scss";
 
-import type { PriorityClass } from "@freelensapp/kube-object";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
 import { observer } from "mobx-react";
 import * as React from "react";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
-import { KubeObjectListLayout } from "../kube-object-list-layout";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { KubeObjectAge } from "../kube-object/age";
+import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
-import type { PriorityClassStore } from "./store";
+import { WithTooltip } from "../with-tooltip";
 import priorityClassStoreInjectable from "./store.injectable";
+
+import type { PriorityClass } from "@freelensapp/kube-object";
+
+import type { KubeObjectDetailsProps } from "../kube-object-details";
+import type { PriorityClassStore } from "./store";
 
 enum columnId {
   name = "name",
@@ -59,7 +61,6 @@ class NonInjectedPriorityClasses extends React.Component<PriorityClassesProps & 
           renderHeaderTitle="Priority Classes"
           renderTableHeader={[
             { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
-            { className: "warning", showWithColumn: columnId.name },
             { title: "Value", className: "value", sortBy: columnId.value, id: columnId.value },
             {
               title: "Global Default",
@@ -70,9 +71,8 @@ class NonInjectedPriorityClasses extends React.Component<PriorityClassesProps & 
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
           renderTableContents={(pc) => [
-            pc.getName(),
-            <KubeObjectStatusIcon key="icon" object={pc} />,
-            pc.getValue(),
+            <WithTooltip>{pc.getName()}</WithTooltip>,
+            <WithTooltip>{pc.getValue()}</WithTooltip>,
             pc.getGlobalDefault(),
             <KubeObjectAge key="age" object={pc} />,
           ]}

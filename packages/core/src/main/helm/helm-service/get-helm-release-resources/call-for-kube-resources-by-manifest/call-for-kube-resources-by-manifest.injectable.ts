@@ -4,14 +4,17 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { KubeJsonApiData } from "@freelensapp/kube-object";
 import { pipeline } from "@ogre-tools/fp";
 import { getInjectable } from "@ogre-tools/injectable";
 import yaml from "js-yaml";
 import { map } from "lodash/fp";
-import type { JsonObject } from "type-fest";
+import { defaultYamlDumpOptions } from "../../../../../common/kube-helpers";
 import { getErrorMessage } from "../../../../../common/utils/get-error-message";
 import execFileWithInputInjectable from "./exec-file-with-input/exec-file-with-input.injectable";
+
+import type { KubeJsonApiData } from "@freelensapp/kube-object";
+
+import type { JsonObject } from "type-fest";
 
 export type CallForKubeResourcesByManifest = (
   namespace: string,
@@ -29,7 +32,7 @@ const callForKubeResourcesByManifestInjectable = getInjectable({
     return async (namespace, kubeconfigPath, kubectlPath, resourceManifests) => {
       const input = pipeline(
         resourceManifests,
-        map((manifest) => yaml.dump(manifest)),
+        map((manifest) => yaml.dump(manifest, defaultYamlDumpOptions)),
         wideJoin("---\n"),
       );
 

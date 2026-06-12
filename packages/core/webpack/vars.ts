@@ -8,7 +8,7 @@ import assert from "assert";
 import path from "path";
 import packageInfo from "../package.json";
 
-export const isDevelopment = process.env.NODE_ENV !== "production";
+export const isDevelopment = process.env.NODE_ENV === "development";
 export const mainDir = path.join(process.cwd(), "src", "main");
 export const buildDir = path.join(process.cwd(), "static", "build");
 export const extensionEntry = path.join(process.cwd(), "src", "extensions", "extension-api.ts");

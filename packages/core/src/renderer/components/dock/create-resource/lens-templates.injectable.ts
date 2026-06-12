@@ -6,6 +6,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import parsePathInjectable from "../../../../common/path/parse.injectable";
+
 import type { RawTemplates } from "./create-resource-templates.injectable";
 
 const lensCreateResourceTemplatesInjectable = getInjectable({

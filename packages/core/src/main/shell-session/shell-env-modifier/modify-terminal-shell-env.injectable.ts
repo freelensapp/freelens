@@ -7,9 +7,10 @@
 import { isDefined } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
-import type { ClusterId } from "../../../common/cluster-types";
 import mainExtensionsInjectable from "../../../extensions/main-extensions.injectable";
 import catalogEntityRegistryInjectable from "../../catalog/entity-registry.injectable";
+
+import type { ClusterId } from "../../../common/cluster-types";
 
 export type ModifyTerminalShellEnv = (
   clusterId: ClusterId,

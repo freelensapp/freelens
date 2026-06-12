@@ -4,13 +4,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { SendMessageToChannel } from "@freelensapp/messaging";
 import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
-import type { DiContainer } from "@ogre-tools/injectable";
 import { MESSAGE } from "triple-beam";
 import { getDiForUnitTesting } from "../../../renderer/getDiForUnitTesting";
 import ipcLogTransportInjectable from "./ipc-transport.injectable";
 import rendererLogFileIdInjectable from "./renderer-log-file-id.injectable";
+
+import type { SendMessageToChannel } from "@freelensapp/messaging";
+
+import type { DiContainer } from "@ogre-tools/injectable";
 
 describe("renderer log transport through ipc", () => {
   let di: DiContainer;

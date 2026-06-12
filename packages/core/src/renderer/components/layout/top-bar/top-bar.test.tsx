@@ -7,13 +7,12 @@
 import { fireEvent } from "@testing-library/react";
 import React from "react";
 import "@testing-library/jest-dom";
-import type { DiContainer } from "@ogre-tools/injectable";
+
 import { computed, observable } from "mobx";
 import platformInjectable from "../../../../common/vars/platform.injectable";
 import rendererExtensionsInjectable from "../../../../extensions/renderer-extensions.injectable";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import currentlyInClusterFrameInjectable from "../../../routes/currently-in-cluster-frame.injectable";
-import type { DiRender } from "../../test-utils/renderFor";
 import { renderFor } from "../../test-utils/renderFor";
 import topBarStateInjectable from "./state.injectable";
 import toggleMaximizeWindowInjectable from "./toggle-maximize-window/toggle-maximize-window.injectable";
@@ -23,6 +22,10 @@ import goBackInjectable from "./top-bar-items/navigation-to-back/go-back/go-back
 import goForwardInjectable from "./top-bar-items/navigation-to-forward/go-forward/go-forward.injectable";
 import closeWindowInjectable from "./top-bar-items/window-controls/close-window/close-window.injectable";
 import maximizeWindowInjectable from "./top-bar-items/window-controls/maximize-window/maximize-window.injectable";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+
+import type { DiRender } from "../../test-utils/renderFor";
 
 describe("<TopBar/>", () => {
   let di: DiContainer;

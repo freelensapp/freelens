@@ -6,9 +6,10 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { extensionRegistratorInjectionToken } from "../../../../extensions/extension-loader/extension-registrator-injection-token";
+import { customCatalogCategoryColumnInjectionToken } from "./custom-token";
+
 import type { LensRendererExtension } from "../../../../extensions/lens-renderer-extension";
 import type { AdditionalCategoryColumnRegistration } from "../custom-category-columns";
-import { customCatalogCategoryColumnInjectionToken } from "./custom-token";
 
 const customCategoryColumnsRegistratorInjectable = getInjectable({
   id: "custom-category-columns-registrator",

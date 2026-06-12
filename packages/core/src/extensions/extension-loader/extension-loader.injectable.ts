@@ -11,9 +11,9 @@ import getDirnameOfPathInjectable from "../../common/path/get-dirname.injectable
 import joinPathsInjectable from "../../common/path/join-paths.injectable";
 import updateExtensionsStateInjectable from "../../features/extensions/enabled/common/update-state.injectable";
 import { extensionEntryPointNameInjectionToken } from "./entry-point-name";
+import extensionInjectable from "./extension/extension.injectable";
 import extensionInstancesInjectable from "./extension-instances.injectable";
 import { ExtensionLoader } from "./extension-loader";
-import extensionInjectable from "./extension/extension.injectable";
 
 const extensionLoaderInjectable = getInjectable({
   id: "extension-loader",

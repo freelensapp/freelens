@@ -6,19 +6,20 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { constants, type WriteStream } from "fs";
-import path from "path";
-import { Transform, Writable, pipeline as _pipeline } from "stream";
-import { promisify } from "util";
 import arg from "arg";
-import type { SingleBar } from "cli-progress";
 import { MultiBar } from "cli-progress";
+import { constants, type WriteStream } from "fs";
 import { type FileHandle, mkdir, open, readFile, unlink } from "fs/promises";
 import gunzip from "gunzip-maybe";
 import fetch from "node-fetch";
+import path from "path";
 import { arch } from "process";
+import { pipeline as _pipeline, Transform, Writable } from "stream";
 import { extract } from "tar-stream";
+import { promisify } from "util";
 import z from "zod";
+
+import type { SingleBar } from "cli-progress";
 
 const options = arg({
   "--package": String,
@@ -127,6 +128,16 @@ abstract class BinaryDownloader {
     });
 
     try {
+      // Remove existing file if it exists to ensure we download the new version
+      try {
+        await unlink(this.target);
+      } catch (error) {
+        // Ignore ENOENT errors (file doesn't exist)
+        if ((error as any)?.code !== "ENOENT") {
+          throw error;
+        }
+      }
+
       /**
        * This is necessary because for some reason `createWriteStream({ flags: "wx" })`
        * was throwing someplace else and not here

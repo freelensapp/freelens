@@ -8,10 +8,11 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 import { Radio, RadioGroup } from "../radio";
-import type { SelectedMetricsType } from "./overview/selected-metrics-type.injectable";
 import selectedMetricsTypeInjectable from "./overview/selected-metrics-type.injectable";
-import type { SelectedNodeRoleForMetrics } from "./overview/selected-node-role-for-metrics.injectable";
 import selectedNodeRoleForMetricsInjectable from "./overview/selected-node-role-for-metrics.injectable";
+
+import type { SelectedMetricsType } from "./overview/selected-metrics-type.injectable";
+import type { SelectedNodeRoleForMetrics } from "./overview/selected-node-role-for-metrics.injectable";
 
 interface Dependencies {
   selectedMetricsType: SelectedMetricsType;

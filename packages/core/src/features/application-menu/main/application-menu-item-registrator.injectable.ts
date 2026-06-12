@@ -4,11 +4,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Injectable } from "@ogre-tools/injectable";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import logErrorInjectable from "../../../common/log-error.injectable";
 import { extensionRegistratorInjectionToken } from "../../../extensions/extension-loader/extension-registrator-injection-token";
+import applicationMenuItemInjectionToken from "./menu-items/application-menu-item-injection-token";
+
+import type { Injectable } from "@ogre-tools/injectable";
+
 import type { LensMainExtension } from "../../../extensions/lens-main-extension";
 import type {
   ApplicationMenuItemTypes,
@@ -16,7 +19,6 @@ import type {
   OsActionMenuItem,
   Separator,
 } from "./menu-items/application-menu-item-injection-token";
-import applicationMenuItemInjectionToken from "./menu-items/application-menu-item-injection-token";
 import type { MenuRegistration } from "./menu-registration";
 
 const applicationMenuItemRegistratorInjectable = getInjectable({

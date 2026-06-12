@@ -15,6 +15,14 @@
     &.group {
       flex: 2;
     }
+
+    &.short-names {
+      flex: 0.5;
+    }
+
+    &.age {
+      flex-grow: 0.4;
+    }
   }
 
   .group-select {

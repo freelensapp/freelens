@@ -4,9 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getInjectable } from "@ogre-tools/injectable";
-
 import { getOrInsert } from "@freelensapp/utilities";
+import { getInjectable } from "@ogre-tools/injectable";
 import ensureDirInjectable from "../../../common/fs/ensure-dir.injectable";
 import joinPathsInjectable from "../../../common/path/join-paths.injectable";
 import randomBytesInjectable from "../../../common/utils/random-bytes.injectable";

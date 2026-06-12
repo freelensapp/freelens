@@ -4,9 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { SidebarItemRegistration } from "@freelensapp/cluster-sidebar";
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
-import type { CustomResourceDefinition } from "@freelensapp/kube-object";
 import { computedAnd, iter, noop } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { matches } from "lodash";
@@ -18,6 +16,11 @@ import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
 import routePathParametersInjectable from "../../routes/route-path-parameters.injectable";
 import customResourcesSidebarItemInjectable from "../custom-resources/sidebar-item.injectable";
 import customResourceDefinitionsInjectable from "./definitions.injectable";
+
+import type { SidebarItemRegistration } from "@freelensapp/cluster-sidebar";
+import type { CustomResourceDefinition } from "@freelensapp/kube-object";
+
+export const sideBarItemCustomResourcePrefix = "sidebar-item-custom-resource-group";
 
 const titleCaseSplitRegex = /(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])/;
 
@@ -36,7 +39,7 @@ const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectab
       index: number,
     ) => {
       const customResourceGroupSidebarItem = getInjectable({
-        id: `sidebar-item-custom-resource-group-${group}`,
+        id: `${sideBarItemCustomResourcePrefix}-${group}`,
         instantiate: (): SidebarItemRegistration => ({
           parentId: customResourcesSidebarItemInjectable.id,
           onClick: noop,
@@ -52,7 +55,7 @@ const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectab
         };
 
         return getInjectable({
-          id: `sidebar-item-custom-resource-group-${group}/${definition.getPluralName()}`,
+          id: `${sideBarItemCustomResourcePrefix}-${group}/${definition.getPluralName()}`,
           instantiate: (di): SidebarItemRegistration => ({
             parentId: customResourceGroupSidebarItem.id,
             onClick: () => navigateToCustomResources(parameters),

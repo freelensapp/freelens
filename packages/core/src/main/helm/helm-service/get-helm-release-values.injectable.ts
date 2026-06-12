@@ -6,10 +6,11 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { Cluster } from "../../../common/cluster/cluster";
 import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
-import type { GetHelmReleaseValuesData } from "../get-helm-release-values.injectable";
 import getHelmReleaseValuesInjectable from "../get-helm-release-values.injectable";
+
+import type { Cluster } from "../../../common/cluster/cluster";
+import type { GetHelmReleaseValuesData } from "../get-helm-release-values.injectable";
 
 const getClusterHelmReleaseValuesInjectable = getInjectable({
   id: "get-cluster-helm-release-values",

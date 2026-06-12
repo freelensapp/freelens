@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
 import { applicationFeature, startApplicationInjectionToken } from "@freelensapp/application";
 import {
   applicationFeatureForElectronMain,
@@ -19,35 +18,25 @@ import { discoverFor } from "@freelensapp/react-testing-library-discovery";
 import { historyInjectionToken } from "@freelensapp/routing";
 import { renderFor } from "@freelensapp/test-utils";
 import { pipeline } from "@ogre-tools/fp";
-import type { DiContainer, Injectable } from "@ogre-tools/injectable";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { RenderResult } from "@testing-library/react";
 import { fireEvent, queryByText } from "@testing-library/react";
-import type { UserEvent } from "@testing-library/user-event";
 import userEvent from "@testing-library/user-event";
+import assert from "assert";
 import { filter, first, join, last, map, matches } from "lodash/fp";
-import type { IComputedValue, ObservableMap } from "mobx";
 import { action, computed, observable, runInAction } from "mobx";
 import React from "react";
 import { Router } from "react-router";
 import { openMenu } from "react-select-event";
 import { Cluster } from "../../../common/cluster/cluster";
-import type { Route } from "../../../common/front-end-routing/front-end-route-injection-token";
-import type { NavigateToRouteOptions } from "../../../common/front-end-routing/navigate-to-route-injection-token";
 import { navigateToRouteInjectionToken } from "../../../common/front-end-routing/navigate-to-route-injection-token";
-import type { NavigateToHelmCharts } from "../../../common/front-end-routing/routes/cluster/helm/charts/navigate-to-helm-charts.injectable";
 import navigateToHelmChartsInjectable from "../../../common/front-end-routing/routes/cluster/helm/charts/navigate-to-helm-charts.injectable";
 import fsInjectable from "../../../common/fs/fs.injectable";
 import writeJsonSyncInjectable from "../../../common/fs/write-json-sync.injectable";
 import kubeDirectoryPathInjectable from "../../../common/os/kube-directory-path.injectable";
-import type { KubeApiResourceDescriptor } from "../../../common/rbac";
 import { formatKubeApiResource } from "../../../common/rbac";
 import { findComposite } from "../../../common/utils/composite/find-composite/find-composite";
 import { getCompositePaths } from "../../../common/utils/composite/get-composite-paths/get-composite-paths";
 import extensionInjectable from "../../../extensions/extension-loader/extension/extension.injectable";
-import type { LensExtension } from "../../../extensions/lens-extension";
-import type { LensMainExtension } from "../../../extensions/lens-main-extension";
-import type { LensRendererExtension } from "../../../extensions/lens-renderer-extension";
 import mainExtensionsInjectable from "../../../extensions/main-extensions.injectable";
 import rendererExtensionsInjectable from "../../../extensions/renderer-extensions.injectable";
 import applicationMenuItemCompositeInjectable from "../../../features/application-menu/main/application-menu-item-composite.injectable";
@@ -59,24 +48,37 @@ import { getDiForUnitTesting as getMainDi } from "../../../main/getDiForUnitTest
 import lensProxyPortInjectable from "../../../main/lens-proxy/lens-proxy-port.injectable";
 import { applicationWindowInjectionToken } from "../../../main/start-main-application/lens-window/application-window/application-window-injection-token";
 import createApplicationWindowInjectable from "../../../main/start-main-application/lens-window/application-window/create-application-window.injectable";
-import type { CreateElectronWindow } from "../../../main/start-main-application/lens-window/application-window/create-electron-window.injectable";
 import createElectronWindowInjectable from "../../../main/start-main-application/lens-window/application-window/create-electron-window.injectable";
-import type { LensWindow } from "../../../main/start-main-application/lens-window/application-window/create-lens-window.injectable";
-import type { MinimalTrayMenuItem } from "../../../main/tray/electron-tray/electron-tray.injectable";
 import electronTrayInjectable from "../../../main/tray/electron-tray/electron-tray.injectable";
 import { getOverrideFsWithFakes } from "../../../test-utils/override-fs-with-fakes";
 import { testUsingFakeTime } from "../../../test-utils/use-fake-time";
 import activeKubernetesClusterInjectable from "../../cluster-frame-context/active-kubernetes-cluster.injectable";
-import hostedClusterIdInjectable from "../../cluster-frame-context/hosted-cluster-id.injectable";
 import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
+import hostedClusterIdInjectable from "../../cluster-frame-context/hosted-cluster-id.injectable";
 import { ClusterFrame } from "../../frames/cluster-frame/cluster-frame";
 import { RootFrame } from "../../frames/root-frame/root-frame";
 import { getDiForUnitTesting as getRendererDi } from "../../getDiForUnitTesting";
 import currentlyInClusterFrameInjectable from "../../routes/currently-in-cluster-frame.injectable";
-import type { NamespaceStore } from "../namespaces/store";
 import namespaceStoreInjectable from "../namespaces/store.injectable";
-import type { FakeExtensionOptions } from "./get-extension-fake";
 import { getExtensionFakeForMain, getExtensionFakeForRenderer } from "./get-extension-fake";
+
+import type { DiContainer, Injectable } from "@ogre-tools/injectable";
+import type { RenderResult } from "@testing-library/react";
+import type { UserEvent } from "@testing-library/user-event";
+import type { IComputedValue, ObservableMap } from "mobx";
+
+import type { Route } from "../../../common/front-end-routing/front-end-route-injection-token";
+import type { NavigateToRouteOptions } from "../../../common/front-end-routing/navigate-to-route-injection-token";
+import type { NavigateToHelmCharts } from "../../../common/front-end-routing/routes/cluster/helm/charts/navigate-to-helm-charts.injectable";
+import type { KubeApiResourceDescriptor } from "../../../common/rbac";
+import type { LensExtension } from "../../../extensions/lens-extension";
+import type { LensMainExtension } from "../../../extensions/lens-main-extension";
+import type { LensRendererExtension } from "../../../extensions/lens-renderer-extension";
+import type { CreateElectronWindow } from "../../../main/start-main-application/lens-window/application-window/create-electron-window.injectable";
+import type { LensWindow } from "../../../main/start-main-application/lens-window/application-window/create-lens-window.injectable";
+import type { MinimalTrayMenuItem } from "../../../main/tray/electron-tray/electron-tray.injectable";
+import type { NamespaceStore } from "../namespaces/store";
+import type { FakeExtensionOptions } from "./get-extension-fake";
 
 type MainDiCallback = (container: { mainDi: DiContainer }) => void | Promise<void>;
 type WindowDiCallback = (container: { windowDi: DiContainer }) => void | Promise<void>;

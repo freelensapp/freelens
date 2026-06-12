@@ -5,8 +5,9 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { Settings } from "electron";
 import electronAppInjectable from "../electron-app.injectable";
+
+import type { Settings } from "electron";
 
 export type SetLoginItemSettings = (settings: Settings) => void;
 

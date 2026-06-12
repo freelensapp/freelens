@@ -7,7 +7,6 @@
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import emitAppEventInjectable from "../../common/app-event-bus/emit-event.injectable";
-import type { Cluster } from "../../common/cluster/cluster";
 import execFileInjectable from "../../common/fs/exec-file.injectable";
 import removePathInjectable from "../../common/fs/remove.injectable";
 import writeFileInjectable from "../../common/fs/write-file.injectable";
@@ -15,6 +14,8 @@ import joinPathsInjectable from "../../common/path/join-paths.injectable";
 import kubeconfigManagerInjectable from "../kubeconfig-manager/kubeconfig-manager.injectable";
 import createKubectlInjectable from "../kubectl/create-kubectl.injectable";
 import { ResourceApplier } from "./resource-applier";
+
+import type { Cluster } from "../../common/cluster/cluster";
 
 const resourceApplierInjectable = getInjectable({
   id: "resource-applier",

@@ -5,8 +5,9 @@
  */
 
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import type { Cluster } from "../../common/cluster/cluster";
 import kubeconfigManagerInjectable from "../kubeconfig-manager/kubeconfig-manager.injectable";
+
+import type { Cluster } from "../../common/cluster/cluster";
 
 export type RemoveProxyKubeconfig = () => Promise<void>;
 

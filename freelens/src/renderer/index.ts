@@ -13,8 +13,8 @@ import { applicationFeature, startApplicationInjectionToken } from "@freelensapp
 import { clusterSidebarFeature } from "@freelensapp/cluster-sidebar";
 import {
   commonExtensionApi as Common,
-  rendererExtensionApi as Renderer,
   metricsFeature,
+  rendererExtensionApi as Renderer,
   registerLensCore,
 } from "@freelensapp/core/renderer";
 import { registerFeature } from "@freelensapp/feature-core";
@@ -27,10 +27,11 @@ import { randomFeature } from "@freelensapp/random";
 import { reactApplicationFeature } from "@freelensapp/react-application";
 import { routingFeature } from "@freelensapp/routing";
 import { createContainer } from "@ogre-tools/injectable";
-import { autoRegister } from "@ogre-tools/injectable-extension-for-auto-registration";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { registerInjectableReact } from "@ogre-tools/injectable-react";
 import { runInAction } from "mobx";
+import { registerInjectables as registerCommonInjectables } from "../common/register-injectables";
+import { registerInjectables as registerRendererInjectables } from "./register-injectables";
 
 const environment = "renderer";
 
@@ -60,14 +61,8 @@ runInAction(() => {
     notificationsFeature,
   );
 
-  autoRegister({
-    di,
-    targetModule: module,
-    getRequireContexts: () => [
-      require.context("./", true, CONTEXT_MATCHER_FOR_NON_FEATURES),
-      require.context("../common", true, CONTEXT_MATCHER_FOR_NON_FEATURES),
-    ],
-  });
+  registerRendererInjectables(di);
+  registerCommonInjectables(di);
 });
 
 const startApplication = di.inject(startApplicationInjectionToken);
@@ -75,12 +70,13 @@ const startApplication = di.inject(startApplicationInjectionToken);
 startApplication();
 
 export {
-  React,
-  ReactDOM,
-  ReactRouter,
-  ReactRouterDom,
   Mobx,
   MobxReact,
+  React,
+  ReactDOM,
+  ReactJsxRuntime,
+  ReactRouter,
+  ReactRouterDom,
 } from "@freelensapp/core/renderer";
 
 export const LensExtensions = {

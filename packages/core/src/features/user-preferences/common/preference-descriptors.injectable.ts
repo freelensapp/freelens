@@ -6,25 +6,30 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { merge } from "lodash";
-import type { ObservableMap } from "mobx";
 import { observable } from "mobx";
 import kubeDirectoryPathInjectable from "../../../common/os/kube-directory-path.injectable";
-import { defaultThemeId } from "../../../common/vars";
+import { defaultColorThemePreference } from "../../../common/vars";
 import currentTimezoneInjectable from "../../../common/vars/current-timezone.injectable";
+import {
+  ClusterPageMenuOrder,
+  defaultEditorConfig,
+  defaultExtensionRegistryUrlLocation,
+  defaultLogViewerPreferences,
+  defaultPackageMirror,
+  defaultTerminalConfig,
+  getPreferenceDescriptor,
+  packageMirrors,
+} from "./preferences-helpers";
+
+import type { ObservableMap } from "mobx";
+
 import type {
   EditorConfiguration,
   ExtensionRegistry,
   KubeconfigSyncEntry,
   KubeconfigSyncValue,
+  LogViewerPreferences,
   TerminalConfig,
-} from "./preferences-helpers";
-import {
-  defaultEditorConfig,
-  defaultExtensionRegistryUrlLocation,
-  defaultPackageMirror,
-  defaultTerminalConfig,
-  getPreferenceDescriptor,
-  packageMirrors,
 } from "./preferences-helpers";
 
 export type PreferenceDescriptors = ReturnType<(typeof userPreferenceDescriptorsInjectable)["instantiate"]>;
@@ -45,8 +50,8 @@ const userPreferenceDescriptorsInjectable = getInjectable({
         toStore: (val) => val || undefined,
       }),
       colorTheme: getPreferenceDescriptor<string>({
-        fromStore: (val) => val || defaultThemeId,
-        toStore: (val) => (!val || val === defaultThemeId ? undefined : val),
+        fromStore: (val) => val || defaultColorThemePreference,
+        toStore: (val) => (!val || val === defaultColorThemePreference ? undefined : val),
       }),
       terminalTheme: getPreferenceDescriptor<string>({
         fromStore: (val) => val || "",
@@ -68,6 +73,10 @@ const userPreferenceDescriptorsInjectable = getInjectable({
         fromStore: (val) => (!val || !packageMirrors.has(val) ? defaultPackageMirror : val),
         toStore: (val) => (val === defaultPackageMirror ? undefined : val),
       }),
+      downloadCustomMirror: getPreferenceDescriptor<string>({
+        fromStore: (val) => val || "",
+        toStore: (val) => val || undefined,
+      }),
       downloadKubectlBinaries: getPreferenceDescriptor<boolean>({
         fromStore: (val) => val ?? true,
         toStore: (val) => (val ? undefined : val),
@@ -80,9 +89,46 @@ const userPreferenceDescriptorsInjectable = getInjectable({
         fromStore: (val) => val,
         toStore: (val) => val || undefined,
       }),
+      helmBinariesPath: getPreferenceDescriptor<string | undefined>({
+        fromStore: (val) => val,
+        toStore: (val) => val || undefined,
+      }),
+      helmServerSide: getPreferenceDescriptor<boolean>({
+        fromStore: (val) => val ?? true,
+        toStore: (val) => (val ? undefined : val),
+      }),
       openAtLogin: getPreferenceDescriptor<boolean>({
         fromStore: (val) => val ?? false,
         toStore: (val) => (!val ? undefined : val),
+      }),
+      showTrayIcon: getPreferenceDescriptor<boolean>({
+        fromStore: (val) => val ?? true,
+        toStore: (val) => (val ? undefined : val),
+      }),
+      hotbarAutoHide: getPreferenceDescriptor<boolean>({
+        fromStore: (val) => val ?? false,
+        toStore: (val) => (!val ? undefined : val),
+      }),
+      persistentSearch: getPreferenceDescriptor<boolean>({
+        fromStore: (val) => val ?? false,
+        toStore: (val) => (!val ? undefined : val),
+      }),
+      logViewerPreferences: getPreferenceDescriptor<Partial<LogViewerPreferences>, LogViewerPreferences>({
+        fromStore: (val) => ({
+          ...defaultLogViewerPreferences,
+          ...val,
+        }),
+        toStore: (val) => {
+          const storedValue: Partial<LogViewerPreferences> = {};
+
+          for (const key of Object.keys(defaultLogViewerPreferences) as (keyof LogViewerPreferences)[]) {
+            if (val[key] !== defaultLogViewerPreferences[key]) {
+              storedValue[key] = val[key];
+            }
+          }
+
+          return Object.keys(storedValue).length > 0 ? storedValue : undefined;
+        },
       }),
       terminalCopyOnSelect: getPreferenceDescriptor<boolean>({
         fromStore: (val) => val ?? false,
@@ -126,6 +172,10 @@ const userPreferenceDescriptorsInjectable = getInjectable({
             location: defaultExtensionRegistryUrlLocation,
           },
         toStore: (val) => (val.location === defaultExtensionRegistryUrlLocation ? undefined : val),
+      }),
+      clusterPageMenuOrder: getPreferenceDescriptor<ClusterPageMenuOrder | undefined>({
+        fromStore: (val) => val,
+        toStore: (val) => val,
       }),
     } as const;
   },

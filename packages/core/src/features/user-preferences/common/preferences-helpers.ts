@@ -4,8 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { editor } from "monaco-editor";
 import { defaultEditorFontFamily, defaultFontSize, defaultTerminalFontFamily } from "../../../common/vars";
+
+import type { editor } from "monaco-editor";
+
 import type { PreferenceDescriptors } from "./preference-descriptors.injectable";
 
 export interface KubeconfigSyncEntry extends KubeconfigSyncValue {
@@ -17,6 +19,18 @@ export interface TerminalConfig {
   fontSize: number;
   fontFamily: string;
 }
+
+export interface LogViewerPreferences {
+  showTimestamps: boolean;
+  showPrevious: boolean;
+  showWordWrap: boolean;
+}
+
+export const defaultLogViewerPreferences: LogViewerPreferences = {
+  showTimestamps: false,
+  showPrevious: false,
+  showWordWrap: true,
+};
 
 export const defaultTerminalConfig: TerminalConfig = {
   fontSize: defaultFontSize,
@@ -61,22 +75,31 @@ export interface DownloadMirror {
 }
 
 export const defaultPackageMirror = "default";
+export const chinaPackageMirror = "china";
+export const customPackageMirror = "custom";
+
 const defaultDownloadMirrorData: DownloadMirror = {
   url: "https://dl.k8s.io/release",
   label: "Default (Google)",
   platforms: new Set(["darwin", "win32", "linux"]),
 };
 
+const chinaPackageMirrorData: DownloadMirror = {
+  url: "https://mirror.azure.cn/kubernetes/kubectl",
+  label: "China (Azure)",
+  platforms: new Set(["win32", "linux"]),
+};
+
+const customPackageMirrorData: DownloadMirror = {
+  url: "",
+  label: "Custom",
+  platforms: new Set(["darwin", "win32", "linux"]),
+};
+
 export const packageMirrors = new Map<string, DownloadMirror>([
   [defaultPackageMirror, defaultDownloadMirrorData],
-  [
-    "china",
-    {
-      url: "https://mirror.azure.cn/kubernetes/kubectl",
-      label: "China (Azure)",
-      platforms: new Set(["win32", "linux"]),
-    },
-  ],
+  [chinaPackageMirror, chinaPackageMirrorData],
+  [customPackageMirror, customPackageMirrorData],
 ]);
 
 export type ExtensionRegistryLocation = "default" | "npmrc" | "custom";
@@ -90,6 +113,10 @@ export type ExtensionRegistry =
       location: "custom";
       customUrl: string;
     };
+
+export type ClusterPageMenuOrder = {
+  [key: string]: number;
+};
 
 export const defaultExtensionRegistryUrlLocation = "default";
 export const defaultExtensionRegistryUrl = "https://registry.npmjs.org";
@@ -105,4 +132,4 @@ export type UserStoreFlatModel = {
 
 export type UserPreferencesModel = {
   [field in keyof PreferenceDescriptors]?: PreferencesModelType<field>;
-} & { updateChannel: string };
+};

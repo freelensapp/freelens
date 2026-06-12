@@ -6,20 +6,21 @@
 
 import "./list-view.scss";
 
-import type { HorizontalPodAutoscaler } from "@freelensapp/kube-object";
-import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import { Badge } from "../badge";
-import { KubeObjectListLayout } from "../kube-object-list-layout";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { KubeObjectAge } from "../kube-object/age";
+import { KubeObjectConditionsList } from "../kube-object-conditions";
+import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
+import { WithTooltip } from "../with-tooltip";
 import getHorizontalPodAutoscalerMetrics from "./get-metrics.injectable";
-import type { HorizontalPodAutoscalerStore } from "./store";
 import horizontalPodAutoscalerStoreInjectable from "./store.injectable";
+
+import type { HorizontalPodAutoscaler } from "@freelensapp/kube-object";
+
+import type { HorizontalPodAutoscalerStore } from "./store";
 
 enum columnId {
   name = "name",
@@ -29,7 +30,7 @@ enum columnId {
   maxPods = "max-pods",
   replicas = "replicas",
   age = "age",
-  status = "status",
+  conditions = "conditions",
 }
 
 interface Dependencies {
@@ -75,37 +76,23 @@ class NonInjectedHorizontalPodAutoscalers extends React.Component<Dependencies> 
           renderHeaderTitle="Horizontal Pod Autoscalers"
           renderTableHeader={[
             { title: "Name", className: "name", sortBy: columnId.name },
-            { className: "warning", showWithColumn: columnId.name },
             { title: "Namespace", className: "namespace", sortBy: columnId.namespace, id: columnId.namespace },
             { title: "Metrics", className: "metrics", id: columnId.metrics },
             { title: "Min Pods", className: "min-pods", sortBy: columnId.minPods, id: columnId.minPods },
             { title: "Max Pods", className: "max-pods", sortBy: columnId.maxPods, id: columnId.maxPods },
             { title: "Replicas", className: "replicas", sortBy: columnId.replicas, id: columnId.replicas },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
-            { title: "Status", className: "status scrollable", id: columnId.status },
+            { title: "Conditions", className: "conditions scrollable", id: columnId.conditions },
           ]}
           renderTableContents={(hpa) => [
-            hpa.getName(),
-            <KubeObjectStatusIcon key="icon" object={hpa} />,
+            <WithTooltip>{hpa.getName()}</WithTooltip>,
             <NamespaceSelectBadge key="namespace" namespace={hpa.getNs()} />,
             this.getTargets(hpa),
             hpa.getMinPods(),
             hpa.getMaxPods(),
             hpa.getReplicas(),
             <KubeObjectAge key="age" object={hpa} />,
-            hpa
-              .getConditions()
-              .filter(({ isReady }) => isReady)
-              .map(({ type, tooltip }) => (
-                <Badge
-                  key={type}
-                  label={type}
-                  tooltip={tooltip}
-                  className={cssNames(type.toLowerCase())}
-                  expandable={false}
-                  scrollable={true}
-                />
-              )),
+            <KubeObjectConditionsList key="conditions" object={hpa} />,
           ]}
         />
       </SiblingsInTabLayout>

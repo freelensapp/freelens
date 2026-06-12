@@ -4,10 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { IconProps } from "@freelensapp/icon";
 import { Icon } from "@freelensapp/icon";
 import React from "react";
 import { FilterType } from "./page-filters/store";
+
+import type { IconProps } from "@freelensapp/icon";
 
 export interface FilterIconProps extends Partial<IconProps> {
   type: FilterType;

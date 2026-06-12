@@ -5,7 +5,9 @@
  */
 
 import { getRequestChannel } from "@freelensapp/messaging";
+
 import type { Result } from "@freelensapp/utilities";
+
 import type { HelmRepo } from "./helm-repo";
 
 export const addHelmRepositoryChannel = getRequestChannel<HelmRepo, Result<void, string>>(

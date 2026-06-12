@@ -3,13 +3,19 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
 
 import { KubeObject } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
 import styles from "../catalog.module.scss";
-import type { RegisteredAdditionalCategoryColumn } from "../custom-category-columns";
 import getLabelBadgesInjectable from "../get-label-badges.injectable";
+
+import type { RegisteredAdditionalCategoryColumn } from "../custom-category-columns";
 
 const defaultCategoryColumnsInjectable = getInjectable({
   id: "default-category-columns",

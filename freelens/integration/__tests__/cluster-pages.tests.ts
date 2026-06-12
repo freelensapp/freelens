@@ -7,19 +7,21 @@
 import { describeIf } from "@freelensapp/test-utils";
 import { pipeline } from "@ogre-tools/fp";
 import { groupBy, toPairs } from "lodash/fp";
-import type { Frame, Page } from "playwright";
-import { minikubeReady } from "../helpers/minikube";
+import { kindReady } from "../helpers/kind";
 /*
-  Cluster tests are run if there is a pre-existing minikube cluster. Before running cluster tests the TEST_NAMESPACE
-  namespace is removed, if it exists, from the minikube cluster. Resources are created as part of the cluster tests in the
-  TEST_NAMESPACE namespace. This is done to minimize destructive impact of the cluster tests on an existing minikube
+  Cluster tests are run if there is a pre-existing kind cluster. Before running cluster tests the TEST_NAMESPACE
+  namespace is removed, if it exists, from the kind cluster. Resources are created as part of the cluster tests in the
+  TEST_NAMESPACE namespace. This is done to minimize destructive impact of the cluster tests on an existing kind
   cluster and vice versa.
 */
 import * as utils from "../helpers/utils";
 
-const TEST_NAMESPACE = "integration-tests";
+import type { Frame, Page } from "playwright";
 
-describeIf(minikubeReady(TEST_NAMESPACE))("Minikube based tests", () => {
+const TEST_KIND_CLUSTER_NAME = process.env.TEST_KIND_CLUSTER_NAME || "kind";
+const TEST_NAMESPACE = process.env.TEST_NAMESPACE || "integration-tests";
+
+describeIf(kindReady(TEST_KIND_CLUSTER_NAME, TEST_NAMESPACE))("KinD based tests", () => {
   let window: Page;
   let cleanup: undefined | (() => Promise<void>);
   let frame: Frame;
@@ -29,7 +31,7 @@ describeIf(minikubeReady(TEST_NAMESPACE))("Minikube based tests", () => {
       ({ window, cleanup } = await utils.start());
       await utils.clickWelcomeButton(window);
 
-      frame = await utils.launchMinikubeClusterFromCatalog(window);
+      frame = await utils.launchKindClusterFromCatalog(TEST_KIND_CLUSTER_NAME, window);
     },
     10 * 60 * 1000,
   );
@@ -151,12 +153,13 @@ describeIf(minikubeReady(TEST_NAMESPACE))("Minikube based tests", () => {
 
       await frame.click(".Dock .Button >> text='Create'");
       await frame.waitForSelector(`.TableCell >> text=${testPodName}`);
+
       await frame.click(".TableRow .TableCell.menu");
       await frame.click(".MenuItem >> text=Delete");
-      await frame.click("button >> text=Remove");
+      await frame.click("button >> text=Delete");
       await frame.waitForSelector(`.TableCell >> text=${testPodName}`, { state: "detached" });
     },
-    10 * 60 * 1000,
+    45 * 60 * 1000,
   );
 });
 

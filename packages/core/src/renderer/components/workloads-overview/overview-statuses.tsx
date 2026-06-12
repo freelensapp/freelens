@@ -7,13 +7,15 @@
 import "./overview-statuses.scss";
 
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { formatKubeApiResource } from "../../../common/rbac";
 import { OverviewWorkloadStatus } from "./overview-workload-status";
-import type { Workload } from "./workloads/workload-injection-token";
 import workloadsInjectable from "./workloads/workloads.injectable";
+
+import type { IComputedValue } from "mobx";
+
+import type { Workload } from "./workloads/workload-injection-token";
 
 export interface OverviewStatusesProps {}
 

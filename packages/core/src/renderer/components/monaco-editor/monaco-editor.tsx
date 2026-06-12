@@ -3,26 +3,34 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
 
-import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { cssNames, disposer } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
 import { debounce, merge } from "lodash";
-import type { IComputedValue } from "mobx";
 import { action, computed, makeObservable, observable, reaction } from "mobx";
 import { observer } from "mobx-react";
-import { Uri, editor } from "monaco-editor";
+import { editor, Uri } from "monaco-editor";
 import React from "react";
-import type { UserPreferencesState } from "../../../features/user-preferences/common/state.injectable";
 import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 import activeThemeInjectable from "../../themes/active.injectable";
-import type { LensTheme } from "../../themes/lens-theme";
 import getEditorHeightFromLinesCountInjectable from "./get-editor-height-from-lines-number.injectable";
 import styles from "./monaco-editor.module.scss";
-import type { MonacoTheme } from "./monaco-themes";
 import { type MonacoValidator, monacoValidators } from "./monaco-validators";
+
+import type { Logger } from "@freelensapp/logger";
+
+import type { IComputedValue } from "mobx";
+
+import type { UserPreferencesState } from "../../../features/user-preferences/common/state.injectable";
+import type { LensTheme } from "../../themes/lens-theme";
+import type { MonacoTheme } from "./monaco-themes";
 
 export type MonacoEditorId = string;
 
@@ -183,7 +191,7 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
   componentDidMount() {
     try {
       this.createEditor();
-      this.logger.info(`[MONACO]: editor did mount`, this.logMetadata);
+      this.logger.debug(`[MONACO]: editor did mount`, this.logMetadata);
     } catch (error) {
       this.logger.error(`[MONACO]: mounting failed: ${error}`, this.logMetadata);
     }
@@ -216,7 +224,7 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
       ...this.options,
     });
 
-    this.logger.info(`[MONACO]: editor created for language=${language}, theme=${theme}`, this.logMetadata);
+    this.logger.debug(`[MONACO]: editor created for language=${language}, theme=${theme}`, this.logMetadata);
     this.validateLazy(); // validate initial value
     this.restoreViewState(this.model); // restore previous state if any
 

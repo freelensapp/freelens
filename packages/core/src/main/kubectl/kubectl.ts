@@ -4,25 +4,29 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import fs from "fs";
-import stream from "stream";
-import { promisify } from "util";
-import type { Logger } from "@freelensapp/logger";
 import { hasTypedProperty, isObject, isString, json } from "@freelensapp/utilities";
+import fs from "fs";
 import { ensureDir, pathExists } from "fs-extra";
-import got from "got/dist/source";
 import { noop } from "lodash/fp";
 import * as lockFile from "proper-lockfile";
-import { SemVer, coerce } from "semver";
+import { coerce, SemVer } from "semver";
+import {
+  customPackageMirror,
+  defaultPackageMirror,
+  packageMirrors,
+} from "../../features/user-preferences/common/preferences-helpers";
+
+import type { Logger } from "@freelensapp/logger";
+
 import type { ExecFile } from "../../common/fs/exec-file.injectable";
 import type { Unlink } from "../../common/fs/unlink.injectable";
 import type { GetBasenameOfPath } from "../../common/path/get-basename.injectable";
 import type { GetDirnameOfPath } from "../../common/path/get-dirname.injectable";
 import type { JoinPaths } from "../../common/path/join-paths.injectable";
 import type { NormalizedPlatform } from "../../common/vars/normalized-platform.injectable";
-import { defaultPackageMirror, packageMirrors } from "../../features/user-preferences/common/preferences-helpers";
+import type { DownloadBinary } from "../fetch/download-binary.injectable";
 
-const initScriptVersionString = "# lens-initscript v3";
+const initScriptVersionString = "# freelens-initscript v3";
 
 export interface KubectlDependencies {
   readonly directoryForKubectlBinaries: string;
@@ -36,10 +40,12 @@ export interface KubectlDependencies {
     readonly downloadBinariesPath?: string;
     readonly downloadKubectlBinaries: boolean;
     readonly downloadMirror: string;
+    readonly downloadCustomMirror?: string;
   };
   readonly bundledKubectlVersion: string;
   readonly kubectlVersionMap: Map<string, string>;
   readonly logger: Logger;
+  downloadBinary: DownloadBinary;
   joinPaths: JoinPaths;
   getDirnameOfPath: GetDirnameOfPath;
   getBasenameOfPath: GetBasenameOfPath;
@@ -148,7 +154,7 @@ export class Kubectl {
 
       return this.dirname;
     } catch (err) {
-      this.dependencies.logger.error("Failed to get biniary directory", err);
+      this.dependencies.logger.error("Failed to get binary directory", err);
 
       return "";
     }
@@ -293,12 +299,18 @@ export class Kubectl {
 
     this.dependencies.logger.info(`Downloading kubectl ${this.kubectlVersion} from ${this.url} to ${this.path}`);
 
-    const downloadStream = got.stream({ url: this.url, decompress: true });
-    const fileWriteStream = fs.createWriteStream(this.path, { mode: 0o755 });
-    const pipeline = promisify(stream.pipeline);
-
     try {
-      await pipeline(downloadStream, fileWriteStream);
+      const response = await this.dependencies.downloadBinary(this.url);
+
+      if (!response.callWasSuccessful) {
+        throw new Error(`Failed to download kubectl binary: ${response.error}`);
+      }
+      if (!response.response || response.response.length == 0) {
+        throw new Error(`Empty content of kubectl binary`);
+      }
+
+      const file = await fs.promises.open(this.path, "w", 0o755);
+      await file.writeFile(response.response);
       await fs.promises.chmod(this.path, 0o755);
       this.dependencies.logger.debug("kubectl binary download finished");
     } catch (error) {
@@ -375,6 +387,14 @@ export class Kubectl {
 
   protected getDownloadMirror(): string {
     // MacOS packages are only available from default
+
+    if (this.dependencies.state.downloadMirror === customPackageMirror) {
+      const custom = (this.dependencies.state.downloadCustomMirror ?? "").trim().replace(/\/+$/, "");
+
+      if (custom) {
+        return custom;
+      }
+    }
 
     const { url } =
       packageMirrors.get(this.dependencies.state.downloadMirror) ?? packageMirrors.get(defaultPackageMirror)!;

@@ -4,11 +4,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { UpdateClusterModel } from "../../../common/cluster-types";
 import { splitConfig } from "../../../common/kube-helpers";
 import kubeconfigSyncLoggerInjectable from "./logger.injectable";
+
+import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
+
+import type { UpdateClusterModel } from "../../../common/cluster-types";
 
 export type ConfigToModels = (rootConfig: KubeConfig, filePath: string) => UpdateClusterModel[];
 

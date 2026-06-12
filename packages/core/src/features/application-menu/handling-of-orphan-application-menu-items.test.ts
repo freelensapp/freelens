@@ -8,11 +8,12 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { runInAction } from "mobx";
 import logErrorInjectable from "../../common/log-error.injectable";
 import { getCompositePaths } from "../../common/utils/composite/get-composite-paths/get-composite-paths";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { advanceFakeTime, testUsingFakeTime } from "../../test-utils/use-fake-time";
 import applicationMenuItemInjectionToken from "./main/menu-items/application-menu-item-injection-token";
 import populateApplicationMenuInjectable from "./main/populate-application-menu.injectable";
+
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 describe("handling-of-orphan-application-menu-items, given orphan menu item", () => {
   let builder: ApplicationBuilder;

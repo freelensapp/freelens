@@ -4,9 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AuthorizationV1Api } from "@freelensapp/kubernetes-client-node";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
+
+import type { AuthorizationV1Api } from "@freelensapp/kubernetes-client-node";
+
 import type { KubeApiResource } from "../rbac";
 
 export type CanListResource = (resource: KubeApiResource) => boolean;
@@ -26,12 +28,12 @@ const createRequestNamespaceListPermissionsInjectable = getInjectable({
 
     return (api) => async (namespace) => {
       try {
-        const {
-          body: { status },
-        } = await api.createSelfSubjectRulesReview({
-          apiVersion: "authorization.k8s.io/v1",
-          kind: "SelfSubjectRulesReview",
-          spec: { namespace },
+        const { status } = await api.createSelfSubjectRulesReview({
+          body: {
+            apiVersion: "authorization.k8s.io/v1",
+            kind: "SelfSubjectRulesReview",
+            spec: { namespace },
+          },
         });
 
         if (!status || status.incomplete) {

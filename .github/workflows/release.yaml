@@ -16,16 +16,12 @@ jobs:
 
     permissions: write-all
 
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04-arm
     timeout-minutes: 360
-
-    env:
-      ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
-      ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Check if package version matches
         run: test "${GITHUB_REF_NAME}" = "v$(jq -r .version freelens/package.json)"
@@ -49,42 +45,51 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-22.04
+          - runs-on: ubuntu-24.04
+            os: linux
+            arch: x64
+            concurrency: linux-x64
+
+          - runs-on: ubuntu-24.04-arm
+            os: linux
             arch: arm64
             concurrency: linux-arm64
-          - os: ubuntu-22.04
-            arch: x64
-            concurrency: linux-amd64
-          - os: macos-14
-            arch: arm64
-            concurrency: macos
-          - os: macos-14
-            arch: x64
-            concurrency: macos
-          - os: windows-2022
-            arch: x64
-            concurrency: windows
 
-    runs-on: ${{ matrix.os }}
+          - runs-on: macos-15
+            os: macos
+            arch: arm64
+            concurrency: macos-arm64
+
+          - runs-on: macos-15-intel
+            os: macos
+            arch: x64
+            concurrency: macos-x64
+
+          - runs-on: windows-11-arm
+            os: windows
+            arch: arm64
+            concurrency: windows-arm64
+
+          - runs-on: windows-2025
+            os: windows
+            arch: x64
+            concurrency: windows-x64
+
+    runs-on: ${{ matrix.runs-on }}
     environment: signing
 
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref_name }}-${{ matrix.concurrency }}
 
     env:
+      DO_NOT_TRACK: "1"
       ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
       ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
+      ELECTRON_HEADERS_CACHE: ${{ github.workspace }}/.cache/electron-headers
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Install dependencies (Linux)
-        if: runner.os == 'Linux'
-        run: |
-          sudo apt-get -q update
-          sudo apt-get -q install -y --no-install-recommends \
-            gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
+        uses: actions/checkout@v6
 
       - name: Install dependencies (macOS)
         if: runner.os == 'macOS'
@@ -95,59 +100,76 @@ jobs:
         run: echo "/usr/local/opt/coreutils/libexec/gnubin" >> $GITHUB_PATH
 
       - name: Install dependencies (Windows)
+        id: install-deps-windows
         if: runner.os == 'Windows'
         shell: bash
-        run: choco install yq --yes --no-progress
+        run: |
+          timeout 300 choco install yq --yes --no-progress
+          yq --version
+        continue-on-error: true
+
+      - name: Install dependencies (Windows) (retry)
+        if: runner.os == 'Windows' && steps.install-deps-windows.outcome == 'failure'
+        shell: bash
+        run: |
+          timeout 300 choco install yq --yes --no-progress
+          yq --version
 
       - name: Setup node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
+          package-manager-cache: false
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-
-      - name: Disable pre post scripts for pnpm
-        shell: bash
-        run: pnpm config set enablePrePostScripts false
+        run: corepack enable
 
       - name: Get pnpm cache directory
         shell: bash
         run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
 
+      - name: Use pnpm cache
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.pnpm_cache_dir }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-node-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-node-
+
+      - name: Disable pre post scripts for pnpm
+        shell: bash
+        run: pnpm config set enablePrePostScripts false
+
       - name: Get Electron version
         shell: bash
-        run: echo "electron_version=$(yq -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')"
-          >> $GITHUB_ENV
+        run: echo "electron_version=$(yq -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
 
       - name: Get Electron Builder version
         shell: bash
-        run: echo "electron_builder_version=$(yq -r .importers.freelens.devDependencies.electron-builder.version pnpm-lock.yaml
-          | sed 's/(.*)//')" >> $GITHUB_ENV
-
-      - name: Use pnpm cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.pnpm_cache_dir }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ matrix.os }}-${{ matrix.arch }}-node-
+        run: echo "electron_builder_version=$(yq -r .importers.freelens.devDependencies.electron-builder.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
 
       - name: Use Electron cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ env.ELECTRON_CACHE }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-electron-${{ env.electron_version }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-${{ env.electron_version }}
           restore-keys: |
-            ${{ matrix.os }}-${{ matrix.arch }}-electron-
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-
 
       - name: Use Electron Builder cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ env.ELECTRON_BUILDER_CACHE }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-${{ env.electron_builder_version }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-builder-${{ env.electron_builder_version }}
           restore-keys: |
-            ${{ matrix.os }}-${{ matrix.arch }}-electron-builder-
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-builder-
+
+      - name: Use Electron headers cache
+        id: electron-headers
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.ELECTRON_HEADERS_CACHE }}
+          key: electron-headers-${{ env.electron_version }}
 
       - name: Install pnpm dependencies
         id: install-pnpm
@@ -160,23 +182,23 @@ jobs:
         shell: bash
         run: pnpm install --color=always --prefer-offline --frozen-lockfile
 
-      - name: Enable downloading for all architectures (macOS x64, Linux arm64)
-        if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64'
+      - name: Install Electron headers
+        if: steps.electron-headers.outputs.cache-hit != 'true'
+        shell: bash
         run: |
-          echo "DOWNLOAD_ALL_ARCHITECTURES=true" >> $GITHUB_ENV
+          set -eo pipefail
+          mkdir -p $ELECTRON_HEADERS_CACHE
+          curl -sSfL https://www.electronjs.org/headers/v$electron_version/node-v$electron_version-headers.tar.gz -o $ELECTRON_HEADERS_CACHE/node-v$electron_version-headers.tar.gz
 
       - name: Build packages
         run: pnpm --color=always --stream build
 
-      - name: Set cross-complilation environment (Linux arm64)
-        if: runner.os == 'Linux' && matrix.arch == 'arm64'
-        run: |
-          echo "CC=aarch64-linux-gnu-gcc" >> $GITHUB_ENV
-          echo "CXX=aarch64-linux-gnu-g++" >> $GITHUB_ENV
-
       - name: Rebuild native packages for Electron
-        if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64'
         run: pnpm --color=always electron-rebuild -a ${{ matrix.arch }}
+        env:
+          npm_config_arch: ${{ matrix.arch }}
+          npm_config_target_arch: ${{ matrix.arch }}
+          npm_package_config_node_gyp_tarball: ${{ env.ELECTRON_HEADERS_CACHE }}/node-v${{ env.electron_version }}-headers.tar.gz
 
       - name: Build extra resources
         id: build-resources
@@ -210,6 +232,7 @@ jobs:
           CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
           CSC_INSTALLER_LINK: ${{ secrets.CSC_INSTALLER_LINK }}
           CSC_INSTALLER_KEY_PASSWORD: ${{ secrets.CSC_INSTALLER_KEY_PASSWORD }}
+          DEBUG: electron-builder,electron-builder:*
 
       - name: Notarize PKG (macOS)
         id: notarize-pkg
@@ -280,18 +303,22 @@ jobs:
           pnpm --color=always build:app \
             AppImage deb rpm \
             --${{ matrix.arch }}
+        env:
+          DEBUG: electron-builder,electron-builder:*
 
-      - name: Build Electron app (Windows x64)
-        if: runner.os == 'Windows' && matrix.arch == 'x64'
+      - name: Build Electron app (Windows)
+        if: runner.os == 'Windows'
         shell: bash
         run: |
           pnpm --color=always build:app \
-            msi nsis \
+            msi nsis portable \
             --${{ matrix.arch }}
+        env:
+          DEBUG: electron-builder,electron-builder:*
 
-      - name: Azure Trusted Signing (Windows x64)
-        if: runner.os == 'Windows' && matrix.arch == 'x64'
-        uses: azure/trusted-signing-action@v0.5.1
+      - name: Azure Trusted Signing (Windows)
+        if: runner.os == 'Windows'
+        uses: azure/artifact-signing-action@v2
         with:
           azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
@@ -317,7 +344,6 @@ jobs:
           my $arch = $arch{$ENV{ARCH}};
           while (<Freelens*>) {
             my $src = $_;
-            s/ Setup /-/;
             s/[ _]/-/g;
             if (/\.(dmg|exe|msi|pkg)$/ && !/-(amd64|arm64)\./) {
               s/\.(dmg|exe|msi|pkg)$/-$arch.$1/;
@@ -326,7 +352,10 @@ jobs:
             s/[.-](amd64|x86-64)/-amd64/;
             s/-(amd64|arm64).(dmg|pkg)$/-macos-$1.$2/;
             s/-(amd64|arm64).(AppImage|deb|flatpak|rpm|snap)$/-linux-$1.$2/;
-            s/-(amd64|arm64).(exe|msi|)$/-windows-$1.$2/;
+            s/-(amd64|arm64)\.msi$/-windows-$1.msi/;
+            s/-(amd64|arm64)\.exe$/-windows-portable-$1.exe/ if !/-Setup-/;
+            s/-(amd64|arm64)\.exe$/-windows-$1.exe/ if /-Setup-/;
+            s/-Setup-/-/;
             my $dst = $_;
             if ($src ne $dst) {
               print "rename $src to $dst\n";
@@ -342,7 +371,9 @@ jobs:
         shell: bash
         run: |
           for f in freelens/dist/Freelens*.*; do
-            sha256sum "$f" | tee "$f.sha256"
+            pushd freelens/dist > /dev/null
+            sha256sum $(basename $f) | tee $(basename $f).sha256
+            popd > /dev/null
           done
 
       - name: Make checksums for binaries (macOS)
@@ -350,7 +381,9 @@ jobs:
         shell: bash
         run: |
           for f in freelens/dist/Freelens*.*; do
-            shasum -a 256 "$f" | tee "$f.sha256"
+            pushd freelens/dist > /dev/null
+            shasum -a 256 $(basename $f) | tee $(basename $f).sha256
+            popd > /dev/null
           done
 
       - name: List files before upload
@@ -363,7 +396,7 @@ jobs:
       - name: Upload files
         shell: bash
         run: |
-          gh release upload ${GITHUB_REF_NAME} freelens/dist/Freelens*.*
+          gh release upload ${GITHUB_REF_NAME#sign/} freelens/dist/Freelens*.*
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -374,11 +407,11 @@ jobs:
       - make-draft-release
       - build-app
 
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04-arm
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Publish GitHub release
         run: gh release edit ${GITHUB_REF_NAME} --draft=false
@@ -397,36 +430,40 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-22.04
-            arch: x64
+          - runs-on: ubuntu-24.04-arm
+            arch: arm64
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.runs-on }}
     environment: publishing
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version-file: .nvmrc
+          package-manager-cache: false
           registry-url: https://registry.npmjs.org
 
+      - name: Upgrade npm
+        run: npm install -g npm@11
+
       - name: Setup pnpm
-        uses: pnpm/action-setup@v4
+        run: corepack enable
 
       - name: Get pnpm cache directory
         shell: bash
         run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
 
       - name: Use pnpm cache
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ${{ env.pnpm_cache_dir }}
-          key: ${{ matrix.os }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-node-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ matrix.os }}-${{ matrix.arch }}-node-
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-node-
 
       - name: Install pnpm dependencies
         id: install-pnpm
@@ -453,7 +490,7 @@ jobs:
             --no-git-checks \
             --tag ${dist_tag}
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: "true"
         continue-on-error: true
 
       - name: Publish npm packages (retry)
@@ -468,7 +505,7 @@ jobs:
             --no-git-checks \
             --tag ${dist_tag}
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: "true"
         continue-on-error: true
 
       - name: Publish npm packages (retry 2)
@@ -482,7 +519,7 @@ jobs:
             --no-git-checks \
             --tag ${dist_tag}
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: "true"
 
   release-apt-repository:
     name: Release APT repository
@@ -491,12 +528,12 @@ jobs:
       - make-draft-release
       - publish-github-release
 
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-24.04-arm
     environment: apt-signing
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 

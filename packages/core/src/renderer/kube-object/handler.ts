@@ -4,9 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { getInjectionToken } from "@ogre-tools/injectable";
+
 import type { BaseIconProps } from "@freelensapp/icon";
 import type { KubeObject } from "@freelensapp/kube-object";
-import { getInjectionToken } from "@ogre-tools/injectable";
+
 import type { IObservableArray } from "mobx";
 import type { RequireAtLeastOne } from "type-fest";
 

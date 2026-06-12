@@ -5,6 +5,7 @@
  */
 
 import React from "react";
+
 import type { CatalogCategory } from "../../../common/catalog/catalog-entity";
 
 interface CatalogCategoryLabelProps {

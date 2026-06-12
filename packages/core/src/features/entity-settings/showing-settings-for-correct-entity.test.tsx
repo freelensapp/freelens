@@ -4,8 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { DiContainer } from "@ogre-tools/injectable";
-import type { RenderResult } from "@testing-library/react";
 import { KubernetesCluster, WebLink } from "../../common/catalog-entities";
 import navigateToEntitySettingsInjectable from "../../common/front-end-routing/routes/entity-settings/navigate-to-entity-settings.injectable";
 import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable";
@@ -15,6 +13,9 @@ import {
   getApplicationBuilder,
 } from "../../renderer/components/test-utils/get-application-builder";
 import addClusterInjectable from "../cluster/storage/common/add.injectable";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+import type { RenderResult } from "@testing-library/react";
 
 describe("Showing correct entity settings", () => {
   let builder: ApplicationBuilder;

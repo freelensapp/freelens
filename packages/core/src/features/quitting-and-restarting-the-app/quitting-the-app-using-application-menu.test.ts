@@ -5,9 +5,10 @@
  */
 
 import requestQuitOfAppInjectable from "../../main/electron-app/features/require-quit.injectable";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { testUsingFakeTime } from "../../test-utils/use-fake-time";
+
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 describe("quitting the app using application menu", () => {
   describe("given application has started", () => {

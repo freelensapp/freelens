@@ -6,8 +6,9 @@
 
 import { getDiForUnitTesting } from "../../../main/getDiForUnitTesting";
 import createIpcFileLoggerTransportInjectable from "./create-ipc-file-transport.injectable";
-import type { IpcFileLogger } from "./ipc-file-logger.injectable";
 import ipcFileLoggerInjectable from "./ipc-file-logger.injectable";
+
+import type { IpcFileLogger } from "./ipc-file-logger.injectable";
 
 describe("ipc file logger in main", () => {
   let logMock: jest.Mock;

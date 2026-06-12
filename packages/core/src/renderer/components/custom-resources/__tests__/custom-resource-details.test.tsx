@@ -7,9 +7,10 @@
 import { CustomResourceDefinition, KubeObject } from "@freelensapp/kube-object";
 import React from "react";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
-import type { DiRender } from "../../test-utils/renderFor";
 import { renderFor } from "../../test-utils/renderFor";
 import { CustomResourceDetails } from "../details";
+
+import type { DiRender } from "../../test-utils/renderFor";
 
 describe("<CustomResourceDetails />", () => {
   let render: DiRender;
@@ -90,7 +91,7 @@ describe("<CustomResourceDetails />", () => {
       const result = render(<CustomResourceDetails crd={crd} object={cr} />);
 
       expect(result.container).toMatchSnapshot();
-      expect(result.getByText("false")).toBeTruthy();
+      expect(result.getByText("False")).toBeTruthy();
     });
 
     it("should display true in an additionalPrinterColumn as 'true'", () => {
@@ -110,7 +111,7 @@ describe("<CustomResourceDetails />", () => {
       const result = render(<CustomResourceDetails crd={crd} object={cr} />);
 
       expect(result.container).toMatchSnapshot();
-      expect(result.getByText("true")).toBeTruthy();
+      expect(result.getByText("True")).toBeTruthy();
     });
   });
 

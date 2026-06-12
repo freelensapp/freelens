@@ -6,24 +6,26 @@
 
 import "./volume-claims.scss";
 
-import type { StorageClassApi } from "@freelensapp/kube-api";
 import { storageClassApiInjectable } from "@freelensapp/kube-api-specifics";
 import { stopPropagation, unitsToBytes } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 import { Link } from "react-router-dom";
-import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
-import { KubeObjectListLayout } from "../kube-object-list-layout";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { KubeObjectAge } from "../kube-object/age";
+import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
-import type { PodStore } from "../workloads-pods/store";
+import { WithTooltip } from "../with-tooltip";
 import podStoreInjectable from "../workloads-pods/store.injectable";
-import type { PersistentVolumeClaimStore } from "./store";
 import persistentVolumeClaimStoreInjectable from "./store.injectable";
+
+import type { StorageClassApi } from "@freelensapp/kube-api";
+
+import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
+import type { PodStore } from "../workloads-pods/store";
+import type { PersistentVolumeClaimStore } from "./store";
 
 enum columnId {
   name = "name",
@@ -71,7 +73,6 @@ class NonInjectedPersistentVolumeClaims extends React.Component<Dependencies> {
           renderHeaderTitle="Persistent Volume Claims"
           renderTableHeader={[
             { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
-            { className: "warning", showWithColumn: columnId.name },
             { title: "Namespace", className: "namespace", sortBy: columnId.namespace, id: columnId.namespace },
             {
               title: "Storage class",
@@ -94,18 +95,19 @@ class NonInjectedPersistentVolumeClaims extends React.Component<Dependencies> {
             );
 
             return [
-              pvc.getName(),
-              <KubeObjectStatusIcon key="icon" object={pvc} />,
+              <WithTooltip>{pvc.getName()}</WithTooltip>,
               <NamespaceSelectBadge key="namespace" namespace={pvc.getNs()} />,
               <Link key="link" to={storageClassDetailsUrl} onClick={stopPropagation}>
-                {storageClassName}
+                <WithTooltip>{storageClassName}</WithTooltip>
               </Link>,
-              pvc.getStorage(),
-              pods.map((pod) => (
-                <Link key={pod.getId()} to={getDetailsUrl(pod.selfLink)} onClick={stopPropagation}>
-                  {pod.getName()}
-                </Link>
-              )),
+              <WithTooltip>{pvc.getStorage()}</WithTooltip>,
+              <WithTooltip tooltip={pods.map((pod) => pod.getName()).join(", ")}>
+                {pods.map((pod) => (
+                  <Link key={pod.getId()} to={getDetailsUrl(pod.selfLink)} onClick={stopPropagation}>
+                    {pod.getName()}
+                  </Link>
+                ))}
+              </WithTooltip>,
               <KubeObjectAge key="age" object={pvc} />,
               { title: pvc.getStatus(), className: pvc.getStatus().toLowerCase() },
             ];

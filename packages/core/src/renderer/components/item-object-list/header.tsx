@@ -6,13 +6,15 @@
 
 import "./item-list-layout.scss";
 
-import type { ItemObject } from "@freelensapp/list-layout";
-import type { IClassName, StrictReactNode } from "@freelensapp/utilities";
 import { cssNames, isDefined } from "@freelensapp/utilities";
 import { observer } from "mobx-react";
 import React from "react";
 import { SearchInputUrl } from "../input";
-import type { HeaderCustomizer, HeaderPlaceholders, ItemListStore, SearchFilter } from "./list-layout";
+
+import type { ItemObject } from "@freelensapp/list-layout";
+import type { IClassName, StrictReactNode } from "@freelensapp/utilities";
+
+import type { HeaderCustomizer, HeaderPlaceholders, ItemListStore, ListLayoutSearchFilter } from "./list-layout";
 import type { Filter } from "./page-filters/store";
 
 export interface ItemListLayoutHeaderProps<I extends ItemObject, PreLoadStores extends boolean> {
@@ -21,7 +23,7 @@ export interface ItemListLayoutHeaderProps<I extends ItemObject, PreLoadStores e
   toggleFilters: () => void;
 
   store: ItemListStore<I, PreLoadStores>;
-  searchFilters?: SearchFilter<I>[];
+  searchFilters?: ListLayoutSearchFilter<I>[];
 
   // header (title, filtering, searching, etc.)
   showHeader?: boolean;

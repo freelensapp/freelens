@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
- @use "../table/table.mixins";
- 
- .ConfigMaps {
+@use "../table/table.mixins";
+
+.ConfigMaps {
   .TableCell {
     &.name {
       flex: 2;
@@ -21,9 +21,7 @@
     }
 
     &.age {
-      flex: .5;
+      flex: 0.5;
     }
-
-
   }
 }

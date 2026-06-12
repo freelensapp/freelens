@@ -4,9 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ReplicaSet } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
 import replicaSetScaleDialogStateInjectable from "./state.injectable";
+
+import type { ReplicaSet } from "@freelensapp/kube-object";
 
 export type OpenReplicaSetScaleDialog = (obj: ReplicaSet) => void;
 

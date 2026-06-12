@@ -1,11 +1,5 @@
 # Freelens development
 
-## Nightly builds
-
-You can download the [nightly
-builds](https://github.com/freelensapp/freelens-nightly-builds/releases) of
-the current main branch.
-
 ## Build from the source
 
 You can build the application using this repository.
@@ -16,7 +10,7 @@ Install a compiler and Python setuptools, for example:
 
 ```sh
 # Debian/Ubuntu
-apt install build-essential python3-setuptools
+apt install build-essential python3-setuptools libnss3
 # MacOS
 brew install bash python3-setuptools
 # Windows
@@ -35,14 +29,15 @@ From the root of this repository:
 ```sh
 nvm install
 # or
+mise settings add idiomatic_version_file_enable_tools node
 mise install
 # or
 winget install CoreyButler.NVMforWindows
-nvm install 22.14.0
-nvm use 22.14.0
+nvm install 24.15.0
+nvm use 24.15.0
 ```
 
-Install Pnpm:
+Install Pnpm (if is not yet installed with mise-en-place):
 
 ```sh
 corepack install
@@ -56,9 +51,10 @@ winget install pnpm.pnpm
 
 ```sh
 pnpm i
-pnpm build
-pnpm build:app dir
-# note: on Windows build:app must be ran in elevated mode
+pnpm build:di           # Generate DI registration files
+pnpm build              # Build all packages
+pnpm build:app:dir      # Build Electron app directory
+# note: on Windows build:app:dir must be ran in elevated mode
 ```
 
 Run it from the directory:
@@ -67,9 +63,20 @@ Run it from the directory:
 pnpm start
 ```
 
+### Clean build
+
+If you encounter build or runtime issues, try a clean rebuild:
+
+```sh
+rm -rf .turbo packages/core/dist freelens/dist
+pnpm build:di
+pnpm build
+```
+
 ### Cross compilation
 
-You can build arm64 binary on Linux amd64 or amd64 binary on MacOS arm64.
+The official binary packages are build in native environment, however you can
+build arm64 binary on Linux amd64 or amd64 binary on MacOS arm64.
 
 On Linux, install cross-compiler (macOS includes this by default):
 
@@ -106,50 +113,86 @@ pnpm build:app AppImage deb --arm64
 pnpm build:app dmg pkg --x64
 ```
 
-### Run app
+## Development Workflow
 
-To run the app in developer mode:
+### Validation before commit
+
+After changing files, especially before commit, run:
 
 ```sh
-pnpm dev
+trunk check
+# or, if trunk is not installed locally
+pnpm trunk:check
 ```
 
-## Additional components
+For main project TypeScript and HTML files, you can run Biome directly:
 
-This application uses additional components hosted in separate repositories:
+```sh
+biome check
+# or, if biome is not installed locally
+pnpm biome:check
+```
 
-* [freelens-k8s-proxy](https://github.com/freelensapp/freelens-k8s-proxy/)
+For other file types, use Trunk:
 
-It bundles binaries for:
+```sh
+trunk check
+# or, if trunk is not installed locally
+pnpm trunk:check
+```
 
-* [helm](https://helm.sh/)
-* [kubectl](https://kubernetes.io/docs/reference/kubectl/)
+### Daily development
 
-The [Renovate](https://github.com/freelensapp/freelens/issues/64) bot keeps
-the versions up-to-date.
+For active development with automatic rebuilds:
 
-The [Automated kubectl versions](.github/workflows/kubectl-versions.yaml)
-workflow updates the list of the latest kubectl patch versions for each minor
-version.
+```sh
+pnpm dev         # Starts the app with file watching
+```
 
-## Distribution
+**Note:** `pnpm dev` is not recommended as it doesn't work correctly with
+webpack. You can use standard workflow
+`pnpm build && pnpm build:app:dir && pnpm start` instead.
 
-Additional repositories for distributing packages:
+### Running tests
 
-* [Flathub](https://github.com/flathub/app.freelens.Freelens)
-* [Homebrew](https://github.com/freelensapp/homebrew-tap)
-* [Snapcraft](https://github.com/freelensapp/freelens-snap)
-* [WinGet](https://github.com/freelensapp/freelens-winget)
+```sh
+pnpm test:unit              # Run unit tests
+pnpm test:integration       # Run integration tests
+```
 
-## Releasing
+### When to regenerate DI files
 
-The [Automated npm version](.github/workflows/npm-version.yaml) workflow
-prepares a new PR for semantic versioning. After the PR is merged, the
-[Release](.github/workflows/release.yaml) workflow handles the release
-process:
+The project uses an explicit dependency injection registration system. Run `pnpm build:di` when:
 
-1. Prepares a new draft release.
-2. Builds and notarizes binaries for each supported OS and architecture.
-3. Finalizes the new release.
-4. Publishes NPM packages.
-5. Adds the indexes for APT repository.
+- Adding new `.injectable.ts` files
+- Moving or renaming injectable files
+- Changing directory structure
+- Seeing DI-related runtime errors
+
+The build process runs this automatically, but you can run it manually to verify changes:
+
+```sh
+pnpm build:di
+```
+
+### Troubleshooting
+
+**Changes not appearing:**
+
+1. Clear cache: `rm -rf .turbo packages/core/dist freelens/dist`
+2. Full rebuild: `pnpm build && pnpm build:app:dir`
+3. Restart app: `pnpm start`
+
+**Build failures:**
+
+1. Check build errors: `pnpm build`
+2. Check linting: `pnpm lint`
+3. Verify dependencies: `pnpm install`
+4. Check Node.js version matches `.nvmrc`
+
+**Runtime errors:**
+
+- Check dev console (renderer process) or terminal output (main process)
+- For DI-related errors, try regenerating: `pnpm build:di`
+
+For more development patterns and troubleshooting, see [AGENTS.md](AGENTS.md).

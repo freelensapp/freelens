@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
 import { getInjectable } from "@ogre-tools/injectable";
+import assert from "assert";
 import getActiveHelmRepositoriesInjectable from "./get-active-helm-repositories/get-active-helm-repositories.injectable";
 
 const getActiveHelmRepositoryInjectable = getInjectable({

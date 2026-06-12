@@ -6,25 +6,28 @@
 
 import "./details.scss";
 
-import { reaction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
-import React from "react";
-
-import type { ClusterRoleBinding } from "@freelensapp/kube-object";
 import { ObservableHashSet, prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
+import { reaction } from "mobx";
+import { disposeOnUnmount, observer } from "mobx-react";
+import React from "react";
 import { AddRemoveButtons } from "../../add-remove-buttons";
-import type { OpenConfirmDialog } from "../../confirm-dialog/open.injectable";
 import openConfirmDialogInjectable from "../../confirm-dialog/open.injectable";
 import { DrawerTitle } from "../../drawer";
-import type { KubeObjectDetailsProps } from "../../kube-object-details";
+import { LinkToClusterRole, LinkToNamespace, LinkToServiceAccount } from "../../kube-object-link";
 import { Table, TableCell, TableHead, TableRow } from "../../table";
+import { WithTooltip } from "../../with-tooltip";
 import { hashSubject } from "../hashers";
-import type { OpenClusterRoleBindingDialog } from "./dialog/open.injectable";
 import openClusterRoleBindingDialogInjectable from "./dialog/open.injectable";
-import type { ClusterRoleBindingStore } from "./store";
 import clusterRoleBindingStoreInjectable from "./store.injectable";
+
+import type { ClusterRoleBinding } from "@freelensapp/kube-object";
+
+import type { OpenConfirmDialog } from "../../confirm-dialog/open.injectable";
+import type { KubeObjectDetailsProps } from "../../kube-object-details";
+import type { OpenClusterRoleBindingDialog } from "./dialog/open.injectable";
+import type { ClusterRoleBindingStore } from "./store";
 
 export interface ClusterRoleBindingDetailsProps extends KubeObjectDetailsProps<ClusterRoleBinding> {}
 
@@ -90,9 +93,15 @@ class NonInjectedClusterRoleBindingDetails extends React.Component<ClusterRoleBi
             <TableCell>API Group</TableCell>
           </TableHead>
           <TableRow>
-            <TableCell>{roleRef.kind}</TableCell>
-            <TableCell>{roleRef.name}</TableCell>
-            <TableCell>{roleRef.apiGroup}</TableCell>
+            <TableCell>
+              <WithTooltip>{roleRef.kind}</WithTooltip>
+            </TableCell>
+            <TableCell>
+              <LinkToClusterRole name={roleRef.name} />
+            </TableCell>
+            <TableCell>
+              <WithTooltip>{roleRef.apiGroup}</WithTooltip>
+            </TableCell>
           </TableRow>
         </Table>
 
@@ -116,9 +125,15 @@ class NonInjectedClusterRoleBindingDetails extends React.Component<ClusterRoleBi
                   onClick={prevDefault(() => this.selectedSubjects.toggle(subject))}
                 >
                   <TableCell checkbox isChecked={isSelected} />
-                  <TableCell className="type">{kind}</TableCell>
-                  <TableCell className="binding">{name}</TableCell>
-                  <TableCell className="ns">{namespace || "-"}</TableCell>
+                  <TableCell className="type">
+                    <WithTooltip>{kind}</WithTooltip>
+                  </TableCell>
+                  <TableCell className="binding">
+                    {kind === "ServiceAccount" ? <LinkToServiceAccount name={name} namespace={namespace} /> : name}
+                  </TableCell>
+                  <TableCell className="ns">
+                    <LinkToNamespace namespace={namespace} />
+                  </TableCell>
                 </TableRow>
               );
             })}

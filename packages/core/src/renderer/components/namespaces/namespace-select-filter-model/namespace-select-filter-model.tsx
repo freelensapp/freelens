@@ -6,19 +6,21 @@
 
 import { Icon } from "@freelensapp/icon";
 import { observableCrate } from "@freelensapp/utilities";
-import type { IComputedValue } from "mobx";
 import { action, comparer, computed, observable } from "mobx";
 import React from "react";
+
+import type { IComputedValue } from "mobx";
 import type { ActionMeta, MultiValue } from "react-select";
+
 import type { ClusterContext } from "../../../cluster-frame-context/cluster-frame-context";
 import type { SelectOption } from "../../select";
 import type { NamespaceStore } from "../store";
-import type { IsMultiSelectionKey } from "./is-selection-key.injectable";
+import type { IsSelectionModifierKey } from "./is-selection-modifier-key.injectable";
 
 interface Dependencies {
   context: ClusterContext;
   namespaceStore: NamespaceStore;
-  isMultiSelectionKey: IsMultiSelectionKey;
+  isSelectionModifierKey: IsSelectionModifierKey;
 }
 
 export const selectAllNamespaces = Symbol("all-namespaces-selected");
@@ -51,10 +53,10 @@ enum SelectMenuState {
 }
 
 export function namespaceSelectFilterModelFor(dependencies: Dependencies): NamespaceSelectFilterModel {
-  const { isMultiSelectionKey, namespaceStore, context } = dependencies;
+  const { isSelectionModifierKey, namespaceStore, context } = dependencies;
 
   let didToggle = false;
-  let isMultiSelection = false;
+  let isSelectionModifierPressed = false;
   const menuState = observableCrate(SelectMenuState.Close, [
     {
       from: SelectMenuState.Close,
@@ -123,7 +125,7 @@ export function namespaceSelectFilterModelFor(dependencies: Dependencies): Names
 
             if (action.option.value === selectAllNamespaces) {
               namespaceStore.selectAll();
-            } else if (isMultiSelection) {
+            } else if (isSelectionModifierPressed && !namespaceStore.areAllSelectedImplicitly) {
               namespaceStore.toggleSingle(action.option.value);
             } else {
               namespaceStore.selectSingle(action.option.value);
@@ -135,18 +137,18 @@ export function namespaceSelectFilterModelFor(dependencies: Dependencies): Names
     onClick: () => {
       if (!menuIsOpen.get()) {
         model.menu.open();
-      } else if (!isMultiSelection) {
+      } else if (!isSelectionModifierPressed) {
         model.menu.close();
       }
     },
     onKeyDown: (event) => {
-      if (isMultiSelectionKey(event)) {
-        isMultiSelection = true;
+      if (isSelectionModifierKey(event)) {
+        isSelectionModifierPressed = true;
       }
     },
     onKeyUp: (event) => {
-      if (isMultiSelectionKey(event)) {
-        isMultiSelection = false;
+      if (isSelectionModifierKey(event)) {
+        isSelectionModifierPressed = false;
 
         if (didToggle) {
           model.menu.close();
@@ -154,7 +156,7 @@ export function namespaceSelectFilterModelFor(dependencies: Dependencies): Names
       }
     },
     reset: action(() => {
-      isMultiSelection = false;
+      isSelectionModifierPressed = false;
       model.menu.close();
     }),
     isOptionSelected,

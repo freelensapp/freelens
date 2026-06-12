@@ -5,8 +5,9 @@
  */
 
 import { ResourceQuota } from "@freelensapp/kube-object";
-import type { DerivedKubeApiOptions, KubeApiDependencies } from "../kube-api";
 import { KubeApi } from "../kube-api";
+
+import type { DerivedKubeApiOptions, KubeApiDependencies } from "../kube-api";
 
 export class ResourceQuotaApi extends KubeApi<ResourceQuota> {
   constructor(deps: KubeApiDependencies, opts: DerivedKubeApiOptions = {}) {

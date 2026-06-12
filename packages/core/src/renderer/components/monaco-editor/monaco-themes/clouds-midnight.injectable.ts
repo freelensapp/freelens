@@ -4,9 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { customMonacoThemeInjectionToken } from "../monaco-themes";
-
 import { getInjectable } from "@ogre-tools/injectable";
+import { customMonacoThemeInjectionToken } from "../monaco-themes";
 
 const cloudsMidnightThemeInjectable = getInjectable({
   id: "clouds-midnight-theme",

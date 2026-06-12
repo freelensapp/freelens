@@ -5,8 +5,9 @@
  */
 
 import { Node } from "@freelensapp/kube-object";
-import type { DerivedKubeApiOptions, KubeApiDependencies } from "../kube-api";
 import { KubeApi } from "../kube-api";
+
+import type { DerivedKubeApiOptions, KubeApiDependencies } from "../kube-api";
 
 export class NodeApi extends KubeApi<Node> {
   constructor(deps: KubeApiDependencies, opts?: DerivedKubeApiOptions) {

@@ -8,8 +8,9 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { action, computed } from "mobx";
 import { normalizeMetrics } from "../../../../common/k8s-api/endpoints/metrics.api";
 import clusterOverviewMetricsInjectable from "../cluster-metrics.injectable";
-import type { MetricType } from "./storage.injectable";
 import clusterOverviewStorageInjectable from "./storage.injectable";
+
+import type { MetricType } from "./storage.injectable";
 
 export type SelectedMetricsType = ReturnType<(typeof selectedMetricsTypeInjectable)["instantiate"]>;
 

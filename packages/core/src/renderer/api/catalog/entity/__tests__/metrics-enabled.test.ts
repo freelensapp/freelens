@@ -4,13 +4,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { DiContainer } from "@ogre-tools/injectable";
 import { observable } from "mobx";
-import { ClusterMetricsResourceType } from "../../../../../common/cluster-types";
 import { Cluster } from "../../../../../common/cluster/cluster";
+import { ClusterMetricsResourceType } from "../../../../../common/cluster-types";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
 import activeEntityInternalClusterInjectable from "../get-active-cluster-entity.injectable";
 import enabledMetricsInjectable from "../metrics-enabled.injectable";
+
+import type { DiContainer } from "@ogre-tools/injectable";
 
 describe("metrics-enabled", () => {
   let cluster: Cluster;

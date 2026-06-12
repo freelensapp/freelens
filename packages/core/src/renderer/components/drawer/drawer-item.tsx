@@ -5,12 +5,14 @@
  */
 
 import "./drawer-item.scss";
-import type { StrictReactNode } from "@freelensapp/utilities";
+
 import { cssNames } from "@freelensapp/utilities";
 import React from "react";
 
+import type { StrictReactNode } from "@freelensapp/utilities";
+
 export interface DrawerItemProps extends React.HTMLAttributes<HTMLDivElement> {
-  name: StrictReactNode;
+  name?: StrictReactNode;
   title?: string;
   labelsOnly?: boolean;
   hidden?: boolean;
@@ -37,8 +39,12 @@ export function DrawerItem({
   }
 
   return (
-    <div {...elemProps} className={cssNames("DrawerItem", className, { labelsOnly })} title={title}>
-      <span className="name">{name}</span>
+    <div
+      {...elemProps}
+      className={cssNames("DrawerItem", className, name ? "" : "WithoutName", { labelsOnly })}
+      title={title}
+    >
+      {name && <span className="name">{name}</span>}
       <span className="value">{children}</span>
     </div>
   );

@@ -31,9 +31,11 @@ rules:
   - pods
   - pods/attach
   - pods/binding
+  - pods/ephemeralcontainers
   - pods/eviction
   - pods/exec
   - pods/log
+  - pods/portforward
   - pods/proxy
   - pods/status
   - podtemplates
@@ -42,10 +44,30 @@ rules:
   - replicationcontrollers/status
   - resourcequotas
   - resourcequotas/status
+  - secrets
   - serviceaccounts
+  - serviceaccounts/token
   - services
   - services/proxy
   - services/status
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - apiextensions.k8s.io
+  resources:
+  - customresourcedefinitions
+  - customresourcedefinitions/status
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - apiregistration.k8s.io
+  resources:
+  - apiservices
+  - apiservices/status
   verbs:
   - get
   - list
@@ -70,15 +92,6 @@ rules:
   - get
   - watch
 - apiGroups:
-  - batch
-  resources:
-  - jobs
-  - jobs/status
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
   - autoscaling
   resources:
   - horizontalpodautoscalers
@@ -97,37 +110,36 @@ rules:
   - list
   - watch
 - apiGroups:
-  - storage.k8s.io
+  - batch
   resources:
-  - csidrivers
-  - csinodes
-  - storageclasses
-  - volumeattachments
-  - volumeattachments/status
+  - cronjobs
+  - cronjobs/status
+  - jobs
+  - jobs/status
   verbs:
   - get
   - list
   - watch
 - apiGroups:
-  - networking.k8s.io
+  - coordination.k8s.io
   resources:
-  - networkpolicies
+  - leases
   verbs:
   - get
   - list
   - watch
 - apiGroups:
-  - scheduling.k8s.io
+  - discovery.k8s.io
   resources:
-  - priorityclasses
+  - endpointslices
   verbs:
   - get
   - list
   - watch
 - apiGroups:
-  - node.k8s.io
+  - events.k8s.io
   resources:
-  - runtimeclasses
+  - events
   verbs:
   - get
   - list
@@ -142,44 +154,28 @@ rules:
   - list
   - watch
 - apiGroups:
-  - events.k8s.io
-  resources:
-  - events
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
-  - apiextensions.k8s.io
-  resources:
-  - customresourcedefinitions
-  - customresourcedefinitions/status
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
-  - apiregistration.k8s.io
-  resources:
-  - apiservices
-  - apiservices/status
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
-  - discovery.k8s.io
-  resources:
-  - endpointslices
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
   - metrics.k8s.io
   resources:
   - pods
   - nodes
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - networking.k8s.io
+  resources:
+  - ingresses
+  - ingresses/status
+  - networkpolicies
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - node.k8s.io
+  resources:
+  - runtimeclasses
   verbs:
   - get
   - list
@@ -209,6 +205,18 @@ rules:
   - scheduling.k8s.io
   resources:
   - priorityclass
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - storage.k8s.io
+  resources:
+  - csidrivers
+  - csinodes
+  - storageclasses
+  - volumeattachments
+  - volumeattachments/status
   verbs:
   - get
   - list

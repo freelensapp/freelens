@@ -14,7 +14,6 @@ import { messagingFeature, testUtils as messagingTestUtils } from "@freelensapp/
 import { notificationsFeature } from "@freelensapp/notifications";
 import { randomFeature } from "@freelensapp/random";
 import { routingFeature } from "@freelensapp/routing";
-import type { GlobalOverride } from "@freelensapp/test-utils";
 import { createContainer, isInjectable } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { registerInjectableReact } from "@ogre-tools/injectable-react";
@@ -26,6 +25,8 @@ import terminalSpawningPoolInjectable from "./components/dock/terminal/terminal-
 import startTopbarStateSyncInjectable from "./components/layout/top-bar/start-state-sync.injectable";
 import legacyOnChannelListenInjectable from "./ipc/legacy-channel-listen.injectable";
 import watchHistoryStateInjectable from "./remote-helpers/watch-history-state.injectable";
+
+import type { GlobalOverride } from "@freelensapp/test-utils";
 
 export const getDiForUnitTesting = () => {
   const environment = "renderer";

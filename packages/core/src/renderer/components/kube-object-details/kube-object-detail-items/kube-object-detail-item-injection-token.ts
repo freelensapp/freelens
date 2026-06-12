@@ -5,8 +5,10 @@
  */
 
 import { getInjectionToken } from "@ogre-tools/injectable";
+
 import type { IComputedValue } from "mobx";
 import type React from "react";
+
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 export interface KubeObjectDetailItem {

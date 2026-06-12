@@ -1,0 +1,99 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HotbarMenu /> auto-hide functionality when auto-hide is disabled renders w/o errors 1`] = `
+<div>
+  <div
+    class="HotbarMenu flex column"
+  >
+    <div
+      class="HotbarItems flex column gaps"
+    />
+    <div
+      class="HotbarSelector"
+    >
+      <i
+        class="Icon material interactive focusable"
+        tabindex="0"
+      >
+        <span
+          class="icon"
+          data-icon-name="arrow_left"
+        >
+          arrow_left
+        </span>
+      </i>
+      <div
+        class="HotbarIndex"
+      >
+        <div
+          class="badge Badge small clickable"
+          data-testid="hotbar-menu-badge-for-undefined"
+          id="hotbarIndex"
+        >
+          ??
+        </div>
+      </div>
+      <i
+        class="Icon material interactive focusable"
+        tabindex="0"
+      >
+        <span
+          class="icon"
+          data-icon-name="arrow_right"
+        >
+          arrow_right
+        </span>
+      </i>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<HotbarMenu /> auto-hide functionality when auto-hide is enabled renders w/o errors 1`] = `
+<div>
+  <div
+    class="HotbarMenu flex column autoHide"
+  >
+    <div
+      class="HotbarItems flex column gaps"
+    />
+    <div
+      class="HotbarSelector"
+    >
+      <i
+        class="Icon material interactive focusable"
+        tabindex="0"
+      >
+        <span
+          class="icon"
+          data-icon-name="arrow_left"
+        >
+          arrow_left
+        </span>
+      </i>
+      <div
+        class="HotbarIndex"
+      >
+        <div
+          class="badge Badge small clickable"
+          data-testid="hotbar-menu-badge-for-undefined"
+          id="hotbarIndex"
+        >
+          ??
+        </div>
+      </div>
+      <i
+        class="Icon material interactive focusable"
+        tabindex="0"
+      >
+        <span
+          class="icon"
+          data-icon-name="arrow_right"
+        >
+          arrow_right
+        </span>
+      </i>
+    </div>
+  </div>
+</div>
+`;

@@ -3,26 +3,33 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
 
 import { Icon } from "@freelensapp/icon";
 import { Tooltip, TooltipPosition } from "@freelensapp/tooltip";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
 import React, { useRef, useState } from "react";
 import activeHotbarInjectable from "../../../features/hotbar/storage/common/active.injectable";
-import type { ComputeDisplayIndex } from "../../../features/hotbar/storage/common/compute-display-index.injectable";
 import computeDisplayIndexInjectable from "../../../features/hotbar/storage/common/compute-display-index.injectable";
-import type { Hotbar } from "../../../features/hotbar/storage/common/hotbar";
-import type { SwitchToNextHotbar } from "../../../features/hotbar/storage/common/switch-to-next.injectable";
 import switchToNextHotbarInjectable from "../../../features/hotbar/storage/common/switch-to-next.injectable";
-import type { SwitchToPreviousHotbar } from "../../../features/hotbar/storage/common/switch-to-previous.injectable";
 import switchToPreviousHotbarInjectable from "../../../features/hotbar/storage/common/switch-to-previous.injectable";
 import { Badge } from "../badge";
 import commandOverlayInjectable from "../command-palette/command-overlay.injectable";
 import styles from "./hotbar-selector.module.scss";
 import { HotbarSwitchCommand } from "./hotbar-switch-command";
+
+import type { IComputedValue } from "mobx";
+
+import type { ComputeDisplayIndex } from "../../../features/hotbar/storage/common/compute-display-index.injectable";
+import type { Hotbar } from "../../../features/hotbar/storage/common/hotbar";
+import type { SwitchToNextHotbar } from "../../../features/hotbar/storage/common/switch-to-next.injectable";
+import type { SwitchToPreviousHotbar } from "../../../features/hotbar/storage/common/switch-to-previous.injectable";
 
 interface Dependencies {
   activeHotbar: IComputedValue<Hotbar | undefined>;

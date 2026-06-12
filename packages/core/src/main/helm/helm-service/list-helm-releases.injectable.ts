@@ -5,12 +5,14 @@
  */
 
 import { loggerInjectionToken } from "@freelensapp/logger";
-import type { AsyncResult } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { Cluster } from "../../../common/cluster/cluster";
-import type { ListedHelmRelease } from "../../../features/helm-releases/common/channels";
 import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
 import listHelmReleasesInjectable from "../list-helm-releases.injectable";
+
+import type { AsyncResult } from "@freelensapp/utilities";
+
+import type { Cluster } from "../../../common/cluster/cluster";
+import type { ListedHelmRelease } from "../../../features/helm-releases/common/channels";
 
 export type ListClusterHelmReleases = (
   cluster: Cluster,

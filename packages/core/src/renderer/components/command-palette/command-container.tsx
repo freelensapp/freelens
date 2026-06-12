@@ -3,26 +3,33 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
 
 import { onKeyboardShortcut } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
-import type { ClusterId } from "../../../common/cluster-types";
-import type { ipcRendererOn } from "../../../common/ipc";
 import { broadcastMessage } from "../../../common/ipc";
 import isMacInjectable from "../../../common/vars/is-mac.injectable";
 import hostedClusterIdInjectable from "../../cluster-frame-context/hosted-cluster-id.injectable";
 import legacyOnChannelListenInjectable from "../../ipc/legacy-channel-listen.injectable";
 import matchedClusterIdInjectable from "../../navigation/matched-cluster-id.injectable";
-import type { AddWindowEventListener } from "../../window/event-listener.injectable";
 import windowAddEventListenerInjectable from "../../window/event-listener.injectable";
 import { Dialog } from "../dialog";
 import styles from "./command-container.module.scss";
 import { CommandDialog } from "./command-dialog";
-import type { CommandOverlay } from "./command-overlay.injectable";
 import commandOverlayInjectable from "./command-overlay.injectable";
+
+import type { IComputedValue } from "mobx";
+
+import type { ClusterId } from "../../../common/cluster-types";
+import type { ipcRendererOn } from "../../../common/ipc";
+import type { AddWindowEventListener } from "../../window/event-listener.injectable";
+import type { CommandOverlay } from "./command-overlay.injectable";
 
 interface Dependencies {
   addWindowEventListener: AddWindowEventListener;

@@ -4,12 +4,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import EventEmitter from "events";
 import { getGlobalOverride } from "@freelensapp/test-utils";
 import { getOrInsert } from "@freelensapp/utilities";
-import type { ClientCertRequestParams, ProxyConfig } from "electron";
+import EventEmitter from "events";
 import { kebabCase } from "lodash";
 import electronAppInjectable from "./electron-app.injectable";
+
+import type { ClientCertRequestParams, ProxyConfig } from "electron";
 
 export default getGlobalOverride(electronAppInjectable, () => {
   const commandLineArgs: string[] = [];
@@ -218,6 +219,19 @@ export default getGlobalOverride(electronAppInjectable, () => {
       void userInfo;
       throw new Error("Method not implemented.");
     }
+    getAccessibilitySupportFeatures(): string[] {
+      throw new Error("Method not implemented.");
+    }
+    getRecentDocuments(): string[] {
+      throw new Error("Method not implemented.");
+    }
+    isHardwareAccelerationEnabled(): boolean {
+      throw new Error("Method not implemented.");
+    }
+    setAccessibilitySupportFeatures(features: string[]): void {
+      void features;
+      throw new Error("Method not implemented.");
+    }
 
     resolveProxy(url: string): Promise<string> {
       void url;
@@ -231,7 +245,7 @@ export default getGlobalOverride(electronAppInjectable, () => {
       throw new Error("Method not implemented.");
     }
 
-    setProxy(config: ProxyConfig): void {
+    setProxy(config: ProxyConfig): Promise<void> {
       void config;
       throw new Error("Method not implemented.");
     }
@@ -290,8 +304,20 @@ export default getGlobalOverride(electronAppInjectable, () => {
         wasOpenedAsHidden: false,
         restoreState: false,
         launchItems: [],
-        status: "",
+        status: "not-found" as const,
       };
+    }
+
+    toastActivatorCLSID = "";
+
+    setToastActivatorCLSID(clsid: string): void {
+      void clsid;
+      throw new Error("Method not implemented.");
+    }
+
+    configureWebAuthn(options: Electron.ConfigureWebAuthnOptions): void {
+      void options;
+      throw new Error("Method not implemented.");
     }
   })();
 });

@@ -6,13 +6,10 @@
 
 import "./icon.scss";
 
-import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { withTooltip } from "@freelensapp/tooltip";
 import { cssNames } from "@freelensapp/utilities";
-import type { StrictReactNode } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { LocationDescriptor } from "history";
 import isNumber from "lodash/isNumber";
 import React, { createRef } from "react";
 import { NavLink } from "react-router-dom";
@@ -37,6 +34,11 @@ import User from "../assets/user.svg";
 import Users from "../assets/users.svg";
 import Wheel from "../assets/wheel.svg";
 import Workloads from "../assets/workloads.svg";
+
+import type { Logger } from "@freelensapp/logger";
+import type { StrictReactNode } from "@freelensapp/utilities";
+
+import type { LocationDescriptor } from "history";
 
 const hrefValidation = /https?:\/\//;
 

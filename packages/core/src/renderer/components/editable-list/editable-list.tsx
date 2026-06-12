@@ -6,17 +6,19 @@
 
 import "./editable-list.scss";
 
+import { Icon } from "@freelensapp/icon";
+import autoBindReact from "auto-bind/react";
 import { observer } from "mobx-react";
 import React from "react";
-
-import { Icon } from "@freelensapp/icon";
-import type { SingleOrMany, StrictReactNode } from "@freelensapp/utilities";
-import autoBindReact from "auto-bind/react";
-import type { InputProps, InputValidator } from "../input";
 import { Input } from "../input";
+
+import type { SingleOrMany, StrictReactNode } from "@freelensapp/utilities";
+
+import type { InputProps, InputValidator } from "../input";
 
 export interface EditableListProps<T> {
   items: T[];
+  separator?: string;
   add: (newItem: string) => void;
   remove: (info: { oldItem: T; index: number }) => void;
   placeholder?: string;
@@ -29,7 +31,7 @@ export interface EditableListProps<T> {
 }
 
 const defaultProps = {
-  placeholder: "Add new item...",
+  placeholder: "Add new items...",
   renderItem: (item: any, index: number) => <React.Fragment key={index}>{item}</React.Fragment>,
   inputTheme: "round",
 };
@@ -46,7 +48,11 @@ class DefaultedEditableList<T> extends React.Component<EditableListProps<T> & ty
   onSubmit(val: string, evt: React.KeyboardEvent) {
     if (val) {
       evt.preventDefault();
-      this.props.add(val);
+      if (this.props.separator) {
+        val.split(this.props.separator).forEach((v) => this.props.add(v));
+      } else {
+        this.props.add(val);
+      }
     }
   }
 

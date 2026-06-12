@@ -5,9 +5,10 @@
  */
 
 import { DockTabStore } from "../dock-tab-store/dock-tab.store";
-import type { DockTabStoreDependencies } from "../dock-tab-store/dock-tab.store";
-import type { TabId } from "../dock/store";
 import { logTabDataValidator } from "./log-tab-data.validator";
+
+import type { TabId } from "../dock/store";
+import type { DockTabStoreDependencies } from "../dock-tab-store/dock-tab.store";
 
 export interface LogTabOwnerRef {
   /**
@@ -55,6 +56,11 @@ export interface LogTabData {
    * Whether to show the logs of the previous container instance
    */
   showPrevious: boolean;
+
+  /**
+   * Whether to wrap long log lines
+   */
+  showWordWrap: boolean;
 }
 
 export class LogTabStore extends DockTabStore<LogTabData> {

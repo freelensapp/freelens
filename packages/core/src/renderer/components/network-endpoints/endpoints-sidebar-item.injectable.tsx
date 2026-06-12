@@ -23,7 +23,7 @@ const endpointsSidebarItemInjectable = getInjectable({
       onClick: di.inject(navigateToEndpointsInjectable),
       isActive: di.inject(routeIsActiveInjectable, route),
       isVisible: route.isEnabled,
-      orderNumber: 20,
+      orderNumber: 21,
     };
   },
 

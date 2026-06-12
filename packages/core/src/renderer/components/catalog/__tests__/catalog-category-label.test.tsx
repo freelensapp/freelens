@@ -7,9 +7,11 @@
 import { render, screen } from "@testing-library/react";
 import React from "react";
 import "@testing-library/jest-dom";
-import type { CatalogCategorySpec } from "../../../../common/catalog";
+
 import { CatalogCategory } from "../../../../common/catalog";
 import { CatalogCategoryLabel } from "../catalog-category-label";
+
+import type { CatalogCategorySpec } from "../../../../common/catalog";
 
 class CatalogCategoryWithoutBadge extends CatalogCategory {
   public readonly apiVersion = "catalog.k8slens.dev/v1alpha1";

@@ -4,10 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { App } from "electron";
 import electronAppInjectable from "../../electron-app/electron-app.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import getElectronAppPathInjectable from "./get-electron-app-path.injectable";
+
+import type { App } from "electron";
 
 describe("get-electron-app-path", () => {
   let getElectronAppPath: (name: string) => string;

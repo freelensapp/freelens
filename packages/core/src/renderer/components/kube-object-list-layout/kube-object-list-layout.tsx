@@ -7,31 +7,34 @@
 import "./kube-object-list-layout.scss";
 
 import { Icon } from "@freelensapp/icon";
-import type { KubeApi } from "@freelensapp/kube-api";
-import type { KubeJsonApiDataFor, KubeObject } from "@freelensapp/kube-object";
-import type { GeneralKubeObjectListLayoutColumn, SpecificKubeListLayoutColumn } from "@freelensapp/list-layout";
 import { kubeObjectListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
 import { TooltipPosition } from "@freelensapp/tooltip";
-import type { Disposer } from "@freelensapp/utilities";
 import { cssNames, hasTypedProperty, isDefined, isObject, isString } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { sortBy } from "lodash";
 import { computed, observable, reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
-import type { ClusterContext } from "../../cluster-frame-context/cluster-frame-context";
 import clusterFrameContextForNamespacedResourcesInjectable from "../../cluster-frame-context/for-namespaced-resources.injectable";
-import type { SubscribableStore, SubscribeStores } from "../../kube-watch-api/kube-watch-api";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
-import type { PageParam } from "../../navigation/page-param";
 import { ResourceKindMap, ResourceNames } from "../../utils/rbac";
-import type { ItemListLayoutProps, ItemListStore } from "../item-object-list/list-layout";
 import { ItemListLayout } from "../item-object-list/list-layout";
 import kubeSelectedUrlParamInjectable from "../kube-detail-params/kube-selected-url.injectable";
-import type { ToggleKubeDetailsPane } from "../kube-detail-params/toggle-details.injectable";
 import toggleKubeDetailsPaneInjectable from "../kube-detail-params/toggle-details.injectable";
 import { KubeObjectMenu } from "../kube-object-menu";
+import { MenuControls } from "../menu";
 import { NamespaceSelectFilter } from "../namespaces/namespace-select-filter";
+
+import type { KubeApi } from "@freelensapp/kube-api";
+import type { KubeJsonApiDataFor, KubeObject } from "@freelensapp/kube-object";
+import type { GeneralKubeObjectListLayoutColumn, SpecificKubeListLayoutColumn } from "@freelensapp/list-layout";
+import type { Disposer } from "@freelensapp/utilities";
+
+import type { ClusterContext } from "../../cluster-frame-context/cluster-frame-context";
+import type { SubscribableStore, SubscribeStores } from "../../kube-watch-api/kube-watch-api";
+import type { PageParam } from "../../navigation/page-param";
+import type { ItemListLayoutProps, ItemListStore } from "../item-object-list/list-layout";
+import type { ToggleKubeDetailsPane } from "../kube-detail-params/toggle-details.injectable";
 
 export type KubeItemListStore<K extends KubeObject> = ItemListStore<K, false> &
   SubscribableStore & {
@@ -97,6 +100,7 @@ class NonInjectedKubeObjectListLayout<
   };
 
   private readonly loadErrors = observable.array<string>();
+  private readonly menuControls = new Map<string, MenuControls>();
 
   @computed get selectedItem() {
     return this.props.store.getByPath(this.props.kubeSelectedUrlParam.get());
@@ -151,6 +155,10 @@ class NonInjectedKubeObjectListLayout<
     );
   }
 
+  private registerControls = (id: string) => (controls: MenuControls) => {
+    this.menuControls.set(id, controls);
+  };
+
   render() {
     const {
       className,
@@ -165,6 +173,7 @@ class NonInjectedKubeObjectListLayout<
       columns,
       generalColumns,
       sortingCallbacks = {},
+      customizeTableRowProps,
       ...layoutProps
     } = this.props;
     const resourceName = this.props.resourceName || ResourceNames[ResourceKindMap[store.api.kind]] || store.api.kind;
@@ -183,6 +192,41 @@ class NonInjectedKubeObjectListLayout<
       [...(renderTableHeader || []).map((header, index) => ({ priority: 20 - index, header })), ...targetColumns],
       (v) => -v.priority,
     ).map((col) => col.header);
+
+    const getTableRowCustomizations = (item: K) => {
+      const id = `menu-actions-for-kube-object-menu-for-${item.getId()}`;
+      const baseProps = customizeTableRowProps?.(item) ?? {};
+
+      return {
+        id,
+        ...baseProps,
+        onContextMenu: (evt: React.MouseEvent<HTMLDivElement>) => {
+          baseProps.onContextMenu?.(evt);
+
+          const controls = this.menuControls.get(id);
+
+          if (!controls) {
+            return;
+          }
+
+          evt.preventDefault();
+          evt.stopPropagation();
+
+          const cursorPosition = { x: evt.clientX, y: evt.clientY };
+          const contextTarget = evt.currentTarget as HTMLElement;
+
+          for (const [otherId, otherControls] of this.menuControls.entries()) {
+            if (otherId !== id) {
+              otherControls.close();
+            }
+          }
+
+          requestAnimationFrame(() => {
+            controls.open({ cursorPosition, contextTarget });
+          });
+        },
+      };
+    };
 
     return (
       <ItemListLayout<K, false>
@@ -215,7 +259,13 @@ class NonInjectedKubeObjectListLayout<
           }),
           ...[customizeHeader].filter(isDefined).flat(),
         ]}
-        renderItemMenu={(item) => <KubeObjectMenu object={item} />}
+        renderItemMenu={(item) => (
+          <KubeObjectMenu
+            id={item.getId()}
+            object={item}
+            onMenuReady={this.registerControls(`menu-actions-for-kube-object-menu-for-${item.getId()}`)}
+          />
+        )}
         onDetails={onDetails ?? ((item) => toggleDetails(item.selfLink))}
         sortingCallbacks={sortingCallbacks}
         renderTableHeader={headers}
@@ -230,6 +280,7 @@ class NonInjectedKubeObjectListLayout<
         }
         spinnerTestId="kube-object-list-layout-spinner"
         {...layoutProps}
+        customizeTableRowProps={getTableRowCustomizations}
       />
     );
   }

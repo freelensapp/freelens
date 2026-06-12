@@ -13,19 +13,22 @@ import { computed, makeObservable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { Link } from "react-router-dom";
-import type { PageParam } from "../../navigation/page-param";
-import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectAge } from "../kube-object/age";
+import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { TabLayout } from "../layout/tab-layout-2";
 import { Select } from "../select";
+import { WithTooltip } from "../with-tooltip";
 import selectedCustomResourceDefinitionGroupsUrlParamInjectable from "./selected-groups-url-param.injectable";
-import type { CustomResourceDefinitionStore } from "./store";
 import customResourceDefinitionStoreInjectable from "./store.injectable";
+
+import type { PageParam } from "../../navigation/page-param";
+import type { CustomResourceDefinitionStore } from "./store";
 
 enum columnId {
   kind = "kind",
   group = "group",
   version = "version",
+  shortNames = "shortNames",
   scope = "scope",
   age = "age",
 }
@@ -111,6 +114,7 @@ class NonInjectedCustomResourceDefinitions extends React.Component<Dependencies>
             [columnId.kind]: (crd) => crd.getResourceKind(),
             [columnId.group]: (crd) => crd.getGroup(),
             [columnId.version]: (crd) => crd.getVersion(),
+            [columnId.shortNames]: (crd) => crd.getNames().shortNames?.join(" "),
             [columnId.scope]: (crd) => crd.getScope(),
             [columnId.age]: (crd) => -crd.getCreationTimestamp(),
           }}
@@ -152,16 +156,18 @@ class NonInjectedCustomResourceDefinitions extends React.Component<Dependencies>
             { title: "Resource", className: "kind", sortBy: columnId.kind, id: columnId.kind },
             { title: "Group", className: "group", sortBy: columnId.group, id: columnId.group },
             { title: "Version", className: "version", sortBy: columnId.version, id: columnId.version },
+            { title: "Short Names", className: "short-names", sortBy: columnId.shortNames, id: columnId.shortNames },
             { title: "Scope", className: "scope", sortBy: columnId.scope, id: columnId.scope },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
           renderTableContents={(crd) => [
             <Link key="link" to={crd.getResourceUrl()} onClick={stopPropagation}>
-              {crd.getResourceKind()}
+              <WithTooltip>{crd.getResourceKind()}</WithTooltip>
             </Link>,
-            crd.getGroup(),
-            crd.getVersion(),
-            crd.getScope(),
+            <WithTooltip>{crd.getGroup()}</WithTooltip>,
+            <WithTooltip>{crd.getVersion()}</WithTooltip>,
+            <WithTooltip>{crd.getNames().shortNames?.join(",")}</WithTooltip>,
+            <WithTooltip>{crd.getScope()}</WithTooltip>,
             <KubeObjectAge key="age" object={crd} />,
           ]}
         />

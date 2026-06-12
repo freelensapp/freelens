@@ -4,11 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ProjectedSource } from "@freelensapp/kube-object";
 import { Pod } from "@freelensapp/kube-object";
 import { render } from "@testing-library/react";
 import React from "react";
 import { Projected } from "./projected";
+
+import type { ProjectedSource } from "@freelensapp/kube-object";
 
 describe("<Projected />", () => {
   it("renders", () => {

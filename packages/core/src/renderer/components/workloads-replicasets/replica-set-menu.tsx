@@ -5,13 +5,15 @@
  */
 
 import { Icon } from "@freelensapp/icon";
-import type { ReplicaSet } from "@freelensapp/kube-object";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
-import type { KubeObjectMenuProps } from "../kube-object-menu";
 import { MenuItem } from "../menu";
-import type { OpenReplicaSetScaleDialog } from "./scale-dialog/open.injectable";
 import openReplicaSetScaleDialogInjectable from "./scale-dialog/open.injectable";
+
+import type { ReplicaSet } from "@freelensapp/kube-object";
+
+import type { KubeObjectMenuProps } from "../kube-object-menu";
+import type { OpenReplicaSetScaleDialog } from "./scale-dialog/open.injectable";
 
 export interface ReplicaSetMenuProps extends KubeObjectMenuProps<ReplicaSet> {}
 

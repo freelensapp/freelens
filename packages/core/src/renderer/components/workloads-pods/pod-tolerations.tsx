@@ -5,11 +5,12 @@
  */
 
 import "./pod-tolerations.scss";
+
 import uniqueId from "lodash/uniqueId";
 import React from "react";
+import { Table, TableCell, TableHead, TableRow } from "../table";
 
 import type { Toleration } from "@freelensapp/kube-object";
-import { Table, TableCell, TableHead, TableRow } from "../table";
 
 export interface PodTolerationsProps {
   tolerations: Toleration[];

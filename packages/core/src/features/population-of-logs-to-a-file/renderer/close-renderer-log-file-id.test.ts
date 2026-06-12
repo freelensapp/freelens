@@ -5,15 +5,18 @@
  */
 
 import { winstonLoggerInjectable } from "@freelensapp/logger";
-import type { SendMessageToChannel } from "@freelensapp/messaging";
 import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
-import type { DiContainer } from "@ogre-tools/injectable";
-import type winston from "winston";
 import { getDiForUnitTesting } from "../../../renderer/getDiForUnitTesting";
 import closeRendererLogFileInjectable from "./close-renderer-log-file.injectable";
-import type IpcLogTransport from "./ipc-transport";
 import ipcLogTransportInjectable from "./ipc-transport.injectable";
 import rendererLogFileIdInjectable from "./renderer-log-file-id.injectable";
+
+import type { SendMessageToChannel } from "@freelensapp/messaging";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+import type winston from "winston";
+
+import type IpcLogTransport from "./ipc-transport";
 
 describe("close renderer file logging", () => {
   let di: DiContainer;

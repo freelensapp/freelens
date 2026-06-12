@@ -4,8 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { DiContainer } from "@ogre-tools/injectable";
-import type { RenderResult } from "@testing-library/react";
 import { KubernetesCluster, WebLink } from "../../common/catalog-entities";
 import navigateToCatalogInjectable from "../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
 import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable";
@@ -17,6 +15,9 @@ import {
 } from "../../renderer/components/test-utils/get-application-builder";
 import { advanceFakeTime } from "../../test-utils/use-fake-time";
 import addClusterInjectable from "../cluster/storage/common/add.injectable";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+import type { RenderResult } from "@testing-library/react";
 
 describe("opening catalog entity details panel", () => {
   let builder: ApplicationBuilder;

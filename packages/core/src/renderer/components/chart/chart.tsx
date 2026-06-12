@@ -5,14 +5,16 @@
  */
 
 import "./chart.scss";
+
 import { cssNames } from "@freelensapp/utilities";
-import type { PluginServiceRegistrationOptions } from "chart.js";
 import ChartJS from "chart.js";
 import { remove } from "lodash";
-import type { CSSProperties } from "react";
 import React from "react";
 import { Badge } from "../badge";
 import { StatusBrick } from "../status-brick";
+
+import type { PluginServiceRegistrationOptions } from "chart.js";
+import type { CSSProperties } from "react";
 
 export interface ChartData extends ChartJS.ChartData {
   datasets?: ChartDataSets[];
@@ -169,7 +171,7 @@ export class Chart extends React.Component<ChartProps> {
         className="LegendBadge flex gaps align-center"
         label={
           <div className="flex items-center">
-            <StatusBrick style={{ backgroundColor: color }} className="flex-shrink-0" />
+            <StatusBrick style={{ backgroundColor: color }} className="shrink-0" />
             <span>{title}</span>
           </div>
         }

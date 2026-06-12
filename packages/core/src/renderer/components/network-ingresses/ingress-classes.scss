@@ -1,0 +1,29 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+.IngressClasses {
+  .TableCell {
+    &.is_default {
+      .Checkbox {
+        align-items: flex-start;
+      }
+    }
+
+    &.age {
+      flex-grow: 0.3;
+    }
+  }
+
+  .Icon {
+    &.set_default_icon {
+      filter: brightness(0.75);
+
+      &:hover {
+        filter: brightness(1.5);
+      }
+    }
+  }
+}

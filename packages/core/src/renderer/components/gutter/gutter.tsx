@@ -12,10 +12,8 @@ interface GutterProps {
   size?: "sm" | "md" | "xl";
 }
 
-const Gutter = ({ size = "md" }: GutterProps) => {
+export const Gutter = ({ size = "md" }: GutterProps) => {
   const classNames = cssNames(styles[`size-${size}`]);
 
   return <div className={classNames} />;
 };
-
-export default Gutter;

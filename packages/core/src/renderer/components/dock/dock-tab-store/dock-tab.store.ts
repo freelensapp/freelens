@@ -7,6 +7,7 @@
 import autoBind from "auto-bind";
 import { action, observable, reaction } from "mobx";
 import { toJS } from "../../../../common/utils";
+
 import type { CreateStorage } from "../../../utils/create-storage/create-storage.injectable";
 import type { StorageLayer } from "../../../utils/storage-helper";
 import type { TabId } from "../dock/store";

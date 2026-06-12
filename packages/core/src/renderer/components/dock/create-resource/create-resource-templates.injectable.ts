@@ -6,9 +6,10 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
-import type { GroupBase } from "react-select";
 import lensCreateResourceTemplatesInjectable from "./lens-templates.injectable";
 import userCreateResourceTemplatesInjectable from "./user-templates.injectable";
+
+import type { GroupBase } from "react-select";
 
 export interface RawTemplate {
   label: string;

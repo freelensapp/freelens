@@ -5,6 +5,7 @@
  */
 
 import { getInjectionToken } from "@ogre-tools/injectable";
+
 import type { Route } from "./front-end-route-injection-token";
 
 type InferParametersFrom<TRoute> = TRoute extends Route<infer TParameters> ? TParameters : never;

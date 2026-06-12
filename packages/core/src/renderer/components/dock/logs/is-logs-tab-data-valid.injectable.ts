@@ -5,8 +5,9 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { TabId } from "../dock/store";
 import logTabStoreInjectable from "./tab-store.injectable";
+
+import type { TabId } from "../dock/store";
 
 const isLogsTabDataValidInjectable = getInjectable({
   id: "is-logs-tab-data-valid",

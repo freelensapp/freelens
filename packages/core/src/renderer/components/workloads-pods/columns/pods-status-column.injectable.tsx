@@ -7,6 +7,7 @@
 import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
 import { getInjectable } from "@ogre-tools/injectable";
 import { kebabCase } from "lodash";
+import { COLUMN_PRIORITY } from "./column-priority";
 
 const columnId = "status";
 
@@ -16,7 +17,7 @@ export const podsStatusColumnInjectable = getInjectable({
     id: columnId,
     kind: "Pod",
     apiVersion: "v1",
-    priority: 0,
+    priority: COLUMN_PRIORITY.STATUS,
     content: (pod) => ({
       title: pod.getStatusMessage(),
       className: kebabCase(pod.getStatusMessage()),

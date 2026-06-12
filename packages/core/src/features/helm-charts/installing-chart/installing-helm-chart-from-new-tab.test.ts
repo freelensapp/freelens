@@ -4,36 +4,38 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import { flushPromises } from "@freelensapp/test-utils";
-import type { DiContainer } from "@ogre-tools/injectable";
-import type { RenderResult } from "@testing-library/react";
 import { fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import directoryForLensLocalStorageInjectable from "../../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
 import readJsonFileInjectable from "../../../common/fs/read-json-file.injectable";
 import writeJsonFileInjectable from "../../../common/fs/write-json-file.injectable";
 import { HelmChart } from "../../../common/k8s-api/endpoints/helm-charts.api";
-import type { RequestHelmCharts } from "../../../common/k8s-api/endpoints/helm-charts.api/request-charts.injectable";
 import requestHelmChartsInjectable from "../../../common/k8s-api/endpoints/helm-charts.api/request-charts.injectable";
-import type { RequestHelmChartReadme } from "../../../common/k8s-api/endpoints/helm-charts.api/request-readme.injectable";
 import requestHelmChartReadmeInjectable from "../../../common/k8s-api/endpoints/helm-charts.api/request-readme.injectable";
-import type { RequestHelmChartValues } from "../../../common/k8s-api/endpoints/helm-charts.api/request-values.injectable";
 import requestHelmChartValuesInjectable from "../../../common/k8s-api/endpoints/helm-charts.api/request-values.injectable";
-import type { RequestHelmChartVersions } from "../../../common/k8s-api/endpoints/helm-charts.api/request-versions.injectable";
 import requestHelmChartVersionsInjectable from "../../../common/k8s-api/endpoints/helm-charts.api/request-versions.injectable";
-import type { RequestCreateHelmRelease } from "../../../common/k8s-api/endpoints/helm-releases.api/request-create.injectable";
 import requestCreateHelmReleaseInjectable from "../../../common/k8s-api/endpoints/helm-releases.api/request-create.injectable";
-import type { ListClusterHelmReleases } from "../../../main/helm/helm-service/list-helm-releases.injectable";
 import listClusterHelmReleasesInjectable from "../../../main/helm/helm-service/list-helm-releases.injectable";
 import dockStoreInjectable from "../../../renderer/components/dock/dock/store.injectable";
 import getRandomInstallChartTabIdInjectable from "../../../renderer/components/dock/install-chart/get-random-install-chart-tab-id.injectable";
-import type { RequestDetailedHelmRelease } from "../../../renderer/components/helm-releases/release-details/release-details-model/request-detailed-helm-release.injectable";
 import requestDetailedHelmReleaseInjectable from "../../../renderer/components/helm-releases/release-details/release-details-model/request-detailed-helm-release.injectable";
-import type { ApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 import currentPathInjectable from "../../../renderer/routes/current-path.injectable";
+
+import type { AsyncFnMock } from "@async-fn/jest";
+import type { DiContainer } from "@ogre-tools/injectable";
+import type { RenderResult } from "@testing-library/react";
+
+import type { RequestHelmCharts } from "../../../common/k8s-api/endpoints/helm-charts.api/request-charts.injectable";
+import type { RequestHelmChartReadme } from "../../../common/k8s-api/endpoints/helm-charts.api/request-readme.injectable";
+import type { RequestHelmChartValues } from "../../../common/k8s-api/endpoints/helm-charts.api/request-values.injectable";
+import type { RequestHelmChartVersions } from "../../../common/k8s-api/endpoints/helm-charts.api/request-versions.injectable";
+import type { RequestCreateHelmRelease } from "../../../common/k8s-api/endpoints/helm-releases.api/request-create.injectable";
+import type { ListClusterHelmReleases } from "../../../main/helm/helm-service/list-helm-releases.injectable";
+import type { RequestDetailedHelmRelease } from "../../../renderer/components/helm-releases/release-details/release-details-model/request-detailed-helm-release.injectable";
+import type { ApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 
 describe("installing helm chart from new tab", () => {
   let builder: ApplicationBuilder;
@@ -322,6 +324,7 @@ describe("installing helm chart from new tab", () => {
             it("calls for installation with default configuration", () => {
               expect(requestCreateHelmReleaseMock).toHaveBeenCalledWith({
                 chart: "some-name",
+                forceConflicts: false,
                 name: undefined,
                 namespace: "default",
                 repo: "some-repository",
@@ -515,6 +518,7 @@ describe("installing helm chart from new tab", () => {
 
                   expect(requestCreateHelmReleaseMock).toHaveBeenCalledWith({
                     chart: "some-other-name",
+                    forceConflicts: false,
                     name: undefined,
                     namespace: "default",
                     repo: "some-repository",
@@ -556,6 +560,7 @@ describe("installing helm chart from new tab", () => {
 
                     expect(requestCreateHelmReleaseMock).toHaveBeenCalledWith({
                       chart: "some-name",
+                      forceConflicts: false,
                       name: undefined,
                       namespace: "default",
                       repo: "some-repository",
@@ -656,6 +661,7 @@ describe("installing helm chart from new tab", () => {
 
                   expect(requestCreateHelmReleaseMock).toHaveBeenCalledWith({
                     chart: "some-name",
+                    forceConflicts: false,
                     name: undefined,
                     namespace: "default",
                     repo: "some-repository",
@@ -708,6 +714,7 @@ describe("installing helm chart from new tab", () => {
 
                 expect(requestCreateHelmReleaseMock).toHaveBeenCalledWith({
                   chart: "some-name",
+                  forceConflicts: false,
                   name: undefined,
                   namespace: "some-other-namespace",
                   repo: "some-repository",
@@ -808,6 +815,7 @@ describe("installing helm chart from new tab", () => {
 
               expect(requestCreateHelmReleaseMock).toHaveBeenCalledWith({
                 chart: "some-name",
+                forceConflicts: false,
                 name: undefined,
                 namespace: "default",
                 repo: "some-repository",
@@ -862,6 +870,7 @@ describe("installing helm chart from new tab", () => {
 
               expect(requestCreateHelmReleaseMock).toHaveBeenCalledWith({
                 chart: "some-name",
+                forceConflicts: false,
                 name: "some-custom-name",
                 namespace: "default",
                 repo: "some-repository",

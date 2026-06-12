@@ -4,12 +4,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import * as yaml from "js-yaml";
+import tempy from "tempy";
+import { defaultYamlDumpOptions } from "../../common/kube-helpers";
+
 import type { KubernetesObject } from "@freelensapp/kubernetes-client-node";
 import type { Logger } from "@freelensapp/logger";
 import type { AsyncResult } from "@freelensapp/utilities";
-import * as yaml from "js-yaml";
+
 import type { Patch } from "rfc6902";
-import tempy from "tempy";
+
 import type { EmitAppEvent } from "../../common/app-event-bus/emit-event.injectable";
 import type { Cluster } from "../../common/cluster/cluster";
 import type { ExecFile } from "../../common/fs/exec-file.injectable";
@@ -161,6 +165,6 @@ export class ResourceApplier {
     delete res.metadata?.resourceVersion;
     delete res.metadata?.annotations?.["kubectl.kubernetes.io/last-applied-configuration"];
 
-    return yaml.dump(res);
+    return yaml.dump(res, defaultYamlDumpOptions);
   }
 }

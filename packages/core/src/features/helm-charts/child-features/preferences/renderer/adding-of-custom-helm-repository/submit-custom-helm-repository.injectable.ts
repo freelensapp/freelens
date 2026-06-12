@@ -5,9 +5,10 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { HelmRepo } from "../../../../../../common/helm/helm-repo";
 import addHelmRepositoryInjectable from "../adding-of-public-helm-repository/select-helm-repository/add-helm-repository.injectable";
 import hideDialogForAddingCustomHelmRepositoryInjectable from "./dialog-visibility/hide-dialog-for-adding-custom-helm-repository.injectable";
+
+import type { HelmRepo } from "../../../../../../common/helm/helm-repo";
 
 const submitCustomHelmRepositoryInjectable = getInjectable({
   id: "submit-custom-helm-repository",

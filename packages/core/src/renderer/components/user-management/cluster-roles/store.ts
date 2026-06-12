@@ -4,9 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { KubeObjectStore } from "../../../../common/k8s-api/kube-object.store";
+
 import type { ClusterRoleApi } from "@freelensapp/kube-api";
 import type { ClusterRole, ClusterRoleData } from "@freelensapp/kube-object";
-import { KubeObjectStore } from "../../../../common/k8s-api/kube-object.store";
 
 export class ClusterRoleStore extends KubeObjectStore<ClusterRole, ClusterRoleApi, ClusterRoleData> {
   protected sortItems(items: ClusterRole[]) {

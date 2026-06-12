@@ -8,11 +8,12 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import moment from "moment-timezone";
 import React from "react";
-import type { UserPreferencesState } from "../../../features/user-preferences/common/state.injectable";
 import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 
+import type { UserPreferencesState } from "../../../features/user-preferences/common/state.injectable";
+
 export interface LocaleDateProps {
-  date: string;
+  date: string | Date;
 }
 
 interface Dependencies {

@@ -13,21 +13,23 @@ import {
   UpdateMode,
   VerticalPodAutoscaler,
 } from "@freelensapp/kube-object";
-import type { PodResourcePolicy, PodUpdatePolicy, VerticalPodAutoscalerStatus } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
-import type { Logger } from "@freelensapp/logger";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import startCase from "lodash/startCase";
 import { observer } from "mobx-react";
 import React from "react";
 import { Link } from "react-router-dom";
-import type { ApiManager } from "../../../common/k8s-api/api-manager";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
 import { Badge } from "../badge";
 import { DrawerItem, DrawerTitle } from "../drawer";
-import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
+
+import type { PodResourcePolicy, PodUpdatePolicy, VerticalPodAutoscalerStatus } from "@freelensapp/kube-object";
+import type { Logger } from "@freelensapp/logger";
+
+import type { ApiManager } from "../../../common/k8s-api/api-manager";
+import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 export interface VpaDetailsProps extends KubeObjectDetailsProps<VerticalPodAutoscaler> {}
@@ -49,7 +51,7 @@ class NonInjectedVpaDetails extends React.Component<VpaDetailsProps & Dependenci
         <DrawerTitle>Status</DrawerTitle>
         <DrawerItem name="Status" className="status" labelsOnly>
           {vpa.getReadyConditions().map(({ type, tooltip, isReady }) => (
-            <Badge key={type} label={type} tooltip={tooltip} className={cssNames({ [type.toLowerCase()]: isReady })} />
+            <Badge key={type} label={type} tooltip={tooltip} className={cssNames({ [type]: isReady })} />
           ))}
         </DrawerItem>
 

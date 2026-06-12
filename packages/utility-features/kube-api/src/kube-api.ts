@@ -6,8 +6,22 @@
 
 // Base class for building all kubernetes apis
 
+import {
+  isJsonApiData,
+  isJsonApiDataList,
+  isKubeStatusData,
+  isPartialJsonApiData,
+  KubeStatus,
+} from "@freelensapp/kube-object";
+import { isDefined, noop, WrappedAbortController } from "@freelensapp/utilities";
 import assert from "assert";
+import byline from "byline";
+import { merge } from "lodash";
+import { matches } from "lodash/fp";
+import { makeObservable, observable } from "mobx";
 import { stringify } from "querystring";
+import { createKubeApiURL, parseKubeApi } from "./kube-api-parse";
+
 import type {
   KubeJsonApiData,
   KubeJsonApiDataFor,
@@ -16,26 +30,15 @@ import type {
   KubeObjectMetadata,
   KubeObjectScope,
   Scale,
+  ScaleCreateOptions,
 } from "@freelensapp/kube-object";
-import {
-  KubeStatus,
-  isJsonApiData,
-  isJsonApiDataList,
-  isKubeStatusData,
-  isPartialJsonApiData,
-} from "@freelensapp/kube-object";
-import type { ScaleCreateOptions } from "@freelensapp/kube-object";
 import type { LogFunction } from "@freelensapp/logger";
 import type { RequestInit, Response } from "@freelensapp/node-fetch";
 import type { Disposer } from "@freelensapp/utilities";
-import { WrappedAbortController, isDefined, noop } from "@freelensapp/utilities";
-import byline from "byline";
-import { merge } from "lodash";
-import { matches } from "lodash/fp";
-import { makeObservable, observable } from "mobx";
+
 import type { Patch } from "rfc6902";
 import type { PartialDeep } from "type-fest";
-import { createKubeApiURL, parseKubeApi } from "./kube-api-parse";
+
 import type { KubeJsonApi } from "./kube-json-api";
 import type { IKubeWatchEvent } from "./kube-watch-event";
 
@@ -180,6 +183,60 @@ const getOrderedVersions = (
 
 export type PropagationPolicy = undefined | "Orphan" | "Foreground" | "Background";
 
+export interface DeleteOptions {
+  /**
+   * The duration in seconds before the object should be deleted. Value must be non-negative integer.
+   * The value zero indicates delete immediately. If this value is nil, the default grace period for the
+   * specified type will be used.
+   * Defaults to a per object value if not specified. zero means delete immediately.
+   */
+  gracePeriodSeconds?: number;
+
+  /**
+   * Must be fulfilled before a deletion is carried out. If not possible, a 409 Conflict status will be
+   * returned.
+   */
+  preconditions?: {
+    /**
+     * Specifies the target ResourceVersion
+     */
+    resourceVersion?: string;
+    /**
+     * Specifies the target UID.
+     */
+    uid?: string;
+  };
+
+  /**
+   * Deprecated: please use the PropagationPolicy, this field will be deprecated in 1.7.
+   * Should the dependent objects be orphaned. If true/false, the "orphan"
+   * finalizer will be added to/removed from the object's finalizers list.
+   * Either this field or PropagationPolicy may be set, but not both.
+   */
+  orphanDependents?: boolean;
+
+  /**
+   * Whether and how garbage collection will be performed.
+   * Either this field or OrphanDependents may be set, but not both.
+   * The default policy is decided by the existing finalizer set in the
+   * metadata.finalizers and the resource-specific default policy.
+   * Acceptable values are: 'Orphan' - orphan the dependents; 'Background' - allow
+   * the garbage collector to delete the dependents in the background;
+   * 'Foreground' - a cascading policy that deletes all dependents in the
+   * foreground.
+   */
+  propagationPolicy?: PropagationPolicy;
+
+  /**
+   * When present, indicates that modifications should not be
+   * persisted. An invalid or unrecognized dryRun directive will
+   * result in an error response and no further processing of the
+   * request. Valid values are:
+   * - All: all dry run stages will be processed
+   */
+  dryRun?: string[];
+}
+
 export type KubeApiWatchCallback<T extends KubeJsonApiData = KubeJsonApiData> = (
   data: IKubeWatchEvent<T> | null,
   error: KubeStatus | Response | null | Record<string, unknown>,
@@ -271,9 +328,15 @@ export interface DeleteResourceDescriptor extends ResourceDescriptor {
    * @default "Background"
    */
   propagationPolicy?: PropagationPolicy;
+
+  /**
+   * Additional options for the delete operation
+   */
+  deleteOptions?: DeleteOptions;
 }
 
 export interface KubeApiDependencies {
+  logDebug: LogFunction;
   logInfo: LogFunction;
   logWarn: LogFunction;
   logError: LogFunction;
@@ -601,7 +664,7 @@ export class KubeApi<
 
   async create(
     { name, namespace }: Partial<ResourceDescriptor>,
-    partialData?: PartialDeep<Object>,
+    partialData?: PartialDeep<Object, { recurseIntoArrays: true }>,
   ): Promise<Object | null> {
     await this.checkPreferredVersion();
 
@@ -717,23 +780,26 @@ export class KubeApi<
     return parsed;
   }
 
-  /**
-   * Some k8s resources might implement special "delete" (e.g. pod.api)
-   * See also: https://kubernetes.io/docs/concepts/scheduling-eviction/api-eviction/
-   * By default should work same as delete()
-   */
-  async evict(desc: DeleteResourceDescriptor): Promise<KubeStatus | KubeObject | unknown> {
-    return this.delete(desc);
-  }
-
-  async delete({ propagationPolicy = "Background", ...desc }: DeleteResourceDescriptor) {
+  async delete({ propagationPolicy = "Background", deleteOptions, ...desc }: DeleteResourceDescriptor) {
     await this.checkPreferredVersion();
     const apiUrl = this.formatUrlForNotListing(desc);
+
+    // Prepare the delete options data
+    const deleteData = deleteOptions
+      ? {
+          kind: "DeleteOptions",
+          apiVersion: "v1",
+          ...deleteOptions,
+          // Override propagationPolicy if specified in deleteOptions
+          ...(deleteOptions.propagationPolicy !== undefined && { propagationPolicy: deleteOptions.propagationPolicy }),
+        }
+      : undefined;
 
     return this.request.del(apiUrl, {
       query: {
         propagationPolicy,
       },
+      data: deleteData,
     });
   }
 
@@ -761,7 +827,7 @@ export class KubeApi<
     const watchUrl = this.getWatchUrl(namespace);
 
     abortController.signal.addEventListener("abort", () => {
-      this.dependencies.logInfo(`watch (${watchId}) aborted ${watchUrl}`);
+      this.dependencies.logDebug(`watch (${watchId}) aborted ${watchUrl}`);
       clearTimeout(timedRetry);
     });
 
@@ -770,7 +836,7 @@ export class KubeApi<
       signal: abortController.signal,
     });
 
-    this.dependencies.logInfo(`watch (${watchId}) ${retry === true ? "retried" : "started"} ${watchUrl}`);
+    this.dependencies.logDebug(`watch (${watchId}) ${retry === true ? "retried" : "started"} ${watchUrl}`);
 
     responsePromise
       .then((response) => {
@@ -798,7 +864,7 @@ export class KubeApi<
               // Close current request
               abortController.abort();
 
-              this.dependencies.logInfo(`Watch timeout set, but not retried, retrying now`);
+              this.dependencies.logDebug(`Watch timeout set, but not retried, retrying now`);
 
               requestRetried = true;
 
@@ -834,7 +900,7 @@ export class KubeApi<
               return;
             }
 
-            this.dependencies.logInfo(`watch (${watchId}) ${eventName} ${watchUrl}`);
+            this.dependencies.logDebug(`watch (${watchId}) ${eventName} ${watchUrl}`);
 
             requestRetried = true;
 

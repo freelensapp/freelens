@@ -5,6 +5,7 @@
  */
 
 import type { JsonValue } from "type-fest";
+
 import type { ExternalDocumentation } from "./external-documentation";
 
 /**

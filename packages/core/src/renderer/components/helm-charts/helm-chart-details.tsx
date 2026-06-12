@@ -6,27 +6,29 @@
 
 import "./helm-chart-details.scss";
 
-import assert from "assert";
 import { Button } from "@freelensapp/button";
 import { Spinner } from "@freelensapp/spinner";
 import { stopPropagation } from "@freelensapp/utilities";
-import { Tooltip, styled } from "@mui/material";
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
+import { styled, Tooltip } from "@mui/material";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import assert from "assert";
 import autoBindReact from "auto-bind/react";
 import { observer } from "mobx-react";
 import React, { Component } from "react";
-import type { HelmChart } from "../../../common/k8s-api/endpoints/helm-charts.api";
 import { Badge } from "../badge";
 import createInstallChartTabInjectable from "../dock/install-chart/create-install-chart-tab.injectable";
 import { Drawer, DrawerItem } from "../drawer";
 import { MarkdownViewer } from "../markdown-viewer";
 import { Select } from "../select";
 import readmeOfSelectHelmChartInjectable from "./details/readme-of-selected-helm-chart.injectable";
-import versionsOfSelectedHelmChartInjectable from "./details/versions-of-selected-helm-chart.injectable";
-import type { HelmChartDetailsVersionSelection } from "./details/versions/helm-chart-details-version-selection.injectable";
 import helmChartDetailsVersionSelectionInjectable from "./details/versions/helm-chart-details-version-selection.injectable";
+import versionsOfSelectedHelmChartInjectable from "./details/versions-of-selected-helm-chart.injectable";
 import { HelmChartIcon } from "./icon";
+
+import type { IAsyncComputed } from "@ogre-tools/injectable-react";
+
+import type { HelmChart } from "../../../common/k8s-api/endpoints/helm-charts.api";
+import type { HelmChartDetailsVersionSelection } from "./details/versions/helm-chart-details-version-selection.injectable";
 
 export interface HelmChartDetailsProps {
   hideDetails(): void;

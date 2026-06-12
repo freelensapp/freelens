@@ -9,7 +9,10 @@ import bundledBinaryPathInjectable from "../../common/utils/bundled-binary-path.
 
 const freeLensK8sProxyPathInjectable = getInjectable({
   id: "freelens-k8s-proxy-path",
-  instantiate: (di) => di.inject(bundledBinaryPathInjectable, "freelens-k8s-proxy"),
+  instantiate: (di) => {
+    const path = di.inject(bundledBinaryPathInjectable, "freelens-k8s-proxy");
+    return path;
+  },
 });
 
 export default freeLensK8sProxyPathInjectable;

@@ -5,8 +5,9 @@
  */
 
 import { PersistentVolumeClaim } from "@freelensapp/kube-object";
-import type { DerivedKubeApiOptions, KubeApiDependencies } from "../kube-api";
 import { KubeApi } from "../kube-api";
+
+import type { DerivedKubeApiOptions, KubeApiDependencies } from "../kube-api";
 
 export class PersistentVolumeClaimApi extends KubeApi<PersistentVolumeClaim> {
   constructor(deps: KubeApiDependencies, opts?: DerivedKubeApiOptions) {

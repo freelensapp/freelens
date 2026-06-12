@@ -5,8 +5,9 @@
  */
 
 import { object } from "@freelensapp/utilities";
-import type { KubeResource } from "../../common/rbac";
 import { apiResourceRecord } from "../../common/rbac";
+
+import type { KubeResource } from "../../common/rbac";
 
 export const ResourceNames: Record<KubeResource, string> = {
   namespaces: "Namespaces",
@@ -32,6 +33,7 @@ export const ResourceNames: Record<KubeResource, string> = {
   jobs: "Jobs",
   cronjobs: "Cron Jobs",
   endpoints: "Endpoints",
+  endpointslices: "Endpoint Slices",
   customresourcedefinitions: "Custom Resource Definitions",
   horizontalpodautoscalers: "Horizontal Pod Autoscalers",
   podsecuritypolicies: "Pod Security Policies",

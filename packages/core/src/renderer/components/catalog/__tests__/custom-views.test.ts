@@ -4,14 +4,17 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { StrictReactNode } from "@freelensapp/utilities";
-import type { DiContainer } from "@ogre-tools/injectable";
 import { computed } from "mobx";
-import type { LensRendererExtension } from "../../../../extensions/lens-renderer-extension";
 import rendererExtensionsInjectable from "../../../../extensions/renderer-extensions.injectable";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
-import type { CustomCategoryViewRegistration } from "../custom-views";
 import customCategoryViewsInjectable from "../custom-views.injectable";
+
+import type { StrictReactNode } from "@freelensapp/utilities";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+
+import type { LensRendererExtension } from "../../../../extensions/lens-renderer-extension";
+import type { CustomCategoryViewRegistration } from "../custom-views";
 
 describe("Custom Category Views", () => {
   let di: DiContainer;

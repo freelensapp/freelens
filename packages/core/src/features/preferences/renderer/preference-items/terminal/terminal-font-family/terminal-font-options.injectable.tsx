@@ -5,14 +5,16 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { IComputedValue } from "mobx";
 import { action, computed } from "mobx";
 import React from "react";
-import type { SingleValue } from "react-select";
 import { defaultTerminalFontFamily } from "../../../../../../common/vars";
-import type { SelectOption } from "../../../../../../renderer/components/select";
 import { terminalFontInjectionToken } from "../../../../../terminal/renderer/fonts/token";
 import userPreferencesStateInjectable from "../../../../../user-preferences/common/state.injectable";
+
+import type { IComputedValue } from "mobx";
+import type { SingleValue } from "react-select";
+
+import type { SelectOption } from "../../../../../../renderer/components/select";
 
 export interface TerminalFontPreferencePresenter {
   readonly options: IComputedValue<SelectOption<string>[]>;

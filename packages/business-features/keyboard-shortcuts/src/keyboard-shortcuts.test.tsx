@@ -1,12 +1,10 @@
 import { startApplicationInjectionToken } from "@freelensapp/application";
 import { registerFeature } from "@freelensapp/feature-core";
-import { renderInjectionToken } from "@freelensapp/react-application";
-import { reactApplicationChildrenInjectionToken } from "@freelensapp/react-application";
+import { reactApplicationChildrenInjectionToken, renderInjectionToken } from "@freelensapp/react-application";
 import { Discover, discoverFor } from "@freelensapp/react-testing-library-discovery";
-import { DiContainer, createContainer, getInjectable } from "@ogre-tools/injectable";
+import { createContainer, DiContainer, getInjectable } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { registerInjectableReact } from "@ogre-tools/injectable-react";
-import type { RenderResult } from "@testing-library/react";
 import { render } from "@testing-library/react";
 import userEvent, { UserEvent } from "@testing-library/user-event";
 import { computed, runInAction } from "mobx";
@@ -15,6 +13,8 @@ import { keyboardShortcutsFeature } from "./feature";
 import { keyboardShortcutInjectionToken } from "./keyboard-shortcut-injection-token";
 import { KeyboardShortcutScope } from "./keyboard-shortcut-scope";
 import platformInjectable from "./platform.injectable";
+
+import type { RenderResult } from "@testing-library/react";
 
 describe("keyboard-shortcuts", () => {
   let di: DiContainer;

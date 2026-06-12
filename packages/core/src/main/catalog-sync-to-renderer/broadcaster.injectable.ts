@@ -6,9 +6,10 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { debounce } from "lodash";
-import type { CatalogEntity } from "../../common/catalog";
 import broadcastMessageInjectable from "../../common/ipc/broadcast-message.injectable";
 import { catalogItemsChannel } from "../../common/ipc/catalog";
+
+import type { CatalogEntity } from "../../common/catalog";
 
 const catalogSyncBroadcasterInjectable = getInjectable({
   id: "catalog-sync-broadcaster",

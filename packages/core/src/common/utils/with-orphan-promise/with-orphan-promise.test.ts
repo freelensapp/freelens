@@ -4,11 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import { getDiForUnitTesting } from "../../../main/getDiForUnitTesting";
 import logErrorInjectable from "../../log-error.injectable";
 import withOrphanPromiseInjectable from "./with-orphan-promise.injectable";
+
+import type { AsyncFnMock } from "@async-fn/jest";
 
 describe("with orphan promise, when called", () => {
   let toBeDecorated: AsyncFnMock<(arg1: string, arg2: string) => Promise<string>>;

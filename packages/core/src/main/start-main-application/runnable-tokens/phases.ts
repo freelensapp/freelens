@@ -4,8 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Runnable, RunnableSync } from "@freelensapp/run-many";
 import { getInjectionToken } from "@ogre-tools/injectable";
+
+import type { Runnable, RunnableSync } from "@freelensapp/run-many";
 
 export const afterQuitOfFrontEndInjectionToken = getInjectionToken<RunnableSync>({
   id: "after-quit-of-front-end",

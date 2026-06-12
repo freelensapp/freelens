@@ -8,13 +8,6 @@
 //       It is here to consolidate the common parts which are exported to `Main`
 //       and to `Renderer`
 
-import type { JsonApiConfig } from "@freelensapp/json-api";
-import type {
-  DerivedKubeApiOptions,
-  KubeJsonApi as InternalKubeJsonApi,
-  KubeApiDependencies,
-  KubeApiOptions,
-} from "@freelensapp/kube-api";
 import {
   DeploymentApi as InternalDeploymentApi,
   IngressApi as InternalIngressApi,
@@ -24,31 +17,41 @@ import {
   PodApi,
 } from "@freelensapp/kube-api";
 import { maybeKubeApiInjectable, storesAndApisCanBeCreatedInjectionToken } from "@freelensapp/kube-api-specifics";
-import type { KubeJsonApiDataFor, KubeObject } from "@freelensapp/kube-object";
+import { KubeJsonApiDataFor, KubeObject, KubeObjectMetadata } from "@freelensapp/kube-object";
 import {
   asLegacyGlobalForExtensionApi,
   asLegacyGlobalFunctionForExtensionApi,
   getLegacyGlobalDiForExtensionApi,
 } from "@freelensapp/legacy-global-di";
 import {
+  logDebugInjectionToken,
   logErrorInjectionToken,
+  loggerInjectionToken,
   logInfoInjectionToken,
   logWarningInjectionToken,
-  loggerInjectionToken,
 } from "@freelensapp/logger";
-import type { RequestInit } from "@freelensapp/node-fetch";
+import createResourceStackInjectable from "../../common/k8s/create-resource-stack.injectable";
 import apiManagerInjectable from "../../common/k8s-api/api-manager/manager.injectable";
 import createKubeApiForClusterInjectable from "../../common/k8s-api/create-kube-api-for-cluster.injectable";
 import createKubeApiForRemoteClusterInjectable from "../../common/k8s-api/create-kube-api-for-remote-cluster.injectable";
-import createKubeJsonApiForClusterInjectable from "../../common/k8s-api/create-kube-json-api-for-cluster.injectable";
 import createKubeJsonApiInjectable from "../../common/k8s-api/create-kube-json-api.injectable";
-import type { KubeApiDataFrom, KubeObjectStoreOptions } from "../../common/k8s-api/kube-object.store";
+import createKubeJsonApiForClusterInjectable from "../../common/k8s-api/create-kube-json-api-for-cluster.injectable";
 import { KubeObjectStore as InternalKubeObjectStore } from "../../common/k8s-api/kube-object.store";
-import createResourceStackInjectable from "../../common/k8s/create-resource-stack.injectable";
-import type { ResourceApplyingStack } from "../../common/k8s/resource-stack";
-import type { ClusterContext } from "../../renderer/cluster-frame-context/cluster-frame-context";
 import clusterFrameContextForNamespacedResourcesInjectable from "../../renderer/cluster-frame-context/for-namespaced-resources.injectable";
 import getPodsByOwnerIdInjectable from "../../renderer/components/workloads-pods/get-pods-by-owner-id.injectable";
+
+import type { JsonApiConfig } from "@freelensapp/json-api";
+import type {
+  DerivedKubeApiOptions,
+  KubeJsonApi as InternalKubeJsonApi,
+  KubeApiDependencies,
+  KubeApiOptions,
+} from "@freelensapp/kube-api";
+
+import type { NodeFetchRequestInit } from "../../common/fetch/node-fetch.injectable";
+import type { ResourceApplyingStack } from "../../common/k8s/resource-stack";
+import type { KubeApiDataFrom, KubeObjectStoreOptions } from "../../common/k8s-api/kube-object.store";
+import type { ClusterContext } from "../../renderer/cluster-frame-context/cluster-frame-context";
 import type { KubernetesCluster } from "./catalog";
 
 export const apiManager = asLegacyGlobalForExtensionApi(apiManagerInjectable);
@@ -61,6 +64,7 @@ const getKubeApiDeps = (): KubeApiDependencies => {
   const di = getLegacyGlobalDiForExtensionApi();
 
   return {
+    logDebug: di.inject(logDebugInjectionToken),
     logError: di.inject(logErrorInjectionToken),
     logInfo: di.inject(logInfoInjectionToken),
     logWarn: di.inject(logWarningInjectionToken),
@@ -137,12 +141,8 @@ export interface IKubeApiCluster {
   };
 }
 
-export type { CreateKubeApiForRemoteClusterConfig as IRemoteKubeApiConfig } from "../../common/k8s-api/create-kube-api-for-remote-cluster.injectable";
-export type { CreateKubeApiForLocalClusterConfig as ILocalKubeApiConfig } from "../../common/k8s-api/create-kube-api-for-cluster.injectable";
-
 export {
-  KubeObject,
-  KubeStatus,
+  createKubeObject,
   isJsonApiData,
   isJsonApiDataList,
   isKubeJsonApiListMetadata,
@@ -151,22 +151,27 @@ export {
   isKubeStatusData,
   isPartialJsonApiData,
   isPartialJsonApiMetadata,
-  createKubeObject,
+  KubeObject,
+  KubeStatus,
   stringifyLabels,
 } from "@freelensapp/kube-object";
+
 export type {
-  OwnerReference,
-  KubeObjectMetadata,
-  NamespaceScopedMetadata,
-  ClusterScopedMetadata,
   BaseKubeJsonApiObjectMetadata,
-  KubeJsonApiObjectMetadata,
-  KubeStatusData,
-  KubeJsonApiDataFor,
+  ClusterScopedMetadata,
   KubeJsonApiData,
+  KubeJsonApiDataFor,
+  KubeJsonApiObjectMetadata,
+  KubeObjectMetadata,
+  KubeStatusData,
+  NamespaceScopedMetadata,
+  OwnerReference,
 } from "@freelensapp/kube-object";
 
-function KubeJsonApiCstr(config: JsonApiConfig, reqInit?: RequestInit) {
+export type { CreateKubeApiForLocalClusterConfig as ILocalKubeApiConfig } from "../../common/k8s-api/create-kube-api-for-cluster.injectable";
+export type { CreateKubeApiForRemoteClusterConfig as IRemoteKubeApiConfig } from "../../common/k8s-api/create-kube-api-for-remote-cluster.injectable";
+
+function KubeJsonApiCstr(config: JsonApiConfig, reqInit?: NodeFetchRequestInit) {
   const di = getLegacyGlobalDiForExtensionApi();
   const createKubeJsonApi = di.inject(createKubeJsonApiInjectable);
 
@@ -300,37 +305,104 @@ export const PersistentVolumeClaimsApi = PersistentVolumeClaimsApiConstructor as
 ) => PersistentVolumeClaimApi;
 
 export {
-  type Container as IPodContainer,
-  type PodContainerStatus as IPodContainerStatus,
-  Pod,
-  Node,
-  Deployment,
-  DaemonSet,
-  StatefulSet,
-  Job,
-  CronJob,
-  ConfigMap,
-  type SecretReference as ISecretRef,
-  Secret,
-  ReplicaSet,
-  ResourceQuota,
-  LimitRange,
-  HorizontalPodAutoscaler,
-  PodDisruptionBudget,
-  PriorityClass,
-  Service,
-  Endpoints as Endpoint,
-  Ingress,
-  NetworkPolicy,
-  PersistentVolume,
-  PersistentVolumeClaim,
-  StorageClass,
-  Namespace,
-  KubeEvent,
-  ServiceAccount,
-  Role,
-  RoleBinding,
   ClusterRole,
   ClusterRoleBinding,
+  ConfigMap,
+  type Container as IPodContainer,
+  CronJob,
   CustomResourceDefinition,
+  DaemonSet,
+  Deployment,
+  EndpointSlice,
+  Endpoints as Endpoint,
+  HorizontalPodAutoscaler,
+  Ingress,
+  Job,
+  KubeEvent,
+  LimitRange,
+  Namespace,
+  NetworkPolicy,
+  Node,
+  PersistentVolume,
+  PersistentVolumeClaim,
+  Pod,
+  type PodContainerStatus as IPodContainerStatus,
+  PodDisruptionBudget,
+  PriorityClass,
+  ReplicaSet,
+  ResourceQuota,
+  Role,
+  RoleBinding,
+  Secret,
+  type SecretReference as ISecretRef,
+  Service,
+  ServiceAccount,
+  StatefulSet,
+  StorageClass,
 } from "@freelensapp/kube-object";
+
+/**
+ * The `KubeObject` that can be used in extensions with additional property to
+ * get CRD metainfo and the API and Store objects.
+ */
+export class LensExtensionKubeObject<
+  Metadata extends KubeObjectMetadata = KubeObjectMetadata,
+  Status = unknown,
+  Spec = unknown,
+> extends KubeObject<Metadata, Status, Spec> {
+  /** Metadata about this CRD object */
+  static readonly crd?: LensExtensionKubeObjectCRD;
+
+  /**
+   * Returns `KubeApi` object for this kind of resource or throws an error.
+   *
+   * @example
+   *
+   * ```ts
+   * const api = Example.getApi<Example>();
+   * const url = api.formatUrlForNotListing({ name: "foo" });
+   * ```
+   */
+  static getApi<K extends KubeObject<any, any, any>, Api extends KubeApi<K> = KubeApi<K>>(): Api {
+    if (!this.crd) {
+      throw new Error(`API for ${this.name} is not for CRD and misses metainfo. Extension won't work correctly.`);
+    }
+    if (this.kind) {
+      for (let apiVersion of this.crd.apiVersions) {
+        const api = apiManager.getApiByKind(this.kind, apiVersion);
+        if (api) return api as unknown as Api;
+      }
+    }
+    throw new Error(`API for ${this.name} is not registered. Extension won't work correctly.`);
+  }
+
+  /**
+   * Returns `KubeObjectStore` object for this kind of resource or throws and
+   * error.
+   *
+   * @example
+   *
+   * ```ts
+   * const api = Example.getStore<Example>();
+   * await store.loadAll({ namespaces });
+   * ```
+   */
+  static getStore<
+    K extends KubeObject<any, any, any>,
+    Store extends KubeObjectStore<any, any, any> = KubeObjectStore<K, any, any>,
+  >(): Store {
+    const api = this.getApi();
+    if (api) {
+      const store = apiManager.getStore(api);
+      if (store) return store as Store;
+    }
+    throw new Error(`Store for ${this.name} is not registered. Extension won't work correctly.`);
+  }
+}
+
+export interface LensExtensionKubeObjectCRD {
+  apiVersions: string[];
+  plural: string;
+  singular: string;
+  shortNames?: string[];
+}

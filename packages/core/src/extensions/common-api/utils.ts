@@ -5,60 +5,25 @@
  */
 
 import { asLegacyGlobalFunctionForExtensionApi, getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
-import openLinkInBrowserInjectable from "../../common/utils/open-link-in-browser.injectable";
+import * as utilities from "@freelensapp/utilities";
+import openLinkInBrowserInjectable, {
+  type OpenLinkInBrowser,
+} from "../../common/utils/open-link-in-browser.injectable";
 import { buildVersionInitializable } from "../../features/vars/build-version/common/token";
 
-export { Singleton } from "../../common/utils/singleton";
+export type { OpenLinkInBrowser };
 
-export {
-  /**
-   * @deprecated Switch to using the `@freelensapp/utilities` package
-   */
-  prevDefault,
-  /**
-   * @deprecated Switch to using the `@freelensapp/utilities` package
-   */
-  stopPropagation,
-  /**
-   * @deprecated Switch to using the `@freelensapp/utilities` package
-   */
-  cssNames,
-  /**
-   * @deprecated Switch to using the `@freelensapp/utilities` package
-   */
-  disposer,
-} from "@freelensapp/utilities";
+const Util = {
+  ...utilities,
 
-export type {
-  /**
-   * @deprecated Switch to using the `@freelensapp/utilities` package
-   */
-  IClassName,
-  /**
-   * @deprecated Switch to using the `@freelensapp/utilities` package
-   */
-  IgnoredClassNames,
-  /**
-   * @deprecated Switch to using the `@freelensapp/utilities` package
-   */
-  Disposer,
-  /**
-   * @deprecated Switch to using the `@freelensapp/utilities` package
-   */
-  Disposable,
-  /**
-   * @deprecated Switch to using the `@freelensapp/utilities` package
-   */
-  ExtendableDisposer,
-} from "@freelensapp/utilities";
+  openExternal: asLegacyGlobalFunctionForExtensionApi(openLinkInBrowserInjectable),
+  openBrowser: asLegacyGlobalFunctionForExtensionApi(openLinkInBrowserInjectable),
 
-export type { OpenLinkInBrowser } from "../../common/utils/open-link-in-browser.injectable";
+  getAppVersion: () => {
+    const di = getLegacyGlobalDiForExtensionApi();
 
-export const openExternal = asLegacyGlobalFunctionForExtensionApi(openLinkInBrowserInjectable);
-export const openBrowser = asLegacyGlobalFunctionForExtensionApi(openLinkInBrowserInjectable);
-
-export const getAppVersion = () => {
-  const di = getLegacyGlobalDiForExtensionApi();
-
-  return di.inject(buildVersionInitializable.stateToken);
+    return di.inject(buildVersionInitializable.stateToken);
+  },
 };
+
+export { Util };

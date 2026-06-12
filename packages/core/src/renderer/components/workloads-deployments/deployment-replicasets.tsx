@@ -6,21 +6,24 @@
 
 import "./deployment-replicasets.scss";
 
-import type { ReplicaSet } from "@freelensapp/kube-object";
 import { Spinner } from "@freelensapp/spinner";
 import { prevDefault, stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 import { DrawerTitle } from "../drawer";
-import type { ShowDetails } from "../kube-detail-params/show-details.injectable";
 import showDetailsInjectable from "../kube-detail-params/show-details.injectable";
-import { KubeObjectMenu } from "../kube-object-menu";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { KubeObjectAge } from "../kube-object/age";
+import { LinkToNamespace, LinkToReplicaSet } from "../kube-object-link";
+import { KubeObjectMenu } from "../kube-object-menu";
 import { Table, TableCell, TableHead, TableRow } from "../table";
-import type { ReplicaSetStore } from "../workloads-replicasets/store";
+import { WithTooltip } from "../with-tooltip";
 import replicaSetStoreInjectable from "../workloads-replicasets/store.injectable";
+
+import type { ReplicaSet } from "@freelensapp/kube-object";
+
+import type { ShowDetails } from "../kube-detail-params/show-details.injectable";
+import type { ReplicaSetStore } from "../workloads-replicasets/store";
 
 enum sortBy {
   name = "name",
@@ -81,7 +84,6 @@ class NonInjectedDeploymentReplicaSets extends React.Component<DeploymentReplica
             <TableCell className="name" sortBy={sortBy.name}>
               Name
             </TableCell>
-            <TableCell className="warning" />
             <TableCell className="namespace" sortBy={sortBy.namespace}>
               Namespace
             </TableCell>
@@ -100,11 +102,16 @@ class NonInjectedDeploymentReplicaSets extends React.Component<DeploymentReplica
               nowrap
               onClick={prevDefault(() => showDetails(replica.selfLink, false))}
             >
-              <TableCell className="name">{replica.getName()}</TableCell>
-              <TableCell className="warning">
-                <KubeObjectStatusIcon key="icon" object={replica} />
+              <TableCell className="name">
+                <WithTooltip>
+                  <LinkToReplicaSet name={replica.getName()} namespace={replica.getNs()} />
+                </WithTooltip>
               </TableCell>
-              <TableCell className="namespace">{replica.getNs()}</TableCell>
+              <TableCell className="namespace">
+                <WithTooltip>
+                  <LinkToNamespace namespace={replica.getNs()} />
+                </WithTooltip>
+              </TableCell>
               <TableCell className="pods">{this.getPodsLength(replica)}</TableCell>
               <TableCell className="age">
                 <KubeObjectAge key="age" object={replica} />

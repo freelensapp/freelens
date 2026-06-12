@@ -5,6 +5,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
+
 import type { AppPaths } from "./app-path-injection-token";
 
 const appPathsStateInjectable = getInjectable({

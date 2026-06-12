@@ -7,8 +7,9 @@
 import { observable, reaction } from "mobx";
 import { toJS } from "../../../common/utils";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
-import type { CreateStorageHelper } from "../create-storage-helper.injectable";
 import createStorageHelperInjectable from "../create-storage-helper.injectable";
+
+import type { CreateStorageHelper } from "../create-storage-helper.injectable";
 import type { StorageHelper } from "../storage-helper";
 
 interface StorageModel {

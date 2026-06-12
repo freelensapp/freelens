@@ -6,22 +6,27 @@
 
 import "./view.scss";
 
-import type { TableCellProps } from "@freelensapp/list-layout";
 import { formatJSONValue, safeJSONPathValue } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
+import { startCase } from "lodash/fp";
 import { computed, makeObservable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import type { ApiManager } from "../../../common/k8s-api/api-manager";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
-import type { CustomResourceDefinitionStore } from "../custom-resource-definitions/store";
 import customResourceDefinitionStoreInjectable from "../custom-resource-definitions/store.injectable";
-import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectAge } from "../kube-object/age";
+import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { TabLayout } from "../layout/tab-layout-2";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
+import { WithTooltip } from "../with-tooltip";
 import customResourcesRouteParametersInjectable from "./route-parameters.injectable";
+
+import type { TableCellProps } from "@freelensapp/list-layout";
+
+import type { IComputedValue } from "mobx";
+
+import type { ApiManager } from "../../../common/k8s-api/api-manager";
+import type { CustomResourceDefinitionStore } from "../custom-resource-definitions/store";
 
 enum columnId {
   name = "name",
@@ -67,7 +72,7 @@ class NonInjectedCustomResources extends React.Component<Dependencies> {
         <KubeObjectListLayout
           isConfigurable
           key={`crd_resources_${crd.getResourceApiBase()}`}
-          tableId="crd_resources"
+          tableId={`crd_resources_${crd.getResourceApiBase()}`}
           className="CustomResources"
           store={store}
           sortingCallbacks={{
@@ -96,7 +101,7 @@ class NonInjectedCustomResources extends React.Component<Dependencies> {
               ? { title: "Namespace", className: "namespace", sortBy: columnId.namespace, id: columnId.namespace }
               : undefined,
             ...extraColumns.map(({ name }) => ({
-              title: name,
+              title: startCase(name),
               className: name.toLowerCase().replace(/\s+/g, "-"),
               sortBy: name,
               id: name,
@@ -105,12 +110,12 @@ class NonInjectedCustomResources extends React.Component<Dependencies> {
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
           renderTableContents={(customResource) => [
-            customResource.getName(),
+            <WithTooltip>{customResource.getName()}</WithTooltip>,
             isNamespaced && <NamespaceSelectBadge namespace={customResource.getNs() as string} />,
             ...extraColumns.map(
               (column): TableCellProps => ({
                 "data-testid": `custom-resource-column-cell-${column.name.toLowerCase().replace(/\s+/g, "-")}-for-${customResource.getScopedName()}`,
-                title: formatJSONValue(safeJSONPathValue(customResource, column.jsonPath)),
+                title: <WithTooltip>{formatJSONValue(safeJSONPathValue(customResource, column.jsonPath))}</WithTooltip>,
               }),
             ),
             <KubeObjectAge key="age" object={customResource} />,

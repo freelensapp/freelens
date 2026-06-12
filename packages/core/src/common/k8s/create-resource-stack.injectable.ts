@@ -6,13 +6,14 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { KubernetesCluster } from "../catalog-entities";
 import readDirectoryInjectable from "../fs/read-directory.injectable";
 import readFileInjectable from "../fs/read-file.injectable";
 import { kubectlApplyAllInjectionToken, kubectlDeleteAllInjectionToken } from "../kube-helpers/channels";
 import joinPathsInjectable from "../path/join-paths.injectable";
-import type { ResourceApplyingStack, ResourceStackDependencies } from "./resource-stack";
 import { ResourceStack } from "./resource-stack";
+
+import type { KubernetesCluster } from "../catalog-entities";
+import type { ResourceApplyingStack, ResourceStackDependencies } from "./resource-stack";
 
 export type CreateResourceStack = (cluster: KubernetesCluster, name: string) => ResourceApplyingStack;
 

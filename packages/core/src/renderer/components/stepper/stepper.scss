@@ -18,7 +18,8 @@
   .step {
     position: relative;
     text-align: center;
-    &.active, &.done {
+    &.active,
+    &.done {
       .point {
         color: var(--textColorAccent);
         background: var(--stepper-color-active);
@@ -33,7 +34,7 @@
       background: var(--stepper-color-active);
     }
     .step-title {
-      font-size: 120%
+      font-size: 120%;
     }
   }
 

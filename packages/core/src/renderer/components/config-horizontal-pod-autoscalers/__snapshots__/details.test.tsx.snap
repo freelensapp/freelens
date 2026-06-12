@@ -64,18 +64,6 @@ exports[`<HpaDetails/> renders 1`] = `
           0
         </span>
       </div>
-      <div
-        class="DrawerItem status labelsOnly"
-      >
-        <span
-          class="name"
-        >
-          Status
-        </span>
-        <span
-          class="value"
-        />
-      </div>
     </div>
   </div>
 </body>
@@ -144,18 +132,6 @@ exports[`<HpaDetails/> shows unknown metrics with lack of metric type 1`] = `
         >
           0
         </span>
-      </div>
-      <div
-        class="DrawerItem status labelsOnly"
-      >
-        <span
-          class="name"
-        >
-          Status
-        </span>
-        <span
-          class="value"
-        />
       </div>
       <div
         class="DrawerTitle title"
@@ -266,18 +242,6 @@ exports[`<HpaDetails/> shows unknown metrics with with unusual type 1`] = `
         >
           0
         </span>
-      </div>
-      <div
-        class="DrawerItem status labelsOnly"
-      >
-        <span
-          class="name"
-        >
-          Status
-        </span>
-        <span
-          class="value"
-        />
       </div>
       <div
         class="DrawerTitle title"

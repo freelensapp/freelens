@@ -269,32 +269,50 @@ exports[`Deleting a cluster when an internal kubeconfig cluster is used when the
                     0 items
                   </div>
                   <div
-                    class="Input SearchInput"
+                    style="display: flex; align-items: center; gap: 8px;"
                   >
-                    <label
-                      class="input-area flex gaps align-center"
-                      id=""
-                    >
-                      <input
-                        class="input box grow"
-                        placeholder="Search..."
-                        spellcheck="false"
-                        value=""
-                      />
-                      <i
-                        class="Icon material focusable small"
-                      >
-                        <span
-                          class="icon"
-                          data-icon-name="search"
-                        >
-                          search
-                        </span>
-                      </i>
-                    </label>
                     <div
-                      class="input-info flex gaps"
-                    />
+                      class="Input SearchInput"
+                    >
+                      <label
+                        class="input-area flex gaps align-center"
+                        id=""
+                      >
+                        <input
+                          class="input box grow"
+                          placeholder="Search..."
+                          spellcheck="false"
+                          value=""
+                        />
+                        <i
+                          class="Icon material focusable small"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="search"
+                          >
+                            search
+                          </span>
+                        </i>
+                      </label>
+                      <div
+                        class="input-info flex gaps"
+                      />
+                    </div>
+                    <i
+                      class="Icon material interactive focusable small"
+                      tabindex="0"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="link_off"
+                      >
+                        link_off
+                      </span>
+                    </i>
+                    <div>
+                      Link search (shared)
+                    </div>
                   </div>
                 </div>
                 <div
@@ -325,6 +343,9 @@ exports[`Deleting a cluster when an internal kubeconfig cluster is used when the
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell nowrap sorting"
@@ -346,6 +367,9 @@ exports[`Deleting a cluster when an internal kubeconfig cluster is used when the
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell sourceCell nowrap sorting"
@@ -367,6 +391,9 @@ exports[`Deleting a cluster when an internal kubeconfig cluster is used when the
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell labelsCell scrollable nowrap"
@@ -378,6 +405,9 @@ exports[`Deleting a cluster when an internal kubeconfig cluster is used when the
                         >
                           Labels
                         </div>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell statusCell nowrap sorting"
@@ -399,6 +429,9 @@ exports[`Deleting a cluster when an internal kubeconfig cluster is used when the
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell menu nowrap"
@@ -895,32 +928,50 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                     0 items
                   </div>
                   <div
-                    class="Input SearchInput"
+                    style="display: flex; align-items: center; gap: 8px;"
                   >
-                    <label
-                      class="input-area flex gaps align-center"
-                      id=""
-                    >
-                      <input
-                        class="input box grow"
-                        placeholder="Search..."
-                        spellcheck="false"
-                        value=""
-                      />
-                      <i
-                        class="Icon material focusable small"
-                      >
-                        <span
-                          class="icon"
-                          data-icon-name="search"
-                        >
-                          search
-                        </span>
-                      </i>
-                    </label>
                     <div
-                      class="input-info flex gaps"
-                    />
+                      class="Input SearchInput"
+                    >
+                      <label
+                        class="input-area flex gaps align-center"
+                        id=""
+                      >
+                        <input
+                          class="input box grow"
+                          placeholder="Search..."
+                          spellcheck="false"
+                          value=""
+                        />
+                        <i
+                          class="Icon material focusable small"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="search"
+                          >
+                            search
+                          </span>
+                        </i>
+                      </label>
+                      <div
+                        class="input-info flex gaps"
+                      />
+                    </div>
+                    <i
+                      class="Icon material interactive focusable small"
+                      tabindex="0"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="link_off"
+                      >
+                        link_off
+                      </span>
+                    </i>
+                    <div>
+                      Link search (shared)
+                    </div>
                   </div>
                 </div>
                 <div
@@ -951,6 +1002,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell nowrap sorting"
@@ -972,6 +1026,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell sourceCell nowrap sorting"
@@ -993,6 +1050,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell labelsCell scrollable nowrap"
@@ -1004,6 +1064,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                         >
                           Labels
                         </div>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell statusCell nowrap sorting"
@@ -1025,6 +1088,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell menu nowrap"
@@ -1554,32 +1620,50 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                     0 items
                   </div>
                   <div
-                    class="Input SearchInput"
+                    style="display: flex; align-items: center; gap: 8px;"
                   >
-                    <label
-                      class="input-area flex gaps align-center"
-                      id=""
-                    >
-                      <input
-                        class="input box grow"
-                        placeholder="Search..."
-                        spellcheck="false"
-                        value=""
-                      />
-                      <i
-                        class="Icon material focusable small"
-                      >
-                        <span
-                          class="icon"
-                          data-icon-name="search"
-                        >
-                          search
-                        </span>
-                      </i>
-                    </label>
                     <div
-                      class="input-info flex gaps"
-                    />
+                      class="Input SearchInput"
+                    >
+                      <label
+                        class="input-area flex gaps align-center"
+                        id=""
+                      >
+                        <input
+                          class="input box grow"
+                          placeholder="Search..."
+                          spellcheck="false"
+                          value=""
+                        />
+                        <i
+                          class="Icon material focusable small"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="search"
+                          >
+                            search
+                          </span>
+                        </i>
+                      </label>
+                      <div
+                        class="input-info flex gaps"
+                      />
+                    </div>
+                    <i
+                      class="Icon material interactive focusable small"
+                      tabindex="0"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="link_off"
+                      >
+                        link_off
+                      </span>
+                    </i>
+                    <div>
+                      Link search (shared)
+                    </div>
                   </div>
                 </div>
                 <div
@@ -1610,6 +1694,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell nowrap sorting"
@@ -1631,6 +1718,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell sourceCell nowrap sorting"
@@ -1652,6 +1742,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell labelsCell scrollable nowrap"
@@ -1663,6 +1756,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                         >
                           Labels
                         </div>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell statusCell nowrap sorting"
@@ -1684,6 +1780,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell menu nowrap"
@@ -1937,6 +2036,7 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
               aria-live="polite"
               aria-relevant="additions text"
               class="css-1f43avz-a11yText-A11yText"
+              role="log"
             />
             <div
               class="Select__control css-13cymwt-control"
@@ -1955,6 +2055,7 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                   data-value=""
                 >
                   <input
+                    aria-activedescendant=""
                     aria-autocomplete="list"
                     aria-describedby="react-select-delete-cluster-input-placeholder"
                     aria-expanded="false"
@@ -2292,32 +2393,50 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                     0 items
                   </div>
                   <div
-                    class="Input SearchInput focused"
+                    style="display: flex; align-items: center; gap: 8px;"
                   >
-                    <label
-                      class="input-area flex gaps align-center"
-                      id=""
-                    >
-                      <input
-                        class="input box grow"
-                        placeholder="Search..."
-                        spellcheck="false"
-                        value=""
-                      />
-                      <i
-                        class="Icon material focusable small"
-                      >
-                        <span
-                          class="icon"
-                          data-icon-name="search"
-                        >
-                          search
-                        </span>
-                      </i>
-                    </label>
                     <div
-                      class="input-info flex gaps"
-                    />
+                      class="Input SearchInput focused"
+                    >
+                      <label
+                        class="input-area flex gaps align-center"
+                        id=""
+                      >
+                        <input
+                          class="input box grow"
+                          placeholder="Search..."
+                          spellcheck="false"
+                          value=""
+                        />
+                        <i
+                          class="Icon material focusable small"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="search"
+                          >
+                            search
+                          </span>
+                        </i>
+                      </label>
+                      <div
+                        class="input-info flex gaps"
+                      />
+                    </div>
+                    <i
+                      class="Icon material interactive focusable small"
+                      tabindex="0"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="link_off"
+                      >
+                        link_off
+                      </span>
+                    </i>
+                    <div>
+                      Link search (shared)
+                    </div>
                   </div>
                 </div>
                 <div
@@ -2348,6 +2467,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell nowrap sorting"
@@ -2369,6 +2491,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell sourceCell nowrap sorting"
@@ -2390,6 +2515,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell labelsCell scrollable nowrap"
@@ -2401,6 +2529,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                         >
                           Labels
                         </div>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell statusCell nowrap sorting"
@@ -2422,6 +2553,9 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell menu nowrap"
@@ -2675,6 +2809,7 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
               aria-live="polite"
               aria-relevant="additions text"
               class="css-1f43avz-a11yText-A11yText"
+              role="log"
             />
             <div
               class="Select__control css-13cymwt-control"
@@ -2693,6 +2828,7 @@ exports[`Deleting a cluster when the kubeconfig has multiple clusters when the d
                   data-value=""
                 >
                   <input
+                    aria-activedescendant=""
                     aria-autocomplete="list"
                     aria-describedby="react-select-delete-cluster-input-placeholder"
                     aria-expanded="false"
@@ -3030,32 +3166,50 @@ exports[`Deleting a cluster when the kubeconfig has only one cluster when the di
                     0 items
                   </div>
                   <div
-                    class="Input SearchInput"
+                    style="display: flex; align-items: center; gap: 8px;"
                   >
-                    <label
-                      class="input-area flex gaps align-center"
-                      id=""
-                    >
-                      <input
-                        class="input box grow"
-                        placeholder="Search..."
-                        spellcheck="false"
-                        value=""
-                      />
-                      <i
-                        class="Icon material focusable small"
-                      >
-                        <span
-                          class="icon"
-                          data-icon-name="search"
-                        >
-                          search
-                        </span>
-                      </i>
-                    </label>
                     <div
-                      class="input-info flex gaps"
-                    />
+                      class="Input SearchInput"
+                    >
+                      <label
+                        class="input-area flex gaps align-center"
+                        id=""
+                      >
+                        <input
+                          class="input box grow"
+                          placeholder="Search..."
+                          spellcheck="false"
+                          value=""
+                        />
+                        <i
+                          class="Icon material focusable small"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="search"
+                          >
+                            search
+                          </span>
+                        </i>
+                      </label>
+                      <div
+                        class="input-info flex gaps"
+                      />
+                    </div>
+                    <i
+                      class="Icon material interactive focusable small"
+                      tabindex="0"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="link_off"
+                      >
+                        link_off
+                      </span>
+                    </i>
+                    <div>
+                      Link search (shared)
+                    </div>
                   </div>
                 </div>
                 <div
@@ -3086,6 +3240,9 @@ exports[`Deleting a cluster when the kubeconfig has only one cluster when the di
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell nowrap sorting"
@@ -3107,6 +3264,9 @@ exports[`Deleting a cluster when the kubeconfig has only one cluster when the di
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell sourceCell nowrap sorting"
@@ -3128,6 +3288,9 @@ exports[`Deleting a cluster when the kubeconfig has only one cluster when the di
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell labelsCell scrollable nowrap"
@@ -3139,6 +3302,9 @@ exports[`Deleting a cluster when the kubeconfig has only one cluster when the di
                         >
                           Labels
                         </div>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell statusCell nowrap sorting"
@@ -3160,6 +3326,9 @@ exports[`Deleting a cluster when the kubeconfig has only one cluster when the di
                             arrow_drop_down
                           </span>
                         </i>
+                        <div
+                          class="resize-handle"
+                        />
                       </div>
                       <div
                         class="TableCell menu nowrap"

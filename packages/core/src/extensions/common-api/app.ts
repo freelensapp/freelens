@@ -14,8 +14,12 @@ import isMacInjectable from "../../common/vars/is-mac.injectable";
 import isSnapPackageInjectable from "../../common/vars/is-snap-package.injectable";
 import isWindowsInjectable from "../../common/vars/is-windows.injectable";
 import enabledExtensionsInjectable from "../../features/extensions/enabled/common/enabled-extensions.injectable";
-import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
+import userPreferencesStateInjectable, {
+  type UserPreferencesState,
+} from "../../features/user-preferences/common/state.injectable";
 import { buildVersionInitializable } from "../../features/vars/build-version/common/token";
+
+export type { UserPreferencesState };
 
 const userStore = asLegacyGlobalForExtensionApi(userPreferencesStateInjectable);
 const enabledExtensions = asLegacyGlobalForExtensionApi(enabledExtensionsInjectable);

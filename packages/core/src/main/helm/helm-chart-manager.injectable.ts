@@ -8,10 +8,11 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import readFileInjectable from "../../common/fs/read-file.injectable";
 import statInjectable from "../../common/fs/stat.injectable";
-import type { HelmRepo } from "../../common/helm/helm-repo";
 import execHelmInjectable from "./exec-helm/exec-helm.injectable";
 import { HelmChartManager } from "./helm-chart-manager";
 import helmChartManagerCacheInjectable from "./helm-chart-manager-cache.injectable";
+
+import type { HelmRepo } from "../../common/helm/helm-repo";
 
 const helmChartManagerInjectable = getInjectable({
   id: "helm-chart-manager",

@@ -4,29 +4,31 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ChildProcess } from "child_process";
-import type { Readable } from "stream";
-import { EventEmitter } from "stream";
-import type { DeepMockProxy } from "jest-mock-extended";
 import { mock, mockDeep } from "jest-mock-extended";
+import { EventEmitter } from "stream";
 import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import type { Cluster } from "../../common/cluster/cluster";
 import ensureDirInjectable from "../../common/fs/ensure-dir.injectable";
 import writeJsonSyncInjectable from "../../common/fs/write-json-sync.injectable";
 import broadcastMessageInjectable from "../../common/ipc/broadcast-message.injectable";
-import type { GetBasenameOfPath } from "../../common/path/get-basename.injectable";
 import getBasenameOfPathInjectable from "../../common/path/get-basename.injectable";
 import normalizedPlatformInjectable from "../../common/vars/normalized-platform.injectable";
 import addClusterInjectable from "../../features/cluster/storage/common/add.injectable";
 import spawnInjectable from "../child-process/spawn.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
-import type { KubeAuthProxy } from "../kube-auth-proxy/create-kube-auth-proxy.injectable";
 import createKubeAuthProxyInjectable from "../kube-auth-proxy/create-kube-auth-proxy.injectable";
 import waitUntilPortIsUsedInjectable from "../kube-auth-proxy/wait-until-port-is-used/wait-until-port-is-used.injectable";
 import kubectlBinaryNameInjectable from "../kubectl/binary-name.injectable";
 import { Kubectl } from "../kubectl/kubectl";
 import kubectlDownloadingNormalizedArchInjectable from "../kubectl/normalized-arch.injectable";
+import type { ChildProcess } from "child_process";
+import type { Readable } from "stream";
+
+import type { DeepMockProxy } from "jest-mock-extended";
+
+import type { Cluster } from "../../common/cluster/cluster";
+import type { GetBasenameOfPath } from "../../common/path/get-basename.injectable";
+import type { KubeAuthProxy } from "../kube-auth-proxy/create-kube-auth-proxy.injectable";
 
 describe("kube auth proxy tests", () => {
   let spawnMock: jest.Mock;
@@ -47,29 +49,29 @@ describe("kube auth proxy tests", () => {
 
     getBasenameOfPath = di.inject(getBasenameOfPathInjectable);
 
-    writeJsonSync("/minikube-config.yml", {
+    writeJsonSync("/kind-config.yml", {
       apiVersion: "v1",
       clusters: [
         {
-          name: "minikube",
+          name: "kind-kind",
           cluster: {
             server: "https://192.168.64.3:8443",
           },
         },
       ],
-      "current-context": "minikube",
+      "current-context": "kind-kind",
       contexts: [
         {
           context: {
-            cluster: "minikube",
-            user: "minikube",
+            cluster: "kind-kind",
+            user: "kind-kind",
           },
-          name: "minikube",
+          name: "kind-kind",
         },
       ],
       users: [
         {
-          name: "minikube",
+          name: "kind-kind",
         },
       ],
       kind: "Config",
@@ -94,8 +96,8 @@ describe("kube auth proxy tests", () => {
 
     cluster = addCluster({
       id: "foobar",
-      kubeConfigPath: "/minikube-config.yml",
-      contextName: "minikube",
+      kubeConfigPath: "/kind-config.yml",
+      contextName: "kind-kind",
     });
     kubeAuthProxy = di.inject(createKubeAuthProxyInjectable, cluster)({});
   });

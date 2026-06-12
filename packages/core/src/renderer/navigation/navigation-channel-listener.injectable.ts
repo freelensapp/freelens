@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { MessageChannel, MessageChannelListener } from "@freelensapp/messaging";
 import { messageChannelListenerInjectionToken } from "@freelensapp/messaging";
 import { getInjectable } from "@ogre-tools/injectable";
 import { appNavigationChannel } from "../../common/front-end-routing/app-navigation-channel";
@@ -12,6 +11,8 @@ import { clusterFrameNavigationChannel } from "../../common/front-end-routing/cl
 import { navigateToUrlInjectionToken } from "../../common/front-end-routing/navigate-to-url-injection-token";
 import currentlyInClusterFrameInjectable from "../routes/currently-in-cluster-frame.injectable";
 import focusWindowInjectable from "./focus-window.injectable";
+
+import type { MessageChannel, MessageChannelListener } from "@freelensapp/messaging";
 
 const navigationChannelListenerInjectable = getInjectable({
   id: "navigation-channel-listener",

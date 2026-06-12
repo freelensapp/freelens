@@ -5,6 +5,7 @@
  */
 
 import "./dock.scss";
+
 import { ErrorBoundary } from "@freelensapp/error-boundary";
 import { Icon } from "@freelensapp/icon";
 import { ResizeDirection, ResizingAnchor } from "@freelensapp/resizing-anchor";
@@ -16,16 +17,17 @@ import { MenuItem } from "../menu";
 import { MenuActions } from "../menu/menu-actions";
 import createResourceTabInjectable from "./create-resource/create-resource-tab.injectable";
 import { CreateResource } from "./create-resource/view";
-import { DockTabs } from "./dock-tabs";
-import type { DockStore, DockTab } from "./dock/store";
 import { TabKind } from "./dock/store";
 import dockStoreInjectable from "./dock/store.injectable";
+import { DockTabs } from "./dock-tabs";
 import { EditResource } from "./edit-resource/view";
 import { InstallChart } from "./install-chart/view";
 import { LogsDockTab } from "./logs/view";
 import createTerminalTabInjectable from "./terminal/create-terminal-tab.injectable";
 import { TerminalWindow } from "./terminal/view";
 import { UpgradeChart } from "./upgrade-chart/view";
+
+import type { DockStore, DockTab } from "./dock/store";
 
 export interface DockProps {
   className?: string;

@@ -1,5 +1,5 @@
-import path from "path";
 import { readJsonSync } from "fs-extra";
+import path from "path";
 // @ts-ignore
 import ExternalModuleFactoryPlugin from "webpack/lib/ExternalModuleFactoryPlugin";
 import { toModuleMatcherRegExp } from "./to-module-matcher-reg-exp/to-module-matcher-reg-exp";

@@ -8,11 +8,12 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { computed, makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import type { AddWeblink } from "../../../features/weblinks/common/add.injectable";
 import addWeblinkInjectable from "../../../features/weblinks/common/add.injectable";
 import commandOverlayInjectable from "../command-palette/command-overlay.injectable";
 import { Input } from "../input";
 import { isUrl } from "../input/input_validators";
+
+import type { AddWeblink } from "../../../features/weblinks/common/add.injectable";
 
 interface Dependencies {
   closeCommandOverlay: () => void;

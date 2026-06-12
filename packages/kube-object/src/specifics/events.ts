@@ -6,8 +6,9 @@
 
 import { formatDuration } from "@freelensapp/utilities";
 import moment from "moment";
-import type { KubeJsonApiData, KubeObjectMetadata, KubeObjectScope, ObjectReference } from "../api-types";
 import { KubeObject } from "../kube-object";
+
+import type { KubeJsonApiData, KubeObjectMetadata, KubeObjectScope, ObjectReference } from "../api-types";
 
 export interface EventSeries {
   count?: number;

@@ -4,21 +4,31 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
-import type { IKubeWatchEvent, KubeApi, KubeApiQueryParams, KubeApiWatchCallback } from "@freelensapp/kube-api";
 import { parseKubeApi } from "@freelensapp/kube-api";
-import type { KubeJsonApiDataFor, KubeObject } from "@freelensapp/kube-object";
 import { KubeStatus } from "@freelensapp/kube-object";
+import { includes, object, rejectPromiseBy, waitUntilDefined } from "@freelensapp/utilities";
+import assert from "assert";
+import autoBind from "auto-bind";
+import { action, computed, makeObservable, observable, reaction } from "mobx";
+import { ItemStore } from "../item.store";
+
+import type {
+  DeleteOptions,
+  IKubeWatchEvent,
+  KubeApi,
+  KubeApiPatchType,
+  KubeApiQueryParams,
+  KubeApiWatchCallback,
+} from "@freelensapp/kube-api";
+import type { KubeJsonApiDataFor, KubeObject } from "@freelensapp/kube-object";
 import type { Logger } from "@freelensapp/logger";
 import type { RequestInit } from "@freelensapp/node-fetch";
 import type { Disposer } from "@freelensapp/utilities";
-import { includes, object, rejectPromiseBy, waitUntilDefined } from "@freelensapp/utilities";
-import autoBind from "auto-bind";
-import { action, computed, makeObservable, observable, reaction } from "mobx";
+
 import type { Patch } from "rfc6902";
 import type { PartialDeep } from "type-fest";
+
 import type { ClusterContext } from "../../renderer/cluster-frame-context/cluster-frame-context";
-import { ItemStore } from "../item.store";
 
 export type OnLoadFailure = (error: unknown) => void;
 
@@ -75,11 +85,8 @@ export interface KubeObjectStoreOptions {
   bufferSize?: number;
 }
 
-export type KubeApiDataFrom<K extends KubeObject, A> = A extends KubeApi<K, infer D>
-  ? D extends KubeJsonApiDataFor<K>
-    ? D
-    : never
-  : never;
+export type KubeApiDataFrom<K extends KubeObject, A> =
+  A extends KubeApi<K, infer D> ? (D extends KubeJsonApiDataFor<K> ? D : never) : never;
 
 export type JsonPatch = Patch;
 
@@ -156,8 +163,19 @@ export class KubeObjectStore<
   }
 
   getByName(name: string, namespace?: string): K | undefined {
-    return this.items.find((item) => {
-      return item.getName() === name && (namespace ? item.getNs() === namespace : true);
+    return this.items.find((item) => item.getName() === name && (namespace ? item.getNs() === namespace : true));
+  }
+
+  getByOwnerReference(apiVersion: string | undefined, kind: string, name: string, namespace: string): K[] {
+    return this.items.filter((item) => {
+      const ownerRefs = item.getOwnerRefs();
+      return (
+        item.getNs() === namespace &&
+        ownerRefs &&
+        ownerRefs.filter(
+          (ref) => (!apiVersion || ref.apiVersion === apiVersion) && ref.kind === kind && ref.name === name,
+        ).length > 0
+      );
     });
   }
 
@@ -337,11 +355,17 @@ export class KubeObjectStore<
     return this.load({ name, namespace });
   }
 
-  protected async createItem(params: { name: string; namespace?: string }, data?: PartialDeep<K>): Promise<K | null> {
+  protected async createItem(
+    params: { name: string; namespace?: string },
+    data?: PartialDeep<K, { recurseIntoArrays: true }>,
+  ): Promise<K | null> {
     return this.api.create(params, data);
   }
 
-  async create(params: { name: string; namespace?: string }, data?: PartialDeep<K>): Promise<K> {
+  async create(
+    params: { name: string; namespace?: string },
+    data?: PartialDeep<K, { recurseIntoArrays: true }>,
+  ): Promise<K> {
     const newItem = await this.createItem(params, data);
 
     assert(newItem, "Failed to create item from kube");
@@ -364,15 +388,36 @@ export class KubeObjectStore<
     return newItem;
   }
 
-  async patch(item: K, patch: JsonPatch): Promise<K> {
-    const rawItem = await this.api.patch(
-      {
-        name: item.getName(),
-        namespace: item.getNs(),
-      },
-      patch,
-      "json",
-    );
+  async patch(item: K, patch: PartialDeep<K>, strategy: "strategic" | "merge"): Promise<K>;
+  async patch(item: K, patch: JsonPatch, strategy?: "json"): Promise<K>;
+  async patch(item: K, patch: PartialDeep<K> | JsonPatch, strategy: KubeApiPatchType = "json"): Promise<K> {
+    let rawItem: K | null;
+
+    if (strategy === "json") {
+      if (!Array.isArray(patch)) {
+        throw new Error("For 'json' patch strategy, patch must be a JsonPatch array");
+      }
+      rawItem = await this.api.patch(
+        {
+          name: item.getName(),
+          namespace: item.getNs(),
+        },
+        patch as JsonPatch,
+        strategy,
+      );
+    } else {
+      if (Array.isArray(patch)) {
+        throw new Error("For 'strategic' or 'merge' patch strategy, patch must be a PartialDeep<Object>");
+      }
+      rawItem = await this.api.patch(
+        {
+          name: item.getName(),
+          namespace: item.getNs(),
+        },
+        patch as PartialDeep<K>,
+        strategy,
+      );
+    }
 
     assert(rawItem, `Failed to patch ${item.getScopedName()} of ${item.kind} ${item.apiVersion}`);
 
@@ -394,9 +439,12 @@ export class KubeObjectStore<
   }
 
   async remove(item: K) {
-    // Some k8s apis might implement special more fine-grained "delete" request for resources (e.g. pod.api.ts)
-    // See also: https://kubernetes.io/docs/concepts/scheduling-eviction/api-eviction/
-    await this.api.evict({ name: item.getName(), namespace: item.getNs() });
+    await this.api.delete({ name: item.getName(), namespace: item.getNs() });
+    this.selectedItemsIds.delete(item.getId());
+  }
+
+  async removeWithOptions(item: K, deleteOptions?: DeleteOptions) {
+    await this.api.delete({ name: item.getName(), namespace: item.getNs(), deleteOptions });
     this.selectedItemsIds.delete(item.getId());
   }
 

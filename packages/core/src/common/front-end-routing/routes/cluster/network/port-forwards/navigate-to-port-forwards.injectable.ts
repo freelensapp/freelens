@@ -6,8 +6,9 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { navigateToRouteInjectionToken } from "../../../../navigate-to-route-injection-token";
-import type { PortForwardsPathParameters } from "./port-forwards-route.injectable";
 import portForwardsRouteInjectable from "./port-forwards-route.injectable";
+
+import type { PortForwardsPathParameters } from "./port-forwards-route.injectable";
 
 export type NavigateToPortForwards = (parameters?: PortForwardsPathParameters) => void;
 

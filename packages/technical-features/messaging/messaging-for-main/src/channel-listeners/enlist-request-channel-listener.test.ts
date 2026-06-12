@@ -1,14 +1,17 @@
-import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import { registerFeature } from "@freelensapp/feature-core";
-import type { RequestChannel, RequestChannelHandler } from "@freelensapp/messaging";
 import { getPromiseStatus } from "@freelensapp/test-utils";
 import { createContainer } from "@ogre-tools/injectable";
-import type { IpcMain, IpcMainInvokeEvent } from "electron";
 import { messagingFeatureForMain } from "../feature";
 import ipcMainInjectable from "../ipc-main/ipc-main.injectable";
-import type { EnlistRequestChannelListener } from "./enlist-request-channel-listener.injectable";
 import enlistRequestChannelListenerInjectable from "./enlist-request-channel-listener.injectable";
+
+import type { RequestChannel, RequestChannelHandler } from "@freelensapp/messaging";
+
+import type { AsyncFnMock } from "@async-fn/jest";
+import type { IpcMain, IpcMainInvokeEvent } from "electron";
+
+import type { EnlistRequestChannelListener } from "./enlist-request-channel-listener.injectable";
 
 type TestRequestChannel = RequestChannel<unknown, unknown>;
 

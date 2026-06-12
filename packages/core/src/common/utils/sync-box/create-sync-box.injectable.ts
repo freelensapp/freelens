@@ -6,12 +6,14 @@
 
 import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { IObservableValue } from "mobx";
 import { computed } from "mobx";
 import { toJS } from "../toJS";
 import { syncBoxChannel } from "./channels";
-import type { SyncBox } from "./sync-box-injection-token";
 import syncBoxStateInjectable from "./sync-box-state.injectable";
+
+import type { IObservableValue } from "mobx";
+
+import type { SyncBox } from "./sync-box-injection-token";
 
 const createSyncBoxInjectable = getInjectable({
   id: "create-sync-box",

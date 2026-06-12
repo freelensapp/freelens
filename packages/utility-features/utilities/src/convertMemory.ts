@@ -7,19 +7,20 @@
 import assert from "assert";
 import { iter } from "./iter";
 
-// Helper to convert memory from units Ki, Mi, Gi, Ti, Pi to bytes and vise versa
+// Helper to convert memory from units Ki, Mi, Gi, Ti, Pi, Ei to bytes and vise versa
 
 const baseMagnitude = 1024;
-const maxMagnitude = ["PiB", baseMagnitude ** 5] as const;
+const maxMagnitude = ["EiB", baseMagnitude ** 6] as const;
 const magnitudes = new Map([
   ["B", 1] as const,
   ["KiB", baseMagnitude ** 1] as const,
   ["MiB", baseMagnitude ** 2] as const,
   ["GiB", baseMagnitude ** 3] as const,
   ["TiB", baseMagnitude ** 4] as const,
+  ["PiB", baseMagnitude ** 5] as const,
   maxMagnitude,
 ]);
-const unitRegex = /(?<value>[0-9]+(\.[0-9]*)?)(?<suffix>(B|[KMGTP]iB?))?/;
+const unitRegex = /(?<value>[0-9]+(\.[0-9]*)?)(?<suffix>(B|[KMGTPE]iB?))?/;
 
 type BinaryUnit = typeof magnitudes extends Map<infer Key, any> ? Key : never;
 

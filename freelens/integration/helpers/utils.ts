@@ -4,18 +4,19 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { disposer } from "@freelensapp/utilities";
 import { createHash } from "crypto";
+import { mkdirp, remove } from "fs-extra";
 import * as os from "os";
 import * as path from "path";
-import { setImmediate } from "timers";
-import { disposer } from "@freelensapp/utilities";
-import { mkdirp, remove } from "fs-extra";
-import type { ElectronApplication, Frame, Page } from "playwright";
 import { _electron as electron } from "playwright";
+import { setImmediate } from "timers";
 import * as uuid from "uuid";
 
+import type { ElectronApplication, Frame, Page } from "playwright";
+
 export const appPaths: Partial<Record<NodeJS.Platform, string>> = {
-  win32: "./dist/win-unpacked/Freelens.exe",
+  win32: `./dist/win${process.arch === "arm64" ? "-arm64" : ""}-unpacked/Freelens.exe`,
   linux: `./dist/linux${process.arch === "arm64" ? "-arm64" : ""}-unpacked/freelens`,
   darwin: `./dist/mac${process.arch === "arm64" ? "-arm64" : ""}/Freelens.app/Contents/MacOS/Freelens`,
 };
@@ -50,7 +51,7 @@ async function getMainWindow(app: ElectronApplication, timeout = 50_000): Promis
     const timeoutId = setTimeout(() => {
       cleanup();
       console.log(stdoutBuf);
-      reject(new Error(`Lens did not open the main window within ${timeout}ms`));
+      reject(new Error(`Freelens did not open the main window within ${timeout}ms`));
     }, timeout);
 
     cleanup.push(() => clearTimeout(timeoutId));
@@ -72,7 +73,7 @@ async function attemptStart() {
 
   // Make sure that the directory is clear
   await remove(FREELENS_INTEGRATION_TESTING_DIR);
-  // We need original .kube/config with minikube context
+  // We need original .kube/config with kind context
   const testDir = path.join(FREELENS_INTEGRATION_TESTING_DIR, "home", ".freelens", "extensions");
   await mkdirp(testDir);
 
@@ -82,6 +83,7 @@ async function attemptStart() {
     bypassCSP: true,
     env: {
       FREELENS_INTEGRATION_TESTING_DIR,
+      LOG_LEVEL: "debug",
       ...process.env,
     },
     timeout: 100_000,
@@ -130,24 +132,24 @@ export async function clickWelcomeButton(window: Page) {
   await window.click("[data-testid=welcome-menu-container] li a");
 }
 
-function minikubeEntityId() {
+function kindEntityId(clusterName: string) {
   return createHash("md5")
-    .update(`${path.join(os.homedir(), ".kube", "config")}:minikube`)
+    .update(`${path.join(os.homedir(), ".kube", "config")}:kind-${clusterName}`)
     .digest("hex");
 }
 
 /**
- * From the catalog, click the minikube entity and wait for it to connect, returning its frame
+ * From the catalog, click the kind entity and wait for it to connect, returning its frame
  */
-export async function launchMinikubeClusterFromCatalog(window: Page): Promise<Frame> {
-  await window.click("div.TableCell >> text='minikube'");
+export async function launchKindClusterFromCatalog(kindClusterName: string, window: Page): Promise<Frame> {
+  await window.click(`div.TableCell >> text='kind-${kindClusterName}'`);
 
-  const minikubeFrame = await window.waitForSelector(`#cluster-frame-${minikubeEntityId()}`);
+  const kindFrame = await window.waitForSelector(`#cluster-frame-${kindEntityId(kindClusterName)}`);
 
-  const frame = await minikubeFrame.contentFrame();
+  const frame = await kindFrame.contentFrame();
 
   if (!frame) {
-    throw new Error("No iframe for minikube found");
+    throw new Error("No iframe for kind cluster found");
   }
 
   await frame.waitForSelector("[data-testid=cluster-sidebar]");

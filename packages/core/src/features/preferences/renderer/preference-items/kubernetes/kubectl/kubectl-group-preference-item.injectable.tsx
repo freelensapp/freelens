@@ -6,17 +6,14 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
-import Gutter from "../../../../../../renderer/components/gutter/gutter";
-import type { PreferenceItemTypes } from "../../preference-item-injection-token";
+import { Gutter } from "../../../../../../renderer/components/gutter";
 import { preferenceItemInjectionToken } from "../../preference-item-injection-token";
 
-const PreferenceItemGroup = ({
-  children,
-  item,
-}: {
-  children: React.ReactElement;
-  item: PreferenceItemTypes;
-}) => <section id={item.id}>{children}</section>;
+import type { PreferenceItemTypes } from "../../preference-item-injection-token";
+
+const PreferenceItemGroup = ({ children, item }: { children: React.ReactElement; item: PreferenceItemTypes }) => (
+  <section id={item.id}>{children}</section>
+);
 
 const kubectlGroupPreferenceItemInjectable = getInjectable({
   id: "kubectl-group-preference-item",

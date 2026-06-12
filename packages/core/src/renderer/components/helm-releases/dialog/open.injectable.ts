@@ -5,8 +5,9 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { HelmRelease } from "../../../../common/k8s-api/endpoints/helm-releases.api";
 import releaseRollbackDialogStateInjectable from "./state.injectable";
+
+import type { HelmRelease } from "../../../../common/k8s-api/endpoints/helm-releases.api";
 
 export type OpenHelmReleaseRollbackDialog = (release: HelmRelease) => void;
 

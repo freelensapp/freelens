@@ -1,5 +1,6 @@
-import type { DiContainerForInjection } from "@ogre-tools/injectable";
 import { getInjectable, getInjectionToken } from "@ogre-tools/injectable";
+
+import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export interface MessageChannel<Message> {
   id: string;
@@ -8,9 +9,8 @@ export interface MessageChannel<Message> {
 
 export type ExtraData = { processId: number; frameId: number };
 
-export type MessageChannelHandler<Channel> = Channel extends MessageChannel<infer Message>
-  ? (message: Message, data?: ExtraData) => void
-  : never;
+export type MessageChannelHandler<Channel> =
+  Channel extends MessageChannel<infer Message> ? (message: Message, data?: ExtraData) => void : never;
 
 export interface MessageChannelListener<Channel> {
   id: string;

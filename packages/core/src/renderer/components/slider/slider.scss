@@ -14,11 +14,13 @@
   .thumb {
     background: var(--blue);
 
-    &.activated, &.jumped, &.focused {
+    &.activated,
+    &.jumped,
+    &.focused {
       box-shadow: 0 0 0 #{$unit * 2} var(--blue) !important;
     }
 
-    &:hover{
+    &:hover {
       box-shadow: 0 0 0 $unit var(--blue);
     }
   }

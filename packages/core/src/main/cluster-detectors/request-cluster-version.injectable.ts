@@ -5,8 +5,9 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { Cluster } from "../../common/cluster/cluster";
 import k8SRequestInjectable from "../k8s-request.injectable";
+
+import type { Cluster } from "../../common/cluster/cluster";
 
 const requestClusterVersionInjectable = getInjectable({
   id: "request-cluster-version",

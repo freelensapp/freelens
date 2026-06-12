@@ -9,8 +9,9 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { reject } from "lodash/fp";
 import { computed } from "mobx";
 import { extensionRegistratorInjectionToken } from "../../../../extensions/extension-loader/extension-registrator-injection-token";
-import type { LensRendererExtension } from "../../../../extensions/lens-renderer-extension";
 import { topBarItemOnRightSideInjectionToken } from "../../../../renderer/components/layout/top-bar/top-bar-items/top-bar-item-injection-token";
+
+import type { LensRendererExtension } from "../../../../extensions/lens-renderer-extension";
 
 const legacyExtensionApiRegistratorForTopBarItemsInjectable = getInjectable({
   id: "legacy-extension-api-registrator-for-top-bar-items",

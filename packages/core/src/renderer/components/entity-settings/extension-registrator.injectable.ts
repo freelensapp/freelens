@@ -6,9 +6,10 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { extensionRegistratorInjectionToken } from "../../../extensions/extension-loader/extension-registrator-injection-token";
+import { entitySettingInjectionToken } from "./token";
+
 import type { LensRendererExtension } from "../../../extensions/lens-renderer-extension";
 import type { CatalogEntity } from "../../api/catalog-entity";
-import { entitySettingInjectionToken } from "./token";
 
 export interface EntitySettingViewProps {
   entity: CatalogEntity;

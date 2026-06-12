@@ -12,9 +12,10 @@ import { Cluster } from "../../../common/cluster/cluster";
 import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import storesAndApisCanBeCreatedInjectable from "../../stores-apis-can-be-created.injectable";
-import type { JobStore } from "../workloads-jobs/store";
 import jobStoreInjectable from "../workloads-jobs/store.injectable";
 import podStoreInjectable from "../workloads-pods/store.injectable";
+
+import type { JobStore } from "../workloads-jobs/store";
 
 const runningJob = new Job({
   apiVersion: "foo",

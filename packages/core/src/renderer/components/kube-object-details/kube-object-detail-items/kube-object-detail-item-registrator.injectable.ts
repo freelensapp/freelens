@@ -8,11 +8,12 @@ import { getRandomIdInjectionToken } from "@freelensapp/random";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import { extensionRegistratorInjectionToken } from "../../../../extensions/extension-loader/extension-registrator-injection-token";
-import type { LensRendererExtension } from "../../../../extensions/lens-renderer-extension";
 import extensionShouldBeEnabledForClusterFrameInjectable from "../../../extension-loader/extension-should-be-enabled-for-cluster-frame.injectable";
 import currentKubeObjectInDetailsInjectable from "../current-kube-object-in-details.injectable";
 import { kubeObjectDetailItemInjectionToken } from "./kube-object-detail-item-injection-token";
 import { kubeObjectMatchesToKindAndApiVersion } from "./kube-object-matches-to-kind-and-api-version";
+
+import type { LensRendererExtension } from "../../../../extensions/lens-renderer-extension";
 
 const kubeObjectDetailItemRegistratorInjectable = getInjectable({
   id: "kube-object-detail-item-registrator",

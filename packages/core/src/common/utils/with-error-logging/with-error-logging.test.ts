@@ -4,13 +4,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import { getPromiseStatus } from "@freelensapp/test-utils";
 import { pipeline } from "@ogre-tools/fp";
 import { getDiForUnitTesting } from "../../../main/getDiForUnitTesting";
 import logErrorInjectable from "../../log-error.injectable";
 import withErrorLoggingInjectable from "./with-error-logging.injectable";
+
+import type { AsyncFnMock } from "@async-fn/jest";
 
 describe("with-error-logging", () => {
   describe("given decorated sync function", () => {

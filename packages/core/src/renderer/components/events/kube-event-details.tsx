@@ -3,23 +3,29 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
 
-import styles from "./kube-event-details.module.scss";
-
-import { KubeObject } from "@freelensapp/kube-object";
-import type { Logger } from "@freelensapp/logger";
+import { type KubeEvent, KubeObject } from "@freelensapp/kube-object";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { disposeOnUnmount, observer } from "mobx-react";
+import moment from "moment-timezone";
 import React from "react";
-import { DrawerItem, DrawerTitle } from "../drawer";
-import { LocaleDate } from "../locale-date";
-import type { EventStore } from "./store";
-
-import { loggerInjectionToken } from "@freelensapp/logger";
-import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
+import { DrawerItem, DrawerTitle } from "../drawer";
+import { DurationAbsoluteTimestamp } from "./duration-absolute";
+import styles from "./kube-event-details.module.scss";
 import eventStoreInjectable from "./store.injectable";
+
+import type { Logger } from "@freelensapp/logger";
+
+import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
+import type { EventStore } from "./store";
 
 export interface KubeEventDetailsProps {
   object: KubeObject;
@@ -29,6 +35,15 @@ interface Dependencies {
   subscribeStores: SubscribeStores;
   eventStore: EventStore;
   logger: Logger;
+}
+
+function timeToUnix(dateStr?: string): number {
+  const m = moment(dateStr);
+  return m.isValid() ? m.unix() : 0;
+}
+
+export function sortEvents(events: KubeEvent[]): KubeEvent[] | undefined {
+  return events?.sort((a, b) => timeToUnix(b.lastTimestamp) - timeToUnix(a.lastTimestamp));
 }
 
 @observer
@@ -59,7 +74,7 @@ class NonInjectedKubeEventDetails extends React.Component<KubeEventDetailsProps 
         </DrawerTitle>
         {events.length > 0 && (
           <div className={styles.KubeEventDetails}>
-            {events.map((event) => (
+            {sortEvents(events)?.map((event) => (
               <div className={styles.event} key={event.getId()}>
                 <div className={cssNames(styles.title, { [styles.warning]: event.isWarning() })}>{event.message}</div>
                 <DrawerItem name="Source">{event.getSource()}</DrawerItem>
@@ -67,7 +82,7 @@ class NonInjectedKubeEventDetails extends React.Component<KubeEventDetailsProps 
                 <DrawerItem name="Sub-object">{event.involvedObject.fieldPath}</DrawerItem>
                 {event.lastTimestamp && (
                   <DrawerItem name="Last seen">
-                    <LocaleDate date={event.lastTimestamp} />
+                    <DurationAbsoluteTimestamp timestamp={event.lastTimestamp} />
                   </DrawerItem>
                 )}
               </div>

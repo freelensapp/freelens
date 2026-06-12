@@ -5,8 +5,9 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { TabId } from "./store";
 import dockStoreInjectable from "./store.injectable";
+
+import type { TabId } from "./store";
 
 const selectDockTabInjectable = getInjectable({
   id: "select-dock-tab",

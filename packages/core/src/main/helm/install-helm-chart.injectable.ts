@@ -5,20 +5,20 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { dump } from "js-yaml";
 import tempy from "tempy";
-import type { JsonValue } from "type-fest";
 import removePathInjectable from "../../common/fs/remove.injectable";
 import writeFileInjectable from "../../common/fs/write-file.injectable";
+import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
 import execHelmInjectable from "./exec-helm/exec-helm.injectable";
 
 export interface InstallHelmChartData {
   chart: string;
-  values: JsonValue;
-  name: string;
+  values: string;
+  name?: string;
   namespace: string;
   version: string;
   kubeconfigPath: string;
+  forceConflicts?: boolean;
 }
 
 export interface InstallHelmChartResult {
@@ -37,11 +37,12 @@ const installHelmChartInjectable = getInjectable({
     const writeFile = di.inject(writeFileInjectable);
     const removePath = di.inject(removePathInjectable);
     const execHelm = di.inject(execHelmInjectable);
+    const state = di.inject(userPreferencesStateInjectable);
 
-    return async ({ chart, kubeconfigPath, name, namespace, values, version }) => {
+    return async ({ chart, kubeconfigPath, name, namespace, values, version, forceConflicts }) => {
       const valuesFilePath = tempy.file({ name: "values.yaml" });
 
-      await writeFile(valuesFilePath, dump(values));
+      await writeFile(valuesFilePath, values);
 
       const args = ["install"];
 
@@ -63,6 +64,20 @@ const installHelmChartInjectable = getInjectable({
 
       if (!name) {
         args.push("--generate-name");
+      }
+
+      // If forceConflicts is enabled, always use server-side
+      // Otherwise, use the preference setting
+      const useServerSide = forceConflicts || state.helmServerSide;
+
+      if (forceConflicts) {
+        args.push("--force-conflicts");
+      }
+
+      if (useServerSide) {
+        args.push("--server-side=true");
+      } else {
+        args.push("--server-side=false");
       }
 
       try {

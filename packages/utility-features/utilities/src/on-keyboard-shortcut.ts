@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+/** */
 function parseKeyDownDescriptor(descriptor: string): (event: KeyboardEvent) => boolean {
   const parts = new Set(
     descriptor

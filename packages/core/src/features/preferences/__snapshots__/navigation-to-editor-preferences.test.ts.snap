@@ -199,26 +199,26 @@ exports[`preferences - navigation to editor preferences given in preferences, wh
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
                     >
                       <div
-                        class="Select__value-container css-hlgwow"
+                        class="Select__value-container Select__value-container--has-value css-hlgwow"
                       >
                         <div
-                          class="Select__placeholder css-1jqq78o-placeholder"
-                          id="react-select-theme-input-placeholder"
+                          class="Select__single-value css-1dimb5e-singleValue"
                         >
-                          Select...
+                          Sync with computer
                         </div>
                         <div
                           class="Select__input-container css-19bb58m"
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
-                            aria-describedby="react-select-theme-input-placeholder"
                             aria-expanded="false"
                             aria-haspopup="true"
                             autocapitalize="none"
@@ -290,6 +290,7 @@ exports[`preferences - navigation to editor preferences given in preferences, wh
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
@@ -307,6 +308,7 @@ exports[`preferences - navigation to editor preferences given in preferences, wh
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-expanded="false"
                             aria-haspopup="true"
@@ -412,6 +414,91 @@ exports[`preferences - navigation to editor preferences given in preferences, wh
                 class="HorizontalLine size-xl"
               />
               <div
+                data-preference-item-test="hotbar-auto-hide"
+              >
+                <section
+                  id="hotbar"
+                >
+                  <div
+                    class="SubTitle"
+                  >
+                    Auto-Hide Hotbar
+                     
+                  </div>
+                  <label
+                    class="Switch"
+                    data-testid="switch"
+                  >
+                    Automatically hide Hotbar
+                    <input
+                      role="switch"
+                      type="checkbox"
+                    />
+                  </label>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
+                data-preference-item-test="menu-bar"
+              >
+                <section
+                  id="menu"
+                >
+                  <div
+                    class="SubTitle"
+                  >
+                    Menu-bar Settings
+                     
+                  </div>
+                  <label
+                    class="Switch"
+                    data-testid="switch"
+                  >
+                    Show tray icon in the menu bar
+                    <input
+                      checked=""
+                      role="switch"
+                      type="checkbox"
+                    />
+                  </label>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
+                data-preference-item-test="sidebar-menu"
+              >
+                <section
+                  id="other"
+                >
+                  <div
+                    class="SubTitle"
+                  >
+                    Sidebar menu order
+                     
+                  </div>
+                  <div
+                    class="row"
+                  >
+                    <span>
+                      Reset sidebar menu order to the original settings
+                    </span>
+                    <button
+                      class="Button primary"
+                      type="button"
+                    >
+                      Reset
+                    </button>
+                  </div>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
                 data-preference-item-test="timezone"
               >
                 <section
@@ -435,6 +522,7 @@ exports[`preferences - navigation to editor preferences given in preferences, wh
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
@@ -452,6 +540,7 @@ exports[`preferences - navigation to editor preferences given in preferences, wh
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-expanded="false"
                             aria-haspopup="true"
@@ -885,6 +974,7 @@ exports[`preferences - navigation to editor preferences given in preferences, wh
                           aria-live="polite"
                           aria-relevant="additions text"
                           class="css-1f43avz-a11yText-A11yText"
+                          role="log"
                         />
                         <div
                           class="Select__control css-13cymwt-control"
@@ -902,6 +992,7 @@ exports[`preferences - navigation to editor preferences given in preferences, wh
                               data-value=""
                             >
                               <input
+                                aria-activedescendant=""
                                 aria-autocomplete="list"
                                 aria-expanded="false"
                                 aria-haspopup="true"
@@ -974,6 +1065,7 @@ exports[`preferences - navigation to editor preferences given in preferences, wh
                       aria-live="polite"
                       aria-relevant="additions text"
                       class="css-1f43avz-a11yText-A11yText"
+                      role="log"
                     />
                     <div
                       class="Select__control css-13cymwt-control"
@@ -991,6 +1083,7 @@ exports[`preferences - navigation to editor preferences given in preferences, wh
                           data-value=""
                         >
                           <input
+                            aria-activedescendant=""
                             aria-autocomplete="list"
                             aria-expanded="false"
                             aria-haspopup="true"

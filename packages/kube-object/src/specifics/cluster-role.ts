@@ -4,8 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ClusterScopedMetadata, KubeJsonApiData, KubeObjectMetadata, KubeObjectScope } from "../api-types";
 import { KubeObject } from "../kube-object";
+
+import type { ClusterScopedMetadata, KubeJsonApiData, KubeObjectMetadata, KubeObjectScope } from "../api-types";
 import type { AggregationRule } from "../types/aggregation-rule";
 import type { PolicyRule } from "../types/policy-rule";
 

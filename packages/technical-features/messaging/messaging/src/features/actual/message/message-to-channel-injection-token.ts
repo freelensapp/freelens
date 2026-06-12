@@ -1,4 +1,5 @@
 import { getInjectionToken } from "@ogre-tools/injectable";
+
 import type { MessageChannel } from "./message-channel-listener-injection-token";
 
 export interface SendMessageToChannel {

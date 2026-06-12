@@ -7,10 +7,11 @@
 import { KubeObject } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
-import type { CatalogEntity } from "../../api/catalog-entity";
 import { Badge } from "../badge";
 import searchUrlPageParamInjectable from "../input/search-url-page-param.injectable";
 import styles from "./catalog.module.scss";
+
+import type { CatalogEntity } from "../../api/catalog-entity";
 
 export type GetLabelBadges = (
   entity: CatalogEntity,

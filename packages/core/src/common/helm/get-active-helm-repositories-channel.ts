@@ -5,7 +5,9 @@
  */
 
 import { getRequestChannel } from "@freelensapp/messaging";
+
 import type { AsyncResult } from "@freelensapp/utilities";
+
 import type { HelmRepo } from "./helm-repo";
 
 export const getActiveHelmRepositoriesChannel = getRequestChannel<void, AsyncResult<HelmRepo[]>>(

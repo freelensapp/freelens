@@ -4,11 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { URL } from "url";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import type { Cluster } from "../../../../common/cluster/cluster";
+import { URL } from "url";
 import statInjectable from "../../../../common/fs/stat.injectable";
 import loadValidatedClusterConfigInjectable from "../../../../common/kube-helpers/load-validated-config-from-file.injectable";
+
+import type { Cluster } from "../../../../common/cluster/cluster";
 
 interface ClusterApiUrlState {
   url: URL;

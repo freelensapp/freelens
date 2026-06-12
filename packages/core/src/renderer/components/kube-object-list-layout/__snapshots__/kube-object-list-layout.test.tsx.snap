@@ -36,6 +36,7 @@ exports[`kube-object-list-layout given pod store renders 1`] = `
                 aria-live="polite"
                 aria-relevant="additions text"
                 class="css-1f43avz-a11yText-A11yText"
+                role="log"
               />
               <div
                 class="Select__control css-13cymwt-control"
@@ -54,6 +55,7 @@ exports[`kube-object-list-layout given pod store renders 1`] = `
                     data-value=""
                   >
                     <input
+                      aria-activedescendant=""
                       aria-autocomplete="list"
                       aria-describedby="react-select-kube-object-list-layout-namespace-select-input-placeholder"
                       aria-expanded="false"
@@ -142,12 +144,30 @@ exports[`kube-object-list-layout given pod store renders 1`] = `
                     arrow_drop_down
                   </span>
                 </i>
+                <div
+                  class="resize-handle"
+                />
               </div>
               <div
-                class="TableCell warning nowrap"
+                class="TableCell warning-header nowrap"
+                id="warning"
               >
                 <div
                   class="content"
+                >
+                  <i
+                    class="Icon material focusable"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="warning_amber"
+                    >
+                      warning_amber
+                    </span>
+                  </i>
+                </div>
+                <div
+                  class="resize-handle"
                 />
               </div>
               <div
@@ -169,6 +189,9 @@ exports[`kube-object-list-layout given pod store renders 1`] = `
                     arrow_drop_down
                   </span>
                 </i>
+                <div
+                  class="resize-handle"
+                />
               </div>
               <div
                 class="TableCell containers nowrap sorting"
@@ -189,6 +212,55 @@ exports[`kube-object-list-layout given pod store renders 1`] = `
                     arrow_drop_down
                   </span>
                 </i>
+                <div
+                  class="resize-handle"
+                />
+              </div>
+              <div
+                class="TableCell cpu nowrap sorting"
+                id="cpuUsage"
+              >
+                <div
+                  class="content"
+                >
+                  CPU
+                </div>
+                <i
+                  class="Icon sortIcon material focusable"
+                >
+                  <span
+                    class="icon"
+                    data-icon-name="arrow_drop_down"
+                  >
+                    arrow_drop_down
+                  </span>
+                </i>
+                <div
+                  class="resize-handle"
+                />
+              </div>
+              <div
+                class="TableCell memory nowrap sorting"
+                id="memoryUsage"
+              >
+                <div
+                  class="content"
+                >
+                  Memory
+                </div>
+                <i
+                  class="Icon sortIcon material focusable"
+                >
+                  <span
+                    class="icon"
+                    data-icon-name="arrow_drop_down"
+                  >
+                    arrow_drop_down
+                  </span>
+                </i>
+                <div
+                  class="resize-handle"
+                />
               </div>
               <div
                 class="TableCell restarts nowrap sorting"
@@ -209,6 +281,9 @@ exports[`kube-object-list-layout given pod store renders 1`] = `
                     arrow_drop_down
                   </span>
                 </i>
+                <div
+                  class="resize-handle"
+                />
               </div>
               <div
                 class="TableCell owners nowrap sorting"
@@ -229,6 +304,32 @@ exports[`kube-object-list-layout given pod store renders 1`] = `
                     arrow_drop_down
                   </span>
                 </i>
+                <div
+                  class="resize-handle"
+                />
+              </div>
+              <div
+                class="TableCell ip nowrap sorting"
+                id="ip"
+              >
+                <div
+                  class="content"
+                >
+                  IP
+                </div>
+                <i
+                  class="Icon sortIcon material focusable"
+                >
+                  <span
+                    class="icon"
+                    data-icon-name="arrow_drop_down"
+                  >
+                    arrow_drop_down
+                  </span>
+                </i>
+                <div
+                  class="resize-handle"
+                />
               </div>
               <div
                 class="TableCell node nowrap sorting"
@@ -249,6 +350,9 @@ exports[`kube-object-list-layout given pod store renders 1`] = `
                     arrow_drop_down
                   </span>
                 </i>
+                <div
+                  class="resize-handle"
+                />
               </div>
               <div
                 class="TableCell qos nowrap sorting"
@@ -269,6 +373,9 @@ exports[`kube-object-list-layout given pod store renders 1`] = `
                     arrow_drop_down
                   </span>
                 </i>
+                <div
+                  class="resize-handle"
+                />
               </div>
               <div
                 class="TableCell age nowrap sorting"
@@ -289,6 +396,9 @@ exports[`kube-object-list-layout given pod store renders 1`] = `
                     arrow_drop_down
                   </span>
                 </i>
+                <div
+                  class="resize-handle"
+                />
               </div>
               <div
                 class="TableCell status nowrap sorting"
@@ -309,6 +419,28 @@ exports[`kube-object-list-layout given pod store renders 1`] = `
                     arrow_drop_down
                   </span>
                 </i>
+                <div
+                  class="resize-handle"
+                />
+              </div>
+              <div
+                class="TableCell logs nowrap"
+                id="logs"
+              >
+                <div
+                  class="content"
+                >
+                  <i
+                    class="Icon material focusable"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="subject"
+                    >
+                      subject
+                    </span>
+                  </i>
+                </div>
               </div>
               <div
                 class="TableCell menu nowrap"

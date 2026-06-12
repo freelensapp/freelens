@@ -6,12 +6,14 @@
 
 import React from "react";
 import "@testing-library/jest-dom";
+
 import { noop } from "@freelensapp/utilities";
 import { fireEvent } from "@testing-library/react";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
-import type { DiRender } from "../../../test-utils/renderFor";
 import { renderFor } from "../../../test-utils/renderFor";
 import { ToBottom } from "../to-bottom";
+
+import type { DiRender } from "../../../test-utils/renderFor";
 
 describe("<ToBottom/>", () => {
   let render: DiRender;

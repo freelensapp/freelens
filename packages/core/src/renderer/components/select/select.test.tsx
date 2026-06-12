@@ -6,16 +6,19 @@
 
 import React from "react";
 import "@testing-library/jest-dom";
-import type { DiContainer } from "@ogre-tools/injectable";
+
 import { computed } from "mobx";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import type { LensRendererExtension } from "../../../extensions/lens-renderer-extension";
 import rendererExtensionsInjectable from "../../../extensions/renderer-extensions.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
-import type { DiRender } from "../test-utils/renderFor";
 import { renderFor } from "../test-utils/renderFor";
-import type { SelectOption } from "./select";
 import { Select } from "./select";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+
+import type { LensRendererExtension } from "../../../extensions/lens-renderer-extension";
+import type { DiRender } from "../test-utils/renderFor";
+import type { SelectOption } from "./select";
 
 describe("<Select />", () => {
   let di: DiContainer;

@@ -5,17 +5,19 @@
  */
 
 import { noop } from "@freelensapp/utilities";
-import type { DiContainer } from "@ogre-tools/injectable";
 import { createContainer } from "@ogre-tools/injectable";
-import type { RenderResult } from "@testing-library/react";
-import type { IComputedValue } from "mobx";
 import { observe } from "mobx";
 import React from "react";
 import { advanceFakeTime, testUsingFakeTime } from "../../../test-utils/use-fake-time";
-import type { DiRender } from "../test-utils/renderFor";
 import { renderFor } from "../test-utils/renderFor";
 import { Countdown } from "./countdown";
 import countdownStateInjectable from "./countdown-state.injectable";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+import type { RenderResult } from "@testing-library/react";
+import type { IComputedValue } from "mobx";
+
+import type { DiRender } from "../test-utils/renderFor";
 
 describe("countdown", () => {
   let di: DiContainer;

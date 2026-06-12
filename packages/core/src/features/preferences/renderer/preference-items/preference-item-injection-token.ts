@@ -4,9 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { MaybeOrderable, Orderable } from "@freelensapp/utilities";
 import { getInjectionToken } from "@ogre-tools/injectable";
+
+import type { MaybeOrderable, Orderable } from "@freelensapp/utilities";
+
 import type React from "react";
+
 import type { GetSeparator } from "../../../../common/utils/add-separator/add-separator";
 import type { Discriminable } from "../../../../common/utils/composable-responsibilities/discriminable/discriminable";
 import type { Labelable } from "../../../../common/utils/composable-responsibilities/labelable/labelable";

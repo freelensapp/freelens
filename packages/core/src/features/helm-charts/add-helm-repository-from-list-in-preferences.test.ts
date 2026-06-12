@@ -4,20 +4,23 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
 import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
-import type { AsyncResult } from "@freelensapp/utilities";
 import { type RenderResult, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import type { ExecFile } from "../../common/fs/exec-file.injectable";
 import execFileInjectable from "../../common/fs/exec-file.injectable";
-import type { HelmRepo } from "../../common/helm/helm-repo";
 import helmBinaryPathInjectable from "../../main/helm/helm-binary-path.injectable";
 import getActiveHelmRepositoriesInjectable from "../../main/helm/repositories/get-active-helm-repositories/get-active-helm-repositories.injectable";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import requestPublicHelmRepositoriesInjectable from "./child-features/preferences/renderer/adding-of-public-helm-repository/public-helm-repositories/request-public-helm-repositories.injectable";
+
+import type { AsyncResult } from "@freelensapp/utilities";
+
+import type { AsyncFnMock } from "@async-fn/jest";
+
+import type { ExecFile } from "../../common/fs/exec-file.injectable";
+import type { HelmRepo } from "../../common/helm/helm-repo";
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 describe("add helm repository from list in preferences", () => {
   let builder: ApplicationBuilder;

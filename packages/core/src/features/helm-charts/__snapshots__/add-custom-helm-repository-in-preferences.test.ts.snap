@@ -230,6 +230,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             aria-live="polite"
                             aria-relevant="additions text"
                             class="css-1f43avz-a11yText-A11yText"
+                            role="log"
                           />
                           <div
                             class="Select__control css-13cymwt-control"
@@ -247,6 +248,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                                 data-value=""
                               >
                                 <input
+                                  aria-activedescendant=""
                                   aria-autocomplete="list"
                                   aria-expanded="false"
                                   aria-haspopup="true"
@@ -362,6 +364,90 @@ exports[`add custom helm repository in preferences when navigating to preference
                             class="input-info flex gaps"
                           />
                         </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the kubectl binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="helm"
+                >
+                  <section
+                    id="helm"
+                  >
+                    <h2>
+                      Helm
+                    </h2>
+                    <div
+                      data-preference-item-test="helm-path-to-binary"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Path to helm binary
+                           
+                        </div>
+                        <div
+                          class="Input theme round black"
+                        >
+                          <label
+                            class="input-area flex gaps align-center"
+                            id=""
+                          >
+                            <input
+                              class="input box grow"
+                              placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              spellcheck="false"
+                              value=""
+                            />
+                          </label>
+                          <div
+                            class="input-info flex gaps"
+                          />
+                        </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the helm binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                    <div
+                      class="size-xl"
+                    />
+                    <div
+                      data-preference-item-test="helm-server-side"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Server-side apply
+                           
+                        </div>
+                        <label
+                          class="Switch"
+                          data-testid="switch"
+                        >
+                          Use server-side apply for Helm chart operations
+                          <input
+                            role="switch"
+                            type="checkbox"
+                          />
+                        </label>
+                        <div
+                          class="hint"
+                        >
+                          When enabled, Helm will use server-side apply (--server-side=true) for install and upgrade operations. This is always enabled when "Force conflicts" is checked.
+                        </div>
                       </section>
                     </div>
                   </section>
@@ -436,8 +522,10 @@ exports[`add custom helm repository in preferences when navigating to preference
                               aria-live="polite"
                               aria-relevant="additions text"
                               class="css-1f43avz-a11yText-A11yText"
+                              role="log"
                             />
                             <div
+                              aria-disabled="true"
                               class="Select__control Select__control--is-disabled css-16xfy0z-control"
                             >
                               <div
@@ -454,6 +542,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                                   data-value=""
                                 >
                                   <input
+                                    aria-activedescendant=""
                                     aria-autocomplete="list"
                                     aria-describedby="react-select-selection-of-active-public-helm-repository-placeholder"
                                     aria-expanded="false"
@@ -481,13 +570,13 @@ exports[`add custom helm repository in preferences when navigating to preference
                                   class="Select__indicator Select__loading-indicator css-pogzpp-loadingIndicator"
                                 >
                                   <span
-                                    class="css-15mwx6b-LoadingDot"
+                                    class="css-1icxkl9-LoadingDot"
                                   />
                                   <span
-                                    class="css-1cg5uks-LoadingDot"
+                                    class="css-1oazjx7-LoadingDot"
                                   />
                                   <span
-                                    class="css-10osd3t-LoadingDot"
+                                    class="css-1wonz24-LoadingDot"
                                   />
                                 </div>
                                 <span
@@ -934,6 +1023,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             aria-live="polite"
                             aria-relevant="additions text"
                             class="css-1f43avz-a11yText-A11yText"
+                            role="log"
                           />
                           <div
                             class="Select__control css-13cymwt-control"
@@ -951,6 +1041,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                                 data-value=""
                               >
                                 <input
+                                  aria-activedescendant=""
                                   aria-autocomplete="list"
                                   aria-expanded="false"
                                   aria-haspopup="true"
@@ -1066,6 +1157,90 @@ exports[`add custom helm repository in preferences when navigating to preference
                             class="input-info flex gaps"
                           />
                         </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the kubectl binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="helm"
+                >
+                  <section
+                    id="helm"
+                  >
+                    <h2>
+                      Helm
+                    </h2>
+                    <div
+                      data-preference-item-test="helm-path-to-binary"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Path to helm binary
+                           
+                        </div>
+                        <div
+                          class="Input theme round black"
+                        >
+                          <label
+                            class="input-area flex gaps align-center"
+                            id=""
+                          >
+                            <input
+                              class="input box grow"
+                              placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              spellcheck="false"
+                              value=""
+                            />
+                          </label>
+                          <div
+                            class="input-info flex gaps"
+                          />
+                        </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the helm binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                    <div
+                      class="size-xl"
+                    />
+                    <div
+                      data-preference-item-test="helm-server-side"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Server-side apply
+                           
+                        </div>
+                        <label
+                          class="Switch"
+                          data-testid="switch"
+                        >
+                          Use server-side apply for Helm chart operations
+                          <input
+                            role="switch"
+                            type="checkbox"
+                          />
+                        </label>
+                        <div
+                          class="hint"
+                        >
+                          When enabled, Helm will use server-side apply (--server-side=true) for install and upgrade operations. This is always enabled when "Force conflicts" is checked.
+                        </div>
                       </section>
                     </div>
                   </section>
@@ -1168,6 +1343,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                               aria-live="polite"
                               aria-relevant="additions text"
                               class="css-1f43avz-a11yText-A11yText"
+                              role="log"
                             />
                             <div
                               class="Select__control css-13cymwt-control"
@@ -1186,6 +1362,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                                   data-value=""
                                 >
                                   <input
+                                    aria-activedescendant=""
                                     aria-autocomplete="list"
                                     aria-describedby="react-select-selection-of-active-public-helm-repository-placeholder"
                                     aria-expanded="false"
@@ -1677,6 +1854,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             aria-live="polite"
                             aria-relevant="additions text"
                             class="css-1f43avz-a11yText-A11yText"
+                            role="log"
                           />
                           <div
                             class="Select__control css-13cymwt-control"
@@ -1694,6 +1872,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                                 data-value=""
                               >
                                 <input
+                                  aria-activedescendant=""
                                   aria-autocomplete="list"
                                   aria-expanded="false"
                                   aria-haspopup="true"
@@ -1809,6 +1988,90 @@ exports[`add custom helm repository in preferences when navigating to preference
                             class="input-info flex gaps"
                           />
                         </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the kubectl binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="helm"
+                >
+                  <section
+                    id="helm"
+                  >
+                    <h2>
+                      Helm
+                    </h2>
+                    <div
+                      data-preference-item-test="helm-path-to-binary"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Path to helm binary
+                           
+                        </div>
+                        <div
+                          class="Input theme round black"
+                        >
+                          <label
+                            class="input-area flex gaps align-center"
+                            id=""
+                          >
+                            <input
+                              class="input box grow"
+                              placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              spellcheck="false"
+                              value=""
+                            />
+                          </label>
+                          <div
+                            class="input-info flex gaps"
+                          />
+                        </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the helm binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                    <div
+                      class="size-xl"
+                    />
+                    <div
+                      data-preference-item-test="helm-server-side"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Server-side apply
+                           
+                        </div>
+                        <label
+                          class="Switch"
+                          data-testid="switch"
+                        >
+                          Use server-side apply for Helm chart operations
+                          <input
+                            role="switch"
+                            type="checkbox"
+                          />
+                        </label>
+                        <div
+                          class="hint"
+                        >
+                          When enabled, Helm will use server-side apply (--server-side=true) for install and upgrade operations. This is always enabled when "Force conflicts" is checked.
+                        </div>
                       </section>
                     </div>
                   </section>
@@ -1911,6 +2174,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                               aria-live="polite"
                               aria-relevant="additions text"
                               class="css-1f43avz-a11yText-A11yText"
+                              role="log"
                             />
                             <div
                               class="Select__control css-13cymwt-control"
@@ -1929,6 +2193,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                                   data-value=""
                                 >
                                   <input
+                                    aria-activedescendant=""
                                     aria-autocomplete="list"
                                     aria-describedby="react-select-selection-of-active-public-helm-repository-placeholder"
                                     aria-expanded="false"
@@ -2531,6 +2796,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             aria-live="polite"
                             aria-relevant="additions text"
                             class="css-1f43avz-a11yText-A11yText"
+                            role="log"
                           />
                           <div
                             class="Select__control css-13cymwt-control"
@@ -2548,6 +2814,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                                 data-value=""
                               >
                                 <input
+                                  aria-activedescendant=""
                                   aria-autocomplete="list"
                                   aria-expanded="false"
                                   aria-haspopup="true"
@@ -2663,6 +2930,90 @@ exports[`add custom helm repository in preferences when navigating to preference
                             class="input-info flex gaps"
                           />
                         </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the kubectl binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="helm"
+                >
+                  <section
+                    id="helm"
+                  >
+                    <h2>
+                      Helm
+                    </h2>
+                    <div
+                      data-preference-item-test="helm-path-to-binary"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Path to helm binary
+                           
+                        </div>
+                        <div
+                          class="Input theme round black"
+                        >
+                          <label
+                            class="input-area flex gaps align-center"
+                            id=""
+                          >
+                            <input
+                              class="input box grow"
+                              placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              spellcheck="false"
+                              value=""
+                            />
+                          </label>
+                          <div
+                            class="input-info flex gaps"
+                          />
+                        </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the helm binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                    <div
+                      class="size-xl"
+                    />
+                    <div
+                      data-preference-item-test="helm-server-side"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Server-side apply
+                           
+                        </div>
+                        <label
+                          class="Switch"
+                          data-testid="switch"
+                        >
+                          Use server-side apply for Helm chart operations
+                          <input
+                            role="switch"
+                            type="checkbox"
+                          />
+                        </label>
+                        <div
+                          class="hint"
+                        >
+                          When enabled, Helm will use server-side apply (--server-side=true) for install and upgrade operations. This is always enabled when "Force conflicts" is checked.
+                        </div>
                       </section>
                     </div>
                   </section>
@@ -2765,6 +3116,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                               aria-live="polite"
                               aria-relevant="additions text"
                               class="css-1f43avz-a11yText-A11yText"
+                              role="log"
                             />
                             <div
                               class="Select__control css-13cymwt-control"
@@ -2783,6 +3135,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                                   data-value=""
                                 >
                                   <input
+                                    aria-activedescendant=""
                                     aria-autocomplete="list"
                                     aria-describedby="react-select-selection-of-active-public-helm-repository-placeholder"
                                     aria-expanded="false"
@@ -3282,6 +3635,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             aria-live="polite"
                             aria-relevant="additions text"
                             class="css-1f43avz-a11yText-A11yText"
+                            role="log"
                           />
                           <div
                             class="Select__control css-13cymwt-control"
@@ -3299,6 +3653,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                                 data-value=""
                               >
                                 <input
+                                  aria-activedescendant=""
                                   aria-autocomplete="list"
                                   aria-expanded="false"
                                   aria-haspopup="true"
@@ -3414,6 +3769,90 @@ exports[`add custom helm repository in preferences when navigating to preference
                             class="input-info flex gaps"
                           />
                         </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the kubectl binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="helm"
+                >
+                  <section
+                    id="helm"
+                  >
+                    <h2>
+                      Helm
+                    </h2>
+                    <div
+                      data-preference-item-test="helm-path-to-binary"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Path to helm binary
+                           
+                        </div>
+                        <div
+                          class="Input theme round black"
+                        >
+                          <label
+                            class="input-area flex gaps align-center"
+                            id=""
+                          >
+                            <input
+                              class="input box grow"
+                              placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              spellcheck="false"
+                              value=""
+                            />
+                          </label>
+                          <div
+                            class="input-info flex gaps"
+                          />
+                        </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the helm binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                    <div
+                      class="size-xl"
+                    />
+                    <div
+                      data-preference-item-test="helm-server-side"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Server-side apply
+                           
+                        </div>
+                        <label
+                          class="Switch"
+                          data-testid="switch"
+                        >
+                          Use server-side apply for Helm chart operations
+                          <input
+                            role="switch"
+                            type="checkbox"
+                          />
+                        </label>
+                        <div
+                          class="hint"
+                        >
+                          When enabled, Helm will use server-side apply (--server-side=true) for install and upgrade operations. This is always enabled when "Force conflicts" is checked.
+                        </div>
                       </section>
                     </div>
                   </section>
@@ -3516,6 +3955,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                               aria-live="polite"
                               aria-relevant="additions text"
                               class="css-1f43avz-a11yText-A11yText"
+                              role="log"
                             />
                             <div
                               class="Select__control css-13cymwt-control"
@@ -3534,6 +3974,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                                   data-value=""
                                 >
                                   <input
+                                    aria-activedescendant=""
                                     aria-autocomplete="list"
                                     aria-describedby="react-select-selection-of-active-public-helm-repository-placeholder"
                                     aria-expanded="false"
@@ -4136,6 +4577,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             aria-live="polite"
                             aria-relevant="additions text"
                             class="css-1f43avz-a11yText-A11yText"
+                            role="log"
                           />
                           <div
                             class="Select__control css-13cymwt-control"
@@ -4153,6 +4595,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                                 data-value=""
                               >
                                 <input
+                                  aria-activedescendant=""
                                   aria-autocomplete="list"
                                   aria-expanded="false"
                                   aria-haspopup="true"
@@ -4268,6 +4711,90 @@ exports[`add custom helm repository in preferences when navigating to preference
                             class="input-info flex gaps"
                           />
                         </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the kubectl binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="helm"
+                >
+                  <section
+                    id="helm"
+                  >
+                    <h2>
+                      Helm
+                    </h2>
+                    <div
+                      data-preference-item-test="helm-path-to-binary"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Path to helm binary
+                           
+                        </div>
+                        <div
+                          class="Input theme round black"
+                        >
+                          <label
+                            class="input-area flex gaps align-center"
+                            id=""
+                          >
+                            <input
+                              class="input box grow"
+                              placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              spellcheck="false"
+                              value=""
+                            />
+                          </label>
+                          <div
+                            class="input-info flex gaps"
+                          />
+                        </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the helm binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                    <div
+                      class="size-xl"
+                    />
+                    <div
+                      data-preference-item-test="helm-server-side"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Server-side apply
+                           
+                        </div>
+                        <label
+                          class="Switch"
+                          data-testid="switch"
+                        >
+                          Use server-side apply for Helm chart operations
+                          <input
+                            role="switch"
+                            type="checkbox"
+                          />
+                        </label>
+                        <div
+                          class="hint"
+                        >
+                          When enabled, Helm will use server-side apply (--server-side=true) for install and upgrade operations. This is always enabled when "Force conflicts" is checked.
+                        </div>
                       </section>
                     </div>
                   </section>
@@ -4370,6 +4897,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                               aria-live="polite"
                               aria-relevant="additions text"
                               class="css-1f43avz-a11yText-A11yText"
+                              role="log"
                             />
                             <div
                               class="Select__control css-13cymwt-control"
@@ -4388,6 +4916,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                                   data-value=""
                                 >
                                   <input
+                                    aria-activedescendant=""
                                     aria-autocomplete="list"
                                     aria-describedby="react-select-selection-of-active-public-helm-repository-placeholder"
                                     aria-expanded="false"
@@ -5172,6 +5701,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             aria-live="polite"
                             aria-relevant="additions text"
                             class="css-1f43avz-a11yText-A11yText"
+                            role="log"
                           />
                           <div
                             class="Select__control css-13cymwt-control"
@@ -5189,6 +5719,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                                 data-value=""
                               >
                                 <input
+                                  aria-activedescendant=""
                                   aria-autocomplete="list"
                                   aria-expanded="false"
                                   aria-haspopup="true"
@@ -5304,6 +5835,90 @@ exports[`add custom helm repository in preferences when navigating to preference
                             class="input-info flex gaps"
                           />
                         </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the kubectl binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="helm"
+                >
+                  <section
+                    id="helm"
+                  >
+                    <h2>
+                      Helm
+                    </h2>
+                    <div
+                      data-preference-item-test="helm-path-to-binary"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Path to helm binary
+                           
+                        </div>
+                        <div
+                          class="Input theme round black"
+                        >
+                          <label
+                            class="input-area flex gaps align-center"
+                            id=""
+                          >
+                            <input
+                              class="input box grow"
+                              placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              spellcheck="false"
+                              value=""
+                            />
+                          </label>
+                          <div
+                            class="input-info flex gaps"
+                          />
+                        </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the helm binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                    <div
+                      class="size-xl"
+                    />
+                    <div
+                      data-preference-item-test="helm-server-side"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Server-side apply
+                           
+                        </div>
+                        <label
+                          class="Switch"
+                          data-testid="switch"
+                        >
+                          Use server-side apply for Helm chart operations
+                          <input
+                            role="switch"
+                            type="checkbox"
+                          />
+                        </label>
+                        <div
+                          class="hint"
+                        >
+                          When enabled, Helm will use server-side apply (--server-side=true) for install and upgrade operations. This is always enabled when "Force conflicts" is checked.
+                        </div>
                       </section>
                     </div>
                   </section>
@@ -5406,6 +6021,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                               aria-live="polite"
                               aria-relevant="additions text"
                               class="css-1f43avz-a11yText-A11yText"
+                              role="log"
                             />
                             <div
                               class="Select__control css-13cymwt-control"
@@ -5424,6 +6040,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                                   data-value=""
                                 >
                                   <input
+                                    aria-activedescendant=""
                                     aria-autocomplete="list"
                                     aria-describedby="react-select-selection-of-active-public-helm-repository-placeholder"
                                     aria-expanded="false"
@@ -6026,6 +6643,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             aria-live="polite"
                             aria-relevant="additions text"
                             class="css-1f43avz-a11yText-A11yText"
+                            role="log"
                           />
                           <div
                             class="Select__control css-13cymwt-control"
@@ -6043,6 +6661,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                                 data-value=""
                               >
                                 <input
+                                  aria-activedescendant=""
                                   aria-autocomplete="list"
                                   aria-expanded="false"
                                   aria-haspopup="true"
@@ -6158,6 +6777,90 @@ exports[`add custom helm repository in preferences when navigating to preference
                             class="input-info flex gaps"
                           />
                         </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the kubectl binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="helm"
+                >
+                  <section
+                    id="helm"
+                  >
+                    <h2>
+                      Helm
+                    </h2>
+                    <div
+                      data-preference-item-test="helm-path-to-binary"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Path to helm binary
+                           
+                        </div>
+                        <div
+                          class="Input theme round black"
+                        >
+                          <label
+                            class="input-area flex gaps align-center"
+                            id=""
+                          >
+                            <input
+                              class="input box grow"
+                              placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              spellcheck="false"
+                              value=""
+                            />
+                          </label>
+                          <div
+                            class="input-info flex gaps"
+                          />
+                        </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the helm binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                    <div
+                      class="size-xl"
+                    />
+                    <div
+                      data-preference-item-test="helm-server-side"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Server-side apply
+                           
+                        </div>
+                        <label
+                          class="Switch"
+                          data-testid="switch"
+                        >
+                          Use server-side apply for Helm chart operations
+                          <input
+                            role="switch"
+                            type="checkbox"
+                          />
+                        </label>
+                        <div
+                          class="hint"
+                        >
+                          When enabled, Helm will use server-side apply (--server-side=true) for install and upgrade operations. This is always enabled when "Force conflicts" is checked.
+                        </div>
                       </section>
                     </div>
                   </section>
@@ -6260,6 +6963,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                               aria-live="polite"
                               aria-relevant="additions text"
                               class="css-1f43avz-a11yText-A11yText"
+                              role="log"
                             />
                             <div
                               class="Select__control css-13cymwt-control"
@@ -6278,6 +6982,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                                   data-value=""
                                 >
                                   <input
+                                    aria-activedescendant=""
                                     aria-autocomplete="list"
                                     aria-describedby="react-select-selection-of-active-public-helm-repository-placeholder"
                                     aria-expanded="false"
@@ -7062,6 +7767,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             aria-live="polite"
                             aria-relevant="additions text"
                             class="css-1f43avz-a11yText-A11yText"
+                            role="log"
                           />
                           <div
                             class="Select__control css-13cymwt-control"
@@ -7079,6 +7785,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                                 data-value=""
                               >
                                 <input
+                                  aria-activedescendant=""
                                   aria-autocomplete="list"
                                   aria-expanded="false"
                                   aria-haspopup="true"
@@ -7194,6 +7901,90 @@ exports[`add custom helm repository in preferences when navigating to preference
                             class="input-info flex gaps"
                           />
                         </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the kubectl binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="helm"
+                >
+                  <section
+                    id="helm"
+                  >
+                    <h2>
+                      Helm
+                    </h2>
+                    <div
+                      data-preference-item-test="helm-path-to-binary"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Path to helm binary
+                           
+                        </div>
+                        <div
+                          class="Input theme round black"
+                        >
+                          <label
+                            class="input-area flex gaps align-center"
+                            id=""
+                          >
+                            <input
+                              class="input box grow"
+                              placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              spellcheck="false"
+                              value=""
+                            />
+                          </label>
+                          <div
+                            class="input-info flex gaps"
+                          />
+                        </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the helm binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                    <div
+                      class="size-xl"
+                    />
+                    <div
+                      data-preference-item-test="helm-server-side"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Server-side apply
+                           
+                        </div>
+                        <label
+                          class="Switch"
+                          data-testid="switch"
+                        >
+                          Use server-side apply for Helm chart operations
+                          <input
+                            role="switch"
+                            type="checkbox"
+                          />
+                        </label>
+                        <div
+                          class="hint"
+                        >
+                          When enabled, Helm will use server-side apply (--server-side=true) for install and upgrade operations. This is always enabled when "Force conflicts" is checked.
+                        </div>
                       </section>
                     </div>
                   </section>
@@ -7296,6 +8087,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                               aria-live="polite"
                               aria-relevant="additions text"
                               class="css-1f43avz-a11yText-A11yText"
+                              role="log"
                             />
                             <div
                               class="Select__control css-13cymwt-control"
@@ -7314,6 +8106,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                                   data-value=""
                                 >
                                   <input
+                                    aria-activedescendant=""
                                     aria-autocomplete="list"
                                     aria-describedby="react-select-selection-of-active-public-helm-repository-placeholder"
                                     aria-expanded="false"
@@ -7917,6 +8710,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             aria-live="polite"
                             aria-relevant="additions text"
                             class="css-1f43avz-a11yText-A11yText"
+                            role="log"
                           />
                           <div
                             class="Select__control css-13cymwt-control"
@@ -7934,6 +8728,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                                 data-value=""
                               >
                                 <input
+                                  aria-activedescendant=""
                                   aria-autocomplete="list"
                                   aria-expanded="false"
                                   aria-haspopup="true"
@@ -8049,6 +8844,90 @@ exports[`add custom helm repository in preferences when navigating to preference
                             class="input-info flex gaps"
                           />
                         </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the kubectl binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="helm"
+                >
+                  <section
+                    id="helm"
+                  >
+                    <h2>
+                      Helm
+                    </h2>
+                    <div
+                      data-preference-item-test="helm-path-to-binary"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Path to helm binary
+                           
+                        </div>
+                        <div
+                          class="Input theme round black"
+                        >
+                          <label
+                            class="input-area flex gaps align-center"
+                            id=""
+                          >
+                            <input
+                              class="input box grow"
+                              placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              spellcheck="false"
+                              value=""
+                            />
+                          </label>
+                          <div
+                            class="input-info flex gaps"
+                          />
+                        </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the helm binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                    <div
+                      class="size-xl"
+                    />
+                    <div
+                      data-preference-item-test="helm-server-side"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Server-side apply
+                           
+                        </div>
+                        <label
+                          class="Switch"
+                          data-testid="switch"
+                        >
+                          Use server-side apply for Helm chart operations
+                          <input
+                            role="switch"
+                            type="checkbox"
+                          />
+                        </label>
+                        <div
+                          class="hint"
+                        >
+                          When enabled, Helm will use server-side apply (--server-side=true) for install and upgrade operations. This is always enabled when "Force conflicts" is checked.
+                        </div>
                       </section>
                     </div>
                   </section>
@@ -8151,6 +9030,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                               aria-live="polite"
                               aria-relevant="additions text"
                               class="css-1f43avz-a11yText-A11yText"
+                              role="log"
                             />
                             <div
                               class="Select__control css-13cymwt-control"
@@ -8169,6 +9049,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                                   data-value=""
                                 >
                                   <input
+                                    aria-activedescendant=""
                                     aria-autocomplete="list"
                                     aria-describedby="react-select-selection-of-active-public-helm-repository-placeholder"
                                     aria-expanded="false"
@@ -8428,7 +9309,7 @@ exports[`add custom helm repository in preferences when navigating to preference
     </div>
   </div>
   <div
-    class="Animate opacity-scale Dialog flex center AddHelmRepoDialog modal enter leave"
+    class="Animate opacity-scale Dialog flex center AddHelmRepoDialog modal enter"
     style="--enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
@@ -8668,6 +9549,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             aria-live="polite"
                             aria-relevant="additions text"
                             class="css-1f43avz-a11yText-A11yText"
+                            role="log"
                           />
                           <div
                             class="Select__control css-13cymwt-control"
@@ -8685,6 +9567,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                                 data-value=""
                               >
                                 <input
+                                  aria-activedescendant=""
                                   aria-autocomplete="list"
                                   aria-expanded="false"
                                   aria-haspopup="true"
@@ -8800,6 +9683,90 @@ exports[`add custom helm repository in preferences when navigating to preference
                             class="input-info flex gaps"
                           />
                         </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the kubectl binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="helm"
+                >
+                  <section
+                    id="helm"
+                  >
+                    <h2>
+                      Helm
+                    </h2>
+                    <div
+                      data-preference-item-test="helm-path-to-binary"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Path to helm binary
+                           
+                        </div>
+                        <div
+                          class="Input theme round black"
+                        >
+                          <label
+                            class="input-area flex gaps align-center"
+                            id=""
+                          >
+                            <input
+                              class="input box grow"
+                              placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              spellcheck="false"
+                              value=""
+                            />
+                          </label>
+                          <div
+                            class="input-info flex gaps"
+                          />
+                        </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the helm binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                    <div
+                      class="size-xl"
+                    />
+                    <div
+                      data-preference-item-test="helm-server-side"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Server-side apply
+                           
+                        </div>
+                        <label
+                          class="Switch"
+                          data-testid="switch"
+                        >
+                          Use server-side apply for Helm chart operations
+                          <input
+                            role="switch"
+                            type="checkbox"
+                          />
+                        </label>
+                        <div
+                          class="hint"
+                        >
+                          When enabled, Helm will use server-side apply (--server-side=true) for install and upgrade operations. This is always enabled when "Force conflicts" is checked.
+                        </div>
                       </section>
                     </div>
                   </section>
@@ -8902,8 +9869,10 @@ exports[`add custom helm repository in preferences when navigating to preference
                               aria-live="polite"
                               aria-relevant="additions text"
                               class="css-1f43avz-a11yText-A11yText"
+                              role="log"
                             />
                             <div
+                              aria-disabled="true"
                               class="Select__control Select__control--is-disabled css-16xfy0z-control"
                             >
                               <div
@@ -8920,6 +9889,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                                   data-value=""
                                 >
                                   <input
+                                    aria-activedescendant=""
                                     aria-autocomplete="list"
                                     aria-describedby="react-select-selection-of-active-public-helm-repository-placeholder"
                                     aria-expanded="false"
@@ -8947,13 +9917,13 @@ exports[`add custom helm repository in preferences when navigating to preference
                                   class="Select__indicator Select__loading-indicator css-pogzpp-loadingIndicator"
                                 >
                                   <span
-                                    class="css-15mwx6b-LoadingDot"
+                                    class="css-1icxkl9-LoadingDot"
                                   />
                                   <span
-                                    class="css-1cg5uks-LoadingDot"
+                                    class="css-1oazjx7-LoadingDot"
                                   />
                                   <span
-                                    class="css-10osd3t-LoadingDot"
+                                    class="css-1wonz24-LoadingDot"
                                   />
                                 </div>
                                 <span
@@ -9168,7 +10138,7 @@ exports[`add custom helm repository in preferences when navigating to preference
     </div>
   </div>
   <div
-    class="Animate opacity-scale Dialog flex center AddHelmRepoDialog modal enter leave"
+    class="Animate opacity-scale Dialog flex center AddHelmRepoDialog modal enter"
     style="--enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
@@ -9408,6 +10378,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                             aria-live="polite"
                             aria-relevant="additions text"
                             class="css-1f43avz-a11yText-A11yText"
+                            role="log"
                           />
                           <div
                             class="Select__control css-13cymwt-control"
@@ -9425,6 +10396,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                                 data-value=""
                               >
                                 <input
+                                  aria-activedescendant=""
                                   aria-autocomplete="list"
                                   aria-expanded="false"
                                   aria-haspopup="true"
@@ -9540,6 +10512,90 @@ exports[`add custom helm repository in preferences when navigating to preference
                             class="input-info flex gaps"
                           />
                         </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the kubectl binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="helm"
+                >
+                  <section
+                    id="helm"
+                  >
+                    <h2>
+                      Helm
+                    </h2>
+                    <div
+                      data-preference-item-test="helm-path-to-binary"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Path to helm binary
+                           
+                        </div>
+                        <div
+                          class="Input theme round black"
+                        >
+                          <label
+                            class="input-area flex gaps align-center"
+                            id=""
+                          >
+                            <input
+                              class="input box grow"
+                              placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
+                              spellcheck="false"
+                              value=""
+                            />
+                          </label>
+                          <div
+                            class="input-info flex gaps"
+                          />
+                        </div>
+                        <div
+                          class="hint"
+                        >
+                          The path to the helm binary. Defaults to the bundled version.
+                        </div>
+                      </section>
+                    </div>
+                    <div
+                      class="size-xl"
+                    />
+                    <div
+                      data-preference-item-test="helm-server-side"
+                    >
+                      <section>
+                        <div
+                          class="SubTitle"
+                        >
+                          Server-side apply
+                           
+                        </div>
+                        <label
+                          class="Switch"
+                          data-testid="switch"
+                        >
+                          Use server-side apply for Helm chart operations
+                          <input
+                            role="switch"
+                            type="checkbox"
+                          />
+                        </label>
+                        <div
+                          class="hint"
+                        >
+                          When enabled, Helm will use server-side apply (--server-side=true) for install and upgrade operations. This is always enabled when "Force conflicts" is checked.
+                        </div>
                       </section>
                     </div>
                   </section>
@@ -9642,8 +10698,10 @@ exports[`add custom helm repository in preferences when navigating to preference
                               aria-live="polite"
                               aria-relevant="additions text"
                               class="css-1f43avz-a11yText-A11yText"
+                              role="log"
                             />
                             <div
+                              aria-disabled="true"
                               class="Select__control Select__control--is-disabled css-16xfy0z-control"
                             >
                               <div
@@ -9660,6 +10718,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                                   data-value=""
                                 >
                                   <input
+                                    aria-activedescendant=""
                                     aria-autocomplete="list"
                                     aria-describedby="react-select-selection-of-active-public-helm-repository-placeholder"
                                     aria-expanded="false"
@@ -9687,13 +10746,13 @@ exports[`add custom helm repository in preferences when navigating to preference
                                   class="Select__indicator Select__loading-indicator css-pogzpp-loadingIndicator"
                                 >
                                   <span
-                                    class="css-15mwx6b-LoadingDot"
+                                    class="css-1icxkl9-LoadingDot"
                                   />
                                   <span
-                                    class="css-1cg5uks-LoadingDot"
+                                    class="css-1oazjx7-LoadingDot"
                                   />
                                   <span
-                                    class="css-10osd3t-LoadingDot"
+                                    class="css-1wonz24-LoadingDot"
                                   />
                                 </div>
                                 <span

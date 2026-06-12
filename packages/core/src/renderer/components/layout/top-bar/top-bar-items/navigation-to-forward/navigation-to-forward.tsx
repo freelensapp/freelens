@@ -6,11 +6,12 @@
 
 import { Icon } from "@freelensapp/icon";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import goForwardInjectable from "./go-forward/go-forward.injectable";
 import topBarNextEnabledInjectable from "./next-enabled.injectable";
+
+import type { IComputedValue } from "mobx";
 
 interface Dependencies {
   nextEnabled: IComputedValue<boolean>;

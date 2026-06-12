@@ -4,8 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { LabelSelector, NamespaceScopedMetadata } from "../api-types";
 import { KubeObject } from "../kube-object";
+
+import type { LabelSelector, NamespaceScopedMetadata } from "../api-types";
 import type { PersistentVolumeClaimTemplateSpec } from "../types/persistent-volume-claim-template-spec";
 import type { PodTemplateSpec } from "../types/pod-template-spec";
 

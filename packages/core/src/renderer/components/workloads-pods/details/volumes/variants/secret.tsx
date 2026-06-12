@@ -4,13 +4,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { SecretApi } from "@freelensapp/kube-api";
 import { secretApiInjectable } from "@freelensapp/kube-api-specifics";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
 import { DrawerItem } from "../../../../drawer";
-import type { PodVolumeVariantSpecificProps } from "../variant-helpers";
 import { LocalRef } from "../variant-helpers";
+
+import type { SecretApi } from "@freelensapp/kube-api";
+
+import type { PodVolumeVariantSpecificProps } from "../variant-helpers";
 
 interface Dependencies {
   secretApi: SecretApi;

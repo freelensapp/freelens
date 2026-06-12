@@ -4,19 +4,18 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import path from "path";
 import corePackageJson from "@freelensapp/core/package.json";
-import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 import CircularDependencyPlugin from "circular-dependency-plugin";
 import CopyPlugin from "copy-webpack-plugin";
 import ForkTsCheckerPlugin from "fork-ts-checker-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import MonacoWebpackPlugin from "monaco-editor-webpack-plugin";
+import path from "path";
+import { assetsFolderName, buildDir, htmlTemplate, isDevelopment, publicPath, rendererDir } from "./vars";
+
 import type webpack from "webpack";
 import type { WebpackPluginInstance } from "webpack";
-import { DefinePlugin } from "webpack";
-import { assetsFolderName, buildDir, htmlTemplate, isDevelopment, publicPath, rendererDir } from "./vars";
 
 const renderer: webpack.Configuration = {
   target: "electron-renderer",
@@ -48,14 +47,14 @@ const renderer: webpack.Configuration = {
   resolve: {
     extensions: [".js", ".jsx", ".json", ".ts", ".tsx"],
   },
-  async externals({ request }) {
+  async externals({ request }: { request?: string }) {
     const externalModulesRegex =
-      /^(byline|isomorphic-ws|js-yam|node:|npm|openid-client|pnpm|request|rfc4648|stream-buffers|tar|tslib|win-ca)/;
+      /^(byline|isomorphic-ws|js-yam|node:|npm|openid-client|pnpm|request|rfc4648|stream-buffers|tar|tslib)/;
 
-    if (externalModulesRegex.test(request)) {
-      return Promise.resolve(`node-commonjs ${request}`);
+    if (typeof request === "string" && externalModulesRegex.test(request)) {
+      return `node-commonjs ${request}`;
     }
-    return Promise.resolve();
+    return;
   },
   optimization: {
     minimize: false,
@@ -83,10 +82,6 @@ const renderer: webpack.Configuration = {
   },
 
   plugins: [
-    new DefinePlugin({
-      CONTEXT_MATCHER_FOR_NON_FEATURES: `/\\.injectable\\.tsx?$/`,
-      CONTEXT_MATCHER_FOR_FEATURES: `/\\/(renderer|common)\\/.+\\.injectable\\.tsx?$/`,
-    }),
     new ForkTsCheckerPlugin(),
 
     // see also: https://github.com/Microsoft/monaco-editor-webpack-plugin#options
@@ -128,8 +123,6 @@ const renderer: webpack.Configuration = {
         },
       ],
     }),
-
-    ...(isDevelopment ? [new ReactRefreshWebpackPlugin()] : []),
   ],
 };
 

@@ -6,11 +6,14 @@
 
 import "./pod-disruption-budgets-details.scss";
 
-import type { PodDisruptionBudget } from "@freelensapp/kube-object";
 import { observer } from "mobx-react";
 import React from "react";
 import { Badge } from "../badge";
 import { DrawerItem } from "../drawer";
+import { KubeObjectConditionsDrawer } from "../kube-object-conditions";
+
+import type { PodDisruptionBudget } from "@freelensapp/kube-object";
+
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 export interface PodDisruptionBudgetDetailsProps extends KubeObjectDetailsProps<PodDisruptionBudget> {}
@@ -35,12 +38,10 @@ export const PodDisruptionBudgetDetails = observer((props: PodDisruptionBudgetDe
       )}
 
       <DrawerItem name="Min Available">{pdb.getMinAvailable()}</DrawerItem>
-
       <DrawerItem name="Max Unavailable">{pdb.getMaxUnavailable()}</DrawerItem>
-
       <DrawerItem name="Current Healthy">{pdb.getCurrentHealthy()}</DrawerItem>
-
       <DrawerItem name="Desired Healthy">{pdb.getDesiredHealthy()}</DrawerItem>
+      <KubeObjectConditionsDrawer object={pdb} />
     </div>
   );
 });

@@ -1,5 +1,7 @@
-import type { StrictReactNode } from "@freelensapp/utilities";
 import { getInjectionToken } from "@ogre-tools/injectable";
+
+import type { StrictReactNode } from "@freelensapp/utilities";
+
 import type React from "react";
 
 export type ReactApplicationHigherOrderComponent = React.ComponentType<{

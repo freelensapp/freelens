@@ -4,8 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-// Debouncing promise evaluation
-
+/**
+ * Debouncing promise evaluation
+ */
 export function debouncePromise<T, F extends any[]>(
   func: (...args: F) => T | Promise<T>,
   timeout = 0,

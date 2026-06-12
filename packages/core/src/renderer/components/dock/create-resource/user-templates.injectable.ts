@@ -16,8 +16,9 @@ import getRelativePathInjectable from "../../../../common/path/get-relative-path
 import joinPathsInjectable from "../../../../common/path/join-paths.injectable";
 import parsePathInjectable from "../../../../common/path/parse.injectable";
 import { waitForPath } from "../../../../common/utils/wait-for-path";
-import type { RawTemplate, RawTemplates } from "./create-resource-templates.injectable";
 import { hasCorrectExtension } from "./has-correct-extension";
+
+import type { RawTemplate, RawTemplates } from "./create-resource-templates.injectable";
 
 const userCreateResourceTemplatesInjectable = getInjectable({
   id: "user-create-resource-templates",

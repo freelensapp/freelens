@@ -5,8 +5,9 @@
  */
 
 import { IngressClass } from "@freelensapp/kube-object";
-import type { KubeApiDependencies, ResourceDescriptor } from "../kube-api";
 import { KubeApi } from "../kube-api";
+
+import type { KubeApiDependencies, ResourceDescriptor } from "../kube-api";
 
 export class IngressClassApi extends KubeApi<IngressClass> {
   constructor(dependencies: KubeApiDependencies) {

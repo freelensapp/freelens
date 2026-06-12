@@ -6,18 +6,21 @@
 
 import "./pods.scss";
 
-import type { Pod } from "@freelensapp/kube-object";
-import type { SpecificKubeListLayoutColumn } from "@freelensapp/list-layout";
 import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
+import { interval } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
-import type { EventStore } from "../events/store";
+import React, { useEffect } from "react";
 import eventStoreInjectable from "../events/store.injectable";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
-import type { PodStore } from "./store";
 import podStoreInjectable from "./store.injectable";
+
+import type { Pod } from "@freelensapp/kube-object";
+import type { SpecificKubeListLayoutColumn } from "@freelensapp/list-layout";
+
+import type { EventStore } from "../events/store";
+import type { PodStore } from "./store";
 
 interface Dependencies {
   eventStore: EventStore;
@@ -25,8 +28,18 @@ interface Dependencies {
   columns: SpecificKubeListLayoutColumn<Pod>[];
 }
 
+const REFRESH_METRICS_INTERVAL = 10;
+
 const NonInjectedPods = observer((props: Dependencies) => {
   const { columns, eventStore, podStore } = props;
+
+  useEffect(() => {
+    const fetchPodsMetricsInterval = interval(REFRESH_METRICS_INTERVAL, () => podStore.loadKubeMetrics());
+
+    fetchPodsMetricsInterval.start(true);
+
+    return () => fetchPodsMetricsInterval.stop();
+  }, [podStore]);
 
   return (
     <SiblingsInTabLayout>
@@ -36,6 +49,7 @@ const NonInjectedPods = observer((props: Dependencies) => {
         dependentStores={[eventStore]} // status icon component uses event store
         tableId="workloads_pods"
         isConfigurable
+        defaultHiddenTableColumns={["ip", "node", "qos"]}
         searchFilters={[
           (pod) => pod.getSearchFields(),
           (pod) => pod.getStatusMessage(),

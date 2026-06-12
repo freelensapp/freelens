@@ -1,5 +1,6 @@
-import type { StartableStoppable } from "./get-startable-stoppable";
 import { getStartableStoppable } from "./get-startable-stoppable";
+
+import type { StartableStoppable } from "./get-startable-stoppable";
 
 describe("getStartableStoppable", () => {
   let stopMock: jest.MockedFunction<() => void>;

@@ -6,8 +6,8 @@
 
 import "./details.scss";
 
+import { Icon } from "@freelensapp/icon";
 import { CustomResourceDefinition } from "@freelensapp/kube-object";
-import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
@@ -16,9 +16,14 @@ import { Link } from "react-router-dom";
 import { Badge } from "../badge";
 import { DrawerItem, DrawerTitle } from "../drawer";
 import { Input } from "../input";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
+import { KubeObjectConditionsDrawer } from "../kube-object-conditions";
 import { MonacoEditor } from "../monaco-editor";
 import { Table, TableCell, TableHead, TableRow } from "../table";
+import { WithTooltip } from "../with-tooltip";
+
+import type { Logger } from "@freelensapp/logger";
+
+import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 export interface CustomResourceDefinitionDetailsProps extends KubeObjectDetailsProps<CustomResourceDefinition> {}
 
@@ -46,15 +51,34 @@ class NonInjectedCustomResourceDefinitionDetails extends React.Component<
       return null;
     }
 
-    const { plural, singular, kind, listKind } = crd.getNames();
+    const { plural, singular, kind, listKind, shortNames } = crd.getNames();
     const printerColumns = crd.getPrinterColumns();
     const validation = crd.getValidation();
 
     return (
       <div className="CustomResourceDefinitionDetails">
         <DrawerItem name="Group">{crd.getGroup()}</DrawerItem>
-        <DrawerItem name="Version">{crd.getVersion()}</DrawerItem>
-        <DrawerItem name="Stored versions">{crd.getStoredVersions()}</DrawerItem>
+        <DrawerItem name="Versions">
+          {crd.getVersions()?.map((version) => (
+            <DrawerItem name="">
+              {version}
+              {version === crd.getVersion() && (
+                <>
+                  {" "}
+                  <Icon small material="star" tooltip="Preferred Version" className="set_default_icon" />
+                </>
+              )}
+            </DrawerItem>
+          ))}
+        </DrawerItem>
+        <DrawerItem name="Stored Versions">
+          {crd
+            .getStoredVersions()
+            .split(", ")
+            ?.map((version) => (
+              <DrawerItem name="">{version}</DrawerItem>
+            ))}
+        </DrawerItem>
         <DrawerItem name="Scope">{crd.getScope()}</DrawerItem>
         <DrawerItem name="Resource">
           <Link to={crd.getResourceUrl()}>{crd.getResourceTitle()}</Link>
@@ -62,29 +86,7 @@ class NonInjectedCustomResourceDefinitionDetails extends React.Component<
         <DrawerItem name="Conversion" className="flex gaps align-flex-start">
           <Input multiLine theme="round-black" className="box grow" value={crd.getConversion()} readOnly />
         </DrawerItem>
-        <DrawerItem name="Conditions" className="conditions" labelsOnly>
-          {crd.getConditions().map((condition) => {
-            const { type, message, lastTransitionTime, status } = condition;
-
-            return (
-              <Badge
-                key={type}
-                label={type}
-                disabled={status === "False"}
-                className={type}
-                tooltip={
-                  <>
-                    <p>{message}</p>
-                    <p>
-                      Last transition time:
-                      {lastTransitionTime}
-                    </p>
-                  </>
-                }
-              />
-            );
-          })}
-        </DrawerItem>
+        <KubeObjectConditionsDrawer object={crd} />
         <DrawerTitle>Names</DrawerTitle>
         <Table selectable className="names box grow">
           <TableHead>
@@ -92,12 +94,24 @@ class NonInjectedCustomResourceDefinitionDetails extends React.Component<
             <TableCell>singular</TableCell>
             <TableCell>kind</TableCell>
             <TableCell>listKind</TableCell>
+            <TableCell>shortNames</TableCell>
           </TableHead>
           <TableRow>
-            <TableCell>{plural}</TableCell>
-            <TableCell>{singular}</TableCell>
-            <TableCell>{kind}</TableCell>
-            <TableCell>{listKind}</TableCell>
+            <TableCell>
+              <WithTooltip>{plural}</WithTooltip>
+            </TableCell>
+            <TableCell>
+              <WithTooltip>{singular}</WithTooltip>
+            </TableCell>
+            <TableCell>
+              <WithTooltip>{kind}</WithTooltip>
+            </TableCell>
+            <TableCell>
+              <WithTooltip>{listKind}</WithTooltip>
+            </TableCell>
+            <TableCell>
+              <WithTooltip>{shortNames?.join(",")}</WithTooltip>
+            </TableCell>
           </TableRow>
         </Table>
         {printerColumns.length > 0 && (

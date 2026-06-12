@@ -4,10 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ElectronApplication, Page } from "playwright";
 import * as utils from "../helpers/utils";
 
-describe("Lens command palette", () => {
+import type { ElectronApplication, Page } from "playwright";
+
+describe("Freelens command palette", () => {
   let window: Page;
   let cleanup: undefined | (() => Promise<void>);
   let app: ElectronApplication;

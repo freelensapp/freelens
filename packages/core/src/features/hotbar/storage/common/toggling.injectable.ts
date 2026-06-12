@@ -6,6 +6,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import activeHotbarInjectable from "./active.injectable";
+
 import type { Hotbar } from "./hotbar";
 
 export type ActiveHotbarModel = Pick<Hotbar, "hasEntity" | "addEntity" | "removeEntity" | "toggleEntity">;

@@ -9,14 +9,13 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { action } from "mobx";
 import { toJS } from "../../../common/utils";
 import storeMigrationVersionInjectable from "../../../common/vars/store-migration-version.injectable";
-import selectedUpdateChannelInjectable from "../../application-update/common/selected-update-channel.injectable";
-import type { ReleaseChannel } from "../../application-update/common/update-channels";
 import createPersistentStorageInjectable from "../../persistent-storage/common/create.injectable";
 import persistentStorageMigrationsInjectable from "../../persistent-storage/common/migrations.injectable";
 import { userPreferencesMigrationInjectionToken } from "./migrations-token";
 import userPreferenceDescriptorsInjectable from "./preference-descriptors.injectable";
-import type { UserPreferencesModel } from "./preferences-helpers";
 import userPreferencesStateInjectable from "./state.injectable";
+
+import type { UserPreferencesModel } from "./preferences-helpers";
 
 export interface UserStoreModel {
   preferences: UserPreferencesModel;
@@ -28,7 +27,6 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
     const createPersistentStorage = di.inject(createPersistentStorageInjectable);
     const logger = di.inject(prefixedLoggerInjectable, "USER-PREFERENCES");
     const descriptors = di.inject(userPreferenceDescriptorsInjectable);
-    const selectedUpdateChannel = di.inject(selectedUpdateChannelInjectable);
     const state = di.inject(userPreferencesStateInjectable);
 
     return createPersistentStorage<UserStoreModel>({
@@ -46,6 +44,7 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
           preferences.downloadKubectlBinaries,
         );
         state.downloadMirror = descriptors.downloadMirror.fromStore(preferences.downloadMirror);
+        state.downloadCustomMirror = descriptors.downloadCustomMirror.fromStore(preferences.downloadCustomMirror);
         state.editorConfiguration = descriptors.editorConfiguration.fromStore(preferences.editorConfiguration);
         state.extensionRegistryUrl = descriptors.extensionRegistryUrl.fromStore(preferences.extensionRegistryUrl);
         state.hiddenTableColumns = descriptors.hiddenTableColumns.fromStore(preferences.hiddenTableColumns);
@@ -53,14 +52,16 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
         state.kubectlBinariesPath = descriptors.kubectlBinariesPath.fromStore(preferences.kubectlBinariesPath);
         state.localeTimezone = descriptors.localeTimezone.fromStore(preferences.localeTimezone);
         state.openAtLogin = descriptors.openAtLogin.fromStore(preferences.openAtLogin);
+        state.showTrayIcon = descriptors.showTrayIcon.fromStore(preferences.showTrayIcon);
+        state.hotbarAutoHide = descriptors.hotbarAutoHide.fromStore(preferences.hotbarAutoHide);
+        state.persistentSearch = descriptors.persistentSearch.fromStore(preferences.persistentSearch);
+        state.logViewerPreferences = descriptors.logViewerPreferences.fromStore(preferences.logViewerPreferences);
         state.shell = descriptors.shell.fromStore(preferences.shell);
         state.syncKubeconfigEntries = descriptors.syncKubeconfigEntries.fromStore(preferences.syncKubeconfigEntries);
         state.terminalConfig = descriptors.terminalConfig.fromStore(preferences.terminalConfig);
         state.terminalCopyOnSelect = descriptors.terminalCopyOnSelect.fromStore(preferences.terminalCopyOnSelect);
         state.terminalTheme = descriptors.terminalTheme.fromStore(preferences.terminalTheme);
-
-        // TODO: Switch to action-based saving instead saving stores by reaction
-        selectedUpdateChannel.setValue(preferences?.updateChannel as ReleaseChannel);
+        state.clusterPageMenuOrder = descriptors.clusterPageMenuOrder.fromStore(preferences.clusterPageMenuOrder);
       }),
       toJSON: () =>
         toJS({
@@ -71,6 +72,7 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
             downloadBinariesPath: descriptors.downloadBinariesPath.toStore(state.downloadBinariesPath),
             downloadKubectlBinaries: descriptors.downloadKubectlBinaries.toStore(state.downloadKubectlBinaries),
             downloadMirror: descriptors.downloadMirror.toStore(state.downloadMirror),
+            downloadCustomMirror: descriptors.downloadCustomMirror.toStore(state.downloadCustomMirror),
             editorConfiguration: descriptors.editorConfiguration.toStore(state.editorConfiguration),
             extensionRegistryUrl: descriptors.extensionRegistryUrl.toStore(state.extensionRegistryUrl),
             hiddenTableColumns: descriptors.hiddenTableColumns.toStore(state.hiddenTableColumns),
@@ -78,12 +80,16 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
             kubectlBinariesPath: descriptors.kubectlBinariesPath.toStore(state.kubectlBinariesPath),
             localeTimezone: descriptors.localeTimezone.toStore(state.localeTimezone),
             openAtLogin: descriptors.openAtLogin.toStore(state.openAtLogin),
+            showTrayIcon: descriptors.showTrayIcon.toStore(state.showTrayIcon),
+            hotbarAutoHide: descriptors.hotbarAutoHide.toStore(state.hotbarAutoHide),
+            persistentSearch: descriptors.persistentSearch.toStore(state.persistentSearch),
+            logViewerPreferences: descriptors.logViewerPreferences.toStore(state.logViewerPreferences),
             shell: descriptors.shell.toStore(state.shell),
             syncKubeconfigEntries: descriptors.syncKubeconfigEntries.toStore(state.syncKubeconfigEntries),
             terminalConfig: descriptors.terminalConfig.toStore(state.terminalConfig),
             terminalCopyOnSelect: descriptors.terminalCopyOnSelect.toStore(state.terminalCopyOnSelect),
             terminalTheme: descriptors.terminalTheme.toStore(state.terminalTheme),
-            updateChannel: selectedUpdateChannel.value.get().id,
+            clusterPageMenuOrder: descriptors.clusterPageMenuOrder.toStore(state.clusterPageMenuOrder),
           },
         }),
     });

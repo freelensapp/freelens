@@ -13,8 +13,9 @@ import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import storesAndApisCanBeCreatedInjectable from "../../stores-apis-can-be-created.injectable";
 import podStoreInjectable from "../workloads-pods/store.injectable";
-import type { StatefulSetStore } from "../workloads-statefulsets/store";
 import statefulSetStoreInjectable from "../workloads-statefulsets/store.injectable";
+
+import type { StatefulSetStore } from "../workloads-statefulsets/store";
 
 const runningStatefulSet = new StatefulSet({
   apiVersion: "foo",

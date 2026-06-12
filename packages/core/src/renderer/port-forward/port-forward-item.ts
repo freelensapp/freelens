@@ -4,8 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ItemObject } from "@freelensapp/list-layout";
 import autoBind from "auto-bind";
+
+import type { ItemObject } from "@freelensapp/list-layout";
 
 export type ForwardedPortStatus = "Active" | "Disabled";
 export interface ForwardedPort {
@@ -16,6 +17,7 @@ export interface ForwardedPort {
   forwardPort: number;
   protocol?: string;
   status?: ForwardedPortStatus;
+  address?: string;
 }
 
 export class PortForwardItem implements ItemObject {
@@ -26,6 +28,7 @@ export class PortForwardItem implements ItemObject {
   forwardPort: number;
   protocol: string;
   status: ForwardedPortStatus;
+  address: string;
 
   constructor(pf: ForwardedPort) {
     this.kind = pf.kind;
@@ -35,6 +38,7 @@ export class PortForwardItem implements ItemObject {
     this.forwardPort = pf.forwardPort;
     this.protocol = pf.protocol ?? "http";
     this.status = pf.status ?? "Active";
+    this.address = pf.address ?? "localhost";
 
     autoBind(this);
   }
@@ -69,6 +73,10 @@ export class PortForwardItem implements ItemObject {
 
   getStatus() {
     return this.status;
+  }
+
+  getAddress() {
+    return this.address;
   }
 
   getSearchFields() {

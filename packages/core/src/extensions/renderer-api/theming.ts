@@ -6,6 +6,7 @@
 
 import { asLegacyGlobalForExtensionApi } from "@freelensapp/legacy-global-di";
 import activeThemeInjectable from "../../renderer/themes/active.injectable";
+
 import type { LensTheme } from "../../renderer/themes/lens-theme";
 
 export const activeTheme = asLegacyGlobalForExtensionApi(activeThemeInjectable);

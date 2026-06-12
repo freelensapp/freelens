@@ -6,8 +6,10 @@
 
 import type { IconProps } from "@freelensapp/icon";
 import type { StrictReactNode } from "@freelensapp/utilities";
+
 import type { IComputedValue } from "mobx";
 import type React from "react";
+
 import type { PageTarget } from "../../routes/page-registration";
 
 export interface ClusterPageMenuRegistration {
@@ -21,5 +23,5 @@ export interface ClusterPageMenuRegistration {
 }
 
 export interface ClusterPageMenuComponents {
-  Icon: React.ComponentType<IconProps>;
+  Icon?: React.ComponentType<IconProps> | null | undefined;
 }

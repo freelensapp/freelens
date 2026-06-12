@@ -6,8 +6,9 @@
 
 import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { SystemThemeType } from "../common/channels";
 import { systemThemeTypeUpdateChannel } from "../common/channels";
+
+import type { SystemThemeType } from "../common/channels";
 
 const emitSystemThemeTypeUpdateInjectable = getInjectable({
   id: "emit-system-theme-type-update",

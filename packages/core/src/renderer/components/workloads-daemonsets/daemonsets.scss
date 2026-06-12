@@ -12,8 +12,24 @@
       flex-grow: 1.6;
     }
 
-    &.pods {
-      flex-grow: 0.3;
+    &.desired {
+      flex-grow: 0.4;
+    }
+
+    &.current {
+      flex-grow: 0.4;
+    }
+
+    &.ready {
+      flex-grow: 0.4;
+    }
+
+    &.updated {
+      flex-grow: 0.4;
+    }
+
+    &.available {
+      flex-grow: 0.4;
     }
 
     &.warning {
@@ -25,6 +41,8 @@
       @include table.table-cell-labels-offsets;
     }
 
-
+    &.age {
+      flex-grow: 0.3;
+    }
   }
 }

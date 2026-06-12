@@ -8,15 +8,18 @@
 // API docs: https://react-select.com/
 import "./select.scss";
 
-import type { ObservableHashSet, StrictReactNode } from "@freelensapp/utilities";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
-import type { IComputedValue, ObservableSet } from "mobx";
 import { action, computed, makeObservable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import ReactSelect, { components, createFilter } from "react-select";
+import activeThemeInjectable from "../../themes/active.injectable";
+
+import type { ObservableHashSet, StrictReactNode } from "@freelensapp/utilities";
+
+import type { IComputedValue, ObservableSet } from "mobx";
 import type {
   GroupBase,
   MultiValue,
@@ -25,7 +28,7 @@ import type {
   Props as ReactSelectProps,
   SingleValue,
 } from "react-select";
-import activeThemeInjectable from "../../themes/active.injectable";
+
 import type { LensTheme } from "../../themes/lens-theme";
 
 const { Menu } = components;

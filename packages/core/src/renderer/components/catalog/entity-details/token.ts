@@ -5,6 +5,7 @@
  */
 
 import { getInjectionToken } from "@ogre-tools/injectable";
+
 import type { CatalogEntity } from "../../../api/catalog-entity";
 
 export interface CatalogEntityDetailsProps<T extends CatalogEntity> {

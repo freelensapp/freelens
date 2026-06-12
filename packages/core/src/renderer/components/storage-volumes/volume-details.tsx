@@ -7,10 +7,8 @@
 import startCase from "lodash/startCase";
 import "./volume-details.scss";
 
-import type { PersistentVolumeClaimApi, StorageClassApi } from "@freelensapp/kube-api";
 import { persistentVolumeClaimApiInjectable, storageClassApiInjectable } from "@freelensapp/kube-api-specifics";
 import { PersistentVolume } from "@freelensapp/kube-object";
-import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
@@ -19,8 +17,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Badge } from "../badge";
 import { DrawerItem, DrawerTitle } from "../drawer";
-import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
+
+import type { PersistentVolumeClaimApi, StorageClassApi } from "@freelensapp/kube-api";
+import type { Logger } from "@freelensapp/logger";
+
+import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 export interface PersistentVolumeDetailsProps extends KubeObjectDetailsProps<PersistentVolume> {}

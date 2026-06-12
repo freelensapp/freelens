@@ -29,6 +29,7 @@ export type KubeResource =
   | "jobs"
   | "cronjobs"
   | "endpoints"
+  | "endpointslices"
   | "customresourcedefinitions"
   | "horizontalpodautoscalers"
   | "verticalpodautoscalers"
@@ -104,6 +105,11 @@ export const apiResourceRecord: Record<KubeResource, KubeApiResourceData> = {
   endpoints: {
     kind: "Endpoint",
     group: "",
+    namespaced: true,
+  },
+  endpointslices: {
+    kind: "EndpointSlice",
+    group: "discovery.k8s.io",
     namespaced: true,
   },
   events: {

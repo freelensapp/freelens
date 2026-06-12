@@ -7,11 +7,12 @@
 import { autorun, makeObservable, observable } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
-import type { KubernetesCluster } from "../../../common/catalog-entities";
-import type { Cluster } from "../../../common/cluster/cluster";
 import { Input } from "../input";
 import { isRequired } from "../input/input_validators";
 import { SubTitle } from "../layout/sub-title";
+
+import type { KubernetesCluster } from "../../../common/catalog-entities";
+import type { Cluster } from "../../../common/cluster/cluster";
 
 export interface ClusterNameSettingProps {
   cluster: Cluster;

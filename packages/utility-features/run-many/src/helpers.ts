@@ -4,10 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
 import { getOrInsertSetFor, isDefined } from "@freelensapp/utilities";
-import type { DiContainerForInjection, InjectionInstanceWithMeta } from "@ogre-tools/injectable";
+import assert from "assert";
 import * as uuid from "uuid";
+
+import type { DiContainerForInjection, InjectionInstanceWithMeta } from "@ogre-tools/injectable";
+
 import type { Runnable, RunnableSync, RunnableSyncWithId, RunnableWithId } from "./types";
 
 const computedNextEdge = (

@@ -6,6 +6,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { lensThemeDeclarationInjectionToken } from "./declaration";
+
 import type { LensTheme } from "./lens-theme";
 
 const lensLightThemeInjectable = getInjectable({
@@ -22,7 +23,7 @@ const lensLightThemeInjectable = getInjectable({
         magenta: "#c93dce",
         golden: "#ffc63d",
         halfGray: "#87909c80",
-        primary: "#800a7a0",
+        primary: "#00a7a0",
         textColorPrimary: "#555555",
         textColorSecondary: "#51575d",
         textColorTertiary: "#555555",

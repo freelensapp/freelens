@@ -50,11 +50,12 @@
     }
   }
 
-  input[type=number]::-webkit-inner-spin-button {
+  input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none; // hide browser controls (top/bottom arrows)
   }
 
-  input, textarea {
+  input,
+  textarea {
     background: none;
     color: inherit;
     font: inherit;
@@ -67,7 +68,7 @@
 
     &::placeholder {
       color: inherit;
-      opacity: .75;
+      opacity: 0.75;
     }
   }
 
@@ -79,7 +80,7 @@
 
   fieldset:disabled &,
   &.disabled {
-    opacity: .5;
+    opacity: 0.5;
     pointer-events: none;
   }
 

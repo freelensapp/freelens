@@ -6,8 +6,9 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { action } from "mobx";
-import type { StatusBarStatus } from "./current-status.injectable";
 import statusBarCurrentStatusInjectable from "./current-status.injectable";
+
+import type { StatusBarStatus } from "./current-status.injectable";
 
 export type SetStatusBarStatus = (newStatus: StatusBarStatus) => void;
 

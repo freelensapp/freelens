@@ -4,15 +4,17 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ObservableMap } from "mobx";
 import { runInAction } from "mobx";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import ensureDirInjectable from "../../../common/fs/ensure-dir.injectable";
 import { getDiForUnitTesting } from "../../../main/getDiForUnitTesting";
 import directoryForExtensionDataInjectable from "./directory-for-extension-data.injectable";
-import type { EnsureHashedDirectoryForExtension } from "./ensure-hashed-directory-for-extension.injectable";
 import ensureHashedDirectoryForExtensionInjectable from "./ensure-hashed-directory-for-extension.injectable";
 import { registeredExtensionsInjectable } from "./registered-extensions.injectable";
+
+import type { ObservableMap } from "mobx";
+
+import type { EnsureHashedDirectoryForExtension } from "./ensure-hashed-directory-for-extension.injectable";
 
 describe("ensure-hashed-directory-for-extension", () => {
   let ensureHashedDirectoryForExtension: EnsureHashedDirectoryForExtension;

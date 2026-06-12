@@ -4,8 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { KubeJsonApiData } from "@freelensapp/kube-object";
 import { getRequestChannel } from "@freelensapp/messaging";
+
+import type { KubeJsonApiData } from "@freelensapp/kube-object";
 import type { Result } from "@freelensapp/utilities";
 
 export interface GetHelmReleaseArgs {

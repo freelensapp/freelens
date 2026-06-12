@@ -10,8 +10,9 @@ import React, { useState } from "react";
 import directoryForKubectlBinariesInjectable from "../../../../../../../common/app-paths/directory-for-kubectl-binaries/directory-for-kubectl-binaries.injectable";
 import { Input, InputValidators } from "../../../../../../../renderer/components/input";
 import { SubTitle } from "../../../../../../../renderer/components/layout/sub-title";
-import type { UserPreferencesState } from "../../../../../../user-preferences/common/state.injectable";
 import userPreferencesStateInjectable from "../../../../../../user-preferences/common/state.injectable";
+
+import type { UserPreferencesState } from "../../../../../../user-preferences/common/state.injectable";
 
 interface Dependencies {
   state: UserPreferencesState;
@@ -38,6 +39,7 @@ const NonInjectedKubectlPathToBinary = observer(({ state, defaultPathForKubectlB
         onBlur={save}
         disabled={state.downloadKubectlBinaries}
       />
+      <div className="hint">The path to the kubectl binary. Defaults to the bundled version.</div>
     </section>
   );
 });

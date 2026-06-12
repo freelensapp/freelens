@@ -6,7 +6,7 @@
 
 import "./port-forward-dialog.scss";
 
-import type { Logger } from "@freelensapp/logger";
+import { Icon } from "@freelensapp/icon";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
@@ -14,21 +14,24 @@ import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React, { Component } from "react";
 import { Checkbox } from "../components/checkbox";
-import type { DialogProps } from "../components/dialog";
 import { Dialog } from "../components/dialog";
 import { Input } from "../components/input";
 import { Wizard, WizardStep } from "../components/wizard";
 import aboutPortForwardingInjectable from "./about-port-forwarding.injectable";
 import notifyErrorPortForwardingInjectable from "./notify-error-port-forwarding.injectable";
-import type { OpenPortForward } from "./open-port-forward.injectable";
 import openPortForwardInjectable from "./open-port-forward.injectable";
+import portForwardDialogModelInjectable from "./port-forward-dialog-model/port-forward-dialog-model.injectable";
+import portForwardStoreInjectable from "./port-forward-store/port-forward-store.injectable";
+
+import type { Logger } from "@freelensapp/logger";
+
+import type { DialogProps } from "../components/dialog";
+import type { OpenPortForward } from "./open-port-forward.injectable";
 import type {
   PortForwardDialogData,
   PortForwardDialogModel,
 } from "./port-forward-dialog-model/port-forward-dialog-model";
-import portForwardDialogModelInjectable from "./port-forward-dialog-model/port-forward-dialog-model.injectable";
 import type { PortForwardStore } from "./port-forward-store/port-forward-store";
-import portForwardStoreInjectable from "./port-forward-store/port-forward-store.injectable";
 
 export interface PortForwardDialogProps extends Partial<DialogProps> {}
 
@@ -45,6 +48,7 @@ interface Dependencies {
 class NonInjectedPortForwardDialog extends Component<PortForwardDialogProps & Dependencies> {
   @observable currentPort = 0;
   @observable desiredPort = 0;
+  @observable desiredAddress = "localhost";
 
   constructor(props: PortForwardDialogProps & Dependencies) {
     super(props);
@@ -58,15 +62,22 @@ class NonInjectedPortForwardDialog extends Component<PortForwardDialogProps & De
   onOpen = async (data: PortForwardDialogData) => {
     this.currentPort = +data.portForward.forwardPort;
     this.desiredPort = this.currentPort;
+    this.desiredAddress = data.portForward.address ?? "localhost";
   };
 
   changePort = (value: string) => {
     this.desiredPort = Number(value);
   };
 
+  changeAddress = (value: string) => {
+    this.desiredAddress = value;
+  };
+
   startPortForward = async (data: PortForwardDialogData) => {
     let { portForward } = data;
     const { currentPort, desiredPort } = this;
+
+    portForward.address = this.desiredAddress;
 
     try {
       // determine how many port-forwards already exist
@@ -127,6 +138,23 @@ class NonInjectedPortForwardDialog extends Component<PortForwardDialogProps & De
           nextLabel={this.currentPort === 0 ? "Start" : "Modify"}
         >
           <div className="flex column gaps align-left">
+            <div className="input-container flex align-center">
+              <div className="current-address" data-testid="current-address">
+                Addresses to listen on (comma separated):
+              </div>
+              <Icon
+                material="info"
+                tooltip="Only accepts IP addresses or localhost as a value. When localhost is
+	supplied, kubectl will try to bind on both 127.0.0.1 and ::1 and will fail if neither of these addresses are
+	available to bind."
+              />
+              <Input
+                className="portInput"
+                placeholder="localhost"
+                value={this.desiredAddress}
+                onChange={this.changeAddress}
+              />
+            </div>
             <div className="input-container flex align-center">
               <div className="current-port" data-testid="current-port">
                 Local port to forward from:

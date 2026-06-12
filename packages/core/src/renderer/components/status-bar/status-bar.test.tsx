@@ -5,11 +5,13 @@
  */
 
 import { getRandomIdInjectionToken } from "@freelensapp/random";
-import type { RenderResult } from "@testing-library/react";
 import React from "react";
-import type { ApplicationBuilder } from "../test-utils/get-application-builder";
 import { getApplicationBuilder } from "../test-utils/get-application-builder";
 import setStatusBarStatusInjectable from "./set-status-bar-status.injectable";
+
+import type { RenderResult } from "@testing-library/react";
+
+import type { ApplicationBuilder } from "../test-utils/get-application-builder";
 
 describe("<StatusBar />", () => {
   let builder: ApplicationBuilder;
@@ -43,25 +45,30 @@ describe("<StatusBar />", () => {
     });
   });
 
-  describe.each([undefined, "hello", 6, null, [], [{}], {}])(
-    "when an extension is enabled with an invalid data type, (%p)",
-    (value) => {
-      beforeEach(() => {
-        builder.extensions.enable({
-          id: "some-id",
-          name: "some-name",
+  describe.each([
+    undefined,
+    "hello",
+    6,
+    null,
+    [],
+    [{}],
+    {},
+  ])("when an extension is enabled with an invalid data type, (%p)", (value) => {
+    beforeEach(() => {
+      builder.extensions.enable({
+        id: "some-id",
+        name: "some-name",
 
-          rendererOptions: {
-            statusBarItems: [value as any],
-          },
-        });
+        rendererOptions: {
+          statusBarItems: [value as any],
+        },
       });
+    });
 
-      it("renders", () => {
-        expect(result.baseElement).toMatchSnapshot();
-      });
-    },
-  );
+    it("renders", () => {
+      expect(result.baseElement).toMatchSnapshot();
+    });
+  });
 
   describe("when an extension is enabled using a deprecated registration of a plain ReactNode", () => {
     beforeEach(() => {

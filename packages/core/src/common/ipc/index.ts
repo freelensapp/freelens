@@ -4,5 +4,5 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-export * from "./ipc";
 export * from "./invalid-kubeconfig";
+export * from "./ipc";

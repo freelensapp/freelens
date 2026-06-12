@@ -5,9 +5,11 @@
  */
 
 import { action, observable } from "mobx";
+import { TerminalChannels } from "../../../../common/terminal/channels";
+import { WebSocketApiState } from "../../../api/websocket-api";
+
 import type { CreateTerminalApi } from "../../../api/create-terminal-api.injectable";
 import type { TerminalApi } from "../../../api/terminal-api";
-import { WebSocketApiState } from "../../../api/websocket-api";
 import type { DockTab, TabId } from "../dock/store";
 import type { CreateTerminal } from "./create-terminal.injectable";
 import type { Terminal } from "./terminal";
@@ -48,6 +50,13 @@ export class TerminalStore {
   destroy(tabId: TabId) {
     const terminal = this.terminals.get(tabId);
     const terminalApi = this.connections.get(tabId);
+
+    if (terminalApi?.isReady) {
+      terminalApi.sendMessage({
+        type: TerminalChannels.STDIN,
+        data: "exit\r",
+      });
+    }
 
     terminal?.destroy();
     terminalApi?.destroy();

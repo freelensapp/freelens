@@ -6,12 +6,14 @@
 
 import React from "react";
 import "@testing-library/jest-dom";
-import type { RenderResult } from "@testing-library/react";
+
 import { fireEvent } from "@testing-library/react";
 import { KubernetesCluster } from "../../../../common/catalog-entities";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import { renderFor } from "../../test-utils/renderFor";
 import { SidebarCluster } from "../sidebar-cluster";
+
+import type { RenderResult } from "@testing-library/react";
 
 describe("<SidebarCluster/>", () => {
   let result: RenderResult;

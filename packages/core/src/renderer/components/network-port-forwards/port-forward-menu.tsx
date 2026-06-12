@@ -5,20 +5,22 @@
  */
 
 import { Icon } from "@freelensapp/icon";
-import type { ShowNotification } from "@freelensapp/notifications";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
 import React from "react";
-import type { PortForwardItem, PortForwardStore } from "../../port-forward";
-import type { OpenPortForward } from "../../port-forward/open-port-forward.injectable";
 import openPortForwardInjectable from "../../port-forward/open-port-forward.injectable";
 import portForwardDialogModelInjectable from "../../port-forward/port-forward-dialog-model/port-forward-dialog-model.injectable";
 import portForwardStoreInjectable from "../../port-forward/port-forward-store/port-forward-store.injectable";
 import { MenuItem } from "../menu";
-import type { MenuActionsProps } from "../menu/menu-actions";
 import { MenuActions } from "../menu/menu-actions";
+
+import type { ShowNotification } from "@freelensapp/notifications";
+
+import type { PortForwardItem, PortForwardStore } from "../../port-forward";
+import type { OpenPortForward } from "../../port-forward/open-port-forward.injectable";
+import type { MenuActionsProps } from "../menu/menu-actions";
 
 export interface PortForwardMenuProps extends MenuActionsProps {
   portForward: PortForwardItem;

@@ -4,8 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-// Helper for getting/setting css-variables
-
+/**
+ * Helper for getting/setting css-variables
+ */
 export function cssVar(elem: HTMLElement) {
   return {
     get(name: string) {

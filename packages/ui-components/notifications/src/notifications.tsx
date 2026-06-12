@@ -9,13 +9,15 @@ import "./notifications.scss";
 import { Animate } from "@freelensapp/animate";
 import { Icon } from "@freelensapp/icon";
 import { JsonApiErrorParsed } from "@freelensapp/json-api";
-import type { Disposer } from "@freelensapp/utilities";
 import { cssNames, prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import { notificationsStoreInjectable } from "./notifications-store.injectable";
+
+import type { Disposer } from "@freelensapp/utilities";
+
 import type {
   CreateNotificationOptions,
   Notification,
@@ -85,16 +87,14 @@ class NonInjectedNotifications extends React.Component<Dependencies> {
                   <Icon material="info_outline" />
                 </div>
                 <div className="message box grow">{msgText}</div>
-                <div className="box">
-                  <Icon
-                    material="close"
-                    className="close"
-                    data-testid={`close-notification-for-${id}`}
-                    onClick={prevDefault(() => {
-                      remove(id);
-                      onClose?.();
-                    })}
-                  />
+                <div
+                  className="box close-icon"
+                  onClick={prevDefault(() => {
+                    remove(id);
+                    onClose?.();
+                  })}
+                >
+                  <Icon material="close" className="close" interactive data-testid={`close-notification-for-${id}`} />
                 </div>
               </div>
             </Animate>

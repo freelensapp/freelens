@@ -4,14 +4,17 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { MutatingWebhookConfigurationData } from "@freelensapp/kube-object";
 import { MutatingWebhookConfiguration } from "@freelensapp/kube-object";
-import type { RenderResult } from "@testing-library/react";
 import React from "react";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
-import type { DiRender } from "../test-utils/renderFor";
 import { renderFor } from "../test-utils/renderFor";
 import { MutatingWebhookDetails } from "./mutating-webhook-configurations-details";
+
+import type { MutatingWebhookConfigurationData } from "@freelensapp/kube-object";
+
+import type { RenderResult } from "@testing-library/react";
+
+import type { DiRender } from "../test-utils/renderFor";
 
 const mutatingWebhookConfig: MutatingWebhookConfigurationData = {
   apiVersion: "admissionregistration.k8s.io/v1",

@@ -5,8 +5,9 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { Hotbar } from "./hotbar";
 import hotbarsStateInjectable from "./state.injectable";
+
+import type { Hotbar } from "./hotbar";
 
 export type GetHotbarById = (id: string) => Hotbar | undefined;
 

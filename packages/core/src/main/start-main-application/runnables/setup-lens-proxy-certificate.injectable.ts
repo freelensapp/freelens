@@ -18,8 +18,8 @@ const setupLensProxyCertificateInjectable = getInjectable({
 
       const cert = generate(
         [
-          { name: "commonName", value: "Lens Certificate Authority" },
-          { name: "organizationName", value: "Lens" },
+          { name: "commonName", value: "Freelens Certificate Authority" },
+          { name: "organizationName", value: "Freelens" },
         ],
         {
           keySize: 2048,

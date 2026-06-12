@@ -9,13 +9,14 @@ import "./config-maps.scss";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import { KubeObjectListLayout } from "../kube-object-list-layout";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { KubeObjectAge } from "../kube-object/age";
+import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
-import type { ConfigMapStore } from "./store";
+import { WithTooltip } from "../with-tooltip";
 import configMapStoreInjectable from "./store.injectable";
+
+import type { ConfigMapStore } from "./store";
 
 enum columnId {
   name = "name",
@@ -48,16 +49,14 @@ class NonInjectedConfigMaps extends React.Component<Dependencies> {
           renderHeaderTitle="Config Maps"
           renderTableHeader={[
             { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
-            { className: "warning", showWithColumn: columnId.name },
             { title: "Namespace", className: "namespace", sortBy: columnId.namespace, id: columnId.namespace },
             { title: "Keys", className: "keys", sortBy: columnId.keys, id: columnId.keys },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
           renderTableContents={(configMap) => [
-            configMap.getName(),
-            <KubeObjectStatusIcon key="icon" object={configMap} />,
+            <WithTooltip>{configMap.getName()}</WithTooltip>,
             <NamespaceSelectBadge key="namespace" namespace={configMap.getNs()} />,
-            configMap.getKeys().join(", "),
+            <WithTooltip>{configMap.getKeys().join(", ")}</WithTooltip>,
             <KubeObjectAge key="age" object={configMap} />,
           ]}
         />

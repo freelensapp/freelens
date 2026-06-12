@@ -4,8 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ObservableCrate } from "./observable-crate";
 import { observableCrate } from "./observable-crate";
+
+import type { ObservableCrate } from "./observable-crate";
 
 describe("observable-crate", () => {
   it("can be constructed with initial value", () => {

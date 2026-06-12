@@ -7,16 +7,18 @@
 import "./pod-security-policy-details.scss";
 
 import { PodSecurityPolicy } from "@freelensapp/kube-object";
-import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
-import type { StrictReactNode } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 import { Badge } from "../badge";
 import { DrawerItem, DrawerTitle } from "../drawer";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
 import { Table, TableCell, TableHead, TableRow } from "../table";
+
+import type { Logger } from "@freelensapp/logger";
+import type { StrictReactNode } from "@freelensapp/utilities";
+
+import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 export interface PodSecurityPolicyDetailsProps extends KubeObjectDetailsProps<PodSecurityPolicy> {}
 

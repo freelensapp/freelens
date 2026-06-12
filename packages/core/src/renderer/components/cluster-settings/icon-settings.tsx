@@ -8,19 +8,22 @@ import {
   clusterIconSettingsComponentInjectionToken,
   clusterIconSettingsMenuInjectionToken,
 } from "@freelensapp/cluster-settings";
-import type { ClusterIconMenuItem, ClusterIconSettingsComponent } from "@freelensapp/cluster-settings";
-import type { ShowNotification } from "@freelensapp/notifications";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import type { KubernetesCluster } from "../../../common/catalog-entities";
-import type { Cluster } from "../../../common/cluster/cluster";
 import { Avatar } from "../avatar";
 import { FilePicker, OverSizeLimitStyle } from "../file-picker";
 import { MenuActions, MenuItem } from "../menu";
+
+import type { ClusterIconMenuItem, ClusterIconSettingsComponent } from "@freelensapp/cluster-settings";
+import type { ShowNotification } from "@freelensapp/notifications";
+
+import type { IComputedValue } from "mobx";
+
+import type { KubernetesCluster } from "../../../common/catalog-entities";
+import type { Cluster } from "../../../common/cluster/cluster";
 
 export interface ClusterIconSettingProps {
   cluster: Cluster;

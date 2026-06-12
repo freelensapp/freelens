@@ -5,13 +5,14 @@
  */
 
 import { observable, reaction } from "mobx";
-import type { CatalogEntityMetadata } from "../../../common/catalog";
 import { CatalogEntity } from "../../../common/catalog";
-import type { WebLinkSpec, WebLinkStatus } from "../../../common/catalog-entities";
 import { WebLink } from "../../../common/catalog-entities";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
-import type { CatalogEntityRegistry } from "../entity-registry";
 import catalogEntityRegistryInjectable from "../entity-registry.injectable";
+
+import type { CatalogEntityMetadata } from "../../../common/catalog";
+import type { WebLinkSpec, WebLinkStatus } from "../../../common/catalog-entities";
+import type { CatalogEntityRegistry } from "../entity-registry";
 
 class InvalidEntity extends CatalogEntity<CatalogEntityMetadata, WebLinkStatus, WebLinkSpec> {
   public readonly apiVersion = "entity.k8slens.dev/v1alpha1";

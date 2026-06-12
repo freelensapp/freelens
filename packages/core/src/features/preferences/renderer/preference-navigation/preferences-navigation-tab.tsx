@@ -5,12 +5,14 @@
  */
 
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { Tab } from "../../../../renderer/components/tabs";
-import type { PreferenceTab } from "../preference-items/preference-item-injection-token";
 import preferenceTabIsActiveInjectable from "./navigate-to-preference-tab/preference-tab-is-active.injectable";
+
+import type { IComputedValue } from "mobx";
+
+import type { PreferenceTab } from "../preference-items/preference-item-injection-token";
 
 interface Dependencies {
   tabIsActive: IComputedValue<boolean>;

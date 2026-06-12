@@ -4,9 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Namespace } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
 import namespaceStoreInjectable from "./store.injectable";
+
+import type { Namespace } from "@freelensapp/kube-object";
 
 export type RequestDeleteNormalNamespace = (namespace: Namespace) => Promise<void>;
 

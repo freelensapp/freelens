@@ -4,11 +4,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ChildProcessWithoutNullStreams } from "child_process";
 import { spawn } from "child_process";
-import type { Logger } from "@freelensapp/logger";
 import * as tcpPortUsed from "tcp-port-used";
 import { TypedRegEx } from "typed-regex";
+import type { ChildProcessWithoutNullStreams } from "child_process";
+
+import type { Logger } from "@freelensapp/logger";
+
 import type { GetPortFromStream } from "../../../utils/get-port-from-stream.injectable";
 
 const internalPortMatcher = "^forwarding from (?<address>.+) ->";
@@ -23,6 +25,7 @@ export interface PortForwardArgs {
   name: string;
   port: number;
   forwardPort: number;
+  address?: string;
 }
 
 export interface PortForwardDependencies {
@@ -52,6 +55,7 @@ export class PortForward {
   public name: string;
   public port: number;
   public forwardPort: number;
+  public address: string;
 
   constructor(
     private dependencies: PortForwardDependencies,
@@ -64,21 +68,24 @@ export class PortForward {
     this.name = args.name;
     this.port = args.port;
     this.forwardPort = args.forwardPort;
+    this.address = args.address?.replace(/\s+/g, "") ?? "localhost";
   }
 
   public async start() {
     const kubectlBin = await this.dependencies.getKubectlBinPath(true);
-    const args = [
+    const commandArgs = [
       "--kubeconfig",
       this.pathToKubeConfig,
       "port-forward",
+      "--address",
+      this.address,
       "-n",
       this.namespace,
       `${this.kind}/${this.name}`,
       `${this.forwardPort ?? ""}:${this.port}`,
     ];
 
-    this.process = spawn(kubectlBin, args, {
+    this.process = spawn(kubectlBin, commandArgs, {
       env: process.env,
     });
     PortForward.portForwards.push(this);
@@ -99,7 +106,12 @@ export class PortForward {
     });
 
     try {
-      await tcpPortUsed.waitUntilUsed(internalPort, 500, 15000);
+      await tcpPortUsed.waitUntilUsedOnHost({
+        host: this.address.split(",")[0],
+        port: internalPort,
+        retryTimeMs: 500,
+        timeOutMs: 15000,
+      });
 
       // make sure this.forwardPort is set to the actual port used (if it was 0 then an available port is found by 'kubectl port-forward')
       this.forwardPort = internalPort;

@@ -4,21 +4,22 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { KubeObjectStore } from "../kube-object.store";
+import { createKubeApiURL, parseKubeApi } from "@freelensapp/kube-api";
+import { getOrInsertWith, iter, lowerAndPluralize } from "@freelensapp/utilities";
+import { action, autorun, observable } from "mobx";
 
 import type { KubeApi } from "@freelensapp/kube-api";
-import { createKubeApiURL, parseKubeApi } from "@freelensapp/kube-api";
 import type { KubeObject, ObjectReference } from "@freelensapp/kube-object";
-import { getOrInsertWith, iter } from "@freelensapp/utilities";
+
 import type { IComputedValue } from "mobx";
-import { action, autorun, observable } from "mobx";
+
+import type { KubeObjectStore } from "../kube-object.store";
 import type { CreateCustomResourceStore } from "./create-custom-resource-store.injectable";
 
 export type RegisterableStore<Store> = Store extends KubeObjectStore<any, any, any> ? Store : never;
 export type RegisterableApi<Api> = Api extends KubeApi<any, any> ? Api : never;
-export type KubeObjectStoreFrom<Api> = Api extends KubeApi<infer KubeObj, infer ApiData>
-  ? KubeObjectStore<KubeObj, Api, ApiData>
-  : never;
+export type KubeObjectStoreFrom<Api> =
+  Api extends KubeApi<infer KubeObj, infer ApiData> ? KubeObjectStore<KubeObj, Api, ApiData> : never;
 
 export type FindApiCallback = (api: KubeApi<KubeObject>) => boolean;
 
@@ -180,7 +181,7 @@ export class ApiManager {
 
     // lookup api by generated resource link
     const apiPrefixes = ["/apis", "/api"];
-    const resource = kind.endsWith("s") ? `${kind.toLowerCase()}es` : `${kind.toLowerCase()}s`;
+    const resource = lowerAndPluralize(kind);
 
     for (const apiPrefix of apiPrefixes) {
       const apiLink = createKubeApiURL({ apiPrefix, apiVersion, name, namespace, resource });
@@ -188,13 +189,6 @@ export class ApiManager {
       if (this.getApi(apiLink)) {
         return apiLink;
       }
-    }
-
-    // resolve by kind only (hpa's might use refs to older versions of resources for example)
-    const apiByKind = this.getApi((api) => api.kind === kind);
-
-    if (apiByKind) {
-      return apiByKind.formatUrlForNotListing({ name, namespace });
     }
 
     // otherwise generate link with default prefix

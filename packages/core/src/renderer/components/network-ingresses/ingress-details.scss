@@ -10,7 +10,7 @@
   --titles-color: var(--textColorSecondary);
 
   .rules {
-    margin-bottom: $margin * 2
+    margin-bottom: $margin * 2;
   }
 
   .host-title {
@@ -30,7 +30,7 @@
 
     .path {
       &:empty:after {
-        content: '\2014';
+        content: "\2014";
       }
     }
   }

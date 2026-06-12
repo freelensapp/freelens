@@ -5,6 +5,7 @@
  */
 
 import type { RequestChannel } from "@freelensapp/messaging";
+
 import type { OpenDialogOptions } from "electron";
 
 export type PathPickingResponse =

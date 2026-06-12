@@ -5,8 +5,9 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { LogTabData } from "./tab-store";
 import logTabStoreInjectable from "./tab-store.injectable";
+
+import type { LogTabData } from "./tab-store";
 
 const setLogTabDataInjectable = getInjectable({
   id: "set-log-tab-data",

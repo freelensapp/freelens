@@ -4,20 +4,25 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./sidebar-items.module.scss";
-
-import type { SidebarItemDeclaration } from "@freelensapp/cluster-sidebar";
 import { Icon } from "@freelensapp/icon";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { sideBarItemCustomResourcePrefix } from "../custom-resource-definitions/groups-sidebar-items-computed.injectable";
+import favoritesOverviewSidebarItemInjectable from "../favorites/overview/sidebar-item.injectable";
+import favoritesStoreInjectable, { FavoritesStore } from "../favorites/store.injectable";
+import styles from "./sidebar-items.module.scss";
+import sidebarStorageInjectable from "./sidebar-storage/sidebar-storage.injectable";
+
+import type { SidebarItemDeclaration } from "@freelensapp/cluster-sidebar";
+
 import type { StorageLayer } from "../../utils/storage-helper";
 import type { SidebarStorageState } from "./sidebar-storage/sidebar-storage.injectable";
-import sidebarStorageInjectable from "./sidebar-storage/sidebar-storage.injectable";
 
 interface Dependencies {
   sidebarStorage: StorageLayer<SidebarStorageState>;
+  favoritesStore: FavoritesStore;
 }
 
 export interface SidebarItemProps {
@@ -25,17 +30,27 @@ export interface SidebarItemProps {
 }
 
 const NonInjectedSidebarItem = observer((props: SidebarItemProps & Dependencies) => {
-  const { item, sidebarStorage } = props;
+  const { item, sidebarStorage, favoritesStore } = props;
   const id = item.id;
   const expanded = sidebarStorage.get().expanded[id] ?? false;
   const isExpandable = item.children.length > 0 && item.children.some((item) => item.isVisible.get());
   const isActive = item.isActive.get();
+  const isFavorite = favoritesStore.has(id);
 
   const toggleExpand = () => {
     sidebarStorage.merge((draft) => {
       draft.expanded[id] = !draft.expanded[id];
     });
   };
+
+  const toggleFavorite = (event: React.MouseEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+    item.id.includes(sideBarItemCustomResourcePrefix)
+      ? favoritesStore.toggle(item, "crd")
+      : favoritesStore.toggle(item, "static");
+  };
+
   const renderSubMenu = () => {
     if (!isExpandable || !expanded) {
       return null;
@@ -86,6 +101,15 @@ const NonInjectedSidebarItem = observer((props: SidebarItemProps & Dependencies)
             data-testid={`expand-icon-for-${id}`}
           />
         )}
+        {item.parentId && !isExpandable && id !== favoritesOverviewSidebarItemInjectable.id && (
+          <Icon
+            className={styles.pinIcon}
+            svg={isFavorite ? "push_off" : "push_pin"}
+            data-testid={`pin-icon-for-${id}`}
+            onClick={(event) => toggleFavorite(event)}
+            size={16}
+          />
+        )}
       </NavLink>
       {renderSubMenu()}
     </div>
@@ -96,6 +120,7 @@ export const SidebarItem = withInjectables<Dependencies, SidebarItemProps>(NonIn
   getProps: (di, props) => ({
     ...props,
     sidebarStorage: di.inject(sidebarStorageInjectable),
+    favoritesStore: di.inject(favoritesStoreInjectable),
   }),
 });
 

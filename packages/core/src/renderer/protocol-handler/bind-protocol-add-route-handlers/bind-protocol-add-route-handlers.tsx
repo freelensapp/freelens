@@ -5,12 +5,14 @@
  */
 
 import assert from "assert";
-import type { ShowNotification } from "@freelensapp/notifications";
 import React from "react";
+import { EXTENSION_NAME_MATCH, EXTENSION_PUBLISHER_MATCH, LensProtocolRouter } from "../../../common/protocol-handler";
+
+import type { ShowNotification } from "@freelensapp/notifications";
+
 import type { NavigateToCatalog } from "../../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
 import type { NavigateToClusterView } from "../../../common/front-end-routing/routes/cluster-view/navigate-to-cluster-view.injectable";
 import type { NavigateToEntitySettings } from "../../../common/front-end-routing/routes/entity-settings/navigate-to-entity-settings.injectable";
-import { EXTENSION_NAME_MATCH, EXTENSION_PUBLISHER_MATCH, LensProtocolRouter } from "../../../common/protocol-handler";
 import type { GetClusterById } from "../../../features/cluster/storage/common/get-by-id.injectable";
 import type { CatalogEntityRegistry } from "../../api/catalog/entity/registry";
 import type { AttemptInstallByInfo } from "../../components/extensions/attempt-install-by-info.injectable";

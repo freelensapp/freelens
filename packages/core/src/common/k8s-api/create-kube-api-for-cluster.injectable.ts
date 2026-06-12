@@ -5,14 +5,21 @@
  */
 
 import { KubeApi } from "@freelensapp/kube-api";
-import type { KubeJsonApiDataFor, KubeObject, KubeObjectConstructor } from "@freelensapp/kube-object";
-import { logErrorInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@freelensapp/logger";
+import {
+  logDebugInjectionToken,
+  logErrorInjectionToken,
+  logInfoInjectionToken,
+  logWarningInjectionToken,
+} from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import { apiKubePrefix } from "../vars";
 import isDevelopmentInjectable from "../vars/is-development.injectable";
 import apiBaseInjectable from "./api-base.injectable";
-import type { KubeApiConstructor } from "./create-kube-api-for-remote-cluster.injectable";
 import createKubeJsonApiInjectable from "./create-kube-json-api.injectable";
+
+import type { KubeJsonApiDataFor, KubeObject, KubeObjectConstructor } from "@freelensapp/kube-object";
+
+import type { KubeApiConstructor } from "./create-kube-api-for-remote-cluster.injectable";
 
 export interface CreateKubeApiForLocalClusterConfig {
   metadata: {
@@ -39,6 +46,7 @@ const createKubeApiForClusterInjectable = getInjectable({
     const apiBase = di.inject(apiBaseInjectable);
     const isDevelopment = di.inject(isDevelopmentInjectable);
     const createKubeJsonApi = di.inject(createKubeJsonApiInjectable);
+    const logDebug = di.inject(logDebugInjectionToken);
     const logError = di.inject(logErrorInjectionToken);
     const logInfo = di.inject(logInfoInjectionToken);
     const logWarn = di.inject(logWarningInjectionToken);
@@ -70,6 +78,7 @@ const createKubeApiForClusterInjectable = getInjectable({
 
       return new KubeApi(
         {
+          logDebug,
           logError,
           logInfo,
           logWarn,

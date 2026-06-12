@@ -6,8 +6,9 @@
 
 import { cpuUnitsToNumber, isObject, unitsToBytes } from "@freelensapp/utilities";
 import { TypedRegEx } from "typed-regex";
-import type { BaseKubeObjectCondition, ClusterScopedMetadata } from "../api-types";
 import { KubeObject } from "../kube-object";
+
+import type { BaseKubeObjectCondition, ClusterScopedMetadata } from "../api-types";
 
 export interface NodeTaint {
   key: string;
@@ -249,6 +250,14 @@ export class Node extends KubeObject<ClusterScopedMetadata, NodeStatus, NodeSpec
 
   getOperatingSystemImage(): string | undefined {
     return this.status?.nodeInfo?.osImage;
+  }
+
+  getInternalIP(): string | undefined {
+    return this.status?.addresses?.find((address) => address.type === "InternalIP")?.address;
+  }
+
+  getExternalIP(): string | undefined {
+    return this.status?.addresses?.find((address) => address.type === "ExternalIP")?.address;
   }
 
   isUnschedulable() {

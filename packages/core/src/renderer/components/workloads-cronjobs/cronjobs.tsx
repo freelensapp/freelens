@@ -8,23 +8,27 @@ import "./cronjobs.scss";
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import moment from "moment";
+import moment from "moment-timezone";
 import React from "react";
-import type { EventStore } from "../events/store";
+import { BadgeBoolean } from "../badge";
 import eventStoreInjectable from "../events/store.injectable";
-import { KubeObjectListLayout } from "../kube-object-list-layout";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { KubeObjectAge } from "../kube-object/age";
+import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
-import type { CronJobStore } from "./store";
+import { WithTooltip } from "../with-tooltip";
 import cronJobStoreInjectable from "./store.injectable";
+import { getScheduleFullDescription } from "./utils";
+
+import type { EventStore } from "../events/store";
+import type { CronJobStore } from "./store";
 
 enum columnId {
   name = "name",
   namespace = "namespace",
   schedule = "schedule",
-  suspend = "suspend",
+  timezone = "timezone",
+  resumed = "resumed",
   active = "active",
   lastSchedule = "last-schedule",
   age = "age",
@@ -49,7 +53,8 @@ const NonInjectedCronJobs = observer((props: Dependencies) => {
         sortingCallbacks={{
           [columnId.name]: (cronJob) => cronJob.getName(),
           [columnId.namespace]: (cronJob) => cronJob.getNs(),
-          [columnId.suspend]: (cronJob) => cronJob.getSuspendFlag(),
+          [columnId.timezone]: (cronJob) => cronJob.spec.timeZone ?? "",
+          [columnId.resumed]: (cronJob) => String(!cronJob.spec.suspend),
           [columnId.active]: (cronJob) => cronJobStore.getActiveJobsNum(cronJob),
           [columnId.lastSchedule]: (cronJob) =>
             cronJob.status?.lastScheduleTime ? moment().diff(cronJob.status.lastScheduleTime) : 0,
@@ -59,10 +64,10 @@ const NonInjectedCronJobs = observer((props: Dependencies) => {
         renderHeaderTitle="Cron Jobs"
         renderTableHeader={[
           { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
-          { className: "warning", showWithColumn: columnId.name },
           { title: "Namespace", className: "namespace", sortBy: columnId.namespace, id: columnId.namespace },
           { title: "Schedule", className: "schedule", id: columnId.schedule },
-          { title: "Suspend", className: "suspend", sortBy: columnId.suspend, id: columnId.suspend },
+          { title: "Timezone", className: "timezone", id: columnId.timezone },
+          { title: "Resumed", className: "resumed", sortBy: columnId.resumed, id: columnId.resumed },
           { title: "Active", className: "active", sortBy: columnId.active, id: columnId.active },
           {
             title: "Last schedule",
@@ -73,13 +78,19 @@ const NonInjectedCronJobs = observer((props: Dependencies) => {
           { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
         ]}
         renderTableContents={(cronJob) => [
-          cronJob.getName(),
-          <KubeObjectStatusIcon key="icon" object={cronJob} />,
+          <WithTooltip>{cronJob.getName()}</WithTooltip>,
           <NamespaceSelectBadge key="namespace" namespace={cronJob.getNs()} />,
-          cronJob.isNeverRun() ? "never" : cronJob.getSchedule(),
-          cronJob.getSuspendFlag(),
+          <WithTooltip tooltip={getScheduleFullDescription(cronJob)}>
+            {cronJob.isNeverRun() ? "never" : cronJob.getSchedule()}
+          </WithTooltip>,
+          <WithTooltip>{cronJob.spec.timeZone}</WithTooltip>,
+          <BadgeBoolean value={!cronJob.spec.suspend} />,
           cronJobStore.getActiveJobsNum(cronJob),
-          cronJob.getLastScheduleTime(),
+          <WithTooltip
+            tooltip={cronJob.status?.lastScheduleTime ? moment(cronJob.status?.lastScheduleTime).toDate() : undefined}
+          >
+            {cronJob.getLastScheduleTime()}
+          </WithTooltip>,
           <KubeObjectAge key="age" object={cronJob} />,
         ]}
       />

@@ -4,8 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { InputValidator } from "../input_validators";
 import { isEmail, isUrl, systemName, unionInputValidators, unionInputValidatorsAsync } from "../input_validators";
+
+import type { InputValidator } from "../input_validators";
 
 type TextValidationCase = [string, boolean];
 
@@ -63,17 +64,17 @@ describe("input validation tests", () => {
       }
     });
 
-    it.each(["hello", "57"])(
-      "Given '%s' is neither a valid email nor URL, emailOrUrl does not match",
-      async (input) => {
-        try {
-          await emailOrUrl.validate(input);
-          fail("Should throw on invalid input");
-        } catch {
-          // We want this to happen
-        }
-      },
-    );
+    it.each([
+      "hello",
+      "57",
+    ])("Given '%s' is neither a valid email nor URL, emailOrUrl does not match", async (input) => {
+      try {
+        await emailOrUrl.validate(input);
+        fail("Should throw on invalid input");
+      } catch {
+        // We want this to happen
+      }
+    });
   });
 
   describe("isEmail tests", () => {

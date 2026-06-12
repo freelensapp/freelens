@@ -6,23 +6,26 @@
 
 import "./dialog.scss";
 
-import type { Namespace } from "@freelensapp/kube-object";
-import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
-import type { IObservableValue } from "mobx";
 import { action, makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import type { DialogProps } from "../../dialog";
 import { Dialog } from "../../dialog";
 import { Input } from "../../input";
 import { systemName } from "../../input/input_validators";
 import { Wizard, WizardStep } from "../../wizard";
-import type { NamespaceStore } from "../store";
 import namespaceStoreInjectable from "../store.injectable";
 import addNamespaceDialogStateInjectable from "./state.injectable";
+
+import type { Namespace } from "@freelensapp/kube-object";
+import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
+
+import type { IObservableValue } from "mobx";
+
+import type { DialogProps } from "../../dialog";
+import type { NamespaceStore } from "../store";
 
 export interface AddNamespaceDialogProps extends DialogProps {
   onSuccess?(ns: Namespace): void;

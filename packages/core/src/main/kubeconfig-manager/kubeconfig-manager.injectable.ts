@@ -8,7 +8,6 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import lensProxyCertificateInjectable from "../../common/certificate/lens-proxy-certificate.injectable";
-import type { Cluster } from "../../common/cluster/cluster";
 import loadKubeconfigInjectable from "../../common/cluster/load-kubeconfig.injectable";
 import pathExistsInjectable from "../../common/fs/path-exists.injectable";
 import removePathInjectable from "../../common/fs/remove.injectable";
@@ -18,6 +17,8 @@ import joinPathsInjectable from "../../common/path/join-paths.injectable";
 import kubeAuthProxyUrlInjectable from "../cluster/auth-proxy-url.injectable";
 import kubeAuthProxyServerInjectable from "../cluster/kube-auth-proxy-server.injectable";
 import { KubeconfigManager } from "./kubeconfig-manager";
+
+import type { Cluster } from "../../common/cluster/cluster";
 
 const kubeconfigManagerInjectable = getInjectable({
   id: "kubeconfig-manager",

@@ -6,9 +6,7 @@
 
 import { registerFeature } from "@freelensapp/feature-core";
 import { setLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
-import type { Logger } from "@freelensapp/logger";
 import { loggerFeature, loggerInjectionToken } from "@freelensapp/logger";
-import type { DiRender } from "@freelensapp/test-utils";
 import { renderFor } from "@freelensapp/test-utils";
 import { createContainer } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
@@ -16,6 +14,10 @@ import { registerInjectableReact } from "@ogre-tools/injectable-react";
 import { runInAction } from "mobx";
 import React from "react";
 import { Icon } from "./icon";
+
+import type { Logger } from "@freelensapp/logger";
+import type { DiRender } from "@freelensapp/test-utils";
+
 describe("<Icon> href technical tests", () => {
   let render: DiRender;
   let logger: jest.MockedObject<Logger>;

@@ -4,9 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { InjectionToken } from "@ogre-tools/injectable";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import * as semver from "semver";
+
+import type { InjectionToken } from "@ogre-tools/injectable";
+
 import type { MigrationDeclaration } from "../common/migrations.injectable";
 
 /**

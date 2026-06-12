@@ -6,8 +6,9 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import createStorageInjectable from "../../../utils/create-storage/create-storage.injectable";
-import type { TableStorageModel } from "./table-model";
 import { TableModel } from "./table-model";
+
+import type { TableStorageModel } from "./table-model";
 
 const tableModelInjectable = getInjectable({
   id: "table-model",

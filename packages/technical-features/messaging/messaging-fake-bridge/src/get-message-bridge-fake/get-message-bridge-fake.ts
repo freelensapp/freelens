@@ -1,3 +1,13 @@
+import asyncFn, { type AsyncFnMock } from "@async-fn/jest";
+import {
+  enlistMessageChannelListenerInjectionToken,
+  enlistRequestChannelListenerInjectionToken,
+  requestFromChannelInjectionToken,
+  sendMessageToChannelInjectionToken,
+} from "@freelensapp/messaging";
+import { pipeline } from "@ogre-tools/fp";
+import { filter, map } from "lodash/fp";
+
 import type {
   MessageChannel,
   MessageChannelHandler,
@@ -6,19 +16,9 @@ import type {
   RequestChannelHandler,
   RequestFromChannel,
 } from "@freelensapp/messaging";
+
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { act } from "@testing-library/react";
-
-import {
-  enlistMessageChannelListenerInjectionToken,
-  enlistRequestChannelListenerInjectionToken,
-  requestFromChannelInjectionToken,
-  sendMessageToChannelInjectionToken,
-} from "@freelensapp/messaging";
-
-import asyncFn, { type AsyncFnMock } from "@async-fn/jest";
-import { pipeline } from "@ogre-tools/fp";
-import { filter, map } from "lodash/fp";
 
 export type MessageBridgeFake = {
   involve: (...dis: DiContainer[]) => void;

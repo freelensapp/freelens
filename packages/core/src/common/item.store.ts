@@ -4,10 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ItemObject } from "@freelensapp/list-layout";
 import autoBind from "auto-bind";
 import orderBy from "lodash/orderBy";
 import { action, computed, makeObservable, observable, when } from "mobx";
+
+import type { ItemObject } from "@freelensapp/list-layout";
 
 export abstract class ItemStore<Item extends ItemObject> {
   protected defaultSorting = (item: Item) => item.getName();

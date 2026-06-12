@@ -5,8 +5,9 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { CatalogEntity } from "../../api/catalog-entity";
 import catalogEntitySettingItemsInjectable from "./settings.injectable";
+
+import type { CatalogEntity } from "../../api/catalog-entity";
 
 export type HasCatalogEntitySettingItems = (entity: CatalogEntity) => boolean;
 

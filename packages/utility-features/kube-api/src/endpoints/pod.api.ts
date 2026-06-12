@@ -4,15 +4,17 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { isKubeStatusData, KubeStatus, Pod } from "@freelensapp/kube-object";
+import { KubeApi } from "../kube-api";
+
 import type { KubeStatusData, PodLogsQuery } from "@freelensapp/kube-object";
-import { KubeStatus, Pod, isKubeStatusData } from "@freelensapp/kube-object";
+
 import type {
   DeleteResourceDescriptor,
   DerivedKubeApiOptions,
   KubeApiDependencies,
   ResourceDescriptor,
 } from "../kube-api";
-import { KubeApi } from "../kube-api";
 
 export class PodApi extends KubeApi<Pod> {
   constructor(deps: KubeApiDependencies, opts?: DerivedKubeApiOptions) {
@@ -52,6 +54,33 @@ export class PodApi extends KubeApi<Pod> {
     }
 
     return response;
+  }
+
+  async forceDelete(resource: DeleteResourceDescriptor) {
+    return this.delete({
+      ...resource,
+      deleteOptions: {
+        gracePeriodSeconds: 0,
+        propagationPolicy: "Background",
+      },
+    });
+  }
+
+  async deleteWithFinalizers(resource: DeleteResourceDescriptor) {
+    // First, try to patch the object to remove finalizers
+    try {
+      await this.patch(resource, {
+        metadata: {
+          finalizers: [],
+        },
+      });
+    } catch (error) {
+      // If patching fails, continue with force delete
+      console.warn("Failed to remove finalizers, proceeding with force delete", error);
+    }
+
+    // Then force delete
+    return this.forceDelete(resource);
   }
 
   async getLogs(params: ResourceDescriptor, query?: PodLogsQuery): Promise<string> {

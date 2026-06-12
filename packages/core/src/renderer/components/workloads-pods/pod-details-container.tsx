@@ -6,28 +6,32 @@
 
 import "./pod-details-container.scss";
 
-import type { Container, Pod, PodContainerStatus } from "@freelensapp/kube-object";
-import type { PodDetailsContainerMetricsComponent } from "@freelensapp/metrics";
 import { podDetailsContainerMetricsInjectionToken } from "@freelensapp/metrics";
 import { cssNames, isDefined } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import { ClusterMetricsResourceType } from "../../../common/cluster-types";
 import enabledMetricsInjectable from "../../api/catalog/entity/metrics-enabled.injectable";
-import type { PortForwardStore } from "../../port-forward";
 import portForwardStoreInjectable from "../../port-forward/port-forward-store/port-forward-store.injectable";
 import { Badge } from "../badge";
 import { DrawerItem } from "../drawer";
-import { LocaleDate } from "../locale-date";
+import { DurationAbsoluteTimestamp } from "../events";
 import { StatusBrick } from "../status-brick";
+import { containerStatusClassName } from "./container-status-class-name";
 import { ContainerEnvironment } from "./pod-container-env";
 import { PodContainerPort } from "./pod-container-port";
 
+import type { ContainerWithType, EphemeralContainerWithType, Pod, PodContainerStatus } from "@freelensapp/kube-object";
+import type { PodDetailsContainerMetricsComponent } from "@freelensapp/metrics";
+
+import type { IComputedValue } from "mobx";
+
+import type { PortForwardStore } from "../../port-forward";
+
 export interface PodDetailsContainerProps {
   pod: Pod;
-  container: Container;
+  container: ContainerWithType | EphemeralContainerWithType;
 }
 
 interface Dependencies {
@@ -42,14 +46,17 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
     disposeOnUnmount(this, [this.props.portForwardStore.watch()]);
   }
 
-  renderStatus(state: string, status: PodContainerStatus | null | undefined) {
-    const { ready = false, state: containerState = {} } = status ?? {};
-    const { terminated } = containerState;
+  renderStatus(container: ContainerWithType | EphemeralContainerWithType, status?: PodContainerStatus) {
+    const state = status ? Object.keys(status?.state ?? {})[0] : "unknown";
+    const terminated = status?.state ? (status?.state.terminated ?? "") : "";
 
     return (
-      <span className={cssNames("status", state)}>
+      <span className={cssNames("status", containerStatusClassName(container, status))}>
         {state}
-        {ready ? ", ready" : ""}
+        {container.type === "initContainers" ? ", init" : ""}
+        {container.type === "ephemeralContainers" ? ", ephemeral" : ""}
+        {status?.restartCount ? ", restarted" : ""}
+        {status?.ready ? ", ready" : ""}
         {terminated ? ` - ${terminated.reason} (exit code: ${terminated.exitCode})` : ""}
       </span>
     );
@@ -59,19 +66,18 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
     const { lastState: lastContainerState = {} } = status ?? {};
     const { terminated } = lastContainerState;
 
-    if (lastState === "terminated" && terminated) {
+    if (terminated) {
       return (
         <span>
           {lastState}
           <br />
-          Reason:
           {`Reason: ${terminated.reason} - exit code: ${terminated.exitCode}`}
           <br />
-          {"Started at: "}
-          {<LocaleDate date={terminated.startedAt} />}
+          {"Started: "}
+          {<DurationAbsoluteTimestamp timestamp={terminated.startedAt} />}
           <br />
-          {"Finished at: "}
-          {<LocaleDate date={terminated.finishedAt} />}
+          {"Finished: "}
+          {<DurationAbsoluteTimestamp timestamp={terminated.finishedAt} />}
           <br />
         </span>
       );
@@ -84,32 +90,39 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
     const { pod, container, containerMetricsVisible, containerMetrics } = this.props;
 
     if (!pod || !container) return null;
-    const { name, image, imagePullPolicy, ports, volumeMounts, command, args } = container;
+    const { name, image, imagePullPolicy, ports, volumeMounts, command, args, resources, resizePolicy } = container;
+    const id = `pod-container-id-${pod}-${name}`;
+    const targetContainerName = "targetContainerName" in container ? container.targetContainerName : undefined;
     const status = pod.getContainerStatuses().find((status) => status.name === container.name);
-    const state = status ? Object.keys(status?.state ?? {})[0] : "";
     const lastState = status ? Object.keys(status?.lastState ?? {})[0] : "";
-    const ready = status ? status.ready : "";
     const imageId = status ? status.imageID : "";
     const liveness = pod.getLivenessProbe(container);
     const readiness = pod.getReadinessProbe(container);
     const startup = pod.getStartupProbe(container);
-    const isInitContainer = !!pod.getInitContainers().find((c) => c.name == name);
+    const containersType = container.type;
     const isMetricVisible = containerMetricsVisible.get();
+    const requests = Object.entries(resources?.requests ?? {});
+    const limits = Object.entries(resources?.limits ?? {});
 
     return (
       <div className="PodDetailsContainer">
-        <div className="pod-container-title">
-          <StatusBrick className={cssNames(state, { ready })} />
+        <div className="pod-container-title" id={id}>
+          <StatusBrick className={containerStatusClassName(container, status)} />
           {name}
         </div>
-        {isMetricVisible && !isInitContainer && (
+        {isMetricVisible && containersType === "containers" && (
           <>
             {containerMetrics.map((ContainerMetrics) => (
               <ContainerMetrics.Component key={ContainerMetrics.id} container={container} pod={pod} />
             ))}
           </>
         )}
-        {status && <DrawerItem name="Status">{this.renderStatus(state, status)}</DrawerItem>}
+        {targetContainerName && (
+          <DrawerItem name="Target Container">
+            <a href={`#pod-container-id-${pod.getName()}-${targetContainerName}`}>{targetContainerName}</a>
+          </DrawerItem>
+        )}
+        {status && <DrawerItem name="Status">{this.renderStatus(container, status)}</DrawerItem>}
         {lastState && <DrawerItem name="Last Status">{this.renderLastState(lastState, status)}</DrawerItem>}
         <DrawerItem name="Image">
           <Badge label={image} tooltip={imageId} />
@@ -128,7 +141,7 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
             ))}
           </DrawerItem>
         )}
-        {<ContainerEnvironment container={container} namespace={pod.getNs()} />}
+        {<ContainerEnvironment pod={pod} container={container} namespace={pod.getNs()} />}
         {volumeMounts && volumeMounts.length > 0 && (
           <DrawerItem name="Mounts">
             {volumeMounts.map((mount) => {
@@ -167,6 +180,29 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
         {command && <DrawerItem name="Command">{command.join(" ")}</DrawerItem>}
 
         {args && <DrawerItem name="Arguments">{args.join(" ")}</DrawerItem>}
+
+        {requests.length > 0 && (
+          <DrawerItem name="Requests" labelsOnly>
+            {requests.map(([key, value], index) => (
+              <Badge key={index} label={`${key}=${value}`} />
+            ))}
+          </DrawerItem>
+        )}
+
+        {limits.length > 0 && (
+          <DrawerItem name="Limits" labelsOnly>
+            {limits.map(([key, value], index) => (
+              <Badge key={index} label={`${key}=${value}`} />
+            ))}
+          </DrawerItem>
+        )}
+        {resizePolicy && resizePolicy.length > 0 && (
+          <DrawerItem name="Resize Policy" labelsOnly>
+            {resizePolicy.map(({ resourceName, restartPolicy }, index) => (
+              <Badge key={`${resourceName}-${restartPolicy}-${index}`} label={`${resourceName}=${restartPolicy}`} />
+            ))}
+          </DrawerItem>
+        )}
       </div>
     );
   }

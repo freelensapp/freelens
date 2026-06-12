@@ -11,16 +11,16 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { reduce } from "lodash";
 import React from "react";
 import { SemVer } from "semver";
-import type { PackageJson } from "type-fest";
 import URLParse from "url-parse";
-import downloadBinaryInjectable from "../../../common/fetch/download-binary.injectable";
-import downloadJsonInjectable from "../../../common/fetch/download-json/normal.injectable";
-import { withTimeout } from "../../../common/fetch/timeout-controller";
 import getBasenameOfPathInjectable from "../../../common/path/get-basename.injectable";
 import extensionInstallationStateStoreInjectable from "../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
+import downloadBinaryViaChannelInjectable from "../../../renderer/fetch/download-binary-via-channel.injectable";
+import downloadJsonViaChannelInjectable from "../../../renderer/fetch/download-json-via-channel-copy.injectable";
 import confirmInjectable from "../confirm-dialog/confirm.injectable";
 import attemptInstallInjectable from "./attempt-install/attempt-install.injectable";
 import getBaseRegistryUrlInjectable from "./get-base-registry-url/get-base-registry-url.injectable";
+
+import type { PackageJson } from "type-fest";
 
 export interface ExtensionInfo {
   name: string;
@@ -52,8 +52,8 @@ const attemptInstallByInfoInjectable = getInjectable({
     const extensionInstallationStateStore = di.inject(extensionInstallationStateStoreInjectable);
     const confirm = di.inject(confirmInjectable);
     const getBasenameOfPath = di.inject(getBasenameOfPathInjectable);
-    const downloadJson = di.inject(downloadJsonInjectable);
-    const downloadBinary = di.inject(downloadBinaryInjectable);
+    const downloadJson = di.inject(downloadJsonViaChannelInjectable);
+    const downloadBinary = di.inject(downloadBinaryViaChannelInjectable);
     const showErrorNotification = di.inject(showErrorNotificationInjectable);
     const logger = di.inject(loggerInjectionToken);
 
@@ -65,7 +65,7 @@ const attemptInstallByInfoInjectable = getInjectable({
       let json: NpmRegistryPackageDescriptor;
 
       try {
-        const result = await downloadJson(registryUrl);
+        const result = await downloadJson(registryUrl, { timeout: 15_000 });
 
         if (!result.callWasSuccessful) {
           showErrorNotification(`Failed to get registry information for extension: ${result.error}`);
@@ -80,9 +80,9 @@ const attemptInstallByInfoInjectable = getInjectable({
         }
 
         if (result.response.error || !isObject(result.response.versions)) {
-          const message = result.response.error ? `: ${result.response.error}` : "";
+          const message = result.response.error || "Incorrect response from registry";
 
-          showErrorNotification(`Failed to get registry information for extension${message}`);
+          showErrorNotification(`Failed to get registry information for extension: ${message}`);
 
           return disposer();
         }
@@ -187,8 +187,7 @@ const attemptInstallByInfoInjectable = getInjectable({
       }
 
       const fileName = getBasenameOfPath(tarballUrl);
-      const { signal } = withTimeout(10 * 60 * 1000);
-      const request = await downloadBinary(tarballUrl, { signal });
+      const request = await downloadBinary(tarballUrl, { timeout: 30_000 });
 
       if (!request.callWasSuccessful) {
         showErrorNotification(`Failed to download extension: ${request.error}`);
@@ -196,7 +195,7 @@ const attemptInstallByInfoInjectable = getInjectable({
         return disposer();
       }
 
-      return attemptInstall({ fileName, data: request.response }, disposer);
+      return attemptInstall({ fileName, data: Buffer.from(request.response) }, disposer);
     };
   },
 });

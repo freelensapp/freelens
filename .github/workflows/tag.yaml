@@ -19,17 +19,18 @@ jobs:
   create-tag:
     name: tag
 
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-24.04-arm
     environment: automated
     timeout-minutes: 10
 
-    if: >
-      (startsWith(github.event.issue.title, 'Automated npm version') && github.event.issue.state == 'closed' && github.event.comment.body
-      == '/tag') || (startsWith(github.event.pull_request.title, 'Automated npm version') && github.event.pull_request.merged)
+    env:
+      DO_NOT_TRACK: "1"
 
+    if: >
+      (startsWith(github.event.issue.title, 'Automated npm version') && github.event.issue.state == 'closed' && github.event.comment.body == '/tag') || (startsWith(github.event.pull_request.title, 'Automated npm version') && github.event.pull_request.merged)
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
           ref: main
@@ -39,9 +40,18 @@ jobs:
         run: |
           echo "version=$(jq -r .version freelens/package.json)" >> $GITHUB_OUTPUT
 
+      - name: Check if version is release
+        id: check-version
+        run: |
+          if [[ "${{ steps.package-json.outputs.version }}" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "is_release=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_release=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Create tag from the main branch
-        if: steps.package-json.outputs.version
-        uses: actions/github-script@v7
+        if: steps.check-version.outputs.is_release == 'true'
+        uses: actions/github-script@v9
         with:
           script: |
             const mainRef = await github.rest.git.getRef({

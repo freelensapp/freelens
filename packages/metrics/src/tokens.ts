@@ -4,6 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { getInjectionToken } from "@ogre-tools/injectable";
+
 import type {
   Container,
   DaemonSet,
@@ -18,7 +20,7 @@ import type {
   ReplicaSet,
   StatefulSet,
 } from "@freelensapp/kube-object";
-import { getInjectionToken } from "@ogre-tools/injectable";
+
 import type React from "react";
 
 export type ClusterOverviewUIBlock = {

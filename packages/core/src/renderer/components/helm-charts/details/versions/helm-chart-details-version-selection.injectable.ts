@@ -5,11 +5,13 @@
  */
 
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import type { IComputedValue } from "mobx";
 import { computed, observable } from "mobx";
-import type { SingleValue } from "react-select";
-import type { HelmChart } from "../../../../../common/k8s-api/endpoints/helm-charts.api";
 import versionsOfSelectedHelmChartInjectable from "../versions-of-selected-helm-chart.injectable";
+
+import type { IComputedValue } from "mobx";
+import type { SingleValue } from "react-select";
+
+import type { HelmChart } from "../../../../../common/k8s-api/endpoints/helm-charts.api";
 
 interface VersionSelectionOption {
   label: string;

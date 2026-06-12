@@ -4,14 +4,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { CephfsSource } from "@freelensapp/kube-object";
 import { Pod } from "@freelensapp/kube-object";
 import React from "react";
 import { getDiForUnitTesting } from "../../../../../../getDiForUnitTesting";
 import storesAndApisCanBeCreatedInjectable from "../../../../../../stores-apis-can-be-created.injectable";
-import type { DiRender } from "../../../../../test-utils/renderFor";
 import { renderFor } from "../../../../../test-utils/renderFor";
 import { CephFs } from "../ceph-fs";
+
+import type { CephfsSource } from "@freelensapp/kube-object";
+
+import type { DiRender } from "../../../../../test-utils/renderFor";
 
 describe("<CephFs />", () => {
   let render: DiRender;

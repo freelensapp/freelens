@@ -47,7 +47,8 @@ exports[`application-menu, given platform is 'darwin' given enough time passes p
   'root -> help',
   'root -> help -> navigate-to-welcome',
   'root -> help -> open-documentation',
-  'root -> help -> open-support'
+  'root -> help -> open-support',
+  'root -> help -> open-licenses'
 ]"
 `;
 
@@ -87,6 +88,7 @@ exports[`application-menu, given platform is 'linux' given enough time passes po
   'root -> help -> navigate-to-welcome',
   'root -> help -> open-documentation',
   'root -> help -> open-support',
+  'root -> help -> open-licenses',
   'root -> help -> about'
 ]"
 `;
@@ -127,6 +129,7 @@ exports[`application-menu, given platform is 'win32' given enough time passes po
   'root -> help -> navigate-to-welcome',
   'root -> help -> open-documentation',
   'root -> help -> open-support',
+  'root -> help -> open-licenses',
   'root -> help -> about'
 ]"
 `;

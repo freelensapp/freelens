@@ -4,12 +4,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import EventEmitter from "events";
-import type { Disposer, StrictReactNode } from "@freelensapp/utilities";
 import { iter } from "@freelensapp/utilities";
+import EventEmitter from "events";
 import { once } from "lodash";
 import { makeObservable, observable } from "mobx";
+
+import type { Disposer, StrictReactNode } from "@freelensapp/utilities";
+
 import type TypedEmitter from "typed-emitter";
+
 import type {
   CategoryColumnRegistration,
   TitleCellProps,
@@ -17,13 +20,13 @@ import type {
 
 export type { CategoryColumnRegistration, TitleCellProps };
 
-export type CatalogEntityDataFor<Entity> = Entity extends CatalogEntity<infer Metadata, infer Status, infer Spec>
-  ? CatalogEntityData<Metadata, Status, Spec>
-  : never;
+export type CatalogEntityDataFor<Entity> =
+  Entity extends CatalogEntity<infer Metadata, infer Status, infer Spec>
+    ? CatalogEntityData<Metadata, Status, Spec>
+    : never;
 
-export type CatalogEntityInstanceFrom<Constructor> = Constructor extends CatalogEntityConstructor<infer Entity>
-  ? Entity
-  : never;
+export type CatalogEntityInstanceFrom<Constructor> =
+  Constructor extends CatalogEntityConstructor<infer Entity> ? Entity : never;
 
 export type CatalogEntityConstructor<Entity extends CatalogEntity> = new (data: CatalogEntityDataFor<Entity>) => Entity;
 

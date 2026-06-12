@@ -8,17 +8,17 @@
 
 .DeploymentDetails {
   .conditions {
-    .available {
+    .Available {
       color: white;
       background-color: workloads-mixins.$deployment-available;
     }
 
-    .progressing {
+    .Progressing {
       color: white;
       background-color: workloads-mixins.$deployment-progressing;
     }
 
-    .replica-failure {
+    .ReplicaFailure {
       color: white;
       background-color: workloads-mixins.$deployment-replicafailure;
     }

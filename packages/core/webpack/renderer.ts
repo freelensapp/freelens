@@ -4,15 +4,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import path from "path";
 import CircularDependencyPlugin from "circular-dependency-plugin";
 import ForkTsCheckerPlugin from "fork-ts-checker-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
-import type webpack from "webpack";
-import type { WebpackPluginInstance } from "webpack";
-import { DefinePlugin, optimize } from "webpack";
+import path from "path";
+import { optimize } from "webpack";
 import nodeExternals from "webpack-node-externals";
 import { buildDir, isDevelopment } from "./vars";
+
+import type webpack from "webpack";
+import type { WebpackPluginInstance } from "webpack";
 
 export function webpackLensRenderer(): webpack.Configuration {
   return {
@@ -84,10 +85,6 @@ export function webpackLensRenderer(): webpack.Configuration {
     },
 
     plugins: [
-      new DefinePlugin({
-        CONTEXT_MATCHER_FOR_NON_FEATURES: `/\\.injectable\\.tsx?$/`,
-        CONTEXT_MATCHER_FOR_FEATURES: `/\\/(renderer|common)\\/.+\\.injectable\\.tsx?$/`,
-      }),
       new ForkTsCheckerPlugin({}),
 
       new CircularDependencyPlugin({
@@ -172,7 +169,7 @@ export function cssModulesWebpackRule({ styleLoader }: CssModulesWebpackRuleOpti
         options: {
           sourceMap: isDevelopment,
           postcssOptions: {
-            plugins: ["tailwindcss"],
+            plugins: ["@tailwindcss/postcss"],
           },
         },
       },

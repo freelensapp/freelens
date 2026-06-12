@@ -22,7 +22,8 @@
       height: 21px;
     }
 
-    .title, .arrow {
+    .title,
+    .arrow {
       display: none;
     }
 
@@ -62,7 +63,9 @@
 
     > .SubMenu {
       margin: 0;
-      transition: visibility, opacity 150ms ease-in-out;
+      transition:
+        visibility,
+        opacity 150ms ease-in-out;
       transition-delay: 150ms;
       opacity: 0;
       visibility: hidden;

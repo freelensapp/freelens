@@ -5,21 +5,23 @@
  */
 
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import type { ComputeHotbarDisplayLabel } from "../../../features/hotbar/storage/common/compute-display-label.injectable";
 import computeHotbarDisplayLabelInjectable from "../../../features/hotbar/storage/common/compute-display-label.injectable";
-import type { Hotbar } from "../../../features/hotbar/storage/common/hotbar";
 import hotbarsInjectable from "../../../features/hotbar/storage/common/hotbars.injectable";
-import type { SetAsActiveHotbar } from "../../../features/hotbar/storage/common/set-as-active.injectable";
 import setAsActiveHotbarInjectable from "../../../features/hotbar/storage/common/set-as-active.injectable";
-import type { CommandOverlay } from "../command-palette";
 import commandOverlayInjectable from "../command-palette/command-overlay.injectable";
 import { Select } from "../select";
 import { HotbarAddCommand } from "./hotbar-add-command";
 import { HotbarRemoveCommand } from "./hotbar-remove-command";
 import { HotbarRenameCommand } from "./hotbar-rename-command";
+
+import type { IComputedValue } from "mobx";
+
+import type { ComputeHotbarDisplayLabel } from "../../../features/hotbar/storage/common/compute-display-label.injectable";
+import type { Hotbar } from "../../../features/hotbar/storage/common/hotbar";
+import type { SetAsActiveHotbar } from "../../../features/hotbar/storage/common/set-as-active.injectable";
+import type { CommandOverlay } from "../command-palette";
 
 const hotbarAddAction = Symbol("hotbar-add");
 const hotbarRemoveAction = Symbol("hotbar-remove");

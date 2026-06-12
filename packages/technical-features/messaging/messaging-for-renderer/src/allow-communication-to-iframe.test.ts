@@ -1,7 +1,7 @@
 import { startApplicationInjectionToken } from "@freelensapp/application";
 import { registerFeature } from "@freelensapp/feature-core";
 import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
-import { DiContainer, createContainer } from "@ogre-tools/injectable";
+import { createContainer, DiContainer } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { runInAction } from "mobx";
 import { frameCommunicationAdminChannel } from "./allow-communication-to-iframe.injectable";

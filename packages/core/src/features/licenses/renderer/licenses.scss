@@ -1,0 +1,17 @@
+.Licenses {
+  .licenses-content {
+    padding: 20px;
+    overflow: auto;
+    height: 100%;
+
+    pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-family: "UbuntuMono", monospace;
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--textColorPrimary);
+    }
+  }
+}

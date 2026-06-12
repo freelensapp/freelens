@@ -4,10 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
+
 import type { CronJobApi } from "@freelensapp/kube-api";
 import type { CronJob } from "@freelensapp/kube-object";
+
 import type { KubeObjectStoreDependencies, KubeObjectStoreOptions } from "../../../common/k8s-api/kube-object.store";
-import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
 import type { GetJobsByOwner } from "../workloads-jobs/get-jobs-by-owner.injectable";
 
 interface Dependencies extends KubeObjectStoreDependencies {

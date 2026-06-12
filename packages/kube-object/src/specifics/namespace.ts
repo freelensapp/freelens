@@ -4,8 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ClusterScopedMetadata, KubeObjectStatus } from "../api-types";
 import { KubeObject } from "../kube-object";
+
+import type { ClusterScopedMetadata, KubeObjectStatus } from "../api-types";
 
 export enum NamespaceStatusKind {
   ACTIVE = "Active",
@@ -28,6 +29,9 @@ export class Namespace extends KubeObject<ClusterScopedMetadata, NamespaceStatus
   static readonly apiBase = "/api/v1/namespaces";
 
   getStatus() {
+    if (this.metadata.deletionTimestamp && this.metadata.finalizers?.length) {
+      return "Finalizing";
+    }
     return this.status?.phase ?? "-";
   }
 

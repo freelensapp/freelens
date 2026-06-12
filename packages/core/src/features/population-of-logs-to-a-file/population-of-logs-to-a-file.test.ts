@@ -6,16 +6,18 @@
 
 import { winstonLoggerInjectable } from "@freelensapp/logger";
 import { noop } from "@freelensapp/utilities";
-import type { DiContainer } from "@ogre-tools/injectable";
 import { runInAction } from "mobx";
 import { MESSAGE } from "triple-beam";
-import type winston from "winston";
 import windowLocationInjectable from "../../common/k8s-api/window-location.injectable";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import browserLoggerTransportInjectable from "../../renderer/logger/browser-transport.injectable";
 import createIpcFileLoggerTransportInjectable from "./main/create-ipc-file-transport.injectable";
 import closeRendererLogFileInjectable from "./renderer/close-renderer-log-file.injectable";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+import type winston from "winston";
+
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 describe("Population of logs to a file", () => {
   let builder: ApplicationBuilder;
@@ -24,13 +26,7 @@ describe("Population of logs to a file", () => {
   let frameSpecificWinstonLogInMainMock: jest.Mock;
   let frameSpecificCloseLogInMainMock: jest.Mock;
 
-  async function setUpTestApplication({
-    testFileId,
-    isClusterFrame,
-  }: {
-    testFileId: string;
-    isClusterFrame: boolean;
-  }) {
+  async function setUpTestApplication({ testFileId, isClusterFrame }: { testFileId: string; isClusterFrame: boolean }) {
     builder = getApplicationBuilder();
 
     if (isClusterFrame) {

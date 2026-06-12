@@ -6,20 +6,29 @@
 
 import { getEnvironmentSpecificLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import { loggerInjectionToken } from "@freelensapp/logger";
-import type { ClusterFrameChildComponent } from "@freelensapp/react-application";
-import type { Disposer } from "@freelensapp/utilities";
 import { pipeline } from "@ogre-tools/fp";
 import { fromPairs, map, matches, toPairs } from "lodash/fp";
+import catalogCategoryRegistryInjectable from "../common/catalog/category-registry.injectable";
+import catalogEntityRegistryInjectable from "../renderer/api/catalog/entity/registry.injectable";
+import { getExtensionRoutePath } from "../renderer/routes/for-extension";
+import getExtensionPageParametersInjectable from "../renderer/routes/get-extension-page-parameters.injectable";
+import navigateToRouteInjectable from "../renderer/routes/navigate-to-route.injectable";
+import routesInjectable from "../renderer/routes/routes.injectable";
+import ensureHashedDirectoryForExtensionInjectable from "./extension-loader/file-system-provisioner-store/ensure-hashed-directory-for-extension.injectable";
+import { Disposers, LensExtension } from "./lens-extension";
+
+import type { ClusterFrameChildComponent } from "@freelensapp/react-application";
+import type { Disposer } from "@freelensapp/utilities";
+
 import type { IComputedValue } from "mobx";
+
 import type { CatalogCategoryRegistry, CatalogEntity, CategoryFilter } from "../common/catalog";
 import type { KubernetesCluster } from "../common/catalog-entities";
-import catalogCategoryRegistryInjectable from "../common/catalog/category-registry.injectable";
 import type { Route } from "../common/front-end-routing/front-end-route-injection-token";
 import type { NavigateToRoute } from "../common/front-end-routing/navigate-to-route-injection-token";
 import type { AppPreferenceRegistration } from "../features/preferences/renderer/compliance-for-legacy-extension-api/app-preference-registration";
 import type { AppPreferenceTabRegistration } from "../features/preferences/renderer/compliance-for-legacy-extension-api/app-preference-tab-registration";
 import type { CatalogEntityRegistry, EntityFilter } from "../renderer/api/catalog/entity/registry";
-import catalogEntityRegistryInjectable from "../renderer/api/catalog/entity/registry.injectable";
 import type { AdditionalCategoryColumnRegistration } from "../renderer/components/catalog/custom-category-columns";
 import type { CustomCategoryViewRegistration } from "../renderer/components/catalog/custom-views";
 import type { CatalogEntityDetailRegistration } from "../renderer/components/catalog/entity-details/token";
@@ -27,22 +36,15 @@ import type { CommandRegistration } from "../renderer/components/command-palette
 import type { EntitySettingRegistration } from "../renderer/components/entity-settings/extension-registrator.injectable";
 import type { KubeObjectDetailRegistration } from "../renderer/components/kube-object-details/kube-object-detail-registration";
 import type { KubeObjectMenuRegistration } from "../renderer/components/kube-object-menu/kube-object-menu-registration";
-import type { KubeObjectStatusRegistration } from "../renderer/components/kube-object-status-icon/kube-object-status-registration";
 import type { ClusterPageMenuRegistration } from "../renderer/components/layout/cluster-page-menu";
 import type { TopBarRegistration } from "../renderer/components/layout/top-bar/top-bar-registration";
 import type { StatusBarRegistration } from "../renderer/components/status-bar/status-bar-registration";
 import type { WelcomeMenuRegistration } from "../renderer/components/welcome/welcome-menu-items/welcome-menu-registration";
 import type { WorkloadsOverviewDetailRegistration } from "../renderer/components/workloads-overview/workloads-overview-detail-registration";
 import type { KubeObjectHandlerRegistration } from "../renderer/kube-object/handler";
-import { getExtensionRoutePath } from "../renderer/routes/for-extension";
 import type { GetExtensionPageParameters } from "../renderer/routes/get-extension-page-parameters.injectable";
-import getExtensionPageParametersInjectable from "../renderer/routes/get-extension-page-parameters.injectable";
-import navigateToRouteInjectable from "../renderer/routes/navigate-to-route.injectable";
 import type { PageRegistration } from "../renderer/routes/page-registration";
-import routesInjectable from "../renderer/routes/routes.injectable";
 import type { InstalledExtension } from "./common-api";
-import ensureHashedDirectoryForExtensionInjectable from "./extension-loader/file-system-provisioner-store/ensure-hashed-directory-for-extension.injectable";
-import { Disposers, LensExtension } from "./lens-extension";
 import type { LensExtensionDependencies } from "./lens-extension";
 
 interface LensRendererExtensionDependencies extends LensExtensionDependencies {
@@ -58,7 +60,6 @@ export class LensRendererExtension extends LensExtension {
   clusterPages: PageRegistration[] = [];
   clusterPageMenus: ClusterPageMenuRegistration[] = [];
   clusterFrameComponents: ClusterFrameChildComponent[] = [];
-  kubeObjectStatusTexts: KubeObjectStatusRegistration[] = [];
   appPreferences: AppPreferenceRegistration[] = [];
   appPreferenceTabs: AppPreferenceTabRegistration[] = [];
   entitySettings: EntitySettingRegistration[] = [];

@@ -5,8 +5,9 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import type { SyncKind } from "./discover-sync-kind.injectable";
 import discoverKubeconfigSyncKindInjectable from "./discover-sync-kind.injectable";
+
+import type { SyncKind } from "./discover-sync-kind.injectable";
 
 export type DiscoverAllKubeconfigSyncKinds = (filePaths: string[]) => Promise<[string, SyncKind][]>;
 

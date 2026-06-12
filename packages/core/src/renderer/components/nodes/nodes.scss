@@ -24,8 +24,13 @@
     }
 
     &.cpu {
-      flex: 1.0;
+      flex: 0.6;
       align-self: center;
+      justify-content: right;
+
+      &.sorting {
+        justify-content: left;
+      }
 
       .LineProgress {
         color: var(--blue);
@@ -33,8 +38,13 @@
     }
 
     &.memory {
-      flex: 1.0;
+      flex: 0.6;
       align-self: center;
+      justify-content: right;
+
+      &.sorting {
+        justify-content: left;
+      }
 
       .LineProgress {
         color: var(--magenta);
@@ -42,16 +52,37 @@
     }
 
     &.disk {
-      flex: 1.0;
+      flex: 0.6;
       align-self: center;
+      justify-content: right;
+
+      &.sorting {
+        justify-content: left;
+      }
 
       .LineProgress {
         color: var(--golden);
       }
     }
 
+    &.schedulable {
+      flex: 0.6;
+    }
+
     &.taints {
       flex: 0.6;
+    }
+
+    &.roles {
+      flex-grow: 1.5;
+    }
+
+    &.internalIp {
+      flex-grow: 1.3;
+    }
+
+    &.age {
+      flex-grow: 0.4;
     }
 
     &.conditions {

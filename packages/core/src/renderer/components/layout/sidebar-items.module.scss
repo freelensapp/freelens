@@ -7,41 +7,62 @@
 
   > .navItem {
     display: flex;
+    align-items: center;
     gap: 8px;
     text-decoration: none;
     padding: 6px 8px 6px 10px;
     cursor: pointer;
 
-    &:global(.active), &:hover {
-      background: var(--blue);
+    &:global(.active),
+    &:hover {
+      background: var(--primary);
       color: var(--sidebarActiveColor);
+
+      + .subMenu {
+        border-color: var(--primary);
+      }
     }
 
     span {
       word-break: break-word;
     }
+
+    .pinIcon {
+      opacity: 0;
+      pointer-events: none;
+      margin-left: auto;
+      width: 24px;
+      display: flex;
+      justify-content: center;
+      transition: opacity 250ms;
+    }
+
+    &:hover .pinIcon {
+      opacity: 1;
+      pointer-events: all;
+    }
   }
 
   .expandIcon {
     margin-left: auto;
+    width: 24px;
+    display: flex;
+    justify-content: center;
   }
 
   .subMenu {
     border-left: 4px solid transparent;
 
-    &.active {
-      border-color: var(--blue);
-    }
-  
     .SidebarItem {
       color: var(--textColorPrimary);
       padding-left: 25px;
-  
+
       .navItem {
         padding-top: 4px;
         padding-bottom: 4px;
 
-        &:global(.active), &:hover {
+        &:global(.active),
+        &:hover {
           color: var(--sidebarSubmenuActiveColor);
           background: none;
         }
@@ -49,7 +70,7 @@
     }
   }
 
-   // 3rd menu level
+  // 3rd menu level
   .subMenu .subMenu {
     &.active {
       border-color: transparent;
@@ -60,4 +81,3 @@
     }
   }
 }
-

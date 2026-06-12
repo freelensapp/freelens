@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { LensExtensionId, LensExtensionManifest } from "@freelensapp/legacy-extensions";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { getInjectable } from "@ogre-tools/injectable";
@@ -14,8 +13,11 @@ import tempDirectoryPathInjectable from "../../../../common/os/temp-directory-pa
 import joinPathsInjectable from "../../../../common/path/join-paths.injectable";
 import extensionDiscoveryInjectable from "../../../../extensions/extension-discovery/extension-discovery.injectable";
 import { getMessageFromError } from "../get-message-from-error/get-message-from-error";
-import type { InstallRequest } from "./attempt-install.injectable";
 import { validatePackage } from "./validate-package";
+
+import type { LensExtensionId, LensExtensionManifest } from "@freelensapp/legacy-extensions";
+
+import type { InstallRequest } from "./attempt-install.injectable";
 
 export interface InstallRequestValidated {
   fileName: string;

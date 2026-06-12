@@ -8,9 +8,10 @@ import { setAndGet } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { action } from "mobx";
 import emitAppEventInjectable from "../../../../common/app-event-bus/emit-event.injectable";
-import type { ClusterModel } from "../../../../common/cluster-types";
 import { Cluster } from "../../../../common/cluster/cluster";
 import clustersStateInjectable from "./state.injectable";
+
+import type { ClusterModel } from "../../../../common/cluster-types";
 
 export type AddCluster = (clusterModel: ClusterModel) => Cluster;
 

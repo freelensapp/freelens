@@ -7,13 +7,14 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
-import type { GetClusterById } from "../../../../features/cluster/storage/common/get-by-id.injectable";
 import getClusterByIdInjectable from "../../../../features/cluster/storage/common/get-by-id.injectable";
 import { ClusterMetricsSetting } from "../../cluster-settings/metrics-setting";
 import { ClusterPrometheusSetting } from "../../cluster-settings/prometheus-setting";
 import { ShowMetricsSetting } from "../../cluster-settings/show-metrics";
-import type { EntitySettingViewProps } from "../extension-registrator.injectable";
 import { entitySettingInjectionToken } from "../token";
+
+import type { GetClusterById } from "../../../../features/cluster/storage/common/get-by-id.injectable";
+import type { EntitySettingViewProps } from "../extension-registrator.injectable";
 
 interface Dependencies {
   getClusterById: GetClusterById;

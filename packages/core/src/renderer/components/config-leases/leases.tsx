@@ -6,18 +6,20 @@
 
 import "./leases.scss";
 
-import type { Lease } from "@freelensapp/kube-object";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import * as React from "react";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
-import { KubeObjectListLayout } from "../kube-object-list-layout";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { KubeObjectAge } from "../kube-object/age";
+import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
-import type { LeaseStore } from "./store";
+import { WithTooltip } from "../with-tooltip";
 import leaseStoreInjectable from "./store.injectable";
+
+import type { Lease } from "@freelensapp/kube-object";
+
+import type { KubeObjectDetailsProps } from "../kube-object-details";
+import type { LeaseStore } from "./store";
 
 enum columnId {
   name = "name",
@@ -54,16 +56,14 @@ class NonInjectedLease extends React.Component<LeaseProps & Dependencies> {
           renderHeaderTitle="Leases"
           renderTableHeader={[
             { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
-            { className: "warning", showWithColumn: columnId.name },
             { title: "Namespace", className: "namespace", sortBy: columnId.namespace, id: columnId.namespace },
             { title: "Holder", className: "holder", sortBy: columnId.holder, id: columnId.holder },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
           renderTableContents={(lease) => [
-            lease.getName(),
-            <KubeObjectStatusIcon key="icon" object={lease} />,
+            <WithTooltip>{lease.getName()}</WithTooltip>,
             <NamespaceSelectBadge key="namespace" namespace={lease.getNs()} />,
-            lease.getHolderIdentity(),
+            <WithTooltip>{lease.getHolderIdentity()}</WithTooltip>,
             <KubeObjectAge key="age" object={lease} />,
           ]}
         />

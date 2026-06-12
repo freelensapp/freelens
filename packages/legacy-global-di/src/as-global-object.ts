@@ -4,8 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Inject } from "@ogre-tools/injectable";
 import { getLegacyGlobalDiForExtensionApi } from "./global-di";
+
+import type { Inject } from "@ogre-tools/injectable";
 
 export const asLegacyGlobalForExtensionApi = ((injectable, instantiationParameter) =>
   new Proxy(

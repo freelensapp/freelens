@@ -8,6 +8,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
 import { computed } from "mobx";
 import { statusBarItemInjectionToken } from "./status-bar-item-injection-token";
+
 import type { StatusBarItemProps } from "./status-bar-registration";
 
 export interface StatusItem {

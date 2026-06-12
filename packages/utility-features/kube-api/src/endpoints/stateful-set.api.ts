@@ -4,11 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import moment from "moment";
-
 import { StatefulSet } from "@freelensapp/kube-object";
-import type { DerivedKubeApiOptions, KubeApiDependencies, NamespacedResourceDescriptor } from "../kube-api";
+import moment from "moment";
 import { KubeApi } from "../kube-api";
+
+import type { DerivedKubeApiOptions, KubeApiDependencies, NamespacedResourceDescriptor } from "../kube-api";
 
 export class StatefulSetApi extends KubeApi<StatefulSet> {
   constructor(deps: KubeApiDependencies, opts?: DerivedKubeApiOptions) {

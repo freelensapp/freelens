@@ -7,8 +7,9 @@
 import { runInAction } from "mobx";
 import fsInjectable from "../../common/fs/fs.injectable";
 import getHashInjectable from "../../extensions/extension-loader/file-system-provisioner-store/get-hash.injectable";
-import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+
+import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import type { FakeExtensionOptions } from "../../renderer/components/test-utils/get-extension-fake";
 
 describe("configurable directories for extension files", () => {

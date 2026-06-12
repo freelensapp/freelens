@@ -8,8 +8,9 @@ import { object } from "@freelensapp/utilities";
 import { pipeline } from "@ogre-tools/fp";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { map } from "lodash/fp";
-import type { LensRendererExtension } from "../../extensions/lens-renderer-extension";
 import createPageParamInjectable from "../navigation/create-page-param.injectable";
+
+import type { LensRendererExtension } from "../../extensions/lens-renderer-extension";
 import type { PageParamInit } from "../navigation/page-param";
 import type { PageRegistration } from "./page-registration";
 

@@ -13,6 +13,7 @@ import {
   isString,
   isTypedArray,
 } from "@freelensapp/utilities";
+
 import type {
   KubeJsonApiData,
   KubeJsonApiDataList,

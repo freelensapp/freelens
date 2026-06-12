@@ -7,6 +7,7 @@
 import { createHash } from "crypto";
 import { broadcastMessage } from "../../common/ipc";
 import { Singleton } from "../../common/utils/singleton";
+
 import type { LensExtension } from "../lens-extension";
 
 export const IpcPrefix = Symbol();

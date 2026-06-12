@@ -5,16 +5,18 @@
  */
 
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
 import React, { useContext } from "react";
 import { isMetricsEmpty, normalizeMetrics } from "../../../common/k8s-api/endpoints/metrics.api";
 import activeThemeInjectable from "../../themes/active.injectable";
-import type { LensTheme } from "../../themes/lens-theme";
-import type { ChartDataSets } from "../chart";
 import { BarChart, memoryOptions } from "../chart";
 import { ResourceMetricsContext } from "../resource-metrics";
 import { NoMetrics } from "../resource-metrics/no-metrics";
+
+import type { IComputedValue } from "mobx";
+
+import type { LensTheme } from "../../themes/lens-theme";
+import type { ChartDataSets } from "../chart";
 
 export interface VolumeClaimDiskChartProps {}
 

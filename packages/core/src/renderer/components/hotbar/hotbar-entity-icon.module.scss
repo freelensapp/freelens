@@ -17,7 +17,9 @@
 
   &.online {
     background-color: var(--primary);
-    box-shadow: 0 0 5px var(--clusterMenuBackground), 0 0 5px var(--primary);
+    box-shadow:
+      0 0 5px var(--clusterMenuBackground),
+      0 0 5px var(--primary);
   }
 }
 

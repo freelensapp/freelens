@@ -5,15 +5,17 @@
  */
 
 import { urlBuilderFor } from "@freelensapp/utilities";
-import type { AsyncResult } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import apiBaseInjectable from "../../api-base.injectable";
+
+import type { AsyncResult } from "@freelensapp/utilities";
 
 interface HelmReleaseUpdatePayload {
   repo: string;
   chart: string;
   version: string;
   values: string;
+  forceConflicts?: boolean;
 }
 
 export type RequestHelmReleaseUpdate = (
@@ -30,13 +32,14 @@ const requestHelmReleaseUpdateInjectable = getInjectable({
   instantiate: (di): RequestHelmReleaseUpdate => {
     const apiBase = di.inject(apiBaseInjectable);
 
-    return async (name, namespace, { repo, chart, values, version }) => {
+    return async (name, namespace, { repo, chart, values, version, forceConflicts }) => {
       try {
         await apiBase.put(requestUpdateEndpoint.compile({ name, namespace }), {
           data: {
             chart: `${repo}/${chart}`,
             values,
             version,
+            forceConflicts,
           },
         });
       } catch (e) {

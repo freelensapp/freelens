@@ -7,8 +7,8 @@
 import { apiPrefix } from "../../../../common/vars";
 import getClusterHelmReleaseValuesInjectable from "../../../helm/helm-service/get-helm-release-values.injectable";
 import { clusterRoute } from "../../../router/route";
-import { contentTypes } from "../../../router/router-content-types";
 import { getRouteInjectable } from "../../../router/router.injectable";
+import { contentTypes } from "../../../router/router-content-types";
 import { getBoolean } from "../../../utils/parse-query";
 
 const getReleaseRouteValuesInjectable = getRouteInjectable({

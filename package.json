@@ -1,43 +1,77 @@
 {
   "name": "freelens-monorepo",
   "private": true,
-  "workspaces": [
-    "packages/**/*",
-    "freelens"
-  ],
+  "homepage": "https://freelens.app",
+  "bugs": {
+    "url": "https://github.com/freelensapp/freelens/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/freelensapp/freelens.git"
+  },
+  "license": "MIT",
   "author": {
     "name": "Freelens Authors",
     "email": "freelens@freelens.app"
   },
+  "workspaces": [
+    "packages/**/*",
+    "freelens"
+  ],
   "scripts": {
-    "asar": "pnpm dlx @electron/asar@3.4.1",
-    "biome": "pnpm dlx @biomejs/biome@1.9.4",
+    "asar": "pnpm dlx @electron/asar@4.2.0",
+    "biome": "pnpm dlx @biomejs/biome@2.4.16",
     "biome:check": "pnpm biome check",
     "biome:fix": "pnpm biome check --fix",
-    "build": "pnpm dlx cross-env@7.0.3 NODE_ENV=production pnpm -r build",
-    "build:app": "cd freelens && pnpm build:app",
-    "build:dev": "pnpm dlx cross-env@7.0.3 NODE_ENV=development pnpm -r build",
-    "build:resources": "cd freelens && pnpm build:resources",
-    "electron-rebuild": "cd freelens && pnpm electron-rebuild",
+    "biome:migrate": "pnpm biome migrate --write",
+    "build": "turbo run build --",
+    "postbuild": "turbo run build:resources --",
+    "build:app": "turbo run build:app --",
+    "build:app:dir": "pnpm build:app dir",
+    "build:core": "cd packages/core && pnpm build",
+    "build:dev": "NODE_ENV=development turbo run build:dev --",
+    "postbuild:dev": "turbo run build:resources --",
+    "build:di": "node scripts/generate-explicit-di-registration.mjs",
+    "build:freelens": "cd freelens && pnpm build",
+    "build:resources": "turbo run build:resources --",
+    "bump-version": "pnpm version --no-commit-hooks --no-git-tag-version --workspaces --no-workspaces-update",
     "clean": "pnpm -r clean",
-    "clean:node_modules": "pnpm -r clean:node_modules && pnpm dlx rimraf@6.0.1 node_modules",
-    "start": "cd freelens && pnpm start",
-    "dev": "pnpm -r dev",
-    "knip": "pnpm dlx knip@5.51.0 --dependencies",
+    "clean:node_modules": "pnpm -r clean:node_modules && pnpm dlx rimraf@6.1.3 node_modules",
+    "compute-versions": "pnpm -r compute-versions",
+    "dev": "turbo run dev --parallel --",
+    "electron-rebuild": "cd freelens && pnpm electron-rebuild",
+    "fmt": "pnpm trunk fmt",
+    "knip": "pnpm dlx knip@6.16.1 --dependencies --no-gitignore",
+    "knip:check": "pnpm \"/^knip:(development|production)\\$/\"",
     "knip:development": "pnpm knip",
     "knip:production": "pnpm knip --production --strict",
-    "lint": "pnpm biome:check",
-    "lint:fix": "pnpm biome:fix",
+    "lint": "pnpm trunk check",
+    "lint:fix": "pnpm trunk check --fix",
+    "prettier": "pnpm dlx prettier@3.8.3",
+    "prettier:check": "pnpm prettier --check .",
+    "prettier:fix": "pnpm prettier --write .",
+    "start": "cd freelens && pnpm start",
+    "start:os": "pnpm dlx run-script-os@1.1.6 --",
+    "start:os:darwin": "open --stdout $(tty) --stderr $(tty) freelens:",
+    "start:os:linux": "xdg-open freelens:",
+    "start:os:win32": "powershell -NoProfile -Command \"Start-Process freelens:\"",
+    "test:integration": "cd freelens && pnpm test:integration",
     "test:unit": "pnpm -r --no-bail test:unit",
     "test:unit:core": "cd packages/core && pnpm test:unit",
     "test:unit:core:updatesnapshot": "cd packages/core && pnpm test:unit -u",
     "test:unit:updatesnapshot": "pnpm -r --no-bail test:unit -u",
-    "test:integration": "cd freelens && pnpm test:integration",
-    "bump-version": "pnpm version --no-commit-hooks --no-git-tag-version --workspaces --no-workspaces-update",
-    "compute-versions": "pnpm -r compute-versions"
+    "trunk": "pnpm dlx @trunkio/launcher@1.3.4",
+    "trunk:check": "pnpm trunk check",
+    "trunk:check:all": "pnpm trunk check --all",
+    "trunk:fix": "pnpm trunk check --fix",
+    "trunk:fix:all": "pnpm trunk check --fix --all"
   },
+  "devDependencies": {
+    "pnpm": "10.34.3",
+    "turbo": "2.9.18"
+  },
+  "packageManager": "pnpm@10.34.3+sha512.f2c531b08829d7be7f03c90addc266615f9c5477463e4bf1d275cb263ce9ea57cf0d5599110d94649a9bb3fed9f0b5efcea74a7016b61532a24cb9ad87860c1d",
   "engines": {
-    "node": ">=22.0.0"
-  },
-  "packageManager": "pnpm@10.10.0+sha512.d615db246fe70f25dcfea6d8d73dee782ce23e2245e3c4f6f888249fb568149318637dca73c2c5c8ef2a4ca0d5657fb9567188bfab47f566d1ee6ce987815c39"
+    "node": ">=24.0.0"
+  }
 }

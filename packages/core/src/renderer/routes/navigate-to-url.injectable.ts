@@ -7,10 +7,11 @@
 import { observableHistoryInjectionToken } from "@freelensapp/routing";
 import { getInjectable } from "@ogre-tools/injectable";
 import { runInAction } from "mobx";
-import type { NavigateToUrl } from "../../common/front-end-routing/navigate-to-url-injection-token";
 import { navigateToUrlInjectionToken } from "../../common/front-end-routing/navigate-to-url-injection-token";
 import broadcastMessageInjectable from "../../common/ipc/broadcast-message.injectable";
 import { IpcRendererNavigationEvents } from "../../common/ipc/navigation-events";
+
+import type { NavigateToUrl } from "../../common/front-end-routing/navigate-to-url-injection-token";
 
 const navigateToUrlInjectable = getInjectable({
   id: "navigate-to-url",

@@ -8,8 +8,9 @@ import { getOrInsert, getOrInsertMap, readonly } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import rendererExtensionsInjectable from "../../extensions/renderer-extensions.injectable";
-import type { KubeObjectHandlerRegistration, KubeObjectHandlers } from "./handler";
 import { staticKubeObjectHandlerInjectionToken } from "./handler";
+
+import type { KubeObjectHandlerRegistration, KubeObjectHandlers } from "./handler";
 
 const kubeObjectHandlersInjectable = getInjectable({
   id: "kube-object-handlers",

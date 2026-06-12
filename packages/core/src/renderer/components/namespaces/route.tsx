@@ -9,17 +9,18 @@ import "./namespaces.scss";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
 import { Badge } from "../badge";
-import { KubeObjectListLayout } from "../kube-object-list-layout";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { KubeObjectAge } from "../kube-object/age";
+import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { TabLayout } from "../layout/tab-layout-2";
+import { WithTooltip } from "../with-tooltip";
 import { AddNamespaceDialog } from "./add-dialog/dialog";
 import openAddNamespaceDialogInjectable from "./add-dialog/open.injectable";
-import type { RequestDeleteNamespace } from "./request-delete-namespace.injectable";
 import requestDeleteNamespaceInjectable from "./request-delete-namespace.injectable";
-import type { NamespaceStore } from "./store";
 import namespaceStoreInjectable from "./store.injectable";
 import { SubnamespaceBadge } from "./subnamespace-badge";
+
+import type { RequestDeleteNamespace } from "./request-delete-namespace.injectable";
+import type { NamespaceStore } from "./store";
 
 enum columnId {
   name = "name",
@@ -84,20 +85,22 @@ const NonInjectedNamespacesRoute = ({
       renderHeaderTitle="Namespaces"
       renderTableHeader={[
         { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
-        { className: "warning", showWithColumn: columnId.name },
         { title: "Labels", className: "labels scrollable", sortBy: columnId.labels, id: columnId.labels },
         { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
         { title: "Status", className: "status", sortBy: columnId.status, id: columnId.status },
       ]}
       renderTableContents={(namespace) => [
         <>
-          {namespace.getName()}
+          <WithTooltip>{namespace.getName()}</WithTooltip>
           {namespace.isSubnamespace() && (
             <SubnamespaceBadge className="subnamespaceBadge" id={`namespace-list-badge-for-${namespace.getId()}`} />
           )}
         </>,
-        <KubeObjectStatusIcon key="icon" object={namespace} />,
-        namespace.getLabels().map((label) => <Badge scrollable key={label} label={label} />),
+        <WithTooltip tooltip={namespace.getLabels().join(", ")} key="labels">
+          {namespace.getLabels().map((label) => (
+            <Badge scrollable key={label} label={label} />
+          ))}
+        </WithTooltip>,
         <KubeObjectAge key="age" object={namespace} />,
         { title: namespace.getStatus(), className: namespace.getStatus().toLowerCase() },
       ]}

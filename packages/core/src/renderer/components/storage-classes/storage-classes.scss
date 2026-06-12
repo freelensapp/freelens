@@ -9,11 +9,15 @@
 .StorageClasses {
   .TableCell {
     &.is-default {
-      flex: .5;
+      flex: 0.5;
     }
 
     &.warning {
       @include table.table-cell-warning;
+    }
+
+    &.age {
+      flex: 0.3;
     }
   }
 }

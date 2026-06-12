@@ -7,17 +7,19 @@
 import { rootFrameChildComponentInjectionToken } from "@freelensapp/react-application";
 import { getInjectable } from "@ogre-tools/injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { computed } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import type { CatalogEntity } from "../../../api/catalog-entity";
-import type { CatalogEntityRegistry } from "../../../api/catalog/entity/registry";
 import catalogEntityRegistryInjectable from "../../../api/catalog/entity/registry.injectable";
-import type { HideEntityDetails } from "./hide.injectable";
 import hideEntityDetailsInjectable from "./hide.injectable";
 import selectedCatalogEntityInjectable from "./selected-entity.injectable";
 import { CatalogEntityDetails } from "./view";
+
+import type { IComputedValue } from "mobx";
+
+import type { CatalogEntityRegistry } from "../../../api/catalog/entity/registry";
+import type { CatalogEntity } from "../../../api/catalog-entity";
+import type { HideEntityDetails } from "./hide.injectable";
 
 interface Dependencies {
   selectedCatalogEntity: IComputedValue<CatalogEntity | undefined>;

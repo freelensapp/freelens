@@ -5,6 +5,7 @@
  */
 
 import type React from "react";
+
 import type { CatalogCategory } from "../../api/catalog-entity";
 
 /**

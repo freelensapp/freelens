@@ -6,8 +6,9 @@
 
 import { iter } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { Hotbar } from "./hotbar";
 import hotbarsStateInjectable from "./state.injectable";
+
+import type { Hotbar } from "./hotbar";
 
 export type FindHotbarByName = (name: string) => Hotbar | undefined;
 

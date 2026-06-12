@@ -9,13 +9,15 @@
 .Endpoints {
   .TableCell {
     &.endpoints {
-      flex-grow: 5.0;
+      flex-grow: 5;
     }
 
     &.warning {
       @include table.table-cell-warning;
     }
 
-
+    &.age {
+      flex: 0.3;
+    }
   }
 }

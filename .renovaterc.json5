@@ -9,9 +9,6 @@
     "renovate"
   ],
   "osvVulnerabilityAlerts": true,
-  "postUpdateOptions": [
-    "pnpmDedupe"
-  ],
   // always bump depdenencies even when are in the range
   "rangeStrategy": "bump",
   "vulnerabilityAlerts": {
@@ -40,12 +37,22 @@
     // non-major updates only
     {
       "matchDepNames": [
-        "@types/node",
         "electron",
         "npm"
       ],
       "matchUpdateTypes": [
         "major"
+      ],
+      "enabled": false
+    },
+    // patch updates only
+    {
+      "matchDepNames": [
+        "@types/node",
+      ],
+      "matchUpdateTypes": [
+        "major",
+        "minor"
       ],
       "enabled": false
     },
@@ -56,6 +63,14 @@
       ],
       "versioning": "deb",
       "enabled": true
+    },
+    // bundle
+    {
+      "groupName": "electron-builder bundle",
+      "matchDepNames": [
+        "electron-builder",
+        "electron-builder-squirrel-windows"
+      ]
     },
     // monorepo
     {
@@ -70,9 +85,9 @@
     {
       "customType": "regex",
       "extractVersionTemplate": "^(?<version>.*)$",
-      "fileMatch": [
-        "^freelens/package\\.json$",
-        "^packages/core/package\\.json$"
+      "managerFilePatterns": [
+        "/^freelens/package\\.json$/",
+        "/^packages/core/package\\.json$/"
       ],
       "matchStrings": [
         "\"k8sProxyVersion\":\\s*\"(?<currentValue>\\d+\\.\\d+\\.\\d+)\""
@@ -85,9 +100,9 @@
     {
       "customType": "regex",
       "extractVersionTemplate": "^(?<version>.*)$",
-      "fileMatch": [
-        "^freelens/package\\.json$",
-        "^packages/core/package\\.json$"
+      "managerFilePatterns": [
+        "/^freelens/package\\.json$/",
+        "/^packages/core/package\\.json$/"
       ],
       "matchStrings": [
         "\"bundledHelmVersion\":\\s*\"(?<currentValue>\\d+\\.\\d+\\.\\d+)\""
@@ -100,8 +115,8 @@
     {
       "customType": "regex",
       "extractVersionTemplate": "^(?<version>.*)$",
-      "fileMatch": [
-        "package\\.json$"
+      "managerFilePatterns": [
+        "/package\\.json$/"
       ],
       "matchStrings": [
         "pnpm\\s+dlx\\s+(?<depName>\\S+)@(?<currentValue>\\S+?)[\\s\"|<>]"
@@ -113,14 +128,14 @@
     {
       "customType": "regex",
       "extractVersionTemplate": "^v?(?<version>.*)$",
-      "fileMatch": [
-        "^\\.github/workflows/.*\\.ya?ml$",
-        "^\\.trunk/trunk.yaml",
-        "^\\.tool-versions$",
-        "^freelens/electron-builder\\.yml$"
+      "managerFilePatterns": [
+        "/^\\.github/workflows/.*\\.ya?ml$/",
+        "/^\\.trunk/trunk.yaml/",
+        "/^\\.tool-versions$/",
+        "/^freelens/electron-builder\\.yml$/"
       ],
       "matchStrings": [
-        "(\\s+|.*?@)(?<currentValue>\\S+)\\s*#\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)(\\s+versioning=(?<versioning>\\S+))?(\\s+registryUrl=(?<registryUrl>\\S+))?\\s*\\n"
+        "(\\s+|.*?@)(?<currentValue>\\S+?)!?\\s*#\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)(\\s+versioning=(?<versioning>\\S+))?(\\s+registryUrl=(?<registryUrl>\\S+))?\\s*\\n"
       ],
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
     }

@@ -5,9 +5,10 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
+import createElectronWindowInjectable from "./create-electron-window.injectable";
+
 import type { ClusterFrameInfo } from "../../../../common/cluster-frames.injectable";
 import type { ContentSource, ElectronWindowTitleBarStyle } from "./create-electron-window.injectable";
-import createElectronWindowInjectable from "./create-electron-window.injectable";
 
 export interface ElectronWindow {
   show: () => void;

@@ -1,7 +1,9 @@
-import type { DiContainer } from "@ogre-tools/injectable";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { Feature } from "./feature";
 import { featureContextMapInjectable, featureContextMapInjectionToken } from "./feature-context-map-injectable";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+
+import type { Feature } from "./feature";
 
 const createFeatureContext = (feature: Feature, di: DiContainer) => {
   const featureContextInjectable = getInjectable({

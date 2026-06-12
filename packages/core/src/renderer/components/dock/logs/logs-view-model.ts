@@ -4,12 +4,18 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { isDefined } from "@freelensapp/utilities";
 import assert from "assert";
+import { computed } from "mobx";
+import { defaultLogViewerPreferences } from "../../../../features/user-preferences/common/preferences-helpers";
+
 import type { ResourceDescriptor } from "@freelensapp/kube-api";
 import type { Pod, PodLogsQuery } from "@freelensapp/kube-object";
-import { isDefined } from "@freelensapp/utilities";
+
 import type { IComputedValue } from "mobx";
-import { computed } from "mobx";
+
+import type { LogViewerPreferences } from "../../../../features/user-preferences/common/preferences-helpers";
+import type { UserPreferencesState } from "../../../../features/user-preferences/common/state.injectable";
 import type { SearchStore } from "../../../search-store/search-store";
 import type { GetPodById } from "../../workloads-pods/get-pod-by-id.injectable";
 import type { GetPodsByOwnerId } from "../../workloads-pods/get-pods-by-owner-id.injectable";
@@ -37,6 +43,7 @@ export interface LogTabViewModelDependencies {
   downloadLogs: (filename: string, logs: string[]) => void;
   downloadAllLogs: (params: ResourceDescriptor, query: PodLogsQuery) => Promise<void>;
   searchStore: SearchStore;
+  userPreferencesState: UserPreferencesState;
 }
 
 export class LogTabViewModel {
@@ -83,6 +90,19 @@ export class LogTabViewModel {
     assert(data, "Can only update data once it is set");
 
     this.dependencies.setLogTabData(this.tabId, { ...data, ...partialData });
+  };
+
+  updateLogPreferences = (partialPreferences: Partial<LogViewerPreferences>) => {
+    // Update the current tab and the saved defaults for future log tabs only.
+    const logViewerPreferences =
+      this.dependencies.userPreferencesState.logViewerPreferences ?? defaultLogViewerPreferences;
+
+    this.dependencies.userPreferencesState.logViewerPreferences = {
+      ...logViewerPreferences,
+      ...partialPreferences,
+    };
+
+    this.updateLogTabData(partialPreferences);
   };
 
   loadLogs = () => this.dependencies.loadLogs(this.tabId, this.pod, this.logTabData);

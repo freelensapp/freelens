@@ -7,7 +7,7 @@
 @use "autoscaler.mixins";
 
 .VpaDetails {
-  .status {
+  .conditions {
     @include autoscaler.vpa-status-bgc;
   }
 

@@ -4,13 +4,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { StrictReactNode } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { orderBy } from "lodash";
-import type { CatalogCategory, CatalogEntity } from "../../../../common/catalog";
-import type { ItemListLayoutProps } from "../../item-object-list";
 import browseAllColumnsInjectable from "./browse-all.injectable";
 import getColumnsForCategoryInjectable from "./specific-category.injectable";
+
+import type { StrictReactNode } from "@freelensapp/utilities";
+
+import type { CatalogCategory, CatalogEntity } from "../../../../common/catalog";
+import type { ItemListLayoutProps } from "../../item-object-list";
 
 export interface GetCategoryColumnsParams {
   activeCategory: CatalogCategory | null | undefined;

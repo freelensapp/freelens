@@ -4,23 +4,26 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
 import { createKubeApiURL, parseKubeApi } from "@freelensapp/kube-api";
-import type { KubeObject, RawKubeObject } from "@freelensapp/kube-object";
-import type { ShowNotification } from "@freelensapp/notifications";
 import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { waitUntilDefined } from "@freelensapp/utilities";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
+import assert from "assert";
 import yaml from "js-yaml";
 import { action, computed, observable, runInAction } from "mobx";
 import React from "react";
-import { createPatch } from "rfc6902";
-import type { EditResourceTabStore, EditingResource } from "../store";
+import { createPatch, type Operation } from "rfc6902";
+import { defaultYamlDumpOptions } from "../../../../../common/kube-helpers";
 import editResourceTabStoreInjectable from "../store.injectable";
-import type { RequestKubeResource } from "./request-kube-resource.injectable";
 import requestKubeResourceInjectable from "./request-kube-resource.injectable";
-import type { RequestPatchKubeResource } from "./request-patch-kube-resource.injectable";
 import requestPatchKubeResourceInjectable from "./request-patch-kube-resource.injectable";
+
+import type { Container, KubeObject, KubeObjectMetadata, PodSpec, RawKubeObject } from "@freelensapp/kube-object";
+import type { ShowNotification } from "@freelensapp/notifications";
+
+import type { EditingResource, EditResourceTabStore } from "../store";
+import type { RequestKubeResource } from "./request-kube-resource.injectable";
+import type { PatchKubeResourceOptions, RequestPatchKubeResource } from "./request-patch-kube-resource.injectable";
 
 const editResourceModelInjectable = getInjectable({
   id: "edit-resource-model",
@@ -60,6 +63,107 @@ interface Dependencies {
   readonly tabId: string;
 }
 
+type PodEditResource = RawKubeObject<KubeObjectMetadata, Record<string, unknown>, PodSpec>;
+
+interface PodResizePatchContainer {
+  name: string;
+  resources?: Container["resources"];
+}
+
+type PodResizePatchPayload = Record<string, unknown> & {
+  spec: {
+    resources?: PodSpec["resources"];
+    containers?: PodResizePatchContainer[];
+    initContainers?: PodResizePatchContainer[];
+  };
+};
+
+type PatchRequest =
+  | {
+      patch: ReturnType<typeof createPatch>;
+      options: PatchKubeResourceOptions;
+    }
+  | {
+      patch: PodResizePatchPayload;
+      options: PatchKubeResourceOptions;
+    }
+  | {
+      error: string;
+    };
+
+function isPodResourcePath(path: string) {
+  return /^\/spec\/(?:resources(?:\/.*)?|(?:containers|initContainers)\/\d+\/resources(?:\/.*)?)$/.test(path);
+}
+
+function isPod(object: RawKubeObject) {
+  return object.kind === "Pod";
+}
+
+function getPodResizePatchContainer(container: Container): PodResizePatchContainer {
+  return {
+    name: container.name,
+    resources: container.resources,
+  };
+}
+
+function getPodResizePatchPayload(object: PodEditResource): PodResizePatchPayload {
+  return {
+    spec: {
+      resources: object.spec?.resources,
+      containers: object.spec?.containers?.map(getPodResizePatchContainer),
+      initContainers: object.spec?.initContainers?.map(getPodResizePatchContainer),
+    },
+  };
+}
+
+function getPatchRequestFor(currentVersion: RawKubeObject, firstVersion: RawKubeObject): PatchRequest {
+  const patch = createPatch(firstVersion, currentVersion);
+
+  if (!isPod(currentVersion)) {
+    return {
+      patch,
+      options: {
+        strategy: "json",
+      },
+    };
+  }
+
+  const currentPodVersion = currentVersion as PodEditResource;
+
+  const hasResourceChanges = patch.some((operation: Operation) => isPodResourcePath(operation.path));
+
+  if (!hasResourceChanges) {
+    return {
+      patch,
+      options: {
+        strategy: "json",
+      },
+    };
+  }
+
+  const hasNonResourceChanges = patch.some((operation: Operation) => !isPodResourcePath(operation.path));
+
+  if (hasNonResourceChanges) {
+    return {
+      error:
+        "Pod resource updates must be saved separately from other pod changes because Kubernetes uses the resize subresource for requests and limits.",
+    };
+  }
+
+  return {
+    patch: getPodResizePatchPayload(currentPodVersion),
+    options: {
+      strategy: "strategic",
+      subResource: "resize",
+    },
+  };
+}
+
+function setEditResourceVersionAnnotation(object: RawKubeObject) {
+  object.metadata.annotations ??= {};
+  object.metadata.annotations[EditResourceAnnotationName] = object.apiVersion.split("/").pop();
+}
+
 function getEditSelfLinkFor(object: RawKubeObject): string | undefined {
   const lensVersionAnnotation = object.metadata.annotations?.[EditResourceAnnotationName];
 
@@ -88,6 +192,30 @@ export const EditResourceAnnotationName = "freelens.app/resource-version";
 
 export class EditResourceModel {
   constructor(protected readonly dependencies: Dependencies) {}
+
+  // Store the managed fields when they're removed so we can restore them
+  @observable private savedManagedFields: any = null;
+
+  // Store the unsorted YAML when sort is enabled so we can restore it
+  @observable private savedUnsortedYaml: string | null = null;
+
+  readonly managedFields = {
+    value: observable.box(false),
+
+    onChange: action((value: boolean) => {
+      this.managedFields.value.set(value);
+      this.toggleManagedFields(value);
+    }),
+  };
+
+  readonly sortKeys = {
+    value: observable.box(false),
+
+    onChange: action((value: boolean) => {
+      this.sortKeys.value.set(value);
+      this.toggleSortKeys(value);
+    }),
+  };
 
   readonly configuration = {
     value: computed(() => this.editingResource.draft || this.editingResource.firstDraft || ""),
@@ -130,6 +258,104 @@ export class EditResourceModel {
     return this.editingResource.resource;
   }
 
+  toggleManagedFields = (showManagedFields: boolean) => {
+    const currentValue = this.configuration.value.get();
+
+    if (!currentValue) {
+      return;
+    }
+
+    try {
+      const parsedYaml = yaml.load(currentValue) as RawKubeObject;
+
+      if (showManagedFields) {
+        // Restore managed fields if we have them saved
+        if (this.savedManagedFields && parsedYaml.metadata) {
+          parsedYaml.metadata.managedFields = this.savedManagedFields;
+        }
+      } else {
+        // Save and remove managed fields
+        if (parsedYaml.metadata?.managedFields) {
+          this.savedManagedFields = parsedYaml.metadata.managedFields;
+          delete parsedYaml.metadata.managedFields;
+        }
+      }
+
+      const newYaml = yaml.dump(parsedYaml, {
+        ...defaultYamlDumpOptions,
+        sortKeys: this.sortKeys.value.get(),
+      });
+
+      runInAction(() => {
+        this.editingResource.draft = newYaml;
+      });
+    } catch (error) {
+      // If parsing fails, show error but don't update the content
+      console.warn("Failed to parse YAML for managed fields toggle:", error);
+    }
+  };
+
+  toggleSortKeys = (enableSort: boolean) => {
+    const currentValue = this.configuration.value.get();
+    const isEdited = currentValue !== this.editingResource.firstDraft;
+
+    if (enableSort) {
+      // Save current YAML before sorting (only if not already edited)
+      if (!isEdited) {
+        this.savedUnsortedYaml = currentValue;
+      }
+
+      // Regenerate with sorting enabled
+      this.regenerateYaml(true);
+    } else {
+      // Restore unsorted YAML only if nothing was edited
+      if (!isEdited && this.savedUnsortedYaml) {
+        const unsortedYaml = this.savedUnsortedYaml;
+
+        runInAction(() => {
+          this.editingResource.draft = unsortedYaml;
+          this.savedUnsortedYaml = null;
+        });
+      } else {
+        // If edited, just regenerate without sorting
+        this.regenerateYaml(false);
+      }
+    }
+  };
+
+  regenerateYaml = (sortKeys?: boolean) => {
+    if (!this._resource) {
+      return;
+    }
+
+    const omitFields = this.managedFields.value.get() ? [] : ["metadata.managedFields"];
+    const shouldSortKeys = sortKeys ?? this.sortKeys.value.get();
+
+    runInAction(() => {
+      const newYaml = yaml.dump(this._resource!.toPlainObject(omitFields), {
+        ...defaultYamlDumpOptions,
+        sortKeys: shouldSortKeys,
+      });
+
+      // Store unsorted version when enabling sort for the first time
+      if (shouldSortKeys && !this.savedUnsortedYaml && !sortKeys) {
+        this.savedUnsortedYaml = this.editingResource.draft || this.editingResource.firstDraft || "";
+      }
+
+      this.editingResource.firstDraft = newYaml;
+
+      // Only set draft if there isn't already a saved draft from previous session
+      // OR if we're explicitly regenerating (sortKeys parameter was provided)
+      if (!this.editingResource.draft || sortKeys !== undefined) {
+        this.editingResource.draft = newYaml;
+      }
+
+      // Store managed fields if they exist for future restoration
+      if (!this.managedFields.value.get() && this._resource!.metadata?.managedFields) {
+        this.savedManagedFields = this._resource!.metadata.managedFields;
+      }
+    });
+  };
   load = async (): Promise<void> => {
     await this.dependencies.waitForEditingResource();
 
@@ -165,9 +391,7 @@ export class EditResourceModel {
       return;
     }
 
-    runInAction(() => {
-      this.editingResource.firstDraft = yaml.dump(resource.toPlainObject());
-    });
+    this.regenerateYaml();
   };
 
   get namespace() {
@@ -185,13 +409,26 @@ export class EditResourceModel {
   save = async () => {
     const currentValue = this.configuration.value.get();
     const currentVersion = yaml.load(currentValue) as RawKubeObject;
-    const firstVersion = yaml.load(this.editingResource.firstDraft ?? currentValue);
+    const firstVersion = yaml.load(this.editingResource.firstDraft ?? currentValue) as RawKubeObject;
+    let patchRequest = getPatchRequestFor(currentVersion, firstVersion);
 
-    // Make sure we save this annotation so that we can use it in the future
-    currentVersion.metadata.annotations ??= {};
-    currentVersion.metadata.annotations[EditResourceAnnotationName] = currentVersion.apiVersion.split("/").pop();
+    if ("error" in patchRequest) {
+      this.dependencies.showErrorNotification(<p>Failed to save resource: {patchRequest.error}</p>);
 
-    const patches = createPatch(firstVersion, currentVersion);
+      return null;
+    }
+
+    if (patchRequest.options.subResource !== "resize") {
+      setEditResourceVersionAnnotation(currentVersion);
+      patchRequest = getPatchRequestFor(currentVersion, firstVersion);
+    }
+
+    if ("error" in patchRequest) {
+      this.dependencies.showErrorNotification(<p>Failed to save resource: {patchRequest.error}</p>);
+
+      return null;
+    }
+
     const selfLink = getEditSelfLinkFor(currentVersion);
 
     if (!selfLink) {
@@ -202,7 +439,7 @@ export class EditResourceModel {
       return null;
     }
 
-    const result = await this.dependencies.requestPatchKubeResource(selfLink, patches);
+    const result = await this.dependencies.requestPatchKubeResource(selfLink, patchRequest.patch, patchRequest.options);
 
     if (!result.callWasSuccessful) {
       this.dependencies.showErrorNotification(<p>Failed to save resource: {result.error}</p>);
@@ -220,7 +457,7 @@ export class EditResourceModel {
     );
 
     runInAction(() => {
-      this.editingResource.firstDraft = yaml.dump(currentVersion);
+      this.editingResource.firstDraft = yaml.dump(currentVersion, defaultYamlDumpOptions);
       this.editingResource.resource = selfLink;
     });
 

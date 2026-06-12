@@ -5,8 +5,9 @@
  */
 
 import { buildURL } from "@freelensapp/utilities";
-import type { BaseKubeObjectCondition, ClusterScopedMetadata } from "../api-types";
 import { KubeObject } from "../kube-object";
+
+import type { BaseKubeObjectCondition, ClusterScopedMetadata } from "../api-types";
 import type { JSONSchemaProps } from "../types/json-schema-props";
 import type { WebhookClientConfig } from "./mutating-webhook-configuration";
 
@@ -181,6 +182,10 @@ export class CustomResourceDefinition extends KubeObject<
 
   getVersion() {
     return this.getPreferredVersion().name;
+  }
+
+  getVersions() {
+    return this.spec.versions?.map((version) => version.name);
   }
 
   isNamespaced() {

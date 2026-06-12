@@ -12,9 +12,10 @@ import { Cluster } from "../../../common/cluster/cluster";
 import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import storesAndApisCanBeCreatedInjectable from "../../stores-apis-can-be-created.injectable";
-import type { DaemonSetStore } from "../workloads-daemonsets/store";
 import daemonSetStoreInjectable from "../workloads-daemonsets/store.injectable";
 import podStoreInjectable from "../workloads-pods/store.injectable";
+
+import type { DaemonSetStore } from "../workloads-daemonsets/store";
 
 const runningDaemonSet = new DaemonSet({
   apiVersion: "foo",

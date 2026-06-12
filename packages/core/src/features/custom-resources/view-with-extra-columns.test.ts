@@ -4,16 +4,19 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { KubeObjectMetadata, KubeObjectScope } from "@freelensapp/kube-object";
 import { CustomResourceDefinition, KubeObject } from "@freelensapp/kube-object";
-import type { RenderResult } from "@testing-library/react";
 import navigateToCustomResourcesInjectable from "../../common/front-end-routing/routes/cluster/custom-resources/navigate-to-custom-resources.injectable";
 import apiManagerInjectable from "../../common/k8s-api/api-manager/manager.injectable";
+import customResourceDefinitionStoreInjectable from "../../renderer/components/custom-resource-definitions/store.injectable";
+import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
+
+import type { KubeObjectMetadata, KubeObjectScope } from "@freelensapp/kube-object";
+
+import type { RenderResult } from "@testing-library/react";
+
 import type { CustomResourceStore } from "../../common/k8s-api/api-manager/resource.store";
 import type { CustomResourceDefinitionStore } from "../../renderer/components/custom-resource-definitions/store";
-import customResourceDefinitionStoreInjectable from "../../renderer/components/custom-resource-definitions/store.injectable";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 describe("Viewing Custom Resources with extra columns", () => {
   let builder: ApplicationBuilder;

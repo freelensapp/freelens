@@ -5,8 +5,9 @@
  */
 
 import { unitsToBytes } from "@freelensapp/utilities";
-import type { ClusterScopedMetadata, LabelSelector, ObjectReference, TypedLocalObjectReference } from "../api-types";
 import { KubeObject } from "../kube-object";
+
+import type { ClusterScopedMetadata, LabelSelector, ObjectReference, TypedLocalObjectReference } from "../api-types";
 import type { ResourceRequirements } from "../types/resource-requirements";
 
 export interface PersistentVolumeSpec {

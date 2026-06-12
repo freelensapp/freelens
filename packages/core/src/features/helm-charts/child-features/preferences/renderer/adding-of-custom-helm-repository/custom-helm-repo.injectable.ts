@@ -6,6 +6,7 @@
 
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { observable } from "mobx";
+
 import type { HelmRepo } from "../../../../../../common/helm/helm-repo";
 
 const customHelmRepoInjectable = getInjectable({

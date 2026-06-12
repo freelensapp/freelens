@@ -7,23 +7,18 @@
 import "./view.scss";
 
 import { Icon } from "@freelensapp/icon";
-import type { SecretApi } from "@freelensapp/kube-api";
 import { secretApiInjectable } from "@freelensapp/kube-api-specifics";
-import { SecretType, reverseSecretTypeMap } from "@freelensapp/kube-object";
-import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
+import { reverseSecretTypeMap, SecretType } from "@freelensapp/kube-object";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 import { base64, iter, object } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import upperFirst from "lodash/upperFirst";
-import type { IComputedValue } from "mobx";
 import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import type { DialogProps } from "../../dialog";
 import { Dialog } from "../../dialog";
 import { Input } from "../../input";
 import { systemName } from "../../input/input_validators";
-import type { ShowDetails } from "../../kube-detail-params/show-details.injectable";
 import showDetailsInjectable from "../../kube-detail-params/show-details.injectable";
 import { SubTitle } from "../../layout/sub-title";
 import { NamespaceSelect } from "../../namespaces/namespace-select";
@@ -31,6 +26,14 @@ import { Select } from "../../select";
 import { Wizard, WizardStep } from "../../wizard";
 import closeAddSecretDialogInjectable from "./close.injectable";
 import isAddSecretDialogOpenInjectable from "./is-open.injectable";
+
+import type { SecretApi } from "@freelensapp/kube-api";
+import type { ShowCheckedErrorNotification } from "@freelensapp/notifications";
+
+import type { IComputedValue } from "mobx";
+
+import type { DialogProps } from "../../dialog";
+import type { ShowDetails } from "../../kube-detail-params/show-details.injectable";
 
 export interface AddSecretDialogProps extends Partial<DialogProps> {}
 

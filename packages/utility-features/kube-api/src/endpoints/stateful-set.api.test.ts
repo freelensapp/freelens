@@ -5,9 +5,10 @@
  */
 
 import asyncFn from "@async-fn/jest";
-import type { AsyncFnMock } from "@async-fn/jest";
 import { KubeJsonApi, StatefulSetApi } from "@freelensapp/kube-api";
 import { flushPromises } from "@freelensapp/test-utils";
+
+import type { AsyncFnMock } from "@async-fn/jest";
 
 describe("StatefulSetApi", () => {
   let statefulSetApi: StatefulSetApi;

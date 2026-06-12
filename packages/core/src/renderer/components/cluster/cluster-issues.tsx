@@ -4,31 +4,35 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./cluster-issues.module.scss";
-
 import { Icon } from "@freelensapp/icon";
 import { Spinner } from "@freelensapp/spinner";
 import { cssNames, prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { computed, makeObservable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import type { ApiManager } from "../../../common/k8s-api/api-manager";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
-import type { PageParam } from "../../navigation/page-param";
 import activeThemeInjectable from "../../themes/active.injectable";
-import type { LensTheme } from "../../themes/lens-theme";
-import type { EventStore } from "../events/store";
 import eventStoreInjectable from "../events/store.injectable";
 import kubeSelectedUrlParamInjectable from "../kube-detail-params/kube-selected-url.injectable";
-import type { ToggleKubeDetailsPane } from "../kube-detail-params/toggle-details.injectable";
 import toggleKubeDetailsPaneInjectable from "../kube-detail-params/toggle-details.injectable";
 import { KubeObjectAge } from "../kube-object/age";
 import { SubHeader } from "../layout/sub-header";
-import type { NodeStore } from "../nodes/store";
+import namespaceStoreInjectable from "../namespaces/store.injectable";
 import nodeStoreInjectable from "../nodes/store.injectable";
 import { Table, TableCell, TableHead, TableRow } from "../table";
+import { WithTooltip } from "../with-tooltip";
+import styles from "./cluster-issues.module.scss";
+
+import type { IComputedValue } from "mobx";
+
+import type { ApiManager } from "../../../common/k8s-api/api-manager";
+import type { PageParam } from "../../navigation/page-param";
+import type { LensTheme } from "../../themes/lens-theme";
+import type { EventStore } from "../events/store";
+import type { ToggleKubeDetailsPane } from "../kube-detail-params/toggle-details.injectable";
+import type { NamespaceStore } from "../namespaces/store";
+import type { NodeStore } from "../nodes/store";
 
 export interface ClusterIssuesProps {
   className?: string;
@@ -53,6 +57,7 @@ enum sortBy {
 interface Dependencies {
   activeTheme: IComputedValue<LensTheme>;
   nodeStore: NodeStore;
+  namespaceStore: NamespaceStore;
   eventStore: EventStore;
   apiManager: ApiManager;
   kubeSelectedUrlParam: PageParam<string>;
@@ -64,6 +69,14 @@ class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Depe
   constructor(props: ClusterIssuesProps & Dependencies) {
     super(props);
     makeObservable(this);
+  }
+
+  async componentDidMount() {
+    // The explicit list of namespaces is required to avoid loading items only
+    // from the current namespace.
+    await this.props.namespaceStore.loadAll({ namespaces: [] });
+    const namespaces = this.props.namespaceStore.items.map((ns) => ns.getName());
+    this.props.eventStore.loadAll({ namespaces });
   }
 
   @computed get warnings(): Warning[] {
@@ -109,10 +122,16 @@ class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Depe
         selected={selfLink === kubeSelectedUrlParam.get()}
         onClick={prevDefault(() => toggleDetails(selfLink))}
       >
-        <TableCell className={styles.message}>{message ?? "<unknown>"}</TableCell>
-        <TableCell className={styles.object}>{getName()}</TableCell>
-        <TableCell className="kind">{kind}</TableCell>
-        <TableCell className="age">{renderAge()}</TableCell>
+        <TableCell className={cssNames(styles.TableCell, styles.message)}>
+          <WithTooltip>{message ?? "<unknown>"}</WithTooltip>
+        </TableCell>
+        <TableCell className={cssNames(styles.TableCell, styles.object)}>
+          <WithTooltip>{getName()}</WithTooltip>
+        </TableCell>
+        <TableCell className={cssNames(styles.TableCell, styles.kind)}>
+          <WithTooltip>{kind}</WithTooltip>
+        </TableCell>
+        <TableCell className={cssNames(styles.TableCell, styles.age)}>{renderAge()}</TableCell>
       </TableRow>
     );
   };
@@ -156,14 +175,14 @@ class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Depe
           className={cssNames("box grow", this.props.activeTheme.get().type)}
         >
           <TableHead nowrap>
-            <TableCell className="message">Message</TableCell>
-            <TableCell className="object" sortBy={sortBy.object}>
+            <TableCell className={cssNames(styles.TableCell, styles.message)}>Message</TableCell>
+            <TableCell className={cssNames(styles.TableCell, styles.object)} sortBy={sortBy.object}>
               Object
             </TableCell>
-            <TableCell className="kind" sortBy={sortBy.type}>
+            <TableCell className={cssNames(styles.TableCell, styles.kind)} sortBy={sortBy.type}>
               Type
             </TableCell>
-            <TableCell className="timestamp" sortBy={sortBy.age}>
+            <TableCell className={cssNames(styles.TableCell, styles.age)} sortBy={sortBy.age}>
               Age
             </TableCell>
           </TableHead>
@@ -185,6 +204,7 @@ export const ClusterIssues = withInjectables<Dependencies, ClusterIssuesProps>(N
     activeTheme: di.inject(activeThemeInjectable),
     apiManager: di.inject(apiManagerInjectable),
     eventStore: di.inject(eventStoreInjectable),
+    namespaceStore: di.inject(namespaceStoreInjectable),
     nodeStore: di.inject(nodeStoreInjectable),
     kubeSelectedUrlParam: di.inject(kubeSelectedUrlParamInjectable),
     toggleKubeDetailsPane: di.inject(toggleKubeDetailsPaneInjectable),

@@ -5,6 +5,7 @@
  */
 
 import Joi from "joi";
+
 import type { LogTabData, LogTabOwnerRef } from "./tab-store";
 
 export const logTabDataValidator = Joi.object<LogTabData>({
@@ -20,4 +21,5 @@ export const logTabDataValidator = Joi.object<LogTabData>({
   selectedContainer: Joi.string().optional(),
   showTimestamps: Joi.boolean().required(),
   showPrevious: Joi.boolean().required(),
+  showWordWrap: Joi.boolean().required(),
 });

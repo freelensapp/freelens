@@ -7,10 +7,11 @@
 import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import type { Cluster } from "../../../common/cluster/cluster";
 import { EditableList } from "../editable-list";
-import { systemName } from "../input/input_validators";
+import { systemNames } from "../input/input_validators";
 import { SubTitle } from "../layout/sub-title";
+
+import type { Cluster } from "../../../common/cluster/cluster";
 
 export interface ClusterAccessibleNamespacesProps {
   cluster: Cluster;
@@ -30,12 +31,13 @@ export class ClusterAccessibleNamespaces extends React.Component<ClusterAccessib
       <>
         <SubTitle title="Accessible Namespaces" id="accessible-namespaces" />
         <EditableList
-          placeholder="Add new namespace..."
+          placeholder="Add new namespaces (comma-separated)..."
+          separator=","
           add={(newNamespace) => {
             this.namespaces.add(newNamespace);
             this.props.cluster.accessibleNamespaces.replace([...this.namespaces]);
           }}
-          validators={systemName}
+          validators={systemNames}
           items={Array.from(this.namespaces)}
           remove={({ oldItem: oldNamespace }) => {
             this.namespaces.delete(oldNamespace);

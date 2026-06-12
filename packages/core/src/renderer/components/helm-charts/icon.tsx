@@ -4,10 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import styles from "./icon.module.css";
-
 import { cssNames } from "@freelensapp/utilities";
 import React, { useState } from "react";
+import styles from "./icon.module.css";
 
 export interface HelmChartIconProps {
   className?: string;

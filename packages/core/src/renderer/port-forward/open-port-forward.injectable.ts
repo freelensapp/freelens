@@ -8,8 +8,9 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { getInjectable } from "@ogre-tools/injectable";
 import openLinkInBrowserInjectable from "../../common/utils/open-link-in-browser.injectable";
-import type { ForwardedPort } from "./port-forward-item";
 import { portForwardAddress } from "./port-forward-utils";
+
+import type { ForwardedPort } from "./port-forward-item";
 
 export type OpenPortForward = (portForward: ForwardedPort) => void;
 

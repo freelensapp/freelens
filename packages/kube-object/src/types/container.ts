@@ -14,6 +14,11 @@ import type { SecurityContext } from "./security-context";
 import type { VolumeDevice } from "./volume-device";
 import type { VolumeMount } from "./volume-mount";
 
+export interface ContainerResizePolicy {
+  resourceName: "cpu" | "memory";
+  restartPolicy: "NotRequired" | "RestartContainer";
+}
+
 /**
  * A single application container that you want to run within a pod.
  */
@@ -66,7 +71,7 @@ export interface Container {
   envFrom?: EnvFromSource[];
 
   /**
-   * Docker image name.
+   * Container image name.
    *
    * More info: https://kubernetes.io/docs/concepts/containers/images
    */
@@ -80,7 +85,20 @@ export interface Container {
    */
   imagePullPolicy?: "Always" | "Never" | "IfNotPresent";
 
+  /**
+   * Lifecycle describes actions that the management system should take in
+   * response to container lifecycle events.
+   *
+   * For the PostStart and PreStop lifecycle handlers, management of the
+   * container blocks until the action is complete, unless the container
+   * process fails, in which case the handler is aborted.
+   */
   lifecycle?: Lifecycle;
+
+  /**
+   * Probe describes a health check to be performed against a container to
+   * determine whether it is alive or ready to receive traffic.
+   */
   livenessProbe?: Probe;
 
   /**
@@ -98,9 +116,43 @@ export interface Container {
    */
   ports?: ContainerPort[];
 
+  /**
+   * Probe describes a health check to be performed against a container to
+   * determine whether it is alive or ready to receive traffic.
+   */
   readinessProbe?: Probe;
+
+  /**
+   * Resource requirements describes the compute resource requirements.
+   */
   resources?: ResourceRequirements;
+
+  /**
+   * Resize policy for the container when cpu or memory resources are changed in-place.
+   */
+  resizePolicy?: ContainerResizePolicy[];
+
+  /**
+   * Restart policy for the container to manage the restart behavior of each
+   * container within a pod. This may only be set for init containers.
+   *
+   * You cannot set this field on ephemeral containers.
+   */
+  restartPolicy?: "Always";
+
+  /**
+   * SecurityContext holds security configuration that will be applied to a
+   * container. Some fields are present in both SecurityContext and
+   * PodSecurityContext.
+   *
+   * When both are set, the values in SecurityContext take precedence.
+   */
   securityContext?: SecurityContext;
+
+  /**
+   * Probe describes a health check to be performed against a container to
+   * determine whether it is alive or ready to receive traffic.
+   */
   startupProbe?: Probe;
 
   /**
@@ -176,3 +228,5 @@ export interface Container {
    */
   workingDir?: string;
 }
+
+export type ContainerWithType = Container & { type: "containers" | "initContainers" };

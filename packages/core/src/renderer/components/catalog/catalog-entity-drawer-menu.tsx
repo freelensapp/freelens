@@ -10,17 +10,18 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import type { VisitEntityContextMenu } from "../../../common/catalog/visit-entity-context-menu.injectable";
 import visitEntityContextMenuInjectable from "../../../common/catalog/visit-entity-context-menu.injectable";
-import type { CatalogEntity, CatalogEntityContextMenu } from "../../api/catalog-entity";
-import type { NormalizeCatalogEntityContextMenu } from "../../catalog/normalize-menu-item.injectable";
 import normalizeCatalogEntityContextMenuInjectable from "../../catalog/normalize-menu-item.injectable";
-import type { Navigate } from "../../navigation/navigate.injectable";
 import navigateInjectable from "../../navigation/navigate.injectable";
 import { MenuItem } from "../menu";
-import type { MenuActionsProps } from "../menu/menu-actions";
 import { MenuActions } from "../menu/menu-actions";
 import { HotbarToggleMenuItem } from "./hotbar-toggle-menu-item";
+
+import type { VisitEntityContextMenu } from "../../../common/catalog/visit-entity-context-menu.injectable";
+import type { CatalogEntity, CatalogEntityContextMenu } from "../../api/catalog-entity";
+import type { NormalizeCatalogEntityContextMenu } from "../../catalog/normalize-menu-item.injectable";
+import type { Navigate } from "../../navigation/navigate.injectable";
+import type { MenuActionsProps } from "../menu/menu-actions";
 
 export interface CatalogEntityDrawerMenuProps<Entity extends CatalogEntity> extends MenuActionsProps {
   entity: Entity;

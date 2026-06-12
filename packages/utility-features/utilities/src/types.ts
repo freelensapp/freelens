@@ -26,9 +26,8 @@ export type OptionVariant<Key, Base, RequiredKey extends keyof Base> = {
 
 export type SingleOrMany<T> = T | T[];
 
-export type IfEquals<T, U, Y = unknown, N = never> = (<G>() => G extends T ? 1 : 2) extends <G>() => G extends U ? 1 : 2
-  ? Y
-  : N;
+export type IfEquals<T, U, Y = unknown, N = never> =
+  (<G>() => G extends T ? 1 : 2) extends <G>() => G extends U ? 1 : 2 ? Y : N;
 
 export type MaybeSetRequired<BaseType, Keys extends keyof BaseType, Query> = Query extends true
   ? SetRequired<BaseType, Keys>

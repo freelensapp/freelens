@@ -7,10 +7,12 @@
 import { getOrInsert, getOrInsertMap } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { orderBy } from "lodash";
-import type { IComputedValue } from "mobx";
 import { computed } from "mobx";
-import type { LensRendererExtension } from "../../../extensions/lens-renderer-extension";
 import rendererExtensionsInjectable from "../../../extensions/renderer-extensions.injectable";
+
+import type { IComputedValue } from "mobx";
+
+import type { LensRendererExtension } from "../../../extensions/lens-renderer-extension";
 import type { CustomCategoryViewComponents } from "./custom-views";
 
 interface Dependencies {

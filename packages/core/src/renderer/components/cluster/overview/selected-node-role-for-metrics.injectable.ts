@@ -7,8 +7,9 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { action, computed } from "mobx";
 import nodeStoreInjectable from "../../nodes/store.injectable";
-import type { MetricNodeRole } from "./storage.injectable";
 import clusterOverviewStorageInjectable from "./storage.injectable";
+
+import type { MetricNodeRole } from "./storage.injectable";
 
 export type SelectedNodeRoleForMetrics = ReturnType<(typeof selectedNodeRoleForMetricsInjectable)["instantiate"]>;
 

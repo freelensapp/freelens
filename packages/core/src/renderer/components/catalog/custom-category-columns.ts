@@ -6,6 +6,7 @@
 
 import type { TableCellProps } from "@freelensapp/list-layout";
 import type { StrictReactNode } from "@freelensapp/utilities";
+
 import type { CatalogEntity } from "../../../common/catalog";
 
 /**

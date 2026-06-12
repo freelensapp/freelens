@@ -9,6 +9,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { Menu } from "electron";
 import { map, sortBy } from "lodash/fp";
 import { checkThatAllDiscriminablesAreExhausted } from "../../../common/utils/composable-responsibilities/discriminable/discriminable";
+
 import type { Composite } from "../../../common/utils/composite/get-composite/get-composite";
 import type { MenuItemRoot } from "./application-menu-item-composite.injectable";
 import type { MenuItemOpts } from "./application-menu-items.injectable";

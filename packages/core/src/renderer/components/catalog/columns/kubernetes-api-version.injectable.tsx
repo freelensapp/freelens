@@ -6,8 +6,9 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
-import type { KubernetesCluster } from "../../../../common/catalog-entities";
 import { customCatalogCategoryColumnInjectionToken } from "./custom-token";
+
+import type { KubernetesCluster } from "../../../../common/catalog-entities";
 
 const kubernetesApiVersionColumnInjectable = getInjectable({
   id: "kubernetes-api-version-column",

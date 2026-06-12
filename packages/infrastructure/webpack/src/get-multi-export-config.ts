@@ -1,7 +1,6 @@
-import { filter, fromPairs, isEqual, keys, map, nth, reject, toPairs, values } from "lodash/fp";
-
-import path from "path";
 import { pipeline } from "@ogre-tools/fp";
+import { filter, fromPairs, isEqual, keys, map, nth, reject, toPairs, values } from "lodash/fp";
+import path from "path";
 import { getNodeConfig } from "./get-node-config";
 import { getReactConfigFor } from "./get-react-config-for";
 

@@ -8,15 +8,17 @@ import { applicationInformationToken } from "@freelensapp/application";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import { BrowserWindow } from "electron";
-import type { RequireExactlyOne } from "type-fest";
 import pathExistsSyncInjectable from "../../../../common/fs/path-exists-sync.injectable";
 import getAbsolutePathInjectable from "../../../../common/path/get-absolute-path.injectable";
 import openLinkInBrowserInjectable from "../../../../common/utils/open-link-in-browser.injectable";
 import isLinuxInjectable from "../../../../common/vars/is-linux.injectable";
 import lensResourcesDirInjectable from "../../../../common/vars/lens-resources-dir.injectable";
 import applicationWindowStateInjectable from "./application-window-state.injectable";
-import type { ElectronWindow } from "./create-lens-window.injectable";
 import sessionCertificateVerifierInjectable from "./session-certificate-verifier.injectable";
+
+import type { RequireExactlyOne } from "type-fest";
+
+import type { ElectronWindow } from "./create-lens-window.injectable";
 
 export type ElectronWindowTitleBarStyle = "hiddenInset" | "hidden" | "default" | "customButtonsOnHover";
 
@@ -135,11 +137,13 @@ const createElectronWindowInjectable = getInjectable({
           logger.info(`[CREATE-ELECTRON-WINDOW]: Window "${configuration.id}" loaded`);
         })
         .setWindowOpenHandler((details) => {
-          openLinkInBrowser(details.url).catch((error) => {
-            logger.error("[CREATE-ELECTRON-WINDOW]: failed to open browser", {
-              error,
+          if (!details.url.includes(".renderer.freelens.app:")) {
+            openLinkInBrowser(details.url).catch((error) => {
+              logger.error("[CREATE-ELECTRON-WINDOW]: failed to open browser", {
+                error,
+              });
             });
-          });
+          }
 
           return { action: "deny" };
         });
@@ -156,7 +160,32 @@ const createElectronWindowInjectable = getInjectable({
         loadUrl: async (url) => {
           logger.info(`[CREATE-ELECTRON-WINDOW]: Loading content for window "${configuration.id}" from url: ${url}...`);
 
-          await browserWindow.loadURL(url);
+          // Retry logic for handling firewall/proxy delays and connection issues
+          const maxAttempts = 3;
+          const retryDelayMs = 1000;
+
+          for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+            try {
+              await browserWindow.loadURL(url);
+              return; // Success
+            } catch (error: any) {
+              const isRetriableError =
+                error.code === "ERR_EMPTY_RESPONSE" ||
+                error.code === "ERR_TUNNEL_CONNECTION_FAILED" ||
+                error.errno === -324 ||
+                error.errno === -111;
+              const isLastAttempt = attempt === maxAttempts;
+
+              if (isRetriableError && !isLastAttempt) {
+                logger.warn(
+                  `[CREATE-ELECTRON-WINDOW]: Failed to load "${configuration.id}" (attempt ${attempt}/${maxAttempts}): ${error.message} (${error.code || error.errno}). Retrying in ${retryDelayMs}ms...`,
+                );
+                await new Promise((resolve) => setTimeout(resolve, retryDelayMs));
+              } else {
+                throw error; // Re-throw if it's not a retriable error or it's the last attempt
+              }
+            }
+          }
         },
 
         show: () => browserWindow.show(),

@@ -4,14 +4,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { KubeObject } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
 import { runInAction } from "mobx";
-import type { DockTabCreateSpecific, TabId } from "../dock/store";
 import { TabKind } from "../dock/store";
 import dockStoreInjectable from "../dock/store.injectable";
 import getRandomIdForEditResourceTabInjectable from "./get-random-id-for-edit-resource-tab.injectable";
 import editResourceTabStoreInjectable from "./store.injectable";
+
+import type { KubeObject } from "@freelensapp/kube-object";
+
+import type { DockTabCreateSpecific, TabId } from "../dock/store";
 
 const createEditResourceTabInjectable = getInjectable({
   id: "create-edit-resource-tab",

@@ -4,8 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { StrictReactNode } from "@freelensapp/utilities";
 import { getInjectionToken } from "@ogre-tools/injectable";
+
+import type { StrictReactNode } from "@freelensapp/utilities";
+
 import type { IComputedValue } from "mobx";
 
 export interface SidebarItemRegistration {
@@ -16,7 +18,7 @@ export interface SidebarItemRegistration {
   getIcon?: () => StrictReactNode;
   isActive?: IComputedValue<boolean>;
   isVisible?: IComputedValue<boolean>;
-  orderNumber: number;
+  orderNumber: number | IComputedValue<number>;
 }
 
 export interface SidebarItemDeclaration {

@@ -4,17 +4,19 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { IncomingMessage } from "http";
-import type { AsyncFnMock } from "@async-fn/jest";
 import asyncFn from "@async-fn/jest";
-import type { AuthorizationV1Api, V1SubjectRulesReviewStatus } from "@freelensapp/kubernetes-client-node";
-import type { DiContainer } from "@ogre-tools/injectable";
 import { anyObject } from "jest-mock-extended";
 import { getDiForUnitTesting } from "../../main/getDiForUnitTesting";
 import { cast } from "../../test-utils/cast";
+import createRequestNamespaceListPermissionsInjectable from "./create-request-namespace-list-permissions.injectable";
+
+import type { AuthorizationV1Api, V1SubjectRulesReviewStatus } from "@freelensapp/kubernetes-client-node";
+
+import type { AsyncFnMock } from "@async-fn/jest";
+import type { DiContainer } from "@ogre-tools/injectable";
+
 import type { KubeApiResource } from "../rbac";
 import type { RequestNamespaceListPermissions } from "./create-request-namespace-list-permissions.injectable";
-import createRequestNamespaceListPermissionsInjectable from "./create-request-namespace-list-permissions.injectable";
 
 interface TestCase {
   description: string;
@@ -196,11 +198,8 @@ describe("requestNamespaceListPermissions", () => {
       describe(`when api returns ${description}`, () => {
         beforeEach(async () => {
           await createSelfSubjectRulesReviewMock.resolve({
-            body: {
-              status,
-              spec: {},
-            },
-            response: null as unknown as IncomingMessage,
+            status,
+            spec: {},
           });
         });
 

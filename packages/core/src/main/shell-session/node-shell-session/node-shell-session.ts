@@ -5,18 +5,20 @@
  */
 
 import { NodeApi } from "@freelensapp/kube-api";
-import type { Pod } from "@freelensapp/kube-object";
 import { CoreV1Api, Watch } from "@freelensapp/kubernetes-client-node";
-import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
 import { get, once } from "lodash";
 import { v4 as uuid } from "uuid";
 import { initialNodeShellImage, initialNodeShellWindowsImage } from "../../../common/cluster-types";
+import { TerminalChannels } from "../../../common/terminal/channels";
+import { ShellOpenError, ShellSession } from "../shell-session";
+
+import type { Pod } from "@freelensapp/kube-object";
+import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
+
 import type { CreateKubeApi } from "../../../common/k8s-api/create-kube-api.injectable";
 import type { CreateKubeJsonApiForCluster } from "../../../common/k8s-api/create-kube-json-api-for-cluster.injectable";
-import { TerminalChannels } from "../../../common/terminal/channels";
 import type { LoadProxyKubeconfig } from "../../cluster/load-proxy-kubeconfig.injectable";
 import type { ShellSessionArgs, ShellSessionDependencies } from "../shell-session";
-import { ShellOpenError, ShellSession } from "../shell-session";
 
 export interface NodeShellSessionArgs extends ShellSessionArgs {
   nodeName: string;
@@ -49,7 +51,7 @@ export class NodeShellSession extends ShellSession {
 
     const cleanup = once(() => {
       coreApi
-        .deleteNamespacedPod(this.podName, "kube-system")
+        .deleteNamespacedPod({ name: this.podName, namespace: "kube-system" })
         .catch((error) => this.dependencies.logger.warn(`[NODE-SHELL]: failed to remove pod shell`, error));
     });
 
@@ -143,37 +145,40 @@ export class NodeShellSession extends ShellSession {
         break;
     }
 
-    return coreApi.createNamespacedPod("kube-system", {
-      metadata: {
-        name: this.podName,
-        namespace: "kube-system",
-      },
-      spec: {
-        nodeName: this.nodeName,
-        restartPolicy: "Never",
-        terminationGracePeriodSeconds: 0,
-        hostPID: true,
-        hostIPC: true,
-        hostNetwork: true,
-        tolerations: [
-          {
-            operator: "Exists",
-          },
-        ],
-        priorityClassName: "system-node-critical",
-        containers: [
-          {
-            name: "shell",
-            image,
-            securityContext,
-            command,
-            args,
-            stdin: true,
-            stdinOnce: true,
-            tty: true,
-          },
-        ],
-        imagePullSecrets,
+    return coreApi.createNamespacedPod({
+      namespace: "kube-system",
+      body: {
+        metadata: {
+          name: this.podName,
+          namespace: "kube-system",
+        },
+        spec: {
+          nodeName: this.nodeName,
+          restartPolicy: "Never",
+          terminationGracePeriodSeconds: 0,
+          hostPID: true,
+          hostIPC: true,
+          hostNetwork: true,
+          tolerations: [
+            {
+              operator: "Exists",
+            },
+          ],
+          priorityClassName: "system-node-critical",
+          containers: [
+            {
+              name: "shell",
+              image,
+              securityContext,
+              command,
+              args,
+              stdin: true,
+              stdinOnce: true,
+              tty: true,
+            },
+          ],
+          imagePullSecrets,
+        },
       },
     });
   }

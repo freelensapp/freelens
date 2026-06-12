@@ -5,6 +5,7 @@
  */
 
 import { getInjectionToken } from "@ogre-tools/injectable";
+
 import type { Cluster } from "../../common/cluster/cluster";
 
 export interface ClusterDetectionResult {

@@ -9,12 +9,13 @@ import "./storage-classes.scss";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import { KubeObjectListLayout } from "../kube-object-list-layout";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { KubeObjectAge } from "../kube-object/age";
+import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
-import type { StorageClassStore } from "./store";
+import { WithTooltip } from "../with-tooltip";
 import storageClassStoreInjectable from "./store.injectable";
+
+import type { StorageClassStore } from "./store";
 
 enum columnId {
   name = "name",
@@ -48,7 +49,6 @@ class NonInjectedStorageClasses extends React.Component<Dependencies> {
           renderHeaderTitle="Storage Classes"
           renderTableHeader={[
             { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
-            { className: "warning", showWithColumn: columnId.name },
             { title: "Provisioner", className: "provisioner", sortBy: columnId.provisioner, id: columnId.provisioner },
             {
               title: "Reclaim Policy",
@@ -60,10 +60,9 @@ class NonInjectedStorageClasses extends React.Component<Dependencies> {
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
           ]}
           renderTableContents={(storageClass) => [
-            storageClass.getName(),
-            <KubeObjectStatusIcon key="icon" object={storageClass} />,
-            storageClass.provisioner,
-            storageClass.getReclaimPolicy(),
+            <WithTooltip>{storageClass.getName()}</WithTooltip>,
+            <WithTooltip>{storageClass.provisioner}</WithTooltip>,
+            <WithTooltip>{storageClass.getReclaimPolicy()}</WithTooltip>,
             storageClass.isDefault() ? "Yes" : null,
             <KubeObjectAge key="age" object={storageClass} />,
           ]}

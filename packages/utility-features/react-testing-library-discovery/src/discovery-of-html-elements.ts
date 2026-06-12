@@ -1,4 +1,5 @@
 import { prettyDOM as prettyDom } from "@testing-library/dom";
+
 import type { RenderResult } from "@testing-library/react";
 
 type DiscoverySourceTypes = RenderResult | Element;

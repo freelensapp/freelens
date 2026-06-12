@@ -5,6 +5,7 @@
  */
 
 import { PassThrough } from "stream";
+
 import type { Headers as NodeFetchHeaders, Response } from "@freelensapp/node-fetch";
 
 export const createMockResponseFromString = (url: string, data: string, statusCode = 200) => {

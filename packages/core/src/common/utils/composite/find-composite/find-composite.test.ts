@@ -4,9 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Composite } from "../get-composite/get-composite";
 import { getCompositeFor } from "../get-composite/get-composite";
 import { findComposite } from "./find-composite";
+
+import type { Composite } from "../get-composite/get-composite";
 
 describe("find-composite", () => {
   let composite: Composite<{ id: string; parentId?: string }>;

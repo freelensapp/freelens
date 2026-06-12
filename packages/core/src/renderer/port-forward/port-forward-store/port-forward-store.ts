@@ -4,16 +4,18 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { JsonApi } from "@freelensapp/json-api";
-import type { Logger } from "@freelensapp/logger";
 import { disposer } from "@freelensapp/utilities";
 import autoBind from "auto-bind";
 import { action, makeObservable, observable, reaction } from "mobx";
 import { waitUntilFree } from "tcp-port-used";
 import { ItemStore } from "../../../common/item.store";
+import { PortForwardItem } from "../port-forward-item";
+
+import type { JsonApi } from "@freelensapp/json-api";
+import type { Logger } from "@freelensapp/logger";
+
 import type { StorageLayer } from "../../utils/storage-helper";
 import type { ForwardedPort } from "../port-forward-item";
-import { PortForwardItem } from "../port-forward-item";
 import type { RequestActivePortForward } from "./request-active-port-forward.injectable";
 
 interface Dependencies {
@@ -263,12 +265,12 @@ export class PortForwardStore extends ItemStore<PortForwardItem> {
       throw new Error("cannot start non-existent port-forward");
     }
 
-    const { port, forwardPort } = pf;
+    const { port, forwardPort, address } = pf;
     let response: { port: number };
 
     try {
       response = await this.dependencies.apiBase.post(`/pods/port-forward/${pf.namespace}/${pf.kind}/${pf.name}`, {
-        query: { port, forwardPort },
+        query: { port, forwardPort, address },
       });
 
       // expecting the received port to be the specified port, unless the specified port is 0, which indicates any available port is suitable

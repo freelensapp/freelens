@@ -34,8 +34,11 @@ Please ensure your pull request adheres to the following guidelines:
 
 ## Development Environment Setup
 
-Read the [DEVELOPMENT.md](DEVELOPMENT.md) document to learn how to build and
-run the application from source files.
+Visit [Development](https://github.com/freelensapp/freelens/wiki/Development)
+wiki page to see how to build the application from source.
+
+Learn about the project from the
+[DeepWiki](https://deepwiki.com/freelensapp/freelens) documentation.
 
 ## Style Guides
 
@@ -43,7 +46,7 @@ run the application from source files.
 
 - Follow the existing coding style.
 - Use [Biome](https://biomejs.dev/) to lint and format your code.
-- Verify your changes with [Trunk Check](https://docs.trunk.io/cli).
+- Verify your changes with [Trunk Check](https://docs.trunk.io/code-quality/overview/initialize-trunk#run-linters).
 
 ### Commit Messages
 

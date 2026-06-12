@@ -7,25 +7,30 @@
 import "./job-details.scss";
 
 import { Job } from "@freelensapp/kube-object";
-import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { formatDuration } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import kebabCase from "lodash/kebabCase";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
-import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
-import { Badge } from "../badge";
+import { Badge, BadgeBoolean } from "../badge";
 import { DrawerItem } from "../drawer";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
+import { DurationAbsoluteTimestamp } from "../events";
+import { KubeObjectConditionsDrawer } from "../kube-object-conditions";
 import { PodDetailsAffinities } from "../workloads-pods/pod-details-affinities";
 import { PodDetailsList } from "../workloads-pods/pod-details-list";
 import { PodDetailsStatuses } from "../workloads-pods/pod-details-statuses";
 import { PodDetailsTolerations } from "../workloads-pods/pod-details-tolerations";
-import type { PodStore } from "../workloads-pods/store";
 import podStoreInjectable from "../workloads-pods/store.injectable";
-import type { JobStore } from "./store";
+import { getStatusClass, getStatusText } from "./jobs";
 import jobStoreInjectable from "./store.injectable";
+
+import type { Logger } from "@freelensapp/logger";
+
+import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
+import type { PodStore } from "../workloads-pods/store";
+import type { JobStore } from "./store";
 
 export interface JobDetailsProps extends KubeObjectDetailsProps<Job> {}
 
@@ -57,43 +62,67 @@ class NonInjectedJobDetails extends React.Component<JobDetailsProps & Dependenci
 
     const selectors = job.getSelectors();
     const nodeSelector = job.getNodeSelectors();
-    const images = job.getImages();
     const childPods = jobStore.getChildPods(job);
-    const condition = job.getCondition();
 
     return (
       <div className="JobDetails">
-        <DrawerItem name="Selector" labelsOnly>
-          {Object.keys(selectors).map((label) => (
-            <Badge key={label} label={label} />
-          ))}
-        </DrawerItem>
+        {selectors.length > 0 && (
+          <DrawerItem name="Selector" labelsOnly>
+            {selectors.map((label) => (
+              <Badge key={label} label={label} />
+            ))}
+          </DrawerItem>
+        )}
         {nodeSelector.length > 0 && (
-          <DrawerItem name="Node Selector" labelsOnly>
+          <DrawerItem name="Node Selector">
             {nodeSelector.map((label) => (
               <Badge key={label} label={label} />
             ))}
           </DrawerItem>
         )}
-        {images.length > 0 && (
-          <DrawerItem name="Images">
-            {images.map((image) => (
-              <p key={image}>{image}</p>
-            ))}
-          </DrawerItem>
-        )}
-        <DrawerItem name="Conditions" className="conditions" labelsOnly>
-          {condition && (
-            <Badge className={kebabCase(condition.type)} label={condition.type} tooltip={condition.message} />
-          )}
+        <DrawerItem name="Status">
+          <Badge className={getStatusClass(job)} label={getStatusText(job)} tooltip={getStatusText(job)} />
         </DrawerItem>
-        <DrawerItem name="Completions">{job.getDesiredCompletions()}</DrawerItem>
         <DrawerItem name="Parallelism">{job.getParallelism()}</DrawerItem>
+        <DrawerItem name="Completions">{job.getDesiredCompletions()}</DrawerItem>
+        <DrawerItem name="Completion Mode" hidden={!job.spec.completionMode}>
+          {job.spec.completionMode}
+        </DrawerItem>
+        <DrawerItem name="Resumed">
+          <BadgeBoolean value={!job.spec.suspend} />
+        </DrawerItem>
+        <DrawerItem name="Backoff Limit" hidden={job.spec.backoffLimit !== undefined}>
+          {job.spec.backoffLimit}
+        </DrawerItem>
+        <DrawerItem name="TTL Seconds After Finished" hidden={job.spec.ttlSecondsAfterFinished !== undefined}>
+          {formatDuration(job.spec.ttlSecondsAfterFinished || 0)}
+        </DrawerItem>
+        <DrawerItem name="Start Time" hidden={!job.status?.startTime}>
+          <DurationAbsoluteTimestamp timestamp={job.status?.startTime} />
+        </DrawerItem>
+        <DrawerItem name="Completed At" hidden={!job.status?.completionTime}>
+          <DurationAbsoluteTimestamp timestamp={job.status?.completionTime} />
+        </DrawerItem>
+        <DrawerItem name="Duration" hidden={!job.status?.startTime || !job.status?.completionTime}>
+          {formatDuration(job.getJobDuration())}
+        </DrawerItem>
+        <DrawerItem name="Active Deadline Seconds" hidden={!job.spec.activeDeadlineSeconds}>
+          {formatDuration(job.spec.activeDeadlineSeconds || 0)}
+        </DrawerItem>
+        <DrawerItem name="Pods Statuses">
+          {job.status?.ready === undefined
+            ? `${job.status?.active || 0} Active / ${job.status?.succeeded || 0} Succeeded / ${job.status?.failed || 0} Failed`
+            : `${job.status?.active || 0} Active (${job.status?.ready || 0} Ready) / ${job.status?.succeeded || 0} Succeeded / ${job.status?.failed || 0} Failed`}
+        </DrawerItem>
+        <DrawerItem name="Completed Indexes" hidden={!job.status?.completedIndexes}>
+          {job.status?.completedIndexes}
+        </DrawerItem>
         <PodDetailsTolerations workload={job} />
         <PodDetailsAffinities workload={job} />
         <DrawerItem name="Pod Status" className="pod-status">
           <PodDetailsStatuses pods={childPods} />
         </DrawerItem>
+        <KubeObjectConditionsDrawer object={job} />
         <PodDetailsList pods={childPods} owner={job} />
       </div>
     );

@@ -7,22 +7,24 @@
 import "./storage-class-details.scss";
 
 import { StorageClass } from "@freelensapp/kube-object";
-import type { Logger } from "@freelensapp/logger";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import startCase from "lodash/startCase";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
-import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import { Badge } from "../badge";
 import { DrawerItem, DrawerTitle } from "../drawer";
-import type { KubeObjectDetailsProps } from "../kube-object-details";
-import type { PersistentVolumeStore } from "../storage-volumes/store";
 import persistentVolumeStoreInjectable from "../storage-volumes/store.injectable";
 import { VolumeDetailsList } from "../storage-volumes/volume-details-list";
-import type { StorageClassStore } from "./store";
 import storageClassStoreInjectable from "./store.injectable";
+
+import type { Logger } from "@freelensapp/logger";
+
+import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
+import type { KubeObjectDetailsProps } from "../kube-object-details";
+import type { PersistentVolumeStore } from "../storage-volumes/store";
+import type { StorageClassStore } from "./store";
 
 export interface StorageClassDetailsProps extends KubeObjectDetailsProps<StorageClass> {}
 

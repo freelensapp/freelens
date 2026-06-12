@@ -6,6 +6,7 @@
 
 import React from "react";
 import { CatalogCategory } from "../catalog";
+
 import type { CatalogCategorySpec } from "../catalog";
 
 class TestCatalogCategoryWithoutBadge extends CatalogCategory {

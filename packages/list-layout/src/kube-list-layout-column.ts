@@ -6,6 +6,7 @@
 
 import type { KubeObject } from "@freelensapp/kube-object";
 import type { StrictReactNode } from "@freelensapp/utilities";
+
 import type { SearchFilter, TableCellProps, TableSortCallback } from "./list-layout-column";
 
 export interface BaseKubeObjectListLayoutColumn<K extends KubeObject> {

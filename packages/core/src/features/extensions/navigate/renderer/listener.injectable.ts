@@ -6,8 +6,9 @@
 
 import { getMessageChannelListenerInjectable } from "@freelensapp/messaging";
 import extensionLoaderInjectable from "../../../../extensions/extension-loader/extension-loader.injectable";
-import type { LensRendererExtension } from "../../../../extensions/lens-renderer-extension";
 import { navigateForExtensionChannel } from "../common/channel";
+
+import type { LensRendererExtension } from "../../../../extensions/lens-renderer-extension";
 
 const navigateForExtensionListenerInjectable = getMessageChannelListenerInjectable({
   channel: navigateForExtensionChannel,

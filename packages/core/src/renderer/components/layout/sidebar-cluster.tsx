@@ -10,20 +10,21 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { observable } from "mobx";
 import { observer } from "mobx-react";
 import React, { useState } from "react";
-import type { VisitEntityContextMenu } from "../../../common/catalog/visit-entity-context-menu.injectable";
 import visitEntityContextMenuInjectable from "../../../common/catalog/visit-entity-context-menu.injectable";
 import { broadcastMessage } from "../../../common/ipc";
 import { IpcRendererNavigationEvents } from "../../../common/ipc/navigation-events";
-import type { ActiveHotbarModel } from "../../../features/hotbar/storage/common/toggling.injectable";
 import activeHotbarInjectable from "../../../features/hotbar/storage/common/toggling.injectable";
-import type { CatalogEntity, CatalogEntityContextMenu } from "../../api/catalog-entity";
-import type { NormalizeCatalogEntityContextMenu } from "../../catalog/normalize-menu-item.injectable";
 import normalizeCatalogEntityContextMenuInjectable from "../../catalog/normalize-menu-item.injectable";
-import type { Navigate } from "../../navigation/navigate.injectable";
 import navigateInjectable from "../../navigation/navigate.injectable";
 import { Avatar } from "../avatar";
 import { Menu, MenuItem } from "../menu";
 import styles from "./sidebar-cluster.module.scss";
+
+import type { VisitEntityContextMenu } from "../../../common/catalog/visit-entity-context-menu.injectable";
+import type { ActiveHotbarModel } from "../../../features/hotbar/storage/common/toggling.injectable";
+import type { CatalogEntity, CatalogEntityContextMenu } from "../../api/catalog-entity";
+import type { NormalizeCatalogEntityContextMenu } from "../../catalog/normalize-menu-item.injectable";
+import type { Navigate } from "../../navigation/navigate.injectable";
 
 export interface SidebarClusterProps {
   clusterEntity: CatalogEntity | null | undefined;

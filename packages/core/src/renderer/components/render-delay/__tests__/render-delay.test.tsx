@@ -4,16 +4,18 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { RenderResult } from "@testing-library/react";
 import React from "react";
 import { advanceFakeTime, testUsingFakeTime } from "../../../../test-utils/use-fake-time";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
-import type { DiRender } from "../../test-utils/renderFor";
 import { renderFor } from "../../test-utils/renderFor";
 import cancelIdleCallbackInjectable from "../cancel-idle-callback.injectable";
 import idleCallbackTimeoutInjectable from "../idle-callback-timeout.injectable";
 import { RenderDelay } from "../render-delay";
 import requestIdleCallbackInjectable from "../request-idle-callback.injectable";
+
+import type { RenderResult } from "@testing-library/react";
+
+import type { DiRender } from "../../test-utils/renderFor";
 
 describe("<RenderDelay/>", () => {
   let render: DiRender;

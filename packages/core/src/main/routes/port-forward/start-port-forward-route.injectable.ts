@@ -26,6 +26,7 @@ const startPortForwardRouteInjectable = getRouteInjectable({
       const { namespace, resourceType, resourceName } = params;
       const port = Number(query.get("port"));
       const forwardPort = Number(query.get("forwardPort"));
+      const address = query.get("address") ?? "localhost";
 
       const proxyKubeconfigManager = di.inject(kubeconfigManagerInjectable, cluster);
 
@@ -37,6 +38,7 @@ const startPortForwardRouteInjectable = getRouteInjectable({
           namespace,
           port,
           forwardPort,
+          address,
         });
 
         if (!portForward) {
@@ -52,6 +54,7 @@ const startPortForwardRouteInjectable = getRouteInjectable({
             name: resourceName,
             port,
             forwardPort: thePort,
+            address,
           });
 
           const started = await portForward.start();

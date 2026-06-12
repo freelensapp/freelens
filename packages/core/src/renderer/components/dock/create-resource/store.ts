@@ -4,8 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { DockTabStoreDependencies } from "../dock-tab-store/dock-tab.store";
 import { DockTabStore } from "../dock-tab-store/dock-tab.store";
+
+import type { DockTabStoreDependencies } from "../dock-tab-store/dock-tab.store";
 
 export interface CreateResourceTabStoreDependencies extends DockTabStoreDependencies {}
 

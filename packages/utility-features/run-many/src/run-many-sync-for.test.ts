@@ -6,6 +6,7 @@
 
 import { createContainer, getInjectable, getInjectionToken } from "@ogre-tools/injectable";
 import { runManySyncFor } from "./run-many-sync-for";
+
 import type { RunnableSync } from "./types";
 
 describe("runManySyncFor", () => {

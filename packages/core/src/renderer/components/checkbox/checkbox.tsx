@@ -5,9 +5,11 @@
  */
 
 import "./checkbox.scss";
-import type { StrictReactNode } from "@freelensapp/utilities";
+
 import { cssNames, noop } from "@freelensapp/utilities";
 import React from "react";
+
+import type { StrictReactNode } from "@freelensapp/utilities";
 
 export interface CheckboxProps {
   className?: string;

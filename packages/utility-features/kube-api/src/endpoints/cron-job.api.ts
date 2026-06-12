@@ -5,8 +5,9 @@
  */
 
 import { CronJob } from "@freelensapp/kube-object";
-import type { DerivedKubeApiOptions, KubeApiDependencies, NamespacedResourceDescriptor } from "../kube-api";
 import { KubeApi } from "../kube-api";
+
+import type { DerivedKubeApiOptions, KubeApiDependencies, NamespacedResourceDescriptor } from "../kube-api";
 
 export class CronJobApi extends KubeApi<CronJob> {
   constructor(deps: KubeApiDependencies, opts: DerivedKubeApiOptions) {

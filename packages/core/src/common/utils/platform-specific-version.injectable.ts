@@ -4,9 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { DiContainerForInjection, InjectionToken } from "@ogre-tools/injectable";
 import { getInjectable } from "@ogre-tools/injectable";
 import platformInjectable from "../vars/platform.injectable";
+
+import type { DiContainerForInjection, InjectionToken } from "@ogre-tools/injectable";
 
 export interface PlatformSpecific<T> {
   instantiate: () => T;

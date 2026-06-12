@@ -9,21 +9,18 @@
   border-top: thin solid var(--hrColor);
 }
 
-@mixin horizontalLineSize(
-  $sizeName,
-  $size
-) {
+@mixin horizontalLineSize($sizeName, $size) {
   .size-#{$sizeName} {
-  margin-top: $size;
-  margin-bottom: $size;
+    margin-top: $size;
+    margin-bottom: $size;
   }
 }
 
 $baseline: 8px;
 
-@include horizontalLineSize('xxs', 0.5 * $baseline);
-@include horizontalLineSize('xs', 1 * $baseline);
-@include horizontalLineSize('sm', 2 * $baseline);
-@include horizontalLineSize('md', 3 * $baseline);
-@include horizontalLineSize('lg', 4 * $baseline);
-@include horizontalLineSize('xl', 5 * $baseline);
+@include horizontalLineSize("xxs", 0.5 * $baseline);
+@include horizontalLineSize("xs", 1 * $baseline);
+@include horizontalLineSize("sm", 2 * $baseline);
+@include horizontalLineSize("md", 3 * $baseline);
+@include horizontalLineSize("lg", 4 * $baseline);
+@include horizontalLineSize("xl", 5 * $baseline);

@@ -8,6 +8,7 @@ import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
 import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
 import { KubeObjectAge } from "../../kube-object/age";
+import { COLUMN_PRIORITY } from "./column-priority";
 
 const columnId = "age";
 
@@ -17,7 +18,7 @@ export const podsAgeColumnInjectable = getInjectable({
     id: columnId,
     kind: "Pod",
     apiVersion: "v1",
-    priority: 30,
+    priority: COLUMN_PRIORITY.AGE,
     content: (pod) => <KubeObjectAge key="age" object={pod} />,
     header: { title: "Age", className: "age", sortBy: columnId, id: columnId },
     sortingCallBack: (pod) => -pod.getCreationTimestamp(),

@@ -7,32 +7,35 @@
 import "./events.scss";
 
 import { Icon } from "@freelensapp/icon";
-import type { KubeEventApi } from "@freelensapp/kube-api";
-import type { KubeEvent, KubeEventData } from "@freelensapp/kube-object";
-import { Tooltip } from "@freelensapp/tooltip";
-import type { IClassName } from "@freelensapp/utilities";
 import { cssNames, stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { orderBy } from "lodash";
 import { computed, makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
+import moment from "moment-timezone";
 import React from "react";
 import { Link } from "react-router-dom";
 import navigateToEventsInjectable from "../../../common/front-end-routing/routes/cluster/events/navigate-to-events.injectable";
-import type { ApiManager } from "../../../common/k8s-api/api-manager";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
 import { ReactiveDuration } from "../duration/reactive-duration";
-import type { HeaderCustomizer } from "../item-object-list";
-import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
-import type { KubeObjectListLayoutProps } from "../kube-object-list-layout";
-import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { KubeObjectAge } from "../kube-object/age";
+import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { TabLayout } from "../layout/tab-layout-2";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
+import { WithTooltip } from "../with-tooltip";
+import eventStoreInjectable from "./store.injectable";
+
+import type { KubeEventApi } from "@freelensapp/kube-api";
+import type { KubeEvent, KubeEventData } from "@freelensapp/kube-object";
+import type { IClassName } from "@freelensapp/utilities";
+
+import type { ApiManager } from "../../../common/k8s-api/api-manager";
+import type { HeaderCustomizer, ListLayoutItemsFilter } from "../item-object-list";
+import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
+import type { KubeObjectListLayoutProps } from "../kube-object-list-layout";
 import type { TableSortCallbacks, TableSortParams } from "../table";
 import type { EventStore } from "./store";
-import eventStoreInjectable from "./store.injectable";
 
 enum columnId {
   message = "message",
@@ -49,6 +52,7 @@ export interface EventsProps extends Partial<KubeObjectListLayoutProps<KubeEvent
   className?: IClassName;
   compact?: boolean;
   compactLimit?: number;
+  filterItems?: ListLayoutItemsFilter<KubeEvent>[];
 }
 
 const defaultProps: Partial<EventsProps> = {
@@ -180,34 +184,28 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
         ]}
         renderTableContents={(event) => {
           const { involvedObject, type, message } = event;
-          const tooltipId = `message-${event.getId()}`;
           const isWarning = event.isWarning();
 
           return [
-            type, // type of event: "Normal" or "Warning"
+            <WithTooltip>{type}</WithTooltip>, // type of event: "Normal" or "Warning"
             {
               className: cssNames({ warning: isWarning }),
-              title: (
-                <>
-                  <span id={tooltipId}>{message}</span>
-                  <Tooltip targetId={tooltipId} formatters={{ narrow: true, warning: isWarning }}>
-                    {message}
-                  </Tooltip>
-                </>
-              ),
+              title: <WithTooltip>{message}</WithTooltip>,
             },
-            compact ? <NamespaceSelectBadge key="namespace" namespace={event.getNs()} /> : event.getNs(),
+            <NamespaceSelectBadge key="namespace" namespace={event.getNs()} />,
             <Link
               key="link"
               to={this.props.getDetailsUrl(apiManager.lookupApiLink(involvedObject, event))}
               onClick={stopPropagation}
             >
-              {`${involvedObject.kind}: ${involvedObject.name}`}
+              <WithTooltip>{`${involvedObject.kind}: ${involvedObject.name}`}</WithTooltip>
             </Link>,
-            event.getSource(),
+            <WithTooltip>{event.getSource()}</WithTooltip>,
             event.count,
             <KubeObjectAge key="age" object={event} />,
-            <ReactiveDuration key="last-seen" timestamp={event.lastTimestamp} />,
+            <WithTooltip tooltip={event.lastTimestamp ? moment(event.lastTimestamp).toDate() : undefined}>
+              <ReactiveDuration key="last-seen" timestamp={event.lastTimestamp} />
+            </WithTooltip>,
           ];
         }}
       />

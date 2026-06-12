@@ -6,20 +6,22 @@
 
 import { iter } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import type { IComputedValue } from "mobx";
 import { observer } from "mobx-react";
 import React, { useState } from "react";
-import type { SingleValue } from "react-select";
-import type { CatalogEntity } from "../../../common/catalog";
 import { broadcastMessage } from "../../../common/ipc";
 import { IpcRendererNavigationEvents } from "../../../common/ipc/navigation-events";
 import activeEntityInjectable from "../../api/catalog/entity/active.injectable";
-import type { Navigate } from "../../navigation/navigate.injectable";
 import navigateInjectable from "../../navigation/navigate.injectable";
 import { Select } from "../select";
 import commandOverlayInjectable from "./command-overlay.injectable";
-import type { RegisteredCommand } from "./registered-commands/commands";
 import registeredCommandsInjectable from "./registered-commands/registered-commands.injectable";
+
+import type { IComputedValue } from "mobx";
+import type { SingleValue } from "react-select";
+
+import type { CatalogEntity } from "../../../common/catalog";
+import type { Navigate } from "../../navigation/navigate.injectable";
+import type { RegisteredCommand } from "./registered-commands/commands";
 
 interface Dependencies {
   commands: IComputedValue<Map<string, RegisteredCommand>>;

@@ -4,10 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Container, Pod } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
-import type { TabId } from "../dock/store";
 import createLogsTabInjectable from "./create-logs-tab.injectable";
+
+import type { Container, Pod } from "@freelensapp/kube-object";
+
+import type { TabId } from "../dock/store";
 
 export interface PodLogsTabData {
   selectedPod: Pod;

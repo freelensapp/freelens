@@ -6,28 +6,31 @@
 
 import "./deployments.scss";
 
-import type { Deployment } from "@freelensapp/kube-object";
-import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import kebabCase from "lodash/kebabCase";
-import orderBy from "lodash/orderBy";
 import { observer } from "mobx-react";
 import React from "react";
-import type { EventStore } from "../events/store";
 import eventStoreInjectable from "../events/store.injectable";
-import { KubeObjectListLayout } from "../kube-object-list-layout";
-import { KubeObjectStatusIcon } from "../kube-object-status-icon";
 import { KubeObjectAge } from "../kube-object/age";
+import { KubeObjectConditionsList } from "../kube-object-conditions";
+import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
-import type { DeploymentStore } from "./store";
+import { WithTooltip } from "../with-tooltip";
 import deploymentStoreInjectable from "./store.injectable";
+
+import type { Deployment } from "@freelensapp/kube-object";
+
+import type { EventStore } from "../events/store";
+import type { DeploymentStore } from "./store";
 
 enum columnId {
   name = "name",
   namespace = "namespace",
-  pods = "pods",
   replicas = "replicas",
+  ready = "ready",
+  desired = "desired",
+  updated = "updated",
+  available = "available",
   age = "age",
   condition = "condition",
 }
@@ -37,24 +40,14 @@ interface Dependencies {
   eventStore: EventStore;
 }
 
+function getReplicas(deployment: Deployment) {
+  const replicas = deployment.status?.replicas || 0;
+  const availableReplicas = deployment.status?.availableReplicas || 0;
+  return `${availableReplicas}/${replicas}`;
+}
+
 @observer
 class NonInjectedDeployments extends React.Component<Dependencies> {
-  renderPods(deployment: Deployment) {
-    const { replicas, availableReplicas } = deployment.status ?? {};
-
-    return `${availableReplicas || 0}/${replicas || 0}`;
-  }
-
-  renderConditions(deployment: Deployment) {
-    const conditions = orderBy(deployment.getConditions(true), "type", "asc");
-
-    return conditions.map(({ type, message }) => (
-      <span key={type} className={cssNames("condition", kebabCase(type))} title={message}>
-        {type}
-      </span>
-    ));
-  }
-
   render() {
     const { deploymentStore, eventStore } = this.props;
 
@@ -69,44 +62,49 @@ class NonInjectedDeployments extends React.Component<Dependencies> {
           sortingCallbacks={{
             [columnId.name]: (deployment) => deployment.getName(),
             [columnId.namespace]: (deployment) => deployment.getNs(),
-            [columnId.replicas]: (deployment) => deployment.getReplicas(),
+            [columnId.replicas]: (deployment) =>
+              (deployment.status?.availableReplicas || 0) * 1000000 + (deployment.status?.replicas || 0),
+            [columnId.ready]: (deployment) => deployment.status?.readyReplicas || 0,
+            [columnId.desired]: (deployment) => deployment.getReplicas(),
+            [columnId.updated]: (deployment) => deployment.status?.updatedReplicas || 0,
+            [columnId.available]: (deployment) => deployment.status?.availableReplicas || 0,
             [columnId.age]: (deployment) => -deployment.getCreationTimestamp(),
             [columnId.condition]: (deployment) => deployment.getConditionsText(),
           }}
           searchFilters={[(deployment) => deployment.getSearchFields(), (deployment) => deployment.getConditionsText()]}
           renderHeaderTitle="Deployments"
+          defaultHiddenTableColumns={[columnId.replicas]}
           renderTableHeader={[
             { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },
-            { className: "warning", showWithColumn: columnId.name },
             {
               title: "Namespace",
               className: "namespace",
               sortBy: columnId.namespace,
               id: columnId.namespace,
             },
-            { title: "Pods", className: "pods", id: columnId.pods },
-            {
-              title: "Replicas",
-              className: "replicas",
-              sortBy: columnId.replicas,
-              id: columnId.replicas,
-            },
+            { title: "Replicas", className: "replicas", sortBy: columnId.replicas, id: columnId.replicas },
+            { title: "Ready", className: "ready", sortBy: columnId.ready, id: columnId.ready },
+            { title: "Desired", className: "desired", sortBy: columnId.desired, id: columnId.desired },
+            { title: "Updated", className: "updated", sortBy: columnId.updated, id: columnId.updated },
+            { title: "Available", className: "available", sortBy: columnId.available, id: columnId.available },
             { title: "Age", className: "age", sortBy: columnId.age, id: columnId.age },
             {
               title: "Conditions",
-              className: "conditions",
+              className: "conditions scrollable",
               sortBy: columnId.condition,
               id: columnId.condition,
             },
           ]}
           renderTableContents={(deployment) => [
-            deployment.getName(),
-            <KubeObjectStatusIcon key="icon" object={deployment} />,
+            <WithTooltip>{deployment.getName()}</WithTooltip>,
             <NamespaceSelectBadge key="namespace" namespace={deployment.getNs()} />,
-            this.renderPods(deployment),
+            getReplicas(deployment),
+            deployment.status?.readyReplicas || 0,
             deployment.getReplicas(),
+            deployment.status?.updatedReplicas || 0,
+            deployment.status?.availableReplicas || 0,
             <KubeObjectAge key="age" object={deployment} />,
-            this.renderConditions(deployment),
+            <KubeObjectConditionsList key="conditions" object={deployment} />,
           ]}
         />
       </SiblingsInTabLayout>

@@ -5,6 +5,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
+
 import type { IPty } from "node-pty";
 
 export type ShellSessionProcesses = Map<string, IPty>;

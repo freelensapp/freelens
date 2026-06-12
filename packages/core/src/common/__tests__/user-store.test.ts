@@ -4,21 +4,21 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { DiContainer } from "@ogre-tools/injectable";
-import type { ClusterStoreModel } from "../../features/cluster/storage/common/storage.injectable";
-import type { ResetTheme } from "../../features/user-preferences/common/reset-theme.injectable";
 import resetThemeInjectable from "../../features/user-preferences/common/reset-theme.injectable";
-import type { UserPreferencesState } from "../../features/user-preferences/common/state.injectable";
 import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
 import userPreferencesPersistentStorageInjectable from "../../features/user-preferences/common/storage.injectable";
 import releaseChannelInjectable from "../../features/vars/common/release-channel.injectable";
 import { getDiForUnitTesting } from "../../main/getDiForUnitTesting";
 import directoryForUserDataInjectable from "../app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import writeFileSyncInjectable from "../fs/write-file-sync.injectable";
+import readJsonSyncInjectable from "../fs/read-json-sync.injectable";
 import writeFileInjectable from "../fs/write-file.injectable";
 import writeJsonSyncInjectable from "../fs/write-json-sync.injectable";
-import { defaultThemeId } from "../vars";
-import storeMigrationVersionInjectable from "../vars/store-migration-version.injectable";
+import { defaultColorThemePreference } from "../vars";
+
+import type { DiContainer } from "@ogre-tools/injectable";
+
+import type { ResetTheme } from "../../features/user-preferences/common/reset-theme.injectable";
+import type { UserPreferencesState } from "../../features/user-preferences/common/state.injectable";
 
 describe("user store tests", () => {
   let state: UserPreferencesState;
@@ -51,7 +51,7 @@ describe("user store tests", () => {
       state.httpsProxy = "abcd://defg";
 
       expect(state.httpsProxy).toBe("abcd://defg");
-      expect(state.colorTheme).toBe(defaultThemeId);
+      expect(state.colorTheme).toBe(defaultColorThemePreference);
 
       state.colorTheme = "light";
       expect(state.colorTheme).toBe("light");
@@ -60,48 +60,86 @@ describe("user store tests", () => {
     it("correctly resets theme to default value", async () => {
       state.colorTheme = "some other theme";
       resetTheme();
-      expect(state.colorTheme).toBe(defaultThemeId);
+      expect(state.colorTheme).toBe(defaultColorThemePreference);
     });
-  });
 
-  describe("migrations", () => {
-    beforeEach(() => {
+    it("loads and stores persistentSearch as a global preference", async () => {
       const writeJsonSync = di.inject(writeJsonSyncInjectable);
-      const writeFileSync = di.inject(writeFileSyncInjectable);
+      const readJsonSync = di.inject(readJsonSyncInjectable);
 
       writeJsonSync("/some-directory-for-user-data/lens-user-store.json", {
-        preferences: { colorTheme: "light" },
+        preferences: {
+          persistentSearch: true,
+        },
       });
-
-      writeJsonSync("/some-directory-for-user-data/lens-cluster-store.json", {
-        clusters: [
-          {
-            id: "foobar",
-            kubeConfigPath: "/some-directory-for-user-data/extension_data/foo/bar",
-          },
-          {
-            id: "barfoo",
-            kubeConfigPath: "/some/other/path",
-          },
-        ],
-      } as ClusterStoreModel);
-
-      writeJsonSync("/some-directory-for-user-data/extension_data", {});
-
-      writeFileSync("/some/other/path", "is file");
-
-      di.override(storeMigrationVersionInjectable, () => "10.0.0");
+      writeJsonSync("/some-directory-for-user-data/kube_config", {});
 
       di.inject(userPreferencesPersistentStorageInjectable).loadAndStartSyncing();
+
+      expect(state.persistentSearch).toBe(true);
+
+      state.persistentSearch = false;
+      expect(readJsonSync("/some-directory-for-user-data/lens-user-store.json")).toMatchObject({
+        preferences: {},
+      });
+      expect(
+        readJsonSync("/some-directory-for-user-data/lens-user-store.json").preferences.persistentSearch,
+      ).toBeUndefined();
+
+      state.persistentSearch = true;
+      expect(readJsonSync("/some-directory-for-user-data/lens-user-store.json")).toMatchObject({
+        preferences: {
+          persistentSearch: true,
+        },
+      });
     });
 
-    it("skips clusters for adding to kube-sync with files under extension_data/", () => {
-      expect(state.syncKubeconfigEntries.has("/some-directory-for-user-data/extension_data/foo/bar")).toBe(false);
-      expect(state.syncKubeconfigEntries.has("/some/other/path")).toBe(true);
-    });
+    it("loads and stores logViewerPreferences as a global preference", async () => {
+      const writeJsonSync = di.inject(writeJsonSyncInjectable);
+      const readJsonSync = di.inject(readJsonSyncInjectable);
 
-    it("allows access to the colorTheme preference", () => {
-      expect(state.colorTheme).toBe("light");
+      writeJsonSync("/some-directory-for-user-data/lens-user-store.json", {
+        preferences: {
+          logViewerPreferences: {
+            showTimestamps: true,
+            showWordWrap: false,
+          },
+        },
+      });
+      writeJsonSync("/some-directory-for-user-data/kube_config", {});
+
+      di.inject(userPreferencesPersistentStorageInjectable).loadAndStartSyncing();
+
+      expect(state.logViewerPreferences).toEqual({
+        showTimestamps: true,
+        showPrevious: false,
+        showWordWrap: false,
+      });
+
+      state.logViewerPreferences = {
+        showTimestamps: false,
+        showPrevious: true,
+        showWordWrap: false,
+      };
+
+      expect(readJsonSync("/some-directory-for-user-data/lens-user-store.json")).toMatchObject({
+        preferences: {
+          logViewerPreferences: {
+            showPrevious: true,
+            showWordWrap: false,
+          },
+        },
+      });
+
+      state.logViewerPreferences = {
+        showTimestamps: false,
+        showPrevious: false,
+        showWordWrap: true,
+      };
+
+      expect(
+        readJsonSync("/some-directory-for-user-data/lens-user-store.json").preferences.logViewerPreferences,
+      ).toBeUndefined();
     });
   });
 });
