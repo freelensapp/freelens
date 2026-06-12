@@ -207,8 +207,8 @@ describe("Pods", () => {
       expect(pod.getRestartsCount()).toStrictEqual(sum(running) + sum(dead));
     });
 
-    it("hasIssues should return false", () => {
-      expect(pod.hasIssues()).toStrictEqual(false);
+    it("hasIssues should return true if a regular container terminated unsuccessfully", () => {
+      expect(pod.hasIssues()).toStrictEqual(dead > 0);
     });
   });
 
@@ -252,7 +252,7 @@ describe("Pods", () => {
   });
 
   describe("hasIssues", () => {
-    it("should return true if a condition isn't ready", () => {
+    it("should return false if only the Ready condition is false", () => {
       const pod = getDummyPod({ running: 1 });
 
       pod.status?.conditions.push({
@@ -260,6 +260,210 @@ describe("Pods", () => {
         status: "foobar",
         lastProbeTime: 1,
         lastTransitionTime: "longer ago",
+      });
+
+      expect(pod.hasIssues()).toStrictEqual(false);
+    });
+
+    it("should return false if the only unready containers completed successfully", () => {
+      const pod = getDummyPod({ running: 1 });
+
+      assert(pod.status);
+
+      pod.status.conditions.push({
+        type: "Ready",
+        status: "False",
+        reason: "ContainersNotReady",
+        message: "containers with unready status: [step-git-clone, step-build-go-binaries]",
+        lastProbeTime: 1,
+        lastTransitionTime: "longer ago",
+      });
+
+      pod.spec.containers.push(
+        {
+          image: "dummy",
+          imagePullPolicy: "Always",
+          name: "step-git-clone",
+        },
+        {
+          image: "dummy",
+          imagePullPolicy: "Always",
+          name: "step-build-go-binaries",
+        },
+      );
+      pod.status.containerStatuses?.push(
+        {
+          image: "dummy",
+          imageID: "dummy",
+          name: "step-git-clone",
+          ready: false,
+          restartCount: 0,
+          state: {
+            terminated: {
+              exitCode: 0,
+              finishedAt: "later",
+              reason: "Completed",
+              startedAt: "before",
+            },
+          },
+        },
+        {
+          image: "dummy",
+          imageID: "dummy",
+          name: "step-build-go-binaries",
+          ready: false,
+          restartCount: 0,
+          state: {
+            terminated: {
+              exitCode: 0,
+              finishedAt: "later",
+              reason: "Completed",
+              startedAt: "before",
+            },
+          },
+        },
+      );
+
+      expect(pod.hasIssues()).toStrictEqual(false);
+    });
+
+    it("should return true if a running pod has an unready container", () => {
+      const pod = getDummyPod({ running: 1 });
+      const firstStatus = pod.status?.containerStatuses?.[0];
+
+      assert(pod.status);
+      assert(firstStatus);
+
+      pod.status.phase = "Running";
+      pod.status.conditions.push({
+        type: "Ready",
+        status: "False",
+        reason: "ContainersNotReady",
+        message: "containers with unready status: [container_running_0]",
+        lastProbeTime: 1,
+        lastTransitionTime: "longer ago",
+      });
+      firstStatus.ready = false;
+
+      expect(pod.hasIssues()).toStrictEqual(true);
+    });
+
+    it("should return true if a running pod has a readiness gate that is not ready", () => {
+      const pod = getDummyPod({ running: 1 });
+
+      assert(pod.status);
+
+      pod.status.phase = "Running";
+      pod.spec.readinessGates = [{ conditionType: "example.com/ready" }];
+      pod.status.conditions.push({
+        type: "Ready",
+        status: "False",
+        reason: "ReadinessGatesNotReady",
+        message: 'the status of pod readiness gate "example.com/ready" is not "True", but False',
+        lastProbeTime: 1,
+        lastTransitionTime: "longer ago",
+      });
+
+      expect(pod.hasIssues()).toStrictEqual(true);
+    });
+
+    it("should return true if a restartable init container is not ready", () => {
+      const pod = getDummyPod({ running: 1, initRunning: 1 });
+      const firstInitContainer = pod.spec.initContainers[0];
+      const firstInitStatus = pod.status?.initContainerStatuses?.[0];
+
+      assert(firstInitContainer);
+      assert(firstInitStatus);
+
+      firstInitContainer.restartPolicy = "Always";
+      firstInitStatus.ready = false;
+
+      expect(pod.hasIssues()).toStrictEqual(true);
+    });
+
+    it("should return false if a restartable init container completed successfully", () => {
+      const pod = getDummyPod({ running: 1, initRunning: 1 });
+      const firstInitContainer = pod.spec.initContainers[0];
+      const firstInitStatus = pod.status?.initContainerStatuses?.[0];
+
+      assert(firstInitContainer);
+      assert(firstInitStatus);
+
+      firstInitContainer.restartPolicy = "Always";
+      firstInitStatus.ready = false;
+      firstInitStatus.state = {
+        terminated: {
+          exitCode: 0,
+          finishedAt: "later",
+          reason: "Completed",
+          startedAt: "before",
+        },
+      };
+
+      expect(pod.hasIssues()).toStrictEqual(false);
+    });
+
+    it("should return true if a readiness gate fails even when unready containers completed successfully", () => {
+      const pod = getDummyPod({ running: 1 });
+
+      assert(pod.status);
+
+      pod.spec.readinessGates = [{ conditionType: "example.com/ready" }];
+      pod.status.conditions.push(
+        {
+          type: "Ready",
+          status: "False",
+          reason: "ContainersNotReady",
+          message: "containers with unready status: [step-git-clone]",
+          lastProbeTime: 1,
+          lastTransitionTime: "longer ago",
+        },
+        {
+          type: "example.com/ready",
+          status: "False",
+          lastProbeTime: 1,
+          lastTransitionTime: "longer ago",
+        },
+      );
+      pod.spec.containers.push({
+        image: "dummy",
+        imagePullPolicy: "Always",
+        name: "step-git-clone",
+      });
+      pod.status.containerStatuses?.push({
+        image: "dummy",
+        imageID: "dummy",
+        name: "step-git-clone",
+        ready: false,
+        restartCount: 0,
+        state: {
+          terminated: {
+            exitCode: 0,
+            finishedAt: "later",
+            reason: "Completed",
+            startedAt: "before",
+          },
+        },
+      });
+
+      expect(pod.hasIssues()).toStrictEqual(true);
+    });
+
+    it("should return true if a regular container status is missing", () => {
+      const pod = getDummyPod({ running: 1 });
+
+      pod.status?.conditions.push({
+        type: "Ready",
+        status: "False",
+        reason: "ContainersNotReady",
+        message: "containers with unknown status: [missing-status]",
+        lastProbeTime: 1,
+        lastTransitionTime: "longer ago",
+      });
+      pod.spec.containers.push({
+        image: "dummy",
+        imagePullPolicy: "Always",
+        name: "missing-status",
       });
 
       expect(pod.hasIssues()).toStrictEqual(true);
@@ -294,12 +498,110 @@ describe("Pods", () => {
       expect(pod.hasIssues()).toStrictEqual(true);
     });
 
-    it("should return true if a current phase isn't running", () => {
+    it("should return true if an ephemeral container is in a crash loop back off", () => {
       const pod = getDummyPod({ running: 1 });
 
       assert(pod.status);
 
-      pod.status.phase = "not running";
+      pod.status.ephemeralContainerStatuses = [
+        {
+          image: "dummy",
+          imageID: "dummy",
+          name: "debugger",
+          ready: false,
+          restartCount: 0,
+          state: {
+            waiting: {
+              reason: "CrashLoopBackOff",
+              message: "too much foobar",
+            },
+          },
+        },
+      ];
+
+      expect(pod.hasIssues()).toStrictEqual(true);
+    });
+
+    it("should return true if an ephemeral container is in a crash loop back off even when containers are ready", () => {
+      const pod = getDummyPod({ running: 1 });
+
+      assert(pod.status);
+
+      pod.status.conditions.push({
+        type: "ContainersReady",
+        status: "True",
+        lastProbeTime: 1,
+        lastTransitionTime: "longer ago",
+      });
+      pod.status.ephemeralContainerStatuses = [
+        {
+          image: "dummy",
+          imageID: "dummy",
+          name: "debugger",
+          ready: false,
+          restartCount: 0,
+          state: {
+            waiting: {
+              reason: "CrashLoopBackOff",
+              message: "too much foobar",
+            },
+          },
+        },
+      ];
+
+      expect(pod.hasIssues()).toStrictEqual(true);
+    });
+
+    it("should return false if containers and pod readiness conditions are true", () => {
+      const pod = getDummyPod({ running: 1 });
+
+      assert(pod.status);
+
+      pod.spec.readinessGates = [{ conditionType: "example.com/ready" }];
+      pod.status.conditions.push(
+        {
+          type: "ContainersReady",
+          status: "True",
+          lastProbeTime: 1,
+          lastTransitionTime: "longer ago",
+        },
+        {
+          type: "Ready",
+          status: "True",
+          lastProbeTime: 1,
+          lastTransitionTime: "longer ago",
+        },
+      );
+
+      expect(pod.hasIssues()).toStrictEqual(false);
+    });
+
+    it("should return true if a current phase failed", () => {
+      const pod = getDummyPod({ running: 1 });
+
+      assert(pod.status);
+
+      pod.status.phase = "Failed";
+
+      expect(pod.hasIssues()).toStrictEqual(true);
+    });
+
+    it("should return true if a current phase is pending", () => {
+      const pod = getDummyPod({ running: 1 });
+
+      assert(pod.status);
+
+      pod.status.phase = "Pending";
+
+      expect(pod.hasIssues()).toStrictEqual(true);
+    });
+
+    it("should return true if a current phase is unknown", () => {
+      const pod = getDummyPod({ running: 1 });
+
+      assert(pod.status);
+
+      pod.status.phase = "Unknown";
 
       expect(pod.hasIssues()).toStrictEqual(true);
     });
@@ -310,6 +612,33 @@ describe("Pods", () => {
       assert(pod.status);
 
       pod.status.phase = "Running";
+
+      expect(pod.hasIssues()).toStrictEqual(false);
+    });
+
+    it("should return false if a current phase succeeded", () => {
+      const pod = getDummyPod({ running: 1 });
+
+      assert(pod.status);
+
+      pod.status.phase = "Succeeded";
+
+      expect(pod.hasIssues()).toStrictEqual(false);
+    });
+
+    it("should return false if a succeeded pod has a readiness gate that is not ready", () => {
+      const pod = getDummyPod({ running: 1 });
+
+      assert(pod.status);
+
+      pod.status.phase = "Succeeded";
+      pod.spec.readinessGates = [{ conditionType: "example.com/ready" }];
+      pod.status.conditions.push({
+        type: "example.com/ready",
+        status: "False",
+        lastProbeTime: 1,
+        lastTransitionTime: "longer ago",
+      });
 
       expect(pod.hasIssues()).toStrictEqual(false);
     });

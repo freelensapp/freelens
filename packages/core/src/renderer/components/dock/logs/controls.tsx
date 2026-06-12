@@ -3,11 +3,6 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-/**
- * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
- * Licensed under MIT License. See LICENSE in root directory for more information.
- */
 
 import { observer } from "mobx-react";
 import React from "react";
@@ -34,16 +29,16 @@ export const LogControls = observer(({ model }: LogControlsProps) => {
   const since = logs.length ? logs[0][0] : null;
 
   const toggleTimestamps = () => {
-    model.updateLogTabData({ showTimestamps: !showTimestamps });
+    model.updateLogPreferences({ showTimestamps: !showTimestamps });
   };
 
   const togglePrevious = () => {
-    model.updateLogTabData({ showPrevious: !previous });
+    model.updateLogPreferences({ showPrevious: !previous });
     model.reloadLogs();
   };
 
   const toggleWordWrap = () => {
-    model.updateLogTabData({ showWordWrap: !showWordWrap });
+    model.updateLogPreferences({ showWordWrap: !showWordWrap });
   };
 
   return (

@@ -336,6 +336,7 @@ export interface DeleteResourceDescriptor extends ResourceDescriptor {
 }
 
 export interface KubeApiDependencies {
+  logDebug: LogFunction;
   logInfo: LogFunction;
   logWarn: LogFunction;
   logError: LogFunction;
@@ -826,7 +827,7 @@ export class KubeApi<
     const watchUrl = this.getWatchUrl(namespace);
 
     abortController.signal.addEventListener("abort", () => {
-      this.dependencies.logInfo(`watch (${watchId}) aborted ${watchUrl}`);
+      this.dependencies.logDebug(`watch (${watchId}) aborted ${watchUrl}`);
       clearTimeout(timedRetry);
     });
 
@@ -835,7 +836,7 @@ export class KubeApi<
       signal: abortController.signal,
     });
 
-    this.dependencies.logInfo(`watch (${watchId}) ${retry === true ? "retried" : "started"} ${watchUrl}`);
+    this.dependencies.logDebug(`watch (${watchId}) ${retry === true ? "retried" : "started"} ${watchUrl}`);
 
     responsePromise
       .then((response) => {
@@ -863,7 +864,7 @@ export class KubeApi<
               // Close current request
               abortController.abort();
 
-              this.dependencies.logInfo(`Watch timeout set, but not retried, retrying now`);
+              this.dependencies.logDebug(`Watch timeout set, but not retried, retrying now`);
 
               requestRetried = true;
 
@@ -899,7 +900,7 @@ export class KubeApi<
               return;
             }
 
-            this.dependencies.logInfo(`watch (${watchId}) ${eventName} ${watchUrl}`);
+            this.dependencies.logDebug(`watch (${watchId}) ${eventName} ${watchUrl}`);
 
             requestRetried = true;
 

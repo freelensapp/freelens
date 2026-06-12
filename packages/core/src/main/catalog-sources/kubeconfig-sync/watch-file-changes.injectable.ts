@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getOrInsertWith, iter } from "@freelensapp/utilities";
+import { getOrInsertWith, isErrnoException, iter } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import GlobToRegExp from "glob-to-regexp";
 import { computed, observable } from "mobx";
@@ -147,6 +147,10 @@ const watchKubeconfigFileChangesInjectable = getInjectable({
             })
             .on("error", (error) => logger.error(`watching file/folder failed: ${error}`, { filePath }));
         } catch (error) {
+          if (isErrnoException(error) && error.code === "ENOENT") {
+            return void logger.debug(`skipping missing file/folder`, { filePath });
+          }
+
           logger.warn(`failed to start watching changes: ${error}`);
         }
       })();

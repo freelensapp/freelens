@@ -200,14 +200,14 @@ export class Terminal {
   };
 
   setFontSize = (fontSize: number) => {
-    this.dependencies.logger.info(`[TERMINAL]: set fontSize to ${fontSize}`);
+    this.dependencies.logger.debug(`[TERMINAL]: set fontSize to ${fontSize}`);
 
     this.xterm.options.fontSize = fontSize;
     this.fit();
   };
 
   setFontFamily = (fontFamily: string) => {
-    this.dependencies.logger.info(`[TERMINAL]: set fontFamily to ${fontFamily}`);
+    this.dependencies.logger.debug(`[TERMINAL]: set fontFamily to ${fontFamily}`);
 
     this.xterm.options.fontFamily = fontFamily;
     this.fit();
