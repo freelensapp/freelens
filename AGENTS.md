@@ -279,6 +279,11 @@ When asked to implement a change on a PR:
 1. Propose the commit subject (as above)
 2. Describe what will change and why
 3. After confirmation, apply the changes with commits on the PR branch
+4. **One commit per fix** — when a review surfaces more than one issue or
+   the plan includes more than one fix, apply and commit each fix
+   separately. Do not batch multiple independent fixes into a single
+   commit. This keeps the history bisectable and makes each change easy
+   to revert individually.
 
 ### Branch Naming Conventions
 
@@ -362,7 +367,8 @@ automatically and ask a human maintainer to close it manually.
 ### Model Information in Comments
 
 When operating via the GitHub Actions workflow, always include the model you are
-running on in the footer of your GitHub comment, alongside the job run link.
+running on in the footer of your GitHub comment and in the PR description when
+creating a pull request, alongside the job run link.
 Your system environment context states the model name explicitly (e.g.
 "You are powered by the model named Sonnet 4.6. The exact model ID is
 claude-sonnet-4-6."). Use the exact model ID from that statement.
@@ -371,6 +377,12 @@ Format the footer line as:
 
 ```text
 [View job run](...) | Model: `claude-sonnet-4-6`
+```
+
+In a PR description, append the model information at the end of the body:
+
+```text
+| Model: `claude-sonnet-4-6`
 ```
 
 If the system context does not provide a model ID, omit the model field rather
