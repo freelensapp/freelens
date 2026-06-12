@@ -25,6 +25,7 @@ import { GitRepo } from "./variants/git-repo";
 import { GlusterFs } from "./variants/gluster-fs";
 import { HostPath } from "./variants/host-path";
 import { IScsi } from "./variants/i-scsi";
+import { ImageVolume } from "./variants/image";
 import { Local } from "./variants/local";
 import { NetworkFs } from "./variants/network-fs";
 import { PersistentVolumeClaim } from "./variants/persistent-volume-claim";
@@ -169,6 +170,13 @@ function renderVolumeVariant({ pod, volume }: VolumeVariantProps): VolumeVariant
     return {
       kind: "hostPath",
       element: <HostPath variant={volume.hostPath} pod={pod} volumeName={volume.name} />,
+    };
+  }
+
+  if (volume.image) {
+    return {
+      kind: "image",
+      element: <ImageVolume variant={volume.image} pod={pod} volumeName={volume.name} />,
     };
   }
 
