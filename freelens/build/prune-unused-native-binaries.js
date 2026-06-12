@@ -4,7 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-const { readdir, rm } = require("fs/promises");
+const { access, readdir, rm } = require("fs/promises");
+const { constants } = require("fs");
 const path = require("path");
 
 const ELECTRON_BUILDER_ARCHES = {
@@ -24,15 +25,11 @@ function getArchName(arch) {
 
 async function pathExists(filePath) {
   try {
-    await readdir(filePath);
+    await access(filePath, constants.F_OK);
 
     return true;
-  } catch (error) {
-    if (error && error.code === "ENOENT") {
-      return false;
-    }
-
-    throw error;
+  } catch {
+    return false;
   }
 }
 
