@@ -291,10 +291,10 @@ repository. Instead:
    git push upstream claude/<original-branch-name>
    ```
 
-2. Open a new PR from that branch with:
-   - A title that matches the original PR
-   - A description that references the original PR (e.g. "Fixes #NNN,
-     supersedes #NNN")
+2. Open a new PR from that branch. The new PR MUST use the **exact same
+   title** as the original PR — copy it verbatim, do not rewrite, improve,
+   or add any prefix. The description MUST reference the original PR
+   (e.g. "Fixes #NNN, supersedes #NNN").
 
 3. Post a comment on the original PR:
    - Explain that the fix has been implemented in a new PR
