@@ -73,6 +73,10 @@ const userPreferenceDescriptorsInjectable = getInjectable({
         fromStore: (val) => (!val || !packageMirrors.has(val) ? defaultPackageMirror : val),
         toStore: (val) => (val === defaultPackageMirror ? undefined : val),
       }),
+      downloadCustomMirror: getPreferenceDescriptor<string>({
+        fromStore: (val) => val || "",
+        toStore: (val) => val || undefined,
+      }),
       downloadKubectlBinaries: getPreferenceDescriptor<boolean>({
         fromStore: (val) => val ?? true,
         toStore: (val) => (val ? undefined : val),
