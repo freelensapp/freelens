@@ -207,6 +207,9 @@ Uses pnpm workspaces for:
 7. **Run validation after file changes (especially before commit):** run `trunk check` (or `pnpm trunk check` if `trunk` is not installed locally)
 8. **For main project TypeScript and HTML files:** run `biome check` directly (or `pnpm biome check` if `biome` is not installed locally)
 9. **For other file types:** use `trunk check` (or `pnpm trunk check` if `trunk` is not installed locally)
+10. **Do not use Antropic Fable for coding tasks** — Fable may be used only for planning,
+    analysis, and thinking through problems. When writing or editing code,
+    use standard editing tools instead.
 
 ## GitHub Actions (Claude Code Action) Rules
 
