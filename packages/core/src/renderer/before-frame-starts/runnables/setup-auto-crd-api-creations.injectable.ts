@@ -7,7 +7,12 @@
 import { KubeApi } from "@freelensapp/kube-api";
 import { maybeKubeApiInjectable } from "@freelensapp/kube-api-specifics";
 import { KubeObject } from "@freelensapp/kube-object";
-import { logErrorInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@freelensapp/logger";
+import {
+  logDebugInjectionToken,
+  logErrorInjectionToken,
+  logInfoInjectionToken,
+  logWarningInjectionToken,
+} from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import { reaction } from "mobx";
 import { customResourceDefinitionApiInjectionToken } from "../../../common/k8s-api/api-manager/crd-api-token";
@@ -50,6 +55,7 @@ const toCrdApiInjectable = (crd: CustomResourceDefinition) =>
 
       return new KubeApi(
         {
+          logDebug: di.inject(logDebugInjectionToken),
           logError: di.inject(logErrorInjectionToken),
           logInfo: di.inject(logInfoInjectionToken),
           logWarn: di.inject(logWarningInjectionToken),

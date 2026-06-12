@@ -1,0 +1,53 @@
+# Claude Code – on-demand assistant via @claude
+# Location: .github/workflows/claude.yml (default branch)
+# Requires:
+#   - GitHub App "Claude" installed on the repo (https://github.com/apps/claude)
+#   - Secret CLAUDE_CODE_OAUTH_TOKEN (org-level, generated with `claude setup-token`)
+# Only users with write+ permission on the repo can trigger it (checked inside the action).
+
+name: Claude
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  issues:
+    types: [opened]
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  claude:
+    if: |
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude')) ||
+      (github.event_name == 'issues' && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude')))
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: read
+      issues: read
+      id-token: write
+      actions: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 1
+
+      - name: Checkout PR branch
+        if: github.event.issue.pull_request != null
+        run: |
+          git fetch origin refs/pull/${{ github.event.issue.number }}/head
+          git checkout FETCH_HEAD
+
+      - name: Run Claude Code
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_args: |-
+            --max-turns 30

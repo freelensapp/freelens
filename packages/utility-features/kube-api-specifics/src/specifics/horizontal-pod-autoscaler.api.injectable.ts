@@ -5,7 +5,12 @@
  */
 
 import { HorizontalPodAutoscalerApi } from "@freelensapp/kube-api";
-import { logErrorInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@freelensapp/logger";
+import {
+  logDebugInjectionToken,
+  logErrorInjectionToken,
+  logInfoInjectionToken,
+  logWarningInjectionToken,
+} from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import assert from "assert";
 import { storesAndApisCanBeCreatedInjectionToken } from "./can-be-created-token";
@@ -21,6 +26,7 @@ export const horizontalPodAutoscalerApiInjectable = getInjectable({
     );
 
     return new HorizontalPodAutoscalerApi({
+      logDebug: di.inject(logDebugInjectionToken),
       logError: di.inject(logErrorInjectionToken),
       logInfo: di.inject(logInfoInjectionToken),
       logWarn: di.inject(logWarningInjectionToken),

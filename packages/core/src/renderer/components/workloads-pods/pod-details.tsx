@@ -53,7 +53,7 @@ class NonInjectedPodDetails extends React.Component<PodDetailsProps & Dependenci
     const { status, spec } = pod;
     const { podIP } = status ?? {};
     const podIPs = pod.getIPs();
-    const { nodeName } = spec ?? {};
+    const { nodeName, schedulerName } = spec ?? {};
     const nodeSelector = pod.getNodeSelectors();
     const { hostIP } = status ?? {};
     const hostIPs = pod.getHostIPs();
@@ -70,6 +70,9 @@ class NonInjectedPodDetails extends React.Component<PodDetailsProps & Dependenci
       <div className="PodDetails">
         <DrawerItem name="Status">
           <span className={cssNames("status", kebabCase(pod.getStatusMessage()))}>{pod.getStatusMessage()}</span>
+        </DrawerItem>
+        <DrawerItem name="Scheduler" hidden={!schedulerName || schedulerName === "default-scheduler"}>
+          {schedulerName}
         </DrawerItem>
         <DrawerItem name="Node" hidden={!nodeName}>
           <LinkToNode name={nodeName} />
