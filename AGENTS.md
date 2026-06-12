@@ -281,7 +281,7 @@ repository. Instead:
 
 1. Create a new branch on `freelensapp/freelens` with the prefix `claude/`
    followed by the original branch name:
-   ```
+   ```bash
    git checkout -b claude/<original-branch-name>
    git push origin claude/<original-branch-name>
    ```
