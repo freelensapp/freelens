@@ -369,7 +369,7 @@ claude-sonnet-4-6."). Use the exact model ID from that statement.
 
 Format the footer line as:
 
-```
+```text
 [View job run](...) | Model: `claude-sonnet-4-6`
 ```
 
