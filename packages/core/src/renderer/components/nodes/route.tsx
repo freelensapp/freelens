@@ -93,20 +93,54 @@ function getNodeGroup(node: Node): string {
   const labels = node.metadata.labels ?? {};
 
   return (
-    labels["eks.amazonaws.com/nodegroup"] ??
-    labels["karpenter.sh/nodepool"] ??
-    labels["karpenter.k8s.aws/ec2nodeclass"] ??
+    labels["eks.amazonaws.com/nodegroup"] ?? // EKS managed node group
+    labels["karpenter.sh/nodepool"] ?? // Karpenter (any cloud)
+    labels["karpenter.k8s.aws/ec2nodeclass"] ?? // Karpenter AWS
+    labels["cloud.google.com/gke-nodepool"] ?? // GKE
+    labels["kubernetes.azure.com/agentpool"] ?? // AKS
+    labels["agentpool"] ?? // AKS (legacy)
     ""
   );
 }
 
 function getCapacityType(node: Node): string {
   const labels = node.metadata.labels ?? {};
-  const capacityType =
-    labels["karpenter.sh/capacity-type"] ?? labels["eks.amazonaws.com/capacityType"] ?? labels["capacity-type"] ?? "";
 
-  // normalize EKS style "ON_DEMAND" to karpenter style "on-demand"
-  return capacityType.toLowerCase().replace(/_/g, "-");
+  // already normalized: "spot" | "on-demand"
+  const karpenterCapacityType = labels["karpenter.sh/capacity-type"];
+  if (karpenterCapacityType) {
+    return karpenterCapacityType;
+  }
+
+  // EKS: "SPOT" | "ON_DEMAND"
+  const eksCapacityType = labels["eks.amazonaws.com/capacityType"];
+  if (eksCapacityType) {
+    return eksCapacityType.toLowerCase().replace(/_/g, "-");
+  }
+
+  // GKE: "spot" | "standard"
+  const gkeProvisioning = labels["cloud.google.com/gke-provisioning"];
+  if (gkeProvisioning) {
+    return gkeProvisioning === "standard" ? "on-demand" : gkeProvisioning;
+  }
+
+  // GKE spot VMs (>= 1.20) and legacy preemptible VMs
+  if (labels["cloud.google.com/gke-spot"] === "true") {
+    return "spot";
+  }
+  if (labels["cloud.google.com/gke-preemptible"] === "true") {
+    return "preemptible";
+  }
+
+  // AKS: "Spot" | "Regular"
+  const aksScaleSetPriority = labels["kubernetes.azure.com/scalesetpriority"];
+  if (aksScaleSetPriority) {
+    const priority = aksScaleSetPriority.toLowerCase();
+
+    return priority === "regular" ? "on-demand" : priority;
+  }
+
+  return (labels["capacity-type"] ?? "").toLowerCase().replace(/_/g, "-");
 }
 
 function formatCores(cores: number): string {
@@ -382,6 +416,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
       <TabLayout>
         <KubeObjectListLayout
           isConfigurable
+          defaultHiddenTableColumns={[columnId.pods, columnId.instanceType, columnId.nodeGroup, columnId.capacityType]}
           tableId="nodes"
           className="Nodes"
           store={nodeStore}
