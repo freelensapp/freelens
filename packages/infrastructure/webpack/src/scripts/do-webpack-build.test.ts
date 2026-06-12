@@ -75,11 +75,59 @@ describe("do-webpack-build", () => {
     it("when execution of webpack exits, script is done", async () => {
       const [[eventName, finishWebpack]] = execResultStub.on.mock.calls;
 
-      eventName === "exit" && finishWebpack();
+      eventName === "exit" && finishWebpack(0);
 
       const promiseStatus = await getPromiseStatus(actualPromise);
 
       expect(promiseStatus.fulfilled).toBe(true);
+    });
+  });
+
+  describe("exit code propagation", () => {
+    let originalExitCode: number | string | undefined;
+
+    beforeEach(() => {
+      originalExitCode = process.exitCode;
+    });
+
+    afterEach(() => {
+      process.exitCode = originalExitCode;
+    });
+
+    it("when execution of webpack exits successfully, does not change the exit code of the process", async () => {
+      const actualPromise = doWebpackBuild({ watch: false });
+
+      const [[, finishWebpack]] = execResultStub.on.mock.calls;
+
+      finishWebpack(0);
+
+      await actualPromise;
+
+      expect(process.exitCode).toBe(originalExitCode);
+    });
+
+    it("when execution of webpack fails, exit code of the process becomes the exit code of webpack", async () => {
+      const actualPromise = doWebpackBuild({ watch: false });
+
+      const [[, finishWebpack]] = execResultStub.on.mock.calls;
+
+      finishWebpack(2);
+
+      await actualPromise;
+
+      expect(process.exitCode).toBe(2);
+    });
+
+    it("when execution of webpack exits without a code, exit code of the process becomes 1", async () => {
+      const actualPromise = doWebpackBuild({ watch: false });
+
+      const [[, finishWebpack]] = execResultStub.on.mock.calls;
+
+      finishWebpack(null);
+
+      await actualPromise;
+
+      expect(process.exitCode).toBe(1);
     });
   });
 });

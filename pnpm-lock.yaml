@@ -29,8 +29,8 @@ importers:
         specifier: 10.34.3
         version: 10.34.3
       turbo:
-        specifier: 2.9.16
-        version: 2.9.16
+        specifier: 2.9.18
+        version: 2.9.18
 
   freelens:
     dependencies:
@@ -394,7 +394,7 @@ importers:
         version: 4.0.0(webpack@5.106.2)
       ts-jest:
         specifier: ^29.4.9
-        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))(typescript@5.9.3)
+        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.7
         version: 9.5.7(typescript@5.9.3)(webpack@5.106.2)
@@ -470,16 +470,19 @@ importers:
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(lodash@4.18.1))(lodash@4.18.1)(mobx@6.15.0)
       '@testing-library/react':
         specifier: ^12.1.5
-        version: 12.1.5(@types/react@17.0.91)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+        version: 12.1.5(@types/react@17.0.93)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       '@testing-library/user-event':
         specifier: ^14.6.1
         version: 14.6.1(@testing-library/dom@10.4.1)
       '@types/lodash':
         specifier: ^4.17.24
         version: 4.17.24
+      '@types/node':
+        specifier: ~24.12.4
+        version: 24.12.4
       '@types/react':
-        specifier: ^17.0.91
-        version: 17.0.91
+        specifier: ^17.0.93
+        version: 17.0.93
       '@types/webpack-env':
         specifier: ^1.18.8
         version: 1.18.8
@@ -497,7 +500,7 @@ importers:
         version: 6.15.0
       ts-jest:
         specifier: ^29.4.9
-        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))(typescript@5.9.3)
+        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.7
         version: 9.5.7(typescript@5.9.3)(webpack@5.106.2)
@@ -518,8 +521,8 @@ importers:
         specifier: workspace:^
         version: link:../infrastructure/webpack
       '@types/react':
-        specifier: ^17.0.91
-        version: 17.0.91
+        specifier: ^17.0.93
+        version: 17.0.93
       ts-loader:
         specifier: ^9.5.7
         version: 9.5.7(typescript@5.9.3)(webpack@5.106.2)
@@ -574,7 +577,7 @@ importers:
         version: 4.18.1
       ts-jest:
         specifier: ^29.4.9
-        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))(typescript@5.9.3)
+        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.7
         version: 9.5.7(typescript@5.9.3)(webpack@5.106.2)
@@ -706,10 +709,10 @@ importers:
         version: 8.1.2
       '@mui/lab':
         specifier: 5.0.0-alpha.142
-        version: 5.0.0-alpha.142(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@types/react@17.0.91)(react@17.0.2))(@mui/material@5.17.1(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@types/react@17.0.91)(react@17.0.2))(@types/react@17.0.91)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(@types/react@17.0.91)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+        version: 5.0.0-alpha.142(@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2))(@types/react@17.0.93)(react@17.0.2))(@mui/material@5.17.1(@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2))(@types/react@17.0.93)(react@17.0.2))(@types/react@17.0.93)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(@types/react@17.0.93)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       '@mui/material':
         specifier: ^5.17.1
-        version: 5.17.1(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@types/react@17.0.91)(react@17.0.2))(@types/react@17.0.91)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+        version: 5.17.1(@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2))(@types/react@17.0.93)(react@17.0.2))(@types/react@17.0.93)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       '@ogre-tools/fp':
         specifier: ^17.11.1
         version: 17.11.1(lodash@4.18.1)
@@ -865,7 +868,7 @@ importers:
         version: 5.3.4(react@17.0.2)
       react-select:
         specifier: ^5.10.2
-        version: 5.10.2(@types/react@17.0.91)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+        version: 5.10.2(@types/react@17.0.93)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       react-table:
         specifier: ^7.8.0
         version: 7.8.0(react@17.0.2)
@@ -926,7 +929,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: 1.7.0
-        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))
       '@freelensapp/messaging-fake-bridge':
         specifier: workspace:^
         version: link:../technical-features/messaging/messaging-fake-bridge
@@ -950,7 +953,7 @@ importers:
         version: 6.9.1
       '@testing-library/react':
         specifier: ^12.1.5
-        version: 12.1.5(@types/react@17.0.91)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+        version: 12.1.5(@types/react@17.0.93)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       '@testing-library/user-event':
         specifier: ^14.6.1
         version: 14.6.1(@testing-library/dom@10.4.1)
@@ -1003,14 +1006,14 @@ importers:
         specifier: ^0.5.9
         version: 0.5.9
       '@types/react':
-        specifier: ^17.0.91
-        version: 17.0.91
+        specifier: ^17.0.93
+        version: 17.0.93
       '@types/react-beautiful-dnd':
         specifier: ^13.1.8
         version: 13.1.8
       '@types/react-dom':
         specifier: ^17.0.26
-        version: 17.0.26(@types/react@17.0.91)
+        version: 17.0.26(@types/react@17.0.93)
       '@types/react-router':
         specifier: ^5.1.20
         version: 5.1.20
@@ -1118,7 +1121,7 @@ importers:
         version: 4.2.4
       ts-jest:
         specifier: ^29.4.9
-        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))(typescript@5.9.3)
+        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.7
         version: 9.5.7(typescript@5.9.3)(webpack@5.106.2)
@@ -1330,7 +1333,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.7.0
-        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))
       '@freelensapp/jest':
         specifier: workspace:^
         version: link:../jest
@@ -1360,7 +1363,7 @@ importers:
         version: 29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@24.12.4)(typescript@5.9.3))
       ts-jest:
         specifier: ^29.4.9
-        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))(typescript@5.9.3)
+        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
 
   packages/kube-object:
     dependencies:
@@ -1403,7 +1406,7 @@ importers:
         version: 29.7.0
       ts-jest:
         specifier: ^29.4.9
-        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))(typescript@5.9.3)
+        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.7
         version: 9.5.7(typescript@5.9.3)(webpack@5.106.2)
@@ -1534,7 +1537,7 @@ importers:
         version: 29.7.0
       ts-jest:
         specifier: ^29.4.9
-        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))(typescript@5.9.3)
+        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.7
         version: 9.5.7(typescript@5.9.3)(webpack@5.106.2)
@@ -1561,8 +1564,8 @@ importers:
         specifier: workspace:^
         version: link:../infrastructure/webpack
       '@types/react':
-        specifier: ^17.0.91
-        version: 17.0.91
+        specifier: ^17.0.93
+        version: 17.0.93
       react:
         specifier: ^17.0.2
         version: 17.0.2
@@ -1685,7 +1688,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.7.0
-        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))
       '@freelensapp/jest':
         specifier: workspace:^
         version: link:../../../infrastructure/jest
@@ -1712,7 +1715,7 @@ importers:
         version: 4.18.1
       ts-jest:
         specifier: ^29.4.9
-        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))(typescript@5.9.3)
+        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.7
         version: 9.5.7(typescript@5.9.3)(webpack@5.106.2)
@@ -1743,7 +1746,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.7.0
-        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))
       '@freelensapp/jest':
         specifier: workspace:^
         version: link:../../../infrastructure/jest
@@ -1770,7 +1773,7 @@ importers:
         version: 4.18.1
       ts-jest:
         specifier: ^29.4.9
-        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))(typescript@5.9.3)
+        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.7
         version: 9.5.7(typescript@5.9.3)(webpack@5.106.2)
@@ -1804,7 +1807,7 @@ importers:
         version: 29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@24.12.4)(typescript@5.9.3))
       ts-jest:
         specifier: ^29.4.9
-        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))(typescript@5.9.3)
+        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.7
         version: 9.5.7(typescript@5.9.3)(webpack@5.106.2)
@@ -1841,7 +1844,7 @@ importers:
         version: 29.7.0
       ts-jest:
         specifier: ^29.4.9
-        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))(typescript@5.9.3)
+        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.7
         version: 9.5.7(typescript@5.9.3)(webpack@5.106.2)
@@ -1890,7 +1893,7 @@ importers:
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(lodash@4.18.1))(lodash@4.18.1)(mobx@6.15.0)
       '@testing-library/react':
         specifier: ^12.1.5
-        version: 12.1.5(@types/react@17.0.91)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+        version: 12.1.5(@types/react@17.0.93)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       '@types/webpack-env':
         specifier: ^1.18.8
         version: 1.18.8
@@ -1914,7 +1917,7 @@ importers:
         version: 17.0.2
       ts-jest:
         specifier: ^29.4.9
-        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))(typescript@5.9.3)
+        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.7
         version: 9.5.7(typescript@5.9.3)(webpack@5.106.2)
@@ -1975,7 +1978,7 @@ importers:
         version: 4.18.1
       ts-jest:
         specifier: ^29.4.9
-        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))(typescript@5.9.3)
+        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.7
         version: 9.5.7(typescript@5.9.3)(webpack@5.106.2)
@@ -1990,7 +1993,7 @@ importers:
     dependencies:
       '@async-fn/jest':
         specifier: ^1.7.0
-        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))
       '@freelensapp/messaging':
         specifier: workspace:^
         version: link:../messaging
@@ -2027,7 +2030,7 @@ importers:
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(lodash@4.18.1))(lodash@4.18.1)(mobx@6.15.0)
       '@testing-library/react':
         specifier: ^12.1.5
-        version: 12.1.5(@types/react@17.0.91)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+        version: 12.1.5(@types/react@17.0.93)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       '@types/lodash':
         specifier: ^4.17.24
         version: 4.17.24
@@ -2045,7 +2048,7 @@ importers:
         version: 6.15.0
       ts-jest:
         specifier: ^29.4.9
-        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))(typescript@5.9.3)
+        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.7
         version: 9.5.7(typescript@5.9.3)(webpack@5.106.2)
@@ -2079,7 +2082,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.7.0
-        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))
       '@freelensapp/jest':
         specifier: workspace:^
         version: link:../../../infrastructure/jest
@@ -2106,7 +2109,7 @@ importers:
         version: 29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@24.12.4)(typescript@5.9.3))
       ts-jest:
         specifier: ^29.4.9
-        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))(typescript@5.9.3)
+        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.7
         version: 9.5.7(typescript@5.9.3)(webpack@5.106.2)
@@ -2137,7 +2140,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.7.0
-        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))
       '@freelensapp/jest':
         specifier: workspace:^
         version: link:../../../infrastructure/jest
@@ -2167,7 +2170,7 @@ importers:
         version: 6.15.0
       ts-jest:
         specifier: ^29.4.9
-        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))(typescript@5.9.3)
+        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.7
         version: 9.5.7(typescript@5.9.3)(webpack@5.106.2)
@@ -2268,13 +2271,13 @@ importers:
         version: 17.11.1(lodash@4.18.1)
       '@testing-library/react':
         specifier: ^12.1.5
-        version: 12.1.5(@types/react@17.0.91)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+        version: 12.1.5(@types/react@17.0.93)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       '@types/react':
-        specifier: ^17.0.91
-        version: 17.0.91
+        specifier: ^17.0.93
+        version: 17.0.93
       '@types/react-dom':
         specifier: ^17.0.26
-        version: 17.0.26(@types/react@17.0.91)
+        version: 17.0.26(@types/react@17.0.93)
       '@types/webpack-env':
         specifier: ^1.18.8
         version: 1.18.8
@@ -2292,7 +2295,7 @@ importers:
         version: 4.18.1
       ts-jest:
         specifier: ^29.4.9
-        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))(typescript@5.9.3)
+        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.7
         version: 9.5.7(typescript@5.9.3)(webpack@5.106.2)
@@ -2413,8 +2416,8 @@ importers:
         specifier: workspace:^
         version: link:../../infrastructure/webpack
       '@types/react':
-        specifier: ^17.0.91
-        version: 17.0.91
+        specifier: ^17.0.93
+        version: 17.0.93
       '@types/webpack-env':
         specifier: ^1.18.8
         version: 1.18.8
@@ -2459,8 +2462,8 @@ importers:
         specifier: workspace:^
         version: link:../../infrastructure/webpack
       '@types/react':
-        specifier: ^17.0.91
-        version: 17.0.91
+        specifier: ^17.0.93
+        version: 17.0.93
       css-loader:
         specifier: ^6.11.0
         version: 6.11.0(webpack@5.106.2)
@@ -2523,8 +2526,8 @@ importers:
         specifier: workspace:^
         version: link:../../infrastructure/webpack
       '@types/react':
-        specifier: ^17.0.91
-        version: 17.0.91
+        specifier: ^17.0.93
+        version: 17.0.93
       css-loader:
         specifier: ^6.11.0
         version: 6.11.0(webpack@5.106.2)
@@ -2599,8 +2602,8 @@ importers:
         specifier: ^4.17.24
         version: 4.17.24
       '@types/react':
-        specifier: ^17.0.91
-        version: 17.0.91
+        specifier: ^17.0.93
+        version: 17.0.93
       '@types/react-router-dom':
         specifier: ^5.3.3
         version: 5.3.3
@@ -2690,8 +2693,8 @@ importers:
         specifier: ^4.17.24
         version: 4.17.24
       '@types/react':
-        specifier: ^17.0.91
-        version: 17.0.91
+        specifier: ^17.0.93
+        version: 17.0.93
       '@types/webpack-env':
         specifier: ^1.18.8
         version: 1.18.8
@@ -2748,8 +2751,8 @@ importers:
         specifier: ^4.17.24
         version: 4.17.24
       '@types/react':
-        specifier: ^17.0.91
-        version: 17.0.91
+        specifier: ^17.0.93
+        version: 17.0.93
       css-loader:
         specifier: ^6.11.0
         version: 6.11.0(webpack@5.106.2)
@@ -2788,8 +2791,8 @@ importers:
         specifier: workspace:^
         version: link:../../infrastructure/webpack
       '@types/react':
-        specifier: ^17.0.91
-        version: 17.0.91
+        specifier: ^17.0.93
+        version: 17.0.93
       css-loader:
         specifier: ^6.11.0
         version: 6.11.0(webpack@5.106.2)
@@ -2847,7 +2850,7 @@ importers:
         version: 6.9.1
       '@testing-library/react':
         specifier: ^12.1.5
-        version: 12.1.5(@types/react@17.0.91)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+        version: 12.1.5(@types/react@17.0.93)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       '@testing-library/user-event':
         specifier: ^14.6.1
         version: 14.6.1(@testing-library/dom@10.4.1)
@@ -2855,11 +2858,11 @@ importers:
         specifier: ^4.17.24
         version: 4.17.24
       '@types/react':
-        specifier: ^17.0.91
-        version: 17.0.91
+        specifier: ^17.0.93
+        version: 17.0.93
       '@types/react-dom':
         specifier: ^17.0.26
-        version: 17.0.26(@types/react@17.0.91)
+        version: 17.0.26(@types/react@17.0.93)
       css-loader:
         specifier: ^6.11.0
         version: 6.11.0(webpack@5.106.2)
@@ -2880,7 +2883,7 @@ importers:
         version: 16.0.7(sass@1.99.0)(webpack@5.106.2)
       ts-jest:
         specifier: ^29.4.9
-        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))(typescript@5.9.3)
+        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.7
         version: 9.5.7(typescript@5.9.3)(webpack@5.106.2)
@@ -2913,7 +2916,7 @@ importers:
         version: 29.7.0
       ts-jest:
         specifier: ^29.4.9
-        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))(typescript@5.9.3)
+        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.7
         version: 9.5.7(typescript@5.9.3)(webpack@5.106.2)
@@ -2996,7 +2999,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.7.0
-        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))
       '@freelensapp/jest':
         specifier: workspace:^
         version: link:../../infrastructure/jest
@@ -3032,7 +3035,7 @@ importers:
         version: 5.2.0
       ts-jest:
         specifier: ^29.4.9
-        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))(typescript@5.9.3)
+        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.7
         version: 9.5.7(typescript@5.9.3)(webpack@5.106.2)
@@ -3091,7 +3094,7 @@ importers:
         version: link:../../infrastructure/webpack
       '@testing-library/react':
         specifier: ^12.1.5
-        version: 12.1.5(@types/react@17.0.91)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+        version: 12.1.5(@types/react@17.0.93)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       ts-loader:
         specifier: ^9.5.7
         version: 9.5.7(typescript@5.9.3)(webpack@5.106.2)
@@ -3110,7 +3113,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.7.0
-        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(babel-plugin-macros@3.1.0))
+        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))
       '@freelensapp/jest':
         specifier: workspace:^
         version: link:../../infrastructure/jest
@@ -3129,6 +3132,9 @@ importers:
       '@ogre-tools/injectable':
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(lodash@4.18.1)
+      '@types/node':
+        specifier: ~24.12.4
+        version: 24.12.4
       '@types/uuid':
         specifier: ^11.0.0
         version: 11.0.0
@@ -3146,7 +3152,7 @@ importers:
         version: 6.15.0
       ts-jest:
         specifier: ^29.4.9
-        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))(typescript@5.9.3)
+        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.7
         version: 9.5.7(typescript@5.9.3)(webpack@5.106.2)
@@ -3182,7 +3188,7 @@ importers:
         version: 29.7.0
       ts-jest:
         specifier: ^29.4.9
-        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))(typescript@5.9.3)
+        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.7
         version: 9.5.7(typescript@5.9.3)(webpack@5.106.2)
@@ -3200,7 +3206,7 @@ importers:
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(lodash@4.18.1))(lodash@4.18.1)(mobx-react@7.6.0(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       '@testing-library/react':
         specifier: ^12.1.5
-        version: 12.1.5(@types/react@17.0.91)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+        version: 12.1.5(@types/react@17.0.93)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       lodash:
         specifier: ^4.18.1
         version: 4.18.1
@@ -3230,8 +3236,8 @@ importers:
         specifier: ~24.12.4
         version: 24.12.4
       '@types/react':
-        specifier: ^17.0.91
-        version: 17.0.91
+        specifier: ^17.0.93
+        version: 17.0.93
       react-dom:
         specifier: ^17.0.2
         version: 17.0.2(react@17.0.2)
@@ -3297,8 +3303,8 @@ importers:
         specifier: ~24.12.4
         version: 24.12.4
       '@types/react':
-        specifier: ^17.0.91
-        version: 17.0.91
+        specifier: ^17.0.93
+        version: 17.0.93
       '@types/react-router':
         specifier: ^5.1.20
         version: 5.1.20
@@ -3319,7 +3325,7 @@ importers:
         version: 5.3.4(react@17.0.2)
       ts-jest:
         specifier: ^29.4.9
-        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))(typescript@5.9.3)
+        version: 29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3)
       ts-loader:
         specifier: ^9.5.7
         version: 9.5.7(typescript@5.9.3)(webpack@5.106.2)
@@ -4548,33 +4554,33 @@ packages:
   '@tsconfig/node16@1.0.4':
     resolution: {integrity: sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==}
 
-  '@turbo/darwin-64@2.9.16':
-    resolution: {integrity: sha512-jLjApWTSNd7JZ5JaLYfelW1ytnGQOvB7ivl+2RD1xQvJTbi8I9gBjzcga7tDZVPyaxpl10YTfJt3BrYXR18KDw==}
+  '@turbo/darwin-64@2.9.18':
+    resolution: {integrity: sha512-9f27peFu16ur8c0v9nUFUEyBnbKuuFsUTjHFWfmwGfzySBXbHwzU44QhZon6Mznz0cHsIr3984NQj/bVrnGSRw==}
     cpu: [x64]
     os: [darwin]
 
-  '@turbo/darwin-arm64@2.9.16':
-    resolution: {integrity: sha512-YPgrn+5HIGzrx0O2a631SV4MBQUe4W/DafMFUuBVgaU32PW9/OTT0ehviF0QSxTXuRJlHvW2eUTemddF5/spmw==}
+  '@turbo/darwin-arm64@2.9.18':
+    resolution: {integrity: sha512-9A6TMRq/Ib+QnbhLlgkhOm+624wO4pzSQ/yQviQfWHOlFvaYxdnIAYmu2H6TS6y7kSVL0DvzNe04NbESTOzFVQ==}
     cpu: [arm64]
     os: [darwin]
 
-  '@turbo/linux-64@2.9.16':
-    resolution: {integrity: sha512-vAEf1H6l26lTpl9FJ/peQo1NUB8RC0sbEJJz5mPcUhHA2bPDup2x3CZPgo/bH8S4cUcBLm4FN3UHd5iUO2RAew==}
+  '@turbo/linux-64@2.9.18':
+    resolution: {integrity: sha512-zCdIDtz69AnbYh913elJRRoF3QY5aa2HNnf+4rAkc7bQ+tWujiDkCNV7stazOUPggaDvhKIf2Z87qHftTeXSkw==}
     cpu: [x64]
     os: [linux]
 
-  '@turbo/linux-arm64@2.9.16':
-    resolution: {integrity: sha512-xDBLR2PZg4BrQOchfG6svgpv5FCNJ2TOtT2psLdEJcdKo1BH+pnPs9Xj6pvUjgfkHbuvBOfeE4R6tvxMoQKDHQ==}
+  '@turbo/linux-arm64@2.9.18':
+    resolution: {integrity: sha512-Va1kXI04naMgYwqv/5Dfa36dTDx8015U7oaQAjrXa45ua9OoFjSV4OmvkML4EmXvUclQHCiBRbY8bvd0jV7eAg==}
     cpu: [arm64]
     os: [linux]
 
-  '@turbo/windows-64@2.9.16':
-    resolution: {integrity: sha512-NBAJnaUiGdgkSzQwUIdOvkCkcpTSu58G/sBGa0mvBtzfvFOOgrQwepKOOQ8cp6sWM6OcKDNFj2p1dsZA1OWjPg==}
+  '@turbo/windows-64@2.9.18':
+    resolution: {integrity: sha512-m0kDhZANxSNz9ck1ybogFscHabriAsp4eDFNrN/1H5WrgTF7b3VlcPZnhuO3v2+E2KnCbeAc+UUT10BZZHdDKw==}
     cpu: [x64]
     os: [win32]
 
-  '@turbo/windows-arm64@2.9.16':
-    resolution: {integrity: sha512-Y7SJppD0Z8wjO3Ec0ZGd9KQ4Yv0BMnA8CIowj5Vp+OEVsosXDG2weK6/t1RRLfJmc2Ozrnd6y4DOgQys+mn3WQ==}
+  '@turbo/windows-arm64@2.9.18':
+    resolution: {integrity: sha512-nUdR8WqoomUys9iIQmG45TMiizJ+5BV8egSeLLZba/AWblyp3fVBcIH1kSE58OtK4g2YzbMJEth6Ttv9w5rqMA==}
     cpu: [arm64]
     os: [win32]
 
@@ -4789,8 +4795,8 @@ packages:
   '@types/react-window@1.8.8':
     resolution: {integrity: sha512-8Ls660bHR1AUA2kuRvVG9D/4XpRC6wjAaPT9dil7Ckc76eP9TKWZwwmgfq8Q1LANX3QNDnoU4Zp48A3w+zK69Q==}
 
-  '@types/react@17.0.91':
-    resolution: {integrity: sha512-xauZca6qMeCU3Moy0KxCM9jtf1vyk6qRYK39Ryf3afUqwgNUjRIGoDdS9BcGWgAMGSg1hvP4XcmlYrM66PtqeA==}
+  '@types/react@17.0.93':
+    resolution: {integrity: sha512-KM4Ty/ZTLZupiYxZVAlP+InNJS3De6uBMdq0ePa6/04+eG9Y7ftnWfst1xTLQ5rwAhgHwQ4momt/O4KepdGBTw==}
 
   '@types/responselike@1.0.0':
     resolution: {integrity: sha512-85Y2BjiufFzaMIlvJDvTTB8Fxl2xfLo4HgmHzVBz08w4wDePCTjYw66PdrolO0kzli3yam/YCgRufyo1DdQVTA==}
@@ -8737,8 +8743,8 @@ packages:
     resolution: {integrity: sha512-axr3IdNuVIxnaK5XGEUFTu3YmAQ6lllgrvqfEoR16g/HGnYY/6We4oWENtAnzK6/LpJ2ur9PAb80RBt7/U4ugw==}
     engines: {node: '>= 6.0.0'}
 
-  turbo@2.9.16:
-    resolution: {integrity: sha512-NqgRQy6j6dPYcdSdv0q1g9QsZg7SWg87RERM8otw/1AtKU2yTFVClOM7cbwKzOonZr/Ek1blTBucw64L9H0Bwg==}
+  turbo@2.9.18:
+    resolution: {integrity: sha512-bwabv6PupzeavybzEoArBAkwq5fnzwf8OFnRtpHwnviFWuwJPFxtyH+aVp36TmIqK3aYYgtTJ3J0m2ysxxSzQg==}
     hasBin: true
 
   type-check@0.3.2:
@@ -9209,7 +9215,7 @@ snapshots:
     dependencies:
       static-eval: 2.0.2
 
-  '@async-fn/jest@1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(babel-plugin-macros@3.1.0))':
+  '@async-fn/jest@1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))':
     dependencies:
       jest: 29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@24.12.4)(typescript@5.9.3))
 
@@ -9592,7 +9598,7 @@ snapshots:
 
   '@emotion/memoize@0.9.0': {}
 
-  '@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2)':
+  '@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2)':
     dependencies:
       '@babel/runtime': 7.28.4
       '@emotion/babel-plugin': 11.13.5
@@ -9604,7 +9610,7 @@ snapshots:
       hoist-non-react-statics: 3.3.2
       react: 17.0.2
     optionalDependencies:
-      '@types/react': 17.0.91
+      '@types/react': 17.0.93
     transitivePeerDependencies:
       - supports-color
 
@@ -9618,18 +9624,18 @@ snapshots:
 
   '@emotion/sheet@1.4.0': {}
 
-  '@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@types/react@17.0.91)(react@17.0.2)':
+  '@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2))(@types/react@17.0.93)(react@17.0.2)':
     dependencies:
       '@babel/runtime': 7.28.4
       '@emotion/babel-plugin': 11.13.5
       '@emotion/is-prop-valid': 1.4.0
-      '@emotion/react': 11.14.0(@types/react@17.0.91)(react@17.0.2)
+      '@emotion/react': 11.14.0(@types/react@17.0.93)(react@17.0.2)
       '@emotion/serialize': 1.3.3
       '@emotion/use-insertion-effect-with-fallbacks': 1.2.0(react@17.0.2)
       '@emotion/utils': 1.4.2
       react: 17.0.2
     optionalDependencies:
-      '@types/react': 17.0.91
+      '@types/react': 17.0.93
     transitivePeerDependencies:
       - supports-color
     optional: true
@@ -10098,13 +10104,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@mui/base@5.0.0-beta.13(@types/react@17.0.91)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)':
+  '@mui/base@5.0.0-beta.13(@types/react@17.0.93)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)':
     dependencies:
       '@babel/runtime': 7.28.4
       '@emotion/is-prop-valid': 1.4.0
       '@floating-ui/react-dom': 2.1.2(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
-      '@mui/types': 7.2.24(@types/react@17.0.91)
-      '@mui/utils': 5.17.1(@types/react@17.0.91)(react@17.0.2)
+      '@mui/types': 7.2.24(@types/react@17.0.93)
+      '@mui/utils': 5.17.1(@types/react@17.0.93)(react@17.0.2)
       '@popperjs/core': 2.11.8
       clsx: 2.1.1
       prop-types: 15.8.1
@@ -10112,37 +10118,37 @@ snapshots:
       react-dom: 17.0.2(react@17.0.2)
       react-is: 18.3.1
     optionalDependencies:
-      '@types/react': 17.0.91
+      '@types/react': 17.0.93
 
   '@mui/core-downloads-tracker@5.17.1': {}
 
-  '@mui/lab@5.0.0-alpha.142(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@types/react@17.0.91)(react@17.0.2))(@mui/material@5.17.1(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@types/react@17.0.91)(react@17.0.2))(@types/react@17.0.91)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(@types/react@17.0.91)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)':
+  '@mui/lab@5.0.0-alpha.142(@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2))(@types/react@17.0.93)(react@17.0.2))(@mui/material@5.17.1(@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2))(@types/react@17.0.93)(react@17.0.2))(@types/react@17.0.93)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(@types/react@17.0.93)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)':
     dependencies:
       '@babel/runtime': 7.28.4
-      '@mui/base': 5.0.0-beta.13(@types/react@17.0.91)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
-      '@mui/material': 5.17.1(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@types/react@17.0.91)(react@17.0.2))(@types/react@17.0.91)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
-      '@mui/system': 5.17.1(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@types/react@17.0.91)(react@17.0.2))(@types/react@17.0.91)(react@17.0.2)
-      '@mui/types': 7.2.24(@types/react@17.0.91)
-      '@mui/utils': 5.17.1(@types/react@17.0.91)(react@17.0.2)
+      '@mui/base': 5.0.0-beta.13(@types/react@17.0.93)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+      '@mui/material': 5.17.1(@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2))(@types/react@17.0.93)(react@17.0.2))(@types/react@17.0.93)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+      '@mui/system': 5.17.1(@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2))(@types/react@17.0.93)(react@17.0.2))(@types/react@17.0.93)(react@17.0.2)
+      '@mui/types': 7.2.24(@types/react@17.0.93)
+      '@mui/utils': 5.17.1(@types/react@17.0.93)(react@17.0.2)
       clsx: 2.1.1
       prop-types: 15.8.1
       react: 17.0.2
       react-dom: 17.0.2(react@17.0.2)
       react-is: 18.3.1
     optionalDependencies:
-      '@emotion/react': 11.14.0(@types/react@17.0.91)(react@17.0.2)
-      '@emotion/styled': 11.14.0(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@types/react@17.0.91)(react@17.0.2)
-      '@types/react': 17.0.91
+      '@emotion/react': 11.14.0(@types/react@17.0.93)(react@17.0.2)
+      '@emotion/styled': 11.14.0(@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2))(@types/react@17.0.93)(react@17.0.2)
+      '@types/react': 17.0.93
 
-  '@mui/material@5.17.1(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@types/react@17.0.91)(react@17.0.2))(@types/react@17.0.91)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)':
+  '@mui/material@5.17.1(@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2))(@types/react@17.0.93)(react@17.0.2))(@types/react@17.0.93)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)':
     dependencies:
       '@babel/runtime': 7.28.4
       '@mui/core-downloads-tracker': 5.17.1
-      '@mui/system': 5.17.1(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@types/react@17.0.91)(react@17.0.2))(@types/react@17.0.91)(react@17.0.2)
-      '@mui/types': 7.2.24(@types/react@17.0.91)
-      '@mui/utils': 5.17.1(@types/react@17.0.91)(react@17.0.2)
+      '@mui/system': 5.17.1(@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2))(@types/react@17.0.93)(react@17.0.2))(@types/react@17.0.93)(react@17.0.2)
+      '@mui/types': 7.2.24(@types/react@17.0.93)
+      '@mui/utils': 5.17.1(@types/react@17.0.93)(react@17.0.2)
       '@popperjs/core': 2.11.8
-      '@types/react-transition-group': 4.4.12(@types/react@17.0.91)
+      '@types/react-transition-group': 4.4.12(@types/react@17.0.93)
       clsx: 2.1.1
       csstype: 3.2.3
       prop-types: 15.8.1
@@ -10151,20 +10157,20 @@ snapshots:
       react-is: 19.0.0
       react-transition-group: 4.4.5(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
     optionalDependencies:
-      '@emotion/react': 11.14.0(@types/react@17.0.91)(react@17.0.2)
-      '@emotion/styled': 11.14.0(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@types/react@17.0.91)(react@17.0.2)
-      '@types/react': 17.0.91
+      '@emotion/react': 11.14.0(@types/react@17.0.93)(react@17.0.2)
+      '@emotion/styled': 11.14.0(@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2))(@types/react@17.0.93)(react@17.0.2)
+      '@types/react': 17.0.93
 
-  '@mui/private-theming@5.17.1(@types/react@17.0.91)(react@17.0.2)':
+  '@mui/private-theming@5.17.1(@types/react@17.0.93)(react@17.0.2)':
     dependencies:
       '@babel/runtime': 7.28.4
-      '@mui/utils': 5.17.1(@types/react@17.0.91)(react@17.0.2)
+      '@mui/utils': 5.17.1(@types/react@17.0.93)(react@17.0.2)
       prop-types: 15.8.1
       react: 17.0.2
     optionalDependencies:
-      '@types/react': 17.0.91
+      '@types/react': 17.0.93
 
-  '@mui/styled-engine@5.16.14(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@types/react@17.0.91)(react@17.0.2))(react@17.0.2)':
+  '@mui/styled-engine@5.16.14(@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2))(@types/react@17.0.93)(react@17.0.2))(react@17.0.2)':
     dependencies:
       '@babel/runtime': 7.28.4
       '@emotion/cache': 11.14.0
@@ -10172,40 +10178,40 @@ snapshots:
       prop-types: 15.8.1
       react: 17.0.2
     optionalDependencies:
-      '@emotion/react': 11.14.0(@types/react@17.0.91)(react@17.0.2)
-      '@emotion/styled': 11.14.0(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@types/react@17.0.91)(react@17.0.2)
+      '@emotion/react': 11.14.0(@types/react@17.0.93)(react@17.0.2)
+      '@emotion/styled': 11.14.0(@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2))(@types/react@17.0.93)(react@17.0.2)
 
-  '@mui/system@5.17.1(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@types/react@17.0.91)(react@17.0.2))(@types/react@17.0.91)(react@17.0.2)':
+  '@mui/system@5.17.1(@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2))(@types/react@17.0.93)(react@17.0.2))(@types/react@17.0.93)(react@17.0.2)':
     dependencies:
       '@babel/runtime': 7.28.4
-      '@mui/private-theming': 5.17.1(@types/react@17.0.91)(react@17.0.2)
-      '@mui/styled-engine': 5.16.14(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@types/react@17.0.91)(react@17.0.2))(react@17.0.2)
-      '@mui/types': 7.2.24(@types/react@17.0.91)
-      '@mui/utils': 5.17.1(@types/react@17.0.91)(react@17.0.2)
+      '@mui/private-theming': 5.17.1(@types/react@17.0.93)(react@17.0.2)
+      '@mui/styled-engine': 5.16.14(@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2))(@types/react@17.0.93)(react@17.0.2))(react@17.0.2)
+      '@mui/types': 7.2.24(@types/react@17.0.93)
+      '@mui/utils': 5.17.1(@types/react@17.0.93)(react@17.0.2)
       clsx: 2.1.1
       csstype: 3.2.3
       prop-types: 15.8.1
       react: 17.0.2
     optionalDependencies:
-      '@emotion/react': 11.14.0(@types/react@17.0.91)(react@17.0.2)
-      '@emotion/styled': 11.14.0(@emotion/react@11.14.0(@types/react@17.0.91)(react@17.0.2))(@types/react@17.0.91)(react@17.0.2)
-      '@types/react': 17.0.91
+      '@emotion/react': 11.14.0(@types/react@17.0.93)(react@17.0.2)
+      '@emotion/styled': 11.14.0(@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2))(@types/react@17.0.93)(react@17.0.2)
+      '@types/react': 17.0.93
 
-  '@mui/types@7.2.24(@types/react@17.0.91)':
+  '@mui/types@7.2.24(@types/react@17.0.93)':
     optionalDependencies:
-      '@types/react': 17.0.91
+      '@types/react': 17.0.93
 
-  '@mui/utils@5.17.1(@types/react@17.0.91)(react@17.0.2)':
+  '@mui/utils@5.17.1(@types/react@17.0.93)(react@17.0.2)':
     dependencies:
       '@babel/runtime': 7.28.4
-      '@mui/types': 7.2.24(@types/react@17.0.91)
+      '@mui/types': 7.2.24(@types/react@17.0.93)
       '@types/prop-types': 15.7.14
       clsx: 2.1.1
       prop-types: 15.8.1
       react: 17.0.2
       react-is: 19.0.0
     optionalDependencies:
-      '@types/react': 17.0.91
+      '@types/react': 17.0.93
 
   '@noble/hashes@1.4.0': {}
 
@@ -10567,11 +10573,11 @@ snapshots:
       picocolors: 1.1.1
       redent: 3.0.0
 
-  '@testing-library/react@12.1.5(@types/react@17.0.91)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)':
+  '@testing-library/react@12.1.5(@types/react@17.0.93)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)':
     dependencies:
       '@babel/runtime': 7.28.4
       '@testing-library/dom': 8.20.1
-      '@types/react-dom': 17.0.26(@types/react@17.0.91)
+      '@types/react-dom': 17.0.26(@types/react@17.0.93)
       react: 17.0.2
       react-dom: 17.0.2(react@17.0.2)
     transitivePeerDependencies:
@@ -10591,22 +10597,22 @@ snapshots:
 
   '@tsconfig/node16@1.0.4': {}
 
-  '@turbo/darwin-64@2.9.16':
+  '@turbo/darwin-64@2.9.18':
     optional: true
 
-  '@turbo/darwin-arm64@2.9.16':
+  '@turbo/darwin-arm64@2.9.18':
     optional: true
 
-  '@turbo/linux-64@2.9.16':
+  '@turbo/linux-64@2.9.18':
     optional: true
 
-  '@turbo/linux-arm64@2.9.16':
+  '@turbo/linux-arm64@2.9.18':
     optional: true
 
-  '@turbo/windows-64@2.9.16':
+  '@turbo/windows-64@2.9.18':
     optional: true
 
-  '@turbo/windows-arm64@2.9.16':
+  '@turbo/windows-arm64@2.9.18':
     optional: true
 
   '@types/aria-query@5.0.1': {}
@@ -10754,7 +10760,7 @@ snapshots:
 
   '@types/hoist-non-react-statics@3.3.1':
     dependencies:
-      '@types/react': 17.0.91
+      '@types/react': 17.0.93
       hoist-non-react-statics: 3.3.2
 
   '@types/html-minifier-terser@6.1.0': {}
@@ -10846,43 +10852,43 @@ snapshots:
 
   '@types/react-beautiful-dnd@13.1.8':
     dependencies:
-      '@types/react': 17.0.91
+      '@types/react': 17.0.93
 
-  '@types/react-dom@17.0.26(@types/react@17.0.91)':
+  '@types/react-dom@17.0.26(@types/react@17.0.93)':
     dependencies:
-      '@types/react': 17.0.91
+      '@types/react': 17.0.93
 
   '@types/react-redux@7.1.25':
     dependencies:
       '@types/hoist-non-react-statics': 3.3.1
-      '@types/react': 17.0.91
+      '@types/react': 17.0.93
       hoist-non-react-statics: 3.3.2
       redux: 4.2.1
 
   '@types/react-router-dom@5.3.3':
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 17.0.91
+      '@types/react': 17.0.93
       '@types/react-router': 5.1.20
 
   '@types/react-router@5.1.20':
     dependencies:
       '@types/history': 4.7.11
-      '@types/react': 17.0.91
+      '@types/react': 17.0.93
 
   '@types/react-table@7.7.20':
     dependencies:
-      '@types/react': 17.0.91
+      '@types/react': 17.0.93
 
-  '@types/react-transition-group@4.4.12(@types/react@17.0.91)':
+  '@types/react-transition-group@4.4.12(@types/react@17.0.93)':
     dependencies:
-      '@types/react': 17.0.91
+      '@types/react': 17.0.93
 
   '@types/react-window@1.8.8':
     dependencies:
-      '@types/react': 17.0.91
+      '@types/react': 17.0.93
 
-  '@types/react@17.0.91':
+  '@types/react@17.0.93':
     dependencies:
       '@types/prop-types': 15.7.14
       '@types/scheduler': 0.16.3
@@ -14445,19 +14451,19 @@ snapshots:
     dependencies:
       '@testing-library/dom': 10.4.1
 
-  react-select@5.10.2(@types/react@17.0.91)(react-dom@17.0.2(react@17.0.2))(react@17.0.2):
+  react-select@5.10.2(@types/react@17.0.93)(react-dom@17.0.2(react@17.0.2))(react@17.0.2):
     dependencies:
       '@babel/runtime': 7.28.4
       '@emotion/cache': 11.14.0
-      '@emotion/react': 11.14.0(@types/react@17.0.91)(react@17.0.2)
+      '@emotion/react': 11.14.0(@types/react@17.0.93)(react@17.0.2)
       '@floating-ui/dom': 1.2.8
-      '@types/react-transition-group': 4.4.12(@types/react@17.0.91)
+      '@types/react-transition-group': 4.4.12(@types/react@17.0.93)
       memoize-one: 6.0.0
       prop-types: 15.8.1
       react: 17.0.2
       react-dom: 17.0.2(react@17.0.2)
       react-transition-group: 4.4.5(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
-      use-isomorphic-layout-effect: 1.2.1(@types/react@17.0.91)(react@17.0.2)
+      use-isomorphic-layout-effect: 1.2.1(@types/react@17.0.93)(react@17.0.2)
     transitivePeerDependencies:
       - '@types/react'
       - supports-color
@@ -15198,7 +15204,7 @@ snapshots:
     optionalDependencies:
       typescript: 5.9.3
 
-  ts-jest@29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))(typescript@5.9.3):
+  ts-jest@29.4.9(@babel/core@7.26.9)(@jest/transform@29.7.0)(@jest/types@29.6.3)(babel-jest@29.7.0(@babel/core@7.26.9))(jest-util@29.7.0)(jest@29.7.0(babel-plugin-macros@3.1.0))(typescript@5.9.3):
     dependencies:
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
@@ -15260,14 +15266,14 @@ snapshots:
     dependencies:
       tslib: 1.14.1
 
-  turbo@2.9.16:
+  turbo@2.9.18:
     optionalDependencies:
-      '@turbo/darwin-64': 2.9.16
-      '@turbo/darwin-arm64': 2.9.16
-      '@turbo/linux-64': 2.9.16
-      '@turbo/linux-arm64': 2.9.16
-      '@turbo/windows-64': 2.9.16
-      '@turbo/windows-arm64': 2.9.16
+      '@turbo/darwin-64': 2.9.18
+      '@turbo/darwin-arm64': 2.9.18
+      '@turbo/linux-64': 2.9.18
+      '@turbo/linux-arm64': 2.9.18
+      '@turbo/windows-64': 2.9.18
+      '@turbo/windows-arm64': 2.9.18
 
   type-check@0.3.2:
     dependencies:
@@ -15377,11 +15383,11 @@ snapshots:
       querystringify: 2.2.0
       requires-port: 1.0.0
 
-  use-isomorphic-layout-effect@1.2.1(@types/react@17.0.91)(react@17.0.2):
+  use-isomorphic-layout-effect@1.2.1(@types/react@17.0.93)(react@17.0.2):
     dependencies:
       react: 17.0.2
     optionalDependencies:
-      '@types/react': 17.0.91
+      '@types/react': 17.0.93
 
   use-memo-one@1.1.3(react@17.0.2):
     dependencies:
