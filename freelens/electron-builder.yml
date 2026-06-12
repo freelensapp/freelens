@@ -19,6 +19,7 @@ files:
   - "!node_modules/electron"
 
 ## Notarization
+afterPack: build/prune-unused-native-binaries.js
 afterSign: build/notarize.js
 
 ## Used to register the app as a handler for the freelens:// protocol

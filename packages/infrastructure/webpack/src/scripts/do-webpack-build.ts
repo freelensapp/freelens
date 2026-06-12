@@ -20,7 +20,13 @@ export const doWebpackBuildInjectable = getInjectable({
       execResult.stderr?.on("data", logWarning);
 
       return new Promise<void>((resolve) => {
-        execResult.on("exit", resolve);
+        execResult.on("exit", (code: number | null) => {
+          if (code !== 0) {
+            process.exitCode = code ?? 1;
+          }
+
+          resolve();
+        });
       });
     };
   },

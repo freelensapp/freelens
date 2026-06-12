@@ -77,6 +77,10 @@ const userPreferenceDescriptorsInjectable = getInjectable({
         fromStore: (val) => (!val || !packageMirrors.has(val) ? defaultPackageMirror : val),
         toStore: (val) => (val === defaultPackageMirror ? undefined : val),
       }),
+      downloadCustomMirror: getPreferenceDescriptor<string>({
+        fromStore: (val) => val || "",
+        toStore: (val) => val || undefined,
+      }),
       downloadKubectlBinaries: getPreferenceDescriptor<boolean>({
         fromStore: (val) => val ?? true,
         toStore: (val) => (val ? undefined : val),
@@ -148,16 +152,33 @@ const userPreferenceDescriptorsInjectable = getInjectable({
           return res.length ? res : undefined;
         },
       }),
-      syncKubeconfigEntries: getPreferenceDescriptor<KubeconfigSyncEntry[], ObservableMap<string, KubeconfigSyncValue>>(
-        {
-          fromStore: (val) =>
-            observable.map(val?.map(({ filePath, ...rest }) => [filePath, rest]) ?? [[mainKubeFolderPath, {}]]),
+      syncKubeconfigEntries: (() => {
+        const map = observable.map<string, KubeconfigSyncValue>();
+
+        return getPreferenceDescriptor<KubeconfigSyncEntry[], ObservableMap<string, KubeconfigSyncValue>>({
+          fromStore: (val) => {
+            const entries = val?.map(({ filePath, ...rest }) => [filePath, rest] as const) ?? [
+              [mainKubeFolderPath, {} as KubeconfigSyncValue] as const,
+            ];
+            const desired = new Map(entries);
+
+            for (const key of Array.from(map.keys())) {
+              if (!desired.has(key)) {
+                map.delete(key);
+              }
+            }
+            for (const [key, value] of desired) {
+              map.set(key, value);
+            }
+
+            return map;
+          },
           toStore: (val) =>
             val.size === 1 && val.has(mainKubeFolderPath)
               ? undefined
               : Array.from(val, ([filePath, rest]) => ({ filePath, ...rest })),
-        },
-      ),
+        });
+      })(),
       editorConfiguration: getPreferenceDescriptor<Partial<EditorConfiguration>, EditorConfiguration>({
         fromStore: (val) => merge(defaultEditorConfig, val),
         toStore: (val) => val,
