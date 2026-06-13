@@ -57,7 +57,7 @@
   },
   "config": {
     "bundledHelmVersion": "4.2.1",
-    "bundledKubectlVersion": "1.36.1",
+    "bundledKubectlVersion": "1.36.2",
     "contentSecurityPolicy": "script-src 'unsafe-eval' 'self'; frame-src https://*.renderer.freelens.app:*/; img-src * data:",
     "k8sProxyVersion": "1.6.1",
     "welcomeRoute": "/welcome"
