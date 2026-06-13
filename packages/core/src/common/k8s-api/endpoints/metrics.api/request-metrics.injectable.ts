@@ -23,7 +23,13 @@ export interface RequestMetricsParams {
 
   /**
    * step in seconds
-   * @default 60 (1 minute)
+   * When not provided, automatically calculated based on time range:
+   * - <= 4 hours: 60s (1 minute)
+   * - <= 1 day: 600s (10 minutes)
+   * - <= 4 days: 3600s (1 hour)
+   * - <= 14 days: 10800s (3 hours)
+   * - <= 30 days: 21600s (6 hours)
+   * - > 30 days: 43200s (12 hours)
    */
   step?: number;
 
@@ -41,10 +47,53 @@ export interface RequestMetricsParams {
 
 export type RequestMetrics = ReturnType<(typeof requestMetricsInjectable)["instantiate"]>;
 
+function normalizeTimestampToUnixSeconds(value: number | string | undefined): number | undefined {
+  if (typeof value === "number") {
+    return value;
+  }
+
+  if (typeof value !== "string") {
+    return undefined;
+  }
+
+  const milliseconds = Date.parse(value);
+
+  if (!Number.isFinite(milliseconds)) {
+    return undefined;
+  }
+
+  return Math.floor(milliseconds / 1000);
+}
+
+/**
+ * Calculate adaptive step based on time range to avoid excessive data points.
+ * The policy favors UI responsiveness for large ranges by aggressively downsampling.
+ *
+ * @param rangeSeconds - Time range in seconds
+ * @returns Appropriate step in seconds
+ */
+function calculateAdaptiveStep(rangeSeconds: number): number {
+  const HOUR = 3_600;
+  const DAY = 24 * HOUR;
+
+  // Keep point count bounded as time range grows.
+  if (rangeSeconds <= 4 * HOUR) return 60; // 1m  (max ~240 pts)
+  if (rangeSeconds <= DAY) return 10 * 60; // 10m (max ~144 pts)
+  if (rangeSeconds <= 4 * DAY) return HOUR; // 1h
+  if (rangeSeconds <= 14 * DAY) return 3 * HOUR; // 3h
+  if (rangeSeconds <= 30 * DAY) return 6 * HOUR; // 6h
+
+  return 12 * HOUR; // > 30d
+}
+
 const requestMetricsInjectable = getInjectable({
   id: "request-metrics",
   instantiate: (di) => {
     const apiBase = di.inject(apiBaseInjectable);
+    const inFlightRequests = new Map<
+      string,
+      Promise<MetricData | MetricData[] | Partial<Record<string, MetricData>>>
+    >();
 
     function requestMetrics(query: string, params?: RequestMetricsParams): Promise<MetricData>;
     function requestMetrics(query: string[], params?: RequestMetricsParams): Promise<MetricData[]>;
@@ -56,8 +105,8 @@ const requestMetricsInjectable = getInjectable({
       query: string | string[] | Partial<Record<string, Partial<Record<string, string>>>>,
       params: RequestMetricsParams = {},
     ): Promise<MetricData | MetricData[] | Partial<Record<string, MetricData>>> {
-      const { range = 3600, step = 60, namespace } = params;
-      let { start, end } = params;
+      const { range = 3600, namespace } = params;
+      let { start, end, step } = params;
 
       if (!start && !end) {
         const now = getSecondsFromUnixEpoch();
@@ -66,15 +115,56 @@ const requestMetricsInjectable = getInjectable({
         end = now;
       }
 
-      return apiBase.post("/metrics", {
-        data: query,
-        query: {
-          start,
-          end,
-          step,
-          kubernetes_namespace: namespace,
-        },
+      const normalizedStart = normalizeTimestampToUnixSeconds(start);
+      const normalizedEnd = normalizeTimestampToUnixSeconds(end);
+
+      if (normalizedStart !== undefined) {
+        start = normalizedStart;
+      }
+
+      if (normalizedEnd !== undefined) {
+        end = normalizedEnd;
+      }
+
+      // Calculate actual range in seconds
+      const actualRange =
+        normalizedStart !== undefined && normalizedEnd !== undefined ? normalizedEnd - normalizedStart : range;
+
+      // Use adaptive step if not explicitly provided
+      if (step === undefined) {
+        step = calculateAdaptiveStep(actualRange);
+      }
+
+      const requestKey = JSON.stringify({
+        query,
+        start,
+        end,
+        step,
+        namespace,
       });
+      const existingRequest = inFlightRequests.get(requestKey);
+
+      if (existingRequest) {
+        return existingRequest;
+      }
+
+      const requestPromise = apiBase
+        .post("/metrics", {
+          data: query,
+          query: {
+            start,
+            end,
+            step,
+            kubernetes_namespace: namespace,
+          },
+        })
+        .finally(() => {
+          inFlightRequests.delete(requestKey);
+        });
+
+      inFlightRequests.set(requestKey, requestPromise);
+
+      return requestPromise;
     }
 
     return requestMetrics;

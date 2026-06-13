@@ -4,29 +4,26 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import { asyncComputed } from "@ogre-tools/injectable-react";
-import { now } from "mobx-utils";
 import requestPodMetricsInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-pod-metrics.injectable";
+import { createTimeRangedMetricsInjectable } from "../resource-metrics/create-time-ranged-metrics";
 
 import type { Pod } from "@freelensapp/kube-object";
 
-const podMetricsInjectable = getInjectable({
+interface PodMetricsInjectableParams {
+  pod: Pod;
+}
+
+const podMetricsInjectable = createTimeRangedMetricsInjectable({
   id: "pod-metrics",
-  instantiate: (di, pod) => {
-    const requestPodMetrics = di.inject(requestPodMetricsInjectable);
-
-    return asyncComputed({
-      getValueFromObservedPromise: () => {
-        now(60 * 1000);
-
-        return requestPodMetrics([pod], pod.getNs());
-      },
-    });
-  },
-  lifecycle: lifecycleEnum.keyedSingleton({
-    getInstanceKey: (di, pod: Pod) => pod.getId(),
-  }),
+  getObject: ({ pod }: PodMetricsInjectableParams) => pod,
+  getObjectId: (pod) => pod.getId(),
+  request: ({ di, object: pod, start, end, range }) =>
+    di.inject(requestPodMetricsInjectable)([pod], pod.getNs(), undefined, "pod, namespace", {
+      start,
+      end,
+      range,
+      metrics: ["cpuUsage", "memoryUsage", "fsUsage", "fsWrites", "fsReads", "networkReceive", "networkTransmit"],
+    }),
 });
 
 export default podMetricsInjectable;

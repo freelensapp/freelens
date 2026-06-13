@@ -4,29 +4,25 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import { asyncComputed } from "@ogre-tools/injectable-react";
-import { now } from "mobx-utils";
 import requestPodMetricsForJobsInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-pod-metrics-for-jobs.injectable";
+import { createTimeRangedMetricsInjectable } from "../resource-metrics/create-time-ranged-metrics";
 
 import type { Job } from "@freelensapp/kube-object";
 
-const jobMetricsInjectable = getInjectable({
+interface JobMetricsInjectableParams {
+  job: Job;
+}
+
+const jobMetricsInjectable = createTimeRangedMetricsInjectable({
   id: "job-metrics",
-  instantiate: (di, job) => {
-    const requestPodMetricsForJobs = di.inject(requestPodMetricsForJobsInjectable);
-
-    return asyncComputed({
-      getValueFromObservedPromise: () => {
-        now(60 * 1000);
-
-        return requestPodMetricsForJobs([job], job.getNs());
-      },
-    });
-  },
-  lifecycle: lifecycleEnum.keyedSingleton({
-    getInstanceKey: (di, job: Job) => job.getId(),
-  }),
+  getObject: ({ job }: JobMetricsInjectableParams) => job,
+  getObjectId: (job) => job.getId(),
+  request: ({ di, object: job, start, end, range }) =>
+    di.inject(requestPodMetricsForJobsInjectable)([job], job.getNs(), undefined, {
+      start,
+      end,
+      range,
+    }),
 });
 
 export default jobMetricsInjectable;
