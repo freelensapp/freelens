@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/startable-stoppable",
-  "version": "1.8.2-0",
+  "version": "1.10.0-0",
   "private": false,
   "description": "TBD",
   "homepage": "https://freelens.app",
@@ -35,7 +35,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "ts-jest": "^29.4.9",
     "ts-loader": "^9.5.7",
-    "webpack": "^5.105.4"
+    "webpack": "^5.106.2"
   },
   "publishConfig": {
     "access": "public",

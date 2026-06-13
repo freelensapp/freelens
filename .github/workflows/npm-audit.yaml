@@ -21,8 +21,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - runs-on: ubuntu-22.04
-            arch: x64
+          - runs-on: ubuntu-24.04-arm
+            arch: arm64
 
     runs-on: ${{ matrix.runs-on }}
     environment: automated
@@ -58,7 +58,7 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ${{ env.pnpm_cache_dir }}
-          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-node-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
             ${{ matrix.runs-on }}-${{ matrix.arch }}-node-
 

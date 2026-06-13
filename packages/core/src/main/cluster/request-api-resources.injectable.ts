@@ -55,7 +55,9 @@ const requestApiResourcesInjectable = getInjectable({
           return result;
         }
 
-        groupLists.push(...result.response);
+        for (const item of result.response) {
+          groupLists.push(item);
+        }
       }
 
       const apiResourceRequests = groupLists.map(async (listGroup) =>
@@ -73,7 +75,9 @@ const requestApiResourcesInjectable = getInjectable({
           continue;
         }
 
-        resources.push(...result.response);
+        for (const item of result.response) {
+          resources.push(item);
+        }
       }
 
       return {

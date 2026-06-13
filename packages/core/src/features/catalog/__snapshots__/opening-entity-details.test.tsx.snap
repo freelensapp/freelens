@@ -253,6 +253,26 @@ exports[`opening catalog entity details panel renders 1`] = `
               >
                 <div
                   class="Avatar rounded disabled avatar"
+                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                >
+                  WP
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="HotbarCell isDraggingOwner animateDown"
+            index="1"
+          >
+            <div
+              style="z-index: 11; position: absolute;"
+            >
+              <div
+                class="HotbarIcon contextMenuAvailable"
+              >
+                <div
+                  class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
                   style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
                 >
@@ -261,10 +281,6 @@ exports[`opening catalog entity details panel renders 1`] = `
               </div>
             </div>
           </div>
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
-          />
           <div
             class="HotbarCell isDraggingOwner animateDown"
             index="2"
@@ -1111,6 +1127,26 @@ exports[`opening catalog entity details panel when navigated to the catalog rend
               >
                 <div
                   class="Avatar rounded disabled avatar"
+                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                >
+                  WP
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="HotbarCell isDraggingOwner animateDown"
+            index="1"
+          >
+            <div
+              style="z-index: 11; position: absolute;"
+            >
+              <div
+                class="HotbarIcon contextMenuAvailable"
+              >
+                <div
+                  class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
                   style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
                 >
@@ -1119,10 +1155,6 @@ exports[`opening catalog entity details panel when navigated to the catalog rend
               </div>
             </div>
           </div>
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
-          />
           <div
             class="HotbarCell isDraggingOwner animateDown"
             index="2"
@@ -1969,6 +2001,26 @@ exports[`opening catalog entity details panel when navigated to the catalog when
               >
                 <div
                   class="Avatar rounded disabled avatar"
+                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                >
+                  WP
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="HotbarCell isDraggingOwner animateDown"
+            index="1"
+          >
+            <div
+              style="z-index: 11; position: absolute;"
+            >
+              <div
+                class="HotbarIcon contextMenuAvailable"
+              >
+                <div
+                  class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
                   style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
                 >
@@ -1977,10 +2029,6 @@ exports[`opening catalog entity details panel when navigated to the catalog when
               </div>
             </div>
           </div>
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
-          />
           <div
             class="HotbarCell isDraggingOwner animateDown"
             index="2"
@@ -2859,6 +2907,26 @@ exports[`opening catalog entity details panel when navigated to the catalog when
               >
                 <div
                   class="Avatar rounded disabled avatar"
+                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                >
+                  WP
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="HotbarCell isDraggingOwner animateDown"
+            index="1"
+          >
+            <div
+              style="z-index: 11; position: absolute;"
+            >
+              <div
+                class="HotbarIcon contextMenuAvailable"
+              >
+                <div
+                  class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
                   style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
                 >
@@ -2867,10 +2935,6 @@ exports[`opening catalog entity details panel when navigated to the catalog when
               </div>
             </div>
           </div>
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
-          />
           <div
             class="HotbarCell isDraggingOwner animateDown"
             index="2"
@@ -3749,6 +3813,26 @@ exports[`opening catalog entity details panel when navigated to the catalog when
               >
                 <div
                   class="Avatar rounded disabled avatar"
+                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                >
+                  WP
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="HotbarCell isDraggingOwner animateDown"
+            index="1"
+          >
+            <div
+              style="z-index: 11; position: absolute;"
+            >
+              <div
+                class="HotbarIcon contextMenuAvailable"
+              >
+                <div
+                  class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
                   style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
                 >
@@ -3757,10 +3841,6 @@ exports[`opening catalog entity details panel when navigated to the catalog when
               </div>
             </div>
           </div>
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
-          />
           <div
             class="HotbarCell isDraggingOwner animateDown"
             index="2"
@@ -4890,6 +4970,26 @@ exports[`opening catalog entity details panel when navigated to the catalog when
               >
                 <div
                   class="Avatar rounded disabled avatar"
+                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                >
+                  WP
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="HotbarCell isDraggingOwner animateDown"
+            index="1"
+          >
+            <div
+              style="z-index: 11; position: absolute;"
+            >
+              <div
+                class="HotbarIcon contextMenuAvailable"
+              >
+                <div
+                  class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
                   style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
                 >
@@ -4898,10 +4998,6 @@ exports[`opening catalog entity details panel when navigated to the catalog when
               </div>
             </div>
           </div>
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
-          />
           <div
             class="HotbarCell isDraggingOwner animateDown"
             index="2"
@@ -5768,6 +5864,26 @@ exports[`opening catalog entity details panel when navigated to the catalog when
               >
                 <div
                   class="Avatar rounded disabled avatar"
+                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                >
+                  WP
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="HotbarCell isDraggingOwner animateDown"
+            index="1"
+          >
+            <div
+              style="z-index: 11; position: absolute;"
+            >
+              <div
+                class="HotbarIcon contextMenuAvailable"
+              >
+                <div
+                  class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
                   style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
                 >
@@ -5776,10 +5892,6 @@ exports[`opening catalog entity details panel when navigated to the catalog when
               </div>
             </div>
           </div>
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
-          />
           <div
             class="HotbarCell isDraggingOwner animateDown"
             index="2"
@@ -6646,6 +6758,26 @@ exports[`opening catalog entity details panel when navigated to the catalog when
               >
                 <div
                   class="Avatar rounded disabled avatar"
+                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                >
+                  WP
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="HotbarCell isDraggingOwner animateDown"
+            index="1"
+          >
+            <div
+              style="z-index: 11; position: absolute;"
+            >
+              <div
+                class="HotbarIcon contextMenuAvailable"
+              >
+                <div
+                  class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
                   style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
                 >
@@ -6654,10 +6786,6 @@ exports[`opening catalog entity details panel when navigated to the catalog when
               </div>
             </div>
           </div>
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
-          />
           <div
             class="HotbarCell isDraggingOwner animateDown"
             index="2"
@@ -7199,6 +7327,26 @@ exports[`opening catalog entity details panel when not navigated to the catalog 
               >
                 <div
                   class="Avatar rounded disabled avatar"
+                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                >
+                  WP
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="HotbarCell isDraggingOwner animateDown"
+            index="1"
+          >
+            <div
+              style="z-index: 11; position: absolute;"
+            >
+              <div
+                class="HotbarIcon contextMenuAvailable"
+              >
+                <div
+                  class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
                   style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
                 >
@@ -7207,10 +7355,6 @@ exports[`opening catalog entity details panel when not navigated to the catalog 
               </div>
             </div>
           </div>
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
-          />
           <div
             class="HotbarCell isDraggingOwner animateDown"
             index="2"

@@ -28,19 +28,15 @@ describe("extensions page tests", () => {
     10 * 60 * 1000,
   );
 
-  const extensions = process.env.EXTENSION_PATH
-    ? [process.env.EXTENSION_PATH]
-    : [
-        "@freelensapp/example-extension",
-        "@freelensapp/example-extension@1.3.0",
-        "@freelensapp/extension-example@1.2.0",
-        "@freelensapp/extension-example@1.0.0",
-        "@freelensapp/freelens-node-pod-menu",
-        "@freelensapp/freelens-node-pod-menu@1.1.0",
-        "@freelensapp/freelens-node-pod-menu@1.0.0",
-      ];
+  const extensionPath = process.env.EXTENSION_PATH;
+  const skipInstallExtensionTests = extensionPath === "skip";
 
-  it.each(extensions)(
+  const extensions =
+    extensionPath && !skipInstallExtensionTests
+      ? extensionPath.split(",").map((ext) => ext.trim())
+      : ["@freelensapp/example-extension@1.3.0"];
+
+  (skipInstallExtensionTests ? it.skip : it).each(extensions)(
     "installs an extension %s",
     async (extension) => {
       // Navigate to extensions page

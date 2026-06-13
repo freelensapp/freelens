@@ -19,7 +19,7 @@ jobs:
   create-tag:
     name: tag
 
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-24.04-arm
     environment: automated
     timeout-minutes: 10
 
@@ -51,7 +51,7 @@ jobs:
 
       - name: Create tag from the main branch
         if: steps.check-version.outputs.is_release == 'true'
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const mainRef = await github.rest.git.getRef({

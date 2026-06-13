@@ -1,7 +1,7 @@
 {
   // Ignore mismatch for Biome version to make Renovate updates without error
   // trunk-ignore(biome/deserialize)
-  "$schema": "https://biomejs.dev/schemas/2.4.10/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.5.0/schema.json",
   "assist": {
     "actions": {
       "source": {
@@ -77,7 +77,7 @@
         "noUnusedVariables": "off",
         "useExhaustiveDependencies": "off"
       },
-      "recommended": false,
+      "preset": "none",
       "style": {
         "noNamespace": "error",
         // should be error later

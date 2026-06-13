@@ -191,7 +191,7 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
   componentDidMount() {
     try {
       this.createEditor();
-      this.logger.info(`[MONACO]: editor did mount`, this.logMetadata);
+      this.logger.debug(`[MONACO]: editor did mount`, this.logMetadata);
     } catch (error) {
       this.logger.error(`[MONACO]: mounting failed: ${error}`, this.logMetadata);
     }
@@ -224,7 +224,7 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
       ...this.options,
     });
 
-    this.logger.info(`[MONACO]: editor created for language=${language}, theme=${theme}`, this.logMetadata);
+    this.logger.debug(`[MONACO]: editor created for language=${language}, theme=${theme}`, this.logMetadata);
     this.validateLazy(); // validate initial value
     this.restoreViewState(this.model); // restore previous state if any
 

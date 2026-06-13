@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/test-utils",
-  "version": "1.8.2-0",
+  "version": "1.10.0-0",
   "private": false,
   "description": "A collection of utilities for testing",
   "homepage": "https://freelens.app",
@@ -42,11 +42,11 @@
     "@freelensapp/webpack": "workspace:^",
     "@types/jest": "^29.5.14",
     "@types/lodash": "^4.17.24",
-    "@types/node": "~22.19.17",
-    "@types/react": "^17.0.91",
+    "@types/node": "~24.12.4",
+    "@types/react": "^17.0.93",
     "react-dom": "^17.0.2",
     "ts-loader": "^9.5.7",
-    "webpack": "^5.105.4"
+    "webpack": "^5.106.2"
   },
   "publishConfig": {
     "access": "public",

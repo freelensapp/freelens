@@ -29,26 +29,30 @@ async function fetchDirectMetrics(
   cluster: Cluster,
   prometheusPrefix: string,
   directUrl: string,
-  body: URLSearchParams,
+  requestMethod: "GET" | "POST",
+  params: URLSearchParams,
 ): Promise<unknown> {
-  const url = `${directUrl.replace(/\/+$/, "")}${prometheusPrefix}/api/v1/query_range`;
-  const headers: Record<string, string> = {
-    "Content-Type": "application/x-www-form-urlencoded",
-  };
+  const queryRangePath = `${directUrl.replace(/\/+$/, "")}${prometheusPrefix}/api/v1/query_range`;
+  const url = requestMethod === "GET" ? `${queryRangePath}?${params.toString()}` : queryRangePath;
+  const headers: Record<string, string> = {};
   const bearerToken = cluster.preferences.prometheus?.bearerToken;
 
   if (bearerToken) {
     headers.Authorization = `Bearer ${bearerToken}`;
   }
 
+  if (requestMethod === "POST") {
+    headers["Content-Type"] = "application/x-www-form-urlencoded;charset=UTF-8";
+  }
+
   const response = await proxyFetch(url, {
-    method: "POST",
+    method: requestMethod,
     headers,
-    body: body.toString(),
+    body: requestMethod === "POST" ? params.toString() : undefined,
   });
 
   if (!response.ok) {
-    throw new Error(`Failed to POST ${url} for clusterId=${cluster.id}: ${response.statusText}`, {
+    throw new Error(`Failed to ${requestMethod} ${url} for clusterId=${cluster.id}: ${response.statusText}`, {
       cause: response,
     });
   }
@@ -65,24 +69,35 @@ const getMetricsInjectable = getInjectable({
 
     return async (cluster, prometheusPath, queryParams) => {
       const prometheusPrefix = cluster.preferences.prometheus?.prefix || "";
-      const body = new URLSearchParams();
+      const requestMethod = cluster.preferences.prometheusRequestMethod === "GET" ? "GET" : "POST";
+      const params = new URLSearchParams();
 
       for (const [key, value] of object.entries(queryParams)) {
-        body.append(key, value.toString());
+        params.append(key, value.toString());
       }
 
       const directUrl = cluster.preferences.prometheus?.directUrl;
 
       if (directUrl) {
-        return fetchDirectMetrics(proxyFetch, cluster, prometheusPrefix, directUrl, body);
+        return fetchDirectMetrics(proxyFetch, cluster, prometheusPrefix, directUrl, requestMethod, params);
       }
 
-      const metricsPath = `/api/v1/namespaces/${prometheusPath}/proxy${prometheusPrefix}/api/v1/query_range`;
+      const queryRangePath = `/api/v1/namespaces/${prometheusPath}/proxy${prometheusPrefix}/api/v1/query_range`;
 
-      return k8sRequest(cluster, metricsPath, {
+      if (requestMethod === "GET") {
+        return k8sRequest(cluster, `${queryRangePath}?${params.toString()}`, {
+          timeout: 0,
+          method: "GET",
+        });
+      }
+
+      return k8sRequest(cluster, queryRangePath, {
         timeout: 0,
         method: "POST",
-        body,
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8",
+        },
+        body: params.toString(),
       });
     };
   },
