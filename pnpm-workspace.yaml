@@ -24,6 +24,7 @@ packages:
 
 patchedDependencies:
   '@async-fn/jest': patches/@async-fn__jest.patch
+  '@xterm/xterm@6.0.0': patches/@xterm__xterm@6.0.0.patch
   circular-dependency-plugin: patches/circular-dependency-plugin.patch
 
 publicHoistPattern:

@@ -36,11 +36,18 @@ jobs:
   claude:
     if: |
       github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
-      (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
-      (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude')) ||
-      (github.event_name == 'issues' && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude')))
-
+      (
+        (
+          (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
+          (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
+          (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude')) ||
+          (github.event_name == 'issues' && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude')))
+        ) &&
+        contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'),
+          github.event.comment.author_association ||
+          github.event.review.author_association ||
+          github.event.issue.author_association)
+      )
     strategy:
       fail-fast: false
       matrix:
@@ -140,19 +147,20 @@ jobs:
           INPUT_PROMPT: ${{ toJSON(github.event.inputs.prompt) }}
           CREATE_PR: ${{ github.event.inputs.create-pr }}
 
-      - name: Parse model from comment
+      - name: Parse model
         id: parse-model
         shell: bash
         run: |
           DEFAULT_MODEL="claude-sonnet-4-6"
-          COMMENT_TEXT="${COMMENT_BODY}${REVIEW_BODY}${ISSUE_BODY}"
+          # For PR/issue events, look in comment/issue body. For workflow_dispatch, use prompt input.
+          TEXT="${COMMENT_BODY}${REVIEW_BODY}${ISSUE_BODY}${PROMPT_INPUT}"
 
-          # Extract [model:xxx] — take first match
-          MODEL_ALIAS=$(echo "$COMMENT_TEXT" \
+          MODEL_ALIAS=$(echo "$TEXT" \
             | grep -oP '\[model:[^\]]+\]' \
             | head -1 \
-            | sed 's/\[model://;s/\]//')
+            | sed 's/\[model://;s/\]//' || true)
 
+          MODEL_ALIAS="${MODEL_ALIAS:-}"
           case "$MODEL_ALIAS" in
             fable|fable-5|claude-fable-5)               MODEL_ID="claude-fable-5" ;;
             opus|opus-4|opus-4.8|claude-opus-4-8)       MODEL_ID="claude-opus-4-8" ;;
@@ -168,6 +176,7 @@ jobs:
           COMMENT_BODY: ${{ github.event.comment.body || '' }}
           REVIEW_BODY: ${{ github.event.review.body || '' }}
           ISSUE_BODY: ${{ github.event.issue.body || '' }}
+          PROMPT_INPUT: ${{ github.event.inputs.prompt || '' }}
 
       - name: Run Claude Code
         if: github.event_name != 'workflow_dispatch'
@@ -178,7 +187,7 @@ jobs:
             --model ${{ steps.parse-model.outputs.model }}
             --fallback-model claude-sonnet-4-6
             --max-turns 100
-            --allowedTools "Bash(pnpm:*)" "Bash(npx:*)" "Bash(node:*)" "Bash(git:*)" "Bash(gh:*)" "Bash(yq:*)" "Bash(jq:*)" "Bash(grep:*)" "Bash(rg:*)" "Bash(sed:*)" "Bash(awk:*)" "Bash(cut:*)" "Bash(tr:*)" "Bash(sort:*)" "Bash(uniq:*)" "Bash(cat:*)" "Bash(head:*)" "Bash(tail:*)" "Bash(wc:*)" "Bash(find:*)" "Bash(xargs:*)" "Bash(ls:*)" "Bash(tree:*)" "Bash(mkdir:*)" "Bash(touch:*)" "Bash(cp:*)" "Bash(mv:*)" "Bash(rm:*)" "Bash(tee:*)" "Bash(echo:*)"
+            --allowedTools "Read" "Write" "Edit" "Glob" "Grep" "Task" "WebSearch" "WebFetch" "BashOutput" "KillShell" "Bash(pnpm:*)" "Bash(npx:*)" "Bash(node:*)" "Bash(git:*)" "Bash(gh:*)" "Bash(yq:*)" "Bash(jq:*)" "Bash(grep:*)" "Bash(rg:*)" "Bash(sed:*)" "Bash(awk:*)" "Bash(cut:*)" "Bash(tr:*)" "Bash(sort:*)" "Bash(uniq:*)" "Bash(cat:*)" "Bash(head:*)" "Bash(tail:*)" "Bash(wc:*)" "Bash(find:*)" "Bash(xargs:*)" "Bash(ls:*)" "Bash(tree:*)" "Bash(mkdir:*)" "Bash(touch:*)" "Bash(cp:*)" "Bash(mv:*)" "Bash(rm:*)" "Bash(tee:*)" "Bash(echo:*)"
             --append-system-prompt-file AGENTS.md
 
       - name: Run Claude Code (workflow_dispatch)
@@ -191,5 +200,5 @@ jobs:
             --model ${{ steps.parse-model.outputs.model }}
             --fallback-model claude-sonnet-4-6
             --max-turns 100
-            --allowedTools "Bash(pnpm:*)" "Bash(npx:*)" "Bash(node:*)" "Bash(git:*)" "Bash(gh:*)" "Bash(yq:*)" "Bash(jq:*)" "Bash(grep:*)" "Bash(rg:*)" "Bash(sed:*)" "Bash(awk:*)" "Bash(cut:*)" "Bash(tr:*)" "Bash(sort:*)" "Bash(uniq:*)" "Bash(cat:*)" "Bash(head:*)" "Bash(tail:*)" "Bash(wc:*)" "Bash(find:*)" "Bash(xargs:*)" "Bash(ls:*)" "Bash(tree:*)" "Bash(mkdir:*)" "Bash(touch:*)" "Bash(cp:*)" "Bash(mv:*)" "Bash(rm:*)" "Bash(tee:*)" "Bash(echo:*)"
+            --allowedTools "Read" "Write" "Edit" "Glob" "Grep" "Task" "WebSearch" "WebFetch" "BashOutput" "KillShell" "Bash(pnpm:*)" "Bash(npx:*)" "Bash(node:*)" "Bash(git:*)" "Bash(gh:*)" "Bash(yq:*)" "Bash(jq:*)" "Bash(grep:*)" "Bash(rg:*)" "Bash(sed:*)" "Bash(awk:*)" "Bash(cut:*)" "Bash(tr:*)" "Bash(sort:*)" "Bash(uniq:*)" "Bash(cat:*)" "Bash(head:*)" "Bash(tail:*)" "Bash(wc:*)" "Bash(find:*)" "Bash(xargs:*)" "Bash(ls:*)" "Bash(tree:*)" "Bash(mkdir:*)" "Bash(touch:*)" "Bash(cp:*)" "Bash(mv:*)" "Bash(rm:*)" "Bash(tee:*)" "Bash(echo:*)"
             --append-system-prompt-file AGENTS.md
