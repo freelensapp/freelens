@@ -7,7 +7,7 @@
 import { Icon } from "@freelensapp/icon";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { ExtensionCard } from "./extension-card";
 import { ExtensionsGrid } from "./extensions-grid";
 import installExtensionFromInputInjectable from "./install-extension-from-input.injectable";
@@ -32,11 +32,16 @@ const NonInjectedMarketplaceExtensions = observer(
     const [searchQuery, setSearchQuery] = useState("");
 
     const extensions = marketplaceExtensions.value.get();
-    const filteredExtensions = extensions.filter(
-      (ext) =>
-        ext.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        ext.description.toLowerCase().includes(searchQuery.toLowerCase()),
-    );
+
+    const filteredExtensions = useMemo(() => {
+      const lowerCaseQuery = searchQuery.toLowerCase();
+
+      return extensions.filter(
+        (ext) =>
+          ext.name.toLowerCase().includes(lowerCaseQuery) ||
+          (ext.description && ext.description.toLowerCase().includes(lowerCaseQuery)),
+      );
+    }, [extensions, searchQuery]);
 
     const handleInstall = (extensionName: string, extensionVersion: string) => {
       void installExtensionFromInput(`${extensionName}@${extensionVersion}`);

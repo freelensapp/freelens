@@ -13,7 +13,7 @@ import { Icon } from "@freelensapp/icon";
 import { Spinner } from "@freelensapp/spinner";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import extensionDiscoveryInjectable from "../../../extensions/extension-discovery/extension-discovery.injectable";
 import extensionInstallationStateStoreInjectable from "../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
 import confirmUninstallExtensionInjectable from "./confirm-uninstall-extension.injectable";
@@ -66,11 +66,15 @@ const NonInjectedInstalledExtensions = observer(
     const [searchQuery, setSearchQuery] = useState("");
     const extensions = userExtensions.get();
 
-    const filteredExtensions = extensions.filter(
-      (ext) =>
-        ext.manifest.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (ext.manifest.description && ext.manifest.description.toLowerCase().includes(searchQuery.toLowerCase())),
-    );
+    const filteredExtensions = useMemo(() => {
+      const lowerCaseQuery = searchQuery.toLowerCase();
+
+      return extensions.filter(
+        (ext) =>
+          ext.manifest.name.toLowerCase().includes(lowerCaseQuery) ||
+          (ext.manifest.description && ext.manifest.description.toLowerCase().includes(lowerCaseQuery)),
+      );
+    }, [extensions, searchQuery]);
 
     if (extensions.length === 0) {
       return (
