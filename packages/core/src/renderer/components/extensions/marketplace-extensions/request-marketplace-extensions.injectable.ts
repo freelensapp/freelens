@@ -10,10 +10,8 @@ import downloadJsonViaChannelInjectable from "../../../fetch/download-json-via-c
 
 import type { MarketplaceExtension } from "./marketplace-extensions.injectable";
 
-// todo: change to offficial url, once the MR is merged
-// ref: https://github.com/freelensapp/freelens-marketplace/pull/1
 const extensionListUrl =
-  "https://raw.githubusercontent.com/maifeeulasad/freelens-marketplace/refs/heads/marketplace-v0/extensions.json";
+  "https://raw.githubusercontent.com/freelensapp/freelens-marketplace/refs/heads/marketplace-v0/extensions.json";
 
 type MarketplacePackageStatus = "official" | "community";
 
