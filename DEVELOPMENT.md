@@ -33,8 +33,8 @@ mise settings add idiomatic_version_file_enable_tools node
 mise install
 # or
 winget install CoreyButler.NVMforWindows
-nvm install 22.22.1
-nvm use 22.22.1
+nvm install 24.15.0
+nvm use 24.15.0
 ```
 
 Install Pnpm (if is not yet installed with mise-en-place):
@@ -75,7 +75,8 @@ pnpm build
 
 ### Cross compilation
 
-You can build arm64 binary on Linux amd64 or amd64 binary on MacOS arm64.
+The official binary packages are build in native environment, however you can
+build arm64 binary on Linux amd64 or amd64 binary on MacOS arm64.
 
 On Linux, install cross-compiler (macOS includes this by default):
 
@@ -113,6 +114,32 @@ pnpm build:app dmg pkg --x64
 ```
 
 ## Development Workflow
+
+### Validation before commit
+
+After changing files, especially before commit, run:
+
+```sh
+trunk check
+# or, if trunk is not installed locally
+pnpm trunk:check
+```
+
+For main project TypeScript and HTML files, you can run Biome directly:
+
+```sh
+biome check
+# or, if biome is not installed locally
+pnpm biome:check
+```
+
+For other file types, use Trunk:
+
+```sh
+trunk check
+# or, if trunk is not installed locally
+pnpm trunk:check
+```
 
 ### Daily development
 

@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/error-boundary",
-  "version": "1.9.1-0",
+  "version": "1.10.0-0",
   "private": false,
   "description": "Highly extendable error-boundary in the Freelens.",
   "homepage": "https://freelens.app",
@@ -47,7 +47,7 @@
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
-    "@types/react": "^17.0.91",
+    "@types/react": "^17.0.93",
     "css-loader": "^6.11.0",
     "mobx-observable-history": "^2.0.3",
     "postcss-loader": "^8.2.1",

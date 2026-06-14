@@ -1,0 +1,141 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+const asyncComputedMock = jest.fn((options: unknown) => options);
+const nowMock = jest.fn();
+
+jest.mock("@ogre-tools/injectable-react", () => {
+  const actual = jest.requireActual("@ogre-tools/injectable-react");
+
+  return {
+    ...actual,
+    asyncComputed: (options: unknown) => asyncComputedMock(options),
+  };
+});
+
+jest.mock("mobx-utils", () => {
+  const actual = jest.requireActual("mobx-utils");
+
+  return {
+    ...actual,
+    now: (interval: number) => nowMock(interval),
+  };
+});
+
+import { getDiForUnitTesting } from "../../getDiForUnitTesting";
+import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
+import { createTimeRangedMetricsInjectable } from "./create-time-ranged-metrics";
+
+interface TestObject {
+  getId: () => string;
+}
+
+type IsAny<T> = 0 extends 1 & T ? true : false;
+type AssertFalse<T extends false> = T;
+
+describe("createTimeRangedMetricsInjectable", () => {
+  beforeEach(() => {
+    asyncComputedMock.mockClear();
+    nowMock.mockClear();
+  });
+
+  it("forwards selected start/end/range without subscribing to an extra refresh clock", async () => {
+    const di = getDiForUnitTesting();
+    const request = jest.fn().mockResolvedValue({});
+    const timestampsGet = jest.fn(() => ({ start: 2000, end: 2100, range: 100 }));
+    const object: TestObject = {
+      getId: () => "resource-id",
+    };
+
+    const injectable = createTimeRangedMetricsInjectable<{ object: TestObject }, TestObject, unknown>({
+      id: "test-time-ranged-metrics",
+      getObject: ({ object }) => object,
+      getObjectId: (resource) => resource.getId(),
+      request: async ({ object, start, end, range }) => request({ object, start, end, range }),
+    });
+    type InjectableShouldNotBeAny = AssertFalse<IsAny<typeof injectable>>;
+    const injectableShouldNotBeAny: InjectableShouldNotBeAny = false;
+
+    expect(injectableShouldNotBeAny).toBe(false);
+
+    di.register(injectable);
+
+    di.override(
+      selectedMetricsTimeRangeInjectable,
+      () =>
+        ({
+          timestamps: {
+            get: timestampsGet,
+          },
+        }) as never,
+    );
+
+    di.inject(injectable, {
+      object,
+    });
+    const asyncComputedConfiguration = asyncComputedMock.mock.calls[0]?.[0] as {
+      getValueFromObservedPromise: () => Promise<unknown>;
+    };
+
+    await asyncComputedConfiguration.getValueFromObservedPromise();
+
+    expect(request).toHaveBeenCalledWith({
+      object,
+      start: 2000,
+      end: 2100,
+      range: 100,
+    });
+    expect(nowMock).not.toHaveBeenCalled();
+    expect(timestampsGet).toHaveBeenCalled();
+    expect(asyncComputedMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        betweenUpdates: "show-latest-value",
+      }),
+    );
+  });
+
+  it("keys instances by object identity", () => {
+    const di = getDiForUnitTesting();
+    const objectA: TestObject = {
+      getId: () => "resource-a",
+    };
+    const objectB: TestObject = {
+      getId: () => "resource-b",
+    };
+
+    const injectable = createTimeRangedMetricsInjectable<{ object: TestObject }, TestObject, unknown>({
+      id: "test-time-ranged-metrics-identity",
+      getObject: ({ object }) => object,
+      getObjectId: (resource) => resource.getId(),
+      request: async () => ({}),
+    });
+
+    di.register(injectable);
+
+    di.override(
+      selectedMetricsTimeRangeInjectable,
+      () =>
+        ({
+          timestamps: {
+            get: () => ({ start: 2000, end: 2100, range: 100 }),
+          },
+        }) as never,
+    );
+
+    const metricsForObjectA = di.inject(injectable, {
+      object: objectA,
+    });
+    const metricsForObjectAAgain = di.inject(injectable, {
+      object: objectA,
+    });
+    const metricsForObjectB = di.inject(injectable, {
+      object: objectB,
+    });
+
+    expect(metricsForObjectAAgain).toBe(metricsForObjectA);
+    expect(metricsForObjectB).not.toBe(metricsForObjectA);
+  });
+});

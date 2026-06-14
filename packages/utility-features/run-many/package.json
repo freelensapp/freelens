@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/run-many",
-  "version": "1.9.1-0",
+  "version": "1.10.0-0",
   "private": false,
   "description": "A package containing runMany and runManySync",
   "homepage": "https://freelens.app",
@@ -41,6 +41,7 @@
     "@freelensapp/webpack": "workspace:^",
     "@ogre-tools/fp": "^17.11.1",
     "@ogre-tools/injectable": "^17.11.1",
+    "@types/node": "~24.12.4",
     "@types/uuid": "^11.0.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^29.7.0",

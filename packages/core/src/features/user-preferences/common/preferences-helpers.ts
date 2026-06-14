@@ -20,6 +20,18 @@ export interface TerminalConfig {
   fontFamily: string;
 }
 
+export interface LogViewerPreferences {
+  showTimestamps: boolean;
+  showPrevious: boolean;
+  showWordWrap: boolean;
+}
+
+export const defaultLogViewerPreferences: LogViewerPreferences = {
+  showTimestamps: false,
+  showPrevious: false,
+  showWordWrap: true,
+};
+
 export const defaultTerminalConfig: TerminalConfig = {
   fontSize: defaultFontSize,
   fontFamily: defaultTerminalFontFamily,
@@ -63,22 +75,31 @@ export interface DownloadMirror {
 }
 
 export const defaultPackageMirror = "default";
+export const chinaPackageMirror = "china";
+export const customPackageMirror = "custom";
+
 const defaultDownloadMirrorData: DownloadMirror = {
   url: "https://dl.k8s.io/release",
   label: "Default (Google)",
   platforms: new Set(["darwin", "win32", "linux"]),
 };
 
+const chinaPackageMirrorData: DownloadMirror = {
+  url: "https://mirror.azure.cn/kubernetes/kubectl",
+  label: "China (Azure)",
+  platforms: new Set(["win32", "linux"]),
+};
+
+const customPackageMirrorData: DownloadMirror = {
+  url: "",
+  label: "Custom",
+  platforms: new Set(["darwin", "win32", "linux"]),
+};
+
 export const packageMirrors = new Map<string, DownloadMirror>([
   [defaultPackageMirror, defaultDownloadMirrorData],
-  [
-    "china",
-    {
-      url: "https://mirror.azure.cn/kubernetes/kubectl",
-      label: "China (Azure)",
-      platforms: new Set(["win32", "linux"]),
-    },
-  ],
+  [chinaPackageMirror, chinaPackageMirrorData],
+  [customPackageMirror, customPackageMirrorData],
 ]);
 
 export type ExtensionRegistryLocation = "default" | "npmrc" | "custom";

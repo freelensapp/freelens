@@ -5,8 +5,9 @@
  */
 
 import { type IAsyncComputed, withInjectables } from "@ogre-tools/injectable-react";
+import { observer } from "mobx-react-lite";
 import React from "react";
-import { ResourceMetrics } from "../resource-metrics";
+import { TimeRangedResourceMetrics } from "../resource-metrics";
 import podMetricsInjectable from "./metrics.injectable";
 import { PodCharts, podMetricTabs } from "./pod-charts";
 
@@ -16,20 +17,24 @@ import type { PodMetricData } from "../../../common/k8s-api/endpoints/metrics.ap
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 interface Dependencies {
-  metrics: IAsyncComputed<PodMetricData>;
+  metrics: IAsyncComputed<Partial<PodMetricData>>;
 }
 
-const NonInjectedPodMetricsDetailsComponent = ({ object, metrics }: KubeObjectDetailsProps<Pod> & Dependencies) => (
-  <ResourceMetrics tabs={podMetricTabs} object={object} metrics={metrics}>
-    <PodCharts />
-  </ResourceMetrics>
+const NonInjectedPodMetricsDetailsComponent = observer(
+  ({ object, metrics }: KubeObjectDetailsProps<Pod> & Dependencies) => (
+    <TimeRangedResourceMetrics tabs={podMetricTabs} object={object} metrics={metrics}>
+      <PodCharts />
+    </TimeRangedResourceMetrics>
+  ),
 );
 
 const PodMetricsDetailsComponent = withInjectables<Dependencies, KubeObjectDetailsProps<Pod>>(
   NonInjectedPodMetricsDetailsComponent,
   {
     getProps: (di, props) => ({
-      metrics: di.inject(podMetricsInjectable, props.object),
+      metrics: di.inject(podMetricsInjectable, {
+        pod: props.object,
+      }),
       ...props,
     }),
   },

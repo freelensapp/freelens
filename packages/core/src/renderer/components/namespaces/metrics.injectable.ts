@@ -4,29 +4,25 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import { asyncComputed } from "@ogre-tools/injectable-react";
-import { now } from "mobx-utils";
 import requestPodMetricsInNamespaceInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-pod-metrics-in-namespace.injectable";
+import { createTimeRangedMetricsInjectable } from "../resource-metrics/create-time-ranged-metrics";
 
 import type { Namespace } from "@freelensapp/kube-object";
 
-const namespaceMetricsInjectable = getInjectable({
+interface NamespaceMetricsInjectableParams {
+  namespace: Namespace;
+}
+
+const namespaceMetricsInjectable = createTimeRangedMetricsInjectable({
   id: "namespace-metrics",
-  instantiate: (di, namespace) => {
-    const requestPodMetricsInNamespace = di.inject(requestPodMetricsInNamespaceInjectable);
-
-    return asyncComputed({
-      getValueFromObservedPromise: async () => {
-        now(60 * 1000); // Update every minute
-
-        return requestPodMetricsInNamespace(namespace.getName());
-      },
-    });
-  },
-  lifecycle: lifecycleEnum.keyedSingleton({
-    getInstanceKey: (di, namespace: Namespace) => namespace.getId(),
-  }),
+  getObject: ({ namespace }: NamespaceMetricsInjectableParams) => namespace,
+  getObjectId: (namespace) => namespace.getId(),
+  request: ({ di, object: namespace, start, end, range }) =>
+    di.inject(requestPodMetricsInNamespaceInjectable)(namespace.getName(), undefined, {
+      start,
+      end,
+      range,
+    }),
 });
 
 export default namespaceMetricsInjectable;

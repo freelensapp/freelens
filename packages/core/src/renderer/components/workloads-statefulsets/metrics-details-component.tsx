@@ -5,8 +5,9 @@
  */
 
 import { type IAsyncComputed, withInjectables } from "@ogre-tools/injectable-react";
+import { observer } from "mobx-react-lite";
 import React from "react";
-import { ResourceMetrics } from "../resource-metrics";
+import { TimeRangedResourceMetrics } from "../resource-metrics";
 import { PodCharts, podMetricTabs } from "../workloads-pods/pod-charts";
 import statefulSetMetricsInjectable from "./metrics.injectable";
 
@@ -19,20 +20,21 @@ interface Dependencies {
   metrics: IAsyncComputed<StatefulSetPodMetricData>;
 }
 
-const NonInjectedStatefulSetMetricsDetailsComponent = ({
-  object,
-  metrics,
-}: KubeObjectDetailsProps<StatefulSet> & Dependencies) => (
-  <ResourceMetrics tabs={podMetricTabs} object={object} metrics={metrics}>
-    <PodCharts />
-  </ResourceMetrics>
+const NonInjectedStatefulSetMetricsDetailsComponent = observer(
+  ({ object, metrics }: KubeObjectDetailsProps<StatefulSet> & Dependencies) => (
+    <TimeRangedResourceMetrics tabs={podMetricTabs} object={object} metrics={metrics}>
+      <PodCharts />
+    </TimeRangedResourceMetrics>
+  ),
 );
 
 export const StatefulSetMetricsDetailsComponent = withInjectables<Dependencies, KubeObjectDetailsProps<StatefulSet>>(
   NonInjectedStatefulSetMetricsDetailsComponent,
   {
     getProps: (di, props) => ({
-      metrics: di.inject(statefulSetMetricsInjectable, props.object),
+      metrics: di.inject(statefulSetMetricsInjectable, {
+        statefulSet: props.object,
+      }),
       ...props,
     }),
   },

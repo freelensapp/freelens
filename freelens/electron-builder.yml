@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/electron-userland/electron-builder/refs/heads/master/packages/app-builder-lib/scheme.json
 
-electronVersion: 39.8.9 # datasource=npm depName=electron
+electronVersion: 41.7.2 # datasource=npm depName=electron
 
 ## Run `pnpm electron-rebuild` instead
 npmRebuild: false
@@ -17,8 +17,14 @@ files:
   - "!node_modules/@freelensapp/core/build"
   - "!node_modules/@freelensapp/core/static/build/library/fonts"
   - "!node_modules/electron"
+  ## Source maps and TS build info are only useful when debugging local builds
+  - "!**/*.map"
+  - "!**/*.tsbuildinfo"
+  ## Monaco is bundled into the renderer by webpack and never required at runtime
+  - "!node_modules/monaco-editor/**"
 
 ## Notarization
+afterPack: build/prune-unused-native-binaries.js
 afterSign: build/notarize.js
 
 ## Used to register the app as a handler for the freelens:// protocol

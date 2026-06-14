@@ -25,7 +25,8 @@ import type { ChartProps } from "./chart";
 
 export interface BarChartProps extends ChartProps {
   name?: string;
-  timeLabelStep?: number; // Minute labels appearance step
+  minTime?: number; // Minimum timestamp (unix seconds) for x-axis
+  maxTime?: number; // Maximum timestamp (unix seconds) for x-axis
 }
 
 const getBarColor: Scriptable<string> = ({ dataset }) => Color(dataset?.borderColor).alpha(0.2).string();
@@ -34,26 +35,101 @@ interface Dependencies {
   activeTheme: IComputedValue<LensTheme>;
 }
 
+const ONE_HOUR_SECONDS = 60 * 60;
+const ONE_DAY_SECONDS = 24 * ONE_HOUR_SECONDS;
+const FOUR_DAYS_SECONDS = 4 * ONE_DAY_SECONDS;
+
+type BarChartTimeUnit = "minute" | "hour" | "day";
+
+const getBarChartTimeUnit = (timeRangeSeconds: number): BarChartTimeUnit => {
+  if (timeRangeSeconds <= ONE_DAY_SECONDS) {
+    return "minute";
+  }
+
+  if (timeRangeSeconds < FOUR_DAYS_SECONDS) {
+    return "hour";
+  }
+
+  return "day";
+};
+
+const parseBarChartTimestamp = (timestamp: string | number): number => {
+  if (typeof timestamp === "number") {
+    return timestamp;
+  }
+
+  return Date.parse(timestamp);
+};
+
+const getTimeBucketAndLabel = (timestamp: string | number, timeRangeSeconds: number) => {
+  const date = moment(parseBarChartTimestamp(timestamp));
+  const timeUnit = getBarChartTimeUnit(timeRangeSeconds);
+
+  if (timeUnit === "minute") {
+    return {
+      bucket: date.startOf("minute").format("YYYY-MM-DD HH:mm"),
+      label: date.format("HH:mm"),
+    };
+  }
+
+  if (timeUnit === "hour") {
+    return {
+      bucket: date.startOf("hour").format("YYYY-MM-DD HH"),
+      label: date.format("DD, HH:mm"),
+    };
+  }
+
+  return {
+    bucket: date.startOf("day").format("YYYY-MM-DD"),
+    label: date.format("MMM DD"),
+  };
+};
+
+const getBarChartTickTimestamp = (tick: string | number | { value: string | number }) => {
+  const rawValue = isObject(tick) && "value" in tick ? tick.value : tick;
+
+  if (typeof rawValue === "string" && /^\d+$/.test(rawValue)) {
+    return Number(rawValue);
+  }
+
+  return rawValue;
+};
+
 const NonInjectedBarChart = observer(
   ({
     activeTheme,
     name,
     data,
     className,
-    timeLabelStep = 10,
+    minTime,
+    maxTime,
     plugins,
     options: customOptions,
     ...settings
   }: Dependencies & BarChartProps) => {
     const { textColorPrimary, borderFaintColor, chartStripesColor } = activeTheme.get().colors;
     const { datasets: rawDatasets = [], ...rest } = data;
+    const timeRangeSeconds = maxTime && minTime ? maxTime - minTime : 3600;
+    const timeUnit = getBarChartTimeUnit(timeRangeSeconds);
+    const inferredStepSeconds = rawDatasets[0]?.data?.length
+      ? Math.max(Math.floor(timeRangeSeconds / rawDatasets[0].data.length), 1)
+      : 60;
+    const useSteppedStyle = inferredStepSeconds >= ONE_HOUR_SECONDS || timeRangeSeconds >= ONE_DAY_SECONDS;
+
     const datasets = rawDatasets
       .filter((set) => set.data?.length)
       .map((item) => ({
-        type: ChartKind.BAR,
-        borderWidth: { top: 3 },
-        barPercentage: 1,
-        categoryPercentage: 1,
+        type: useSteppedStyle ? ChartKind.LINE : ChartKind.BAR,
+        borderWidth: useSteppedStyle ? 2 : { top: 3 },
+        barPercentage: useSteppedStyle ? undefined : 1,
+        categoryPercentage: useSteppedStyle ? undefined : 1,
+        steppedLine: useSteppedStyle,
+        stepped: useSteppedStyle,
+        lineTension: useSteppedStyle ? 0 : undefined,
+        pointRadius: useSteppedStyle ? 0 : undefined,
+        pointHoverRadius: useSteppedStyle ? 2 : undefined,
+        fill: useSteppedStyle,
+        backgroundColor: useSteppedStyle ? getBarColor({ dataset: item } as never) : undefined,
         ...item,
       }));
 
@@ -68,15 +144,43 @@ const NonInjectedBarChart = observer(
       return <NoMetrics />;
     }
 
-    const formatTimeLabels = (timestamp: string, index: number) => {
-      const label = moment(parseInt(timestamp)).format("HH:mm");
-      const offset = "     ";
+    const ONE_WEEK = 7 * ONE_DAY_SECONDS;
+    const maxTimeTicks = (() => {
+      if (timeRangeSeconds <= 4 * 60 * 60) {
+        return 6;
+      }
 
-      if (index == 0) return offset + label;
-      if (index == 60) return label + offset;
+      if (timeRangeSeconds <= ONE_DAY_SECONDS) {
+        return 7;
+      }
 
-      return index % timeLabelStep == 0 ? label : "";
+      if (timeRangeSeconds <= ONE_WEEK) {
+        return 4;
+      }
+
+      return 3;
+    })();
+
+    const formatTimeLabels = (
+      timestamp: string | number,
+      index?: number,
+      values?: Array<string | number | { value: string | number }>,
+    ) => {
+      const currentTimestamp = values?.[index ?? 0] ? getBarChartTickTimestamp(values[index ?? 0]) : timestamp;
+      const { bucket, label } = getTimeBucketAndLabel(currentTimestamp, timeRangeSeconds);
+
+      if (typeof index !== "number" || !values || index === 0) {
+        return label;
+      }
+
+      const previousTimestamp = getBarChartTickTimestamp(values[index - 1]);
+      const { bucket: previousBucket } = getTimeBucketAndLabel(previousTimestamp, timeRangeSeconds);
+
+      return previousBucket === bucket ? "" : label;
     };
+
+    const requestedMin = minTime ? minTime * 1000 : undefined;
+    const requestedMax = maxTime ? maxTime * 1000 : undefined;
 
     const barOptions: ChartOptions = {
       maintainAspectRatio: false,
@@ -85,34 +189,42 @@ const NonInjectedBarChart = observer(
         xAxes: [
           {
             type: "time",
-            offset: true,
+            offset: false,
             gridLines: {
               display: false,
             },
             stacked: true,
             ticks: {
               callback: formatTimeLabels,
-              autoSkip: false,
-              source: "data",
+              autoSkip: true,
+              autoSkipPadding: 12,
+              maxTicksLimit: maxTimeTicks,
+              source: "auto",
               backdropColor: "white",
               fontColor: textColorPrimary,
               fontSize: 11,
               maxRotation: 0,
               minRotation: 0,
+              min: requestedMin,
+              max: requestedMax,
             },
             bounds: "data",
             time: {
-              unit: "minute",
+              unit: timeUnit,
               displayFormats: {
                 minute: "x",
+                hour: "x",
+                day: "x",
               },
-              parser: (timestamp) => moment.unix(parseInt(timestamp)),
+              parser: (timestamp: string | number) => {
+                return parseBarChartTimestamp(timestamp);
+              },
             },
           },
         ],
         yAxes: [
           {
-            position: "right",
+            position: "left",
             gridLines: {
               color: borderFaintColor,
               drawBorder: false,
@@ -135,11 +247,18 @@ const NonInjectedBarChart = observer(
         callbacks: {
           title([tooltip]: ChartTooltipItem[]) {
             const xLabel = tooltip?.xLabel;
-            const skipLabel = xLabel == null || new Date(xLabel).getTime() > Date.now();
 
-            if (skipLabel) return "";
+            if (xLabel == null) {
+              return "";
+            }
 
-            return String(xLabel);
+            const timestamp = parseBarChartTimestamp(getBarChartTickTimestamp(xLabel));
+
+            if (!Number.isFinite(timestamp) || timestamp > Date.now()) {
+              return "";
+            }
+
+            return moment(timestamp).format("MMM DD, HH:mm");
           },
           labelColor: ({ datasetIndex }) =>
             typeof datasetIndex === "number"
@@ -166,7 +285,7 @@ const NonInjectedBarChart = observer(
     return (
       <Chart
         className={cssNames("BarChart flex box grow column", className)}
-        type={ChartKind.BAR}
+        type={useSteppedStyle ? ChartKind.LINE : ChartKind.BAR}
         data={{ datasets, ...rest }}
         options={merge(barOptions, customOptions)}
         plugins={plugins}
