@@ -19,15 +19,12 @@ import { TabLayout } from "../layout/tab-layout";
 import nodeStoreInjectable from "../nodes/store.injectable";
 import podStoreInjectable from "../workloads-pods/store.injectable";
 import { ClusterIssues } from "./cluster-issues";
-import clusterOverviewMetricsInjectable from "./cluster-metrics.injectable";
 import styles from "./cluster-overview.module.scss";
 
 import type { ClusterOverviewUIBlock } from "@freelensapp/metrics";
 
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import type { IComputedValue } from "mobx";
 
-import type { ClusterMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
 import type { SubscribeStores } from "../../kube-watch-api/kube-watch-api";
 import type { EventStore } from "../events/store";
 import type { NodeStore } from "../nodes/store";
@@ -40,7 +37,6 @@ interface Dependencies {
   nodeStore: NodeStore;
   clusterMetricsAreVisible: IComputedValue<boolean>;
   uiBlocks: IComputedValue<ClusterOverviewUIBlock[]>;
-  clusterOverviewMetrics: IAsyncComputed<ClusterMetricData | undefined>;
 }
 
 @observer
@@ -90,6 +86,5 @@ export const ClusterOverview = withInjectables<Dependencies>(NonInjectedClusterO
     eventStore: di.inject(eventStoreInjectable),
     nodeStore: di.inject(nodeStoreInjectable),
     uiBlocks: di.inject(computedInjectManyInjectable)(clusterOverviewUIBlockInjectionToken),
-    clusterOverviewMetrics: di.inject(clusterOverviewMetricsInjectable),
   }),
 });

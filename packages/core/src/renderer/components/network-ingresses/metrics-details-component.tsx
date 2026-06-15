@@ -4,15 +4,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { withInjectables } from "@ogre-tools/injectable-react";
+import { type IAsyncComputed, withInjectables } from "@ogre-tools/injectable-react";
+import { observer } from "mobx-react-lite";
 import React from "react";
-import { ResourceMetrics } from "../resource-metrics";
+import { TimeRangedResourceMetrics } from "../resource-metrics";
 import { IngressCharts } from "./ingress-charts";
 import ingressMetricsInjectable from "./metrics.injectable";
 
 import type { Ingress } from "@freelensapp/kube-object";
-
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 
 import type { IngressMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-ingress-metrics.injectable";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
@@ -21,20 +20,21 @@ interface Dependencies {
   metrics: IAsyncComputed<IngressMetricData>;
 }
 
-const NonInjectedIngressMetricsDetailsComponent = ({
-  object,
-  metrics,
-}: KubeObjectDetailsProps<Ingress> & Dependencies) => (
-  <ResourceMetrics tabs={["Network", "Duration"]} object={object} metrics={metrics}>
-    <IngressCharts />
-  </ResourceMetrics>
+const NonInjectedIngressMetricsDetailsComponent = observer(
+  ({ object, metrics }: KubeObjectDetailsProps<Ingress> & Dependencies) => (
+    <TimeRangedResourceMetrics tabs={["Network", "Duration"]} object={object} metrics={metrics}>
+      <IngressCharts />
+    </TimeRangedResourceMetrics>
+  ),
 );
 
 export const IngressMetricsDetailsComponent = withInjectables<Dependencies, KubeObjectDetailsProps<Ingress>>(
   NonInjectedIngressMetricsDetailsComponent,
   {
     getProps: (di, props) => ({
-      metrics: di.inject(ingressMetricsInjectable, props.object),
+      metrics: di.inject(ingressMetricsInjectable, {
+        ingress: props.object,
+      }),
       ...props,
     }),
   },

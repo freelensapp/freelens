@@ -5,11 +5,9 @@
  */
 
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { toJS } from "mobx";
 import { observer } from "mobx-react-lite";
 import React from "react";
-import { getItemMetrics } from "../../../common/k8s-api/endpoints/metrics.api";
-import { ResourceMetrics } from "../resource-metrics";
+import { TimeRangedResourceMetrics } from "../resource-metrics";
 import { ContainerCharts } from "./container-charts";
 import podContainerMetricsInjectable from "./container-metrics.injectable";
 
@@ -25,23 +23,15 @@ interface ContainerMetricsProps {
 }
 
 interface Dependencies {
-  podContainerMetrics: IAsyncComputed<PodMetricData>;
+  podContainerMetrics: IAsyncComputed<Partial<PodMetricData>>;
 }
 
 const NonInjectedPodDetailsContainerMetrics = observer(
-  ({ pod, container, podContainerMetrics }: ContainerMetricsProps & Dependencies) => {
-    const metrics = getItemMetrics(toJS(podContainerMetrics.value.get()), container.name);
-
-    if (!metrics) {
-      return null;
-    }
-
-    return (
-      <ResourceMetrics object={pod} tabs={["CPU", "Memory", "Filesystem"]} metrics={metrics}>
-        <ContainerCharts />
-      </ResourceMetrics>
-    );
-  },
+  ({ pod, container, podContainerMetrics }: ContainerMetricsProps & Dependencies) => (
+    <TimeRangedResourceMetrics object={pod} tabs={["CPU", "Memory", "Filesystem"]} metrics={podContainerMetrics}>
+      <ContainerCharts containerName={container.name} />
+    </TimeRangedResourceMetrics>
+  ),
 );
 
 export const PodDetailsContainerMetrics = withInjectables<Dependencies, ContainerMetricsProps>(
@@ -49,7 +39,10 @@ export const PodDetailsContainerMetrics = withInjectables<Dependencies, Containe
   {
     getProps: (di, props) => ({
       ...props,
-      podContainerMetrics: di.inject(podContainerMetricsInjectable, { pod: props.pod, container: props.container }),
+      podContainerMetrics: di.inject(podContainerMetricsInjectable, {
+        pod: props.pod,
+        container: props.container,
+      }),
     }),
   },
 );

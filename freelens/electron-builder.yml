@@ -17,6 +17,11 @@ files:
   - "!node_modules/@freelensapp/core/build"
   - "!node_modules/@freelensapp/core/static/build/library/fonts"
   - "!node_modules/electron"
+  ## Source maps and TS build info are only useful when debugging local builds
+  - "!**/*.map"
+  - "!**/*.tsbuildinfo"
+  ## Monaco is bundled into the renderer by webpack and never required at runtime
+  - "!node_modules/monaco-editor/**"
 
 ## Notarization
 afterPack: build/prune-unused-native-binaries.js
