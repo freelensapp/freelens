@@ -70,7 +70,12 @@
       "matchDepNames": [
         "electron-builder",
         "electron-builder-squirrel-windows"
-      ]
+      ],
+      // Pinned to 26.11.1: 26.12+ rewrote the Windows NSIS/packaging pipeline and
+      // produces broken installers and portable builds (missing Freelens.exe,
+      // app does not start). See issue #1974. Remove this constraint once the
+      // upstream regression is fixed and verified on Windows.
+      "allowedVersions": "<=26.11.1"
     },
     // monorepo
     {
