@@ -8,6 +8,7 @@ import { isDefined } from "@freelensapp/utilities";
 import assert from "assert";
 import { computed } from "mobx";
 import { defaultLogViewerPreferences } from "../../../../features/user-preferences/common/preferences-helpers";
+import { getTimestampedLogFilename } from "./get-timestamped-log-filename";
 
 import type { ResourceDescriptor } from "@freelensapp/kube-api";
 import type { Pod, PodLogsQuery } from "@freelensapp/kube-object";
@@ -20,7 +21,6 @@ import type { SearchStore } from "../../../search-store/search-store";
 import type { GetPodById } from "../../workloads-pods/get-pod-by-id.injectable";
 import type { GetPodsByOwnerId } from "../../workloads-pods/get-pods-by-owner-id.injectable";
 import type { TabId } from "../dock/store";
-import { getTimestampedLogFilename } from "./get-timestamped-log-filename";
 import type { LoadLogs } from "./load-logs.injectable";
 import type { LogTabData } from "./tab-store";
 
