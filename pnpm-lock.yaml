@@ -11,7 +11,7 @@ overrides:
   form-data: ^4.0.6
   http-proxy: npm:http-proxy-node16@^1.0.6
   http-proxy-middleware: ^3.0.5
-  tmp@^0.2.0: ^0.2.6
+  tmp@^0.2.0: ^0.2.7
 
 patchedDependencies:
   '@async-fn/jest':
