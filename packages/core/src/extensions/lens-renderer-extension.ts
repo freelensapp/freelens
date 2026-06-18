@@ -9,6 +9,7 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { pipeline } from "@ogre-tools/fp";
 import { fromPairs, map, matches, toPairs } from "lodash/fp";
 import catalogCategoryRegistryInjectable from "../common/catalog/category-registry.injectable";
+import navigateToPreferencesInjectable from "../features/preferences/common/navigate-to-preferences.injectable";
 import catalogEntityRegistryInjectable from "../renderer/api/catalog/entity/registry.injectable";
 import { getExtensionRoutePath } from "../renderer/routes/for-extension";
 import getExtensionPageParametersInjectable from "../renderer/routes/get-extension-page-parameters.injectable";
@@ -51,6 +52,7 @@ interface LensRendererExtensionDependencies extends LensExtensionDependencies {
   navigateToRoute: NavigateToRoute;
   getExtensionPageParameters: GetExtensionPageParameters;
   readonly routes: IComputedValue<Route<unknown>[]>;
+  navigateToPreferences: (tabId?: string) => void;
   readonly entityRegistry: CatalogEntityRegistry;
   readonly categoryRegistry: CatalogCategoryRegistry;
 }
@@ -89,6 +91,7 @@ export class LensRendererExtension extends LensExtension {
       categoryRegistry: di.inject(catalogCategoryRegistryInjectable),
       entityRegistry: di.inject(catalogEntityRegistryInjectable),
       routes: di.inject(routesInjectable),
+      navigateToPreferences: di.inject(navigateToPreferencesInjectable),
       logger: di.inject(loggerInjectionToken),
     };
 
@@ -126,6 +129,18 @@ export class LensRendererExtension extends LensExtension {
     this.dependencies.navigateToRoute(targetRoute, {
       query,
     });
+  }
+
+  /**
+   * Navigate to this extension's own preferences page.
+   *
+   * Opens the application preferences and selects the tab that holds the
+   * preference items registered by this extension through `appPreferences`.
+   * It always navigates to this extension's preferences, never to the
+   * generic preferences or to another extension's preferences.
+   */
+  navigateToPreferences() {
+    this.dependencies.navigateToPreferences(this.sanitizedExtensionId);
   }
 
   /**
