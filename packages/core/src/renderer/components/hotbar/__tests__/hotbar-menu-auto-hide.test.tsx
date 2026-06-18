@@ -6,20 +6,29 @@
 
 import "@testing-library/jest-dom";
 
-import { fireEvent, waitFor } from "@testing-library/react";
+import { act, fireEvent, waitFor } from "@testing-library/react";
 import React from "react";
 import directoryForUserDataInjectable from "../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
+import activeHotbarIdInjectable from "../../../../features/hotbar/storage/common/active-id.injectable";
+import { Hotbar } from "../../../../features/hotbar/storage/common/hotbar";
+import hotbarsStateInjectable from "../../../../features/hotbar/storage/common/state.injectable";
 import userPreferencesStateInjectable from "../../../../features/user-preferences/common/state.injectable";
+import catalogEntityRegistryInjectable from "../../../api/catalog/entity/registry.injectable";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import { renderFor } from "../../test-utils/renderFor";
 import { HotbarMenu } from "../hotbar-menu";
 
 import type { RenderResult } from "@testing-library/react";
+import type { IObservableValue, ObservableMap } from "mobx";
 
 import type { UserPreferencesState } from "../../../../features/user-preferences/common/state.injectable";
+import type { CatalogEntityRegistry } from "../../../api/catalog/entity/registry";
 
 describe("<HotbarMenu /> auto-hide functionality", () => {
   let result: RenderResult;
+  let activeHotbarId: IObservableValue<string | undefined>;
+  let entityRegistry: CatalogEntityRegistry;
+  let hotbarsState: ObservableMap<string, Hotbar>;
   let userPreferencesState: UserPreferencesState;
 
   beforeEach(() => {
@@ -28,9 +37,83 @@ describe("<HotbarMenu /> auto-hide functionality", () => {
 
     di.override(directoryForUserDataInjectable, () => "/some-directory-for-user-data");
 
+    activeHotbarId = di.inject(activeHotbarIdInjectable);
+    entityRegistry = di.inject(catalogEntityRegistryInjectable);
+    hotbarsState = di.inject(hotbarsStateInjectable);
     userPreferencesState = di.inject(userPreferencesStateInjectable);
 
     result = render(<HotbarMenu />);
+  });
+
+  it("renders items added after mounting", async () => {
+    const hotbar = new Hotbar({ name: "Default" });
+
+    act(() => {
+      hotbarsState.set(hotbar.id, hotbar);
+      activeHotbarId.set(hotbar.id);
+    });
+
+    await waitFor(() => {
+      expect(result.container.querySelectorAll(".HotbarItem")).toHaveLength(0);
+    });
+
+    act(() => {
+      hotbar.items.push({
+        entity: {
+          uid: "new-item",
+          name: "New item",
+        },
+      });
+    });
+
+    await waitFor(() => {
+      expect(result.container.querySelectorAll(".HotbarItem")).toHaveLength(1);
+    });
+  });
+
+  it("resolves persisted items when catalog entities load after mounting", async () => {
+    const hotbar = new Hotbar({ name: "Default" });
+
+    hotbar.items.push({
+      entity: {
+        uid: "delayed-item",
+        name: "Delayed item",
+      },
+    });
+
+    act(() => {
+      hotbarsState.set(hotbar.id, hotbar);
+      activeHotbarId.set(hotbar.id);
+    });
+
+    await waitFor(() => {
+      expect(result.container.querySelector("#hotbarIcon-hotbar-icon-delayed-item")).toBeInTheDocument();
+    });
+
+    act(() => {
+      entityRegistry.updateItems([
+        {
+          apiVersion: "entity.k8slens.dev/v1alpha1",
+          kind: "WebLink",
+          metadata: {
+            uid: "delayed-item",
+            name: "Delayed item",
+            source: "test",
+            labels: {},
+          },
+          spec: {
+            url: "https://freelens.app",
+          },
+          status: {
+            phase: "available",
+          },
+        },
+      ]);
+    });
+
+    await waitFor(() => {
+      expect(result.container.querySelector("#hotbarIcon-delayed-item")).toBeInTheDocument();
+    });
   });
 
   describe("when auto-hide is disabled", () => {
@@ -51,6 +134,11 @@ describe("<HotbarMenu /> auto-hide functionality", () => {
     it("should not have visible class", () => {
       const hotbarMenu = result.container.querySelector(".HotbarMenu");
       expect(hotbarMenu).not.toHaveClass("visible");
+    });
+
+    it("does not render empty item placeholders", () => {
+      expect(result.container.querySelector(".HotbarCell")).not.toBeInTheDocument();
+      expect(result.container.querySelector(".HotbarItem")).not.toBeInTheDocument();
     });
   });
 

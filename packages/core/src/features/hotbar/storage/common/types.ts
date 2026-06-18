@@ -18,11 +18,9 @@ export interface HotbarItem {
 export interface CreateHotbarData {
   id?: string;
   name: string;
-  items?: (HotbarItem | null)[];
+  items?: readonly (HotbarItem | null)[];
 }
 
 export interface CreateHotbarOptions {
   setActive?: boolean;
 }
-
-export const defaultHotbarCells = 12; // Number is chosen to easy hit any item with keyboard

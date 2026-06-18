@@ -33,9 +33,7 @@ import type { Navigate } from "../../navigation/navigate.injectable";
 
 export interface HotbarEntityIconProps {
   entity: CatalogEntity;
-  index: number;
   errorClass?: IClassName;
-  add: (item: CatalogEntity, index: number) => void;
   remove: (uid: string) => void;
   size?: number;
   onClick?: () => void;

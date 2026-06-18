@@ -34,12 +34,14 @@
   }
 
   .HotbarItems {
-    --cellWidth: 40px;
-    --cellHeight: 40px;
+    --itemWidth: 40px;
+    --itemHeight: 40px;
 
     box-sizing: content-box;
+    flex: 1;
     margin: 0 auto;
     height: 100%;
+    min-height: 0;
     overflow: hidden;
     padding-bottom: 8px;
 
@@ -57,90 +59,12 @@
       }
     }
 
-    .HotbarCell {
-      width: var(--cellWidth);
-      height: var(--cellHeight);
-      min-height: var(--cellHeight);
+    .HotbarItem {
+      width: var(--itemWidth);
+      height: var(--itemHeight);
+      min-height: var(--itemHeight);
       margin: 12px;
-      background: var(--clusterMenuCellBackground);
-      border-radius: 6px;
       position: relative;
-
-      &.isDraggingOver {
-        background-color: #3e4148;
-        box-shadow:
-          0 0 0px 3px var(--clusterMenuBackground),
-          0 0 0px 6px #ffffff30;
-
-        &:not(.isDraggingOwner) {
-          z-index: 50;
-
-          > div:not(:empty) {
-            border-radius: 6px;
-            box-shadow: 0 0 9px #00000042;
-          }
-
-          &.animateUp {
-            > div {
-              transform: translate(0px, -40px) !important;
-            }
-          }
-
-          &.animateDown {
-            > div {
-              transform: translate(0px, 40px);
-            }
-          }
-        }
-      }
-
-      &.animating {
-        &:empty {
-          animation: shake 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-          transform: translate3d(0, 0, 0);
-          backface-visibility: hidden;
-          perspective: 1000px;
-        }
-
-        &:not(:empty) {
-          > div {
-            animation: click 0.1s;
-          }
-        }
-      }
     }
-  }
-}
-
-@keyframes shake {
-  10%,
-  90% {
-    transform: translate3d(-1px, 0, 0);
-  }
-
-  20%,
-  80% {
-    transform: translate3d(2px, 0, 0);
-  }
-
-  30%,
-  50%,
-  70% {
-    transform: translate3d(-4px, 0, 0);
-  }
-
-  40%,
-  60% {
-    transform: translate3d(4px, 0, 0);
-  }
-}
-
-@keyframes click {
-  0% {
-    margin-top: 0;
-  }
-
-  100% {
-    margin-top: 2px;
   }
 }
