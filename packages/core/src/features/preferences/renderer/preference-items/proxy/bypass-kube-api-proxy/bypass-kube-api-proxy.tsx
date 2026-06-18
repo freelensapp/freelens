@@ -23,9 +23,10 @@ const NonInjectedBypassKubeApiProxy = observer(({ state }: Dependencies) => (
       Bypass Freelens Internal KubeApi Proxy
     </Switch>
     <small className="hint">
-      This will make commands like kubectl and helm skip Freelens internal KubeApi proxy. Needed with some corporate
-      proxies, bastion hosts (e.g. Teleport), or SOCKS5 tunnels that do certificate re-writing. Does not affect cluster
-      communications!
+      This makes kubectl and helm — including Freelens's in-app Helm releases and node shell — skip the internal KubeApi
+      proxy and connect using your original kubeconfig. Needed with some corporate proxies, bastion hosts (e.g.
+      Teleport), or SOCKS5 tunnels that do certificate re-writing. The cluster resource views are unaffected. Takes
+      effect on reconnect.
     </small>
   </section>
 ));

@@ -6,6 +6,7 @@
 
 import asyncFn from "@async-fn/jest";
 import { loggerInjectionToken } from "@freelensapp/logger";
+import yaml from "js-yaml";
 import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../common/cluster/cluster";
@@ -415,6 +416,119 @@ describe("kubeconfig manager tests", () => {
 
         expect(await getPathPromise).toBe("/some-directory-for-temp/kubeconfig-foo");
       });
+
+      it("preserves fields that a lossy copy would drop (proxy-url, tls-server-name, impersonation, exec)", async () => {
+        await readFileMock.resolveSpecific(
+          ["/kind-config.yml"],
+          JSON.stringify({
+            apiVersion: "v1",
+            clusters: [
+              {
+                name: "kind-kind",
+                cluster: {
+                  server: clusterServerUrl,
+                  "proxy-url": "socks5://127.0.0.1:1080",
+                  "tls-server-name": "kubernetes.example.com",
+                },
+              },
+            ],
+            contexts: [{ context: { cluster: "kind-kind", user: "kind-kind" }, name: "kind-kind" }],
+            users: [
+              {
+                name: "kind-kind",
+                user: {
+                  as: "admin",
+                  exec: { command: "tsh", apiVersion: "client.authentication.k8s.io/v1beta1" },
+                },
+              },
+            ],
+            "current-context": "kind-kind",
+            kind: "Config",
+            preferences: {},
+          }),
+        );
+
+        const [, contents] = writeFileMock.mock.calls[0] ?? [];
+        const written = yaml.load(contents as string) as ParsedKubeconfig;
+
+        expect(written.clusters[0].cluster["proxy-url"]).toBe("socks5://127.0.0.1:1080");
+        expect(written.clusters[0].cluster["tls-server-name"]).toBe("kubernetes.example.com");
+        expect(written.users[0].user.as).toBe("admin");
+        expect((written.users[0].user.exec as { command: string }).command).toBe("tsh");
+      });
+
+      it("makes relative file paths absolute and keeps token-file as a live reference", async () => {
+        await readFileMock.resolveSpecific(
+          ["/kind-config.yml"],
+          JSON.stringify({
+            apiVersion: "v1",
+            clusters: [
+              {
+                name: "kind-kind",
+                cluster: { server: clusterServerUrl, "certificate-authority": "ca.crt" },
+              },
+            ],
+            contexts: [{ context: { cluster: "kind-kind", user: "kind-kind" }, name: "kind-kind" }],
+            users: [{ name: "kind-kind", user: { "client-key": "keys/client.key", "token-file": "token" } }],
+            "current-context": "kind-kind",
+            kind: "Config",
+            preferences: {},
+          }),
+        );
+
+        const [, contents] = writeFileMock.mock.calls[0] ?? [];
+        const written = yaml.load(contents as string) as ParsedKubeconfig;
+
+        // The original kubeconfig lives at "/kind-config.yml", so relative paths
+        // resolve against "/".
+        expect(written.clusters[0].cluster["certificate-authority"]).toBe("/ca.crt");
+        expect(written.users[0].user["client-key"]).toBe("/keys/client.key");
+        expect(written.users[0].user["token-file"]).toBe("/token");
+
+        // token-file must stay a reference, not be inlined/frozen into a token.
+        expect(written.users[0].user.token).toBeUndefined();
+        expect(readFileMock).toBeCalledTimes(1);
+      });
+    });
+
+    describe("when a default namespace is configured for the cluster", () => {
+      beforeEach(() => {
+        clusterFake.preferences.defaultNamespace = "team-a";
+      });
+
+      describe("when ensurePath() is called", () => {
+        beforeEach(() => {
+          kubeConfManager.ensurePath();
+        });
+
+        it("pins the namespace on the opened cluster's context", async () => {
+          await readFileMock.resolveSpecific(
+            ["/kind-config.yml"],
+            JSON.stringify({
+              apiVersion: "v1",
+              clusters: [{ name: "kind-kind", cluster: { server: clusterServerUrl } }],
+              contexts: [{ context: { cluster: "kind-kind", user: "kind-kind" }, name: "kind-kind" }],
+              users: [{ name: "kind-kind" }],
+              "current-context": "kind-kind",
+              kind: "Config",
+              preferences: {},
+            }),
+          );
+
+          const [, contents] = writeFileMock.mock.calls[0] ?? [];
+          const written = yaml.load(contents as string) as ParsedKubeconfig;
+          const context = written.contexts.find((entry) => entry.name === "kind-kind");
+
+          expect(context?.context.namespace).toBe("team-a");
+        });
+      });
     });
   });
 });
+
+interface ParsedKubeconfig {
+  "current-context"?: string;
+  clusters: { name: string; cluster: Record<string, string> }[];
+  users: { name: string; user: Record<string, unknown> }[];
+  contexts: { name: string; context: Record<string, string> }[];
+}
