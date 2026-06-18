@@ -418,10 +418,10 @@ importers:
         version: 5.106.2(webpack-cli@7.0.2)
       webpack-cli:
         specifier: ^7.0.2
-        version: 7.0.2(webpack-dev-server@5.2.4)(webpack@5.106.2)
+        version: 7.0.2(webpack-dev-server@5.2.5)(webpack@5.106.2)
       webpack-dev-server:
-        specifier: ^5.2.4
-        version: 5.2.4(webpack-cli@7.0.2)(webpack@5.106.2)
+        specifier: ^5.2.5
+        version: 5.2.5(webpack-cli@7.0.2)(webpack@5.106.2)
       webpack-node-externals:
         specifier: ^3.0.0
         version: 3.0.0
@@ -1148,7 +1148,7 @@ importers:
         version: 5.106.2(webpack-cli@7.0.2)
       webpack-cli:
         specifier: ^7.0.2
-        version: 7.0.2(webpack-dev-server@5.2.4)(webpack@5.106.2)
+        version: 7.0.2(webpack-dev-server@5.2.5)(webpack@5.106.2)
       webpack-node-externals:
         specifier: ^3.0.0
         version: 3.0.0
@@ -1216,7 +1216,7 @@ importers:
         version: 5.106.2(webpack-cli@7.0.2)
       webpack-cli:
         specifier: ^7.0.2
-        version: 7.0.2(webpack-dev-server@5.2.4)(webpack@5.106.2)
+        version: 7.0.2(webpack-dev-server@5.2.5)(webpack@5.106.2)
 
   packages/generate-license:
     dependencies:
@@ -1329,7 +1329,7 @@ importers:
         version: 5.106.2(webpack-cli@7.0.2)
       webpack-cli:
         specifier: ^7.0.2
-        version: 7.0.2(webpack-dev-server@5.2.4)(webpack@5.106.2)
+        version: 7.0.2(webpack-dev-server@5.2.5)(webpack@5.106.2)
       webpack-node-externals:
         specifier: ^3.0.0
         version: 3.0.0
@@ -4381,9 +4381,6 @@ packages:
 
   '@peculiar/asn1-rsa@2.6.1':
     resolution: {integrity: sha512-1nVMEh46SElUt5CB3RUTV4EG/z7iYc7EoaDY5ECwganibQPkZ/Y2eMsTKB/LeyrUJ+W/tKoD9WUqIy8vB+CEdA==}
-
-  '@peculiar/asn1-schema@2.6.0':
-    resolution: {integrity: sha512-xNLYLBFTBKkCzEZIw842BxytQQATQv+lDTCEMZ8C196iJcJJMBUZxrhSTxLaohMyKK8QlzRNTRkUmanucnDSqg==}
 
   '@peculiar/asn1-schema@2.7.0':
     resolution: {integrity: sha512-W8ZfWzLmQnrcky+eh3tni4IozMdqBDiHWU0N+vve/UGjMaUs8c0L7A2oEdkBXS8rTpWDpK/aoI3DG/L/hxmxPg==}
@@ -9195,8 +9192,8 @@ packages:
       webpack:
         optional: true
 
-  webpack-dev-server@5.2.4:
-    resolution: {integrity: sha512-GqDPGZN9bRqKBTkp4aWkobDDHMsrXKoGSdOH56smIri8qR0JG8gfL8/v/f/OZR3/OKXjG8uwJbFVhKm/FNU/UA==}
+  webpack-dev-server@5.2.5:
+    resolution: {integrity: sha512-4wZtCquSuv9CKX8oybo+mqxtxZqWz47uM1Ch94lxowBztOhWCbhqvRbfC/mODOwxgV2brY+JGZpHq58/SuVFYg==}
     engines: {node: '>= 18.12.0'}
     hasBin: true
     peerDependencies:
@@ -10653,12 +10650,6 @@ snapshots:
       asn1js: 3.0.10
       tslib: 2.8.1
 
-  '@peculiar/asn1-schema@2.6.0':
-    dependencies:
-      asn1js: 3.0.10
-      pvtsutils: 1.3.6
-      tslib: 2.8.1
-
   '@peculiar/asn1-schema@2.7.0':
     dependencies:
       '@peculiar/utils': 2.0.3
@@ -10690,7 +10681,7 @@ snapshots:
       '@peculiar/asn1-ecc': 2.6.1
       '@peculiar/asn1-pkcs9': 2.6.1
       '@peculiar/asn1-rsa': 2.6.1
-      '@peculiar/asn1-schema': 2.6.0
+      '@peculiar/asn1-schema': 2.7.0
       '@peculiar/asn1-x509': 2.6.1
       pvtsutils: 1.3.6
       reflect-metadata: 0.2.2
@@ -15964,7 +15955,7 @@ snapshots:
 
   webidl-conversions@8.0.1: {}
 
-  webpack-cli@7.0.2(webpack-dev-server@5.2.4)(webpack@5.106.2):
+  webpack-cli@7.0.2(webpack-dev-server@5.2.5)(webpack@5.106.2):
     dependencies:
       '@discoveryjs/json-ext': 1.0.0
       commander: 14.0.3
@@ -15977,7 +15968,7 @@ snapshots:
       webpack: 5.106.2(webpack-cli@7.0.2)
       webpack-merge: 6.0.1
     optionalDependencies:
-      webpack-dev-server: 5.2.4(webpack-cli@7.0.2)(webpack@5.106.2)
+      webpack-dev-server: 5.2.5(webpack-cli@7.0.2)(webpack@5.106.2)
 
   webpack-dev-middleware@7.4.2(webpack@5.106.2):
     dependencies:
@@ -15990,7 +15981,7 @@ snapshots:
     optionalDependencies:
       webpack: 5.106.2(webpack-cli@7.0.2)
 
-  webpack-dev-server@5.2.4(webpack-cli@7.0.2)(webpack@5.106.2):
+  webpack-dev-server@5.2.5(webpack-cli@7.0.2)(webpack@5.106.2):
     dependencies:
       '@types/bonjour': 3.5.13
       '@types/connect-history-api-fallback': 1.5.4
@@ -16022,7 +16013,7 @@ snapshots:
       ws: 8.20.1
     optionalDependencies:
       webpack: 5.106.2(webpack-cli@7.0.2)
-      webpack-cli: 7.0.2(webpack-dev-server@5.2.4)(webpack@5.106.2)
+      webpack-cli: 7.0.2(webpack-dev-server@5.2.5)(webpack@5.106.2)
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -16065,7 +16056,7 @@ snapshots:
       watchpack: 2.5.1
       webpack-sources: 3.3.4
     optionalDependencies:
-      webpack-cli: 7.0.2(webpack-dev-server@5.2.4)(webpack@5.106.2)
+      webpack-cli: 7.0.2(webpack-dev-server@5.2.5)(webpack@5.106.2)
     transitivePeerDependencies:
       - '@swc/core'
       - esbuild
