@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-const { access, readdir, rm } = require("fs/promises");
+const { access, readFile, readdir, rm, writeFile } = require("fs/promises");
 const { constants } = require("fs");
 const path = require("path");
 
@@ -89,6 +89,108 @@ async function removePnpmReflinkBinariesExcept(parentDir, keepPrefix) {
   );
 }
 
+/**
+ * Recursively removes entries from the asar header's files tree for any
+ * "unpacked" files or directories that no longer exist in .asar.unpacked.
+ * Empty directory entries left behind are also removed.
+ */
+async function removeStaleUnpackedEntries(filesNode, currentUnpackedDir) {
+  const keysToRemove = [];
+
+  for (const [name, entry] of Object.entries(filesNode)) {
+    const entryPath = path.join(currentUnpackedDir, name);
+
+    if (typeof entry.files === "object") {
+      // Directory entry
+      if (entry.unpacked) {
+        // Entire directory is marked as unpacked — check if it still exists on disk
+        if (!(await pathExists(entryPath))) {
+          keysToRemove.push(name);
+        }
+      } else {
+        // Regular directory — recurse to check individual entries
+        await removeStaleUnpackedEntries(entry.files, entryPath);
+        // If all children were removed, clean up the now-empty directory entry
+        if (Object.keys(entry.files).length === 0) {
+          keysToRemove.push(name);
+        }
+      }
+    } else if (entry.unpacked) {
+      // Individual unpacked file — check if it still exists on disk
+      if (!(await pathExists(entryPath))) {
+        keysToRemove.push(name);
+      }
+    }
+    // Inline files (no unpacked property) are stored inside the asar — leave them alone
+  }
+
+  for (const key of keysToRemove) {
+    delete filesNode[key];
+  }
+}
+
+/**
+ * Reads the asar header, removes entries for any "unpacked" files that no
+ * longer exist in .asar.unpacked, and writes the corrected header back.
+ *
+ * The asar binary format stores inline-file offsets relative to the start of
+ * the file-data section (not the start of the file), so only the header needs
+ * to be rewritten — the file-data section is appended unchanged.
+ *
+ * Asar binary layout:
+ *   [sizeBuf (8 bytes)]  — Pickle<uint32> holding the byte length of headerBuf
+ *   [headerBuf (N bytes)] — Pickle<string> holding the JSON header
+ *   [file data section]   — concatenated inline file contents
+ *
+ * Pickle<uint32>:  [4 bytes payloadSize=4] [4 bytes value]
+ * Pickle<string>:  [4 bytes payloadSize] [4 bytes stringLen] [stringLen bytes, 4-byte-aligned]
+ */
+async function reconcileAsarHeader(asarPath) {
+  const unpackedDir = `${asarPath}.unpacked`;
+
+  // Read the entire asar into memory
+  const asarBuf = await readFile(asarPath);
+
+  // Parse sizeBuf (bytes 0–7): bytes 4–7 hold the headerBuf byte length
+  const headerBufLength = asarBuf.readUInt32LE(4);
+
+  // Parse headerBuf (bytes 8 to 8+headerBufLength):
+  //   bytes 8–11:  Pickle payloadSize (not needed for parsing)
+  //   bytes 12–15: JSON string byte length
+  //   bytes 16+:   JSON string
+  const jsonLength = asarBuf.readUInt32LE(12);
+  const jsonStr = asarBuf.slice(16, 16 + jsonLength).toString("utf8");
+  const header = JSON.parse(jsonStr);
+
+  // Remove header entries for files pruned from .asar.unpacked
+  if (header.files && typeof header.files === "object") {
+    await removeStaleUnpackedEntries(header.files, unpackedDir);
+  }
+
+  // Re-encode the header JSON as a Pickle<string>
+  const newJsonStr = JSON.stringify(header);
+  const newJsonBuf = Buffer.from(newJsonStr, "utf8");
+  const newJsonLength = newJsonBuf.length;
+  // Pickle aligns payload fields to 4-byte boundaries
+  const newJsonAlignedLength = Math.ceil(newJsonLength / 4) * 4;
+  const newPayloadSize = 4 + newJsonAlignedLength; // 4-byte length field + aligned JSON
+  const newHeaderBuf = Buffer.alloc(4 + newPayloadSize, 0); // zero-initialised (handles padding)
+  newHeaderBuf.writeUInt32LE(newPayloadSize, 0);
+  newHeaderBuf.writeUInt32LE(newJsonLength, 4);
+  newJsonBuf.copy(newHeaderBuf, 8);
+
+  // Re-encode sizeBuf as a Pickle<uint32> holding the new headerBuf byte length
+  const newSizeBuf = Buffer.alloc(8, 0);
+  newSizeBuf.writeUInt32LE(4, 0); // Pickle payloadSize = 4
+  newSizeBuf.writeUInt32LE(newHeaderBuf.length, 4);
+
+  // The file-data section is unchanged; it immediately follows the original header
+  const fileDataSection = asarBuf.slice(8 + headerBufLength);
+
+  // Write the corrected asar
+  await writeFile(asarPath, Buffer.concat([newSizeBuf, newHeaderBuf, fileDataSection]));
+}
+
 exports.default = async function pruneUnusedNativeBinaries(context) {
   const archName = getArchName(context.arch);
 
@@ -102,4 +204,11 @@ exports.default = async function pruneUnusedNativeBinaries(context) {
 
   await removeChildrenExcept(path.join(nodeModulesDir, "node-pty", "prebuilds"), platformArch);
   await removePnpmReflinkBinariesExcept(path.join(nodeModulesDir, "pnpm", "dist"), `reflink.${platformArch}`);
+
+  // After pruning files from .asar.unpacked, the app.asar header still lists the
+  // deleted files as "unpacked", making the asar inconsistent.  Reconcile the header
+  // so it only references files that actually exist in .asar.unpacked.
+  const asarPath = path.join(resourcesDir, "app.asar");
+
+  await reconcileAsarHeader(asarPath);
 };
