@@ -21,7 +21,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Check if package version matches
         run: test "${GITHUB_REF_NAME}" = "v$(jq -r .version freelens/package.json)"
@@ -89,7 +89,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Install dependencies (macOS)
         if: runner.os == 'macOS'
@@ -411,7 +411,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Publish GitHub release
         run: gh release edit ${GITHUB_REF_NAME} --draft=false
@@ -438,7 +438,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup node
         uses: actions/setup-node@v6
@@ -533,7 +533,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
