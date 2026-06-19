@@ -6,6 +6,7 @@
 
 const { access, readFile, readdir, rm, writeFile } = require("fs/promises");
 const { constants } = require("fs");
+const { createHash } = require("crypto");
 const path = require("path");
 
 const ELECTRON_BUILDER_ARCHES = {
@@ -144,6 +145,10 @@ async function removeStaleUnpackedEntries(filesNode, currentUnpackedDir) {
  *
  * Pickle<uint32>:  [4 bytes payloadSize=4] [4 bytes value]
  * Pickle<string>:  [4 bytes payloadSize] [4 bytes stringLen] [stringLen bytes, 4-byte-aligned]
+ *
+ * Returns the old and new header SHA-256 hashes (hex) so the caller can update
+ * the asar integrity metadata that electron-builder embedded *before* this hook
+ * ran (see reconcileAsarIntegrity).  Returns null when nothing changed.
  */
 async function reconcileAsarHeader(asarPath) {
   const unpackedDir = `${asarPath}.unpacked`;
@@ -159,8 +164,8 @@ async function reconcileAsarHeader(asarPath) {
   //   bytes 12–15: JSON string byte length
   //   bytes 16+:   JSON string
   const jsonLength = asarBuf.readUInt32LE(12);
-  const jsonStr = asarBuf.slice(16, 16 + jsonLength).toString("utf8");
-  const header = JSON.parse(jsonStr);
+  const oldJsonBuf = asarBuf.slice(16, 16 + jsonLength);
+  const header = JSON.parse(oldJsonBuf.toString("utf8"));
 
   // Remove header entries for files pruned from .asar.unpacked
   if (header.files && typeof header.files === "object") {
@@ -168,8 +173,13 @@ async function reconcileAsarHeader(asarPath) {
   }
 
   // Re-encode the header JSON as a Pickle<string>
-  const newJsonStr = JSON.stringify(header);
-  const newJsonBuf = Buffer.from(newJsonStr, "utf8");
+  const newJsonBuf = Buffer.from(JSON.stringify(header), "utf8");
+
+  // Nothing was pruned — leave the asar (and its already-embedded integrity) untouched
+  if (newJsonBuf.equals(oldJsonBuf)) {
+    return null;
+  }
+
   const newJsonLength = newJsonBuf.length;
   // Pickle aligns payload fields to 4-byte boundaries
   const newJsonAlignedLength = Math.ceil(newJsonLength / 4) * 4;
@@ -189,6 +199,76 @@ async function reconcileAsarHeader(asarPath) {
 
   // Write the corrected asar
   await writeFile(asarPath, Buffer.concat([newSizeBuf, newHeaderBuf, fileDataSection]));
+
+  // electron-builder embeds sha256(headerJson) as the asar integrity hash
+  // (see app-builder-lib asar/integrity.js → hashHeader).
+  return {
+    oldHash: createHash("sha256").update(oldJsonBuf).digest("hex"),
+    newHash: createHash("sha256").update(newJsonBuf).digest("hex"),
+  };
+}
+
+/**
+ * Replaces every occurrence of `search` with `replacement` (both equal-length
+ * buffers) inside `buf`, in place.  Returns the number of replacements made.
+ */
+function replaceInBuffer(buf, search, replacement) {
+  let count = 0;
+  let index = buf.indexOf(search);
+
+  while (index !== -1) {
+    replacement.copy(buf, index);
+    count += 1;
+    index = buf.indexOf(search, index + replacement.length);
+  }
+
+  return count;
+}
+
+/**
+ * electron-builder embeds the app.asar header hash as an integrity check
+ * *before* the afterPack hook runs:
+ *   - macOS:   ElectronAsarIntegrity in Contents/Info.plist
+ *   - Windows: the INTEGRITY/ELECTRONASAR resource in the main .exe
+ *   - Linux:   not embedded
+ *
+ * After reconcileAsarHeader rewrites the header, that embedded hash no longer
+ * matches and Electron would refuse to launch if asar integrity validation is
+ * enabled.  Both the old and new hashes are 64-character lowercase hex of the
+ * same length, so the embedded value is patched in place (no change to file
+ * size or PE/plist structure).  Signing happens after this hook, so the updated
+ * bytes are covered by the signature.
+ */
+async function reconcileAsarIntegrity(context, resourcesDir, hashes) {
+  const { electronPlatformName } = context;
+
+  let targetFile;
+
+  if (electronPlatformName === "darwin") {
+    // resourcesDir is <bundle>.app/Contents/Resources; Info.plist sits next to it
+    targetFile = path.join(resourcesDir, "..", "Info.plist");
+  } else if (electronPlatformName === "win32") {
+    const productFilename = context.packager.appInfo.productFilename;
+
+    targetFile = path.join(context.appOutDir, `${productFilename}.exe`);
+  } else {
+    // Linux does not embed asar integrity
+    return;
+  }
+
+  if (!(await pathExists(targetFile))) {
+    return;
+  }
+
+  const buf = await readFile(targetFile);
+  const replacements = replaceInBuffer(buf, Buffer.from(hashes.oldHash, "ascii"), Buffer.from(hashes.newHash, "ascii"));
+
+  // No embedded hash found (e.g. asar integrity disabled) — nothing to reconcile
+  if (replacements === 0) {
+    return;
+  }
+
+  await writeFile(targetFile, buf);
 }
 
 exports.default = async function pruneUnusedNativeBinaries(context) {
@@ -210,5 +290,11 @@ exports.default = async function pruneUnusedNativeBinaries(context) {
   // so it only references files that actually exist in .asar.unpacked.
   const asarPath = path.join(resourcesDir, "app.asar");
 
-  await reconcileAsarHeader(asarPath);
+  const hashes = await reconcileAsarHeader(asarPath);
+
+  // Rewriting the header invalidates the asar integrity hash electron-builder
+  // already embedded, so update it to match the reconciled header.
+  if (hashes) {
+    await reconcileAsarIntegrity(context, resourcesDir, hashes);
+  }
 };
