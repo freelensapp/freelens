@@ -428,11 +428,6 @@ jobs:
             popd > /dev/null
           done
 
-      - name: Publish SBOM
-        uses: anchore/sbom-action/publish-sbom@v0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: List files before upload
         shell: bash
         run: |
