@@ -285,6 +285,27 @@ When asked to implement a change on a PR:
    commit. This keeps the history bisectable and makes each change easy
    to revert individually.
 
+### Modifying GitHub Actions Workflows
+
+Claude cannot push changes to files under `.github/workflows/` directly,
+because the GitHub token used by the action lacks the `workflows` permission.
+Any patch to a workflow file MUST therefore be delivered as a new, complete
+file under the `github-workflow-fix/` directory instead of editing the file in
+place:
+
+1. Write the full, final contents of the workflow to
+   `github-workflow-fix/<workflow-file-name>` (e.g.
+   `github-workflow-fix/claude.yaml`). Do **not** edit the original file under
+   `.github/workflows/`.
+2. Make it a **complete** file — the entire workflow as it should look after
+   the change, not just a diff or fragment — so it can be copied verbatim.
+3. Commit and open the PR as usual. In the PR description, clearly note that
+   the file is a proposed workflow change and that a maintainer must move it
+   from `github-workflow-fix/` to `.github/workflows/` manually.
+
+This lets the PR be created successfully while leaving the actual workflow
+change for a human to apply.
+
 ### Branch Naming Conventions
 
 When creating a branch from an issue, use a human-readable name that includes
