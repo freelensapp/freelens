@@ -1,0 +1,608 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - v*
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  make-draft-release:
+    name: make draft release
+
+    permissions: write-all
+
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 360
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Check if package version matches
+        run: test "${GITHUB_REF_NAME}" = "v$(jq -r .version freelens/package.json)"
+
+      - name: Create draft release
+        run: |
+          gh release create ${GITHUB_REF_NAME} \
+            --draft \
+            --title ${GITHUB_REF_NAME} \
+            --generate-notes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-app:
+    name: build app
+
+    needs:
+      - make-draft-release
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runs-on: ubuntu-24.04
+            os: linux
+            arch: x64
+            concurrency: linux-x64
+
+          - runs-on: ubuntu-24.04-arm
+            os: linux
+            arch: arm64
+            concurrency: linux-arm64
+
+          - runs-on: macos-15
+            os: macos
+            arch: arm64
+            concurrency: macos-arm64
+
+          - runs-on: macos-15-intel
+            os: macos
+            arch: x64
+            concurrency: macos-x64
+
+          - runs-on: windows-11-arm
+            os: windows
+            arch: arm64
+            concurrency: windows-arm64
+
+          - runs-on: windows-2025
+            os: windows
+            arch: x64
+            concurrency: windows-x64
+
+    runs-on: ${{ matrix.runs-on }}
+    environment: signing
+
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.ref_name }}-${{ matrix.concurrency }}
+
+    env:
+      DO_NOT_TRACK: "1"
+      ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
+      ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
+      ELECTRON_HEADERS_CACHE: ${{ github.workspace }}/.cache/electron-headers
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Install dependencies (macOS)
+        if: runner.os == 'macOS'
+        run: brew install bash coreutils python-setuptools
+
+      - name: Add coreutils to PATH (macOS)
+        if: runner.os == 'macOS'
+        run: echo "/usr/local/opt/coreutils/libexec/gnubin" >> $GITHUB_PATH
+
+      - name: Install dependencies (Windows)
+        id: install-deps-windows
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          timeout 300 choco install yq --yes --no-progress
+          yq --version
+        continue-on-error: true
+
+      - name: Install dependencies (Windows) (retry)
+        if: runner.os == 'Windows' && steps.install-deps-windows.outcome == 'failure'
+        shell: bash
+        run: |
+          timeout 300 choco install yq --yes --no-progress
+          yq --version
+
+      - name: Setup node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Setup pnpm
+        run: corepack enable
+
+      - name: Get pnpm cache directory
+        shell: bash
+        run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
+
+      - name: Use pnpm cache
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.pnpm_cache_dir }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-node-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-node-
+
+      - name: Disable pre post scripts for pnpm
+        shell: bash
+        run: pnpm config set enablePrePostScripts false
+
+      - name: Get Electron version
+        shell: bash
+        run: echo "electron_version=$(yq -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
+
+      - name: Get Electron Builder version
+        shell: bash
+        run: echo "electron_builder_version=$(yq -r .importers.freelens.devDependencies.electron-builder.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
+
+      - name: Use Electron cache
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.ELECTRON_CACHE }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-${{ env.electron_version }}
+          restore-keys: |
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-
+
+      - name: Use Electron Builder cache
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.ELECTRON_BUILDER_CACHE }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-builder-${{ env.electron_builder_version }}
+          restore-keys: |
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-builder-
+
+      - name: Use Electron headers cache
+        id: electron-headers
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.ELECTRON_HEADERS_CACHE }}
+          key: electron-headers-${{ env.electron_version }}
+
+      - name: Install pnpm dependencies
+        id: install-pnpm
+        shell: bash
+        run: pnpm install --color=always --prefer-offline --frozen-lockfile
+        continue-on-error: true
+
+      - name: Install pnpm dependencies (retry)
+        if: steps.install-pnpm.outcome == 'failure'
+        shell: bash
+        run: pnpm install --color=always --prefer-offline --frozen-lockfile
+
+      - name: Install Electron headers
+        if: steps.electron-headers.outputs.cache-hit != 'true'
+        shell: bash
+        run: |
+          set -eo pipefail
+          mkdir -p $ELECTRON_HEADERS_CACHE
+          curl -sSfL https://www.electronjs.org/headers/v$electron_version/node-v$electron_version-headers.tar.gz -o $ELECTRON_HEADERS_CACHE/node-v$electron_version-headers.tar.gz
+
+      - name: Build packages
+        run: pnpm --color=always --stream build
+
+      - name: Rebuild native packages for Electron
+        run: pnpm --color=always electron-rebuild -a ${{ matrix.arch }}
+        env:
+          npm_config_arch: ${{ matrix.arch }}
+          npm_config_target_arch: ${{ matrix.arch }}
+          npm_package_config_node_gyp_tarball: ${{ env.ELECTRON_HEADERS_CACHE }}/node-v${{ env.electron_version }}-headers.tar.gz
+
+      - name: Build extra resources
+        id: build-resources
+        run: pnpm --color=always build:resources
+        continue-on-error: true
+
+      - name: Build extra resources (retry)
+        id: build-resources-2
+        if: steps.build-resources.outcome == 'failure'
+        run: pnpm --color=always build:resources
+        continue-on-error: true
+
+      - name: Build extra resources (retry 2)
+        if: steps.build-resources-2.outcome == 'failure'
+        run: pnpm --color=always build:resources
+
+      - name: Build Electron app (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          for var in APPLEID APPLEIDPASS APPLETEAMID CSC_LINK CSC_KEY_PASSWORD CSC_INSTALLER_LINK CSC_INSTALLER_KEY_PASSWORD; do
+            test -n "${!var}" || unset $var
+          done
+          pnpm --color=always build:app \
+            dmg pkg \
+            --${{ matrix.arch }}
+        env:
+          APPLEID: ${{ secrets.APPLEID }}
+          APPLEIDPASS: ${{ secrets.APPLEIDPASS }}
+          APPLETEAMID: ${{ secrets.APPLETEAMID }}
+          CSC_LINK: ${{ secrets.CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+          CSC_INSTALLER_LINK: ${{ secrets.CSC_INSTALLER_LINK }}
+          CSC_INSTALLER_KEY_PASSWORD: ${{ secrets.CSC_INSTALLER_KEY_PASSWORD }}
+          DEBUG: electron-builder,electron-builder:*
+
+      - name: Notarize PKG (macOS)
+        id: notarize-pkg
+        if: runner.os == 'macOS'
+        run: |
+          if [[ -n $APPLEID && -n $APPLEIDPASS && -n $APPLETEAMID ]]; then
+            pkgname=$(ls -1 freelens/dist/Freelens*.pkg | head -n1)
+            auth="--apple-id $APPLEID --password $APPLEIDPASS --team-id $APPLETEAMID"
+            xcrun notarytool submit $pkgname $auth --wait 2>&1 | tee freelens/dist/notarytool.log
+            uuid=$(awk '/id: / { print $2; exit; }' freelens/dist/notarytool.log)
+            sleep 60
+            if [[ -n $uuid ]]; then
+              xcrun notarytool log $uuid $auth
+              xcrun stapler staple $pkgname
+            fi
+          fi
+        env:
+          APPLEID: ${{ secrets.APPLEID }}
+          APPLEIDPASS: ${{ secrets.APPLEIDPASS }}
+          APPLETEAMID: ${{ secrets.APPLETEAMID }}
+        continue-on-error: true
+
+      - name: Notarize PKG (macOS) (retry)
+        id: notarize-pkg-2
+        if: runner.os == 'macOS' && steps.notarize-pkg.outcome == 'failure'
+        run: |
+          if [[ -n $APPLEID && -n $APPLEIDPASS && -n $APPLETEAMID ]]; then
+            sleep 600
+            pkgname=$(ls -1 freelens/dist/Freelens*.pkg | head -n1)
+            auth="--apple-id $APPLEID --password $APPLEIDPASS --team-id $APPLETEAMID"
+            xcrun notarytool submit $pkgname $auth --wait 2>&1 | tee freelens/dist/notarytool.log
+            uuid=$(awk '/id: / { print $2; exit; }' freelens/dist/notarytool.log)
+            sleep 60
+            if [[ -n $uuid ]]; then
+              xcrun notarytool log $uuid $auth
+              xcrun stapler staple $pkgname
+            fi
+          fi
+        env:
+          APPLEID: ${{ secrets.APPLEID }}
+          APPLEIDPASS: ${{ secrets.APPLEIDPASS }}
+          APPLETEAMID: ${{ secrets.APPLETEAMID }}
+        continue-on-error: true
+
+      - name: Notarize PKG (macOS) (retry 2)
+        if: runner.os == 'macOS' && steps.notarize-pkg-2.outcome == 'failure'
+        run: |
+          if [[ -n $APPLEID && -n $APPLEIDPASS && -n $APPLETEAMID ]]; then
+            sleep 600
+            pkgname=$(ls -1 freelens/dist/Freelens*.pkg | head -n1)
+            auth="--apple-id $APPLEID --password $APPLEIDPASS --team-id $APPLETEAMID"
+            xcrun notarytool submit $pkgname $auth --wait 2>&1 | tee freelens/dist/notarytool.log
+            uuid=$(awk '/id: / { print $2; exit; }' freelens/dist/notarytool.log)
+            sleep 60
+            if [[ -n $uuid ]]; then
+              xcrun notarytool log $uuid $auth
+              xcrun stapler staple $pkgname
+            fi
+          fi
+        env:
+          APPLEID: ${{ secrets.APPLEID }}
+          APPLEIDPASS: ${{ secrets.APPLEIDPASS }}
+          APPLETEAMID: ${{ secrets.APPLETEAMID }}
+
+      - name: Build Electron app (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          pnpm --color=always build:app \
+            AppImage deb rpm \
+            --${{ matrix.arch }}
+        env:
+          DEBUG: electron-builder,electron-builder:*
+
+      - name: Build Electron app (Windows)
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          pnpm --color=always build:app \
+            msi nsis portable \
+            --${{ matrix.arch }}
+        env:
+          DEBUG: electron-builder,electron-builder:*
+
+      - name: Azure Trusted Signing (Windows)
+        if: runner.os == 'Windows'
+        uses: azure/artifact-signing-action@v2
+        with:
+          azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          endpoint: ${{ vars.AZURE_ENDPOINT }}
+          trusted-signing-account-name: ${{ vars.AZURE_CODE_SIGNING_NAME }}
+          certificate-profile-name: ${{ vars.AZURE_CERT_PROFILE_NAME }}
+          files-folder: ${{ github.workspace }}\freelens\dist
+          files-folder-filter: exe,msi
+
+      - name: Tweak binaries
+        shell: bash
+        run: |
+          find . -name '*pty.node' -print0 | xargs -0 file
+          rm -f freelens/dist/*.blockmap
+
+      - name: Normalize filenames before upload
+        shell: bash
+        run: |
+          perl << 'END'
+          chdir "freelens/dist" or die $!;
+          my %arch = (x64 => "amd64", arm64 => "arm64");
+          my $arch = $arch{$ENV{ARCH}};
+          while (<Freelens*>) {
+            my $src = $_;
+            s/[ _]/-/g;
+            if (/\.(dmg|exe|msi|pkg)$/ && !/-(amd64|arm64)\./) {
+              s/\.(dmg|exe|msi|pkg)$/-$arch.$1/;
+            }
+            s/[.-](aarch64|arm64)/-arm64/;
+            s/[.-](amd64|x86-64)/-amd64/;
+            s/-(amd64|arm64).(dmg|pkg)$/-macos-$1.$2/;
+            s/-(amd64|arm64).(AppImage|deb|flatpak|rpm|snap)$/-linux-$1.$2/;
+            s/-(amd64|arm64)\.msi$/-windows-$1.msi/;
+            s/-(amd64|arm64)\.exe$/-windows-portable-$1.exe/ if !/-Setup-/;
+            s/-(amd64|arm64)\.exe$/-windows-$1.exe/ if /-Setup-/;
+            s/-Setup-/-/;
+            my $dst = $_;
+            if ($src ne $dst) {
+              print "rename $src to $dst\n";
+              rename $src, $dst or die $!;
+            }
+          }
+          END
+        env:
+          ARCH: ${{ matrix.arch }}
+
+      - name: Make checksums for binaries (Linux, Windows)
+        if: runner.os == 'Linux' || runner.os == 'Windows'
+        shell: bash
+        run: |
+          for f in freelens/dist/Freelens*.*; do
+            pushd freelens/dist > /dev/null
+            sha256sum $(basename $f) | tee $(basename $f).sha256
+            popd > /dev/null
+          done
+
+      - name: Make checksums for binaries (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          for f in freelens/dist/Freelens*.*; do
+            pushd freelens/dist > /dev/null
+            shasum -a 256 $(basename $f) | tee $(basename $f).sha256
+            popd > /dev/null
+          done
+
+      - name: Create SBOM
+        uses: anchore/sbom-action@v0
+        with:
+          format: spdx-json
+          output-file: "freelens/dist/${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-sbom.spdx.json"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          artifact-name: "${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-sbom.spdx.json"
+
+      - name: Normalize SBOM filename
+        shell: bash
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          os="${{ matrix.os }}"
+          arch="${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}"
+          for f in freelens/dist/*-sbom.spdx.json; do
+            newname="freelens/dist/Freelens-${version}-${os}-${arch}-sbom.spdx.json"
+            mv "$f" "$newname"
+            if [ -f "${f}.sha256" ]; then
+              mv "${f}.sha256" "${newname}.sha256"
+            fi
+          done
+
+      - name: Make checksum for SBOM (Linux, Windows)
+        if: runner.os == 'Linux' || runner.os == 'Windows'
+        shell: bash
+        run: |
+          for f in freelens/dist/*-sbom.spdx.json; do
+            pushd freelens/dist > /dev/null
+            sha256sum $(basename $f) | tee $(basename $f).sha256
+            popd > /dev/null
+          done
+
+      - name: Make checksum for SBOM (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          for f in freelens/dist/*-sbom.spdx.json; do
+            pushd freelens/dist > /dev/null
+            shasum -a 256 $(basename $f) | tee $(basename $f).sha256
+            popd > /dev/null
+          done
+
+      - name: List files before upload
+        shell: bash
+        run: |
+          for f in freelens/dist/Freelens*.*; do
+            echo "$(ls -l "$f")" "|" "$(file -b "$f")"
+          done
+
+      - name: Upload files
+        shell: bash
+        run: |
+          gh release upload ${GITHUB_REF_NAME#sign/} freelens/dist/Freelens*.*
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish-github-release:
+    name: publish GitHub release
+
+    needs:
+      - make-draft-release
+      - build-app
+
+    runs-on: ubuntu-24.04-arm
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Publish GitHub release
+        run: gh release edit ${GITHUB_REF_NAME} --draft=false
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish-npm-release:
+    name: publish NPM release
+
+    needs:
+      - make-draft-release
+      - build-app
+      - publish-github-release
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runs-on: ubuntu-24.04-arm
+            arch: arm64
+
+    runs-on: ${{ matrix.runs-on }}
+    environment: publishing
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+          registry-url: https://registry.npmjs.org
+
+      - name: Upgrade npm
+        run: npm install -g npm@11
+
+      - name: Setup pnpm
+        run: corepack enable
+
+      - name: Get pnpm cache directory
+        shell: bash
+        run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
+
+      - name: Use pnpm cache
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.pnpm_cache_dir }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-node-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-node-
+
+      - name: Install pnpm dependencies
+        id: install-pnpm
+        shell: bash
+        run: pnpm install --color=always --prefer-offline --frozen-lockfile
+        continue-on-error: true
+
+      - name: Install pnpm dependencies (retry)
+        if: steps.install-pnpm.outcome == 'failure'
+        shell: bash
+        run: pnpm install --color=always --prefer-offline --frozen-lockfile
+
+      - name: Build packages
+        run: pnpm --color=always --stream build
+
+      - name: Publish npm packages
+        id: publish-npm
+        run: |
+          case "${GITHUB_REF_NAME}" in
+            *-*) dist_tag=next;;
+            *) dist_tag=latest;;
+          esac
+          pnpm --color=always publish -r \
+            --no-git-checks \
+            --tag ${dist_tag}
+        env:
+          NPM_CONFIG_PROVENANCE: "true"
+        continue-on-error: true
+
+      - name: Publish npm packages (retry)
+        id: publish-npm-2
+        if: steps.publish-npm.outcome == 'failure'
+        run: |
+          case "${GITHUB_REF_NAME}" in
+            *-*) dist_tag=next;;
+            *) dist_tag=latest;;
+          esac
+          pnpm --color=always publish -r \
+            --no-git-checks \
+            --tag ${dist_tag}
+        env:
+          NPM_CONFIG_PROVENANCE: "true"
+        continue-on-error: true
+
+      - name: Publish npm packages (retry 2)
+        if: steps.publish-npm-2.outcome == 'failure'
+        run: |
+          case "${GITHUB_REF_NAME}" in
+            *-*) dist_tag=next;;
+            *) dist_tag=latest;;
+          esac
+          pnpm --color=always publish -r \
+            --no-git-checks \
+            --tag ${dist_tag}
+        env:
+          NPM_CONFIG_PROVENANCE: "true"
+
+  release-apt-repository:
+    name: Release APT repository
+
+    needs:
+      - make-draft-release
+      - publish-github-release
+
+    runs-on: ubuntu-24.04-arm
+    environment: apt-signing
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: GPG configuration
+        run: |
+          mkdir -p -m 0700 $HOME/.gnupg
+          echo "use-agent" > $HOME/.gnupg/gpg.conf
+          echo "pinentry-program $GITHUB_WORKSPACE/.github/scripts/pinentry.sh" > $HOME/.gnupg/gpg-agent.conf
+          echo "$GPG_PASSPHRASE" > $HOME/.gnupg/passphrase
+          gpgconf --launch gpg-agent
+          echo "$GPG_PRIVATE_KEY" | gpg --import
+          echo "$GPG_KEY_ID:6:" | gpg --import-ownertrust
+        env:
+          GPG_KEY_ID: ${{ vars.GPG_KEY_ID }}
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
+
+      - name: Release APT repository
+        run: |
+          set -x
+          gh release download ${GITHUB_REF_NAME} -p "*.deb" -D tmp
+          pushd tmp
+            apt-ftparchive packages . | tee Packages | xz > Packages.xz
+            apt-ftparchive release -c ../freelens/build/apt/release.conf . > Release
+            gpg --clearsign -o InRelease Release
+            gpg --armor --detach-sign --sign -o Release.gpg Release
+            gh release upload ${GITHUB_REF_NAME} InRelease Packages Packages.xz Release Release.gpg --clobber
+          popd
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
