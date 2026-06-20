@@ -386,6 +386,53 @@ jobs:
             popd > /dev/null
           done
 
+      - name: Create SBOM
+        uses: anchore/sbom-action@v0
+        with:
+          format: spdx-json
+          output-file: "freelens/dist/${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-sbom.spdx.json"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          artifact-name: "${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-sbom.spdx.json"
+
+      - name: Normalize SBOM filename
+        shell: bash
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          os="${{ matrix.os }}"
+          arch="${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}"
+          for f in freelens/dist/*-sbom.spdx.json; do
+            newname="freelens/dist/Freelens-${version}-${os}-${arch}-sbom.spdx.json"
+            mv "$f" "$newname"
+            if [ -f "${f}.sha256" ]; then
+              mv "${f}.sha256" "${newname}.sha256"
+            fi
+          done
+
+      - name: Make checksum for SBOM (Linux, Windows)
+        if: runner.os == 'Linux' || runner.os == 'Windows'
+        shell: bash
+        run: |
+          for f in freelens/dist/*-sbom.spdx.json; do
+            pushd freelens/dist > /dev/null
+            sha256sum $(basename $f) | tee $(basename $f).sha256
+            popd > /dev/null
+          done
+
+      - name: Make checksum for SBOM (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          for f in freelens/dist/*-sbom.spdx.json; do
+            pushd freelens/dist > /dev/null
+            shasum -a 256 $(basename $f) | tee $(basename $f).sha256
+            popd > /dev/null
+          done
+
+      - name: Publish SBOM
+        uses: anchore/sbom-action/publish-sbom@v0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: List files before upload
         shell: bash
         run: |
