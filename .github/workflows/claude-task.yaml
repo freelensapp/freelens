@@ -99,12 +99,12 @@ jobs:
 
       - name: Install pnpm dependencies
         id: install-pnpm
-        run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
+        run: pnpm install --color=always --prefer-offline --frozen-lockfile
         continue-on-error: true
 
       - name: Install pnpm dependencies (retry)
         if: steps.install-pnpm.outcome == 'failure'
-        run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
+        run: pnpm install --color=always --prefer-offline --frozen-lockfile
 
       - name: Prepare prompt
         id: prompt
@@ -153,6 +153,7 @@ jobs:
           PROMPT_INPUT: ${{ github.event.inputs.prompt || '' }}
 
       - name: Use the latest AGENTS.md
+        shell: bash
         run: |
           git fetch origin main
           git show origin/main:AGENTS.md > /tmp/AGENTS.md 2>/dev/null || touch /tmp/AGENTS.md
