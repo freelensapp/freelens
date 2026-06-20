@@ -10,9 +10,16 @@
 # branch it was invoked on. For defense in depth, enable branch protection
 # rules on the main branch (require PR + approvals).
 #
-# Two jobs:
+# Jobs:
 #   1. parse – always ubuntu-24.04-arm, parses [model:xxx] and [runs-on:xxx] from the trigger text
-#   2. claude – runs on the parsed runner, checks out code and invokes Claude Code
+#
+#   Linux / macOS path:
+#   2. claude – runs on the parsed runner, checks out code, invokes Claude Code
+#
+#   Windows path (Claude Code action does not support Windows natively):
+#   2. prepare-windows – Claude writes a PowerShell script, uploads as artifact
+#   3. run-windows – executes the script on the selected Windows runner
+#   4. analyze-windows – Claude reads the output and posts a summary comment
 
 name: Claude
 
@@ -46,6 +53,8 @@ jobs:
     outputs:
       model: ${{ steps.parse.outputs.model }}
       runs-on: ${{ steps.parse.outputs.runs-on }}
+      is-windows: ${{ steps.parse.outputs.is-windows }}
+      text: ${{ steps.parse.outputs.text }}
 
     permissions:
       actions: read
@@ -98,6 +107,18 @@ jobs:
 
           echo "Resolved runs-on: '${RUNS_ON_ALIAS:-<none>}' -> $RUNS_ON"
           echo "runs-on=$RUNS_ON" >> "$GITHUB_OUTPUT"
+
+          # --- is-windows ---
+          case "$RUNS_ON" in
+            windows-*) IS_WINDOWS="true" ;;
+            *)         IS_WINDOWS="false" ;;
+          esac
+          echo "is-windows=$IS_WINDOWS" >> "$GITHUB_OUTPUT"
+
+          # --- text (for Windows jobs that need the original prompt) ---
+          echo "text<<TEXT_EOF" >> "$GITHUB_OUTPUT"
+          echo "$TEXT" >> "$GITHUB_OUTPUT"
+          echo "TEXT_EOF" >> "$GITHUB_OUTPUT"
         env:
           COMMENT_BODY: ${{ github.event.comment.body || '' }}
           REVIEW_BODY: ${{ github.event.review.body || '' }}
@@ -105,7 +126,7 @@ jobs:
 
   claude:
     needs: parse
-    if: always() && needs.parse.result == 'success'
+    if: always() && needs.parse.result == 'success' && needs.parse.outputs.is-windows != 'true'
 
     runs-on: ${{ needs.parse.outputs.runs-on }}
     timeout-minutes: 30
@@ -195,3 +216,115 @@ jobs:
             --max-turns 200
             --allowedTools "Read" "Write" "Edit" "Glob" "Grep" "Task" "WebSearch" "WebFetch" "BashOutput" "KillShell" "Bash(pnpm:*)" "Bash(npx:*)" "Bash(node:*)" "Bash(git:*)" "Bash(gh:*)" "Bash(yq:*)" "Bash(jq:*)" "Bash(grep:*)" "Bash(rg:*)" "Bash(sed:*)" "Bash(awk:*)" "Bash(cut:*)" "Bash(tr:*)" "Bash(sort:*)" "Bash(uniq:*)" "Bash(cat:*)" "Bash(head:*)" "Bash(tail:*)" "Bash(wc:*)" "Bash(find:*)" "Bash(xargs:*)" "Bash(ls:*)" "Bash(tree:*)" "Bash(mkdir:*)" "Bash(touch:*)" "Bash(cp:*)" "Bash(mv:*)" "Bash(rm:*)" "Bash(tee:*)" "Bash(echo:*)"
             --append-system-prompt-file /tmp/AGENTS.md
+
+  # ── Windows path: Claude writes PS script → execute on Windows → Claude analyzes ──
+
+  prepare-windows:
+    needs: parse
+    if: always() && needs.parse.result == 'success' && needs.parse.outputs.is-windows == 'true'
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 10
+
+    permissions:
+      contents: read
+      actions: read
+
+    steps:
+      - uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_args: |-
+            --model ${{ needs.parse.outputs.model }}
+            --fallback-model claude-opus-4-8
+            --max-turns 50
+            --allowedTools "Write"
+          prompt: |-
+            Based on the following request from a GitHub comment, write a PowerShell
+            script named verify.ps1 that accomplishes the task on a Windows runner.
+
+            The script must be self-contained and idempotent.
+            After completing the work, save a JSON summary to result.json with the
+            keys: exitCode (number), stdout (string), stderr (string), summary
+            (string – a human-readable summary of what happened).
+
+            Request:
+
+            ${{ needs.parse.outputs.text }}
+
+      - name: Upload PowerShell script
+        uses: actions/upload-artifact@v5
+        with:
+          name: ps-script
+          path: verify.ps1
+
+  run-windows:
+    needs: [parse, prepare-windows]
+    if: always() && needs.prepare-windows.result == 'success'
+    runs-on: ${{ needs.parse.outputs.runs-on }}
+    timeout-minutes: 30
+
+    permissions:
+      contents: read
+      actions: read
+
+    steps:
+      - name: Download PowerShell script
+        uses: actions/download-artifact@v5
+        with:
+          name: ps-script
+
+      - name: Execute verification
+        shell: pwsh
+        run: ./verify.ps1
+        continue-on-error: true
+
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: verify-results
+          path: result.json
+
+  analyze-windows:
+    needs: [parse, run-windows]
+    if: always() && needs.run-windows.result != 'skipped'
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 10
+
+    permissions:
+      pull-requests: write
+      issues: write
+      contents: read
+      actions: read
+
+    steps:
+      - name: Download results from Windows
+        uses: actions/download-artifact@v5
+        with:
+          name: verify-results
+
+      - uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_args: |-
+            --model ${{ needs.parse.outputs.model }}
+            --fallback-model claude-opus-4-8
+            --max-turns 30
+            --allowedTools "Read" "Grep" "Bash(gh:*)" "Bash(jq:*)" "Bash(cat:*)"
+          prompt: |-
+            Read the file result.json (output from a test executed on a Windows
+            runner). Write a short summary as a GitHub comment on the PR or issue
+            that triggered this workflow. Include: whether it succeeded, the exit
+            code, and any suspicious output in stdout/stderr.
+
+            Use the GitHub CLI (gh) to post the comment. The trigger event is
+            ${{ github.event_name }}.
+
+            If the event is issue_comment, the comment URL is:
+            ${{ github.event.comment.html_url }}
+            If the event is pull_request_review_comment, the comment URL is:
+            ${{ github.event.comment.html_url }}
+            If the event is issues, the issue URL is:
+            ${{ github.event.issue.html_url }}
+            If the event is pull_request_review, the review URL is:
+            ${{ github.event.review.html_url }}
