@@ -1,5 +1,5 @@
-# Claude Code – on-demand assistant via @claude
-# Location: .github/workflows/claude.yml (default branch)
+# Claude Code – on-demand assistant via @claude in PRs and issues
+# Location: .github/workflows/claude.yaml (default branch)
 # Requires:
 #   - GitHub App "Claude" installed on the repo (https://github.com/apps/claude)
 #   - Secret CLAUDE_CODE_OAUTH_TOKEN (org-level, generated with `claude setup-token`)
@@ -9,6 +9,10 @@
 # permissions). It is constrained by its system prompt to only push to the PR
 # branch it was invoked on. For defense in depth, enable branch protection
 # rules on the main branch (require PR + approvals).
+#
+# Two jobs:
+#   1. parse – always ubuntu-24.04-arm, parses [model:xxx] and [runs-on:xxx] from the trigger text
+#   2. claude – runs on the parsed runner, checks out code and invokes Claude Code
 
 name: Claude
 
@@ -21,41 +25,89 @@ on:
     types: [opened]
   pull_request_review:
     types: [submitted]
-  workflow_dispatch:
-    inputs:
-      prompt:
-        description: Task for Claude
-        required: true
-        type: string
-      create-pr:
-        description: Create a PR with changes (on a new branch)
-        type: boolean
-        default: false
 
 jobs:
-  claude:
+  parse:
     if: |
-      github.event_name == 'workflow_dispatch' ||
       (
-        (
-          (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
-          (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
-          (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude')) ||
-          (github.event_name == 'issues' && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude')))
-        ) &&
-        contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'),
-          github.event.comment.author_association ||
-          github.event.review.author_association ||
-          github.event.issue.author_association)
-      )
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - runs-on: ubuntu-24.04-arm
-            arch: arm64
+        (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
+        (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
+        (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude')) ||
+        (github.event_name == 'issues' && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude')))
+      ) &&
+      contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'),
+        github.event.comment.author_association ||
+        github.event.review.author_association ||
+        github.event.issue.author_association)
 
-    runs-on: ${{ matrix.runs-on }}
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 2
+
+    outputs:
+      model: ${{ steps.parse.outputs.model }}
+      runs-on: ${{ steps.parse.outputs.runs-on }}
+
+    permissions:
+      actions: read
+
+    steps:
+      - name: Parse model and runs-on
+        id: parse
+        shell: bash
+        run: |
+          DEFAULT_MODEL="claude-opus-4-8"
+          DEFAULT_RUNS_ON="ubuntu-24.04-arm"
+          TEXT="${COMMENT_BODY}${REVIEW_BODY}${ISSUE_BODY}"
+
+          # --- model ---
+          MODEL_ALIAS=$(echo "$TEXT" \
+            | grep -oP '\[model:[^\]]+\]' \
+            | head -1 \
+            | sed 's/\[model://;s/\]//' || true)
+          MODEL_ALIAS="${MODEL_ALIAS:-}"
+
+          case "$MODEL_ALIAS" in
+            fable|fable-5|claude-fable-5)               MODEL_ID="claude-fable-5" ;;
+            opus|opus-4|opus-4.8|claude-opus-4-8)       MODEL_ID="claude-opus-4-8" ;;
+            sonnet|sonnet-4|sonnet-4.6|claude-sonnet-4-6) MODEL_ID="claude-sonnet-4-6" ;;
+            haiku|haiku-4|haiku-4.5)                    MODEL_ID="claude-haiku-4-5-20251001" ;;
+            "")                                          MODEL_ID="$DEFAULT_MODEL" ;;
+            *)                                           MODEL_ID="$MODEL_ALIAS" ;;
+          esac
+
+          echo "Resolved model: '${MODEL_ALIAS:-<none>}' -> $MODEL_ID"
+          echo "model=$MODEL_ID" >> "$GITHUB_OUTPUT"
+
+          # --- runs-on ---
+          RUNS_ON_ALIAS=$(echo "$TEXT" \
+            | grep -oP '\[runs-on:[^\]]+\]' \
+            | head -1 \
+            | sed 's/\[runs-on://;s/\]//' || true)
+          RUNS_ON_ALIAS="${RUNS_ON_ALIAS:-}"
+
+          case "$RUNS_ON_ALIAS" in
+            ubuntu-24.04|ubuntu|linux|linux-x64)        RUNS_ON="ubuntu-24.04" ;;
+            ubuntu-24.04-arm|ubuntu-arm|linux-arm|linux-arm64) RUNS_ON="ubuntu-24.04-arm" ;;
+            macos-15|macos|macos-arm64)                  RUNS_ON="macos-15" ;;
+            macos-15-intel|macos-intel|macos-x64)        RUNS_ON="macos-15-intel" ;;
+            windows-11-arm|windows-arm|windows-arm64)    RUNS_ON="windows-11-arm" ;;
+            windows-2025|windows|windows-x64)            RUNS_ON="windows-2025" ;;
+            "")                                          RUNS_ON="$DEFAULT_RUNS_ON" ;;
+            *)                                           RUNS_ON="$RUNS_ON_ALIAS" ;;
+          esac
+
+          echo "Resolved runs-on: '${RUNS_ON_ALIAS:-<none>}' -> $RUNS_ON"
+          echo "runs-on=$RUNS_ON" >> "$GITHUB_OUTPUT"
+        env:
+          COMMENT_BODY: ${{ github.event.comment.body || '' }}
+          REVIEW_BODY: ${{ github.event.review.body || '' }}
+          ISSUE_BODY: ${{ github.event.issue.body || '' }}
+
+  claude:
+    needs: parse
+    if: always() && needs.parse.result == 'success'
+
+    runs-on: ${{ needs.parse.outputs.runs-on }}
     timeout-minutes: 30
 
     env:
@@ -78,8 +130,8 @@ jobs:
           ref: ${{ github.event.pull_request.head.ref || format('refs/pull/{0}/head', github.event.issue.number) }}
           fetch-depth: 0
 
-      - name: Checkout (default branch — issues, workflow_dispatch)
-        if: github.event_name == 'issues' || github.event_name == 'workflow_dispatch' || (github.event_name == 'issue_comment' && !github.event.issue.pull_request)
+      - name: Checkout (default branch — issues)
+        if: github.event_name == 'issues' || (github.event_name == 'issue_comment' && !github.event.issue.pull_request)
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
@@ -106,17 +158,17 @@ jobs:
         uses: actions/cache@v5
         with:
           path: ${{ env.pnpm_cache_dir }}
-          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-node-${{ hashFiles('pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-${{ runner.arch }}-node-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ matrix.runs-on }}-${{ matrix.arch }}-node-
+            ${{ runner.os }}-${{ runner.arch }}-node-
 
       - name: Use Turborepo cache
         uses: actions/cache@v5
         with:
           path: ${{ env.TURBOREPO_CACHE }}
-          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-turborepo-${{ hashFiles('package.json', 'freelens/package.json', 'packages/**/package.json', 'pnpm-lock.yaml','turbo.json') }}
+          key: ${{ runner.os }}-${{ runner.arch }}-turborepo-${{ hashFiles('package.json', 'freelens/package.json', 'packages/**/package.json', 'pnpm-lock.yaml','turbo.json') }}
           restore-keys: |
-            ${{ matrix.runs-on }}-${{ matrix.arch }}-turborepo-
+            ${{ runner.os }}-${{ runner.arch }}-turborepo-
 
       - name: Install pnpm dependencies
         id: install-pnpm
@@ -127,83 +179,18 @@ jobs:
         if: steps.install-pnpm.outcome == 'failure'
         run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
 
-      - name: Prepare prompt (workflow_dispatch)
-        if: github.event_name == 'workflow_dispatch'
-        id: prompt
-        shell: bash
-        run: |
-          PROMPT=$(echo "$INPUT_PROMPT" | jq -r '.')
-          if [[ "$CREATE_PR" == "true" ]]; then
-            PROMPT="${PROMPT}
-
-          After making changes, create a new branch (prefix claude/) for the
-          changes, commit, push to origin, and open a pull request. Follow the
-          rules in AGENTS.md (no Conventional Commits prefixes, no emoji)."
-          fi
-          echo "text<<EOF" >> "$GITHUB_OUTPUT"
-          echo "$PROMPT" >> "$GITHUB_OUTPUT"
-          echo "EOF" >> "$GITHUB_OUTPUT"
-        env:
-          INPUT_PROMPT: ${{ toJSON(github.event.inputs.prompt) }}
-          CREATE_PR: ${{ github.event.inputs.create-pr }}
-
-      - name: Parse model
-        id: parse-model
-        shell: bash
-        run: |
-          DEFAULT_MODEL="claude-opus-4-8"
-          # For PR/issue events, look in comment/issue body. For workflow_dispatch, use prompt input.
-          TEXT="${COMMENT_BODY}${REVIEW_BODY}${ISSUE_BODY}${PROMPT_INPUT}"
-
-          MODEL_ALIAS=$(echo "$TEXT" \
-            | grep -oP '\[model:[^\]]+\]' \
-            | head -1 \
-            | sed 's/\[model://;s/\]//' || true)
-
-          MODEL_ALIAS="${MODEL_ALIAS:-}"
-          case "$MODEL_ALIAS" in
-            fable|fable-5|claude-fable-5)               MODEL_ID="claude-fable-5" ;;
-            opus|opus-4|opus-4.8|claude-opus-4-8)       MODEL_ID="claude-opus-4-8" ;;
-            sonnet|sonnet-4|sonnet-4.6|claude-sonnet-4-6) MODEL_ID="claude-sonnet-4-6" ;;
-            haiku|haiku-4|haiku-4.5)                    MODEL_ID="claude-haiku-4-5-20251001" ;;
-            "")                                          MODEL_ID="$DEFAULT_MODEL" ;;
-            *)                                           MODEL_ID="$MODEL_ALIAS" ;;
-          esac
-
-          echo "Resolved model: '${MODEL_ALIAS:-<none>}' -> $MODEL_ID"
-          echo "model=$MODEL_ID" >> "$GITHUB_OUTPUT"
-        env:
-          COMMENT_BODY: ${{ github.event.comment.body || '' }}
-          REVIEW_BODY: ${{ github.event.review.body || '' }}
-          ISSUE_BODY: ${{ github.event.issue.body || '' }}
-          PROMPT_INPUT: ${{ github.event.inputs.prompt || '' }}
-
       - name: Use the latest AGENTS.md
         run: |
           git fetch origin main
           git show origin/main:AGENTS.md > /tmp/AGENTS.md 2>/dev/null || touch /tmp/AGENTS.md
 
       - name: Run Claude Code
-        if: github.event_name != 'workflow_dispatch'
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           claude_args: |-
-            --model ${{ steps.parse-model.outputs.model }}
+            --model ${{ needs.parse.outputs.model }}
             --fallback-model claude-opus-4-8
             --max-turns 200
-            --allowedTools "Read" "Write" "Edit" "Glob" "Grep" "Task" "WebSearch" "WebFetch" "BashOutput" "KillShell" "Bash(pnpm:*)" "Bash(npx:*)" "Bash(node:*)" "Bash(git:*)" "Bash(gh:*)" "Bash(yq:*)" "Bash(jq:*)" "Bash(grep:*)" "Bash(rg:*)" "Bash(sed:*)" "Bash(awk:*)" "Bash(cut:*)" "Bash(tr:*)" "Bash(sort:*)" "Bash(uniq:*)" "Bash(cat:*)" "Bash(head:*)" "Bash(tail:*)" "Bash(wc:*)" "Bash(find:*)" "Bash(xargs:*)" "Bash(ls:*)" "Bash(tree:*)" "Bash(mkdir:*)" "Bash(touch:*)" "Bash(cp:*)" "Bash(mv:*)" "Bash(rm:*)" "Bash(tee:*)" "Bash(echo:*)"
-            --append-system-prompt-file /tmp/AGENTS.md
-
-      - name: Run Claude Code (workflow_dispatch)
-        if: github.event_name == 'workflow_dispatch'
-        uses: anthropics/claude-code-action@v1
-        with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
-          prompt: ${{ steps.prompt.outputs.text }}
-          claude_args: |-
-            --model ${{ steps.parse-model.outputs.model }}
-            --fallback-model claude-sonnet-4-6w
-            --max-turns 100
             --allowedTools "Read" "Write" "Edit" "Glob" "Grep" "Task" "WebSearch" "WebFetch" "BashOutput" "KillShell" "Bash(pnpm:*)" "Bash(npx:*)" "Bash(node:*)" "Bash(git:*)" "Bash(gh:*)" "Bash(yq:*)" "Bash(jq:*)" "Bash(grep:*)" "Bash(rg:*)" "Bash(sed:*)" "Bash(awk:*)" "Bash(cut:*)" "Bash(tr:*)" "Bash(sort:*)" "Bash(uniq:*)" "Bash(cat:*)" "Bash(head:*)" "Bash(tail:*)" "Bash(wc:*)" "Bash(find:*)" "Bash(xargs:*)" "Bash(ls:*)" "Bash(tree:*)" "Bash(mkdir:*)" "Bash(touch:*)" "Bash(cp:*)" "Bash(mv:*)" "Bash(rm:*)" "Bash(tee:*)" "Bash(echo:*)"
             --append-system-prompt-file /tmp/AGENTS.md
