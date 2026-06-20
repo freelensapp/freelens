@@ -228,6 +228,7 @@ jobs:
     permissions:
       contents: read
       actions: read
+      id-token: write
 
     steps:
       - uses: anthropics/claude-code-action@v1
@@ -296,6 +297,7 @@ jobs:
       issues: write
       contents: read
       actions: read
+      id-token: write
 
     steps:
       - name: Download results from Windows
