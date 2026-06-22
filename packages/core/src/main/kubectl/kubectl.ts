@@ -10,7 +10,11 @@ import { ensureDir, pathExists } from "fs-extra";
 import { noop } from "lodash/fp";
 import * as lockFile from "proper-lockfile";
 import { coerce, SemVer } from "semver";
-import { defaultPackageMirror, packageMirrors } from "../../features/user-preferences/common/preferences-helpers";
+import {
+  customPackageMirror,
+  defaultPackageMirror,
+  packageMirrors,
+} from "../../features/user-preferences/common/preferences-helpers";
 
 import type { Logger } from "@freelensapp/logger";
 
@@ -36,6 +40,7 @@ export interface KubectlDependencies {
     readonly downloadBinariesPath?: string;
     readonly downloadKubectlBinaries: boolean;
     readonly downloadMirror: string;
+    readonly downloadCustomMirror?: string;
   };
   readonly bundledKubectlVersion: string;
   readonly kubectlVersionMap: Map<string, string>;
@@ -382,6 +387,14 @@ export class Kubectl {
 
   protected getDownloadMirror(): string {
     // MacOS packages are only available from default
+
+    if (this.dependencies.state.downloadMirror === customPackageMirror) {
+      const custom = (this.dependencies.state.downloadCustomMirror ?? "").trim().replace(/\/+$/, "");
+
+      if (custom) {
+        return custom;
+      }
+    }
 
     const { url } =
       packageMirrors.get(this.dependencies.state.downloadMirror) ?? packageMirrors.get(defaultPackageMirror)!;

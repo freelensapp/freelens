@@ -1,0 +1,169 @@
+# Claude Code – on-demand task via workflow_dispatch
+# Location: .github/workflows/claude-task.yaml (default branch)
+# Requires:
+#   - GitHub App "Claude" installed on the repo (https://github.com/apps/claude)
+#   - Secret CLAUDE_CODE_OAUTH_TOKEN (org-level, generated with `claude setup-token`)
+# Only users with write+ permission on the repo can trigger it (checked by GitHub).
+#
+# Claude pushes commits via its own GitHub App token (independent of workflow
+# permissions). It is constrained by its system prompt to only push to branches
+# it creates. For defense in depth, enable branch protection rules on the main
+# branch (require PR + approvals).
+
+name: Claude Task
+
+on:
+  workflow_dispatch:
+    inputs:
+      prompt:
+        description: Task for Claude
+        required: true
+        type: string
+      model:
+        description: Anthropic model to run
+        required: true
+        type: choice
+        default: claude-opus-4-8
+        options:
+          - claude-opus-4-8
+          - claude-sonnet-4-6
+          - claude-haiku-4-5-20251001
+      runs-on:
+        description: Runner to use
+        required: true
+        type: choice
+        default: ubuntu-24.04-arm
+        options:
+          - ubuntu-24.04
+          - ubuntu-24.04-arm
+          - macos-15
+          - macos-15-intel
+      create-pr:
+        description: Create a PR with changes (on a new branch)
+        type: boolean
+        default: false
+
+jobs:
+  claude:
+    runs-on: ${{ github.event.inputs.runs-on }}
+    timeout-minutes: 30
+
+    env:
+      DO_NOT_TRACK: "1"
+      TURBOREPO_CACHE: ${{ github.workspace }}/.turbo
+      RUNS_ON: ${{ github.event.inputs.runs-on }}
+
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      id-token: write
+      actions: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Setup node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Setup pnpm
+        run: corepack enable
+
+      - name: Get pnpm cache directory
+        shell: bash
+        run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
+
+      - name: Use pnpm cache
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.pnpm_cache_dir }}
+          key: ${{ env.RUNS_ON }}-node-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ env.RUNS_ON }}-node-
+
+      - name: Use Turborepo cache
+        uses: actions/cache@v5
+        with:
+          path: ${{ env.TURBOREPO_CACHE }}
+          key: ${{ env.RUNS_ON }}-turborepo-${{ hashFiles('package.json', 'freelens/package.json', 'packages/**/package.json', 'pnpm-lock.yaml','turbo.json') }}
+          restore-keys: |
+            ${{ env.RUNS_ON }}-turborepo-
+
+      - name: Install pnpm dependencies
+        id: install-pnpm
+        run: pnpm install --color=always --prefer-offline --frozen-lockfile
+        continue-on-error: true
+
+      - name: Install pnpm dependencies (retry)
+        if: steps.install-pnpm.outcome == 'failure'
+        run: pnpm install --color=always --prefer-offline --frozen-lockfile
+
+      - name: Prepare prompt
+        id: prompt
+        shell: bash
+        run: |
+          PROMPT=$(echo "$INPUT_PROMPT" | jq -r '.')
+          if [[ "$CREATE_PR" == "true" ]]; then
+            PROMPT="${PROMPT}
+
+          After making changes, create a new branch (prefix claude/) for the
+          changes, commit, push to origin, and open a pull request. Follow the
+          rules in AGENTS.md (no Conventional Commits prefixes, no emoji)."
+          fi
+          echo "text<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$PROMPT" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+        env:
+          INPUT_PROMPT: ${{ toJSON(github.event.inputs.prompt) }}
+          CREATE_PR: ${{ github.event.inputs.create-pr }}
+
+      - name: Parse model
+        id: parse-model
+        shell: bash
+        run: |
+          DEFAULT_MODEL="claude-opus-4-8"
+          TEXT="${PROMPT_INPUT}"
+
+          MODEL_ALIAS=$(echo "$TEXT" \
+            | grep -oP '\[model:[^\]]+\]' \
+            | head -1 \
+            | sed 's/\[model://;s/\]//' || true)
+
+          MODEL_ALIAS="${MODEL_ALIAS:-}"
+          case "$MODEL_ALIAS" in
+            fable|fable-5|claude-fable-5)               MODEL_ID="claude-fable-5" ;;
+            opus|opus-4|opus-4.8|claude-opus-4-8)       MODEL_ID="claude-opus-4-8" ;;
+            sonnet|sonnet-4|sonnet-4.6|claude-sonnet-4-6) MODEL_ID="claude-sonnet-4-6" ;;
+            haiku|haiku-4|haiku-4.5)                    MODEL_ID="claude-haiku-4-5-20251001" ;;
+            "")                                          MODEL_ID="$DEFAULT_MODEL" ;;
+            *)                                           MODEL_ID="$MODEL_ALIAS" ;;
+          esac
+
+          echo "Resolved model: '${MODEL_ALIAS:-<none>}' -> $MODEL_ID"
+          echo "model=$MODEL_ID" >> "$GITHUB_OUTPUT"
+        env:
+          PROMPT_INPUT: ${{ github.event.inputs.prompt || '' }}
+
+      - name: Use the latest AGENTS.md
+        shell: bash
+        run: |
+          git fetch origin main
+          git show origin/main:AGENTS.md > /tmp/AGENTS.md 2>/dev/null || touch /tmp/AGENTS.md
+
+      - name: Run Claude Code
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: ${{ steps.prompt.outputs.text }}
+          claude_args: |-
+            --model ${{ steps.parse-model.outputs.model }}
+            --fallback-model claude-sonnet-4-6
+            --max-turns 100
+            --allowedTools "Read" "Write" "Edit" "Glob" "Grep" "Task" "WebSearch" "WebFetch" "BashOutput" "KillShell" "Bash(pnpm:*)" "Bash(npx:*)" "Bash(node:*)" "Bash(git:*)" "Bash(gh:*)" "Bash(yq:*)" "Bash(jq:*)" "Bash(grep:*)" "Bash(rg:*)" "Bash(sed:*)" "Bash(awk:*)" "Bash(cut:*)" "Bash(tr:*)" "Bash(sort:*)" "Bash(uniq:*)" "Bash(cat:*)" "Bash(head:*)" "Bash(tail:*)" "Bash(wc:*)" "Bash(find:*)" "Bash(xargs:*)" "Bash(ls:*)" "Bash(tree:*)" "Bash(mkdir:*)" "Bash(touch:*)" "Bash(cp:*)" "Bash(mv:*)" "Bash(rm:*)" "Bash(tee:*)" "Bash(echo:*)"
+            --append-system-prompt-file /tmp/AGENTS.md

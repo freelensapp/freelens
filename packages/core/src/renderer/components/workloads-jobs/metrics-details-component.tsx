@@ -5,8 +5,9 @@
  */
 
 import { type IAsyncComputed, withInjectables } from "@ogre-tools/injectable-react";
+import { observer } from "mobx-react-lite";
 import React from "react";
-import { ResourceMetrics } from "../resource-metrics";
+import { TimeRangedResourceMetrics } from "../resource-metrics";
 import { PodCharts, podMetricTabs } from "../workloads-pods/pod-charts";
 import jobMetricsInjectable from "./metrics.injectable";
 
@@ -19,17 +20,21 @@ interface Dependencies {
   metrics: IAsyncComputed<JobPodMetricData>;
 }
 
-const NonInjectedJobMetricsDetailsComponent = ({ object, metrics }: KubeObjectDetailsProps<Job> & Dependencies) => (
-  <ResourceMetrics tabs={podMetricTabs} object={object} metrics={metrics}>
-    <PodCharts />
-  </ResourceMetrics>
+const NonInjectedJobMetricsDetailsComponent = observer(
+  ({ object, metrics }: KubeObjectDetailsProps<Job> & Dependencies) => (
+    <TimeRangedResourceMetrics tabs={podMetricTabs} object={object} metrics={metrics}>
+      <PodCharts />
+    </TimeRangedResourceMetrics>
+  ),
 );
 
 export const JobMetricsDetailsComponent = withInjectables<Dependencies, KubeObjectDetailsProps<Job>>(
   NonInjectedJobMetricsDetailsComponent,
   {
     getProps: (di, props) => ({
-      metrics: di.inject(jobMetricsInjectable, props.object),
+      metrics: di.inject(jobMetricsInjectable, {
+        job: props.object,
+      }),
       ...props,
     }),
   },

@@ -482,6 +482,11 @@ export interface VsphereVolumeSource {
   storagePolicyID?: string;
 }
 
+export interface ImageVolumeSource {
+  reference?: string;
+  pullPolicy?: "Always" | "Never" | "IfNotPresent";
+}
+
 export interface ContainerStorageInterfaceSource {
   driver: string;
   /**
@@ -517,6 +522,7 @@ export interface PodVolumeVariants {
   gitRepo: GitRepoSource;
   glusterfs: GlusterFsSource;
   hostPath: HostPathSource;
+  image: ImageVolumeSource;
   iscsi: IScsiSource;
   local: LocalSource;
   nfs: NetworkFsSource;
@@ -574,7 +580,7 @@ export interface PodSpec {
   preemptionPolicy?: string;
   priority?: number;
   priorityClassName?: string;
-  readinessGates?: unknown[];
+  readinessGates?: PodReadinessGate[];
   restartPolicy?: "Always" | "OnFailure" | "Never";
   runtimeClassName?: string;
   schedulerName?: string;
@@ -600,12 +606,16 @@ export type PodConditionType =
   | "PodResizePending"
   | "PodResizeInProgress";
 
+export interface PodReadinessGate {
+  conditionType: string;
+}
+
 export interface PodCondition {
   lastProbeTime?: number;
   lastTransitionTime?: string;
   message?: string;
   reason?: string;
-  type: PodConditionType;
+  type: PodConditionType | string;
   status: string;
 }
 
@@ -833,19 +843,110 @@ export class Pod extends KubeObject<NamespaceScopedMetadata, PodStatus, PodSpec>
   }
 
   hasIssues() {
-    for (const { type, status } of this.getConditions()) {
-      if (type === "Ready" && status !== "True") {
+    const phase = this.getStatusPhase();
+
+    if (!phase) {
+      return true;
+    }
+
+    if (phase === "Succeeded") {
+      return false;
+    }
+
+    if (phase === "Failed" || phase === "Pending" || phase === "Unknown") {
+      return true;
+    }
+
+    // "Running" pods can still have container or readiness-gate issues.
+    if (this.hasCrashLoopingContainers()) {
+      return true;
+    }
+
+    const podIsReady = this.getConditions().some(({ type, status }) => type === "Ready" && status === "True");
+
+    if (!podIsReady) {
+      if (this.hasUnreadyContainers()) {
+        return true;
+      }
+
+      if (this.hasGateReadinessIssues()) {
         return true;
       }
     }
 
+    return false;
+  }
+
+  private hasCrashLoopingContainers() {
     for (const { state } of this.getContainerStatuses()) {
       if (state?.waiting?.reason === "CrashLoopBackOff") {
         return true;
       }
     }
+    return false;
+  }
 
-    return this.getStatusPhase() !== "Running";
+  private hasUnreadyContainers() {
+    const { containerStatuses = [], initContainerStatuses = [] } = this.status ?? {};
+
+    const statusesByName = new Map<string, PodContainerStatus>();
+
+    for (const status of initContainerStatuses) {
+      statusesByName.set(status.name, status);
+    }
+
+    for (const status of containerStatuses) {
+      statusesByName.set(status.name, status);
+    }
+
+    for (const { name, restartPolicy } of this.getInitContainers()) {
+      if (restartPolicy !== "Always") {
+        continue;
+      }
+
+      if (this.isContainerStatusUnready(statusesByName.get(name))) {
+        return true;
+      }
+    }
+
+    for (const { name } of this.getContainers()) {
+      if (this.isContainerStatusUnready(statusesByName.get(name))) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  private isContainerStatusUnready(status?: PodContainerStatus) {
+    if (!status) {
+      return true;
+    }
+
+    if (status.ready) {
+      return false;
+    }
+
+    return status.state?.terminated?.exitCode !== 0;
+  }
+
+  private hasGateReadinessIssues() {
+    // Kubelet's Ready condition fails when any configured readiness gate is missing or not True.
+    const readinessGates = this.spec?.readinessGates;
+
+    if (!readinessGates?.length) {
+      return false;
+    }
+
+    const conditionStatuses = new Map(this.getConditions().map(({ type, status }) => [type, status]));
+
+    for (const { conditionType } of readinessGates) {
+      if (conditionStatuses.get(conditionType) !== "True") {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   getLivenessProbe(container: Container) {

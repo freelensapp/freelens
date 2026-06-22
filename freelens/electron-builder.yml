@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/electron-userland/electron-builder/refs/heads/master/packages/app-builder-lib/scheme.json
 
-electronVersion: 41.7.1 # datasource=npm depName=electron
+electronVersion: 41.7.2 # datasource=npm depName=electron
 
 ## Run `pnpm electron-rebuild` instead
 npmRebuild: false
@@ -17,6 +17,20 @@ files:
   - "!node_modules/@freelensapp/core/build"
   - "!node_modules/@freelensapp/core/static/build/library/fonts"
   - "!node_modules/electron"
+  ## Source maps and TS build info are only useful when debugging local builds
+  - "!**/*.map"
+  - "!**/*.tsbuildinfo"
+  ## Monaco is bundled into the renderer by webpack and never required at runtime
+  - "!node_modules/monaco-editor/**"
+  ## Native binaries for other platforms/arches are never loaded at runtime, so
+  ## exclude them at pack time. Doing this here (instead of deleting them from
+  ## app.asar.unpacked afterwards) keeps the app.asar header consistent with the
+  ## files actually present. ${platform} expands to darwin/linux/win32 and ${arch}
+  ## to x64/arm64, matching node-pty's prebuild directory names (e.g. darwin-arm64)
+  ## and the pnpm reflink binary names (e.g. reflink.linux-x64-<hash>.node).
+  - "!node_modules/node-pty/prebuilds/!(${platform}-${arch})"
+  - "!node_modules/node-pty/prebuilds/!(${platform}-${arch})/**"
+  - "!node_modules/pnpm/dist/reflink.!(${platform}-${arch}*).node"
 
 ## Notarization
 afterSign: build/notarize.js
