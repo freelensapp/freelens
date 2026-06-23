@@ -885,6 +885,7 @@ async function runBiomeFix(generatedFiles) {
         const biome = spawn("pnpm", ["--silent", "biome:fix", ...batch], {
           cwd: rootDir,
           stdio: "inherit",
+          shell: process.platform === "win32",
         });
 
         biome.on("close", (code) => {
