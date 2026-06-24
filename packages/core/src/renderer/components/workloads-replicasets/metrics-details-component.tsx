@@ -5,8 +5,9 @@
  */
 
 import { type IAsyncComputed, withInjectables } from "@ogre-tools/injectable-react";
+import { observer } from "mobx-react-lite";
 import React from "react";
-import { ResourceMetrics } from "../resource-metrics";
+import { TimeRangedResourceMetrics } from "../resource-metrics";
 import { PodCharts, podMetricTabs } from "../workloads-pods/pod-charts";
 import replicaSetMetricsInjectable from "./metrics.injectable";
 
@@ -19,20 +20,21 @@ interface Dependencies {
   metrics: IAsyncComputed<ReplicaSetPodMetricData>;
 }
 
-const NonInjectedReplicaSetMetricsDetailsComponent = ({
-  object,
-  metrics,
-}: KubeObjectDetailsProps<ReplicaSet> & Dependencies) => (
-  <ResourceMetrics tabs={podMetricTabs} object={object} metrics={metrics}>
-    <PodCharts />
-  </ResourceMetrics>
+const NonInjectedReplicaSetMetricsDetailsComponent = observer(
+  ({ object, metrics }: KubeObjectDetailsProps<ReplicaSet> & Dependencies) => (
+    <TimeRangedResourceMetrics tabs={podMetricTabs} object={object} metrics={metrics}>
+      <PodCharts />
+    </TimeRangedResourceMetrics>
+  ),
 );
 
 export const ReplicaSetMetricsDetailsComponent = withInjectables<Dependencies, KubeObjectDetailsProps<ReplicaSet>>(
   NonInjectedReplicaSetMetricsDetailsComponent,
   {
     getProps: (di, props) => ({
-      metrics: di.inject(replicaSetMetricsInjectable, props.object),
+      metrics: di.inject(replicaSetMetricsInjectable, {
+        replicaSet: props.object,
+      }),
       ...props,
     }),
   },

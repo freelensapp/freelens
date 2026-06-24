@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/kubernetes-client-node",
-  "version": "1.10.0-0",
+  "version": "1.10.1",
   "private": false,
   "description": "Kubernetes client for Freelens",
   "homepage": "https://freelens.app",
@@ -33,7 +33,7 @@
     "@freelensapp/openid-client": "workspace:^",
     "hpagent": "^1.2.0",
     "isomorphic-ws": "^5.0.0",
-    "js-yaml": "^4.1.1",
+    "js-yaml": "^4.2.0",
     "rfc4648": "^1.5.4",
     "socks-proxy-agent": "^8.0.5",
     "stream-buffers": "^3.0.3",

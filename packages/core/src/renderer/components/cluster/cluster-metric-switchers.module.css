@@ -1,0 +1,25 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+.container {
+  margin-bottom: calc(var(--margin) * 2);
+  align-items: center;
+  flex-wrap: nowrap;
+  min-width: 0;
+}
+
+.container > div {
+  min-width: 0;
+}
+
+.timeRangeBox {
+  flex: 1 1 0;
+  min-width: 120px;
+  max-width: 260px;
+}
+
+.metricTypeBox {
+  text-align: right;
+}

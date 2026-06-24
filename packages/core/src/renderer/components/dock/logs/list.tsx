@@ -57,7 +57,7 @@ class NonForwardedLogList extends React.Component<
   private virtualListDivElement: HTMLDivElement | null = null;
   private resizeObserver: ResizeObserver | null = null;
   private virtualListRef = React.createRef<VirtualListRef>(); // A reference for VirtualList component
-  private overlappingRowPadding = new Map<number, number>();
+  private measuredRowHeights = new Map<number, number>();
   private pendingResetFromIndex: number | null = null;
   private pendingResetFrame: number | null = null;
   private lineHeight = 18;
@@ -98,7 +98,7 @@ class NonForwardedLogList extends React.Component<
     this.containerWidth = this.virtualListDivElement.clientWidth;
 
     if (prevWidth !== this.containerWidth) {
-      this.overlappingRowPadding.clear();
+      this.measuredRowHeights.clear();
       this.overlapVersion++;
       this.virtualListRef.current?.resetAfterIndex(0);
     }
@@ -136,7 +136,7 @@ class NonForwardedLogList extends React.Component<
             !prevLogs.length || !logs.length || logs[0] !== prevLogs[0] || logs.length < prevLogs.length;
 
           if (didLogsResetOrPrepend) {
-            this.overlappingRowPadding.clear();
+            this.measuredRowHeights.clear();
             this.overlapVersion++;
           }
 
@@ -184,7 +184,7 @@ class NonForwardedLogList extends React.Component<
   }
 
   componentWillUnmount() {
-    this.overlappingRowPadding.clear();
+    this.measuredRowHeights.clear();
     this.overlapVersion++;
     if (this.pendingResetFrame !== null) {
       window.cancelAnimationFrame(this.pendingResetFrame);
@@ -202,16 +202,22 @@ class NonForwardedLogList extends React.Component<
       return;
     }
 
-    const overflowPadding = Math.ceil(element.scrollHeight - element.clientHeight);
-    const nextPadding = overflowPadding > this.wrappedRowSafetyPadding ? overflowPadding : 0;
-    const currentPadding = this.overlappingRowPadding.get(rowIndex) ?? 0;
-    const resolvedPadding = Math.max(currentPadding, nextPadding);
+    // The wrapped row uses `height: auto`, so its rendered box is the true height
+    // the row needs. Measuring it directly avoids the empty space left over when the
+    // character-count estimate over- or under-shoots the real wrapped line count.
+    const measuredHeight = Math.ceil(element.getBoundingClientRect().height);
 
-    if (currentPadding === resolvedPadding) {
+    if (measuredHeight <= 0) {
       return;
     }
 
-    this.overlappingRowPadding.set(rowIndex, resolvedPadding);
+    const currentHeight = this.measuredRowHeights.get(rowIndex);
+
+    if (currentHeight === measuredHeight) {
+      return;
+    }
+
+    this.measuredRowHeights.set(rowIndex, measuredHeight);
     this.overlapVersion++;
     this.scheduleMeasuredRowReset(rowIndex);
   };
@@ -288,6 +294,14 @@ class NonForwardedLogList extends React.Component<
     const charsPerLine = Math.max(1, Math.floor(usableWidth / this.charWidth));
 
     return this.logs.map((line, rowIndex) => {
+      // Prefer the real rendered height once the row has been measured; the estimate
+      // below is only a first approximation used until the row is laid out.
+      const measuredHeight = this.measuredRowHeights.get(rowIndex);
+
+      if (measuredHeight !== undefined) {
+        return measuredHeight;
+      }
+
       const visibleLine = line.replace(ansiEscapeSequenceRegex, "");
       const lineCount = visibleLine.split("\n").reduce((count, segment) => {
         const wrappedLineCount = Math.max(1, Math.ceil(segment.length / charsPerLine));
@@ -295,9 +309,7 @@ class NonForwardedLogList extends React.Component<
         return count + wrappedLineCount;
       }, 0);
 
-      const overlapPadding = this.overlappingRowPadding.get(rowIndex) ?? 0;
-
-      return lineCount * this.lineHeight + this.rowVerticalPadding + this.wrappedRowSafetyPadding + overlapPadding;
+      return lineCount * this.lineHeight + this.rowVerticalPadding + this.wrappedRowSafetyPadding;
     });
   }
 

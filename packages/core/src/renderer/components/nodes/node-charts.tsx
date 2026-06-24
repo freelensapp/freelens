@@ -12,6 +12,7 @@ import { isMetricsEmpty, normalizeMetrics } from "../../../common/k8s-api/endpoi
 import activeThemeInjectable from "../../themes/active.injectable";
 import { BarChart } from "../chart";
 import { type MetricsTab, metricTabOptions } from "../chart/options";
+import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
 import { ResourceMetricsContext } from "../resource-metrics";
 import { NoMetrics } from "../resource-metrics/no-metrics";
 
@@ -19,15 +20,21 @@ import type { IComputedValue } from "mobx";
 
 import type { LensTheme } from "../../themes/lens-theme";
 import type { ChartDataSets } from "../chart";
+import type { SelectedMetricsTimeRange } from "../cluster/overview/selected-metrics-time-range.injectable";
 
 export interface NodeChartsProps {}
 
 interface Dependencies {
   activeTheme: IComputedValue<LensTheme>;
+  selectedMetricsTimeRange: SelectedMetricsTimeRange;
 }
 
-const NonInjectedNodeCharts = observer(({ activeTheme }: Dependencies & NodeChartsProps) => {
+const convertNodeMetricValuesToChartData = (values: Array<[number, string]>) =>
+  values.map(([x, y]) => ({ x: x * 1000, y }));
+
+const NonInjectedNodeCharts = observer(({ activeTheme, selectedMetricsTimeRange }: Dependencies & NodeChartsProps) => {
   const { metrics, tab, object } = useContext(ResourceMetricsContext) ?? {};
+  const { start: minTime, end: maxTime } = selectedMetricsTimeRange.timestamps.get();
 
   if (!metrics || !object || !tab) return null;
   if (isMetricsEmpty(metrics)) return <NoMetrics />;
@@ -57,28 +64,28 @@ const NonInjectedNodeCharts = observer(({ activeTheme }: Dependencies & NodeChar
         label: `Usage`,
         tooltip: `CPU cores usage`,
         borderColor: "#00a7a0",
-        data: cpuUsage.map(([x, y]) => ({ x, y })),
+        data: convertNodeMetricValuesToChartData(cpuUsage),
       },
       {
         id: `${id}-cpuRequests`,
         label: `Requests`,
         tooltip: `CPU requests`,
         borderColor: "#30b24d",
-        data: cpuRequests.map(([x, y]) => ({ x, y })),
+        data: convertNodeMetricValuesToChartData(cpuRequests),
       },
       {
         id: `${id}-cpuAllocatableCapacity`,
         label: `Allocatable Capacity`,
         tooltip: `CPU allocatable capacity`,
         borderColor: "#032b4d",
-        data: cpuAllocatableCapacity.map(([x, y]) => ({ x, y })),
+        data: convertNodeMetricValuesToChartData(cpuAllocatableCapacity),
       },
       {
         id: `${id}-cpuCapacity`,
         label: `Capacity`,
         tooltip: `CPU capacity`,
         borderColor: chartCapacityColor,
-        data: cpuCapacity.map(([x, y]) => ({ x, y })),
+        data: convertNodeMetricValuesToChartData(cpuCapacity),
       },
     ],
     Memory: [
@@ -87,35 +94,35 @@ const NonInjectedNodeCharts = observer(({ activeTheme }: Dependencies & NodeChar
         label: `Usage`,
         tooltip: `Memory usage`,
         borderColor: "#c93dce",
-        data: memoryUsage.map(([x, y]) => ({ x, y })),
+        data: convertNodeMetricValuesToChartData(memoryUsage),
       },
       {
         id: `${id}-workloadMemoryUsage`,
         label: `Workload Memory Usage`,
         tooltip: `Workload memory usage`,
         borderColor: "#9cd3ce",
-        data: workloadMemoryUsage.map(([x, y]) => ({ x, y })),
+        data: convertNodeMetricValuesToChartData(workloadMemoryUsage),
       },
       {
         id: "memoryRequests",
         label: `Requests`,
         tooltip: `Memory requests`,
         borderColor: "#30b24d",
-        data: memoryRequests.map(([x, y]) => ({ x, y })),
+        data: convertNodeMetricValuesToChartData(memoryRequests),
       },
       {
         id: `${id}-memoryAllocatableCapacity`,
         label: `Allocatable Capacity`,
         tooltip: `Memory allocatable capacity`,
         borderColor: "#032b4d",
-        data: memoryAllocatableCapacity.map(([x, y]) => ({ x, y })),
+        data: convertNodeMetricValuesToChartData(memoryAllocatableCapacity),
       },
       {
         id: `${id}-memoryCapacity`,
         label: `Capacity`,
         tooltip: `Memory capacity`,
         borderColor: chartCapacityColor,
-        data: memoryCapacity.map(([x, y]) => ({ x, y })),
+        data: convertNodeMetricValuesToChartData(memoryCapacity),
       },
     ],
     Disk: [
@@ -124,14 +131,14 @@ const NonInjectedNodeCharts = observer(({ activeTheme }: Dependencies & NodeChar
         label: `Usage`,
         tooltip: `Node filesystem usage in bytes`,
         borderColor: "#ffc63d",
-        data: fsUsage.map(([x, y]) => ({ x, y })),
+        data: convertNodeMetricValuesToChartData(fsUsage),
       },
       {
         id: `${id}-fsSize`,
         label: `Size`,
         tooltip: `Node filesystem size in bytes`,
         borderColor: chartCapacityColor,
-        data: fsSize.map(([x, y]) => ({ x, y })),
+        data: convertNodeMetricValuesToChartData(fsSize),
       },
     ],
     Pods: [
@@ -140,14 +147,14 @@ const NonInjectedNodeCharts = observer(({ activeTheme }: Dependencies & NodeChar
         label: `Usage`,
         tooltip: `Number of running Pods`,
         borderColor: "#30b24d",
-        data: podUsage.map(([x, y]) => ({ x, y })),
+        data: convertNodeMetricValuesToChartData(podUsage),
       },
       {
         id: `${id}-podCapacity`,
         label: `Capacity`,
         tooltip: `Node Pods capacity`,
         borderColor: chartCapacityColor,
-        data: podCapacity.map(([x, y]) => ({ x, y })),
+        data: convertNodeMetricValuesToChartData(podCapacity),
       },
     ],
   };
@@ -157,6 +164,8 @@ const NonInjectedNodeCharts = observer(({ activeTheme }: Dependencies & NodeChar
       name={`${object.getName()}-metric-${tab}`}
       options={metricTabOptions[tab]}
       data={{ datasets: datasets[tab] }}
+      minTime={minTime}
+      maxTime={maxTime}
     />
   );
 });
@@ -165,5 +174,6 @@ export const NodeCharts = withInjectables<Dependencies, NodeChartsProps>(NonInje
   getProps: (di, props) => ({
     ...props,
     activeTheme: di.inject(activeThemeInjectable),
+    selectedMetricsTimeRange: di.inject(selectedMetricsTimeRangeInjectable),
   }),
 });
