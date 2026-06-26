@@ -10,6 +10,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
 import createPodLogsTabInjectable from "../../dock/logs/create-pod-logs-tab.injectable";
+import { findOptimalDefaultContainer } from "../../dock/logs/default-container-helper";
 import { COLUMN_PRIORITY } from "./column-priority";
 
 import type { Pod } from "@freelensapp/kube-object";
@@ -36,7 +37,7 @@ const NonInjectableLogsButton: React.FC<LogsButtonProps & Dependencies> = ({ pod
 
     // Use the first container by default
     // For multi-container pods, users can still use the context menu for specific container selection
-    const selectedContainer = containers[0];
+    const selectedContainer = findOptimalDefaultContainer(containers, pod.getAnnotations(true));
 
     createPodLogsTab({
       selectedPod: pod,
