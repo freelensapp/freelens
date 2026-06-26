@@ -121,6 +121,18 @@ exports[`remove helm repository from list of active repositories in preferences 
                     </div>
                   </div>
                   <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
+                    </div>
+                  </div>
+                  <div
                     class="Tab flex gaps align-center active"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
@@ -928,6 +940,18 @@ exports[`remove helm repository from list of active repositories in preferences 
                       class="label"
                     >
                       Proxy
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
                     </div>
                   </div>
                   <div
@@ -1748,6 +1772,18 @@ exports[`remove helm repository from list of active repositories in preferences 
                       class="label"
                     >
                       Proxy
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
                     </div>
                   </div>
                   <div
@@ -2596,6 +2632,18 @@ exports[`remove helm repository from list of active repositories in preferences 
                       class="label"
                     >
                       Proxy
+                    </div>
+                  </div>
+                  <div
+                    class="Tab flex gaps align-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
                     </div>
                   </div>
                   <div

@@ -13,7 +13,7 @@ import type { MonacoEditorProps, MonacoEditorRef } from "../monaco-editor";
 
 class FakeMonacoEditor extends React.Component<MonacoEditorProps> {
   render() {
-    const { id, value, onChange, onError, language = "yaml" } = this.props;
+    const { id, value, onChange, onError, language = "yaml", readOnly } = this.props;
 
     return (
       <textarea
@@ -32,6 +32,7 @@ class FakeMonacoEditor extends React.Component<MonacoEditorProps> {
           }
         }}
         value={value}
+        readOnly={readOnly}
       />
     );
   }
