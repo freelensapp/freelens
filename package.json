@@ -67,10 +67,10 @@
     "trunk:fix:all": "pnpm trunk check --fix --all"
   },
   "devDependencies": {
-    "pnpm": "10.34.4",
+    "pnpm": "11.9.0",
     "turbo": "2.10.0"
   },
-  "packageManager": "pnpm@10.34.4+sha512.8768be55200ae3f2226b6527fcca2687e14bc4e5f12d7721a0f25da3df47915177058648db4177baf348120fa0ba2752d8d8d93f6beaf1fe64ae18da8de961af",
+  "packageManager": "pnpm@11.9.0+sha512.bd682d5d03fe525ef7c9fd6780c6884d1e756ac4c9c9fe00c538782824310dcf90e3ddc4f53835f06dfaebd5085e41855e0bcbb3b60de2ac5bbab89e5036f03b",
   "engines": {
     "node": ">=24.0.0"
   }

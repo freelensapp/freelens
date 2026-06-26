@@ -14,23 +14,17 @@ overrides:
   tmp@^0.2.0: ^0.2.7
 
 patchedDependencies:
-  '@async-fn/jest':
-    hash: e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562
-    path: patches/@async-fn__jest.patch
-  '@xterm/xterm@6.0.0':
-    hash: fb7ebbc29ef246137af8ea109596e698df4691ccaa0b87ed5969259bcb27e435
-    path: patches/@xterm__xterm@6.0.0.patch
-  circular-dependency-plugin:
-    hash: fc0571771d63f45e608503224f91a2c744a2b48c5088413e14660ee7da11fd51
-    path: patches/circular-dependency-plugin.patch
+  '@async-fn/jest': e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562
+  '@xterm/xterm@6.0.0': fb7ebbc29ef246137af8ea109596e698df4691ccaa0b87ed5969259bcb27e435
+  circular-dependency-plugin: fc0571771d63f45e608503224f91a2c744a2b48c5088413e14660ee7da11fd51
 
 importers:
 
   .:
     devDependencies:
       pnpm:
-        specifier: 10.34.4
-        version: 10.34.4
+        specifier: 11.9.0
+        version: 11.9.0
       turbo:
         specifier: 2.10.0
         version: 2.10.0
@@ -200,8 +194,8 @@ importers:
         specifier: ^6.3.0
         version: 6.3.0
       pnpm:
-        specifier: ^10.34.4
-        version: 10.34.4
+        specifier: ^11.9.0
+        version: 11.9.0
       proper-lockfile:
         specifier: ^4.1.2
         version: 4.1.2
@@ -843,8 +837,8 @@ importers:
         specifier: ^6.3.0
         version: 6.3.0
       pnpm:
-        specifier: ^10.34.4
-        version: 10.34.4
+        specifier: ^11.9.0
+        version: 11.9.0
       proper-lockfile:
         specifier: ^4.1.2
         version: 4.1.2
@@ -932,7 +926,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: 1.7.0
-        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))
+        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(babel-plugin-macros@3.1.0))
       '@freelensapp/messaging-fake-bridge':
         specifier: workspace:^
         version: link:../technical-features/messaging/messaging-fake-bridge
@@ -1336,7 +1330,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.7.0
-        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))
+        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(babel-plugin-macros@3.1.0))
       '@freelensapp/jest':
         specifier: workspace:^
         version: link:../jest
@@ -1691,7 +1685,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.7.0
-        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))
+        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(babel-plugin-macros@3.1.0))
       '@freelensapp/jest':
         specifier: workspace:^
         version: link:../../../infrastructure/jest
@@ -1749,7 +1743,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.7.0
-        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))
+        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(babel-plugin-macros@3.1.0))
       '@freelensapp/jest':
         specifier: workspace:^
         version: link:../../../infrastructure/jest
@@ -1996,7 +1990,7 @@ importers:
     dependencies:
       '@async-fn/jest':
         specifier: ^1.7.0
-        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))
+        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(babel-plugin-macros@3.1.0))
       '@freelensapp/messaging':
         specifier: workspace:^
         version: link:../messaging
@@ -2085,7 +2079,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.7.0
-        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))
+        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(babel-plugin-macros@3.1.0))
       '@freelensapp/jest':
         specifier: workspace:^
         version: link:../../../infrastructure/jest
@@ -2143,7 +2137,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.7.0
-        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))
+        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(babel-plugin-macros@3.1.0))
       '@freelensapp/jest':
         specifier: workspace:^
         version: link:../../../infrastructure/jest
@@ -3002,7 +2996,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.7.0
-        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))
+        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(babel-plugin-macros@3.1.0))
       '@freelensapp/jest':
         specifier: workspace:^
         version: link:../../infrastructure/jest
@@ -3116,7 +3110,7 @@ importers:
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.7.0
-        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))
+        version: 1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(babel-plugin-macros@3.1.0))
       '@freelensapp/jest':
         specifier: workspace:^
         version: link:../../infrastructure/jest
@@ -7936,9 +7930,9 @@ packages:
     resolution: {integrity: sha512-uysumyrvkUX0rX/dEVqt8gC3sTBzd4zoWfLeS29nb53imdaXVvLINYXTI2GNqzaMuvacNx4uJQ8+b3zXR0pkgQ==}
     engines: {node: '>=10.4.0'}
 
-  pnpm@10.34.4:
-    resolution: {integrity: sha512-h2i+VSAK4/Iia2Un/Momh+FLxOXxLXchoPJdo99HkVF3BYZI20F3uvNIEg+guidS2NjZP2vq8f5krhjajelhrw==}
-    engines: {node: '>=18.12'}
+  pnpm@11.9.0:
+    resolution: {integrity: sha512-vWgtXQP+Ul73yf1ngMaITR51asTJyf4AxTh4KCQxDc+Q493E9Tg18G3669UIXkGFXgvLs7YN4qxburieUDbwOw==}
+    engines: {node: '>=22.13'}
     hasBin: true
 
   possible-typed-array-names@1.1.0:
@@ -9429,7 +9423,7 @@ snapshots:
     dependencies:
       static-eval: 2.0.2
 
-  '@async-fn/jest@1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0))':
+  '@async-fn/jest@1.7.0(patch_hash=e6f6298f958eb8e8255087ea54bff3f834b249e874070c5caca2ebfa13fe4562)(jest@29.7.0(babel-plugin-macros@3.1.0))':
     dependencies:
       jest: 29.7.0(@types/node@24.12.4)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@24.12.4)(typescript@5.9.3))
 
@@ -14638,7 +14632,7 @@ snapshots:
       base64-js: 1.5.1
       xmlbuilder: 15.1.1
 
-  pnpm@10.34.4: {}
+  pnpm@11.9.0: {}
 
   possible-typed-array-names@1.1.0: {}
 
