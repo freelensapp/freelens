@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/messaging-fake-bridge",
-  "version": "1.10.1",
+  "version": "1.10.2-0",
   "private": false,
   "description": "Fake implementation to bridge multiple dependency injection containers.",
   "homepage": "https://freelens.app",
