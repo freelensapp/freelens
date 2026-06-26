@@ -162,7 +162,7 @@
     "react-window": "^1.8.11",
     "rfc6902": "^5.2.0",
     "selfsigned": "^4.0.1",
-    "semver": "^7.7.4",
+    "semver": "^7.8.5",
     "stoppable": "^1.1.0",
     "tar": "^7.5.17",
     "tcp-port-used": "^1.0.2",
