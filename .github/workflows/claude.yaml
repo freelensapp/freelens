@@ -176,7 +176,7 @@ jobs:
         run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
 
       - name: Use pnpm cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ env.pnpm_cache_dir }}
           key: ${{ runner.os }}-${{ runner.arch }}-node-${{ hashFiles('pnpm-lock.yaml') }}
@@ -184,7 +184,7 @@ jobs:
             ${{ runner.os }}-${{ runner.arch }}-node-
 
       - name: Use Turborepo cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ env.TURBOREPO_CACHE }}
           key: ${{ runner.os }}-${{ runner.arch }}-turborepo-${{ hashFiles('package.json', 'freelens/package.json', 'packages/**/package.json', 'pnpm-lock.yaml','turbo.json') }}
