@@ -31,11 +31,16 @@ const installExtensionInjectable = getInjectable({
 
       try {
         logger.info(`installing package for extension "${name}"`);
-        if (!(await pathExists(packageJsonPath))) {
-          writeJsonSync(packageJsonPath, { private: true });
-        } else if ((await stat(packageJsonPath)).size === 0) {
-          writeJsonSync(packageJsonPath, { private: true });
+
+        try {
+          if (!(await pathExists(packageJsonPath)) || (await stat(packageJsonPath)).size === 0) {
+            writeJsonSync(packageJsonPath, { private: true });
+          }
+        } catch (error) {
+          logger.error(`failed to bootstrap package.json at "${packageJsonPath}": ${error}`);
+          return;
         }
+
         await forkPnpm("install", "--prefer-offline", "--prod", "--force", "--save-optional", name);
         logger.info(`installed package for extension "${name}"`);
       } catch (error) {
