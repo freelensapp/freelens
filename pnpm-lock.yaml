@@ -1221,8 +1221,8 @@ importers:
   packages/generate-license:
     dependencies:
       '@quantco/pnpm-licenses':
-        specifier: ^2.4.1
-        version: 2.4.1
+        specifier: ^2.4.2
+        version: 2.4.2
       spdx-license-list:
         specifier: ^6.11.0
         version: 6.11.0
@@ -4405,8 +4405,8 @@ packages:
   '@popperjs/core@2.11.8':
     resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
 
-  '@quantco/pnpm-licenses@2.4.1':
-    resolution: {integrity: sha512-+Jc670YHuQ1OY/xTAAFGjTHU3Hx/GqP/XTY/6L0YaUaQuY54FGhIlBzPsfabW67FfmueC5NOSDfiFywiwSmTFQ==}
+  '@quantco/pnpm-licenses@2.4.2':
+    resolution: {integrity: sha512-kUdJ4V8/dr1YT9dG+jVhFDvqtPHUZbgw1WnWtc9Fx+JhOpz2fYAgpkx0tOnaszaWwpX9IdHnM1hCDJxdRUtV7w==}
     hasBin: true
 
   '@side/jest-runtime@1.1.0':
@@ -10678,7 +10678,7 @@ snapshots:
 
   '@popperjs/core@2.11.8': {}
 
-  '@quantco/pnpm-licenses@2.4.1':
+  '@quantco/pnpm-licenses@2.4.2':
     dependencies:
       minimist: 1.2.8
       multimatch: 8.0.0
