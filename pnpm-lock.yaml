@@ -1233,8 +1233,8 @@ importers:
         specifier: ^5.0.2
         version: 5.0.2
       jsdom:
-        specifier: ^29.1.0
-        version: 29.1.0(@noble/hashes@2.2.0)
+        specifier: ^29.1.1
+        version: 29.1.1(@noble/hashes@2.2.0)
       sharp:
         specifier: ^0.34.5
         version: 0.34.5
@@ -7068,8 +7068,8 @@ packages:
       canvas:
         optional: true
 
-  jsdom@29.1.0:
-    resolution: {integrity: sha512-YNUc7fB9QuvSSQWfrH0xF+TyABkxUwx8sswgIDaCrw4Hol8BghdZDkITtZheRJeMtzWlnTfsM3bBBusRvpO1wg==}
+  jsdom@29.1.1:
+    resolution: {integrity: sha512-ECi4Fi2f7BdJtUKTflYRTiaMxIB0O6zfR1fX0GXpUrf6flp8QIYn1UT20YQqdSOfk2dfkCwS8LAFoJDEppNK5Q==}
     engines: {node: ^20.19.0 || ^22.13.0 || >=24.0.0}
     peerDependencies:
       canvas: ^3.0.0
@@ -13816,7 +13816,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  jsdom@29.1.0(@noble/hashes@2.2.0):
+  jsdom@29.1.1(@noble/hashes@2.2.0):
     dependencies:
       '@asamuzakjp/css-color': 5.1.11
       '@asamuzakjp/dom-selector': 7.1.1
