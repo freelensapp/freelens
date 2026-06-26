@@ -182,7 +182,7 @@
     "node-abi": "^4.28.0",
     "node-gyp": "12.3.0",
     "node-loader": "^2.1.0",
-    "playwright": "^1.59.1",
+    "playwright": "^1.61.1",
     "style-loader": "^4.0.0",
     "ts-jest": "^29.4.9",
     "ts-loader": "^9.5.7",
