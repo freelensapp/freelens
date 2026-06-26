@@ -439,6 +439,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                         >
                           Use server-side apply for Helm chart operations
                           <input
+                            checked=""
                             role="switch"
                             type="checkbox"
                           />
@@ -1248,6 +1249,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                         >
                           Use server-side apply for Helm chart operations
                           <input
+                            checked=""
                             role="switch"
                             type="checkbox"
                           />
@@ -2095,6 +2097,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                         >
                           Use server-side apply for Helm chart operations
                           <input
+                            checked=""
                             role="switch"
                             type="checkbox"
                           />
@@ -3053,6 +3056,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                         >
                           Use server-side apply for Helm chart operations
                           <input
+                            checked=""
                             role="switch"
                             type="checkbox"
                           />
@@ -3908,6 +3912,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                         >
                           Use server-side apply for Helm chart operations
                           <input
+                            checked=""
                             role="switch"
                             type="checkbox"
                           />
@@ -4866,6 +4871,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                         >
                           Use server-side apply for Helm chart operations
                           <input
+                            checked=""
                             role="switch"
                             type="checkbox"
                           />
@@ -6006,6 +6012,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                         >
                           Use server-side apply for Helm chart operations
                           <input
+                            checked=""
                             role="switch"
                             type="checkbox"
                           />
@@ -6964,6 +6971,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                         >
                           Use server-side apply for Helm chart operations
                           <input
+                            checked=""
                             role="switch"
                             type="checkbox"
                           />
@@ -8104,6 +8112,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                         >
                           Use server-side apply for Helm chart operations
                           <input
+                            checked=""
                             role="switch"
                             type="checkbox"
                           />
@@ -9063,6 +9072,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                         >
                           Use server-side apply for Helm chart operations
                           <input
+                            checked=""
                             role="switch"
                             type="checkbox"
                           />
@@ -9918,6 +9928,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                         >
                           Use server-side apply for Helm chart operations
                           <input
+                            checked=""
                             role="switch"
                             type="checkbox"
                           />
@@ -10763,6 +10774,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                         >
                           Use server-side apply for Helm chart operations
                           <input
+                            checked=""
                             role="switch"
                             type="checkbox"
                           />
