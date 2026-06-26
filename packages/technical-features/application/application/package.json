@@ -47,7 +47,7 @@
     "ts-jest": "^29.4.9",
     "ts-loader": "^9.5.7",
     "typescript": "^5.9.3",
-    "webpack": "^5.106.2"
+    "webpack": "^5.108.1"
   },
   "publishConfig": {
     "access": "public",
