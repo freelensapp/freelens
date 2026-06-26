@@ -240,7 +240,7 @@
     "node-loader": "^2.1.0",
     "postcss-loader": "^8.2.1",
     "react-select-event": "^5.5.1",
-    "sass-loader": "^16.0.7",
+    "sass-loader": "^16.0.8",
     "tailwindcss": "^4.2.4",
     "ts-jest": "^29.4.9",
     "ts-loader": "^9.5.7",
