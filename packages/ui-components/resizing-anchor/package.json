@@ -46,7 +46,7 @@
     "@types/react": "^17.0.93",
     "css-loader": "^6.11.0",
     "postcss-loader": "^8.2.1",
-    "sass-loader": "^16.0.7",
+    "sass-loader": "^16.0.8",
     "ts-loader": "^9.5.7",
     "typescript": "^5.9.3",
     "webpack": "^5.106.2"
