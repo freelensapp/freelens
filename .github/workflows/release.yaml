@@ -374,7 +374,6 @@ jobs:
             --${{ matrix.arch }}
         env:
           DEBUG: electron-builder,electron-builder:*
-          TURBO_FORCE: "true"
 
       - name: Azure Trusted Signing (Windows)
         if: runner.os == 'Windows'
