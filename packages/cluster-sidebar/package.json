@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/cluster-sidebar",
-  "version": "1.10.2-0",
+  "version": "1.10.2",
   "private": false,
   "description": "Injection tokens for adding new sidebar items within the Cluster View",
   "homepage": "https://freelens.app",
