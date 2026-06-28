@@ -167,8 +167,8 @@ importers:
         specifier: ^1.0.6
         version: 1.0.6(debug@4.4.0)
       immer:
-        specifier: ^11.1.4
-        version: 11.1.4
+        specifier: ^11.1.8
+        version: 11.1.8
       isomorphic-ws:
         specifier: ^5.0.0
         version: 5.0.0(ws@8.21.0)
@@ -798,8 +798,8 @@ importers:
         specifier: ^1.0.6
         version: 1.0.6(debug@4.4.0)
       immer:
-        specifier: ^11.1.4
-        version: 11.1.4
+        specifier: ^11.1.8
+        version: 11.1.8
       joi:
         specifier: ^18.2.3
         version: 18.2.3
@@ -6590,8 +6590,8 @@ packages:
   immediate@3.0.6:
     resolution: {integrity: sha512-XXOFtyqDjNDAQxVfYxuF7g9Il/IbWmmlQg2MYKOH8ExIT1qg6xc4zyS3HaEEATgs1btfzxq15ciUiY7gjSXRGQ==}
 
-  immer@11.1.4:
-    resolution: {integrity: sha512-XREFCPo6ksxVzP4E0ekD5aMdf8WMwmdNaz6vuvxgI40UaEiu6q3p8X52aU6GdyvLY3XXX/8R7JOTXStz/nBbRw==}
+  immer@11.1.8:
+    resolution: {integrity: sha512-/tbkHMW7y10Lx6i1crLjD4/OhNkRG+Fo7byZHtah0547nIeXYcpIXaUh0IAQY6gO5459qpGGYapcEOHtFXkIuA==}
 
   immutable@5.1.5:
     resolution: {integrity: sha512-t7xcm2siw+hlUM68I+UEOK+z84RzmN59as9DZ7P1l0994DKUWV7UXBMQZVxaoMSRQ+PBZbHCOoBt7a2wxOMt+A==}
@@ -13236,7 +13236,7 @@ snapshots:
 
   immediate@3.0.6: {}
 
-  immer@11.1.4: {}
+  immer@11.1.8: {}
 
   immutable@5.1.5: {}
 
