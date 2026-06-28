@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/legacy-extensions",
-  "version": "1.10.2-0",
+  "version": "1.10.2",
   "private": false,
   "description": "Package for Lens extensions using the v1 API",
   "homepage": "https://freelens.app",
