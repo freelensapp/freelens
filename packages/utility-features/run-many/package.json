@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/run-many",
-  "version": "1.10.1",
+  "version": "1.10.2",
   "private": false,
   "description": "A package containing runMany and runManySync",
   "homepage": "https://freelens.app",
@@ -51,7 +51,7 @@
     "ts-loader": "^9.5.7",
     "type-fest": "^5.6.0",
     "typed-emitter": "^1.4.0",
-    "webpack": "^5.106.2"
+    "webpack": "^5.108.1"
   },
   "publishConfig": {
     "access": "public",

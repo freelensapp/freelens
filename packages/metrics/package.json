@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/metrics",
-  "version": "1.10.1",
+  "version": "1.10.2",
   "private": false,
   "description": "Injection tokens for implementing metrics for Freelens",
   "homepage": "https://freelens.app",
@@ -38,7 +38,7 @@
     "@types/react": "^17.0.93",
     "react": "^17.0.2",
     "ts-loader": "^9.5.7",
-    "webpack": "^5.106.2"
+    "webpack": "^5.108.1"
   },
   "publishConfig": {
     "access": "public",

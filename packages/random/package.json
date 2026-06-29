@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/random",
-  "version": "1.10.1",
+  "version": "1.10.2",
   "private": false,
   "description": "Highly extendable random in the Freelens.",
   "homepage": "https://freelens.app",
@@ -40,7 +40,7 @@
     "@freelensapp/webpack": "workspace:^",
     "@types/webpack-env": "^1.18.8",
     "ts-loader": "^9.5.7",
-    "webpack": "^5.106.2"
+    "webpack": "^5.108.1"
   },
   "publishConfig": {
     "access": "public",

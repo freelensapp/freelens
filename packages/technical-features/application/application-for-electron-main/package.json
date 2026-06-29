@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/application-for-electron-main",
-  "version": "1.10.1",
+  "version": "1.10.2",
   "private": false,
   "description": "Electron's main specifics for creating Freelens applications",
   "homepage": "https://freelens.app",
@@ -33,7 +33,7 @@
     "@freelensapp/feature-core": "workspace:^",
     "@freelensapp/run-many": "workspace:^",
     "@ogre-tools/injectable": "^17.11.1",
-    "electron": "^41.7.2"
+    "electron": "^41.9.0"
   },
   "devDependencies": {
     "@async-fn/jest": "^1.7.0",
@@ -48,7 +48,7 @@
     "ts-jest": "^29.4.9",
     "ts-loader": "^9.5.7",
     "typescript": "^5.9.3",
-    "webpack": "^5.106.2"
+    "webpack": "^5.108.1"
   },
   "publishConfig": {
     "access": "public",

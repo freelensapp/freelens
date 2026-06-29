@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/routing",
-  "version": "1.10.1",
+  "version": "1.10.2",
   "private": false,
   "description": "Highly extendable routing in the Freelens.",
   "homepage": "https://freelens.app",
@@ -42,7 +42,7 @@
     "@types/webpack-env": "^1.18.8",
     "lodash": "^4.18.1",
     "ts-loader": "^9.5.7",
-    "webpack": "^5.106.2"
+    "webpack": "^5.108.1"
   },
   "publishConfig": {
     "access": "public",
