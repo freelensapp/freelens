@@ -18,7 +18,7 @@ import {
 
 import type { Logger } from "@freelensapp/logger";
 
-import type { ExecFile } from "../../common/fs/exec-file.injectable";
+import type { ExecFile, ExecFileError } from "../../common/fs/exec-file.injectable";
 import type { Unlink } from "../../common/fs/unlink.injectable";
 import type { GetBasenameOfPath } from "../../common/path/get-basename.injectable";
 import type { GetDirnameOfPath } from "../../common/path/get-dirname.injectable";
@@ -27,6 +27,20 @@ import type { NormalizedPlatform } from "../../common/vars/normalized-platform.i
 import type { DownloadBinary } from "../fetch/download-binary.injectable";
 
 const initScriptVersionString = "# freelens-initscript v3";
+
+/**
+ * Error codes that indicate the binary could not be executed because of a
+ * transient condition rather than because the binary itself is broken. On
+ * Windows a freshly downloaded executable is frequently locked for a short
+ * time by antivirus real-time scanning (surfacing as `EBUSY`), and similar
+ * races can produce `ETXTBSY`/`EAGAIN`/`EPERM`. In these cases the binary is
+ * almost certainly valid and must not be deleted.
+ */
+const transientExecErrorCodes = new Set(["EBUSY", "ETXTBSY", "EAGAIN", "EPERM", "EACCES"]);
+
+function isTransientExecError(error: ExecFileError | undefined): boolean {
+  return typeof error?.code === "string" && transientExecErrorCodes.has(error.code);
+}
 
 export interface KubectlDependencies {
   readonly directoryForKubectlBinaries: string;
@@ -171,8 +185,20 @@ export class Kubectl {
     const execResult = await this.dependencies.execFile(path, args);
 
     if (!execResult.callWasSuccessful) {
+      // A transient failure (e.g. the binary is momentarily locked by
+      // antivirus right after being downloaded on Windows, surfacing as
+      // EBUSY) does not mean the binary is broken. Keep it instead of
+      // deleting a perfectly good download; it will verify on a later run.
+      if (isTransientExecError(execResult.error)) {
+        this.dependencies.logger.warn(
+          `Local kubectl could not be verified because of a transient error (${execResult.error.code}), keeping the binary`,
+        );
+
+        return true;
+      }
+
       this.dependencies.logger.error(`Local kubectl failed to run properly (${execResult.error}), unlinking`);
-      await this.dependencies.unlink(this.path);
+      await this.dependencies.unlink(path);
 
       return;
     }
@@ -181,7 +207,7 @@ export class Kubectl {
 
     if (!parseResult.callWasSuccessful) {
       this.dependencies.logger.error(`Local kubectl failed to run properly (${parseResult.error}), unlinking`);
-      await this.dependencies.unlink(this.path);
+      await this.dependencies.unlink(path);
 
       return;
     }
@@ -198,7 +224,7 @@ export class Kubectl {
       !hasTypedProperty(output.clientVersion, "gitVersion", isString)
     ) {
       this.dependencies.logger.error(`Local kubectl failed to return correct shaped response, unlinking`);
-      await this.dependencies.unlink(this.path);
+      await this.dependencies.unlink(path);
 
       return;
     }
@@ -215,7 +241,7 @@ export class Kubectl {
         this.dependencies.logger.error(
           `Local kubectl is version ${version}, expected ${this.kubectlVersion}, unlinking`,
         );
-        await this.dependencies.unlink(this.path);
+        await this.dependencies.unlink(path);
 
         return false;
     }
