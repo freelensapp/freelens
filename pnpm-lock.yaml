@@ -987,9 +987,6 @@ importers:
       '@types/jest':
         specifier: ^29.5.14
         version: 29.5.14
-      '@types/js-yaml':
-        specifier: ^4.0.9
-        version: 4.0.9
       '@types/lodash':
         specifier: ^4.17.24
         version: 4.17.24

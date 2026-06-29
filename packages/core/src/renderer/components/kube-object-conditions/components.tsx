@@ -1,5 +1,5 @@
 import { cssNames } from "@freelensapp/utilities";
-import yaml from "js-yaml";
+import * as yaml from "js-yaml";
 import { upperFirst } from "lodash/fp";
 import moment from "moment-timezone";
 import React from "react";

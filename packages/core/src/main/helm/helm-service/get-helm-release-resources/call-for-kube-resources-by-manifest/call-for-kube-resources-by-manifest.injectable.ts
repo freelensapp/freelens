@@ -6,7 +6,7 @@
 
 import { pipeline } from "@ogre-tools/fp";
 import { getInjectable } from "@ogre-tools/injectable";
-import yaml from "js-yaml";
+import * as yaml from "js-yaml";
 import { map } from "lodash/fp";
 import { defaultYamlDumpOptions } from "../../../../../common/kube-helpers";
 import { getErrorMessage } from "../../../../../common/utils/get-error-message";
