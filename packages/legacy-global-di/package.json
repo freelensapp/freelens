@@ -33,7 +33,7 @@
     "@freelensapp/webpack": "workspace:^",
     "@ogre-tools/injectable": "^17.11.1",
     "ts-loader": "^9.5.7",
-    "webpack": "^5.108.1"
+    "webpack": "^5.108.2"
   },
   "publishConfig": {
     "access": "public",
