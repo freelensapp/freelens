@@ -13,6 +13,7 @@ import getBasenameOfPathInjectable from "../../../common/path/get-basename.injec
 import getDirnameOfPathInjectable from "../../../common/path/get-dirname.injectable";
 import joinPathsInjectable from "../../../common/path/join-paths.injectable";
 import appNameInjectable from "../../../common/vars/app-name.injectable";
+import baseBundledBinariesDirectoryInjectable from "../../../common/vars/base-bundled-binaries-dir.injectable";
 import defaultShellInjectable from "../../../common/vars/default-shell.injectable";
 import isMacInjectable from "../../../common/vars/is-mac.injectable";
 import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
@@ -48,6 +49,7 @@ const openLocalShellSessionInjectable = getInjectable({
     const createKubectl = di.inject(createKubectlInjectable);
     const dependencies: Omit<LocalShellSessionDependencies, "proxyKubeconfigPath" | "directoryContainingKubectl"> = {
       directoryForBinaries: di.inject(directoryForBinariesInjectable),
+      baseBundledBinariesDirectory: di.inject(baseBundledBinariesDirectoryInjectable),
       isMac: di.inject(isMacInjectable),
       isWindows: di.inject(isWindowsInjectable),
       defaultShell: di.inject(defaultShellInjectable),
