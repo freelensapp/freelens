@@ -7,6 +7,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { reaction } from "mobx";
 import initializeSystemThemeTypeInjectable from "../../features/theme/system-type/renderer/initialize.injectable";
+import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
 import initUserStoreInjectable from "../../features/user-preferences/renderer/load-storage.injectable";
 import { beforeFrameStartsSecondInjectionToken } from "../before-frame-starts/tokens";
 import activeThemeInjectable from "./active.injectable";
@@ -18,10 +19,18 @@ const setupApplyActiveThemeInjectable = getInjectable({
     run: () => {
       const activeTheme = di.inject(activeThemeInjectable);
       const applyLensTheme = di.inject(applyLensThemeInjectable);
+      const userPreferencesState = di.inject(userPreferencesStateInjectable);
 
-      reaction(() => activeTheme.get(), applyLensTheme, {
-        fireImmediately: true,
-      });
+      reaction(
+        () => ({
+          theme: activeTheme.get(),
+          customThemeColors: { ...(userPreferencesState.customThemeColors ?? {}) },
+        }),
+        ({ theme }) => applyLensTheme(theme),
+        {
+          fireImmediately: true,
+        },
+      );
     },
     runAfter: [initializeSystemThemeTypeInjectable, initUserStoreInjectable],
   }),
