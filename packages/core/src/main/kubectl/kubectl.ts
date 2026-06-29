@@ -39,7 +39,7 @@ const initScriptVersionString = "# freelens-initscript v3";
 const transientExecErrorCodes = new Set(["EBUSY", "ETXTBSY", "EAGAIN", "EPERM", "EACCES"]);
 
 function isTransientExecError(error: ExecFileError | undefined): boolean {
-  return error?.code != null && transientExecErrorCodes.has(error.code);
+  return typeof error?.code === "string" && transientExecErrorCodes.has(error.code);
 }
 
 export interface KubectlDependencies {
