@@ -105,6 +105,8 @@ export interface ClusterPreferences extends ClusterPrometheusPreferences {
   nodeShellWindowsImage?: string;
   imagePullSecret?: string;
   defaultNamespace?: string;
+  skipNamespaceAuthorizationCheck?: boolean;
+  skipMetricsRouteCheck?: boolean;
 }
 
 /**

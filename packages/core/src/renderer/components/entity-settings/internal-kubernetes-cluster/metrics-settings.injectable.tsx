@@ -8,6 +8,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
 import getClusterByIdInjectable from "../../../../features/cluster/storage/common/get-by-id.injectable";
+import { MetricsRouteCheckSetting } from "../../cluster-settings/metrics-route-check-setting";
 import { ClusterMetricsSetting } from "../../cluster-settings/metrics-setting";
 import { ClusterPrometheusSetting } from "../../cluster-settings/prometheus-setting";
 import { ShowMetricsSetting } from "../../cluster-settings/show-metrics";
@@ -39,6 +40,10 @@ function NonInjectedMetricsKubernetesClusterSettings({
       <section>
         <ClusterMetricsSetting cluster={cluster} />
         <ShowMetricsSetting cluster={cluster} />
+      </section>
+      <hr />
+      <section>
+        <MetricsRouteCheckSetting cluster={cluster} />
       </section>
     </section>
   );
