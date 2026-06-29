@@ -58,7 +58,7 @@
     "mobx": "^6.15.0",
     "ts-jest": "^29.4.9",
     "ts-loader": "^9.5.7",
-    "webpack": "^5.108.1"
+    "webpack": "^5.108.2"
   },
   "publishConfig": {
     "access": "public",

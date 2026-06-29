@@ -42,7 +42,7 @@
     "tailwindcss": "^4.2.4",
     "ts-loader": "^9.5.7",
     "ts-node": "^10.9.2",
-    "webpack": "^5.108.1",
+    "webpack": "^5.108.2",
     "webpack-cli": "^7.0.3",
     "webpack-node-externals": "^3.0.0"
   },
