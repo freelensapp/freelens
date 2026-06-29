@@ -420,6 +420,11 @@ export class Kubectl {
       if (custom) {
         return custom;
       }
+
+      // The custom mirror is selected but left empty: its entry in
+      // `packageMirrors` has an empty URL, which would otherwise produce a
+      // malformed download URL. Fall back to the default mirror instead.
+      return packageMirrors.get(defaultPackageMirror)!.url;
     }
 
     const { url } =
