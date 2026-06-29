@@ -264,8 +264,8 @@ importers:
         specifier: ^3.0.2
         version: 3.0.2
       '@electron/rebuild':
-        specifier: ^4.0.4
-        version: 4.0.4
+        specifier: ^4.0.6
+        version: 4.0.6
       '@freelensapp/animate':
         specifier: workspace:^
         version: link:../packages/ui-components/animate
@@ -3645,8 +3645,8 @@ packages:
     engines: {node: '>=22.12.0'}
     hasBin: true
 
-  '@electron/rebuild@4.0.4':
-    resolution: {integrity: sha512-Rzc39XPdk/+/wBG8MfwAHohXflep0ITUfulb6Rgz3R0NeSB1noE+E9/M/cb8ftCAiyDD9PPhLuuWgE1GaInbKg==}
+  '@electron/rebuild@4.0.6':
+    resolution: {integrity: sha512-323ygp5Lz4DP2nVu54NLCx4n0TKsQ3OMDG3PPeOFjOTMDtSxGbCi7mQfWBc5C80pp+9awEsiHx9HR9DfAM/IEQ==}
     engines: {node: '>=22.12.0'}
     hasBin: true
 
@@ -9797,7 +9797,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@electron/rebuild@4.0.4':
+  '@electron/rebuild@4.0.6':
     dependencies:
       '@malept/cross-spawn-promise': 2.0.0
       debug: 4.4.0
