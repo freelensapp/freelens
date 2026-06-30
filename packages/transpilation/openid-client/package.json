@@ -32,7 +32,7 @@
     "openid-client": "^6.8.4",
     "ts-loader": "^9.5.7",
     "typescript": "^5.9.3",
-    "webpack": "^5.108.2"
+    "webpack": "^5.108.3"
   },
   "publishConfig": {
     "access": "public",
