@@ -8,3 +8,30 @@
   margin-top: var(--margin);
   margin-bottom: calc(var(--margin) * 3);
 }
+
+.tabs {
+  display: flex;
+  gap: 2rem;
+  border-bottom: 1px solid var(--borderColor);
+  margin-bottom: 1.5rem;
+}
+
+.tabButton {
+  padding: 0.75rem 0;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: -1px;
+}
+
+.tabActive {
+  color: var(--textColorPrimary);
+  border-bottom: 2px solid #00d4aa;
+}
+
+.tabInactive {
+  color: var(--textColorSecondary);
+  border-bottom: 2px solid transparent;
+}
