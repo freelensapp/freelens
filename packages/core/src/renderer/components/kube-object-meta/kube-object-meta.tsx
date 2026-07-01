@@ -7,7 +7,7 @@
 import { KubeObject } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import yaml from "js-yaml";
+import * as yaml from "js-yaml";
 import { observer } from "mobx-react";
 import React from "react";
 import { Link } from "react-router-dom";

@@ -9,7 +9,7 @@ import { showErrorNotificationInjectable, showSuccessNotificationInjectable } fr
 import { waitUntilDefined } from "@freelensapp/utilities";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import assert from "assert";
-import yaml from "js-yaml";
+import * as yaml from "js-yaml";
 import { action, computed, observable, runInAction } from "mobx";
 import React from "react";
 import { createPatch, type Operation } from "rfc6902";
