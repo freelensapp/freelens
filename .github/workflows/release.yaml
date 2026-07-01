@@ -100,19 +100,32 @@ jobs:
         run: echo "/usr/local/opt/coreutils/libexec/gnubin" >> $GITHUB_PATH
 
       - name: Install dependencies (Windows)
-        id: install-deps-windows
         if: runner.os == 'Windows'
         shell: bash
+        env:
+          # Renovate keeps this version up to date via the inline datasource
+          # hint below (see .renovaterc.json5 customManagers).
+          YQ_VERSION: v4.53.3 # datasource=github-releases depName=mikefarah/yq
         run: |
-          timeout 300 choco install yq --yes --no-progress
-          yq --version
-        continue-on-error: true
-
-      - name: Install dependencies (Windows) (retry)
-        if: runner.os == 'Windows' && steps.install-deps-windows.outcome == 'failure'
-        shell: bash
-        run: |
-          timeout 300 choco install yq --yes --no-progress
+          set -eo pipefail
+          # winget/choco is not available on every Windows runner image (in
+          # particular the windows-11-arm image used for the arm64 build), so
+          # download the yq binary directly from the upstream GitHub release.
+          # Pick the asset that matches the runner architecture. Expose the
+          # install directory to later steps via GITHUB_PATH (Windows form,
+          # which Git Bash re-converts to POSIX on startup) and prepend the
+          # POSIX form to PATH here so the verification below can find yq.
+          case "${{ matrix.arch }}" in
+            arm64) yq_arch=arm64 ;;
+            *) yq_arch=amd64 ;;
+          esac
+          yq_version="$YQ_VERSION"
+          bin_dir="$HOME/bin"
+          mkdir -p "$bin_dir"
+          curl -fsSL -o "$bin_dir/yq.exe" \
+            "https://github.com/mikefarah/yq/releases/download/${yq_version}/yq_windows_${yq_arch}.exe"
+          cygpath --windows "$bin_dir" >> "$GITHUB_PATH"
+          PATH="$bin_dir:$PATH"
           yq --version
 
       - name: Setup node
