@@ -13,15 +13,18 @@ import type { StrictReactNode } from "@freelensapp/utilities";
 
 import type { UseTableOptions } from "react-table";
 
+import type { SearchInputProps } from "../input";
+
 export type SearchFilter<T> = (item: T) => string | number;
 
 export interface ListProps<T> extends UseTableOptions<any> {
   items: T[];
   filters: SearchFilter<T>[];
   title?: StrictReactNode;
+  searchInputProps?: Partial<SearchInputProps>;
 }
 
-export function List<T>({ columns, data, title, items, filters }: ListProps<T>) {
+export function List<T>({ columns, data, title, items, filters, searchInputProps }: ListProps<T>) {
   const [search, setSearch] = useState<string>("");
   const query = search.toLowerCase();
 
@@ -34,7 +37,13 @@ export function List<T>({ columns, data, title, items, filters }: ListProps<T>) 
       <div className="flex align-center justify-between mb-6">
         <div className="mr-6">{title}</div>
         <div>
-          <SearchInput value={search} theme="round-black" onChange={setSearch} className={styles.searchInput} />
+          <SearchInput
+            value={search}
+            theme="round-black"
+            onChange={setSearch}
+            className={styles.searchInput}
+            {...searchInputProps}
+          />
         </div>
       </div>
       <ReactTable columns={columns} data={filteredData} />
