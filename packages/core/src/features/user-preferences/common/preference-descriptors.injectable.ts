@@ -8,8 +8,8 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { merge } from "lodash";
 import { observable } from "mobx";
 import kubeDirectoryPathInjectable from "../../../common/os/kube-directory-path.injectable";
-import { defaultColorThemePreference } from "../../../common/vars";
 import currentTimezoneInjectable from "../../../common/vars/current-timezone.injectable";
+import { defaultAccentColor, defaultColorThemePreference } from "../../../common/vars";
 import {
   ClusterPageMenuOrder,
   defaultEditorConfig,
@@ -52,6 +52,10 @@ const userPreferenceDescriptorsInjectable = getInjectable({
       colorTheme: getPreferenceDescriptor<string>({
         fromStore: (val) => val || defaultColorThemePreference,
         toStore: (val) => (!val || val === defaultColorThemePreference ? undefined : val),
+      }),
+      customAccentColor: getPreferenceDescriptor<string>({
+        fromStore: (val) => val || "",
+        toStore: (val) => (!val || val === defaultAccentColor ? undefined : val),
       }),
       terminalTheme: getPreferenceDescriptor<string>({
         fromStore: (val) => val || "",
