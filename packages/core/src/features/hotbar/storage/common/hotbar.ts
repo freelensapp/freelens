@@ -4,89 +4,47 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { tuple } from "@freelensapp/utilities";
 import { type IObservableArray, type IObservableValue, observable, runInAction, toJS } from "mobx";
 import * as uuid from "uuid";
 import { getShortName } from "../../../../common/catalog/helpers";
-import { broadcastMessage } from "../../../../common/ipc";
-import { hotbarTooManyItemsChannel } from "../../../../common/ipc/hotbar";
-import { defaultHotbarCells } from "./types";
-
-import type { Logger } from "@freelensapp/logger";
 
 import type { CatalogEntity } from "../../../../common/catalog";
 import type { CreateHotbarData, HotbarItem } from "./types";
 
-export interface HotbarDependencies {
-  readonly logger: Logger;
-}
-
 export interface HotbarData {
   readonly id: string;
   readonly name: string;
-  readonly items: (HotbarItem | null)[];
+  readonly items: HotbarItem[];
 }
 
 export class Hotbar {
   readonly id: string;
   readonly name: IObservableValue<string>;
-  readonly items: IObservableArray<HotbarItem | null>;
+  readonly items: IObservableArray<HotbarItem>;
 
-  constructor(
-    private readonly dependencies: HotbarDependencies,
-    data: CreateHotbarData,
-  ) {
+  constructor(data: CreateHotbarData) {
     this.id = data.id ?? uuid.v4();
     this.name = observable.box(data.name);
-    this.items = observable.array(data.items ?? tuple.filled(defaultHotbarCells, null));
-  }
-
-  isFull() {
-    for (const item of this.items) {
-      if (!item) {
-        return false;
-      }
-    }
-
-    return true;
+    this.items = observable.array(data.items?.filter((item): item is HotbarItem => item !== null) ?? []);
   }
 
   hasEntity(entityId: string) {
     return this.items.findIndex((item) => item?.entity.uid === entityId) >= 0;
   }
 
-  private findClosestEmptyIndex(from: number, direction = 1) {
-    let index = from;
-
-    while (this.items[index] != null) {
-      index += direction;
+  restack(from: number, to: number) {
+    if (from < 0 || to < 0 || from >= this.items.length || to >= this.items.length || isNaN(from) || isNaN(to)) {
+      throw new Error("Invalid 'from' or 'to' arguments");
     }
 
-    return index;
-  }
-
-  restack(from: number, to: number) {
     runInAction(() => {
-      const source = this.items[from];
-      const moveDown = from < to;
-
-      if (from < 0 || to < 0 || from >= this.items.length || to >= this.items.length || isNaN(from) || isNaN(to)) {
-        throw new Error("Invalid 'from' or 'to' arguments");
-      }
-
       if (from == to) {
         return;
       }
 
-      this.items.splice(from, 1, null);
+      const [source] = this.items.splice(from, 1);
 
-      if (this.items[to] == null) {
-        this.items.splice(to, 1, source);
-      } else {
-        // Move cells up or down to closes empty cell
-        this.items.splice(this.findClosestEmptyIndex(to, moveDown ? -1 : 1), 1);
-        this.items.splice(to, 0, source);
-      }
+      this.items.splice(to, 0, source);
     });
   }
 
@@ -108,11 +66,11 @@ export class Hotbar {
         return;
       }
 
-      this.items[index] = null;
+      this.items.splice(index, 1);
     });
   }
 
-  addEntity(item: CatalogEntity, cellIndex?: number) {
+  addEntity(item: CatalogEntity) {
     const uid = item.getId();
     const name = item.getName();
     const shortName = getShortName(item);
@@ -141,28 +99,9 @@ export class Hotbar {
     };
     const newItem = { entity };
 
-    if (cellIndex === undefined) {
-      // Add item to empty cell
-      const emptyCellIndex = this.items.indexOf(null);
-
-      if (emptyCellIndex >= 0) {
-        runInAction(() => {
-          this.items[emptyCellIndex] = newItem;
-        });
-      } else {
-        broadcastMessage(hotbarTooManyItemsChannel);
-      }
-    } else if (0 <= cellIndex && cellIndex < this.items.length) {
-      runInAction(() => {
-        this.items[cellIndex] = newItem;
-      });
-    } else {
-      this.dependencies.logger.error("cannot pin entity to hotbar outside of index range", {
-        entityId: uid,
-        hotbarId: this.id,
-        cellIndex,
-      });
-    }
+    runInAction(() => {
+      this.items.push(newItem);
+    });
   }
 
   toJSON(): HotbarData {

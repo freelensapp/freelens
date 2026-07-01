@@ -16,12 +16,17 @@ import activeHotbarIdInjectable from "./active-id.injectable";
 import createHotbarInjectable from "./create-hotbar.injectable";
 import { hotbarStoreMigrationInjectionToken } from "./migrations-token";
 import hotbarsStateInjectable from "./state.injectable";
-import { defaultHotbarCells } from "./types";
 
-import type { Hotbar, HotbarData } from "./hotbar";
+import type { HotbarItem } from "./types";
+
+interface StoredHotbarData {
+  id: string;
+  name: string;
+  items: readonly (HotbarItem | null)[];
+}
 
 export interface HotbarStoreModel {
-  hotbars: HotbarData[];
+  hotbars: StoredHotbarData[];
   activeHotbarId: string | undefined;
 }
 
@@ -48,27 +53,25 @@ const hotbarsPersistentStorageInjectable = getInjectable({
           const hotbar = createHotbar({
             name: "Default",
           });
-          hotbar.items[0] = {
-            entity: {
-              uid: welcomeCatalogEntity.metadata.uid,
-              name: welcomeCatalogEntity.metadata.name,
-              source: welcomeCatalogEntity.metadata.source,
+          hotbar.items.push(
+            {
+              entity: {
+                uid: welcomeCatalogEntity.metadata.uid,
+                name: welcomeCatalogEntity.metadata.name,
+                source: welcomeCatalogEntity.metadata.source,
+              },
             },
-          };
-          hotbar.items[1] = {
-            entity: {
-              uid: catalogCatalogEntity.metadata.uid,
-              name: catalogCatalogEntity.metadata.name,
-              source: catalogCatalogEntity.metadata.source,
+            {
+              entity: {
+                uid: catalogCatalogEntity.metadata.uid,
+                name: catalogCatalogEntity.metadata.name,
+                source: catalogCatalogEntity.metadata.source,
+              },
             },
-          };
+          );
           state.replace([[hotbar.id, hotbar]]);
         } else {
           state.replace(data.hotbars.map((hotbar) => [hotbar.id, createHotbar(hotbar)]));
-        }
-
-        for (const hotbar of state.values()) {
-          ensureExactHotbarItemLength(hotbar);
         }
 
         if (data.activeHotbarId) {
@@ -95,27 +98,3 @@ const hotbarsPersistentStorageInjectable = getInjectable({
 });
 
 export default hotbarsPersistentStorageInjectable;
-
-/**
- * This function ensures that there are always exactly `defaultHotbarCells`
- * worth of items in the hotbar.
- * @param hotbar The hotbar to modify
- */
-function ensureExactHotbarItemLength(hotbar: Hotbar) {
-  // if there are not enough items
-  while (hotbar.items.length < defaultHotbarCells) {
-    hotbar.items.push(null);
-  }
-
-  // if for some reason the hotbar was overfilled before, remove as many entries
-  // as needed, but prefer empty slots and items at the end first.
-  while (hotbar.items.length > defaultHotbarCells) {
-    const lastNull = hotbar.items.lastIndexOf(null);
-
-    if (lastNull >= 0) {
-      hotbar.items.splice(lastNull, 1);
-    } else {
-      hotbar.items.length = defaultHotbarCells;
-    }
-  }
-}

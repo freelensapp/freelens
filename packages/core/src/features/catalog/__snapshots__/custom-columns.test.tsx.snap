@@ -483,85 +483,35 @@ exports[`custom category columns for catalog renders 1`] = `
           class="HotbarItems flex column gaps"
         >
           <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="0"
+            class="HotbarItem"
           >
             <div
-              style="z-index: 12; position: absolute;"
+              class="HotbarIcon contextMenuAvailable"
             >
               <div
-                class="HotbarIcon contextMenuAvailable"
+                class="Avatar rounded disabled avatar"
+                id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
               >
-                <div
-                  class="Avatar rounded disabled avatar"
-                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
-                >
-                  WP
-                </div>
+                WP
               </div>
             </div>
           </div>
           <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
+            class="HotbarItem"
           >
             <div
-              style="z-index: 11; position: absolute;"
+              class="HotbarIcon contextMenuAvailable"
             >
               <div
-                class="HotbarIcon contextMenuAvailable"
+                class="Avatar rounded disabled avatar"
+                id="hotbarIcon-hotbar-icon-catalog-entity"
+                style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
               >
-                <div
-                  class="Avatar rounded disabled avatar"
-                  id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
-                >
-                  Ca
-                </div>
+                Ca
               </div>
             </div>
           </div>
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="2"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="3"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="4"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="5"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="6"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="7"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="8"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="9"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="10"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="11"
-          />
         </div>
         <div
           class="HotbarSelector"
@@ -1133,85 +1083,35 @@ exports[`custom category columns for catalog when category is added using defaul
           class="HotbarItems flex column gaps"
         >
           <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="0"
+            class="HotbarItem"
           >
             <div
-              style="z-index: 12; position: absolute;"
+              class="HotbarIcon contextMenuAvailable"
             >
               <div
-                class="HotbarIcon contextMenuAvailable"
+                class="Avatar rounded disabled avatar"
+                id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
               >
-                <div
-                  class="Avatar rounded disabled avatar"
-                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
-                >
-                  WP
-                </div>
+                WP
               </div>
             </div>
           </div>
           <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
+            class="HotbarItem"
           >
             <div
-              style="z-index: 11; position: absolute;"
+              class="HotbarIcon contextMenuAvailable"
             >
               <div
-                class="HotbarIcon contextMenuAvailable"
+                class="Avatar rounded disabled avatar"
+                id="hotbarIcon-hotbar-icon-catalog-entity"
+                style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
               >
-                <div
-                  class="Avatar rounded disabled avatar"
-                  id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
-                >
-                  Ca
-                </div>
+                Ca
               </div>
             </div>
           </div>
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="2"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="3"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="4"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="5"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="6"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="7"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="8"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="9"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="10"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="11"
-          />
         </div>
         <div
           class="HotbarSelector"
@@ -1773,85 +1673,35 @@ exports[`custom category columns for catalog when category is added using defaul
           class="HotbarItems flex column gaps"
         >
           <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="0"
+            class="HotbarItem"
           >
             <div
-              style="z-index: 12; position: absolute;"
+              class="HotbarIcon contextMenuAvailable"
             >
               <div
-                class="HotbarIcon contextMenuAvailable"
+                class="Avatar rounded disabled avatar"
+                id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
               >
-                <div
-                  class="Avatar rounded disabled avatar"
-                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
-                >
-                  WP
-                </div>
+                WP
               </div>
             </div>
           </div>
           <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
+            class="HotbarItem"
           >
             <div
-              style="z-index: 11; position: absolute;"
+              class="HotbarIcon contextMenuAvailable"
             >
               <div
-                class="HotbarIcon contextMenuAvailable"
+                class="Avatar rounded disabled avatar"
+                id="hotbarIcon-hotbar-icon-catalog-entity"
+                style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
               >
-                <div
-                  class="Avatar rounded disabled avatar"
-                  id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
-                >
-                  Ca
-                </div>
+                Ca
               </div>
             </div>
           </div>
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="2"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="3"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="4"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="5"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="6"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="7"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="8"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="9"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="10"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="11"
-          />
         </div>
         <div
           class="HotbarSelector"
@@ -2399,85 +2249,35 @@ exports[`custom category columns for catalog when category is added using defaul
           class="HotbarItems flex column gaps"
         >
           <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="0"
+            class="HotbarItem"
           >
             <div
-              style="z-index: 12; position: absolute;"
+              class="HotbarIcon contextMenuAvailable"
             >
               <div
-                class="HotbarIcon contextMenuAvailable"
+                class="Avatar rounded disabled avatar"
+                id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
               >
-                <div
-                  class="Avatar rounded disabled avatar"
-                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
-                >
-                  WP
-                </div>
+                WP
               </div>
             </div>
           </div>
           <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
+            class="HotbarItem"
           >
             <div
-              style="z-index: 11; position: absolute;"
+              class="HotbarIcon contextMenuAvailable"
             >
               <div
-                class="HotbarIcon contextMenuAvailable"
+                class="Avatar rounded disabled avatar"
+                id="hotbarIcon-hotbar-icon-catalog-entity"
+                style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
               >
-                <div
-                  class="Avatar rounded disabled avatar"
-                  id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
-                >
-                  Ca
-                </div>
+                Ca
               </div>
             </div>
           </div>
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="2"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="3"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="4"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="5"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="6"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="7"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="8"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="9"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="10"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="11"
-          />
         </div>
         <div
           class="HotbarSelector"
@@ -3049,85 +2849,35 @@ exports[`custom category columns for catalog when category is added with custom 
           class="HotbarItems flex column gaps"
         >
           <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="0"
+            class="HotbarItem"
           >
             <div
-              style="z-index: 12; position: absolute;"
+              class="HotbarIcon contextMenuAvailable"
             >
               <div
-                class="HotbarIcon contextMenuAvailable"
+                class="Avatar rounded disabled avatar"
+                id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
               >
-                <div
-                  class="Avatar rounded disabled avatar"
-                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
-                >
-                  WP
-                </div>
+                WP
               </div>
             </div>
           </div>
           <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
+            class="HotbarItem"
           >
             <div
-              style="z-index: 11; position: absolute;"
+              class="HotbarIcon contextMenuAvailable"
             >
               <div
-                class="HotbarIcon contextMenuAvailable"
+                class="Avatar rounded disabled avatar"
+                id="hotbarIcon-hotbar-icon-catalog-entity"
+                style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
               >
-                <div
-                  class="Avatar rounded disabled avatar"
-                  id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
-                >
-                  Ca
-                </div>
+                Ca
               </div>
             </div>
           </div>
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="2"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="3"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="4"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="5"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="6"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="7"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="8"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="9"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="10"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="11"
-          />
         </div>
         <div
           class="HotbarSelector"
@@ -3627,85 +3377,35 @@ exports[`custom category columns for catalog when category is added with custom 
           class="HotbarItems flex column gaps"
         >
           <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="0"
+            class="HotbarItem"
           >
             <div
-              style="z-index: 12; position: absolute;"
+              class="HotbarIcon contextMenuAvailable"
             >
               <div
-                class="HotbarIcon contextMenuAvailable"
+                class="Avatar rounded disabled avatar"
+                id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
               >
-                <div
-                  class="Avatar rounded disabled avatar"
-                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
-                >
-                  WP
-                </div>
+                WP
               </div>
             </div>
           </div>
           <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
+            class="HotbarItem"
           >
             <div
-              style="z-index: 11; position: absolute;"
+              class="HotbarIcon contextMenuAvailable"
             >
               <div
-                class="HotbarIcon contextMenuAvailable"
+                class="Avatar rounded disabled avatar"
+                id="hotbarIcon-hotbar-icon-catalog-entity"
+                style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
               >
-                <div
-                  class="Avatar rounded disabled avatar"
-                  id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
-                >
-                  Ca
-                </div>
+                Ca
               </div>
             </div>
           </div>
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="2"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="3"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="4"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="5"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="6"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="7"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="8"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="9"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="10"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="11"
-          />
         </div>
         <div
           class="HotbarSelector"
@@ -4277,85 +3977,35 @@ exports[`custom category columns for catalog when category is added without defa
           class="HotbarItems flex column gaps"
         >
           <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="0"
+            class="HotbarItem"
           >
             <div
-              style="z-index: 12; position: absolute;"
+              class="HotbarIcon contextMenuAvailable"
             >
               <div
-                class="HotbarIcon contextMenuAvailable"
+                class="Avatar rounded disabled avatar"
+                id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
               >
-                <div
-                  class="Avatar rounded disabled avatar"
-                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
-                >
-                  WP
-                </div>
+                WP
               </div>
             </div>
           </div>
           <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
+            class="HotbarItem"
           >
             <div
-              style="z-index: 11; position: absolute;"
+              class="HotbarIcon contextMenuAvailable"
             >
               <div
-                class="HotbarIcon contextMenuAvailable"
+                class="Avatar rounded disabled avatar"
+                id="hotbarIcon-hotbar-icon-catalog-entity"
+                style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
               >
-                <div
-                  class="Avatar rounded disabled avatar"
-                  id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
-                >
-                  Ca
-                </div>
+                Ca
               </div>
             </div>
           </div>
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="2"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="3"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="4"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="5"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="6"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="7"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="8"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="9"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="10"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="11"
-          />
         </div>
         <div
           class="HotbarSelector"
@@ -4841,85 +4491,35 @@ exports[`custom category columns for catalog when category is added without defa
           class="HotbarItems flex column gaps"
         >
           <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="0"
+            class="HotbarItem"
           >
             <div
-              style="z-index: 12; position: absolute;"
+              class="HotbarIcon contextMenuAvailable"
             >
               <div
-                class="HotbarIcon contextMenuAvailable"
+                class="Avatar rounded disabled avatar"
+                id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
               >
-                <div
-                  class="Avatar rounded disabled avatar"
-                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
-                >
-                  WP
-                </div>
+                WP
               </div>
             </div>
           </div>
           <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
+            class="HotbarItem"
           >
             <div
-              style="z-index: 11; position: absolute;"
+              class="HotbarIcon contextMenuAvailable"
             >
               <div
-                class="HotbarIcon contextMenuAvailable"
+                class="Avatar rounded disabled avatar"
+                id="hotbarIcon-hotbar-icon-catalog-entity"
+                style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
               >
-                <div
-                  class="Avatar rounded disabled avatar"
-                  id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
-                >
-                  Ca
-                </div>
+                Ca
               </div>
             </div>
           </div>
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="2"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="3"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="4"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="5"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="6"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="7"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="8"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="9"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="10"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="11"
-          />
         </div>
         <div
           class="HotbarSelector"
