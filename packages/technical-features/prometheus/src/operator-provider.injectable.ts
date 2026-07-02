@@ -54,7 +54,7 @@ export const getOperatorLikeQueryFor =
           case "fsSize":
             return `sum(node_filesystem_size_bytes{mountpoint=~"${opts.mountpoints}"} * on (pod,namespace) group_left(node) max without(pod_ip,host_ip) (kube_pod_info{node=~"${opts.nodes}"}))`;
           case "fsUsage":
-            return `sum(node_filesystem_size_bytes{mountpoint=~"${opts.mountpoints}"} * on (pod,namespace) group_left(node) max without(pod_ip,host_ip) (kube_pod_info{node=~"${opts.nodes}"}) - node_filesystem_avail_bytes{mountpoint=~"${opts.mountpoints}"} * on (pod,namespace) group_left(node) max without(pod_ip) (kube_pod_info{node=~"${opts.nodes}"}))`;
+            return `sum(node_filesystem_size_bytes{mountpoint=~"${opts.mountpoints}"} * on (pod,namespace) group_left(node) max without(pod_ip,host_ip) (kube_pod_info{node=~"${opts.nodes}"}) - node_filesystem_avail_bytes{mountpoint=~"${opts.mountpoints}"} * on (pod,namespace) group_left(node) max without(pod_ip,host_ip) (kube_pod_info{node=~"${opts.nodes}"}))`;
         }
         break;
       case "nodes":
