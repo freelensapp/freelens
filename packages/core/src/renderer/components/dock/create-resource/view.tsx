@@ -9,7 +9,7 @@ import { showCheckedErrorNotificationInjectable, showSuccessNotificationInjectab
 import { Spinner } from "@freelensapp/spinner";
 import { isObject, prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import yaml from "js-yaml";
+import * as yaml from "js-yaml";
 import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
