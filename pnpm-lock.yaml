@@ -176,8 +176,8 @@ importers:
         specifier: ^18.2.3
         version: 18.2.3
       js-yaml:
-        specifier: ^5.2.0
-        version: 5.2.0
+        specifier: ^5.2.1
+        version: 5.2.1
       lodash:
         specifier: ^4.18.1
         version: 4.18.1
@@ -415,7 +415,7 @@ importers:
         version: 5.108.3(postcss@8.5.8)(webpack-cli@7.1.0)
       webpack-cli:
         specifier: ^7.1.0
-        version: 7.1.0(js-yaml@5.2.0)(json5@2.2.3)(webpack-dev-server@5.2.5)(webpack@5.108.3)
+        version: 7.1.0(js-yaml@5.2.1)(json5@2.2.3)(webpack-dev-server@5.2.5)(webpack@5.108.3)
       webpack-dev-server:
         specifier: ^5.2.5
         version: 5.2.5(webpack-cli@7.1.0)(webpack@5.108.3)
@@ -804,8 +804,8 @@ importers:
         specifier: ^18.2.3
         version: 18.2.3
       js-yaml:
-        specifier: ^5.2.0
-        version: 5.2.0
+        specifier: ^5.2.1
+        version: 5.2.1
       lodash:
         specifier: ^4.18.1
         version: 4.18.1
@@ -1142,7 +1142,7 @@ importers:
         version: 5.108.3(postcss@8.5.8)(webpack-cli@7.1.0)
       webpack-cli:
         specifier: ^7.1.0
-        version: 7.1.0(js-yaml@5.2.0)(json5@2.2.3)(webpack-dev-server@5.2.5)(webpack@5.108.3)
+        version: 7.1.0(js-yaml@5.2.1)(json5@2.2.3)(webpack-dev-server@5.2.5)(webpack@5.108.3)
       webpack-node-externals:
         specifier: ^3.0.0
         version: 3.0.0
@@ -1210,7 +1210,7 @@ importers:
         version: 5.108.3(postcss@8.5.8)(webpack-cli@7.1.0)
       webpack-cli:
         specifier: ^7.1.0
-        version: 7.1.0(js-yaml@5.2.0)(json5@2.2.3)(webpack-dev-server@5.2.5)(webpack@5.108.3)
+        version: 7.1.0(js-yaml@5.2.1)(json5@2.2.3)(webpack-dev-server@5.2.5)(webpack@5.108.3)
 
   packages/generate-license:
     dependencies:
@@ -1323,7 +1323,7 @@ importers:
         version: 5.108.3(webpack-cli@7.1.0)
       webpack-cli:
         specifier: ^7.1.0
-        version: 7.1.0(js-yaml@5.2.0)(json5@2.2.3)(webpack-dev-server@5.2.5)(webpack@5.108.3)
+        version: 7.1.0(js-yaml@5.2.1)(json5@2.2.3)(webpack-dev-server@5.2.5)(webpack@5.108.3)
       webpack-node-externals:
         specifier: ^3.0.0
         version: 3.0.0
@@ -2318,8 +2318,8 @@ importers:
         specifier: ^5.0.0
         version: 5.0.0(ws@8.21.0)
       js-yaml:
-        specifier: ^5.2.0
-        version: 5.2.0
+        specifier: ^5.2.1
+        version: 5.2.1
       rfc4648:
         specifier: ^1.5.4
         version: 1.5.4
@@ -7050,8 +7050,8 @@ packages:
     resolution: {integrity: sha512-1td788aAnnZ5qs7V2QIRl1owjtYpbKt749Y3xauqQgwIIGF/xXWz1wMTEBx5O3LK3lXLVuqXPdPxj2BoFHaW9Q==}
     hasBin: true
 
-  js-yaml@5.2.0:
-    resolution: {integrity: sha512-YeLUMlvR4Ou1B119LIaM0r65JvbOBooJDc9yEu0dClb/uSC5P4FrLU8OCCz/HXWvtPoIrR0dRzABTjo1sTN9Bw==}
+  js-yaml@5.2.1:
+    resolution: {integrity: sha512-zfLtNfQqxVqq3uaTqSkh4x4hZw3KHobGUA0fJUj4wawW8bsQLTVqpHdXSIzidh7o+4lEW36tANuAGdaFx6Zgnw==}
     hasBin: true
 
   jsbn@1.1.0:
@@ -13871,7 +13871,7 @@ snapshots:
     dependencies:
       argparse: 2.0.1
 
-  js-yaml@5.2.0:
+  js-yaml@5.2.1:
     dependencies:
       argparse: 2.0.1
 
@@ -16083,7 +16083,7 @@ snapshots:
 
   webidl-conversions@8.0.1: {}
 
-  webpack-cli@7.1.0(js-yaml@5.2.0)(json5@2.2.3)(webpack-dev-server@5.2.5)(webpack@5.108.3):
+  webpack-cli@7.1.0(js-yaml@5.2.1)(json5@2.2.3)(webpack-dev-server@5.2.5)(webpack@5.108.3):
     dependencies:
       '@discoveryjs/json-ext': 1.1.0
       commander: 14.0.3
@@ -16095,7 +16095,7 @@ snapshots:
       webpack: 5.108.3(postcss@8.5.8)(webpack-cli@7.1.0)
       webpack-merge: 6.0.1
     optionalDependencies:
-      js-yaml: 5.2.0
+      js-yaml: 5.2.1
       json5: 2.2.3
       webpack-dev-server: 5.2.5(webpack-cli@7.1.0)(webpack@5.108.3)
 
@@ -16142,7 +16142,7 @@ snapshots:
       ws: 8.21.0
     optionalDependencies:
       webpack: 5.108.3(postcss@8.5.8)(webpack-cli@7.1.0)
-      webpack-cli: 7.1.0(js-yaml@5.2.0)(json5@2.2.3)(webpack-dev-server@5.2.5)(webpack@5.108.3)
+      webpack-cli: 7.1.0(js-yaml@5.2.1)(json5@2.2.3)(webpack-dev-server@5.2.5)(webpack@5.108.3)
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -16221,7 +16221,7 @@ snapshots:
       watchpack: 2.5.2
       webpack-sources: 3.5.0
     optionalDependencies:
-      webpack-cli: 7.1.0(js-yaml@5.2.0)(json5@2.2.3)(webpack-dev-server@5.2.5)(webpack@5.108.3)
+      webpack-cli: 7.1.0(js-yaml@5.2.1)(json5@2.2.3)(webpack-dev-server@5.2.5)(webpack@5.108.3)
     transitivePeerDependencies:
       - '@minify-html/node'
       - '@swc/core'
@@ -16261,7 +16261,7 @@ snapshots:
       watchpack: 2.5.2
       webpack-sources: 3.5.0
     optionalDependencies:
-      webpack-cli: 7.1.0(js-yaml@5.2.0)(json5@2.2.3)(webpack-dev-server@5.2.5)(webpack@5.108.3)
+      webpack-cli: 7.1.0(js-yaml@5.2.1)(json5@2.2.3)(webpack-dev-server@5.2.5)(webpack@5.108.3)
     transitivePeerDependencies:
       - '@minify-html/node'
       - '@swc/core'
