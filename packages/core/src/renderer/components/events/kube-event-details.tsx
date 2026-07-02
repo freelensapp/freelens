@@ -78,7 +78,7 @@ class NonInjectedKubeEventDetails extends React.Component<KubeEventDetailsProps 
               <div className={styles.event} key={event.getId()}>
                 <div className={cssNames(styles.title, { [styles.warning]: event.isWarning() })}>{event.message}</div>
                 <DrawerItem name="Source">{event.getSource()}</DrawerItem>
-                <DrawerItem name="Count">{event.count}</DrawerItem>
+                <DrawerItem name="Count">{event.getCount()}</DrawerItem>
                 <DrawerItem name="Sub-object">{event.involvedObject.fieldPath}</DrawerItem>
                 {event.lastTimestamp && (
                   <DrawerItem name="Last seen">
