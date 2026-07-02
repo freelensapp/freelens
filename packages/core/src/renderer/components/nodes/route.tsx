@@ -126,7 +126,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
   getNodeMemoryUsage(node: Node) {
     const metrics = this.props.nodeStore.getNodeKubeMetrics(node);
 
-    return bytesToUnitsAligned(metrics.memory);
+    return Number.isNaN(metrics.memory) ? "N/A" : bytesToUnitsAligned(metrics.memory);
   }
 
   private renderUsage({ node, title, metricNames, formatters, usageText }: UsageArgs) {
