@@ -23,7 +23,7 @@ export const getOperatorLikeQueryFor =
           case "memoryUsage":
             return `sum(node_memory_MemTotal_bytes - (node_memory_MemFree_bytes + node_memory_Buffers_bytes + node_memory_Cached_bytes))`.replace(
               /_bytes/g,
-              `_bytes * on (pod,namespace) group_left(node) kube_pod_info{node=~"${opts.nodes}"}`,
+              `_bytes * on (pod,namespace) group_left(node) max without(pod_ip,host_ip) (kube_pod_info{node=~"${opts.nodes}"})`,
             );
           case "workloadMemoryUsage":
             return `sum(container_memory_working_set_bytes{container!="",image!="", instance=~"${opts.nodes}"}) by (component)`;
@@ -36,7 +36,7 @@ export const getOperatorLikeQueryFor =
           case "memoryAllocatableCapacity":
             return `sum(kube_node_status_allocatable{node=~"${opts.nodes}", resource="memory"})`;
           case "cpuUsage":
-            return `sum(rate(node_cpu_seconds_total{mode=~"user|system"}[${rateAccuracy}])* on (pod,namespace) group_left(node) kube_pod_info{node=~"${opts.nodes}"})`;
+            return `sum(rate(node_cpu_seconds_total{mode=~"user|system"}[${rateAccuracy}])* on (pod,namespace) group_left(node) max without(pod_ip,host_ip) (kube_pod_info{node=~"${opts.nodes}"}))`;
           case "cpuRequests":
             return `sum(kube_pod_container_resource_requests{node=~"${opts.nodes}", resource="cpu"})`;
           case "cpuLimits":
@@ -52,15 +52,15 @@ export const getOperatorLikeQueryFor =
           case "podAllocatableCapacity":
             return `sum(kube_node_status_allocatable{node=~"${opts.nodes}", resource="pods"})`;
           case "fsSize":
-            return `sum(node_filesystem_size_bytes{mountpoint=~"${opts.mountpoints}"} * on (pod,namespace) group_left(node) kube_pod_info{node=~"${opts.nodes}"})`;
+            return `sum(node_filesystem_size_bytes{mountpoint=~"${opts.mountpoints}"} * on (pod,namespace) group_left(node) max without(pod_ip,host_ip) (kube_pod_info{node=~"${opts.nodes}"}))`;
           case "fsUsage":
-            return `sum(node_filesystem_size_bytes{mountpoint=~"${opts.mountpoints}"} * on (pod,namespace) group_left(node) kube_pod_info{node=~"${opts.nodes}"} - node_filesystem_avail_bytes{mountpoint=~"${opts.mountpoints}"} * on (pod,namespace) group_left(node) kube_pod_info{node=~"${opts.nodes}"})`;
+            return `sum(node_filesystem_size_bytes{mountpoint=~"${opts.mountpoints}"} * on (pod,namespace) group_left(node) max without(pod_ip,host_ip) (kube_pod_info{node=~"${opts.nodes}"}) - node_filesystem_avail_bytes{mountpoint=~"${opts.mountpoints}"} * on (pod,namespace) group_left(node) max without(pod_ip) (kube_pod_info{node=~"${opts.nodes}"}))`;
         }
         break;
       case "nodes":
         switch (queryName) {
           case "memoryUsage":
-            return `sum((node_memory_MemTotal_bytes - (node_memory_MemFree_bytes + node_memory_Buffers_bytes + node_memory_Cached_bytes)) * on (pod, namespace) group_left(node) kube_pod_info) by (node)`;
+            return `sum((node_memory_MemTotal_bytes - (node_memory_MemFree_bytes + node_memory_Buffers_bytes + node_memory_Cached_bytes)) * on (pod, namespace) group_left(node) max without(pod_ip,host_ip) (kube_pod_info)) by (node)`;
           case "workloadMemoryUsage":
             return `sum(container_memory_working_set_bytes{container!="POD", container!=""}) by (node)`;
           case "memoryCapacity":
@@ -68,15 +68,15 @@ export const getOperatorLikeQueryFor =
           case "memoryAllocatableCapacity":
             return `sum(kube_node_status_allocatable{resource="memory"}) by (node)`;
           case "cpuUsage":
-            return `sum(rate(node_cpu_seconds_total{mode=~"user|system"}[${rateAccuracy}]) * on (pod, namespace) group_left(node) kube_pod_info) by (node)`;
+            return `sum(rate(node_cpu_seconds_total{mode=~"user|system"}[${rateAccuracy}]) * on (pod, namespace) group_left(node) max without(pod_ip,host_ip) (kube_pod_info)) by (node)`;
           case "cpuCapacity":
             return `sum(kube_node_status_allocatable{resource="cpu"}) by (node)`;
           case "cpuAllocatableCapacity":
             return `sum(kube_node_status_allocatable{resource="cpu"}) by (node)`;
           case "fsSize":
-            return `sum(node_filesystem_size_bytes{mountpoint=~"${opts.mountpoints}"} * on (pod,namespace) group_left(node) kube_pod_info) by (node)`;
+            return `sum(node_filesystem_size_bytes{mountpoint=~"${opts.mountpoints}"} * on (pod,namespace) group_left(node) max without(pod_ip,host_ip) (kube_pod_info)) by (node)`;
           case "fsUsage":
-            return `sum((node_filesystem_size_bytes{mountpoint=~"${opts.mountpoints}"} - node_filesystem_avail_bytes{mountpoint=~"${opts.mountpoints}"}) * on (pod, namespace) group_left(node) kube_pod_info) by (node)`;
+            return `sum((node_filesystem_size_bytes{mountpoint=~"${opts.mountpoints}"} - node_filesystem_avail_bytes{mountpoint=~"${opts.mountpoints}"}) * on (pod, namespace) group_left(node) max without(pod_ip,host_ip) (kube_pod_info)) by (node)`;
         }
         break;
       case "pods":
