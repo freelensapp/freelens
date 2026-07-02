@@ -1,0 +1,380 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ValidatingAdmissionPolicyDetails renders 1`] = `
+<body>
+  <div>
+    <div
+      class="ValidatingAdmissionPolicyDetails"
+    >
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          API version
+        </span>
+        <span
+          class="value"
+        >
+          admissionregistration.k8s.io/v1
+        </span>
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Failure Policy
+        </span>
+        <span
+          class="value"
+        >
+          Fail
+        </span>
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Param Kind
+        </span>
+        <span
+          class="value"
+        >
+          rules.example.com/v1/ReplicaLimit
+        </span>
+      </div>
+      <div
+        class="DrawerTitle title"
+      >
+        Match Conditions
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          exclude-leases
+        </span>
+        <span
+          class="value"
+        >
+          !(request.resource.group == 'coordination.k8s.io' && request.resource.resource == 'leases')
+        </span>
+      </div>
+      <div
+        class="DrawerTitle title"
+      >
+        Variables
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          replicas
+        </span>
+        <span
+          class="value"
+        >
+          object.spec.replicas
+        </span>
+      </div>
+      <div
+        class="DrawerTitle title"
+      >
+        Validations
+      </div>
+      <div>
+        <div
+          class="DrawerItem"
+        >
+          <span
+            class="name"
+          >
+            Expression
+          </span>
+          <span
+            class="value"
+          >
+            object.spec.replicas &lt;= 5
+          </span>
+        </div>
+        <div
+          class="DrawerItem"
+        >
+          <span
+            class="name"
+          >
+            Message
+          </span>
+          <span
+            class="value"
+          >
+            Too many replicas
+          </span>
+        </div>
+        <div
+          class="DrawerItem"
+        >
+          <span
+            class="name"
+          >
+            Reason
+          </span>
+          <span
+            class="value"
+          >
+            Invalid
+          </span>
+        </div>
+      </div>
+      <div
+        class="DrawerTitle title"
+      >
+        Audit Annotations
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          high-replica-count
+        </span>
+        <span
+          class="value"
+        >
+          'Deployment spec.replicas set to ' + string(object.spec.replicas)
+        </span>
+      </div>
+      <div
+        class="DrawerTitle title"
+      >
+        Match Constraints
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Match Policy
+        </span>
+        <span
+          class="value"
+        >
+          Equivalent
+        </span>
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Resource Rules
+        </span>
+        <span
+          class="value"
+        >
+          <div>
+            <div>
+              API Groups: 
+              apps
+            </div>
+            <div>
+              API Versions: 
+              v1
+            </div>
+            <div>
+              Operations: 
+              CREATE, UPDATE
+            </div>
+            <div>
+              Resources: 
+              deployments
+            </div>
+          </div>
+        </span>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`ValidatingAdmissionPolicyDetails renders with no validations 1`] = `
+<body>
+  <div>
+    <div
+      class="ValidatingAdmissionPolicyDetails"
+    >
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          API version
+        </span>
+        <span
+          class="value"
+        >
+          admissionregistration.k8s.io/v1
+        </span>
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Failure Policy
+        </span>
+        <span
+          class="value"
+        >
+          Fail
+        </span>
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Param Kind
+        </span>
+        <span
+          class="value"
+        >
+          rules.example.com/v1/ReplicaLimit
+        </span>
+      </div>
+      <div
+        class="DrawerTitle title"
+      >
+        Match Conditions
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          exclude-leases
+        </span>
+        <span
+          class="value"
+        >
+          !(request.resource.group == 'coordination.k8s.io' && request.resource.resource == 'leases')
+        </span>
+      </div>
+      <div
+        class="DrawerTitle title"
+      >
+        Variables
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          replicas
+        </span>
+        <span
+          class="value"
+        >
+          object.spec.replicas
+        </span>
+      </div>
+      <div
+        class="DrawerTitle title"
+      >
+        Validations
+      </div>
+      <div
+        style="opacity: 0.6;"
+      >
+        No validations set
+      </div>
+      <div
+        class="DrawerTitle title"
+      >
+        Audit Annotations
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          high-replica-count
+        </span>
+        <span
+          class="value"
+        >
+          'Deployment spec.replicas set to ' + string(object.spec.replicas)
+        </span>
+      </div>
+      <div
+        class="DrawerTitle title"
+      >
+        Match Constraints
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Match Policy
+        </span>
+        <span
+          class="value"
+        >
+          Equivalent
+        </span>
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Resource Rules
+        </span>
+        <span
+          class="value"
+        >
+          <div>
+            <div>
+              API Groups: 
+              apps
+            </div>
+            <div>
+              API Versions: 
+              v1
+            </div>
+            <div>
+              Operations: 
+              CREATE, UPDATE
+            </div>
+            <div>
+              Resources: 
+              deployments
+            </div>
+          </div>
+        </span>
+      </div>
+    </div>
+  </div>
+</body>
+`;

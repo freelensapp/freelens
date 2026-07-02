@@ -48,6 +48,8 @@ export const ResourceNames: Record<KubeResource, string> = {
   serviceaccounts: "Service Accounts",
   verticalpodautoscalers: "Vertical Pod Autoscalers",
   mutatingwebhookconfigurations: "Mutating Webhook Configurations",
+  validatingadmissionpolicies: "Validating Admission Policies",
+  validatingadmissionpolicybindings: "Validating Admission Policy Bindings",
   validatingwebhookconfigurations: "Validating Webhook Configurations",
 };
 
