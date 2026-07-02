@@ -7,10 +7,8 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import rendererExtensionsInjectable from "../../../../extensions/renderer-extensions.injectable";
-import customResourceDefinitionsInjectable from "../../custom-resource-definitions/definitions.injectable";
-import internalCommandsInjectable, { isKubernetesClusterActive } from "./internal-commands.injectable";
-
-import type { CustomResourceDefinition } from "@freelensapp/kube-object";
+import internalCommandsInjectable from "./internal-commands.injectable";
+import sidebarNavigationCommandsInjectable from "./sidebar-navigation-commands.injectable";
 
 import type { IComputedValue } from "mobx";
 
@@ -19,24 +17,17 @@ import type { CommandRegistration, RegisteredCommand } from "./commands";
 
 interface Dependencies {
   extensions: IComputedValue<LensRendererExtension[]>;
-  customResourceDefinitions: IComputedValue<CustomResourceDefinition[]>;
+  sidebarNavigationCommands: IComputedValue<CommandRegistration[]>;
   internalCommands: CommandRegistration[];
 }
 
-const instantiateRegisteredCommands = ({ extensions, customResourceDefinitions, internalCommands }: Dependencies) =>
+const instantiateRegisteredCommands = ({ extensions, sidebarNavigationCommands, internalCommands }: Dependencies) =>
   computed(() => {
     const result = new Map<string, RegisteredCommand>();
     const commands = [
       ...internalCommands,
       ...extensions.get().flatMap((e) => e.commands),
-      ...customResourceDefinitions.get().map(
-        (command): CommandRegistration => ({
-          id: `cluster.view.${command.getResourceKind()}`,
-          title: `Cluster: View ${command.getResourceKind()}`,
-          isActive: isKubernetesClusterActive,
-          action: ({ navigate }) => navigate(command.getResourceUrl()),
-        }),
-      ),
+      ...sidebarNavigationCommands.get(),
     ];
 
     for (const { scope, isActive = () => true, ...command } of commands) {
@@ -56,7 +47,7 @@ const registeredCommandsInjectable = getInjectable({
   instantiate: (di) =>
     instantiateRegisteredCommands({
       extensions: di.inject(rendererExtensionsInjectable),
-      customResourceDefinitions: di.inject(customResourceDefinitionsInjectable),
+      sidebarNavigationCommands: di.inject(sidebarNavigationCommandsInjectable),
       internalCommands: di.inject(internalCommandsInjectable),
     }),
 });
