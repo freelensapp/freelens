@@ -22,6 +22,42 @@ import type { GetMetrics } from "../../get-metrics.injectable";
 // This is used for backoff retry tracking.
 const ATTEMPTS = [false, false, false, false, true];
 
+interface MetricsErrorDescription {
+  query: string;
+  status?: number;
+  response?: string;
+  message?: string;
+}
+
+async function describeError(query: string, error: unknown): Promise<MetricsErrorDescription> {
+  if (!(error instanceof Error)) {
+    return { query, message: String(error) };
+  }
+
+  const cause = error.cause as any;
+
+  // Duck-type check for a Response
+  const looksLikeResponse = cause && typeof cause.text === "function" && typeof cause.status === "number";
+
+  if (looksLikeResponse) {
+    try {
+      const bodyText = await cause.text();
+
+      if (bodyText) {
+        return {
+          query,
+          status: cause.status,
+          response: bodyText.trim(),
+        };
+      }
+    } catch {
+      // body already consumed or unreadable — fall through
+    }
+  }
+
+  return { query, message: error.message };
+}
+
 const loadMetricsFor =
   (getMetrics: GetMetrics) =>
   async (
@@ -48,7 +84,8 @@ const loadMetricsFor =
                 400 <= error.statusCode &&
                 error.statusCode < 500)
             ) {
-              throw new Error("Metrics not available", { cause: error });
+              const description = await describeError(query, error);
+              throw new Error("Metrics not available", { cause: description });
             }
 
             await new Promise((resolve) => setTimeout(resolve, (attempt + 1) * 1000)); // add delay before repeating request
@@ -121,8 +158,13 @@ const addMetricsRouteInjectable = getRouteInjectable({
         return { response: {} };
       } catch (error) {
         prometheusMetadata.success = false;
+        const description = error instanceof Error ? (error.cause as MetricsErrorDescription | undefined) : undefined;
 
-        logger.warn(`[METRICS-ROUTE]: failed to get metrics for clusterId=${cluster.id}: ${error}`);
+        if (description?.status === 422) {
+          logger.warn(`[METRICS-ROUTE]: query failed for clusterId=${cluster.id}`, description);
+        } else {
+          logger.warn(`[METRICS-ROUTE]: failed to get metrics for clusterId=${cluster.id}: ${error}`);
+        }
 
         return { response: {} };
       } finally {
