@@ -7,7 +7,11 @@ module.exports = {
     "^uuid$": require.resolve("uuid"),
   },
   runtime: "@side/jest-runtime",
-  testEnvironment: "jsdom",
+  // The integration tests drive a real Electron app through Playwright and do
+  // not use the DOM. Playwright >= 1.61 bundles undici, which references
+  // `global.Request` at import time; that global is undefined under jsdom, so
+  // the "node" environment is required for the Playwright import to succeed.
+  testEnvironment: "node",
   testTimeout: 120000,
   transform: {
     "^.+\\.tsx?$": [

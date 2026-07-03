@@ -47,6 +47,8 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
         state.downloadCustomMirror = descriptors.downloadCustomMirror.fromStore(preferences.downloadCustomMirror);
         state.editorConfiguration = descriptors.editorConfiguration.fromStore(preferences.editorConfiguration);
         state.extensionRegistryUrl = descriptors.extensionRegistryUrl.fromStore(preferences.extensionRegistryUrl);
+        state.helmBinariesPath = descriptors.helmBinariesPath.fromStore(preferences.helmBinariesPath);
+        state.helmServerSide = descriptors.helmServerSide.fromStore(preferences.helmServerSide);
         state.hiddenTableColumns = descriptors.hiddenTableColumns.fromStore(preferences.hiddenTableColumns);
         state.httpsProxy = descriptors.httpsProxy.fromStore(preferences.httpsProxy);
         state.kubectlBinariesPath = descriptors.kubectlBinariesPath.fromStore(preferences.kubectlBinariesPath);
@@ -75,6 +77,8 @@ const userPreferencesPersistentStorageInjectable = getInjectable({
             downloadCustomMirror: descriptors.downloadCustomMirror.toStore(state.downloadCustomMirror),
             editorConfiguration: descriptors.editorConfiguration.toStore(state.editorConfiguration),
             extensionRegistryUrl: descriptors.extensionRegistryUrl.toStore(state.extensionRegistryUrl),
+            helmBinariesPath: descriptors.helmBinariesPath.toStore(state.helmBinariesPath),
+            helmServerSide: descriptors.helmServerSide.toStore(state.helmServerSide),
             hiddenTableColumns: descriptors.hiddenTableColumns.toStore(state.hiddenTableColumns),
             httpsProxy: descriptors.httpsProxy.toStore(state.httpsProxy),
             kubectlBinariesPath: descriptors.kubectlBinariesPath.toStore(state.kubectlBinariesPath),

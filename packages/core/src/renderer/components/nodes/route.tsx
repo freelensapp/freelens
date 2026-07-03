@@ -120,13 +120,13 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
   getNodeCpuUsage(node: Node) {
     const metrics = this.props.nodeStore.getNodeKubeMetrics(node);
 
-    return bytesToUnitsAligned(metrics.cpu);
+    return Number.isNaN(metrics.cpu) ? "N/A" : metrics.cpu.toFixed(3);
   }
 
   getNodeMemoryUsage(node: Node) {
     const metrics = this.props.nodeStore.getNodeKubeMetrics(node);
 
-    return bytesToUnitsAligned(metrics.memory);
+    return Number.isNaN(metrics.memory) ? "N/A" : bytesToUnitsAligned(metrics.memory);
   }
 
   private renderUsage({ node, title, metricNames, formatters, usageText }: UsageArgs) {

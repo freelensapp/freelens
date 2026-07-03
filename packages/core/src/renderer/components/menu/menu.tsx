@@ -453,16 +453,19 @@ export const Menu = withInjectables<Dependencies, MenuProps>(NonInjectedMenu, {
 
 export function SubMenu(props: Partial<MenuProps>) {
   const { className, ...menuProps } = props;
+  // Inherit close behavior from the parent menu so that clicking a MenuItem
+  // inside a sub-menu also closes the top-level menu (e.g. MenuActions).
+  const parentMenu = React.useContext(MenuContext);
 
   return (
     <Menu
       className={cssNames("SubMenu", className)}
       isOpen
       open={noop}
-      close={noop}
+      close={parentMenu ? () => parentMenu.close() : noop}
       position={{}} // reset position, must be handled in css
       closeOnClickOutside={false}
-      closeOnClickItem={false}
+      closeOnClickItem={parentMenu?.props.closeOnClickItem ?? false}
       {...menuProps}
     />
   );

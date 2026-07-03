@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/kube-object",
-  "version": "1.10.2-0",
+  "version": "1.10.3-0",
   "private": false,
   "description": "Injection tokens for list layout",
   "homepage": "https://freelens.app",
@@ -47,7 +47,7 @@
     "ts-jest": "^29.4.9",
     "ts-loader": "^9.5.7",
     "type-fest": "^5.6.0",
-    "webpack": "^5.106.2"
+    "webpack": "^5.108.3"
   },
   "publishConfig": {
     "access": "public",

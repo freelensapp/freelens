@@ -1,0 +1,204 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ValidatingAdmissionPolicyBindingDetails renders 1`] = `
+<body>
+  <div>
+    <div
+      class="ValidatingAdmissionPolicyBindingDetails"
+    >
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          API version
+        </span>
+        <span
+          class="value"
+        >
+          admissionregistration.k8s.io/v1
+        </span>
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Policy Name
+        </span>
+        <span
+          class="value"
+        >
+          demo-policy.example.com
+        </span>
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Validation Actions
+        </span>
+        <span
+          class="value"
+        >
+          Deny, Warn
+        </span>
+      </div>
+      <div
+        class="DrawerTitle title"
+      >
+        Param Ref
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Name
+        </span>
+        <span
+          class="value"
+        >
+          replica-limit
+        </span>
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Namespace
+        </span>
+        <span
+          class="value"
+        >
+          default
+        </span>
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Parameter Not Found Action
+        </span>
+        <span
+          class="value"
+        >
+          Deny
+        </span>
+      </div>
+      <div
+        class="DrawerTitle title"
+      >
+        Match Resources
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Match Policy
+        </span>
+        <span
+          class="value"
+        >
+          Equivalent
+        </span>
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Resource Rules
+        </span>
+        <span
+          class="value"
+        >
+          <div>
+            <div>
+              API Groups: 
+              apps
+            </div>
+            <div>
+              API Versions: 
+              v1
+            </div>
+            <div>
+              Operations: 
+              CREATE, UPDATE
+            </div>
+            <div>
+              Resources: 
+              deployments
+            </div>
+          </div>
+        </span>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`ValidatingAdmissionPolicyBindingDetails renders with no param ref 1`] = `
+<body>
+  <div>
+    <div
+      class="ValidatingAdmissionPolicyBindingDetails"
+    >
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          API version
+        </span>
+        <span
+          class="value"
+        >
+          admissionregistration.k8s.io/v1
+        </span>
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Policy Name
+        </span>
+        <span
+          class="value"
+        >
+          demo-policy.example.com
+        </span>
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Validation Actions
+        </span>
+        <span
+          class="value"
+        >
+          Deny
+        </span>
+      </div>
+    </div>
+  </div>
+</body>
+`;

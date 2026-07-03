@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/generate-tray-icons",
-  "version": "1.10.2-0",
+  "version": "1.10.3-0",
   "private": false,
   "description": "CLI generating tray icons for building a lens-like application",
   "homepage": "https://freelens.app",
@@ -32,12 +32,12 @@
   },
   "dependencies": {
     "arg": "^5.0.2",
-    "jsdom": "^29.1.0",
+    "jsdom": "^29.1.1",
     "sharp": "^0.34.5"
   },
   "devDependencies": {
     "@freelensapp/icon": "workspace:^",
-    "@types/jsdom": "^28.0.1",
+    "@types/jsdom": "^28.0.3",
     "@types/node": "~24.12.4",
     "typescript": "^5.9.3"
   },

@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/messaging",
-  "version": "1.10.2-0",
+  "version": "1.10.3-0",
   "private": false,
   "description": "An abstraction for messaging between Lens environments",
   "homepage": "https://freelens.app",
@@ -49,7 +49,7 @@
     "ts-jest": "^29.4.9",
     "ts-loader": "^9.5.7",
     "typescript": "^5.9.3",
-    "webpack": "^5.106.2"
+    "webpack": "^5.108.3"
   },
   "publishConfig": {
     "access": "public",

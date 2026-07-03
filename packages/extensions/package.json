@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/extensions",
-  "version": "1.10.2-0",
+  "version": "1.10.3-0",
   "description": "Freelens - Free IDE for Kubernetes: extensions",
   "homepage": "https://freelens.app",
   "bugs": {
@@ -37,8 +37,8 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
     "typescript-plugin-css-modules": "^5.2.0",
-    "webpack": "^5.106.2",
-    "webpack-cli": "^7.0.2"
+    "webpack": "^5.108.3",
+    "webpack-cli": "^7.1.0"
   },
   "publishConfig": {
     "access": "public",

@@ -264,6 +264,7 @@
     "packages/infrastructure/webpack": {
       "entry": ["bin/webpack-build!", "dist/index.js!", "index.ts"],
       "project": ["*.js", "*.ts", "bin/*", "dist/**/*.js!", "dist/**/*.ts", "src/**/*.ts", "static/build/**/*.js!"],
+      "ignore": ["dist/**/*.d.ts"],
       "ignoreDependencies": [
         "@tailwindcss/postcss",
         "@types/webpack-env",
