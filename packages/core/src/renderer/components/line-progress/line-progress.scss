@@ -12,8 +12,20 @@
   background: var(--lineProgressBackground);
   height: 3px;
 
+  // extended hover area, e.g. for tooltips
+  &:after {
+    $offset: $padding;
+    content: "";
+    position: absolute;
+    top: -$offset;
+    left: 0;
+    bottom: -$offset;
+    right: 0;
+  }
+
   // line indicator
   .line {
+    position: relative;
     background: currentColor;
     display: block;
     width: 100%;
@@ -21,14 +33,12 @@
     border-radius: inherit;
     transition: 250ms width ease-in;
 
-    &:after {
-      $offset: $padding;
-      content: "";
+    // optional second line behind the main one, e.g. requests behind usage
+    &.secondary {
       position: absolute;
-      top: -$offset;
+      top: 0;
       left: 0;
-      bottom: -$offset;
-      right: 0;
+      opacity: 0.5;
     }
   }
 }
