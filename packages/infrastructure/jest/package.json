@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/jest",
-  "version": "1.10.3-0",
+  "version": "1.10.3",
   "private": false,
   "description": "Jest configuration and scripts for Freelens packages.",
   "homepage": "https://freelens.app",
