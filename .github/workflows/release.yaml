@@ -100,19 +100,32 @@ jobs:
         run: echo "/usr/local/opt/coreutils/libexec/gnubin" >> $GITHUB_PATH
 
       - name: Install dependencies (Windows)
-        id: install-deps-windows
         if: runner.os == 'Windows'
         shell: bash
+        env:
+          # Renovate keeps this version up to date via the inline datasource
+          # hint below (see .renovaterc.json5 customManagers).
+          YQ_VERSION: v4.53.3 # datasource=github-releases depName=mikefarah/yq
         run: |
-          timeout 300 choco install yq --yes --no-progress
-          yq --version
-        continue-on-error: true
-
-      - name: Install dependencies (Windows) (retry)
-        if: runner.os == 'Windows' && steps.install-deps-windows.outcome == 'failure'
-        shell: bash
-        run: |
-          timeout 300 choco install yq --yes --no-progress
+          set -eo pipefail
+          # winget/choco is not available on every Windows runner image (in
+          # particular the windows-11-arm image used for the arm64 build), so
+          # download the yq binary directly from the upstream GitHub release.
+          # Pick the asset that matches the runner architecture. Expose the
+          # install directory to later steps via GITHUB_PATH (Windows form,
+          # which Git Bash re-converts to POSIX on startup) and prepend the
+          # POSIX form to PATH here so the verification below can find yq.
+          case "${{ matrix.arch }}" in
+            arm64) yq_arch=arm64 ;;
+            *) yq_arch=amd64 ;;
+          esac
+          yq_version="$YQ_VERSION"
+          bin_dir="$HOME/bin"
+          mkdir -p "$bin_dir"
+          curl -fsSL -o "$bin_dir/yq.exe" \
+            "https://github.com/mikefarah/yq/releases/download/${yq_version}/yq_windows_${yq_arch}.exe"
+          cygpath --windows "$bin_dir" >> "$GITHUB_PATH"
+          PATH="$bin_dir:$PATH"
           yq --version
 
       - name: Setup node
@@ -129,7 +142,7 @@ jobs:
         run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
 
       - name: Use pnpm cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ env.pnpm_cache_dir }}
           key: ${{ matrix.runs-on }}-${{ matrix.arch }}-node-${{ hashFiles('pnpm-lock.yaml') }}
@@ -149,7 +162,7 @@ jobs:
         run: echo "electron_builder_version=$(yq -r .importers.freelens.devDependencies.electron-builder.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
 
       - name: Use Electron cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ env.ELECTRON_CACHE }}
           key: ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-${{ env.electron_version }}
@@ -157,7 +170,7 @@ jobs:
             ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-
 
       - name: Use Electron Builder cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ env.ELECTRON_BUILDER_CACHE }}
           key: ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-builder-${{ env.electron_builder_version }}
@@ -166,7 +179,7 @@ jobs:
 
       - name: Use Electron headers cache
         id: electron-headers
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ env.ELECTRON_HEADERS_CACHE }}
           key: electron-headers-${{ env.electron_version }}
@@ -306,12 +319,71 @@ jobs:
         env:
           DEBUG: electron-builder,electron-builder:*
 
-      - name: Build Electron app (Windows)
+      - name: Build Electron app directory (Windows)
         if: runner.os == 'Windows'
         shell: bash
         run: |
           pnpm --color=always build:app \
+            dir \
+            --${{ matrix.arch }}
+        env:
+          DEBUG: electron-builder,electron-builder:*
+
+      - name: List unpacked binaries to sign (Windows)
+        id: sign-list
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          set -euo pipefail
+          case "${{ matrix.arch }}" in
+            arm64) unpacked="win-arm64-unpacked" ;;
+            *) unpacked="win-unpacked" ;;
+          esac
+          ws='${{ github.workspace }}'
+          dir="freelens/dist/$unpacked"
+          list="$RUNNER_TEMP/sign-files.txt"
+          : > "$list"
+          while IFS= read -r -d '' f; do
+            if file -b "$f" | grep -q 'PE32'; then
+              rel="${f#./}"
+              printf '%s\\%s\n' "$ws" "${rel//\//\\}" >> "$list"
+            fi
+          done < <(find "$dir" -type f \( -iname '*.dll' -o -iname '*.exe' -o -iname '*.node' \) -print0)
+          if [[ ! -s "$list" ]]; then
+            echo "No Windows PE binaries found under ${dir} to sign" >&2
+            exit 1
+          fi
+          echo "Files to sign:"
+          cat "$list"
+          {
+            echo "files<<SIGN_EOF"
+            cat "$list"
+            echo "SIGN_EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Azure Trusted Signing unpacked binaries (Windows)
+        if: runner.os == 'Windows'
+        uses: azure/artifact-signing-action@v2
+        with:
+          azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          endpoint: ${{ vars.AZURE_ENDPOINT }}
+          trusted-signing-account-name: ${{ vars.AZURE_CODE_SIGNING_NAME }}
+          certificate-profile-name: ${{ vars.AZURE_CERT_PROFILE_NAME }}
+          files: ${{ steps.sign-list.outputs.files }}
+
+      - name: Build Electron app installers (Windows)
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          case "${{ matrix.arch }}" in
+            arm64) unpacked="win-arm64-unpacked" ;;
+            *) unpacked="win-unpacked" ;;
+          esac
+          pnpm --color=always build:app \
             msi nsis portable \
+            --prepackaged "$GITHUB_WORKSPACE/freelens/dist/$unpacked" \
             --${{ matrix.arch }}
         env:
           DEBUG: electron-builder,electron-builder:*
@@ -501,7 +573,7 @@ jobs:
         run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
 
       - name: Use pnpm cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ env.pnpm_cache_dir }}
           key: ${{ matrix.runs-on }}-${{ matrix.arch }}-node-${{ hashFiles('pnpm-lock.yaml') }}

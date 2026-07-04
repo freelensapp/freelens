@@ -112,20 +112,18 @@ describe("user store tests", () => {
 
       expect(state.logViewerPreferences).toEqual({
         showTimestamps: true,
-        showPrevious: false,
         showWordWrap: false,
       });
 
       state.logViewerPreferences = {
-        showTimestamps: false,
-        showPrevious: true,
+        showTimestamps: true,
         showWordWrap: false,
       };
 
       expect(readJsonSync("/some-directory-for-user-data/lens-user-store.json")).toMatchObject({
         preferences: {
           logViewerPreferences: {
-            showPrevious: true,
+            showTimestamps: true,
             showWordWrap: false,
           },
         },
@@ -133,7 +131,6 @@ describe("user store tests", () => {
 
       state.logViewerPreferences = {
         showTimestamps: false,
-        showPrevious: false,
         showWordWrap: true,
       };
 

@@ -42,8 +42,14 @@ const createLogsTab =
         false,
       );
       // Apply saved log preferences first so explicit tab data can override them.
+      // `showPrevious` is intentionally not persisted: it is specific to a single
+      // pod (whether a container has restarted) and must default to false for every
+      // new tab rather than leaking from a previously viewed pod. It is forced to
+      // false after the preferences spread so a stale persisted value (from an
+      // upgraded store) cannot leak back in, while explicit tab data can still set it.
       setLogTabData(id, {
         ...(userPreferencesState.logViewerPreferences ?? defaultLogViewerPreferences),
+        showPrevious: false,
         ...data,
       });
     });

@@ -8,6 +8,7 @@
 
 import internalCommandsInjectable from "./internal-commands.injectable";
 import registeredCommandsInjectable from "./registered-commands.injectable";
+import sidebarNavigationCommandsInjectable from "./sidebar-navigation-commands.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
@@ -19,6 +20,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(registeredCommandsInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(sidebarNavigationCommandsInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

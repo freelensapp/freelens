@@ -33,7 +33,8 @@ export const LogControls = observer(({ model }: LogControlsProps) => {
   };
 
   const togglePrevious = () => {
-    model.updateLogPreferences({ showPrevious: !previous });
+    // Keep this choice per-tab; it should not become a persisted global default.
+    model.updateLogTabData({ showPrevious: !previous });
     model.reloadLogs();
   };
 

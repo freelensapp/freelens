@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/utilities",
-  "version": "1.10.1",
+  "version": "1.10.3-0",
   "private": false,
   "description": "A collection of useful types",
   "homepage": "https://freelens.app",
@@ -38,8 +38,8 @@
     "p-limit": "^3.1.0",
     "path-to-regexp": "^6.3.0",
     "react": "^17.0.2",
-    "semver": "^7.7.4",
-    "tar": "^7.5.16",
+    "semver": "^7.8.5",
+    "tar": "^7.5.19",
     "typed-regex": "^0.0.8"
   },
   "devDependencies": {
@@ -59,7 +59,7 @@
     "ts-jest": "^29.4.9",
     "ts-loader": "^9.5.7",
     "type-fest": "^5.6.0",
-    "webpack": "^5.106.2"
+    "webpack": "^5.108.3"
   },
   "publishConfig": {
     "access": "public",

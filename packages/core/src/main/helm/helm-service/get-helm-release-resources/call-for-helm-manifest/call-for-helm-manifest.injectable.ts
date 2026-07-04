@@ -6,7 +6,7 @@
 
 import { isObject } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import yaml from "js-yaml";
+import * as yaml from "js-yaml";
 import execHelmInjectable from "../../../exec-helm/exec-helm.injectable";
 
 import type { KubeJsonApiData, KubeJsonApiDataList } from "@freelensapp/kube-object";

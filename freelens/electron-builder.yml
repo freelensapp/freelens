@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/electron-userland/electron-builder/refs/heads/master/packages/app-builder-lib/scheme.json
 
-electronVersion: 41.7.2 # datasource=npm depName=electron
+electronVersion: 41.9.2 # datasource=npm depName=electron
 
 ## Run `pnpm electron-rebuild` instead
 npmRebuild: false
@@ -22,6 +22,14 @@ files:
   - "!**/*.tsbuildinfo"
   ## Monaco is bundled into the renderer by webpack and never required at runtime
   - "!node_modules/monaco-editor/**"
+  ## node-pty is a N-API (node-addon-api) module, so its bundled prebuilt
+  ## binaries are ABI-stable and work as-is on every Electron version we ship.
+  ## electron-rebuild still recompiles them into build/Release, producing
+  ## unsigned binaries that some antivirus engines flag as false positives
+  ## (see issue #2021). Excluding build/ from the package makes node-pty fall
+  ## back to the original, vendor-provided prebuilds/ binaries at runtime
+  ## (lib/utils.js checks build/Release first, then prebuilds/<platform>-<arch>).
+  - "!node_modules/node-pty/build"
   ## Native binaries for other platforms/arches are never loaded at runtime, so
   ## exclude them at pack time. Doing this here (instead of deleting them from
   ## app.asar.unpacked afterwards) keeps the app.asar header consistent with the

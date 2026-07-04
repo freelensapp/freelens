@@ -5,7 +5,6 @@
  */
 
 import { Icon } from "@freelensapp/icon";
-import { prevDefault } from "@freelensapp/utilities";
 import React from "react";
 import { MenuItem, SubMenu } from "../menu";
 import { StatusBrick } from "../status-brick";
@@ -36,7 +35,14 @@ const PodMenuItem: React.FC<NodePodMenuItemProps> = (props) => {
 
   return (
     <>
-      <MenuItem onClick={prevDefault(() => onMenuItemClick(containers[0]))}>
+      <MenuItem
+        onClick={(evt) => {
+          // Stop propagation so a click on a sub-menu item does not also
+          // trigger this parent item, but allow the menu to close itself.
+          evt.stopPropagation();
+          onMenuItemClick(containers[0]);
+        }}
+      >
         <Icon material={material} svg={svg} interactive={toolbar} tooltip={toolbar && tooltip} />
         <span className="title">{title}</span>
         <Icon className="arrow" material="keyboard_arrow_right" />
@@ -49,7 +55,10 @@ const PodMenuItem: React.FC<NodePodMenuItemProps> = (props) => {
             return (
               <MenuItem
                 key={name}
-                onClick={prevDefault(() => onMenuItemClick(container))}
+                onClick={(evt) => {
+                  evt.stopPropagation();
+                  onMenuItemClick(container);
+                }}
                 className="flex align-center"
               >
                 {brick}

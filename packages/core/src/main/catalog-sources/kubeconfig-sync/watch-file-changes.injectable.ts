@@ -57,6 +57,18 @@ const ignoreGlobs = [
 const folderSyncMaxAllowedFileReadSize = 2 * 1024 * 1024; // 2 MiB
 const fileSyncMaxAllowedFileReadSize = 16 * folderSyncMaxAllowedFileReadSize; // 32 MiB
 
+/**
+ * Detects kubeconfig paths that live on a WSL 9p filesystem share, e.g.
+ * `\\wsl.localhost\Ubuntu\...` (Windows 11) or `\\wsl$\Ubuntu\...` (Windows 10).
+ *
+ * Native filesystem change notifications (`FindFirstChangeNotification`) do not
+ * work over the 9p protocol, so the watcher never fires and new clusters only
+ * appear after a restart. Enabling polling is the recommended workaround.
+ *
+ * @see https://github.com/freelensapp/freelens/issues/2020
+ */
+export const isWslPath = (filePath: string): boolean => /^\\\\wsl(\.localhost|\$)\\/i.test(filePath);
+
 const watchKubeconfigFileChangesInjectable = getInjectable({
   id: "watch-kubeconfig-file-changes",
   instantiate: (di): WatchKubeconfigFileChanges => {
@@ -86,7 +98,10 @@ const watchKubeconfigFileChangesInjectable = getInjectable({
             followSymlinks: true,
             depth: isFolderSync ? 0 : 1, // DIRs works with 0 but files need 1 (bug: https://github.com/paulmillr/chokidar/issues/1095)
             ignorePermissionErrors: true,
-            usePolling: false,
+            // WSL 9p shares do not emit native filesystem change events, so fall
+            // back to polling for kubeconfigs stored under `\\wsl.localhost\` or
+            // `\\wsl$\` (https://github.com/freelensapp/freelens/issues/2020).
+            usePolling: isWslPath(filePath),
             awaitWriteFinish: {
               pollInterval: 100,
               stabilityThreshold: 1000,
