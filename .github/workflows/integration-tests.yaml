@@ -222,7 +222,20 @@ jobs:
         run: pnpx playwright install-deps
 
       - name: Build packages
+        if: runner.os != 'Windows'
         run: pnpm --color=always --stream build
+
+      # STATUS_DLL_INIT_FAILED (0xC0000142) intermittently crashes turbo's
+      # child build processes on the GitHub-hosted Windows runners when the
+      # build fans out across all packages at once (see issue #105). Cap
+      # turbo's concurrency on Windows to lower the parallelism and memory
+      # pressure that trigger the crash; other platforms keep turbo's default.
+      - name: Build packages (Windows)
+        if: runner.os == 'Windows'
+        shell: bash
+        run: pnpm --color=always --stream build
+        env:
+          TURBO_CONCURRENCY: "2"
 
       - name: Build extra resources
         id: build-resources
