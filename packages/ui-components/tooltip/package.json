@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/tooltip",
-  "version": "1.10.1",
+  "version": "1.10.3-0",
   "private": false,
   "description": "Highly extendable tooltip in the Freelens.",
   "homepage": "https://freelens.app",
@@ -56,11 +56,11 @@
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "postcss-loader": "^8.2.1",
-    "sass-loader": "^16.0.7",
+    "sass-loader": "^16.0.8",
     "ts-jest": "^29.4.9",
     "ts-loader": "^9.5.7",
     "typescript": "^5.9.3",
-    "webpack": "^5.106.2"
+    "webpack": "^5.108.3"
   },
   "publishConfig": {
     "access": "public",

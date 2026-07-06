@@ -38,7 +38,7 @@
       "dependsOn": ["^build:resources"],
       "env": ["CC", "CXX", "DOWNLOAD_ALL_ARCHITECTURES", "NODE_ENV"],
       "inputs": ["package.json", "**/logo-lens.svg"],
-      "outputs": ["binaries/**", "static/build/**"]
+      "outputs": ["binaries/**", "static/build/license.txt", "static/build/tray/**"]
     },
     "dev": {
       "dependsOn": ["^build:dev"],

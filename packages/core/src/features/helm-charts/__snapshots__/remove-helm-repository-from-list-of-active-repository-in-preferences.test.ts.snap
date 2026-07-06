@@ -439,6 +439,7 @@ exports[`remove helm repository from list of active repositories in preferences 
                         >
                           Use server-side apply for Helm chart operations
                           <input
+                            checked=""
                             role="switch"
                             type="checkbox"
                           />
@@ -1248,6 +1249,7 @@ exports[`remove helm repository from list of active repositories in preferences 
                         >
                           Use server-side apply for Helm chart operations
                           <input
+                            checked=""
                             role="switch"
                             type="checkbox"
                           />
@@ -2067,6 +2069,7 @@ exports[`remove helm repository from list of active repositories in preferences 
                         >
                           Use server-side apply for Helm chart operations
                           <input
+                            checked=""
                             role="switch"
                             type="checkbox"
                           />
@@ -2914,6 +2917,7 @@ exports[`remove helm repository from list of active repositories in preferences 
                         >
                           Use server-side apply for Helm chart operations
                           <input
+                            checked=""
                             role="switch"
                             type="checkbox"
                           />

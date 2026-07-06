@@ -22,13 +22,11 @@ export interface TerminalConfig {
 
 export interface LogViewerPreferences {
   showTimestamps: boolean;
-  showPrevious: boolean;
   showWordWrap: boolean;
 }
 
 export const defaultLogViewerPreferences: LogViewerPreferences = {
   showTimestamps: false,
-  showPrevious: false,
   showWordWrap: true,
 };
 

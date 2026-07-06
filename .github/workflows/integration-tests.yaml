@@ -72,19 +72,32 @@ jobs:
         run: echo "/usr/local/opt/coreutils/libexec/gnubin" >> $GITHUB_PATH
 
       - name: Install dependencies (Windows)
-        id: install-deps-windows
         if: runner.os == 'Windows'
         shell: bash
+        env:
+          # Renovate keeps this version up to date via the inline datasource
+          # hint below (see .renovaterc.json5 customManagers).
+          YQ_VERSION: v4.53.3 # datasource=github-releases depName=mikefarah/yq
         run: |
-          timeout 300 choco install yq --yes --no-progress
-          yq --version
-        continue-on-error: true
-
-      - name: Install dependencies (Windows) (retry)
-        if: runner.os == 'Windows' && steps.install-deps-windows.outcome == 'failure'
-        shell: bash
-        run: |
-          timeout 300 choco install yq --yes --no-progress
+          set -eo pipefail
+          # winget/choco is not available on every Windows runner image (in
+          # particular the windows-11-arm image used for the arm64 build), so
+          # download the yq binary directly from the upstream GitHub release.
+          # Pick the asset that matches the runner architecture. Expose the
+          # install directory to later steps via GITHUB_PATH (Windows form,
+          # which Git Bash re-converts to POSIX on startup) and prepend the
+          # POSIX form to PATH here so the verification below can find yq.
+          case "${{ matrix.arch }}" in
+            arm64) yq_arch=arm64 ;;
+            *) yq_arch=amd64 ;;
+          esac
+          yq_version="$YQ_VERSION"
+          bin_dir="$HOME/bin"
+          mkdir -p "$bin_dir"
+          curl -fsSL -o "$bin_dir/yq.exe" \
+            "https://github.com/mikefarah/yq/releases/download/${yq_version}/yq_windows_${yq_arch}.exe"
+          cygpath --windows "$bin_dir" >> "$GITHUB_PATH"
+          PATH="$bin_dir:$PATH"
           yq --version
 
       - name: Setup node
@@ -101,7 +114,7 @@ jobs:
         run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
 
       - name: Use pnpm cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ env.pnpm_cache_dir }}
           key: ${{ matrix.runs-on }}-${{ matrix.arch }}-node-${{ hashFiles('pnpm-lock.yaml') }}
@@ -121,7 +134,7 @@ jobs:
         run: echo "playwright_version=$(yq -r .importers.freelens.devDependencies.playwright.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
 
       - name: Use Electron cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ env.ELECTRON_CACHE }}
           key: ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-${{ env.electron_version }}
@@ -129,7 +142,7 @@ jobs:
             ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-
 
       - name: Use Electron Builder cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ env.ELECTRON_BUILDER_CACHE }}
           key: ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-builder-${{ env.electron_builder_version }}
@@ -138,14 +151,14 @@ jobs:
 
       - name: Use Electron headers cache
         id: electron-headers
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ env.ELECTRON_HEADERS_CACHE }}
           key: electron-headers-${{ env.electron_version }}
 
       - name: Use Playwright cache
         id: playwright-cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
           key: ${{ matrix.runs-on }}-${{ matrix.arch }}-playwright-${{ env.playwright_version }}
@@ -153,7 +166,7 @@ jobs:
             ${{ matrix.runs-on }}-${{ matrix.arch }}-playwright-
 
       - name: Use Turborepo cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ env.TURBOREPO_CACHE }}
           key: ${{ matrix.runs-on }}-${{ matrix.arch }}-turborepo-${{ hashFiles('package.json', 'freelens/package.json', 'packages/**/package.json', 'pnpm-lock.yaml','turbo.json') }}
@@ -209,7 +222,20 @@ jobs:
         run: pnpx playwright install-deps
 
       - name: Build packages
+        if: runner.os != 'Windows'
         run: pnpm --color=always --stream build
+
+      # STATUS_DLL_INIT_FAILED (0xC0000142) intermittently crashes turbo's
+      # child build processes on the GitHub-hosted Windows runners when the
+      # build fans out across all packages at once (see issue #105). Cap
+      # turbo's concurrency on Windows to lower the parallelism and memory
+      # pressure that trigger the crash; other platforms keep turbo's default.
+      - name: Build packages (Windows)
+        if: runner.os == 'Windows'
+        shell: bash
+        run: pnpm --color=always --stream build
+        env:
+          TURBO_CONCURRENCY: "2"
 
       - name: Build extra resources
         id: build-resources

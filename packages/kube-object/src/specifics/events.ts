@@ -116,13 +116,27 @@ export class KubeEvent extends KubeObject<KubeObjectMetadata<KubeObjectScope.Nam
   }
 
   getSource() {
-    if (!this.source?.component) {
-      return "<unknown>";
+    if (this.source?.component) {
+      const { component, host = "" } = this.source;
+
+      return `${component} ${host}`;
     }
 
-    const { component, host = "" } = this.source;
+    // The events.k8s.io/v1 API leaves the legacy `source` empty and reports the
+    // emitter through `reportingComponent` / `reportingInstance` instead.
+    if (this.reportingComponent) {
+      return `${this.reportingComponent} ${this.reportingInstance ?? ""}`.trimEnd();
+    }
 
-    return `${component} ${host}`;
+    return "<unknown>";
+  }
+
+  /**
+   * The repeat count of the event. The events.k8s.io/v1 API leaves the legacy
+   * `count` empty and reports repeats through `series.count` instead.
+   */
+  getCount() {
+    return this.count ?? this.series?.count ?? 0;
   }
 
   /**

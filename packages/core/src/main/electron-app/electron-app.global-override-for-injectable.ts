@@ -159,6 +159,10 @@ export default getGlobalOverride(electronAppInjectable, () => {
       void policy;
       throw new Error("Method not implemented.");
     }
+    setDesktopName(name: string): void {
+      void name;
+      throw new Error("Method not implemented.");
+    }
     setAppLogsPath(path?: string | undefined): void {
       void path;
       throw new Error("Method not implemented.");

@@ -15,6 +15,7 @@ import type { ShellSessionArgs, ShellSessionDependencies } from "../shell-sessio
 
 export interface LocalShellSessionDependencies extends ShellSessionDependencies {
   readonly directoryForBinaries: string;
+  readonly baseBundledBinariesDirectory: string;
   readonly state: UserPreferencesState;
   modifyTerminalShellEnv: ModifyTerminalShellEnv;
   joinPaths: JoinPaths;
@@ -65,12 +66,19 @@ export class LocalShellSession extends ShellSession {
       .replace(/\.exe$/i, "")
       .toLowerCase();
 
+    // The bundled binaries directory (e.g. resources/<arch>) holds the
+    // kubectl shipped with the app. The bash/zsh init scripts already append
+    // it as a fallback, so include it here as well for PowerShell and fish.
+    // Otherwise, when the downloaded kubectl directory is empty (e.g. a failed
+    // download), Windows PowerShell has no kubectl on PATH at all.
+    const bundledBinariesDir = this.dependencies.baseBundledBinariesDirectory;
+
     switch (shellName) {
       case "powershell":
         return [
           "-NoExit",
           "-command",
-          `& {$Env:PATH="${kubectlPathDir};${this.dependencies.directoryForBinaries};$Env:PATH"}`,
+          `& {$Env:PATH="${kubectlPathDir};${this.dependencies.directoryForBinaries};${bundledBinariesDir};$Env:PATH"}`,
         ];
       case "bash":
         return [
@@ -81,7 +89,7 @@ export class LocalShellSession extends ShellSession {
         return [
           "--login",
           "--init-command",
-          `export PATH="${kubectlPathDir}:${this.dependencies.directoryForBinaries}:$PATH"; export KUBECONFIG="${await this.dependencies.proxyKubeconfigPath}"`,
+          `export PATH="${kubectlPathDir}:${this.dependencies.directoryForBinaries}:${bundledBinariesDir}:$PATH"; export KUBECONFIG="${await this.dependencies.proxyKubeconfigPath}"`,
         ];
       case "zsh":
         return ["--login"];
