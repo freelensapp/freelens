@@ -24,8 +24,8 @@ export type GetMetrics = (
 
 /**
  * Fetch metrics directly from a Prometheus-compatible URL, bypassing the K8s
- * service proxy. Used for OpenShift (bearer token auth) and external backends
- * like Mimir (custom headers such as X-Scope-OrgID).
+ * service proxy. Used when a directUrl is configured (e.g. OpenShift routes,
+ * external Mimir endpoints with custom headers such as X-Scope-OrgID).
  */
 async function fetchDirectMetrics(
   proxyFetch: ProxyFetch,
@@ -36,7 +36,9 @@ async function fetchDirectMetrics(
   requestMethod: "GET" | "POST",
   params: URLSearchParams,
 ): Promise<unknown> {
-  const queryRangePath = `${directUrl.replace(/\/+$/, "")}${prometheusPrefix}/api/v1/query_range`;
+  const useHttps = cluster.preferences.prometheus?.https;
+  const normalizedUrl = useHttps ? directUrl.replace(/^http:\/\//i, "https://") : directUrl;
+  const queryRangePath = `${normalizedUrl.replace(/\/+$/, "")}${prometheusPrefix}/api/v1/query_range`;
   const url = requestMethod === "GET" ? `${queryRangePath}?${params.toString()}` : queryRangePath;
   const headers: Record<string, string> = {};
   const bearerToken = cluster.preferences.prometheus?.bearerToken;
@@ -60,6 +62,7 @@ async function fetchDirectMetrics(
     method: requestMethod,
     headers,
     body: requestMethod === "POST" ? params.toString() : undefined,
+    redirect: "follow",
   });
 
   if (!response.ok) {
