@@ -30,7 +30,6 @@ describe("LogTabViewModel", () => {
 
     expect(userPreferencesState.logViewerPreferences).toEqual({
       showTimestamps: true,
-      showPrevious: false,
       showWordWrap: true,
     });
     expect(setLogTabData).toHaveBeenCalledWith("tab-id", {

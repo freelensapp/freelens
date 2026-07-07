@@ -21,22 +21,22 @@ import {
 
 import type { UserEvent } from "@testing-library/user-event";
 
-import type { LogViewerPreferences } from "../../../../../features/user-preferences/common/preferences-helpers";
 import type { UserPreferencesState } from "../../../../../features/user-preferences/common/state.injectable";
 import type { DiRender } from "../../../test-utils/renderFor";
 import type { TabId } from "../../dock/store";
 import type { LogTabViewModelDependencies } from "../logs-view-model";
+import type { LogTabData } from "../tab-store";
 
 function getOnePodViewModel(
   tabId: TabId,
   userPreferencesState: UserPreferencesState,
-  logViewerPreferences: LogViewerPreferences,
+  logTabData: Partial<LogTabData>,
   deps: Partial<LogTabViewModelDependencies> = {},
 ): LogTabViewModel {
   const selectedPod = dockerPod;
 
   return createMockLogTabViewModel(tabId, userPreferencesState, {
-    getLogTabData: () => getDefaultOnePodLogTabData(logViewerPreferences),
+    getLogTabData: () => getDefaultOnePodLogTabData(logTabData),
     getPodById: (id) => {
       if (id === selectedPod.getId()) {
         return selectedPod;
@@ -75,7 +75,6 @@ describe("LogControls", () => {
 
     expect(userPreferencesState.logViewerPreferences).toEqual({
       showTimestamps: true,
-      showPrevious: false,
       showWordWrap: true,
     });
   });
@@ -87,21 +86,31 @@ describe("LogControls", () => {
 
     expect(userPreferencesState.logViewerPreferences).toEqual({
       showTimestamps: false,
-      showPrevious: false,
       showWordWrap: false,
     });
   });
 
-  it("updates the saved previous-container preference before reloading logs", async () => {
+  it("updates only the tab data (not the saved preference) before reloading logs", async () => {
+    const setLogTabData = jest.fn();
+
+    model = getOnePodViewModel(
+      "foobar",
+      userPreferencesState,
+      { showTimestamps: false, showPrevious: false, showWordWrap: true },
+      { setLogTabData },
+    );
+
     const reloadLogsSpy = jest.spyOn(model, "reloadLogs");
 
     render(<LogControls model={model} />);
 
     await user.click(await screen.findByText("Show previous terminated container"));
 
+    expect(setLogTabData).toHaveBeenCalledWith("foobar", expect.objectContaining({ showPrevious: true }));
+
+    // The previous-container choice must not be persisted as a global default.
     expect(userPreferencesState.logViewerPreferences).toEqual({
       showTimestamps: false,
-      showPrevious: true,
       showWordWrap: true,
     });
     expect(reloadLogsSpy).toHaveBeenCalledTimes(1);

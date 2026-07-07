@@ -351,8 +351,8 @@ importers:
         specifier: ^6.11.0
         version: 6.11.0(webpack@5.108.3)
       electron:
-        specifier: ^41.9.2
-        version: 41.9.2
+        specifier: ^41.10.0
+        version: 41.10.0
       electron-builder:
         specifier: 26.11.1
         version: 26.11.1(electron-builder-squirrel-windows@26.11.1)
@@ -1057,8 +1057,8 @@ importers:
         specifier: ^6.11.0
         version: 6.11.0(webpack@5.108.3)
       electron:
-        specifier: ^41.9.2
-        version: 41.9.2
+        specifier: ^41.10.0
+        version: 41.10.0
       fork-ts-checker-webpack-plugin:
         specifier: ^9.1.0
         version: 9.1.0(typescript@5.9.3)(webpack@5.108.3)
@@ -1738,8 +1738,8 @@ importers:
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(lodash@4.18.1)
       electron:
-        specifier: ^41.9.2
-        version: 41.9.2
+        specifier: ^41.10.0
+        version: 41.10.0
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.7.0
@@ -2071,8 +2071,8 @@ importers:
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(lodash@4.18.1)
       electron:
-        specifier: ^41.9.2
-        version: 41.9.2
+        specifier: ^41.10.0
+        version: 41.10.0
       lodash:
         specifier: ^4.18.1
         version: 4.18.1
@@ -2132,8 +2132,8 @@ importers:
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(lodash@4.18.1)
       electron:
-        specifier: ^41.9.2
-        version: 41.9.2
+        specifier: ^41.10.0
+        version: 41.10.0
     devDependencies:
       '@async-fn/jest':
         specifier: ^1.7.0
@@ -5972,8 +5972,8 @@ packages:
     resolution: {integrity: sha512-bO3y10YikuUwUuDUQRM4KfwNkKhnpVO7IPdbsrejwN9/AABJzzTQ4GeHwyzNSrVO+tEH3/Np255a3sVZpZDjvg==}
     engines: {node: '>=8.0.0'}
 
-  electron@41.9.2:
-    resolution: {integrity: sha512-j8a6s8HDIeKMdsU8mLFl13ALuzORPjtoK/d9oKpmg8Qp/iTmKjPO6TRuFpHJzYXyTwG7ytCU/qjMbfhRkHVEfw==}
+  electron@41.10.0:
+    resolution: {integrity: sha512-KuPcYnZXtmUv89YbNyZoU+Hud8s/X724zrhUZ4RjUg1b0pE0ax0FzTCiM1Lo4Nmxf2vX25u8w055to8IxVWxsQ==}
     engines: {node: '>= 22.12.0'}
     hasBin: true
 
@@ -12533,7 +12533,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  electron@41.9.2:
+  electron@41.10.0:
     dependencies:
       '@electron-internal/extract-zip': 1.0.3
       '@electron/get': 5.0.0
