@@ -24,8 +24,8 @@ export type GetMetrics = (
 
 /**
  * Fetch metrics directly from a Prometheus-compatible URL, bypassing the K8s
- * service proxy. Used for OpenShift (bearer token auth) and external backends
- * like Mimir (custom headers such as X-Scope-OrgID).
+ * service proxy. Used when a directUrl is configured (e.g. OpenShift routes,
+ * external Mimir endpoints with custom headers such as X-Scope-OrgID).
  */
 async function fetchDirectMetrics(
   proxyFetch: ProxyFetch,

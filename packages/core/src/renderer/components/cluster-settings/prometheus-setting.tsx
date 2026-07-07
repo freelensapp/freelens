@@ -279,50 +279,50 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
               />
               <small className="hint">
                 What query format is used to fetch metrics from Prometheus. Select &quot;OpenShift&quot; for
-                OpenShift/OKD clusters, or &quot;Mimir (External Endpoint)&quot; for a remote Mimir instance.
+                OpenShift/OKD clusters, or &quot;Mimir&quot; for Grafana Mimir deployments.
               </small>
             </>
           )}
         </section>
         {this.canEditPrometheusPath && (
           <>
-            {!this.isMimir && (
-              <>
-                <hr />
-                <section>
-                  <SubTitle title="Prometheus service address" />
-                  <Input
-                    theme="round-black"
-                    value={this.path}
-                    onChange={(value) => (this.path = value)}
-                    onBlur={this.onSaveAll}
-                    placeholder="<namespace>/<service>:<port>"
-                  />
-                  <small className="hint">
-                    {this.isOpenShift
-                      ? `An address to the Prometheus service (<namespace>/<service>:<port>). For OpenShift this is typically openshift-monitoring/prometheus-k8s:9091. Can be left empty when using a Prometheus ingress/route.`
+            <>
+              <hr />
+              <section>
+                <SubTitle title="Prometheus service address" />
+                <Input
+                  theme="round-black"
+                  value={this.path}
+                  onChange={(value) => (this.path = value)}
+                  onBlur={this.onSaveAll}
+                  placeholder="<namespace>/<service>:<port>"
+                />
+                <small className="hint">
+                  {this.isOpenShift
+                    ? `An address to the Prometheus service (<namespace>/<service>:<port>). For OpenShift this is typically openshift-monitoring/prometheus-k8s:9091. Can be left empty when using a Prometheus ingress/route.`
+                    : this.isMimir
+                      ? `An address to the Mimir query-frontend service (<namespace>/<service>:<port>). ${this.props.productName} tries to auto-detect address if left empty. Can be left empty when using an external Mimir endpoint URL.`
                       : `An address to an existing Prometheus installation (<namespace>/<service>:<port>). ${this.props.productName} tries to auto-detect address if left empty.`}
-                  </small>
-                </section>
-                <hr />
-                <section>
-                  <SubTitle title="Prometheus HTTPS requests" />
-                  <Checkbox
-                    label={`Use HTTPS for Prometheus requests`}
-                    value={this.useHttps}
-                    onChange={(checked) => {
-                      this.useHttps = checked;
-                      this.onSaveAll();
-                    }}
-                  />
-                  <small className="hint">
-                    {this.isOpenShift
-                      ? "Enable HTTPS for the Kubernetes API service proxy path. Not needed when using a Prometheus ingress/route (the route URL scheme is used instead)."
-                      : "Externally hosted Prometheus might listen using HTTPS. Usually this is not needed."}
-                  </small>
-                </section>
-              </>
-            )}
+                </small>
+              </section>
+              <hr />
+              <section>
+                <SubTitle title="Prometheus HTTPS requests" />
+                <Checkbox
+                  label={`Use HTTPS for Prometheus requests`}
+                  value={this.useHttps}
+                  onChange={(checked) => {
+                    this.useHttps = checked;
+                    this.onSaveAll();
+                  }}
+                />
+                <small className="hint">
+                  {this.isOpenShift
+                    ? "Enable HTTPS for the Kubernetes API service proxy path. Not needed when using a Prometheus ingress/route (the route URL scheme is used instead)."
+                    : "Externally hosted Prometheus might listen using HTTPS. Usually this is not needed."}
+                </small>
+              </section>
+            </>
             <hr />
             <section>
               <SubTitle title="Custom path prefix" />
@@ -380,7 +380,7 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
               <>
                 <hr />
                 <section>
-                  <SubTitle title="Mimir endpoint URL" />
+                  <SubTitle title="Mimir external endpoint" />
                   <Input
                     theme="round-black"
                     value={this.directUrl}
@@ -389,8 +389,8 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
                     placeholder="https://mimir.example.com"
                   />
                   <small className="hint">
-                    The URL of your Mimir query endpoint. Queries are sent directly to this URL, bypassing the
-                    Kubernetes API service proxy.
+                    Optional external URL to the Mimir query endpoint. When set, queries are sent directly to this URL,
+                    bypassing the Kubernetes API service proxy. Leave empty to use the in-cluster service address above.
                   </small>
                 </section>
                 <hr />

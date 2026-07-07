@@ -83,8 +83,8 @@ export const createClusterPrometheusHandler = (...args: [Dependencies, Cluster])
     setupPrometheus(cluster.preferences);
 
     if (prometheus && prometheusProvider) {
-      // For directUrl-only providers (e.g. Mimir) the service address may be
-      // empty — the actual endpoint is the directUrl, not a K8s service proxy.
+      // When a user has configured both provider type and service preferences,
+      // use them directly without re-running service discovery.
       return {
         kind: prometheusProvider,
         namespace: prometheus.namespace,
