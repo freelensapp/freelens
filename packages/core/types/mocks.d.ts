@@ -48,3 +48,18 @@ declare module "*?worker" {
   };
   export default workerConstructor;
 }
+
+// Minimal subset of Vite's import.meta.glob typing (v2 build); replaces
+// webpack's require.context typing from @types/webpack-env.
+interface ImportMeta {
+  glob(
+    pattern: string | string[],
+    options?: {
+      eager?: boolean;
+      query?: string | Record<string, string | number | boolean>;
+      import?: string;
+      base?: string;
+      exhaustive?: boolean;
+    },
+  ): Record<string, unknown>;
+}
