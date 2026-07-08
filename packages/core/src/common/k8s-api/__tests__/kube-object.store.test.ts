@@ -45,7 +45,7 @@ class FakeKubeObjectStore extends KubeObjectStore<KubeObject> {
 
 describe("KubeObjectStore", () => {
   it("should remove an object from the list of items after it is not returned from listing the same namespace again", async () => {
-    const loadItems = jest.fn();
+    const loadItems = vi.fn();
     const obj = new KubeObject({
       apiVersion: "v1",
       kind: "Foo",
@@ -79,7 +79,7 @@ describe("KubeObjectStore", () => {
   });
 
   it("should not remove an object that is not returned, if it is in a different namespace", async () => {
-    const loadItems = jest.fn();
+    const loadItems = vi.fn();
     const objInDefaultNamespace = new KubeObject({
       apiVersion: "v1",
       kind: "Foo",
@@ -124,7 +124,7 @@ describe("KubeObjectStore", () => {
   });
 
   it("should remove all objects not returned if the api is cluster-scoped", async () => {
-    const loadItems = jest.fn();
+    const loadItems = vi.fn();
     const clusterScopedObject1 = new KubeObject({
       apiVersion: "v1",
       kind: "Foo",

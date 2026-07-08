@@ -14,12 +14,12 @@ import type { ExecuteOnClusterResponse } from "../../common/types";
 
 describe("executeOnCluster", () => {
   let di: DiContainer;
-  let requestFromChannelMock: jest.Mock;
+  let requestFromChannelMock: vi.Mock;
 
   beforeEach(() => {
     di = getDiForUnitTesting();
 
-    requestFromChannelMock = jest.fn();
+    requestFromChannelMock = vi.fn();
     di.override(requestFromChannelInjectionToken, () => requestFromChannelMock);
   });
 

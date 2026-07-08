@@ -58,12 +58,12 @@ describe("technical unit tests for local shell sessions", () => {
 
   describe("when on windows", () => {
     let openLocalShellSession: OpenShellSession;
-    let spawnPtyMock: jest.MockedFunction<SpawnPty>;
+    let spawnPtyMock: vi.MockedFunction<SpawnPty>;
 
     beforeEach(() => {
       di.override(platformInjectable, () => "win32");
 
-      spawnPtyMock = jest.fn();
+      spawnPtyMock = vi.fn();
       di.override(spawnPtyInjectable, () => spawnPtyMock);
 
       di.override(
@@ -100,22 +100,22 @@ describe("technical unit tests for local shell sessions", () => {
             rows: 40,
             pid: 12343,
             handleFlowControl: false,
-            kill: jest.fn(),
-            onData: jest.fn(),
-            onExit: jest.fn(),
-            pause: jest.fn(),
+            kill: vi.fn(),
+            onData: vi.fn(),
+            onExit: vi.fn(),
+            pause: vi.fn(),
             process: "my-pty",
-            resize: jest.fn(),
-            resume: jest.fn(),
-            write: jest.fn(),
-            on: jest.fn(),
-            clear: jest.fn(), // Add the clear method
+            resize: vi.fn(),
+            resume: vi.fn(),
+            write: vi.fn(),
+            on: vi.fn(),
+            clear: vi.fn(), // Add the clear method
           };
         });
 
         const websocket = {
-          on: jest.fn(() => websocket),
-          once: jest.fn(() => websocket),
+          on: vi.fn(() => websocket),
+          once: vi.fn(() => websocket),
         } as Partial<WebSocket> as WebSocket;
 
         const cluster = new Cluster({

@@ -4,12 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import k8sRequestInjectable from "../k8s-request.injectable";
 import requestNonCoreApiVersionsInjectable from "./request-non-core-api-versions.injectable";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
 import type { V1APIGroupList } from "@kubernetes/client-node";
 import type { DiContainer } from "@ogre-tools/injectable";
 

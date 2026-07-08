@@ -28,7 +28,7 @@ describe("logger", () => {
 
       registerFeature(di, loggerFeature);
 
-      const winstonLoggerStub = { [scenario]: jest.fn() } as any;
+      const winstonLoggerStub = { [scenario]: vi.fn() } as any;
 
       di.override(winstonLoggerInjectable, () => winstonLoggerStub);
 
@@ -44,7 +44,7 @@ describe("logger", () => {
 
       registerFeature(di, loggerFeature);
 
-      const winstonLoggerStub = { [scenario]: jest.fn() } as any;
+      const winstonLoggerStub = { [scenario]: vi.fn() } as any;
 
       di.override(winstonLoggerInjectable, () => winstonLoggerStub);
 
@@ -60,7 +60,7 @@ describe("logger", () => {
 
       registerFeature(di, loggerFeature);
 
-      const winstonLoggerStub = { [scenario]: jest.fn() } as any;
+      const winstonLoggerStub = { [scenario]: vi.fn() } as any;
 
       di.override(winstonLoggerInjectable, () => winstonLoggerStub);
 
@@ -91,7 +91,7 @@ describe("logger", () => {
 
       registerFeature(di, someFeature);
 
-      const winstonLoggerStub = { [scenario]: jest.fn() } as any;
+      const winstonLoggerStub = { [scenario]: vi.fn() } as any;
 
       di.override(winstonLoggerInjectable, () => winstonLoggerStub);
 
@@ -105,7 +105,7 @@ describe("logger", () => {
 
   it("given a single transport, when logging, does not throw, and does call the transport", () => {
     const di = createContainer("irrelevant");
-    const log = jest.fn().mockImplementation((data, next) => next());
+    const log = vi.fn().mockImplementation((data, next) => next());
 
     registerFeature(di, loggerFeature);
 

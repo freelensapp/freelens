@@ -9,10 +9,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { flushPromises } from "@freelensapp/test-utils";
-import { anyObject } from "jest-mock-extended/lib";
 import { PartialDeep } from "type-fest";
+import { anyObject } from "vitest-mock-extended/lib";
 import createAuthorizationApiInjectable from "../../common/cluster/create-authorization-api.injectable";
 import createCoreApiInjectable from "../../common/cluster/create-core-api.injectable";
 import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable";
@@ -24,7 +24,7 @@ import createKubeAuthProxyInjectable from "../../main/kube-auth-proxy/create-kub
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import addClusterInjectable from "./storage/common/add.injectable";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
 import type {
   AuthorizationV1Api,
   CoreV1Api,
@@ -61,7 +61,7 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
     kubeAuthProxyMock = {
       apiPrefix: "/some-api-prefix",
       port: 0,
-      exit: jest.fn(),
+      exit: vi.fn(),
       run: asyncFn(),
     };
     mainDi.override(createKubeAuthProxyInjectable, () => () => kubeAuthProxyMock);

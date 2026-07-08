@@ -103,9 +103,9 @@ describe("renderer/utils/StorageHelper", () => {
       storageHelper = createStorageHelper<typeof defaultValue>("some-key", {
         defaultValue,
         storage: {
-          getItem: jest.fn(),
-          setItem: jest.fn(),
-          removeItem: jest.fn(),
+          getItem: vi.fn(),
+          setItem: vi.fn(),
+          removeItem: vi.fn(),
         },
       });
     });

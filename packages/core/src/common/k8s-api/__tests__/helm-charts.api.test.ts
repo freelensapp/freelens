@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { anyObject } from "jest-mock-extended";
+import { anyObject } from "vitest-mock-extended";
 import { HelmChart } from "../endpoints/helm-charts.api";
 
 describe("HelmChart tests", () => {
@@ -297,7 +297,7 @@ describe("HelmChart tests", () => {
 
     it("should warn on unknown fields", () => {
       const { warn } = console;
-      const warnFn = (console.warn = jest.fn());
+      const warnFn = (console.warn = vi.fn());
 
       HelmChart.create({
         apiVersion: "1",

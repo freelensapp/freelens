@@ -17,13 +17,13 @@ import type { ExecuteOnClusterRequest, ExecuteOnClusterResponse } from "../../co
  */
 describe("K8s mutation functions (via injectable)", () => {
   let di: DiContainer;
-  let requestFromChannelMock: jest.Mock;
+  let requestFromChannelMock: vi.Mock;
   let executeOnCluster: (request: ExecuteOnClusterRequest) => Promise<ExecuteOnClusterResponse>;
 
   beforeEach(() => {
     di = getDiForUnitTesting();
 
-    requestFromChannelMock = jest.fn();
+    requestFromChannelMock = vi.fn();
     di.override(requestFromChannelInjectionToken, () => requestFromChannelMock);
 
     executeOnCluster = di.inject(executeOnClusterInjectable);

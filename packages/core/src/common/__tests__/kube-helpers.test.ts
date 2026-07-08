@@ -116,7 +116,7 @@ describe("kube helpers", () => {
 
   describe("pre-validate context object in kubeconfig tests", () => {
     beforeEach(() => {
-      jest.clearAllMocks();
+      vi.clearAllMocks();
     });
 
     describe("Check logger.error() output", () => {

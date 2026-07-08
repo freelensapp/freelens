@@ -4,13 +4,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { getPromiseStatus } from "@freelensapp/test-utils";
 import { resolveSystemProxyInjectionToken } from "../../common/utils/resolve-system-proxy/resolve-system-proxy-injection-token";
 import resolveSystemProxyFromElectronInjectable from "../../main/utils/resolve-system-proxy/resolve-system-proxy-from-electron.injectable";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
 
 import type { ResolveSystemProxy } from "../../common/utils/resolve-system-proxy/resolve-system-proxy-injection-token";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";

@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 
 import { KubeConfig } from "@kubernetes/client-node";
 import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";

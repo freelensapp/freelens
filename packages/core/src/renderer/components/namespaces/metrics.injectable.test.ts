@@ -14,7 +14,7 @@ import type { Namespace } from "@freelensapp/kube-object";
 describe("namespace-metrics injectable", () => {
   it("requests namespace pod metrics with the selected time range", () => {
     const di = getDiForUnitTesting();
-    const requestPodMetricsInNamespace = jest.fn().mockResolvedValue({});
+    const requestPodMetricsInNamespace = vi.fn().mockResolvedValue({});
     const namespace = {
       getId: () => "namespace-id",
       getName: () => "namespace-name",

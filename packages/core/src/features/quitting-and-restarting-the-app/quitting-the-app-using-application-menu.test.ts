@@ -13,7 +13,7 @@ import type { ApplicationBuilder } from "../../renderer/components/test-utils/ge
 describe("quitting the app using application menu", () => {
   describe("given application has started", () => {
     let builder: ApplicationBuilder;
-    let requestQuitOfAppMock: jest.Mock;
+    let requestQuitOfAppMock: vi.Mock;
 
     beforeEach(async () => {
       testUsingFakeTime("2015-10-21T07:28:00Z");
@@ -21,7 +21,7 @@ describe("quitting the app using application menu", () => {
       builder = getApplicationBuilder();
 
       builder.beforeApplicationStart(({ mainDi }) => {
-        requestQuitOfAppMock = jest.fn();
+        requestQuitOfAppMock = vi.fn();
         mainDi.override(requestQuitOfAppInjectable, () => requestQuitOfAppMock);
       });
 

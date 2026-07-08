@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { KubeApi, PodApi } from "@freelensapp/kube-api";
 import { podApiInjectable } from "@freelensapp/kube-api-specifics";
 import { Pod } from "@freelensapp/kube-object";
@@ -26,7 +26,7 @@ import createKubeJsonApiInjectable from "../create-kube-json-api.injectable";
 
 import type { KubeStatusData } from "@freelensapp/kube-object";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
 import type { DiContainer } from "@ogre-tools/injectable";
 
 import type { NodeFetch } from "../../fetch/node-fetch.injectable";

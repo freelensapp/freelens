@@ -37,7 +37,7 @@ describe("ExtensionLoader", () => {
       ipcRendererInjectable,
       () =>
         ({
-          invoke: jest.fn(async (channel: string) => {
+          invoke: vi.fn(async (channel: string) => {
             if (channel === "extension-loader:main:state") {
               return [
                 [

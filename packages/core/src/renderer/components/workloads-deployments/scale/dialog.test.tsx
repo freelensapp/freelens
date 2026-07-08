@@ -113,7 +113,7 @@ describe("<DeploymentScaleDialog />", () => {
     // when <DeploymentScaleDialog /> rendered.
     const initReplicas = 3;
 
-    deploymentApi.getReplicas = jest.fn().mockImplementationOnce(async () => Promise.resolve(initReplicas));
+    deploymentApi.getReplicas = vi.fn().mockImplementationOnce(async () => Promise.resolve(initReplicas));
     const { findByTestId } = render(<DeploymentScaleDialog />);
 
     openDeploymentScaleDialog(dummyDeployment);
@@ -133,7 +133,7 @@ describe("<DeploymentScaleDialog />", () => {
   it("changes the desired scale when clicking the icon buttons +/-", async () => {
     const initReplicas = 1;
 
-    deploymentApi.getReplicas = jest.fn().mockImplementationOnce(async () => Promise.resolve(initReplicas));
+    deploymentApi.getReplicas = vi.fn().mockImplementationOnce(async () => Promise.resolve(initReplicas));
     const component = render(<DeploymentScaleDialog />);
 
     openDeploymentScaleDialog(dummyDeployment);

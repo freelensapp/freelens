@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import execHelmInjectable from "../../exec-helm/exec-helm.injectable";
 import execFileWithInputInjectable from "./call-for-kube-resources-by-manifest/exec-file-with-input/exec-file-with-input.injectable";
@@ -13,7 +13,7 @@ import getHelmReleaseResourcesInjectable from "./get-helm-release-resources.inje
 import type { KubeJsonApiData } from "@freelensapp/kube-object";
 import type { AsyncResult } from "@freelensapp/utilities";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
 
 import type { ExecHelm } from "../../exec-helm/exec-helm.injectable";
 import type { ExecFileWithInput } from "./call-for-kube-resources-by-manifest/exec-file-with-input/exec-file-with-input.injectable";

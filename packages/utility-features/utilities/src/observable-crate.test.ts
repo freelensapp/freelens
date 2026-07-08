@@ -33,12 +33,12 @@ describe("observable-crate", () => {
     }
 
     let crate: ObservableCrate<Test>;
-    let correctHandler: jest.MockedFunction<() => void>;
-    let incorrectHandler: jest.MockedFunction<() => void>;
+    let correctHandler: vi.MockedFunction<() => void>;
+    let incorrectHandler: vi.MockedFunction<() => void>;
 
     beforeEach(() => {
-      correctHandler = jest.fn();
-      incorrectHandler = jest.fn();
+      correctHandler = vi.fn();
+      incorrectHandler = vi.fn();
       crate = observableCrate(Test.Start, [
         {
           from: Test.Start,

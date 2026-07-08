@@ -123,7 +123,7 @@ describe("<StatefulSetScaleDialog />", () => {
     // when <StatefulSetScaleDialog /> rendered.
     const initReplicas = 1;
 
-    statefulSetApi.getReplicas = jest.fn().mockImplementationOnce(async () => Promise.resolve(initReplicas));
+    statefulSetApi.getReplicas = vi.fn().mockImplementationOnce(async () => Promise.resolve(initReplicas));
     const { getByTestId } = render(<StatefulSetScaleDialog />);
 
     openStatefulSetDialog(dummyStatefulSet);
@@ -143,7 +143,7 @@ describe("<StatefulSetScaleDialog />", () => {
   it("changes the desired scale when clicking the icon buttons +/-", async () => {
     const initReplicas = 1;
 
-    statefulSetApi.getReplicas = jest.fn().mockImplementationOnce(async () => Promise.resolve(initReplicas));
+    statefulSetApi.getReplicas = vi.fn().mockImplementationOnce(async () => Promise.resolve(initReplicas));
     const component = render(<StatefulSetScaleDialog />);
 
     openStatefulSetDialog(dummyStatefulSet);

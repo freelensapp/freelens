@@ -22,23 +22,23 @@ import type { DiRender } from "../../test-utils/renderFor";
 
 describe("ClusterLocalTerminalSettings", () => {
   let render: DiRender;
-  let showErrorNotificationMock: jest.Mock;
-  let statMock: jest.Mock;
-  let loadKubeconfigMock: jest.Mock;
+  let showErrorNotificationMock: vi.Mock;
+  let statMock: vi.Mock;
+  let loadKubeconfigMock: vi.Mock;
   let user: UserEvent;
 
   beforeEach(() => {
     const di = getDiForUnitTesting();
 
-    showErrorNotificationMock = jest.fn();
+    showErrorNotificationMock = vi.fn();
 
-    statMock = jest.fn();
+    statMock = vi.fn();
 
     di.override(statInjectable, () => statMock);
 
     di.override(showErrorNotificationInjectable, () => showErrorNotificationMock);
 
-    loadKubeconfigMock = jest.fn();
+    loadKubeconfigMock = vi.fn();
     di.override(loadKubeconfigInjectable, () => loadKubeconfigMock);
 
     render = renderFor(di);

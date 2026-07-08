@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { Deployment, Pod } from "@freelensapp/kube-object";
 import { flushPromises } from "@freelensapp/test-utils";
 import { PassThrough } from "stream";
@@ -15,7 +15,7 @@ import { createMockResponseFromStream, createMockResponseFromString } from "./mo
 import type { KubeJsonApiData, KubeJsonApiDataFor } from "@freelensapp/kube-object";
 import type { Logger } from "@freelensapp/logger";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
 import type Fetch from "node-fetch";
 
 import type { KubeApiWatchCallback } from "./kube-api";
@@ -30,11 +30,11 @@ describe("KubeApi", () => {
     fetchMock = asyncFn();
 
     logger = {
-      debug: jest.fn(),
-      error: jest.fn(),
-      info: jest.fn(),
-      silly: jest.fn(),
-      warn: jest.fn(),
+      debug: vi.fn(),
+      error: vi.fn(),
+      info: vi.fn(),
+      silly: vi.fn(),
+      warn: vi.fn(),
     };
 
     kubeJsonApi = new KubeJsonApi(
@@ -59,9 +59,9 @@ describe("KubeApi", () => {
 
     beforeEach(() => {
       api = new DeploymentApi({
-        logError: jest.fn(),
-        logInfo: jest.fn(),
-        logWarn: jest.fn(),
+        logError: vi.fn(),
+        logInfo: vi.fn(),
+        logWarn: vi.fn(),
         maybeKubeApi: kubeJsonApi,
       });
     });
@@ -480,10 +480,10 @@ describe("KubeApi", () => {
 
     describe("when watching in a namespace", () => {
       let stopWatch: () => void;
-      let callback: jest.MockedFunction<KubeApiWatchCallback>;
+      let callback: vi.MockedFunction<KubeApiWatchCallback>;
 
       beforeEach(async () => {
-        callback = jest.fn();
+        callback = vi.fn();
         stopWatch = api.watch({
           namespace: "kube-system",
           callback,
@@ -585,11 +585,11 @@ describe("KubeApi", () => {
     });
 
     describe("when watching in a namespace with an abort controller provided", () => {
-      let callback: jest.MockedFunction<KubeApiWatchCallback>;
+      let callback: vi.MockedFunction<KubeApiWatchCallback>;
       let abortController: AbortController;
 
       beforeEach(async () => {
-        callback = jest.fn();
+        callback = vi.fn();
         abortController = new AbortController();
         api.watch({
           namespace: "kube-system",
@@ -690,10 +690,10 @@ describe("KubeApi", () => {
 
     describe("when watching in a namespace with a timeout", () => {
       let stopWatch: () => void;
-      let callback: jest.MockedFunction<KubeApiWatchCallback>;
+      let callback: vi.MockedFunction<KubeApiWatchCallback>;
 
       beforeEach(async () => {
-        callback = jest.fn();
+        callback = vi.fn();
         stopWatch = api.watch({
           namespace: "kube-system",
           callback,

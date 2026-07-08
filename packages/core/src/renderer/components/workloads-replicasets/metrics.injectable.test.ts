@@ -14,7 +14,7 @@ import type { ReplicaSet } from "@freelensapp/kube-object";
 describe("replica-set-metrics injectable", () => {
   it("requests replica set pod metrics with the selected time range", () => {
     const di = getDiForUnitTesting();
-    const requestPodMetricsForReplicaSets = jest.fn().mockResolvedValue({});
+    const requestPodMetricsForReplicaSets = vi.fn().mockResolvedValue({});
     const replicaSet = {
       getId: () => "replica-set-id",
       getName: () => "replica-set-name",
