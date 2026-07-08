@@ -56,6 +56,9 @@ export default defineConfig({
         test: {
           name,
           root: dir,
+          // `globals` is a project-scoped option and is not inherited from the
+          // root-level `test` config, so it must be repeated per project.
+          globals: true,
           environment: nodeEnvironmentDirs.has(dir) ? "node" : "jsdom",
           include: ["**/?(*.)test.{js,ts,tsx}"],
           exclude: ["**/node_modules/**", "**/dist/**", "**/build/**", "**/coverage/**"],

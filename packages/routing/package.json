@@ -30,13 +30,13 @@
     "mobx-observable-history": "^2.0.3"
   },
   "devDependencies": {
-    "@freelensapp/jest": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@types/history": "^4.7.11",
     "@types/webpack-env": "^1.18.8",
     "lodash": "^4.18.1",
     "ts-loader": "^9.5.7",
+    "vitest": "^4.1.10",
     "webpack": "^5.108.3"
   },
   "publishConfig": {
