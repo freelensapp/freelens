@@ -14,9 +14,9 @@ import { createMockResponseFromStream, createMockResponseFromString } from "./mo
 
 import type { KubeJsonApiData, KubeJsonApiDataFor } from "@freelensapp/kube-object";
 import type { Logger } from "@freelensapp/logger";
-import type Fetch from "@freelensapp/node-fetch";
 
 import type { AsyncFnMock } from "@async-fn/jest";
+import type Fetch from "node-fetch";
 
 import type { KubeApiWatchCallback } from "./kube-api";
 import type { IKubeWatchEvent } from "./kube-watch-event";

@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { Headers as NodeFetchHeaders, Response } from "@freelensapp/node-fetch";
+import { Headers as NodeFetchHeaders, Response } from "node-fetch";
 import { PassThrough } from "stream";
 
 export const createMockResponseFromString = (url: string, data: string, statusCode = 200) => {

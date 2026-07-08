@@ -12,10 +12,10 @@ import { merge } from "lodash";
 import { stringify } from "querystring";
 
 import type { Logger } from "@freelensapp/logger";
-import type Fetch from "@freelensapp/node-fetch";
-import type { RequestInit, Response } from "@freelensapp/node-fetch";
 import type { Defaulted } from "@freelensapp/utilities";
 
+import type Fetch from "node-fetch";
+import type { RequestInit, Response } from "node-fetch";
 import type { Patch } from "rfc6902";
 import type { PartialDeep, ValueOf } from "type-fest";
 

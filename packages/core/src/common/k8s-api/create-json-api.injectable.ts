@@ -12,7 +12,8 @@ import lensProxyCertificateInjectable from "../certificate/lens-proxy-certificat
 import nodeFetchInjectable from "../fetch/node-fetch.injectable";
 
 import type { JsonApiConfig, JsonApiData, JsonApiDependencies, JsonApiParams } from "@freelensapp/json-api";
-import type { RequestInit } from "@freelensapp/node-fetch";
+
+import type { RequestInit } from "node-fetch";
 
 export type CreateJsonApi = <Data = JsonApiData, Params extends JsonApiParams<Data> = JsonApiParams<Data>>(
   config: JsonApiConfig,

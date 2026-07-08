@@ -4,10 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import freelensFetch from "@freelensapp/node-fetch";
 import * as glob from "glob";
 import { enableMapSet, setAutoFreeze } from "immer";
 import { configure } from "mobx";
+import freelensFetch from "node-fetch";
 import path from "path";
 import React from "react";
 import { TextDecoder as TextDecoderNode, TextEncoder } from "util";

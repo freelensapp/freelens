@@ -9,7 +9,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import k8sRequestInjectable from "../k8s-request.injectable";
 import { apiVersionsRequesterInjectionToken } from "./api-versions-requester";
 
-import type { V1APIGroupList } from "@freelensapp/kubernetes-client-node";
+import type { V1APIGroupList } from "@kubernetes/client-node";
 
 const requestNonCoreApiVersionsInjectable = getInjectable({
   id: "request-non-core-api-versions",

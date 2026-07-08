@@ -24,6 +24,7 @@ import createKubeAuthProxyInjectable from "../../main/kube-auth-proxy/create-kub
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import addClusterInjectable from "./storage/common/add.injectable";
 
+import type { AsyncFnMock } from "@async-fn/jest";
 import type {
   AuthorizationV1Api,
   CoreV1Api,
@@ -31,9 +32,7 @@ import type {
   V1APIVersions,
   V1SelfSubjectAccessReview,
   V1SelfSubjectRulesReview,
-} from "@freelensapp/kubernetes-client-node";
-
-import type { AsyncFnMock } from "@async-fn/jest";
+} from "@kubernetes/client-node";
 
 import type { Cluster } from "../../common/cluster/cluster";
 import type { ClusterConnection } from "../../main/cluster/cluster-connection.injectable";

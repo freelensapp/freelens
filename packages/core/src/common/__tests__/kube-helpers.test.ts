@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { KubeConfig } from "@freelensapp/kubernetes-client-node";
+import { KubeConfig } from "@kubernetes/client-node";
 import { loadConfigFromString, validateKubeConfig } from "../kube-helpers";
 
 const kubeconfig = `

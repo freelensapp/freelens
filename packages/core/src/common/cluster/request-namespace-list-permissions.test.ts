@@ -10,9 +10,8 @@ import { getDiForUnitTesting } from "../../main/getDiForUnitTesting";
 import { cast } from "../../test-utils/cast";
 import createRequestNamespaceListPermissionsInjectable from "./create-request-namespace-list-permissions.injectable";
 
-import type { AuthorizationV1Api, V1SubjectRulesReviewStatus } from "@freelensapp/kubernetes-client-node";
-
 import type { AsyncFnMock } from "@async-fn/jest";
+import type { AuthorizationV1Api, V1SubjectRulesReviewStatus } from "@kubernetes/client-node";
 import type { DiContainer } from "@ogre-tools/injectable";
 
 import type { KubeApiResource } from "../rbac";

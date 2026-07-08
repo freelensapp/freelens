@@ -22,9 +22,9 @@ import type {
 } from "@freelensapp/kube-api";
 import type { KubeJsonApiDataFor, KubeObject } from "@freelensapp/kube-object";
 import type { Logger } from "@freelensapp/logger";
-import type { RequestInit } from "@freelensapp/node-fetch";
 import type { Disposer } from "@freelensapp/utilities";
 
+import type { RequestInit } from "node-fetch";
 import type { Patch } from "rfc6902";
 import type { PartialDeep } from "type-fest";
 
