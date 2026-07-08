@@ -10,6 +10,7 @@ import assert from "assert";
 import { ipcMain, ipcRenderer } from "electron";
 import { isEqual } from "lodash";
 import { action, computed, observable, reaction, runInAction, toJS, when } from "mobx";
+import { createRequire } from "module";
 import { broadcastMessage, ipcMainHandle, ipcMainOn, ipcRendererOn } from "../../common/ipc";
 import {
   extensionLoaderFromMainChannel,
@@ -37,6 +38,14 @@ import type { LensExtension } from "../lens-extension";
 import type { Extension } from "./extension/extension.injectable";
 
 const logModule = "[EXTENSIONS-LOADER]";
+
+// v2 (plan D2/D6): the bundles are ESM, where the main process has no
+// `require` global; the node-integrated renderer keeps it. Node 24's
+// require(esm) loads both CJS and ESM extension entry points synchronously
+// (verified empirically in #1718), so a sync loader keeps working for both
+// module formats in both processes. Entry points with top-level await would
+// need an async import() path in the main process; not supported for now.
+const extensionRequire = globalThis.require ?? createRequire(import.meta.url);
 
 interface Dependencies {
   readonly extensionInstances: ObservableMap<LensExtensionId, LegacyLensExtension>;
@@ -400,7 +409,7 @@ export class ExtensionLoader {
     );
 
     try {
-      return require(/* webpackIgnore: true */ extAbsolutePath).default;
+      return extensionRequire(extAbsolutePath).default;
     } catch (error) {
       const message = (error instanceof Error ? error.stack : undefined) || error;
 
