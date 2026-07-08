@@ -13,6 +13,7 @@
     "url": "git+https://github.com/freelensapp/freelens.git"
   },
   "license": "MIT",
+  "type": "module",
   "author": {
     "name": "Freelens Authors",
     "email": "freelens@freelens.app"
