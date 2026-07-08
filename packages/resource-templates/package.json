@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/resource-templates",
   "version": "1.10.4-0",
-  "private": false,
+  "private": true,
   "homepage": "https://freelens.app",
   "bugs": {
     "url": "https://github.com/freelensapp/freelens/issues"

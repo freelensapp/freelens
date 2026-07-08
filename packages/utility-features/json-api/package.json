@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/json-api",
   "version": "1.10.4-0",
-  "private": false,
+  "private": true,
   "description": "JSON api client",
   "homepage": "https://freelens.app",
   "bugs": {

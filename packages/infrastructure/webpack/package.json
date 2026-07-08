@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/webpack",
   "version": "1.10.4-0",
-  "private": false,
+  "private": true,
   "description": "Webpack configurations and scripts for Lens packages.",
   "homepage": "https://freelens.app",
   "bugs": {

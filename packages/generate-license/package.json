@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/generate-license",
   "version": "1.10.4-0",
-  "private": false,
+  "private": true,
   "description": "CLI for generating license files",
   "homepage": "https://freelens.app",
   "bugs": {
