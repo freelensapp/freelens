@@ -20,21 +20,21 @@
   },
   "exports": {
     "./package.json": "./package.json",
-    "./main": "./static/build/library/main.js",
-    "./renderer": "./static/build/library/renderer.js",
-    "./styles": "./static/build/library/renderer.css",
+    "./main": "./src/main/library.ts",
+    "./renderer": "./src/renderer/library.ts",
+    "./styles": "./src/renderer/components/app.scss",
     "./template.html": "./src/renderer/template.html",
     "./vars.scss": "./src/renderer/components/vars.scss",
-    "./fonts": "./static/build/library/fonts"
+    "./fonts": "./src/renderer/fonts"
   },
   "main": "static/build/main.js",
   "typesVersions": {
     "*": {
       "main": [
-        "./static/build/library/src/main/library.d.ts"
+        "./src/main/library.ts"
       ],
       "renderer": [
-        "./static/build/library/src/renderer/library.d.ts"
+        "./src/renderer/library.ts"
       ]
     }
   },
