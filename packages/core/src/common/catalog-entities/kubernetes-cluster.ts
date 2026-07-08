@@ -12,7 +12,7 @@ import {
 import { CatalogCategory, CatalogEntity, categoryVersion } from "../catalog/catalog-entity";
 import { broadcastMessage } from "../ipc";
 import { IpcRendererNavigationEvents } from "../ipc/navigation-events";
-import KubeClusterCategoryIcon from "./icons/kubernetes.svg";
+import KubeClusterCategoryIcon from "./icons/kubernetes.svg?raw";
 
 import type {
   CatalogCategorySpec,

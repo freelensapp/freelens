@@ -1,4 +1,4 @@
-import type { ContainerWithType, EphemeralContainerWithType, PodContainerStatus } from "@freelensapp/kube-object/dist";
+import type { ContainerWithType, EphemeralContainerWithType, PodContainerStatus } from "@freelensapp/kube-object";
 
 export function containerStatusClassName(
   container: ContainerWithType | EphemeralContainerWithType,

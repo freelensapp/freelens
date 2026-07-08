@@ -35,3 +35,31 @@ declare module "*.ttf" {
   const content: string;
   export = content;
 }
+
+// Vite-specific import qualifiers (v2 build; see freelens/electron.vite.config.ts)
+declare module "*.svg?raw" {
+  const content: string;
+  export default content;
+}
+
+declare module "*?worker" {
+  const workerConstructor: {
+    new (options?: { name?: string }): Worker;
+  };
+  export default workerConstructor;
+}
+
+// Minimal subset of Vite's import.meta.glob typing (v2 build); replaces
+// webpack's require.context typing from @types/webpack-env.
+interface ImportMeta {
+  glob(
+    pattern: string | string[],
+    options?: {
+      eager?: boolean;
+      query?: string | Record<string, string | number | boolean>;
+      import?: string;
+      base?: string;
+      exhaustive?: boolean;
+    },
+  ): Record<string, unknown>;
+}

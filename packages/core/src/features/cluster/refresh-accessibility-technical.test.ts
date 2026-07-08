@@ -10,7 +10,7 @@
  */
 
 import asyncFn from "@async-fn/jest";
-import { flushPromises } from "@freelensapp/test-utils/dist";
+import { flushPromises } from "@freelensapp/test-utils";
 import { anyObject } from "jest-mock-extended/lib";
 import { PartialDeep } from "type-fest";
 import createAuthorizationApiInjectable from "../../common/cluster/create-authorization-api.injectable";

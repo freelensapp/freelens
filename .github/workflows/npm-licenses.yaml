@@ -70,6 +70,7 @@ jobs:
         run: yq -pj -oy 'pick((keys) - (pick(env(allowed_licenses)) | keys))' licenses.json > disallowed_licenses.yaml
         env:
           allowed_licenses: |-
+            - (Apache-2.0 AND BSD-3-Clause)
             - (Apache-2.0 OR MPL-1.1)
             - (BSD-3-Clause OR GPL-2.0)
             - (MIT AND Zlib)

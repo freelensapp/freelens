@@ -18,12 +18,12 @@
     "email": "freelens@freelens.app"
   },
   "exports": {
-    ".": "./src/index.ts",
+    ".": "./index.ts",
     "./styles": "./src/icon.scss",
     "./icons/*.svg": "./assets/*.svg"
   },
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "main": "./index.ts",
+  "types": "./index.ts",
   "files": [
     "assets"
   ],

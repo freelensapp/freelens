@@ -34,7 +34,14 @@ const write = process.argv.includes("--write");
 // Packages excluded from the automated codemod (special-cased elsewhere).
 const EXCLUDED = new Set(["@freelensapp/core", "@freelensapp/extensions"]);
 
-const SOURCE_ENTRY = "./src/index.ts";
+/**
+ * The TypeScript source entry of a package: `./src/index.ts` when present,
+ * otherwise the package-root `./index.ts` (used by most technical-features
+ * and utility packages, whose webpack entry was the root index.ts).
+ */
+function sourceEntry(pkgDir) {
+  return existsSync(join(pkgDir, "src", "index.ts")) ? "./src/index.ts" : "./index.ts";
+}
 
 /** Recursively collect package.json paths under packages/, skipping node_modules and dist. */
 function findPackageJsons(dir, acc = []) {
@@ -59,12 +66,12 @@ function findStylesSource(pkgDir) {
 }
 
 /** Rewrite an exports value that pointed at `./dist/index.js` to the source entry. */
-function rewriteDotExport(value) {
-  if (typeof value === "string") return SOURCE_ENTRY;
+function rewriteDotExport(value, entry) {
+  if (typeof value === "string") return entry;
   if (value && typeof value === "object") {
     const out = {};
     for (const [k, v] of Object.entries(value)) {
-      out[k] = typeof v === "string" ? SOURCE_ENTRY : v;
+      out[k] = typeof v === "string" ? entry : v;
     }
     return out;
   }
@@ -83,15 +90,16 @@ for (const pkgPath of findPackageJsons(join(repoRoot, "packages"))) {
 
   const pkgDir = dirname(pkgPath);
   const before = JSON.stringify(pkg);
+  const entry = sourceEntry(pkgDir);
 
-  if (pkg.main) pkg.main = SOURCE_ENTRY;
-  if (pkg.types) pkg.types = SOURCE_ENTRY;
-  if (pkg.module) pkg.module = SOURCE_ENTRY;
+  if (pkg.main) pkg.main = entry;
+  if (pkg.types) pkg.types = entry;
+  if (pkg.module) pkg.module = entry;
 
   if (pkg.exports && typeof pkg.exports === "object") {
     for (const [key, value] of Object.entries(pkg.exports)) {
       if (key === ".") {
-        pkg.exports[key] = rewriteDotExport(value);
+        pkg.exports[key] = rewriteDotExport(value, entry);
       } else if (key === "./styles") {
         const stylesSource = findStylesSource(pkgDir);
         if (stylesSource) {
