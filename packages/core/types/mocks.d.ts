@@ -41,3 +41,10 @@ declare module "*.svg?raw" {
   const content: string;
   export default content;
 }
+
+declare module "*?worker" {
+  const workerConstructor: {
+    new (options?: { name?: string }): Worker;
+  };
+  export default workerConstructor;
+}
