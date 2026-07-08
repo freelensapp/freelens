@@ -1,12 +1,16 @@
 name: Knip
 
+# Temporarily deactivated during the v2 migration (WIP): automatic push and
+# pull_request triggers are disabled so CI does not run knip while the
+# source-only packages work is in progress. Only manual dispatch remains.
+# To reactivate, restore the push/pull_request triggers below.
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - "*"
+  # push:
+  #   branches:
+  #     - main
+  # pull_request:
+  #   branches:
+  #     - "*"
   workflow_dispatch: {}
 
 permissions:
