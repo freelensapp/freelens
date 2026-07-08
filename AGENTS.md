@@ -285,6 +285,20 @@ When asked to implement a change on a PR:
    commit. This keeps the history bisectable and makes each change easy
    to revert individually.
 
+### Pushing After Every Commit
+
+The GitHub Actions job running Claude has a total timeout of 60 minutes.
+When the session times out, any commits that exist only in the runner's
+local checkout are lost. To make the work resumable in a follow-up session:
+
+1. **Push to the remote branch immediately after every commit.** Do not
+   accumulate multiple local commits before pushing — commit, push, then
+   move on to the next change.
+2. This pairs with the "one commit per fix" rule above: each completed fix
+   should land on the remote branch as soon as it is committed, so a
+   timed-out session can be resumed from the last pushed commit instead of
+   starting over.
+
 ### Modifying GitHub Actions Workflows
 
 Claude cannot push changes to files under `.github/workflows/` directly,
