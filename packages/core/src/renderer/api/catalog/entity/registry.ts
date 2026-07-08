@@ -21,7 +21,6 @@ import "../../../../common/catalog-entities";
 import { iter } from "@freelensapp/utilities";
 import { ipcRenderer } from "electron";
 import { once } from "lodash";
-import { isMainFrame } from "process";
 import { CatalogRunEvent } from "../../../../common/catalog/catalog-run-event";
 import { catalogEntityRunListener, catalogInitChannel, catalogItemsChannel } from "../../../../common/ipc/catalog";
 
@@ -101,7 +100,7 @@ export class CatalogEntityRegistry {
     // Make sure that we get items ASAP and not the next time one of them changes
     ipcRenderer.send(catalogInitChannel);
 
-    if (isMainFrame) {
+    if (process.isMainFrame) {
       ipcRendererOn(catalogEntityRunListener, (event, id: string) => {
         const entity = this.getById(id);
 
