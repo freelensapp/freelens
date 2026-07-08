@@ -9,6 +9,12 @@
 // electron-vite. It is intentionally incomplete: TODOs below mark the gaps that
 // still need local iteration against a real Electron run (the "packaged app that
 // boots" bar from Phase 1 cannot be verified on a headless CI runner).
+//
+// Phase 3 (WIP) — ESM flip (D2/D3): the main process output is switched from CJS
+// to ESM here. The matching `"type": "module"` flip across freelens and the
+// workspace packages is codemodded by scripts/v2-phase-3-esm-flip.mjs; the
+// extension loader's require()->import() move and Monaco module workers are
+// tracked as TODOs below (behaviour-bearing, not headless-verifiable).
 
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -28,7 +34,11 @@ export default defineConfig({
       outDir: buildDir,
       minify: false, // matches optimization.minimize: false
       sourcemap: true,
-      lib: { entry: resolve(root, "src/main/index.ts"), formats: ["cjs"] }, // ESM flip is Phase 3 (D2)
+      // D2/D3 (Phase 3): ESM main output. Requires `"type": "module"` in
+      // freelens/package.json (see scripts/v2-phase-3-esm-flip.mjs) so the
+      // emitted `main.js` is loaded as ESM; otherwise electron-vite writes an
+      // `.mjs` and the package `main` field must point at it. Verify locally.
+      lib: { entry: resolve(root, "src/main/index.ts"), formats: ["es"] },
     },
   },
   renderer: {
