@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { requestFromChannelInjectionToken } from "@freelensapp/messaging/dist";
+import { requestFromChannelInjectionToken } from "@freelensapp/messaging";
 import { getInjectable, type Injectable } from "@ogre-tools/injectable";
 import { downloadJsonChannel } from "../../common/fetch/download-json-channel";
 

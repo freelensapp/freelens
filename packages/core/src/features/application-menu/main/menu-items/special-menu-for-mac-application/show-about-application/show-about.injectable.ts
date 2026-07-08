@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { loggerInjectionToken } from "@freelensapp/logger/dist";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import * as semver from "semver";
 import getLatestVersionInjectable from "../../../../../../common/utils/get-latest-version.injectable";
