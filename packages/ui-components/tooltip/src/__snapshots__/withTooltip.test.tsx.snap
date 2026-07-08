@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`withTooltip tests does not render a tooltip when not specified 1`] = `
+exports[`withTooltip tests > does not render a tooltip when not specified 1`] = `
 <body>
   <div>
     <div>
@@ -10,7 +10,7 @@ exports[`withTooltip tests does not render a tooltip when not specified 1`] = `
 </body>
 `;
 
-exports[`withTooltip tests renders a tooltip when specified without id 1`] = `
+exports[`withTooltip tests > renders a tooltip when specified without id 1`] = `
 <body>
   <div>
     <div
@@ -23,7 +23,7 @@ exports[`withTooltip tests renders a tooltip when specified without id 1`] = `
 </body>
 `;
 
-exports[`withTooltip tests when a tooltip ReactNode and id is specified renders 1`] = `
+exports[`withTooltip tests > when a tooltip ReactNode and id is specified > renders 1`] = `
 <body>
   <div>
     <div
@@ -37,7 +37,7 @@ exports[`withTooltip tests when a tooltip ReactNode and id is specified renders 
 </body>
 `;
 
-exports[`withTooltip tests when a tooltip ReactNode and id is specified when hovering the component renders 1`] = `
+exports[`withTooltip tests > when a tooltip via props and id is specified > renders 1`] = `
 <body>
   <div>
     <div
@@ -47,48 +47,6 @@ exports[`withTooltip tests when a tooltip ReactNode and id is specified when hov
       foobar
       <div />
     </div>
-  </div>
-  <div
-    class="Tooltip narrow right formatter"
-    role="tooltip"
-    style="left: 10px; top: 0px;"
-  >
-    my-tooltip
-  </div>
-</body>
-`;
-
-exports[`withTooltip tests when a tooltip via props and id is specified renders 1`] = `
-<body>
-  <div>
-    <div
-      data-testid="my-test-id"
-      id="bat"
-    >
-      foobar
-      <div />
-    </div>
-  </div>
-</body>
-`;
-
-exports[`withTooltip tests when a tooltip via props and id is specified when hovering the component renders 1`] = `
-<body>
-  <div>
-    <div
-      data-testid="my-test-id"
-      id="bat"
-    >
-      foobar
-      <div />
-    </div>
-  </div>
-  <div
-    class="Tooltip narrow right formatter"
-    role="tooltip"
-    style="left: 10px; top: 0px;"
-  >
-    my-tooltip
   </div>
 </body>
 `;
