@@ -90,6 +90,16 @@ const NonInjectedInstalledExtensions = observer(
       <section data-testid="extensions-table">
         <List
           title={<h2 className={styles.title}>Installed extensions</h2>}
+          searchInputProps={{
+            searchHistory: {
+              enabled: true,
+              id: "extension-search-bar",
+              maxHistory: 10,
+              maxPinned: 10,
+              debounceMs: 700,
+              minQueryLength: 2,
+            },
+          }}
           columns={[
             {
               Header: "Name",
