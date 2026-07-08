@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/list-layout",
   "version": "1.10.4-0",
-  "private": false,
+  "private": true,
   "description": "Injection tokens for list layout",
   "homepage": "https://freelens.app",
   "bugs": {
