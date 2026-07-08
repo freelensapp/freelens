@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/ensure-binaries",
   "version": "1.10.4-0",
-  "private": false,
+  "private": true,
   "description": "CLI for downloading configured versions of the bundled versions of CLIs",
   "homepage": "https://freelens.app",
   "bugs": {

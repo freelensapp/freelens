@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/notifications",
   "version": "1.10.4-0",
-  "private": false,
+  "private": true,
   "description": "Highly extendable notifications in the Freelens.",
   "homepage": "https://freelens.app",
   "bugs": {

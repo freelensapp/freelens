@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/kubectl-versions",
   "version": "1.10.4-0",
-  "private": false,
+  "private": true,
   "description": "Package of kubectl versions at build time",
   "homepage": "https://freelens.app",
   "bugs": {

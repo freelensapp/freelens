@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/utilities",
   "version": "1.10.4-0",
-  "private": false,
+  "private": true,
   "description": "A collection of useful types",
   "homepage": "https://freelens.app",
   "bugs": {

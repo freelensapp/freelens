@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/react-application",
   "version": "1.10.4-0",
-  "private": false,
+  "private": true,
   "description": "Package for React Application",
   "homepage": "https://freelens.app",
   "bugs": {

@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/typescript",
   "version": "1.10.4-0",
-  "private": false,
+  "private": true,
   "description": "Typescript configuration for Freelens packages.",
   "homepage": "https://freelens.app",
   "bugs": {
