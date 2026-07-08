@@ -16,16 +16,13 @@
     "name": "Freelens Authors",
     "email": "freelens@freelens.app"
   },
-  "main": "dist/extension-api.js",
-  "types": "dist/extension-api.d.ts",
+  "main": "./src/extension-api.ts",
+  "types": "./src/extension-api.ts",
   "files": [
-    "dist/**/*.ts",
-    "__mocks__/*.ts",
-    "dist/**/*.js"
+    "src/**/*.ts",
+    "__mocks__/*.ts"
   ],
   "scripts": {
-    "build": "webpack --config webpack/extensions.ts",
-    "build:dev": "webpack --config webpack/extensions.ts",
     "clean": "pnpm dlx rimraf@6.1.3 dist",
     "clean:node_modules": "pnpm dlx rimraf@6.1.3 node_modules"
   },
