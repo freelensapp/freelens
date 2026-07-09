@@ -1,8 +1,5 @@
 name: Unit tests
 
-# Reactivated for the v2 migration: Phase 6 of docs/v2-plan.md is complete
-# enough that the full Vitest suite (core included) runs green, so the
-# automatic push and pull_request triggers are restored.
 on:
   push:
     branches:
@@ -17,17 +14,46 @@ permissions:
   contents: read
 
 jobs:
+  setup:
+    name: compute shards
+    runs-on: ubuntu-24.04-arm
+    outputs:
+      shards: ${{ steps.compute.outputs.shards }}
+      total: ${{ steps.compute.outputs.total }}
+    steps:
+      - name: Compute shard count from CPU cores and memory
+        id: compute
+        shell: bash
+        run: |
+          cores=$(nproc)
+          mem_gb=$(awk '/MemTotal/ { printf "%d", $2 / 1024 / 1024 }' /proc/meminfo)
+
+          # Aim for roughly one shard per two cores, but never request more
+          # shards than memory comfortably allows (~2 GB headroom per shard),
+          # and cap the fan-out at 4 to keep the matrix and build duplication
+          # bounded. Floor at 1 so a tiny runner still runs the whole suite.
+          by_cores=$(( (cores + 1) / 2 ))
+          by_mem=$(( mem_gb / 2 ))
+          total=$by_cores
+          if [ "$by_mem" -lt "$total" ]; then total=$by_mem; fi
+          if [ "$total" -lt 1 ]; then total=1; fi
+          if [ "$total" -gt 4 ]; then total=4; fi
+
+          shards="[$(seq -s, 1 "$total")]"
+          echo "total=$total" >> "$GITHUB_OUTPUT"
+          echo "shards=$shards" >> "$GITHUB_OUTPUT"
+          echo "cores=${cores} mem_gb=${mem_gb} -> total=${total} shards=${shards}"
+
   test-unit:
-    name: unit tests
+    name: unit tests (shard ${{ matrix.shard }})
+    needs: setup
 
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - runs-on: ubuntu-24.04-arm
-            arch: arm64
+        shard: ${{ fromJson(needs.setup.outputs.shards) }}
 
-    runs-on: ${{ matrix.runs-on }}
+    runs-on: ubuntu-24.04-arm
     timeout-minutes: 60
 
     env:
@@ -55,17 +81,17 @@ jobs:
         uses: actions/cache@v6
         with:
           path: ${{ env.pnpm_cache_dir }}
-          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-node-${{ hashFiles('pnpm-lock.yaml') }}
+          key: ubuntu-24.04-arm-arm64-node-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
-            ${{ matrix.runs-on }}-${{ matrix.arch }}-node-
+            ubuntu-24.04-arm-arm64-node-
 
       - name: Use Turborepo cache
         uses: actions/cache@v6
         with:
           path: ${{ env.TURBOREPO_CACHE }}
-          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-turborepo-${{ hashFiles('package.json', 'freelens/package.json', 'packages/**/package.json', 'pnpm-lock.yaml','turbo.json') }}
+          key: ubuntu-24.04-arm-arm64-turborepo-${{ hashFiles('package.json', 'freelens/package.json', 'packages/**/package.json', 'pnpm-lock.yaml','turbo.json') }}
           restore-keys: |
-            ${{ matrix.runs-on }}-${{ matrix.arch }}-turborepo-
+            ubuntu-24.04-arm-arm64-turborepo-
 
       - name: Install pnpm dependencies
         id: install-pnpm
@@ -79,8 +105,14 @@ jobs:
       - name: Build packages
         run: pnpm --color=always --stream build
 
-      - name: Run test units
-        run: pnpm --color=always --stream test:unit
+      # The core project carries the whole regression, so only it is sharded.
+      # The cheap non-core package projects run once, on the first shard.
+      - name: Run non-core unit tests
+        if: matrix.shard == 1
+        run: pnpm --color=always --stream --no-bail --filter='!@freelensapp/core' -r test:unit
+
+      - name: Run core unit tests (shard ${{ matrix.shard }}/${{ needs.setup.outputs.total }})
+        run: cd packages/core && pnpm test:unit --shard=${{ matrix.shard }}/${{ needs.setup.outputs.total }}
 
       - name: Clean after tests
         run: pnpm --color=always --parallel clean
