@@ -1,0 +1,134 @@
+name: Unit tests
+
+# Reactivated for the v2 migration: Phase 6 of docs/v2-plan.md is complete
+# enough that the full Vitest suite (core included) runs green, so the
+# automatic push and pull_request triggers are restored.
+#
+# Interim performance mitigation (docs/v2-plan.md D8, §6, and the option 3
+# analysis on PR #2115): the packages/core Vitest project dominates wall-clock
+# because every test file re-evaluates the eagerly-globbed injectable graph
+# from TypeScript source. Until the structural fix lands (isolate: false, which
+# is blocked by @freelensapp/legacy-global-di — see the Phase 7 removal item),
+# the core project is sharded across a matrix. The shard count is computed
+# dynamically from the runner's CPU cores and available memory by the `setup`
+# job, rather than hardcoded, so it tracks the runner class in use.
+on:
+  push:
+    branches:
+      - main
+      - v2
+  pull_request:
+    branches:
+      - "*"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  setup:
+    name: compute shards
+    runs-on: ubuntu-24.04-arm
+    outputs:
+      shards: ${{ steps.compute.outputs.shards }}
+      total: ${{ steps.compute.outputs.total }}
+    steps:
+      - name: Compute shard count from CPU cores and memory
+        id: compute
+        shell: bash
+        run: |
+          cores=$(nproc)
+          mem_gb=$(awk '/MemTotal/ { printf "%d", $2 / 1024 / 1024 }' /proc/meminfo)
+
+          # Aim for roughly one shard per two cores, but never request more
+          # shards than memory comfortably allows (~2 GB headroom per shard),
+          # and cap the fan-out at 4 to keep the matrix and build duplication
+          # bounded. Floor at 1 so a tiny runner still runs the whole suite.
+          by_cores=$(( (cores + 1) / 2 ))
+          by_mem=$(( mem_gb / 2 ))
+          total=$by_cores
+          if [ "$by_mem" -lt "$total" ]; then total=$by_mem; fi
+          if [ "$total" -lt 1 ]; then total=1; fi
+          if [ "$total" -gt 4 ]; then total=4; fi
+
+          shards="[$(seq -s, 1 "$total")]"
+          echo "total=$total" >> "$GITHUB_OUTPUT"
+          echo "shards=$shards" >> "$GITHUB_OUTPUT"
+          echo "cores=${cores} mem_gb=${mem_gb} -> total=${total} shards=${shards}"
+
+  test-unit:
+    name: unit tests (shard ${{ matrix.shard }})
+    needs: setup
+
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ${{ fromJson(needs.setup.outputs.shards) }}
+
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 60
+
+    env:
+      DO_NOT_TRACK: "1"
+      TURBOREPO_CACHE: ${{ github.workspace }}/.turbo
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup node
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Setup pnpm
+        run: corepack enable
+
+      - name: Get pnpm cache directory
+        shell: bash
+        run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
+
+      - name: Use pnpm cache
+        uses: actions/cache@v6
+        with:
+          path: ${{ env.pnpm_cache_dir }}
+          key: ubuntu-24.04-arm-arm64-node-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ubuntu-24.04-arm-arm64-node-
+
+      - name: Use Turborepo cache
+        uses: actions/cache@v6
+        with:
+          path: ${{ env.TURBOREPO_CACHE }}
+          key: ubuntu-24.04-arm-arm64-turborepo-${{ hashFiles('package.json', 'freelens/package.json', 'packages/**/package.json', 'pnpm-lock.yaml','turbo.json') }}
+          restore-keys: |
+            ubuntu-24.04-arm-arm64-turborepo-
+
+      - name: Install pnpm dependencies
+        id: install-pnpm
+        run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
+        continue-on-error: true
+
+      - name: Install pnpm dependencies (retry)
+        if: steps.install-pnpm.outcome == 'failure'
+        run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
+
+      - name: Build packages
+        run: pnpm --color=always --stream build
+
+      # The core project carries the whole regression, so only it is sharded.
+      # The cheap non-core package projects run once, on the first shard.
+      - name: Run non-core unit tests
+        if: matrix.shard == 1
+        run: pnpm --color=always --stream --no-bail --filter='!@freelensapp/core' -r test:unit
+
+      - name: Run core unit tests (shard ${{ matrix.shard }}/${{ needs.setup.outputs.total }})
+        run: cd packages/core && pnpm test:unit --shard=${{ matrix.shard }}/${{ needs.setup.outputs.total }}
+
+      - name: Clean after tests
+        run: pnpm --color=always --parallel clean
+
+      - name: Check untracked files
+        shell: bash
+        run: for f in $(git ls-files --others --exclude-standard); do git diff --no-index --stat --exit-code /dev/null $f; done
