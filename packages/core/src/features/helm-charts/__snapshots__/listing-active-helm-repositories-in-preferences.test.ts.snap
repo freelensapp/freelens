@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`listing active helm repositories in preferences when navigating to preferences containing helm repositories renders 1`] = `
+exports[`listing active helm repositories in preferences > when navigating to preferences containing helm repositories > renders 1`] = `
 <body>
   <div>
     <div
@@ -259,7 +259,7 @@ exports[`listing active helm repositories in preferences when navigating to pref
                                   id="download-mirror-input"
                                   role="combobox"
                                   spellcheck="false"
-                                  style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                  style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                                   tabindex="0"
                                   type="text"
                                   value=""
@@ -457,45 +457,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                   class="HorizontalLine size-xl"
                 />
                 <div
-                  data-preference-item-test="kubeconfig-sync"
-                >
-                  <section
-                    id="kube-sync"
-                  >
-                    <h2
-                      data-testid="kubernetes-sync-header"
-                    >
-                      Kubeconfig Syncs
-                    </h2>
-                    <div
-                      class="self-start mb-5"
-                    >
-                      <button
-                        class="Button PathPicker primary"
-                        type="button"
-                      >
-                        Sync Files and Folders
-                      </button>
-                    </div>
-                    <div
-                      class="SubTitle pt-5"
-                    >
-                      Synced Items
-                       
-                    </div>
-                    <div
-                      class="loading-spinner"
-                    >
-                      <div
-                        class="Spinner singleColor"
-                      />
-                    </div>
-                  </section>
-                </div>
-                <div
-                  class="HorizontalLine size-xl"
-                />
-                <div
                   data-preference-item-test="helm-charts"
                 >
                   <section
@@ -556,7 +517,7 @@ exports[`listing active helm repositories in preferences when navigating to pref
                                     id="selection-of-active-public-helm-repository"
                                     role="combobox"
                                     spellcheck="false"
-                                    style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                    style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                                     tabindex="0"
                                     type="text"
                                     value=""
@@ -624,6 +585,73 @@ exports[`listing active helm repositories in preferences when navigating to pref
                           </div>
                         </div>
                         <div />
+                      </div>
+                    </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="kubeconfig-sync"
+                >
+                  <section
+                    id="kube-sync"
+                  >
+                    <h2
+                      data-testid="kubernetes-sync-header"
+                    >
+                      Kubeconfig Syncs
+                    </h2>
+                    <div
+                      class="self-start mb-5"
+                    >
+                      <button
+                        class="Button PathPicker primary"
+                        type="button"
+                      >
+                        Sync Files and Folders
+                      </button>
+                    </div>
+                    <div
+                      class="SubTitle pt-5"
+                    >
+                      Synced Items
+                       
+                    </div>
+                    <div>
+                      <div
+                        class="item flex gaps align-center justify-space-between mt-3"
+                      >
+                        <i
+                          class="Icon material focusable"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="folder"
+                          >
+                            folder
+                          </span>
+                        </i>
+                        <div
+                          class="flex-grow break-all"
+                        >
+                          /some-home-dir/.kube
+                        </div>
+                        <i
+                          class="Icon material interactive focusable"
+                          tabindex="0"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="delete"
+                          >
+                            delete
+                          </span>
+                        </i>
+                        <div>
+                          Remove
+                        </div>
                       </div>
                     </div>
                   </section>
@@ -810,7 +838,7 @@ exports[`listing active helm repositories in preferences when navigating to pref
 </body>
 `;
 
-exports[`listing active helm repositories in preferences when navigating to preferences containing helm repositories when configuration resolves renders 1`] = `
+exports[`listing active helm repositories in preferences > when navigating to preferences containing helm repositories > when configuration resolves > renders 1`] = `
 <body>
   <div>
     <div
@@ -1069,7 +1097,7 @@ exports[`listing active helm repositories in preferences when navigating to pref
                                   id="download-mirror-input"
                                   role="combobox"
                                   spellcheck="false"
-                                  style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                  style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                                   tabindex="0"
                                   type="text"
                                   value=""
@@ -1267,73 +1295,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                   class="HorizontalLine size-xl"
                 />
                 <div
-                  data-preference-item-test="kubeconfig-sync"
-                >
-                  <section
-                    id="kube-sync"
-                  >
-                    <h2
-                      data-testid="kubernetes-sync-header"
-                    >
-                      Kubeconfig Syncs
-                    </h2>
-                    <div
-                      class="self-start mb-5"
-                    >
-                      <button
-                        class="Button PathPicker primary"
-                        type="button"
-                      >
-                        Sync Files and Folders
-                      </button>
-                    </div>
-                    <div
-                      class="SubTitle pt-5"
-                    >
-                      Synced Items
-                       
-                    </div>
-                    <div>
-                      <div
-                        class="item flex gaps align-center justify-space-between mt-3"
-                      >
-                        <i
-                          class="Icon material focusable"
-                        >
-                          <span
-                            class="icon"
-                            data-icon-name="folder"
-                          >
-                            folder
-                          </span>
-                        </i>
-                        <div
-                          class="flex-grow break-all"
-                        >
-                          /some-home-dir/.kube
-                        </div>
-                        <i
-                          class="Icon material interactive focusable"
-                          tabindex="0"
-                        >
-                          <span
-                            class="icon"
-                            data-icon-name="delete"
-                          >
-                            delete
-                          </span>
-                        </i>
-                        <div>
-                          Remove
-                        </div>
-                      </div>
-                    </div>
-                  </section>
-                </div>
-                <div
-                  class="HorizontalLine size-xl"
-                />
-                <div
                   data-preference-item-test="helm-charts"
                 >
                   <section
@@ -1394,7 +1355,7 @@ exports[`listing active helm repositories in preferences when navigating to pref
                                     id="selection-of-active-public-helm-repository"
                                     role="combobox"
                                     spellcheck="false"
-                                    style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                    style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                                     tabindex="0"
                                     type="text"
                                     value=""
@@ -1462,6 +1423,73 @@ exports[`listing active helm repositories in preferences when navigating to pref
                           </div>
                         </div>
                         <div />
+                      </div>
+                    </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="kubeconfig-sync"
+                >
+                  <section
+                    id="kube-sync"
+                  >
+                    <h2
+                      data-testid="kubernetes-sync-header"
+                    >
+                      Kubeconfig Syncs
+                    </h2>
+                    <div
+                      class="self-start mb-5"
+                    >
+                      <button
+                        class="Button PathPicker primary"
+                        type="button"
+                      >
+                        Sync Files and Folders
+                      </button>
+                    </div>
+                    <div
+                      class="SubTitle pt-5"
+                    >
+                      Synced Items
+                       
+                    </div>
+                    <div>
+                      <div
+                        class="item flex gaps align-center justify-space-between mt-3"
+                      >
+                        <i
+                          class="Icon material focusable"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="folder"
+                          >
+                            folder
+                          </span>
+                        </i>
+                        <div
+                          class="flex-grow break-all"
+                        >
+                          /some-home-dir/.kube
+                        </div>
+                        <i
+                          class="Icon material interactive focusable"
+                          tabindex="0"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="delete"
+                          >
+                            delete
+                          </span>
+                        </i>
+                        <div>
+                          Remove
+                        </div>
                       </div>
                     </div>
                   </section>
@@ -1648,7 +1676,7 @@ exports[`listing active helm repositories in preferences when navigating to pref
 </body>
 `;
 
-exports[`listing active helm repositories in preferences when navigating to preferences containing helm repositories when configuration resolves when updating repositories reject with any other error renders 1`] = `
+exports[`listing active helm repositories in preferences > when navigating to preferences containing helm repositories > when configuration resolves > when updating repositories reject with any other error > renders 1`] = `
 <body>
   <div>
     <div
@@ -1907,7 +1935,7 @@ exports[`listing active helm repositories in preferences when navigating to pref
                                   id="download-mirror-input"
                                   role="combobox"
                                   spellcheck="false"
-                                  style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                  style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                                   tabindex="0"
                                   type="text"
                                   value=""
@@ -2098,73 +2126,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                           When enabled, Helm will use server-side apply (--server-side=true) for install and upgrade operations. This is always enabled when "Force conflicts" is checked.
                         </div>
                       </section>
-                    </div>
-                  </section>
-                </div>
-                <div
-                  class="HorizontalLine size-xl"
-                />
-                <div
-                  data-preference-item-test="kubeconfig-sync"
-                >
-                  <section
-                    id="kube-sync"
-                  >
-                    <h2
-                      data-testid="kubernetes-sync-header"
-                    >
-                      Kubeconfig Syncs
-                    </h2>
-                    <div
-                      class="self-start mb-5"
-                    >
-                      <button
-                        class="Button PathPicker primary"
-                        type="button"
-                      >
-                        Sync Files and Folders
-                      </button>
-                    </div>
-                    <div
-                      class="SubTitle pt-5"
-                    >
-                      Synced Items
-                       
-                    </div>
-                    <div>
-                      <div
-                        class="item flex gaps align-center justify-space-between mt-3"
-                      >
-                        <i
-                          class="Icon material focusable"
-                        >
-                          <span
-                            class="icon"
-                            data-icon-name="folder"
-                          >
-                            folder
-                          </span>
-                        </i>
-                        <div
-                          class="flex-grow break-all"
-                        >
-                          /some-home-dir/.kube
-                        </div>
-                        <i
-                          class="Icon material interactive focusable"
-                          tabindex="0"
-                        >
-                          <span
-                            class="icon"
-                            data-icon-name="delete"
-                          >
-                            delete
-                          </span>
-                        </i>
-                        <div>
-                          Remove
-                        </div>
-                      </div>
                     </div>
                   </section>
                 </div>
@@ -2193,6 +2154,73 @@ exports[`listing active helm repositories in preferences when navigating to pref
                     </div>
                   </section>
                 </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="kubeconfig-sync"
+                >
+                  <section
+                    id="kube-sync"
+                  >
+                    <h2
+                      data-testid="kubernetes-sync-header"
+                    >
+                      Kubeconfig Syncs
+                    </h2>
+                    <div
+                      class="self-start mb-5"
+                    >
+                      <button
+                        class="Button PathPicker primary"
+                        type="button"
+                      >
+                        Sync Files and Folders
+                      </button>
+                    </div>
+                    <div
+                      class="SubTitle pt-5"
+                    >
+                      Synced Items
+                       
+                    </div>
+                    <div>
+                      <div
+                        class="item flex gaps align-center justify-space-between mt-3"
+                      >
+                        <i
+                          class="Icon material focusable"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="folder"
+                          >
+                            folder
+                          </span>
+                        </i>
+                        <div
+                          class="flex-grow break-all"
+                        >
+                          /some-home-dir/.kube
+                        </div>
+                        <i
+                          class="Icon material interactive focusable"
+                          tabindex="0"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="delete"
+                          >
+                            delete
+                          </span>
+                        </i>
+                        <div>
+                          Remove
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                </div>
               </section>
             </div>
             <div
@@ -2375,7 +2403,7 @@ exports[`listing active helm repositories in preferences when navigating to pref
 </body>
 `;
 
-exports[`listing active helm repositories in preferences when navigating to preferences containing helm repositories when configuration resolves when updating repositories reject with error about no existing repositories renders 1`] = `
+exports[`listing active helm repositories in preferences > when navigating to preferences containing helm repositories > when configuration resolves > when updating repositories reject with error about no existing repositories > renders 1`] = `
 <body>
   <div>
     <div
@@ -2634,7 +2662,7 @@ exports[`listing active helm repositories in preferences when navigating to pref
                                   id="download-mirror-input"
                                   role="combobox"
                                   spellcheck="false"
-                                  style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                  style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                                   tabindex="0"
                                   type="text"
                                   value=""
@@ -2825,73 +2853,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                           When enabled, Helm will use server-side apply (--server-side=true) for install and upgrade operations. This is always enabled when "Force conflicts" is checked.
                         </div>
                       </section>
-                    </div>
-                  </section>
-                </div>
-                <div
-                  class="HorizontalLine size-xl"
-                />
-                <div
-                  data-preference-item-test="kubeconfig-sync"
-                >
-                  <section
-                    id="kube-sync"
-                  >
-                    <h2
-                      data-testid="kubernetes-sync-header"
-                    >
-                      Kubeconfig Syncs
-                    </h2>
-                    <div
-                      class="self-start mb-5"
-                    >
-                      <button
-                        class="Button PathPicker primary"
-                        type="button"
-                      >
-                        Sync Files and Folders
-                      </button>
-                    </div>
-                    <div
-                      class="SubTitle pt-5"
-                    >
-                      Synced Items
-                       
-                    </div>
-                    <div>
-                      <div
-                        class="item flex gaps align-center justify-space-between mt-3"
-                      >
-                        <i
-                          class="Icon material focusable"
-                        >
-                          <span
-                            class="icon"
-                            data-icon-name="folder"
-                          >
-                            folder
-                          </span>
-                        </i>
-                        <div
-                          class="flex-grow break-all"
-                        >
-                          /some-home-dir/.kube
-                        </div>
-                        <i
-                          class="Icon material interactive focusable"
-                          tabindex="0"
-                        >
-                          <span
-                            class="icon"
-                            data-icon-name="delete"
-                          >
-                            delete
-                          </span>
-                        </i>
-                        <div>
-                          Remove
-                        </div>
-                      </div>
                     </div>
                   </section>
                 </div>
@@ -2957,7 +2918,7 @@ exports[`listing active helm repositories in preferences when navigating to pref
                                     id="selection-of-active-public-helm-repository"
                                     role="combobox"
                                     spellcheck="false"
-                                    style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                    style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                                     tabindex="0"
                                     type="text"
                                     value=""
@@ -3006,6 +2967,73 @@ exports[`listing active helm repositories in preferences when navigating to pref
                     </div>
                   </section>
                 </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="kubeconfig-sync"
+                >
+                  <section
+                    id="kube-sync"
+                  >
+                    <h2
+                      data-testid="kubernetes-sync-header"
+                    >
+                      Kubeconfig Syncs
+                    </h2>
+                    <div
+                      class="self-start mb-5"
+                    >
+                      <button
+                        class="Button PathPicker primary"
+                        type="button"
+                      >
+                        Sync Files and Folders
+                      </button>
+                    </div>
+                    <div
+                      class="SubTitle pt-5"
+                    >
+                      Synced Items
+                       
+                    </div>
+                    <div>
+                      <div
+                        class="item flex gaps align-center justify-space-between mt-3"
+                      >
+                        <i
+                          class="Icon material focusable"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="folder"
+                          >
+                            folder
+                          </span>
+                        </i>
+                        <div
+                          class="flex-grow break-all"
+                        >
+                          /some-home-dir/.kube
+                        </div>
+                        <i
+                          class="Icon material interactive focusable"
+                          tabindex="0"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="delete"
+                          >
+                            delete
+                          </span>
+                        </i>
+                        <div>
+                          Remove
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                </div>
               </section>
             </div>
             <div
@@ -3188,7 +3216,7 @@ exports[`listing active helm repositories in preferences when navigating to pref
 </body>
 `;
 
-exports[`listing active helm repositories in preferences when navigating to preferences containing helm repositories when configuration resolves when updating repositories resolve when repositories resolves renders 1`] = `
+exports[`listing active helm repositories in preferences > when navigating to preferences containing helm repositories > when configuration resolves > when updating repositories resolve > when repositories resolves > renders 1`] = `
 <body>
   <div>
     <div
@@ -3447,7 +3475,7 @@ exports[`listing active helm repositories in preferences when navigating to pref
                                   id="download-mirror-input"
                                   role="combobox"
                                   spellcheck="false"
-                                  style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                  style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                                   tabindex="0"
                                   type="text"
                                   value=""
@@ -3645,73 +3673,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                   class="HorizontalLine size-xl"
                 />
                 <div
-                  data-preference-item-test="kubeconfig-sync"
-                >
-                  <section
-                    id="kube-sync"
-                  >
-                    <h2
-                      data-testid="kubernetes-sync-header"
-                    >
-                      Kubeconfig Syncs
-                    </h2>
-                    <div
-                      class="self-start mb-5"
-                    >
-                      <button
-                        class="Button PathPicker primary"
-                        type="button"
-                      >
-                        Sync Files and Folders
-                      </button>
-                    </div>
-                    <div
-                      class="SubTitle pt-5"
-                    >
-                      Synced Items
-                       
-                    </div>
-                    <div>
-                      <div
-                        class="item flex gaps align-center justify-space-between mt-3"
-                      >
-                        <i
-                          class="Icon material focusable"
-                        >
-                          <span
-                            class="icon"
-                            data-icon-name="folder"
-                          >
-                            folder
-                          </span>
-                        </i>
-                        <div
-                          class="flex-grow break-all"
-                        >
-                          /some-home-dir/.kube
-                        </div>
-                        <i
-                          class="Icon material interactive focusable"
-                          tabindex="0"
-                        >
-                          <span
-                            class="icon"
-                            data-icon-name="delete"
-                          >
-                            delete
-                          </span>
-                        </i>
-                        <div>
-                          Remove
-                        </div>
-                      </div>
-                    </div>
-                  </section>
-                </div>
-                <div
-                  class="HorizontalLine size-xl"
-                />
-                <div
                   data-preference-item-test="helm-charts"
                 >
                   <section
@@ -3770,7 +3731,7 @@ exports[`listing active helm repositories in preferences when navigating to pref
                                     id="selection-of-active-public-helm-repository"
                                     role="combobox"
                                     spellcheck="false"
-                                    style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                    style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                                     tabindex="0"
                                     type="text"
                                     value=""
@@ -3888,6 +3849,73 @@ exports[`listing active helm repositories in preferences when navigating to pref
                     </div>
                   </section>
                 </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="kubeconfig-sync"
+                >
+                  <section
+                    id="kube-sync"
+                  >
+                    <h2
+                      data-testid="kubernetes-sync-header"
+                    >
+                      Kubeconfig Syncs
+                    </h2>
+                    <div
+                      class="self-start mb-5"
+                    >
+                      <button
+                        class="Button PathPicker primary"
+                        type="button"
+                      >
+                        Sync Files and Folders
+                      </button>
+                    </div>
+                    <div
+                      class="SubTitle pt-5"
+                    >
+                      Synced Items
+                       
+                    </div>
+                    <div>
+                      <div
+                        class="item flex gaps align-center justify-space-between mt-3"
+                      >
+                        <i
+                          class="Icon material focusable"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="folder"
+                          >
+                            folder
+                          </span>
+                        </i>
+                        <div
+                          class="flex-grow break-all"
+                        >
+                          /some-home-dir/.kube
+                        </div>
+                        <i
+                          class="Icon material interactive focusable"
+                          tabindex="0"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="delete"
+                          >
+                            delete
+                          </span>
+                        </i>
+                        <div>
+                          Remove
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                </div>
               </section>
             </div>
             <div
@@ -4070,7 +4098,7 @@ exports[`listing active helm repositories in preferences when navigating to pref
 </body>
 `;
 
-exports[`listing active helm repositories in preferences when navigating to preferences containing helm repositories when configuration resolves without path to repository cache directory renders 1`] = `
+exports[`listing active helm repositories in preferences > when navigating to preferences containing helm repositories > when configuration resolves without path to repository cache directory > renders 1`] = `
 <body>
   <div>
     <div
@@ -4329,7 +4357,7 @@ exports[`listing active helm repositories in preferences when navigating to pref
                                   id="download-mirror-input"
                                   role="combobox"
                                   spellcheck="false"
-                                  style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                  style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                                   tabindex="0"
                                   type="text"
                                   value=""
@@ -4520,73 +4548,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                           When enabled, Helm will use server-side apply (--server-side=true) for install and upgrade operations. This is always enabled when "Force conflicts" is checked.
                         </div>
                       </section>
-                    </div>
-                  </section>
-                </div>
-                <div
-                  class="HorizontalLine size-xl"
-                />
-                <div
-                  data-preference-item-test="kubeconfig-sync"
-                >
-                  <section
-                    id="kube-sync"
-                  >
-                    <h2
-                      data-testid="kubernetes-sync-header"
-                    >
-                      Kubeconfig Syncs
-                    </h2>
-                    <div
-                      class="self-start mb-5"
-                    >
-                      <button
-                        class="Button PathPicker primary"
-                        type="button"
-                      >
-                        Sync Files and Folders
-                      </button>
-                    </div>
-                    <div
-                      class="SubTitle pt-5"
-                    >
-                      Synced Items
-                       
-                    </div>
-                    <div>
-                      <div
-                        class="item flex gaps align-center justify-space-between mt-3"
-                      >
-                        <i
-                          class="Icon material focusable"
-                        >
-                          <span
-                            class="icon"
-                            data-icon-name="folder"
-                          >
-                            folder
-                          </span>
-                        </i>
-                        <div
-                          class="flex-grow break-all"
-                        >
-                          /some-home-dir/.kube
-                        </div>
-                        <i
-                          class="Icon material interactive focusable"
-                          tabindex="0"
-                        >
-                          <span
-                            class="icon"
-                            data-icon-name="delete"
-                          >
-                            delete
-                          </span>
-                        </i>
-                        <div>
-                          Remove
-                        </div>
-                      </div>
                     </div>
                   </section>
                 </div>
@@ -4615,6 +4576,73 @@ exports[`listing active helm repositories in preferences when navigating to pref
                     </div>
                   </section>
                 </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="kubeconfig-sync"
+                >
+                  <section
+                    id="kube-sync"
+                  >
+                    <h2
+                      data-testid="kubernetes-sync-header"
+                    >
+                      Kubeconfig Syncs
+                    </h2>
+                    <div
+                      class="self-start mb-5"
+                    >
+                      <button
+                        class="Button PathPicker primary"
+                        type="button"
+                      >
+                        Sync Files and Folders
+                      </button>
+                    </div>
+                    <div
+                      class="SubTitle pt-5"
+                    >
+                      Synced Items
+                       
+                    </div>
+                    <div>
+                      <div
+                        class="item flex gaps align-center justify-space-between mt-3"
+                      >
+                        <i
+                          class="Icon material focusable"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="folder"
+                          >
+                            folder
+                          </span>
+                        </i>
+                        <div
+                          class="flex-grow break-all"
+                        >
+                          /some-home-dir/.kube
+                        </div>
+                        <i
+                          class="Icon material interactive focusable"
+                          tabindex="0"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="delete"
+                          >
+                            delete
+                          </span>
+                        </i>
+                        <div>
+                          Remove
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                </div>
               </section>
             </div>
             <div
@@ -4797,7 +4825,7 @@ exports[`listing active helm repositories in preferences when navigating to pref
 </body>
 `;
 
-exports[`listing active helm repositories in preferences when navigating to preferences containing helm repositories when configuration resolves without path to repository config file renders 1`] = `
+exports[`listing active helm repositories in preferences > when navigating to preferences containing helm repositories > when configuration resolves without path to repository config file > renders 1`] = `
 <body>
   <div>
     <div
@@ -5056,7 +5084,7 @@ exports[`listing active helm repositories in preferences when navigating to pref
                                   id="download-mirror-input"
                                   role="combobox"
                                   spellcheck="false"
-                                  style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                  style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                                   tabindex="0"
                                   type="text"
                                   value=""
@@ -5247,73 +5275,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                           When enabled, Helm will use server-side apply (--server-side=true) for install and upgrade operations. This is always enabled when "Force conflicts" is checked.
                         </div>
                       </section>
-                    </div>
-                  </section>
-                </div>
-                <div
-                  class="HorizontalLine size-xl"
-                />
-                <div
-                  data-preference-item-test="kubeconfig-sync"
-                >
-                  <section
-                    id="kube-sync"
-                  >
-                    <h2
-                      data-testid="kubernetes-sync-header"
-                    >
-                      Kubeconfig Syncs
-                    </h2>
-                    <div
-                      class="self-start mb-5"
-                    >
-                      <button
-                        class="Button PathPicker primary"
-                        type="button"
-                      >
-                        Sync Files and Folders
-                      </button>
-                    </div>
-                    <div
-                      class="SubTitle pt-5"
-                    >
-                      Synced Items
-                       
-                    </div>
-                    <div>
-                      <div
-                        class="item flex gaps align-center justify-space-between mt-3"
-                      >
-                        <i
-                          class="Icon material focusable"
-                        >
-                          <span
-                            class="icon"
-                            data-icon-name="folder"
-                          >
-                            folder
-                          </span>
-                        </i>
-                        <div
-                          class="flex-grow break-all"
-                        >
-                          /some-home-dir/.kube
-                        </div>
-                        <i
-                          class="Icon material interactive focusable"
-                          tabindex="0"
-                        >
-                          <span
-                            class="icon"
-                            data-icon-name="delete"
-                          >
-                            delete
-                          </span>
-                        </i>
-                        <div>
-                          Remove
-                        </div>
-                      </div>
                     </div>
                   </section>
                 </div>
@@ -5342,6 +5303,73 @@ exports[`listing active helm repositories in preferences when navigating to pref
                     </div>
                   </section>
                 </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
+                  data-preference-item-test="kubeconfig-sync"
+                >
+                  <section
+                    id="kube-sync"
+                  >
+                    <h2
+                      data-testid="kubernetes-sync-header"
+                    >
+                      Kubeconfig Syncs
+                    </h2>
+                    <div
+                      class="self-start mb-5"
+                    >
+                      <button
+                        class="Button PathPicker primary"
+                        type="button"
+                      >
+                        Sync Files and Folders
+                      </button>
+                    </div>
+                    <div
+                      class="SubTitle pt-5"
+                    >
+                      Synced Items
+                       
+                    </div>
+                    <div>
+                      <div
+                        class="item flex gaps align-center justify-space-between mt-3"
+                      >
+                        <i
+                          class="Icon material focusable"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="folder"
+                          >
+                            folder
+                          </span>
+                        </i>
+                        <div
+                          class="flex-grow break-all"
+                        >
+                          /some-home-dir/.kube
+                        </div>
+                        <i
+                          class="Icon material interactive focusable"
+                          tabindex="0"
+                        >
+                          <span
+                            class="icon"
+                            data-icon-name="delete"
+                          >
+                            delete
+                          </span>
+                        </i>
+                        <div>
+                          Remove
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                </div>
               </section>
             </div>
             <div
@@ -5524,7 +5552,7 @@ exports[`listing active helm repositories in preferences when navigating to pref
 </body>
 `;
 
-exports[`listing active helm repositories in preferences when navigating to preferences containing helm repositories when getting configuration rejects renders 1`] = `
+exports[`listing active helm repositories in preferences > when navigating to preferences containing helm repositories > when getting configuration rejects > renders 1`] = `
 <body>
   <div>
     <div
@@ -5783,7 +5811,7 @@ exports[`listing active helm repositories in preferences when navigating to pref
                                   id="download-mirror-input"
                                   role="combobox"
                                   spellcheck="false"
-                                  style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                  style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                                   tabindex="0"
                                   type="text"
                                   value=""
@@ -5981,6 +6009,31 @@ exports[`listing active helm repositories in preferences when navigating to pref
                   class="HorizontalLine size-xl"
                 />
                 <div
+                  data-preference-item-test="helm-charts"
+                >
+                  <section
+                    id="helm"
+                  >
+                    <h2>
+                      Helm Charts
+                    </h2>
+                    <div>
+                      <div
+                        class="notice"
+                      >
+                        <div
+                          class="flex-grow text-center"
+                        >
+                          Error getting Helm configuration: some-error
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+                <div
+                  class="HorizontalLine size-xl"
+                />
+                <div
                   data-preference-item-test="kubeconfig-sync"
                 >
                   <section
@@ -6039,31 +6092,6 @@ exports[`listing active helm repositories in preferences when navigating to pref
                         </i>
                         <div>
                           Remove
-                        </div>
-                      </div>
-                    </div>
-                  </section>
-                </div>
-                <div
-                  class="HorizontalLine size-xl"
-                />
-                <div
-                  data-preference-item-test="helm-charts"
-                >
-                  <section
-                    id="helm"
-                  >
-                    <h2>
-                      Helm Charts
-                    </h2>
-                    <div>
-                      <div
-                        class="notice"
-                      >
-                        <div
-                          class="flex-grow text-center"
-                        >
-                          Error getting Helm configuration: some-error
                         </div>
                       </div>
                     </div>

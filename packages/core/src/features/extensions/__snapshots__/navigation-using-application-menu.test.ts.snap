@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`extensions - navigation using application menu renders 1`] = `
+exports[`extensions - navigation using application menu > renders 1`] = `
 <div>
   <div
     class="Notifications flex column align-flex-end"
@@ -376,7 +376,7 @@ exports[`extensions - navigation using application menu renders 1`] = `
 </div>
 `;
 
-exports[`extensions - navigation using application menu when navigating to extensions using application menu renders 1`] = `
+exports[`extensions - navigation using application menu > when navigating to extensions using application menu > renders 1`] = `
 <div>
   <div
     class="Notifications flex column align-flex-end"

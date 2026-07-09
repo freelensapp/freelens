@@ -1,10 +1,52 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissions given no matching component given current url is starting url renders 1`] = `
+exports[`<ClusterFrame /> > given cluster with list nodes and namespaces permissions > given no matching component > given current url is starting url > renders 1`] = `
 <div>
   <div
     class="Notifications flex column align-flex-end"
   />
+  <div
+    class="Animate slide-right Drawer KubeObjectDetails flex column right enter"
+    style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
+  >
+    <div
+      class="drawer-wrapper flex column"
+    >
+      <div
+        class="drawer-title flex align-center"
+      >
+        <div
+          class="drawer-title-text flex gaps align-center"
+        >
+          
+        </div>
+        <i
+          class="Icon material interactive focusable"
+          tabindex="0"
+        >
+          <span
+            class="icon"
+            data-icon-name="close"
+          >
+            close
+          </span>
+        </i>
+        <div>
+          Close
+        </div>
+      </div>
+      <div
+        class="drawer-content flex column box grow"
+      >
+        <div
+          class="Spinner singleColor center"
+        />
+      </div>
+    </div>
+    <div
+      class="ResizingAnchor horizontal leading"
+    />
+  </div>
   <div
     class="mainLayout"
     style="--sidebar-width: 200px;"
@@ -21,7 +63,7 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
         >
           <div
             class="Avatar rounded loadingAvatar"
-            style="width: 40px; height: 40px;"
+            style="width: 40px; height: 40px; background: var(--halfGray);"
           >
             ??
           </div>
@@ -458,7 +500,7 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
             aria-live="assertive"
             id="DndLiveRegion-2"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
       </div>
@@ -608,6 +650,14 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
       </div>
     </div>
   </div>
+</div>
+`;
+
+exports[`<ClusterFrame /> > given cluster with list nodes and namespaces permissions > renders 1`] = `
+<div>
+  <div
+    class="Notifications flex column align-flex-end"
+  />
   <div
     class="Animate slide-right Drawer KubeObjectDetails flex column right enter"
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
@@ -650,14 +700,6 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
       class="ResizingAnchor horizontal leading"
     />
   </div>
-</div>
-`;
-
-exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissions renders 1`] = `
-<div>
-  <div
-    class="Notifications flex column align-flex-end"
-  />
   <div
     class="mainLayout"
     style="--sidebar-width: 200px;"
@@ -674,7 +716,7 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
         >
           <div
             class="Avatar rounded loadingAvatar"
-            style="width: 40px; height: 40px;"
+            style="width: 40px; height: 40px; background: var(--halfGray);"
           >
             ??
           </div>
@@ -1111,7 +1153,7 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
             aria-live="assertive"
             id="DndLiveRegion-0"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
       </div>
@@ -1268,6 +1310,14 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
       </div>
     </div>
   </div>
+</div>
+`;
+
+exports[`<ClusterFrame /> > given cluster without list nodes, but with namespaces permissions > renders 1`] = `
+<div>
+  <div
+    class="Notifications flex column align-flex-end"
+  />
   <div
     class="Animate slide-right Drawer KubeObjectDetails flex column right enter"
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
@@ -1310,14 +1360,6 @@ exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissio
       class="ResizingAnchor horizontal leading"
     />
   </div>
-</div>
-`;
-
-exports[`<ClusterFrame /> given cluster without list nodes, but with namespaces permissions renders 1`] = `
-<div>
-  <div
-    class="Notifications flex column align-flex-end"
-  />
   <div
     class="mainLayout"
     style="--sidebar-width: 200px;"
@@ -1334,7 +1376,7 @@ exports[`<ClusterFrame /> given cluster without list nodes, but with namespaces 
         >
           <div
             class="Avatar rounded loadingAvatar"
-            style="width: 40px; height: 40px;"
+            style="width: 40px; height: 40px; background: var(--halfGray);"
           >
             ??
           </div>
@@ -1699,7 +1741,7 @@ exports[`<ClusterFrame /> given cluster without list nodes, but with namespaces 
             aria-live="assertive"
             id="DndLiveRegion-4"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
       </div>
@@ -1793,7 +1835,7 @@ exports[`<ClusterFrame /> given cluster without list nodes, but with namespaces 
                           id="overview-namespace-select-filter-input"
                           role="combobox"
                           spellcheck="false"
-                          style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                          style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                           tabindex="0"
                           type="text"
                           value=""
@@ -1967,48 +2009,6 @@ exports[`<ClusterFrame /> given cluster without list nodes, but with namespaces 
         </div>
       </div>
     </div>
-  </div>
-  <div
-    class="Animate slide-right Drawer KubeObjectDetails flex column right enter"
-    style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
-  >
-    <div
-      class="drawer-wrapper flex column"
-    >
-      <div
-        class="drawer-title flex align-center"
-      >
-        <div
-          class="drawer-title-text flex gaps align-center"
-        >
-          
-        </div>
-        <i
-          class="Icon material interactive focusable"
-          tabindex="0"
-        >
-          <span
-            class="icon"
-            data-icon-name="close"
-          >
-            close
-          </span>
-        </i>
-        <div>
-          Close
-        </div>
-      </div>
-      <div
-        class="drawer-content flex column box grow"
-      >
-        <div
-          class="Spinner singleColor center"
-        />
-      </div>
-    </div>
-    <div
-      class="ResizingAnchor horizontal leading"
-    />
   </div>
 </div>
 `;

@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`<Projected /> renders 1`] = `
+exports[`<Projected /> > renders 1`] = `
 <body>
   <div>
     <div
@@ -19,7 +19,7 @@ exports[`<Projected /> renders 1`] = `
 </body>
 `;
 
-exports[`<Projected /> renders a secret source including overriding mode 1`] = `
+exports[`<Projected /> > renders a secret source including overriding mode 1`] = `
 <body>
   <div>
     <div
@@ -91,7 +91,7 @@ exports[`<Projected /> renders a secret source including overriding mode 1`] = `
 </body>
 `;
 
-exports[`<Projected /> renders a secret source, when provided 1`] = `
+exports[`<Projected /> > renders a secret source, when provided 1`] = `
 <body>
   <div>
     <div
@@ -162,7 +162,7 @@ exports[`<Projected /> renders a secret source, when provided 1`] = `
 </body>
 `;
 
-exports[`<Projected /> renders default mount mode in octal when provided 1`] = `
+exports[`<Projected /> > renders default mount mode in octal when provided 1`] = `
 <body>
   <div>
     <div
@@ -195,7 +195,7 @@ exports[`<Projected /> renders default mount mode in octal when provided 1`] = `
 </body>
 `;
 
-exports[`<Projected /> renders when no sources array provided 1`] = `
+exports[`<Projected /> > renders when no sources array provided 1`] = `
 <body>
   <div>
     <div

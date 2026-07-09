@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Icon settings given no external registrations for cluster settings menu injection token renders 1`] = `
+exports[`Icon settings > given no external registrations for cluster settings menu injection token > renders 1`] = `
 <body>
   <div>
     <div>
@@ -52,7 +52,7 @@ exports[`Icon settings given no external registrations for cluster settings menu
 </body>
 `;
 
-exports[`Icon settings given no registrations for cluster settings component injection token renders 1`] = `
+exports[`Icon settings > given no registrations for cluster settings component injection token > renders 1`] = `
 <body>
   <div>
     <div>

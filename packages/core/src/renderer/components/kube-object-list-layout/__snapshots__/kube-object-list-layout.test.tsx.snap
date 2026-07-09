@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`kube-object-list-layout given pod store renders 1`] = `
+exports[`kube-object-list-layout > given pod store > renders 1`] = `
 <body>
   <div>
     <div>
@@ -67,7 +67,7 @@ exports[`kube-object-list-layout given pod store renders 1`] = `
                       id="kube-object-list-layout-namespace-select-input"
                       role="combobox"
                       spellcheck="false"
-                      style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                      style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                       tabindex="0"
                       type="text"
                       value=""
