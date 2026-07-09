@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { fireEvent, waitFor } from "@testing-library/react";
 import execFileInjectable from "../../common/fs/exec-file.injectable";
@@ -17,7 +17,7 @@ import requestPublicHelmRepositoriesInjectable from "./child-features/preference
 
 import type { AsyncResult } from "@freelensapp/utilities";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
 import type { RenderResult } from "@testing-library/react";
 
 import type { ExecFile } from "../../common/fs/exec-file.injectable";
@@ -26,14 +26,14 @@ import type { ApplicationBuilder } from "../../renderer/components/test-utils/ge
 
 describe("add custom helm repository in preferences", () => {
   let builder: ApplicationBuilder;
-  let showSuccessNotificationMock: jest.Mock;
-  let showErrorNotificationMock: jest.Mock;
+  let showSuccessNotificationMock: vi.Mock;
+  let showErrorNotificationMock: vi.Mock;
   let rendered: RenderResult;
   let execFileMock: AsyncFnMock<ExecFile>;
   let getActiveHelmRepositoriesMock: AsyncFnMock<() => AsyncResult<HelmRepo[]>>;
 
   beforeEach(async () => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
 
     builder = getApplicationBuilder();
 
@@ -41,8 +41,8 @@ describe("add custom helm repository in preferences", () => {
 
     execFileMock = asyncFn();
     getActiveHelmRepositoriesMock = asyncFn();
-    showSuccessNotificationMock = jest.fn();
-    showErrorNotificationMock = jest.fn();
+    showSuccessNotificationMock = vi.fn();
+    showErrorNotificationMock = vi.fn();
 
     builder.beforeApplicationStart(({ mainDi }) => {
       mainDi.override(getActiveHelmRepositoriesInjectable, () => getActiveHelmRepositoriesMock);
@@ -175,7 +175,7 @@ describe("add custom helm repository in preferences", () => {
               fireEvent.click(submitButton);
 
               // TODO: Remove when debounce is removed from WizardStep.submit
-              jest.runOnlyPendingTimers();
+              vi.runOnlyPendingTimers();
             });
 
             it("renders", async () => {
@@ -363,7 +363,7 @@ describe("add custom helm repository in preferences", () => {
 
                 fireEvent.click(checkbox);
 
-                jest.runOnlyPendingTimers();
+                vi.runOnlyPendingTimers();
               });
 
               it("renders", async () => {
@@ -379,7 +379,7 @@ describe("add custom helm repository in preferences", () => {
                 fireEvent.click(submitButton);
 
                 // TODO: Remove when debounce is removed from WizardStep.submit
-                jest.runOnlyPendingTimers();
+                vi.runOnlyPendingTimers();
 
                 expect(execFileMock).toHaveBeenCalledWith(
                   "some-helm-binary-path",

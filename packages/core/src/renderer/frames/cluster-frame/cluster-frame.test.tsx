@@ -42,8 +42,8 @@ describe("<ClusterFrame />", () => {
         </DiContextProvider>,
       );
 
-    di.override(subscribeStoresInjectable, () => jest.fn().mockImplementation(() => jest.fn()));
-    di.override(legacyOnChannelListenInjectable, () => jest.fn().mockImplementation(() => jest.fn()));
+    di.override(subscribeStoresInjectable, () => vi.fn().mockImplementation(() => vi.fn()));
+    di.override(legacyOnChannelListenInjectable, () => vi.fn().mockImplementation(() => vi.fn()));
     di.override(directoryForUserDataInjectable, () => "/some/irrelavent/path");
     di.override(storesAndApisCanBeCreatedInjectable, () => true);
     di.override(currentlyInClusterFrameInjectable, () => true);

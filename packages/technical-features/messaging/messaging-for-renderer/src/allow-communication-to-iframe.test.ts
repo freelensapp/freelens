@@ -10,7 +10,7 @@ import ipcRendererInjectable from "./ipc/ipc-renderer.injectable";
 
 describe("allow communication to iframe", () => {
   let di: DiContainer;
-  let sendMessageToChannelMock: jest.Mock;
+  let sendMessageToChannelMock: vi.Mock;
 
   beforeEach(() => {
     di = createContainer("irrelevant");
@@ -23,7 +23,7 @@ describe("allow communication to iframe", () => {
 
     di.override(ipcRendererInjectable, () => ({ on: () => {} }) as unknown);
 
-    sendMessageToChannelMock = jest.fn();
+    sendMessageToChannelMock = vi.fn();
     di.override(sendMessageToChannelInjectionToken, () => sendMessageToChannelMock);
   });
 

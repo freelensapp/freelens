@@ -45,7 +45,7 @@ describe("Main K8s API functions (direct handler)", () => {
         items: [{ metadata: { name: "pod-1" } }, { metadata: { name: "pod-2" } }],
       };
 
-      const di = setupDi({ get: jest.fn().mockResolvedValue(mockPods) });
+      const di = setupDi({ get: vi.fn().mockResolvedValue(mockPods) });
       const executeHandler = di.inject(executeOnClusterHandlerInjectable);
 
       const response = await executeHandler({
@@ -63,7 +63,7 @@ describe("Main K8s API functions (direct handler)", () => {
     it("should get a single resource", async () => {
       const mockPod = { metadata: { name: "my-pod", namespace: "default" } };
 
-      const di = setupDi({ get: jest.fn().mockResolvedValue(mockPod) });
+      const di = setupDi({ get: vi.fn().mockResolvedValue(mockPod) });
       const executeHandler = di.inject(executeOnClusterHandlerInjectable);
 
       const response = await executeHandler({
@@ -81,7 +81,7 @@ describe("Main K8s API functions (direct handler)", () => {
     it("should create a resource", async () => {
       const mockCreated = { metadata: { name: "new-config", namespace: "default", uid: "new-uid" } };
 
-      const di = setupDi({ post: jest.fn().mockResolvedValue(mockCreated) });
+      const di = setupDi({ post: vi.fn().mockResolvedValue(mockCreated) });
       const executeHandler = di.inject(executeOnClusterHandlerInjectable);
 
       const response = await executeHandler({
@@ -98,7 +98,7 @@ describe("Main K8s API functions (direct handler)", () => {
     it("should update an existing resource", async () => {
       const mockUpdated = { metadata: { name: "my-config", namespace: "default" }, data: { key: "new-value" } };
 
-      const di = setupDi({ put: jest.fn().mockResolvedValue(mockUpdated) });
+      const di = setupDi({ put: vi.fn().mockResolvedValue(mockUpdated) });
       const executeHandler = di.inject(executeOnClusterHandlerInjectable);
 
       const response = await executeHandler({
@@ -115,7 +115,7 @@ describe("Main K8s API functions (direct handler)", () => {
 
   describe("deleteOnCluster behavior", () => {
     it("should delete a resource", async () => {
-      const di = setupDi({ del: jest.fn().mockResolvedValue({ status: "Success" }) });
+      const di = setupDi({ del: vi.fn().mockResolvedValue({ status: "Success" }) });
       const executeHandler = di.inject(executeOnClusterHandlerInjectable);
 
       const response = await executeHandler({
@@ -132,7 +132,7 @@ describe("Main K8s API functions (direct handler)", () => {
     it("should patch with strategic merge", async () => {
       const mockPatched = { metadata: { name: "my-deploy" }, spec: { replicas: 5 } };
 
-      const di = setupDi({ patch: jest.fn().mockResolvedValue(mockPatched) });
+      const di = setupDi({ patch: vi.fn().mockResolvedValue(mockPatched) });
       const executeHandler = di.inject(executeOnClusterHandlerInjectable);
 
       const response = await executeHandler({
@@ -147,7 +147,7 @@ describe("Main K8s API functions (direct handler)", () => {
     });
 
     it("should patch with JSON patch", async () => {
-      const di = setupDi({ patch: jest.fn().mockResolvedValue({}) });
+      const di = setupDi({ patch: vi.fn().mockResolvedValue({}) });
       const executeHandler = di.inject(executeOnClusterHandlerInjectable);
 
       const response = await executeHandler({

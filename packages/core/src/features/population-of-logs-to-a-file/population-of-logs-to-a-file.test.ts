@@ -23,8 +23,8 @@ describe("Population of logs to a file", () => {
   let builder: ApplicationBuilder;
   let windowDi: DiContainer;
   let logWarningInRenderer: (message: string, ...args: any) => void;
-  let frameSpecificWinstonLogInMainMock: jest.Mock;
-  let frameSpecificCloseLogInMainMock: jest.Mock;
+  let frameSpecificWinstonLogInMainMock: vi.Mock;
+  let frameSpecificCloseLogInMainMock: vi.Mock;
 
   async function setUpTestApplication({ testFileId, isClusterFrame }: { testFileId: string; isClusterFrame: boolean }) {
     builder = getApplicationBuilder();
@@ -33,8 +33,8 @@ describe("Population of logs to a file", () => {
       builder.setEnvironmentToClusterFrame();
     }
 
-    frameSpecificWinstonLogInMainMock = jest.fn();
-    frameSpecificCloseLogInMainMock = jest.fn();
+    frameSpecificWinstonLogInMainMock = vi.fn();
+    frameSpecificCloseLogInMainMock = vi.fn();
 
     builder.beforeApplicationStart(({ mainDi }) => {
       mainDi.override(

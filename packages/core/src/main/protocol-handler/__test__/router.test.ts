@@ -37,7 +37,7 @@ describe("protocol router tests", () => {
   let extensionInstances: ObservableMap<LensExtensionId, LegacyLensExtension>;
   let lpr: LensProtocolRouterMain;
   let enabledExtensions: ObservableMap<LensExtensionId, LensExtensionState>;
-  let broadcastMessageMock: jest.Mock;
+  let broadcastMessageMock: vi.Mock;
 
   beforeEach(async () => {
     const di = getDiForUnitTesting();
@@ -45,7 +45,7 @@ describe("protocol router tests", () => {
     enabledExtensions = di.inject(enabledExtensionsStateInjectable);
     di.override(directoryForUserDataInjectable, () => "/some-directory-for-user-data");
 
-    broadcastMessageMock = jest.fn();
+    broadcastMessageMock = vi.fn();
     di.override(broadcastMessageInjectable, () => broadcastMessageMock);
 
     extensionInstances = di.inject(extensionInstancesInjectable);

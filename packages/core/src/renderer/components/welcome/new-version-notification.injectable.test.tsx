@@ -16,7 +16,7 @@ import type { DiContainer } from "@ogre-tools/injectable";
 
 describe("new-version-notification.injectable", () => {
   let di: DiContainer;
-  let showInfoMock: jest.Mock;
+  let showInfoMock: vi.Mock;
 
   beforeEach(() => {
     di = getDiForUnitTesting();
@@ -24,7 +24,7 @@ describe("new-version-notification.injectable", () => {
     // Current app version used in comparison
     di.override(buildVersionInitializable.stateToken, () => "1.2.3");
 
-    showInfoMock = jest.fn();
+    showInfoMock = vi.fn();
     di.override(showInfoNotificationInjectable, () => showInfoMock);
   });
 

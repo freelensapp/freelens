@@ -1,4 +1,4 @@
-import asyncFn, { AsyncFnMock } from "@async-fn/jest";
+import asyncFn, { AsyncFnMock } from "@async-fn/vitest";
 import { getPromiseStatus } from "@ogre-tools/test-utils";
 import { DoWebpackBuild, doWebpackBuildInjectable } from "./do-webpack-build";
 import { execInjectable } from "./exec.injectable";
@@ -7,7 +7,7 @@ import { LogSuccess, logSuccessInjectable } from "./log-success.injectable";
 import { LogWarning, logWarningInjectable } from "./log-warning.injectable";
 
 describe("do-webpack-build", () => {
-  let execMock: jest.Mock;
+  let execMock: vi.Mock;
   let doWebpackBuild: DoWebpackBuild;
   let logSuccessMock: AsyncFnMock<LogSuccess>;
   let logWarningMock: AsyncFnMock<LogWarning>;
@@ -17,11 +17,11 @@ describe("do-webpack-build", () => {
     const di = getDi();
 
     execResultStub = {
-      stdout: { on: jest.fn() },
-      stderr: { on: jest.fn() },
-      on: jest.fn(),
+      stdout: { on: vi.fn() },
+      stderr: { on: vi.fn() },
+      on: vi.fn(),
     };
-    execMock = jest.fn().mockReturnValue(execResultStub);
+    execMock = vi.fn().mockReturnValue(execResultStub);
     di.override(execInjectable, () => execMock as any);
     logSuccessMock = asyncFn();
     di.override(logSuccessInjectable, () => logSuccessMock);

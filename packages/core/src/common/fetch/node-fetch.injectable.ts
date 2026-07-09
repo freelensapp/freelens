@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import nodeFetch, { type RequestInfo, type RequestInit, type Response } from "@freelensapp/node-fetch";
 import { getInjectable, type Injectable } from "@ogre-tools/injectable";
+import nodeFetch, { type RequestInfo, type RequestInit, type Response } from "node-fetch";
 
 export type NodeFetchRequestInfo = RequestInfo;
 export type NodeFetchRequestInit = RequestInit;

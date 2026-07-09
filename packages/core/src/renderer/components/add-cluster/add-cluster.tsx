@@ -23,8 +23,9 @@ import { SettingLayout } from "../layout/setting-layout";
 import { MonacoEditor } from "../monaco-editor";
 import styles from "./add-cluster.module.scss";
 
-import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
 import type { ShowNotification } from "@freelensapp/notifications";
+
+import type { KubeConfig } from "@kubernetes/client-node";
 
 import type { EmitAppEvent } from "../../../common/app-event-bus/emit-event.injectable";
 import type { NavigateToCatalog } from "../../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";

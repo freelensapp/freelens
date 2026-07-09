@@ -73,7 +73,7 @@ describe("ClusterRoleBindingDialog tests", () => {
 
   afterEach(() => {
     closeClusterRoleBindingDialog();
-    jest.resetAllMocks();
+    vi.resetAllMocks();
   });
 
   it("should render without any errors", () => {

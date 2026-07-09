@@ -44,7 +44,6 @@
     "react-router-dom": "^5.3.4"
   },
   "devDependencies": {
-    "@freelensapp/jest": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
     "@types/history": "^4.7.11",
@@ -57,6 +56,7 @@
     "sass-loader": "^16.0.8",
     "ts-loader": "^9.5.7",
     "typescript": "^5.9.3",
+    "vitest": "^4.1.10",
     "webpack": "^5.108.3"
   },
   "publishConfig": {

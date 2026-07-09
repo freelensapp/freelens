@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
@@ -26,7 +26,7 @@ import lensProxyPortInjectable from "../lens-proxy/lens-proxy-port.injectable";
 
 import type { Logger } from "@freelensapp/logger";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
 import type { DiContainer } from "@ogre-tools/injectable";
 
 import type { PathExists } from "../../common/fs/path-exists.injectable";
@@ -40,7 +40,7 @@ const clusterServerUrl = "https://192.168.64.3:8443";
 describe("kubeconfig manager tests", () => {
   let clusterFake: Cluster;
   let di: DiContainer;
-  let loggerMock: jest.Mocked<Logger>;
+  let loggerMock: vi.Mocked<Logger>;
   let readFileMock: AsyncFnMock<ReadFile>;
   let deleteFileMock: AsyncFnMock<RemovePath>;
   let writeFileMock: AsyncFnMock<WriteFile>;
@@ -77,11 +77,11 @@ describe("kubeconfig manager tests", () => {
     di.override(removePathInjectable, () => deleteFileMock);
 
     loggerMock = {
-      warn: jest.fn(),
-      debug: jest.fn(),
-      error: jest.fn(),
-      info: jest.fn(),
-      silly: jest.fn(),
+      warn: vi.fn(),
+      debug: vi.fn(),
+      error: vi.fn(),
+      info: vi.fn(),
+      silly: vi.fn(),
     };
 
     di.override(loggerInjectionToken, () => loggerMock);
@@ -89,11 +89,11 @@ describe("kubeconfig manager tests", () => {
     ensureServerMock = asyncFn();
 
     di.override(kubeAuthProxyServerInjectable, () => ({
-      restart: jest.fn(),
-      stop: jest.fn(),
-      getApiTarget: jest.fn(),
+      restart: vi.fn(),
+      stop: vi.fn(),
+      getApiTarget: vi.fn(),
       ensureRunning: ensureServerMock,
-      ensureAuthProxyUrl: jest.fn(),
+      ensureAuthProxyUrl: vi.fn(),
     }));
 
     clusterFake = new Cluster({

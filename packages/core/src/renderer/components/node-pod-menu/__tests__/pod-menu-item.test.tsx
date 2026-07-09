@@ -8,8 +8,8 @@ import type { ContainerWithType } from "@freelensapp/kube-object";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 
-jest.mock("../../menu", () => {
-  const actualMenu = jest.requireActual("../../menu");
+vi.mock("../../menu", () => {
+  const actualMenu = vi.requireActual("../../menu");
 
   return {
     ...actualMenu,
@@ -25,12 +25,12 @@ jest.mock("../../menu", () => {
 describe("pod-menu-item", () => {
   let di: DiContainer;
   let render: DiRender;
-  let callback: jest.Mock;
+  let callback: vi.Mock;
 
   beforeEach(() => {
     di = getDiForUnitTesting();
 
-    callback = jest.fn();
+    callback = vi.fn();
 
     render = renderFor(di);
   });

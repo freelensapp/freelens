@@ -12,9 +12,9 @@ import activeThemeInjectable from "../../themes/active.injectable";
 import { renderFor } from "../test-utils/renderFor";
 import { BarChart } from "./bar-chart";
 
-const chartMock = jest.fn();
+const chartMock = vi.fn();
 
-jest.mock("./chart", () => ({
+vi.mock("./chart", () => ({
   ChartKind: {
     BAR: "bar",
     LINE: "line",

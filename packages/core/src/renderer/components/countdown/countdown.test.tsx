@@ -35,10 +35,10 @@ describe("countdown", () => {
 
   describe("when rendering countdown", () => {
     let rendered: RenderResult;
-    let onZeroMock: jest.Mock;
+    let onZeroMock: vi.Mock;
 
     beforeEach(() => {
-      onZeroMock = jest.fn();
+      onZeroMock = vi.fn();
 
       const secondsTill = di.inject(countdownStateInjectable, {
         startFrom: 42,
@@ -104,12 +104,12 @@ describe("countdown", () => {
   });
 
   describe("given observed", () => {
-    let onZeroMock: jest.Mock;
+    let onZeroMock: vi.Mock;
     let unobserve: () => void;
     let secondsTill: IComputedValue<number>;
 
     beforeEach(() => {
-      onZeroMock = jest.fn();
+      onZeroMock = vi.fn();
 
       secondsTill = di.inject(countdownStateInjectable, {
         startFrom: 1,

@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { noop } from "@freelensapp/utilities";
@@ -17,7 +17,7 @@ import requestPublicHelmRepositoriesInjectable from "./child-features/preference
 
 import type { Logger } from "@freelensapp/logger";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
 
 import type { ReadYamlFile } from "../../common/fs/read-yaml-file.injectable";
 import type { HelmRepositoriesFromYaml } from "../../main/helm/repositories/get-active-helm-repositories/get-active-helm-repositories.injectable";
@@ -29,17 +29,17 @@ describe("listing active helm repositories in preferences", () => {
   let readYamlFileMock: AsyncFnMock<ReadYamlFile>;
   let execFileMock: AsyncFnMock<ExecFile>;
   let loggerStub: Logger;
-  let showErrorNotificationMock: jest.Mock;
+  let showErrorNotificationMock: vi.Mock;
 
   beforeEach(async () => {
     builder = getApplicationBuilder();
 
     readYamlFileMock = asyncFn();
     execFileMock = asyncFn();
-    showErrorNotificationMock = jest.fn();
+    showErrorNotificationMock = vi.fn();
 
     loggerStub = {
-      error: jest.fn(),
+      error: vi.fn(),
       debug: noop,
       info: noop,
       silly: noop,

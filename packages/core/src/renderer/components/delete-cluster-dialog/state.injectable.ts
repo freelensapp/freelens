@@ -7,7 +7,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { observable } from "mobx";
 
-import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
+import type { KubeConfig } from "@kubernetes/client-node";
 
 import type { Cluster } from "../../../common/cluster/cluster";
 

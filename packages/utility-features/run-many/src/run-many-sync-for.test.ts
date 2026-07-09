@@ -11,12 +11,12 @@ import type { RunnableSync } from "./types";
 
 describe("runManySyncFor", () => {
   describe("given hierarchy, when running many", () => {
-    let runMock: jest.Mock;
+    let runMock: vi.Mock;
 
     beforeEach(() => {
       const rootDi = createContainer("irrelevant");
 
-      runMock = jest.fn();
+      runMock = vi.fn();
 
       const someInjectionTokenForRunnables = getInjectionToken<RunnableSync>({
         id: "some-injection-token",
@@ -51,12 +51,12 @@ describe("runManySyncFor", () => {
   });
 
   describe("given hierarchy that is three levels deep, when running many", () => {
-    let runMock: jest.Mock<(arg: string) => void>;
+    let runMock: vi.Mock<(arg: string) => void>;
 
     beforeEach(() => {
       const di = createContainer("irrelevant");
 
-      runMock = jest.fn();
+      runMock = vi.fn();
 
       const someInjectionTokenForRunnables = getInjectionToken<RunnableSync>({
         id: "some-injection-token",
@@ -103,7 +103,7 @@ describe("runManySyncFor", () => {
   it("given invalid hierarchy, when running runnables, throws", () => {
     const rootDi = createContainer("irrelevant");
 
-    const runMock = jest.fn();
+    const runMock = vi.fn();
 
     const someInjectionToken = getInjectionToken<RunnableSync>({
       id: "some-injection-token",
@@ -140,12 +140,12 @@ describe("runManySyncFor", () => {
   });
 
   describe("when running many with parameter", () => {
-    let runMock: jest.Mock<(arg: string, arg2: string) => undefined>;
+    let runMock: vi.Mock<(arg: string, arg2: string) => undefined>;
 
     beforeEach(() => {
       const rootDi = createContainer("irrelevant");
 
-      runMock = jest.fn();
+      runMock = vi.fn();
 
       const someInjectionTokenForRunnablesWithParameter = getInjectionToken<RunnableSync<string>>({
         id: "some-injection-token",

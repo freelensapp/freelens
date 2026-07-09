@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import React from "react";
 import userPreferencesStateInjectable from "../../../../../features/user-preferences/common/state.injectable";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
@@ -22,9 +22,9 @@ import type { UserPreferencesState } from "../../../../../features/user-preferen
 import type { DiRender } from "../../../test-utils/renderFor";
 import type { TabId } from "../../dock/store";
 
-const virtualListMock = jest.fn();
+const virtualListMock = vi.fn();
 
-jest.mock("../../../virtual-list", () => {
+vi.mock("../../../virtual-list", () => {
   const React = require("react");
 
   return {

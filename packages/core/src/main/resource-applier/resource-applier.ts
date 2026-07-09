@@ -8,10 +8,10 @@ import * as yaml from "js-yaml";
 import tempy from "tempy";
 import { defaultYamlDumpOptions } from "../../common/kube-helpers";
 
-import type { KubernetesObject } from "@freelensapp/kubernetes-client-node";
 import type { Logger } from "@freelensapp/logger";
 import type { AsyncResult } from "@freelensapp/utilities";
 
+import type { KubernetesObject } from "@kubernetes/client-node";
 import type { Patch } from "rfc6902";
 
 import type { EmitAppEvent } from "../../common/app-event-bus/emit-event.injectable";

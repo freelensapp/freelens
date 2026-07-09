@@ -20,7 +20,7 @@ import type { DiRender } from "@freelensapp/test-utils";
 
 describe("<Icon> href technical tests", () => {
   let render: DiRender;
-  let logger: jest.MockedObject<Logger>;
+  let logger: vi.MockedObject<Logger>;
 
   beforeEach(() => {
     const environment = "renderer";
@@ -37,11 +37,11 @@ describe("<Icon> href technical tests", () => {
     });
 
     logger = {
-      debug: jest.fn(),
-      error: jest.fn(),
-      info: jest.fn(),
-      silly: jest.fn(),
-      warn: jest.fn(),
+      debug: vi.fn(),
+      error: vi.fn(),
+      info: vi.fn(),
+      silly: vi.fn(),
+      warn: vi.fn(),
     };
 
     di.override(loggerInjectionToken, () => logger);

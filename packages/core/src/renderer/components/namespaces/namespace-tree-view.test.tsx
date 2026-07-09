@@ -19,7 +19,7 @@ import type { DiContainer } from "@ogre-tools/injectable";
 import type { DiRender } from "../test-utils/renderFor";
 import type { NamespaceTree } from "./store";
 
-jest.mock("react-router-dom", () => ({
+vi.mock("react-router-dom", () => ({
   Link: ({ children }: { children: StrictReactNode }) => children,
 }));
 

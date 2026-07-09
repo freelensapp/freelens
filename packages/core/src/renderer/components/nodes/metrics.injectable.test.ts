@@ -13,7 +13,7 @@ import nodeMetricsInjectable from "./metrics.injectable";
 describe("node-metrics injectable", () => {
   it("requests exactly the node metric series consumed by node charts and route views", () => {
     const di = getDiForUnitTesting();
-    const requestClusterMetricsByNodeNames = jest.fn().mockResolvedValue({});
+    const requestClusterMetricsByNodeNames = vi.fn().mockResolvedValue({});
     const node = new Node({
       apiVersion: "v1",
       kind: "Node",

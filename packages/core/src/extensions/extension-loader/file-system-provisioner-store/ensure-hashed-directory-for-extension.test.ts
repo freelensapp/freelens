@@ -18,13 +18,13 @@ import type { EnsureHashedDirectoryForExtension } from "./ensure-hashed-director
 
 describe("ensure-hashed-directory-for-extension", () => {
   let ensureHashedDirectoryForExtension: EnsureHashedDirectoryForExtension;
-  let ensureDirMock: jest.Mock;
+  let ensureDirMock: vi.Mock;
   let registeredExtensions: ObservableMap<string, string>;
 
   beforeEach(() => {
     const di = getDiForUnitTesting();
 
-    ensureDirMock = jest.fn();
+    ensureDirMock = vi.fn();
 
     di.override(ensureDirInjectable, () => ensureDirMock);
     di.override(directoryForExtensionDataInjectable, () => "some-directory-for-extension-data");

@@ -1,4 +1,4 @@
-import asyncFn, { AsyncFnMock } from "@async-fn/jest";
+import asyncFn, { AsyncFnMock } from "@async-fn/vitest";
 import { registerFeature } from "@freelensapp/feature-core";
 import { getPromiseStatus } from "@freelensapp/test-utils";
 import { createContainer, DiContainer, getInjectable } from "@ogre-tools/injectable";

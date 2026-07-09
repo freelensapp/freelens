@@ -4,27 +4,27 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { getPromiseStatus } from "@freelensapp/test-utils";
 import logErrorInjectable from "../../../common/log-error.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import resolveSystemProxyFromElectronInjectable from "./resolve-system-proxy-from-electron.injectable";
 import resolveSystemProxyWindowInjectable from "./resolve-system-proxy-window.injectable";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { BrowserWindow, Session, WebContents } from "electron";
 
 describe("technical: resolve-system-proxy-from-electron", () => {
   let resolveSystemProxyMock: AsyncFnMock<(url: string) => Promise<string>>;
-  let logErrorMock: jest.Mock;
+  let logErrorMock: vi.Mock;
   let di: DiContainer;
   let actualPromise: Promise<string>;
 
   beforeEach(() => {
     di = getDiForUnitTesting();
 
-    logErrorMock = jest.fn();
+    logErrorMock = vi.fn();
     di.override(logErrorInjectable, () => logErrorMock);
   });
 

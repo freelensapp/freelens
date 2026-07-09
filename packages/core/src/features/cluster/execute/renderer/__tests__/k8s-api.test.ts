@@ -22,13 +22,13 @@ import type { ExecuteOnClusterResponse } from "../../common/types";
 
 describe("K8s extension API functions (via injectable)", () => {
   let di: DiContainer;
-  let requestFromChannelMock: jest.Mock;
+  let requestFromChannelMock: vi.Mock;
   let catalogEntityRegistry: CatalogEntityRegistry;
 
   beforeEach(() => {
     di = getDiForUnitTesting();
 
-    requestFromChannelMock = jest.fn();
+    requestFromChannelMock = vi.fn();
     di.override(requestFromChannelInjectionToken, () => requestFromChannelMock);
 
     catalogEntityRegistry = di.inject(catalogEntityRegistryInjectable);

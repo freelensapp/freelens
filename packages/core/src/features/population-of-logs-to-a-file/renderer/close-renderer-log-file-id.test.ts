@@ -26,9 +26,9 @@ describe("close renderer file logging", () => {
 
   beforeEach(() => {
     di = getDiForUnitTesting();
-    sendIpcMock = jest.fn();
+    sendIpcMock = vi.fn();
     winstonMock = {
-      remove: jest.fn(),
+      remove: vi.fn(),
     } as any as winston.Logger;
     ipcTransportMock = { name: "ipc-renderer-transport" } as IpcLogTransport;
 
