@@ -53,6 +53,13 @@ export default defineConfig({
     projects: projectDirs.map((dir) => {
       const name = JSON.parse(readFileSync(join(dir, "package.json"), "utf8")).name;
       return {
+        // The shared Jest config mapped "^electron$" to identity-obj-proxy for
+        // every monorepo package; vitest.electron-stub.ts keeps that behaviour
+        // for the package projects. The freelens project is excluded: its
+        // tests are Playwright-driven and talk to a real Electron binary.
+        ...(nodeEnvironmentDirs.has(dir)
+          ? {}
+          : { resolve: { alias: { electron: join(root, "vitest.electron-stub.ts") } } }),
         test: {
           name,
           root: dir,
