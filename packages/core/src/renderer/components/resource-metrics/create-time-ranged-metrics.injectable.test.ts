@@ -7,8 +7,8 @@
 const asyncComputedMock = vi.fn((options: unknown) => options);
 const nowMock = vi.fn();
 
-vi.mock("@ogre-tools/injectable-react", () => {
-  const actual = vi.requireActual("@ogre-tools/injectable-react");
+vi.mock("@ogre-tools/injectable-react", async (importOriginal) => {
+  const actual = await importOriginal<object>();
 
   return {
     ...actual,
@@ -16,8 +16,8 @@ vi.mock("@ogre-tools/injectable-react", () => {
   };
 });
 
-vi.mock("mobx-utils", () => {
-  const actual = vi.requireActual("mobx-utils");
+vi.mock("mobx-utils", async (importOriginal) => {
+  const actual = await importOriginal<object>();
 
   return {
     ...actual,

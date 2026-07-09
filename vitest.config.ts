@@ -45,6 +45,22 @@ const nodeEnvironmentDirs = new Set([join(root, "freelens")]);
 // jest.* globals are codemodded to vi.* (scripts/v2-phase-6-vitest.mjs).
 const setupCandidates = ["src/jest.setup.tsx", "src/jest-after-env.setup.ts"];
 
+// packages/core kept Jest's automatic node-module mocks in __mocks__/; Vitest
+// has no automatic __mocks__ resolution for node modules, so they are wired as
+// resolve aliases for the core project only. Core also carries Jest extras the
+// other packages do not have: the canvas mock, the UTC timezone, and a longer
+// test timeout.
+const coreDir = join(root, "packages/core");
+const coreMockAliases = {
+  electron: join(coreDir, "__mocks__/electron.ts"),
+  "monaco-editor": join(coreDir, "__mocks__/monaco-editor.ts"),
+  "node-pty": join(coreDir, "__mocks__/node-pty.ts"),
+  "react-beautiful-dnd": join(coreDir, "__mocks__/react-beautiful-dnd.tsx"),
+  "react-virtualized-auto-sizer": join(coreDir, "__mocks__/react-virtualized-auto-sizer.tsx"),
+  "@sentry/electron/main": join(coreDir, "__mocks__/@sentry/electron/main.ts"),
+  "@sentry/electron/renderer": join(coreDir, "__mocks__/@sentry/electron/renderer.ts"),
+};
+
 export default defineConfig({
   test: {
     // D8: globals enabled for the transition so the jest.* -> vi.* codemod does
@@ -59,7 +75,11 @@ export default defineConfig({
         // tests are Playwright-driven and talk to a real Electron binary.
         ...(nodeEnvironmentDirs.has(dir)
           ? {}
-          : { resolve: { alias: { electron: join(root, "vitest.electron-stub.ts") } } }),
+          : {
+              resolve: {
+                alias: dir === coreDir ? coreMockAliases : { electron: join(root, "vitest.electron-stub.ts") },
+              },
+            }),
         test: {
           name,
           root: dir,
@@ -69,10 +89,14 @@ export default defineConfig({
           environment: nodeEnvironmentDirs.has(dir) ? "node" : "jsdom",
           include: ["**/?(*.)test.{js,ts,tsx}"],
           exclude: ["**/node_modules/**", "**/dist/**", "**/build/**", "**/coverage/**"],
-          setupFiles: setupCandidates
-            .map((rel) => join(dir, rel))
-            .filter((abs) => existsSync(abs))
-            .map((abs) => `./${relative(dir, abs)}`),
+          setupFiles: [
+            ...(dir === coreDir ? ["vitest-canvas-mock"] : []),
+            ...setupCandidates
+              .map((rel) => join(dir, rel))
+              .filter((abs) => existsSync(abs))
+              .map((abs) => `./${relative(dir, abs)}`),
+          ],
+          ...(dir === coreDir ? { testTimeout: 15000, env: { TZ: "UTC" } } : {}),
         },
       };
     }),
