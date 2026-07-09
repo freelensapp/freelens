@@ -53,6 +53,10 @@ const userPreferenceDescriptorsInjectable = getInjectable({
         fromStore: (val) => val || defaultColorThemePreference,
         toStore: (val) => (!val || val === defaultColorThemePreference ? undefined : val),
       }),
+      customAccentColor: getPreferenceDescriptor<string | undefined>({
+        fromStore: (val) => val,
+        toStore: (val) => val || undefined,
+      }),
       terminalTheme: getPreferenceDescriptor<string>({
         fromStore: (val) => val || "",
         toStore: (val) => val || undefined,
