@@ -4,9 +4,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-vi.mock("tls", () => ({
-  connect: vi.fn(),
-}));
+vi.mock("tls", () => {
+  const connect = vi.fn();
+
+  // Some modules in the graph import tls as a default import, so the mock has
+  // to provide the same surface under both shapes.
+  return { connect, default: { connect } };
+});
 
 import { EventEmitter } from "events";
 import { connect } from "tls";
