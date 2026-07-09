@@ -39,7 +39,6 @@
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
-    "@freelensapp/webpack": "workspace:^",
     "@types/crypto-js": "^4.2.2",
     "@types/lodash": "^4.17.24",
     "@types/node": "~24.12.4",

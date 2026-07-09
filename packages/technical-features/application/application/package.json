@@ -34,7 +34,6 @@
     "@async-fn/vitest": "^1.8.0",
     "@freelensapp/test-utils": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
-    "@freelensapp/webpack": "workspace:^",
     "@types/webpack-env": "^1.18.8",
     "lodash": "^4.18.1",
     "ts-loader": "^9.5.7",

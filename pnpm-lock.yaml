@@ -471,9 +471,6 @@ importers:
       '@freelensapp/utilities':
         specifier: workspace:^
         version: link:../../utility-features/utilities
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../infrastructure/webpack
       '@ogre-tools/injectable-extension-for-mobx':
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(lodash@4.18.1))(lodash@4.18.1)(mobx@6.15.0)
@@ -520,9 +517,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../infrastructure/webpack
       '@types/react':
         specifier: ^17.0.93
         version: 17.0.93
@@ -554,9 +548,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../infrastructure/webpack
       '@types/lodash':
         specifier: ^4.17.24
         version: 4.17.24
@@ -1256,85 +1247,6 @@ importers:
         specifier: ^5.2.0
         version: 5.2.0(ts-node@10.9.2(@types/node@24.12.4)(typescript@5.9.3))(typescript@5.9.3)
 
-  packages/infrastructure/webpack:
-    dependencies:
-      '@ogre-tools/fp':
-        specifier: ^17.11.1
-        version: 17.11.1(lodash@4.18.1)
-      '@ogre-tools/injectable':
-        specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(lodash@4.18.1)
-      '@tailwindcss/postcss':
-        specifier: ^4.2.4
-        version: 4.2.4
-      css-loader:
-        specifier: ^6.11.0
-        version: 6.11.0(webpack@5.108.3)
-      fork-ts-checker-webpack-plugin:
-        specifier: ^9.1.0
-        version: 9.1.0(typescript@5.9.3)(webpack@5.108.3)
-      fs-extra:
-        specifier: ^11.3.6
-        version: 11.3.6
-      lodash:
-        specifier: ^4.18.1
-        version: 4.18.1
-      mini-css-extract-plugin:
-        specifier: ^2.10.2
-        version: 2.10.2(webpack@5.108.3)
-      sass:
-        specifier: ^1.101.0
-        version: 1.101.0
-      sass-loader:
-        specifier: ^16.0.8
-        version: 16.0.8(sass-embedded@1.100.0)(sass@1.101.0)(webpack@5.108.3)
-      style-loader:
-        specifier: ^4.0.0
-        version: 4.0.0(webpack@5.108.3)
-      tailwindcss:
-        specifier: ^4.2.4
-        version: 4.2.4
-      ts-loader:
-        specifier: ^9.5.7
-        version: 9.5.7(typescript@5.9.3)(webpack@5.108.3)
-      ts-node:
-        specifier: ^10.9.2
-        version: 10.9.2(@types/node@24.12.4)(typescript@5.9.3)
-      webpack:
-        specifier: ^5.108.3
-        version: 5.108.3(lightningcss@1.32.0)(webpack-cli@7.1.0)
-      webpack-cli:
-        specifier: ^7.1.0
-        version: 7.1.0(js-yaml@5.2.1)(json5@2.2.3)(webpack-dev-server@5.2.5)(webpack@5.108.3)
-      webpack-node-externals:
-        specifier: ^3.0.0
-        version: 3.0.0
-    devDependencies:
-      '@async-fn/vitest':
-        specifier: ^1.8.0
-        version: 1.8.0(patch_hash=86478f697e61e0e2ca0274a6b255c31c05d0dd83078743e9e755910710d597ef)(vitest@4.1.10)
-      '@freelensapp/typescript':
-        specifier: workspace:^
-        version: link:../typescript
-      '@ogre-tools/test-utils':
-        specifier: ^17.11.1
-        version: 17.11.1(lodash@4.18.1)
-      '@types/fs-extra':
-        specifier: ^11.0.4
-        version: 11.0.4
-      '@types/lodash':
-        specifier: ^4.17.24
-        version: 4.17.24
-      '@types/webpack-env':
-        specifier: ^1.18.8
-        version: 1.18.8
-      '@types/webpack-node-externals':
-        specifier: 3.0.4
-        version: 3.0.4(lightningcss@1.32.0)(webpack-cli@7.1.0)
-      vitest:
-        specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
-
   packages/kube-object:
     dependencies:
       '@freelensapp/utilities':
@@ -1356,9 +1268,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../infrastructure/webpack
       '@types/lodash':
         specifier: ^4.17.24
         version: 4.17.24
@@ -1383,9 +1292,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../infrastructure/webpack
       '@types/semver':
         specifier: ^7.7.1
         version: 7.7.1
@@ -1416,9 +1322,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../infrastructure/webpack
       '@ogre-tools/injectable':
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(lodash@4.18.1)
@@ -1444,9 +1347,6 @@ importers:
       '@freelensapp/utilities':
         specifier: workspace:^
         version: link:../utility-features/utilities
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../infrastructure/webpack
       ts-loader:
         specifier: ^9.5.7
         version: 9.5.7(typescript@5.9.3)(webpack@5.108.3(lightningcss@1.32.0))
@@ -1475,9 +1375,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../infrastructure/webpack
       '@types/lodash':
         specifier: ^4.17.24
         version: 4.17.24
@@ -1512,9 +1409,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../infrastructure/webpack
       '@types/react':
         specifier: ^17.0.93
         version: 17.0.93
@@ -1543,9 +1437,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../infrastructure/webpack
       '@types/webpack-env':
         specifier: ^1.18.8
         version: 1.18.8
@@ -1579,9 +1470,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../infrastructure/webpack
       '@types/history':
         specifier: ^4.7.11
         version: 4.7.11
@@ -1647,9 +1535,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../../infrastructure/webpack
       '@types/webpack-env':
         specifier: ^1.18.8
         version: 1.18.8
@@ -1693,9 +1578,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../../infrastructure/webpack
       '@ogre-tools/test-utils':
         specifier: ^17.11.1
         version: 17.11.1(lodash@4.18.1)
@@ -1727,9 +1609,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../../infrastructure/webpack
       ts-loader:
         specifier: ^9.5.7
         version: 9.5.7(typescript@5.9.3)(webpack@5.108.3(lightningcss@1.32.0))
@@ -1752,9 +1631,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../infrastructure/webpack
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1(@noble/hashes@2.2.0)
@@ -1795,9 +1671,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../../infrastructure/webpack
       '@ogre-tools/fp':
         specifier: ^17.11.1
         version: 17.11.1(lodash@4.18.1)
@@ -1865,9 +1738,6 @@ importers:
       '@freelensapp/utilities':
         specifier: workspace:^
         version: link:../../../utility-features/utilities
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../../infrastructure/webpack
       '@types/webpack-env':
         specifier: ^1.18.8
         version: 1.18.8
@@ -1917,9 +1787,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../../infrastructure/webpack
       '@ogre-tools/injectable':
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(lodash@4.18.1)
@@ -1981,9 +1848,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../../infrastructure/webpack
       '@types/lodash':
         specifier: ^4.17.24
         version: 4.17.24
@@ -2027,9 +1891,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../../infrastructure/webpack
       '@ogre-tools/injectable-extension-for-mobx':
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(lodash@4.18.1))(lodash@4.18.1)(mobx@6.15.0)
@@ -2073,9 +1934,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../infrastructure/webpack
       '@kubernetes/client-node':
         specifier: ^1.4.0
         version: 1.4.0(encoding@0.1.13)
@@ -2134,9 +1992,6 @@ importers:
       '@freelensapp/utilities':
         specifier: workspace:^
         version: link:../../utility-features/utilities
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../infrastructure/webpack
       '@ogre-tools/fp':
         specifier: ^17.11.1
         version: 17.11.1(lodash@4.18.1)
@@ -2192,9 +2047,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../infrastructure/webpack
       '@types/react':
         specifier: ^17.0.93
         version: 17.0.93
@@ -2238,9 +2090,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../infrastructure/webpack
       '@types/react':
         specifier: ^17.0.93
         version: 17.0.93
@@ -2302,9 +2151,6 @@ importers:
       '@freelensapp/utilities':
         specifier: workspace:^
         version: link:../../utility-features/utilities
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../infrastructure/webpack
       '@types/react':
         specifier: ^17.0.93
         version: 17.0.93
@@ -2381,9 +2227,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../infrastructure/webpack
       '@ogre-tools/injectable-extension-for-mobx':
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(lodash@4.18.1))(lodash@4.18.1)(mobx@6.15.0)
@@ -2484,9 +2327,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../infrastructure/webpack
       '@types/lodash':
         specifier: ^4.17.24
         version: 4.17.24
@@ -2542,9 +2382,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../infrastructure/webpack
       '@types/lodash':
         specifier: ^4.17.24
         version: 4.17.24
@@ -2585,9 +2422,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../infrastructure/webpack
       '@types/react':
         specifier: ^17.0.93
         version: 17.0.93
@@ -2640,9 +2474,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../infrastructure/webpack
       '@testing-library/jest-dom':
         specifier: ^6.9.1
         version: 6.9.1
@@ -2691,9 +2522,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../infrastructure/webpack
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1(@noble/hashes@2.2.0)
@@ -2725,9 +2553,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../infrastructure/webpack
       '@types/lodash':
         specifier: ^4.17.24
         version: 4.17.24
@@ -2792,9 +2617,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../infrastructure/webpack
       '@types/byline':
         specifier: ^4.2.36
         version: 4.2.36
@@ -2841,9 +2663,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../infrastructure/webpack
       '@types/webpack-env':
         specifier: ^1.18.8
         version: 1.18.8
@@ -2863,9 +2682,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../infrastructure/webpack
       '@testing-library/react':
         specifier: ^12.1.5
         version: 12.1.5(@types/react@17.0.93)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
@@ -2894,9 +2710,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../infrastructure/webpack
       '@ogre-tools/fp':
         specifier: ^17.11.1
         version: 17.11.1(lodash@4.18.1)
@@ -2936,9 +2749,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../infrastructure/webpack
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1(@noble/hashes@2.2.0)
@@ -2976,9 +2786,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../infrastructure/webpack
       '@types/lodash':
         specifier: ^4.17.24
         version: 4.17.24
@@ -3040,9 +2847,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
-      '@freelensapp/webpack':
-        specifier: workspace:^
-        version: link:../../infrastructure/webpack
       '@types/crypto-js':
         specifier: ^4.2.2
         version: 4.2.2
@@ -11360,25 +11164,6 @@ snapshots:
       - uglify-js
       - webpack-cli
 
-  '@types/webpack-node-externals@3.0.4(lightningcss@1.32.0)(webpack-cli@7.1.0)':
-    dependencies:
-      '@types/node': 24.12.4
-      webpack: 5.108.3(lightningcss@1.32.0)(webpack-cli@7.1.0)
-    transitivePeerDependencies:
-      - '@minify-html/node'
-      - '@swc/core'
-      - '@swc/css'
-      - '@swc/html'
-      - clean-css
-      - cssnano
-      - csso
-      - esbuild
-      - html-minifier-terser
-      - lightningcss
-      - postcss
-      - uglify-js
-      - webpack-cli
-
   '@types/ws@8.18.1':
     dependencies:
       '@types/node': 24.12.4
@@ -13995,16 +13780,6 @@ snapshots:
     optionalDependencies:
       lightningcss: 1.32.0
 
-  minimizer-webpack-plugin@5.6.1(lightningcss@1.32.0)(webpack@5.108.3):
-    dependencies:
-      '@jridgewell/trace-mapping': 0.3.25
-      jest-worker: 27.5.1
-      schema-utils: 4.3.3
-      terser: 5.39.0
-      webpack: 5.108.3(lightningcss@1.32.0)(webpack-cli@7.1.0)
-    optionalDependencies:
-      lightningcss: 1.32.0
-
   minipass-collect@2.0.1:
     dependencies:
       minipass: 7.1.3
@@ -16091,46 +15866,6 @@ snapshots:
       loader-runner: 4.3.2
       mime-db: 1.54.0
       minimizer-webpack-plugin: 5.6.1(lightningcss@1.32.0)(postcss@8.5.8)(webpack@5.108.3)
-      neo-async: 2.6.2
-      schema-utils: 4.3.3
-      tapable: 2.3.3
-      watchpack: 2.5.2
-      webpack-sources: 3.5.0
-    optionalDependencies:
-      webpack-cli: 7.1.0(js-yaml@5.2.1)(json5@2.2.3)(webpack-dev-server@5.2.5)(webpack@5.108.3)
-    transitivePeerDependencies:
-      - '@minify-html/node'
-      - '@swc/core'
-      - '@swc/css'
-      - '@swc/html'
-      - clean-css
-      - cssnano
-      - csso
-      - esbuild
-      - html-minifier-terser
-      - lightningcss
-      - postcss
-      - uglify-js
-
-  webpack@5.108.3(lightningcss@1.32.0)(webpack-cli@7.1.0):
-    dependencies:
-      '@types/estree': 1.0.8
-      '@types/json-schema': 7.0.15
-      '@webassemblyjs/ast': 1.14.1
-      '@webassemblyjs/wasm-edit': 1.14.1
-      '@webassemblyjs/wasm-parser': 1.14.1
-      acorn: 8.16.0
-      acorn-import-phases: 1.0.3(acorn@8.16.0)
-      browserslist: 4.28.1
-      chrome-trace-event: 1.0.3
-      enhanced-resolve: 5.24.1
-      es-module-lexer: 2.1.0
-      eslint-scope: 5.1.1
-      events: 3.3.0
-      graceful-fs: 4.2.11
-      loader-runner: 4.3.2
-      mime-db: 1.54.0
-      minimizer-webpack-plugin: 5.6.1(lightningcss@1.32.0)(webpack@5.108.3)
       neo-async: 2.6.2
       schema-utils: 4.3.3
       tapable: 2.3.3

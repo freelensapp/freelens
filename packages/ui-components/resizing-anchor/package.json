@@ -35,7 +35,6 @@
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
-    "@freelensapp/webpack": "workspace:^",
     "@types/lodash": "^4.17.24",
     "@types/react": "^17.0.93",
     "css-loader": "^6.11.0",

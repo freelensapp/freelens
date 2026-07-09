@@ -35,7 +35,6 @@
     "@freelensapp/messaging-fake-bridge": "workspace:^",
     "@freelensapp/test-utils": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
-    "@freelensapp/webpack": "workspace:^",
     "@ogre-tools/fp": "^17.11.1",
     "@ogre-tools/injectable-extension-for-mobx": "^17.11.1",
     "@testing-library/jest-dom": "^6.9.1",

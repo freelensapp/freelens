@@ -39,7 +39,6 @@
     "@freelensapp/react-testing-library-discovery": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
-    "@freelensapp/webpack": "workspace:^",
     "@ogre-tools/fp": "^17.11.1",
     "@testing-library/react": "^12.1.5",
     "@types/react": "^17.0.93",

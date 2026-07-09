@@ -22,7 +22,6 @@
   "scripts": {
     "clean": "pnpm dlx rimraf@6.1.3 dist",
     "clean:node_modules": "pnpm dlx rimraf@6.1.3 node_modules",
-    "dev": "lens-webpack-build --watch",
     "test:unit": "vitest run -c ../../../vitest.config.ts --project @freelensapp/kube-api"
   },
   "dependencies": {
@@ -41,7 +40,6 @@
     "@freelensapp/logger": "workspace:^",
     "@freelensapp/test-utils": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
-    "@freelensapp/webpack": "workspace:^",
     "@types/byline": "^4.2.36",
     "@types/lodash": "^4.17.24",
     "node-fetch": "^3.3.2",
