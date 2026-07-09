@@ -12,7 +12,7 @@
 import asyncFn from "@async-fn/vitest";
 import { flushPromises } from "@freelensapp/test-utils";
 import { PartialDeep } from "type-fest";
-import { anyObject } from "vitest-mock-extended/lib";
+import { anyObject } from "vitest-mock-extended";
 import createAuthorizationApiInjectable from "../../common/cluster/create-authorization-api.injectable";
 import createCoreApiInjectable from "../../common/cluster/create-core-api.injectable";
 import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable";
@@ -166,7 +166,7 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
       });
 
       // TODO: fails with `Tried to resolve an asyncFn call that has not been made yet.`
-      xdescribe.each([true, false])("when cluster admin request resolves to %p", (isAdmin) => {
+      describe.skip.each([true, false])("when cluster admin request resolves to %p", (isAdmin) => {
         beforeEach(async () => {
           await createSelfSubjectAccessReviewMock.resolve({
             body: {
