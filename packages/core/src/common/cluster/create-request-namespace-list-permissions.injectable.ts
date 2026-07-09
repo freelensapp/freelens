@@ -7,7 +7,7 @@
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 
-import type { AuthorizationV1Api } from "@freelensapp/kubernetes-client-node";
+import type { AuthorizationV1Api } from "@kubernetes/client-node";
 
 import type { KubeApiResource } from "../rbac";
 

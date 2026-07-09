@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 
 import { fireEvent, waitFor } from "@testing-library/react";
 import React from "react";
@@ -115,7 +115,7 @@ describe("<HotbarMenu /> auto-hide functionality", () => {
     });
 
     it("should cleanup event listeners on unmount", () => {
-      const removeEventListenerSpy = jest.spyOn(window, "removeEventListener");
+      const removeEventListenerSpy = vi.spyOn(window, "removeEventListener");
 
       result.unmount();
 

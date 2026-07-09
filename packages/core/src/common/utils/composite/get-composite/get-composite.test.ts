@@ -206,7 +206,7 @@ Available parent ids are:
 
   describe("given items with missing parents, when creating composite with handling for missing parents", () => {
     let composite: Composite<any>;
-    let handleMissingParentIdMock: jest.Mock;
+    let handleMissingParentIdMock: vi.Mock;
 
     beforeEach(() => {
       const someItem = {
@@ -222,7 +222,7 @@ Available parent ids are:
 
       const items = [someItem, someItemWithMissingParentId];
 
-      handleMissingParentIdMock = jest.fn();
+      handleMissingParentIdMock = vi.fn();
 
       const getComposite = getCompositeFor<SomeItem>({
         getId: (x) => x.id,

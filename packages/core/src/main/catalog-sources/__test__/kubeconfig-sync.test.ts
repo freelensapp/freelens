@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { iter, strictGet } from "@freelensapp/utilities";
 import EventEmitter from "events";
 import { ObservableMap, observable, runInAction } from "mobx";
@@ -30,7 +30,7 @@ import type { ReadStream, Stats } from "fs";
 
 import type { Logger } from "@freelensapp/logger";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
 import type { DiContainer } from "@ogre-tools/injectable";
 
 import type { CatalogEntity } from "../../../common/catalog";
@@ -505,20 +505,20 @@ describe("kubeconfig-sync.source tests", () => {
     let manager: KubeconfigSyncManager;
     let localDi: DiContainer;
     let localKubeconfigSyncs: ObservableMap<string, KubeconfigSyncValue>;
-    let watchMock: jest.Mock;
-    let logger: jest.Mocked<Pick<Logger, "debug" | "warn" | "info" | "error">>;
+    let watchMock: vi.Mock;
+    let logger: vi.Mocked<Pick<Logger, "debug" | "warn" | "info" | "error">>;
 
     beforeEach(() => {
       localDi = getDiForUnitTesting();
       localKubeconfigSyncs = observable.map();
       logger = {
-        debug: jest.fn(),
-        warn: jest.fn(),
-        info: jest.fn(),
-        error: jest.fn(),
+        debug: vi.fn(),
+        warn: vi.fn(),
+        info: vi.fn(),
+        error: vi.fn(),
       };
 
-      watchMock = jest.fn(() => getFakeWatchInstance());
+      watchMock = vi.fn(() => getFakeWatchInstance());
 
       localDi.override(directoryForUserDataInjectable, () => "/some-directory-for-user-data");
       localDi.override(directoryForTempInjectable, () => "/some-directory-for-temp");
@@ -556,7 +556,7 @@ describe("kubeconfig-sync.source tests", () => {
     let localDi: DiContainer;
     let localKubeconfigSyncs: ObservableMap<string, KubeconfigSyncValue>;
     let watchInstances: Map<string, Watcher<true>>;
-    let watchMock: jest.Mock;
+    let watchMock: vi.Mock;
     let statMock: AsyncFnMock<Stat>;
 
     beforeEach(() => {
@@ -565,7 +565,7 @@ describe("kubeconfig-sync.source tests", () => {
       statMock = asyncFn();
 
       watchInstances = new Map();
-      watchMock = jest.fn((path: string) => {
+      watchMock = vi.fn((path: string) => {
         const instance = getFakeWatchInstance();
 
         watchInstances.set(path, instance);
@@ -675,7 +675,7 @@ describe("kubeconfig-sync.source tests", () => {
         });
 
         // stopOldSync calls disposer which calls watcher.close()
-        expect((watcherBefore.close as jest.Mock).mock.calls.length).toBeGreaterThan(0);
+        expect((watcherBefore.close as vi.Mock).mock.calls.length).toBeGreaterThan(0);
       });
 
       it("removes the source entry for the deleted path", () => {
@@ -719,7 +719,7 @@ describe("kubeconfig-sync.source tests", () => {
         });
 
         // directoryForKubeConfigs is always in desired set — watcher must NOT be stopped
-        expect((watcherBefore.close as jest.Mock).mock.calls.length).toBe(0);
+        expect((watcherBefore.close as vi.Mock).mock.calls.length).toBe(0);
       });
     });
   });
@@ -728,7 +728,7 @@ describe("kubeconfig-sync.source tests", () => {
   describe("descriptor syncKubeconfigEntries.fromStore() IPC-reload path", () => {
     let localDi: DiContainer;
     let watchInstances: Map<string, Watcher<true>>;
-    let watchMock: jest.Mock;
+    let watchMock: vi.Mock;
     let statMock: AsyncFnMock<Stat>;
 
     beforeEach(() => {
@@ -736,7 +736,7 @@ describe("kubeconfig-sync.source tests", () => {
       statMock = asyncFn();
 
       watchInstances = new Map();
-      watchMock = jest.fn((path: string) => {
+      watchMock = vi.fn((path: string) => {
         const instance = getFakeWatchInstance();
 
         watchInstances.set(path, instance);
@@ -847,14 +847,14 @@ describe("kubeconfig-sync.source tests", () => {
         descriptors.syncKubeconfigEntries.fromStore([{ filePath: "/path/a" }]);
       });
 
-      expect((watcherForB.close as jest.Mock).mock.calls.length).toBeGreaterThan(0);
+      expect((watcherForB.close as vi.Mock).mock.calls.length).toBeGreaterThan(0);
     });
   });
 });
 
 const getFakeWatchInstance = (): Watcher<true> => {
   return Object.assign(new EventEmitter(), {
-    close: jest.fn().mockImplementation(async () => {}),
+    close: vi.fn().mockImplementation(async () => {}),
   });
 };
 

@@ -20,27 +20,27 @@ import type { DiRender } from "../../test-utils/renderFor";
 
 describe("<ContainerEnv />", () => {
   let render: DiRender;
-  let secretStore: jest.Mocked<Pick<SecretStore, "load" | "getByName">>;
-  let configMapStore: jest.Mocked<Pick<ConfigMapStore, "load" | "getByName">>;
+  let secretStore: vi.Mocked<Pick<SecretStore, "load" | "getByName">>;
+  let configMapStore: vi.Mocked<Pick<ConfigMapStore, "load" | "getByName">>;
 
   beforeEach(() => {
     const di = getDiForUnitTesting();
 
     secretStore = {
-      load: jest.fn().mockImplementation(async () => {
+      load: vi.fn().mockImplementation(async () => {
         return {} as Secret;
       }),
-      getByName: jest.fn(),
+      getByName: vi.fn(),
     };
     configMapStore = {
-      load: jest.fn().mockImplementation(async () => {
+      load: vi.fn().mockImplementation(async () => {
         return {} as ConfigMap;
       }),
-      getByName: jest.fn(),
+      getByName: vi.fn(),
     };
 
-    di.override(secretStoreInjectable, () => secretStore as jest.Mocked<SecretStore>);
-    di.override(configMapStoreInjectable, () => configMapStore as jest.Mocked<ConfigMapStore>);
+    di.override(secretStoreInjectable, () => secretStore as vi.Mocked<SecretStore>);
+    di.override(configMapStoreInjectable, () => configMapStore as vi.Mocked<ConfigMapStore>);
 
     render = renderFor(di);
   });

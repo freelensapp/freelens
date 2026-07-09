@@ -73,7 +73,7 @@ describe("safeJSONPathValue", () => {
 
   beforeEach(() => {
     oldWarn = console.warn;
-    console.warn = jest.fn();
+    console.warn = vi.fn();
   });
 
   afterEach(() => {

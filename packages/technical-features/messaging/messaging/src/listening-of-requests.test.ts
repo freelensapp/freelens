@@ -19,9 +19,9 @@ import { messagingFeatureForUnitTesting } from "./features/unit-testing";
 
 describe("listening-of-requests", () => {
   let di: DiContainer;
-  let enlistRequestChannelListenerMock: jest.MockedFunction<EnlistRequestChannelListener>;
-  let disposeSomeListenerMock: jest.Mock;
-  let disposeSomeUnrelatedListenerMock: jest.Mock;
+  let enlistRequestChannelListenerMock: vi.MockedFunction<EnlistRequestChannelListener>;
+  let disposeSomeListenerMock: vi.Mock;
+  let disposeSomeUnrelatedListenerMock: vi.Mock;
 
   beforeEach(() => {
     configure({
@@ -34,10 +34,10 @@ describe("listening-of-requests", () => {
 
     registerMobX(di);
 
-    disposeSomeListenerMock = jest.fn();
-    disposeSomeUnrelatedListenerMock = jest.fn();
+    disposeSomeListenerMock = vi.fn();
+    disposeSomeUnrelatedListenerMock = vi.fn();
 
-    enlistRequestChannelListenerMock = jest.fn((listener) =>
+    enlistRequestChannelListenerMock = vi.fn((listener) =>
       listener.id === "some-channel-id-request-listener-some-listener"
         ? disposeSomeListenerMock
         : disposeSomeUnrelatedListenerMock,

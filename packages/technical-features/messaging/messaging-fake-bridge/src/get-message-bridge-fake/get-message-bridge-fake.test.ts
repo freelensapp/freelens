@@ -1,4 +1,4 @@
-import asyncFn, { AsyncFnMock } from "@async-fn/jest";
+import asyncFn, { AsyncFnMock } from "@async-fn/vitest";
 import { startApplicationInjectionToken } from "@freelensapp/application";
 import { registerFeature } from "@freelensapp/feature-core";
 import {
@@ -75,15 +75,15 @@ const someRequestChannelWithoutListeners: SomeRequestChannel = {
       });
 
       describe("given there are message listeners", () => {
-        let someHandler1MockInDi1: jest.Mock;
-        let someHandler1MockInDi2: jest.Mock;
-        let someHandler2MockInDi2: jest.Mock;
+        let someHandler1MockInDi1: vi.Mock;
+        let someHandler1MockInDi2: vi.Mock;
+        let someHandler2MockInDi2: vi.Mock;
         let someListener1InDi2: Injectable<unknown, unknown>;
 
         beforeEach(() => {
-          someHandler1MockInDi1 = jest.fn();
-          someHandler1MockInDi2 = jest.fn();
-          someHandler2MockInDi2 = jest.fn();
+          someHandler1MockInDi1 = vi.fn();
+          someHandler1MockInDi2 = vi.fn();
+          someHandler2MockInDi2 = vi.fn();
 
           const someListener1InDi1 = getMessageChannelListenerInjectable({
             id: "some-listener-in-di-1",
@@ -142,10 +142,10 @@ const someRequestChannelWithoutListeners: SomeRequestChannel = {
               : "immediately";
 
             describe(scenarioTitle, () => {
-              let someWrapper: jest.Mock;
+              let someWrapper: vi.Mock;
 
               beforeEach((done) => {
-                someWrapper = jest.fn((propagation) => propagation());
+                someWrapper = vi.fn((propagation) => propagation());
 
                 if (scenarioIsAsync) {
                   messageBridgeFake.messagePropagationRecursive(someWrapper).then(done);
@@ -233,10 +233,10 @@ const someRequestChannelWithoutListeners: SomeRequestChannel = {
 
           scenarioIsAsync &&
             describe("when messages are propagated using a wrapper, such as act() in react testing lib", () => {
-              let someWrapper: jest.Mock;
+              let someWrapper: vi.Mock;
 
               beforeEach(async () => {
-                someWrapper = jest.fn((observation) => observation());
+                someWrapper = vi.fn((observation) => observation());
 
                 await messageBridgeFake.messagePropagation(someWrapper);
               });

@@ -18,19 +18,19 @@ import { messagingFeatureForUnitTesting } from "./features/unit-testing";
 
 describe("listening-of-messages", () => {
   let di: DiContainer;
-  let enlistMessageChannelListenerMock: jest.MockedFunction<EnlistMessageChannelListener>;
-  let disposeSomeListenerMock: jest.Mock;
-  let disposeSomeUnrelatedListenerMock: jest.Mock;
+  let enlistMessageChannelListenerMock: vi.MockedFunction<EnlistMessageChannelListener>;
+  let disposeSomeListenerMock: vi.Mock;
+  let disposeSomeUnrelatedListenerMock: vi.Mock;
 
   beforeEach(() => {
     di = createContainer("irrelevant");
 
     registerMobX(di);
 
-    disposeSomeListenerMock = jest.fn();
-    disposeSomeUnrelatedListenerMock = jest.fn();
+    disposeSomeListenerMock = vi.fn();
+    disposeSomeUnrelatedListenerMock = vi.fn();
 
-    enlistMessageChannelListenerMock = jest.fn((listener) =>
+    enlistMessageChannelListenerMock = vi.fn((listener) =>
       listener.id === "some-channel-id-message-listener-some-listener"
         ? disposeSomeListenerMock
         : disposeSomeUnrelatedListenerMock,

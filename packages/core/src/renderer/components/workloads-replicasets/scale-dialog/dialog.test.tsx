@@ -108,7 +108,7 @@ describe("<ReplicaSetScaleDialog />", () => {
     // when <ReplicaSetScaleDialog /> rendered.
     const initReplicas = 1;
 
-    replicaSetApi.getReplicas = jest.fn().mockImplementationOnce(async () => Promise.resolve(initReplicas));
+    replicaSetApi.getReplicas = vi.fn().mockImplementationOnce(async () => Promise.resolve(initReplicas));
     const { getByTestId } = render(<ReplicaSetScaleDialog />);
 
     openReplicaSetScaleDialog(dummyReplicaSet);
@@ -128,7 +128,7 @@ describe("<ReplicaSetScaleDialog />", () => {
   it("changes the desired scale when clicking the icon buttons +/-", async () => {
     const initReplicas = 1;
 
-    replicaSetApi.getReplicas = jest.fn().mockImplementationOnce(async () => Promise.resolve(initReplicas));
+    replicaSetApi.getReplicas = vi.fn().mockImplementationOnce(async () => Promise.resolve(initReplicas));
     const component = render(<ReplicaSetScaleDialog />);
 
     openReplicaSetScaleDialog(dummyReplicaSet);

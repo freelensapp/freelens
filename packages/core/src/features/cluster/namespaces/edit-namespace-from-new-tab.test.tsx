@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { JsonApiErrorParsed } from "@freelensapp/json-api";
 import { Namespace } from "@freelensapp/kube-object";
 import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
@@ -24,7 +24,7 @@ import apiKubePatchInjectable from "../../../renderer/k8s/api-kube-patch.injecta
 import type { BaseKubeJsonApiObjectMetadata, KubeJsonApiData, KubeObjectScope } from "@freelensapp/kube-object";
 import type { ShowNotification } from "@freelensapp/notifications";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
 
@@ -36,8 +36,8 @@ describe("cluster/namespaces - edit namespace from new tab", () => {
   let builder: ApplicationBuilder;
   let apiKubePatchMock: AsyncFnMock<ApiKubePatch>;
   let apiKubeGetMock: AsyncFnMock<ApiKubeGet>;
-  let showSuccessNotificationMock: jest.MockedFunction<ShowNotification>;
-  let showErrorNotificationMock: jest.MockedFunction<ShowNotification>;
+  let showSuccessNotificationMock: vi.MockedFunction<ShowNotification>;
+  let showErrorNotificationMock: vi.MockedFunction<ShowNotification>;
 
   beforeEach(() => {
     builder = getApplicationBuilder();
@@ -49,10 +49,10 @@ describe("cluster/namespaces - edit namespace from new tab", () => {
 
       windowDi.override(hostedClusterIdInjectable, () => "some-cluster-id");
 
-      showSuccessNotificationMock = jest.fn();
+      showSuccessNotificationMock = vi.fn();
       windowDi.override(showSuccessNotificationInjectable, () => showSuccessNotificationMock);
 
-      showErrorNotificationMock = jest.fn();
+      showErrorNotificationMock = vi.fn();
       windowDi.override(showErrorNotificationInjectable, () => showErrorNotificationMock);
 
       windowDi.override(getRandomIdForEditResourceTabInjectable, () =>

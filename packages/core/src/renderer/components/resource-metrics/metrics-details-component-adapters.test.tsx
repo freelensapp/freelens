@@ -5,7 +5,7 @@
  */
 
 import type { Injectable } from "@ogre-tools/injectable";
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import React from "react";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import namespaceMetricsInjectable from "../namespaces/metrics.injectable";
@@ -51,7 +51,7 @@ import type { AtLeastOneMetricTab, ResourceMetricsProps } from "./resource-metri
 
 let capturedProps: ResourceMetricsProps<string> | undefined;
 
-jest.mock("./index", () => ({
+vi.mock("./index", () => ({
   TimeRangedResourceMetrics: (props: ResourceMetricsProps<string>) => {
     capturedProps = props;
 
@@ -263,9 +263,9 @@ describe("metrics details adapters", () => {
       const di = getDiForUnitTesting();
       const render = renderFor(di);
       const metrics = {
-        value: { get: jest.fn() },
-        pending: { get: jest.fn() },
-        invalidate: jest.fn(),
+        value: { get: vi.fn() },
+        pending: { get: vi.fn() },
+        invalidate: vi.fn(),
       };
       let capturedParams: unknown;
 

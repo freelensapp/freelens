@@ -4,15 +4,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
-import { anyObject } from "jest-mock-extended";
+import asyncFn from "@async-fn/vitest";
+import { anyObject } from "vitest-mock-extended";
 import { getDiForUnitTesting } from "../../main/getDiForUnitTesting";
 import { cast } from "../../test-utils/cast";
 import createRequestNamespaceListPermissionsInjectable from "./create-request-namespace-list-permissions.injectable";
 
-import type { AuthorizationV1Api, V1SubjectRulesReviewStatus } from "@freelensapp/kubernetes-client-node";
-
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
+import type { AuthorizationV1Api, V1SubjectRulesReviewStatus } from "@kubernetes/client-node";
 import type { DiContainer } from "@ogre-tools/injectable";
 
 import type { KubeApiResource } from "../rbac";

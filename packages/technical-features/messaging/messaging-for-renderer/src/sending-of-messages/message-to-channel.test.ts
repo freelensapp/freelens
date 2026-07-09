@@ -1,4 +1,4 @@
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { registerFeature } from "@freelensapp/feature-core";
 import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import { createContainer, DiContainer } from "@ogre-tools/injectable";
@@ -7,7 +7,7 @@ import sendToIpcInjectable from "./send-to-ipc.injectable";
 
 import type { MessageChannel } from "@freelensapp/messaging";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
 
 describe("message-from-channel", () => {
   let di: DiContainer;

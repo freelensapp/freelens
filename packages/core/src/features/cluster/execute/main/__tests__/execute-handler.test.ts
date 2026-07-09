@@ -89,7 +89,7 @@ describe("executeOnClusterHandler", () => {
 
         di.override(
           createKubeJsonApiInjectable,
-          () => () => createMockKubeJsonApi({ get: jest.fn().mockResolvedValue(mockPods) }) as any,
+          () => () => createMockKubeJsonApi({ get: vi.fn().mockResolvedValue(mockPods) }) as any,
         );
 
         const executeHandler = di.inject(executeOnClusterHandlerInjectable);
@@ -113,7 +113,7 @@ describe("executeOnClusterHandler", () => {
           createKubeJsonApiInjectable,
           () => () =>
             createMockKubeJsonApi({
-              get: jest.fn().mockImplementation((url: string) => {
+              get: vi.fn().mockImplementation((url: string) => {
                 capturedUrl = url;
                 return Promise.resolve({ items: [] });
               }),
@@ -138,7 +138,7 @@ describe("executeOnClusterHandler", () => {
           createKubeJsonApiInjectable,
           () => () =>
             createMockKubeJsonApi({
-              get: jest.fn().mockImplementation((url: string) => {
+              get: vi.fn().mockImplementation((url: string) => {
                 capturedUrl = url;
                 return Promise.resolve({ items: [] });
               }),
@@ -163,7 +163,7 @@ describe("executeOnClusterHandler", () => {
           createKubeJsonApiInjectable,
           () => () =>
             createMockKubeJsonApi({
-              get: jest.fn().mockImplementation((url: string) => {
+              get: vi.fn().mockImplementation((url: string) => {
                 capturedUrl = url;
                 return Promise.resolve({ items: [] });
               }),
@@ -191,7 +191,7 @@ describe("executeOnClusterHandler", () => {
           createKubeJsonApiInjectable,
           () => () =>
             createMockKubeJsonApi({
-              get: jest.fn().mockImplementation((url: string) => {
+              get: vi.fn().mockImplementation((url: string) => {
                 capturedUrl = url;
                 return Promise.resolve(mockPod);
               }),
@@ -222,7 +222,7 @@ describe("executeOnClusterHandler", () => {
           createKubeJsonApiInjectable,
           () => () =>
             createMockKubeJsonApi({
-              post: jest.fn().mockImplementation((url: string, params: any) => {
+              post: vi.fn().mockImplementation((url: string, params: any) => {
                 capturedUrl = url;
                 capturedBody = params?.data;
                 return Promise.resolve(mockCreatedPod);
@@ -257,7 +257,7 @@ describe("executeOnClusterHandler", () => {
           createKubeJsonApiInjectable,
           () => () =>
             createMockKubeJsonApi({
-              put: jest.fn().mockImplementation((url: string, params: any) => {
+              put: vi.fn().mockImplementation((url: string, params: any) => {
                 capturedUrl = url;
                 capturedBody = params?.data;
                 return Promise.resolve(mockUpdatedPod);
@@ -292,7 +292,7 @@ describe("executeOnClusterHandler", () => {
           createKubeJsonApiInjectable,
           () => () =>
             createMockKubeJsonApi({
-              patch: jest.fn().mockImplementation((url: string, params: any, reqInit: any) => {
+              patch: vi.fn().mockImplementation((url: string, params: any, reqInit: any) => {
                 capturedUrl = url;
                 capturedBody = params?.data;
                 capturedHeaders = reqInit?.headers;
@@ -324,7 +324,7 @@ describe("executeOnClusterHandler", () => {
           createKubeJsonApiInjectable,
           () => () =>
             createMockKubeJsonApi({
-              patch: jest.fn().mockImplementation((_url: string, _params: any, reqInit: any) => {
+              patch: vi.fn().mockImplementation((_url: string, _params: any, reqInit: any) => {
                 capturedHeaders = reqInit?.headers;
                 return Promise.resolve({});
               }),
@@ -351,7 +351,7 @@ describe("executeOnClusterHandler", () => {
           createKubeJsonApiInjectable,
           () => () =>
             createMockKubeJsonApi({
-              patch: jest.fn().mockImplementation((_url: string, _params: any, reqInit: any) => {
+              patch: vi.fn().mockImplementation((_url: string, _params: any, reqInit: any) => {
                 capturedHeaders = reqInit?.headers;
                 return Promise.resolve({});
               }),
@@ -380,7 +380,7 @@ describe("executeOnClusterHandler", () => {
           createKubeJsonApiInjectable,
           () => () =>
             createMockKubeJsonApi({
-              del: jest.fn().mockImplementation((url: string) => {
+              del: vi.fn().mockImplementation((url: string) => {
                 capturedUrl = url;
                 return Promise.resolve({});
               }),
@@ -429,7 +429,7 @@ describe("executeOnClusterHandler", () => {
 
         di.override(
           createKubeJsonApiInjectable,
-          () => () => createMockKubeJsonApi({ get: jest.fn().mockRejectedValue(apiError) }) as any,
+          () => () => createMockKubeJsonApi({ get: vi.fn().mockRejectedValue(apiError) }) as any,
         );
 
         const executeHandler = di.inject(executeOnClusterHandlerInjectable);
@@ -449,7 +449,7 @@ describe("executeOnClusterHandler", () => {
       it("handles unknown errors gracefully", async () => {
         di.override(
           createKubeJsonApiInjectable,
-          () => () => createMockKubeJsonApi({ get: jest.fn().mockRejectedValue(new Error("Network error")) }) as any,
+          () => () => createMockKubeJsonApi({ get: vi.fn().mockRejectedValue(new Error("Network error")) }) as any,
         );
 
         const executeHandler = di.inject(executeOnClusterHandlerInjectable);
@@ -473,7 +473,7 @@ describe("executeOnClusterHandler", () => {
           createKubeJsonApiInjectable,
           () => () =>
             createMockKubeJsonApi({
-              get: jest.fn().mockImplementation((_url: string, params: any) => {
+              get: vi.fn().mockImplementation((_url: string, params: any) => {
                 capturedQuery = params?.query;
                 return Promise.resolve({ items: [] });
               }),
@@ -498,7 +498,7 @@ describe("executeOnClusterHandler", () => {
           createKubeJsonApiInjectable,
           () => () =>
             createMockKubeJsonApi({
-              get: jest.fn().mockImplementation((_url: string, params: any) => {
+              get: vi.fn().mockImplementation((_url: string, params: any) => {
                 capturedQuery = params?.query;
                 return Promise.resolve({ items: [] });
               }),
@@ -523,7 +523,7 @@ describe("executeOnClusterHandler", () => {
           createKubeJsonApiInjectable,
           () => () =>
             createMockKubeJsonApi({
-              get: jest.fn().mockImplementation((_url: string, params: any) => {
+              get: vi.fn().mockImplementation((_url: string, params: any) => {
                 capturedQuery = params?.query;
                 return Promise.resolve({ items: [] });
               }),

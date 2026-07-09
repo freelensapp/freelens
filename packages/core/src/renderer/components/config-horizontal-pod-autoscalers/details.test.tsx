@@ -21,7 +21,7 @@ import type { RenderResult } from "@testing-library/react";
 
 import type { DiRender } from "../test-utils/renderFor";
 
-jest.mock("react-router-dom", () => ({
+vi.mock("react-router-dom", () => ({
   Link: ({ children }: { children: StrictReactNode }) => children,
 }));
 

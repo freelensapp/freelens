@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { Namespace } from "@freelensapp/kube-object";
 import { disposer } from "@freelensapp/utilities";
 import { fireEvent } from "@testing-library/react";
@@ -24,7 +24,7 @@ import namespaceStoreInjectable from "./store.injectable";
 
 import type { Disposer } from "@freelensapp/utilities";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
 

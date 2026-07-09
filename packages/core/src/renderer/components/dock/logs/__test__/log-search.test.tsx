@@ -62,18 +62,18 @@ describe("LogSearch tests", () => {
   });
 
   afterEach(() => {
-    jest.restoreAllMocks();
+    vi.restoreAllMocks();
   });
 
   it("renders w/o errors", () => {
     const model = getOnePodViewModel("foobar", userPreferencesState);
-    const { container } = render(<LogSearch model={model} scrollToOverlay={jest.fn()} />);
+    const { container } = render(<LogSearch model={model} scrollToOverlay={vi.fn()} />);
 
     expect(container).toBeInstanceOf(HTMLElement);
   });
 
   it("should scroll to new active overlay when clicking the previous button", async () => {
-    const scrollToOverlay = jest.fn();
+    const scrollToOverlay = vi.fn();
     const model = getOnePodViewModel("foobar", userPreferencesState, {
       getLogsWithoutTimestamps: () => ["hello", "world"],
     });
@@ -87,7 +87,7 @@ describe("LogSearch tests", () => {
   });
 
   it("should scroll to new active overlay when clicking the next button", async () => {
-    const scrollToOverlay = jest.fn();
+    const scrollToOverlay = vi.fn();
     const model = getOnePodViewModel("foobar", userPreferencesState, {
       getLogsWithoutTimestamps: () => ["hello", "world"],
     });
@@ -101,7 +101,7 @@ describe("LogSearch tests", () => {
   });
 
   it("next and previous should be disabled initially", async () => {
-    const scrollToOverlay = jest.fn();
+    const scrollToOverlay = vi.fn();
     const model = getOnePodViewModel("foobar", userPreferencesState, {
       getLogsWithoutTimestamps: () => ["hello", "world"],
     });
@@ -117,7 +117,7 @@ describe("LogSearch tests", () => {
     { label: "ctrl+f", eventInit: { key: "f", ctrlKey: true } },
     { label: "cmd+f", eventInit: { key: "f", metaKey: true } },
   ])("should prefill search on $label when selection is inside pod logs list", async ({ eventInit }) => {
-    const scrollToOverlay = jest.fn();
+    const scrollToOverlay = vi.fn();
     const model = getOnePodViewModel("foobar", userPreferencesState, {
       getLogsWithoutTimestamps: () => ["hello", "world"],
     });
@@ -133,7 +133,7 @@ describe("LogSearch tests", () => {
 
     const selectionSource = screen.getByTestId("selection-source").firstChild;
 
-    jest.spyOn(window, "getSelection").mockReturnValue({
+    vi.spyOn(window, "getSelection").mockReturnValue({
       anchorNode: selectionSource,
       focusNode: selectionSource,
       toString: () => "hello",
@@ -148,7 +148,7 @@ describe("LogSearch tests", () => {
   });
 
   it("should not prefill search on ctrl+f when selection is outside pod logs list", async () => {
-    const scrollToOverlay = jest.fn();
+    const scrollToOverlay = vi.fn();
     const model = getOnePodViewModel("foobar", userPreferencesState, {
       getLogsWithoutTimestamps: () => ["hello", "world"],
     });
@@ -170,7 +170,7 @@ describe("LogSearch tests", () => {
 
     const outsideSelectionSource = screen.getByTestId("outside-selection-source").firstChild;
 
-    jest.spyOn(window, "getSelection").mockReturnValue({
+    vi.spyOn(window, "getSelection").mockReturnValue({
       anchorNode: outsideSelectionSource,
       focusNode: outsideSelectionSource,
       toString: () => "hello",
@@ -184,7 +184,7 @@ describe("LogSearch tests", () => {
   });
 
   it("should keep existing query on ctrl+f when selection is empty", async () => {
-    const scrollToOverlay = jest.fn();
+    const scrollToOverlay = vi.fn();
     const model = getOnePodViewModel("foobar", userPreferencesState, {
       getLogsWithoutTimestamps: () => ["hello", "world"],
     });
@@ -205,7 +205,7 @@ describe("LogSearch tests", () => {
 
     const selectionSource = screen.getByTestId("selection-source").firstChild;
 
-    jest.spyOn(window, "getSelection").mockReturnValue({
+    vi.spyOn(window, "getSelection").mockReturnValue({
       anchorNode: selectionSource,
       focusNode: selectionSource,
       toString: () => "",

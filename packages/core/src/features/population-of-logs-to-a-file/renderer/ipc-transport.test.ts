@@ -19,7 +19,7 @@ describe("renderer log transport through ipc", () => {
   let sendIpcMock: SendMessageToChannel;
 
   beforeEach(() => {
-    sendIpcMock = jest.fn();
+    sendIpcMock = vi.fn();
     di = getDiForUnitTesting();
     di.override(sendMessageToChannelInjectionToken, () => sendIpcMock);
     di.override(rendererLogFileIdInjectable, () => "some-log-id");

@@ -7,9 +7,9 @@
 import { isErrnoException } from "@freelensapp/utilities";
 import { dumpConfigYaml } from "../../common/kube-helpers";
 
-import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
 import type { Logger } from "@freelensapp/logger";
 
+import type { KubeConfig } from "@kubernetes/client-node";
 import type { SelfSignedCert } from "selfsigned";
 import type { PartialDeep } from "type-fest";
 

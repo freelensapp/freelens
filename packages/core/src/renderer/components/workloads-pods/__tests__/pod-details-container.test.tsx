@@ -15,7 +15,7 @@ import { PodDetailsContainer } from "../pod-details-container";
 
 import type { PodStatus } from "@freelensapp/kube-object";
 
-jest.mock("../pod-container-env", () => ({
+vi.mock("../pod-container-env", () => ({
   ContainerEnvironment: () => null,
 }));
 

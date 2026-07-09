@@ -15,12 +15,12 @@ import type { ApplicationBuilder } from "../../renderer/components/test-utils/ge
 
 describe.each(allPlatforms)("application-menu, given platform is '%s'", (platform) => {
   let builder: ApplicationBuilder;
-  let populateApplicationMenuMock: jest.Mock;
+  let populateApplicationMenuMock: vi.Mock;
 
   beforeEach(async () => {
     testUsingFakeTime();
 
-    populateApplicationMenuMock = jest.fn();
+    populateApplicationMenuMock = vi.fn();
 
     builder = getApplicationBuilder();
 

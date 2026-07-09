@@ -80,7 +80,7 @@ describe("requestMetricsInjectable", () => {
   it("dedupes identical concurrent requests while one network call is still in flight", async () => {
     const deferred = createDeferred<object>();
     const response = { result: "metrics" };
-    const { post, requestMetrics } = instantiateRequestMetrics(jest.fn(() => deferred.promise));
+    const { post, requestMetrics } = instantiateRequestMetrics(vi.fn(() => deferred.promise));
     const params = { start: 0, end: 60 * 60 };
 
     const firstRequest = requestMetrics("sum(rate(container_cpu_usage_seconds_total[5m]))", params);
@@ -113,7 +113,7 @@ describe("requestMetricsInjectable", () => {
   });
 });
 
-function instantiateRequestMetrics(post: jest.Mock = jest.fn().mockResolvedValue({})) {
+function instantiateRequestMetrics(post: vi.Mock = vi.fn().mockResolvedValue({})) {
   const requestMetrics = requestMetricsInjectable.instantiate({
     inject: (injectable: unknown) => {
       if (injectable === apiBaseInjectable) {

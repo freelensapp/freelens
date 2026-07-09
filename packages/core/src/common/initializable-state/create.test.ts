@@ -4,14 +4,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { runManyFor } from "@freelensapp/run-many";
 import { createContainer, getInjectionToken } from "@ogre-tools/injectable";
 import { getInitializable, getInjectablesForInitializable } from "./create";
 
 import type { Runnable } from "@freelensapp/run-many";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
 import type { DiContainer, InjectionToken } from "@ogre-tools/injectable";
 
 import type { ImplInitializableInjectionTokensArgs, Initializable } from "./create";

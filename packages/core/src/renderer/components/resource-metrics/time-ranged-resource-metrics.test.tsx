@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import { screen } from "@testing-library/react";
 import React from "react";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
@@ -16,11 +16,11 @@ import type { AtLeastOneMetricTab } from "./resource-metrics";
 
 let capturedResourceMetricsProps: unknown;
 
-jest.mock("../cluster/metrics-time-range-selector", () => ({
+vi.mock("../cluster/metrics-time-range-selector", () => ({
   MetricsTimeRangeSelector: () => <div data-testid="metrics-time-range-selector" />,
 }));
 
-jest.mock("./resource-metrics", () => ({
+vi.mock("./resource-metrics", () => ({
   ResourceMetrics: (props: unknown) => {
     capturedResourceMetricsProps = props;
 

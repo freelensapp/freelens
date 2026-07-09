@@ -12,7 +12,7 @@ import { computeNextPosition, RectangleDimensions } from "./helpers";
 import { Tooltip, TooltipPosition } from "./tooltip";
 
 import type { RenderResult } from "@testing-library/react";
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 
 const getRectangle = (parts: Omit<RectangleDimensions, "width" | "height">): RectangleDimensions => {
   assert(parts.right >= parts.left);
@@ -30,7 +30,7 @@ describe("<Tooltip />", () => {
   let user: UserEvent;
 
   beforeEach(() => {
-    requestAnimationFrameSpy = jest.spyOn(window, "requestAnimationFrame");
+    requestAnimationFrameSpy = vi.spyOn(window, "requestAnimationFrame");
 
     requestAnimationFrameSpy.mockImplementation((cb) => {
       cb(0);

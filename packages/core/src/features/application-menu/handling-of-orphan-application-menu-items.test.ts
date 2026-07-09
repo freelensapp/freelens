@@ -17,14 +17,14 @@ import type { ApplicationBuilder } from "../../renderer/components/test-utils/ge
 
 describe("handling-of-orphan-application-menu-items, given orphan menu item", () => {
   let builder: ApplicationBuilder;
-  let populateApplicationMenuMock: jest.Mock;
-  let logErrorMock: jest.Mock;
+  let populateApplicationMenuMock: vi.Mock;
+  let logErrorMock: vi.Mock;
 
   beforeEach(async () => {
     testUsingFakeTime();
 
-    populateApplicationMenuMock = jest.fn();
-    logErrorMock = jest.fn();
+    populateApplicationMenuMock = vi.fn();
+    logErrorMock = vi.fn();
 
     builder = getApplicationBuilder();
 

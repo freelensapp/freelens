@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { fireEvent, waitFor } from "@testing-library/react";
 import execFileInjectable from "../../common/fs/exec-file.injectable";
 import helmBinaryPathInjectable from "../../main/helm/helm-binary-path.injectable";
@@ -14,7 +14,7 @@ import requestPublicHelmRepositoriesInjectable from "./child-features/preference
 
 import type { AsyncResult } from "@freelensapp/utilities";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
 import type { RenderResult } from "@testing-library/react";
 
 import type { ExecFile } from "../../common/fs/exec-file.injectable";

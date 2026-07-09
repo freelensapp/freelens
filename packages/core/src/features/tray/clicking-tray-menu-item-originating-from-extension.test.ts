@@ -13,13 +13,13 @@ import type { FakeExtensionOptions } from "../../renderer/components/test-utils/
 
 describe("clicking tray menu item originating from extension", () => {
   let builder: ApplicationBuilder;
-  let logErrorMock: jest.Mock;
+  let logErrorMock: vi.Mock;
 
   beforeEach(async () => {
     builder = getApplicationBuilder();
 
     builder.beforeApplicationStart(({ mainDi }) => {
-      logErrorMock = jest.fn();
+      logErrorMock = vi.fn();
 
       mainDi.override(logErrorInjectable, () => logErrorMock);
       mainDi.override(getRandomIdInjectionToken, () => () => "some-random-id");
@@ -30,10 +30,10 @@ describe("clicking tray menu item originating from extension", () => {
 
   describe("when extension is enabled", () => {
     let someExtension: FakeExtensionOptions;
-    let clickMock: jest.Mock;
+    let clickMock: vi.Mock;
 
     beforeEach(() => {
-      clickMock = jest.fn();
+      clickMock = vi.fn();
 
       someExtension = {
         id: "some-extension-id",

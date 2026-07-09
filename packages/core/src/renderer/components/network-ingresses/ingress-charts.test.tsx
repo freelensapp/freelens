@@ -11,14 +11,14 @@ import { ResourceMetricsContext } from "../resource-metrics";
 import { renderFor } from "../test-utils/renderFor";
 import { IngressCharts } from "./ingress-charts";
 
-const barChartMock = jest.fn();
+const barChartMock = vi.fn();
 
-jest.mock("../../../common/k8s-api/endpoints/metrics.api", () => ({
+vi.mock("../../../common/k8s-api/endpoints/metrics.api", () => ({
   isMetricsEmpty: () => false,
   normalizeMetrics: (metric: unknown) => metric,
 }));
 
-jest.mock("../chart", () => ({
+vi.mock("../chart", () => ({
   BarChart: (props: unknown) => {
     barChartMock(props);
 

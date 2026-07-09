@@ -4,10 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import freelensFetch from "@freelensapp/node-fetch";
 import * as glob from "glob";
 import { enableMapSet, setAutoFreeze } from "immer";
 import { configure } from "mobx";
+import freelensFetch from "node-fetch";
 import path from "path";
 import React from "react";
 import { TextDecoder as TextDecoderNode, TextEncoder } from "util";
@@ -24,7 +24,7 @@ declare global {
 }
 
 configure({
-  // Needed because we want to use jest.spyOn()
+  // Needed because we want to use vi.spyOn()
   // ref https://github.com/mobxjs/mobx/issues/2784
   safeDescriptors: false,
   enforceActions: "never",
@@ -34,7 +34,7 @@ setAutoFreeze(false); // allow to merge mobx observables
 enableMapSet(); // allow to merge maps and sets
 
 // Mock __non_webpack_require__ for tests
-globalThis.__non_webpack_require__ = jest.fn();
+globalThis.__non_webpack_require__ = vi.fn();
 
 global.fail = ((error = "Test failed without explicit error") => {
   console.error(error);
@@ -55,9 +55,9 @@ global.ResizeObserver = class {
   disconnect = () => {};
 };
 
-jest.mock("./renderer/components/monaco-editor/monaco-editor");
-jest.mock("@freelensapp/tooltip", () => ({
-  ...jest.requireActual("@freelensapp/tooltip"),
+vi.mock("./renderer/components/monaco-editor/monaco-editor");
+vi.mock("@freelensapp/tooltip", () => ({
+  ...vi.requireActual("@freelensapp/tooltip"),
   withTooltip: ((Target) =>
     ({ tooltip, tooltipOverrideDisabled, ...props }: any) => {
       if (tooltip) {
@@ -74,7 +74,7 @@ jest.mock("@freelensapp/tooltip", () => ({
       return <Target {...props} />;
     }) as typeof K8slensTooltip.withTooltip,
 }));
-jest.mock("monaco-editor");
+vi.mock("monaco-editor");
 
 const getInjectables = (environment: "renderer" | "main", filePathGlob: string) =>
   [

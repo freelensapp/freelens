@@ -1,4 +1,4 @@
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { registerFeature } from "@freelensapp/feature-core";
 import { createContainer, DiContainer } from "@ogre-tools/injectable";
 import { getPromiseStatus } from "@ogre-tools/test-utils";
@@ -6,7 +6,7 @@ import electronAppInjectable from "../electron/electron-app.injectable";
 import { applicationFeatureForElectronMain } from "../feature";
 import whenAppIsReadyInjectable from "./when-app-is-ready.injectable";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
 
 describe("when-app-is-ready", () => {
   let di: DiContainer;

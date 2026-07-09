@@ -16,19 +16,19 @@ type RawMetricsTimeRange = {
 
 describe("selectedMetricsTimeRangeInjectable", () => {
   beforeEach(() => {
-    jest.useFakeTimers();
-    jest.setSystemTime(new Date("2024-01-01T00:00:00Z"));
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2024-01-01T00:00:00Z"));
   });
 
   afterEach(() => {
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 
   it("advances duration timestamps when time moves forward", () => {
     const { selectedMetricsTimeRange } = instantiateWithStorage({ duration: 3600 });
     const initial = selectedMetricsTimeRange.timestamps.get();
 
-    jest.advanceTimersByTime(60 * 1000);
+    vi.advanceTimersByTime(60 * 1000);
 
     const updated = selectedMetricsTimeRange.timestamps.get();
 
@@ -40,7 +40,7 @@ describe("selectedMetricsTimeRangeInjectable", () => {
     const { selectedMetricsTimeRange } = instantiateWithStorage({ duration: null, customStart: 100, customEnd: 200 });
     const initial = selectedMetricsTimeRange.timestamps.get();
 
-    jest.advanceTimersByTime(60 * 1000);
+    vi.advanceTimersByTime(60 * 1000);
 
     expect(selectedMetricsTimeRange.timestamps.get()).toEqual(initial);
   });

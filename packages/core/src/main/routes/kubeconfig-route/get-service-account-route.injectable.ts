@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { CoreV1Api } from "@freelensapp/kubernetes-client-node";
+import { CoreV1Api } from "@kubernetes/client-node";
 import * as yaml from "js-yaml";
 import { defaultYamlDumpOptions } from "../../../common/kube-helpers";
 import { apiPrefix } from "../../../common/vars";

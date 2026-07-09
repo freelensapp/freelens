@@ -5,7 +5,7 @@
  */
 
 import { NodeApi } from "@freelensapp/kube-api";
-import { CoreV1Api, Watch } from "@freelensapp/kubernetes-client-node";
+import { CoreV1Api, Watch } from "@kubernetes/client-node";
 import { get, once } from "lodash";
 import { v4 as uuid } from "uuid";
 import { initialNodeShellImage, initialNodeShellWindowsImage } from "../../../common/cluster-types";
@@ -13,7 +13,8 @@ import { TerminalChannels } from "../../../common/terminal/channels";
 import { ShellOpenError, ShellSession } from "../shell-session";
 
 import type { Pod } from "@freelensapp/kube-object";
-import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
+
+import type { KubeConfig } from "@kubernetes/client-node";
 
 import type { CreateKubeApi } from "../../../common/k8s-api/create-kube-api.injectable";
 import type { CreateKubeJsonApiForCluster } from "../../../common/k8s-api/create-kube-json-api-for-cluster.injectable";

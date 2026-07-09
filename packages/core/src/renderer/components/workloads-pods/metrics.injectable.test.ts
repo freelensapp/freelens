@@ -14,7 +14,7 @@ import type { Pod } from "@freelensapp/kube-object";
 describe("pod-metrics injectable", () => {
   it("requests pod metrics with the selected time range", () => {
     const di = getDiForUnitTesting();
-    const requestPodMetrics = jest.fn().mockResolvedValue({});
+    const requestPodMetrics = vi.fn().mockResolvedValue({});
     const pod = {
       getId: () => "pod-id",
       getName: () => "pod-name",
