@@ -44,8 +44,14 @@
     "react-router-dom": "^5.3.4"
   },
   "devDependencies": {
+    "@freelensapp/feature-core": "workspace:^",
+    "@freelensapp/legacy-global-di": "workspace:^",
+    "@freelensapp/test-utils": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/webpack": "workspace:^",
+    "@ogre-tools/injectable-extension-for-mobx": "^17.11.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^12.1.5",
     "@types/history": "^4.7.11",
     "@types/lodash": "^4.17.24",
     "@types/react": "^17.0.93",
