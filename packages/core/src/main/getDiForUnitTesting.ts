@@ -85,9 +85,9 @@ export function getDiForUnitTesting() {
   });
   di.override(spawnInjectable, () => () => {
     return {
-      stderr: { on: jest.fn(), removeAllListeners: jest.fn() },
-      stdout: { on: jest.fn(), removeAllListeners: jest.fn() },
-      on: jest.fn(),
+      stderr: { on: vi.fn(), removeAllListeners: vi.fn() },
+      stdout: { on: vi.fn(), removeAllListeners: vi.fn() },
+      on: vi.fn(),
     } as never;
   });
 

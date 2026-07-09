@@ -14,16 +14,33 @@ export const advanceFakeTime = (milliseconds: number) => {
   }
 
   act(() => {
-    jest.advanceTimersByTime(milliseconds);
+    vi.advanceTimersByTime(milliseconds);
   });
 };
 
 export const testUsingFakeTime = (dateTime = "2015-10-21T07:28:00Z") => {
   usingFakeTime = true;
 
-  jest.useFakeTimers({
-    doNotFake: ["nextTick"],
+  // Jest faked every timer API except process.nextTick (doNotFake:
+  // ["nextTick"]); Vitest's default toFake list is smaller, so the list is
+  // spelled out to keep parity.
+  vi.useFakeTimers({
+    toFake: [
+      "setTimeout",
+      "clearTimeout",
+      "setInterval",
+      "clearInterval",
+      "setImmediate",
+      "clearImmediate",
+      "Date",
+      "performance",
+      "requestAnimationFrame",
+      "cancelAnimationFrame",
+      "requestIdleCallback",
+      "cancelIdleCallback",
+      "queueMicrotask",
+    ],
   });
 
-  jest.setSystemTime(new Date(dateTime));
+  vi.setSystemTime(new Date(dateTime));
 };

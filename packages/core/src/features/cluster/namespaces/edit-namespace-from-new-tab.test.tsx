@@ -96,31 +96,31 @@ describe("cluster/namespaces - edit namespace from new tab", () => {
     });
 
     // TODO: Implement skipped tests when loading of resources can be tested
-    xit("renders", () => {
+    it.skip("renders", () => {
       expect(rendered.baseElement).toMatchSnapshot();
     });
 
-    xit("calls for namespaces", () => {});
+    it.skip("calls for namespaces", () => {});
 
-    xit("shows spinner", () => {});
+    it.skip("shows spinner", () => {});
 
     describe("when namespaces resolve", () => {
       beforeEach(() => {});
 
-      xit("renders", () => {
+      it.skip("renders", () => {
         expect(rendered.baseElement).toMatchSnapshot();
       });
 
-      xit("does not show spinner anymore", () => {});
+      it.skip("does not show spinner anymore", () => {});
 
       describe("when clicking the context menu for a namespace", () => {
         beforeEach(() => {});
 
-        xit("renders", () => {
+        it.skip("renders", () => {
           expect(rendered.baseElement).toMatchSnapshot();
         });
 
-        xit("does not show edit resource tab yet", () => {});
+        it.skip("does not show edit resource tab yet", () => {});
 
         describe("when clicking to edit namespace", () => {
           beforeEach(() => {

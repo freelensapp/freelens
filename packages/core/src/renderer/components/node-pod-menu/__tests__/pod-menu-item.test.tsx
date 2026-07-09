@@ -8,8 +8,8 @@ import type { ContainerWithType } from "@freelensapp/kube-object";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 
-vi.mock("../../menu", () => {
-  const actualMenu = vi.requireActual("../../menu");
+vi.mock("../../menu", async (importOriginal) => {
+  const actualMenu = await importOriginal<object>();
 
   return {
     ...actualMenu,

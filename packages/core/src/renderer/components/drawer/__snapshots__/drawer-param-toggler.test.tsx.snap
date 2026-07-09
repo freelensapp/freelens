@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`<DrawerParamToggler /> after clicking the toggle after clicking the toggle again renders 1`] = `
 <body>

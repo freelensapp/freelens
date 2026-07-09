@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`legacy extension adding cluster frame components given custom components for cluster view available renders 1`] = `
 <div>

@@ -1,4 +1,4 @@
-import asyncFn, { type AsyncFnMock } from "@async-fn/jest";
+import asyncFn, { type AsyncFnMock } from "@async-fn/vitest";
 import {
   enlistMessageChannelListenerInjectionToken,
   enlistRequestChannelListenerInjectionToken,

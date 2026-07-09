@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import "@testing-library/jest-dom/vitest";
 import { registerFeature } from "@freelensapp/feature-core";
 import { setLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import { loggerFeature, loggerInjectionToken } from "@freelensapp/logger";

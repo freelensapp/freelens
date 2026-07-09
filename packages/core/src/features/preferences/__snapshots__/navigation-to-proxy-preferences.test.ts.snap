@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`preferences - navigation to proxy preferences given in preferences, when rendered renders 1`] = `
 <div>
