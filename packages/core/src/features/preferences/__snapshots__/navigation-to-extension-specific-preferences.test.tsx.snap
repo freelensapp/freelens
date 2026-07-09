@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`preferences - navigation to extension specific preferences given in preferences, when rendered given extension with registered tab renders 1`] = `
+exports[`preferences - navigation to extension specific preferences > given in preferences, when rendered > given extension with registered tab > renders 1`] = `
 <body>
   <div>
     <div
@@ -241,7 +241,7 @@ exports[`preferences - navigation to extension specific preferences given in pre
                               id="theme-input"
                               role="combobox"
                               spellcheck="false"
-                              style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                              style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                               tabindex="0"
                               type="text"
                               value=""
@@ -332,7 +332,7 @@ exports[`preferences - navigation to extension specific preferences given in pre
                               id="extension-install-registry-input"
                               role="combobox"
                               spellcheck="false"
-                              style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                              style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                               tabindex="0"
                               type="text"
                               value=""
@@ -564,7 +564,7 @@ exports[`preferences - navigation to extension specific preferences given in pre
                               id="timezone-input"
                               role="combobox"
                               spellcheck="false"
-                              style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                              style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                               tabindex="0"
                               type="text"
                               value=""
@@ -781,7 +781,7 @@ exports[`preferences - navigation to extension specific preferences given in pre
 </body>
 `;
 
-exports[`preferences - navigation to extension specific preferences given in preferences, when rendered given extension with registered tab when navigating to specific extension tab renders 1`] = `
+exports[`preferences - navigation to extension specific preferences > given in preferences, when rendered > given extension with registered tab > when navigating to specific extension tab > renders 1`] = `
 <div>
   <div
     class="Notifications flex column align-flex-end"
@@ -1177,7 +1177,7 @@ exports[`preferences - navigation to extension specific preferences given in pre
 </div>
 `;
 
-exports[`preferences - navigation to extension specific preferences given in preferences, when rendered given extensions with tabs having same id when navigating to first extension tab renders 1`] = `
+exports[`preferences - navigation to extension specific preferences > given in preferences, when rendered > given extensions with tabs having same id > when navigating to first extension tab > renders 1`] = `
 <div>
   <div
     class="Notifications flex column align-flex-end"
@@ -1585,7 +1585,7 @@ exports[`preferences - navigation to extension specific preferences given in pre
 </div>
 `;
 
-exports[`preferences - navigation to extension specific preferences given in preferences, when rendered given extensions with tabs having same id when navigating to second extension tab renders 1`] = `
+exports[`preferences - navigation to extension specific preferences > given in preferences, when rendered > given extensions with tabs having same id > when navigating to second extension tab > renders 1`] = `
 <div>
   <div
     class="Notifications flex column align-flex-end"
@@ -1993,7 +1993,7 @@ exports[`preferences - navigation to extension specific preferences given in pre
 </div>
 `;
 
-exports[`preferences - navigation to extension specific preferences given in preferences, when rendered given multiple extensions with specific preferences, when navigating to extension specific preferences page renders 1`] = `
+exports[`preferences - navigation to extension specific preferences > given in preferences, when rendered > given multiple extensions with specific preferences, when navigating to extension specific preferences page > renders 1`] = `
 <div>
   <div
     class="Notifications flex column align-flex-end"
@@ -2427,7 +2427,7 @@ exports[`preferences - navigation to extension specific preferences given in pre
 </div>
 `;
 
-exports[`preferences - navigation to extension specific preferences given in preferences, when rendered renders 1`] = `
+exports[`preferences - navigation to extension specific preferences > given in preferences, when rendered > renders 1`] = `
 <div>
   <div
     class="Notifications flex column align-flex-end"
@@ -2655,7 +2655,7 @@ exports[`preferences - navigation to extension specific preferences given in pre
                             id="theme-input"
                             role="combobox"
                             spellcheck="false"
-                            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                            style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                             tabindex="0"
                             type="text"
                             value=""
@@ -2746,7 +2746,7 @@ exports[`preferences - navigation to extension specific preferences given in pre
                             id="extension-install-registry-input"
                             role="combobox"
                             spellcheck="false"
-                            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                            style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                             tabindex="0"
                             type="text"
                             value=""
@@ -2978,7 +2978,7 @@ exports[`preferences - navigation to extension specific preferences given in pre
                             id="timezone-input"
                             role="combobox"
                             spellcheck="false"
-                            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                            style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                             tabindex="0"
                             type="text"
                             value=""
@@ -3194,7 +3194,7 @@ exports[`preferences - navigation to extension specific preferences given in pre
 </div>
 `;
 
-exports[`preferences - navigation to extension specific preferences given in preferences, when rendered when extension with specific preferences is enabled renders 1`] = `
+exports[`preferences - navigation to extension specific preferences > given in preferences, when rendered > when extension with specific preferences is enabled > renders 1`] = `
 <div>
   <div
     class="Notifications flex column align-flex-end"
@@ -3460,7 +3460,7 @@ exports[`preferences - navigation to extension specific preferences given in pre
                             id="theme-input"
                             role="combobox"
                             spellcheck="false"
-                            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                            style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                             tabindex="0"
                             type="text"
                             value=""
@@ -3551,7 +3551,7 @@ exports[`preferences - navigation to extension specific preferences given in pre
                             id="extension-install-registry-input"
                             role="combobox"
                             spellcheck="false"
-                            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                            style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                             tabindex="0"
                             type="text"
                             value=""
@@ -3783,7 +3783,7 @@ exports[`preferences - navigation to extension specific preferences given in pre
                             id="timezone-input"
                             role="combobox"
                             spellcheck="false"
-                            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                            style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                             tabindex="0"
                             type="text"
                             value=""
@@ -3999,7 +3999,7 @@ exports[`preferences - navigation to extension specific preferences given in pre
 </div>
 `;
 
-exports[`preferences - navigation to extension specific preferences given in preferences, when rendered when extension with specific preferences is enabled when navigating to extension preferences using navigation renders 1`] = `
+exports[`preferences - navigation to extension specific preferences > given in preferences, when rendered > when extension with specific preferences is enabled > when navigating to extension preferences using navigation > renders 1`] = `
 <div>
   <div
     class="Notifications flex column align-flex-end"
@@ -4421,7 +4421,7 @@ exports[`preferences - navigation to extension specific preferences given in pre
 </div>
 `;
 
-exports[`preferences - navigation to extension specific preferences given in preferences, when rendered when extension with specific preferences is enabled when navigating to extension preferences using navigation when extension is disabled renders 1`] = `
+exports[`preferences - navigation to extension specific preferences > given in preferences, when rendered > when extension with specific preferences is enabled > when navigating to extension preferences using navigation > when extension is disabled > renders 1`] = `
 <body>
   <div>
     <div

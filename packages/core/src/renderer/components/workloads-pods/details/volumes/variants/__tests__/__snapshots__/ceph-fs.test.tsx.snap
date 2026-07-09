@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`<CephFs /> should render 'false' for Readonly when false is provided 1`] = `
+exports[`<CephFs /> > should render 'false' for Readonly when false is provided 1`] = `
 <div>
   <div
     class="DrawerItem"
@@ -76,7 +76,7 @@ exports[`<CephFs /> should render 'false' for Readonly when false is provided 1`
 </div>
 `;
 
-exports[`<CephFs /> should render 'false' for Readonly when not provided 1`] = `
+exports[`<CephFs /> > should render 'false' for Readonly when not provided 1`] = `
 <div>
   <div
     class="DrawerItem"
@@ -152,7 +152,7 @@ exports[`<CephFs /> should render 'false' for Readonly when not provided 1`] = `
 </div>
 `;
 
-exports[`<CephFs /> should render 'true' for Readonly when true is provided 1`] = `
+exports[`<CephFs /> > should render 'true' for Readonly when true is provided 1`] = `
 <div>
   <div
     class="DrawerItem"

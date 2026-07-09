@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`preferences - navigation to editor preferences given in preferences, when rendered renders 1`] = `
+exports[`preferences - navigation to editor preferences > given in preferences, when rendered > renders 1`] = `
 <div>
   <div
     class="Notifications flex column align-flex-end"
@@ -228,7 +228,7 @@ exports[`preferences - navigation to editor preferences given in preferences, wh
                             id="theme-input"
                             role="combobox"
                             spellcheck="false"
-                            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                            style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                             tabindex="0"
                             type="text"
                             value=""
@@ -319,7 +319,7 @@ exports[`preferences - navigation to editor preferences given in preferences, wh
                             id="extension-install-registry-input"
                             role="combobox"
                             spellcheck="false"
-                            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                            style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                             tabindex="0"
                             type="text"
                             value=""
@@ -551,7 +551,7 @@ exports[`preferences - navigation to editor preferences given in preferences, wh
                             id="timezone-input"
                             role="combobox"
                             spellcheck="false"
-                            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                            style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                             tabindex="0"
                             type="text"
                             value=""
@@ -767,7 +767,7 @@ exports[`preferences - navigation to editor preferences given in preferences, wh
 </div>
 `;
 
-exports[`preferences - navigation to editor preferences given in preferences, when rendered when navigating to editor preferences using navigation renders 1`] = `
+exports[`preferences - navigation to editor preferences > given in preferences, when rendered > when navigating to editor preferences using navigation > renders 1`] = `
 <div>
   <div
     class="Notifications flex column align-flex-end"
@@ -1019,7 +1019,7 @@ exports[`preferences - navigation to editor preferences given in preferences, wh
                                 id="minimap-input"
                                 role="combobox"
                                 spellcheck="false"
-                                style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                                 tabindex="0"
                                 type="text"
                                 value=""
@@ -1110,7 +1110,7 @@ exports[`preferences - navigation to editor preferences given in preferences, wh
                             id="editor-line-numbers-input"
                             role="combobox"
                             spellcheck="false"
-                            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                            style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                             tabindex="0"
                             type="text"
                             value=""

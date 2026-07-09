@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`<ContainerEnv /> renders both env and configMapRef envFrom 1`] = `
+exports[`<ContainerEnv /> > renders both env and configMapRef envFrom 1`] = `
 <body>
   <div>
     <div
@@ -42,7 +42,7 @@ exports[`<ContainerEnv /> renders both env and configMapRef envFrom 1`] = `
 </body>
 `;
 
-exports[`<ContainerEnv /> renders env 1`] = `
+exports[`<ContainerEnv /> > renders env 1`] = `
 <body>
   <div>
     <div
@@ -73,7 +73,7 @@ exports[`<ContainerEnv /> renders env 1`] = `
 </body>
 `;
 
-exports[`<ContainerEnv /> renders env 2`] = `
+exports[`<ContainerEnv /> > renders env 2`] = `
 <body>
   <div>
     <div
@@ -104,7 +104,7 @@ exports[`<ContainerEnv /> renders env 2`] = `
 </body>
 `;
 
-exports[`<ContainerEnv /> renders env from fieldRef 1`] = `
+exports[`<ContainerEnv /> > renders env from fieldRef 1`] = `
 <body>
   <div>
     <div
@@ -289,7 +289,7 @@ exports[`<ContainerEnv /> renders env from fieldRef 1`] = `
 </body>
 `;
 
-exports[`<ContainerEnv /> renders env from resourceFieldRef 1`] = `
+exports[`<ContainerEnv /> > renders env from resourceFieldRef 1`] = `
 <body>
   <div>
     <div
@@ -511,7 +511,7 @@ exports[`<ContainerEnv /> renders env from resourceFieldRef 1`] = `
 </body>
 `;
 
-exports[`<ContainerEnv /> renders env from resourceFieldRef 2`] = `
+exports[`<ContainerEnv /> > renders env from resourceFieldRef 2`] = `
 <body>
   <div>
     <div
@@ -733,7 +733,7 @@ exports[`<ContainerEnv /> renders env from resourceFieldRef 2`] = `
 </body>
 `;
 
-exports[`<ContainerEnv /> renders envFrom when given a configMapRef 1`] = `
+exports[`<ContainerEnv /> > renders envFrom when given a configMapRef 1`] = `
 <body>
   <div>
     <div
@@ -764,7 +764,7 @@ exports[`<ContainerEnv /> renders envFrom when given a configMapRef 1`] = `
 </body>
 `;
 
-exports[`<ContainerEnv /> renders envFrom when given a secretRef 1`] = `
+exports[`<ContainerEnv /> > renders envFrom when given a secretRef 1`] = `
 <body>
   <div>
     <div

@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`preferences - navigation to kubernetes preferences given in preferences, when rendered renders 1`] = `
+exports[`preferences - navigation to kubernetes preferences > given in preferences, when rendered > renders 1`] = `
 <div>
   <div
     class="Notifications flex column align-flex-end"
@@ -228,7 +228,7 @@ exports[`preferences - navigation to kubernetes preferences given in preferences
                             id="theme-input"
                             role="combobox"
                             spellcheck="false"
-                            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                            style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                             tabindex="0"
                             type="text"
                             value=""
@@ -319,7 +319,7 @@ exports[`preferences - navigation to kubernetes preferences given in preferences
                             id="extension-install-registry-input"
                             role="combobox"
                             spellcheck="false"
-                            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                            style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                             tabindex="0"
                             type="text"
                             value=""
@@ -551,7 +551,7 @@ exports[`preferences - navigation to kubernetes preferences given in preferences
                             id="timezone-input"
                             role="combobox"
                             spellcheck="false"
-                            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                            style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                             tabindex="0"
                             type="text"
                             value=""
@@ -767,7 +767,7 @@ exports[`preferences - navigation to kubernetes preferences given in preferences
 </div>
 `;
 
-exports[`preferences - navigation to kubernetes preferences given in preferences, when rendered when navigating to kubernetes preferences using navigation renders 1`] = `
+exports[`preferences - navigation to kubernetes preferences > given in preferences, when rendered > when navigating to kubernetes preferences using navigation > renders 1`] = `
 <div>
   <div
     class="Notifications flex column align-flex-end"
@@ -1025,7 +1025,7 @@ exports[`preferences - navigation to kubernetes preferences given in preferences
                                 id="download-mirror-input"
                                 role="combobox"
                                 spellcheck="false"
-                                style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                                 tabindex="0"
                                 type="text"
                                 value=""
@@ -1223,45 +1223,6 @@ exports[`preferences - navigation to kubernetes preferences given in preferences
                 class="HorizontalLine size-xl"
               />
               <div
-                data-preference-item-test="kubeconfig-sync"
-              >
-                <section
-                  id="kube-sync"
-                >
-                  <h2
-                    data-testid="kubernetes-sync-header"
-                  >
-                    Kubeconfig Syncs
-                  </h2>
-                  <div
-                    class="self-start mb-5"
-                  >
-                    <button
-                      class="Button PathPicker primary"
-                      type="button"
-                    >
-                      Sync Files and Folders
-                    </button>
-                  </div>
-                  <div
-                    class="SubTitle pt-5"
-                  >
-                    Synced Items
-                     
-                  </div>
-                  <div
-                    class="loading-spinner"
-                  >
-                    <div
-                      class="Spinner singleColor"
-                    />
-                  </div>
-                </section>
-              </div>
-              <div
-                class="HorizontalLine size-xl"
-              />
-              <div
                 data-preference-item-test="helm-charts"
               >
                 <section
@@ -1320,7 +1281,7 @@ exports[`preferences - navigation to kubernetes preferences given in preferences
                                   id="selection-of-active-public-helm-repository"
                                   role="combobox"
                                   spellcheck="false"
-                                  style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                                  style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                                   tabindex="0"
                                   type="text"
                                   value=""
@@ -1366,6 +1327,45 @@ exports[`preferences - navigation to kubernetes preferences given in preferences
                       />
                       <div />
                     </div>
+                  </div>
+                </section>
+              </div>
+              <div
+                class="HorizontalLine size-xl"
+              />
+              <div
+                data-preference-item-test="kubeconfig-sync"
+              >
+                <section
+                  id="kube-sync"
+                >
+                  <h2
+                    data-testid="kubernetes-sync-header"
+                  >
+                    Kubeconfig Syncs
+                  </h2>
+                  <div
+                    class="self-start mb-5"
+                  >
+                    <button
+                      class="Button PathPicker primary"
+                      type="button"
+                    >
+                      Sync Files and Folders
+                    </button>
+                  </div>
+                  <div
+                    class="SubTitle pt-5"
+                  >
+                    Synced Items
+                     
+                  </div>
+                  <div
+                    class="loading-spinner"
+                  >
+                    <div
+                      class="Spinner singleColor"
+                    />
                   </div>
                 </section>
               </div>

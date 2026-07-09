@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`<HpaDetails/> renders 1`] = `
+exports[`<HpaDetails/> > renders 1`] = `
 <body>
   <div>
     <div
@@ -69,7 +69,7 @@ exports[`<HpaDetails/> renders 1`] = `
 </body>
 `;
 
-exports[`<HpaDetails/> shows unknown metrics with lack of metric type 1`] = `
+exports[`<HpaDetails/> > shows unknown metrics with lack of metric type 1`] = `
 <body>
   <div>
     <div
@@ -179,7 +179,7 @@ exports[`<HpaDetails/> shows unknown metrics with lack of metric type 1`] = `
 </body>
 `;
 
-exports[`<HpaDetails/> shows unknown metrics with with unusual type 1`] = `
+exports[`<HpaDetails/> > shows unknown metrics with with unusual type 1`] = `
 <body>
   <div>
     <div

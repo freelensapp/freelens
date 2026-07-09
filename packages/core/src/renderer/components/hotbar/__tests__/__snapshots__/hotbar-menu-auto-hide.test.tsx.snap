@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`<HotbarMenu /> auto-hide functionality when auto-hide is disabled renders w/o errors 1`] = `
+exports[`<HotbarMenu /> auto-hide functionality > when auto-hide is disabled > renders w/o errors 1`] = `
 <div>
   <div
     class="HotbarMenu flex column"
@@ -49,7 +49,7 @@ exports[`<HotbarMenu /> auto-hide functionality when auto-hide is disabled rende
 </div>
 `;
 
-exports[`<HotbarMenu /> auto-hide functionality when auto-hide is enabled renders w/o errors 1`] = `
+exports[`<HotbarMenu /> auto-hide functionality > when auto-hide is enabled > renders w/o errors 1`] = `
 <div>
   <div
     class="HotbarMenu flex column autoHide"
