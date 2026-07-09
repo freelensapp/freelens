@@ -49,7 +49,7 @@
     "tsconfig.json"
   ],
   "scripts": {
-    "build": "webpack --config webpack/library-bundle.ts --progress",
+    "build:webpack": "webpack --config webpack/library-bundle.ts --progress",
     "build:dev": "NODE_ENV=development webpack --config webpack/library-bundle.ts --progress",
     "clean": "pnpm dlx rimraf@6.1.3 dist static/build",
     "clean:node_modules": "pnpm dlx rimraf@6.1.3 node_modules",
