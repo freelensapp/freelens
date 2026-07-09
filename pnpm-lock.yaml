@@ -14,6 +14,9 @@ overrides:
   tmp@^0.2.0: ^0.2.7
 
 patchedDependencies:
+  '@async-fn/vitest':
+    hash: 86478f697e61e0e2ca0274a6b255c31c05d0dd83078743e9e755910710d597ef
+    path: patches/@async-fn__vitest.patch
   '@xterm/xterm@6.0.0':
     hash: fb7ebbc29ef246137af8ea109596e698df4691ccaa0b87ed5969259bcb27e435
     path: patches/@xterm__xterm@6.0.0.patch
@@ -920,7 +923,7 @@ importers:
     devDependencies:
       '@async-fn/vitest':
         specifier: ^1.8.0
-        version: 1.8.0(vitest@4.1.10)
+        version: 1.8.0(patch_hash=86478f697e61e0e2ca0274a6b255c31c05d0dd83078743e9e755910710d597ef)(vitest@4.1.10)
       '@freelensapp/messaging-fake-bridge':
         specifier: workspace:^
         version: link:../technical-features/messaging/messaging-fake-bridge
@@ -1309,7 +1312,7 @@ importers:
     devDependencies:
       '@async-fn/vitest':
         specifier: ^1.8.0
-        version: 1.8.0(vitest@4.1.10)
+        version: 1.8.0(patch_hash=86478f697e61e0e2ca0274a6b255c31c05d0dd83078743e9e755910710d597ef)(vitest@4.1.10)
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../typescript
@@ -1637,7 +1640,7 @@ importers:
     devDependencies:
       '@async-fn/vitest':
         specifier: ^1.8.0
-        version: 1.8.0(vitest@4.1.10)
+        version: 1.8.0(patch_hash=86478f697e61e0e2ca0274a6b255c31c05d0dd83078743e9e755910710d597ef)(vitest@4.1.10)
       '@freelensapp/test-utils':
         specifier: workspace:^
         version: link:../../../utility-features/test-utils
@@ -1686,7 +1689,7 @@ importers:
     devDependencies:
       '@async-fn/vitest':
         specifier: ^1.8.0
-        version: 1.8.0(vitest@4.1.10)
+        version: 1.8.0(patch_hash=86478f697e61e0e2ca0274a6b255c31c05d0dd83078743e9e755910710d597ef)(vitest@4.1.10)
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../../infrastructure/typescript
@@ -1891,7 +1894,7 @@ importers:
     dependencies:
       '@async-fn/vitest':
         specifier: ^1.8.0
-        version: 1.8.0(vitest@4.1.10)
+        version: 1.8.0(patch_hash=86478f697e61e0e2ca0274a6b255c31c05d0dd83078743e9e755910710d597ef)(vitest@4.1.10)
       '@freelensapp/messaging':
         specifier: workspace:^
         version: link:../messaging
@@ -1971,7 +1974,7 @@ importers:
     devDependencies:
       '@async-fn/vitest':
         specifier: ^1.8.0
-        version: 1.8.0(vitest@4.1.10)
+        version: 1.8.0(patch_hash=86478f697e61e0e2ca0274a6b255c31c05d0dd83078743e9e755910710d597ef)(vitest@4.1.10)
       '@freelensapp/test-utils':
         specifier: workspace:^
         version: link:../../../utility-features/test-utils
@@ -2020,7 +2023,7 @@ importers:
     devDependencies:
       '@async-fn/vitest':
         specifier: ^1.8.0
-        version: 1.8.0(vitest@4.1.10)
+        version: 1.8.0(patch_hash=86478f697e61e0e2ca0274a6b255c31c05d0dd83078743e9e755910710d597ef)(vitest@4.1.10)
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../../infrastructure/typescript
@@ -2779,7 +2782,7 @@ importers:
     devDependencies:
       '@async-fn/vitest':
         specifier: ^1.8.0
-        version: 1.8.0(vitest@4.1.10)
+        version: 1.8.0(patch_hash=86478f697e61e0e2ca0274a6b255c31c05d0dd83078743e9e755910710d597ef)(vitest@4.1.10)
       '@freelensapp/logger':
         specifier: workspace:^
         version: link:../../logger
@@ -2884,7 +2887,7 @@ importers:
     devDependencies:
       '@async-fn/vitest':
         specifier: ^1.8.0
-        version: 1.8.0(vitest@4.1.10)
+        version: 1.8.0(patch_hash=86478f697e61e0e2ca0274a6b255c31c05d0dd83078743e9e755910710d597ef)(vitest@4.1.10)
       '@freelensapp/test-utils':
         specifier: workspace:^
         version: link:../test-utils
@@ -9487,7 +9490,7 @@ snapshots:
     dependencies:
       static-eval: 2.0.2
 
-  '@async-fn/vitest@1.8.0(vitest@4.1.10)':
+  '@async-fn/vitest@1.8.0(patch_hash=86478f697e61e0e2ca0274a6b255c31c05d0dd83078743e9e755910710d597ef)(vitest@4.1.10)':
     dependencies:
       vitest: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
@@ -12246,7 +12249,7 @@ snapshots:
       postcss-value-parser: 4.2.0
       semver: 7.8.5
     optionalDependencies:
-      webpack: 5.108.3(lightningcss@1.32.0)(webpack-cli@7.1.0)
+      webpack: 5.108.3(lightningcss@1.32.0)(postcss@8.5.8)(webpack-cli@7.1.0)
 
   css-select@4.3.0:
     dependencies:
@@ -12941,7 +12944,7 @@ snapshots:
       semver: 7.8.5
       tapable: 2.3.3
       typescript: 5.9.3
-      webpack: 5.108.3(lightningcss@1.32.0)(webpack-cli@7.1.0)
+      webpack: 5.108.3(lightningcss@1.32.0)(postcss@8.5.8)(webpack-cli@7.1.0)
 
   form-data@4.0.6:
     dependencies:
@@ -13938,7 +13941,7 @@ snapshots:
     dependencies:
       schema-utils: 4.3.3
       tapable: 2.3.3
-      webpack: 5.108.3(lightningcss@1.32.0)(webpack-cli@7.1.0)
+      webpack: 5.108.3(lightningcss@1.32.0)(postcss@8.5.8)(webpack-cli@7.1.0)
 
   minimalistic-assert@1.0.1: {}
 
@@ -15051,7 +15054,7 @@ snapshots:
     optionalDependencies:
       sass: 1.101.0
       sass-embedded: 1.100.0
-      webpack: 5.108.3(lightningcss@1.32.0)(webpack-cli@7.1.0)
+      webpack: 5.108.3(lightningcss@1.32.0)(postcss@8.5.8)(webpack-cli@7.1.0)
 
   sass@1.100.0:
     dependencies:
@@ -15423,7 +15426,7 @@ snapshots:
 
   style-loader@4.0.0(webpack@5.108.3):
     dependencies:
-      webpack: 5.108.3(lightningcss@1.32.0)(webpack-cli@7.1.0)
+      webpack: 5.108.3(lightningcss@1.32.0)(postcss@8.5.8)(webpack-cli@7.1.0)
 
   stylis@4.2.0: {}
 
@@ -15640,7 +15643,7 @@ snapshots:
       semver: 7.8.5
       source-map: 0.7.4
       typescript: 5.9.3
-      webpack: 5.108.3(lightningcss@1.32.0)(webpack-cli@7.1.0)
+      webpack: 5.108.3(lightningcss@1.32.0)(postcss@8.5.8)(webpack-cli@7.1.0)
 
   ts-node@10.9.2(@types/node@24.12.4)(typescript@5.9.3):
     dependencies:
@@ -15927,7 +15930,7 @@ snapshots:
       import-local: 3.2.0
       interpret: 3.1.1
       rechoir: 0.8.0
-      webpack: 5.108.3(lightningcss@1.32.0)(webpack-cli@7.1.0)
+      webpack: 5.108.3(lightningcss@1.32.0)(postcss@8.5.8)(webpack-cli@7.1.0)
       webpack-merge: 6.0.1
     optionalDependencies:
       js-yaml: 5.2.1
@@ -15943,7 +15946,7 @@ snapshots:
       range-parser: 1.2.1
       schema-utils: 4.3.3
     optionalDependencies:
-      webpack: 5.108.3(lightningcss@1.32.0)(webpack-cli@7.1.0)
+      webpack: 5.108.3(lightningcss@1.32.0)(postcss@8.5.8)(webpack-cli@7.1.0)
 
   webpack-dev-server@5.2.5(webpack-cli@7.1.0)(webpack@5.108.3):
     dependencies:
@@ -15976,7 +15979,7 @@ snapshots:
       webpack-dev-middleware: 7.4.2(webpack@5.108.3)
       ws: 8.21.0
     optionalDependencies:
-      webpack: 5.108.3(lightningcss@1.32.0)(webpack-cli@7.1.0)
+      webpack: 5.108.3(lightningcss@1.32.0)(postcss@8.5.8)(webpack-cli@7.1.0)
       webpack-cli: 7.1.0(js-yaml@5.2.1)(json5@2.2.3)(webpack-dev-server@5.2.5)(webpack@5.108.3)
     transitivePeerDependencies:
       - bufferutil
