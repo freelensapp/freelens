@@ -22,9 +22,6 @@ configure({
 setAutoFreeze(false); // allow to merge mobx observables
 enableMapSet(); // allow to merge maps and sets
 
-// Mock __non_webpack_require__ for tests
-globalThis.__non_webpack_require__ = vi.fn();
-
 global.fail = ((error = "Test failed without explicit error") => {
   console.error(error);
 }) as any;
