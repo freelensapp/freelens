@@ -4,24 +4,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import * as glob from "glob";
 import { enableMapSet, setAutoFreeze } from "immer";
 import { configure } from "mobx";
 import freelensFetch from "node-fetch";
-import path from "path";
 import React from "react";
 import { TextDecoder as TextDecoderNode, TextEncoder } from "util";
 
 import type * as K8slensTooltip from "@freelensapp/tooltip";
-
-declare global {
-  interface InjectablePaths {
-    paths: string[];
-    globalOverridePaths: string[];
-  }
-
-  var injectablePaths: Record<"main" | "renderer", InjectablePaths>;
-}
 
 configure({
   // Needed because we want to use vi.spyOn()
@@ -77,25 +66,7 @@ vi.mock("@freelensapp/tooltip", async (importOriginal) => ({
 // monaco-editor is replaced with __mocks__/monaco-editor.ts through a resolve
 // alias in the root vitest.config.ts: its package has no Node-resolvable
 // entry, so neither externalization nor vi.mock automocking can load it.
-
-const getInjectables = (environment: "renderer" | "main", filePathGlob: string) =>
-  [
-    ...glob.sync(`./{common,extensions,${environment},test-env}/**/${filePathGlob}`, {
-      cwd: __dirname,
-    }),
-
-    ...glob.sync(`./features/**/{${environment},common}/**/${filePathGlob}`, {
-      cwd: __dirname,
-    }),
-  ].map((x) => path.resolve(__dirname, x));
-
-global.injectablePaths = {
-  renderer: {
-    globalOverridePaths: getInjectables("renderer", "*.global-override-for-injectable.{ts,tsx}"),
-    paths: getInjectables("renderer", "*.injectable.{ts,tsx}"),
-  },
-  main: {
-    globalOverridePaths: getInjectables("main", "*.global-override-for-injectable.{ts,tsx}"),
-    paths: getInjectables("main", "*.injectable.{ts,tsx}"),
-  },
-};
+//
+// The injectable files for getDiForUnitTesting are collected with
+// import.meta.glob inside src/{main,renderer}/getDiForUnitTesting themselves,
+// so they load through Vite's transform pipeline instead of native require.

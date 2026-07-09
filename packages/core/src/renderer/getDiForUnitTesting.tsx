@@ -28,6 +28,33 @@ import watchHistoryStateInjectable from "./remote-helpers/watch-history-state.in
 
 import type { GlobalOverride } from "@freelensapp/test-utils";
 
+// The injectable files must be loaded through Vite's transform pipeline
+// (import.meta.glob), not native require(path): the source-only workspace
+// packages they import use extensionless specifiers that only Vite resolves.
+const injectableModules = import.meta.glob<object>(
+  [
+    "../common/**/*.injectable.{ts,tsx}",
+    "../extensions/**/*.injectable.{ts,tsx}",
+    "./**/*.injectable.{ts,tsx}",
+    "../test-env/**/*.injectable.{ts,tsx}",
+    "../features/**/renderer/**/*.injectable.{ts,tsx}",
+    "../features/**/common/**/*.injectable.{ts,tsx}",
+  ],
+  { eager: true },
+);
+
+const globalOverrideModules = import.meta.glob<{ default: GlobalOverride<unknown, unknown, unknown> }>(
+  [
+    "../common/**/*.global-override-for-injectable.{ts,tsx}",
+    "../extensions/**/*.global-override-for-injectable.{ts,tsx}",
+    "./**/*.global-override-for-injectable.{ts,tsx}",
+    "../test-env/**/*.global-override-for-injectable.{ts,tsx}",
+    "../features/**/renderer/**/*.global-override-for-injectable.{ts,tsx}",
+    "../features/**/common/**/*.global-override-for-injectable.{ts,tsx}",
+  ],
+  { eager: true },
+);
+
 export const getDiForUnitTesting = () => {
   const environment = "renderer";
   const di = createContainer(environment, {
@@ -56,19 +83,14 @@ export const getDiForUnitTesting = () => {
   di.preventSideEffects();
 
   runInAction(() => {
-    const injectables = global.injectablePaths.renderer.paths
-      .map((path) => require(path))
-      .flatMap(Object.values)
-      .filter(isInjectable);
+    const injectables = Object.values(injectableModules).flatMap(Object.values).filter(isInjectable);
 
     for (const block of chunk(100)(injectables)) {
       di.register(...block);
     }
   });
 
-  for (const globalOverridePath of global.injectablePaths.renderer.globalOverridePaths) {
-    const globalOverride = require(globalOverridePath).default as GlobalOverride<unknown, unknown, unknown>;
-
+  for (const globalOverride of Object.values(globalOverrideModules).map((module) => module.default)) {
     di.override(globalOverride.injectable, globalOverride.overridingInstantiate);
   }
 
