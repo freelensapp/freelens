@@ -3,46 +3,34 @@ import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "vitest/config";
 
-// Phase 6 of the v2 plan (docs/v2-plan.md, D8): replace the 33 jest.config.js
-// files and the shared @freelensapp/jest package with a single root Vitest
-// config that uses `projects`. Per-package projects preserve the ability to run
-// and isolate each package's tests separately (relevant to D4's optional future
-// package collapse).
-//
-// WIP scaffold: this config only defines the project topology. Driving the
-// suites green package by package, regenerating snapshots per package (not in
-// one commit — see the Snapshot-churn risk in §6), and re-enabling unit tests
-// in CI are the behaviour-bearing steps left for local iteration. CI red is
-// allowed on `v2` (D9), and unit tests are disabled there until Phase 6
-// completes.
+// Phase 6 of the v2 plan (docs/v2-plan.md, D8): a single root Vitest config
+// with per-package `projects`, replacing the per-package jest.config.js files
+// and the shared @freelensapp/jest package. Per-package projects preserve the
+// ability to run and isolate each package's tests separately (relevant to
+// D4's optional future package collapse).
 
 const root = dirname(fileURLToPath(import.meta.url));
 
-// Discover every package that currently defines a Jest project. Phase 6 keeps
-// the same project boundaries; each package's jest.config.js is deleted during
-// local iteration once its Vitest project runs green.
-const projectDirs = globSync("packages/**/jest.config.js", { cwd: root })
+// A workspace package is a Vitest project when it declares vitest as a
+// devDependency; this reproduces exactly the project set the deleted
+// jest.config.js markers used to define.
+const projectDirs = globSync("{packages/**,freelens}/package.json", { cwd: root })
+  .filter((p) => !p.includes("node_modules"))
+  .filter((p) => {
+    const pkg = JSON.parse(readFileSync(join(root, p), "utf8")) as { devDependencies?: Record<string, string> };
+    return Boolean(pkg.devDependencies?.vitest);
+  })
   .map((p) => join(root, dirname(p)))
-  .filter((dir) => !dir.includes("node_modules"))
-  .concat([join(root, "freelens")])
   .filter((dir) => existsSync(join(dir, "package.json")));
 
-// The current @freelensapp/jest split maps configForReact -> jsdom and
-// configForNode -> node. Vitest resolves CSS/asset imports natively, so the
-// moduleNameMapper entries (identity-obj-proxy, assetMock) are dropped rather
-// than migrated.
-//
-// TODO(D8): classify each project as jsdom vs node faithfully. Today the
-// classification is inferred from whether the package's jest.config.js selected
-// `configForReact`; verify per package during local iteration and pin the few
-// node-only projects (e.g. Playwright-driven integration in `freelens`) to the
-// node environment.
+// Every project runs under jsdom (the old @freelensapp/jest configForReact)
+// except freelens itself, whose tests are Playwright-driven integration tests
+// that need the node environment. Vitest resolves CSS/asset imports natively,
+// so the old moduleNameMapper entries (identity-obj-proxy, assetMock) were
+// dropped rather than migrated.
 const nodeEnvironmentDirs = new Set([join(root, "freelens")]);
 
-// TODO(D8): wire the shared React setup (packages/infrastructure/jest/
-// setup-react-tests.ts) and per-package setups (jest.setup.tsx,
-// jest-after-env.setup.ts, jest.timezone.ts) as Vitest setupFiles once their
-// jest.* globals are codemodded to vi.* (scripts/v2-phase-6-vitest.mjs).
+// Per-package setup files, kept at their historical names from the Jest era.
 const setupCandidates = ["src/jest.setup.tsx", "src/jest-after-env.setup.ts"];
 
 // packages/core kept Jest's automatic node-module mocks in __mocks__/; Vitest
