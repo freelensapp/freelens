@@ -144,13 +144,11 @@ const someRequestChannelWithoutListeners: SomeRequestChannel = {
             describe(scenarioTitle, () => {
               let someWrapper: vi.Mock;
 
-              beforeEach((done) => {
+              beforeEach(async () => {
                 someWrapper = vi.fn((propagation) => propagation());
 
                 if (scenarioIsAsync) {
-                  messageBridgeFake.messagePropagationRecursive(someWrapper).then(done);
-                } else {
-                  done();
+                  await messageBridgeFake.messagePropagationRecursive(someWrapper);
                 }
               });
 
@@ -172,11 +170,9 @@ const someRequestChannelWithoutListeners: SomeRequestChannel = {
               : "immediately";
 
             describe(scenarioName, () => {
-              beforeEach((done) => {
+              beforeEach(async () => {
                 if (scenarioIsAsync) {
-                  messageBridgeFake.messagePropagationRecursive().then(done);
-                } else {
-                  done();
+                  await messageBridgeFake.messagePropagationRecursive();
                 }
               });
 
@@ -210,11 +206,9 @@ const someRequestChannelWithoutListeners: SomeRequestChannel = {
           const scenarioName = scenarioIsAsync ? "when messages are propagated" : "immediately";
 
           describe(scenarioName, () => {
-            beforeEach((done) => {
+            beforeEach(async () => {
               if (scenarioIsAsync) {
-                messageBridgeFake.messagePropagation().then(done);
-              } else {
-                done();
+                await messageBridgeFake.messagePropagation();
               }
             });
 
