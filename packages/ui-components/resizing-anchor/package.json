@@ -37,13 +37,8 @@
     "@freelensapp/typescript": "workspace:^",
     "@types/lodash": "^4.17.24",
     "@types/react": "^17.0.93",
-    "css-loader": "^6.11.0",
-    "postcss-loader": "^8.2.1",
-    "sass-loader": "^16.0.8",
-    "ts-loader": "^9.5.7",
     "typescript": "^5.9.3",
-    "vitest": "^4.1.10",
-    "webpack": "^5.108.3"
+    "vitest": "^4.1.10"
   },
   "publishConfig": {
     "access": "public",

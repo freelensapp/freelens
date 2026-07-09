@@ -29,9 +29,7 @@
   "devDependencies": {
     "@freelensapp/kube-object": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
-    "@freelensapp/utilities": "workspace:^",
-    "ts-loader": "^9.5.7",
-    "webpack": "^5.108.3"
+    "@freelensapp/utilities": "workspace:^"
   },
   "publishConfig": {
     "access": "public",

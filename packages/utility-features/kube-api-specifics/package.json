@@ -30,10 +30,7 @@
     "@ogre-tools/injectable": "^17.11.1"
   },
   "devDependencies": {
-    "@freelensapp/typescript": "workspace:^",
-    "@types/webpack-env": "^1.18.8",
-    "ts-loader": "^9.5.7",
-    "webpack": "^5.108.3"
+    "@freelensapp/typescript": "workspace:^"
   },
   "publishConfig": {
     "access": "public",

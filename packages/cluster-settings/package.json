@@ -28,9 +28,7 @@
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
-    "@types/react": "^17.0.93",
-    "ts-loader": "^9.5.7",
-    "webpack": "^5.108.3"
+    "@types/react": "^17.0.93"
   },
   "publishConfig": {
     "access": "public",

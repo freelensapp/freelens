@@ -41,10 +41,8 @@
     "@types/lodash": "^4.17.24",
     "jsdom": "^29.1.1",
     "mobx": "^6.15.0",
-    "ts-loader": "^9.5.7",
     "typescript": "^5.9.3",
-    "vitest": "^4.1.10",
-    "webpack": "^5.108.3"
+    "vitest": "^4.1.10"
   },
   "publishConfig": {
     "access": "public",

@@ -44,12 +44,9 @@
     "@types/lodash": "^4.17.24",
     "@types/node": "~24.12.4",
     "@types/react": "^17.0.93",
-    "@types/webpack-env": "^1.18.8",
     "jsdom": "^29.1.1",
     "mobx": "^6.15.0",
-    "ts-loader": "^9.5.7",
-    "vitest": "^4.1.10",
-    "webpack": "^5.108.3"
+    "vitest": "^4.1.10"
   },
   "publishConfig": {
     "access": "public",
