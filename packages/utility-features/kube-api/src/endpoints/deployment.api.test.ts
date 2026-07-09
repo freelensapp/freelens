@@ -4,7 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { DeploymentApi, KubeJsonApi } from "@freelensapp/kube-api";
+import { KubeJsonApi } from "../kube-json-api";
+import { DeploymentApi } from "./deployment.api";
 
 describe("DeploymentApi", () => {
   let deploymentApi: DeploymentApi;
