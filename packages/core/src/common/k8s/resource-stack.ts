@@ -7,7 +7,7 @@
 import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import { hasTypedProperty, isObject } from "@freelensapp/utilities";
 import hb from "handlebars";
-import yaml from "js-yaml";
+import * as yaml from "js-yaml";
 import { defaultYamlDumpOptions } from "../kube-helpers";
 import productNameInjectable from "../vars/product-name.injectable";
 

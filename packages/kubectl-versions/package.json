@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/kubectl-versions",
-  "version": "1.10.2",
+  "version": "1.10.4-0",
   "private": false,
   "description": "Package of kubectl versions at build time",
   "homepage": "https://freelens.app",
@@ -39,7 +39,7 @@
     "ts-loader": "^9.5.7",
     "typed-regex": "^0.0.8",
     "typescript": "^5.9.3",
-    "webpack": "^5.108.1"
+    "webpack": "^5.108.3"
   },
   "publishConfig": {
     "access": "public",

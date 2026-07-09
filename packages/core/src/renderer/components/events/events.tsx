@@ -79,7 +79,7 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
     [columnId.namespace]: (event) => event.getNs(),
     [columnId.type]: (event) => event.type,
     [columnId.object]: (event) => event.involvedObject.name,
-    [columnId.count]: (event) => event.count,
+    [columnId.count]: (event) => event.getCount(),
     [columnId.age]: (event) => -event.getCreationTimestamp(),
     [columnId.lastSeen]: (event) => (event.lastTimestamp ? -new Date(event.lastTimestamp).getTime() : 0),
   };
@@ -201,7 +201,7 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
               <WithTooltip>{`${involvedObject.kind}: ${involvedObject.name}`}</WithTooltip>
             </Link>,
             <WithTooltip>{event.getSource()}</WithTooltip>,
-            event.count,
+            event.getCount(),
             <KubeObjectAge key="age" object={event} />,
             <WithTooltip tooltip={event.lastTimestamp ? moment(event.lastTimestamp).toDate() : undefined}>
               <ReactiveDuration key="last-seen" timestamp={event.lastTimestamp} />

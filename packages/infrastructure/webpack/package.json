@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/webpack",
-  "version": "1.10.2",
+  "version": "1.10.4-0",
   "private": false,
   "description": "Webpack configurations and scripts for Lens packages.",
   "homepage": "https://freelens.app",
@@ -33,7 +33,7 @@
     "@tailwindcss/postcss": "^4.2.4",
     "css-loader": "^6.11.0",
     "fork-ts-checker-webpack-plugin": "^9.1.0",
-    "fs-extra": "^11.3.5",
+    "fs-extra": "^11.3.6",
     "lodash": "^4.18.1",
     "mini-css-extract-plugin": "^2.10.2",
     "sass": "^1.101.0",
@@ -42,8 +42,8 @@
     "tailwindcss": "^4.2.4",
     "ts-loader": "^9.5.7",
     "ts-node": "^10.9.2",
-    "webpack": "^5.108.1",
-    "webpack-cli": "^7.0.3",
+    "webpack": "^5.108.3",
+    "webpack-cli": "^7.1.0",
     "webpack-node-externals": "^3.0.0"
   },
   "devDependencies": {
