@@ -56,7 +56,7 @@ describe("cluster/namespaces - edit namespace from new tab", () => {
       windowDi.override(showErrorNotificationInjectable, () => showErrorNotificationMock);
 
       windowDi.override(getRandomIdForEditResourceTabInjectable, () =>
-        jest
+        vi
           .fn(() => "some-irrelevant-random-id")
           .mockReturnValueOnce("some-first-tab-id")
           .mockReturnValueOnce("some-second-tab-id"),
