@@ -117,7 +117,7 @@ describe("add custom helm repository in preferences", () => {
         });
 
         // TODO: Figure out how to close dialog by clicking outside of it
-        xdescribe("when closing the dialog by clicking outside", () => {
+        describe.skip("when closing the dialog by clicking outside", () => {
           beforeEach(() => {});
 
           it("renders", () => {

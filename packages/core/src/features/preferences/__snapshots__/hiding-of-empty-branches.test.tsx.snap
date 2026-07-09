@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`preferences - hiding-of-empty-branches, given in preferences page given tab group and empty tabs renders 1`] = `
 <div>

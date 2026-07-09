@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`preferences: extension adding preference tabs given in preferences, when extension with preference tabs is enabled renders 1`] = `
 <body>

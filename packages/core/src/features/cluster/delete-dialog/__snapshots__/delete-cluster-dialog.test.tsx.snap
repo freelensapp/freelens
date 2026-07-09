@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`Deleting a cluster when an internal kubeconfig cluster is used when the dialog is opened renders 1`] = `
 <body>

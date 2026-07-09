@@ -56,8 +56,8 @@ global.ResizeObserver = class {
 };
 
 vi.mock("./renderer/components/monaco-editor/monaco-editor");
-vi.mock("@freelensapp/tooltip", () => ({
-  ...vi.requireActual("@freelensapp/tooltip"),
+vi.mock("@freelensapp/tooltip", async (importOriginal) => ({
+  ...(await importOriginal<typeof K8slensTooltip>()),
   withTooltip: ((Target) =>
     ({ tooltip, tooltipOverrideDisabled, ...props }: any) => {
       if (tooltip) {
@@ -74,7 +74,9 @@ vi.mock("@freelensapp/tooltip", () => ({
       return <Target {...props} />;
     }) as typeof K8slensTooltip.withTooltip,
 }));
-vi.mock("monaco-editor");
+// monaco-editor is replaced with __mocks__/monaco-editor.ts through a resolve
+// alias in the root vitest.config.ts: its package has no Node-resolvable
+// entry, so neither externalization nor vi.mock automocking can load it.
 
 const getInjectables = (environment: "renderer" | "main", filePathGlob: string) =>
   [

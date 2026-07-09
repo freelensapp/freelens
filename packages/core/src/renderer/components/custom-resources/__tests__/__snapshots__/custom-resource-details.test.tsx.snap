@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`<CustomResourceDetails /> with a CRD with a boolean field should display false in an additionalPrinterColumn as 'false' 1`] = `
 <div>

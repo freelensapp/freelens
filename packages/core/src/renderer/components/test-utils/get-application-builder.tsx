@@ -232,7 +232,7 @@ export const getApplicationBuilder = (user: UserEvent = userEvent.setup()) => {
 
   let trayMenuIconPath: string;
 
-  const traySetMenuItemsMock = jest.fn<any, [MinimalTrayMenuItem[]]>();
+  const traySetMenuItemsMock = vi.fn<(menuItems: MinimalTrayMenuItem[]) => any>();
 
   mainDi.override(electronTrayInjectable, () => ({
     start: () => {},

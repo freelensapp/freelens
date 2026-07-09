@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`installing helm chart from previously opened tab given tab for installing chart was previously opened, when application is started renders 1`] = `
 <body>

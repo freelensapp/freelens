@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`disable kube object detail items when cluster is not relevant given extension should be enabled for the cluster renders 1`] = `
 <body>
