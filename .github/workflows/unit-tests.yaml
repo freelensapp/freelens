@@ -1,16 +1,16 @@
 name: Unit tests
 
-# Temporarily deactivated during the v2 migration (WIP): automatic push and
-# pull_request triggers are disabled so CI does not run these tests while the
-# source-only packages work is in progress. Only manual dispatch remains.
-# To reactivate, restore the push/pull_request triggers below.
+# Reactivated for the v2 migration: Phase 6 of docs/v2-plan.md is complete
+# enough that the full Vitest suite (core included) runs green, so the
+# automatic push and pull_request triggers are restored.
 on:
-  # push:
-  #   branches:
-  #     - main
-  # pull_request:
-  #   branches:
-  #     - "*"
+  push:
+    branches:
+      - main
+      - v2
+  pull_request:
+    branches:
+      - "*"
   workflow_dispatch: {}
 
 permissions:
