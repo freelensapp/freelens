@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`<ClusterFrame /> given cluster with list nodes and namespaces permissions given no matching component given current url is starting url renders 1`] = `
 <div>

@@ -4,12 +4,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
+import type { MockedFunction } from "vitest";
 
 type GetMockedType<T> = T extends (...args: any[]) => Promise<any>
   ? AsyncFnMock<T>
   : T extends (...args: any[]) => any
-    ? jest.MockedFunction<T>
+    ? MockedFunction<T>
     : T;
 
 export type Mocked<T extends object> = {

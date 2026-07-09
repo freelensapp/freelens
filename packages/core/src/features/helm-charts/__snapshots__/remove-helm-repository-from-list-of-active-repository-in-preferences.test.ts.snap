@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`remove helm repository from list of active repositories in preferences when navigating to preferences containing helm repositories renders 1`] = `
 <body>

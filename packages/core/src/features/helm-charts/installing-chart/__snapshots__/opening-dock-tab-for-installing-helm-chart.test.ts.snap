@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`opening dock tab for installing helm chart given application is started, when navigating to helm charts renders 1`] = `
 <body>

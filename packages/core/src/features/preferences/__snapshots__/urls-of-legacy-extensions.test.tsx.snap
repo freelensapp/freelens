@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`preferences: URLs of legacy extensions given extension with both custom preference tabs and content for the default tab when navigating to specific custom preference tab using magic string URL renders 1`] = `
 <body>

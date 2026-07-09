@@ -6,6 +6,8 @@
 import { KubernetesCluster } from "../../../../common/catalog-entities/kubernetes-cluster";
 import { Cluster } from "../../../../common/cluster/cluster";
 
+import type { Mock } from "vitest";
+
 import type { ClusterId } from "../../../../extensions/common-api/cluster-types";
 
 /**
@@ -71,11 +73,11 @@ export function createMockProxyKubeconfig(options: MockProxyKubeconfigOptions) {
 }
 
 export interface MockKubeJsonApiConfig {
-  get?: jest.Mock;
-  post?: jest.Mock;
-  put?: jest.Mock;
-  patch?: jest.Mock;
-  del?: jest.Mock;
+  get?: Mock;
+  post?: Mock;
+  put?: Mock;
+  patch?: Mock;
+  del?: Mock;
 }
 
 /**
@@ -83,11 +85,11 @@ export interface MockKubeJsonApiConfig {
  */
 export function createMockKubeJsonApi(config: MockKubeJsonApiConfig = {}) {
   return {
-    get: config.get ?? jest.fn().mockResolvedValue({ items: [] }),
-    post: config.post ?? jest.fn().mockResolvedValue({}),
-    put: config.put ?? jest.fn().mockResolvedValue({}),
-    patch: config.patch ?? jest.fn().mockResolvedValue({}),
-    del: config.del ?? jest.fn().mockResolvedValue({}),
+    get: config.get ?? vi.fn().mockResolvedValue({ items: [] }),
+    post: config.post ?? vi.fn().mockResolvedValue({}),
+    put: config.put ?? vi.fn().mockResolvedValue({}),
+    patch: config.patch ?? vi.fn().mockResolvedValue({}),
+    del: config.del ?? vi.fn().mockResolvedValue({}),
   };
 }
 

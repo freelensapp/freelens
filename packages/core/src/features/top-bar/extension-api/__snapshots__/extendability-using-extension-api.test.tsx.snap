@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`extendability-using-extension-api given an extension with a weakly typed and invalid top-bar item is enabled renders without blowing up 1`] = `
 <body>

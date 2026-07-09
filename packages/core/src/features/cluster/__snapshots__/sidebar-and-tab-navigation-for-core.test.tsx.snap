@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`cluster - sidebar and tab navigation for core given core registrations given empty state for expanded sidebar items already exists, when rendered renders without errors 1`] = `
 <div>
