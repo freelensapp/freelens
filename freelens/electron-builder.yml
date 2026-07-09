@@ -13,14 +13,14 @@ publish: []
 ## Files in app.asar
 files:
   - static
-  - "!node_modules/@freelensapp/*/src"
-  - "!node_modules/@freelensapp/core/build"
-  - "!node_modules/@freelensapp/core/static/build/library/fonts"
+  ## Workspace packages are bundled from TypeScript source into
+  ## static/build by electron-vite and never required at runtime
+  - "!node_modules/@freelensapp/**"
   - "!node_modules/electron"
   ## Source maps and TS build info are only useful when debugging local builds
   - "!**/*.map"
   - "!**/*.tsbuildinfo"
-  ## Monaco is bundled into the renderer by webpack and never required at runtime
+  ## Monaco is bundled into the renderer by Vite and never required at runtime
   - "!node_modules/monaco-editor/**"
   ## node-pty is a N-API (node-addon-api) module, so its bundled prebuilt
   ## binaries are ABI-stable and work as-is on every Electron version we ship.
