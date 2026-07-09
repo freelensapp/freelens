@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`preferences: URLs of legacy extensions given extension with both custom preference tabs and content for the default tab when navigating to specific custom preference tab using magic string URL renders 1`] = `
+exports[`preferences: URLs of legacy extensions > given extension with both custom preference tabs and content for the default tab > when navigating to specific custom preference tab using magic string URL > renders 1`] = `
 <body>
   <div>
     <div
@@ -446,7 +446,7 @@ exports[`preferences: URLs of legacy extensions given extension with both custom
 </body>
 `;
 
-exports[`preferences: URLs of legacy extensions given extension with both custom preference tabs and content for the default tab when navigating to unspecified custom preferences tab using magic string URL renders 1`] = `
+exports[`preferences: URLs of legacy extensions > given extension with both custom preference tabs and content for the default tab > when navigating to unspecified custom preferences tab using magic string URL > renders 1`] = `
 <body>
   <div>
     <div
@@ -892,7 +892,7 @@ exports[`preferences: URLs of legacy extensions given extension with both custom
 </body>
 `;
 
-exports[`preferences: URLs of legacy extensions given extension with custom preferences and a custom preference tab when navigating to specific custom preference tab using magic string URL renders 1`] = `
+exports[`preferences: URLs of legacy extensions > given extension with custom preferences and a custom preference tab > when navigating to specific custom preference tab using magic string URL > renders 1`] = `
 <body>
   <div>
     <div
@@ -1300,7 +1300,7 @@ exports[`preferences: URLs of legacy extensions given extension with custom pref
 </body>
 `;
 
-exports[`preferences: URLs of legacy extensions given extension with custom preferences and a custom preference tab when navigating to unspecified custom preferences tab using magic string URL renders 1`] = `
+exports[`preferences: URLs of legacy extensions > given extension with custom preferences and a custom preference tab > when navigating to unspecified custom preferences tab using magic string URL > renders 1`] = `
 <body>
   <div>
     <div
@@ -1682,7 +1682,7 @@ exports[`preferences: URLs of legacy extensions given extension with custom pref
 </body>
 `;
 
-exports[`preferences: URLs of legacy extensions given extension with custom preferences but without a custom preference tab when navigating to the default preference tab using magic string URL renders 1`] = `
+exports[`preferences: URLs of legacy extensions > given extension with custom preferences but without a custom preference tab > when navigating to the default preference tab using magic string URL > renders 1`] = `
 <body>
   <div>
     <div

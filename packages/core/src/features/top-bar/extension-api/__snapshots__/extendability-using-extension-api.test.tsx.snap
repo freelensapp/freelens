@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`extendability-using-extension-api given an extension with a weakly typed and invalid top-bar item is enabled renders without blowing up 1`] = `
+exports[`extendability-using-extension-api > given an extension with a weakly typed and invalid top-bar item is enabled > renders without blowing up 1`] = `
 <body>
   <div>
     <div
@@ -378,7 +378,7 @@ exports[`extendability-using-extension-api given an extension with a weakly type
 </body>
 `;
 
-exports[`extendability-using-extension-api given an extension with top-bar items is enabled renders 1`] = `
+exports[`extendability-using-extension-api > given an extension with top-bar items is enabled > renders 1`] = `
 <body>
   <div>
     <div
@@ -765,7 +765,7 @@ exports[`extendability-using-extension-api given an extension with top-bar items
 </body>
 `;
 
-exports[`extendability-using-extension-api given an extension with top-bar items is enabled when the extension is disabled renders 1`] = `
+exports[`extendability-using-extension-api > given an extension with top-bar items is enabled > when the extension is disabled > renders 1`] = `
 <body>
   <div>
     <div
@@ -1143,7 +1143,7 @@ exports[`extendability-using-extension-api given an extension with top-bar items
 </body>
 `;
 
-exports[`extendability-using-extension-api renders 1`] = `
+exports[`extendability-using-extension-api > renders 1`] = `
 <body>
   <div>
     <div

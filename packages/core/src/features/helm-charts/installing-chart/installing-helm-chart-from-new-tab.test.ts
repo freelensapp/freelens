@@ -69,7 +69,7 @@ describe("installing helm chart from new tab", () => {
       windowDi.override(requestCreateHelmReleaseInjectable, () => requestCreateHelmReleaseMock);
 
       windowDi.override(getRandomInstallChartTabIdInjectable, () =>
-        jest
+        vi
           .fn(() => "some-irrelevant-tab-id")
           .mockReturnValueOnce("some-first-tab-id")
           .mockReturnValueOnce("some-second-tab-id"),

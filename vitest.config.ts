@@ -86,6 +86,10 @@ export default defineConfig({
           // `globals` is a project-scoped option and is not inherited from the
           // root-level `test` config, so it must be repeated per project.
           globals: true,
+          // Jest mapped CSS modules to identity-obj-proxy, so tests and
+          // snapshots assert plain class names ("StatusBar"), not Vite's
+          // scoped ones ("_StatusBar_b5e087").
+          css: { modules: { classNameStrategy: "non-scoped" } },
           environment: nodeEnvironmentDirs.has(dir) ? "node" : "jsdom",
           include: ["**/?(*.)test.{js,ts,tsx}"],
           exclude: ["**/node_modules/**", "**/dist/**", "**/build/**", "**/coverage/**"],

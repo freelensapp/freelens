@@ -30,7 +30,7 @@ describe("InitializableTokens technical tests", () => {
 
   it("throws given attempting to inject the state token", () => {
     expect(() => di.inject(initializableToken.stateToken)).toThrowErrorMatchingInlineSnapshot(
-      `"Tried to inject non-registered injectable "irrelevant" -> "some-root-id-state-token"."`,
+      `[Error: Tried to inject non-registered injectable "irrelevant" -> "some-root-id-state-token".]`,
     );
   });
 
@@ -51,7 +51,7 @@ describe("InitializableTokens technical tests", () => {
 
     it("throws given attempting to inject the state token", () => {
       expect(() => di.inject(initializableToken.stateToken)).toThrowErrorMatchingInlineSnapshot(
-        `"Tried to inject "some-root-id" before initialization was complete"`,
+        `[AssertionError: Tried to inject "some-root-id" before initialization was complete]`,
       );
     });
 
@@ -64,7 +64,7 @@ describe("InitializableTokens technical tests", () => {
 
       it("throws given attempting to inject the state token", () => {
         expect(() => di.inject(initializableToken.stateToken)).toThrowErrorMatchingInlineSnapshot(
-          `"Tried to inject "some-root-id" before initialization was complete"`,
+          `[AssertionError: Tried to inject "some-root-id" before initialization was complete]`,
         );
       });
 

@@ -74,6 +74,28 @@ async function findProjectTopDir() {
   }
 }
 
+function getSpdxLicenseText(license) {
+  const ids = license
+    .replace(/^\(/, "")
+    .replace(/\)$/, "")
+    .split(/ AND | OR /)
+    .map((id) => id.trim());
+
+  const texts = [];
+
+  for (const id of ids) {
+    const entry = spdxLicenseList[id];
+
+    if (!entry) {
+      return null;
+    }
+
+    texts.push(entry.licenseText);
+  }
+
+  return texts.join("\n\n");
+}
+
 async function normalizeStoreDir(storeDir) {
   if (path.isAbsolute(storeDir)) {
     return storeDir;
@@ -122,6 +144,14 @@ async function main() {
       licenseText = (await getLicenseText(d)).licenseText;
     } catch (_e) {
       console.warn(`Could not get license text for ${d.name}`, d);
+
+      const spdxLicenseText = getSpdxLicenseText(d.license);
+
+      if (spdxLicenseText) {
+        npmLicenses[key] = { name: d.name, author: d.author, licenseText: spdxLicenseText };
+        continue;
+      }
+
       if (!staticLicenses[key]) {
         throw new Error(`Missing license text for ${d.name}`);
       }

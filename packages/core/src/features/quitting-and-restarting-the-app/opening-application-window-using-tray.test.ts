@@ -23,8 +23,8 @@ describe("opening application window using tray", () => {
     let builder: ApplicationBuilder;
     let createElectronWindowMock: vi.Mock;
     let expectWindowsToBeOpen: (windowIds: string[]) => void;
-    let callForSplashWindowHtmlMock: AsyncFnMock<() => Promise<void>>;
-    let callForApplicationWindowHtmlMock: AsyncFnMock<() => Promise<void>>;
+    let callForSplashWindowHtmlMock: AsyncFnMock<(filePath: string) => Promise<void>>;
+    let callForApplicationWindowHtmlMock: AsyncFnMock<(url: string) => Promise<void>>;
     let focusApplicationMock: vi.Mock;
 
     beforeEach(async () => {
@@ -40,9 +40,16 @@ describe("opening application window using tray", () => {
 
         mainDi.override(staticFilesDirectoryInjectable, () => "/some-static-directory");
 
-        const loadFileMock = vi.fn(callForSplashWindowHtmlMock).mockImplementationOnce(() => Promise.resolve());
+        // @async-fn/vitest rejects mockImplementationOnce directly on an
+        // AsyncFnMock; wrapping in a plain vi.fn keeps the one-shot resolved
+        // first call while later calls still go through the asyncFn.
+        const loadFileMock = vi
+          .fn((filePath: string) => callForSplashWindowHtmlMock(filePath))
+          .mockImplementationOnce(() => Promise.resolve());
 
-        const loadUrlMock = vi.fn(callForApplicationWindowHtmlMock).mockImplementationOnce(() => Promise.resolve());
+        const loadUrlMock = vi
+          .fn((url: string) => callForApplicationWindowHtmlMock(url))
+          .mockImplementationOnce(() => Promise.resolve());
 
         createElectronWindowMock = vi.fn(
           (toBeDecorated): CreateElectronWindow =>

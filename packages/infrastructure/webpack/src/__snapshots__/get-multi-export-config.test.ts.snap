@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`get-multi-export-config given maximal package.json, when creating configuration works 1`] = `
+exports[`get-multi-export-config > given maximal package.json, when creating configuration > works 1`] = `
 "[
   {
     name: './index.ts',

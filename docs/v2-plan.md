@@ -187,6 +187,14 @@ Replace Jest 29 across the repository with Vitest 4:
 - Timing: the framework swap (configs, dependencies, codemod) happens early
   so nothing new is written for Jest, but making all suites green is
   explicitly deferred out of the MVP (see non-goals).
+- Test-run cost: because every `packages/core` test file re-evaluates the
+  eagerly-globbed injectable graph from TypeScript source, the core project
+  dominates wall-clock (~57% of aggregate worker time is module `import`).
+  The interim mitigation is CI sharding of the core project (`vitest run
+  --shard`) across a matrix, with the shard count derived from the runner's
+  CPU/memory. The structural fixes — `isolate: false`, or externalizing the
+  `@freelensapp/*` packages for the test run — are deferred (see the
+  legacy-global-di removal item in Phase 7 and §6).
 
 ### D9. CI on the v2 branch: trimmed, re-enabled gradually
 
@@ -240,7 +248,13 @@ Phase ordering; each phase lands as one or more PRs against `v2`:
    package; re-enable unit tests in CI.
 8. **Phase 7 — hardening.** TypeScript 7 as type-checker (D6), knip
    re-enabled, integration tests restored, extension migration guide
-   published.
+   published. Remove `@freelensapp/legacy-global-di`: its module-level
+   `Map<Environments, DiContainer>` accumulates containers across test files
+   and is one of the blockers for running the Vitest core project with
+   `isolate: false`. Once it is gone, re-analyze the test-run cost
+   remediations (`isolate: false`, externalizing/prebundling the
+   `@freelensapp/*` packages for tests, environment reclassification) and
+   pick the structural fix that replaces the interim CI sharding.
 
 Dependencies: 0 → 1 → 2 → 3 → 4 → 5; 6 can start any time after 2 (config
 swap) but completes after 3; 7 is last.
@@ -287,3 +301,10 @@ Success criteria:
 - **TypeScript 7 type-check differences.** tsgo may surface new errors or
   behave differently on the more exotic types in the tree; that is why it
   is adopted as a checker swap (D6) rather than a prerequisite.
+- **Vitest core-project cost and `isolate: false`.** The core project's
+  per-file re-evaluation of the injectable graph makes the Vitest run ~2–3x
+  slower than the Jest era. CI sharding is the interim relief; the structural
+  fix (`isolate: false`) is blocked today by shared module-level state,
+  notably `@freelensapp/legacy-global-di`'s container map and testing-library
+  cleanup that only attaches on the first file. Removing legacy-global-di
+  (Phase 7) is a prerequisite to re-analyzing that path.

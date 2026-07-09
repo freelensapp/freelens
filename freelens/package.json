@@ -20,7 +20,7 @@
   },
   "main": "static/build/main.js",
   "scripts": {
-    "build": "electron-vite build",
+    "build": "node --max-old-space-size=8192 node_modules/electron-vite/bin/electron-vite.js build",
     "build:webpack": "webpack --config webpack/webpack.ts --progress",
     "prebuild:app": "node build/prebuild.js",
     "build:app": "pnpm dlx run-script-os@1.1.6 --",
