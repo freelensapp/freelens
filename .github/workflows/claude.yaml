@@ -15,6 +15,8 @@
 #
 #   Linux / macOS path:
 #   2. claude – runs on the parsed runner, checks out code, invokes Claude Code
+#   3. report-failure – last resort: if claude failed or timed out, re-run Claude
+#      to diagnose the failure and fix any stalled tracking comment (feedback only)
 #
 #   Windows path (Claude Code action does not support Windows natively):
 #   2. prepare-windows – Claude writes a PowerShell script, uploads as artifact
@@ -216,6 +218,71 @@ jobs:
             --max-turns 200
             --allowedTools "Read" "Write" "Edit" "Glob" "Grep" "Task" "WebSearch" "WebFetch" "BashOutput" "KillShell" "Bash(pnpm:*)" "Bash(npx:*)" "Bash(node:*)" "Bash(git:*)" "Bash(gh:*)" "Bash(yq:*)" "Bash(jq:*)" "Bash(grep:*)" "Bash(rg:*)" "Bash(sed:*)" "Bash(awk:*)" "Bash(cut:*)" "Bash(tr:*)" "Bash(sort:*)" "Bash(uniq:*)" "Bash(cat:*)" "Bash(head:*)" "Bash(tail:*)" "Bash(wc:*)" "Bash(find:*)" "Bash(xargs:*)" "Bash(ls:*)" "Bash(tree:*)" "Bash(mkdir:*)" "Bash(touch:*)" "Bash(cp:*)" "Bash(mv:*)" "Bash(rm:*)" "Bash(tee:*)" "Bash(echo:*)"
             --append-system-prompt-file /tmp/AGENTS.md
+
+  # ── Last resort: if the main claude job failed or timed out, re-run Claude to
+  #    analyze WHY it failed and update the PR/issue. Feedback only — it must not
+  #    attempt the original work. ──
+
+  report-failure:
+    needs: [parse, claude]
+    if: >-
+      always() && needs.parse.result == 'success' && needs.parse.outputs.is-windows != 'true' && (needs.claude.result == 'failure' || needs.claude.result == 'cancelled')
+
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 15
+
+    permissions:
+      pull-requests: write
+      issues: write
+      contents: read
+      actions: read
+      id-token: write
+
+    steps:
+      - uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_args: |-
+            --model claude-opus-4-8
+            --fallback-model claude-sonnet-4-6
+            --max-turns 30
+            --allowedTools "Read" "Grep" "Bash(gh:*)" "Bash(jq:*)" "Bash(cat:*)" "Bash(head:*)" "Bash(tail:*)" "Bash(sed:*)" "Bash(awk:*)"
+          prompt: |-
+            The main Claude job in this workflow run did not finish: its result
+            was "${{ needs.claude.result }}" (it either failed with an error or was
+            cancelled after hitting the 60-minute timeout). Your ONLY task is to
+            report this back to the user. Do NOT attempt the original requested
+            work — only work on the feedback.
+
+            1. Diagnose the failure. Use the GitHub CLI:
+                 gh run view ${{ github.run_id }} --repo ${{ github.repository }}
+                 gh run view ${{ github.run_id }} --repo ${{ github.repository }} --log-failed
+               The failed job is named "claude". Read only the tail of the log to
+               find the root cause (build error, test failure, timeout, rate
+               limit, network error, etc.) — the logs can be very large, so keep
+               reads small.
+
+            2. Post a concise comment on the triggering PR or issue with
+               `gh issue comment` (works for both issues and PRs). Include:
+                 - one line stating the run did not finish and the root cause in
+                   plain language,
+                 - a short, concrete remediation if one is apparent,
+                 - a link to the run:
+                   ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+                 - a note that mentioning @claude again will retry.
+
+            3. Fix any stalled tracking comment. The interrupted run may have left
+               a comment that still shows an in-progress spinner (an <img> spinner)
+               and unchecked todos. Find the most recent bot/app-authored comment
+               on this PR or issue that contains such a spinner and edit it with
+               `gh` to remove the spinner and note the run was interrupted, so it
+               no longer looks like it is still working.
+
+            Context:
+              - Repository:  ${{ github.repository }}
+              - Event:       ${{ github.event_name }}
+              - Issue/PR #:  ${{ github.event.issue.number || github.event.pull_request.number }}
+              - Job result:  ${{ needs.claude.result }}
 
   # ── Windows path: Claude writes PS script → execute on Windows → Claude analyzes ──
 
