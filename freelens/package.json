@@ -50,7 +50,7 @@
     "start:win32:AMD64": "dist\\win-unpacked\\Freelens.exe",
     "start:win32:ARM64": "dist\\win-arm64-unpacked\\Freelens.exe",
     "start:win32": "echo pnpm start:linux:${npm_config_arch:-${PROCESSOR_ARCHITECTURE}}",
-    "test:integration": "jest -xyz --runInBand --detectOpenHandles --forceExit"
+    "test:integration": "vitest run --config vitest.integration.config.ts"
   },
   "config": {
     "bundledHelmVersion": "4.2.2",
