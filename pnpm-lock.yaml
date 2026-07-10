@@ -1547,6 +1547,12 @@ importers:
       '@testing-library/react':
         specifier: ^12.1.5
         version: 12.1.5(@types/react@17.0.93)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+      '@types/lodash':
+        specifier: ^4.17.24
+        version: 4.17.24
+      '@types/react':
+        specifier: ^17.0.93
+        version: 17.0.93
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1(@noble/hashes@2.2.0)
@@ -1593,6 +1599,9 @@ importers:
       '@freelensapp/utilities':
         specifier: workspace:^
         version: link:../../../utility-features/utilities
+      '@types/lodash':
+        specifier: ^4.17.24
+        version: 4.17.24
       jsdom:
         specifier: ^29.1.1
         version: 29.1.1(@noble/hashes@2.2.0)
