@@ -13,10 +13,11 @@ import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import newVersionNotificationInjectable from "./new-version-notification.injectable";
 
 import type { DiContainer } from "@ogre-tools/injectable";
+import type { Mock } from "vitest";
 
 describe("new-version-notification.injectable", () => {
   let di: DiContainer;
-  let showInfoMock: vi.Mock;
+  let showInfoMock: Mock;
 
   beforeEach(() => {
     di = getDiForUnitTesting();

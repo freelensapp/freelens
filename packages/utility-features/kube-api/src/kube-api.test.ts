@@ -17,6 +17,7 @@ import type { Logger } from "@freelensapp/logger";
 
 import type { AsyncFnMock } from "@async-fn/vitest";
 import type Fetch from "node-fetch";
+import type { MockedFunction } from "vitest";
 
 import type { KubeApiWatchCallback } from "./kube-api";
 import type { IKubeWatchEvent } from "./kube-watch-event";
@@ -480,7 +481,7 @@ describe("KubeApi", () => {
 
     describe("when watching in a namespace", () => {
       let stopWatch: () => void;
-      let callback: vi.MockedFunction<KubeApiWatchCallback>;
+      let callback: MockedFunction<KubeApiWatchCallback>;
 
       beforeEach(async () => {
         callback = vi.fn();
@@ -585,7 +586,7 @@ describe("KubeApi", () => {
     });
 
     describe("when watching in a namespace with an abort controller provided", () => {
-      let callback: vi.MockedFunction<KubeApiWatchCallback>;
+      let callback: MockedFunction<KubeApiWatchCallback>;
       let abortController: AbortController;
 
       beforeEach(async () => {
@@ -690,7 +691,7 @@ describe("KubeApi", () => {
 
     describe("when watching in a namespace with a timeout", () => {
       let stopWatch: () => void;
-      let callback: vi.MockedFunction<KubeApiWatchCallback>;
+      let callback: MockedFunction<KubeApiWatchCallback>;
 
       beforeEach(async () => {
         callback = vi.fn();

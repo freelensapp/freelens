@@ -22,6 +22,7 @@ import { getApplicationBuilder } from "../../../renderer/components/test-utils/g
 
 import type { AsyncFnMock } from "@async-fn/vitest";
 import type { RenderResult } from "@testing-library/react";
+import type { Mock } from "vitest";
 
 import type { RequestHelmCharts } from "../../../common/k8s-api/endpoints/helm-charts.api/request-charts.injectable";
 import type { RequestHelmChartReadme } from "../../../common/k8s-api/endpoints/helm-charts.api/request-readme.injectable";
@@ -33,7 +34,7 @@ describe("opening dock tab for installing helm chart", () => {
   let requestHelmChartsMock: AsyncFnMock<RequestHelmCharts>;
   let requestHelmChartVersionsMock: AsyncFnMock<RequestHelmChartVersions>;
   let requestHelmChartReadmeMock: AsyncFnMock<RequestHelmChartReadme>;
-  let requestHelmChartValuesMock: vi.Mock;
+  let requestHelmChartValuesMock: Mock;
 
   beforeEach(() => {
     builder = getApplicationBuilder(userEvent.setup({ delay: null }));

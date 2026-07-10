@@ -8,6 +8,7 @@ import { type DiRender, renderFor } from "../../test-utils/renderFor";
 import { PodAttachMenu } from "../pod-attach-menu";
 
 import type { DiContainer } from "@ogre-tools/injectable";
+import type { Mock } from "vitest";
 
 vi.mock("uuid", () => ({
   v4: vi.fn(() => "mocked-id"),
@@ -28,9 +29,9 @@ vi.mock("../pod-menu-item", () => ({
 describe("pod-attach-menu", () => {
   let di: DiContainer;
   let render: DiRender;
-  let createTerminalTabMock: vi.Mock;
-  let sendCommandMock: vi.Mock;
-  let hideDetailsMock: vi.Mock;
+  let createTerminalTabMock: Mock;
+  let sendCommandMock: Mock;
+  let hideDetailsMock: Mock;
 
   beforeEach(() => {
     di = getDiForUnitTesting();

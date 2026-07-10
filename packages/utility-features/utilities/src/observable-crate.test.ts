@@ -6,6 +6,8 @@
 
 import { observableCrate } from "./observable-crate";
 
+import type { MockedFunction } from "vitest";
+
 import type { ObservableCrate } from "./observable-crate";
 
 describe("observable-crate", () => {
@@ -33,8 +35,8 @@ describe("observable-crate", () => {
     }
 
     let crate: ObservableCrate<Test>;
-    let correctHandler: vi.MockedFunction<() => void>;
-    let incorrectHandler: vi.MockedFunction<() => void>;
+    let correctHandler: MockedFunction<() => void>;
+    let incorrectHandler: MockedFunction<() => void>;
 
     beforeEach(() => {
       correctHandler = vi.fn();

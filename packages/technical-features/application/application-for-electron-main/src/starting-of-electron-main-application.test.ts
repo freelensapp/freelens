@@ -6,10 +6,12 @@ import { applicationFeatureForElectronMain } from "./feature";
 import * as timeSlots from "./start-application/time-slots";
 import whenAppIsReadyInjectable from "./start-application/when-app-is-ready.injectable";
 
+import type { Mock } from "vitest";
+
 describe("starting-of-electron-main-application", () => {
   let di: DiContainer;
-  let beforeAnythingMock: vi.Mock;
-  let beforeElectronIsReadyMock: vi.Mock;
+  let beforeAnythingMock: Mock;
+  let beforeElectronIsReadyMock: Mock;
   let beforeApplicationIsLoadingMock: AsyncFnMock<() => Promise<void>>;
   let whenAppIsReadyMock: AsyncFnMock<() => Promise<void>>;
 

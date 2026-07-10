@@ -24,6 +24,7 @@ import kubectlDownloadingNormalizedArchInjectable from "../kubectl/normalized-ar
 import type { ChildProcess } from "child_process";
 import type { Readable } from "stream";
 
+import type { Mock } from "vitest";
 import type { DeepMockProxy } from "vitest-mock-extended";
 
 import type { Cluster } from "../../common/cluster/cluster";
@@ -31,9 +32,9 @@ import type { GetBasenameOfPath } from "../../common/path/get-basename.injectabl
 import type { KubeAuthProxy } from "../kube-auth-proxy/create-kube-auth-proxy.injectable";
 
 describe("kube auth proxy tests", () => {
-  let spawnMock: vi.Mock;
-  let waitUntilPortIsUsedMock: vi.Mock;
-  let broadcastMessageMock: vi.Mock;
+  let spawnMock: Mock;
+  let waitUntilPortIsUsedMock: Mock;
+  let broadcastMessageMock: Mock;
   let getBasenameOfPath: GetBasenameOfPath;
   let cluster: Cluster;
   let kubeAuthProxy: KubeAuthProxy;

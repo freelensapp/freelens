@@ -17,6 +17,7 @@ import requestPublicHelmRepositoriesInjectable from "./child-features/preference
 import type { AsyncResult } from "@freelensapp/utilities";
 
 import type { AsyncFnMock } from "@async-fn/vitest";
+import type { Mock } from "vitest";
 
 import type { ExecFile } from "../../common/fs/exec-file.injectable";
 import type { HelmRepo } from "../../common/helm/helm-repo";
@@ -24,8 +25,8 @@ import type { ApplicationBuilder } from "../../renderer/components/test-utils/ge
 
 describe("add helm repository from list in preferences", () => {
   let builder: ApplicationBuilder;
-  let showSuccessNotificationMock: vi.Mock;
-  let showErrorNotificationMock: vi.Mock;
+  let showSuccessNotificationMock: Mock;
+  let showErrorNotificationMock: Mock;
   let rendered: RenderResult;
   let execFileMock: AsyncFnMock<ExecFile>;
   let getActiveHelmRepositoriesMock: AsyncFnMock<() => AsyncResult<HelmRepo[]>>;

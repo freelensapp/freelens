@@ -12,6 +12,7 @@ import { computeNextPosition, RectangleDimensions } from "./helpers";
 import { Tooltip, TooltipPosition } from "./tooltip";
 
 import type { RenderResult } from "@testing-library/react";
+import type { MockInstance } from "vitest";
 import "@testing-library/jest-dom/vitest";
 
 const getRectangle = (parts: Omit<RectangleDimensions, "width" | "height">): RectangleDimensions => {
@@ -26,7 +27,7 @@ const getRectangle = (parts: Omit<RectangleDimensions, "width" | "height">): Rec
 };
 
 describe("<Tooltip />", () => {
-  let requestAnimationFrameSpy: jest.SpyInstance<number, [callback: FrameRequestCallback]>;
+  let requestAnimationFrameSpy: MockInstance<(callback: FrameRequestCallback) => number>;
   let user: UserEvent;
 
   beforeEach(() => {

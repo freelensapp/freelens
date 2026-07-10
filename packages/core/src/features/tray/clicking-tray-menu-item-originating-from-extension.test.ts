@@ -8,12 +8,14 @@ import { getRandomIdInjectionToken } from "@freelensapp/random";
 import logErrorInjectable from "../../common/log-error.injectable";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
+import type { Mock } from "vitest";
+
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import type { FakeExtensionOptions } from "../../renderer/components/test-utils/get-extension-fake";
 
 describe("clicking tray menu item originating from extension", () => {
   let builder: ApplicationBuilder;
-  let logErrorMock: vi.Mock;
+  let logErrorMock: Mock;
 
   beforeEach(async () => {
     builder = getApplicationBuilder();
@@ -30,7 +32,7 @@ describe("clicking tray menu item originating from extension", () => {
 
   describe("when extension is enabled", () => {
     let someExtension: FakeExtensionOptions;
-    let clickMock: vi.Mock;
+    let clickMock: Mock;
 
     beforeEach(() => {
       clickMock = vi.fn();

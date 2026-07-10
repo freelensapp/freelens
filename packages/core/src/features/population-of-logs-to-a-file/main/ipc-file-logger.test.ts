@@ -8,12 +8,14 @@ import { getDiForUnitTesting } from "../../../main/getDiForUnitTesting";
 import createIpcFileLoggerTransportInjectable from "./create-ipc-file-transport.injectable";
 import ipcFileLoggerInjectable from "./ipc-file-logger.injectable";
 
+import type { Mock } from "vitest";
+
 import type { IpcFileLogger } from "./ipc-file-logger.injectable";
 
 describe("ipc file logger in main", () => {
-  let logMock: vi.Mock;
-  let closeMock: vi.Mock;
-  let createFileTransportMock: vi.Mock;
+  let logMock: Mock;
+  let closeMock: Mock;
+  let createFileTransportMock: Mock;
   let logger: IpcFileLogger;
 
   beforeEach(() => {

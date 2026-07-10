@@ -17,11 +17,13 @@ import {
 } from "./features/actual/request/request-channel-listener-injection-token";
 import { messagingFeatureForUnitTesting } from "./features/unit-testing";
 
+import type { Mock, MockedFunction } from "vitest";
+
 describe("listening-of-requests", () => {
   let di: DiContainer;
-  let enlistRequestChannelListenerMock: vi.MockedFunction<EnlistRequestChannelListener>;
-  let disposeSomeListenerMock: vi.Mock;
-  let disposeSomeUnrelatedListenerMock: vi.Mock;
+  let enlistRequestChannelListenerMock: MockedFunction<EnlistRequestChannelListener>;
+  let disposeSomeListenerMock: Mock;
+  let disposeSomeUnrelatedListenerMock: Mock;
 
   beforeEach(() => {
     configure({

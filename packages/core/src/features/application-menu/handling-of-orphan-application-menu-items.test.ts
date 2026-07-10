@@ -13,12 +13,14 @@ import { advanceFakeTime, testUsingFakeTime } from "../../test-utils/use-fake-ti
 import applicationMenuItemInjectionToken from "./main/menu-items/application-menu-item-injection-token";
 import populateApplicationMenuInjectable from "./main/populate-application-menu.injectable";
 
+import type { Mock } from "vitest";
+
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 describe("handling-of-orphan-application-menu-items, given orphan menu item", () => {
   let builder: ApplicationBuilder;
-  let populateApplicationMenuMock: vi.Mock;
-  let logErrorMock: vi.Mock;
+  let populateApplicationMenuMock: Mock;
+  let logErrorMock: Mock;
 
   beforeEach(async () => {
     testUsingFakeTime();

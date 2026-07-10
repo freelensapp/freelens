@@ -7,11 +7,13 @@
 import { createContainer, getInjectable, getInjectionToken } from "@ogre-tools/injectable";
 import { runManySyncFor } from "./run-many-sync-for";
 
+import type { Mock } from "vitest";
+
 import type { RunnableSync } from "./types";
 
 describe("runManySyncFor", () => {
   describe("given hierarchy, when running many", () => {
-    let runMock: vi.Mock;
+    let runMock: Mock;
 
     beforeEach(() => {
       const rootDi = createContainer("irrelevant");
@@ -51,7 +53,7 @@ describe("runManySyncFor", () => {
   });
 
   describe("given hierarchy that is three levels deep, when running many", () => {
-    let runMock: vi.Mock<(arg: string) => void>;
+    let runMock: Mock<(arg: string) => void>;
 
     beforeEach(() => {
       const di = createContainer("irrelevant");
@@ -140,7 +142,7 @@ describe("runManySyncFor", () => {
   });
 
   describe("when running many with parameter", () => {
-    let runMock: vi.Mock<(arg: string, arg2: string) => undefined>;
+    let runMock: Mock<(arg: string, arg2: string) => undefined>;
 
     beforeEach(() => {
       const rootDi = createContainer("irrelevant");

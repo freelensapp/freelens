@@ -11,14 +11,16 @@ import { getDiForUnitTesting } from "../../main/getDiForUnitTesting";
 import forkPnpmInjectable from "./fork-pnpm.injectable";
 import installExtensionInjectable from "./install-extension.injectable";
 
+import type { Mock } from "vitest";
+
 import type { InstallExtension } from "./install-extension.injectable";
 
 describe("install-extension", () => {
   let installExtension: InstallExtension;
-  let forkPnpmMock: vi.Mock;
-  let pathExistsMock: vi.Mock;
-  let statMock: vi.Mock;
-  let writeJsonSyncMock: vi.Mock;
+  let forkPnpmMock: Mock;
+  let pathExistsMock: Mock;
+  let statMock: Mock;
+  let writeJsonSyncMock: Mock;
 
   beforeEach(() => {
     const di = getDiForUnitTesting();

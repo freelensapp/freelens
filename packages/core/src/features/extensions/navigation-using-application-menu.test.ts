@@ -8,6 +8,7 @@ import { getApplicationBuilder } from "../../renderer/components/test-utils/get-
 import focusWindowInjectable from "../../renderer/navigation/focus-window.injectable";
 
 import type { RenderResult } from "@testing-library/react";
+import type { Mock } from "vitest";
 
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
@@ -17,7 +18,7 @@ vi.mock("../../renderer/components/input/input");
 describe("extensions - navigation using application menu", () => {
   let builder: ApplicationBuilder;
   let rendered: RenderResult;
-  let focusWindowMock: vi.Mock;
+  let focusWindowMock: Mock;
 
   beforeEach(async () => {
     builder = getApplicationBuilder();

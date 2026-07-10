@@ -13,6 +13,7 @@ import splashWindowInjectable from "../../main/start-main-application/lens-windo
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 import type { AsyncFnMock } from "@async-fn/vitest";
+import type { Mock } from "vitest";
 
 import type { CreateElectronWindow } from "../../main/start-main-application/lens-window/application-window/create-electron-window.injectable";
 import type { LensWindow } from "../../main/start-main-application/lens-window/application-window/create-lens-window.injectable";
@@ -21,11 +22,11 @@ import type { ApplicationBuilder } from "../../renderer/components/test-utils/ge
 describe("opening application window using tray", () => {
   describe("given application has started", () => {
     let builder: ApplicationBuilder;
-    let createElectronWindowMock: vi.Mock;
+    let createElectronWindowMock: Mock;
     let expectWindowsToBeOpen: (windowIds: string[]) => void;
     let callForSplashWindowHtmlMock: AsyncFnMock<(filePath: string) => Promise<void>>;
     let callForApplicationWindowHtmlMock: AsyncFnMock<(url: string) => Promise<void>>;
-    let focusApplicationMock: vi.Mock;
+    let focusApplicationMock: Mock;
 
     beforeEach(async () => {
       callForSplashWindowHtmlMock = asyncFn();

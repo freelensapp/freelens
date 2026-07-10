@@ -8,9 +8,11 @@ import { frameCommunicationAdminChannel } from "./allow-communication-to-iframe.
 import { messagingFeatureForRenderer } from "./feature";
 import ipcRendererInjectable from "./ipc/ipc-renderer.injectable";
 
+import type { Mock } from "vitest";
+
 describe("allow communication to iframe", () => {
   let di: DiContainer;
-  let sendMessageToChannelMock: vi.Mock;
+  let sendMessageToChannelMock: Mock;
 
   beforeEach(() => {
     di = createContainer("irrelevant");

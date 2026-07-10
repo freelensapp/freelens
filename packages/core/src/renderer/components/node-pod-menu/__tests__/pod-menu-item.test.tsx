@@ -7,6 +7,7 @@ import PodMenuItem from "../pod-menu-item";
 import type { ContainerWithType } from "@freelensapp/kube-object";
 
 import type { DiContainer } from "@ogre-tools/injectable";
+import type { Mock } from "vitest";
 
 vi.mock("../../menu", async (importOriginal) => {
   const actualMenu = await importOriginal<object>();
@@ -25,7 +26,7 @@ vi.mock("../../menu", async (importOriginal) => {
 describe("pod-menu-item", () => {
   let di: DiContainer;
   let render: DiRender;
-  let callback: vi.Mock;
+  let callback: Mock;
 
   beforeEach(() => {
     di = getDiForUnitTesting();

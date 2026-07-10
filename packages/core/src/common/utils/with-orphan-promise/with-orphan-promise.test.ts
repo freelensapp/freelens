@@ -10,11 +10,12 @@ import logErrorInjectable from "../../log-error.injectable";
 import withOrphanPromiseInjectable from "./with-orphan-promise.injectable";
 
 import type { AsyncFnMock } from "@async-fn/vitest";
+import type { Mock } from "vitest";
 
 describe("with orphan promise, when called", () => {
   let toBeDecorated: AsyncFnMock<(arg1: string, arg2: string) => Promise<string>>;
   let actual: void;
-  let logErrorMock: vi.Mock;
+  let logErrorMock: Mock;
 
   beforeEach(() => {
     const di = getDiForUnitTesting();
