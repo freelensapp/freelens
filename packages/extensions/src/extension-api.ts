@@ -4,27 +4,31 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-// Phase 4 (D5): `@freelensapp/extensions` is a thin runtime shim over the
-// extension API. The app assigns the API object to a global at startup
-// (`globalThis.FreelensExtensionApi`, see `freelens/src/{main,renderer}/index.ts`).
-// Extensions depend on this package for types; at runtime the members resolve
-// to the global regardless of whether an extension bundles this shim or marks
-// it external.
+// Phase 4 (D5): the type-level entry of `@freelensapp/extensions`. The
+// published package pairs the d.ts rollup of this module with the runtime
+// shim (`./runtime-shim.ts`, emitted as `dist/extension-api.js`), which
+// resolves the same members from `globalThis.FreelensExtensionApi` at
+// runtime. The app assigns that global at startup (see
+// `freelens/src/{main,renderer}/index.ts`).
 //
-// The type-only imports below give extension authors the full API surface for
-// every process. At runtime `Main` is undefined in the renderer and `Renderer`
-// is undefined in the main process; extensions only touch the namespace for the
-// process they run in.
+// `Common`, `Main`, and `Renderer` are re-exported as namespaces (not consts)
+// so extension authors can use them in type positions —
+// `Renderer.Component.IconProps`, `Common.PackageJson` — exactly as with the
+// v1 extension API. At runtime `Main` is undefined in the renderer and
+// `Renderer` is undefined in the main process; extensions only touch the
+// namespace for the process they run in.
 //
-// TODO(D5): the published package ships a rolled-up, self-contained `.d.ts`
-// (e.g. `rollup-plugin-dts`) with no `@freelensapp/*` imports, since internal
-// packages become `private` in Phase 5. That declaration emit is the fiddliest
-// deliverable of this phase (see plan §6) and needs local iteration.
+// This module is never executed in the workspace (the package's runtime entry
+// everywhere is the shim); it exists for declaration emit and workspace type
+// resolution only.
 
 /// <reference path="../../core/types/mocks.d.ts" />
 
 import type { commonExtensionApi, mainExtensionApi } from "@freelensapp/core/main";
 import type { rendererExtensionApi } from "@freelensapp/core/renderer";
+
+export { commonExtensionApi as Common, mainExtensionApi as Main } from "@freelensapp/core/main";
+export { rendererExtensionApi as Renderer } from "@freelensapp/core/renderer";
 
 declare global {
   // eslint-disable-next-line no-var
@@ -34,9 +38,3 @@ declare global {
     Renderer?: typeof rendererExtensionApi;
   };
 }
-
-const api = globalThis.FreelensExtensionApi;
-
-export const Common = api.Common;
-export const Main = api.Main as typeof mainExtensionApi;
-export const Renderer = api.Renderer as typeof rendererExtensionApi;
