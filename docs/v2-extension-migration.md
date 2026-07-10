@@ -10,9 +10,12 @@ is ported (the validation vehicle named in the plan).
 ## What changed, and why
 
 - **ESM-first.** The application main process, renderer, and the extension API
-  are all ES modules. Extensions load through `await import(pathToFileURL(...))`
-  instead of `require()`, so an extension may be authored as **ESM or
-  CommonJS** — both are accepted, including graphs with top-level `await`.
+  are all ES modules. Extensions load through Node's `require(esm)` (verified
+  in [#1718](https://github.com/freelensapp/freelens/issues/1718) to work in
+  all processes), so an extension may be authored as **ESM or CommonJS** —
+  both are accepted. The one restriction: the extension entrypoint graph must
+  not use top-level `await`, which synchronous loading cannot express. An
+  `import()`-based main-process loader may lift this later.
 - **One published package.** `@freelensapp/extensions` is the only published
   package. Every other `@freelensapp/*` package is `private` and is consumed by
   the app as TypeScript source. Extensions must not depend on internal
@@ -59,9 +62,39 @@ runtime.
 - Depend on `@freelensapp/extensions` for **types**. You do not need to bundle
   it; the API is provided by the host through the runtime global.
 - Author your entrypoints as ESM or CommonJS. If you ship ESM, set
-  `"type": "module"` (or use `.mjs`); the `import()`-based loader handles both.
+  `"type": "module"` (or use `.mjs`); the loader handles both. Avoid top-level
+  `await` in the entrypoint graph (see above).
 - Do not add any other `@freelensapp/*` package as a dependency — they are
   private in v2 and are not published.
+- The package declares its ~30 type-level dependencies (react, mobx,
+  monaco-editor, type-fest, ...) itself, so its bundled `.d.ts` type-checks in
+  your project with no extra installs — with one exception: **`electron`** is
+  an optional peer dependency (a hard dependency would download the Electron
+  binary into every extension install). Add it as a `devDependency` for its
+  types.
+
+## `tsconfig.json` for an extension
+
+The bundled `extension-api.d.ts` sets two floors for consumer compilers:
+
+- `"skipLibCheck": true` — the type dependency graph (for example
+  `@ogre-tools/injectable`, which references jest types) is not clean under
+  `skipLibCheck: false`, and checking it is not your job.
+- `"lib": ["ES2024", "DOM", "DOM.Iterable"]` (or newer) — mobx 6.15 types
+  reference `ReadonlySetLike`, which first appears in the ES2024 lib.
+
+`"moduleResolution": "bundler"` (or `node16`/`nodenext`) both resolve the
+package's `exports`.
+
+The API namespaces work in type positions exactly as in v1:
+
+```ts
+import { Common, Renderer } from "@freelensapp/extensions";
+
+const manifest: Common.PackageJson = { name: "my-extension", version: "1.0.0" };
+
+function renderIcon(props: Renderer.Component.IconProps) { /* ... */ }
+```
 
 ## API namespace reorganization
 
@@ -89,8 +122,10 @@ in from the freelens-example-extension port and will be appended here.
 These items are finalized as the migration is validated end-to-end and are
 noted here so the guide is honest about what is not yet locked:
 
-- The **rolled-up, self-contained `.d.ts`** for the published
-  `@freelensapp/extensions` (no `@freelensapp/*` imports) — the fiddliest
-  Phase 4 deliverable (plan §6).
 - The **example-extension port**, from which the namespace rename table above
   is derived.
+
+The rolled-up, self-contained `.d.ts` for the published
+`@freelensapp/extensions` (no `@freelensapp/*` imports, declared type
+dependencies, namespaces usable in type positions) is done and verified
+against a strict-mode scratch consumer.
