@@ -15,6 +15,7 @@ import createIpcFileLoggerTransportInjectable from "./main/create-ipc-file-trans
 import closeRendererLogFileInjectable from "./renderer/close-renderer-log-file.injectable";
 
 import type { DiContainer } from "@ogre-tools/injectable";
+import type { Mock } from "vitest";
 import type winston from "winston";
 
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
@@ -23,8 +24,8 @@ describe("Population of logs to a file", () => {
   let builder: ApplicationBuilder;
   let windowDi: DiContainer;
   let logWarningInRenderer: (message: string, ...args: any) => void;
-  let frameSpecificWinstonLogInMainMock: vi.Mock;
-  let frameSpecificCloseLogInMainMock: vi.Mock;
+  let frameSpecificWinstonLogInMainMock: Mock;
+  let frameSpecificCloseLogInMainMock: Mock;
 
   async function setUpTestApplication({ testFileId, isClusterFrame }: { testFileId: string; isClusterFrame: boolean }) {
     builder = getApplicationBuilder();

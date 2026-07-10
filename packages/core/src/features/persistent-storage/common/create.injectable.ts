@@ -20,7 +20,7 @@ import { persistStateToConfigInjectionToken } from "./save-to-file";
 
 import type { MessageChannel } from "@freelensapp/messaging";
 
-import type { Options } from "conf/dist/source";
+import type { Options } from "conf";
 import type { IEqualsComparer } from "mobx";
 
 import type { Migrations } from "./migrations.injectable";

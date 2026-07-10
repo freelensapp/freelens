@@ -22,15 +22,16 @@ import extensionDiscoveryInjectable from "../extension-discovery/extension-disco
 import installExtensionInjectable from "../install-extension/install-extension.injectable";
 
 import type { FSWatcher } from "chokidar";
+import type { Mock } from "vitest";
 
 import type { JoinPaths } from "../../common/path/join-paths.injectable";
 import type { ExtensionDiscovery } from "../extension-discovery/extension-discovery";
 
 describe("ExtensionDiscovery", () => {
   let extensionDiscovery: ExtensionDiscovery;
-  let readJsonFileMock: vi.Mock;
-  let pathExistsMock: vi.Mock;
-  let watchMock: vi.Mock;
+  let readJsonFileMock: Mock;
+  let pathExistsMock: Mock;
+  let watchMock: Mock;
   let joinPaths: JoinPaths;
   let homeDirectoryPath: string;
 

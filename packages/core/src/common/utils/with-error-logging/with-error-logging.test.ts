@@ -12,12 +12,13 @@ import logErrorInjectable from "../../log-error.injectable";
 import withErrorLoggingInjectable from "./with-error-logging.injectable";
 
 import type { AsyncFnMock } from "@async-fn/vitest";
+import type { Mock } from "vitest";
 
 describe("with-error-logging", () => {
   describe("given decorated sync function", () => {
-    let toBeDecorated: vi.Mock<number | undefined, [string, string]>;
+    let toBeDecorated: Mock<number | undefined, [string, string]>;
     let decorated: (a: string, b: string) => number | undefined;
-    let logErrorMock: vi.Mock;
+    let logErrorMock: Mock;
 
     beforeEach(() => {
       const di = getDiForUnitTesting();
@@ -112,7 +113,7 @@ describe("with-error-logging", () => {
   describe("given decorated async function", () => {
     let decorated: (a: string, b: string) => Promise<number | undefined>;
     let toBeDecorated: AsyncFnMock<typeof decorated>;
-    let logErrorMock: vi.Mock;
+    let logErrorMock: Mock;
 
     beforeEach(() => {
       const di = getDiForUnitTesting();

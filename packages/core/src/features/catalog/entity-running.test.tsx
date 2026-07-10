@@ -16,6 +16,7 @@ import { advanceFakeTime, testUsingFakeTime } from "../../test-utils/use-fake-ti
 
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
+import type { MockedFunction } from "vitest";
 
 import type { AppEvent } from "../../common/app-event-bus/event-bus";
 import type { CatalogEntityActionContext } from "../../common/catalog";
@@ -82,8 +83,8 @@ describe("entity running technical tests", () => {
   let builder: ApplicationBuilder;
   let windowDi: DiContainer;
   let rendered: RenderResult;
-  let appEventListener: vi.MockedFunction<(event: AppEvent) => void>;
-  let onRun: vi.MockedFunction<(context: CatalogEntityActionContext) => void | Promise<void>>;
+  let appEventListener: MockedFunction<(event: AppEvent) => void>;
+  let onRun: MockedFunction<(context: CatalogEntityActionContext) => void | Promise<void>>;
   let catalogEntityRegistry: CatalogEntityRegistry;
 
   beforeEach(async () => {

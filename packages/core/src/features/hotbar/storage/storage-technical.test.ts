@@ -24,6 +24,7 @@ import type { Logger } from "@freelensapp/logger";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { IComputedValue } from "mobx";
+import type { Mocked } from "vitest";
 
 import type { CatalogEntity, CatalogEntityData, CatalogEntityKindData } from "../../../common/catalog";
 import type { AddHotbar } from "./common/add.injectable";
@@ -50,7 +51,7 @@ describe("Hotbars technical tests", () => {
   let testCluster: CatalogEntity;
   let kindCluster: CatalogEntity;
   let awsCluster: CatalogEntity;
-  let loggerMock: vi.Mocked<Logger>;
+  let loggerMock: Mocked<Logger>;
   let setAsActiveHotbar: SetAsActiveHotbar;
   let hotbars: IComputedValue<Hotbar[]>;
   let activeHotbar: IComputedValue<Hotbar | undefined>;

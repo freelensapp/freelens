@@ -23,6 +23,7 @@ import lensProtocolRouterMainInjectable from "../lens-protocol-router-main/lens-
 import type { LegacyLensExtension, LensExtensionId } from "@freelensapp/legacy-extensions";
 
 import type { ObservableMap } from "mobx";
+import type { Mock } from "vitest";
 
 import type { LensExtensionState } from "../../../features/extensions/enabled/common/state.injectable";
 import type { LensProtocolRouterMain } from "../lens-protocol-router-main/lens-protocol-router-main";
@@ -37,7 +38,7 @@ describe("protocol router tests", () => {
   let extensionInstances: ObservableMap<LensExtensionId, LegacyLensExtension>;
   let lpr: LensProtocolRouterMain;
   let enabledExtensions: ObservableMap<LensExtensionId, LensExtensionState>;
-  let broadcastMessageMock: vi.Mock;
+  let broadcastMessageMock: Mock;
 
   beforeEach(async () => {
     const di = getDiForUnitTesting();

@@ -14,14 +14,16 @@ import { ContainerEnvironment } from "../pod-container-env";
 
 import type { Container } from "@freelensapp/kube-object";
 
+import type { Mocked } from "vitest";
+
 import type { ConfigMapStore } from "../../config-maps/store";
 import type { SecretStore } from "../../config-secrets/store";
 import type { DiRender } from "../../test-utils/renderFor";
 
 describe("<ContainerEnv />", () => {
   let render: DiRender;
-  let secretStore: vi.Mocked<Pick<SecretStore, "load" | "getByName">>;
-  let configMapStore: vi.Mocked<Pick<ConfigMapStore, "load" | "getByName">>;
+  let secretStore: Mocked<Pick<SecretStore, "load" | "getByName">>;
+  let configMapStore: Mocked<Pick<ConfigMapStore, "load" | "getByName">>;
 
   beforeEach(() => {
     const di = getDiForUnitTesting();
@@ -39,8 +41,8 @@ describe("<ContainerEnv />", () => {
       getByName: vi.fn(),
     };
 
-    di.override(secretStoreInjectable, () => secretStore as vi.Mocked<SecretStore>);
-    di.override(configMapStoreInjectable, () => configMapStore as vi.Mocked<ConfigMapStore>);
+    di.override(secretStoreInjectable, () => secretStore as Mocked<SecretStore>);
+    di.override(configMapStoreInjectable, () => configMapStore as Mocked<ConfigMapStore>);
 
     render = renderFor(di);
   });

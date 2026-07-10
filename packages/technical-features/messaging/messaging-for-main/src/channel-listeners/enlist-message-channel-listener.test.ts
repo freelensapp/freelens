@@ -5,12 +5,13 @@ import { messagingFeatureForMain } from "../feature";
 import ipcMainInjectable from "../ipc-main/ipc-main.injectable";
 
 import type { IpcMain, IpcMainEvent } from "electron";
+import type { Mock } from "vitest";
 
 describe("enlist message channel listener in main", () => {
   let enlistMessageChannelListener: EnlistMessageChannelListener;
   let ipcMainStub: IpcMain;
-  let onMock: vi.Mock;
-  let offMock: vi.Mock;
+  let onMock: Mock;
+  let offMock: Mock;
 
   beforeEach(() => {
     const di = createContainer("irrelevant");
@@ -31,7 +32,7 @@ describe("enlist message channel listener in main", () => {
   });
 
   describe("when called", () => {
-    let handlerMock: vi.Mock;
+    let handlerMock: Mock;
     let disposer: () => void;
 
     beforeEach(() => {

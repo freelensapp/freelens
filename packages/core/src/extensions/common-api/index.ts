@@ -20,7 +20,11 @@ export { Util } from "./utils";
 export type { InstalledExtension, LensExtensionManifest } from "@freelensapp/legacy-extensions";
 export type { Logger } from "@freelensapp/logger";
 
-export type { PackageJson } from "type-fest";
+// A plain alias instead of a re-export: type-fest declares PackageJson as a
+// type plus a same-named namespace, and rollup-plugin-dts turns a namespace
+// re-export into `declare const ...: typeof PackageJson`, which is invalid
+// for a type-only namespace (TS2708 for consumers of the bundled d.ts).
+export type PackageJson = import("type-fest").PackageJson;
 
 export type { LensExtension } from "../lens-extension";
 

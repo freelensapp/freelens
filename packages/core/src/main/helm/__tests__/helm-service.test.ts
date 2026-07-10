@@ -12,11 +12,13 @@ import getActiveHelmRepositoriesInjectable from "../repositories/get-active-helm
 
 import type { AsyncResult } from "@freelensapp/utilities";
 
+import type { Mock } from "vitest";
+
 import type { HelmRepo } from "../../../common/helm/helm-repo";
 
 describe("Helm Service tests", () => {
   let listHelmCharts: () => Promise<any>;
-  let getActiveHelmRepositoriesMock: vi.Mock<AsyncResult<HelmRepo[]>>;
+  let getActiveHelmRepositoriesMock: Mock<AsyncResult<HelmRepo[]>>;
 
   beforeEach(() => {
     const di = getDiForUnitTesting();

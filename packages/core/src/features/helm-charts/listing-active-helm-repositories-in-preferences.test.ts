@@ -18,6 +18,7 @@ import requestPublicHelmRepositoriesInjectable from "./child-features/preference
 import type { Logger } from "@freelensapp/logger";
 
 import type { AsyncFnMock } from "@async-fn/vitest";
+import type { Mock } from "vitest";
 
 import type { ReadYamlFile } from "../../common/fs/read-yaml-file.injectable";
 import type { HelmRepositoriesFromYaml } from "../../main/helm/repositories/get-active-helm-repositories/get-active-helm-repositories.injectable";
@@ -29,7 +30,7 @@ describe("listing active helm repositories in preferences", () => {
   let readYamlFileMock: AsyncFnMock<ReadYamlFile>;
   let execFileMock: AsyncFnMock<ExecFile>;
   let loggerStub: Logger;
-  let showErrorNotificationMock: vi.Mock;
+  let showErrorNotificationMock: Mock;
 
   beforeEach(async () => {
     builder = getApplicationBuilder();

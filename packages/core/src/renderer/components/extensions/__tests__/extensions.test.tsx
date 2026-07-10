@@ -4,6 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import type { MockedFunction } from "vitest";
+
 import "@testing-library/jest-dom/vitest";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import assert from "assert";
@@ -33,11 +35,11 @@ import type { InstallExtensionFromInput } from "../install-extension-from-input.
 describe("Extensions", () => {
   let extensionLoader: ExtensionLoader;
   let extensionDiscovery: ExtensionDiscovery;
-  let installExtensionFromInput: vi.MockedFunction<InstallExtensionFromInput>;
+  let installExtensionFromInput: MockedFunction<InstallExtensionFromInput>;
   let extensionInstallationStateStore: ExtensionInstallationStateStore;
   let render: DiRender;
-  let deleteFileMock: vi.MockedFunction<RemovePath>;
-  let downloadBinary: vi.MockedFunction<DownloadBinary>;
+  let deleteFileMock: MockedFunction<RemovePath>;
+  let downloadBinary: MockedFunction<DownloadBinary>;
 
   beforeEach(() => {
     try {

@@ -14,10 +14,11 @@ import resolveSystemProxyWindowInjectable from "./resolve-system-proxy-window.in
 import type { AsyncFnMock } from "@async-fn/vitest";
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { BrowserWindow, Session, WebContents } from "electron";
+import type { Mock } from "vitest";
 
 describe("technical: resolve-system-proxy-from-electron", () => {
   let resolveSystemProxyMock: AsyncFnMock<(url: string) => Promise<string>>;
-  let logErrorMock: vi.Mock;
+  let logErrorMock: Mock;
   let di: DiContainer;
   let actualPromise: Promise<string>;
 

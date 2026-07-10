@@ -32,6 +32,7 @@ import type { Logger } from "@freelensapp/logger";
 
 import type { AsyncFnMock } from "@async-fn/vitest";
 import type { DiContainer } from "@ogre-tools/injectable";
+import type { Mock, Mocked } from "vitest";
 
 import type { CatalogEntity } from "../../../common/catalog";
 import type { Cluster } from "../../../common/cluster/cluster";
@@ -505,8 +506,8 @@ describe("kubeconfig-sync.source tests", () => {
     let manager: KubeconfigSyncManager;
     let localDi: DiContainer;
     let localKubeconfigSyncs: ObservableMap<string, KubeconfigSyncValue>;
-    let watchMock: vi.Mock;
-    let logger: vi.Mocked<Pick<Logger, "debug" | "warn" | "info" | "error">>;
+    let watchMock: Mock;
+    let logger: Mocked<Pick<Logger, "debug" | "warn" | "info" | "error">>;
 
     beforeEach(() => {
       localDi = getDiForUnitTesting();
@@ -556,7 +557,7 @@ describe("kubeconfig-sync.source tests", () => {
     let localDi: DiContainer;
     let localKubeconfigSyncs: ObservableMap<string, KubeconfigSyncValue>;
     let watchInstances: Map<string, Watcher<true>>;
-    let watchMock: vi.Mock;
+    let watchMock: Mock;
     let statMock: AsyncFnMock<Stat>;
 
     beforeEach(() => {
@@ -675,7 +676,7 @@ describe("kubeconfig-sync.source tests", () => {
         });
 
         // stopOldSync calls disposer which calls watcher.close()
-        expect((watcherBefore.close as vi.Mock).mock.calls.length).toBeGreaterThan(0);
+        expect((watcherBefore.close as Mock).mock.calls.length).toBeGreaterThan(0);
       });
 
       it("removes the source entry for the deleted path", () => {
@@ -719,7 +720,7 @@ describe("kubeconfig-sync.source tests", () => {
         });
 
         // directoryForKubeConfigs is always in desired set — watcher must NOT be stopped
-        expect((watcherBefore.close as vi.Mock).mock.calls.length).toBe(0);
+        expect((watcherBefore.close as Mock).mock.calls.length).toBe(0);
       });
     });
   });
@@ -728,7 +729,7 @@ describe("kubeconfig-sync.source tests", () => {
   describe("descriptor syncKubeconfigEntries.fromStore() IPC-reload path", () => {
     let localDi: DiContainer;
     let watchInstances: Map<string, Watcher<true>>;
-    let watchMock: vi.Mock;
+    let watchMock: Mock;
     let statMock: AsyncFnMock<Stat>;
 
     beforeEach(() => {
@@ -847,7 +848,7 @@ describe("kubeconfig-sync.source tests", () => {
         descriptors.syncKubeconfigEntries.fromStore([{ filePath: "/path/a" }]);
       });
 
-      expect((watcherForB.close as vi.Mock).mock.calls.length).toBeGreaterThan(0);
+      expect((watcherForB.close as Mock).mock.calls.length).toBeGreaterThan(0);
     });
   });
 });

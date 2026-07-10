@@ -15,10 +15,11 @@ import { KeyboardShortcutScope } from "./keyboard-shortcut-scope";
 import platformInjectable from "./platform.injectable";
 
 import type { RenderResult } from "@testing-library/react";
+import type { Mock } from "vitest";
 
 describe("keyboard-shortcuts", () => {
   let di: DiContainer;
-  let invokeMock: vi.Mock;
+  let invokeMock: Mock;
   let rendered: RenderResult;
   let user: UserEvent;
 

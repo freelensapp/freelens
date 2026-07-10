@@ -16,6 +16,7 @@ import processExecPathInjectable from "./execPath.injectable";
 import type { ChildProcessWithoutNullStreams } from "child_process";
 
 import type { DiContainer } from "@ogre-tools/injectable";
+import type { MockedFunction } from "vitest";
 
 import type { Spawn } from "../../../main/child-process/spawn.injectable";
 import type { ComputeUnixShellEnvironment } from "./compute-unix-shell-environment.injectable";
@@ -33,7 +34,7 @@ const expectedEnv = {
 describe("computeUnixShellEnvironment technical tests", () => {
   let di: DiContainer;
   let computeUnixShellEnvironment: ComputeUnixShellEnvironment;
-  let spawnMock: vi.MockedFunction<Spawn>;
+  let spawnMock: MockedFunction<Spawn>;
   let shellProcessFake: ChildProcessWithoutNullStreams;
   let stdinValue: string;
   let shellStdin: MemoryStream;

@@ -12,6 +12,7 @@ import { createMockClusterEntity } from "../../common/testing";
 import executeOnClusterInjectable from "../execute-on-cluster.injectable";
 
 import type { DiContainer } from "@ogre-tools/injectable";
+import type { Mock } from "vitest";
 
 import type { CatalogEntityRegistry } from "../../../../../renderer/api/catalog/entity/registry";
 import type { ExecuteOnClusterResponse } from "../../common/types";
@@ -22,7 +23,7 @@ import type { ExecuteOnClusterResponse } from "../../common/types";
 
 describe("K8s extension API functions (via injectable)", () => {
   let di: DiContainer;
-  let requestFromChannelMock: vi.Mock;
+  let requestFromChannelMock: Mock;
   let catalogEntityRegistry: CatalogEntityRegistry;
 
   beforeEach(() => {
