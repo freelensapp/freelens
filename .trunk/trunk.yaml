@@ -17,11 +17,20 @@ runtimes:
     - python@3.14.4
 # This is the section where you manage your linters. (https://docs.trunk.io/check/configuration)
 lint:
+  # Trunk's built-in `javascript` file type does not match `.cjs` (or `.mjs`),
+  # so Biome would never lint the CommonJS build hook scripts. Define an extra
+  # file type covering those extensions and add it to the Biome definition.
+  files:
+    - name: commonjs
+      extensions:
+        - cjs
+        - mjs
   definitions:
     # See https://github.com/trunk-io/plugins/pull/1063
     - name: biome
       files:
         - astro
+        - commonjs
         - css
         - graphql
         - html
