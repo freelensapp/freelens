@@ -279,7 +279,7 @@ describe("Pods", () => {
         lastTransitionTime: "longer ago",
       });
 
-      pod.spec.containers.push(
+      pod.spec.containers?.push(
         {
           image: "dummy",
           imagePullPolicy: "Always",
@@ -369,7 +369,7 @@ describe("Pods", () => {
 
     it("should return true if a restartable init container is not ready", () => {
       const pod = getDummyPod({ running: 1, initRunning: 1 });
-      const firstInitContainer = pod.spec.initContainers[0];
+      const firstInitContainer = pod.spec.initContainers?.[0];
       const firstInitStatus = pod.status?.initContainerStatuses?.[0];
 
       assert(firstInitContainer);
@@ -383,7 +383,7 @@ describe("Pods", () => {
 
     it("should return false if a restartable init container completed successfully", () => {
       const pod = getDummyPod({ running: 1, initRunning: 1 });
-      const firstInitContainer = pod.spec.initContainers[0];
+      const firstInitContainer = pod.spec.initContainers?.[0];
       const firstInitStatus = pod.status?.initContainerStatuses?.[0];
 
       assert(firstInitContainer);
@@ -425,7 +425,7 @@ describe("Pods", () => {
           lastTransitionTime: "longer ago",
         },
       );
-      pod.spec.containers.push({
+      pod.spec.containers?.push({
         image: "dummy",
         imagePullPolicy: "Always",
         name: "step-git-clone",
@@ -460,7 +460,7 @@ describe("Pods", () => {
         lastProbeTime: 1,
         lastTransitionTime: "longer ago",
       });
-      pod.spec.containers.push({
+      pod.spec.containers?.push({
         image: "dummy",
         imagePullPolicy: "Always",
         name: "missing-status",
