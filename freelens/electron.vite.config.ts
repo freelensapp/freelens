@@ -53,9 +53,18 @@ const packageJson = JSON.parse(readFileSync(resolve(root, "package.json"), "utf-
 // bundled rather than externalized.
 const workspacePackages = Object.keys(packageJson.dependencies).filter((name) => name.startsWith("@freelensapp/"));
 
+// CommonJS dependencies that we import through extensionless subpaths
+// (e.g. `crypto-js/enc-base64`, `lodash/fp`). Neither ships an `exports`
+// map, so once the main bundle is real ESM (D2/D3, formats: ["es"]) Node's
+// ESM resolver refuses those specifiers at runtime with ERR_MODULE_NOT_FOUND
+// / ERR_UNSUPPORTED_DIR_IMPORT (it does not append `.js` or resolve a
+// directory index the way CommonJS require did). Bundling them lets Vite
+// resolve the subpaths at build time, sidestepping runtime ESM resolution.
+const bundledCjsSubpathPackages = ["crypto-js", "lodash"];
+
 export default defineConfig({
   main: {
-    plugins: [externalizeDepsPlugin({ exclude: workspacePackages })],
+    plugins: [externalizeDepsPlugin({ exclude: [...workspacePackages, ...bundledCjsSubpathPackages] })],
     build: {
       outDir: buildDir,
       emptyOutDir: false,
