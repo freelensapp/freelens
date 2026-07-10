@@ -200,7 +200,11 @@ jobs:
 
       - name: Install pnpm dependencies (retry)
         if: steps.install-pnpm.outcome == 'failure'
-        run: pnpm install --color=always --prefer-offline --frozen-lockfile
+        # Best-effort recovery: drop --frozen-lockfile so an out-of-date
+        # pnpm-lock.yaml does not abort the install, and never fail the job on a
+        # broken install — Claude should still run and get a chance to fix it.
+        run: pnpm install --color=always --prefer-offline --no-frozen-lockfile
+        continue-on-error: true
 
       - name: Use the latest AGENTS.md
         shell: bash

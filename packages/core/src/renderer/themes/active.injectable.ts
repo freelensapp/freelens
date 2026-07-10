@@ -13,7 +13,14 @@ import defaultLensThemeInjectable from "./default-theme.injectable";
 import systemThemeConfigurationInjectable from "./system-theme.injectable";
 import lensThemesInjectable from "./themes.injectable";
 
-const activeThemeInjectable = getInjectable({
+import type { Injectable } from "@ogre-tools/injectable";
+import type { IComputedValue } from "mobx";
+import type { ReadonlyDeep } from "type-fest";
+
+import type { LensTheme } from "./lens-theme";
+
+// Annotated for declaration emit; see ./declaration.ts.
+const activeThemeInjectable: Injectable<IComputedValue<ReadonlyDeep<LensTheme>>> = getInjectable({
   id: "active-theme",
   instantiate: (di) => {
     const lensThemes = di.inject(lensThemesInjectable);

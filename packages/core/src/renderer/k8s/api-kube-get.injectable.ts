@@ -9,9 +9,13 @@ import apiKubeInjectable from "./api-kube.injectable";
 
 import type { KubeJsonApi } from "@freelensapp/kube-api";
 
+import type { Injectable } from "@ogre-tools/injectable";
+
 export type ApiKubeGet = KubeJsonApi["get"];
 
-const apiKubeGetInjectable = getInjectable({
+// Annotated for declaration emit: without it the emitter expands the method
+// type and reaches into node-fetch internals it cannot reference (TS2742).
+const apiKubeGetInjectable: Injectable<ApiKubeGet> = getInjectable({
   id: "api-kube-get",
   instantiate: (di): ApiKubeGet => {
     const apiKube = di.inject(apiKubeInjectable);

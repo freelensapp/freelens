@@ -7,7 +7,13 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { lensThemeDeclarationInjectionToken } from "./declaration";
 
-const defaultLensThemeInjectable = getInjectable({
+import type { Injectable } from "@ogre-tools/injectable";
+import type { ReadonlyDeep } from "type-fest";
+
+import type { LensTheme } from "./lens-theme";
+
+// Annotated for declaration emit; see ./declaration.ts.
+const defaultLensThemeInjectable: Injectable<ReadonlyDeep<LensTheme>> = getInjectable({
   id: "default-lens-theme",
   instantiate: (di) => {
     const themes = di.injectMany(lensThemeDeclarationInjectionToken);

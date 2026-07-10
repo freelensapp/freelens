@@ -7,7 +7,7 @@
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import URLParse from "url-parse";
-import { Server as WebSocketServer } from "ws";
+import { WebSocketServer } from "ws";
 import openShellSessionInjectable from "../../shell-session/create-shell-session.injectable";
 import getClusterForRequestInjectable from "../get-cluster-for-request.injectable";
 import shellRequestAuthenticatorInjectable from "./shell-request-authenticator/shell-request-authenticator.injectable";

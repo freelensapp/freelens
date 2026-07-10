@@ -21,6 +21,8 @@
 // packages become `private` in Phase 5. That declaration emit is the fiddliest
 // deliverable of this phase (see plan §6) and needs local iteration.
 
+/// <reference path="../../core/types/mocks.d.ts" />
+
 import type { commonExtensionApi, mainExtensionApi } from "@freelensapp/core/main";
 import type { rendererExtensionApi } from "@freelensapp/core/renderer";
 
