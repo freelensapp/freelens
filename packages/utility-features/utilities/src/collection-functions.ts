@@ -9,13 +9,25 @@ import { inspect } from "util";
 import { isDefined } from "./type-narrowing";
 
 /**
+ * The structural subset of `Map` these helpers use. Declared explicitly so
+ * that mobx's `ObservableMap`, which does not implement the ES2026 `Map`
+ * additions (`getOrInsert`, `getOrInsertComputed`), stays accepted no matter
+ * which lib version the checker loads.
+ */
+export interface MapLike<K, V> {
+  has(key: K): boolean;
+  get(key: K): V | undefined;
+  set(key: K, value: V): this;
+}
+
+/**
  * Get the value behind `key`. If it was not present, first insert `value`
  * @param map The map to interact with
  * @param key The key to insert into the map with
  * @param value The value to optional add to the map
  * @returns The value in the map
  */
-export function getOrInsert<K, V>(map: Map<K, V>, key: K, value: V): V {
+export function getOrInsert<K, V>(map: MapLike<K, V>, key: K, value: V): V {
   if (!map.has(key)) {
     map.set(key, value);
   }
@@ -26,7 +38,7 @@ export function getOrInsert<K, V>(map: Map<K, V>, key: K, value: V): V {
 /**
  * Updates map and returns the value that was just inserted
  */
-export function put<K, V>(map: Map<K, V>, key: K, value: V): V {
+export function put<K, V>(map: MapLike<K, V>, key: K, value: V): V {
   map.set(key, value);
 
   return value;
@@ -36,7 +48,7 @@ export function put<K, V>(map: Map<K, V>, key: K, value: V): V {
  * Like `getOrInsert` but specifically for when `V` is `Map<MK, MV>` so that
  * the typings are inferred correctly.
  */
-export function getOrInsertMap<K, MK, MV>(map: Map<K, Map<MK, MV>>, key: K): Map<MK, MV> {
+export function getOrInsertMap<K, MK, MV>(map: MapLike<K, Map<MK, MV>>, key: K): Map<MK, MV> {
   return getOrInsert(map, key, new Map<MK, MV>());
 }
 
@@ -44,14 +56,14 @@ export function getOrInsertMap<K, MK, MV>(map: Map<K, Map<MK, MV>>, key: K): Map
  * Like `getOrInsert` but specifically for when `V` is `Set<any>` so that
  * the typings are inferred.
  */
-export function getOrInsertSet<K, SK>(map: Map<K, Set<SK>>, key: K): Set<SK> {
+export function getOrInsertSet<K, SK>(map: MapLike<K, Set<SK>>, key: K): Set<SK> {
   return getOrInsert(map, key, new Set<SK>());
 }
 
 /**
  * A currying version of {@link getOrInsertSet}
  */
-export function getOrInsertSetFor<K, SK>(map: Map<K, Set<SK>>): (key: K) => Set<SK> {
+export function getOrInsertSetFor<K, SK>(map: MapLike<K, Set<SK>>): (key: K) => Set<SK> {
   return (key) => getOrInsertSet(map, key);
 }
 
@@ -59,10 +71,10 @@ export function getOrInsertSetFor<K, SK>(map: Map<K, Set<SK>>): (key: K) => Set<
  * Like `getOrInsert` but with delayed creation of the item. Which is useful
  * if it is very expensive to create the initial value.
  */
-export function getOrInsertWith<K, V>(map: Map<K, V>, key: K, builder: () => V): V;
-export function getOrInsertWith<K extends object, V>(map: Map<K, V> | WeakMap<K, V>, key: K, builder: () => V): V;
+export function getOrInsertWith<K, V>(map: MapLike<K, V>, key: K, builder: () => V): V;
+export function getOrInsertWith<K extends object, V>(map: MapLike<K, V> | WeakMap<K, V>, key: K, builder: () => V): V;
 
-export function getOrInsertWith<K extends object, V>(map: Map<K, V> | WeakMap<K, V>, key: K, builder: () => V): V {
+export function getOrInsertWith<K extends object, V>(map: MapLike<K, V> | WeakMap<K, V>, key: K, builder: () => V): V {
   if (!map.has(key)) {
     map.set(key, builder());
   }
@@ -73,7 +85,11 @@ export function getOrInsertWith<K extends object, V>(map: Map<K, V> | WeakMap<K,
 /**
  * Like {@link getOrInsertWith} but the builder is async and will be awaited before inserting into the map
  */
-export async function getOrInsertWithAsync<K, V>(map: Map<K, V>, key: K, asyncBuilder: () => Promise<V>): Promise<V> {
+export async function getOrInsertWithAsync<K, V>(
+  map: MapLike<K, V>,
+  key: K,
+  asyncBuilder: () => Promise<V>,
+): Promise<V> {
   if (!map.has(key)) {
     const newValue = await asyncBuilder();
 
@@ -88,7 +104,7 @@ export async function getOrInsertWithAsync<K, V>(map: Map<K, V>, key: K, asyncBu
 /**
  * Insert `val` into `map` under `key` and then get the value back
  */
-export function setAndGet<K, V>(map: Map<K, V>, key: K, val: V): V {
+export function setAndGet<K, V>(map: MapLike<K, V>, key: K, val: V): V {
   map.set(key, val);
 
   return map.get(key)!;
@@ -100,7 +116,7 @@ export function setAndGet<K, V>(map: Map<K, V>, key: K, val: V): V {
  * @throws if `key` already in map
  * @returns `this` so that `strictSet` can be chained
  */
-export function strictSet<K, V>(map: Map<K, V>, key: K, val: V): typeof map {
+export function strictSet<K, V>(map: MapLike<K, V>, key: K, val: V): typeof map {
   if (map.has(key)) {
     throw new TypeError(`Map already contains key: ${inspect(key)}`);
   }
@@ -113,7 +129,7 @@ export function strictSet<K, V>(map: Map<K, V>, key: K, val: V): typeof map {
  * @param map The map to interact with
  * @throws if `key` did not a value associated with it
  */
-export function strictGet<K, V>(map: Map<K, V>, key: K): V {
+export function strictGet<K, V>(map: MapLike<K, V>, key: K): V {
   if (!map.has(key)) {
     throw new TypeError(`Map does not contains key: ${inspect(key)}`);
   }
