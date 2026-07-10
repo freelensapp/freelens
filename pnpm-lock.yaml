@@ -1035,13 +1035,107 @@ importers:
         version: 5.9.3
 
   packages/extensions:
+    dependencies:
+      '@mui/material':
+        specifier: ^5.17.1
+        version: 5.17.1(@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@17.0.93)(react@17.0.2))(@types/react@17.0.93)(react@17.0.2))(@types/react@17.0.93)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+      '@ogre-tools/injectable':
+        specifier: ^17.11.1
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(lodash@4.18.1)
+      '@ogre-tools/injectable-react':
+        specifier: ^17.11.1
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(lodash@4.18.1))(lodash@4.18.1)(mobx-react@7.6.0(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+      '@types/chart.js':
+        specifier: ^2.9.41
+        version: 2.9.41
+      '@types/history':
+        specifier: ^4.7.11
+        version: 4.7.11
+      '@types/lodash':
+        specifier: ^4.17.24
+        version: 4.17.24
+      '@types/node':
+        specifier: ~24.12.4
+        version: 24.12.4
+      '@types/react':
+        specifier: ^17.0.93
+        version: 17.0.93
+      '@types/react-router':
+        specifier: ^5.1.20
+        version: 5.1.20
+      '@types/react-router-dom':
+        specifier: ^5.3.3
+        version: 5.3.3
+      '@types/react-table':
+        specifier: ^7.7.20
+        version: 7.7.20
+      '@types/react-window':
+        specifier: ^1.8.8
+        version: 1.8.8
+      '@xterm/xterm':
+        specifier: ^6.0.0
+        version: 6.0.0(patch_hash=fb7ebbc29ef246137af8ea109596e698df4691ccaa0b87ed5969259bcb27e435)
+      chart.js:
+        specifier: ^2.9.4
+        version: 2.9.4
+      conf:
+        specifier: ^10.2.0
+        version: 10.2.0
+      electron:
+        specifier: '>=41.0.0'
+        version: 41.10.0
+      history:
+        specifier: ^4.10.1
+        version: 4.10.1
+      immer:
+        specifier: ^11.1.8
+        version: 11.1.8
+      lodash:
+        specifier: ^4.18.1
+        version: 4.18.1
+      mobx:
+        specifier: ^6.15.0
+        version: 6.15.0
+      mobx-observable-history:
+        specifier: ^2.0.3
+        version: 2.0.3
+      monaco-editor:
+        specifier: ^0.54.0
+        version: 0.54.0
+      node-fetch:
+        specifier: ^3.3.2
+        version: 3.3.2
+      react:
+        specifier: ^17.0.2
+        version: 17.0.2
+      react-router:
+        specifier: ^5.3.4
+        version: 5.3.4(react@17.0.2)
+      react-router-dom:
+        specifier: ^5.3.4
+        version: 5.3.4(react@17.0.2)
+      react-select:
+        specifier: ^5.10.2
+        version: 5.10.2(@types/react@17.0.93)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+      react-table:
+        specifier: ^7.8.0
+        version: 7.8.0(react@17.0.2)
+      react-window:
+        specifier: ^1.8.11
+        version: 1.8.11(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
+      rfc6902:
+        specifier: ^5.2.0
+        version: 5.2.0
+      type-fest:
+        specifier: ^5.6.0
+        version: 5.6.0
+      typed-emitter:
+        specifier: ^1.4.0
+        version: 1.4.0
     devDependencies:
       '@freelensapp/core':
         specifier: workspace:^
         version: link:../core
-      '@types/node':
-        specifier: ~24.12.4
-        version: 24.12.4
       rollup:
         specifier: ^4.62.2
         version: 4.62.2
