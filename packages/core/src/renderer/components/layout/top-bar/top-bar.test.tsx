@@ -6,6 +6,8 @@
 
 import { fireEvent } from "@testing-library/react";
 import React from "react";
+
+import type { MockedFunction } from "vitest";
 import "@testing-library/jest-dom/vitest";
 
 import { computed, observable } from "mobx";
@@ -30,12 +32,12 @@ import type { DiRender } from "../../test-utils/renderFor";
 describe("<TopBar/>", () => {
   let di: DiContainer;
   let render: DiRender;
-  let goBack: vi.MockedFunction<() => void>;
-  let goForward: vi.MockedFunction<() => void>;
-  let openAppContextMenu: vi.MockedFunction<() => void>;
-  let closeWindow: vi.MockedFunction<() => void>;
-  let maximizeWindow: vi.MockedFunction<() => void>;
-  let toggleMaximizeWindow: vi.MockedFunction<() => void>;
+  let goBack: MockedFunction<() => void>;
+  let goForward: MockedFunction<() => void>;
+  let openAppContextMenu: MockedFunction<() => void>;
+  let closeWindow: MockedFunction<() => void>;
+  let maximizeWindow: MockedFunction<() => void>;
+  let toggleMaximizeWindow: MockedFunction<() => void>;
 
   beforeEach(() => {
     di = getDiForUnitTesting();

@@ -9,6 +9,7 @@ import { type DiRender, renderFor } from "../../test-utils/renderFor";
 import { NodeMenu } from "../node-menu";
 
 import type { DiContainer } from "@ogre-tools/injectable";
+import type { Mock } from "vitest";
 
 vi.mock("../../menu", () => ({
   __esModule: true,
@@ -22,10 +23,10 @@ vi.mock("../../menu", () => ({
 describe("pod-node-menu", () => {
   let di: DiContainer;
   let render: DiRender;
-  let createTerminalTabMock: vi.Mock;
-  let openConfirmDialogMock: vi.Mock;
-  let sendCommandMock: vi.Mock;
-  let hideDetailsMock: vi.Mock;
+  let createTerminalTabMock: Mock;
+  let openConfirmDialogMock: Mock;
+  let sendCommandMock: Mock;
+  let hideDetailsMock: Mock;
 
   beforeEach(() => {
     di = getDiForUnitTesting();

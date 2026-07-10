@@ -7,6 +7,8 @@
 import apiBaseInjectable from "../../api-base.injectable";
 import requestMetricsInjectable from "./request-metrics.injectable";
 
+import type { Mock } from "vitest";
+
 import type { RequestMetrics } from "./request-metrics.injectable";
 
 describe("requestMetricsInjectable", () => {
@@ -113,7 +115,7 @@ describe("requestMetricsInjectable", () => {
   });
 });
 
-function instantiateRequestMetrics(post: vi.Mock = vi.fn().mockResolvedValue({})) {
+function instantiateRequestMetrics(post: Mock = vi.fn().mockResolvedValue({})) {
   const requestMetrics = requestMetricsInjectable.instantiate({
     inject: (injectable: unknown) => {
       if (injectable === apiBaseInjectable) {

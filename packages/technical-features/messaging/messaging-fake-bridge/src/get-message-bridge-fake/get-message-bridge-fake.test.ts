@@ -18,6 +18,8 @@ import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { runInAction } from "mobx";
 import { getMessageBridgeFake } from "./get-message-bridge-fake";
 
+import type { Mock } from "vitest";
+
 type SomeMessageChannel = MessageChannel<string>;
 type SomeRequestChannel = RequestChannel<string, number>;
 
@@ -75,9 +77,9 @@ const someRequestChannelWithoutListeners: SomeRequestChannel = {
       });
 
       describe("given there are message listeners", () => {
-        let someHandler1MockInDi1: vi.Mock;
-        let someHandler1MockInDi2: vi.Mock;
-        let someHandler2MockInDi2: vi.Mock;
+        let someHandler1MockInDi1: Mock;
+        let someHandler1MockInDi2: Mock;
+        let someHandler2MockInDi2: Mock;
         let someListener1InDi2: Injectable<unknown, unknown>;
 
         beforeEach(() => {
@@ -142,7 +144,7 @@ const someRequestChannelWithoutListeners: SomeRequestChannel = {
               : "immediately";
 
             describe(scenarioTitle, () => {
-              let someWrapper: vi.Mock;
+              let someWrapper: Mock;
 
               beforeEach(async () => {
                 someWrapper = vi.fn((propagation) => propagation());
@@ -227,7 +229,7 @@ const someRequestChannelWithoutListeners: SomeRequestChannel = {
 
           scenarioIsAsync &&
             describe("when messages are propagated using a wrapper, such as act() in react testing lib", () => {
-              let someWrapper: vi.Mock;
+              let someWrapper: Mock;
 
               beforeEach(async () => {
                 someWrapper = vi.fn((observation) => observation());

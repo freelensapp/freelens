@@ -22,6 +22,8 @@ import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import kubeAuthProxyCertificateInjectable from "../kube-auth-proxy/kube-auth-proxy-certificate.injectable";
 import kubeApiUpgradeRequestInjectable from "../lens-proxy/proxy-functions/kube-api-upgrade-request.injectable";
 
+import type { MockedFunction } from "vitest";
+
 class MockSocket extends EventEmitter {
   destroyed = false;
   writable = true;
@@ -45,7 +47,7 @@ const mockConnectImplementation = (proxySocket: MockSocket) =>
 describe("kube api upgrade request", () => {
   it("forwards the upgrade request to the auth proxy", async () => {
     const di = getDiForUnitTesting();
-    const connectMock = connect as vi.MockedFunction<typeof connect>;
+    const connectMock = connect as MockedFunction<typeof connect>;
     const proxySocket = new MockSocket();
     const socket = new MockSocket();
     const head = Buffer.from("buffered-head");
@@ -115,7 +117,7 @@ describe("kube api upgrade request", () => {
 
   it("applies backpressure from the auth proxy socket to the client socket", async () => {
     const di = getDiForUnitTesting();
-    const connectMock = connect as vi.MockedFunction<typeof connect>;
+    const connectMock = connect as MockedFunction<typeof connect>;
     const proxySocket = new MockSocket();
     const socket = new MockSocket();
     const cluster = new Cluster({
@@ -170,7 +172,7 @@ describe("kube api upgrade request", () => {
 
   it("applies backpressure from the client socket to the auth proxy socket", async () => {
     const di = getDiForUnitTesting();
-    const connectMock = connect as vi.MockedFunction<typeof connect>;
+    const connectMock = connect as MockedFunction<typeof connect>;
     const proxySocket = new MockSocket();
     const socket = new MockSocket();
     const cluster = new Cluster({
@@ -225,7 +227,7 @@ describe("kube api upgrade request", () => {
 
   it("returns an http error before the upgraded stream starts", async () => {
     const di = getDiForUnitTesting();
-    const connectMock = connect as vi.MockedFunction<typeof connect>;
+    const connectMock = connect as MockedFunction<typeof connect>;
     const proxySocket = new MockSocket();
     const socket = new MockSocket();
     const cluster = new Cluster({

@@ -8,6 +8,7 @@ import { screen, waitFor } from "@testing-library/react";
 import React from "react";
 
 import type { RenderResult } from "@testing-library/react";
+import type { Mocked } from "vitest";
 import "@testing-library/jest-dom/vitest";
 
 import { KubeObject } from "@freelensapp/kube-object";
@@ -101,7 +102,7 @@ describe("kube-object-menu", () => {
 
   describe("given kube object", () => {
     let result: RenderResult;
-    let kubeObjectDeleteServiceMock: vi.Mocked<KubeObjectDeleteService>;
+    let kubeObjectDeleteServiceMock: Mocked<KubeObjectDeleteService>;
     let deletePendingPromise: Promise<void>;
     let resolveDelete: () => void;
 

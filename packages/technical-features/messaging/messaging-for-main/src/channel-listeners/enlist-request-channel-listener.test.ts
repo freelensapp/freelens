@@ -10,6 +10,7 @@ import type { RequestChannel, RequestChannelHandler } from "@freelensapp/messagi
 
 import type { AsyncFnMock } from "@async-fn/vitest";
 import type { IpcMain, IpcMainInvokeEvent } from "electron";
+import type { Mock } from "vitest";
 
 import type { EnlistRequestChannelListener } from "./enlist-request-channel-listener.injectable";
 
@@ -22,8 +23,8 @@ const testRequestChannel: TestRequestChannel = {
 describe("enlist request channel listener in main", () => {
   let enlistRequestChannelListener: EnlistRequestChannelListener;
   let ipcMainStub: IpcMain;
-  let handleMock: vi.Mock;
-  let offMock: vi.Mock;
+  let handleMock: Mock;
+  let offMock: Mock;
 
   beforeEach(() => {
     const di = createContainer("irrelevant");

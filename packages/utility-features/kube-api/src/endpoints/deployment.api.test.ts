@@ -7,9 +7,11 @@
 import { KubeJsonApi } from "../kube-json-api";
 import { DeploymentApi } from "./deployment.api";
 
+import type { Mocked } from "vitest";
+
 describe("DeploymentApi", () => {
   let deploymentApi: DeploymentApi;
-  let kubeJsonApi: vi.Mocked<KubeJsonApi>;
+  let kubeJsonApi: Mocked<KubeJsonApi>;
 
   beforeEach(() => {
     kubeJsonApi = {

@@ -27,6 +27,7 @@ import type { ShowNotification } from "@freelensapp/notifications";
 import type { AsyncFnMock } from "@async-fn/vitest";
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
+import type { MockedFunction } from "vitest";
 
 import type { ApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 import type { ApiKubeGet } from "../../../renderer/k8s/api-kube-get.injectable";
@@ -36,8 +37,8 @@ describe("cluster/namespaces - edit namespace from new tab", () => {
   let builder: ApplicationBuilder;
   let apiKubePatchMock: AsyncFnMock<ApiKubePatch>;
   let apiKubeGetMock: AsyncFnMock<ApiKubeGet>;
-  let showSuccessNotificationMock: vi.MockedFunction<ShowNotification>;
-  let showErrorNotificationMock: vi.MockedFunction<ShowNotification>;
+  let showSuccessNotificationMock: MockedFunction<ShowNotification>;
+  let showErrorNotificationMock: MockedFunction<ShowNotification>;
 
   beforeEach(() => {
     builder = getApplicationBuilder();

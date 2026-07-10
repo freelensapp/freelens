@@ -8,12 +8,14 @@ import requestQuitOfAppInjectable from "../../main/electron-app/features/require
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { testUsingFakeTime } from "../../test-utils/use-fake-time";
 
+import type { Mock } from "vitest";
+
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 describe("quitting the app using application menu", () => {
   describe("given application has started", () => {
     let builder: ApplicationBuilder;
-    let requestQuitOfAppMock: vi.Mock;
+    let requestQuitOfAppMock: Mock;
 
     beforeEach(async () => {
       testUsingFakeTime("2015-10-21T07:28:00Z");

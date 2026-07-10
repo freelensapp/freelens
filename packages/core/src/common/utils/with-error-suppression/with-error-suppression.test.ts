@@ -9,10 +9,11 @@ import { getPromiseStatus } from "@freelensapp/test-utils";
 import { withErrorSuppression } from "./with-error-suppression";
 
 import type { AsyncFnMock } from "@async-fn/vitest";
+import type { Mock } from "vitest";
 
 describe("with-error-suppression", () => {
   describe("given decorated sync function", () => {
-    let toBeDecorated: vi.Mock<void, [string, string]>;
+    let toBeDecorated: Mock<void, [string, string]>;
     let decorated: (a: string, b: string) => void;
 
     beforeEach(() => {

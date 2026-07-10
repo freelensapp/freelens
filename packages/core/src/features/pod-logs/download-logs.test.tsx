@@ -29,6 +29,7 @@ import type { Container } from "@freelensapp/kube-object";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
+import type { Mock, MockedFunction } from "vitest";
 
 import type { CallForLogs } from "../../renderer/components/dock/logs/call-for-logs.injectable";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
@@ -37,11 +38,11 @@ describe("download logs options in logs dock tab", () => {
   let windowDi: DiContainer;
   let rendered: RenderResult;
   let builder: ApplicationBuilder;
-  let openSaveFileDialogMock: vi.MockedFunction<() => void>;
-  let callForLogsMock: vi.MockedFunction<CallForLogs>;
-  let getLogsMock: vi.Mock;
-  let getSplitLogsMock: vi.Mock;
-  let showErrorNotificationMock: vi.Mock;
+  let openSaveFileDialogMock: MockedFunction<() => void>;
+  let callForLogsMock: MockedFunction<CallForLogs>;
+  let getLogsMock: Mock;
+  let getSplitLogsMock: Mock;
+  let showErrorNotificationMock: Mock;
   const logs = new Map([["timestamp", "some-logs"]]);
   const pod = dockerPod;
 

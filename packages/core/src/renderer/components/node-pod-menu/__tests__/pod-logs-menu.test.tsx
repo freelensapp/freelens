@@ -6,6 +6,7 @@ import { type DiRender, renderFor } from "../../test-utils/renderFor";
 import { PodLogsMenu } from "../pod-logs-menu";
 
 import type { DiContainer } from "@ogre-tools/injectable";
+import type { Mock } from "vitest";
 
 let showLogs: (container: { name: string }) => void = () => {};
 
@@ -22,8 +23,8 @@ vi.mock("../pod-menu-item", () => ({
 describe("pod-logs-menu", () => {
   let di: DiContainer;
   let render: DiRender;
-  let hideDetailsMock: vi.Mock;
-  let createPodLogsTabMock: vi.Mock;
+  let hideDetailsMock: Mock;
+  let createPodLogsTabMock: Mock;
 
   beforeEach(() => {
     di = getDiForUnitTesting();

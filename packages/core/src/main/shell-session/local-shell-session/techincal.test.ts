@@ -22,6 +22,7 @@ import spawnPtyInjectable from "../spawn-pty.injectable";
 import openLocalShellSessionInjectable from "./open.injectable";
 
 import type { DiContainer } from "@ogre-tools/injectable";
+import type { MockedFunction } from "vitest";
 import type WebSocket from "ws";
 
 import type { KubeconfigManager } from "../../kubeconfig-manager/kubeconfig-manager";
@@ -58,7 +59,7 @@ describe("technical unit tests for local shell sessions", () => {
 
   describe("when on windows", () => {
     let openLocalShellSession: OpenShellSession;
-    let spawnPtyMock: vi.MockedFunction<SpawnPty>;
+    let spawnPtyMock: MockedFunction<SpawnPty>;
 
     beforeEach(() => {
       di.override(platformInjectable, () => "win32");

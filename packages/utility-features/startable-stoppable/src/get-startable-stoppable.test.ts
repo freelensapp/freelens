@@ -1,10 +1,12 @@
 import { getStartableStoppable } from "./get-startable-stoppable";
 
+import type { MockedFunction } from "vitest";
+
 import type { StartableStoppable } from "./get-startable-stoppable";
 
 describe("getStartableStoppable", () => {
-  let stopMock: vi.MockedFunction<() => void>;
-  let startMock: vi.MockedFunction<() => () => void>;
+  let stopMock: MockedFunction<() => void>;
+  let startMock: MockedFunction<() => () => void>;
   let actual: StartableStoppable;
 
   beforeEach(() => {

@@ -25,6 +25,7 @@ import { testUsingFakeTime } from "../../test-utils/use-fake-time";
 
 import type { AsyncFnMock } from "@async-fn/vitest";
 import type { RenderResult } from "@testing-library/react";
+import type { Mock } from "vitest";
 
 import type { RequestHelmCharts } from "../../common/k8s-api/endpoints/helm-charts.api/request-charts.injectable";
 import type { RequestHelmChartReadme } from "../../common/k8s-api/endpoints/helm-charts.api/request-readme.injectable";
@@ -45,8 +46,8 @@ describe("showing details for helm release", () => {
   let requestHelmChartVersionsMock: AsyncFnMock<RequestHelmChartVersions>;
   let requestHelmChartReadmeMock: AsyncFnMock<RequestHelmChartReadme>;
   let requestHelmChartValuesMock: AsyncFnMock<RequestHelmChartValues>;
-  let showSuccessNotificationMock: vi.Mock;
-  let showCheckedErrorNotificationMock: vi.Mock;
+  let showSuccessNotificationMock: Mock;
+  let showCheckedErrorNotificationMock: Mock;
   let listClusterHelmReleasesMock: AsyncFnMock<ListClusterHelmReleases>;
 
   beforeEach(() => {

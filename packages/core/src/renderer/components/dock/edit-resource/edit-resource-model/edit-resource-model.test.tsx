@@ -10,6 +10,8 @@ import { EditResourceModel } from "./edit-resource-model.injectable";
 
 import type { ShowNotification } from "@freelensapp/notifications";
 
+import type { MockedFunction } from "vitest";
+
 import type { EditingResource, EditResourceTabStore } from "../store";
 import type { RequestKubeResource } from "./request-kube-resource.injectable";
 import type { RequestPatchKubeResource } from "./request-patch-kube-resource.injectable";
@@ -17,10 +19,10 @@ import type { RequestPatchKubeResource } from "./request-patch-kube-resource.inj
 const selfLink = "/api/v1/namespaces/default/pods/test-pod";
 
 describe("edit-resource-model", () => {
-  const requestKubeResource = vi.fn() as vi.MockedFunction<RequestKubeResource>;
+  const requestKubeResource = vi.fn() as MockedFunction<RequestKubeResource>;
   const waitForEditingResource = vi.fn(async () => undefined as never);
-  const showSuccessNotification = vi.fn() as vi.MockedFunction<ShowNotification>;
-  const showErrorNotification = vi.fn() as vi.MockedFunction<ShowNotification>;
+  const showSuccessNotification = vi.fn() as MockedFunction<ShowNotification>;
+  const showErrorNotification = vi.fn() as MockedFunction<ShowNotification>;
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -39,7 +41,7 @@ describe("edit-resource-model", () => {
           kind: "Pod",
           name: "test-pod",
         },
-      }))) as vi.MockedFunction<RequestPatchKubeResource>;
+      }))) as MockedFunction<RequestPatchKubeResource>;
 
     const model = new EditResourceModel({
       requestKubeResource,

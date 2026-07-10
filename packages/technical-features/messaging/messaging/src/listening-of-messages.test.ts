@@ -16,11 +16,13 @@ import {
 } from "./features/actual/message/message-channel-listener-injection-token";
 import { messagingFeatureForUnitTesting } from "./features/unit-testing";
 
+import type { Mock, MockedFunction } from "vitest";
+
 describe("listening-of-messages", () => {
   let di: DiContainer;
-  let enlistMessageChannelListenerMock: vi.MockedFunction<EnlistMessageChannelListener>;
-  let disposeSomeListenerMock: vi.Mock;
-  let disposeSomeUnrelatedListenerMock: vi.Mock;
+  let enlistMessageChannelListenerMock: MockedFunction<EnlistMessageChannelListener>;
+  let disposeSomeListenerMock: Mock;
+  let disposeSomeUnrelatedListenerMock: Mock;
 
   beforeEach(() => {
     di = createContainer("irrelevant");

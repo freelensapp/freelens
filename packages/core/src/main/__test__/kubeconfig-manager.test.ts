@@ -28,6 +28,7 @@ import type { Logger } from "@freelensapp/logger";
 
 import type { AsyncFnMock } from "@async-fn/vitest";
 import type { DiContainer } from "@ogre-tools/injectable";
+import type { Mocked } from "vitest";
 
 import type { PathExists } from "../../common/fs/path-exists.injectable";
 import type { ReadFile } from "../../common/fs/read-file.injectable";
@@ -40,7 +41,7 @@ const clusterServerUrl = "https://192.168.64.3:8443";
 describe("kubeconfig manager tests", () => {
   let clusterFake: Cluster;
   let di: DiContainer;
-  let loggerMock: vi.Mocked<Logger>;
+  let loggerMock: Mocked<Logger>;
   let readFileMock: AsyncFnMock<ReadFile>;
   let deleteFileMock: AsyncFnMock<RemovePath>;
   let writeFileMock: AsyncFnMock<WriteFile>;

@@ -8,6 +8,7 @@ import { getDiForUnitTesting } from "../../../../../renderer/getDiForUnitTesting
 import executeOnClusterInjectable from "../execute-on-cluster.injectable";
 
 import type { DiContainer } from "@ogre-tools/injectable";
+import type { Mock } from "vitest";
 
 import type { ExecuteOnClusterRequest, ExecuteOnClusterResponse } from "../../common/types";
 
@@ -17,7 +18,7 @@ import type { ExecuteOnClusterRequest, ExecuteOnClusterResponse } from "../../co
  */
 describe("K8s mutation functions (via injectable)", () => {
   let di: DiContainer;
-  let requestFromChannelMock: vi.Mock;
+  let requestFromChannelMock: Mock;
   let executeOnCluster: (request: ExecuteOnClusterRequest) => Promise<ExecuteOnClusterResponse>;
 
   beforeEach(() => {

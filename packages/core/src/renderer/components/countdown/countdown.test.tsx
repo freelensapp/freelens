@@ -16,6 +16,7 @@ import countdownStateInjectable from "./countdown-state.injectable";
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
 import type { IComputedValue } from "mobx";
+import type { Mock } from "vitest";
 
 import type { DiRender } from "../test-utils/renderFor";
 
@@ -35,7 +36,7 @@ describe("countdown", () => {
 
   describe("when rendering countdown", () => {
     let rendered: RenderResult;
-    let onZeroMock: vi.Mock;
+    let onZeroMock: Mock;
 
     beforeEach(() => {
       onZeroMock = vi.fn();
@@ -104,7 +105,7 @@ describe("countdown", () => {
   });
 
   describe("given observed", () => {
-    let onZeroMock: vi.Mock;
+    let onZeroMock: Mock;
     let unobserve: () => void;
     let secondsTill: IComputedValue<number>;
 
