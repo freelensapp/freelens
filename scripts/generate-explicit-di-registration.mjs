@@ -374,10 +374,15 @@ async function extractExportInfo(filePath) {
   // Check for multiple export const statements
   const exportConstMatches = [...content.matchAll(/export\s+const\s+(\w+)\s*=/g)];
   if (exportConstMatches.length > 1) {
-    const filteredExports = exportConstMatches
-      .map((match) => match[1])
-      .filter((name) => !name.endsWith("InjectionToken"))
-      .map((name) => ({ name, isDefault: false }));
+    const names = exportConstMatches.map((match) => match[1]).filter((name) => !name.endsWith("InjectionToken"));
+    // When the file also exports helpers (channels, constants), only the
+    // Injectable-suffixed exports are registrable; di.register throws on the
+    // rest.
+    const injectableNames = names.filter((name) => name.endsWith("Injectable"));
+    const filteredExports = (injectableNames.length > 0 ? injectableNames : names).map((name) => ({
+      name,
+      isDefault: false,
+    }));
     return filteredExports.length > 0 ? filteredExports : null;
   }
 

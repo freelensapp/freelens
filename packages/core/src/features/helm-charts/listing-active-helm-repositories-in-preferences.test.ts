@@ -49,7 +49,7 @@ describe("listing active helm repositories in preferences", () => {
 
     builder.beforeApplicationStart(({ mainDi }) => {
       mainDi.override(readYamlFileInjectable, () => readYamlFileMock);
-      mainDi.override(execFileInjectable, () => execFileMock);
+      mainDi.override(execFileInjectable, () => execFileMock as unknown as ExecFile);
       mainDi.override(helmBinaryPathInjectable, () => "some-helm-binary-path");
       mainDi.override(loggerInjectionToken, () => loggerStub);
     });

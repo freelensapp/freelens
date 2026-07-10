@@ -18,7 +18,7 @@ import type { HelmRepo } from "../../../common/helm/helm-repo";
 
 describe("Helm Service tests", () => {
   let listHelmCharts: () => Promise<any>;
-  let getActiveHelmRepositoriesMock: Mock<AsyncResult<HelmRepo[]>>;
+  let getActiveHelmRepositoriesMock: Mock<() => AsyncResult<HelmRepo[]>>;
 
   beforeEach(() => {
     const di = getDiForUnitTesting();
