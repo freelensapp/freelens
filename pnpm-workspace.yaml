@@ -25,7 +25,6 @@ overrides:
 patchedDependencies:
   '@async-fn/vitest': patches/@async-fn__vitest.patch
   '@xterm/xterm@6.0.0': patches/@xterm__xterm@6.0.0.patch
-  circular-dependency-plugin: patches/circular-dependency-plugin.patch
 
 publicHoistPattern:
   - node-gyp

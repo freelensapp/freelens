@@ -22,20 +22,16 @@
   "scripts": {
     "clean:node_modules": "pnpm dlx rimraf@6.1.3 node_modules",
     "precompute-versions": "tsc --pretty --project build",
-    "compute-versions": "node ./build/compute-versions.mjs",
-    "dev": "lens-webpack-build --watch"
+    "compute-versions": "node ./build/compute-versions.mjs"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
-    "@freelensapp/webpack": "workspace:^",
     "@types/semver": "^7.7.1",
     "fast-xml-parser": "^5.9.3",
     "node-fetch": "^3.3.2",
     "semver": "^7.8.5",
-    "ts-loader": "^9.5.7",
     "typed-regex": "^0.0.8",
-    "typescript": "^5.9.3",
-    "webpack": "^5.108.3"
+    "typescript": "^5.9.3"
   },
   "publishConfig": {
     "access": "public",

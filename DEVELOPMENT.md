@@ -143,15 +143,16 @@ pnpm trunk:check
 
 ### Daily development
 
-For active development with automatic rebuilds:
+For active development with hot module replacement:
 
 ```sh
-pnpm dev         # Starts the app with file watching
+pnpm dev         # Starts the app through electron-vite dev
 ```
 
-**Note:** `pnpm dev` is not recommended as it doesn't work correctly with
-webpack. You can use standard workflow
-`pnpm build && pnpm build:app:dir && pnpm start` instead.
+The renderer is served by the Vite dev server (port 9191, overridable with
+`FREELENS_DEV_SERVER_PORT`) through the lens proxy; the main process is
+rebuilt on change. If dev mode misbehaves, the packaged-app workflow
+`pnpm build && pnpm build:app:dir && pnpm start` always works.
 
 ### Running tests
 

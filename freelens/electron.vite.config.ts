@@ -39,6 +39,12 @@ import electronRenderer from "vite-plugin-electron-renderer";
 const root = dirname(fileURLToPath(import.meta.url));
 const buildDir = resolve(root, "static", "build"); // == webpack vars.buildDir
 
+// Dev-server port for `electron-vite dev`. The lens proxy's dev static-file
+// route (packages/core/src/main/routes/files/development.injectable.ts)
+// proxies renderer requests here, exactly as it did to the webpack dev server
+// before; both sides read the same environment variable.
+const devServerPort = Number(process.env.FREELENS_DEV_SERVER_PORT) || 9191;
+
 const packageJson = JSON.parse(readFileSync(resolve(root, "package.json"), "utf-8")) as {
   dependencies: Record<string, string>;
 };
@@ -69,6 +75,23 @@ export default defineConfig({
     // URLs must stay relative (webpack used publicPath "/build/").
     base: "./",
     plugins: [react(), electronRenderer()],
+    server: {
+      // Same serving architecture as the webpack dev server it replaces: the
+      // app window always loads through the lens proxy, which forwards to
+      // this port (see development.injectable.ts). HMR websockets bypass the
+      // proxy and connect straight to 127.0.0.1, like webpack's
+      // client.webSocketURL did.
+      host: "127.0.0.1",
+      port: devServerPort,
+      strictPort: true,
+      cors: true, // was Access-Control-Allow-Origin: *
+      allowedHosts: [".freelens.app"],
+      hmr: {
+        protocol: "ws",
+        host: "127.0.0.1",
+        port: devServerPort,
+      },
+    },
     css: {
       // D11: preserve CSS Modules scoped names; code accesses kebab-case
       // keys, so no localsConvention. auto: /\.module\./ is Vite's default.

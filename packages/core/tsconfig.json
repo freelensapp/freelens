@@ -16,6 +16,6 @@
       }
     ]
   },
-  "include": ["package.json", "webpack/vars.ts", "src/**/*", "types/*.d.ts"],
+  "include": ["package.json", "src/**/*", "types/*.d.ts"],
   "exclude": ["node_modules"]
 }

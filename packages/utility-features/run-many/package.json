@@ -32,18 +32,15 @@
     "@async-fn/vitest": "^1.8.0",
     "@freelensapp/test-utils": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
-    "@freelensapp/webpack": "workspace:^",
     "@ogre-tools/fp": "^17.11.1",
     "@ogre-tools/injectable": "^17.11.1",
     "@types/node": "~24.12.4",
     "@types/uuid": "^11.0.0",
     "jsdom": "^29.1.1",
     "mobx": "^6.15.0",
-    "ts-loader": "^9.5.7",
     "type-fest": "^5.6.0",
     "typed-emitter": "^1.4.0",
-    "vitest": "^4.1.10",
-    "webpack": "^5.108.3"
+    "vitest": "^4.1.10"
   },
   "publishConfig": {
     "access": "public",

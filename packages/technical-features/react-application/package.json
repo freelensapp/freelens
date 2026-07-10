@@ -39,18 +39,14 @@
     "@freelensapp/react-testing-library-discovery": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
-    "@freelensapp/webpack": "workspace:^",
     "@ogre-tools/fp": "^17.11.1",
     "@testing-library/react": "^12.1.5",
     "@types/react": "^17.0.93",
     "@types/react-dom": "^17.0.26",
-    "@types/webpack-env": "^1.18.8",
     "jsdom": "^29.1.1",
     "lodash": "^4.18.1",
-    "ts-loader": "^9.5.7",
     "typescript": "^5.9.3",
-    "vitest": "^4.1.10",
-    "webpack": "^5.108.3"
+    "vitest": "^4.1.10"
   },
   "publishConfig": {
     "access": "public",
