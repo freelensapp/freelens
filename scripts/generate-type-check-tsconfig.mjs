@@ -29,12 +29,35 @@ for (const [specifier, sourcePath] of enumerateWorkspaceEntries(repoRoot)) {
 paths["@freelensapp/extensions"] = ["./packages/extensions/src/extension-api.ts"];
 
 const tsconfig = {
-  extends: "./tsconfig.json",
+  // The root tsconfig.json is not extended: it declares baseUrl, which
+  // TypeScript 7 (the checker this program runs under) removed. Its options
+  // are inlined here instead; the ./-relative paths entries resolve against
+  // the tsconfig directory without a baseUrl.
   compilerOptions: {
+    jsx: "react",
+    target: "ES2022",
+    // The root tsconfig says ESNext, a moving target: under TypeScript 7 it
+    // includes the ES2026 Map.getOrInsert proposal, which mobx's
+    // ObservableMap does not implement, breaking their assignability. ES2024
+    // is the documented floor (mobx needs its ReadonlySetLike).
+    lib: ["ES2024", "DOM", "DOM.Iterable"],
+    sourceMap: true,
+    strict: true,
+    noImplicitAny: true,
+    noUnusedLocals: true,
+    noImplicitReturns: true,
+    experimentalDecorators: true,
+    emitDecoratorMetadata: true,
+    isolatedModules: true,
+    skipLibCheck: true,
+    allowJs: false,
+    esModuleInterop: true,
+    verbatimModuleSyntax: false,
+    resolveJsonModule: true,
+    useDefineForClassFields: true,
     moduleResolution: "Bundler",
     module: "ESNext",
     noEmit: true,
-    baseUrl: ".",
     paths,
     types: ["node", "vitest/globals"],
   },
