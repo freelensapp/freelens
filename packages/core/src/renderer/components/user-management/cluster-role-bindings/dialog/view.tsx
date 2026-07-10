@@ -142,12 +142,12 @@ class NonInjectedClusterRoleBindingDialog extends React.Component<ClusterRoleBin
     const { closeClusterRoleBindingDialog, clusterRoleBindingStore, editBindingNameState, showDetails } = this.props;
     const { selectedRoleRef, selectedBindings, clusterRoleBinding } = this;
 
-    if (!clusterRoleBinding || !selectedRoleRef) {
+    if (!selectedRoleRef) {
       return;
     }
 
     try {
-      const { selfLink } = this.isEditing
+      const { selfLink } = clusterRoleBinding
         ? await clusterRoleBindingStore.updateSubjects(clusterRoleBinding, selectedBindings)
         : await clusterRoleBindingStore.create(
             { name: editBindingNameState.get() },
