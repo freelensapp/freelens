@@ -7,7 +7,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import fse from "fs-extra";
 
-import type { CopyOptions, EnsureDirOptions, JsonReadOptions } from "fs-extra";
+import type { CopyOptions, EnsureDirOptions, JsonReadOptions, JsonWriteOptions } from "fs-extra";
 
 /**
  * NOTE: Add corresponding override of this injectable in `src/test-utils/override-fs-with-fakes.ts`
@@ -35,13 +35,13 @@ const fsInjectable = getInjectable({
       readFile,
       readJson: readJson as (file: string, options?: JsonReadOptions | BufferEncoding) => Promise<any>,
       writeFile,
-      writeJson,
+      writeJson: writeJson as (file: string, object: any, options?: JsonWriteOptions | BufferEncoding) => Promise<void>,
       pathExists,
       readdir,
       readFileSync,
-      readJsonSync,
+      readJsonSync: readJsonSync as (file: string, options?: JsonReadOptions | BufferEncoding) => any,
       writeFileSync,
-      writeJsonSync,
+      writeJsonSync: writeJsonSync as (file: string, object: any, options?: JsonWriteOptions | BufferEncoding) => void,
       pathExistsSync,
       lstat,
       rm,
