@@ -32,23 +32,23 @@ import type { DiRender } from "../../test-utils/renderFor";
 describe("<TopBar/>", () => {
   let di: DiContainer;
   let render: DiRender;
-  let goBack: MockedFunction<() => void>;
-  let goForward: MockedFunction<() => void>;
-  let openAppContextMenu: MockedFunction<() => void>;
-  let closeWindow: MockedFunction<() => void>;
-  let maximizeWindow: MockedFunction<() => void>;
-  let toggleMaximizeWindow: MockedFunction<() => void>;
+  let goBack: MockedFunction<() => Promise<void>>;
+  let goForward: MockedFunction<() => Promise<void>>;
+  let openAppContextMenu: MockedFunction<() => Promise<void>>;
+  let closeWindow: MockedFunction<() => Promise<void>>;
+  let maximizeWindow: MockedFunction<() => Promise<void>>;
+  let toggleMaximizeWindow: MockedFunction<() => Promise<void>>;
 
   beforeEach(() => {
     di = getDiForUnitTesting();
 
     di.override(rendererExtensionsInjectable, () => computed(() => []));
-    di.override(openAppContextMenuInjectable, () => (openAppContextMenu = vi.fn()));
-    di.override(goBackInjectable, () => (goBack = vi.fn()));
-    di.override(goForwardInjectable, () => (goForward = vi.fn()));
-    di.override(closeWindowInjectable, () => (closeWindow = vi.fn()));
-    di.override(maximizeWindowInjectable, () => (maximizeWindow = vi.fn()));
-    di.override(toggleMaximizeWindowInjectable, () => (toggleMaximizeWindow = vi.fn()));
+    di.override(openAppContextMenuInjectable, () => (openAppContextMenu = vi.fn(async () => {})));
+    di.override(goBackInjectable, () => (goBack = vi.fn(async () => {})));
+    di.override(goForwardInjectable, () => (goForward = vi.fn(async () => {})));
+    di.override(closeWindowInjectable, () => (closeWindow = vi.fn(async () => {})));
+    di.override(maximizeWindowInjectable, () => (maximizeWindow = vi.fn(async () => {})));
+    di.override(toggleMaximizeWindowInjectable, () => (toggleMaximizeWindow = vi.fn(async () => {})));
     di.override(currentlyInClusterFrameInjectable, () => false);
 
     render = renderFor(di);

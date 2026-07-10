@@ -16,7 +16,7 @@ import type { Mock } from "vitest";
 
 describe("with-error-logging", () => {
   describe("given decorated sync function", () => {
-    let toBeDecorated: Mock<number | undefined, [string, string]>;
+    let toBeDecorated: Mock<(a: string, b: string) => number | undefined>;
     let decorated: (a: string, b: string) => number | undefined;
     let logErrorMock: Mock;
 
