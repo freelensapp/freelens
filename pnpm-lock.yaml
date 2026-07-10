@@ -1035,17 +1035,13 @@ importers:
         version: 5.9.3
 
   packages/extensions:
-    dependencies:
+    devDependencies:
       '@freelensapp/core':
         specifier: workspace:^
         version: link:../core
-    devDependencies:
       '@types/node':
         specifier: ~24.12.4
         version: 24.12.4
-      dts-bundle-generator:
-        specifier: 9.5.1
-        version: 9.5.1
       rollup:
         specifier: ^4.62.2
         version: 4.62.2
@@ -4880,11 +4876,6 @@ packages:
   dotenv@16.4.7:
     resolution: {integrity: sha512-47qPchRCykZC03FhkYAhrvwU4xDBFIj1QPqaarj6mdM/hgUzfPHcpkHJOn3mJAufFeeAxAzeGsr5X0M4k6fLZQ==}
     engines: {node: '>=12'}
-
-  dts-bundle-generator@9.5.1:
-    resolution: {integrity: sha512-DxpJOb2FNnEyOzMkG11sxO2dmxPjthoVWxfKqWYJ/bI/rT1rvTMktF5EKjAYrRZu6Z6t3NhOUZ0sZ5ZXevOfbA==}
-    engines: {node: '>=14.0.0'}
-    hasBin: true
 
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
@@ -10058,11 +10049,6 @@ snapshots:
       dotenv: 16.4.7
 
   dotenv@16.4.7: {}
-
-  dts-bundle-generator@9.5.1:
-    dependencies:
-      typescript: 5.9.3
-      yargs: 17.7.2
 
   dunder-proto@1.0.1:
     dependencies:
