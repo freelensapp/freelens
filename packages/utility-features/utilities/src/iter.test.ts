@@ -99,7 +99,7 @@ describe("iter", () => {
     });
 
     it("should throw a type error if the same part is provided more than once", () => {
-      try {
+      expect(() =>
         iter.nFircate(
           [
             { a: 1, b: "a" },
@@ -108,11 +108,8 @@ describe("iter", () => {
           ],
           "a",
           [1, 2, 1],
-        );
-        fail("Expected error");
-      } catch (error) {
-        expect(error).toBeInstanceOf(TypeError);
-      }
+        ),
+      ).toThrow(TypeError);
     });
   });
 });

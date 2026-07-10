@@ -35,6 +35,7 @@
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
+    "@types/lodash": "^4.17.24",
     "jsdom": "^29.1.1",
     "lodash": "^4.18.1",
     "typescript": "^5.9.3",

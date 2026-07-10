@@ -13,6 +13,8 @@ export default ({ children }: { children: (size: Size) => React.ReactNode }) => 
     <div>
       {children({
         height: 420000,
+        scaledHeight: 420000,
+        scaledWidth: 100,
         width: 100,
       })}
     </div>

@@ -60,6 +60,7 @@ describe("KubeApi", () => {
 
     beforeEach(() => {
       api = new DeploymentApi({
+        logDebug: vi.fn(),
         logError: vi.fn(),
         logInfo: vi.fn(),
         logWarn: vi.fn(),
@@ -373,6 +374,7 @@ describe("KubeApi", () => {
 
     beforeEach(() => {
       api = new NamespaceApi({
+        logDebug: logger.debug,
         logError: logger.error,
         logInfo: logger.info,
         logWarn: logger.error,

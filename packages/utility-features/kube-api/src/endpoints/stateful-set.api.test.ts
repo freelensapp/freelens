@@ -25,6 +25,7 @@ describe("StatefulSetApi", () => {
       patch: kubeJsonApiPatchMock,
     } as Partial<KubeJsonApi> as KubeJsonApi;
     statefulSetApi = new StatefulSetApi({
+      logDebug: vi.fn(),
       logError: vi.fn(),
       logInfo: vi.fn(),
       logWarn: vi.fn(),

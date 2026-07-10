@@ -13,7 +13,7 @@ import type { Mock } from "vitest";
 
 describe("with-error-suppression", () => {
   describe("given decorated sync function", () => {
-    let toBeDecorated: Mock<void, [string, string]>;
+    let toBeDecorated: Mock<(a: string, b: string) => void>;
     let decorated: (a: string, b: string) => void;
 
     beforeEach(() => {

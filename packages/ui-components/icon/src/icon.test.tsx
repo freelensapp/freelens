@@ -19,9 +19,11 @@ import { Icon } from "./icon";
 import type { Logger } from "@freelensapp/logger";
 import type { DiRender } from "@freelensapp/test-utils";
 
+import type { MockedObject } from "vitest";
+
 describe("<Icon> href technical tests", () => {
   let render: DiRender;
-  let logger: vi.MockedObject<Logger>;
+  let logger: MockedObject<Logger>;
 
   beforeEach(() => {
     const environment = "renderer";

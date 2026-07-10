@@ -24,6 +24,7 @@ describe("DeploymentApi", () => {
     } as never;
 
     deploymentApi = new DeploymentApi({
+      logDebug: vi.fn(),
       logError: vi.fn(),
       logInfo: vi.fn(),
       logWarn: vi.fn(),
