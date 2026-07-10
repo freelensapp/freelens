@@ -189,12 +189,16 @@ describe("entity running technical tests", () => {
         expect(onRun).toHaveBeenCalled();
       });
 
-      it("addOnRunHook return a promise and does not prevent run event => onRun()", (done) => {
-        onRun.mockImplementation(() => done());
+      it("addOnRunHook return a promise and does not prevent run event => onRun()", async () => {
+        const onRunCalled = new Promise<void>((resolve) => {
+          onRun.mockImplementation(() => resolve());
+        });
 
         catalogEntityRegistry.addOnBeforeRun(async () => {});
 
         rendered.getByTestId("detail-panel-hot-bar-icon").click();
+
+        await onRunCalled;
       });
 
       it("addOnRunHook return a promise and prevents event wont be triggered", async () => {
