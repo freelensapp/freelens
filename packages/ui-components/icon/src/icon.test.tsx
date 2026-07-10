@@ -16,10 +16,10 @@ import { runInAction } from "mobx";
 import React from "react";
 import { Icon } from "./icon";
 
-import type { MockedObject } from "vitest";
-
 import type { Logger } from "@freelensapp/logger";
 import type { DiRender } from "@freelensapp/test-utils";
+
+import type { MockedObject } from "vitest";
 
 describe("<Icon> href technical tests", () => {
   let render: DiRender;
