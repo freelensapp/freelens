@@ -5,7 +5,8 @@
 
 // Writes tsconfig.typecheck.generated.json: a solution-wide `tsc --noEmit`
 // program covering every workspace package (sources and tests) plus the
-// freelens application sources. Like the extension-api d.ts build, it maps
+// freelens application sources and its Playwright integration tests. Like
+// the extension-api d.ts build, it maps
 // every `@freelensapp/*` entry point to its TypeScript source through
 // `paths`: resolution through node_modules symlinks would mark those files
 // external library files and skip checking them.
@@ -37,7 +38,14 @@ const tsconfig = {
     paths,
     types: ["node", "vitest/globals"],
   },
-  include: ["packages/**/*.ts", "packages/**/*.tsx", "packages/core/types/*.d.ts", "freelens/src/**/*"],
+  include: [
+    "packages/**/*.ts",
+    "packages/**/*.tsx",
+    "packages/core/types/*.d.ts",
+    "freelens/src/**/*",
+    "freelens/integration/**/*.ts",
+    "freelens/vitest.integration.config.ts",
+  ],
   exclude: ["**/node_modules/**", "**/dist/**", "**/dist-types/**", "**/static/**", "**/binaries/**"],
 };
 
