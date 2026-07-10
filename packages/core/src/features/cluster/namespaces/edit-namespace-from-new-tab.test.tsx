@@ -64,10 +64,10 @@ describe("cluster/namespaces - edit namespace from new tab", () => {
       );
 
       apiKubePatchMock = asyncFn();
-      windowDi.override(apiKubePatchInjectable, () => apiKubePatchMock);
+      windowDi.override(apiKubePatchInjectable, () => apiKubePatchMock as unknown as ApiKubePatch);
 
       apiKubeGetMock = asyncFn();
-      windowDi.override(apiKubeGetInjectable, () => apiKubeGetMock);
+      windowDi.override(apiKubeGetInjectable, () => apiKubeGetMock as unknown as ApiKubeGet);
     });
 
     builder.afterWindowStart(() => {

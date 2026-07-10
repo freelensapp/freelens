@@ -47,7 +47,7 @@ describe("add custom helm repository in preferences", () => {
 
     builder.beforeApplicationStart(({ mainDi }) => {
       mainDi.override(getActiveHelmRepositoriesInjectable, () => getActiveHelmRepositoriesMock);
-      mainDi.override(execFileInjectable, () => execFileMock);
+      mainDi.override(execFileInjectable, () => execFileMock as unknown as ExecFile);
       mainDi.override(helmBinaryPathInjectable, () => "some-helm-binary-path");
     });
 

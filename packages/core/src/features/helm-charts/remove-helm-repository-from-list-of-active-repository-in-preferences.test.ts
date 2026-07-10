@@ -35,7 +35,7 @@ describe("remove helm repository from list of active repositories in preferences
 
     builder.beforeApplicationStart(({ mainDi }) => {
       mainDi.override(getActiveHelmRepositoriesInjectable, () => getActiveHelmRepositoriesMock);
-      mainDi.override(execFileInjectable, () => execFileMock);
+      mainDi.override(execFileInjectable, () => execFileMock as unknown as ExecFile);
       mainDi.override(helmBinaryPathInjectable, () => "some-helm-binary-path");
     });
 
