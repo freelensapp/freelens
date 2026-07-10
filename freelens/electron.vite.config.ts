@@ -53,18 +53,30 @@ const packageJson = JSON.parse(readFileSync(resolve(root, "package.json"), "utf-
 // bundled rather than externalized.
 const workspacePackages = Object.keys(packageJson.dependencies).filter((name) => name.startsWith("@freelensapp/"));
 
-// CommonJS dependencies that we import through extensionless subpaths
-// (e.g. `crypto-js/enc-base64`, `lodash/fp`). Neither ships an `exports`
-// map, so once the main bundle is real ESM (D2/D3, formats: ["es"]) Node's
-// ESM resolver refuses those specifiers at runtime with ERR_MODULE_NOT_FOUND
-// / ERR_UNSUPPORTED_DIR_IMPORT (it does not append `.js` or resolve a
-// directory index the way CommonJS require did). Bundling them lets Vite
-// resolve the subpaths at build time, sidestepping runtime ESM resolution.
-const bundledCjsSubpathPackages = ["crypto-js", "lodash"];
+// CommonJS dependencies that must be bundled into the ESM main process
+// because Node cannot consume them as externals at runtime:
+// - crypto-js, lodash: imported through extensionless subpaths (e.g.
+//   `crypto-js/enc-base64`, `lodash/fp`) and neither ships an `exports`
+//   map, so once the main bundle is real ESM (D2/D3, formats: ["es"]) Node's
+//   ESM resolver refuses the specifiers at runtime with ERR_MODULE_NOT_FOUND
+//   / ERR_UNSUPPORTED_DIR_IMPORT (it does not append `.js` or resolve a
+//   directory index the way CommonJS require did).
+// - @ogre-tools/*: webpack-bundled CJS whose exports are defined via
+//   Object.defineProperty getters; cjs-module-lexer cannot detect them, so
+//   named imports fail at ESM link time ("Named export ... not found").
+// Bundling lets Vite resolve the subpaths and named exports at build time,
+// sidestepping runtime ESM resolution.
+const bundledCjsPackages = [
+  "crypto-js",
+  "lodash",
+  "@ogre-tools/injectable",
+  "@ogre-tools/fp",
+  "@ogre-tools/injectable-extension-for-mobx",
+];
 
 export default defineConfig({
   main: {
-    plugins: [externalizeDepsPlugin({ exclude: [...workspacePackages, ...bundledCjsSubpathPackages] })],
+    plugins: [externalizeDepsPlugin({ exclude: [...workspacePackages, ...bundledCjsPackages] })],
     build: {
       outDir: buildDir,
       emptyOutDir: false,
