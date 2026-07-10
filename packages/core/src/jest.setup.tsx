@@ -22,12 +22,8 @@ configure({
 setAutoFreeze(false); // allow to merge mobx observables
 enableMapSet(); // allow to merge maps and sets
 
-global.fail = ((error = "Test failed without explicit error") => {
-  console.error(error);
-}) as any;
-
 process.on("unhandledRejection", (err: any) => {
-  global.fail(err);
+  console.error(err ?? "Test failed without explicit error");
 });
 
 global.fetch = freelensFetch as unknown as typeof fetch;
