@@ -28,11 +28,8 @@
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
-    "@freelensapp/webpack": "workspace:^",
-    "ts-loader": "^9.5.7",
     "typescript": "^5.9.3",
-    "vitest": "^4.1.10",
-    "webpack": "^5.108.3"
+    "vitest": "^4.1.10"
   },
   "publishConfig": {
     "access": "public",
