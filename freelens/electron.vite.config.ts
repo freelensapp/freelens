@@ -74,9 +74,61 @@ const bundledCjsPackages = [
   "@ogre-tools/injectable-extension-for-mobx",
 ];
 
+// Rewrite the packaged main bundle's single merged `electron` import from a
+// named import into a default import + destructure.
+//
+// `electron` stays external, and the ESM main bundle (D2/D3, formats: ["es"])
+// emits `import { app, ipcRenderer, ... } from "electron"`. In the main
+// process Electron's ESM `electron` module only exposes the *main-process*
+// named exports; renderer-only names (e.g. `ipcRenderer`) are absent, so a
+// static named import throws at link time:
+//   SyntaxError: The requested module 'electron' does not provide an export
+//   named 'ipcRenderer'.
+// Shared code imports those names to branch on the current process
+// (`const channel = ipcRenderer ? ... : ...`), relying on them being
+// `undefined` in main — exactly how the old CommonJS build behaved. Turning
+// the import into `import electron from "electron"; const { ipcRenderer } =
+// electron;` restores that: missing names resolve to `undefined` at runtime
+// instead of failing at link time.
+function rewriteElectronNamedImportsPlugin() {
+  const electronImportRe = /import\s*\{([^}]*)\}\s*from\s*(["'])electron\2;?/g;
+
+  return {
+    name: "freelens:rewrite-electron-named-imports",
+    renderChunk(code: string) {
+      let changed = false;
+
+      const out = code.replace(electronImportRe, (match: string, specifiers: string) => {
+        changed = true;
+
+        const bindings = specifiers
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean)
+          .map((s) => {
+            // `foo as bar` in an import becomes `foo: bar` in a destructure.
+            const alias = /^(.+?)\s+as\s+(.+)$/.exec(s);
+            return alias ? `${alias[1]}: ${alias[2]}` : s;
+          })
+          .join(", ");
+
+        // Keep the original line count so the chunk sourcemap stays aligned.
+        const newlines = "\n".repeat((match.match(/\n/g) ?? []).length);
+
+        return `import electron from "electron"; const { ${bindings} } = electron;${newlines}`;
+      });
+
+      return changed ? { code: out, map: null } : null;
+    },
+  };
+}
+
 export default defineConfig({
   main: {
-    plugins: [externalizeDepsPlugin({ exclude: [...workspacePackages, ...bundledCjsPackages] })],
+    plugins: [
+      externalizeDepsPlugin({ exclude: [...workspacePackages, ...bundledCjsPackages] }),
+      rewriteElectronNamedImportsPlugin(),
+    ],
     build: {
       outDir: buildDir,
       emptyOutDir: false,
