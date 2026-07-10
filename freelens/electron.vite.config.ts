@@ -64,11 +64,18 @@ const workspacePackages = Object.keys(packageJson.dependencies).filter((name) =>
 // - @ogre-tools/*: webpack-bundled CJS whose exports are defined via
 //   Object.defineProperty getters; cjs-module-lexer cannot detect them, so
 //   named imports fail at ESM link time ("Named export ... not found").
-// Bundling lets Vite resolve the subpaths and named exports at build time,
-// sidestepping runtime ESM resolution.
+// - await-lock: a CJS module that exports its class as `exports.default`.
+//   Under a bundler TypeScript's esModuleInterop binds `import AwaitLock from
+//   "await-lock"` to `module.exports.default` (the class), but Node's native
+//   ESM interop binds the default import to the whole `module.exports` object
+//   (`{ __esModule: true, default: [class] }`), so `new AwaitLock()` throws
+//   "AwaitLock is not a constructor".
+// Bundling lets Vite resolve the subpaths, named exports and default interop
+// at build time, sidestepping runtime ESM resolution.
 const bundledCjsPackages = [
   "crypto-js",
   "lodash",
+  "await-lock",
   "@ogre-tools/injectable",
   "@ogre-tools/fp",
   "@ogre-tools/injectable-extension-for-mobx",
