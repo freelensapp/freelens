@@ -2,7 +2,9 @@
 
 electronVersion: 41.10.0 # datasource=npm depName=electron
 
-## Run `pnpm electron-rebuild` instead
+## node-pty is our only native module and it is a N-API (node-addon-api)
+## addon, so its bundled prebuilt binaries are ABI-stable and load as-is on
+## every Electron version we ship. No native rebuild is needed at pack time.
 npmRebuild: false
 
 ## There is no support in app for autoupdates yet
@@ -22,13 +24,12 @@ files:
   - "!**/*.tsbuildinfo"
   ## Monaco is bundled into the renderer by Vite and never required at runtime
   - "!node_modules/monaco-editor/**"
-  ## node-pty is a N-API (node-addon-api) module, so its bundled prebuilt
-  ## binaries are ABI-stable and work as-is on every Electron version we ship.
-  ## electron-rebuild still recompiles them into build/Release, producing
-  ## unsigned binaries that some antivirus engines flag as false positives
-  ## (see issue #2021). Excluding build/ from the package makes node-pty fall
-  ## back to the original, vendor-provided prebuilds/ binaries at runtime
-  ## (lib/utils.js checks build/Release first, then prebuilds/<platform>-<arch>).
+  ## node-pty ships vendor-provided prebuilt binaries under prebuilds/ that we
+  ## load as-is (see npmRebuild above). A local build/ directory would only ever
+  ## contain unsigned binaries that some antivirus engines flag as false
+  ## positives (see issue #2021), so exclude it: node-pty's loader then falls
+  ## back to the vendor prebuilds at runtime (lib/utils.js checks build/Release
+  ## first, then prebuilds/<platform>-<arch>).
   - "!node_modules/node-pty/build"
   ## Native binaries for other platforms/arches are never loaded at runtime, so
   ## exclude them at pack time. Doing this here (instead of deleting them from

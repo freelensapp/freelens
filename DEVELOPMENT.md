@@ -6,17 +6,18 @@ You can build the application using this repository.
 
 ### Prerequisites
 
-Install a compiler and Python setuptools, for example:
+The only native module Freelens uses is
+[node-pty](https://www.npmjs.com/package/node-pty), which ships prebuilt,
+ABI-stable (N-API) binaries for every platform we support. There is therefore
+no need for a C/C++ compiler, Python, or Visual Studio build tools to build or
+run the app.
+
+On Linux you still need the shared libraries Electron requires at runtime, for
+example:
 
 ```sh
 # Debian/Ubuntu
-apt install build-essential python3-setuptools libnss3
-# MacOS
-brew install bash python3-setuptools
-# Windows
-winget install Microsoft.VisualStudio.2022.Community Python.Python.3.13
-& 'C:\Program Files (x86)\Microsoft Visual Studio\Installer\vs_installer.exe'
-# then install required components
+apt install libnss3
 ```
 
 Use [NVM](https://github.com/nvm-sh/nvm) or
@@ -77,36 +78,18 @@ pnpm build
 
 ### Cross compilation
 
-The official binary packages are build in native environment, however you can
-build arm64 binary on Linux amd64 or amd64 binary on MacOS arm64.
+The official binary packages are built in a native environment, however you can
+build an arm64 binary on Linux amd64 or an amd64 binary on macOS arm64.
 
-On Linux, install cross-compiler (macOS includes this by default):
-
-```sh
-# Debian/Ubuntu
-apt install gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
-```
-
-Then set the environment with support for other architectures:
+Because node-pty ships prebuilt binaries for every architecture, no native
+recompilation is required — you only need electron-builder to download Electron
+for the foreign architecture:
 
 ```sh
-# Debian/Ubuntu
-export CC=aarch64-linux-gnu-gcc CXX=aarch64-linux-gnu-g++
-export DOWNLOAD_ALL_ARCHITECTURES=true
-# MacOS
 export DOWNLOAD_ALL_ARCHITECTURES=true
 ```
 
-And rebuild binary packages for the foreign architecture:
-
-```sh
-# Debian/Ubuntu
-pnpm electron-rebuild -a arm64
-# MacOS
-pnpm electron-rebuild -a x64
-```
-
-Finally, generate binary packages:
+Then generate the binary packages for the foreign architecture:
 
 ```sh
 # Debian/Ubuntu

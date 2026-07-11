@@ -219,7 +219,6 @@
     "memorystream": "^0.3.1",
     "mobx-observable-history": "^2.0.3",
     "mock-http": "^1.1.1",
-    "node-gyp": "12.3.0",
     "react-select-event": "^5.5.1",
     "tailwindcss": "^4.2.4",
     "type-fest": "^5.6.0",

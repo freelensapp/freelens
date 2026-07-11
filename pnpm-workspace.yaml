@@ -10,8 +10,6 @@ allowBuilds:
 
 engineStrict: true
 
-nodeGyp: ../../../../node-gyp/bin/node-gyp.js
-
 overrides:
   '@types/http-proxy': '-'
   brace-expansion@^2.0.1: ^2.1.1
@@ -24,8 +22,5 @@ overrides:
 patchedDependencies:
   '@async-fn/vitest': patches/@async-fn__vitest.patch
   '@xterm/xterm@6.0.0': patches/@xterm__xterm@6.0.0.patch
-
-publicHoistPattern:
-  - node-gyp
 
 shellEmulator: true

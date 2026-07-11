@@ -221,9 +221,6 @@ importers:
       '@electron/notarize':
         specifier: ^3.0.2
         version: 3.0.2
-      '@electron/rebuild':
-        specifier: ^4.0.6
-        version: 4.0.6
       '@freelensapp/animate':
         specifier: workspace:^
         version: link:../packages/ui-components/animate
@@ -305,12 +302,6 @@ importers:
       electron-vite:
         specifier: 5.0.0
         version: 5.0.0(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
-      node-abi:
-        specifier: ^4.28.0
-        version: 4.28.0
-      node-gyp:
-        specifier: 12.3.0
-        version: 12.3.0
       playwright:
         specifier: ^1.61.1
         version: 1.61.1
@@ -912,9 +903,6 @@ importers:
       mock-http:
         specifier: ^1.1.1
         version: 1.1.1
-      node-gyp:
-        specifier: 12.3.0
-        version: 12.3.0
       react-select-event:
         specifier: ^5.5.1
         version: 5.5.1
@@ -2742,11 +2730,6 @@ packages:
     engines: {node: '>=22.12.0'}
     hasBin: true
 
-  '@electron/rebuild@4.0.6':
-    resolution: {integrity: sha512-323ygp5Lz4DP2nVu54NLCx4n0TKsQ3OMDG3PPeOFjOTMDtSxGbCi7mQfWBc5C80pp+9awEsiHx9HR9DfAM/IEQ==}
-    engines: {node: '>=22.12.0'}
-    hasBin: true
-
   '@electron/universal@2.0.3':
     resolution: {integrity: sha512-Wn9sPYIVFRFl5HmwMJkARCCf7rqK/EurkfQ/rJZ14mHP3iYTjZSIOSVonEAnhWeAXwtw7zOekGRlc6yTtZ0t+g==}
     engines: {node: '>=16.4'}
@@ -4394,10 +4377,6 @@ packages:
     resolution: {integrity: sha512-AO2ac6pjRB3SJmGJo+v5/aK6Omggp6fsLrs6wN9bd35ulu4cCwaAU9+7ZhXjeqHVkaHThLuzH0nZr0YpCDhygg==}
     engines: {node: ^18.17.0 || >=20.5.0}
 
-  abbrev@4.0.0:
-    resolution: {integrity: sha512-a1wflyaL0tHtJSmLSOVybYhy22vRih4eduhhrkcjgrWGnRfrZtovJ2FRjxuTtkkj47O/baf0R86QU5OuYpz8fA==}
-    engines: {node: ^20.17.0 || >=22.9.0}
-
   acorn-walk@8.2.0:
     resolution: {integrity: sha512-k+iyHEuPgSw6SbuDpGQM+06HQUa04DZ3o+F6CSzXMvvI5KMvnaEqXe+YVe555R9nn6GPt404fos4wcgpw12SDA==}
     engines: {node: '>=0.4.0'}
@@ -5246,14 +5225,6 @@ packages:
 
   fastq@1.15.0:
     resolution: {integrity: sha512-wBrocU2LCXXa+lWBt8RoIRD89Fi8OdABODa/kEnyeyjS5aZO5/GNvI5sEINADqP/h8M29UHTHUb53sUu5Ihqdw==}
-
-  fdir@6.4.3:
-    resolution: {integrity: sha512-PMXmW2y1hDDfTSRc9gaXIuCCRpuoz3Kaz8cUelp3smouvfT632ozg2vrT6lJsHKKOF59YLbOGfAWGUcKEfRMQw==}
-    peerDependencies:
-      picomatch: ^3 || ^4
-    peerDependenciesMeta:
-      picomatch:
-        optional: true
 
   fdir@6.5.0:
     resolution: {integrity: sha512-tIbYtZbucOs0BRGqPJkshJUYdL+SDH7dVM8gjy+ERp3WAUjLEFJE+02kanyHtwjWOnwrKYBiwAmM0p4kLJAnXg==}
@@ -6280,11 +6251,6 @@ packages:
     engines: {node: ^18.17.0 || >=20.5.0}
     hasBin: true
 
-  node-gyp@12.3.0:
-    resolution: {integrity: sha512-QNcUWM+HgJplcPzBvFBZ9VXacyGZ4+VTOb80PwWR+TlVzoHbRKULNEzpRsnaoxG3Wzr7Qh7BYxGDU3CbKib2Yg==}
-    engines: {node: ^20.17.0 || >=22.9.0}
-    hasBin: true
-
   node-int64@0.4.0:
     resolution: {integrity: sha512-O5lz91xSOeoXP6DulyHfllpq+Eg00MWitZIbtPfoSEvqIHdl5gfcY6hYzDWnj0qD5tz52PI08u9qUvSVeUBeHw==}
 
@@ -6297,11 +6263,6 @@ packages:
   nopt@8.1.0:
     resolution: {integrity: sha512-ieGu42u/Qsa4TFktmaKEwM6MQH0pOWnaB3htzh0JRtx84+Mebc0cbZYN5bC+6WTZ4+77xrL9Pn5m7CV6VIkV7A==}
     engines: {node: ^18.17.0 || >=20.5.0}
-    hasBin: true
-
-  nopt@9.0.0:
-    resolution: {integrity: sha512-Zhq3a+yFKrYwSBluL4H9XP3m3y5uvQkB/09CwDruCiRmR/UJYnn9W4R48ry0uGC70aeTPKLynBtscP9efFFcPw==}
-    engines: {node: ^20.17.0 || >=22.9.0}
     hasBin: true
 
   normalize-url@6.1.0:
@@ -6458,10 +6419,6 @@ packages:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
     engines: {node: '>=8.6'}
 
-  picomatch@4.0.2:
-    resolution: {integrity: sha512-M7BAV6Rlcy5u+m6oPhAPFgJTzAioX/6B0DxyvDlo9l8+T3nLKbrczg2WLUyzd45L8RqfUMyGPzekbMvX2Ldkwg==}
-    engines: {node: '>=12'}
-
   picomatch@4.0.5:
     resolution: {integrity: sha512-RvwwcruNjI1ncT5xRakeyS9Lf8lcItv34KD+aif+VH9kduAyfYBipGh12274xtenIPZ119/R9BdTBa8gAwSh0A==}
     engines: {node: '>=12'}
@@ -6554,10 +6511,6 @@ packages:
   proc-log@5.0.0:
     resolution: {integrity: sha512-Azwzvl90HaF0aCz1JrDdXQykFakSSNPaPoiZ9fm5qJIMHioDZEi7OAdRwSm6rSoPtY3Qutnm3L7ogmg3dc+wbQ==}
     engines: {node: ^18.17.0 || >=20.5.0}
-
-  proc-log@6.0.0:
-    resolution: {integrity: sha512-KG/XsTDN901PNfPfAMmj6N/Ywg9tM+bHK8pAz+27fS4N4Pcr+4zoYBOcGSBu6ceXYNPxkLpa4ohtfxV1XcLAfA==}
-    engines: {node: ^20.17.0 || >=22.9.0}
 
   process-nextick-args@2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
@@ -7294,10 +7247,6 @@ packages:
     resolution: {integrity: sha512-SHf/r48b7vOrjve9PxJo3MN5v5yuyjHvdUcrQffT3WXMUfnGmHDVbC4k3sHJaJTgZCwpUplIaAo5ANtMyp3YHg==}
     engines: {node: '>=18'}
 
-  tinyglobby@0.2.12:
-    resolution: {integrity: sha512-qkf4trmKSIiMTs/E63cxH+ojC2unam7rJ0WrauAzpT3ECNTxGRMlaXxVbfxMUC/w0LaYk6jQ4y/nGR9uBO3tww==}
-    engines: {node: '>=12.0.0'}
-
   tinyglobby@0.2.17:
     resolution: {integrity: sha512-wXR/dYpcqKmfWpEdZjiKJOwCNFndD0DMnrW/cYjVGttEkBfVgcLFHoNrlj47mjOVic9yyNu65alsgF4NQyTa2g==}
     engines: {node: '>=12.0.0'}
@@ -7432,10 +7381,6 @@ packages:
 
   undici-types@7.24.4:
     resolution: {integrity: sha512-cRaY9PagdEZoRmcwzk3tUV3SVGrVQkR6bcSilav/A0vXsfpW4Lvd0BvgRMwTEDTLLGN+QdyBTG+nnvTgJhdt6w==}
-
-  undici@6.25.0:
-    resolution: {integrity: sha512-ZgpWDC5gmNiuY9CnLVXEH8rl50xhRCuLNA97fAUnKi8RRuV4E6KG31pDTsLVUKnohJE0I3XDrTeEydAXRw47xg==}
-    engines: {node: '>=18.17'}
 
   undici@7.25.0:
     resolution: {integrity: sha512-xXnp4kTyor2Zq+J1FfPI6Eq3ew5h6Vl0F/8d9XU5zZQf1tX9s2Su1/3PiMmUANFULpmksxkClamIZcaUqryHsQ==}
@@ -7662,11 +7607,6 @@ packages:
   which@5.0.0:
     resolution: {integrity: sha512-JEdGzHwwkrbWoGOlIHqQ5gtprKGOenpDHpxE9zVR1bWbOtYRyPPHMe9FaP6x61CmNaTThSkb0DAJte5jD+DmzQ==}
     engines: {node: ^18.17.0 || >=20.5.0}
-    hasBin: true
-
-  which@6.0.0:
-    resolution: {integrity: sha512-f+gEpIKMR9faW/JgAgPK1D7mekkFoqbmiwvNzuhsHetni20QSgzg9Vhn0g2JSJkkfehQnqdUAx7/e15qS1lPxg==}
-    engines: {node: ^20.17.0 || >=22.9.0}
     hasBin: true
 
   why-is-node-running@2.3.0:
@@ -8141,17 +8081,6 @@ snapshots:
       semver: 7.8.5
       tar: 7.5.19
       yargs: 17.7.2
-    transitivePeerDependencies:
-      - supports-color
-
-  '@electron/rebuild@4.0.6':
-    dependencies:
-      '@malept/cross-spawn-promise': 2.0.0
-      debug: 4.4.0
-      node-abi: 4.28.0
-      node-api-version: 0.2.1
-      node-gyp: 12.3.0
-      read-binary-file-arch: 1.0.6
     transitivePeerDependencies:
       - supports-color
 
@@ -9573,8 +9502,6 @@ snapshots:
 
   abbrev@3.0.1: {}
 
-  abbrev@4.0.0: {}
-
   acorn-walk@8.2.0:
     optional: true
 
@@ -10563,10 +10490,6 @@ snapshots:
   fastq@1.15.0:
     dependencies:
       reusify: 1.0.4
-
-  fdir@6.4.3(picomatch@4.0.2):
-    optionalDependencies:
-      picomatch: 4.0.2
 
   fdir@6.5.0(picomatch@4.0.5):
     optionalDependencies:
@@ -11572,19 +11495,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  node-gyp@12.3.0:
-    dependencies:
-      env-paths: 2.2.1
-      exponential-backoff: 3.1.2
-      graceful-fs: 4.2.11
-      nopt: 9.0.0
-      proc-log: 6.0.0
-      semver: 7.8.5
-      tar: 7.5.19
-      tinyglobby: 0.2.12
-      undici: 6.25.0
-      which: 6.0.0
-
   node-int64@0.4.0: {}
 
   node-pty@1.2.0-beta.14:
@@ -11596,10 +11506,6 @@ snapshots:
   nopt@8.1.0:
     dependencies:
       abbrev: 3.0.1
-
-  nopt@9.0.0:
-    dependencies:
-      abbrev: 4.0.0
 
   normalize-url@6.1.0: {}
 
@@ -11747,8 +11653,6 @@ snapshots:
 
   picomatch@2.3.1: {}
 
-  picomatch@4.0.2: {}
-
   picomatch@4.0.5: {}
 
   pify@4.0.1:
@@ -11827,8 +11731,6 @@ snapshots:
       react-is: 17.0.2
 
   proc-log@5.0.0: {}
-
-  proc-log@6.0.0: {}
 
   process-nextick-args@2.0.1: {}
 
@@ -12662,11 +12564,6 @@ snapshots:
 
   tinyexec@1.2.4: {}
 
-  tinyglobby@0.2.12:
-    dependencies:
-      fdir: 6.4.3(picomatch@4.0.2)
-      picomatch: 4.0.2
-
   tinyglobby@0.2.17:
     dependencies:
       fdir: 6.5.0(picomatch@4.0.5)
@@ -12824,8 +12721,6 @@ snapshots:
   undici-types@7.16.0: {}
 
   undici-types@7.24.4: {}
-
-  undici@6.25.0: {}
 
   undici@7.25.0: {}
 
@@ -13026,10 +12921,6 @@ snapshots:
       isexe: 2.0.0
 
   which@5.0.0:
-    dependencies:
-      isexe: 3.1.1
-
-  which@6.0.0:
     dependencies:
       isexe: 3.1.1
 
