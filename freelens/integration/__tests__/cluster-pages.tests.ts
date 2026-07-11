@@ -64,11 +64,11 @@ describeIf(kindReady(TEST_KIND_CLUSTER_NAME, TEST_NAMESPACE))("KinD based tests"
 
       for (const [parentSidebarItemTestId, scenarios] of scenariosByParent) {
         if (parentSidebarItemTestId !== "null") {
-          await frame.click(`[data-testid="${parentSidebarItemTestId}"]`);
+          await utils.clickSidebarItem(frame, parentSidebarItemTestId);
         }
 
         for (const scenario of scenarios) {
-          await frame.click(`[data-testid="${scenario.sidebarItemTestId}"]`);
+          await utils.clickSidebarItem(frame, scenario.sidebarItemTestId);
 
           await frame.waitForSelector(scenario.expectedSelector, selectorTimeout);
         }
@@ -390,10 +390,10 @@ const scenarios = [
 ];
 
 const navigateToPods = async (frame: Frame) => {
-  await frame.click(`[data-testid="link-for-sidebar-item-workloads"]`);
-  await frame.click(`[data-testid="link-for-sidebar-item-pods"]`);
+  await utils.clickSidebarItem(frame, "link-for-sidebar-item-workloads");
+  await utils.clickSidebarItem(frame, "link-for-sidebar-item-pods");
 };
 
 const navigateToNamespaces = async (frame: Frame) => {
-  await frame.click(`[data-testid="link-for-sidebar-item-namespaces"]`);
+  await utils.clickSidebarItem(frame, "link-for-sidebar-item-namespaces");
 };

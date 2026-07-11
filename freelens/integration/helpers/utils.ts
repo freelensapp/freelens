@@ -122,6 +122,21 @@ export async function clickWelcomeButton(window: Page) {
   await window.click("[data-testid=welcome-menu-container] li a");
 }
 
+/**
+ * Click a sidebar navigation item by its test id.
+ *
+ * The sidebar links are plain navigation anchors. Right after a cluster connects, the
+ * cluster overview metrics area (spinner -> chart / no-metrics) keeps re-laying out, and
+ * Playwright's hit-test can transiently resolve the click point to the ClusterMetrics
+ * content div ("subtree intercepts pointer events"), which times out the click even though
+ * the link itself is visible, enabled and stable. Forcing the click bypasses the hit-test
+ * while still waiting for the element to be attached, which is safe for navigation anchors
+ * and removes this source of flakiness.
+ */
+export async function clickSidebarItem(frame: Frame, testId: string) {
+  await frame.click(`[data-testid="${testId}"]`, { force: true });
+}
+
 function kindEntityId(clusterName: string) {
   return createHash("md5")
     .update(`${path.join(os.homedir(), ".kube", "config")}:kind-${clusterName}`)
