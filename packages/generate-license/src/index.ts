@@ -11,6 +11,14 @@ import fs from "fs/promises";
 import path from "path";
 import spdxLicenseList from "spdx-license-list/full.js";
 
+type Dependency = Awaited<ReturnType<typeof getDependencies>>[number];
+
+interface LicenseEntry {
+  name: string;
+  author?: string;
+  licenseText: string;
+}
+
 function parseArgs() {
   const args = process.argv.slice(2);
   const outputIndex = args.indexOf("--output");
@@ -24,7 +32,7 @@ function parseArgs() {
   };
 }
 
-async function getDependenciesFromPnpmApi(prod) {
+async function getDependenciesFromPnpmApi(prod: boolean) {
   const previousStoreDir = process.env.npm_config_store_dir;
 
   if (previousStoreDir?.trim()) {
@@ -74,14 +82,14 @@ async function findProjectTopDir() {
   }
 }
 
-function getSpdxLicenseText(license) {
+function getSpdxLicenseText(license: string): string | null {
   const ids = license
     .replace(/^\(/, "")
     .replace(/\)$/, "")
     .split(/ AND | OR /)
     .map((id) => id.trim());
 
-  const texts = [];
+  const texts: string[] = [];
 
   for (const id of ids) {
     const entry = spdxLicenseList[id];
@@ -96,7 +104,7 @@ function getSpdxLicenseText(license) {
   return texts.join("\n\n");
 }
 
-async function normalizeStoreDir(storeDir) {
+async function normalizeStoreDir(storeDir: string) {
   if (path.isAbsolute(storeDir)) {
     return storeDir;
   }
@@ -108,7 +116,7 @@ async function normalizeStoreDir(storeDir) {
 
 async function main() {
   const { outputFile, headerFile, prod } = parseArgs();
-  const staticLicenses = {
+  const staticLicenses: Record<string, LicenseEntry> = {
     "kubectl:Apache-2.0": {
       name: "kubectl",
       author: "The Kubernetes Authors",
@@ -123,7 +131,7 @@ async function main() {
 
   const npmDependencies = await getDependenciesFromPnpmApi(prod);
 
-  const fixedDepdencies = [];
+  const fixedDepdencies: Dependency[] = [];
 
   for (const d of npmDependencies) {
     if (d.license.match(" OR ")) {
@@ -135,7 +143,7 @@ async function main() {
     }
   }
 
-  const npmLicenses = {};
+  const npmLicenses: Record<string, LicenseEntry> = {};
 
   for (const d of fixedDepdencies) {
     const key = `${d.name}:${d.license}`;
@@ -161,7 +169,7 @@ async function main() {
   }
 
   const licenseContent = Object.entries({ ...staticLicenses, ...npmLicenses })
-    .map(([k, v]) => `\n\n\n${v.name}\n\n${v.author ? `Copyright (c) ${v.author}.\n\n` : ""}${v.licenseText}`)
+    .map(([_k, v]) => `\n\n\n${v.name}\n\n${v.author ? `Copyright (c) ${v.author}.\n\n` : ""}${v.licenseText}`)
     .join("");
 
   let finalContent = licenseContent;
