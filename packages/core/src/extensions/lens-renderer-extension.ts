@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getEnvironmentSpecificLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { pipeline } from "@ogre-tools/fp";
 import { fromPairs, map, matches, toPairs } from "lodash/fp";
@@ -15,6 +14,7 @@ import { getExtensionRoutePath } from "../renderer/routes/for-extension";
 import getExtensionPageParametersInjectable from "../renderer/routes/get-extension-page-parameters.injectable";
 import navigateToRouteInjectable from "../renderer/routes/navigate-to-route.injectable";
 import routesInjectable from "../renderer/routes/routes.injectable";
+import { getEnvironmentSpecificDiForExtensionApi } from "./extension-api-di";
 import ensureHashedDirectoryForExtensionInjectable from "./extension-loader/file-system-provisioner-store/ensure-hashed-directory-for-extension.injectable";
 import { Disposers, LensExtension } from "./lens-extension";
 
@@ -83,7 +83,7 @@ export class LensRendererExtension extends LensExtension {
   protected declare readonly dependencies: LensRendererExtensionDependencies;
 
   constructor(extension: InstalledExtension) {
-    const di = getEnvironmentSpecificLegacyGlobalDiForExtensionApi("renderer");
+    const di = getEnvironmentSpecificDiForExtensionApi("renderer");
     const deps: LensRendererExtensionDependencies = {
       getExtensionPageParameters: di.inject(getExtensionPageParametersInjectable),
       navigateToRoute: di.inject(navigateToRouteInjectable),

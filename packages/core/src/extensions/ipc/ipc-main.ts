@@ -4,11 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getEnvironmentSpecificLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { ipcMain } from "electron";
 import { once } from "lodash";
 import { ipcMainHandle } from "../../common/ipc";
+import { getEnvironmentSpecificDiForExtensionApi } from "../extension-api-di";
 import { Disposers } from "../lens-extension";
 import { IpcPrefix, IpcRegistrar } from "./ipc-registrar";
 
@@ -27,7 +27,7 @@ export abstract class IpcMain extends IpcRegistrar {
   constructor(extension: LensMainExtension) {
     super(extension);
 
-    const di = getEnvironmentSpecificLegacyGlobalDiForExtensionApi("main");
+    const di = getEnvironmentSpecificDiForExtensionApi("main");
 
     this.dependencies = {
       logger: di.inject(loggerInjectionToken),

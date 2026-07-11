@@ -45,7 +45,6 @@
   },
   "devDependencies": {
     "@freelensapp/feature-core": "workspace:^",
-    "@freelensapp/legacy-global-di": "workspace:^",
     "@freelensapp/test-utils": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@ogre-tools/injectable-extension-for-mobx": "^17.11.1",

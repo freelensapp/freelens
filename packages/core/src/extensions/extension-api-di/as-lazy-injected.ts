@@ -4,17 +4,23 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getLegacyGlobalDiForExtensionApi } from "./global-di";
+import { getDiForExtensionApi } from "./extension-api-di";
 
 import type { Inject } from "@ogre-tools/injectable";
 
-export const asLegacyGlobalForExtensionApi = ((injectable, instantiationParameter) =>
+/**
+ * Exposes an injectable to the extension API as a lazy singleton: the proxy
+ * is created at module load time, but the instance is injected from the DI
+ * container only when a property is first accessed, after the container of
+ * the process has been registered with `setDiForExtensionApi`.
+ */
+export const asLazyInjectedForExtensionApi = ((injectable, instantiationParameter) =>
   new Proxy(
     {},
 
     {
       apply(target: unknown, thisArg, argArray: unknown[]) {
-        const fn = getLegacyGlobalDiForExtensionApi().inject(injectable, instantiationParameter) as unknown as (
+        const fn = getDiForExtensionApi().inject(injectable, instantiationParameter) as unknown as (
           ...args: unknown[]
         ) => unknown;
 
@@ -26,7 +32,7 @@ export const asLegacyGlobalForExtensionApi = ((injectable, instantiationParamete
           return undefined;
         }
 
-        const instance = getLegacyGlobalDiForExtensionApi().inject(injectable, instantiationParameter) as Record<
+        const instance = getDiForExtensionApi().inject(injectable, instantiationParameter) as Record<
           string | symbol,
           unknown
         >;

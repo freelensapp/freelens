@@ -491,9 +491,6 @@ importers:
       '@freelensapp/legacy-extensions':
         specifier: workspace:^
         version: link:../technical-features/application/legacy-extensions
-      '@freelensapp/legacy-global-di':
-        specifier: workspace:^
-        version: link:../legacy-global-di
       '@freelensapp/list-layout':
         specifier: workspace:^
         version: link:../list-layout
@@ -1183,15 +1180,6 @@ importers:
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
-
-  packages/legacy-global-di:
-    devDependencies:
-      '@freelensapp/typescript':
-        specifier: workspace:^
-        version: link:../infrastructure/typescript
-      '@ogre-tools/injectable':
-        specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(lodash@4.18.1)
 
   packages/list-layout:
     dependencies:
@@ -1911,9 +1899,6 @@ importers:
       '@freelensapp/feature-core':
         specifier: workspace:^
         version: link:../../technical-features/feature-core
-      '@freelensapp/legacy-global-di':
-        specifier: workspace:^
-        version: link:../../legacy-global-di
       '@freelensapp/test-utils':
         specifier: workspace:^
         version: link:../../utility-features/test-utils

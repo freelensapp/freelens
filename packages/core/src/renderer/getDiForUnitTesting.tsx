@@ -8,7 +8,6 @@ import { animateFeature, requestAnimationFrameInjectable } from "@freelensapp/an
 import { clusterSidebarFeature } from "@freelensapp/cluster-sidebar";
 import { registerFeature } from "@freelensapp/feature-core";
 import { kubeApiSpecificsFeature } from "@freelensapp/kube-api-specifics";
-import { setLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import { loggerFeature } from "@freelensapp/logger";
 import { messagingFeature, testUtils as messagingTestUtils } from "@freelensapp/messaging";
 import { notificationsFeature } from "@freelensapp/notifications";
@@ -19,6 +18,7 @@ import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { registerInjectableReact } from "@ogre-tools/injectable-react";
 import { chunk, noop } from "lodash/fp";
 import { runInAction } from "mobx";
+import { setDiForExtensionApi } from "../extensions/extension-api-di";
 import { getOverrideFsWithFakes } from "../test-utils/override-fs-with-fakes";
 import hostedClusterIdInjectable from "./cluster-frame-context/hosted-cluster-id.injectable";
 import terminalSpawningPoolInjectable from "./components/dock/terminal/terminal-spawning-pool.injectable";
@@ -63,7 +63,7 @@ export const getDiForUnitTesting = () => {
 
   registerMobX(di);
   registerInjectableReact(di);
-  setLegacyGlobalDiForExtensionApi(di, environment);
+  setDiForExtensionApi(di, environment);
 
   runInAction(() => {
     registerFeature(

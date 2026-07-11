@@ -80,7 +80,6 @@
     "@freelensapp/kube-object": "workspace:^",
     "@freelensapp/kubectl-versions": "workspace:^",
     "@freelensapp/legacy-extensions": "workspace:^",
-    "@freelensapp/legacy-global-di": "workspace:^",
     "@freelensapp/list-layout": "workspace:^",
     "@freelensapp/logger": "workspace:^",
     "@freelensapp/messaging": "workspace:^",
