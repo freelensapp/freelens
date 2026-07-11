@@ -172,7 +172,6 @@
     "typescript-plugin-css-modules": "^5.2.0",
     "user-agent-data-types": "^0.4.3",
     "vite": "7.3.6",
-    "vite-plugin-electron-renderer": "1.0.0",
     "vitest": "^4.1.10"
   },
   "engines": {
