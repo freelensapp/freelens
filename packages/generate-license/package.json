@@ -17,20 +17,28 @@
     "email": "freelens@freelens.app"
   },
   "type": "module",
+  "main": "dist/index.js",
   "bin": {
     "generate-license": "bin/generate-license.js"
   },
   "files": [
-    "src"
+    "dist"
   ],
   "scripts": {
-    "clean:node_modules": "pnpm dlx rimraf@6.1.3 node_modules"
+    "build": "tsc --pretty --project .",
+    "build:dev": "tsc --pretty --project .",
+    "clean": "pnpm dlx rimraf@6.1.3 dist",
+    "clean:node_modules": "pnpm dlx rimraf@6.1.3 node_modules",
+    "start": "node ./dist/index.js"
   },
   "dependencies": {
     "@quantco/pnpm-licenses": "^2.4.2",
     "spdx-license-list": "^6.11.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/node": "~24.12.4",
+    "typescript": "^5.9.3"
+  },
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
