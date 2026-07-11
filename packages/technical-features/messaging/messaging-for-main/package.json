@@ -1,6 +1,6 @@
 {
   "name": "@freelensapp/messaging-for-main",
-  "version": "1.10.4-0",
+  "version": "2.0.0-0",
   "private": true,
   "description": "Implementations for 'messaging' in Electron main",
   "homepage": "https://freelens.app",
