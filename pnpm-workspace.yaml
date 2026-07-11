@@ -1,11 +1,10 @@
-
 packages:
   - freelens
   - packages/**
+
 allowBuilds:
   '@parcel/watcher': true
   electron: true
-  electron-winstaller: true
   node-pty: true
   sharp: true
 
