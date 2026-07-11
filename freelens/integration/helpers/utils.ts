@@ -125,16 +125,22 @@ export async function clickWelcomeButton(window: Page) {
 /**
  * Click a sidebar navigation item by its test id.
  *
- * The sidebar links are plain navigation anchors. Right after a cluster connects, the
- * cluster overview metrics area (spinner -> chart / no-metrics) keeps re-laying out, and
- * Playwright's hit-test can transiently resolve the click point to the ClusterMetrics
- * content div ("subtree intercepts pointer events"), which times out the click even though
- * the link itself is visible, enabled and stable. Forcing the click bypasses the hit-test
- * while still waiting for the element to be attached, which is safe for navigation anchors
- * and removes this source of flakiness.
+ * The sidebar links are React Router `NavLink`s that navigate from their `onClick` handler
+ * (the anchor calls `event.preventDefault()` and uses `to=""`, so navigation never relies on
+ * the href). Right after a cluster connects, the cluster overview metrics area
+ * (spinner -> chart / no-metrics) keeps re-laying out and can transiently cover the click
+ * point, so a normal `frame.click` hit-tests to the ClusterMetrics content div
+ * ("subtree intercepts pointer events") and times out.
+ *
+ * A forced click is not safe here either: `{ force: true }` only skips the actionability
+ * check, it still delivers the mouse event at the element's coordinates, so the overlay
+ * swallows the click, the `onClick` handler never runs and navigation silently never happens
+ * (the page content then times out instead). Dispatching the click event directly on the
+ * anchor invokes its `onClick` handler regardless of any transient overlay, which triggers
+ * navigation reliably.
  */
 export async function clickSidebarItem(frame: Frame, testId: string) {
-  await frame.click(`[data-testid="${testId}"]`, { force: true });
+  await frame.dispatchEvent(`[data-testid="${testId}"]`, "click");
 }
 
 function kindEntityId(clusterName: string) {
