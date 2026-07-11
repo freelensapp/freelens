@@ -2,19 +2,6 @@ packages:
   - freelens
   - packages/**
 
-# TypeScript is declared once in the default catalog so every package
-# references a single source of truth instead of repeating the version in each
-# package.json. A single version keeps Renovate updates unambiguous and avoids
-# the confusion of multiple parallel majors.
-#
-# TypeScript 6.0.x is used because it is the last JavaScript-based release: it
-# ships both the `tsc` CLI (used for the repository-wide type-check and CLI
-# declaration emit) and the classic JavaScript compiler API
-# (ts.createProgram, ts.createSourceFile, ...) required by tooling that imports
-# the compiler programmatically (rollup-plugin-dts, typescript-plugin-css-modules,
-# vitest-mock-extended). The native TypeScript 7 port ships only the CLI and
-# does not yet expose that API, so it cannot serve as the single version until
-# the API is re-exposed.
 catalog:
   typescript: ^6.0.3
 
