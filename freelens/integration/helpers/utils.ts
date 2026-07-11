@@ -10,7 +10,6 @@ import { mkdirp, remove } from "fs-extra";
 import * as os from "os";
 import * as path from "path";
 import { _electron as electron } from "playwright";
-import { setImmediate } from "timers";
 import * as uuid from "uuid";
 
 import type { ElectronApplication, Frame, Page } from "playwright";
@@ -61,15 +60,6 @@ async function getMainWindow(app: ElectronApplication, timeout = 50_000): Promis
 async function attemptStart() {
   const FREELENS_INTEGRATION_TESTING_DIR = path.join(os.tmpdir(), "freelens-integration-testing", uuid.v4());
   process.env.FREELENS_INTEGRATION_TESTING_DIR = FREELENS_INTEGRATION_TESTING_DIR;
-
-  // Playwright does not work with jest-runtime for reading the package.json
-  process.env.PW_VERSION_OVERRIDE = require("./../../package.json").devDependencies["playwright"].replace(
-    /[^0-9.]/g,
-    "",
-  );
-
-  // Fixes `electron.launch: setImmediate is not defined`
-  global.setImmediate = setImmediate;
 
   // Make sure that the directory is clear
   await remove(FREELENS_INTEGRATION_TESTING_DIR);

@@ -41,7 +41,7 @@ files:
   - "!node_modules/pnpm/dist/reflink.!(${platform}-${arch}*).node"
 
 ## Notarization
-afterSign: build/notarize.js
+afterSign: build/notarize.cjs
 
 ## Used to register the app as a handler for the freelens:// protocol
 protocols:

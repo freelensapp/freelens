@@ -32,7 +32,7 @@ const userCreateResourceTemplatesInjectable = getInjectable({
     const parsePath = di.inject(parsePathInjectable);
 
     const userTemplatesFolder = joinPaths(homeDirectoryPath, ".freelens", "templates");
-    const groupTemplates = (templates: Map<string, string>): RawTemplates[] => {
+    const groupTemplates = (templates: ReadonlyMap<string, string>): RawTemplates[] => {
       const res = new Map<string, RawTemplate[]>();
 
       for (const [filePath, value] of templates) {
