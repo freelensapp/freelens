@@ -40,7 +40,7 @@
     "@freelensapp/icon": "workspace:^",
     "@types/jsdom": "^28.0.3",
     "@types/node": "~24.12.4",
-    "typescript": "catalog:"
+    "typescript": "^6.0.3"
   },
   "publishConfig": {
     "access": "public",

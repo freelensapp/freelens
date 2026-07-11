@@ -37,7 +37,7 @@
     "@freelensapp/test-utils": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@types/lodash": "^4.17.24",
-    "typescript": "catalog:",
+    "typescript": "^6.0.3",
     "vitest": "^4.1.10"
   },
   "publishConfig": {

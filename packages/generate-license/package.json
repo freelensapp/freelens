@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@types/node": "~24.12.4",
-    "typescript": "catalog:"
+    "typescript": "^6.0.3"
   },
   "publishConfig": {
     "access": "public",

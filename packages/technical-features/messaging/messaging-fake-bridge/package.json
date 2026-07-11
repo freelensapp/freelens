@@ -41,7 +41,7 @@
     "@types/lodash": "^4.17.24",
     "jsdom": "^29.1.1",
     "mobx": "^6.15.0",
-    "typescript": "catalog:",
+    "typescript": "^6.0.3",
     "vitest": "^4.1.10"
   },
   "publishConfig": {

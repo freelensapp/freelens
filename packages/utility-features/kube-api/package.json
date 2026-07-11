@@ -45,7 +45,7 @@
     "node-fetch": "^3.3.2",
     "rfc6902": "^5.2.0",
     "type-fest": "^5.6.0",
-    "typescript": "catalog:",
+    "typescript": "^6.0.3",
     "vitest": "^4.1.10"
   },
   "publishConfig": {
