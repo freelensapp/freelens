@@ -40,7 +40,9 @@ nvm use 24.18.0
 Install Pnpm (if is not yet installed with mise-en-place):
 
 ```sh
-corepack install
+corepack enable pnpm
+# or
+mise exec -- corepack enable pnpm
 # or
 curl -fsSL https://get.pnpm.io/install.sh | sh -
 # or

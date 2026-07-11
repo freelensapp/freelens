@@ -431,6 +431,8 @@ export class ExtensionLoader {
   }
 
   toJSON(): Map<LensExtensionId, InstalledExtension> {
-    return toJS(this.extensions);
+    // toJS is typed T -> T, so its runtime ObservableMap-to-Map conversion is
+    // invisible to the checker; the Map copy makes the declared type true.
+    return new Map(toJS(this.extensions));
   }
 }
