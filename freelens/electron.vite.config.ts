@@ -45,6 +45,13 @@ const buildDir = resolve(root, "static", "build"); // == webpack vars.buildDir
 // before; both sides read the same environment variable.
 const devServerPort = Number(process.env.FREELENS_DEV_SERVER_PORT) || 9191;
 
+// Resolve NODE_ENV the same way the old webpack `mode` did
+// (isDevelopment = process.env.NODE_ENV === "development"): anything other than
+// an explicit "development" is a production build. `pnpm build:dev` sets
+// NODE_ENV=development while still running `electron-vite build`, so this keys
+// off NODE_ENV rather than electron-vite's command/mode.
+const nodeEnv = process.env.NODE_ENV === "development" ? "development" : "production";
+
 const packageJson = JSON.parse(readFileSync(resolve(root, "package.json"), "utf-8")) as {
   dependencies: Record<string, string>;
 };
@@ -163,6 +170,17 @@ export default defineConfig({
       externalizeDepsPlugin({ exclude: [...workspacePackages, ...bundledCjsPackages] }),
       rewriteElectronNamedImportsPlugin(),
     ],
+    // Unlike the renderer (a browser target, where Vite bakes in
+    // process.env.NODE_ENV automatically), electron-vite does not define
+    // process.env.NODE_ENV for the Node main target. Without this the packaged
+    // main bundle keeps `process.env.NODE_ENV || "development"` verbatim and,
+    // launched with NODE_ENV unset, resolves to "development" — so the static
+    // file route proxies to the dev server (127.0.0.1:9191) and the app crashes
+    // with ECONNREFUSED. Baking the value in replaces webpack's `mode`-driven
+    // DefinePlugin.
+    define: {
+      "process.env.NODE_ENV": JSON.stringify(nodeEnv),
+    },
     build: {
       outDir: buildDir,
       emptyOutDir: false,
