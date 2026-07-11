@@ -39,7 +39,6 @@
     "clean:node_modules": "pnpm -r clean:node_modules && pnpm dlx rimraf@6.1.3 node_modules",
     "compute-versions": "pnpm -r compute-versions",
     "dev": "turbo run dev --parallel --",
-    "electron-rebuild": "cd freelens && pnpm electron-rebuild",
     "fmt": "pnpm trunk fmt",
     "knip": "pnpm dlx knip@6.24.0 --dependencies --no-gitignore",
     "knip:check": "pnpm \"/^knip:(development|production)\\$/\"",

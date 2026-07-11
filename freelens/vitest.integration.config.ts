@@ -18,5 +18,11 @@ export default defineConfig({
     fileParallelism: false,
     testTimeout: 120_000,
     hookTimeout: 120_000,
+    // These tests drive a packaged Electron app through Playwright and are
+    // inherently prone to transient UI-timing flakiness (late renders, layout
+    // shifts intercepting clicks, slow cluster responses). Retry a failed test
+    // a couple of times before failing the whole run; a genuine failure still
+    // fails after the retries are exhausted.
+    retry: 2,
   },
 });

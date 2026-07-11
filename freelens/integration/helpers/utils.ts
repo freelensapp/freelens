@@ -122,6 +122,27 @@ export async function clickWelcomeButton(window: Page) {
   await window.click("[data-testid=welcome-menu-container] li a");
 }
 
+/**
+ * Click a sidebar navigation item by its test id.
+ *
+ * The sidebar links are React Router `NavLink`s that navigate from their `onClick` handler
+ * (the anchor calls `event.preventDefault()` and uses `to=""`, so navigation never relies on
+ * the href). Right after a cluster connects, the cluster overview metrics area
+ * (spinner -> chart / no-metrics) keeps re-laying out and can transiently cover the click
+ * point, so a normal `frame.click` hit-tests to the ClusterMetrics content div
+ * ("subtree intercepts pointer events") and times out.
+ *
+ * A forced click is not safe here either: `{ force: true }` only skips the actionability
+ * check, it still delivers the mouse event at the element's coordinates, so the overlay
+ * swallows the click, the `onClick` handler never runs and navigation silently never happens
+ * (the page content then times out instead). Dispatching the click event directly on the
+ * anchor invokes its `onClick` handler regardless of any transient overlay, which triggers
+ * navigation reliably.
+ */
+export async function clickSidebarItem(frame: Frame, testId: string) {
+  await frame.dispatchEvent(`[data-testid="${testId}"]`, "click");
+}
+
 function kindEntityId(clusterName: string) {
   return createHash("md5")
     .update(`${path.join(os.homedir(), ".kube", "config")}:kind-${clusterName}`)
