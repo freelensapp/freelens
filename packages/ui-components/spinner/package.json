@@ -33,7 +33,7 @@
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
     "@types/react": "^17.0.93",
-    "typescript": "catalog:ts5",
+    "typescript": "catalog:",
     "vitest": "^4.1.10"
   },
   "publishConfig": {

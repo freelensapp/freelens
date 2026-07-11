@@ -147,7 +147,7 @@
     "electron-vite": "5.0.0",
     "playwright": "^1.61.1",
     "sass-embedded": "1.100.0",
-    "typescript": "catalog:ts5",
+    "typescript": "catalog:",
     "typescript-plugin-css-modules": "^5.2.0",
     "vite": "7.3.6",
     "vitest": "^4.1.10"

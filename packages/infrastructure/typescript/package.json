@@ -21,7 +21,7 @@
     "clean:node_modules": "pnpm dlx rimraf@6.1.3 node_modules"
   },
   "dependencies": {
-    "typescript": "catalog:ts5",
+    "typescript": "catalog:",
     "typescript-plugin-css-modules": "^5.2.0"
   },
   "publishConfig": {
