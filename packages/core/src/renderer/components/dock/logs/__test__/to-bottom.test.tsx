@@ -4,11 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React from "react";
-import "@testing-library/jest-dom";
-
 import { noop } from "@freelensapp/utilities";
 import { fireEvent } from "@testing-library/react";
+import React from "react";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
 import { renderFor } from "../../../test-utils/renderFor";
 import { ToBottom } from "../to-bottom";

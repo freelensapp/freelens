@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import "@testing-library/jest-dom";
 import { act, screen } from "@testing-library/react";
 import { computed, observable } from "mobx";
 import React, { useContext } from "react";

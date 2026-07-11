@@ -4,8 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import "@testing-library/jest-dom";
-
 import { NonInjectedItemListLayoutContent } from "../content";
 
 import type { ItemObject } from "@freelensapp/list-layout";

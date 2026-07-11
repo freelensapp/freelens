@@ -4,10 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React from "react";
-import "@testing-library/jest-dom";
-
 import { fireEvent } from "@testing-library/react";
+import React from "react";
 import { KubernetesCluster } from "../../../../common/catalog-entities";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import { renderFor } from "../../test-utils/renderFor";

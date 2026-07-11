@@ -5,10 +5,8 @@
  */
 
 import { fireEvent } from "@testing-library/react";
-import React from "react";
-import "@testing-library/jest-dom";
-
 import { computed, observable } from "mobx";
+import React from "react";
 import platformInjectable from "../../../../common/vars/platform.injectable";
 import rendererExtensionsInjectable from "../../../../extensions/renderer-extensions.injectable";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";

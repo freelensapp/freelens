@@ -4,9 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { DiContainer } from "@ogre-tools/injectable";
-import "@testing-library/jest-dom";
-
 import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
 import React from "react";
 import appPathsStateInjectable from "../../../common/app-paths/app-paths-state.injectable";
@@ -24,6 +21,7 @@ import { renderFor } from "../test-utils/renderFor";
 import podStoreInjectable from "../workloads-pods/store.injectable";
 import { KubeObjectListLayout } from "./index";
 
+import type { DiContainer } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
 
 import type { DiRender } from "../test-utils/renderFor";

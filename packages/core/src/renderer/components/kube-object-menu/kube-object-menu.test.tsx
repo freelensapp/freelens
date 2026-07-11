@@ -4,16 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { screen, waitFor } from "@testing-library/react";
-import React from "react";
-
-import type { RenderResult } from "@testing-library/react";
-import "@testing-library/jest-dom";
-
 import { KubeObject } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { computed, runInAction } from "mobx";
+import React from "react";
 import directoryForTempInjectable from "../../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../../common/cluster/cluster";
@@ -32,6 +28,7 @@ import kubeObjectDeleteServiceInjectable from "./kube-object-delete-service.inje
 import { kubeObjectMenuItemInjectionToken } from "./kube-object-menu-item-injection-token";
 
 import type { DiContainer } from "@ogre-tools/injectable";
+import type { RenderResult } from "@testing-library/react";
 import type { UserEvent } from "@testing-library/user-event";
 
 import type { ApiManager } from "../../../common/k8s-api/api-manager";

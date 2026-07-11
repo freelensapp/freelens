@@ -6,8 +6,6 @@
 
 import { render, screen } from "@testing-library/react";
 import React from "react";
-import "@testing-library/jest-dom";
-
 import { CatalogCategory } from "../../../../common/catalog";
 import { CatalogCategoryLabel } from "../catalog-category-label";
 

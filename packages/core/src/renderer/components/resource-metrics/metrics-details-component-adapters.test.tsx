@@ -4,8 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { Injectable } from "@ogre-tools/injectable";
-import "@testing-library/jest-dom";
 import React from "react";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import namespaceMetricsInjectable from "../namespaces/metrics.injectable";
@@ -46,6 +44,8 @@ import type {
   ReplicaSet,
   StatefulSet,
 } from "@freelensapp/kube-object";
+
+import type { Injectable } from "@ogre-tools/injectable";
 
 import type { AtLeastOneMetricTab, ResourceMetricsProps } from "./resource-metrics";
 

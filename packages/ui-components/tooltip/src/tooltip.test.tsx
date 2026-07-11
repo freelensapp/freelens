@@ -12,7 +12,6 @@ import { computeNextPosition, RectangleDimensions } from "./helpers";
 import { Tooltip, TooltipPosition } from "./tooltip";
 
 import type { RenderResult } from "@testing-library/react";
-import "@testing-library/jest-dom";
 
 const getRectangle = (parts: Omit<RectangleDimensions, "width" | "height">): RectangleDimensions => {
   assert(parts.right >= parts.left);
