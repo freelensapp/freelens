@@ -130,6 +130,33 @@ function rewriteElectronNamedImportsPlugin() {
   };
 }
 
+// Set the renderer's public base path for the packaged build.
+//
+// The packaged app loads the renderer from the lens proxy web root
+// (https://renderer.freelens.app:<port>/), while the built assets live under
+// static/build/. So the production HTML must reference assets with an absolute
+// "/build/" prefix — exactly what webpack's publicPath "/build/" produced. The
+// prod file route (packages/core/src/main/routes/files/production.injectable.ts)
+// serves /build/... from static/build/..., whereas a relative "./" base would
+// resolve to /assets/... at the web root and 404 as static/assets/....
+//
+// electron-vite's renderer preset force-sets base to "./" for the production
+// build (it assumes file:// loading), so this plugin must run with
+// `enforce: "post"` to override that after the preset's config hook. In the dev
+// server the base stays "./" (== root), which the dev file route
+// (development.injectable.ts) relies on, so only the build is overridden.
+function rendererBuildBasePlugin(base: string) {
+  return {
+    name: "freelens:renderer-build-base",
+    enforce: "post" as const,
+    config(_config: unknown, env: { command: string }) {
+      if (env.command === "build") {
+        return { base };
+      }
+    },
+  };
+}
+
 export default defineConfig({
   main: {
     plugins: [
@@ -151,10 +178,7 @@ export default defineConfig({
   },
   renderer: {
     root: resolve(root, "src/renderer"),
-    // The renderer is served by the lens proxy under /build/, so all asset
-    // URLs must stay relative (webpack used publicPath "/build/").
-    base: "./",
-    plugins: [react(), electronRenderer()],
+    plugins: [react(), electronRenderer(), rendererBuildBasePlugin("/build/")],
     server: {
       // Same serving architecture as the webpack dev server it replaces: the
       // app window always loads through the lens proxy, which forwards to
