@@ -11,6 +11,14 @@ import fs from "fs/promises";
 import path from "path";
 import spdxLicenseList from "spdx-license-list/full.js";
 
+type Dependency = Awaited<ReturnType<typeof getDependencies>>[number];
+
+interface LicenseEntry {
+  name: string;
+  author?: string;
+  licenseText: string;
+}
+
 function parseArgs() {
   const args = process.argv.slice(2);
   const outputIndex = args.indexOf("--output");
@@ -24,7 +32,7 @@ function parseArgs() {
   };
 }
 
-async function getDependenciesFromPnpmApi(prod) {
+async function getDependenciesFromPnpmApi(prod: boolean) {
   const previousStoreDir = process.env.npm_config_store_dir;
 
   if (previousStoreDir?.trim()) {
@@ -74,7 +82,7 @@ async function findProjectTopDir() {
   }
 }
 
-async function normalizeStoreDir(storeDir) {
+async function normalizeStoreDir(storeDir: string) {
   if (path.isAbsolute(storeDir)) {
     return storeDir;
   }
@@ -86,7 +94,7 @@ async function normalizeStoreDir(storeDir) {
 
 async function main() {
   const { outputFile, headerFile, prod } = parseArgs();
-  const staticLicenses = {
+  const staticLicenses: Record<string, LicenseEntry> = {
     "kubectl:Apache-2.0": {
       name: "kubectl",
       author: "The Kubernetes Authors",
@@ -101,7 +109,7 @@ async function main() {
 
   const npmDependencies = await getDependenciesFromPnpmApi(prod);
 
-  const fixedDepdencies = [];
+  const fixedDepdencies: Dependency[] = [];
 
   for (const d of npmDependencies) {
     if (d.license.match(" OR ")) {
@@ -113,7 +121,7 @@ async function main() {
     }
   }
 
-  const npmLicenses = {};
+  const npmLicenses: Record<string, LicenseEntry> = {};
 
   for (const d of fixedDepdencies) {
     const key = `${d.name}:${d.license}`;
