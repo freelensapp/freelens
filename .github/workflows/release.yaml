@@ -85,7 +85,6 @@ jobs:
       DO_NOT_TRACK: "1"
       ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
       ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
-      ELECTRON_HEADERS_CACHE: ${{ github.workspace }}/.cache/electron-headers
 
     steps:
       - name: Checkout
@@ -93,7 +92,7 @@ jobs:
 
       - name: Install dependencies (macOS)
         if: runner.os == 'macOS'
-        run: brew install bash coreutils python-setuptools
+        run: brew install bash coreutils
 
       - name: Add coreutils to PATH (macOS)
         if: runner.os == 'macOS'
@@ -177,13 +176,6 @@ jobs:
           restore-keys: |
             ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-builder-
 
-      - name: Use Electron headers cache
-        id: electron-headers
-        uses: actions/cache@v6
-        with:
-          path: ${{ env.ELECTRON_HEADERS_CACHE }}
-          key: electron-headers-${{ env.electron_version }}
-
       - name: Install pnpm dependencies
         id: install-pnpm
         shell: bash
@@ -194,14 +186,6 @@ jobs:
         if: steps.install-pnpm.outcome == 'failure'
         shell: bash
         run: pnpm install --color=always --prefer-offline --frozen-lockfile
-
-      - name: Install Electron headers
-        if: steps.electron-headers.outputs.cache-hit != 'true'
-        shell: bash
-        run: |
-          set -eo pipefail
-          mkdir -p $ELECTRON_HEADERS_CACHE
-          curl -sSfL https://www.electronjs.org/headers/v$electron_version/node-v$electron_version-headers.tar.gz -o $ELECTRON_HEADERS_CACHE/node-v$electron_version-headers.tar.gz
 
       - name: Build packages
         if: runner.os != 'Windows'
@@ -218,13 +202,6 @@ jobs:
         run: pnpm --color=always --stream build
         env:
           TURBO_CONCURRENCY: "2"
-
-      - name: Rebuild native packages for Electron
-        run: pnpm --color=always electron-rebuild -a ${{ matrix.arch }}
-        env:
-          npm_config_arch: ${{ matrix.arch }}
-          npm_config_target_arch: ${{ matrix.arch }}
-          npm_package_config_node_gyp_tarball: ${{ env.ELECTRON_HEADERS_CACHE }}/node-v${{ env.electron_version }}-headers.tar.gz
 
       - name: Build extra resources
         id: build-resources

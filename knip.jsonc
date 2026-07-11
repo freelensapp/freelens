@@ -64,10 +64,6 @@
         "electron",
         // explicit dependency to prevent to install different versions of app-build-lib
         "electron-builder-squirrel-windows",
-        // it has to be explicitly updated together with electron
-        "node-abi",
-        // explicit dependency to prevent using version from pnpm
-        "node-gyp",
         // used as script to run in fork() to install extensions
         "pnpm"
       ],
@@ -86,8 +82,6 @@
         // provided by the Electron runtime and declared only as a
         // devDependency; production code imports it in both processes
         "electron",
-        // explicit dependency to prevent using version from pnpm
-        "node-gyp",
         // used as script to run in fork() to install extensions
         "pnpm",
         // tailwind dependencies are not handled by knip correctly
