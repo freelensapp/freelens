@@ -260,7 +260,11 @@ Phase ordering; each phase lands as one or more PRs against `v2`:
    have their own value), so CI sharding of the core project is the
    steady-state approach, not an interim one. Only isolation-preserving
    tuning (worker pool choice, dependency handling) remains, applied when
-   it measures faster and stays green.
+   it measures faster and stays green. Measured outcome: the core project
+   runs on the `threads` pool (~8% faster than the default `forks` on the
+   import-dominated suite, full suite green at 2.9 GB peak memory);
+   `vmThreads` measured ~26% faster per shard but crashed the full suite
+   at 13.7 GB peak memory and is rejected.
 
 Dependencies: 0 → 1 → 2 → 3 → 4 → 5; 6 can start any time after 2 (config
 swap) but completes after 3; 7 is last.
