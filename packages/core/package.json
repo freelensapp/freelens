@@ -27,7 +27,6 @@
     "./vars.scss": "./src/renderer/components/vars.scss",
     "./fonts": "./src/renderer/fonts"
   },
-  "main": "static/build/main.js",
   "typesVersions": {
     "*": {
       "main": [
