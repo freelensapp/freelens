@@ -17,7 +17,7 @@ import type { Mock } from "vitest";
 import type { CatalogEntityRegistry } from "../../../../../renderer/api/catalog/entity/registry";
 import type { ExecuteOnClusterResponse } from "../../common/types";
 
-// We need to test the K8s API functions, but they use asLegacyGlobalFunctionForExtensionApi
+// We need to test the K8s API functions, but they use asLazyInjectedFunctionForExtensionApi
 // which requires global DI setup. For unit tests, we test the underlying injectable directly.
 // Integration tests would cover the full API surface.
 

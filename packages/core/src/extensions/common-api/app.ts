@@ -5,7 +5,6 @@
  */
 
 import { lensBuildEnvironmentInjectionToken } from "@freelensapp/application";
-import { asLegacyGlobalForExtensionApi, getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import { issuesTrackerUrl } from "../../common/vars";
 import appNameInjectable from "../../common/vars/app-name.injectable";
 import isFlatpakPackageInjectable from "../../common/vars/is-flatpak-package.injectable";
@@ -18,11 +17,12 @@ import userPreferencesStateInjectable, {
   type UserPreferencesState,
 } from "../../features/user-preferences/common/state.injectable";
 import { buildVersionInitializable } from "../../features/vars/build-version/common/token";
+import { asLazyInjectedForExtensionApi, getDiForExtensionApi } from "../extension-api-di";
 
 export type { UserPreferencesState };
 
-const userStore = asLegacyGlobalForExtensionApi(userPreferencesStateInjectable);
-const enabledExtensions = asLegacyGlobalForExtensionApi(enabledExtensionsInjectable);
+const userStore = asLazyInjectedForExtensionApi(userPreferencesStateInjectable);
+const enabledExtensions = asLazyInjectedForExtensionApi(enabledExtensionsInjectable);
 
 export const App = {
   Preferences: {
@@ -30,42 +30,42 @@ export const App = {
   },
   getEnabledExtensions: () => enabledExtensions.get(),
   get version() {
-    const di = getLegacyGlobalDiForExtensionApi();
+    const di = getDiForExtensionApi();
 
     return di.inject(buildVersionInitializable.stateToken);
   },
   get appName() {
-    const di = getLegacyGlobalDiForExtensionApi();
+    const di = getDiForExtensionApi();
 
     return di.inject(appNameInjectable);
   },
   get isFlatpak() {
-    const di = getLegacyGlobalDiForExtensionApi();
+    const di = getDiForExtensionApi();
 
     return di.inject(isFlatpakPackageInjectable);
   },
   get isSnap() {
-    const di = getLegacyGlobalDiForExtensionApi();
+    const di = getDiForExtensionApi();
 
     return di.inject(isSnapPackageInjectable);
   },
   get isWindows() {
-    const di = getLegacyGlobalDiForExtensionApi();
+    const di = getDiForExtensionApi();
 
     return di.inject(isWindowsInjectable);
   },
   get isMac() {
-    const di = getLegacyGlobalDiForExtensionApi();
+    const di = getDiForExtensionApi();
 
     return di.inject(isMacInjectable);
   },
   get isLinux() {
-    const di = getLegacyGlobalDiForExtensionApi();
+    const di = getDiForExtensionApi();
 
     return di.inject(isLinuxInjectable);
   },
   get lensBuildEnvironment() {
-    const di = getLegacyGlobalDiForExtensionApi();
+    const di = getDiForExtensionApi();
 
     return di.inject(lensBuildEnvironmentInjectionToken);
   },

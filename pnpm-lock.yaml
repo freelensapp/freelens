@@ -491,9 +491,6 @@ importers:
       '@freelensapp/legacy-extensions':
         specifier: workspace:^
         version: link:../technical-features/application/legacy-extensions
-      '@freelensapp/legacy-global-di':
-        specifier: workspace:^
-        version: link:../legacy-global-di
       '@freelensapp/list-layout':
         specifier: workspace:^
         version: link:../list-layout

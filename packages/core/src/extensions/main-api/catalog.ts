@@ -4,16 +4,16 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { asLegacyGlobalForExtensionApi } from "@freelensapp/legacy-global-di";
 import catalogCategoryRegistryInjectable from "../../common/catalog/category-registry.injectable";
 import catalogEntityRegistryInjectable from "../../main/catalog/entity-registry.injectable";
 import clusterEnumerationInjectable from "../../main/cluster-enumeration/cluster-enumeration.injectable";
+import { asLazyInjectedForExtensionApi } from "../extension-api-di";
 
 import type { CatalogEntity } from "../../common/catalog";
 import type { ClusterId, ClusterInfo } from "../common-api/cluster-types";
 
-export const catalogCategories = asLegacyGlobalForExtensionApi(catalogCategoryRegistryInjectable);
-const catalogEntityRegistry = asLegacyGlobalForExtensionApi(catalogEntityRegistryInjectable);
+export const catalogCategories = asLazyInjectedForExtensionApi(catalogCategoryRegistryInjectable);
+const catalogEntityRegistry = asLazyInjectedForExtensionApi(catalogEntityRegistryInjectable);
 
 export interface CatalogEntityRegistry {
   getItemsForApiKind(apiVersion: string, kind: string): CatalogEntity[];
@@ -30,7 +30,7 @@ export const catalogEntities: CatalogEntityRegistry = {
 };
 
 // Cluster enumeration API
-const clusterEnumeration = asLegacyGlobalForExtensionApi(clusterEnumerationInjectable);
+const clusterEnumeration = asLazyInjectedForExtensionApi(clusterEnumerationInjectable);
 
 /**
  * Get all registered Kubernetes clusters.

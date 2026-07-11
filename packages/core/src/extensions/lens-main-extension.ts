@@ -4,11 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getEnvironmentSpecificLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { isObservableArray } from "mobx";
 import catalogEntityRegistryInjectable from "../main/catalog/entity-registry.injectable";
 import navigateForExtensionInjectable from "../main/start-main-application/lens-window/navigate-for-extension.injectable";
+import { getEnvironmentSpecificDiForExtensionApi } from "./extension-api-di";
 import ensureHashedDirectoryForExtensionInjectable from "./extension-loader/file-system-provisioner-store/ensure-hashed-directory-for-extension.injectable";
 import { LensExtension } from "./lens-extension";
 
@@ -38,7 +38,7 @@ export class LensMainExtension extends LensExtension {
   declare readonly dependencies: LensMainExtensionDependencies;
 
   constructor(extension: InstalledExtension) {
-    const di = getEnvironmentSpecificLegacyGlobalDiForExtensionApi("main");
+    const di = getEnvironmentSpecificDiForExtensionApi("main");
     const deps: LensMainExtensionDependencies = {
       ensureHashedDirectoryForExtension: di.inject(ensureHashedDirectoryForExtensionInjectable),
       navigate: di.inject(navigateForExtensionInjectable),

@@ -6,7 +6,6 @@
 
 import { registerFeature } from "@freelensapp/feature-core";
 import { kubeApiSpecificsFeature } from "@freelensapp/kube-api-specifics";
-import { setLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import { loggerFeature } from "@freelensapp/logger";
 import { messagingFeature, testUtils as messagingTestUtils } from "@freelensapp/messaging";
 import { notificationsFeature } from "@freelensapp/notifications";
@@ -16,6 +15,7 @@ import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { chunk } from "lodash/fp";
 import { runInAction } from "mobx";
 import broadcastMessageInjectable from "../common/ipc/broadcast-message.injectable";
+import { setDiForExtensionApi } from "../extensions/extension-api-di";
 import setupSyncingOfWeblinksInjectable from "../features/weblinks/main/setup-syncing-of-weblinks.injectable";
 import { getOverrideFsWithFakes } from "../test-utils/override-fs-with-fakes";
 import spawnInjectable from "./child-process/spawn.injectable";
@@ -68,7 +68,7 @@ export function getDiForUnitTesting() {
   });
 
   registerMobX(di);
-  setLegacyGlobalDiForExtensionApi(di, environment);
+  setDiForExtensionApi(di, environment);
 
   runInAction(() => {
     registerFeature(

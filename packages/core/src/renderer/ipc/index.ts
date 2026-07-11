@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import { clusterSetFrameIdHandler, clusterStates } from "../../common/ipc/cluster";
 import { extensionDiscoveryStateChannel, extensionLoaderFromMainChannel } from "../../common/ipc/extension-handling";
 import {
@@ -14,6 +13,7 @@ import {
   windowOpenAppMenuAsContextMenuChannel,
 } from "../../common/ipc/window";
 import { toJS } from "../../common/utils";
+import { getDiForExtensionApi } from "../../extensions/extension-api-di";
 import ipcRendererInjectable from "../utils/channel/ipc-renderer.injectable";
 
 import type { InstalledExtension, LensExtensionId } from "@freelensapp/legacy-extensions";
@@ -23,7 +23,7 @@ import type { Location } from "history";
 import type { ClusterId, ClusterState } from "../../common/cluster-types";
 
 function requestMain(channel: string, ...args: any[]) {
-  const di = getLegacyGlobalDiForExtensionApi();
+  const di = getDiForExtensionApi();
 
   const ipcRenderer = di.inject(ipcRendererInjectable);
 
@@ -31,7 +31,7 @@ function requestMain(channel: string, ...args: any[]) {
 }
 
 function emitToMain(channel: string, ...args: any[]) {
-  const di = getLegacyGlobalDiForExtensionApi();
+  const di = getDiForExtensionApi();
 
   const ipcRenderer = di.inject(ipcRendererInjectable);
 
