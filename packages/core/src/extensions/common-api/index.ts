@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { asLegacyGlobalForExtensionApi } from "@freelensapp/legacy-global-di";
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { asLazyInjectedForExtensionApi } from "../extension-api-di";
 
 // APIs
 export { App } from "./app";
@@ -28,4 +28,4 @@ export type PackageJson = import("type-fest").PackageJson;
 
 export type { LensExtension } from "../lens-extension";
 
-export const logger = asLegacyGlobalForExtensionApi(loggerInjectionToken);
+export const logger = asLazyInjectedForExtensionApi(loggerInjectionToken);

@@ -19,11 +19,6 @@ import {
 import { maybeKubeApiInjectable, storesAndApisCanBeCreatedInjectionToken } from "@freelensapp/kube-api-specifics";
 import { KubeJsonApiDataFor, KubeObject, KubeObjectMetadata } from "@freelensapp/kube-object";
 import {
-  asLegacyGlobalForExtensionApi,
-  asLegacyGlobalFunctionForExtensionApi,
-  getLegacyGlobalDiForExtensionApi,
-} from "@freelensapp/legacy-global-di";
-import {
   logDebugInjectionToken,
   logErrorInjectionToken,
   loggerInjectionToken,
@@ -39,6 +34,11 @@ import createKubeJsonApiForClusterInjectable from "../../common/k8s-api/create-k
 import { KubeObjectStore as InternalKubeObjectStore } from "../../common/k8s-api/kube-object.store";
 import clusterFrameContextForNamespacedResourcesInjectable from "../../renderer/cluster-frame-context/for-namespaced-resources.injectable";
 import getPodsByOwnerIdInjectable from "../../renderer/components/workloads-pods/get-pods-by-owner-id.injectable";
+import {
+  asLazyInjectedForExtensionApi,
+  asLazyInjectedFunctionForExtensionApi,
+  getDiForExtensionApi,
+} from "../extension-api-di";
 
 import type { JsonApiConfig } from "@freelensapp/json-api";
 import type {
@@ -54,14 +54,14 @@ import type { KubeApiDataFrom, KubeObjectStoreOptions } from "../../common/k8s-a
 import type { ClusterContext } from "../../renderer/cluster-frame-context/cluster-frame-context";
 import type { KubernetesCluster } from "./catalog";
 
-export const apiManager = asLegacyGlobalForExtensionApi(apiManagerInjectable);
-export const forCluster = asLegacyGlobalFunctionForExtensionApi(createKubeApiForClusterInjectable);
-export const forRemoteCluster = asLegacyGlobalFunctionForExtensionApi(createKubeApiForRemoteClusterInjectable);
-export const createResourceStack = asLegacyGlobalFunctionForExtensionApi(createResourceStackInjectable);
-export const getPodsByOwnerId = asLegacyGlobalFunctionForExtensionApi(getPodsByOwnerIdInjectable);
+export const apiManager = asLazyInjectedForExtensionApi(apiManagerInjectable);
+export const forCluster = asLazyInjectedFunctionForExtensionApi(createKubeApiForClusterInjectable);
+export const forRemoteCluster = asLazyInjectedFunctionForExtensionApi(createKubeApiForRemoteClusterInjectable);
+export const createResourceStack = asLazyInjectedFunctionForExtensionApi(createResourceStackInjectable);
+export const getPodsByOwnerId = asLazyInjectedFunctionForExtensionApi(getPodsByOwnerIdInjectable);
 
 const getKubeApiDeps = (): KubeApiDependencies => {
-  const di = getLegacyGlobalDiForExtensionApi();
+  const di = getDiForExtensionApi();
 
   return {
     logDebug: di.inject(logDebugInjectionToken),
@@ -91,7 +91,7 @@ function KubeApiCstr<
 >({ autoRegister = true, ...opts }: KubeApiOptions<Object, Data> & ExternalKubeApiOptions) {
   const api = new InternalKubeApi(getKubeApiDeps(), opts);
 
-  const di = getLegacyGlobalDiForExtensionApi();
+  const di = getDiForExtensionApi();
   const storesAndApisCanBeCreated = di.inject(storesAndApisCanBeCreatedInjectionToken);
 
   if (storesAndApisCanBeCreated && autoRegister) {
@@ -172,7 +172,7 @@ export type { CreateKubeApiForLocalClusterConfig as ILocalKubeApiConfig } from "
 export type { CreateKubeApiForRemoteClusterConfig as IRemoteKubeApiConfig } from "../../common/k8s-api/create-kube-api-for-remote-cluster.injectable";
 
 function KubeJsonApiCstr(config: JsonApiConfig, reqInit?: NodeFetchRequestInit) {
-  const di = getLegacyGlobalDiForExtensionApi();
+  const di = getDiForExtensionApi();
   const createKubeJsonApi = di.inject(createKubeJsonApiInjectable);
 
   return createKubeJsonApi(config, reqInit);
@@ -186,7 +186,7 @@ export const KubeJsonApi = Object.assign(
     reqInit?: RequestInit,
   ) => InternalKubeJsonApi,
   {
-    forCluster: asLegacyGlobalForExtensionApi(createKubeJsonApiForClusterInjectable),
+    forCluster: asLazyInjectedForExtensionApi(createKubeJsonApiForClusterInjectable),
   },
 );
 
@@ -203,7 +203,7 @@ export abstract class KubeObjectStore<
       console.warn("Setting KubeObjectStore.context is no longer supported");
       void ctx;
     },
-    get: () => asLegacyGlobalForExtensionApi(clusterFrameContextForNamespacedResourcesInjectable),
+    get: () => asLazyInjectedForExtensionApi(clusterFrameContextForNamespacedResourcesInjectable),
   };
 
   get context() {
@@ -216,7 +216,7 @@ export abstract class KubeObjectStore<
    */
   constructor();
   constructor(api?: A, opts?: KubeObjectStoreOptions) {
-    const di = getLegacyGlobalDiForExtensionApi();
+    const di = getDiForExtensionApi();
 
     super(
       {

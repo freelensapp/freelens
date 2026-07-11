@@ -4,11 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { asLegacyGlobalForExtensionApi } from "@freelensapp/legacy-global-di";
 import catalogCategoryRegistryInjectable from "../../common/catalog/category-registry.injectable";
 import catalogEntityRegistryInjectable from "../../renderer/api/catalog/entity/registry.injectable";
 import rendererClusterEnumerationInjectable from "../../renderer/cluster-enumeration/cluster-enumeration.injectable";
 import activeKubernetesClusterInjectable from "../../renderer/cluster-frame-context/active-kubernetes-cluster.injectable";
+import { asLazyInjectedForExtensionApi } from "../extension-api-di";
 
 import type { Disposer } from "@freelensapp/utilities";
 
@@ -16,9 +16,9 @@ import type { CatalogCategory, CatalogEntity } from "../../common/catalog";
 import type { CatalogEntityOnBeforeRun } from "../../renderer/api/catalog/entity/registry";
 import type { ClusterId, ClusterInfo } from "../common-api/cluster-types";
 
-export const catalogCategories = asLegacyGlobalForExtensionApi(catalogCategoryRegistryInjectable);
+export const catalogCategories = asLazyInjectedForExtensionApi(catalogCategoryRegistryInjectable);
 
-const internalEntityRegistry = asLegacyGlobalForExtensionApi(catalogEntityRegistryInjectable);
+const internalEntityRegistry = asLazyInjectedForExtensionApi(catalogEntityRegistryInjectable);
 
 export class CatalogEntityRegistry {
   /**
@@ -59,10 +59,10 @@ export class CatalogEntityRegistry {
 
 export const catalogEntities = new CatalogEntityRegistry();
 
-export const activeCluster = asLegacyGlobalForExtensionApi(activeKubernetesClusterInjectable);
+export const activeCluster = asLazyInjectedForExtensionApi(activeKubernetesClusterInjectable);
 
 // Cluster enumeration API
-const clusterEnumeration = asLegacyGlobalForExtensionApi(rendererClusterEnumerationInjectable);
+const clusterEnumeration = asLazyInjectedForExtensionApi(rendererClusterEnumerationInjectable);
 
 /**
  * Get all registered Kubernetes clusters.

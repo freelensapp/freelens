@@ -194,7 +194,7 @@ Replace Jest 29 across the repository with Vitest 4:
   --shard`) across a matrix, with the shard count derived from the runner's
   CPU/memory. The structural fixes — `isolate: false`, or externalizing the
   `@freelensapp/*` packages for the test run — are deferred (see the
-  legacy-global-di removal item in Phase 7 and §6).
+  extension-api-di item in Phase 7 and §6).
 
 ### D9. CI on the v2 branch: trimmed, re-enabled gradually
 
@@ -248,13 +248,17 @@ Phase ordering; each phase lands as one or more PRs against `v2`:
    package; re-enable unit tests in CI.
 8. **Phase 7 — hardening.** TypeScript 7 as type-checker (D6), knip
    re-enabled, integration tests restored, extension migration guide
-   published. Remove `@freelensapp/legacy-global-di`: its module-level
-   `Map<Environments, DiContainer>` accumulates containers across test files
-   and is one of the blockers for running the Vitest core project with
-   `isolate: false`. Once it is gone, re-analyze the test-run cost
-   remediations (`isolate: false`, externalizing/prebundling the
-   `@freelensapp/*` packages for tests, environment reclassification) and
-   pick the structural fix that replaces the interim CI sharding.
+   published. Remove `@freelensapp/legacy-global-di` — done: its
+   responsibility (lazy singletons for the extension API) moved into core as
+   `packages/core/src/extensions/extension-api-di`, since the extension API
+   namespaces are built on lazy injection and must keep working. The
+   module-level `Map<Environments, DiContainer>` still exists there and
+   remains one of the blockers for running the Vitest core project with
+   `isolate: false`; now that it is core-internal it can grow a reset hook
+   for the test runner. Re-analyze the test-run cost remediations
+   (`isolate: false`, externalizing/prebundling the `@freelensapp/*`
+   packages for tests, environment reclassification) and pick the
+   structural fix that replaces the interim CI sharding.
 
 Dependencies: 0 → 1 → 2 → 3 → 4 → 5; 6 can start any time after 2 (config
 swap) but completes after 3; 7 is last.
@@ -305,6 +309,7 @@ Success criteria:
   per-file re-evaluation of the injectable graph makes the Vitest run ~2–3x
   slower than the Jest era. CI sharding is the interim relief; the structural
   fix (`isolate: false`) is blocked today by shared module-level state,
-  notably `@freelensapp/legacy-global-di`'s container map and testing-library
-  cleanup that only attaches on the first file. Removing legacy-global-di
-  (Phase 7) is a prerequisite to re-analyzing that path.
+  notably the extension API DI container map (now core-internal in
+  `packages/core/src/extensions/extension-api-di`) and testing-library
+  cleanup that only attaches on the first file. With the map inside core it
+  can be reset between test files as part of that re-analysis.

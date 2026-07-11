@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { asLegacyGlobalFunctionForExtensionApi } from "@freelensapp/legacy-global-di";
 import hideEntityDetailsInjectable, {
   type HideEntityDetails,
 } from "../../renderer/components/catalog/entity-details/hide.injectable";
@@ -28,6 +27,7 @@ import createPageParamInjectable, {
 } from "../../renderer/navigation/create-page-param.injectable";
 import isActiveRouteInjectable, { type IsRouteActive } from "../../renderer/navigation/is-route-active.injectable";
 import navigateInjectable, { type Navigate } from "../../renderer/navigation/navigate.injectable";
+import { asLazyInjectedFunctionForExtensionApi } from "../extension-api-di";
 
 export type { URLParams } from "@freelensapp/utilities";
 
@@ -44,13 +44,13 @@ export type {
   ShowEntityDetails,
 };
 
-export const getDetailsUrl = asLegacyGlobalFunctionForExtensionApi(getDetailsUrlInjectable);
-export const getMaybeDetailsUrl = asLegacyGlobalFunctionForExtensionApi(getMaybeDetailsUrlInjectable);
-export const showDetails = asLegacyGlobalFunctionForExtensionApi(showDetailsInjectable);
-export const hideDetails = asLegacyGlobalFunctionForExtensionApi(hideDetailsInjectable);
-export const createPageParam = asLegacyGlobalFunctionForExtensionApi(createPageParamInjectable);
-export const isActiveRoute = asLegacyGlobalFunctionForExtensionApi(isActiveRouteInjectable);
-export const navigate = asLegacyGlobalFunctionForExtensionApi(navigateInjectable);
+export const getDetailsUrl = asLazyInjectedFunctionForExtensionApi(getDetailsUrlInjectable);
+export const getMaybeDetailsUrl = asLazyInjectedFunctionForExtensionApi(getMaybeDetailsUrlInjectable);
+export const showDetails = asLazyInjectedFunctionForExtensionApi(showDetailsInjectable);
+export const hideDetails = asLazyInjectedFunctionForExtensionApi(hideDetailsInjectable);
+export const createPageParam = asLazyInjectedFunctionForExtensionApi(createPageParamInjectable);
+export const isActiveRoute = asLazyInjectedFunctionForExtensionApi(isActiveRouteInjectable);
+export const navigate = asLazyInjectedFunctionForExtensionApi(navigateInjectable);
 
-export const showEntityDetails = asLegacyGlobalFunctionForExtensionApi(showEntityDetailsInjectable);
-export const hideEntityDetails = asLegacyGlobalFunctionForExtensionApi(hideEntityDetailsInjectable);
+export const showEntityDetails = asLazyInjectedFunctionForExtensionApi(showEntityDetailsInjectable);
+export const hideEntityDetails = asLazyInjectedFunctionForExtensionApi(hideEntityDetailsInjectable);

@@ -4,6 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-export * from "./src/as-global-function";
-export * from "./src/as-global-object";
-export * from "./src/global-di";
+export * from "./as-lazy-injected";
+export * from "./as-lazy-injected-function";
+export * from "./extension-api-di";
