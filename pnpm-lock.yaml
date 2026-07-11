@@ -1908,9 +1908,6 @@ importers:
       '@freelensapp/feature-core':
         specifier: workspace:^
         version: link:../../technical-features/feature-core
-      '@freelensapp/legacy-global-di':
-        specifier: workspace:^
-        version: link:../../legacy-global-di
       '@freelensapp/test-utils':
         specifier: workspace:^
         version: link:../../utility-features/test-utils

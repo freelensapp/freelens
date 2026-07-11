@@ -6,7 +6,6 @@
 
 import "@testing-library/jest-dom/vitest";
 import { registerFeature } from "@freelensapp/feature-core";
-import { setLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import { loggerFeature, loggerInjectionToken } from "@freelensapp/logger";
 import { renderFor } from "@freelensapp/test-utils";
 import { createContainer } from "@ogre-tools/injectable";
@@ -33,7 +32,6 @@ describe("<Icon> href technical tests", () => {
 
     registerMobX(di);
     registerInjectableReact(di);
-    setLegacyGlobalDiForExtensionApi(di, environment);
 
     runInAction(() => {
       registerFeature(di, loggerFeature);
