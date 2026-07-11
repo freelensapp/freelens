@@ -88,7 +88,12 @@ export default defineConfig({
               .filter((abs) => existsSync(abs))
               .map((abs) => `./${relative(dir, abs)}`),
           ],
-          ...(dir === coreDir ? { testTimeout: 15000, env: { TZ: "UTC" } } : {}),
+          // Core runs on the threads pool: measured ~8% faster than the
+          // default forks pool on the import-dominated core project, with
+          // per-file isolation kept (fresh worker context per test file).
+          // vmThreads measured ~26% faster per shard but crashed the full
+          // suite at 13.7 GB peak memory, so it is rejected.
+          ...(dir === coreDir ? { pool: "threads" as const, testTimeout: 15000, env: { TZ: "UTC" } } : {}),
         },
       };
     }),

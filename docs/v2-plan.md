@@ -190,11 +190,15 @@ Replace Jest 29 across the repository with Vitest 4:
 - Test-run cost: because every `packages/core` test file re-evaluates the
   eagerly-globbed injectable graph from TypeScript source, the core project
   dominates wall-clock (~57% of aggregate worker time is module `import`).
-  The interim mitigation is CI sharding of the core project (`vitest run
+  The mitigation is CI sharding of the core project (`vitest run
   --shard`) across a matrix, with the shard count derived from the runner's
-  CPU/memory. The structural fixes — `isolate: false`, or externalizing the
-  `@freelensapp/*` packages for the test run — are deferred (see the
-  extension-api-di item in Phase 7 and §6).
+  CPU/memory. `isolate: false` was considered as a structural fix and
+  rejected (maintainer decision, 2026-07-11): isolated tests have their own
+  value, so per-file isolation stays. Externalizing or prebundling the
+  `@freelensapp/*` packages for the test run is rejected for the same
+  reason — modules evaluated once per worker instead of once per test file
+  are shared state across test files, which is `isolate: false` through the
+  back door. Remaining tuning must preserve isolation (see §6).
 
 ### D9. CI on the v2 branch: trimmed, re-enabled gradually
 
@@ -251,14 +255,16 @@ Phase ordering; each phase lands as one or more PRs against `v2`:
    published. Remove `@freelensapp/legacy-global-di` — done: its
    responsibility (lazy singletons for the extension API) moved into core as
    `packages/core/src/extensions/extension-api-di`, since the extension API
-   namespaces are built on lazy injection and must keep working. The
-   module-level `Map<Environments, DiContainer>` still exists there and
-   remains one of the blockers for running the Vitest core project with
-   `isolate: false`; now that it is core-internal it can grow a reset hook
-   for the test runner. Re-analyze the test-run cost remediations
-   (`isolate: false`, externalizing/prebundling the `@freelensapp/*`
-   packages for tests, environment reclassification) and pick the
-   structural fix that replaces the interim CI sharding.
+   namespaces are built on lazy injection and must keep working. Test-run
+   cost re-analysis — decided: `isolate: false` is rejected (isolated tests
+   have their own value), so CI sharding of the core project is the
+   steady-state approach, not an interim one. Only isolation-preserving
+   tuning (worker pool choice, dependency handling) remains, applied when
+   it measures faster and stays green. Measured outcome: the core project
+   runs on the `threads` pool (~8% faster than the default `forks` on the
+   import-dominated suite, full suite green at 2.9 GB peak memory);
+   `vmThreads` measured ~26% faster per shard but crashed the full suite
+   at 13.7 GB peak memory and is rejected.
 
 Dependencies: 0 → 1 → 2 → 3 → 4 → 5; 6 can start any time after 2 (config
 swap) but completes after 3; 7 is last.
@@ -305,11 +311,9 @@ Success criteria:
 - **TypeScript 7 type-check differences.** tsgo may surface new errors or
   behave differently on the more exotic types in the tree; that is why it
   is adopted as a checker swap (D6) rather than a prerequisite.
-- **Vitest core-project cost and `isolate: false`.** The core project's
-  per-file re-evaluation of the injectable graph makes the Vitest run ~2–3x
-  slower than the Jest era. CI sharding is the interim relief; the structural
-  fix (`isolate: false`) is blocked today by shared module-level state,
-  notably the extension API DI container map (now core-internal in
-  `packages/core/src/extensions/extension-api-di`) and testing-library
-  cleanup that only attaches on the first file. With the map inside core it
-  can be reset between test files as part of that re-analysis.
+- **Vitest core-project cost.** The core project's per-file re-evaluation
+  of the injectable graph makes the Vitest run ~2–3x slower than the Jest
+  era. Decided (2026-07-11): `isolate: false` is not introduced — isolated
+  tests have their own value, and the per-file re-evaluation is the price
+  of that isolation. CI sharding of the core project is the accepted
+  steady-state relief; any further tuning must preserve per-file isolation.
