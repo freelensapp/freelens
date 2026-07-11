@@ -4,6 +4,16 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  ts5:
+    typescript:
+      specifier: ^5.9.3
+      version: 5.9.3
+  ts7:
+    typescript:
+      specifier: ~7.0.2
+      version: 7.0.2
+
 overrides:
   '@types/http-proxy': '-'
   brace-expansion@^2.0.1: ^2.1.1
@@ -41,7 +51,7 @@ importers:
         specifier: 2.10.2
         version: 2.10.2
       typescript:
-        specifier: ~7.0.2
+        specifier: catalog:ts7
         version: 7.0.2
       vitest:
         specifier: ^4.1.10
@@ -309,7 +319,7 @@ importers:
         specifier: 1.100.0
         version: 1.100.0
       typescript:
-        specifier: ^5.9.3
+        specifier: catalog:ts5
         version: 5.9.3
       typescript-plugin-css-modules:
         specifier: ^5.2.0
@@ -913,7 +923,7 @@ importers:
         specifier: ^1.4.0
         version: 1.4.0
       typescript:
-        specifier: ^5.9.3
+        specifier: catalog:ts5
         version: 5.9.3
       typescript-plugin-css-modules:
         specifier: ^5.2.0
@@ -962,7 +972,7 @@ importers:
         specifier: ^3.1.4
         version: 3.1.4
       typescript:
-        specifier: ^5.9.3
+        specifier: catalog:ts5
         version: 5.9.3
 
   packages/extensions:
@@ -1074,7 +1084,7 @@ importers:
         specifier: ^6.4.1
         version: 6.4.1(rollup@4.62.2)(typescript@5.9.3)
       typescript:
-        specifier: ^5.9.3
+        specifier: catalog:ts5
         version: 5.9.3
       typescript-plugin-css-modules:
         specifier: ^5.2.0
@@ -1093,7 +1103,7 @@ importers:
         specifier: ~24.12.4
         version: 24.12.4
       typescript:
-        specifier: ^5.9.3
+        specifier: catalog:ts5
         version: 5.9.3
 
   packages/generate-tray-icons:
@@ -1118,13 +1128,13 @@ importers:
         specifier: ~24.12.4
         version: 24.12.4
       typescript:
-        specifier: ^5.9.3
+        specifier: catalog:ts5
         version: 5.9.3
 
   packages/infrastructure/typescript:
     dependencies:
       typescript:
-        specifier: ^5.9.3
+        specifier: catalog:ts5
         version: 5.9.3
       typescript-plugin-css-modules:
         specifier: ^5.2.0
@@ -1185,7 +1195,7 @@ importers:
         specifier: ^0.0.8
         version: 0.0.8
       typescript:
-        specifier: ^5.9.3
+        specifier: catalog:ts5
         version: 5.9.3
 
   packages/list-layout:
@@ -1325,7 +1335,7 @@ importers:
         specifier: ^7.7.1
         version: 7.7.1
       typescript:
-        specifier: ^5.9.3
+        specifier: catalog:ts5
         version: 5.9.3
 
   packages/technical-features/application/application:
@@ -1356,7 +1366,7 @@ importers:
         specifier: ^4.18.1
         version: 4.18.1
       typescript:
-        specifier: ^5.9.3
+        specifier: catalog:ts5
         version: 5.9.3
       vitest:
         specifier: ^4.1.10
@@ -1393,7 +1403,7 @@ importers:
         specifier: ^4.18.1
         version: 4.18.1
       typescript:
-        specifier: ^5.9.3
+        specifier: catalog:ts5
         version: 5.9.3
       vitest:
         specifier: ^4.1.10
@@ -1409,7 +1419,7 @@ importers:
         specifier: workspace:^
         version: link:../../../infrastructure/typescript
       typescript:
-        specifier: ^5.9.3
+        specifier: catalog:ts5
         version: 5.9.3
       vitest:
         specifier: ^4.1.10
@@ -1489,7 +1499,7 @@ importers:
         specifier: ^17.0.2
         version: 17.0.2
       typescript:
-        specifier: ^5.9.3
+        specifier: catalog:ts5
         version: 5.9.3
       vitest:
         specifier: ^4.1.10
@@ -1532,7 +1542,7 @@ importers:
         specifier: ^4.18.1
         version: 4.18.1
       typescript:
-        specifier: ^5.9.3
+        specifier: catalog:ts5
         version: 5.9.3
       vitest:
         specifier: ^4.1.10
@@ -1584,7 +1594,7 @@ importers:
         specifier: ^6.15.0
         version: 6.15.0
       typescript:
-        specifier: ^5.9.3
+        specifier: catalog:ts5
         version: 5.9.3
       vitest:
         specifier: ^4.1.10
@@ -1624,7 +1634,7 @@ importers:
         specifier: ^4.17.24
         version: 4.17.24
       typescript:
-        specifier: ^5.9.3
+        specifier: catalog:ts5
         version: 5.9.3
       vitest:
         specifier: ^4.1.10
@@ -1664,7 +1674,7 @@ importers:
         specifier: ^6.15.0
         version: 6.15.0
       typescript:
-        specifier: ^5.9.3
+        specifier: catalog:ts5
         version: 5.9.3
       vitest:
         specifier: ^4.1.10
@@ -1695,7 +1705,7 @@ importers:
         specifier: ^17.11.1
         version: 17.11.1(lodash@4.18.1)
       typescript:
-        specifier: ^5.9.3
+        specifier: catalog:ts5
         version: 5.9.3
 
   packages/technical-features/react-application:
@@ -1756,7 +1766,7 @@ importers:
         specifier: ^4.18.1
         version: 4.18.1
       typescript:
-        specifier: ^5.9.3
+        specifier: catalog:ts5
         version: 5.9.3
       vitest:
         specifier: ^4.1.10
@@ -1787,7 +1797,7 @@ importers:
         specifier: ^17.0.93
         version: 17.0.93
       typescript:
-        specifier: ^5.9.3
+        specifier: catalog:ts5
         version: 5.9.3
       vitest:
         specifier: ^4.1.10
@@ -1812,7 +1822,7 @@ importers:
         specifier: ^17.0.93
         version: 17.0.93
       typescript:
-        specifier: ^5.9.3
+        specifier: catalog:ts5
         version: 5.9.3
       vitest:
         specifier: ^4.1.10
@@ -1861,7 +1871,7 @@ importers:
         specifier: ^2.0.3
         version: 2.0.3
       typescript:
-        specifier: ^5.9.3
+        specifier: catalog:ts5
         version: 5.9.3
       vitest:
         specifier: ^4.1.10
@@ -1934,7 +1944,7 @@ importers:
         specifier: ^4.10.1
         version: 4.10.1
       typescript:
-        specifier: ^5.9.3
+        specifier: catalog:ts5
         version: 5.9.3
       vitest:
         specifier: ^4.1.10
@@ -2004,7 +2014,7 @@ importers:
         specifier: ^5.6.0
         version: 5.6.0
       typescript:
-        specifier: ^5.9.3
+        specifier: catalog:ts5
         version: 5.9.3
       vitest:
         specifier: ^4.1.10
@@ -2038,7 +2048,7 @@ importers:
         specifier: ^17.0.93
         version: 17.0.93
       typescript:
-        specifier: ^5.9.3
+        specifier: catalog:ts5
         version: 5.9.3
       vitest:
         specifier: ^4.1.10
@@ -2060,7 +2070,7 @@ importers:
         specifier: ^17.0.93
         version: 17.0.93
       typescript:
-        specifier: ^5.9.3
+        specifier: catalog:ts5
         version: 5.9.3
       vitest:
         specifier: ^4.1.10
@@ -2115,7 +2125,7 @@ importers:
         specifier: ^29.1.1
         version: 29.1.1(@noble/hashes@2.2.0)
       typescript:
-        specifier: ^5.9.3
+        specifier: catalog:ts5
         version: 5.9.3
       vitest:
         specifier: ^4.1.10
@@ -2225,7 +2235,7 @@ importers:
         specifier: ^5.6.0
         version: 5.6.0
       typescript:
-        specifier: ^5.9.3
+        specifier: catalog:ts5
         version: 5.9.3
       vitest:
         specifier: ^4.1.10

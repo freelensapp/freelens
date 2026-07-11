@@ -54,7 +54,7 @@
     "@types/react": "^17.0.93",
     "@types/react-router-dom": "^5.3.3",
     "history": "^4.10.1",
-    "typescript": "^5.9.3",
+    "typescript": "catalog:ts5",
     "vitest": "^4.1.10"
   },
   "publishConfig": {

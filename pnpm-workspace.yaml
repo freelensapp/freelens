@@ -2,6 +2,28 @@ packages:
   - freelens
   - packages/**
 
+# TypeScript is declared in two named catalogs so every package references a
+# single source of truth instead of repeating the version in each package.json.
+#
+# Two versions are intentional and cannot yet be collapsed into one:
+#   - ts7 (TypeScript 7) is the native `tsc` port. Its npm package ships only
+#     the CLI and language server; `require("typescript")` exposes just the
+#     version string, not the classic JavaScript compiler API
+#     (ts.createProgram, ts.createSourceFile, ...). It is used exclusively for
+#     the repository-wide type-check (`tsc --noEmit`) and for CLI declaration
+#     emit, both of which the native CLI supports.
+#   - ts5 (TypeScript 5) remains required by tooling that imports the compiler
+#     API programmatically: rollup-plugin-dts, typescript-plugin-css-modules,
+#     ts-node, ts-essentials and vitest-mock-extended.
+#
+# Once the TypeScript 7 npm package exposes the compiler API these can be
+# merged into a single catalog entry.
+catalogs:
+  ts5:
+    typescript: ^5.9.3
+  ts7:
+    typescript: ~7.0.2
+
 allowBuilds:
   '@parcel/watcher': true
   electron: true
