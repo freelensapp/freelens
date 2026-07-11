@@ -25,7 +25,9 @@ for (const [specifier, sourcePath] of enumerateWorkspaceEntries(repoRoot)) {
 const tsconfig = {
   extends: "./tsconfig.dts.json",
   compilerOptions: {
-    baseUrl: ".",
+    // paths values are ./-relative, so they resolve against this config's
+    // directory without a baseUrl (removed: baseUrl is deprecated in TS6 and
+    // dropped in TS7).
     paths,
   },
 };

@@ -1,12 +1,8 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "baseUrl": ".",
     "composite": true,
     "outDir": "static/build/library/",
-    "paths": {
-      "*": ["node_modules/*", "types/*"]
-    },
     "plugins": [
       {
         "name": "typescript-plugin-css-modules",
