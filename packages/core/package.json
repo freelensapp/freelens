@@ -27,7 +27,6 @@
     "./vars.scss": "./src/renderer/components/vars.scss",
     "./fonts": "./src/renderer/fonts"
   },
-  "main": "static/build/main.js",
   "typesVersions": {
     "*": {
       "main": [
@@ -214,7 +213,6 @@
     "@types/uuid": "^11.0.0",
     "@types/ws": "^8.18.1",
     "electron": "^41.10.0",
-    "glob": "^13.0.6",
     "jsdom": "^29.1.1",
     "logform": "^2.7.0",
     "memfs": "^4.17.1",
