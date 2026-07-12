@@ -15,6 +15,14 @@
 
 @config "../../../tailwind.config.js";
 
+// Wire Tailwind's `dark:` variant to the real theme mechanism. The theme
+// system keeps dark as the default and toggles `body.theme-light` for light
+// (themes/apply-lens-theme.injectable.ts) — there is no `.dark` class, so
+// Tailwind's stock `darkMode: "class"` would never match. This makes `dark:`
+// apply to any element that is not inside a light-themed body. Prefer the
+// `var(--…)` theme tokens over `dark:`; they re-theme automatically.
+@custom-variant dark (&:where(body:not(.theme-light), body:not(.theme-light) *));
+
 :root {
   --flex-gap: #{$padding};
   --unit: 8px;
