@@ -19,10 +19,10 @@ const notifyErrorPortForwardingInjectable = getInjectable({
 
     return (msg: string) => {
       const removeNotification = showErrorNotification(
-        <div className="flex column gaps">
+        <div className="flex flex-col gap-4">
           <b>Port Forwarding</b>
           <p>{msg}</p>
-          <div className="flex gaps row align-left box grow">
+          <div className="flex gap-4 grow shrink-0 basis-0">
             <Button
               active
               outlined
