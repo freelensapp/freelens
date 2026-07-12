@@ -64,7 +64,7 @@ class NonInjectedDeploymentReplicaSets extends React.Component<DeploymentReplica
     if (!replicaSets.length) return null;
 
     return (
-      <div className="ReplicaSets flex column">
+      <div className="ReplicaSets flex flex-col">
         <DrawerTitle>Deploy Revisions</DrawerTitle>
         <Table
           selectable
@@ -78,7 +78,7 @@ class NonInjectedDeploymentReplicaSets extends React.Component<DeploymentReplica
           }}
           sortByDefault={{ sortBy: sortBy.pods, orderBy: "desc" }}
           sortSyncWithUrl={false}
-          className="box grow"
+          className="grow shrink-0 basis-0"
         >
           <TableHead flat sticky={false}>
             <TableCell className="name" sortBy={sortBy.name}>

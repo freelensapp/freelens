@@ -84,7 +84,7 @@ const NonInjectedOverviewWorkloadStatus = observer((props: OverviewWorkloadStatu
 
   return (
     <div className="OverviewWorkloadStatus">
-      <div className="flex column align-center box grow">
+      <div className="flex flex-col items-center grow shrink-0 basis-0">
         <PieChart
           data={chartData}
           options={{

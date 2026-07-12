@@ -173,7 +173,7 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
     const virtual = pods.length > 20;
 
     return (
-      <div className="PodDetailsList flex column">
+      <div className="PodDetailsList flex flex-col">
         <DrawerTitle>Pods</DrawerTitle>
         <Table
           tableId="workloads_pod_details_list"
@@ -194,7 +194,7 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
           sortSyncWithUrl={false}
           getTableRow={this.getTableRow}
           renderRow={virtual ? undefined : (pod) => this.getTableRow(pod.getId())}
-          className="box grow"
+          className="grow shrink-0 basis-0"
         >
           <TableHead flat sticky={virtual}>
             <TableCell className="name" sortBy={sortBy.name}>
