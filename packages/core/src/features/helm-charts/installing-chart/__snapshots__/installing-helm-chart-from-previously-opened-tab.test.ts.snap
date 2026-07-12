@@ -1353,7 +1353,7 @@ exports[`installing helm chart from previously opened tab > given tab for instal
             style="flex-basis: 300px;"
           >
             <div
-              class="InstallChart flex column"
+              class="InstallChart flex flex-col"
             >
               <div
                 class="InfoPanel flex gaps align-center"

@@ -59,7 +59,7 @@ export class NonInjectedUpgradeChart extends React.Component<UpgradeChartProps &
 
     return (
       <div
-        className={cssNames("UpgradeChart flex column", className)}
+        className={cssNames("UpgradeChart flex flex-col", className)}
         data-testid={`upgrade-chart-dock-tab-contents-for-${release.getId()}`}
       >
         <InfoPanel

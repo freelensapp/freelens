@@ -5036,7 +5036,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
             style="flex-basis: 300px;"
           >
             <div
-              class="UpgradeChart flex column"
+              class="UpgradeChart flex flex-col"
               data-testid="upgrade-chart-dock-tab-contents-for-my-second-namespace/some-name"
             >
               <div
@@ -6251,7 +6251,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
             style="flex-basis: 300px;"
           >
             <div
-              class="UpgradeChart flex column"
+              class="UpgradeChart flex flex-col"
               data-testid="upgrade-chart-dock-tab-contents-for-my-second-namespace/some-name"
             >
               <div

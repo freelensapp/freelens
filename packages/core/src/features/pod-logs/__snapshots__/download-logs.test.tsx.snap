@@ -516,7 +516,7 @@ exports[`download logs options in logs dock tab opening pod logs when logs avail
             style="flex-basis: 300px;"
           >
             <div
-              class="PodLogs flex column"
+              class="PodLogs flex flex-col"
             >
               <div
                 class="InfoPanel flex gaps align-center"
@@ -1376,7 +1376,7 @@ exports[`download logs options in logs dock tab opening pod logs when logs not a
             style="flex-basis: 300px;"
           >
             <div
-              class="PodLogs flex column"
+              class="PodLogs flex flex-col"
             >
               <div
                 class="InfoPanel flex gaps align-center"

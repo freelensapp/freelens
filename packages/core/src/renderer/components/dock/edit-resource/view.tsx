@@ -26,7 +26,7 @@ interface Dependencies {
 }
 
 const NonInjectedEditResource = observer(({ model, tabId }: EditResourceProps & Dependencies) => (
-  <div className="EditResource flex column">
+  <div className="EditResource flex flex-col">
     {model.shouldShowErrorAboutNoResource ? (
       <Notice>Resource not found</Notice>
     ) : (

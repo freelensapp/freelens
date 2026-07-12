@@ -3549,7 +3549,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             style="flex-basis: 300px;"
           >
             <div
-              class="InstallChart flex column"
+              class="InstallChart flex flex-col"
             >
               <div
                 class="InfoPanel flex gaps align-center"
@@ -4766,7 +4766,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             style="flex-basis: 300px;"
           >
             <div
-              class="InstallChart flex column"
+              class="InstallChart flex flex-col"
             >
               <div
                 class="InfoPanel flex gaps align-center"
@@ -5952,7 +5952,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             style="flex-basis: 300px;"
           >
             <div
-              class="InstallChart flex column"
+              class="InstallChart flex flex-col"
             >
               <div
                 class="InfoPanel flex gaps align-center"
@@ -7133,7 +7133,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             style="flex-basis: 300px;"
           >
             <div
-              class="InstallChart flex column"
+              class="InstallChart flex flex-col"
             >
               <div
                 class="InfoPanel flex gaps align-center"
@@ -8314,7 +8314,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             style="flex-basis: 300px;"
           >
             <div
-              class="InstallChart flex column"
+              class="InstallChart flex flex-col"
             >
               <div
                 class="InfoPanel flex gaps align-center"
@@ -9517,7 +9517,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             style="flex-basis: 300px;"
           >
             <div
-              class="InstallChart flex column"
+              class="InstallChart flex flex-col"
             >
               <div
                 class="InfoPanel flex gaps align-center"
@@ -10734,7 +10734,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             style="flex-basis: 300px;"
           >
             <div
-              class="InstallChart flex column"
+              class="InstallChart flex flex-col"
             >
               <div
                 class="InfoPanel flex gaps align-center"
@@ -11915,7 +11915,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             style="flex-basis: 300px;"
           >
             <div
-              class="InstallChart flex column"
+              class="InstallChart flex flex-col"
             >
               <div
                 class="InfoPanel flex gaps align-center"
@@ -16199,7 +16199,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             style="flex-basis: 300px;"
           >
             <div
-              class="InstallChart flex column"
+              class="InstallChart flex flex-col"
             >
               <div
                 class="InfoPanel flex gaps align-center"
@@ -18646,7 +18646,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             style="flex-basis: 300px;"
           >
             <div
-              class="InstallChart flex column"
+              class="InstallChart flex flex-col"
             >
               <div
                 class="InfoPanel flex gaps align-center"
@@ -19881,7 +19881,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             style="flex-basis: 300px;"
           >
             <div
-              class="InstallChart flex column"
+              class="InstallChart flex flex-col"
             >
               <div
                 class="InfoPanel flex gaps align-center"
@@ -21062,7 +21062,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             style="flex-basis: 300px;"
           >
             <div
-              class="InstallChart flex column"
+              class="InstallChart flex flex-col"
             >
               <div
                 class="InfoPanel flex gaps align-center"
@@ -22243,7 +22243,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             style="flex-basis: 300px;"
           >
             <div
-              class="InstallChart flex column"
+              class="InstallChart flex flex-col"
             >
               <div
                 class="InfoPanel flex gaps align-center"

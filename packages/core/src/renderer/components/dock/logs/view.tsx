@@ -74,7 +74,7 @@ const NonInjectedLogsDockTab = observer(
     }
 
     return (
-      <div className={cssNames("PodLogs flex column", className)}>
+      <div className={cssNames("PodLogs flex flex-col", className)}>
         <InfoPanel
           tabId={tab.id}
           controls={
