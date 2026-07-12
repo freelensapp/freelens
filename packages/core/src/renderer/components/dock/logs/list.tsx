@@ -429,7 +429,7 @@ class NonForwardedLogList extends React.Component<
   render() {
     if (this.props.model.isLoading.get()) {
       return (
-        <div className="LogList flex box grow align-center justify-center">
+        <div className="LogList flex grow shrink-0 basis-0 items-center justify-center">
           <Spinner />
         </div>
       );
@@ -437,7 +437,7 @@ class NonForwardedLogList extends React.Component<
 
     if (!this.logs.length) {
       return (
-        <div className="LogList flex box grow align-center justify-center">
+        <div className="LogList flex grow shrink-0 basis-0 items-center justify-center">
           There are no logs available for container {this.props.model.logTabData.get()?.selectedContainer}
         </div>
       );
@@ -452,7 +452,7 @@ class NonForwardedLogList extends React.Component<
           onScroll={this.onScroll}
           outerRef={this.virtualListDiv}
           ref={this.virtualListRef}
-          className="box grow"
+          className="grow shrink-0 basis-0"
         />
         {this.isJumpButtonVisible && <ToBottom onClick={this.scrollToBottom} />}
       </div>
