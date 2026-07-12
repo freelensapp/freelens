@@ -7,8 +7,9 @@
 // (see docs/v2-styling.md and issue #2145).
 //
 // It counts occurrences of the legacy in-house flexbox utility vocabulary
-// (`.flex`, `.column`, `.gaps`, `.box`, `.grow`, `.align-center`, ...) inside
-// `className` attributes across core's TSX. The count is compared against a
+// (`.flex`, `.column`, `.gaps`, `.box`, `.grow`, `.align-center`, ...) in the
+// class-list string literals of core's TSX (both `className="..."` and helper
+// calls such as `cssNames("flex box grow", ...)`). The count is compared to a
 // committed baseline (`scripts/legacy-flexbox-baseline.json`) and the check
 // fails when the count *increases*. This stops new mixed classnames from
 // landing while first-party usage is migrated to Tailwind, one batch at a
@@ -26,10 +27,15 @@ const repoRoot = path.resolve(import.meta.dirname, "..");
 const scanRoot = path.join(repoRoot, "packages", "core", "src");
 const baselineFile = path.join(repoRoot, "scripts", "legacy-flexbox-baseline.json");
 
-// Legacy tokens that do not exist in Tailwind's vocabulary. These are always
-// counted because they can only come from flexbox.scss.
-const UNAMBIGUOUS_LEGACY = new Set([
+// Legacy tokens with a unique spelling that only flexbox.scss produces — no
+// Tailwind utility or common component class shares the name. Always counted.
+const ALWAYS_LEGACY = new Set([
+  "box",
   "gaps",
+  "column",
+  "fullsize",
+  "grow-fixed",
+  "wrap-reverse",
   "align-center",
   "align-flex-start",
   "align-flex-end",
@@ -43,32 +49,22 @@ const UNAMBIGUOUS_LEGACY = new Set([
   "content-flex-end",
   "content-space-between",
   "content-space-around",
-  "grow-fixed",
+  "content-stretch",
   "self-flex-start",
   "self-flex-end",
-  "self-stretch",
-  "self-baseline",
-  "wrap-reverse",
 ]);
 
-// Legacy tokens whose spelling collides with unrelated component classes or
-// Tailwind utilities (e.g. `center`, `grow`, `column`). They are only counted
-// when the same `className` is a flexbox context, i.e. it also carries the
-// `flex` or `box` token.
-const CONTEXTUAL_LEGACY = new Set([
-  "box",
-  "grow",
-  "column",
-  "reverse",
-  "inline",
-  "fullsize",
-  "auto",
-  "center",
-  "left",
-  "right",
-  "wrap",
-  "self-center",
-]);
+// Legacy child utilities (`.flex > .box.grow`, `.box.center`, ...). Their
+// spelling collides with Tailwind utilities (`grow`, `self-stretch`, ...), so
+// they are counted only when the same className still carries `box` — a
+// migrated className drops `box`, which is what lets the ratchet reach zero.
+const CHILD_LEGACY = new Set(["grow", "center", "left", "right", "self-stretch", "self-baseline", "self-center"]);
+
+// Legacy parent modifiers (`.flex.inline`, `.flex.center`, ...). Counted only
+// when the className carries `flex`. Their migrated Tailwind equivalents are
+// spelled differently (`inline-flex`, `flex-row-reverse`, `items-center`), so
+// this does not count migrated code.
+const PARENT_LEGACY = new Set(["inline", "reverse", "wrap", "auto", "center"]);
 
 /** Recursively collect *.tsx files under a directory. */
 function collectTsx(dir, out) {
@@ -97,12 +93,15 @@ const STRING_LITERAL_RE = /"([^"\\]*(?:\\.[^"\\]*)*)"|`([^`\\]*(?:\\.[^`\\]*)*)`
 /** Count legacy tokens inside a single className string. */
 function countInClassName(value) {
   const tokens = value.split(/\s+/).filter(Boolean);
-  const isFlexContext = tokens.includes("flex") || tokens.includes("box");
+  const hasFlex = tokens.includes("flex");
+  const hasBox = tokens.includes("box");
   let count = 0;
   for (const token of tokens) {
-    if (UNAMBIGUOUS_LEGACY.has(token)) {
+    if (ALWAYS_LEGACY.has(token)) {
       count += 1;
-    } else if (isFlexContext && CONTEXTUAL_LEGACY.has(token)) {
+    } else if (hasBox && CHILD_LEGACY.has(token)) {
+      count += 1;
+    } else if (hasFlex && PARENT_LEGACY.has(token)) {
       count += 1;
     }
   }
