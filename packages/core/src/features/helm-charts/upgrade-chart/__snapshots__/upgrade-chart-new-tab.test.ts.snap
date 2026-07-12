@@ -595,7 +595,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -1459,7 +1459,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -2465,7 +2465,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -3487,7 +3487,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -4545,7 +4545,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -5760,7 +5760,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -6977,7 +6977,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"

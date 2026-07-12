@@ -106,7 +106,7 @@ exports[`kube-object-list-layout > given pod store > renders 1`] = `
           class="items box grow flex column"
         >
           <div
-            class="Table flex column KubeObjectListLayout Pods box grow dark selectable scrollable sortable autoSize virtual"
+            class="Table flex flex-col KubeObjectListLayout Pods box grow dark selectable scrollable sortable autoSize virtual"
           >
             <div
               class="TableHead sticky nowrap topLine"

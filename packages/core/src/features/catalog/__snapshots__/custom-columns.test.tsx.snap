@@ -393,7 +393,7 @@ exports[`custom category columns for catalog > renders 1`] = `
                   class="items box grow flex column"
                 >
                   <div
-                    class="Table flex column Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"
@@ -1117,7 +1117,7 @@ exports[`custom category columns for catalog > when category is added using defa
                   class="items box grow flex column"
                 >
                   <div
-                    class="Table flex column Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"
@@ -1841,7 +1841,7 @@ exports[`custom category columns for catalog > when category is added using defa
                   class="items box grow flex column"
                 >
                   <div
-                    class="Table flex column Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"
@@ -2555,7 +2555,7 @@ exports[`custom category columns for catalog > when category is added using defa
                   class="items box grow flex column"
                 >
                   <div
-                    class="Table flex column Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"
@@ -3255,7 +3255,7 @@ exports[`custom category columns for catalog > when category is added with custo
                   class="items box grow flex column"
                 >
                   <div
-                    class="Table flex column Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"
@@ -3979,7 +3979,7 @@ exports[`custom category columns for catalog > when category is added with custo
                   class="items box grow flex column"
                 >
                   <div
-                    class="Table flex column Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"
@@ -4631,7 +4631,7 @@ exports[`custom category columns for catalog > when category is added without de
                   class="items box grow flex column"
                 >
                   <div
-                    class="Table flex column Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"
@@ -5355,7 +5355,7 @@ exports[`custom category columns for catalog > when category is added without de
                   class="items box grow flex column"
                 >
                   <div
-                    class="Table flex column Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"

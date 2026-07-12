@@ -771,7 +771,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                   class="items box grow flex column"
                 >
                   <div
-                    class="Table flex column Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"
@@ -1719,7 +1719,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                   class="items box grow flex column"
                 >
                   <div
-                    class="Table flex column Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"
@@ -2699,7 +2699,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                   class="items box grow flex column"
                 >
                   <div
-                    class="Table flex column Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"
@@ -3679,7 +3679,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                   class="items box grow flex column"
                 >
                   <div
-                    class="Table flex column Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"
@@ -4911,7 +4911,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                   class="items box grow flex column"
                 >
                   <div
-                    class="Table flex column Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"
@@ -5879,7 +5879,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                   class="items box grow flex column"
                 >
                   <div
-                    class="Table flex column Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"
@@ -6847,7 +6847,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                   class="items box grow flex column"
                 >
                   <div
-                    class="Table flex column Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"

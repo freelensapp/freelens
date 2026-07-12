@@ -424,7 +424,7 @@ exports[`entity running technical tests > when navigated to catalog > renders 1`
                   class="items box grow flex column"
                 >
                   <div
-                    class="Table flex column Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"
@@ -1242,7 +1242,7 @@ exports[`entity running technical tests > when navigated to catalog > when detai
                   class="items box grow flex column"
                 >
                   <div
-                    class="Table flex column Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"

@@ -508,7 +508,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -1198,7 +1198,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -2056,7 +2056,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -2971,7 +2971,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -4036,7 +4036,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -5111,7 +5111,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -6176,7 +6176,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -7245,7 +7245,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -8320,7 +8320,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"

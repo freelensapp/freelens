@@ -595,7 +595,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column KubeObjectListLayout Pods box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col KubeObjectListLayout Pods box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -1777,7 +1777,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column KubeObjectListLayout Pods box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col KubeObjectListLayout Pods box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -2811,7 +2811,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column KubeObjectListLayout Pods box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col KubeObjectListLayout Pods box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"

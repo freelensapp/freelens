@@ -1099,7 +1099,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -2170,7 +2170,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -3119,7 +3119,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -4336,7 +4336,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -5522,7 +5522,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -6703,7 +6703,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -7884,7 +7884,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -9087,7 +9087,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -10304,7 +10304,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -11485,7 +11485,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -12721,7 +12721,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -13837,7 +13837,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -14727,7 +14727,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -15769,7 +15769,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -17163,7 +17163,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -18164,7 +18164,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -19399,7 +19399,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -20632,7 +20632,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -21813,7 +21813,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -22994,7 +22994,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="items box grow flex column"
               >
                 <div
-                  class="Table flex column HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmCharts box grow dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"

@@ -393,7 +393,7 @@ exports[`Deleting a cluster > when an internal kubeconfig cluster is used > when
                   class="items box grow flex column"
                 >
                   <div
-                    class="Table flex column Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"
@@ -1142,7 +1142,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
                   class="items box grow flex column"
                 >
                   <div
-                    class="Table flex column Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"
@@ -1924,7 +1924,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
                   class="items box grow flex column"
                 >
                   <div
-                    class="Table flex column Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"
@@ -2787,7 +2787,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
                   class="items box grow flex column"
                 >
                   <div
-                    class="Table flex column Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"
@@ -3650,7 +3650,7 @@ exports[`Deleting a cluster > when the kubeconfig has only one cluster > when th
                   class="items box grow flex column"
                 >
                   <div
-                    class="Table flex column Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"

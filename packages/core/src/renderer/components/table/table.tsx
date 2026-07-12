@@ -295,7 +295,7 @@ class NonInjectedTable<Item extends ItemObject> extends React.Component<TablePro
 
   render() {
     const { selectable, scrollable, autoSize, virtual, className } = this.props;
-    const classNames = cssNames("Table flex column", className, {
+    const classNames = cssNames("Table flex flex-col", className, {
       selectable,
       scrollable,
       sortable: this.isSortable,

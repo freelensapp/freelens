@@ -482,7 +482,7 @@ exports[`Viewing Custom Resources with extra columns > renders 1`] = `
               class="items box grow flex column"
             >
               <div
-                class="Table flex column KubeObjectListLayout CustomResources box grow dark selectable scrollable sortable autoSize virtual"
+                class="Table flex flex-col KubeObjectListLayout CustomResources box grow dark selectable scrollable sortable autoSize virtual"
               >
                 <div
                   class="TableHead sticky nowrap topLine"

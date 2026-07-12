@@ -63,7 +63,7 @@ export function Radio<T>({ className, label, value, disabled = false }: RadioPro
 
   return (
     <label
-      className={cssNames("Radio flex align-center", className, {
+      className={cssNames("Radio flex items-center", className, {
         checked,
         disabled: disabled || ctx.disabled,
       })}
@@ -78,7 +78,7 @@ export function Radio<T>({ className, label, value, disabled = false }: RadioPro
       ref={ref}
     >
       <input type="radio" checked={checked} onChange={() => ctx.onSelect(value)} disabled={disabled || ctx.disabled} />
-      <i className="tick flex center" />
+      <i className="tick flex items-center justify-center" />
       {label ? <div className="label">{label}</div> : null}
     </label>
   );
