@@ -507,10 +507,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col KubeObjectListLayout Namespaces box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col KubeObjectListLayout Namespaces grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -1329,10 +1329,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col KubeObjectListLayout Namespaces box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col KubeObjectListLayout Namespaces grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -2156,10 +2156,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col KubeObjectListLayout Namespaces box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col KubeObjectListLayout Namespaces grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -3082,10 +3082,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col KubeObjectListLayout Namespaces box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col KubeObjectListLayout Namespaces grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -3956,10 +3956,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col KubeObjectListLayout Namespaces box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col KubeObjectListLayout Namespaces grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -4932,10 +4932,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col KubeObjectListLayout Namespaces box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col KubeObjectListLayout Namespaces grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -5910,10 +5910,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col KubeObjectListLayout Namespaces box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col KubeObjectListLayout Namespaces grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -6850,10 +6850,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col KubeObjectListLayout Namespaces box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col KubeObjectListLayout Namespaces grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -7785,10 +7785,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col KubeObjectListLayout Namespaces box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col KubeObjectListLayout Namespaces grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -8711,10 +8711,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col KubeObjectListLayout Namespaces box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col KubeObjectListLayout Namespaces grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -9637,10 +9637,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col KubeObjectListLayout Namespaces box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col KubeObjectListLayout Namespaces grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -10563,10 +10563,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col KubeObjectListLayout Namespaces box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col KubeObjectListLayout Namespaces grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -11294,10 +11294,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col KubeObjectListLayout Namespaces box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col KubeObjectListLayout Namespaces grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -12229,10 +12229,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col KubeObjectListLayout Namespaces box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col KubeObjectListLayout Namespaces grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -13155,10 +13155,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col KubeObjectListLayout Namespaces box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col KubeObjectListLayout Namespaces grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -14081,10 +14081,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col KubeObjectListLayout Namespaces box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col KubeObjectListLayout Namespaces grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"

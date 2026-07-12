@@ -390,10 +390,10 @@ exports[`custom category columns for catalog > renders 1`] = `
                   </div>
                 </div>
                 <div
-                  class="items box grow flex column"
+                  class="items grow shrink-0 basis-0 flex flex-col"
                 >
                   <div
-                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"
@@ -1114,10 +1114,10 @@ exports[`custom category columns for catalog > when category is added using defa
                   </div>
                 </div>
                 <div
-                  class="items box grow flex column"
+                  class="items grow shrink-0 basis-0 flex flex-col"
                 >
                   <div
-                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"
@@ -1838,10 +1838,10 @@ exports[`custom category columns for catalog > when category is added using defa
                   </div>
                 </div>
                 <div
-                  class="items box grow flex column"
+                  class="items grow shrink-0 basis-0 flex flex-col"
                 >
                   <div
-                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"
@@ -2552,10 +2552,10 @@ exports[`custom category columns for catalog > when category is added using defa
                   </div>
                 </div>
                 <div
-                  class="items box grow flex column"
+                  class="items grow shrink-0 basis-0 flex flex-col"
                 >
                   <div
-                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"
@@ -3252,10 +3252,10 @@ exports[`custom category columns for catalog > when category is added with custo
                   </div>
                 </div>
                 <div
-                  class="items box grow flex column"
+                  class="items grow shrink-0 basis-0 flex flex-col"
                 >
                   <div
-                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"
@@ -3976,10 +3976,10 @@ exports[`custom category columns for catalog > when category is added with custo
                   </div>
                 </div>
                 <div
-                  class="items box grow flex column"
+                  class="items grow shrink-0 basis-0 flex flex-col"
                 >
                   <div
-                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"
@@ -4628,10 +4628,10 @@ exports[`custom category columns for catalog > when category is added without de
                   </div>
                 </div>
                 <div
-                  class="items box grow flex column"
+                  class="items grow shrink-0 basis-0 flex flex-col"
                 >
                   <div
-                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"
@@ -5352,10 +5352,10 @@ exports[`custom category columns for catalog > when category is added without de
                   </div>
                 </div>
                 <div
-                  class="items box grow flex column"
+                  class="items grow shrink-0 basis-0 flex flex-col"
                 >
                   <div
-                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"

@@ -592,10 +592,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -1537,10 +1537,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -1745,7 +1745,7 @@ exports[`showing details for helm release > given application is started > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -2755,10 +2755,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -2963,7 +2963,7 @@ exports[`showing details for helm release > given application is started > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -4034,10 +4034,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -4242,7 +4242,7 @@ exports[`showing details for helm release > given application is started > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -5313,10 +5313,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -5521,7 +5521,7 @@ exports[`showing details for helm release > given application is started > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -6838,10 +6838,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -7046,7 +7046,7 @@ exports[`showing details for helm release > given application is started > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -8363,10 +8363,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -8571,7 +8571,7 @@ exports[`showing details for helm release > given application is started > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -9888,10 +9888,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -11140,10 +11140,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -12394,10 +12394,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -12602,7 +12602,7 @@ exports[`showing details for helm release > given application is started > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -13919,10 +13919,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -14127,7 +14127,7 @@ exports[`showing details for helm release > given application is started > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -15198,10 +15198,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -15406,7 +15406,7 @@ exports[`showing details for helm release > given application is started > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -16479,10 +16479,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -16687,7 +16687,7 @@ exports[`showing details for helm release > given application is started > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -17697,10 +17697,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -17905,7 +17905,7 @@ exports[`showing details for helm release > given application is started > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -18976,10 +18976,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -19184,7 +19184,7 @@ exports[`showing details for helm release > given application is started > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -20255,10 +20255,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -20463,7 +20463,7 @@ exports[`showing details for helm release > given application is started > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -21534,10 +21534,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -21742,7 +21742,7 @@ exports[`showing details for helm release > given application is started > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -22813,10 +22813,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex flex-col HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"

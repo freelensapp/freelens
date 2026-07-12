@@ -421,10 +421,10 @@ exports[`entity running technical tests > when navigated to catalog > renders 1`
                   </div>
                 </div>
                 <div
-                  class="items box grow flex column"
+                  class="items grow shrink-0 basis-0 flex flex-col"
                 >
                   <div
-                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"
@@ -560,7 +560,7 @@ exports[`entity running technical tests > when navigated to catalog > renders 1`
                       </div>
                     </div>
                     <div
-                      class="VirtualList Catalog box grow dark"
+                      class="VirtualList Catalog grow shrink-0 basis-0 dark"
                     >
                       <div>
                         <div
@@ -1239,10 +1239,10 @@ exports[`entity running technical tests > when navigated to catalog > when detai
                   </div>
                 </div>
                 <div
-                  class="items box grow flex column"
+                  class="items grow shrink-0 basis-0 flex flex-col"
                 >
                   <div
-                    class="Table flex flex-col Catalog box grow dark selectable scrollable sortable autoSize virtual"
+                    class="Table flex flex-col Catalog grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                   >
                     <div
                       class="TableHead sticky nowrap topLine"
@@ -1378,7 +1378,7 @@ exports[`entity running technical tests > when navigated to catalog > when detai
                       </div>
                     </div>
                     <div
-                      class="VirtualList Catalog box grow dark"
+                      class="VirtualList Catalog grow shrink-0 basis-0 dark"
                     >
                       <div>
                         <div
