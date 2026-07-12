@@ -1722,7 +1722,7 @@ exports[`entity running technical tests > when navigated to catalog > when detai
             </div>
           </div>
           <div
-            class="box grow metadata"
+            class="grow shrink-0 basis-0 metadata"
           >
             <div
               class="DrawerItem"
@@ -1800,7 +1800,7 @@ exports[`entity running technical tests > when navigated to catalog > when detai
           </div>
         </div>
         <div
-          class="box grow"
+          class="grow shrink-0 basis-0"
         />
       </div>
     </div>

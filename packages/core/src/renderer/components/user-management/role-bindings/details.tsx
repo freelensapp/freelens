@@ -102,7 +102,7 @@ class NonInjectedRoleBindingDetails extends React.Component<RoleBindingDetailsPr
 
         <DrawerTitle>Bindings</DrawerTitle>
         {subjects.length > 0 && (
-          <Table selectable className="bindings box grow">
+          <Table selectable className="bindings grow shrink-0 basis-0">
             <TableHead>
               <TableCell checkbox />
               <TableCell className="type">Type</TableCell>

@@ -151,7 +151,7 @@ const NonInjectedClusterMetrics = observer((props: Dependencies) => {
   };
 
   return (
-    <div className={cssNames(styles.ClusterMetrics, "flex column")}>
+    <div className={cssNames(styles.ClusterMetrics, "flex flex-col")}>
       <ClusterMetricSwitchers hasCPUMetrics={hasCPUMetrics} hasMemoryMetrics={hasMemoryMetrics} />
       {renderMetrics()}
     </div>
