@@ -30,8 +30,8 @@ const projectDirs = globSync("{packages/**,freelens}/package.json", { cwd: root 
 // dropped rather than migrated.
 const nodeEnvironmentDirs = new Set([join(root, "freelens")]);
 
-// Per-package setup files, kept at their historical names from the Jest era.
-const setupCandidates = ["src/jest.setup.tsx", "src/jest-after-env.setup.ts"];
+// Per-package setup files.
+const setupCandidates = ["src/vitest.setup.tsx", "src/vitest-after-env.setup.ts"];
 
 // packages/core kept Jest's automatic node-module mocks in __mocks__/; Vitest
 // has no automatic __mocks__ resolution for node modules, so they are wired as
