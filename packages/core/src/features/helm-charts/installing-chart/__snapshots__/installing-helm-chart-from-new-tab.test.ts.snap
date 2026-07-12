@@ -3745,7 +3745,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       />
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -4961,7 +4961,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       />
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -6147,7 +6147,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       />
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -7328,7 +7328,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       />
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -8509,7 +8509,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       />
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -9713,7 +9713,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       />
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -10929,7 +10929,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       />
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -12110,7 +12110,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       />
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -13846,7 +13846,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -16394,7 +16394,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       />
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -18843,7 +18843,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       />
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -20076,7 +20076,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       />
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -21257,7 +21257,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       />
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -22438,7 +22438,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       />
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"

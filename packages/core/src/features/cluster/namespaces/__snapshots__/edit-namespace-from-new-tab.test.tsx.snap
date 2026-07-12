@@ -519,7 +519,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -1341,7 +1341,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -2168,7 +2168,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -2496,7 +2496,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       default
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -2511,7 +2511,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       </span>
                     </label>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -3094,7 +3094,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -3968,7 +3968,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -4348,7 +4348,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       default
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -4363,7 +4363,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       </span>
                     </label>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -4944,7 +4944,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -5324,7 +5324,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       default
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -5339,7 +5339,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       </span>
                     </label>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -5922,7 +5922,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -6250,7 +6250,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       default
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -6265,7 +6265,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       </span>
                     </label>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -6862,7 +6862,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -7190,7 +7190,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       default
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -7205,7 +7205,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       </span>
                     </label>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -7797,7 +7797,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -8125,7 +8125,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       default
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -8140,7 +8140,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       </span>
                     </label>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -8723,7 +8723,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -9051,7 +9051,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       default
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -9066,7 +9066,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       </span>
                     </label>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -9649,7 +9649,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -9977,7 +9977,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       default
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -9992,7 +9992,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       </span>
                     </label>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -10575,7 +10575,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -11306,7 +11306,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -11634,7 +11634,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       default
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -11649,7 +11649,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       </span>
                     </label>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -12241,7 +12241,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -12569,7 +12569,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       default
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -12584,7 +12584,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       </span>
                     </label>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -13167,7 +13167,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -13495,7 +13495,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       default
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -13510,7 +13510,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       </span>
                     </label>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -14093,7 +14093,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -14786,7 +14786,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -15608,7 +15608,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -16435,7 +16435,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -16763,7 +16763,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       default
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -16778,7 +16778,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       </span>
                     </label>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -17361,7 +17361,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -18235,7 +18235,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -18615,7 +18615,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       default
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -18630,7 +18630,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       </span>
                     </label>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -19211,7 +19211,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -19591,7 +19591,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       default
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -19606,7 +19606,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       </span>
                     </label>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -20189,7 +20189,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -20517,7 +20517,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       default
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -20532,7 +20532,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       </span>
                     </label>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -21129,7 +21129,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -21457,7 +21457,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       default
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -21472,7 +21472,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       </span>
                     </label>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -22064,7 +22064,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -22392,7 +22392,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       default
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -22407,7 +22407,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       </span>
                     </label>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -22990,7 +22990,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -23318,7 +23318,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       default
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -23333,7 +23333,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       </span>
                     </label>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -23916,7 +23916,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -24244,7 +24244,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       default
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -24259,7 +24259,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       </span>
                     </label>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -24842,7 +24842,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -25573,7 +25573,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -25901,7 +25901,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       default
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -25916,7 +25916,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       </span>
                     </label>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -26508,7 +26508,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -26836,7 +26836,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       default
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -26851,7 +26851,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       </span>
                     </label>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -27434,7 +27434,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -27762,7 +27762,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       default
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -27777,7 +27777,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       </span>
                     </label>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -28360,7 +28360,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"

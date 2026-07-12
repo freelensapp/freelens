@@ -115,7 +115,7 @@ exports[`kube-object-list-layout > given pod store > renders 1`] = `
                 class="TableCell checkbox"
               >
                 <label
-                  class="Checkbox flex align-center"
+                  class="Checkbox flex items-center"
                 >
                   <input
                     type="checkbox"

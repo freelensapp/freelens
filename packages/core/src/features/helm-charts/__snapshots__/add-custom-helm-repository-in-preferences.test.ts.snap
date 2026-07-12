@@ -5402,7 +5402,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                    
                 </div>
                 <label
-                  class="Checkbox flex align-center"
+                  class="Checkbox flex items-center"
                 >
                   <input
                     data-testid="custom-helm-repository-verify-tls-input"
@@ -7502,7 +7502,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                    
                 </div>
                 <label
-                  class="Checkbox flex align-center checked"
+                  class="Checkbox flex items-center checked"
                 >
                   <input
                     data-testid="custom-helm-repository-verify-tls-input"
@@ -12254,7 +12254,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                    
                 </div>
                 <label
-                  class="Checkbox flex align-center"
+                  class="Checkbox flex items-center"
                 >
                   <input
                     data-testid="custom-helm-repository-verify-tls-input"
@@ -14354,7 +14354,7 @@ exports[`add custom helm repository in preferences when navigating to preference
                    
                 </div>
                 <label
-                  class="Checkbox flex align-center checked"
+                  class="Checkbox flex items-center checked"
                 >
                   <input
                     data-testid="custom-helm-repository-verify-tls-input"

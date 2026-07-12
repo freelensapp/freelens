@@ -491,7 +491,7 @@ exports[`Viewing Custom Resources with extra columns > renders 1`] = `
                     class="TableCell checkbox"
                   >
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -614,7 +614,7 @@ exports[`Viewing Custom Resources with extra columns > renders 1`] = `
                               class="TableCell checkbox"
                             >
                               <label
-                                class="Checkbox flex align-center"
+                                class="Checkbox flex items-center"
                               >
                                 <input
                                   type="checkbox"

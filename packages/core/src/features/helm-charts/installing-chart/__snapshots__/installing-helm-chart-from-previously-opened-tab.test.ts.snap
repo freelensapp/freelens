@@ -1548,7 +1548,7 @@ exports[`installing helm chart from previously opened tab > given tab for instal
                       />
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"

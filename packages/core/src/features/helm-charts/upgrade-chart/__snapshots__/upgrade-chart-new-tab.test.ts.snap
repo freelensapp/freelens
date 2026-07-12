@@ -604,7 +604,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -1468,7 +1468,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -1685,7 +1685,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -2474,7 +2474,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -2691,7 +2691,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -3496,7 +3496,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -3713,7 +3713,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -4554,7 +4554,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -4771,7 +4771,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -5153,7 +5153,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       </div>
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -5769,7 +5769,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -5986,7 +5986,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -6368,7 +6368,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       </div>
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -6986,7 +6986,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -7203,7 +7203,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"

@@ -604,7 +604,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -905,7 +905,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -1786,7 +1786,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -2820,7 +2820,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"

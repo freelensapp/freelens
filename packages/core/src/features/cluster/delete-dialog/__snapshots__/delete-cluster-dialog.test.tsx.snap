@@ -1487,7 +1487,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
           class="mt-4"
         >
           <label
-            class="Checkbox flex align-center"
+            class="Checkbox flex items-center"
           >
             <input
               data-testid="delete-cluster-dialog-context-switch"
@@ -2269,7 +2269,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
           class="mt-4"
         >
           <label
-            class="Checkbox flex align-center checked"
+            class="Checkbox flex items-center checked"
           >
             <input
               data-testid="delete-cluster-dialog-context-switch"
@@ -3132,7 +3132,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
           class="mt-4"
         >
           <label
-            class="Checkbox flex align-center checked"
+            class="Checkbox flex items-center checked"
           >
             <input
               checked=""

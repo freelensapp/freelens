@@ -797,7 +797,7 @@ exports[`download logs options in logs dock tab opening pod logs when logs avail
                   class="flex gaps align-center"
                 >
                   <label
-                    class="Checkbox flex align-center show-timestamps"
+                    class="Checkbox flex items-center show-timestamps"
                   >
                     <input
                       type="checkbox"
@@ -812,7 +812,7 @@ exports[`download logs options in logs dock tab opening pod logs when logs avail
                     </span>
                   </label>
                   <label
-                    class="Checkbox flex align-center show-previous checked"
+                    class="Checkbox flex items-center show-previous checked"
                   >
                     <input
                       checked=""
@@ -1628,7 +1628,7 @@ exports[`download logs options in logs dock tab opening pod logs when logs not a
                   class="flex gaps align-center"
                 >
                   <label
-                    class="Checkbox flex align-center show-timestamps"
+                    class="Checkbox flex items-center show-timestamps"
                   >
                     <input
                       type="checkbox"
@@ -1643,7 +1643,7 @@ exports[`download logs options in logs dock tab opening pod logs when logs not a
                     </span>
                   </label>
                   <label
-                    class="Checkbox flex align-center show-previous checked"
+                    class="Checkbox flex items-center show-previous checked"
                   >
                     <input
                       checked=""

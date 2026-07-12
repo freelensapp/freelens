@@ -1441,7 +1441,7 @@ exports[`cluster/namespaces - edit namespaces from previously opened tab > given
                       default
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -1456,7 +1456,7 @@ exports[`cluster/namespaces - edit namespaces from previously opened tab > given
                       </span>
                     </label>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
