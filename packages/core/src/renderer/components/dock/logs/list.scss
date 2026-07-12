@@ -32,6 +32,7 @@
           word-break: break-all;
           height: auto;
           min-height: 18px;
+          overflow-y: clip; // estimate-sized frames must clip, not paint over following rows
         }
 
         &:hover {

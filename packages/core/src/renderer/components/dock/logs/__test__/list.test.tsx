@@ -5,6 +5,7 @@
  */
 
 import "@testing-library/jest-dom/vitest";
+import { waitFor } from "@testing-library/react";
 import React from "react";
 import userPreferencesStateInjectable from "../../../../../features/user-preferences/common/state.injectable";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
@@ -31,7 +32,11 @@ vi.mock("../../../virtual-list", () => {
     VirtualList: (props: any) => {
       virtualListMock(props);
 
-      return <div data-testid="virtual-list">{props.getRow(0)}</div>;
+      return (
+        <div data-testid="virtual-list" ref={props.outerRef}>
+          {props.getRow(0)}
+        </div>
+      );
     },
   };
 });
@@ -81,5 +86,37 @@ describe("LogList", () => {
     const { container } = render(<LogList model={model} />);
 
     expect(container.querySelector(".LogRow.wordWrap")).toBeInTheDocument();
+  });
+
+  it("reports the measured content height plus the row's vertical padding as the row height", async () => {
+    const originalClientWidth = Object.getOwnPropertyDescriptor(HTMLElement.prototype, "clientWidth");
+
+    Object.defineProperty(HTMLElement.prototype, "clientWidth", {
+      configurable: true,
+      get: () => 400,
+    });
+
+    jest.spyOn(Element.prototype, "getBoundingClientRect").mockReturnValue({
+      height: 36,
+      width: 72,
+    } as DOMRect);
+
+    try {
+      const model = getOnePodViewModel("foobar", userPreferencesState, true);
+
+      render(<LogList model={model} />);
+
+      await waitFor(() => {
+        expect(virtualListMock).toHaveBeenLastCalledWith(expect.objectContaining({ rowHeights: [40] }));
+      });
+    } finally {
+      if (originalClientWidth) {
+        Object.defineProperty(HTMLElement.prototype, "clientWidth", originalClientWidth);
+      } else {
+        delete (HTMLElement.prototype as any).clientWidth;
+      }
+
+      jest.restoreAllMocks();
+    }
   });
 });
