@@ -4,10 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import { hasTypedProperty, isObject } from "@freelensapp/utilities";
 import hb from "handlebars";
 import * as yaml from "js-yaml";
+import { getDiForExtensionApi } from "../../extensions/extension-api-di";
 import { defaultYamlDumpOptions } from "../kube-helpers";
 import productNameInjectable from "../vars/product-name.injectable";
 
@@ -107,7 +107,7 @@ export class ResourceStack {
 
   protected async renderTemplates(folderPath: string, templateContext: any): Promise<string[]> {
     const resources: string[] = [];
-    const di = getLegacyGlobalDiForExtensionApi();
+    const di = getDiForExtensionApi();
     const productName = di.inject(productNameInjectable);
 
     this.dependencies.logger.info(`[RESOURCE-STACK]: render templates from ${folderPath}`);

@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { flushPromises } from "@freelensapp/test-utils";
 import { fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -20,8 +20,9 @@ import dockStoreInjectable from "../../../renderer/components/dock/dock/store.in
 import getRandomInstallChartTabIdInjectable from "../../../renderer/components/dock/install-chart/get-random-install-chart-tab-id.injectable";
 import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
 import type { RenderResult } from "@testing-library/react";
+import type { Mock } from "vitest";
 
 import type { RequestHelmCharts } from "../../../common/k8s-api/endpoints/helm-charts.api/request-charts.injectable";
 import type { RequestHelmChartReadme } from "../../../common/k8s-api/endpoints/helm-charts.api/request-readme.injectable";
@@ -33,7 +34,7 @@ describe("opening dock tab for installing helm chart", () => {
   let requestHelmChartsMock: AsyncFnMock<RequestHelmCharts>;
   let requestHelmChartVersionsMock: AsyncFnMock<RequestHelmChartVersions>;
   let requestHelmChartReadmeMock: AsyncFnMock<RequestHelmChartReadme>;
-  let requestHelmChartValuesMock: jest.Mock;
+  let requestHelmChartValuesMock: Mock;
 
   beforeEach(() => {
     builder = getApplicationBuilder(userEvent.setup({ delay: null }));
@@ -41,7 +42,7 @@ describe("opening dock tab for installing helm chart", () => {
     requestHelmChartsMock = asyncFn();
     requestHelmChartVersionsMock = asyncFn();
     requestHelmChartReadmeMock = asyncFn();
-    requestHelmChartValuesMock = jest.fn();
+    requestHelmChartValuesMock = vi.fn();
 
     builder.beforeWindowStart(({ windowDi }) => {
       windowDi.override(directoryForLensLocalStorageInjectable, () => "/some-directory-for-lens-local-storage");
@@ -50,9 +51,9 @@ describe("opening dock tab for installing helm chart", () => {
       windowDi.override(requestHelmChartVersionsInjectable, () => requestHelmChartVersionsMock);
       windowDi.override(requestHelmChartReadmeInjectable, () => requestHelmChartReadmeMock);
       windowDi.override(requestHelmChartValuesInjectable, () => requestHelmChartValuesMock);
-      windowDi.override(requestCreateHelmReleaseInjectable, () => jest.fn());
+      windowDi.override(requestCreateHelmReleaseInjectable, () => vi.fn());
       windowDi.override(getRandomInstallChartTabIdInjectable, () =>
-        jest.fn(() => "some-irrelevant-tab-id").mockReturnValueOnce("some-tab-id"),
+        vi.fn(() => "some-irrelevant-tab-id").mockReturnValueOnce("some-tab-id"),
       );
     });
 

@@ -11,28 +11,30 @@ import { getDiForUnitTesting } from "../../main/getDiForUnitTesting";
 import forkPnpmInjectable from "./fork-pnpm.injectable";
 import installExtensionInjectable from "./install-extension.injectable";
 
+import type { Mock } from "vitest";
+
 import type { InstallExtension } from "./install-extension.injectable";
 
 describe("install-extension", () => {
   let installExtension: InstallExtension;
-  let forkPnpmMock: jest.Mock;
-  let pathExistsMock: jest.Mock;
-  let statMock: jest.Mock;
-  let writeJsonSyncMock: jest.Mock;
+  let forkPnpmMock: Mock;
+  let pathExistsMock: Mock;
+  let statMock: Mock;
+  let writeJsonSyncMock: Mock;
 
   beforeEach(() => {
     const di = getDiForUnitTesting();
 
-    pathExistsMock = jest.fn().mockResolvedValue(false);
+    pathExistsMock = vi.fn().mockResolvedValue(false);
     di.override(pathExistsInjectable, () => pathExistsMock);
 
-    statMock = jest.fn();
+    statMock = vi.fn();
     di.override(statInjectable, () => statMock);
 
-    writeJsonSyncMock = jest.fn();
+    writeJsonSyncMock = vi.fn();
     di.override(writeJsonSyncInjectable, () => writeJsonSyncMock);
 
-    forkPnpmMock = jest.fn().mockResolvedValue(undefined);
+    forkPnpmMock = vi.fn().mockResolvedValue(undefined);
     di.override(forkPnpmInjectable, () => forkPnpmMock);
 
     installExtension = di.inject(installExtensionInjectable);

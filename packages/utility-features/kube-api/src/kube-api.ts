@@ -33,9 +33,9 @@ import type {
   ScaleCreateOptions,
 } from "@freelensapp/kube-object";
 import type { LogFunction } from "@freelensapp/logger";
-import type { RequestInit, Response } from "@freelensapp/node-fetch";
 import type { Disposer } from "@freelensapp/utilities";
 
+import type { RequestInit, Response } from "node-fetch";
 import type { Patch } from "rfc6902";
 import type { PartialDeep } from "type-fest";
 

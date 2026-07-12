@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { mock, mockDeep } from "jest-mock-extended";
 import { EventEmitter } from "stream";
+import { mock, mockDeep } from "vitest-mock-extended";
 import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import ensureDirInjectable from "../../common/fs/ensure-dir.injectable";
@@ -24,16 +24,17 @@ import kubectlDownloadingNormalizedArchInjectable from "../kubectl/normalized-ar
 import type { ChildProcess } from "child_process";
 import type { Readable } from "stream";
 
-import type { DeepMockProxy } from "jest-mock-extended";
+import type { Mock } from "vitest";
+import type { DeepMockProxy } from "vitest-mock-extended";
 
 import type { Cluster } from "../../common/cluster/cluster";
 import type { GetBasenameOfPath } from "../../common/path/get-basename.injectable";
 import type { KubeAuthProxy } from "../kube-auth-proxy/create-kube-auth-proxy.injectable";
 
 describe("kube auth proxy tests", () => {
-  let spawnMock: jest.Mock;
-  let waitUntilPortIsUsedMock: jest.Mock;
-  let broadcastMessageMock: jest.Mock;
+  let spawnMock: Mock;
+  let waitUntilPortIsUsedMock: Mock;
+  let broadcastMessageMock: Mock;
   let getBasenameOfPath: GetBasenameOfPath;
   let cluster: Cluster;
   let kubeAuthProxy: KubeAuthProxy;
@@ -79,13 +80,13 @@ describe("kube auth proxy tests", () => {
     });
     await ensureDir("/tmp");
 
-    spawnMock = jest.fn();
+    spawnMock = vi.fn();
     di.override(spawnInjectable, () => spawnMock);
 
-    waitUntilPortIsUsedMock = jest.fn();
+    waitUntilPortIsUsedMock = vi.fn();
     di.override(waitUntilPortIsUsedInjectable, () => waitUntilPortIsUsedMock);
 
-    broadcastMessageMock = jest.fn();
+    broadcastMessageMock = vi.fn();
     di.override(broadcastMessageInjectable, () => broadcastMessageMock);
 
     di.override(kubectlBinaryNameInjectable, () => "kubectl");
@@ -121,8 +122,8 @@ describe("kube auth proxy tests", () => {
       mockedCP.stderr = stderr as any;
       mockedCP.stdout = stdout as any;
 
-      jest.spyOn(Kubectl.prototype, "checkBinary").mockReturnValueOnce(Promise.resolve(true));
-      jest.spyOn(Kubectl.prototype, "ensureKubectl").mockReturnValueOnce(Promise.resolve(false));
+      vi.spyOn(Kubectl.prototype, "checkBinary").mockReturnValueOnce(Promise.resolve(true));
+      vi.spyOn(Kubectl.prototype, "ensureKubectl").mockReturnValueOnce(Promise.resolve(false));
       mockedCP.on.mockImplementation(
         (event: string | symbol, listener: (message: any, sendHandle: any) => void): ChildProcess => {
           listeners.on(event, listener);

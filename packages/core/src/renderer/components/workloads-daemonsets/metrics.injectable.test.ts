@@ -14,7 +14,7 @@ import type { DaemonSet } from "@freelensapp/kube-object";
 describe("daemon-set-metrics injectable", () => {
   it("requests daemon set pod metrics with the selected time range", () => {
     const di = getDiForUnitTesting();
-    const requestPodMetricsForDaemonSets = jest.fn().mockResolvedValue({});
+    const requestPodMetricsForDaemonSets = vi.fn().mockResolvedValue({});
     const daemonSet = {
       getId: () => "daemon-set-id",
       getName: () => "daemon-set-name",

@@ -4,11 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-const asyncComputedMock = jest.fn((options: unknown) => options);
-const nowMock = jest.fn();
+const asyncComputedMock = vi.fn((options: unknown) => options);
+const nowMock = vi.fn();
 
-jest.mock("@ogre-tools/injectable-react", () => {
-  const actual = jest.requireActual("@ogre-tools/injectable-react");
+vi.mock("@ogre-tools/injectable-react", async (importOriginal) => {
+  const actual = await importOriginal<object>();
 
   return {
     ...actual,
@@ -16,8 +16,8 @@ jest.mock("@ogre-tools/injectable-react", () => {
   };
 });
 
-jest.mock("mobx-utils", () => {
-  const actual = jest.requireActual("mobx-utils");
+vi.mock("mobx-utils", async (importOriginal) => {
+  const actual = await importOriginal<object>();
 
   return {
     ...actual,
@@ -44,8 +44,8 @@ describe("createTimeRangedMetricsInjectable", () => {
 
   it("forwards selected start/end/range without subscribing to an extra refresh clock", async () => {
     const di = getDiForUnitTesting();
-    const request = jest.fn().mockResolvedValue({});
-    const timestampsGet = jest.fn(() => ({ start: 2000, end: 2100, range: 100 }));
+    const request = vi.fn().mockResolvedValue({});
+    const timestampsGet = vi.fn(() => ({ start: 2000, end: 2100, range: 100 }));
     const object: TestObject = {
       getId: () => "resource-id",
     };

@@ -10,6 +10,8 @@ import { EditResourceModel } from "./edit-resource-model.injectable";
 
 import type { ShowNotification } from "@freelensapp/notifications";
 
+import type { MockedFunction } from "vitest";
+
 import type { EditingResource, EditResourceTabStore } from "../store";
 import type { RequestKubeResource } from "./request-kube-resource.injectable";
 import type { RequestPatchKubeResource } from "./request-patch-kube-resource.injectable";
@@ -17,13 +19,13 @@ import type { RequestPatchKubeResource } from "./request-patch-kube-resource.inj
 const selfLink = "/api/v1/namespaces/default/pods/test-pod";
 
 describe("edit-resource-model", () => {
-  const requestKubeResource = jest.fn() as jest.MockedFunction<RequestKubeResource>;
-  const waitForEditingResource = jest.fn(async () => undefined as never);
-  const showSuccessNotification = jest.fn() as jest.MockedFunction<ShowNotification>;
-  const showErrorNotification = jest.fn() as jest.MockedFunction<ShowNotification>;
+  const requestKubeResource = vi.fn() as MockedFunction<RequestKubeResource>;
+  const waitForEditingResource = vi.fn(async () => undefined as never);
+  const showSuccessNotification = vi.fn() as MockedFunction<ShowNotification>;
+  const showErrorNotification = vi.fn() as MockedFunction<ShowNotification>;
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   const createModel = (firstDraft: string, draft: string, requestPatchKubeResource?: RequestPatchKubeResource) => {
@@ -33,13 +35,13 @@ describe("edit-resource-model", () => {
       draft,
     };
     const requestPatchKubeResourceMock = (requestPatchKubeResource ??
-      jest.fn(async () => ({
+      vi.fn(async () => ({
         callWasSuccessful: true,
         response: {
           kind: "Pod",
           name: "test-pod",
         },
-      }))) as jest.MockedFunction<RequestPatchKubeResource>;
+      }))) as MockedFunction<RequestPatchKubeResource>;
 
     const model = new EditResourceModel({
       requestKubeResource,

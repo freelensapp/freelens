@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`ValidatingAdmissionPolicyBindingDetails renders 1`] = `
+exports[`ValidatingAdmissionPolicyBindingDetails > renders 1`] = `
 <body>
   <div>
     <div
@@ -150,7 +150,7 @@ exports[`ValidatingAdmissionPolicyBindingDetails renders 1`] = `
 </body>
 `;
 
-exports[`ValidatingAdmissionPolicyBindingDetails renders with no param ref 1`] = `
+exports[`ValidatingAdmissionPolicyBindingDetails > renders with no param ref 1`] = `
 <body>
   <div>
     <div

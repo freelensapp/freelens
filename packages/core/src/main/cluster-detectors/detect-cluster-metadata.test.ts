@@ -28,10 +28,10 @@ describe("detect-cluster-metadata", () => {
   beforeEach(async () => {
     const di = getDiForUnitTesting();
 
-    const lastSeenDetectMock = jest.fn().mockReturnValue(Promise.resolve({ value: "some-time-stamp", accuracy: 100 }));
-    const nodeCountDetectMock = jest.fn().mockReturnValue(Promise.resolve({ value: 42, accuracy: 100 }));
-    const clusterIdDetectMock = jest.fn().mockReturnValue(Promise.resolve({ value: "some-cluster-id", accuracy: 100 }));
-    const distributionDetectMock = jest
+    const lastSeenDetectMock = vi.fn().mockReturnValue(Promise.resolve({ value: "some-time-stamp", accuracy: 100 }));
+    const nodeCountDetectMock = vi.fn().mockReturnValue(Promise.resolve({ value: 42, accuracy: 100 }));
+    const clusterIdDetectMock = vi.fn().mockReturnValue(Promise.resolve({ value: "some-cluster-id", accuracy: 100 }));
+    const distributionDetectMock = vi
       .fn()
       .mockReturnValue(Promise.resolve({ value: "some-distribution", accuracy: 100 }));
 

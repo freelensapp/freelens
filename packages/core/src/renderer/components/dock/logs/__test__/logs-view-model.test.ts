@@ -20,7 +20,7 @@ describe("LogTabViewModel", () => {
   });
 
   it("updates the saved log viewer preferences and the current tab data", () => {
-    const setLogTabData = jest.fn();
+    const setLogTabData = vi.fn();
     const model = createMockLogTabViewModel("tab-id", userPreferencesState, {
       getLogTabData: () => getDefaultOnePodLogTabData(),
       setLogTabData,

@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Command Pallet: keyboard shortcut tests when on linux renders 1`] = `
+exports[`Command Pallet: keyboard shortcut tests > when on linux > renders 1`] = `
 <body>
   <div>
     <div
@@ -469,7 +469,7 @@ exports[`Command Pallet: keyboard shortcut tests when on linux renders 1`] = `
 </body>
 `;
 
-exports[`Command Pallet: keyboard shortcut tests when on linux when pressing ESC renders 1`] = `
+exports[`Command Pallet: keyboard shortcut tests > when on linux > when pressing ESC > renders 1`] = `
 <body>
   <div>
     <div
@@ -938,7 +938,7 @@ exports[`Command Pallet: keyboard shortcut tests when on linux when pressing ESC
 </body>
 `;
 
-exports[`Command Pallet: keyboard shortcut tests when on linux when pressing SHIFT+CTRL+P renders 1`] = `
+exports[`Command Pallet: keyboard shortcut tests > when on linux > when pressing SHIFT+CTRL+P > renders 1`] = `
 <body>
   <div>
     <div
@@ -1419,7 +1419,7 @@ exports[`Command Pallet: keyboard shortcut tests when on linux when pressing SHI
 </body>
 `;
 
-exports[`Command Pallet: keyboard shortcut tests when on linux when pressing SHIFT+CTRL+P when pressing ESC renders 1`] = `
+exports[`Command Pallet: keyboard shortcut tests > when on linux > when pressing SHIFT+CTRL+P > when pressing ESC > renders 1`] = `
 <body>
   <div>
     <div
@@ -1888,7 +1888,7 @@ exports[`Command Pallet: keyboard shortcut tests when on linux when pressing SHI
 </body>
 `;
 
-exports[`Command Pallet: keyboard shortcut tests when on macOS renders 1`] = `
+exports[`Command Pallet: keyboard shortcut tests > when on macOS > renders 1`] = `
 <body>
   <div>
     <div
@@ -2266,7 +2266,7 @@ exports[`Command Pallet: keyboard shortcut tests when on macOS renders 1`] = `
 </body>
 `;
 
-exports[`Command Pallet: keyboard shortcut tests when on macOS when pressing ESC renders 1`] = `
+exports[`Command Pallet: keyboard shortcut tests > when on macOS > when pressing ESC > renders 1`] = `
 <body>
   <div>
     <div
@@ -2644,7 +2644,7 @@ exports[`Command Pallet: keyboard shortcut tests when on macOS when pressing ESC
 </body>
 `;
 
-exports[`Command Pallet: keyboard shortcut tests when on macOS when pressing SHIFT+CMD+P renders 1`] = `
+exports[`Command Pallet: keyboard shortcut tests > when on macOS > when pressing SHIFT+CMD+P > renders 1`] = `
 <body>
   <div>
     <div
@@ -3034,7 +3034,7 @@ exports[`Command Pallet: keyboard shortcut tests when on macOS when pressing SHI
 </body>
 `;
 
-exports[`Command Pallet: keyboard shortcut tests when on macOS when pressing SHIFT+CMD+P when pressing ESC renders 1`] = `
+exports[`Command Pallet: keyboard shortcut tests > when on macOS > when pressing SHIFT+CMD+P > when pressing ESC > renders 1`] = `
 <body>
   <div>
     <div

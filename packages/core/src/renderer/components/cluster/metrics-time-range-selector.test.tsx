@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { act, fireEvent, screen } from "@testing-library/react";
 import { computed, observable } from "mobx";
@@ -14,7 +14,7 @@ import { renderFor } from "../test-utils/renderFor";
 import { MetricsTimeRangeSelector } from "./metrics-time-range-selector";
 import selectedMetricsTimeRangeInjectable from "./overview/selected-metrics-time-range.injectable";
 
-jest.mock("../select", () => ({
+vi.mock("../select", () => ({
   Select: ({ id, onChange, options, value }: any) => (
     <select
       data-testid={id}
@@ -44,7 +44,7 @@ describe("MetricsTimeRangeSelector", () => {
       customStart?: number;
       customEnd?: number;
     }>({ duration: 3600, customStart: undefined, customEnd: undefined }, { deep: false });
-    const showErrorNotification = jest.fn();
+    const showErrorNotification = vi.fn();
     const expectedStart = Math.floor(new Date(2024, 0, 1, 10, 15).getTime() / 1000);
     const expectedEnd = Math.floor(new Date(2024, 0, 1, 11, 45).getTime() / 1000);
 
@@ -66,9 +66,9 @@ describe("MetricsTimeRangeSelector", () => {
           label: computed(() => (selectedTimeRange.get().duration === null ? "Custom" : "1 hour")),
           displayLabel: computed(() => ""),
           isCustom: computed(() => selectedTimeRange.get().duration === null),
-          setDuration: jest.fn(),
-          setCustomRange: jest.fn(),
-          reset: jest.fn(),
+          setDuration: vi.fn(),
+          setCustomRange: vi.fn(),
+          reset: vi.fn(),
         }) as never,
     );
 

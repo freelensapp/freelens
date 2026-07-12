@@ -12,23 +12,24 @@ import { createMockClusterEntity } from "../../common/testing";
 import executeOnClusterInjectable from "../execute-on-cluster.injectable";
 
 import type { DiContainer } from "@ogre-tools/injectable";
+import type { Mock } from "vitest";
 
 import type { CatalogEntityRegistry } from "../../../../../renderer/api/catalog/entity/registry";
 import type { ExecuteOnClusterResponse } from "../../common/types";
 
-// We need to test the K8s API functions, but they use asLegacyGlobalFunctionForExtensionApi
+// We need to test the K8s API functions, but they use asLazyInjectedFunctionForExtensionApi
 // which requires global DI setup. For unit tests, we test the underlying injectable directly.
 // Integration tests would cover the full API surface.
 
 describe("K8s extension API functions (via injectable)", () => {
   let di: DiContainer;
-  let requestFromChannelMock: jest.Mock;
+  let requestFromChannelMock: Mock;
   let catalogEntityRegistry: CatalogEntityRegistry;
 
   beforeEach(() => {
     di = getDiForUnitTesting();
 
-    requestFromChannelMock = jest.fn();
+    requestFromChannelMock = vi.fn();
     di.override(requestFromChannelInjectionToken, () => requestFromChannelMock);
 
     catalogEntityRegistry = di.inject(catalogEntityRegistryInjectable);

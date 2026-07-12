@@ -9,10 +9,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
-import { flushPromises } from "@freelensapp/test-utils/dist";
-import { anyObject } from "jest-mock-extended/lib";
+import asyncFn from "@async-fn/vitest";
+import { flushPromises } from "@freelensapp/test-utils";
 import { PartialDeep } from "type-fest";
+import { anyObject } from "vitest-mock-extended";
 import createAuthorizationApiInjectable from "../../common/cluster/create-authorization-api.injectable";
 import createCoreApiInjectable from "../../common/cluster/create-core-api.injectable";
 import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable";
@@ -24,6 +24,7 @@ import createKubeAuthProxyInjectable from "../../main/kube-auth-proxy/create-kub
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import addClusterInjectable from "./storage/common/add.injectable";
 
+import type { AsyncFnMock } from "@async-fn/vitest";
 import type {
   AuthorizationV1Api,
   CoreV1Api,
@@ -31,9 +32,7 @@ import type {
   V1APIVersions,
   V1SelfSubjectAccessReview,
   V1SelfSubjectRulesReview,
-} from "@freelensapp/kubernetes-client-node";
-
-import type { AsyncFnMock } from "@async-fn/jest";
+} from "@kubernetes/client-node";
 
 import type { Cluster } from "../../common/cluster/cluster";
 import type { ClusterConnection } from "../../main/cluster/cluster-connection.injectable";
@@ -62,7 +61,7 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
     kubeAuthProxyMock = {
       apiPrefix: "/some-api-prefix",
       port: 0,
-      exit: jest.fn(),
+      exit: vi.fn(),
       run: asyncFn(),
     };
     mainDi.override(createKubeAuthProxyInjectable, () => () => kubeAuthProxyMock);
@@ -167,7 +166,7 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
       });
 
       // TODO: fails with `Tried to resolve an asyncFn call that has not been made yet.`
-      xdescribe.each([true, false])("when cluster admin request resolves to %p", (isAdmin) => {
+      describe.skip.each([true, false])("when cluster admin request resolves to %p", (isAdmin) => {
         beforeEach(async () => {
           await createSelfSubjectAccessReviewMock.resolve({
             body: {

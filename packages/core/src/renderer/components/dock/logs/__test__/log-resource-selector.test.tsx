@@ -5,7 +5,9 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom";
+
+import type { MockedFunction } from "vitest";
+import "@testing-library/jest-dom/vitest";
 import userEvent from "@testing-library/user-event";
 import assert from "assert";
 import * as selectEvent from "react-select-event";
@@ -146,10 +148,10 @@ describe("<LogResourceSelector />", () => {
 
   describe("with several pods", () => {
     let model: LogTabViewModel;
-    let renameTab: jest.MockedFunction<LogTabViewModelDependencies["renameTab"]>;
+    let renameTab: MockedFunction<LogTabViewModelDependencies["renameTab"]>;
 
     beforeEach(() => {
-      renameTab = jest.fn();
+      renameTab = vi.fn();
       model = getFewPodsTabData("foobar", userPreferencesState, { renameTab });
     });
 

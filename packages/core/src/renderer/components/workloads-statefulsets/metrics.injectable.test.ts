@@ -14,7 +14,7 @@ import type { StatefulSet } from "@freelensapp/kube-object";
 describe("stateful-set-metrics injectable", () => {
   it("requests stateful set pod metrics with the selected time range", () => {
     const di = getDiForUnitTesting();
-    const requestPodMetricsForStatefulSets = jest.fn().mockResolvedValue({});
+    const requestPodMetricsForStatefulSets = vi.fn().mockResolvedValue({});
     const statefulSet = {
       getId: () => "stateful-set-id",
       getName: () => "stateful-set-name",

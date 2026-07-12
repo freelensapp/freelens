@@ -1,15 +1,17 @@
 import { getStartableStoppable } from "./get-startable-stoppable";
 
+import type { MockedFunction } from "vitest";
+
 import type { StartableStoppable } from "./get-startable-stoppable";
 
 describe("getStartableStoppable", () => {
-  let stopMock: jest.MockedFunction<() => void>;
-  let startMock: jest.MockedFunction<() => () => void>;
+  let stopMock: MockedFunction<() => void>;
+  let startMock: MockedFunction<() => () => void>;
   let actual: StartableStoppable;
 
   beforeEach(() => {
-    stopMock = jest.fn();
-    startMock = jest.fn().mockImplementation(() => stopMock);
+    stopMock = vi.fn();
+    startMock = vi.fn().mockImplementation(() => stopMock);
     actual = getStartableStoppable("some-id", startMock);
   });
 

@@ -4,11 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
-import { KubeJsonApi, StatefulSetApi } from "@freelensapp/kube-api";
+import asyncFn from "@async-fn/vitest";
 import { flushPromises } from "@freelensapp/test-utils";
+import { KubeJsonApi } from "../kube-json-api";
+import { StatefulSetApi } from "./stateful-set.api";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
 
 describe("StatefulSetApi", () => {
   let statefulSetApi: StatefulSetApi;
@@ -24,9 +25,10 @@ describe("StatefulSetApi", () => {
       patch: kubeJsonApiPatchMock,
     } as Partial<KubeJsonApi> as KubeJsonApi;
     statefulSetApi = new StatefulSetApi({
-      logError: jest.fn(),
-      logInfo: jest.fn(),
-      logWarn: jest.fn(),
+      logDebug: vi.fn(),
+      logError: vi.fn(),
+      logInfo: vi.fn(),
+      logWarn: vi.fn(),
       maybeKubeApi: kubeJsonApi,
     });
   });

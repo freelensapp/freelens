@@ -6,7 +6,9 @@
 
 import { fireEvent } from "@testing-library/react";
 import React from "react";
-import "@testing-library/jest-dom";
+
+import type { MockedFunction } from "vitest";
+import "@testing-library/jest-dom/vitest";
 
 import { computed, observable } from "mobx";
 import platformInjectable from "../../../../common/vars/platform.injectable";
@@ -30,23 +32,23 @@ import type { DiRender } from "../../test-utils/renderFor";
 describe("<TopBar/>", () => {
   let di: DiContainer;
   let render: DiRender;
-  let goBack: jest.MockedFunction<() => void>;
-  let goForward: jest.MockedFunction<() => void>;
-  let openAppContextMenu: jest.MockedFunction<() => void>;
-  let closeWindow: jest.MockedFunction<() => void>;
-  let maximizeWindow: jest.MockedFunction<() => void>;
-  let toggleMaximizeWindow: jest.MockedFunction<() => void>;
+  let goBack: MockedFunction<() => Promise<void>>;
+  let goForward: MockedFunction<() => Promise<void>>;
+  let openAppContextMenu: MockedFunction<() => Promise<void>>;
+  let closeWindow: MockedFunction<() => Promise<void>>;
+  let maximizeWindow: MockedFunction<() => Promise<void>>;
+  let toggleMaximizeWindow: MockedFunction<() => Promise<void>>;
 
   beforeEach(() => {
     di = getDiForUnitTesting();
 
     di.override(rendererExtensionsInjectable, () => computed(() => []));
-    di.override(openAppContextMenuInjectable, () => (openAppContextMenu = jest.fn()));
-    di.override(goBackInjectable, () => (goBack = jest.fn()));
-    di.override(goForwardInjectable, () => (goForward = jest.fn()));
-    di.override(closeWindowInjectable, () => (closeWindow = jest.fn()));
-    di.override(maximizeWindowInjectable, () => (maximizeWindow = jest.fn()));
-    di.override(toggleMaximizeWindowInjectable, () => (toggleMaximizeWindow = jest.fn()));
+    di.override(openAppContextMenuInjectable, () => (openAppContextMenu = vi.fn(async () => {})));
+    di.override(goBackInjectable, () => (goBack = vi.fn(async () => {})));
+    di.override(goForwardInjectable, () => (goForward = vi.fn(async () => {})));
+    di.override(closeWindowInjectable, () => (closeWindow = vi.fn(async () => {})));
+    di.override(maximizeWindowInjectable, () => (maximizeWindow = vi.fn(async () => {})));
+    di.override(toggleMaximizeWindowInjectable, () => (toggleMaximizeWindow = vi.fn(async () => {})));
     di.override(currentlyInClusterFrameInjectable, () => false);
 
     render = renderFor(di);

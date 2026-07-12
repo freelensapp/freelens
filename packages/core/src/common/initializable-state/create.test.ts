@@ -4,14 +4,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { runManyFor } from "@freelensapp/run-many";
 import { createContainer, getInjectionToken } from "@ogre-tools/injectable";
 import { getInitializable, getInjectablesForInitializable } from "./create";
 
 import type { Runnable } from "@freelensapp/run-many";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
 import type { DiContainer, InjectionToken } from "@ogre-tools/injectable";
 
 import type { ImplInitializableInjectionTokensArgs, Initializable } from "./create";
@@ -30,7 +30,7 @@ describe("InitializableTokens technical tests", () => {
 
   it("throws given attempting to inject the state token", () => {
     expect(() => di.inject(initializableToken.stateToken)).toThrowErrorMatchingInlineSnapshot(
-      `"Tried to inject non-registered injectable "irrelevant" -> "some-root-id-state-token"."`,
+      `[Error: Tried to inject non-registered injectable "irrelevant" -> "some-root-id-state-token".]`,
     );
   });
 
@@ -51,7 +51,7 @@ describe("InitializableTokens technical tests", () => {
 
     it("throws given attempting to inject the state token", () => {
       expect(() => di.inject(initializableToken.stateToken)).toThrowErrorMatchingInlineSnapshot(
-        `"Tried to inject "some-root-id" before initialization was complete"`,
+        `[AssertionError: Tried to inject "some-root-id" before initialization was complete]`,
       );
     });
 
@@ -64,7 +64,7 @@ describe("InitializableTokens technical tests", () => {
 
       it("throws given attempting to inject the state token", () => {
         expect(() => di.inject(initializableToken.stateToken)).toThrowErrorMatchingInlineSnapshot(
-          `"Tried to inject "some-root-id" before initialization was complete"`,
+          `[AssertionError: Tried to inject "some-root-id" before initialization was complete]`,
         );
       });
 

@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import { getOrInsertWith } from "@freelensapp/utilities";
 import assert from "assert";
 import * as path from "path";
@@ -12,6 +11,7 @@ import directoryForUserDataInjectable from "../common/app-paths/directory-for-us
 import createPersistentStorageInjectable, {
   type PersistentStorage,
 } from "../features/persistent-storage/common/create.injectable";
+import { getDiForExtensionApi } from "./extension-api-di";
 
 import type { Options } from "conf";
 
@@ -58,7 +58,7 @@ export abstract class BaseExtensionStore<M extends object = any> {
 
   protected persistentStorage?: PersistentStorage;
   private readonly dependencies = (() => {
-    const di = getLegacyGlobalDiForExtensionApi();
+    const di = getDiForExtensionApi();
 
     return {
       createPersistentStorage: di.inject(createPersistentStorageInjectable),

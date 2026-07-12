@@ -8,9 +8,10 @@ import React from "react";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 import type { RenderResult } from "@testing-library/react";
+import type { Mock } from "vitest";
 
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 
 import { discoverFor } from "@freelensapp/react-testing-library-discovery";
 import logErrorInjectable from "../../common/log-error.injectable";
@@ -28,11 +29,11 @@ describe("preferences - navigation to extension specific preferences", () => {
 
   describe("given in preferences, when rendered", () => {
     let rendered: RenderResult;
-    let logErrorMock: jest.Mock;
+    let logErrorMock: Mock;
     let discover: Discover;
 
     beforeEach(async () => {
-      logErrorMock = jest.fn();
+      logErrorMock = vi.fn();
 
       builder.beforeWindowStart(({ windowDi }) => {
         windowDi.override(logErrorInjectable, () => logErrorMock);

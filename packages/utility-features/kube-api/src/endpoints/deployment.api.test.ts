@@ -4,26 +4,30 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { DeploymentApi, KubeJsonApi } from "@freelensapp/kube-api";
+import { KubeJsonApi } from "../kube-json-api";
+import { DeploymentApi } from "./deployment.api";
+
+import type { Mocked } from "vitest";
 
 describe("DeploymentApi", () => {
   let deploymentApi: DeploymentApi;
-  let kubeJsonApi: jest.Mocked<KubeJsonApi>;
+  let kubeJsonApi: Mocked<KubeJsonApi>;
 
   beforeEach(() => {
     kubeJsonApi = {
-      getResponse: jest.fn(),
-      get: jest.fn(),
-      post: jest.fn(),
-      put: jest.fn(),
-      patch: jest.fn(),
-      del: jest.fn(),
+      getResponse: vi.fn(),
+      get: vi.fn(),
+      post: vi.fn(),
+      put: vi.fn(),
+      patch: vi.fn(),
+      del: vi.fn(),
     } as never;
 
     deploymentApi = new DeploymentApi({
-      logError: jest.fn(),
-      logInfo: jest.fn(),
-      logWarn: jest.fn(),
+      logDebug: vi.fn(),
+      logError: vi.fn(),
+      logInfo: vi.fn(),
+      logWarn: vi.fn(),
       maybeKubeApi: kubeJsonApi,
     });
   });

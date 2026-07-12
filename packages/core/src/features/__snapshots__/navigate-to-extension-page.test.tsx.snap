@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`navigate to extension page renders 1`] = `
+exports[`navigate to extension page > renders 1`] = `
 <div>
   <div
     class="Notifications flex column align-flex-end"
@@ -376,7 +376,7 @@ exports[`navigate to extension page renders 1`] = `
 </div>
 `;
 
-exports[`navigate to extension page when extension navigates to child route renders 1`] = `
+exports[`navigate to extension page > when extension navigates to child route > renders 1`] = `
 <div>
   <div
     class="Notifications flex column align-flex-end"
@@ -597,7 +597,7 @@ exports[`navigate to extension page when extension navigates to child route rend
 </div>
 `;
 
-exports[`navigate to extension page when extension navigates to route with parameters renders 1`] = `
+exports[`navigate to extension page > when extension navigates to route with parameters > renders 1`] = `
 <div>
   <div
     class="Notifications flex column align-flex-end"
@@ -834,7 +834,7 @@ exports[`navigate to extension page when extension navigates to route with param
 </div>
 `;
 
-exports[`navigate to extension page when extension navigates to route without parameters renders 1`] = `
+exports[`navigate to extension page > when extension navigates to route without parameters > renders 1`] = `
 <div>
   <div
     class="Notifications flex column align-flex-end"
@@ -1071,7 +1071,7 @@ exports[`navigate to extension page when extension navigates to route without pa
 </div>
 `;
 
-exports[`navigate to extension page when extension navigates to route without parameters when changing page parameters renders 1`] = `
+exports[`navigate to extension page > when extension navigates to route without parameters > when changing page parameters > renders 1`] = `
 <div>
   <div
     class="Notifications flex column align-flex-end"

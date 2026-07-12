@@ -19,7 +19,8 @@ import type { AgentOptions } from "https";
 
 import type { KubeApiOptions } from "@freelensapp/kube-api";
 import type { KubeJsonApiDataFor, KubeObject, KubeObjectConstructor } from "@freelensapp/kube-object";
-import type { RequestInit } from "@freelensapp/node-fetch";
+
+import type { RequestInit } from "node-fetch";
 
 export interface CreateKubeApiForRemoteClusterConfig {
   cluster: {

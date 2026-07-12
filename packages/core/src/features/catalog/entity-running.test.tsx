@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn, { type AsyncFnMock } from "@async-fn/jest";
+import asyncFn, { type AsyncFnMock } from "@async-fn/vitest";
 import { flushPromises } from "@freelensapp/test-utils";
 import appEventBusInjectable from "../../common/app-event-bus/app-event-bus.injectable";
 import { CatalogCategory, CatalogEntity, categoryVersion } from "../../common/catalog";
@@ -16,6 +16,7 @@ import { advanceFakeTime, testUsingFakeTime } from "../../test-utils/use-fake-ti
 
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
+import type { MockedFunction } from "vitest";
 
 import type { AppEvent } from "../../common/app-event-bus/event-bus";
 import type { CatalogEntityActionContext } from "../../common/catalog";
@@ -82,15 +83,15 @@ describe("entity running technical tests", () => {
   let builder: ApplicationBuilder;
   let windowDi: DiContainer;
   let rendered: RenderResult;
-  let appEventListener: jest.MockedFunction<(event: AppEvent) => void>;
-  let onRun: jest.MockedFunction<(context: CatalogEntityActionContext) => void | Promise<void>>;
+  let appEventListener: MockedFunction<(event: AppEvent) => void>;
+  let onRun: MockedFunction<(context: CatalogEntityActionContext) => void | Promise<void>>;
   let catalogEntityRegistry: CatalogEntityRegistry;
 
   beforeEach(async () => {
     builder = getApplicationBuilder();
 
     builder.afterWindowStart(({ windowDi }) => {
-      onRun = jest.fn();
+      onRun = vi.fn();
 
       const catalogCategoryRegistery = windowDi.inject(catalogCategoryRegistryInjectable);
 
@@ -102,7 +103,7 @@ describe("entity running technical tests", () => {
 
       catalogEntityRegistry.updateItems([catalogEntityItem]);
 
-      appEventListener = jest.fn();
+      appEventListener = vi.fn();
       windowDi.inject(appEventBusInjectable).addListener(appEventListener);
     });
 
@@ -165,7 +166,7 @@ describe("entity running technical tests", () => {
       });
 
       it("onBeforeRun prevents event => onRun wont be triggered", async () => {
-        const onBeforeRunMock = jest.fn((event) => event.preventDefault());
+        const onBeforeRunMock = vi.fn((event) => event.preventDefault());
 
         catalogEntityRegistry.addOnBeforeRun(onBeforeRunMock);
 
@@ -188,12 +189,16 @@ describe("entity running technical tests", () => {
         expect(onRun).toHaveBeenCalled();
       });
 
-      it("addOnRunHook return a promise and does not prevent run event => onRun()", (done) => {
-        onRun.mockImplementation(() => done());
+      it("addOnRunHook return a promise and does not prevent run event => onRun()", async () => {
+        const onRunCalled = new Promise<void>((resolve) => {
+          onRun.mockImplementation(() => resolve());
+        });
 
         catalogEntityRegistry.addOnBeforeRun(async () => {});
 
         rendered.getByTestId("detail-panel-hot-bar-icon").click();
+
+        await onRunCalled;
       });
 
       it("addOnRunHook return a promise and prevents event wont be triggered", async () => {

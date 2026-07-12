@@ -4,12 +4,13 @@ import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import { type DiRender, renderFor } from "../../test-utils/renderFor";
 import PodMenuItem from "../pod-menu-item";
 
-import type { ContainerWithType } from "@freelensapp/kube-object/dist";
+import type { ContainerWithType } from "@freelensapp/kube-object";
 
 import type { DiContainer } from "@ogre-tools/injectable";
+import type { Mock } from "vitest";
 
-jest.mock("../../menu", () => {
-  const actualMenu = jest.requireActual("../../menu");
+vi.mock("../../menu", async (importOriginal) => {
+  const actualMenu = await importOriginal<object>();
 
   return {
     ...actualMenu,
@@ -25,12 +26,12 @@ jest.mock("../../menu", () => {
 describe("pod-menu-item", () => {
   let di: DiContainer;
   let render: DiRender;
-  let callback: jest.Mock;
+  let callback: Mock;
 
   beforeEach(() => {
     di = getDiForUnitTesting();
 
-    callback = jest.fn();
+    callback = vi.fn();
 
     render = renderFor(di);
   });

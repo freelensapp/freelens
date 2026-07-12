@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`ValidatingAdmissionPolicyDetails renders 1`] = `
+exports[`ValidatingAdmissionPolicyDetails > renders 1`] = `
 <body>
   <div>
     <div
@@ -209,7 +209,7 @@ exports[`ValidatingAdmissionPolicyDetails renders 1`] = `
 </body>
 `;
 
-exports[`ValidatingAdmissionPolicyDetails renders with no validations 1`] = `
+exports[`ValidatingAdmissionPolicyDetails > renders with no validations 1`] = `
 <body>
   <div>
     <div

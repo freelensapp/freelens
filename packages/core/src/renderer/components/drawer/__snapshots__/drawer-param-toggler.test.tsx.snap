@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`<DrawerParamToggler /> after clicking the toggle after clicking the toggle again renders 1`] = `
+exports[`<DrawerParamToggler /> > after clicking the toggle > after clicking the toggle again > renders 1`] = `
 <body>
   <div>
     <div
@@ -43,7 +43,7 @@ exports[`<DrawerParamToggler /> after clicking the toggle after clicking the tog
 </body>
 `;
 
-exports[`<DrawerParamToggler /> after clicking the toggle renders 1`] = `
+exports[`<DrawerParamToggler /> > after clicking the toggle > renders 1`] = `
 <body>
   <div>
     <div
@@ -90,7 +90,7 @@ exports[`<DrawerParamToggler /> after clicking the toggle renders 1`] = `
 </body>
 `;
 
-exports[`<DrawerParamToggler /> renders 1`] = `
+exports[`<DrawerParamToggler /> > renders 1`] = `
 <body>
   <div>
     <div

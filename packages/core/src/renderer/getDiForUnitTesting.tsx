@@ -8,7 +8,6 @@ import { animateFeature, requestAnimationFrameInjectable } from "@freelensapp/an
 import { clusterSidebarFeature } from "@freelensapp/cluster-sidebar";
 import { registerFeature } from "@freelensapp/feature-core";
 import { kubeApiSpecificsFeature } from "@freelensapp/kube-api-specifics";
-import { setLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import { loggerFeature } from "@freelensapp/logger";
 import { messagingFeature, testUtils as messagingTestUtils } from "@freelensapp/messaging";
 import { notificationsFeature } from "@freelensapp/notifications";
@@ -19,6 +18,7 @@ import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { registerInjectableReact } from "@ogre-tools/injectable-react";
 import { chunk, noop } from "lodash/fp";
 import { runInAction } from "mobx";
+import { setDiForExtensionApi } from "../extensions/extension-api-di";
 import { getOverrideFsWithFakes } from "../test-utils/override-fs-with-fakes";
 import hostedClusterIdInjectable from "./cluster-frame-context/hosted-cluster-id.injectable";
 import terminalSpawningPoolInjectable from "./components/dock/terminal/terminal-spawning-pool.injectable";
@@ -28,6 +28,33 @@ import watchHistoryStateInjectable from "./remote-helpers/watch-history-state.in
 
 import type { GlobalOverride } from "@freelensapp/test-utils";
 
+// The injectable files must be loaded through Vite's transform pipeline
+// (import.meta.glob), not native require(path): the source-only workspace
+// packages they import use extensionless specifiers that only Vite resolves.
+const injectableModules = import.meta.glob<object>(
+  [
+    "../common/**/*.injectable.{ts,tsx}",
+    "../extensions/**/*.injectable.{ts,tsx}",
+    "./**/*.injectable.{ts,tsx}",
+    "../test-env/**/*.injectable.{ts,tsx}",
+    "../features/**/renderer/**/*.injectable.{ts,tsx}",
+    "../features/**/common/**/*.injectable.{ts,tsx}",
+  ],
+  { eager: true },
+);
+
+const globalOverrideModules = import.meta.glob<{ default: GlobalOverride<unknown, unknown, unknown> }>(
+  [
+    "../common/**/*.global-override-for-injectable.{ts,tsx}",
+    "../extensions/**/*.global-override-for-injectable.{ts,tsx}",
+    "./**/*.global-override-for-injectable.{ts,tsx}",
+    "../test-env/**/*.global-override-for-injectable.{ts,tsx}",
+    "../features/**/renderer/**/*.global-override-for-injectable.{ts,tsx}",
+    "../features/**/common/**/*.global-override-for-injectable.{ts,tsx}",
+  ],
+  { eager: true },
+);
+
 export const getDiForUnitTesting = () => {
   const environment = "renderer";
   const di = createContainer(environment, {
@@ -36,7 +63,7 @@ export const getDiForUnitTesting = () => {
 
   registerMobX(di);
   registerInjectableReact(di);
-  setLegacyGlobalDiForExtensionApi(di, environment);
+  setDiForExtensionApi(di, environment);
 
   runInAction(() => {
     registerFeature(
@@ -56,19 +83,14 @@ export const getDiForUnitTesting = () => {
   di.preventSideEffects();
 
   runInAction(() => {
-    const injectables = global.injectablePaths.renderer.paths
-      .map((path) => require(path))
-      .flatMap(Object.values)
-      .filter(isInjectable);
+    const injectables = Object.values(injectableModules).flatMap(Object.values).filter(isInjectable);
 
     for (const block of chunk(100)(injectables)) {
       di.register(...block);
     }
   });
 
-  for (const globalOverridePath of global.injectablePaths.renderer.globalOverridePaths) {
-    const globalOverride = require(globalOverridePath).default as GlobalOverride<unknown, unknown, unknown>;
-
+  for (const globalOverride of Object.values(globalOverrideModules).map((module) => module.default)) {
     di.override(globalOverride.injectable, globalOverride.overridingInstantiate);
   }
 

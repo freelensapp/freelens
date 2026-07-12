@@ -5,7 +5,7 @@
  */
 
 import type { DiContainer } from "@ogre-tools/injectable";
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 
 import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
 import React from "react";
@@ -54,7 +54,7 @@ describe("kube-object-list-layout", () => {
 
     render = renderFor(di);
 
-    di.override(subscribeStoresInjectable, () => jest.fn().mockImplementation(() => jest.fn()));
+    di.override(subscribeStoresInjectable, () => vi.fn().mockImplementation(() => vi.fn()));
     di.override(kubeSelectedUrlParamInjectable, () => ({
       get: () => "path",
     }));

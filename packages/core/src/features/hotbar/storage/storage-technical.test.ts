@@ -5,8 +5,8 @@
  */
 
 import { loggerInjectionToken } from "@freelensapp/logger";
-import { anyObject } from "jest-mock-extended";
 import { computed } from "mobx";
+import { anyObject } from "vitest-mock-extended";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import hasCategoryForEntityInjectable from "../../../common/catalog/has-category-for-entity.injectable";
 import catalogCatalogEntityInjectable from "../../../common/catalog-entities/general-catalog-entities/implementations/catalog-catalog-entity.injectable";
@@ -24,6 +24,7 @@ import type { Logger } from "@freelensapp/logger";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { IComputedValue } from "mobx";
+import type { Mocked } from "vitest";
 
 import type { CatalogEntity, CatalogEntityData, CatalogEntityKindData } from "../../../common/catalog";
 import type { AddHotbar } from "./common/add.injectable";
@@ -32,12 +33,12 @@ import type { SetAsActiveHotbar } from "./common/set-as-active.injectable";
 
 function getMockCatalogEntity(data: Partial<CatalogEntityData> & CatalogEntityKindData): CatalogEntity {
   return {
-    getName: jest.fn(() => data.metadata?.name),
-    getId: jest.fn(() => data.metadata?.uid),
-    getSource: jest.fn(() => data.metadata?.source ?? "unknown"),
-    isEnabled: jest.fn(() => data.status?.enabled ?? true),
-    onContextMenuOpen: jest.fn(),
-    onSettingsOpen: jest.fn(),
+    getName: vi.fn(() => data.metadata?.name),
+    getId: vi.fn(() => data.metadata?.uid),
+    getSource: vi.fn(() => data.metadata?.source ?? "unknown"),
+    isEnabled: vi.fn(() => data.status?.enabled ?? true),
+    onContextMenuOpen: vi.fn(),
+    onSettingsOpen: vi.fn(),
     metadata: {},
     spec: {},
     status: {},
@@ -50,7 +51,7 @@ describe("Hotbars technical tests", () => {
   let testCluster: CatalogEntity;
   let kindCluster: CatalogEntity;
   let awsCluster: CatalogEntity;
-  let loggerMock: jest.Mocked<Logger>;
+  let loggerMock: Mocked<Logger>;
   let setAsActiveHotbar: SetAsActiveHotbar;
   let hotbars: IComputedValue<Hotbar[]>;
   let activeHotbar: IComputedValue<Hotbar | undefined>;
@@ -102,11 +103,11 @@ describe("Hotbars technical tests", () => {
     di.override(hasCategoryForEntityInjectable, () => () => true);
 
     loggerMock = {
-      warn: jest.fn(),
-      debug: jest.fn(),
-      error: jest.fn(),
-      info: jest.fn(),
-      silly: jest.fn(),
+      warn: vi.fn(),
+      debug: vi.fn(),
+      error: vi.fn(),
+      info: vi.fn(),
+      silly: vi.fn(),
     };
 
     di.override(loggerInjectionToken, () => loggerMock);

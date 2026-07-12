@@ -4,7 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import "@testing-library/jest-dom";
+import type { MockedFunction } from "vitest";
+
+import "@testing-library/jest-dom/vitest";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import assert from "assert";
 import { observable, when } from "mobx";
@@ -33,11 +35,11 @@ import type { InstallExtensionFromInput } from "../install-extension-from-input.
 describe("Extensions", () => {
   let extensionLoader: ExtensionLoader;
   let extensionDiscovery: ExtensionDiscovery;
-  let installExtensionFromInput: jest.MockedFunction<InstallExtensionFromInput>;
+  let installExtensionFromInput: MockedFunction<InstallExtensionFromInput>;
   let extensionInstallationStateStore: ExtensionInstallationStateStore;
   let render: DiRender;
-  let deleteFileMock: jest.MockedFunction<RemovePath>;
-  let downloadBinary: jest.MockedFunction<DownloadBinary>;
+  let deleteFileMock: MockedFunction<RemovePath>;
+  let downloadBinary: MockedFunction<DownloadBinary>;
 
   beforeEach(() => {
     try {
@@ -49,13 +51,13 @@ describe("Extensions", () => {
 
       render = renderFor(di);
 
-      installExtensionFromInput = jest.fn();
+      installExtensionFromInput = vi.fn();
       di.override(installExtensionFromInputInjectable, () => installExtensionFromInput);
 
-      deleteFileMock = jest.fn();
+      deleteFileMock = vi.fn();
       di.override(removePathInjectable, () => deleteFileMock);
 
-      downloadBinary = jest.fn().mockImplementation((url) => {
+      downloadBinary = vi.fn().mockImplementation((url) => {
         throw new Error(`Unexpected call to downloadJson for url=${url}`);
       });
 
@@ -77,7 +79,7 @@ describe("Extensions", () => {
         isCompatible: true,
       });
 
-      extensionDiscovery.uninstallExtension = jest.fn(() => Promise.resolve());
+      extensionDiscovery.uninstallExtension = vi.fn(() => Promise.resolve());
     } catch (e) {
       console.error(e);
       throw e;

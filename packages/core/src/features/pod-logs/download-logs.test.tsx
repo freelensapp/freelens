@@ -29,6 +29,7 @@ import type { Container } from "@freelensapp/kube-object";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
+import type { Mock, MockedFunction } from "vitest";
 
 import type { CallForLogs } from "../../renderer/components/dock/logs/call-for-logs.injectable";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
@@ -37,11 +38,11 @@ describe("download logs options in logs dock tab", () => {
   let windowDi: DiContainer;
   let rendered: RenderResult;
   let builder: ApplicationBuilder;
-  let openSaveFileDialogMock: jest.MockedFunction<() => void>;
-  let callForLogsMock: jest.MockedFunction<CallForLogs>;
-  let getLogsMock: jest.Mock;
-  let getSplitLogsMock: jest.Mock;
-  let showErrorNotificationMock: jest.Mock;
+  let openSaveFileDialogMock: MockedFunction<() => void>;
+  let callForLogsMock: MockedFunction<CallForLogs>;
+  let getLogsMock: Mock;
+  let getSplitLogsMock: Mock;
+  let showErrorNotificationMock: Mock;
   const logs = new Map([["timestamp", "some-logs"]]);
   const pod = dockerPod;
 
@@ -57,9 +58,9 @@ describe("download logs options in logs dock tab", () => {
 
     builder.setEnvironmentToClusterFrame();
 
-    callForLogsMock = jest.fn();
-    getLogsMock = jest.fn();
-    getSplitLogsMock = jest.fn();
+    callForLogsMock = vi.fn();
+    getLogsMock = vi.fn();
+    getSplitLogsMock = vi.fn();
 
     builder.beforeWindowStart(({ windowDi }) => {
       windowDi.override(callForLogsInjectable, () => callForLogsMock);
@@ -68,7 +69,7 @@ describe("download logs options in logs dock tab", () => {
       windowDi.override(getLogsInjectable, () => getLogsMock);
       windowDi.override(getLogsWithoutTimestampsInjectable, () => getLogsMock);
       windowDi.override(getTimestampSplitLogsInjectable, () => getSplitLogsMock);
-      windowDi.override(reloadLogsInjectable, () => jest.fn());
+      windowDi.override(reloadLogsInjectable, () => vi.fn());
       windowDi.override(getLogTabDataInjectable, () => () => ({
         selectedPodId: selectedPod.getId(),
         selectedContainer: selectedPod.getContainers()[0].name,
@@ -77,10 +78,10 @@ describe("download logs options in logs dock tab", () => {
         showTimestamps: false,
         showWordWrap: false,
       }));
-      windowDi.override(setLogTabDataInjectable, () => jest.fn());
-      windowDi.override(loadLogsInjectable, () => jest.fn());
-      windowDi.override(stopLoadingLogsInjectable, () => jest.fn());
-      windowDi.override(areLogsPresentInjectable, () => jest.fn());
+      windowDi.override(setLogTabDataInjectable, () => vi.fn());
+      windowDi.override(loadLogsInjectable, () => vi.fn());
+      windowDi.override(stopLoadingLogsInjectable, () => vi.fn());
+      windowDi.override(areLogsPresentInjectable, () => vi.fn());
       windowDi.override(getPodByIdInjectable, () => (id) => {
         if (id === selectedPod.getId()) {
           return selectedPod;
@@ -88,14 +89,14 @@ describe("download logs options in logs dock tab", () => {
 
         return undefined;
       });
-      windowDi.override(getPodsByOwnerIdInjectable, () => jest.fn());
+      windowDi.override(getPodsByOwnerIdInjectable, () => vi.fn());
 
-      windowDi.override(getRandomIdForPodLogsTabInjectable, () => jest.fn(() => "some-irrelevant-random-id"));
+      windowDi.override(getRandomIdForPodLogsTabInjectable, () => vi.fn(() => "some-irrelevant-random-id"));
 
-      openSaveFileDialogMock = jest.fn();
+      openSaveFileDialogMock = vi.fn();
       windowDi.override(openSaveFileDialogInjectable, () => openSaveFileDialogMock);
 
-      showErrorNotificationMock = jest.fn();
+      showErrorNotificationMock = vi.fn();
       windowDi.override(showErrorNotificationInjectable, () => showErrorNotificationMock);
     });
   });

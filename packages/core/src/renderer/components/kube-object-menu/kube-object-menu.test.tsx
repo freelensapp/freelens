@@ -8,7 +8,8 @@ import { screen, waitFor } from "@testing-library/react";
 import React from "react";
 
 import type { RenderResult } from "@testing-library/react";
-import "@testing-library/jest-dom";
+import type { Mocked } from "vitest";
+import "@testing-library/jest-dom/vitest";
 
 import { KubeObject } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
@@ -73,7 +74,7 @@ describe("kube-object-menu", () => {
         ({
           getStore: (api: any) => ({
             getByPath: (path: string) => null, // Return null to use the original object
-            remove: jest.fn(),
+            remove: vi.fn(),
           }),
         }) as ApiManager,
     );
@@ -101,7 +102,7 @@ describe("kube-object-menu", () => {
 
   describe("given kube object", () => {
     let result: RenderResult;
-    let kubeObjectDeleteServiceMock: jest.Mocked<KubeObjectDeleteService>;
+    let kubeObjectDeleteServiceMock: Mocked<KubeObjectDeleteService>;
     let deletePendingPromise: Promise<void>;
     let resolveDelete: () => void;
 
@@ -124,7 +125,7 @@ describe("kube-object-menu", () => {
       });
 
       kubeObjectDeleteServiceMock = {
-        delete: jest.fn().mockReturnValue(deletePendingPromise),
+        delete: vi.fn().mockReturnValue(deletePendingPromise),
       };
 
       di.override(kubeObjectDeleteServiceInjectable, () => kubeObjectDeleteServiceMock);

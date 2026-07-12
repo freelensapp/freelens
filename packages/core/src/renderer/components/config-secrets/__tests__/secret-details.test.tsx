@@ -15,7 +15,7 @@ import storesAndApisCanBeCreatedInjectable from "../../../stores-apis-can-be-cre
 import { renderFor } from "../../test-utils/renderFor";
 import { SecretDetails } from "../secret-details";
 
-jest.mock("../../kube-object-meta/kube-object-meta", () => ({
+vi.mock("../../kube-object-meta/kube-object-meta", () => ({
   KubeObjectMeta: () => null,
 }));
 

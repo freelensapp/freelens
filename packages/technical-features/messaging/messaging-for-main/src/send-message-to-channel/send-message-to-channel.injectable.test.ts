@@ -6,6 +6,7 @@ import allowCommunicationListenerInjectable from "./allow-communication-listener
 import getWebContentsInjectable from "./get-web-contents.injectable";
 
 import type { WebContents } from "electron";
+import type { Mock } from "vitest";
 
 const someChannel = getMessageChannel<string>("some-channel");
 
@@ -27,12 +28,12 @@ describe("send-message-to-channel", () => {
   });
 
   describe("given web content that is alive", () => {
-    let sendToFrameMock: jest.Mock;
-    let sendMessageMock: jest.Mock;
+    let sendToFrameMock: Mock;
+    let sendMessageMock: Mock;
 
     beforeEach(() => {
-      sendToFrameMock = jest.fn();
-      sendMessageMock = jest.fn();
+      sendToFrameMock = vi.fn();
+      sendMessageMock = vi.fn();
 
       di.override(getWebContentsInjectable, () => () => [
         {
@@ -97,7 +98,7 @@ describe("send-message-to-channel", () => {
   });
 
   it("given non alive web contents, when sending a message, does not send messages", () => {
-    const sendToWebContentsMock = jest.fn();
+    const sendToWebContentsMock = vi.fn();
 
     di.override(getWebContentsInjectable, () => () => [
       {

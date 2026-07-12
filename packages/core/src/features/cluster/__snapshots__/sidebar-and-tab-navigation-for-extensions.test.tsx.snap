@@ -1,10 +1,48 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`cluster - sidebar and tab navigation for extensions given extension with cluster pages and cluster page menus given empty state for expanded sidebar items already exists, when rendered renders without errors 1`] = `
+exports[`cluster - sidebar and tab navigation for extensions > given extension with cluster pages and cluster page menus > given empty state for expanded sidebar items already exists, when rendered > renders without errors 1`] = `
 <div>
   <div
     class="Notifications flex column align-flex-end"
   />
+  <div
+    class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+    style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
+  >
+    <div
+      class="drawer-wrapper flex column"
+    >
+      <div
+        class="drawer-title flex align-center"
+      >
+        <div
+          class="drawer-title-text flex gaps align-center"
+        >
+          
+        </div>
+        <i
+          class="Icon material interactive focusable"
+          tabindex="0"
+        >
+          <span
+            class="icon"
+            data-icon-name="close"
+          >
+            close
+          </span>
+        </i>
+        <div>
+          Close
+        </div>
+      </div>
+      <div
+        class="drawer-content flex column box grow"
+      />
+    </div>
+    <div
+      class="ResizingAnchor horizontal leading"
+    />
+  </div>
   <div
     class="mainLayout"
     style="--sidebar-width: 200px;"
@@ -21,7 +59,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
         >
           <div
             class="Avatar rounded loadingAvatar"
-            style="width: 40px; height: 40px;"
+            style="width: 40px; height: 40px; background: var(--halfGray);"
           >
             ??
           </div>
@@ -406,7 +444,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
             aria-live="assertive"
             id="DndLiveRegion-9"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
       </div>
@@ -500,7 +538,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
                           id="overview-namespace-select-filter-input"
                           role="combobox"
                           spellcheck="false"
-                          style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                          style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                           tabindex="0"
                           type="text"
                           value=""
@@ -675,6 +713,14 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
       </div>
     </div>
   </div>
+</div>
+`;
+
+exports[`cluster - sidebar and tab navigation for extensions > given extension with cluster pages and cluster page menus > given no initially persisted state for sidebar items, when rendered > renders 1`] = `
+<div>
+  <div
+    class="Notifications flex column align-flex-end"
+  />
   <div
     class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
@@ -713,14 +759,6 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
       class="ResizingAnchor horizontal leading"
     />
   </div>
-</div>
-`;
-
-exports[`cluster - sidebar and tab navigation for extensions given extension with cluster pages and cluster page menus given no initially persisted state for sidebar items, when rendered renders 1`] = `
-<div>
-  <div
-    class="Notifications flex column align-flex-end"
-  />
   <div
     class="mainLayout"
     style="--sidebar-width: 200px;"
@@ -737,7 +775,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
         >
           <div
             class="Avatar rounded loadingAvatar"
-            style="width: 40px; height: 40px;"
+            style="width: 40px; height: 40px; background: var(--halfGray);"
           >
             ??
           </div>
@@ -1122,7 +1160,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
             aria-live="assertive"
             id="DndLiveRegion-11"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
       </div>
@@ -1216,7 +1254,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
                           id="overview-namespace-select-filter-input"
                           role="combobox"
                           spellcheck="false"
-                          style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                          style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                           tabindex="0"
                           type="text"
                           value=""
@@ -1391,6 +1429,14 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
       </div>
     </div>
   </div>
+</div>
+`;
+
+exports[`cluster - sidebar and tab navigation for extensions > given extension with cluster pages and cluster page menus > given no initially persisted state for sidebar items, when rendered > when a parent sidebar item is expanded > renders 1`] = `
+<div>
+  <div
+    class="Notifications flex column align-flex-end"
+  />
   <div
     class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
@@ -1429,14 +1475,6 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
       class="ResizingAnchor horizontal leading"
     />
   </div>
-</div>
-`;
-
-exports[`cluster - sidebar and tab navigation for extensions given extension with cluster pages and cluster page menus given no initially persisted state for sidebar items, when rendered when a parent sidebar item is expanded renders 1`] = `
-<div>
-  <div
-    class="Notifications flex column align-flex-end"
-  />
   <div
     class="mainLayout"
     style="--sidebar-width: 200px;"
@@ -1453,7 +1491,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
         >
           <div
             class="Avatar rounded loadingAvatar"
-            style="width: 40px; height: 40px;"
+            style="width: 40px; height: 40px; background: var(--halfGray);"
           >
             ??
           </div>
@@ -1914,7 +1952,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
             aria-live="assertive"
             id="DndLiveRegion-16"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
       </div>
@@ -2008,7 +2046,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
                           id="overview-namespace-select-filter-input"
                           role="combobox"
                           spellcheck="false"
-                          style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                          style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                           tabindex="0"
                           type="text"
                           value=""
@@ -2183,6 +2221,14 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
       </div>
     </div>
   </div>
+</div>
+`;
+
+exports[`cluster - sidebar and tab navigation for extensions > given extension with cluster pages and cluster page menus > given no initially persisted state for sidebar items, when rendered > when a parent sidebar item is expanded > when a child of the parent is selected > renders 1`] = `
+<div>
+  <div
+    class="Notifications flex column align-flex-end"
+  />
   <div
     class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
@@ -2221,14 +2267,6 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
       class="ResizingAnchor horizontal leading"
     />
   </div>
-</div>
-`;
-
-exports[`cluster - sidebar and tab navigation for extensions given extension with cluster pages and cluster page menus given no initially persisted state for sidebar items, when rendered when a parent sidebar item is expanded when a child of the parent is selected renders 1`] = `
-<div>
-  <div
-    class="Notifications flex column align-flex-end"
-  />
   <div
     class="mainLayout"
     style="--sidebar-width: 200px;"
@@ -2245,7 +2283,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
         >
           <div
             class="Avatar rounded loadingAvatar"
-            style="width: 40px; height: 40px;"
+            style="width: 40px; height: 40px; background: var(--halfGray);"
           >
             ??
           </div>
@@ -2707,7 +2745,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
             aria-live="assertive"
             id="DndLiveRegion-19"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
       </div>
@@ -2892,6 +2930,14 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
       </div>
     </div>
   </div>
+</div>
+`;
+
+exports[`cluster - sidebar and tab navigation for extensions > given extension with cluster pages and cluster page menus > given no initially persisted state for sidebar items, when rendered > when a parent sidebar item is expanded > when a child of the parent is selected > when selecting sibling tab > renders 1`] = `
+<div>
+  <div
+    class="Notifications flex column align-flex-end"
+  />
   <div
     class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
@@ -2930,14 +2976,6 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
       class="ResizingAnchor horizontal leading"
     />
   </div>
-</div>
-`;
-
-exports[`cluster - sidebar and tab navigation for extensions given extension with cluster pages and cluster page menus given no initially persisted state for sidebar items, when rendered when a parent sidebar item is expanded when a child of the parent is selected when selecting sibling tab renders 1`] = `
-<div>
-  <div
-    class="Notifications flex column align-flex-end"
-  />
   <div
     class="mainLayout"
     style="--sidebar-width: 200px;"
@@ -2954,7 +2992,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
         >
           <div
             class="Avatar rounded loadingAvatar"
-            style="width: 40px; height: 40px;"
+            style="width: 40px; height: 40px; background: var(--halfGray);"
           >
             ??
           </div>
@@ -3416,7 +3454,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
             aria-live="assertive"
             id="DndLiveRegion-28"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
       </div>
@@ -3601,6 +3639,14 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
       </div>
     </div>
   </div>
+</div>
+`;
+
+exports[`cluster - sidebar and tab navigation for extensions > given extension with cluster pages and cluster page menus > given no state for expanded sidebar items exists, and navigated to child sidebar item, when rendered > renders 1`] = `
+<div>
+  <div
+    class="Notifications flex column align-flex-end"
+  />
   <div
     class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
@@ -3639,14 +3685,6 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
       class="ResizingAnchor horizontal leading"
     />
   </div>
-</div>
-`;
-
-exports[`cluster - sidebar and tab navigation for extensions given extension with cluster pages and cluster page menus given no state for expanded sidebar items exists, and navigated to child sidebar item, when rendered renders 1`] = `
-<div>
-  <div
-    class="Notifications flex column align-flex-end"
-  />
   <div
     class="mainLayout"
     style="--sidebar-width: 200px;"
@@ -3663,7 +3701,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
         >
           <div
             class="Avatar rounded loadingAvatar"
-            style="width: 40px; height: 40px;"
+            style="width: 40px; height: 40px; background: var(--halfGray);"
           >
             ??
           </div>
@@ -4048,7 +4086,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
             aria-live="assertive"
             id="DndLiveRegion-0"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
       </div>
@@ -4233,6 +4271,14 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
       </div>
     </div>
   </div>
+</div>
+`;
+
+exports[`cluster - sidebar and tab navigation for extensions > given extension with cluster pages and cluster page menus > given state for expanded sidebar items already exists, when rendered > renders 1`] = `
+<div>
+  <div
+    class="Notifications flex column align-flex-end"
+  />
   <div
     class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
@@ -4271,14 +4317,6 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
       class="ResizingAnchor horizontal leading"
     />
   </div>
-</div>
-`;
-
-exports[`cluster - sidebar and tab navigation for extensions given extension with cluster pages and cluster page menus given state for expanded sidebar items already exists, when rendered renders 1`] = `
-<div>
-  <div
-    class="Notifications flex column align-flex-end"
-  />
   <div
     class="mainLayout"
     style="--sidebar-width: 200px;"
@@ -4295,7 +4333,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
         >
           <div
             class="Avatar rounded loadingAvatar"
-            style="width: 40px; height: 40px;"
+            style="width: 40px; height: 40px; background: var(--halfGray);"
           >
             ??
           </div>
@@ -4756,7 +4794,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
             aria-live="assertive"
             id="DndLiveRegion-4"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
       </div>
@@ -4850,7 +4888,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
                           id="overview-namespace-select-filter-input"
                           role="combobox"
                           spellcheck="false"
-                          style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                          style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                           tabindex="0"
                           type="text"
                           value=""
@@ -5025,6 +5063,14 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
       </div>
     </div>
   </div>
+</div>
+`;
+
+exports[`cluster - sidebar and tab navigation for extensions > given extension with cluster pages and cluster page menus > given state for expanded unknown sidebar items already exists, when rendered > renders without errors 1`] = `
+<div>
+  <div
+    class="Notifications flex column align-flex-end"
+  />
   <div
     class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
@@ -5063,14 +5109,6 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
       class="ResizingAnchor horizontal leading"
     />
   </div>
-</div>
-`;
-
-exports[`cluster - sidebar and tab navigation for extensions given extension with cluster pages and cluster page menus given state for expanded unknown sidebar items already exists, when rendered renders without errors 1`] = `
-<div>
-  <div
-    class="Notifications flex column align-flex-end"
-  />
   <div
     class="mainLayout"
     style="--sidebar-width: 200px;"
@@ -5087,7 +5125,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
         >
           <div
             class="Avatar rounded loadingAvatar"
-            style="width: 40px; height: 40px;"
+            style="width: 40px; height: 40px; background: var(--halfGray);"
           >
             ??
           </div>
@@ -5472,7 +5510,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
             aria-live="assertive"
             id="DndLiveRegion-7"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
       </div>
@@ -5566,7 +5604,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
                           id="overview-namespace-select-filter-input"
                           role="combobox"
                           spellcheck="false"
-                          style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                          style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                           tabindex="0"
                           type="text"
                           value=""
@@ -5741,6 +5779,14 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
       </div>
     </div>
   </div>
+</div>
+`;
+
+exports[`cluster - sidebar and tab navigation for extensions > given extension with cluster pages and cluster page menus with explicit 'orderNumber' > given no state for expanded sidebar items exists, and navigated to child sidebar item, when rendered > renders 1`] = `
+<div>
+  <div
+    class="Notifications flex column align-flex-end"
+  />
   <div
     class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
@@ -5779,14 +5825,6 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
       class="ResizingAnchor horizontal leading"
     />
   </div>
-</div>
-`;
-
-exports[`cluster - sidebar and tab navigation for extensions given extension with cluster pages and cluster page menus with explicit 'orderNumber' given no state for expanded sidebar items exists, and navigated to child sidebar item, when rendered renders 1`] = `
-<div>
-  <div
-    class="Notifications flex column align-flex-end"
-  />
   <div
     class="mainLayout"
     style="--sidebar-width: 200px;"
@@ -5803,7 +5841,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
         >
           <div
             class="Avatar rounded loadingAvatar"
-            style="width: 40px; height: 40px;"
+            style="width: 40px; height: 40px; background: var(--halfGray);"
           >
             ??
           </div>
@@ -6188,7 +6226,7 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
             aria-live="assertive"
             id="DndLiveRegion-32"
             role="status"
-            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip-path: inset(100%); white-space: nowrap;"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
       </div>
@@ -6372,44 +6410,6 @@ exports[`cluster - sidebar and tab navigation for extensions given extension wit
         </div>
       </div>
     </div>
-  </div>
-  <div
-    class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
-    style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
-  >
-    <div
-      class="drawer-wrapper flex column"
-    >
-      <div
-        class="drawer-title flex align-center"
-      >
-        <div
-          class="drawer-title-text flex gaps align-center"
-        >
-          
-        </div>
-        <i
-          class="Icon material interactive focusable"
-          tabindex="0"
-        >
-          <span
-            class="icon"
-            data-icon-name="close"
-          >
-            close
-          </span>
-        </i>
-        <div>
-          Close
-        </div>
-      </div>
-      <div
-        class="drawer-content flex column box grow"
-      />
-    </div>
-    <div
-      class="ResizingAnchor horizontal leading"
-    />
   </div>
 </div>
 `;

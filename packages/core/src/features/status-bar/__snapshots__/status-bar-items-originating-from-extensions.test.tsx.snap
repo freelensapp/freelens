@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`status-bar-items-originating-from-extensions when application starts when extension with status bar items is loaded renders 1`] = `
+exports[`status-bar-items-originating-from-extensions > when application starts > when extension with status bar items is loaded > renders 1`] = `
 <body>
   <div>
     <div

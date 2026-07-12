@@ -7,7 +7,7 @@
 import { isRequestError } from "@freelensapp/utilities";
 import { getInjectionToken } from "@ogre-tools/injectable";
 
-import type { CoreV1Api } from "@freelensapp/kubernetes-client-node";
+import type { CoreV1Api } from "@kubernetes/client-node";
 
 export interface PrometheusService extends PrometheusServiceInfo {
   kind: string;

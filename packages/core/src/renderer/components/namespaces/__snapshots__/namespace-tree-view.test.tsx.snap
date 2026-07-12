@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`<NamespaceTreeView /> collapses item by clicking minus button 1`] = `
+exports[`<NamespaceTreeView /> > collapses item by clicking minus button 1`] = `
 <body>
   <div>
     <div
@@ -200,7 +200,7 @@ exports[`<NamespaceTreeView /> collapses item by clicking minus button 1`] = `
 </body>
 `;
 
-exports[`<NamespaceTreeView /> expands item by clicking plus button 1`] = `
+exports[`<NamespaceTreeView /> > expands item by clicking plus button 1`] = `
 <body>
   <div>
     <div
@@ -400,7 +400,7 @@ exports[`<NamespaceTreeView /> expands item by clicking plus button 1`] = `
 </body>
 `;
 
-exports[`<NamespaceTreeView /> renders 2 levels deep 1`] = `
+exports[`<NamespaceTreeView /> > renders 2 levels deep 1`] = `
 <body>
   <div>
     <div
@@ -599,7 +599,7 @@ exports[`<NamespaceTreeView /> renders 2 levels deep 1`] = `
 </body>
 `;
 
-exports[`<NamespaceTreeView /> renders namespace with 2 children namespaces 1`] = `
+exports[`<NamespaceTreeView /> > renders namespace with 2 children namespaces 1`] = `
 <body>
   <div>
     <div
@@ -749,7 +749,7 @@ exports[`<NamespaceTreeView /> renders namespace with 2 children namespaces 1`] 
 </body>
 `;
 
-exports[`<NamespaceTreeView /> renders namespace with children namespaces and a subnamespace 1`] = `
+exports[`<NamespaceTreeView /> > renders namespace with children namespaces and a subnamespace 1`] = `
 <body>
   <div>
     <div
@@ -906,7 +906,7 @@ exports[`<NamespaceTreeView /> renders namespace with children namespaces and a 
 </body>
 `;
 
-exports[`<NamespaceTreeView /> renders one namespace without children 1`] = `
+exports[`<NamespaceTreeView /> > renders one namespace without children 1`] = `
 <body>
   <div>
     <div

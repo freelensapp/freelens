@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { flushPromises } from "@freelensapp/test-utils";
 import { fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -24,7 +24,7 @@ import requestDetailedHelmReleaseInjectable from "../../../renderer/components/h
 import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 import currentPathInjectable from "../../../renderer/routes/current-path.injectable";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
 
@@ -69,7 +69,7 @@ describe("installing helm chart from new tab", () => {
       windowDi.override(requestCreateHelmReleaseInjectable, () => requestCreateHelmReleaseMock);
 
       windowDi.override(getRandomInstallChartTabIdInjectable, () =>
-        jest
+        vi
           .fn(() => "some-irrelevant-tab-id")
           .mockReturnValueOnce("some-first-tab-id")
           .mockReturnValueOnce("some-second-tab-id"),

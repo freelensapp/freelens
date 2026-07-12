@@ -11,16 +11,18 @@ import { getApplicationBuilder } from "../../renderer/components/test-utils/get-
 import { advanceFakeTime, testUsingFakeTime } from "../../test-utils/use-fake-time";
 import populateApplicationMenuInjectable from "./main/populate-application-menu.injectable";
 
+import type { Mock } from "vitest";
+
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 describe.each(allPlatforms)("application-menu, given platform is '%s'", (platform) => {
   let builder: ApplicationBuilder;
-  let populateApplicationMenuMock: jest.Mock;
+  let populateApplicationMenuMock: Mock;
 
   beforeEach(async () => {
     testUsingFakeTime();
 
-    populateApplicationMenuMock = jest.fn();
+    populateApplicationMenuMock = vi.fn();
 
     builder = getApplicationBuilder();
 

@@ -1,7 +1,4 @@
 {
   "extends": "@freelensapp/typescript/config/base.json",
-  "include": ["**/*.ts"],
-  "compilerOptions": {
-    "moduleResolution": "node"
-  }
+  "include": ["**/*.ts"]
 }

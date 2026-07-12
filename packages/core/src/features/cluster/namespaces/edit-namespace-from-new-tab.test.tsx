@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { JsonApiErrorParsed } from "@freelensapp/json-api";
 import { Namespace } from "@freelensapp/kube-object";
 import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
@@ -24,9 +24,10 @@ import apiKubePatchInjectable from "../../../renderer/k8s/api-kube-patch.injecta
 import type { BaseKubeJsonApiObjectMetadata, KubeJsonApiData, KubeObjectScope } from "@freelensapp/kube-object";
 import type { ShowNotification } from "@freelensapp/notifications";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
+import type { MockedFunction } from "vitest";
 
 import type { ApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 import type { ApiKubeGet } from "../../../renderer/k8s/api-kube-get.injectable";
@@ -36,8 +37,8 @@ describe("cluster/namespaces - edit namespace from new tab", () => {
   let builder: ApplicationBuilder;
   let apiKubePatchMock: AsyncFnMock<ApiKubePatch>;
   let apiKubeGetMock: AsyncFnMock<ApiKubeGet>;
-  let showSuccessNotificationMock: jest.MockedFunction<ShowNotification>;
-  let showErrorNotificationMock: jest.MockedFunction<ShowNotification>;
+  let showSuccessNotificationMock: MockedFunction<ShowNotification>;
+  let showErrorNotificationMock: MockedFunction<ShowNotification>;
 
   beforeEach(() => {
     builder = getApplicationBuilder();
@@ -49,24 +50,24 @@ describe("cluster/namespaces - edit namespace from new tab", () => {
 
       windowDi.override(hostedClusterIdInjectable, () => "some-cluster-id");
 
-      showSuccessNotificationMock = jest.fn();
+      showSuccessNotificationMock = vi.fn();
       windowDi.override(showSuccessNotificationInjectable, () => showSuccessNotificationMock);
 
-      showErrorNotificationMock = jest.fn();
+      showErrorNotificationMock = vi.fn();
       windowDi.override(showErrorNotificationInjectable, () => showErrorNotificationMock);
 
       windowDi.override(getRandomIdForEditResourceTabInjectable, () =>
-        jest
+        vi
           .fn(() => "some-irrelevant-random-id")
           .mockReturnValueOnce("some-first-tab-id")
           .mockReturnValueOnce("some-second-tab-id"),
       );
 
       apiKubePatchMock = asyncFn();
-      windowDi.override(apiKubePatchInjectable, () => apiKubePatchMock);
+      windowDi.override(apiKubePatchInjectable, () => apiKubePatchMock as unknown as ApiKubePatch);
 
       apiKubeGetMock = asyncFn();
-      windowDi.override(apiKubeGetInjectable, () => apiKubeGetMock);
+      windowDi.override(apiKubeGetInjectable, () => apiKubeGetMock as unknown as ApiKubeGet);
     });
 
     builder.afterWindowStart(() => {
@@ -96,31 +97,31 @@ describe("cluster/namespaces - edit namespace from new tab", () => {
     });
 
     // TODO: Implement skipped tests when loading of resources can be tested
-    xit("renders", () => {
+    it.skip("renders", () => {
       expect(rendered.baseElement).toMatchSnapshot();
     });
 
-    xit("calls for namespaces", () => {});
+    it.skip("calls for namespaces", () => {});
 
-    xit("shows spinner", () => {});
+    it.skip("shows spinner", () => {});
 
     describe("when namespaces resolve", () => {
       beforeEach(() => {});
 
-      xit("renders", () => {
+      it.skip("renders", () => {
         expect(rendered.baseElement).toMatchSnapshot();
       });
 
-      xit("does not show spinner anymore", () => {});
+      it.skip("does not show spinner anymore", () => {});
 
       describe("when clicking the context menu for a namespace", () => {
         beforeEach(() => {});
 
-        xit("renders", () => {
+        it.skip("renders", () => {
           expect(rendered.baseElement).toMatchSnapshot();
         });
 
-        xit("does not show edit resource tab yet", () => {});
+        it.skip("does not show edit resource tab yet", () => {});
 
         describe("when clicking to edit namespace", () => {
           beforeEach(() => {

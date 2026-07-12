@@ -79,6 +79,12 @@ export {
   ReactRouterDom,
 } from "@freelensapp/core/renderer";
 
+// Phase 4 (D5): expose the extension API through a runtime global so the
+// published `@freelensapp/extensions` shim can re-export it in each process.
+// The renderer gets `{ Common, Renderer }`; main gets `{ Common, Main }`.
+// The global's ambient type lives in `../freelens-extension-api.ts`.
+globalThis.FreelensExtensionApi = { Common, Renderer };
+
 export const LensExtensions = {
   Renderer,
   Common,

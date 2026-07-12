@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/json-api",
-  "version": "1.10.4-0",
-  "private": false,
+  "version": "2.0.0-0",
+  "private": true,
   "description": "JSON api client",
   "homepage": "https://freelens.app",
   "bugs": {
@@ -12,22 +12,16 @@
     "url": "git+https://github.com/freelensapp/freelens.git"
   },
   "license": "MIT",
+  "type": "module",
   "author": {
     "name": "Freelens Authors",
     "email": "freelens@freelens.app"
   },
-  "type": "commonjs",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "main": "./index.ts",
+  "types": "./index.ts",
   "scripts": {
-    "build": "lens-webpack-build",
-    "build:dev": "lens-webpack-build",
     "clean": "pnpm dlx rimraf@6.1.3 dist",
-    "clean:node_modules": "pnpm dlx rimraf@6.1.3 node_modules",
-    "dev": "lens-webpack-build --watch"
+    "clean:node_modules": "pnpm dlx rimraf@6.1.3 node_modules"
   },
   "dependencies": {
     "@freelensapp/event-emitter": "workspace:^",
@@ -36,15 +30,12 @@
   },
   "devDependencies": {
     "@freelensapp/logger": "workspace:^",
-    "@freelensapp/node-fetch": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
-    "@freelensapp/webpack": "workspace:^",
     "@types/lodash": "^4.17.24",
     "@types/node": "~24.12.4",
+    "node-fetch": "^3.3.2",
     "rfc6902": "^5.2.0",
-    "ts-loader": "^9.5.7",
-    "type-fest": "^5.6.0",
-    "webpack": "^5.108.3"
+    "type-fest": "^5.6.0"
   },
   "publishConfig": {
     "access": "public",

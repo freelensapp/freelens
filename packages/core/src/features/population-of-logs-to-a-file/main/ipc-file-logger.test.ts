@@ -8,18 +8,20 @@ import { getDiForUnitTesting } from "../../../main/getDiForUnitTesting";
 import createIpcFileLoggerTransportInjectable from "./create-ipc-file-transport.injectable";
 import ipcFileLoggerInjectable from "./ipc-file-logger.injectable";
 
+import type { Mock } from "vitest";
+
 import type { IpcFileLogger } from "./ipc-file-logger.injectable";
 
 describe("ipc file logger in main", () => {
-  let logMock: jest.Mock;
-  let closeMock: jest.Mock;
-  let createFileTransportMock: jest.Mock;
+  let logMock: Mock;
+  let closeMock: Mock;
+  let createFileTransportMock: Mock;
   let logger: IpcFileLogger;
 
   beforeEach(() => {
-    logMock = jest.fn();
-    closeMock = jest.fn();
-    createFileTransportMock = jest.fn(() => ({
+    logMock = vi.fn();
+    closeMock = vi.fn();
+    createFileTransportMock = vi.fn(() => ({
       log: logMock,
       close: closeMock,
     }));
@@ -97,8 +99,8 @@ describe("ipc file logger in main", () => {
   });
 
   it("logs to correct files", () => {
-    const someLogMock = jest.fn();
-    const someOthertLogMock = jest.fn();
+    const someLogMock = vi.fn();
+    const someOthertLogMock = vi.fn();
 
     createFileTransportMock.mockImplementation((fileId: string) => {
       if (fileId === "some-log-file") {

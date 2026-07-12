@@ -8,7 +8,7 @@ import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import loadConfigFromFileInjectable from "../../common/kube-helpers/load-config-from-file.injectable";
 import kubeconfigManagerInjectable from "../kubeconfig-manager/kubeconfig-manager.injectable";
 
-import type { KubeConfig } from "@freelensapp/kubernetes-client-node";
+import type { KubeConfig } from "@kubernetes/client-node";
 
 import type { Cluster } from "../../common/cluster/cluster";
 

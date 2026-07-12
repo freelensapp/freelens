@@ -4,22 +4,23 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { getDiForUnitTesting } from "../../../main/getDiForUnitTesting";
 import logErrorInjectable from "../../log-error.injectable";
 import withOrphanPromiseInjectable from "./with-orphan-promise.injectable";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
+import type { Mock } from "vitest";
 
 describe("with orphan promise, when called", () => {
   let toBeDecorated: AsyncFnMock<(arg1: string, arg2: string) => Promise<string>>;
   let actual: void;
-  let logErrorMock: jest.Mock;
+  let logErrorMock: Mock;
 
   beforeEach(() => {
     const di = getDiForUnitTesting();
 
-    logErrorMock = jest.fn();
+    logErrorMock = vi.fn();
 
     di.override(logErrorInjectable, () => logErrorMock);
 

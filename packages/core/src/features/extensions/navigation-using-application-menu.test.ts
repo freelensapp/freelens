@@ -8,22 +8,23 @@ import { getApplicationBuilder } from "../../renderer/components/test-utils/get-
 import focusWindowInjectable from "../../renderer/navigation/focus-window.injectable";
 
 import type { RenderResult } from "@testing-library/react";
+import type { Mock } from "vitest";
 
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 // TODO: Make components free of side effects by making them deterministic
-jest.mock("../../renderer/components/input/input");
+vi.mock("../../renderer/components/input/input");
 
 describe("extensions - navigation using application menu", () => {
   let builder: ApplicationBuilder;
   let rendered: RenderResult;
-  let focusWindowMock: jest.Mock;
+  let focusWindowMock: Mock;
 
   beforeEach(async () => {
     builder = getApplicationBuilder();
 
     builder.beforeWindowStart(({ windowDi }) => {
-      focusWindowMock = jest.fn();
+      focusWindowMock = vi.fn();
 
       windowDi.override(focusWindowInjectable, () => focusWindowMock);
     });

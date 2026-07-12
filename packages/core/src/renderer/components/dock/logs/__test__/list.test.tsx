@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 import { waitFor } from "@testing-library/react";
 import React from "react";
 import userPreferencesStateInjectable from "../../../../../features/user-preferences/common/state.injectable";
@@ -23,9 +23,9 @@ import type { UserPreferencesState } from "../../../../../features/user-preferen
 import type { DiRender } from "../../../test-utils/renderFor";
 import type { TabId } from "../../dock/store";
 
-const virtualListMock = jest.fn();
+const virtualListMock = vi.fn();
 
-jest.mock("../../../virtual-list", () => {
+vi.mock("../../../virtual-list", () => {
   const React = require("react");
 
   return {
@@ -96,7 +96,7 @@ describe("LogList", () => {
       get: () => 400,
     });
 
-    jest.spyOn(Element.prototype, "getBoundingClientRect").mockReturnValue({
+    vi.spyOn(Element.prototype, "getBoundingClientRect").mockReturnValue({
       height: 36,
       width: 72,
     } as DOMRect);
@@ -116,7 +116,7 @@ describe("LogList", () => {
         delete (HTMLElement.prototype as any).clientWidth;
       }
 
-      jest.restoreAllMocks();
+      vi.restoreAllMocks();
     }
   });
 });

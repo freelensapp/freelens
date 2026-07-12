@@ -8,9 +8,11 @@ import { frameCommunicationAdminChannel } from "./allow-communication-to-iframe.
 import { messagingFeatureForRenderer } from "./feature";
 import ipcRendererInjectable from "./ipc/ipc-renderer.injectable";
 
+import type { Mock } from "vitest";
+
 describe("allow communication to iframe", () => {
   let di: DiContainer;
-  let sendMessageToChannelMock: jest.Mock;
+  let sendMessageToChannelMock: Mock;
 
   beforeEach(() => {
     di = createContainer("irrelevant");
@@ -23,7 +25,7 @@ describe("allow communication to iframe", () => {
 
     di.override(ipcRendererInjectable, () => ({ on: () => {} }) as unknown);
 
-    sendMessageToChannelMock = jest.fn();
+    sendMessageToChannelMock = vi.fn();
     di.override(sendMessageToChannelInjectionToken, () => sendMessageToChannelMock);
   });
 

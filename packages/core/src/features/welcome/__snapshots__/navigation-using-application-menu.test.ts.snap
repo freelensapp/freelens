@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`welcome - navigation using application menu renders 1`] = `
+exports[`welcome - navigation using application menu > renders 1`] = `
 <div>
   <div
     class="Notifications flex column align-flex-end"
@@ -376,7 +376,7 @@ exports[`welcome - navigation using application menu renders 1`] = `
 </div>
 `;
 
-exports[`welcome - navigation using application menu when navigated somewhere else renders 1`] = `
+exports[`welcome - navigation using application menu > when navigated somewhere else > renders 1`] = `
 <body>
   <div>
     <div
@@ -605,7 +605,7 @@ exports[`welcome - navigation using application menu when navigated somewhere el
                               id="theme-input"
                               role="combobox"
                               spellcheck="false"
-                              style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                              style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                               tabindex="0"
                               type="text"
                               value=""
@@ -696,7 +696,7 @@ exports[`welcome - navigation using application menu when navigated somewhere el
                               id="extension-install-registry-input"
                               role="combobox"
                               spellcheck="false"
-                              style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                              style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                               tabindex="0"
                               type="text"
                               value=""
@@ -928,7 +928,7 @@ exports[`welcome - navigation using application menu when navigated somewhere el
                               id="timezone-input"
                               role="combobox"
                               spellcheck="false"
-                              style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                              style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                               tabindex="0"
                               type="text"
                               value=""
@@ -1145,7 +1145,7 @@ exports[`welcome - navigation using application menu when navigated somewhere el
 </body>
 `;
 
-exports[`welcome - navigation using application menu when navigated somewhere else when navigated to welcome using application menu renders 1`] = `
+exports[`welcome - navigation using application menu > when navigated somewhere else > when navigated to welcome using application menu > renders 1`] = `
 <div>
   <div
     class="Notifications flex column align-flex-end"

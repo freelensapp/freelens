@@ -1,13 +1,14 @@
+packages:
+  - freelens
+  - packages/**
+
 allowBuilds:
   '@parcel/watcher': true
   electron: true
-  electron-winstaller: true
   node-pty: true
   sharp: true
 
 engineStrict: true
-
-nodeGyp: ../../../../node-gyp/bin/node-gyp.js
 
 overrides:
   '@types/http-proxy': '-'
@@ -18,16 +19,8 @@ overrides:
   http-proxy-middleware: ^3.0.7
   tmp@^0.2.0: ^0.2.7
 
-packages:
-  - freelens
-  - packages/**
-
 patchedDependencies:
-  '@async-fn/jest': patches/@async-fn__jest.patch
+  '@async-fn/vitest': patches/@async-fn__vitest.patch
   '@xterm/xterm@6.0.0': patches/@xterm__xterm@6.0.0.patch
-  circular-dependency-plugin: patches/circular-dependency-plugin.patch
-
-publicHoistPattern:
-  - node-gyp
 
 shellEmulator: true

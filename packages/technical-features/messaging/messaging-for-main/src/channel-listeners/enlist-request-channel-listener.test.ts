@@ -1,4 +1,4 @@
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { registerFeature } from "@freelensapp/feature-core";
 import { getPromiseStatus } from "@freelensapp/test-utils";
 import { createContainer } from "@ogre-tools/injectable";
@@ -8,8 +8,9 @@ import enlistRequestChannelListenerInjectable from "./enlist-request-channel-lis
 
 import type { RequestChannel, RequestChannelHandler } from "@freelensapp/messaging";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
 import type { IpcMain, IpcMainInvokeEvent } from "electron";
+import type { Mock } from "vitest";
 
 import type { EnlistRequestChannelListener } from "./enlist-request-channel-listener.injectable";
 
@@ -22,16 +23,16 @@ const testRequestChannel: TestRequestChannel = {
 describe("enlist request channel listener in main", () => {
   let enlistRequestChannelListener: EnlistRequestChannelListener;
   let ipcMainStub: IpcMain;
-  let handleMock: jest.Mock;
-  let offMock: jest.Mock;
+  let handleMock: Mock;
+  let offMock: Mock;
 
   beforeEach(() => {
     const di = createContainer("irrelevant");
 
     registerFeature(di, messagingFeatureForMain);
 
-    handleMock = jest.fn();
-    offMock = jest.fn();
+    handleMock = vi.fn();
+    offMock = vi.fn();
 
     ipcMainStub = {
       handle: handleMock,

@@ -14,7 +14,7 @@ import type { PersistentVolumeClaim } from "@freelensapp/kube-object";
 describe("persistent-volume-claim-metrics injectable", () => {
   it("requests pvc metrics with the selected time range", () => {
     const di = getDiForUnitTesting();
-    const requestPersistentVolumeClaimMetrics = jest.fn().mockResolvedValue({});
+    const requestPersistentVolumeClaimMetrics = vi.fn().mockResolvedValue({});
     const persistentVolumeClaim = {
       getId: () => "pvc-id",
       getName: () => "pvc-name",

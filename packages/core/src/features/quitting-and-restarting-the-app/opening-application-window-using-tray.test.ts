@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { runInAction } from "mobx";
 import staticFilesDirectoryInjectable from "../../common/vars/static-files-directory.injectable";
 import focusApplicationInjectable from "../../main/electron-app/features/focus-application.injectable";
@@ -12,7 +12,8 @@ import createElectronWindowInjectable from "../../main/start-main-application/le
 import splashWindowInjectable from "../../main/start-main-application/lens-window/splash-window/splash-window.injectable";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
+import type { Mock } from "vitest";
 
 import type { CreateElectronWindow } from "../../main/start-main-application/lens-window/application-window/create-electron-window.injectable";
 import type { LensWindow } from "../../main/start-main-application/lens-window/application-window/create-lens-window.injectable";
@@ -21,17 +22,17 @@ import type { ApplicationBuilder } from "../../renderer/components/test-utils/ge
 describe("opening application window using tray", () => {
   describe("given application has started", () => {
     let builder: ApplicationBuilder;
-    let createElectronWindowMock: jest.Mock;
+    let createElectronWindowMock: Mock;
     let expectWindowsToBeOpen: (windowIds: string[]) => void;
-    let callForSplashWindowHtmlMock: AsyncFnMock<() => Promise<void>>;
-    let callForApplicationWindowHtmlMock: AsyncFnMock<() => Promise<void>>;
-    let focusApplicationMock: jest.Mock;
+    let callForSplashWindowHtmlMock: AsyncFnMock<(filePath: string) => Promise<void>>;
+    let callForApplicationWindowHtmlMock: AsyncFnMock<(url: string) => Promise<void>>;
+    let focusApplicationMock: Mock;
 
     beforeEach(async () => {
       callForSplashWindowHtmlMock = asyncFn();
       callForApplicationWindowHtmlMock = asyncFn();
 
-      focusApplicationMock = jest.fn();
+      focusApplicationMock = vi.fn();
 
       builder = getApplicationBuilder();
 
@@ -40,11 +41,18 @@ describe("opening application window using tray", () => {
 
         mainDi.override(staticFilesDirectoryInjectable, () => "/some-static-directory");
 
-        const loadFileMock = jest.fn(callForSplashWindowHtmlMock).mockImplementationOnce(() => Promise.resolve());
+        // @async-fn/vitest rejects mockImplementationOnce directly on an
+        // AsyncFnMock; wrapping in a plain vi.fn keeps the one-shot resolved
+        // first call while later calls still go through the asyncFn.
+        const loadFileMock = vi
+          .fn((filePath: string) => callForSplashWindowHtmlMock(filePath))
+          .mockImplementationOnce(() => Promise.resolve());
 
-        const loadUrlMock = jest.fn(callForApplicationWindowHtmlMock).mockImplementationOnce(() => Promise.resolve());
+        const loadUrlMock = vi
+          .fn((url: string) => callForApplicationWindowHtmlMock(url))
+          .mockImplementationOnce(() => Promise.resolve());
 
-        createElectronWindowMock = jest.fn(
+        createElectronWindowMock = vi.fn(
           (toBeDecorated): CreateElectronWindow =>
             (configuration) => {
               const browserWindow = toBeDecorated(configuration);

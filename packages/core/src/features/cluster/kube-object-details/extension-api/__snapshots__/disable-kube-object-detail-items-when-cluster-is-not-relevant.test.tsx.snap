@@ -1,11 +1,128 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`disable kube object detail items when cluster is not relevant given extension should be enabled for the cluster renders 1`] = `
+exports[`disable kube object detail items when cluster is not relevant > given extension should be enabled for the cluster > renders 1`] = `
 <body>
   <div>
     <div
       class="Notifications flex column align-flex-end"
     />
+    <div
+      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
+    >
+      <div
+        class="drawer-wrapper flex column"
+      >
+        <div
+          class="drawer-title flex align-center"
+          style="position: relative;"
+        >
+          <div
+            class="drawer-title-text flex gaps align-center"
+          >
+            some-kind: some-name
+            <i
+              class="Icon material interactive focusable"
+              tabindex="0"
+            >
+              <span
+                class="icon"
+                data-icon-name="content_copy"
+              >
+                content_copy
+              </span>
+            </i>
+            <div>
+              Copy
+            </div>
+          </div>
+          <ul
+            class="Menu MenuActions flex KubeObjectMenu toolbar gaps right bottom"
+            data-testid="menu-actions-for-kube-object-menu-for-some-uid"
+            id="menu-actions-for-kube-object-menu-for-some-uid"
+          />
+          <i
+            class="Icon material interactive focusable"
+            tabindex="0"
+          >
+            <span
+              class="icon"
+              data-icon-name="close"
+            >
+              close
+            </span>
+          </i>
+          <div>
+            Close
+          </div>
+        </div>
+        <div
+          class="drawer-content flex column box grow"
+        >
+          <div
+            class="DrawerItem"
+          >
+            <span
+              class="name"
+            >
+              Name
+            </span>
+            <span
+              class="value"
+            >
+              some-name
+            </span>
+          </div>
+          <div
+            class="DrawerItem"
+          >
+            <span
+              class="name"
+            >
+              Namespace
+            </span>
+            <span
+              class="value"
+            >
+              <a
+                href="/workloads?kube-details=%2Fapi%2Fv1%2Fnamespaces%2Fsome-namespace&kube-selected=%2Fapi%2Fsome-api-version%2Fnamespaces%2Fsome-namespace%2Fsome-kind%2Fsome-name"
+              >
+                <div
+                  class="badge flat"
+                >
+                  some-namespace
+                </div>
+                <div>
+                  some-namespace
+                </div>
+              </a>
+            </span>
+          </div>
+          <div
+            data-testid="some-kube-object-detail-item"
+          >
+            Some detail
+          </div>
+          <div>
+            <div
+              class="DrawerTitle title"
+            >
+              <span>
+                Events
+              </span>
+            </div>
+            <div
+              class="empty"
+            >
+              No events found
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="ResizingAnchor horizontal leading"
+      />
+    </div>
     <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
@@ -22,7 +139,7 @@ exports[`disable kube object detail items when cluster is not relevant given ext
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -361,7 +478,7 @@ exports[`disable kube object detail items when cluster is not relevant given ext
               aria-live="assertive"
               id="DndLiveRegion-4"
               role="status"
-              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip-path: inset(100%); white-space: nowrap;"
+              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
             />
           </div>
         </div>
@@ -455,7 +572,7 @@ exports[`disable kube object detail items when cluster is not relevant given ext
                             id="overview-namespace-select-filter-input"
                             role="combobox"
                             spellcheck="false"
-                            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                            style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                             tabindex="0"
                             type="text"
                             value=""
@@ -630,6 +747,16 @@ exports[`disable kube object detail items when cluster is not relevant given ext
         </div>
       </div>
     </div>
+  </div>
+</body>
+`;
+
+exports[`disable kube object detail items when cluster is not relevant > given extension shouldn't be enabled for the cluster > renders 1`] = `
+<body>
+  <div>
+    <div
+      class="Notifications flex column align-flex-end"
+    />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
@@ -639,6 +766,7 @@ exports[`disable kube object detail items when cluster is not relevant given ext
       >
         <div
           class="drawer-title flex align-center"
+          style="position: relative;"
         >
           <div
             class="drawer-title-text flex gaps align-center"
@@ -721,11 +849,6 @@ exports[`disable kube object detail items when cluster is not relevant given ext
               </a>
             </span>
           </div>
-          <div
-            data-testid="some-kube-object-detail-item"
-          >
-            Some detail
-          </div>
           <div>
             <div
               class="DrawerTitle title"
@@ -746,16 +869,6 @@ exports[`disable kube object detail items when cluster is not relevant given ext
         class="ResizingAnchor horizontal leading"
       />
     </div>
-  </div>
-</body>
-`;
-
-exports[`disable kube object detail items when cluster is not relevant given extension shouldn't be enabled for the cluster renders 1`] = `
-<body>
-  <div>
-    <div
-      class="Notifications flex column align-flex-end"
-    />
     <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
@@ -772,7 +885,7 @@ exports[`disable kube object detail items when cluster is not relevant given ext
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -1111,7 +1224,7 @@ exports[`disable kube object detail items when cluster is not relevant given ext
               aria-live="assertive"
               id="DndLiveRegion-2"
               role="status"
-              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip-path: inset(100%); white-space: nowrap;"
+              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
             />
           </div>
         </div>
@@ -1205,7 +1318,7 @@ exports[`disable kube object detail items when cluster is not relevant given ext
                             id="overview-namespace-select-filter-input"
                             role="combobox"
                             spellcheck="false"
-                            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                            style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                             tabindex="0"
                             type="text"
                             value=""
@@ -1380,6 +1493,16 @@ exports[`disable kube object detail items when cluster is not relevant given ext
         </div>
       </div>
     </div>
+  </div>
+</body>
+`;
+
+exports[`disable kube object detail items when cluster is not relevant > given not yet known if extension should be enabled for the cluster > renders 1`] = `
+<body>
+  <div>
+    <div
+      class="Notifications flex column align-flex-end"
+    />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
@@ -1389,6 +1512,7 @@ exports[`disable kube object detail items when cluster is not relevant given ext
       >
         <div
           class="drawer-title flex align-center"
+          style="position: relative;"
         >
           <div
             class="drawer-title-text flex gaps align-center"
@@ -1491,16 +1615,6 @@ exports[`disable kube object detail items when cluster is not relevant given ext
         class="ResizingAnchor horizontal leading"
       />
     </div>
-  </div>
-</body>
-`;
-
-exports[`disable kube object detail items when cluster is not relevant given not yet known if extension should be enabled for the cluster renders 1`] = `
-<body>
-  <div>
-    <div
-      class="Notifications flex column align-flex-end"
-    />
     <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
@@ -1517,7 +1631,7 @@ exports[`disable kube object detail items when cluster is not relevant given not
           >
             <div
               class="Avatar rounded loadingAvatar"
-              style="width: 40px; height: 40px;"
+              style="width: 40px; height: 40px; background: var(--halfGray);"
             >
               ??
             </div>
@@ -1856,7 +1970,7 @@ exports[`disable kube object detail items when cluster is not relevant given not
               aria-live="assertive"
               id="DndLiveRegion-0"
               role="status"
-              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip-path: inset(100%); white-space: nowrap;"
+              style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
             />
           </div>
         </div>
@@ -1950,7 +2064,7 @@ exports[`disable kube object detail items when cluster is not relevant given not
                             id="overview-namespace-select-filter-input"
                             role="combobox"
                             spellcheck="false"
-                            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                            style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                             tabindex="0"
                             type="text"
                             value=""
@@ -2124,117 +2238,6 @@ exports[`disable kube object detail items when cluster is not relevant given not
           </div>
         </div>
       </div>
-    </div>
-    <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
-      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
-    >
-      <div
-        class="drawer-wrapper flex column"
-      >
-        <div
-          class="drawer-title flex align-center"
-        >
-          <div
-            class="drawer-title-text flex gaps align-center"
-          >
-            some-kind: some-name
-            <i
-              class="Icon material interactive focusable"
-              tabindex="0"
-            >
-              <span
-                class="icon"
-                data-icon-name="content_copy"
-              >
-                content_copy
-              </span>
-            </i>
-            <div>
-              Copy
-            </div>
-          </div>
-          <ul
-            class="Menu MenuActions flex KubeObjectMenu toolbar gaps right bottom"
-            data-testid="menu-actions-for-kube-object-menu-for-some-uid"
-            id="menu-actions-for-kube-object-menu-for-some-uid"
-          />
-          <i
-            class="Icon material interactive focusable"
-            tabindex="0"
-          >
-            <span
-              class="icon"
-              data-icon-name="close"
-            >
-              close
-            </span>
-          </i>
-          <div>
-            Close
-          </div>
-        </div>
-        <div
-          class="drawer-content flex column box grow"
-        >
-          <div
-            class="DrawerItem"
-          >
-            <span
-              class="name"
-            >
-              Name
-            </span>
-            <span
-              class="value"
-            >
-              some-name
-            </span>
-          </div>
-          <div
-            class="DrawerItem"
-          >
-            <span
-              class="name"
-            >
-              Namespace
-            </span>
-            <span
-              class="value"
-            >
-              <a
-                href="/workloads?kube-details=%2Fapi%2Fv1%2Fnamespaces%2Fsome-namespace&kube-selected=%2Fapi%2Fsome-api-version%2Fnamespaces%2Fsome-namespace%2Fsome-kind%2Fsome-name"
-              >
-                <div
-                  class="badge flat"
-                >
-                  some-namespace
-                </div>
-                <div>
-                  some-namespace
-                </div>
-              </a>
-            </span>
-          </div>
-          <div>
-            <div
-              class="DrawerTitle title"
-            >
-              <span>
-                Events
-              </span>
-            </div>
-            <div
-              class="empty"
-            >
-              No events found
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        class="ResizingAnchor horizontal leading"
-      />
     </div>
   </div>
 </body>

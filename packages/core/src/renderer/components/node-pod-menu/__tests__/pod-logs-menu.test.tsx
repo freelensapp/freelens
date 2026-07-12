@@ -6,11 +6,12 @@ import { type DiRender, renderFor } from "../../test-utils/renderFor";
 import { PodLogsMenu } from "../pod-logs-menu";
 
 import type { DiContainer } from "@ogre-tools/injectable";
+import type { Mock } from "vitest";
 
 let showLogs: (container: { name: string }) => void = () => {};
 
 // This mock is used to get showLogs function from PodLogsMenu
-jest.mock("../pod-menu-item", () => ({
+vi.mock("../pod-menu-item", () => ({
   __esModule: true,
   default: ({ onMenuItemClick }: { onMenuItemClick: (container: { name: string }) => Promise<any> }) => {
     showLogs = onMenuItemClick;
@@ -22,14 +23,14 @@ jest.mock("../pod-menu-item", () => ({
 describe("pod-logs-menu", () => {
   let di: DiContainer;
   let render: DiRender;
-  let hideDetailsMock: jest.Mock;
-  let createPodLogsTabMock: jest.Mock;
+  let hideDetailsMock: Mock;
+  let createPodLogsTabMock: Mock;
 
   beforeEach(() => {
     di = getDiForUnitTesting();
 
-    hideDetailsMock = jest.fn();
-    createPodLogsTabMock = jest.fn();
+    hideDetailsMock = vi.fn();
+    createPodLogsTabMock = vi.fn();
 
     di.override(hideDetailsInjectable, () => hideDetailsMock);
     di.override(createPodLogsTabInjectable, () => createPodLogsTabMock);

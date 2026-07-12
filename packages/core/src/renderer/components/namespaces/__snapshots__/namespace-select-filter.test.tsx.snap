@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`<NamespaceSelectFilter /> once the subscribe resolves renders 1`] = `
+exports[`<NamespaceSelectFilter /> > once the subscribe resolves > renders 1`] = `
 <body>
   <div>
     <div
@@ -50,7 +50,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves renders 1`] = `
                 id="namespace-select-filter"
                 role="combobox"
                 spellcheck="false"
-                style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                 tabindex="0"
                 type="text"
                 value=""
@@ -88,7 +88,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves renders 1`] = `
 </body>
 `;
 
-exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked renders 1`] = `
+exports[`<NamespaceSelectFilter /> > once the subscribe resolves > when clicked > renders 1`] = `
 <body>
   <div>
     <div
@@ -139,7 +139,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
                 id="namespace-select-filter"
                 role="combobox"
                 spellcheck="false"
-                style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                 tabindex="0"
                 type="text"
                 value=""
@@ -683,7 +683,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked rend
 </body>
 `;
 
-exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when 'test-2' is clicked renders 1`] = `
+exports[`<NamespaceSelectFilter /> > once the subscribe resolves > when clicked > when 'test-2' is clicked > renders 1`] = `
 <body>
   <div>
     <div
@@ -733,7 +733,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
                 id="namespace-select-filter"
                 role="combobox"
                 spellcheck="false"
-                style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                 tabindex="0"
                 type="text"
                 value=""
@@ -771,7 +771,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
 </body>
 `;
 
-exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when 'test-2' is clicked when clicked again renders 1`] = `
+exports[`<NamespaceSelectFilter /> > once the subscribe resolves > when clicked > when 'test-2' is clicked > when clicked again > renders 1`] = `
 <body>
   <div>
     <div
@@ -822,7 +822,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
                 id="namespace-select-filter"
                 role="combobox"
                 spellcheck="false"
-                style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                 tabindex="0"
                 type="text"
                 value=""
@@ -1234,7 +1234,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
 </body>
 `;
 
-exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when 'test-2' is clicked when clicked again when 'test-1' is clicked renders 1`] = `
+exports[`<NamespaceSelectFilter /> > once the subscribe resolves > when clicked > when 'test-2' is clicked > when clicked again > when 'test-1' is clicked > renders 1`] = `
 <body>
   <div>
     <div
@@ -1284,7 +1284,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
                 id="namespace-select-filter"
                 role="combobox"
                 spellcheck="false"
-                style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                 tabindex="0"
                 type="text"
                 value=""
@@ -1322,7 +1322,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
 </body>
 `;
 
-exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when 'test-2' is clicked when clicked again when 'test-1' is clicked when clicked again, then holding down multi select key when 'test-3' is clicked renders 1`] = `
+exports[`<NamespaceSelectFilter /> > once the subscribe resolves > when clicked > when 'test-2' is clicked > when clicked again > when 'test-1' is clicked > when clicked again, then holding down multi select key > when 'test-3' is clicked > renders 1`] = `
 <body>
   <div>
     <div
@@ -1373,7 +1373,7 @@ exports[`<NamespaceSelectFilter /> once the subscribe resolves when clicked when
                 id="namespace-select-filter"
                 role="combobox"
                 spellcheck="false"
-                style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                 tabindex="0"
                 type="text"
                 value=""

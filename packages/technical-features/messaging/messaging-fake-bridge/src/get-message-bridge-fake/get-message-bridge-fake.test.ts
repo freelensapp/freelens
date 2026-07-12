@@ -1,4 +1,4 @@
-import asyncFn, { AsyncFnMock } from "@async-fn/jest";
+import asyncFn, { AsyncFnMock } from "@async-fn/vitest";
 import { startApplicationInjectionToken } from "@freelensapp/application";
 import { registerFeature } from "@freelensapp/feature-core";
 import {
@@ -17,6 +17,8 @@ import { createContainer, DiContainer, Injectable } from "@ogre-tools/injectable
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { runInAction } from "mobx";
 import { getMessageBridgeFake } from "./get-message-bridge-fake";
+
+import type { Mock } from "vitest";
 
 type SomeMessageChannel = MessageChannel<string>;
 type SomeRequestChannel = RequestChannel<string, number>;
@@ -75,15 +77,15 @@ const someRequestChannelWithoutListeners: SomeRequestChannel = {
       });
 
       describe("given there are message listeners", () => {
-        let someHandler1MockInDi1: jest.Mock;
-        let someHandler1MockInDi2: jest.Mock;
-        let someHandler2MockInDi2: jest.Mock;
+        let someHandler1MockInDi1: Mock;
+        let someHandler1MockInDi2: Mock;
+        let someHandler2MockInDi2: Mock;
         let someListener1InDi2: Injectable<unknown, unknown>;
 
         beforeEach(() => {
-          someHandler1MockInDi1 = jest.fn();
-          someHandler1MockInDi2 = jest.fn();
-          someHandler2MockInDi2 = jest.fn();
+          someHandler1MockInDi1 = vi.fn();
+          someHandler1MockInDi2 = vi.fn();
+          someHandler2MockInDi2 = vi.fn();
 
           const someListener1InDi1 = getMessageChannelListenerInjectable({
             id: "some-listener-in-di-1",
@@ -142,15 +144,13 @@ const someRequestChannelWithoutListeners: SomeRequestChannel = {
               : "immediately";
 
             describe(scenarioTitle, () => {
-              let someWrapper: jest.Mock;
+              let someWrapper: Mock;
 
-              beforeEach((done) => {
-                someWrapper = jest.fn((propagation) => propagation());
+              beforeEach(async () => {
+                someWrapper = vi.fn((propagation) => propagation());
 
                 if (scenarioIsAsync) {
-                  messageBridgeFake.messagePropagationRecursive(someWrapper).then(done);
-                } else {
-                  done();
+                  await messageBridgeFake.messagePropagationRecursive(someWrapper);
                 }
               });
 
@@ -172,11 +172,9 @@ const someRequestChannelWithoutListeners: SomeRequestChannel = {
               : "immediately";
 
             describe(scenarioName, () => {
-              beforeEach((done) => {
+              beforeEach(async () => {
                 if (scenarioIsAsync) {
-                  messageBridgeFake.messagePropagationRecursive().then(done);
-                } else {
-                  done();
+                  await messageBridgeFake.messagePropagationRecursive();
                 }
               });
 
@@ -210,11 +208,9 @@ const someRequestChannelWithoutListeners: SomeRequestChannel = {
           const scenarioName = scenarioIsAsync ? "when messages are propagated" : "immediately";
 
           describe(scenarioName, () => {
-            beforeEach((done) => {
+            beforeEach(async () => {
               if (scenarioIsAsync) {
-                messageBridgeFake.messagePropagation().then(done);
-              } else {
-                done();
+                await messageBridgeFake.messagePropagation();
               }
             });
 
@@ -233,10 +229,10 @@ const someRequestChannelWithoutListeners: SomeRequestChannel = {
 
           scenarioIsAsync &&
             describe("when messages are propagated using a wrapper, such as act() in react testing lib", () => {
-              let someWrapper: jest.Mock;
+              let someWrapper: Mock;
 
               beforeEach(async () => {
-                someWrapper = jest.fn((observation) => observation());
+                someWrapper = vi.fn((observation) => observation());
 
                 await messageBridgeFake.messagePropagation(someWrapper);
               });

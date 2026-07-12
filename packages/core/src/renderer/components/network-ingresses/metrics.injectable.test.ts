@@ -14,7 +14,7 @@ import type { Ingress } from "@freelensapp/kube-object";
 describe("ingress-metrics injectable", () => {
   it("requests ingress metrics with the selected time range", () => {
     const di = getDiForUnitTesting();
-    const requestIngressMetrics = jest.fn().mockResolvedValue({});
+    const requestIngressMetrics = vi.fn().mockResolvedValue({});
     const ingress = {
       getId: () => "ingress-id",
       getName: () => "ingress-name",

@@ -4,10 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { showCheckedErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { fireEvent } from "@testing-library/react";
-import { anyObject } from "jest-mock-extended";
+import { anyObject } from "vitest-mock-extended";
 import navigateToHelmReleasesInjectable from "../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
 import { HelmChart } from "../../common/k8s-api/endpoints/helm-charts.api";
 import requestHelmChartsInjectable from "../../common/k8s-api/endpoints/helm-charts.api/request-charts.injectable";
@@ -23,8 +23,9 @@ import { toHelmRelease } from "../../renderer/components/helm-releases/to-helm-r
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { testUsingFakeTime } from "../../test-utils/use-fake-time";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
 import type { RenderResult } from "@testing-library/react";
+import type { Mock } from "vitest";
 
 import type { RequestHelmCharts } from "../../common/k8s-api/endpoints/helm-charts.api/request-charts.injectable";
 import type { RequestHelmChartReadme } from "../../common/k8s-api/endpoints/helm-charts.api/request-readme.injectable";
@@ -45,8 +46,8 @@ describe("showing details for helm release", () => {
   let requestHelmChartVersionsMock: AsyncFnMock<RequestHelmChartVersions>;
   let requestHelmChartReadmeMock: AsyncFnMock<RequestHelmChartReadme>;
   let requestHelmChartValuesMock: AsyncFnMock<RequestHelmChartValues>;
-  let showSuccessNotificationMock: jest.Mock;
-  let showCheckedErrorNotificationMock: jest.Mock;
+  let showSuccessNotificationMock: Mock;
+  let showCheckedErrorNotificationMock: Mock;
   let listClusterHelmReleasesMock: AsyncFnMock<ListClusterHelmReleases>;
 
   beforeEach(() => {
@@ -64,8 +65,8 @@ describe("showing details for helm release", () => {
     requestHelmChartReadmeMock = asyncFn();
     requestHelmChartValuesMock = asyncFn();
 
-    showSuccessNotificationMock = jest.fn();
-    showCheckedErrorNotificationMock = jest.fn();
+    showSuccessNotificationMock = vi.fn();
+    showCheckedErrorNotificationMock = vi.fn();
 
     builder.beforeWindowStart(({ windowDi }) => {
       windowDi.override(getRandomUpgradeChartTabIdInjectable, () => () => "some-tab-id");

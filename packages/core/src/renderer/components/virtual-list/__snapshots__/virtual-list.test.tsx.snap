@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`VirtualList renders 1`] = `
+exports[`VirtualList > renders 1`] = `
 <body>
   <div>
     <div
@@ -98,7 +98,7 @@ exports[`VirtualList renders 1`] = `
 </body>
 `;
 
-exports[`VirtualList when non-visable item is selected renders 1`] = `
+exports[`VirtualList > when non-visable item is selected > renders 1`] = `
 <body>
   <div>
     <div
@@ -256,7 +256,7 @@ exports[`VirtualList when non-visable item is selected renders 1`] = `
 </body>
 `;
 
-exports[`VirtualList when visible item is selected renders 1`] = `
+exports[`VirtualList > when visible item is selected > renders 1`] = `
 <body>
   <div>
     <div

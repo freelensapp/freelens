@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/typescript",
-  "version": "1.10.4-0",
-  "private": false,
+  "version": "2.0.0-0",
+  "private": true,
   "description": "Typescript configuration for Freelens packages.",
   "homepage": "https://freelens.app",
   "bugs": {
@@ -12,16 +12,16 @@
     "url": "git+https://github.com/freelensapp/freelens.git"
   },
   "license": "MIT",
+  "type": "module",
   "author": {
     "name": "Freelens Authors",
     "email": "freelens@freelens.app"
   },
-  "type": "commonjs",
   "scripts": {
     "clean:node_modules": "pnpm dlx rimraf@6.1.3 node_modules"
   },
   "dependencies": {
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.3",
     "typescript-plugin-css-modules": "^5.2.0"
   },
   "publishConfig": {

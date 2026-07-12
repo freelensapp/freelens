@@ -10,7 +10,6 @@ import { mkdirp, remove } from "fs-extra";
 import * as os from "os";
 import * as path from "path";
 import { _electron as electron } from "playwright";
-import { setImmediate } from "timers";
 import * as uuid from "uuid";
 
 import type { ElectronApplication, Frame, Page } from "playwright";
@@ -61,15 +60,6 @@ async function getMainWindow(app: ElectronApplication, timeout = 50_000): Promis
 async function attemptStart() {
   const FREELENS_INTEGRATION_TESTING_DIR = path.join(os.tmpdir(), "freelens-integration-testing", uuid.v4());
   process.env.FREELENS_INTEGRATION_TESTING_DIR = FREELENS_INTEGRATION_TESTING_DIR;
-
-  // Playwright does not work with jest-runtime for reading the package.json
-  process.env.PW_VERSION_OVERRIDE = require("./../../package.json").devDependencies["playwright"].replace(
-    /[^0-9.]/g,
-    "",
-  );
-
-  // Fixes `electron.launch: setImmediate is not defined`
-  global.setImmediate = setImmediate;
 
   // Make sure that the directory is clear
   await remove(FREELENS_INTEGRATION_TESTING_DIR);
@@ -130,6 +120,27 @@ export async function start() {
 
 export async function clickWelcomeButton(window: Page) {
   await window.click("[data-testid=welcome-menu-container] li a");
+}
+
+/**
+ * Click a sidebar navigation item by its test id.
+ *
+ * The sidebar links are React Router `NavLink`s that navigate from their `onClick` handler
+ * (the anchor calls `event.preventDefault()` and uses `to=""`, so navigation never relies on
+ * the href). Right after a cluster connects, the cluster overview metrics area
+ * (spinner -> chart / no-metrics) keeps re-laying out and can transiently cover the click
+ * point, so a normal `frame.click` hit-tests to the ClusterMetrics content div
+ * ("subtree intercepts pointer events") and times out.
+ *
+ * A forced click is not safe here either: `{ force: true }` only skips the actionability
+ * check, it still delivers the mouse event at the element's coordinates, so the overlay
+ * swallows the click, the `onClick` handler never runs and navigation silently never happens
+ * (the page content then times out instead). Dispatching the click event directly on the
+ * anchor invokes its `onClick` handler regardless of any transient overlay, which triggers
+ * navigation reliably.
+ */
+export async function clickSidebarItem(frame: Frame, testId: string) {
+  await frame.dispatchEvent(`[data-testid="${testId}"]`, "click");
 }
 
 function kindEntityId(clusterName: string) {

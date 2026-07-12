@@ -1,4 +1,4 @@
-import asyncFn, { AsyncFnMock } from "@async-fn/jest";
+import asyncFn, { AsyncFnMock } from "@async-fn/vitest";
 import { beforeApplicationIsLoadingInjectionToken, startApplicationInjectionToken } from "@freelensapp/application";
 import { registerFeature } from "@freelensapp/feature-core";
 import { createContainer, DiContainer, getInjectable } from "@ogre-tools/injectable";
@@ -6,18 +6,20 @@ import { applicationFeatureForElectronMain } from "./feature";
 import * as timeSlots from "./start-application/time-slots";
 import whenAppIsReadyInjectable from "./start-application/when-app-is-ready.injectable";
 
+import type { Mock } from "vitest";
+
 describe("starting-of-electron-main-application", () => {
   let di: DiContainer;
-  let beforeAnythingMock: jest.Mock;
-  let beforeElectronIsReadyMock: jest.Mock;
+  let beforeAnythingMock: Mock;
+  let beforeElectronIsReadyMock: Mock;
   let beforeApplicationIsLoadingMock: AsyncFnMock<() => Promise<void>>;
   let whenAppIsReadyMock: AsyncFnMock<() => Promise<void>>;
 
   beforeEach(() => {
     di = createContainer("irrelevant");
 
-    beforeAnythingMock = jest.fn();
-    beforeElectronIsReadyMock = jest.fn();
+    beforeAnythingMock = vi.fn();
+    beforeElectronIsReadyMock = vi.fn();
 
     beforeApplicationIsLoadingMock = asyncFn();
     whenAppIsReadyMock = asyncFn();

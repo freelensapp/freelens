@@ -8,15 +8,16 @@ import { type DiRender, renderFor } from "../../test-utils/renderFor";
 import { PodShellMenu } from "../pod-shell-menu";
 
 import type { DiContainer } from "@ogre-tools/injectable";
+import type { Mock } from "vitest";
 
-jest.mock("uuid", () => ({
-  v4: jest.fn(() => "mocked-id"),
+vi.mock("uuid", () => ({
+  v4: vi.fn(() => "mocked-id"),
 }));
 
 let execShell: (container: { name: string }) => Promise<void> = async () => {};
 
 // This mock is used to get attachToPod function from PodShellMenu
-jest.mock("../pod-menu-item", () => ({
+vi.mock("../pod-menu-item", () => ({
   __esModule: true,
   default: ({ onMenuItemClick }: { onMenuItemClick: (container: { name: string }) => Promise<any> }) => {
     execShell = onMenuItemClick;
@@ -28,16 +29,16 @@ jest.mock("../pod-menu-item", () => ({
 describe("pod-shell-menu", () => {
   let di: DiContainer;
   let render: DiRender;
-  let createTerminalTabMock: jest.Mock;
-  let sendCommandMock: jest.Mock;
-  let hideDetailsMock: jest.Mock;
+  let createTerminalTabMock: Mock;
+  let sendCommandMock: Mock;
+  let hideDetailsMock: Mock;
 
   beforeEach(() => {
     di = getDiForUnitTesting();
 
-    createTerminalTabMock = jest.fn();
-    sendCommandMock = jest.fn(() => Promise.resolve());
-    hideDetailsMock = jest.fn();
+    createTerminalTabMock = vi.fn();
+    sendCommandMock = vi.fn(() => Promise.resolve());
+    hideDetailsMock = vi.fn();
 
     di.override(createTerminalTabInjectable, () => createTerminalTabMock);
     di.override(sendCommandInjectable, () => sendCommandMock);
@@ -93,7 +94,7 @@ describe("pod-shell-menu", () => {
       },
     };
 
-    jest.spyOn(os, "platform").mockReturnValue("linux");
+    vi.spyOn(os, "platform").mockReturnValue("linux");
 
     // WHEN
     expect(() => {
@@ -119,7 +120,7 @@ describe("pod-shell-menu", () => {
       },
     };
 
-    jest.spyOn(os, "platform").mockReturnValue("win32");
+    vi.spyOn(os, "platform").mockReturnValue("win32");
 
     // WHEN
     expect(() => {

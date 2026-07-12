@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`preferences - navigation to application preferences given in preferences, when rendered renders 1`] = `
+exports[`preferences - navigation to application preferences > given in preferences, when rendered > renders 1`] = `
 <div>
   <div
     class="Notifications flex column align-flex-end"
@@ -228,7 +228,7 @@ exports[`preferences - navigation to application preferences given in preference
                             id="theme-input"
                             role="combobox"
                             spellcheck="false"
-                            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                            style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                             tabindex="0"
                             type="text"
                             value=""
@@ -319,7 +319,7 @@ exports[`preferences - navigation to application preferences given in preference
                             id="extension-install-registry-input"
                             role="combobox"
                             spellcheck="false"
-                            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                            style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                             tabindex="0"
                             type="text"
                             value=""
@@ -551,7 +551,7 @@ exports[`preferences - navigation to application preferences given in preference
                             id="timezone-input"
                             role="combobox"
                             spellcheck="false"
-                            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                            style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                             tabindex="0"
                             type="text"
                             value=""
@@ -767,7 +767,7 @@ exports[`preferences - navigation to application preferences given in preference
 </div>
 `;
 
-exports[`preferences - navigation to application preferences given in preferences, when rendered when extension with application preference items gets enabled renders 1`] = `
+exports[`preferences - navigation to application preferences > given in preferences, when rendered > when extension with application preference items gets enabled > renders 1`] = `
 <div>
   <div
     class="Notifications flex column align-flex-end"
@@ -995,7 +995,7 @@ exports[`preferences - navigation to application preferences given in preference
                             id="theme-input"
                             role="combobox"
                             spellcheck="false"
-                            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                            style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                             tabindex="0"
                             type="text"
                             value=""
@@ -1086,7 +1086,7 @@ exports[`preferences - navigation to application preferences given in preference
                             id="extension-install-registry-input"
                             role="combobox"
                             spellcheck="false"
-                            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                            style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                             tabindex="0"
                             type="text"
                             value=""
@@ -1318,7 +1318,7 @@ exports[`preferences - navigation to application preferences given in preference
                             id="timezone-input"
                             role="combobox"
                             spellcheck="false"
-                            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                            style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                             tabindex="0"
                             type="text"
                             value=""
@@ -1565,7 +1565,7 @@ exports[`preferences - navigation to application preferences given in preference
 </div>
 `;
 
-exports[`preferences - navigation to application preferences given in some child page of preferences, when rendered renders 1`] = `
+exports[`preferences - navigation to application preferences > given in some child page of preferences, when rendered > renders 1`] = `
 <div>
   <div
     class="Notifications flex column align-flex-end"
@@ -1988,7 +1988,7 @@ exports[`preferences - navigation to application preferences given in some child
 </div>
 `;
 
-exports[`preferences - navigation to application preferences given in some child page of preferences, when rendered when navigating to application preferences using navigation renders 1`] = `
+exports[`preferences - navigation to application preferences > given in some child page of preferences, when rendered > when navigating to application preferences using navigation > renders 1`] = `
 <div>
   <div
     class="Notifications flex column align-flex-end"
@@ -2216,7 +2216,7 @@ exports[`preferences - navigation to application preferences given in some child
                             id="theme-input"
                             role="combobox"
                             spellcheck="false"
-                            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                            style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                             tabindex="0"
                             type="text"
                             value=""
@@ -2307,7 +2307,7 @@ exports[`preferences - navigation to application preferences given in some child
                             id="extension-install-registry-input"
                             role="combobox"
                             spellcheck="false"
-                            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                            style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                             tabindex="0"
                             type="text"
                             value=""
@@ -2539,7 +2539,7 @@ exports[`preferences - navigation to application preferences given in some child
                             id="timezone-input"
                             role="combobox"
                             spellcheck="false"
-                            style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                            style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                             tabindex="0"
                             type="text"
                             value=""
@@ -2755,7 +2755,7 @@ exports[`preferences - navigation to application preferences given in some child
 </div>
 `;
 
-exports[`preferences - navigation to application preferences given in some child page of preferences, when rendered when navigating to preferences without specifying the tab renders 1`] = `
+exports[`preferences - navigation to application preferences > given in some child page of preferences, when rendered > when navigating to preferences without specifying the tab > renders 1`] = `
 <body>
   <div>
     <div
@@ -2984,7 +2984,7 @@ exports[`preferences - navigation to application preferences given in some child
                               id="theme-input"
                               role="combobox"
                               spellcheck="false"
-                              style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                              style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                               tabindex="0"
                               type="text"
                               value=""
@@ -3075,7 +3075,7 @@ exports[`preferences - navigation to application preferences given in some child
                               id="extension-install-registry-input"
                               role="combobox"
                               spellcheck="false"
-                              style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                              style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                               tabindex="0"
                               type="text"
                               value=""
@@ -3307,7 +3307,7 @@ exports[`preferences - navigation to application preferences given in some child
                               id="timezone-input"
                               role="combobox"
                               spellcheck="false"
-                              style="opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;"
+                              style="color: inherit; background: 0px center; opacity: 1; width: 100%; grid-area: 1 / 2; font: inherit; min-width: 2px; border: 0px; margin: 0px; outline: 0px; padding: 0px;"
                               tabindex="0"
                               type="text"
                               value=""

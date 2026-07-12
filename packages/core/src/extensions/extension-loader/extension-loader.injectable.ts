@@ -7,6 +7,8 @@
 import { bundledExtensionInjectionToken } from "@freelensapp/legacy-extensions";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
+import pathExistsInjectable from "../../common/fs/path-exists.injectable";
+import readFileInjectable from "../../common/fs/read-file.injectable";
 import getDirnameOfPathInjectable from "../../common/path/get-dirname.injectable";
 import joinPathsInjectable from "../../common/path/join-paths.injectable";
 import updateExtensionsStateInjectable from "../../features/extensions/enabled/common/update-state.injectable";
@@ -28,6 +30,8 @@ const extensionLoaderInjectable = getInjectable({
       logger: di.inject(loggerInjectionToken),
       joinPaths: di.inject(joinPathsInjectable),
       getDirnameOfPath: di.inject(getDirnameOfPathInjectable),
+      readFile: di.inject(readFileInjectable),
+      pathExists: di.inject(pathExistsInjectable),
     }),
 });
 

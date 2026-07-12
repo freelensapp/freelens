@@ -5,20 +5,21 @@ import { messagingFeatureForRenderer } from "../feature";
 import ipcRendererInjectable from "../ipc/ipc-renderer.injectable";
 
 import type { IpcRenderer, IpcRendererEvent } from "electron";
+import type { Mock } from "vitest";
 
 describe("enlist message channel listener in renderer", () => {
   let enlistMessageChannelListener: EnlistMessageChannelListener;
   let ipcRendererStub: IpcRenderer;
-  let onMock: jest.Mock;
-  let offMock: jest.Mock;
+  let onMock: Mock;
+  let offMock: Mock;
 
   beforeEach(() => {
     const di = createContainer("irrelevant");
 
     registerFeature(di, messagingFeatureForRenderer);
 
-    onMock = jest.fn();
-    offMock = jest.fn();
+    onMock = vi.fn();
+    offMock = vi.fn();
 
     ipcRendererStub = {
       on: onMock,
@@ -31,11 +32,11 @@ describe("enlist message channel listener in renderer", () => {
   });
 
   describe("when called", () => {
-    let handlerMock: jest.Mock;
+    let handlerMock: Mock;
     let disposer: () => void;
 
     beforeEach(() => {
-      handlerMock = jest.fn();
+      handlerMock = vi.fn();
 
       disposer = enlistMessageChannelListener({
         id: "some-listener",

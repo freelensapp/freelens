@@ -16,6 +16,7 @@ import processExecPathInjectable from "./execPath.injectable";
 import type { ChildProcessWithoutNullStreams } from "child_process";
 
 import type { DiContainer } from "@ogre-tools/injectable";
+import type { MockedFunction } from "vitest";
 
 import type { Spawn } from "../../../main/child-process/spawn.injectable";
 import type { ComputeUnixShellEnvironment } from "./compute-unix-shell-environment.injectable";
@@ -33,7 +34,7 @@ const expectedEnv = {
 describe("computeUnixShellEnvironment technical tests", () => {
   let di: DiContainer;
   let computeUnixShellEnvironment: ComputeUnixShellEnvironment;
-  let spawnMock: jest.MockedFunction<Spawn>;
+  let spawnMock: MockedFunction<Spawn>;
   let shellProcessFake: ChildProcessWithoutNullStreams;
   let stdinValue: string;
   let shellStdin: MemoryStream;
@@ -44,7 +45,7 @@ describe("computeUnixShellEnvironment technical tests", () => {
   beforeEach(() => {
     di = getDiForUnitTesting();
 
-    spawnMock = jest.fn().mockImplementation((spawnfile, spawnargs) => {
+    spawnMock = vi.fn().mockImplementation((spawnfile, spawnargs) => {
       shellStdin = new MemoryStream();
       shellStdout = new MemoryStream();
       shellStderr = new MemoryStream();
@@ -60,17 +61,17 @@ describe("computeUnixShellEnvironment technical tests", () => {
         stderr: shellStderr,
         stdio: [shellStdin, shellStdout, shellStderr] as any,
         killed: false,
-        kill: jest.fn(),
-        send: jest.fn(),
-        disconnect: jest.fn(),
-        unref: jest.fn(),
-        ref: jest.fn(),
+        kill: vi.fn(),
+        send: vi.fn(),
+        disconnect: vi.fn(),
+        unref: vi.fn(),
+        ref: vi.fn(),
         connected: false,
         exitCode: null,
         signalCode: null,
         spawnargs,
         spawnfile,
-        [Symbol.dispose]: jest.fn(),
+        [Symbol.dispose]: vi.fn(),
       }));
     });
     di.override(spawnInjectable, () => spawnMock);

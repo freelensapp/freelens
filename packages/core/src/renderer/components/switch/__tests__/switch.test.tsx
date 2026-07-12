@@ -6,7 +6,7 @@
 
 import { fireEvent, render } from "@testing-library/react";
 import React from "react";
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 
 import { Switch } from "../switch";
 
@@ -32,7 +32,7 @@ describe("<Switch/>", () => {
   });
 
   it("onClick event fired", () => {
-    const onClick = jest.fn();
+    const onClick = vi.fn();
     const { getByTestId } = render(<Switch onClick={onClick} />);
     const switcher = getByTestId("switch");
 
@@ -42,7 +42,7 @@ describe("<Switch/>", () => {
   });
 
   it("onClick event not fired for disabled item", () => {
-    const onClick = jest.fn();
+    const onClick = vi.fn();
     const { getByTestId } = render(<Switch onClick={onClick} disabled />);
     const switcher = getByTestId("switch");
 
@@ -52,7 +52,7 @@ describe("<Switch/>", () => {
   });
 
   it("returns true checked attribute in a onChange callback", () => {
-    const onClick = jest.fn();
+    const onClick = vi.fn();
     const { getByTestId } = render(<Switch onChange={onClick} checked={true} />);
     const switcher = getByTestId("switch");
 
@@ -62,7 +62,7 @@ describe("<Switch/>", () => {
   });
 
   it("returns false checked attribute in a onChange callback", () => {
-    const onClick = jest.fn();
+    const onClick = vi.fn();
     const { getByTestId } = render(<Switch onChange={onClick} />);
     const switcher = getByTestId("switch");
 

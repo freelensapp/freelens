@@ -15,10 +15,11 @@ import { KeyboardShortcutScope } from "./keyboard-shortcut-scope";
 import platformInjectable from "./platform.injectable";
 
 import type { RenderResult } from "@testing-library/react";
+import type { Mock } from "vitest";
 
 describe("keyboard-shortcuts", () => {
   let di: DiContainer;
-  let invokeMock: jest.Mock;
+  let invokeMock: Mock;
   let rendered: RenderResult;
   let user: UserEvent;
 
@@ -32,7 +33,7 @@ describe("keyboard-shortcuts", () => {
       registerFeature(di, keyboardShortcutsFeature);
     });
 
-    invokeMock = jest.fn();
+    invokeMock = vi.fn();
 
     const someKeyboardShortcutInjectable = getInjectable({
       id: "some-keyboard-shortcut",
@@ -205,7 +206,7 @@ describe("keyboard-shortcuts", () => {
       },
     ].forEach(({ binding, keyboard, scenario, shouldCallCallback }) => {
       it(scenario, async () => {
-        const invokeMock = jest.fn();
+        const invokeMock = vi.fn();
 
         const shortcutInjectable = getInjectable({
           id: "shortcut",
@@ -237,7 +238,7 @@ describe("keyboard-shortcuts", () => {
     beforeEach(async () => {
       di.override(platformInjectable, () => "darwin");
 
-      invokeMock = jest.fn();
+      invokeMock = vi.fn();
 
       const shortcutInjectable = getInjectable({
         id: "shortcut",
@@ -276,7 +277,7 @@ describe("keyboard-shortcuts", () => {
     beforeEach(async () => {
       di.override(platformInjectable, () => "win32");
 
-      invokeMock = jest.fn();
+      invokeMock = vi.fn();
 
       const shortcutInjectable = getInjectable({
         id: "shortcut",
@@ -315,7 +316,7 @@ describe("keyboard-shortcuts", () => {
     beforeEach(async () => {
       di.override(platformInjectable, () => "some-other-platform");
 
-      invokeMock = jest.fn();
+      invokeMock = vi.fn();
 
       const shortcutInjectable = getInjectable({
         id: "shortcut",

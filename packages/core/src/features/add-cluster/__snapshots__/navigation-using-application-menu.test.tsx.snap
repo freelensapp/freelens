@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`add-cluster - navigation using application menu renders 1`] = `
+exports[`add-cluster - navigation using application menu > renders 1`] = `
 <div>
   <div
     class="Notifications flex column align-flex-end"
@@ -376,7 +376,7 @@ exports[`add-cluster - navigation using application menu renders 1`] = `
 </div>
 `;
 
-exports[`add-cluster - navigation using application menu when navigating to add cluster using application menu renders 1`] = `
+exports[`add-cluster - navigation using application menu > when navigating to add cluster using application menu > renders 1`] = `
 <div>
   <div
     class="Notifications flex column align-flex-end"

@@ -11,12 +11,14 @@ import logErrorInjectable from "../../common/log-error.injectable";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import applicationMenuItemInjectionToken from "./main/menu-items/application-menu-item-injection-token";
 
+import type { Mock } from "vitest";
+
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import type { FakeExtensionOptions } from "../../renderer/components/test-utils/get-extension-fake";
 
 describe("application-menu-in-legacy-extension-api", () => {
   let builder: ApplicationBuilder;
-  let logErrorMock: jest.Mock;
+  let logErrorMock: Mock;
 
   beforeEach(async () => {
     builder = getApplicationBuilder();
@@ -26,7 +28,7 @@ describe("application-menu-in-legacy-extension-api", () => {
         mainDi.register(someTopMenuItemInjectable, someNonExtensionBasedMenuItemInjectable);
       });
 
-      logErrorMock = jest.fn();
+      logErrorMock = vi.fn();
 
       mainDi.override(logErrorInjectable, () => logErrorMock);
     });
@@ -35,11 +37,11 @@ describe("application-menu-in-legacy-extension-api", () => {
   });
 
   describe("when extension with application menu items is enabled", () => {
-    let onClickMock: jest.Mock;
+    let onClickMock: Mock;
     let testExtensionOptions: FakeExtensionOptions;
 
     beforeEach(() => {
-      onClickMock = jest.fn();
+      onClickMock = vi.fn();
 
       testExtensionOptions = {
         id: "some-test-extension",

@@ -5,7 +5,7 @@
  */
 
 import React from "react";
-import "@testing-library/jest-dom";
+import "@testing-library/jest-dom/vitest";
 
 import { computed } from "mobx";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
@@ -44,7 +44,7 @@ describe("<Select />", () => {
       },
     ];
 
-    const onChange = jest.fn();
+    const onChange = vi.fn();
 
     const { container } = render(<Select id="some-test-input" onChange={onChange} options={options} />);
 
@@ -63,7 +63,7 @@ describe("<Select />", () => {
       },
     ];
 
-    const onChange = jest.fn();
+    const onChange = vi.fn();
 
     const { container } = render(<Select value={options[0].value} onChange={onChange} options={options} />);
     const selectedValueContainer = container.querySelector(".Select__single-value");
@@ -83,7 +83,7 @@ describe("<Select />", () => {
       },
     ];
 
-    const onChange = jest.fn();
+    const onChange = vi.fn();
 
     const { container, rerender } = render(<Select value={options[0].value} onChange={onChange} options={options} />);
     const selectedValueContainer = container.querySelector(".Select__single-value");
@@ -107,7 +107,7 @@ describe("<Select />", () => {
       },
     ];
 
-    const onChange = jest.fn();
+    const onChange = vi.fn();
 
     const { container, rerender } = render(<Select value={options[0].value} onChange={onChange} options={options} />);
     const selectedValueContainer = container.querySelector(".Select__single-value");
@@ -131,7 +131,7 @@ describe("<Select />", () => {
       },
     ];
 
-    const onChange = jest.fn();
+    const onChange = vi.fn();
 
     const { container, rerender } = render(<Select value={options[0].value} onChange={onChange} options={options} />);
     const selectedValueContainer = container.querySelector(".Select__single-value");

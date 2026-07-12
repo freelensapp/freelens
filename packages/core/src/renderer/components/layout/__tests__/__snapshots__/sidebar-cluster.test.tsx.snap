@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`<SidebarCluster/> renders w/o errors 1`] = `
+exports[`<SidebarCluster/> > renders w/o errors 1`] = `
 <div>
   <div
     class="SidebarCluster"

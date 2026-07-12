@@ -91,7 +91,7 @@ describe("LogControls", () => {
   });
 
   it("updates only the tab data (not the saved preference) before reloading logs", async () => {
-    const setLogTabData = jest.fn();
+    const setLogTabData = vi.fn();
 
     model = getOnePodViewModel(
       "foobar",
@@ -100,7 +100,7 @@ describe("LogControls", () => {
       { setLogTabData },
     );
 
-    const reloadLogsSpy = jest.spyOn(model, "reloadLogs");
+    const reloadLogsSpy = vi.spyOn(model, "reloadLogs");
 
     render(<LogControls model={model} />);
 

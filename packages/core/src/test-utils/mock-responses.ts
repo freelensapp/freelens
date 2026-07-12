@@ -6,30 +6,31 @@
 
 import { PassThrough } from "stream";
 
-import type { Headers as NodeFetchHeaders, Response } from "@freelensapp/node-fetch";
+import type { Headers as NodeFetchHeaders, Response } from "node-fetch";
+import type { Mocked } from "vitest";
 
 export const createMockResponseFromString = (url: string, data: string, statusCode = 200) => {
-  const res: jest.Mocked<Response> = {
-    buffer: jest.fn(async () => {
+  const res: Mocked<Response> = {
+    buffer: vi.fn(async () => {
       throw new Error("buffer() is not supported");
     }),
-    clone: jest.fn(() => res),
-    arrayBuffer: jest.fn(async () => {
+    clone: vi.fn(() => res),
+    arrayBuffer: vi.fn(async () => {
       throw new Error("arrayBuffer() is not supported");
     }),
-    blob: jest.fn(async () => {
+    blob: vi.fn(async () => {
       throw new Error("blob() is not supported");
     }),
     body: new PassThrough(),
     bodyUsed: false,
     headers: new Headers() as unknown as NodeFetchHeaders,
-    json: jest.fn(async () => JSON.parse(await res.text())),
+    json: vi.fn(async () => JSON.parse(await res.text())),
     ok: 200 <= statusCode && statusCode < 300,
     redirected: 300 <= statusCode && statusCode < 400,
     size: data.length,
     status: statusCode,
     statusText: "some-text",
-    text: jest.fn(async () => data),
+    text: vi.fn(async () => data),
     type: "basic",
     url,
   } as any;
@@ -38,27 +39,27 @@ export const createMockResponseFromString = (url: string, data: string, statusCo
 };
 
 export const createMockResponseFromStream = (url: string, stream: NodeJS.ReadableStream, statusCode = 200) => {
-  const res: jest.Mocked<Response> = {
-    buffer: jest.fn(async () => {
+  const res: Mocked<Response> = {
+    buffer: vi.fn(async () => {
       throw new Error("buffer() is not supported");
     }),
-    clone: jest.fn(() => res),
-    arrayBuffer: jest.fn(async () => {
+    clone: vi.fn(() => res),
+    arrayBuffer: vi.fn(async () => {
       throw new Error("arrayBuffer() is not supported");
     }),
-    blob: jest.fn(async () => {
+    blob: vi.fn(async () => {
       throw new Error("blob() is not supported");
     }),
     body: stream,
     bodyUsed: false,
     headers: new Headers() as unknown as NodeFetchHeaders,
-    json: jest.fn(async () => JSON.parse(await res.text())),
+    json: vi.fn(async () => JSON.parse(await res.text())),
     ok: 200 <= statusCode && statusCode < 300,
     redirected: 300 <= statusCode && statusCode < 400,
     size: 10,
     status: statusCode,
     statusText: "some-text",
-    text: jest.fn(() => {
+    text: vi.fn(() => {
       const chunks: Buffer[] = [];
 
       return new Promise((resolve, reject) => {

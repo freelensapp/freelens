@@ -6,12 +6,12 @@
 
 import "./setting-layout.scss";
 
-import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import { observableHistoryInjectionToken } from "@freelensapp/routing";
 import { cssNames } from "@freelensapp/utilities";
 import { observer } from "mobx-react";
 import React from "react";
 import navigateToCatalogInjectable from "../../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
+import { getDiForExtensionApi } from "../../../extensions/extension-api-di";
 import { CloseButton } from "./close-button";
 
 import type { IClassName, StrictReactNode } from "@freelensapp/utilities";
@@ -31,7 +31,7 @@ const defaultProps: Partial<SettingLayoutProps> = {
   provideBackButtonNavigation: true,
   contentGaps: true,
   back: () => {
-    const di = getLegacyGlobalDiForExtensionApi();
+    const di = getDiForExtensionApi();
     const navigateToCatalog = di.inject(navigateToCatalogInjectable);
     const observableHistory = di.inject(observableHistoryInjectionToken);
 

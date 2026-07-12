@@ -13,18 +13,19 @@ import ensureHashedDirectoryForExtensionInjectable from "./ensure-hashed-directo
 import { registeredExtensionsInjectable } from "./registered-extensions.injectable";
 
 import type { ObservableMap } from "mobx";
+import type { Mock } from "vitest";
 
 import type { EnsureHashedDirectoryForExtension } from "./ensure-hashed-directory-for-extension.injectable";
 
 describe("ensure-hashed-directory-for-extension", () => {
   let ensureHashedDirectoryForExtension: EnsureHashedDirectoryForExtension;
-  let ensureDirMock: jest.Mock;
+  let ensureDirMock: Mock;
   let registeredExtensions: ObservableMap<string, string>;
 
   beforeEach(() => {
     const di = getDiForUnitTesting();
 
-    ensureDirMock = jest.fn();
+    ensureDirMock = vi.fn();
 
     di.override(ensureDirInjectable, () => ensureDirMock);
     di.override(directoryForExtensionDataInjectable, () => "some-directory-for-extension-data");

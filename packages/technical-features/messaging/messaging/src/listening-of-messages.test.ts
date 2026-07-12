@@ -16,21 +16,23 @@ import {
 } from "./features/actual/message/message-channel-listener-injection-token";
 import { messagingFeatureForUnitTesting } from "./features/unit-testing";
 
+import type { Mock, MockedFunction } from "vitest";
+
 describe("listening-of-messages", () => {
   let di: DiContainer;
-  let enlistMessageChannelListenerMock: jest.MockedFunction<EnlistMessageChannelListener>;
-  let disposeSomeListenerMock: jest.Mock;
-  let disposeSomeUnrelatedListenerMock: jest.Mock;
+  let enlistMessageChannelListenerMock: MockedFunction<EnlistMessageChannelListener>;
+  let disposeSomeListenerMock: Mock;
+  let disposeSomeUnrelatedListenerMock: Mock;
 
   beforeEach(() => {
     di = createContainer("irrelevant");
 
     registerMobX(di);
 
-    disposeSomeListenerMock = jest.fn();
-    disposeSomeUnrelatedListenerMock = jest.fn();
+    disposeSomeListenerMock = vi.fn();
+    disposeSomeUnrelatedListenerMock = vi.fn();
 
-    enlistMessageChannelListenerMock = jest.fn((listener) =>
+    enlistMessageChannelListenerMock = vi.fn((listener) =>
       listener.id === "some-channel-id-message-listener-some-listener"
         ? disposeSomeListenerMock
         : disposeSomeUnrelatedListenerMock,
