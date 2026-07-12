@@ -461,7 +461,7 @@ exports[`preferences - navigation using application menu > when navigating to pr
             class="sidebar"
           >
             <div
-              class="Tabs flex column"
+              class="Tabs flex flex-col"
             >
               <div
                 data-preference-tab-group-test="general-tab-group"

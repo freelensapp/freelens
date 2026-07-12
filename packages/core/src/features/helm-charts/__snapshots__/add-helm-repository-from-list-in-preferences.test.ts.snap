@@ -86,7 +86,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"
@@ -896,7 +896,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"
@@ -1744,7 +1744,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"
@@ -2650,7 +2650,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"
@@ -3498,7 +3498,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"
@@ -4346,7 +4346,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"
@@ -5184,7 +5184,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"
@@ -6066,7 +6066,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"
@@ -7016,7 +7016,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"
@@ -7898,7 +7898,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"

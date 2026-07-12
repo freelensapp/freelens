@@ -480,7 +480,7 @@ exports[`Showing correct entity settings > when navigating to local cluster enti
                 </div>
               </div>
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <hr />
                 <div
@@ -859,7 +859,7 @@ exports[`Showing correct entity settings > when navigating to non-local cluster 
                 </div>
               </div>
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <hr />
                 <div
@@ -1259,7 +1259,7 @@ exports[`Showing correct entity settings > when navigating to weblink entity set
                 </div>
               </div>
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               />
             </div>
           </nav>

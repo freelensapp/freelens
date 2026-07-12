@@ -86,7 +86,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"
@@ -924,7 +924,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"
@@ -1772,7 +1772,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"
@@ -2731,7 +2731,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"
@@ -3587,7 +3587,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"
@@ -4546,7 +4546,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"
@@ -5687,7 +5687,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"
@@ -6646,7 +6646,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"
@@ -7787,7 +7787,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"
@@ -8747,7 +8747,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"
@@ -9603,7 +9603,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"
@@ -10449,7 +10449,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"

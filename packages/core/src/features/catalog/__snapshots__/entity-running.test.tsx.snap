@@ -357,7 +357,7 @@ exports[`entity running technical tests > when navigated to catalog > renders 1`
               class="views"
             >
               <div
-                class="ItemListLayout flex column Catalog"
+                class="ItemListLayout flex flex-col Catalog"
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
@@ -1175,7 +1175,7 @@ exports[`entity running technical tests > when navigated to catalog > when detai
               class="views"
             >
               <div
-                class="ItemListLayout flex column Catalog"
+                class="ItemListLayout flex flex-col Catalog"
                 data-testid="catalog-list-for-browse-all"
               >
                 <div

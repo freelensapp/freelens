@@ -484,7 +484,7 @@ exports[`add-cluster - navigation using application menu > when navigating to ad
               </a>
             </p>
             <div
-              class="flex column"
+              class="flex flex-col"
             >
               <textarea
                 data-testid="monaco-editor-for-undefined"

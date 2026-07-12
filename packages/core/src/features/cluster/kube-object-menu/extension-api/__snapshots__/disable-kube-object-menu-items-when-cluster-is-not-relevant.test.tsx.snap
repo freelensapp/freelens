@@ -7,7 +7,7 @@ exports[`disable kube object menu items when cluster is not relevant > given ext
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -463,7 +463,7 @@ exports[`disable kube object menu items when cluster is not relevant > given ext
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -562,7 +562,7 @@ exports[`disable kube object menu items when cluster is not relevant > given ext
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -1012,7 +1012,7 @@ exports[`disable kube object menu items when cluster is not relevant > given ext
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -1111,7 +1111,7 @@ exports[`disable kube object menu items when cluster is not relevant > given not
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -1561,7 +1561,7 @@ exports[`disable kube object menu items when cluster is not relevant > given not
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"

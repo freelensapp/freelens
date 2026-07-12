@@ -284,7 +284,7 @@ const NonInjectedBarChart = observer(
 
     return (
       <Chart
-        className={cssNames("BarChart flex box grow column", className)}
+        className={cssNames("BarChart flex flex-col grow shrink-0 basis-0", className)}
         type={useSteppedStyle ? ChartKind.LINE : ChartKind.BAR}
         data={{ datasets, ...rest }}
         options={merge(barOptions, customOptions)}

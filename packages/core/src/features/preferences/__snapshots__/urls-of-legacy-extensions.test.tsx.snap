@@ -86,7 +86,7 @@ exports[`preferences: URLs of legacy extensions > given extension with both cust
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"
@@ -532,7 +532,7 @@ exports[`preferences: URLs of legacy extensions > given extension with both cust
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"
@@ -978,7 +978,7 @@ exports[`preferences: URLs of legacy extensions > given extension with custom pr
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"
@@ -1386,7 +1386,7 @@ exports[`preferences: URLs of legacy extensions > given extension with custom pr
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"
@@ -1768,7 +1768,7 @@ exports[`preferences: URLs of legacy extensions > given extension with custom pr
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"

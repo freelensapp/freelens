@@ -5,7 +5,7 @@ exports[`kube-object-list-layout > given pod store > renders 1`] = `
   <div>
     <div>
       <div
-        class="ItemListLayout flex column KubeObjectListLayout Pods"
+        class="ItemListLayout flex flex-col KubeObjectListLayout Pods"
       >
         <div
           class="header flex gaps align-center"

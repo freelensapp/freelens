@@ -43,7 +43,7 @@ const NonInjectedKubeObjectDetails = observer((props: Dependencies) => {
 
   return (
     <Drawer
-      className="KubeObjectDetails flex column"
+      className="KubeObjectDetails flex flex-col"
       open={Boolean(isLoading || currentKubeObject)}
       title={currentKubeObject?.object ? `${currentKubeObject.object.kind}: ${currentKubeObject.object.getName()}` : ""}
       toolbar={currentKubeObject?.object && <KubeObjectMenu object={currentKubeObject.object} toolbar={true} />}
@@ -51,7 +51,7 @@ const NonInjectedKubeObjectDetails = observer((props: Dependencies) => {
     >
       {isLoading && <Spinner center />}
       {currentKubeObject?.error && (
-        <div className="box center">
+        <div className="m-auto">
           Resource loading has failed:
           <b>{currentKubeObject.error}</b>
         </div>

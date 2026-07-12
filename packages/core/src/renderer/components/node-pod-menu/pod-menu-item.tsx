@@ -52,7 +52,7 @@ const PodMenuItem: React.FC<NodePodMenuItemProps> = (props) => {
               <MenuItem
                 key={name}
                 onClick={prevDefault(() => onMenuItemClick(container))}
-                className="flex align-center"
+                className="flex items-center"
               >
                 {brick}
                 <span>{name}</span>
