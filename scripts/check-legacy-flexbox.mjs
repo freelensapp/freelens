@@ -85,10 +85,14 @@ function collectTsx(dir, out) {
   return out;
 }
 
-// Matches className="..." and className={`...`} and pulls out the literal
-// class string. Template expressions (${...}) are left in place and simply do
-// not tokenize into legacy words.
-const CLASSNAME_RE = /className=(?:"([^"]*)"|\{`([^`]*)`\})/g;
+// Matches double-quoted and backtick string literals. Legacy flexbox classes
+// live both directly in `className="..."` and inside helper calls such as
+// `cssNames("flex box grow", ...)`, so every string literal is examined and a
+// literal is only counted when it looks like a class list (see
+// countInClassName). Template expressions (${...}) do not tokenize into legacy
+// words. Single-quoted literals are skipped: they are almost always import
+// specifiers here and never carry class lists.
+const STRING_LITERAL_RE = /"([^"\\]*(?:\\.[^"\\]*)*)"|`([^`\\]*(?:\\.[^`\\]*)*)`/g;
 
 /** Count legacy tokens inside a single className string. */
 function countInClassName(value) {
@@ -112,7 +116,7 @@ function scan() {
   for (const file of files) {
     const source = readFileSync(file, "utf8");
     let fileCount = 0;
-    for (const match of source.matchAll(CLASSNAME_RE)) {
+    for (const match of source.matchAll(STRING_LITERAL_RE)) {
       const value = match[1] ?? match[2] ?? "";
       fileCount += countInClassName(value);
     }
