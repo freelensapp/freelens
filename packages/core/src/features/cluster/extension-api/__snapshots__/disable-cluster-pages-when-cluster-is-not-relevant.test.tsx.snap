@@ -983,14 +983,14 @@ exports[`disable-cluster-pages-when-cluster-is-not-relevant > given extension sh
             class="scrollable"
           >
             <div
-              class="WorkloadsOverview flex column gaps"
+              class="WorkloadsOverview flex flex-col gap-4"
               data-testid="page-for-workloads-overview"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
-                  class="box grow"
+                  class="grow shrink-0 basis-0"
                 >
                   Overview
                 </h5>
@@ -1655,14 +1655,14 @@ exports[`disable-cluster-pages-when-cluster-is-not-relevant > given not yet know
             class="scrollable"
           >
             <div
-              class="WorkloadsOverview flex column gaps"
+              class="WorkloadsOverview flex flex-col gap-4"
               data-testid="page-for-workloads-overview"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
-                  class="box grow"
+                  class="grow shrink-0 basis-0"
                 >
                   Overview
                 </h5>

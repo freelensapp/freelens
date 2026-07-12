@@ -141,14 +141,8 @@ class NonInjectedClusterStatus extends React.Component<ClusterStatusProps & Depe
     if (this.hasErrorsOrWarnings && !this.isReconnecting) {
       return (
         <>
-          <Button
-            primary
-            label="Reconnect"
-            className="box center"
-            onClick={this.reconnect}
-            waiting={this.isReconnecting}
-          />
-          <a className="box center interactive" onClick={this.manageProxySettings}>
+          <Button primary label="Reconnect" className="m-auto" onClick={this.reconnect} waiting={this.isReconnecting} />
+          <a className="m-auto interactive" onClick={this.manageProxySettings}>
             Manage Proxy Settings
           </a>
         </>
@@ -161,9 +155,9 @@ class NonInjectedClusterStatus extends React.Component<ClusterStatusProps & Depe
   render() {
     return (
       <div
-        className={cssNames(styles.status, "flex column box center align-center justify-center", this.props.className)}
+        className={cssNames(styles.status, "flex flex-col m-auto items-center justify-center", this.props.className)}
       >
-        <div className="flex items-center column gaps">
+        <div className="flex flex-col items-center gap-4">
           <h2>{this.entity?.getName() ?? this.cluster.name.get()}</h2>
           {this.renderStatusIcon()}
           {this.renderAuthenticationOutput()}

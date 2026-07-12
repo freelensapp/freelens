@@ -621,7 +621,7 @@ exports[`remove helm repository from list of active repositories in preferences 
                     </div>
                     <div>
                       <div
-                        class="item flex gaps align-center justify-space-between mt-3"
+                        class="item flex gap-2 items-center justify-between mt-3"
                       >
                         <i
                           class="Icon material focusable"
@@ -1398,7 +1398,7 @@ exports[`remove helm repository from list of active repositories in preferences 
                           class="repos"
                         >
                           <div
-                            class="item flex gaps align-center justify-space-between repo"
+                            class="item flex gap-2 items-center justify-between repo"
                           >
                             <div>
                               <div
@@ -2218,7 +2218,7 @@ exports[`remove helm repository from list of active repositories in preferences 
                           class="repos"
                         >
                           <div
-                            class="item flex gaps align-center justify-space-between repo"
+                            class="item flex gap-2 items-center justify-between repo"
                           >
                             <div>
                               <div
@@ -2289,7 +2289,7 @@ exports[`remove helm repository from list of active repositories in preferences 
                     </div>
                     <div>
                       <div
-                        class="item flex gaps align-center justify-space-between mt-3"
+                        class="item flex gap-2 items-center justify-between mt-3"
                       >
                         <i
                           class="Icon material focusable"
@@ -3127,7 +3127,7 @@ exports[`remove helm repository from list of active repositories in preferences 
                     </div>
                     <div>
                       <div
-                        class="item flex gaps align-center justify-space-between mt-3"
+                        class="item flex gap-2 items-center justify-between mt-3"
                       >
                         <i
                           class="Icon material focusable"

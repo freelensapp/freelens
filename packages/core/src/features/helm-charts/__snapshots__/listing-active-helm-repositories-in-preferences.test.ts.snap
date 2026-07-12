@@ -621,7 +621,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                     <div>
                       <div
-                        class="item flex gaps align-center justify-space-between mt-3"
+                        class="item flex gap-2 items-center justify-between mt-3"
                       >
                         <i
                           class="Icon material focusable"
@@ -1459,7 +1459,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                     <div>
                       <div
-                        class="item flex gaps align-center justify-space-between mt-3"
+                        class="item flex gap-2 items-center justify-between mt-3"
                       >
                         <i
                           class="Icon material focusable"
@@ -2186,7 +2186,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                     <div>
                       <div
-                        class="item flex gaps align-center justify-space-between mt-3"
+                        class="item flex gap-2 items-center justify-between mt-3"
                       >
                         <i
                           class="Icon material focusable"
@@ -2999,7 +2999,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                     <div>
                       <div
-                        class="item flex gaps align-center justify-space-between mt-3"
+                        class="item flex gap-2 items-center justify-between mt-3"
                       >
                         <i
                           class="Icon material focusable"
@@ -3776,7 +3776,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                           class="repos"
                         >
                           <div
-                            class="item flex gaps align-center justify-space-between repo"
+                            class="item flex gap-2 items-center justify-between repo"
                           >
                             <div>
                               <div
@@ -3810,7 +3810,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                             </div>
                           </div>
                           <div
-                            class="item flex gaps align-center justify-space-between repo"
+                            class="item flex gap-2 items-center justify-between repo"
                           >
                             <div>
                               <div
@@ -3881,7 +3881,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                     <div>
                       <div
-                        class="item flex gaps align-center justify-space-between mt-3"
+                        class="item flex gap-2 items-center justify-between mt-3"
                       >
                         <i
                           class="Icon material focusable"
@@ -4608,7 +4608,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                     <div>
                       <div
-                        class="item flex gaps align-center justify-space-between mt-3"
+                        class="item flex gap-2 items-center justify-between mt-3"
                       >
                         <i
                           class="Icon material focusable"
@@ -5335,7 +5335,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                     <div>
                       <div
-                        class="item flex gaps align-center justify-space-between mt-3"
+                        class="item flex gap-2 items-center justify-between mt-3"
                       >
                         <i
                           class="Icon material focusable"
@@ -6062,7 +6062,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                     <div>
                       <div
-                        class="item flex gaps align-center justify-space-between mt-3"
+                        class="item flex gap-2 items-center justify-between mt-3"
                       >
                         <i
                           class="Icon material focusable"
