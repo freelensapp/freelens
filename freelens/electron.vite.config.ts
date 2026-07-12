@@ -33,6 +33,7 @@ import { readFileSync } from "node:fs";
 import { builtinModules, createRequire } from "node:module";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import tailwindcss from "@tailwindcss/postcss";
 import react from "@vitejs/plugin-react";
 import { defineConfig, externalizeDepsPlugin } from "electron-vite";
 
@@ -365,6 +366,16 @@ export default defineConfig({
       },
     },
     css: {
+      // D11: port the Tailwind PostCSS plugin from the old webpack pipeline
+      // (packages/core/webpack/renderer.ts ran sass-loader -> postcss-loader
+      // with @tailwindcss/postcss -> css-loader). Vite handles the sass step
+      // via sass-embedded on its own, but the PostCSS plugin must be
+      // registered explicitly; without it the `@import "tailwindcss"`,
+      // `@config` and `@apply` directives used across the core SCSS are left
+      // unprocessed and Tailwind utilities emit no CSS.
+      postcss: {
+        plugins: [tailwindcss()],
+      },
       // D11: preserve CSS Modules scoped names; code accesses kebab-case
       // keys, so no localsConvention. auto: /\.module\./ is Vite's default.
       modules: { generateScopedName: "[name]__[local]--[hash:base64:5]" },
