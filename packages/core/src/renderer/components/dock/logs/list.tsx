@@ -145,6 +145,14 @@ class NonForwardedLogList extends React.Component<
           this.onUserScrolledUp(logs, prevLogs);
         },
       ),
+      reaction(
+        () => this.props.model.logTabData.get()?.showTimestamps,
+        () => {
+          this.measuredRowHeights.clear();
+          this.overlapVersion++;
+          this.virtualListRef.current?.resetAfterIndex(0);
+        },
+      ),
     ]);
     this.bindInnerRef({
       scrollToItem: this.scrollToItem,
@@ -202,15 +210,18 @@ class NonForwardedLogList extends React.Component<
       return;
     }
 
-    // The wrapped row uses `height: auto`, so its rendered box is the true height
-    // the row needs. Measuring it directly avoids the empty space left over when the
-    // character-count estimate over- or under-shoots the real wrapped line count.
-    const measuredHeight = Math.ceil(element.getBoundingClientRect().height);
+    // `element` is the row's inner content wrapper, which lays out in normal flow and
+    // therefore reflects the natural height of the wrapped text. The outer `.LogRow`
+    // cannot be measured for this: react-window pins its inline `height` to the current
+    // item size, so its bounding box always equals the estimate being verified. Adding
+    // the row's vertical padding yields the border-box height the row needs.
+    const contentHeight = element.getBoundingClientRect().height;
 
-    if (measuredHeight <= 0) {
+    if (contentHeight <= 0) {
       return;
     }
 
+    const measuredHeight = Math.ceil(contentHeight) + this.rowVerticalPadding;
     const currentHeight = this.measuredRowHeights.get(rowIndex);
 
     if (currentHeight === measuredHeight) {
@@ -418,10 +429,12 @@ class NonForwardedLogList extends React.Component<
     }
 
     return (
-      <div ref={this.onRowRendered(rowIndex)} className={cssNames("LogRow", { wordWrap: this.showWordWrap })}>
-        {contents.length > 1 ? contents : <span dangerouslySetInnerHTML={{ __html: ansiToHtml(item) }} />}
-        {/* For preserving copy-paste experience and keeping line breaks */}
-        <br />
+      <div className={cssNames("LogRow", { wordWrap: this.showWordWrap })}>
+        <div ref={this.onRowRendered(rowIndex)}>
+          {contents.length > 1 ? contents : <span dangerouslySetInnerHTML={{ __html: ansiToHtml(item) }} />}
+          {/* For preserving copy-paste experience and keeping line breaks */}
+          <br />
+        </div>
       </div>
     );
   };
