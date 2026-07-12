@@ -31,6 +31,8 @@ import type { Logger } from "@freelensapp/logger";
 
 import type { ObservableMap } from "mobx";
 
+import type { PathExists } from "../../common/fs/path-exists.injectable";
+import type { ReadFile } from "../../common/fs/read-file.injectable";
 import type { GetDirnameOfPath } from "../../common/path/get-dirname.injectable";
 import type { JoinPaths } from "../../common/path/join-paths.injectable";
 import type { UpdateExtensionsState } from "../../features/extensions/enabled/common/update-state.injectable";
@@ -56,6 +58,8 @@ interface Dependencies {
   getExtension: (instance: LegacyLensExtension) => Extension;
   joinPaths: JoinPaths;
   getDirnameOfPath: GetDirnameOfPath;
+  readFile: ReadFile;
+  pathExists: PathExists;
 }
 
 interface ExtensionBeingActivated {
@@ -90,6 +94,11 @@ export class ExtensionLoader {
   );
 
   private readonly onRemoveExtensionId = new EventEmitter<[string]>();
+
+  // Absolute paths of extension stylesheets already injected into the renderer
+  // document, so a reload (the toJSON reaction re-requires user extensions)
+  // does not append the same <style> twice.
+  private readonly injectedStylePaths = new Set<string>();
 
   readonly isLoaded = observable.box(false);
 
@@ -409,7 +418,17 @@ export class ExtensionLoader {
     );
 
     try {
-      return extensionRequire(extAbsolutePath).default;
+      const extensionModule = extensionRequire(extAbsolutePath);
+
+      // Load the extension's renderer stylesheet, if any. Extensions are built
+      // in Vite library mode, which extracts CSS to a sibling asset and injects
+      // nothing (unlike the host's own application build). Without this, an
+      // extension has to import its SCSS twice and inline it through a manual
+      // `<style>` tag (see docs/v2-extension-migration.md). Fire-and-forget:
+      // requiring the entry is synchronous, style injection is a side effect.
+      void this.injectRendererStyles(extAbsolutePath, extension);
+
+      return extensionModule.default;
     } catch (error) {
       const message = (error instanceof Error ? error.stack : undefined) || error;
 
@@ -420,6 +439,69 @@ export class ExtensionLoader {
     }
 
     return null;
+  }
+
+  /**
+   * Inject an extension's renderer stylesheet into the host document.
+   *
+   * Vite library builds emit the extension's CSS as an asset next to the
+   * renderer entry (either `<entry>.css` or a `style.css` in the same folder)
+   * but, unlike an application build, do not inject it. The host loads the
+   * entry with `require()` and would otherwise never load that CSS. This reads
+   * the sibling stylesheet and appends it as a `<style>` element, so plain
+   * side-effect and CSS-module imports in an extension "just work" without the
+   * `?inline` + `<style>` workaround.
+   *
+   * A no-op when there is no sibling stylesheet, so existing extensions are
+   * unaffected. Renderer-only: guarded on the entry-point name and on the
+   * presence of `document`.
+   */
+  private async injectRendererStyles(extEntryPath: string, extension: ExternalInstalledExtension): Promise<void> {
+    if (this.dependencies.extensionEntryPointName !== "renderer" || typeof document === "undefined") {
+      return;
+    }
+
+    const entryDir = this.dependencies.getDirnameOfPath(extEntryPath);
+    // Prefer a stylesheet named after the entry (renderer.js -> renderer.css),
+    // then Vite's default library CSS asset name (style.css).
+    const candidates = [
+      extEntryPath.replace(/\.[^./\\]+$/, ".css"),
+      this.dependencies.joinPaths(entryDir, "style.css"),
+    ];
+
+    for (const cssPath of candidates) {
+      if (cssPath === extEntryPath || this.injectedStylePaths.has(cssPath)) {
+        continue;
+      }
+
+      try {
+        if (!(await this.dependencies.pathExists(cssPath))) {
+          continue;
+        }
+
+        const css = await this.dependencies.readFile(cssPath);
+
+        // Guard again: another async candidate may have won the race meanwhile.
+        if (this.injectedStylePaths.has(cssPath)) {
+          continue;
+        }
+        this.injectedStylePaths.add(cssPath);
+
+        const style = document.createElement("style");
+
+        style.dataset.freelensExtension = extension.manifest.name;
+        style.textContent = css;
+        document.head.appendChild(style);
+
+        this.dependencies.logger.debug(
+          `${logModule}: injected stylesheet "${cssPath}" for "${extension.manifest.name}"`,
+        );
+      } catch (error) {
+        this.dependencies.logger.warn(
+          `${logModule}: failed to inject stylesheet "${cssPath}" for "${extension.manifest.name}": ${error}`,
+        );
+      }
+    }
   }
 
   getExtensionById(extId: LensExtensionId) {

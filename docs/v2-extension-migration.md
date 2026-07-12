@@ -105,10 +105,65 @@ namespace path, re-check it against the current
 between `Common`, `Main`, and `Renderer`. The concrete rename table is filled
 in from the freelens-example-extension port and will be appended here.
 
+## Styling and CSS
+
+In v1 the extension bundler ran a `style-loader`, which injected each imported
+stylesheet into the document at runtime. In v2 extensions are built by their
+authors in Vite **library mode**, which does the opposite: it *extracts* CSS to
+a sibling asset next to the JS entry and injects nothing. The host loads an
+extension by `require()`-ing its JS entry, so without help that extracted CSS
+would never reach the page — which is why early v2 extensions had to import
+each stylesheet twice and inline it through a manual `<style>` tag:
+
+```tsx
+// The workaround you no longer need:
+import styles from "./available-version.module.scss"; // mangled class names
+import stylesInline from "./available-version.module.scss?inline"; // raw CSS text
+// ...
+<style>{stylesInline}</style>;
+```
+
+**The host now injects the extension's stylesheet for you.** When the renderer
+loads an extension, the extension loader looks next to the renderer entry for a
+sibling stylesheet — either `<entry-name>.css` (e.g. `renderer.js` →
+`renderer.css`) or a `style.css` in the same folder — and, if present, appends
+its contents to the document as a `<style>` element. So you can import your
+SCSS the normal way and drop the `?inline` copy and the `<style>` tag:
+
+```tsx
+import styles from "./available-version.module.scss"; // class names only
+// no ?inline import, no <style> tag — the host loads the emitted CSS
+```
+
+To rely on this, make your Vite library build emit **one** CSS asset next to
+the renderer entry:
+
+- Keep Vite's default single-file CSS extraction (it emits `style.css`), or
+  name it after the entry. Either is picked up automatically.
+- If your build splits CSS per module (for example with
+  `output.preserveModules: true`), consolidate it into a single asset, or add a
+  runtime CSS-injection plugin such as `vite-plugin-css-injected-by-js` (which
+  embeds the CSS into the JS bundle and injects it itself — also fine, since
+  extensions run in the host window).
+
+Use **CSS Modules** (`*.module.scss`) to scope an extension's own component
+styles; the class names are mangled at build time so they never collide with
+the host or with other extensions. For the host's shared component classes
+(`.Tooltip`, `.Button`, …), which are global and part of the public API, you
+may target them directly — do not redefine them. See
+[`docs/v2-styling.md`](./v2-styling.md) for the full styling model.
+
+> Note: Tailwind utilities do **not** work in extensions. The host's Tailwind
+> JIT only scans core's own source, so a Tailwind class in an extension emits
+> no CSS. Write extension styles as SCSS/CSS.
+
 ## Checklist
 
 - [ ] Replace any direct `@freelensapp/*` internal dependency with
       `@freelensapp/extensions` (types only).
+- [ ] Import stylesheets normally (side-effect or CSS-module import); drop any
+      `?inline` + `<style>` CSS workaround, and make sure your build emits a
+      single CSS asset next to the renderer entry.
 - [ ] Confirm your entrypoints are ESM or CommonJS and, if ESM, that
       `package.json` declares it.
 - [ ] Access only the process-appropriate namespace (`Main` in main,
