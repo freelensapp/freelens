@@ -75,7 +75,7 @@ exports[`extension special characters in page registrations > renders 1`] = `
         id="lens-views"
       />
       <div
-        class="flex justify-center Welcome align-center"
+        class="flex justify-center Welcome items-center"
         data-testid="welcome-page"
       >
         <div
@@ -203,7 +203,7 @@ exports[`extension special characters in page registrations > renders 1`] = `
                   class="flex grid-12"
                 >
                   <i
-                    class="Icon box col-1 material focusable"
+                    class="Icon col-1 material focusable"
                   >
                     <span
                       class="icon"
@@ -213,12 +213,12 @@ exports[`extension special characters in page registrations > renders 1`] = `
                     </span>
                   </i>
                   <a
-                    class="box col-10"
+                    class="col-10"
                   >
                     Browse Clusters in Catalog
                   </a>
                   <i
-                    class="Icon box col-1 material focusable"
+                    class="Icon col-1 material focusable"
                   >
                     <span
                       class="icon"

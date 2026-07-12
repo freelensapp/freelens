@@ -31,7 +31,7 @@ export function List<T>({ columns, data, title, items, filters }: ListProps<T>) 
 
   return (
     <>
-      <div className="flex align-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-6">
         <div className="mr-6">{title}</div>
         <div>
           <SearchInput value={search} theme="round-black" onChange={setSearch} className={styles.searchInput} />

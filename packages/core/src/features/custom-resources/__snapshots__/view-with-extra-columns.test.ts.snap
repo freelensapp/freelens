@@ -479,10 +479,10 @@ exports[`Viewing Custom Resources with extra columns > renders 1`] = `
               </div>
             </div>
             <div
-              class="items box grow flex column"
+              class="items grow shrink-0 basis-0 flex flex-col"
             >
               <div
-                class="Table flex column KubeObjectListLayout CustomResources box grow dark selectable scrollable sortable autoSize virtual"
+                class="Table flex flex-col KubeObjectListLayout CustomResources grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
               >
                 <div
                   class="TableHead sticky nowrap topLine"
@@ -491,7 +491,7 @@ exports[`Viewing Custom Resources with extra columns > renders 1`] = `
                     class="TableCell checkbox"
                   >
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -593,7 +593,7 @@ exports[`Viewing Custom Resources with extra columns > renders 1`] = `
                   </div>
                 </div>
                 <div
-                  class="VirtualList KubeObjectListLayout CustomResources box grow dark"
+                  class="VirtualList KubeObjectListLayout CustomResources grow shrink-0 basis-0 dark"
                 >
                   <div>
                     <div
@@ -614,7 +614,7 @@ exports[`Viewing Custom Resources with extra columns > renders 1`] = `
                               class="TableCell checkbox"
                             >
                               <label
-                                class="Checkbox flex align-center"
+                                class="Checkbox flex items-center"
                               >
                                 <input
                                   type="checkbox"

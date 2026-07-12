@@ -31,7 +31,7 @@ export function Checkbox({
   disabled,
   ...inputProps
 }: CheckboxProps) {
-  const componentClass = cssNames("Checkbox flex align-center", className, {
+  const componentClass = cssNames("Checkbox flex items-center", className, {
     inline,
     checked: value,
     disabled,

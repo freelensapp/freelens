@@ -592,10 +592,10 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex column KubeObjectListLayout Pods box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col KubeObjectListLayout Pods grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -604,7 +604,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -884,7 +884,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
                     </div>
                   </div>
                   <div
-                    class="VirtualList KubeObjectListLayout Pods box grow dark"
+                    class="VirtualList KubeObjectListLayout Pods grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -905,7 +905,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -1774,10 +1774,10 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex column KubeObjectListLayout Pods box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col KubeObjectListLayout Pods grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -1786,7 +1786,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -2808,10 +2808,10 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex column KubeObjectListLayout Pods box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col KubeObjectListLayout Pods grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -2820,7 +2820,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"

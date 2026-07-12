@@ -76,7 +76,7 @@ exports[`status-bar-items-originating-from-extensions > when application starts 
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div
@@ -204,7 +204,7 @@ exports[`status-bar-items-originating-from-extensions > when application starts 
                     class="flex grid-12"
                   >
                     <i
-                      class="Icon box col-1 material focusable"
+                      class="Icon col-1 material focusable"
                     >
                       <span
                         class="icon"
@@ -214,12 +214,12 @@ exports[`status-bar-items-originating-from-extensions > when application starts 
                       </span>
                     </i>
                     <a
-                      class="box col-10"
+                      class="col-10"
                     >
                       Browse Clusters in Catalog
                     </a>
                     <i
-                      class="Icon box col-1 material focusable"
+                      class="Icon col-1 material focusable"
                     >
                       <span
                         class="icon"

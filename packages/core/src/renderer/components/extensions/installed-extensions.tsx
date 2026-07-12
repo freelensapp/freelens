@@ -76,7 +76,7 @@ const NonInjectedInstalledExtensions = observer(
 
     if (extensions.length == 0) {
       return (
-        <div className="flex column h-full items-center justify-center">
+        <div className="flex flex-col h-full items-center justify-center">
           <Icon material="extension" className={styles.noItemsIcon} />
           <h3 className="font-medium text-3xl mt-5 mb-2">There are no extensions installed.</h3>
           <p>Please use the form above to install or drag a tarball file here.</p>

@@ -163,7 +163,7 @@ class NonInjectedCreateResource extends React.Component<CreateResourceProps & De
     const { tabId, data, error } = this;
 
     return (
-      <div className="CreateResource flex column">
+      <div className="CreateResource flex flex-col">
         <InfoPanel
           tabId={tabId}
           error={error}

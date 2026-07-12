@@ -516,7 +516,7 @@ exports[`download logs options in logs dock tab opening pod logs when logs avail
             style="flex-basis: 300px;"
           >
             <div
-              class="PodLogs flex column"
+              class="PodLogs flex flex-col"
             >
               <div
                 class="InfoPanel flex gaps align-center"
@@ -756,7 +756,7 @@ exports[`download logs options in logs dock tab opening pod logs when logs avail
                 class="LogList flex"
               >
                 <div
-                  class="VirtualList box grow"
+                  class="VirtualList grow shrink-0 basis-0"
                 >
                   <div>
                     <div
@@ -797,7 +797,7 @@ exports[`download logs options in logs dock tab opening pod logs when logs avail
                   class="flex gaps align-center"
                 >
                   <label
-                    class="Checkbox flex align-center show-timestamps"
+                    class="Checkbox flex items-center show-timestamps"
                   >
                     <input
                       type="checkbox"
@@ -812,7 +812,7 @@ exports[`download logs options in logs dock tab opening pod logs when logs avail
                     </span>
                   </label>
                   <label
-                    class="Checkbox flex align-center show-previous checked"
+                    class="Checkbox flex items-center show-previous checked"
                   >
                     <input
                       checked=""
@@ -1376,7 +1376,7 @@ exports[`download logs options in logs dock tab opening pod logs when logs not a
             style="flex-basis: 300px;"
           >
             <div
-              class="PodLogs flex column"
+              class="PodLogs flex flex-col"
             >
               <div
                 class="InfoPanel flex gaps align-center"
@@ -1613,7 +1613,7 @@ exports[`download logs options in logs dock tab opening pod logs when logs not a
                 </div>
               </div>
               <div
-                class="LogList flex box grow align-center justify-center"
+                class="LogList flex grow shrink-0 basis-0 items-center justify-center"
               >
                 There are no logs available for container
                  
@@ -1628,7 +1628,7 @@ exports[`download logs options in logs dock tab opening pod logs when logs not a
                   class="flex gaps align-center"
                 >
                   <label
-                    class="Checkbox flex align-center show-timestamps"
+                    class="Checkbox flex items-center show-timestamps"
                   >
                     <input
                       type="checkbox"
@@ -1643,7 +1643,7 @@ exports[`download logs options in logs dock tab opening pod logs when logs not a
                     </span>
                   </label>
                   <label
-                    class="Checkbox flex align-center show-previous checked"
+                    class="Checkbox flex items-center show-previous checked"
                   >
                     <input
                       checked=""

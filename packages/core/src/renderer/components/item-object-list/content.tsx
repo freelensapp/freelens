@@ -520,12 +520,12 @@ export class NonInjectedItemListLayoutContent<
       activeTheme,
     } = this.props;
     const selectedItemId = detailsItem && detailsItem.getId();
-    const classNames = cssNames(className, "box", "grow", activeTheme.get().type);
+    const classNames = cssNames(className, "grow", "shrink-0", "basis-0", activeTheme.get().type);
     const items = getItems();
     const selectedItems = store.pickOnlySelected(items);
 
     return (
-      <div className="items box grow flex column" ref={this.tableRef}>
+      <div className="items grow shrink-0 basis-0 flex flex-col" ref={this.tableRef}>
         {this.resizeGuideX !== null && (
           <div
             ref={this.resizeGuideRef}

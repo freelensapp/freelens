@@ -72,7 +72,7 @@ const NonInjectedInstallChart = observer(({ model: model, tabId }: InstallChartP
   const { configuration, version, namespace, customName, errorInConfiguration } = model;
 
   return (
-    <div className="InstallChart flex column">
+    <div className="InstallChart flex flex-col">
       <InfoPanel
         tabId={tabId}
         controls={

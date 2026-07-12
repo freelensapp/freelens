@@ -592,10 +592,10 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -604,7 +604,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -1456,10 +1456,10 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -1468,7 +1468,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -1664,7 +1664,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -1685,7 +1685,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -2462,10 +2462,10 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -2474,7 +2474,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -2670,7 +2670,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -2691,7 +2691,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -3484,10 +3484,10 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -3496,7 +3496,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -3692,7 +3692,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -3713,7 +3713,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -4542,10 +4542,10 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -4554,7 +4554,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -4750,7 +4750,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -4771,7 +4771,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -5036,7 +5036,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
             style="flex-basis: 300px;"
           >
             <div
-              class="UpgradeChart flex column"
+              class="UpgradeChart flex flex-col"
               data-testid="upgrade-chart-dock-tab-contents-for-my-second-namespace/some-name"
             >
               <div
@@ -5153,7 +5153,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       </div>
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -5757,10 +5757,10 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -5769,7 +5769,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -5965,7 +5965,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -5986,7 +5986,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -6251,7 +6251,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
             style="flex-basis: 300px;"
           >
             <div
-              class="UpgradeChart flex column"
+              class="UpgradeChart flex flex-col"
               data-testid="upgrade-chart-dock-tab-contents-for-my-second-namespace/some-name"
             >
               <div
@@ -6368,7 +6368,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       </div>
                     </div>
                     <label
-                      class="Checkbox flex align-center"
+                      class="Checkbox flex items-center"
                     >
                       <input
                         type="checkbox"
@@ -6974,10 +6974,10 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -6986,7 +6986,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -7182,7 +7182,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -7203,7 +7203,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"

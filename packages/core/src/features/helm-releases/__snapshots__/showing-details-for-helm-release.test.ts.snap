@@ -592,10 +592,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -604,7 +604,7 @@ exports[`showing details for helm release > given application is started > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -1537,10 +1537,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -1549,7 +1549,7 @@ exports[`showing details for helm release > given application is started > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -1745,7 +1745,7 @@ exports[`showing details for helm release > given application is started > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -1766,7 +1766,7 @@ exports[`showing details for helm release > given application is started > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -1897,7 +1897,7 @@ exports[`showing details for helm release > given application is started > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -2755,10 +2755,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -2767,7 +2767,7 @@ exports[`showing details for helm release > given application is started > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -2963,7 +2963,7 @@ exports[`showing details for helm release > given application is started > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -2984,7 +2984,7 @@ exports[`showing details for helm release > given application is started > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -3115,7 +3115,7 @@ exports[`showing details for helm release > given application is started > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -4034,10 +4034,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -4046,7 +4046,7 @@ exports[`showing details for helm release > given application is started > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -4242,7 +4242,7 @@ exports[`showing details for helm release > given application is started > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -4263,7 +4263,7 @@ exports[`showing details for helm release > given application is started > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -4394,7 +4394,7 @@ exports[`showing details for helm release > given application is started > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -5313,10 +5313,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -5325,7 +5325,7 @@ exports[`showing details for helm release > given application is started > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -5521,7 +5521,7 @@ exports[`showing details for helm release > given application is started > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -5542,7 +5542,7 @@ exports[`showing details for helm release > given application is started > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -5673,7 +5673,7 @@ exports[`showing details for helm release > given application is started > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -6149,7 +6149,7 @@ exports[`showing details for helm release > given application is started > when 
               class="flex column gaps"
             >
               <label
-                class="Checkbox flex align-center"
+                class="Checkbox flex items-center"
               >
                 <input
                   data-testid="user-supplied-values-only-checkbox"
@@ -6204,7 +6204,7 @@ exports[`showing details for helm release > given application is started > when 
                
             </div>
             <div
-              class="Table flex column autoSize"
+              class="Table flex flex-col autoSize"
             >
               <div
                 class="TableHead"
@@ -6838,10 +6838,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -6850,7 +6850,7 @@ exports[`showing details for helm release > given application is started > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -7046,7 +7046,7 @@ exports[`showing details for helm release > given application is started > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -7067,7 +7067,7 @@ exports[`showing details for helm release > given application is started > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -7198,7 +7198,7 @@ exports[`showing details for helm release > given application is started > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -7674,7 +7674,7 @@ exports[`showing details for helm release > given application is started > when 
               class="flex column gaps"
             >
               <label
-                class="Checkbox flex align-center"
+                class="Checkbox flex items-center"
               >
                 <input
                   data-testid="user-supplied-values-only-checkbox"
@@ -7729,7 +7729,7 @@ exports[`showing details for helm release > given application is started > when 
                
             </div>
             <div
-              class="Table flex column autoSize"
+              class="Table flex flex-col autoSize"
             >
               <div
                 class="TableHead"
@@ -8363,10 +8363,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -8375,7 +8375,7 @@ exports[`showing details for helm release > given application is started > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -8571,7 +8571,7 @@ exports[`showing details for helm release > given application is started > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -8592,7 +8592,7 @@ exports[`showing details for helm release > given application is started > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -8723,7 +8723,7 @@ exports[`showing details for helm release > given application is started > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -9199,7 +9199,7 @@ exports[`showing details for helm release > given application is started > when 
               class="flex column gaps"
             >
               <label
-                class="Checkbox flex align-center"
+                class="Checkbox flex items-center"
               >
                 <input
                   data-testid="user-supplied-values-only-checkbox"
@@ -9254,7 +9254,7 @@ exports[`showing details for helm release > given application is started > when 
                
             </div>
             <div
-              class="Table flex column autoSize"
+              class="Table flex flex-col autoSize"
             >
               <div
                 class="TableHead"
@@ -9888,10 +9888,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -9900,7 +9900,7 @@ exports[`showing details for helm release > given application is started > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -10451,7 +10451,7 @@ exports[`showing details for helm release > given application is started > when 
               class="flex column gaps"
             >
               <label
-                class="Checkbox flex align-center"
+                class="Checkbox flex items-center"
               >
                 <input
                   data-testid="user-supplied-values-only-checkbox"
@@ -10506,7 +10506,7 @@ exports[`showing details for helm release > given application is started > when 
                
             </div>
             <div
-              class="Table flex column autoSize"
+              class="Table flex flex-col autoSize"
             >
               <div
                 class="TableHead"
@@ -11140,10 +11140,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -11152,7 +11152,7 @@ exports[`showing details for helm release > given application is started > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -11703,7 +11703,7 @@ exports[`showing details for helm release > given application is started > when 
               class="flex column gaps"
             >
               <label
-                class="Checkbox flex align-center disabled"
+                class="Checkbox flex items-center disabled"
               >
                 <input
                   data-testid="user-supplied-values-only-checkbox"
@@ -11760,7 +11760,7 @@ exports[`showing details for helm release > given application is started > when 
                
             </div>
             <div
-              class="Table flex column autoSize"
+              class="Table flex flex-col autoSize"
             >
               <div
                 class="TableHead"
@@ -12394,10 +12394,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -12406,7 +12406,7 @@ exports[`showing details for helm release > given application is started > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -12602,7 +12602,7 @@ exports[`showing details for helm release > given application is started > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -12623,7 +12623,7 @@ exports[`showing details for helm release > given application is started > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -12754,7 +12754,7 @@ exports[`showing details for helm release > given application is started > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -13230,7 +13230,7 @@ exports[`showing details for helm release > given application is started > when 
               class="flex column gaps"
             >
               <label
-                class="Checkbox flex align-center checked"
+                class="Checkbox flex items-center checked"
               >
                 <input
                   data-testid="user-supplied-values-only-checkbox"
@@ -13285,7 +13285,7 @@ exports[`showing details for helm release > given application is started > when 
                
             </div>
             <div
-              class="Table flex column autoSize"
+              class="Table flex flex-col autoSize"
             >
               <div
                 class="TableHead"
@@ -13919,10 +13919,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -13931,7 +13931,7 @@ exports[`showing details for helm release > given application is started > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -14127,7 +14127,7 @@ exports[`showing details for helm release > given application is started > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -14148,7 +14148,7 @@ exports[`showing details for helm release > given application is started > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -14279,7 +14279,7 @@ exports[`showing details for helm release > given application is started > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -15198,10 +15198,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -15210,7 +15210,7 @@ exports[`showing details for helm release > given application is started > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -15406,7 +15406,7 @@ exports[`showing details for helm release > given application is started > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -15427,7 +15427,7 @@ exports[`showing details for helm release > given application is started > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -15558,7 +15558,7 @@ exports[`showing details for helm release > given application is started > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -16479,10 +16479,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -16491,7 +16491,7 @@ exports[`showing details for helm release > given application is started > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -16687,7 +16687,7 @@ exports[`showing details for helm release > given application is started > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -16708,7 +16708,7 @@ exports[`showing details for helm release > given application is started > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -16839,7 +16839,7 @@ exports[`showing details for helm release > given application is started > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -17697,10 +17697,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -17709,7 +17709,7 @@ exports[`showing details for helm release > given application is started > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -17905,7 +17905,7 @@ exports[`showing details for helm release > given application is started > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -17926,7 +17926,7 @@ exports[`showing details for helm release > given application is started > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -18057,7 +18057,7 @@ exports[`showing details for helm release > given application is started > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -18976,10 +18976,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -18988,7 +18988,7 @@ exports[`showing details for helm release > given application is started > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -19184,7 +19184,7 @@ exports[`showing details for helm release > given application is started > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -19205,7 +19205,7 @@ exports[`showing details for helm release > given application is started > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -19336,7 +19336,7 @@ exports[`showing details for helm release > given application is started > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -20255,10 +20255,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -20267,7 +20267,7 @@ exports[`showing details for helm release > given application is started > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -20463,7 +20463,7 @@ exports[`showing details for helm release > given application is started > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -20484,7 +20484,7 @@ exports[`showing details for helm release > given application is started > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -20615,7 +20615,7 @@ exports[`showing details for helm release > given application is started > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -21534,10 +21534,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -21546,7 +21546,7 @@ exports[`showing details for helm release > given application is started > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
@@ -21742,7 +21742,7 @@ exports[`showing details for helm release > given application is started > when 
                     </div>
                   </div>
                   <div
-                    class="VirtualList HelmReleases box grow dark"
+                    class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
                     <div>
                       <div
@@ -21763,7 +21763,7 @@ exports[`showing details for helm release > given application is started > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -21894,7 +21894,7 @@ exports[`showing details for helm release > given application is started > when 
                                 class="TableCell checkbox"
                               >
                                 <label
-                                  class="Checkbox flex align-center"
+                                  class="Checkbox flex items-center"
                                 >
                                   <input
                                     type="checkbox"
@@ -22813,10 +22813,10 @@ exports[`showing details for helm release > given application is started > when 
                 </div>
               </div>
               <div
-                class="items box grow flex column"
+                class="items grow shrink-0 basis-0 flex flex-col"
               >
                 <div
-                  class="Table flex column HelmReleases box grow dark selectable scrollable sortable autoSize virtual"
+                  class="Table flex flex-col HelmReleases grow shrink-0 basis-0 dark selectable scrollable sortable autoSize virtual"
                 >
                   <div
                     class="TableHead sticky nowrap topLine"
@@ -22825,7 +22825,7 @@ exports[`showing details for helm release > given application is started > when 
                       class="TableCell checkbox"
                     >
                       <label
-                        class="Checkbox flex align-center"
+                        class="Checkbox flex items-center"
                       >
                         <input
                           type="checkbox"
