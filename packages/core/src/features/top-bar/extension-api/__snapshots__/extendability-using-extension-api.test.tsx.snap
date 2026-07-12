@@ -76,7 +76,7 @@ exports[`extendability-using-extension-api > given an extension with a weakly ty
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div
@@ -463,7 +463,7 @@ exports[`extendability-using-extension-api > given an extension with top-bar ite
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div
@@ -841,7 +841,7 @@ exports[`extendability-using-extension-api > given an extension with top-bar ite
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div
@@ -1219,7 +1219,7 @@ exports[`extendability-using-extension-api > renders 1`] = `
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div

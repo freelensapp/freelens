@@ -76,7 +76,7 @@ exports[`show-about-using-tray > renders 1`] = `
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div

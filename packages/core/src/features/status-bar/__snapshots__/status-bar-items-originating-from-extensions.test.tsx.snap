@@ -76,7 +76,7 @@ exports[`status-bar-items-originating-from-extensions > when application starts 
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div

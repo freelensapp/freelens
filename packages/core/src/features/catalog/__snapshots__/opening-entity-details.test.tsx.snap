@@ -76,7 +76,7 @@ exports[`opening catalog entity details panel > renders 1`] = `
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div
@@ -7669,7 +7669,7 @@ exports[`opening catalog entity details panel > when not navigated to the catalo
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div

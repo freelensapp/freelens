@@ -167,7 +167,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on linux > renders 1`] =
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div
@@ -636,7 +636,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on linux > when pressing
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div
@@ -1105,7 +1105,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on linux > when pressing
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div
@@ -1586,7 +1586,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on linux > when pressing
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div
@@ -1964,7 +1964,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on macOS > renders 1`] =
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div
@@ -2342,7 +2342,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on macOS > when pressing
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div
@@ -2720,7 +2720,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on macOS > when pressing
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div
@@ -3110,7 +3110,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on macOS > when pressing
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div

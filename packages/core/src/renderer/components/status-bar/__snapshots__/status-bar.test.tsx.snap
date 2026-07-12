@@ -76,7 +76,7 @@ exports[`<StatusBar /> > when StatusBar's status is set to %p > renders 1`] = `
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div
@@ -454,7 +454,7 @@ exports[`<StatusBar /> > when StatusBar's status is set to %p > renders 2`] = `
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div
@@ -832,7 +832,7 @@ exports[`<StatusBar /> > when an extension is enabled specifying the side the el
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div
@@ -1252,7 +1252,7 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div
@@ -1630,7 +1630,7 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div
@@ -2008,7 +2008,7 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div
@@ -2386,7 +2386,7 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div
@@ -2764,7 +2764,7 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div
@@ -3142,7 +3142,7 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div
@@ -3520,7 +3520,7 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div
@@ -3898,7 +3898,7 @@ exports[`<StatusBar /> > when an extension is enabled with no status items > ren
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div
