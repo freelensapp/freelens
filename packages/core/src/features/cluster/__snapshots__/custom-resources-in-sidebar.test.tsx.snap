@@ -6,7 +6,7 @@ exports[`cluster - custom resources in sidebar > renders 1`] = `
     class="Notifications flex column align-flex-end"
   />
   <div
-    class="Animate slide-right Drawer KubeObjectDetails flex column right enter"
+    class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter"
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
@@ -579,7 +579,7 @@ exports[`cluster - custom resources in sidebar > renders 1`] = `
                   class="label"
                 >
                   <div
-                    class="flex align-center"
+                    class="flex items-center"
                   >
                     <span
                       class="title"
@@ -676,7 +676,7 @@ exports[`cluster - custom resources in sidebar > when custom resource definition
     class="Notifications flex column align-flex-end"
   />
   <div
-    class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+    class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
@@ -1286,7 +1286,7 @@ exports[`cluster - custom resources in sidebar > when custom resource definition
                   class="label"
                 >
                   <div
-                    class="flex align-center"
+                    class="flex items-center"
                   >
                     <span
                       class="title"
@@ -1383,7 +1383,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > r
     class="Notifications flex column align-flex-end"
   />
   <div
-    class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+    class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
@@ -1956,7 +1956,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > r
                   class="label"
                 >
                   <div
-                    class="flex align-center"
+                    class="flex items-center"
                   >
                     <span
                       class="title"
@@ -2053,7 +2053,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
     class="Notifications flex column align-flex-end"
   />
   <div
-    class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+    class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
@@ -2663,7 +2663,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
                   class="label"
                 >
                   <div
-                    class="flex align-center"
+                    class="flex items-center"
                   >
                     <span
                       class="title"
@@ -2760,7 +2760,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
     class="Notifications flex column align-flex-end"
   />
   <div
-    class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+    class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
@@ -3410,7 +3410,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
                   class="label"
                 >
                   <div
-                    class="flex align-center"
+                    class="flex items-center"
                   >
                     <span
                       class="title"
@@ -3507,7 +3507,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
     class="Notifications flex column align-flex-end"
   />
   <div
-    class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+    class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
@@ -4080,7 +4080,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
                   class="label"
                 >
                   <div
-                    class="flex align-center"
+                    class="flex items-center"
                   >
                     <span
                       class="title"
@@ -4177,7 +4177,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
     class="Notifications flex column align-flex-end"
   />
   <div
-    class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+    class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
@@ -4818,7 +4818,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
                   class="label"
                 >
                   <div
-                    class="flex align-center"
+                    class="flex items-center"
                   >
                     <span
                       class="title"
@@ -4915,7 +4915,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
     class="Notifications flex column align-flex-end"
   />
   <div
-    class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+    class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
@@ -5596,7 +5596,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
                   class="label"
                 >
                   <div
-                    class="flex align-center"
+                    class="flex items-center"
                   >
                     <span
                       class="title"

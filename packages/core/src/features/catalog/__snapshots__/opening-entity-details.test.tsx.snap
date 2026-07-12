@@ -704,7 +704,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
               class="views"
             >
               <div
-                class="ItemListLayout flex column Catalog"
+                class="ItemListLayout flex flex-col Catalog"
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
@@ -1652,7 +1652,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
               class="views"
             >
               <div
-                class="ItemListLayout flex column Catalog"
+                class="ItemListLayout flex flex-col Catalog"
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
@@ -2632,7 +2632,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
               class="views"
             >
               <div
-                class="ItemListLayout flex column Catalog"
+                class="ItemListLayout flex flex-col Catalog"
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
@@ -3612,7 +3612,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
               class="views"
             >
               <div
-                class="ItemListLayout flex column Catalog"
+                class="ItemListLayout flex flex-col Catalog"
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
@@ -4844,7 +4844,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
               class="views"
             >
               <div
-                class="ItemListLayout flex column Catalog"
+                class="ItemListLayout flex flex-col Catalog"
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
@@ -5812,7 +5812,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
               class="views"
             >
               <div
-                class="ItemListLayout flex column Catalog"
+                class="ItemListLayout flex flex-col Catalog"
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
@@ -6780,7 +6780,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
               class="views"
             >
               <div
-                class="ItemListLayout flex column Catalog"
+                class="ItemListLayout flex flex-col Catalog"
                 data-testid="catalog-list-for-browse-all"
               >
                 <div

@@ -7,7 +7,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -598,7 +598,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -1043,7 +1043,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               style="display: none;"
             />
             <div
-              class="ItemListLayout flex column HelmCharts"
+              class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
                 class="header flex gaps align-center"
@@ -1669,7 +1669,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -2114,7 +2114,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               style="display: none;"
             />
             <div
-              class="ItemListLayout flex column HelmCharts"
+              class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
                 class="header flex gaps align-center"
@@ -2509,7 +2509,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -2618,7 +2618,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -3063,7 +3063,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               style="display: none;"
             />
             <div
-              class="ItemListLayout flex column HelmCharts"
+              class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
                 class="header flex gaps align-center"
@@ -3458,7 +3458,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -3835,7 +3835,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -4280,7 +4280,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               style="display: none;"
             />
             <div
-              class="ItemListLayout flex column HelmCharts"
+              class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
                 class="header flex gaps align-center"
@@ -4675,7 +4675,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -5021,7 +5021,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -5466,7 +5466,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               style="display: none;"
             />
             <div
-              class="ItemListLayout flex column HelmCharts"
+              class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
                 class="header flex gaps align-center"
@@ -5861,7 +5861,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -6202,7 +6202,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -6647,7 +6647,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               style="display: none;"
             />
             <div
-              class="ItemListLayout flex column HelmCharts"
+              class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
                 class="header flex gaps align-center"
@@ -7042,7 +7042,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -7383,7 +7383,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -7828,7 +7828,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               style="display: none;"
             />
             <div
-              class="ItemListLayout flex column HelmCharts"
+              class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
                 class="header flex gaps align-center"
@@ -8223,7 +8223,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -8586,7 +8586,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -9031,7 +9031,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               style="display: none;"
             />
             <div
-              class="ItemListLayout flex column HelmCharts"
+              class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
                 class="header flex gaps align-center"
@@ -9426,7 +9426,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -9803,7 +9803,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -10248,7 +10248,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               style="display: none;"
             />
             <div
-              class="ItemListLayout flex column HelmCharts"
+              class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
                 class="header flex gaps align-center"
@@ -10643,7 +10643,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -10984,7 +10984,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -11429,7 +11429,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               style="display: none;"
             />
             <div
-              class="ItemListLayout flex column HelmCharts"
+              class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
                 class="header flex gaps align-center"
@@ -11824,7 +11824,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -12220,7 +12220,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       </div>
     </div>
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -12665,7 +12665,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               style="display: none;"
             />
             <div
-              class="ItemListLayout flex column HelmCharts"
+              class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
                 class="header flex gaps align-center"
@@ -13060,7 +13060,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -13249,7 +13249,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       </div>
     </div>
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -13690,7 +13690,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class=""
           >
             <div
-              class="ItemListLayout flex column HelmReleases"
+              class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
                 class="header flex gaps align-center"
@@ -14226,7 +14226,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       </div>
     </div>
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -14671,7 +14671,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               style="display: none;"
             />
             <div
-              class="ItemListLayout flex column HelmCharts"
+              class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
                 class="header flex gaps align-center"
@@ -15066,7 +15066,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -15268,7 +15268,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -15713,7 +15713,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               style="display: none;"
             />
             <div
-              class="ItemListLayout flex column HelmCharts"
+              class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
                 class="header flex gaps align-center"
@@ -16108,7 +16108,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -16662,7 +16662,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -17107,7 +17107,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               style="display: none;"
             />
             <div
-              class="ItemListLayout flex column HelmCharts"
+              class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
                 class="header flex gaps align-center"
@@ -17502,7 +17502,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -17554,7 +17554,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -17663,7 +17663,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -18108,7 +18108,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               style="display: none;"
             />
             <div
-              class="ItemListLayout flex column HelmCharts"
+              class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
                 class="header flex gaps align-center"
@@ -18503,7 +18503,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -18555,7 +18555,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -18898,7 +18898,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -19343,7 +19343,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               style="display: none;"
             />
             <div
-              class="ItemListLayout flex column HelmCharts"
+              class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
                 class="header flex gaps align-center"
@@ -19738,7 +19738,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -19790,7 +19790,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -20131,7 +20131,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -20576,7 +20576,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               style="display: none;"
             />
             <div
-              class="ItemListLayout flex column HelmCharts"
+              class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
                 class="header flex gaps align-center"
@@ -20971,7 +20971,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -21312,7 +21312,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -21757,7 +21757,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               style="display: none;"
             />
             <div
-              class="ItemListLayout flex column HelmCharts"
+              class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
                 class="header flex gaps align-center"
@@ -22152,7 +22152,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -22493,7 +22493,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -22938,7 +22938,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               style="display: none;"
             />
             <div
-              class="ItemListLayout flex column HelmCharts"
+              class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
                 class="header flex gaps align-center"

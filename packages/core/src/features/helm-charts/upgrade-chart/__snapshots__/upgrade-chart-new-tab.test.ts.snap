@@ -7,7 +7,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -448,7 +448,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
             class=""
           >
             <div
-              class="ItemListLayout flex column HelmReleases"
+              class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
                 class="header flex gaps align-center"
@@ -871,7 +871,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -1312,7 +1312,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
             class=""
           >
             <div
-              class="ItemListLayout flex column HelmReleases"
+              class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
                 class="header flex gaps align-center"
@@ -1877,7 +1877,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -2318,7 +2318,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
             class=""
           >
             <div
-              class="ItemListLayout flex column HelmReleases"
+              class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
                 class="header flex gaps align-center"
@@ -3340,7 +3340,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
             class=""
           >
             <div
-              class="ItemListLayout flex column HelmReleases"
+              class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
                 class="header flex gaps align-center"
@@ -3887,7 +3887,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -4398,7 +4398,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
             class=""
           >
             <div
-              class="ItemListLayout flex column HelmReleases"
+              class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
                 class="header flex gaps align-center"
@@ -4945,7 +4945,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -5613,7 +5613,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
             class=""
           >
             <div
-              class="ItemListLayout flex column HelmReleases"
+              class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
                 class="header flex gaps align-center"
@@ -6160,7 +6160,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -6830,7 +6830,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
             class=""
           >
             <div
-              class="ItemListLayout flex column HelmReleases"
+              class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
                 class="header flex gaps align-center"

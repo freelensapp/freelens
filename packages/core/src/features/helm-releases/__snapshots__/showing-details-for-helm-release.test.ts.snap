@@ -7,7 +7,7 @@ exports[`showing details for helm release > given application is started > when 
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -448,7 +448,7 @@ exports[`showing details for helm release > given application is started > when 
             class=""
           >
             <div
-              class="ItemListLayout flex column HelmReleases"
+              class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
                 class="header flex gaps align-center"
@@ -853,7 +853,7 @@ exports[`showing details for helm release > given application is started > when 
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -952,7 +952,7 @@ exports[`showing details for helm release > given application is started > when 
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -1393,7 +1393,7 @@ exports[`showing details for helm release > given application is started > when 
             class=""
           >
             <div
-              class="ItemListLayout flex column HelmReleases"
+              class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
                 class="header flex gaps align-center"
@@ -2071,7 +2071,7 @@ exports[`showing details for helm release > given application is started > when 
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -2170,7 +2170,7 @@ exports[`showing details for helm release > given application is started > when 
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -2611,7 +2611,7 @@ exports[`showing details for helm release > given application is started > when 
             class=""
           >
             <div
-              class="ItemListLayout flex column HelmReleases"
+              class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
                 class="header flex gaps align-center"
@@ -3289,7 +3289,7 @@ exports[`showing details for helm release > given application is started > when 
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -3449,7 +3449,7 @@ exports[`showing details for helm release > given application is started > when 
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -3890,7 +3890,7 @@ exports[`showing details for helm release > given application is started > when 
             class=""
           >
             <div
-              class="ItemListLayout flex column HelmReleases"
+              class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
                 class="header flex gaps align-center"
@@ -4568,7 +4568,7 @@ exports[`showing details for helm release > given application is started > when 
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -4728,7 +4728,7 @@ exports[`showing details for helm release > given application is started > when 
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -5169,7 +5169,7 @@ exports[`showing details for helm release > given application is started > when 
             class=""
           >
             <div
-              class="ItemListLayout flex column HelmReleases"
+              class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
                 class="header flex gaps align-center"
@@ -5847,7 +5847,7 @@ exports[`showing details for helm release > given application is started > when 
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -6253,7 +6253,7 @@ exports[`showing details for helm release > given application is started > when 
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -6694,7 +6694,7 @@ exports[`showing details for helm release > given application is started > when 
             class=""
           >
             <div
-              class="ItemListLayout flex column HelmReleases"
+              class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
                 class="header flex gaps align-center"
@@ -7372,7 +7372,7 @@ exports[`showing details for helm release > given application is started > when 
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -7778,7 +7778,7 @@ exports[`showing details for helm release > given application is started > when 
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -8219,7 +8219,7 @@ exports[`showing details for helm release > given application is started > when 
             class=""
           >
             <div
-              class="ItemListLayout flex column HelmReleases"
+              class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
                 class="header flex gaps align-center"
@@ -8897,7 +8897,7 @@ exports[`showing details for helm release > given application is started > when 
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -9303,7 +9303,7 @@ exports[`showing details for helm release > given application is started > when 
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -9744,7 +9744,7 @@ exports[`showing details for helm release > given application is started > when 
             class=""
           >
             <div
-              class="ItemListLayout flex column HelmReleases"
+              class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
                 class="header flex gaps align-center"
@@ -10149,7 +10149,7 @@ exports[`showing details for helm release > given application is started > when 
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -10555,7 +10555,7 @@ exports[`showing details for helm release > given application is started > when 
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -10996,7 +10996,7 @@ exports[`showing details for helm release > given application is started > when 
             class=""
           >
             <div
-              class="ItemListLayout flex column HelmReleases"
+              class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
                 class="header flex gaps align-center"
@@ -11401,7 +11401,7 @@ exports[`showing details for helm release > given application is started > when 
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -11809,7 +11809,7 @@ exports[`showing details for helm release > given application is started > when 
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -12250,7 +12250,7 @@ exports[`showing details for helm release > given application is started > when 
             class=""
           >
             <div
-              class="ItemListLayout flex column HelmReleases"
+              class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
                 class="header flex gaps align-center"
@@ -12928,7 +12928,7 @@ exports[`showing details for helm release > given application is started > when 
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -13334,7 +13334,7 @@ exports[`showing details for helm release > given application is started > when 
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -13775,7 +13775,7 @@ exports[`showing details for helm release > given application is started > when 
             class=""
           >
             <div
-              class="ItemListLayout flex column HelmReleases"
+              class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
                 class="header flex gaps align-center"
@@ -14453,7 +14453,7 @@ exports[`showing details for helm release > given application is started > when 
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -14505,7 +14505,7 @@ exports[`showing details for helm release > given application is started > when 
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -14613,7 +14613,7 @@ exports[`showing details for helm release > given application is started > when 
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -15054,7 +15054,7 @@ exports[`showing details for helm release > given application is started > when 
             class=""
           >
             <div
-              class="ItemListLayout flex column HelmReleases"
+              class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
                 class="header flex gaps align-center"
@@ -15732,7 +15732,7 @@ exports[`showing details for helm release > given application is started > when 
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -15894,7 +15894,7 @@ exports[`showing details for helm release > given application is started > when 
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -16335,7 +16335,7 @@ exports[`showing details for helm release > given application is started > when 
             class=""
           >
             <div
-              class="ItemListLayout flex column HelmReleases"
+              class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
                 class="header flex gaps align-center"
@@ -17013,7 +17013,7 @@ exports[`showing details for helm release > given application is started > when 
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -17112,7 +17112,7 @@ exports[`showing details for helm release > given application is started > when 
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -17553,7 +17553,7 @@ exports[`showing details for helm release > given application is started > when 
             class=""
           >
             <div
-              class="ItemListLayout flex column HelmReleases"
+              class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
                 class="header flex gaps align-center"
@@ -18231,7 +18231,7 @@ exports[`showing details for helm release > given application is started > when 
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -18391,7 +18391,7 @@ exports[`showing details for helm release > given application is started > when 
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -18832,7 +18832,7 @@ exports[`showing details for helm release > given application is started > when 
             class=""
           >
             <div
-              class="ItemListLayout flex column HelmReleases"
+              class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
                 class="header flex gaps align-center"
@@ -19510,7 +19510,7 @@ exports[`showing details for helm release > given application is started > when 
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -19670,7 +19670,7 @@ exports[`showing details for helm release > given application is started > when 
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -20111,7 +20111,7 @@ exports[`showing details for helm release > given application is started > when 
             class=""
           >
             <div
-              class="ItemListLayout flex column HelmReleases"
+              class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
                 class="header flex gaps align-center"
@@ -20789,7 +20789,7 @@ exports[`showing details for helm release > given application is started > when 
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -20949,7 +20949,7 @@ exports[`showing details for helm release > given application is started > when 
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -21390,7 +21390,7 @@ exports[`showing details for helm release > given application is started > when 
             class=""
           >
             <div
-              class="ItemListLayout flex column HelmReleases"
+              class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
                 class="header flex gaps align-center"
@@ -22068,7 +22068,7 @@ exports[`showing details for helm release > given application is started > when 
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"
@@ -22228,7 +22228,7 @@ exports[`showing details for helm release > given application is started > when 
       class="Notifications flex column align-flex-end"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex column right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -22669,7 +22669,7 @@ exports[`showing details for helm release > given application is started > when 
             class=""
           >
             <div
-              class="ItemListLayout flex column HelmReleases"
+              class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
                 class="header flex gaps align-center"
@@ -23079,7 +23079,7 @@ exports[`showing details for helm release > given application is started > when 
                     class="label"
                   >
                     <div
-                      class="flex align-center"
+                      class="flex items-center"
                     >
                       <span
                         class="title"

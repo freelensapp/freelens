@@ -326,7 +326,7 @@ exports[`Deleting a cluster > when an internal kubeconfig cluster is used > when
               class="views"
             >
               <div
-                class="ItemListLayout flex column Catalog"
+                class="ItemListLayout flex flex-col Catalog"
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
@@ -1075,7 +1075,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
               class="views"
             >
               <div
-                class="ItemListLayout flex column Catalog"
+                class="ItemListLayout flex flex-col Catalog"
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
@@ -1857,7 +1857,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
               class="views"
             >
               <div
-                class="ItemListLayout flex column Catalog"
+                class="ItemListLayout flex flex-col Catalog"
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
@@ -2720,7 +2720,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
               class="views"
             >
               <div
-                class="ItemListLayout flex column Catalog"
+                class="ItemListLayout flex flex-col Catalog"
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
@@ -3583,7 +3583,7 @@ exports[`Deleting a cluster > when the kubeconfig has only one cluster > when th
               class="views"
             >
               <div
-                class="ItemListLayout flex column Catalog"
+                class="ItemListLayout flex flex-col Catalog"
                 data-testid="catalog-list-for-browse-all"
               >
                 <div

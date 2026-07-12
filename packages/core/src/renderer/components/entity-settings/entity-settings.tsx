@@ -64,7 +64,7 @@ const NonInjectedCatalogEntitySettings = observer((props: CatalogEntitySettingsP
         />
         <div className={styles.entityName}>{entity.getName()}</div>
       </div>
-      <Tabs className="flex column" scrollable={false} onChange={activeEntitySettingsTab.set} value={tabId}>
+      <Tabs className="flex flex-col" scrollable={false} onChange={activeEntitySettingsTab.set} value={tabId}>
         {groups.map(({ tabs, title }) => (
           <React.Fragment key={title}>
             <hr />

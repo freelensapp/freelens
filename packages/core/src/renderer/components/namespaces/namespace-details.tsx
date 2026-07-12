@@ -87,7 +87,7 @@ class NonInjectedNamespaceDetails extends React.Component<NamespaceDetailsProps 
           <span className={cssNames("status", status.toLowerCase())}>{status}</span>
         </DrawerItem>
 
-        <DrawerItem name="Resource Quotas" className="quotas flex align-center">
+        <DrawerItem name="Resource Quotas" className="quotas flex items-center">
           {!this.quotas && resourceQuotaStore.isLoading && <Spinner />}
           {this.quotas.map(
             (quota) =>

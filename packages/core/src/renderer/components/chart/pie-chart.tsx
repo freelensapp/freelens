@@ -97,7 +97,7 @@ const NonInjectedPieChart = observer(
 
     return (
       <Chart
-        className={cssNames("PieChart flex column align-center", className)}
+        className={cssNames("PieChart flex flex-col items-center", className)}
         data={data}
         options={showChart ? {} : opts}
         showChart={showChart}

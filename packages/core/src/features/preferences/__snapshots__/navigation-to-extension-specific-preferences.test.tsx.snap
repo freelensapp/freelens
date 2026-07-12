@@ -86,7 +86,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"
@@ -866,7 +866,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
             class="sidebar"
           >
             <div
-              class="Tabs flex column"
+              class="Tabs flex flex-col"
             >
               <div
                 data-preference-tab-group-test="general-tab-group"
@@ -1262,7 +1262,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
             class="sidebar"
           >
             <div
-              class="Tabs flex column"
+              class="Tabs flex flex-col"
             >
               <div
                 data-preference-tab-group-test="general-tab-group"
@@ -1670,7 +1670,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
             class="sidebar"
           >
             <div
-              class="Tabs flex column"
+              class="Tabs flex flex-col"
             >
               <div
                 data-preference-tab-group-test="general-tab-group"
@@ -2078,7 +2078,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
             class="sidebar"
           >
             <div
-              class="Tabs flex column"
+              class="Tabs flex flex-col"
             >
               <div
                 data-preference-tab-group-test="general-tab-group"
@@ -2512,7 +2512,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
             class="sidebar"
           >
             <div
-              class="Tabs flex column"
+              class="Tabs flex flex-col"
             >
               <div
                 data-preference-tab-group-test="general-tab-group"
@@ -3279,7 +3279,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
             class="sidebar"
           >
             <div
-              class="Tabs flex column"
+              class="Tabs flex flex-col"
             >
               <div
                 data-preference-tab-group-test="general-tab-group"
@@ -4084,7 +4084,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
             class="sidebar"
           >
             <div
-              class="Tabs flex column"
+              class="Tabs flex flex-col"
             >
               <div
                 data-preference-tab-group-test="general-tab-group"
@@ -4507,7 +4507,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"

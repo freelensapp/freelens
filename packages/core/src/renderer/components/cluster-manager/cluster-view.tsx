@@ -107,14 +107,14 @@ class NonInjectedClusterView extends React.Component<Dependencies> {
     const { cluster, isReady } = this;
 
     if (cluster && !isReady) {
-      return <ClusterStatus cluster={cluster} className="box center" />;
+      return <ClusterStatus cluster={cluster} className="m-auto" />;
     }
 
     return null;
   }
 
   render() {
-    return <div className="ClusterView flex column align-center">{this.renderStatus()}</div>;
+    return <div className="ClusterView flex flex-col items-center">{this.renderStatus()}</div>;
   }
 }
 

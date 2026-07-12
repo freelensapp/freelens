@@ -326,7 +326,7 @@ exports[`custom category columns for catalog > renders 1`] = `
               class="views"
             >
               <div
-                class="ItemListLayout flex column Catalog"
+                class="ItemListLayout flex flex-col Catalog"
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
@@ -1050,7 +1050,7 @@ exports[`custom category columns for catalog > when category is added using defa
               class="views"
             >
               <div
-                class="ItemListLayout flex column Catalog"
+                class="ItemListLayout flex flex-col Catalog"
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
@@ -1774,7 +1774,7 @@ exports[`custom category columns for catalog > when category is added using defa
               class="views"
             >
               <div
-                class="ItemListLayout flex column Catalog"
+                class="ItemListLayout flex flex-col Catalog"
                 data-testid="catalog-list-for-Test"
               >
                 <div
@@ -2488,7 +2488,7 @@ exports[`custom category columns for catalog > when category is added using defa
               class="views"
             >
               <div
-                class="ItemListLayout flex column Catalog"
+                class="ItemListLayout flex flex-col Catalog"
                 data-testid="catalog-list-for-Test"
               >
                 <div
@@ -3188,7 +3188,7 @@ exports[`custom category columns for catalog > when category is added with custo
               class="views"
             >
               <div
-                class="ItemListLayout flex column Catalog"
+                class="ItemListLayout flex flex-col Catalog"
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
@@ -3912,7 +3912,7 @@ exports[`custom category columns for catalog > when category is added with custo
               class="views"
             >
               <div
-                class="ItemListLayout flex column Catalog"
+                class="ItemListLayout flex flex-col Catalog"
                 data-testid="catalog-list-for-Test"
               >
                 <div
@@ -4564,7 +4564,7 @@ exports[`custom category columns for catalog > when category is added without de
               class="views"
             >
               <div
-                class="ItemListLayout flex column Catalog"
+                class="ItemListLayout flex flex-col Catalog"
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
@@ -5288,7 +5288,7 @@ exports[`custom category columns for catalog > when category is added without de
               class="views"
             >
               <div
-                class="ItemListLayout flex column Catalog"
+                class="ItemListLayout flex flex-col Catalog"
                 data-testid="catalog-list-for-Test"
               >
                 <div

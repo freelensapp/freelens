@@ -130,7 +130,7 @@ class NonInjectedAddCluster extends React.Component<Dependencies> {
             Read more about adding clusters.
           </a>
         </p>
-        <div className="flex column">
+        <div className="flex flex-col">
           <MonacoEditor
             autoFocus
             className={styles.editor}

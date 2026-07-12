@@ -29,7 +29,7 @@ interface Dependencies {
 }
 
 const NonInjectedPreferencesNavigation = observer(({ composite, navigateToPreferenceTab }: Dependencies) => (
-  <Tabs<string> className="flex column" scrollable={false} onChange={navigateToPreferenceTab}>
+  <Tabs<string> className="flex flex-col" scrollable={false} onChange={navigateToPreferenceTab}>
     {toNavigationHierarchy(composite.get())}
   </Tabs>
 ));
