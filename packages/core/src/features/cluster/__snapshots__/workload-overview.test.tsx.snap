@@ -561,7 +561,7 @@ exports[`workload overview > when navigating to workload overview > renders 1`] 
                       class="OverviewWorkloadStatus"
                     >
                       <div
-                        class="flex column align-center box grow"
+                        class="flex flex-col items-center grow shrink-0 basis-0"
                       >
                         <div
                           class="Chart PieChart flex column align-center"
