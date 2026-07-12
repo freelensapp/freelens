@@ -85,6 +85,56 @@ Convention going forward:
   migrate existing ones opportunistically.
 - Do not mix the two vocabularies in the same `className`.
 
+### Legacy-to-Tailwind mapping
+
+When migrating an existing `className`, translate each legacy token as
+follows. Migrate a container **together with its flex children in the same
+change** — the two systems coexist during the migration and the legacy
+compound selectors (`.flex.gaps > :not(:last-child)`, `.flex > .box.grow`) win
+on specificity, so a half-migrated subtree double-spaces or loses `grow`.
+
+| Legacy | Tailwind | Note |
+|---|---|---|
+| `flex` | `flex` | Same name, same rule |
+| `flex inline` | `inline-flex` | |
+| `flex column` / `column reverse` | `flex flex-col` / `flex-col-reverse` | |
+| `flex reverse` | `flex flex-row-reverse` | |
+| `flex wrap` / `wrap-reverse` | `flex flex-wrap` / `flex-wrap-reverse` | |
+| `flex fullsize` | `flex w-screen h-screen` | |
+| `flex auto` | `flex-1` on each child | Parent-side rule has no Tailwind equivalent |
+| `flex center` | `items-center justify-center` on parent | Legacy sets `margin: auto` per child; verify multi-child sites |
+| `justify-flex-start` / `-end`, `justify-space-between` / `-around` | `justify-start` / `end`, `justify-between` / `around` | |
+| `align-center`, `align-flex-start` / `-end`, `align-stretch`, `align-baseline` | `items-center`, `items-start` / `end`, `items-stretch`, `items-baseline` | |
+| `content-flex-start` / `-end`, `content-space-between` / `-around`, `content-stretch` | `content-start` / `end`, `content-between` / `around`, `content-stretch` | |
+| `gaps` | `gap-*` on the container | Legacy `gaps` is margin-based and parametrized by `--flex-gap`; compute the effective value and set an explicit `gap-*`. Real `gap` also applies between wrapped lines — check wrapping containers |
+| `box grow` | `grow shrink-0` (exact: `flex: 1 0`) or `flex-1` where shrinking is fine | Do not translate to bare `grow` — legacy forbids shrinking |
+| `box grow-fixed` | `grow shrink-0 basis-0` | `flex: 1 0 0` |
+| `box center` | `m-auto` | |
+| `box left` / `box right` | `mr-auto` / `ml-auto` | |
+| `box self-flex-start` / `-end`, `self-stretch`, ... | `self-start` / `end`, `self-stretch`, ... | |
+| bare `box` | usually delete | Except where a stylesheet structurally selects `.box` (`confirm-dialog`, `checkbox`, `notifications`) — give those elements a named class and rewrite the selector in the same change |
+
+Do not translate legacy utilities to Tailwind in `packages/ui-components` or
+extensions: the Tailwind JIT only scans core TSX (see above), so those classes
+would produce no CSS. Replace them with plain rules in the component's own
+SCSS.
+
+### Ratchet guardrail
+
+`scripts/check-legacy-flexbox.mjs` counts legacy flexbox tokens in core TSX
+`className` attributes and fails when the count rises above the committed
+baseline in `scripts/legacy-flexbox-baseline.json`. This keeps new mixed
+classnames out while the migration proceeds in batches. After a batch lowers
+the count, ratchet the baseline down:
+
+```bash
+node scripts/check-legacy-flexbox.mjs           # verify (CI)
+node scripts/check-legacy-flexbox.mjs --update   # lower the baseline
+```
+
+The endgame is a baseline of `0`, a deprecation notice on `flexbox.scss`, and
+removal in a later major after an extension audit.
+
 ## Tailwind configuration caveats
 
 - **Only four theme colors are bridged into Tailwind**

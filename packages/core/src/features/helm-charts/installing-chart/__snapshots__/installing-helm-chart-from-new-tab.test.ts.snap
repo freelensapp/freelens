@@ -14042,10 +14042,10 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     </div>
                   </div>
                   <div
-                    class="NoItems flex box grow"
+                    class="NoItems flex grow shrink-0 basis-0"
                   >
                     <div
-                      class="box center"
+                      class="m-auto"
                     >
                       Item list is empty
                     </div>

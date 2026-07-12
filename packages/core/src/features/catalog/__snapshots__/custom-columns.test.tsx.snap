@@ -529,10 +529,10 @@ exports[`custom category columns for catalog > renders 1`] = `
                       </div>
                     </div>
                     <div
-                      class="NoItems flex box grow"
+                      class="NoItems flex grow shrink-0 basis-0"
                     >
                       <div
-                        class="box center"
+                        class="m-auto"
                       >
                         Item list is empty
                       </div>
@@ -1253,10 +1253,10 @@ exports[`custom category columns for catalog > when category is added using defa
                       </div>
                     </div>
                     <div
-                      class="NoItems flex box grow"
+                      class="NoItems flex grow shrink-0 basis-0"
                     >
                       <div
-                        class="box center"
+                        class="m-auto"
                       >
                         Item list is empty
                       </div>
@@ -1967,10 +1967,10 @@ exports[`custom category columns for catalog > when category is added using defa
                       </div>
                     </div>
                     <div
-                      class="NoItems flex box grow"
+                      class="NoItems flex grow shrink-0 basis-0"
                     >
                       <div
-                        class="box center"
+                        class="m-auto"
                       >
                         Item list is empty
                       </div>
@@ -2667,10 +2667,10 @@ exports[`custom category columns for catalog > when category is added using defa
                       </div>
                     </div>
                     <div
-                      class="NoItems flex box grow"
+                      class="NoItems flex grow shrink-0 basis-0"
                     >
                       <div
-                        class="box center"
+                        class="m-auto"
                       >
                         Item list is empty
                       </div>
@@ -3391,10 +3391,10 @@ exports[`custom category columns for catalog > when category is added with custo
                       </div>
                     </div>
                     <div
-                      class="NoItems flex box grow"
+                      class="NoItems flex grow shrink-0 basis-0"
                     >
                       <div
-                        class="box center"
+                        class="m-auto"
                       >
                         Item list is empty
                       </div>
@@ -4043,10 +4043,10 @@ exports[`custom category columns for catalog > when category is added with custo
                       </div>
                     </div>
                     <div
-                      class="NoItems flex box grow"
+                      class="NoItems flex grow shrink-0 basis-0"
                     >
                       <div
-                        class="box center"
+                        class="m-auto"
                       >
                         Item list is empty
                       </div>
@@ -4767,10 +4767,10 @@ exports[`custom category columns for catalog > when category is added without de
                       </div>
                     </div>
                     <div
-                      class="NoItems flex box grow"
+                      class="NoItems flex grow shrink-0 basis-0"
                     >
                       <div
-                        class="box center"
+                        class="m-auto"
                       >
                         Item list is empty
                       </div>
@@ -5405,10 +5405,10 @@ exports[`custom category columns for catalog > when category is added without de
                       </div>
                     </div>
                     <div
-                      class="NoItems flex box grow"
+                      class="NoItems flex grow shrink-0 basis-0"
                     >
                       <div
-                        class="box center"
+                        class="m-auto"
                       >
                         Item list is empty
                       </div>
