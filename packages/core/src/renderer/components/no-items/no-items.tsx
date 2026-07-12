@@ -20,8 +20,8 @@ export function NoItems(props: NoItemsProps) {
   const { className, children } = props;
 
   return (
-    <div className={cssNames("NoItems flex box grow", className)}>
-      <div className="box center">{children || "Item list is empty"}</div>
+    <div className={cssNames("NoItems flex grow shrink-0 basis-0", className)}>
+      <div className="m-auto">{children || "Item list is empty"}</div>
     </div>
   );
 }

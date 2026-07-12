@@ -2066,10 +2066,10 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
                     </div>
                   </div>
                   <div
-                    class="NoItems flex box grow"
+                    class="NoItems flex grow shrink-0 basis-0"
                   >
                     <div
-                      class="box center"
+                      class="m-auto"
                     >
                       Item list is empty
                     </div>

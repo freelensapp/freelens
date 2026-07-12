@@ -529,10 +529,10 @@ exports[`Deleting a cluster > when an internal kubeconfig cluster is used > when
                       </div>
                     </div>
                     <div
-                      class="NoItems flex box grow"
+                      class="NoItems flex grow shrink-0 basis-0"
                     >
                       <div
-                        class="box center"
+                        class="m-auto"
                       >
                         Item list is empty
                       </div>
@@ -1278,10 +1278,10 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
                       </div>
                     </div>
                     <div
-                      class="NoItems flex box grow"
+                      class="NoItems flex grow shrink-0 basis-0"
                     >
                       <div
-                        class="box center"
+                        class="m-auto"
                       >
                         Item list is empty
                       </div>
@@ -2060,10 +2060,10 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
                       </div>
                     </div>
                     <div
-                      class="NoItems flex box grow"
+                      class="NoItems flex grow shrink-0 basis-0"
                     >
                       <div
-                        class="box center"
+                        class="m-auto"
                       >
                         Item list is empty
                       </div>
@@ -2923,10 +2923,10 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
                       </div>
                     </div>
                     <div
-                      class="NoItems flex box grow"
+                      class="NoItems flex grow shrink-0 basis-0"
                     >
                       <div
-                        class="box center"
+                        class="m-auto"
                       >
                         Item list is empty
                       </div>
@@ -3786,10 +3786,10 @@ exports[`Deleting a cluster > when the kubeconfig has only one cluster > when th
                       </div>
                     </div>
                     <div
-                      class="NoItems flex box grow"
+                      class="NoItems flex grow shrink-0 basis-0"
                     >
                       <div
-                        class="box center"
+                        class="m-auto"
                       >
                         Item list is empty
                       </div>
