@@ -295,7 +295,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on linux > renders 1`] =
                     class="flex grid-12"
                   >
                     <i
-                      class="Icon box col-1 material focusable"
+                      class="Icon col-1 material focusable"
                     >
                       <span
                         class="icon"
@@ -305,12 +305,12 @@ exports[`Command Pallet: keyboard shortcut tests > when on linux > renders 1`] =
                       </span>
                     </i>
                     <a
-                      class="box col-10"
+                      class="col-10"
                     >
                       Browse Clusters in Catalog
                     </a>
                     <i
-                      class="Icon box col-1 material focusable"
+                      class="Icon col-1 material focusable"
                     >
                       <span
                         class="icon"
@@ -764,7 +764,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on linux > when pressing
                     class="flex grid-12"
                   >
                     <i
-                      class="Icon box col-1 material focusable"
+                      class="Icon col-1 material focusable"
                     >
                       <span
                         class="icon"
@@ -774,12 +774,12 @@ exports[`Command Pallet: keyboard shortcut tests > when on linux > when pressing
                       </span>
                     </i>
                     <a
-                      class="box col-10"
+                      class="col-10"
                     >
                       Browse Clusters in Catalog
                     </a>
                     <i
-                      class="Icon box col-1 material focusable"
+                      class="Icon col-1 material focusable"
                     >
                       <span
                         class="icon"
@@ -1233,7 +1233,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on linux > when pressing
                     class="flex grid-12"
                   >
                     <i
-                      class="Icon box col-1 material focusable"
+                      class="Icon col-1 material focusable"
                     >
                       <span
                         class="icon"
@@ -1243,12 +1243,12 @@ exports[`Command Pallet: keyboard shortcut tests > when on linux > when pressing
                       </span>
                     </i>
                     <a
-                      class="box col-10"
+                      class="col-10"
                     >
                       Browse Clusters in Catalog
                     </a>
                     <i
-                      class="Icon box col-1 material focusable"
+                      class="Icon col-1 material focusable"
                     >
                       <span
                         class="icon"
@@ -1714,7 +1714,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on linux > when pressing
                     class="flex grid-12"
                   >
                     <i
-                      class="Icon box col-1 material focusable"
+                      class="Icon col-1 material focusable"
                     >
                       <span
                         class="icon"
@@ -1724,12 +1724,12 @@ exports[`Command Pallet: keyboard shortcut tests > when on linux > when pressing
                       </span>
                     </i>
                     <a
-                      class="box col-10"
+                      class="col-10"
                     >
                       Browse Clusters in Catalog
                     </a>
                     <i
-                      class="Icon box col-1 material focusable"
+                      class="Icon col-1 material focusable"
                     >
                       <span
                         class="icon"
@@ -2092,7 +2092,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on macOS > renders 1`] =
                     class="flex grid-12"
                   >
                     <i
-                      class="Icon box col-1 material focusable"
+                      class="Icon col-1 material focusable"
                     >
                       <span
                         class="icon"
@@ -2102,12 +2102,12 @@ exports[`Command Pallet: keyboard shortcut tests > when on macOS > renders 1`] =
                       </span>
                     </i>
                     <a
-                      class="box col-10"
+                      class="col-10"
                     >
                       Browse Clusters in Catalog
                     </a>
                     <i
-                      class="Icon box col-1 material focusable"
+                      class="Icon col-1 material focusable"
                     >
                       <span
                         class="icon"
@@ -2470,7 +2470,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on macOS > when pressing
                     class="flex grid-12"
                   >
                     <i
-                      class="Icon box col-1 material focusable"
+                      class="Icon col-1 material focusable"
                     >
                       <span
                         class="icon"
@@ -2480,12 +2480,12 @@ exports[`Command Pallet: keyboard shortcut tests > when on macOS > when pressing
                       </span>
                     </i>
                     <a
-                      class="box col-10"
+                      class="col-10"
                     >
                       Browse Clusters in Catalog
                     </a>
                     <i
-                      class="Icon box col-1 material focusable"
+                      class="Icon col-1 material focusable"
                     >
                       <span
                         class="icon"
@@ -2848,7 +2848,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on macOS > when pressing
                     class="flex grid-12"
                   >
                     <i
-                      class="Icon box col-1 material focusable"
+                      class="Icon col-1 material focusable"
                     >
                       <span
                         class="icon"
@@ -2858,12 +2858,12 @@ exports[`Command Pallet: keyboard shortcut tests > when on macOS > when pressing
                       </span>
                     </i>
                     <a
-                      class="box col-10"
+                      class="col-10"
                     >
                       Browse Clusters in Catalog
                     </a>
                     <i
-                      class="Icon box col-1 material focusable"
+                      class="Icon col-1 material focusable"
                     >
                       <span
                         class="icon"
@@ -3238,7 +3238,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on macOS > when pressing
                     class="flex grid-12"
                   >
                     <i
-                      class="Icon box col-1 material focusable"
+                      class="Icon col-1 material focusable"
                     >
                       <span
                         class="icon"
@@ -3248,12 +3248,12 @@ exports[`Command Pallet: keyboard shortcut tests > when on macOS > when pressing
                       </span>
                     </i>
                     <a
-                      class="box col-10"
+                      class="col-10"
                     >
                       Browse Clusters in Catalog
                     </a>
                     <i
-                      class="Icon box col-1 material focusable"
+                      class="Icon col-1 material focusable"
                     >
                       <span
                         class="icon"

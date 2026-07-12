@@ -1,6 +1,6 @@
 {
   "comment": "Ratchet baseline for the legacy flexbox -> Tailwind migration. This number may only decrease. See scripts/check-legacy-flexbox.mjs and docs/v2-styling.md.",
-  "total": 359,
+  "total": 356,
   "files": {
     "packages/core/src/features/catalog/custom-columns.test.tsx": 23,
     "packages/core/src/features/helm-charts/child-features/preferences/renderer/adding-of-custom-helm-repository/adding-of-custom-helm-repository-dialog-content.tsx": 3,
@@ -63,7 +63,6 @@
     "packages/core/src/renderer/components/user-management/cluster-roles/add-dialog/view.tsx": 2,
     "packages/core/src/renderer/components/user-management/roles/add-dialog/view.tsx": 2,
     "packages/core/src/renderer/components/welcome/new-version-notification.injectable.tsx": 2,
-    "packages/core/src/renderer/components/welcome/welcome.tsx": 3,
     "packages/core/src/renderer/components/wizard/wizard.tsx": 3,
     "packages/core/src/renderer/components/workloads-cronjobs/cronjob-details.tsx": 1,
     "packages/core/src/renderer/components/workloads-cronjobs/trigger-dialog/view.tsx": 6,

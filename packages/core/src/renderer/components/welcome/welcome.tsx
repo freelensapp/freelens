@@ -56,9 +56,9 @@ const NonInjectedWelcome = observer(({ welcomeMenuItems, productName, newVersion
             <ul className="block" style={{ width: `${defaultWidth}px` }} data-testid="welcome-menu-container">
               {welcomeMenuItems.get().map((item, index) => (
                 <li key={index} className="flex grid-12" onClick={() => item.click()}>
-                  <Icon material={item.icon} className="box col-1" />
-                  <a className="box col-10">{typeof item.title === "string" ? item.title : item.title()}</a>
-                  <Icon material="navigate_next" className="box col-1" />
+                  <Icon material={item.icon} className="col-1" />
+                  <a className="col-10">{typeof item.title === "string" ? item.title : item.title()}</a>
+                  <Icon material="navigate_next" className="col-1" />
                 </li>
               ))}
             </ul>
