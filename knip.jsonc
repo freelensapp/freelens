@@ -25,7 +25,7 @@
         // vitest.config.ts wires per-project setup files and the canvas mock;
         // they resolve relative to each project dir (packages/core), not to
         // the root config
-        "./src/jest.setup.tsx",
+        "./src/vitest.setup.tsx",
         "./src/jest-after-env.setup.ts",
         "vitest-canvas-mock"
       ]
