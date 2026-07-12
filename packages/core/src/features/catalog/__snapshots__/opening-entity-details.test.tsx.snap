@@ -4395,7 +4395,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
             </div>
           </div>
           <div
-            class="box grow metadata"
+            class="grow shrink-0 basis-0 metadata"
           >
             <div
               class="DrawerItem"
@@ -4468,7 +4468,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
           </div>
         </div>
         <div
-          class="box grow"
+          class="grow shrink-0 basis-0"
         >
           <div
             class="DrawerTitle title"
@@ -4476,7 +4476,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
             Kubernetes Information
           </div>
           <div
-            class="box grow EntityMetadata"
+            class="grow shrink-0 basis-0 EntityMetadata"
           >
             <div
               class="DrawerItem"
@@ -7488,7 +7488,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
             </div>
           </div>
           <div
-            class="box grow metadata"
+            class="grow shrink-0 basis-0 metadata"
           >
             <div
               class="DrawerItem"
@@ -7561,7 +7561,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
           </div>
         </div>
         <div
-          class="box grow"
+          class="grow shrink-0 basis-0"
         >
           <div
             class="DrawerTitle title"
@@ -8037,7 +8037,7 @@ exports[`opening catalog entity details panel > when not navigated to the catalo
             </div>
           </div>
           <div
-            class="box grow metadata"
+            class="grow shrink-0 basis-0 metadata"
           >
             <div
               class="DrawerItem"
@@ -8110,7 +8110,7 @@ exports[`opening catalog entity details panel > when not navigated to the catalo
           </div>
         </div>
         <div
-          class="box grow"
+          class="grow shrink-0 basis-0"
         >
           <div
             class="DrawerTitle title"

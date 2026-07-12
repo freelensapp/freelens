@@ -20,7 +20,7 @@ const kubernetesClusterDetailsItemInjectable = getInjectable({
       Details: ({ entity }) => (
         <>
           <DrawerTitle>Kubernetes Information</DrawerTitle>
-          <div className="box grow EntityMetadata">
+          <div className="grow shrink-0 basis-0 EntityMetadata">
             <DrawerItem name="Distribution" data-testid={`kubernetes-distro-for-${entity.getId()}`}>
               {entity.metadata.distro || "unknown"}
             </DrawerItem>

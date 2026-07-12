@@ -66,7 +66,7 @@ export class ServiceAccountsSecret extends React.Component<ServiceAccountsSecret
     const { secret } = this.props;
 
     return (
-      <div className="ServiceAccountsSecret box grow-fixed">
+      <div className="ServiceAccountsSecret grow shrink-0 basis-0">
         {this.renderRow({
           name: "Name: ",
           value: typeof secret === "string" ? secret : secret.getName(),
