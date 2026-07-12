@@ -1,11 +1,14 @@
 # Freelens v2 Plan: Vite, ESM-first, Vitest
 
-Status: proposed (issue [#2102](https://github.com/freelensapp/freelens/issues/2102)).
+Status: delivered and merged into `main` (issue [#2102](https://github.com/freelensapp/freelens/issues/2102)).
 Builds on the analysis and empirical verification in issue
 [#1718](https://github.com/freelensapp/freelens/issues/1718).
 
-Development happens on a long-lived `v2` branch that breaks compatibility
-with v1, including the extension API.
+The work described here happened on a long-lived `v2` branch that broke
+compatibility with v1, including the extension API. That branch has since
+been merged into `main` and deleted — v2 is now the mainline, and all
+ongoing development targets `main`. The phase history below refers to the
+`v2` branch as it existed during the migration and is kept as a record.
 
 ## 1. Goals and non-goals
 
