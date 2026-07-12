@@ -85,7 +85,7 @@ exports[`preferences - navigation to terminal preferences > given in preferences
             class="sidebar"
           >
             <div
-              class="Tabs flex column"
+              class="Tabs flex flex-col"
             >
               <div
                 data-preference-tab-group-test="general-tab-group"
@@ -852,7 +852,7 @@ exports[`preferences - navigation to terminal preferences > given in preferences
             class="sidebar"
           >
             <div
-              class="Tabs flex column"
+              class="Tabs flex flex-col"
             >
               <div
                 data-preference-tab-group-test="general-tab-group"

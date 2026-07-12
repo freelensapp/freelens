@@ -86,7 +86,7 @@ exports[`remove helm repository from list of active repositories in preferences 
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"
@@ -924,7 +924,7 @@ exports[`remove helm repository from list of active repositories in preferences 
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"
@@ -1744,7 +1744,7 @@ exports[`remove helm repository from list of active repositories in preferences 
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"
@@ -2592,7 +2592,7 @@ exports[`remove helm repository from list of active repositories in preferences 
               class="sidebar"
             >
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <div
                   data-preference-tab-group-test="general-tab-group"

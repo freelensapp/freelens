@@ -6,7 +6,7 @@ exports[`<ClusterFrame /> > given cluster with list nodes and namespaces permiss
     class="Notifications flex column align-flex-end"
   />
   <div
-    class="Animate slide-right Drawer KubeObjectDetails flex column right enter"
+    class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter"
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
@@ -562,7 +562,7 @@ exports[`<ClusterFrame /> > given cluster with list nodes and namespaces permiss
                   class="label"
                 >
                   <div
-                    class="flex align-center"
+                    class="flex items-center"
                   >
                     <span
                       class="title"
@@ -659,7 +659,7 @@ exports[`<ClusterFrame /> > given cluster with list nodes and namespaces permiss
     class="Notifications flex column align-flex-end"
   />
   <div
-    class="Animate slide-right Drawer KubeObjectDetails flex column right enter"
+    class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter"
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
@@ -1222,7 +1222,7 @@ exports[`<ClusterFrame /> > given cluster with list nodes and namespaces permiss
                   class="label"
                 >
                   <div
-                    class="flex align-center"
+                    class="flex items-center"
                   >
                     <span
                       class="title"
@@ -1319,7 +1319,7 @@ exports[`<ClusterFrame /> > given cluster without list nodes, but with namespace
     class="Notifications flex column align-flex-end"
   />
   <div
-    class="Animate slide-right Drawer KubeObjectDetails flex column right enter"
+    class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter"
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
@@ -1922,7 +1922,7 @@ exports[`<ClusterFrame /> > given cluster without list nodes, but with namespace
                   class="label"
                 >
                   <div
-                    class="flex align-center"
+                    class="flex items-center"
                   >
                     <span
                       class="title"
