@@ -15229,7 +15229,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             </code>
           </div>
           <div
-            class="buttons flex gaps align-center justify-space-between"
+            class="buttons flex gap-2 items-center justify-between"
           >
             <button
               class="Button plain"
