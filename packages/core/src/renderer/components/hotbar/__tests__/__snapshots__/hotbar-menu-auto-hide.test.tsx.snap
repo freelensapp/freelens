@@ -6,7 +6,7 @@ exports[`<HotbarMenu /> auto-hide functionality > when auto-hide is disabled > r
     class="HotbarMenu flex flex-col"
   >
     <div
-      class="HotbarItems flex flex-col gap-2"
+      class="HotbarItems flex flex-col"
     />
     <div
       class="HotbarSelector"
@@ -55,7 +55,7 @@ exports[`<HotbarMenu /> auto-hide functionality > when auto-hide is enabled > re
     class="HotbarMenu flex flex-col autoHide"
   >
     <div
-      class="HotbarItems flex flex-col gap-2"
+      class="HotbarItems flex flex-col"
     />
     <div
       class="HotbarSelector"

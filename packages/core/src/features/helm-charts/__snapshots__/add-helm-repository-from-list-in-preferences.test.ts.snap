@@ -311,18 +311,18 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="Input theme round black"
                         >
                           <label
-                            class="input-area flex gaps align-center"
+                            class="input-area flex items-center gap-2"
                             id=""
                           >
                             <input
-                              class="input box grow"
+                              class="input grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
                               spellcheck="false"
                               value=""
                             />
                           </label>
                           <div
-                            class="input-info flex gaps"
+                            class="input-info flex gap-2"
                           />
                         </div>
                         <div
@@ -349,11 +349,11 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="Input theme round black disabled"
                         >
                           <label
-                            class="input-area flex gaps align-center"
+                            class="input-area flex items-center gap-2"
                             id=""
                           >
                             <input
-                              class="input box grow"
+                              class="input grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
                               spellcheck="false"
@@ -361,7 +361,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                             />
                           </label>
                           <div
-                            class="input-info flex gaps"
+                            class="input-info flex gap-2"
                           />
                         </div>
                         <div
@@ -399,18 +399,18 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="Input theme round black"
                         >
                           <label
-                            class="input-area flex gaps align-center"
+                            class="input-area flex items-center gap-2"
                             id=""
                           >
                             <input
-                              class="input box grow"
+                              class="input grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
                               spellcheck="false"
                               value=""
                             />
                           </label>
                           <div
-                            class="input-info flex gaps"
+                            class="input-info flex gap-2"
                           />
                         </div>
                         <div
@@ -671,7 +671,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -1121,18 +1121,18 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="Input theme round black"
                         >
                           <label
-                            class="input-area flex gaps align-center"
+                            class="input-area flex items-center gap-2"
                             id=""
                           >
                             <input
-                              class="input box grow"
+                              class="input grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
                               spellcheck="false"
                               value=""
                             />
                           </label>
                           <div
-                            class="input-info flex gaps"
+                            class="input-info flex gap-2"
                           />
                         </div>
                         <div
@@ -1159,11 +1159,11 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="Input theme round black disabled"
                         >
                           <label
-                            class="input-area flex gaps align-center"
+                            class="input-area flex items-center gap-2"
                             id=""
                           >
                             <input
-                              class="input box grow"
+                              class="input grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
                               spellcheck="false"
@@ -1171,7 +1171,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                             />
                           </label>
                           <div
-                            class="input-info flex gaps"
+                            class="input-info flex gap-2"
                           />
                         </div>
                         <div
@@ -1209,18 +1209,18 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="Input theme round black"
                         >
                           <label
-                            class="input-area flex gaps align-center"
+                            class="input-area flex items-center gap-2"
                             id=""
                           >
                             <input
-                              class="input box grow"
+                              class="input grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
                               spellcheck="false"
                               value=""
                             />
                           </label>
                           <div
-                            class="input-info flex gaps"
+                            class="input-info flex gap-2"
                           />
                         </div>
                         <div
@@ -1519,7 +1519,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -1969,18 +1969,18 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="Input theme round black"
                         >
                           <label
-                            class="input-area flex gaps align-center"
+                            class="input-area flex items-center gap-2"
                             id=""
                           >
                             <input
-                              class="input box grow"
+                              class="input grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
                               spellcheck="false"
                               value=""
                             />
                           </label>
                           <div
-                            class="input-info flex gaps"
+                            class="input-info flex gap-2"
                           />
                         </div>
                         <div
@@ -2007,11 +2007,11 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="Input theme round black disabled"
                         >
                           <label
-                            class="input-area flex gaps align-center"
+                            class="input-area flex items-center gap-2"
                             id=""
                           >
                             <input
-                              class="input box grow"
+                              class="input grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
                               spellcheck="false"
@@ -2019,7 +2019,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                             />
                           </label>
                           <div
-                            class="input-info flex gaps"
+                            class="input-info flex gap-2"
                           />
                         </div>
                         <div
@@ -2057,18 +2057,18 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="Input theme round black"
                         >
                           <label
-                            class="input-area flex gaps align-center"
+                            class="input-area flex items-center gap-2"
                             id=""
                           >
                             <input
-                              class="input box grow"
+                              class="input grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
                               spellcheck="false"
                               value=""
                             />
                           </label>
                           <div
-                            class="input-info flex gaps"
+                            class="input-info flex gap-2"
                           />
                         </div>
                         <div
@@ -2368,7 +2368,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -2875,18 +2875,18 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="Input theme round black"
                         >
                           <label
-                            class="input-area flex gaps align-center"
+                            class="input-area flex items-center gap-2"
                             id=""
                           >
                             <input
-                              class="input box grow"
+                              class="input grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
                               spellcheck="false"
                               value=""
                             />
                           </label>
                           <div
-                            class="input-info flex gaps"
+                            class="input-info flex gap-2"
                           />
                         </div>
                         <div
@@ -2913,11 +2913,11 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="Input theme round black disabled"
                         >
                           <label
-                            class="input-area flex gaps align-center"
+                            class="input-area flex items-center gap-2"
                             id=""
                           >
                             <input
-                              class="input box grow"
+                              class="input grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
                               spellcheck="false"
@@ -2925,7 +2925,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                             />
                           </label>
                           <div
-                            class="input-info flex gaps"
+                            class="input-info flex gap-2"
                           />
                         </div>
                         <div
@@ -2963,18 +2963,18 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="Input theme round black"
                         >
                           <label
-                            class="input-area flex gaps align-center"
+                            class="input-area flex items-center gap-2"
                             id=""
                           >
                             <input
-                              class="input box grow"
+                              class="input grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
                               spellcheck="false"
                               value=""
                             />
                           </label>
                           <div
-                            class="input-info flex gaps"
+                            class="input-info flex gap-2"
                           />
                         </div>
                         <div
@@ -3273,7 +3273,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -3723,18 +3723,18 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="Input theme round black"
                         >
                           <label
-                            class="input-area flex gaps align-center"
+                            class="input-area flex items-center gap-2"
                             id=""
                           >
                             <input
-                              class="input box grow"
+                              class="input grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
                               spellcheck="false"
                               value=""
                             />
                           </label>
                           <div
-                            class="input-info flex gaps"
+                            class="input-info flex gap-2"
                           />
                         </div>
                         <div
@@ -3761,11 +3761,11 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="Input theme round black disabled"
                         >
                           <label
-                            class="input-area flex gaps align-center"
+                            class="input-area flex items-center gap-2"
                             id=""
                           >
                             <input
-                              class="input box grow"
+                              class="input grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
                               spellcheck="false"
@@ -3773,7 +3773,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                             />
                           </label>
                           <div
-                            class="input-info flex gaps"
+                            class="input-info flex gap-2"
                           />
                         </div>
                         <div
@@ -3811,18 +3811,18 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="Input theme round black"
                         >
                           <label
-                            class="input-area flex gaps align-center"
+                            class="input-area flex items-center gap-2"
                             id=""
                           >
                             <input
-                              class="input box grow"
+                              class="input grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
                               spellcheck="false"
                               value=""
                             />
                           </label>
                           <div
-                            class="input-info flex gaps"
+                            class="input-info flex gap-2"
                           />
                         </div>
                         <div
@@ -4121,7 +4121,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -4571,18 +4571,18 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="Input theme round black"
                         >
                           <label
-                            class="input-area flex gaps align-center"
+                            class="input-area flex items-center gap-2"
                             id=""
                           >
                             <input
-                              class="input box grow"
+                              class="input grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
                               spellcheck="false"
                               value=""
                             />
                           </label>
                           <div
-                            class="input-info flex gaps"
+                            class="input-info flex gap-2"
                           />
                         </div>
                         <div
@@ -4609,11 +4609,11 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="Input theme round black disabled"
                         >
                           <label
-                            class="input-area flex gaps align-center"
+                            class="input-area flex items-center gap-2"
                             id=""
                           >
                             <input
-                              class="input box grow"
+                              class="input grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
                               spellcheck="false"
@@ -4621,7 +4621,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                             />
                           </label>
                           <div
-                            class="input-info flex gaps"
+                            class="input-info flex gap-2"
                           />
                         </div>
                         <div
@@ -4659,18 +4659,18 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="Input theme round black"
                         >
                           <label
-                            class="input-area flex gaps align-center"
+                            class="input-area flex items-center gap-2"
                             id=""
                           >
                             <input
-                              class="input box grow"
+                              class="input grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
                               spellcheck="false"
                               value=""
                             />
                           </label>
                           <div
-                            class="input-info flex gaps"
+                            class="input-info flex gap-2"
                           />
                         </div>
                         <div
@@ -4959,7 +4959,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -5409,18 +5409,18 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="Input theme round black"
                         >
                           <label
-                            class="input-area flex gaps align-center"
+                            class="input-area flex items-center gap-2"
                             id=""
                           >
                             <input
-                              class="input box grow"
+                              class="input grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
                               spellcheck="false"
                               value=""
                             />
                           </label>
                           <div
-                            class="input-info flex gaps"
+                            class="input-info flex gap-2"
                           />
                         </div>
                         <div
@@ -5447,11 +5447,11 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="Input theme round black disabled"
                         >
                           <label
-                            class="input-area flex gaps align-center"
+                            class="input-area flex items-center gap-2"
                             id=""
                           >
                             <input
-                              class="input box grow"
+                              class="input grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
                               spellcheck="false"
@@ -5459,7 +5459,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                             />
                           </label>
                           <div
-                            class="input-info flex gaps"
+                            class="input-info flex gap-2"
                           />
                         </div>
                         <div
@@ -5497,18 +5497,18 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="Input theme round black"
                         >
                           <label
-                            class="input-area flex gaps align-center"
+                            class="input-area flex items-center gap-2"
                             id=""
                           >
                             <input
-                              class="input box grow"
+                              class="input grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
                               spellcheck="false"
                               value=""
                             />
                           </label>
                           <div
-                            class="input-info flex gaps"
+                            class="input-info flex gap-2"
                           />
                         </div>
                         <div
@@ -5841,7 +5841,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -6291,18 +6291,18 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="Input theme round black"
                         >
                           <label
-                            class="input-area flex gaps align-center"
+                            class="input-area flex items-center gap-2"
                             id=""
                           >
                             <input
-                              class="input box grow"
+                              class="input grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
                               spellcheck="false"
                               value=""
                             />
                           </label>
                           <div
-                            class="input-info flex gaps"
+                            class="input-info flex gap-2"
                           />
                         </div>
                         <div
@@ -6329,11 +6329,11 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="Input theme round black disabled"
                         >
                           <label
-                            class="input-area flex gaps align-center"
+                            class="input-area flex items-center gap-2"
                             id=""
                           >
                             <input
-                              class="input box grow"
+                              class="input grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
                               spellcheck="false"
@@ -6341,7 +6341,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                             />
                           </label>
                           <div
-                            class="input-info flex gaps"
+                            class="input-info flex gap-2"
                           />
                         </div>
                         <div
@@ -6379,18 +6379,18 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="Input theme round black"
                         >
                           <label
-                            class="input-area flex gaps align-center"
+                            class="input-area flex items-center gap-2"
                             id=""
                           >
                             <input
-                              class="input box grow"
+                              class="input grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
                               spellcheck="false"
                               value=""
                             />
                           </label>
                           <div
-                            class="input-info flex gaps"
+                            class="input-info flex gap-2"
                           />
                         </div>
                         <div
@@ -6724,7 +6724,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -7241,18 +7241,18 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="Input theme round black"
                         >
                           <label
-                            class="input-area flex gaps align-center"
+                            class="input-area flex items-center gap-2"
                             id=""
                           >
                             <input
-                              class="input box grow"
+                              class="input grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
                               spellcheck="false"
                               value=""
                             />
                           </label>
                           <div
-                            class="input-info flex gaps"
+                            class="input-info flex gap-2"
                           />
                         </div>
                         <div
@@ -7279,11 +7279,11 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="Input theme round black disabled"
                         >
                           <label
-                            class="input-area flex gaps align-center"
+                            class="input-area flex items-center gap-2"
                             id=""
                           >
                             <input
-                              class="input box grow"
+                              class="input grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
                               spellcheck="false"
@@ -7291,7 +7291,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                             />
                           </label>
                           <div
-                            class="input-info flex gaps"
+                            class="input-info flex gap-2"
                           />
                         </div>
                         <div
@@ -7329,18 +7329,18 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="Input theme round black"
                         >
                           <label
-                            class="input-area flex gaps align-center"
+                            class="input-area flex items-center gap-2"
                             id=""
                           >
                             <input
-                              class="input box grow"
+                              class="input grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
                               spellcheck="false"
                               value=""
                             />
                           </label>
                           <div
-                            class="input-info flex gaps"
+                            class="input-info flex gap-2"
                           />
                         </div>
                         <div
@@ -7673,7 +7673,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -8123,18 +8123,18 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="Input theme round black"
                         >
                           <label
-                            class="input-area flex gaps align-center"
+                            class="input-area flex items-center gap-2"
                             id=""
                           >
                             <input
-                              class="input box grow"
+                              class="input grow"
                               placeholder="/some-directory-for-app-data/some-product-name/binaries"
                               spellcheck="false"
                               value=""
                             />
                           </label>
                           <div
-                            class="input-info flex gaps"
+                            class="input-info flex gap-2"
                           />
                         </div>
                         <div
@@ -8161,11 +8161,11 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="Input theme round black disabled"
                         >
                           <label
-                            class="input-area flex gaps align-center"
+                            class="input-area flex items-center gap-2"
                             id=""
                           >
                             <input
-                              class="input box grow"
+                              class="input grow"
                               disabled=""
                               placeholder="/some-directory-for-app-data/some-product-name/binaries/kubectl"
                               spellcheck="false"
@@ -8173,7 +8173,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                             />
                           </label>
                           <div
-                            class="input-info flex gaps"
+                            class="input-info flex gap-2"
                           />
                         </div>
                         <div
@@ -8211,18 +8211,18 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="Input theme round black"
                         >
                           <label
-                            class="input-area flex gaps align-center"
+                            class="input-area flex items-center gap-2"
                             id=""
                           >
                             <input
-                              class="input box grow"
+                              class="input grow"
                               placeholder="/irrelavent-dir-for-lens-resources/x64/helm"
                               spellcheck="false"
                               value=""
                             />
                           </label>
                           <div
-                            class="input-info flex gaps"
+                            class="input-info flex gap-2"
                           />
                         </div>
                         <div
@@ -8511,7 +8511,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"

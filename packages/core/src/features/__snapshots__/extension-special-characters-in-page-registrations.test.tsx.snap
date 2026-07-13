@@ -238,7 +238,7 @@ exports[`extension special characters in page registrations > renders 1`] = `
       class="HotbarMenu flex flex-col"
     >
       <div
-        class="HotbarItems flex flex-col gap-2"
+        class="HotbarItems flex flex-col"
       >
         <div
           class="HotbarCell isDraggingOwner animateDown"
@@ -459,7 +459,7 @@ exports[`extension special characters in page registrations > when navigating to
       class="HotbarMenu flex flex-col"
     >
       <div
-        class="HotbarItems flex flex-col gap-2"
+        class="HotbarItems flex flex-col"
       >
         <div
           class="HotbarCell isDraggingOwner animateDown"

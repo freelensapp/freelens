@@ -551,11 +551,11 @@ exports[`showing details for helm release > given application is started > when 
                     class="Input SearchInput focused"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Releases..."
                         spellcheck="false"
                         value=""
@@ -572,7 +572,7 @@ exports[`showing details for helm release > given application is started > when 
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -1496,11 +1496,11 @@ exports[`showing details for helm release > given application is started > when 
                     class="Input SearchInput focused"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Releases..."
                         spellcheck="false"
                         value=""
@@ -1517,7 +1517,7 @@ exports[`showing details for helm release > given application is started > when 
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -2714,11 +2714,11 @@ exports[`showing details for helm release > given application is started > when 
                     class="Input SearchInput focused"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Releases..."
                         spellcheck="false"
                         value=""
@@ -2735,7 +2735,7 @@ exports[`showing details for helm release > given application is started > when 
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -3993,11 +3993,11 @@ exports[`showing details for helm release > given application is started > when 
                     class="Input SearchInput focused"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Releases..."
                         spellcheck="false"
                         value=""
@@ -4014,7 +4014,7 @@ exports[`showing details for helm release > given application is started > when 
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -5272,11 +5272,11 @@ exports[`showing details for helm release > given application is started > when 
                     class="Input SearchInput focused"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Releases..."
                         spellcheck="false"
                         value=""
@@ -5293,7 +5293,7 @@ exports[`showing details for helm release > given application is started > when 
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -6797,11 +6797,11 @@ exports[`showing details for helm release > given application is started > when 
                     class="Input SearchInput focused"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Releases..."
                         spellcheck="false"
                         value=""
@@ -6818,7 +6818,7 @@ exports[`showing details for helm release > given application is started > when 
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -8322,11 +8322,11 @@ exports[`showing details for helm release > given application is started > when 
                     class="Input SearchInput focused"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Releases..."
                         spellcheck="false"
                         value=""
@@ -8343,7 +8343,7 @@ exports[`showing details for helm release > given application is started > when 
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -9847,11 +9847,11 @@ exports[`showing details for helm release > given application is started > when 
                     class="Input SearchInput focused"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Releases..."
                         spellcheck="false"
                         value=""
@@ -9868,7 +9868,7 @@ exports[`showing details for helm release > given application is started > when 
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -11099,11 +11099,11 @@ exports[`showing details for helm release > given application is started > when 
                     class="Input SearchInput focused"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Releases..."
                         spellcheck="false"
                         value=""
@@ -11120,7 +11120,7 @@ exports[`showing details for helm release > given application is started > when 
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -12353,11 +12353,11 @@ exports[`showing details for helm release > given application is started > when 
                     class="Input SearchInput focused"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Releases..."
                         spellcheck="false"
                         value=""
@@ -12374,7 +12374,7 @@ exports[`showing details for helm release > given application is started > when 
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -13878,11 +13878,11 @@ exports[`showing details for helm release > given application is started > when 
                     class="Input SearchInput"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Releases..."
                         spellcheck="false"
                         value=""
@@ -13899,7 +13899,7 @@ exports[`showing details for helm release > given application is started > when 
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -15157,11 +15157,11 @@ exports[`showing details for helm release > given application is started > when 
                     class="Input SearchInput focused"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Releases..."
                         spellcheck="false"
                         value=""
@@ -15178,7 +15178,7 @@ exports[`showing details for helm release > given application is started > when 
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -16438,11 +16438,11 @@ exports[`showing details for helm release > given application is started > when 
                     class="Input SearchInput focused"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Releases..."
                         spellcheck="false"
                         value=""
@@ -16459,7 +16459,7 @@ exports[`showing details for helm release > given application is started > when 
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -17656,11 +17656,11 @@ exports[`showing details for helm release > given application is started > when 
                     class="Input SearchInput focused"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Releases..."
                         spellcheck="false"
                         value=""
@@ -17677,7 +17677,7 @@ exports[`showing details for helm release > given application is started > when 
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -18935,11 +18935,11 @@ exports[`showing details for helm release > given application is started > when 
                     class="Input SearchInput focused"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Releases..."
                         spellcheck="false"
                         value=""
@@ -18956,7 +18956,7 @@ exports[`showing details for helm release > given application is started > when 
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -20214,11 +20214,11 @@ exports[`showing details for helm release > given application is started > when 
                     class="Input SearchInput focused"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Releases..."
                         spellcheck="false"
                         value=""
@@ -20235,7 +20235,7 @@ exports[`showing details for helm release > given application is started > when 
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -21493,11 +21493,11 @@ exports[`showing details for helm release > given application is started > when 
                     class="Input SearchInput focused"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Releases..."
                         spellcheck="false"
                         value=""
@@ -21514,7 +21514,7 @@ exports[`showing details for helm release > given application is started > when 
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -22772,11 +22772,11 @@ exports[`showing details for helm release > given application is started > when 
                     class="Input SearchInput focused"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Releases..."
                         spellcheck="false"
                         value=""
@@ -22793,7 +22793,7 @@ exports[`showing details for helm release > given application is started > when 
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i

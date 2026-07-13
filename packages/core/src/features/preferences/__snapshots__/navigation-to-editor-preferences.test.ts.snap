@@ -366,11 +366,11 @@ exports[`preferences - navigation to editor preferences > given in preferences, 
                     class="Input theme round black disabled invalid"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         disabled=""
                         placeholder="Custom Extension Registry URL..."
                         spellcheck="false"
@@ -378,7 +378,7 @@ exports[`preferences - navigation to editor preferences > given in preferences, 
                       />
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                 </section>
@@ -629,7 +629,7 @@ exports[`preferences - navigation to editor preferences > given in preferences, 
       class="HotbarMenu flex flex-col"
     >
       <div
-        class="HotbarItems flex flex-col gap-2"
+        class="HotbarItems flex flex-col"
       >
         <div
           class="HotbarCell isDraggingOwner animateDown"
@@ -1162,11 +1162,11 @@ exports[`preferences - navigation to editor preferences > given in preferences, 
                     class="Input theme round black"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         min="1"
                         spellcheck="false"
                         type="number"
@@ -1174,7 +1174,7 @@ exports[`preferences - navigation to editor preferences > given in preferences, 
                       />
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                 </section>
@@ -1196,11 +1196,11 @@ exports[`preferences - navigation to editor preferences > given in preferences, 
                     class="Input theme round black"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         min="10"
                         spellcheck="false"
                         type="number"
@@ -1208,7 +1208,7 @@ exports[`preferences - navigation to editor preferences > given in preferences, 
                       />
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                 </section>
@@ -1230,18 +1230,18 @@ exports[`preferences - navigation to editor preferences > given in preferences, 
                     class="Input theme round black"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         spellcheck="false"
                         type="text"
                         value="RobotoMono"
                       />
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                 </section>
@@ -1289,7 +1289,7 @@ exports[`preferences - navigation to editor preferences > given in preferences, 
       class="HotbarMenu flex flex-col"
     >
       <div
-        class="HotbarItems flex flex-col gap-2"
+        class="HotbarItems flex flex-col"
       >
         <div
           class="HotbarCell isDraggingOwner animateDown"

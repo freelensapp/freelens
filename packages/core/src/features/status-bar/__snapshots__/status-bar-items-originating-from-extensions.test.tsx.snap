@@ -239,7 +239,7 @@ exports[`status-bar-items-originating-from-extensions > when application starts 
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"

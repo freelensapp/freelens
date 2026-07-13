@@ -1055,11 +1055,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="Input SearchInput focused"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -1076,7 +1076,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -2126,11 +2126,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="Input SearchInput"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -2147,7 +2147,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -3075,11 +3075,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="Input SearchInput"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -3096,7 +3096,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -3728,11 +3728,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       class="Input"
                     >
                       <label
-                        class="input-area flex gaps align-center"
+                        class="input-area flex items-center gap-2"
                         id=""
                       >
                         <input
-                          class="input box grow"
+                          class="input grow"
                           data-testid="install-chart-custom-name-input-for-some-first-tab-id"
                           placeholder="Name (optional)"
                           spellcheck="false"
@@ -3741,7 +3741,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                         />
                       </label>
                       <div
-                        class="input-info flex gaps"
+                        class="input-info flex gap-2"
                       />
                     </div>
                     <label
@@ -4292,11 +4292,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="Input SearchInput"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -4313,7 +4313,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -4944,11 +4944,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       class="Input"
                     >
                       <label
-                        class="input-area flex gaps align-center"
+                        class="input-area flex items-center gap-2"
                         id=""
                       >
                         <input
-                          class="input box grow"
+                          class="input grow"
                           data-testid="install-chart-custom-name-input-for-some-first-tab-id"
                           placeholder="Name (optional)"
                           spellcheck="false"
@@ -4957,7 +4957,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                         />
                       </label>
                       <div
-                        class="input-info flex gaps"
+                        class="input-info flex gap-2"
                       />
                     </div>
                     <label
@@ -5478,11 +5478,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="Input SearchInput"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -5499,7 +5499,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -6130,11 +6130,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       class="Input"
                     >
                       <label
-                        class="input-area flex gaps align-center"
+                        class="input-area flex items-center gap-2"
                         id=""
                       >
                         <input
-                          class="input box grow"
+                          class="input grow"
                           data-testid="install-chart-custom-name-input-for-some-first-tab-id"
                           placeholder="Name (optional)"
                           spellcheck="false"
@@ -6143,7 +6143,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                         />
                       </label>
                       <div
-                        class="input-info flex gaps"
+                        class="input-info flex gap-2"
                       />
                     </div>
                     <label
@@ -6659,11 +6659,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="Input SearchInput"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -6680,7 +6680,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -7311,11 +7311,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       class="Input"
                     >
                       <label
-                        class="input-area flex gaps align-center"
+                        class="input-area flex items-center gap-2"
                         id=""
                       >
                         <input
-                          class="input box grow"
+                          class="input grow"
                           data-testid="install-chart-custom-name-input-for-some-first-tab-id"
                           placeholder="Name (optional)"
                           spellcheck="false"
@@ -7324,7 +7324,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                         />
                       </label>
                       <div
-                        class="input-info flex gaps"
+                        class="input-info flex gap-2"
                       />
                     </div>
                     <label
@@ -7840,11 +7840,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="Input SearchInput"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -7861,7 +7861,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -8492,11 +8492,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       class="Input"
                     >
                       <label
-                        class="input-area flex gaps align-center"
+                        class="input-area flex items-center gap-2"
                         id=""
                       >
                         <input
-                          class="input box grow"
+                          class="input grow"
                           data-testid="install-chart-custom-name-input-for-some-first-tab-id"
                           placeholder="Name (optional)"
                           spellcheck="false"
@@ -8505,7 +8505,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                         />
                       </label>
                       <div
-                        class="input-info flex gaps"
+                        class="input-info flex gap-2"
                       />
                     </div>
                     <label
@@ -9043,11 +9043,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="Input SearchInput"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -9064,7 +9064,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -9696,11 +9696,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       class="Input"
                     >
                       <label
-                        class="input-area flex gaps align-center"
+                        class="input-area flex items-center gap-2"
                         id=""
                       >
                         <input
-                          class="input box grow"
+                          class="input grow"
                           data-testid="install-chart-custom-name-input-for-some-first-tab-id"
                           placeholder="Name (optional)"
                           spellcheck="false"
@@ -9709,7 +9709,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                         />
                       </label>
                       <div
-                        class="input-info flex gaps"
+                        class="input-info flex gap-2"
                       />
                     </div>
                     <label
@@ -10260,11 +10260,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="Input SearchInput"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -10281,7 +10281,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -10912,11 +10912,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       class="Input"
                     >
                       <label
-                        class="input-area flex gaps align-center"
+                        class="input-area flex items-center gap-2"
                         id=""
                       >
                         <input
-                          class="input box grow"
+                          class="input grow"
                           data-testid="install-chart-custom-name-input-for-some-first-tab-id"
                           placeholder="Name (optional)"
                           spellcheck="false"
@@ -10925,7 +10925,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                         />
                       </label>
                       <div
-                        class="input-info flex gaps"
+                        class="input-info flex gap-2"
                       />
                     </div>
                     <label
@@ -11441,11 +11441,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="Input SearchInput"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -11462,7 +11462,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -12093,11 +12093,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       class="Input"
                     >
                       <label
-                        class="input-area flex gaps align-center"
+                        class="input-area flex items-center gap-2"
                         id=""
                       >
                         <input
-                          class="input box grow"
+                          class="input grow"
                           data-testid="install-chart-custom-name-input-for-some-first-tab-id"
                           placeholder="Name (optional)"
                           spellcheck="false"
@@ -12106,7 +12106,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                         />
                       </label>
                       <div
-                        class="input-info flex gaps"
+                        class="input-info flex gap-2"
                       />
                     </div>
                     <label
@@ -12677,11 +12677,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="Input SearchInput"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -12698,7 +12698,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -13793,11 +13793,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="Input SearchInput focused"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Releases..."
                         spellcheck="false"
                         value=""
@@ -13814,7 +13814,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -14683,11 +14683,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="Input SearchInput"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -14704,7 +14704,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -15725,11 +15725,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="Input SearchInput"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -15746,7 +15746,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -16377,11 +16377,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       class="Input"
                     >
                       <label
-                        class="input-area flex gaps align-center"
+                        class="input-area flex items-center gap-2"
                         id=""
                       >
                         <input
-                          class="input box grow"
+                          class="input grow"
                           data-testid="install-chart-custom-name-input-for-some-first-tab-id"
                           placeholder="Name (optional)"
                           spellcheck="false"
@@ -16390,7 +16390,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                         />
                       </label>
                       <div
-                        class="input-info flex gaps"
+                        class="input-info flex gap-2"
                       />
                     </div>
                     <label
@@ -17119,11 +17119,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="Input SearchInput"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -17140,7 +17140,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -18120,11 +18120,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="Input SearchInput"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -18141,7 +18141,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -18826,11 +18826,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       class="Input"
                     >
                       <label
-                        class="input-area flex gaps align-center"
+                        class="input-area flex items-center gap-2"
                         id=""
                       >
                         <input
-                          class="input box grow"
+                          class="input grow"
                           data-testid="install-chart-custom-name-input-for-some-second-tab-id"
                           placeholder="Name (optional)"
                           spellcheck="false"
@@ -18839,7 +18839,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                         />
                       </label>
                       <div
-                        class="input-info flex gaps"
+                        class="input-info flex gap-2"
                       />
                     </div>
                     <label
@@ -19355,11 +19355,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="Input SearchInput"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -19376,7 +19376,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -20059,11 +20059,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       class="Input"
                     >
                       <label
-                        class="input-area flex gaps align-center"
+                        class="input-area flex items-center gap-2"
                         id=""
                       >
                         <input
-                          class="input box grow"
+                          class="input grow"
                           data-testid="install-chart-custom-name-input-for-some-first-tab-id"
                           placeholder="Name (optional)"
                           spellcheck="false"
@@ -20072,7 +20072,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                         />
                       </label>
                       <div
-                        class="input-info flex gaps"
+                        class="input-info flex gap-2"
                       />
                     </div>
                     <label
@@ -20588,11 +20588,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="Input SearchInput"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -20609,7 +20609,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -21240,11 +21240,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       class="Input"
                     >
                       <label
-                        class="input-area flex gaps align-center"
+                        class="input-area flex items-center gap-2"
                         id=""
                       >
                         <input
-                          class="input box grow"
+                          class="input grow"
                           data-testid="install-chart-custom-name-input-for-some-first-tab-id"
                           placeholder="Name (optional)"
                           spellcheck="false"
@@ -21253,7 +21253,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                         />
                       </label>
                       <div
-                        class="input-info flex gaps"
+                        class="input-info flex gap-2"
                       />
                     </div>
                     <label
@@ -21769,11 +21769,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="Input SearchInput"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -21790,7 +21790,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -22421,11 +22421,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       class="Input"
                     >
                       <label
-                        class="input-area flex gaps align-center"
+                        class="input-area flex items-center gap-2"
                         id=""
                       >
                         <input
-                          class="input box grow"
+                          class="input grow"
                           data-testid="install-chart-custom-name-input-for-some-first-tab-id"
                           placeholder="Name (optional)"
                           spellcheck="false"
@@ -22434,7 +22434,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                         />
                       </label>
                       <div
-                        class="input-info flex gaps"
+                        class="input-info flex gap-2"
                       />
                     </div>
                     <label
@@ -22950,11 +22950,11 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="Input SearchInput"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -22971,7 +22971,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i

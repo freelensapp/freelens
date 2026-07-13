@@ -551,11 +551,11 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
                     class="Input SearchInput focused"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Pods..."
                         spellcheck="false"
                         value=""
@@ -572,7 +572,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -1733,11 +1733,11 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
                     class="Input SearchInput focused"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Pods..."
                         spellcheck="false"
                         value=""
@@ -1754,7 +1754,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -2767,11 +2767,11 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
                     class="Input SearchInput focused"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Pods..."
                         spellcheck="false"
                         value=""
@@ -2788,7 +2788,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
