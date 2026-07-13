@@ -7,7 +7,7 @@ exports[`<DrawerParamToggler /> > after clicking the toggle > after clicking the
       class="DrawerParamToggler"
     >
       <div
-        class="flex gaps align-center params"
+        class="flex gap-2 items-center params"
       >
         <div
           class="param-label"
@@ -50,7 +50,7 @@ exports[`<DrawerParamToggler /> > after clicking the toggle > renders 1`] = `
       class="DrawerParamToggler"
     >
       <div
-        class="flex gaps align-center params"
+        class="flex gap-2 items-center params"
       >
         <div
           class="param-label"
@@ -97,7 +97,7 @@ exports[`<DrawerParamToggler /> > renders 1`] = `
       class="DrawerParamToggler"
     >
       <div
-        class="flex gaps align-center params"
+        class="flex gap-2 items-center params"
       >
         <div
           class="param-label"
