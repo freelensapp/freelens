@@ -66,7 +66,7 @@ class NonInjectedKubeConfigDialog extends React.Component<KubeConfigDialogProps 
     <Wizard header={<h5>{data.title || "Kubeconfig File"}</h5>}>
       <WizardStep
         customButtons={
-          <div className="actions flex gaps">
+          <div className="actions flex gap-2">
             <Button plain onClick={() => this.copyToClipboard(data.config)}>
               <Icon material="assignment" />
               {" Copy to clipboard"}
@@ -75,7 +75,7 @@ class NonInjectedKubeConfigDialog extends React.Component<KubeConfigDialogProps 
               <Icon material="cloud_download" />
               {" Download file"}
             </Button>
-            <Button plain className="box right" onClick={this.close}>
+            <Button plain className="ml-auto" onClick={this.close}>
               Close
             </Button>
           </div>
