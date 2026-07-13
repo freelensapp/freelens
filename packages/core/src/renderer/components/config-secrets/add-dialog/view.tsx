@@ -147,9 +147,9 @@ class NonInjectedAddSecretDialog extends React.Component<AddSecretDialogProps & 
         </SubTitle>
         <div className="secret-fields">
           {this.getFields(field).map((item, index) => (
-            <div key={index} className="secret-field flex gaps auto align-center">
+            <div key={index} className="secret-field flex gap-3 items-center">
               <Input
-                className="key"
+                className="key flex-1"
                 placeholder="Name"
                 title={item.key}
                 tabIndex={item.required ? -1 : 0}
@@ -161,7 +161,7 @@ class NonInjectedAddSecretDialog extends React.Component<AddSecretDialogProps & 
                 multiLine
                 maxRows={5}
                 required={item.required}
-                className="value"
+                className="value flex-1"
                 placeholder="Value"
                 value={item.value}
                 onChange={(v) => (item.value = v)}
@@ -199,7 +199,7 @@ class NonInjectedAddSecretDialog extends React.Component<AddSecretDialogProps & 
         close={this.close}
       >
         <Wizard header={header} done={this.close}>
-          <WizardStep contentClass="flow column" nextLabel="Create" next={this.createSecret}>
+          <WizardStep contentClass="space-y-3" nextLabel="Create" next={this.createSecret}>
             <div className="secret-name">
               <SubTitle title="Secret name" />
               <Input
@@ -212,8 +212,8 @@ class NonInjectedAddSecretDialog extends React.Component<AddSecretDialogProps & 
                 onChange={(v) => (this.name = v)}
               />
             </div>
-            <div className="flex auto gaps">
-              <div className="secret-namespace">
+            <div className="flex gap-3">
+              <div className="secret-namespace flex-1">
                 <SubTitle title="Namespace" />
                 <NamespaceSelect
                   id="secret-namespace-input"
@@ -222,7 +222,7 @@ class NonInjectedAddSecretDialog extends React.Component<AddSecretDialogProps & 
                   onChange={(option) => (this.namespace = option?.value ?? "default")}
                 />
               </div>
-              <div className="secret-type">
+              <div className="secret-type flex-1">
                 <SubTitle title="Secret type" />
                 <Select
                   id="secret-input"
