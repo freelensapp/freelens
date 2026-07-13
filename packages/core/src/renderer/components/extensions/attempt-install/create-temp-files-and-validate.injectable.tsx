@@ -62,7 +62,7 @@ const createTempFilesAndValidateInjectable = getInjectable({
 
         logger.info(`[EXTENSION-INSTALLATION]: installing ${fileName} has failed: ${message}`, { error });
         showErrorNotification(
-          <div className="flex column gaps">
+          <div className="flex flex-col gap-2">
             <p>
               {"Installing "}
               <em>{fileName}</em>
