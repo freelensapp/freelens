@@ -38,7 +38,7 @@ const NonInjectedLogsDialog = (props: LogsDialogProps & Dependencies) => {
         <WizardStep
           scrollable={false}
           customButtons={
-            <div className="buttons flex gaps align-center justify-space-between">
+            <div className="buttons flex gap-2 items-center justify-between">
               <Button
                 plain
                 onClick={() => {
