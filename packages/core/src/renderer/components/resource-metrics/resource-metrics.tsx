@@ -62,11 +62,11 @@ export const ResourceMetrics = observer(
     const currentMetrics = isAsyncMetrics ? (shouldHideStaleMetrics ? undefined : metrics.value.get()) : metrics;
 
     return (
-      <div className={cssNames("ResourceMetrics flex column", className)}>
-        <div className="switchers flex gaps">
-          <RadioGroup asButtons className="flex box grow gaps" value={tab} onChange={setTab}>
+      <div className={cssNames("ResourceMetrics flex flex-col", className)}>
+        <div className="switchers flex gap-2">
+          <RadioGroup asButtons className="flex gap-2 grow shrink-0 basis-0" value={tab} onChange={setTab}>
             {tabs.map((tab, index) => (
-              <Radio key={index} className="box grow" label={tab} value={tab} />
+              <Radio key={index} className="grow shrink-0 basis-0" label={tab} value={tab} />
             ))}
           </RadioGroup>
         </div>
