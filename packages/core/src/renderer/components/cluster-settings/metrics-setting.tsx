@@ -66,7 +66,7 @@ export class ClusterMetricsSetting extends React.Component<ClusterMetricsSetting
       <>
         <Select
           id="cluster-metric-resource-type-input"
-          className="box grow"
+          className="grow shrink-0 basis-0"
           placeholder="Select metrics to hide..."
           isMulti
           isSearchable
@@ -76,9 +76,9 @@ export class ClusterMetricsSetting extends React.Component<ClusterMetricsSetting
           options={metricResourceTypeOptions}
           onChange={onMultiSelectFor(this.hiddenMetrics)}
           formatOptionLabel={(option) => (
-            <div className="flex gaps align-center">
+            <div className="flex gap-2 items-center">
               <span>{option.value}</span>
-              {option.isSelected && <Icon smallest material="check" className="box right" />}
+              {option.isSelected && <Icon smallest material="check" className="ml-auto" />}
             </div>
           )}
           themeName="lens"
@@ -93,7 +93,7 @@ export class ClusterMetricsSetting extends React.Component<ClusterMetricsSetting
     return (
       <div className="MetricsSelec0 mb-5">
         <SubTitle title={"Hide metrics from the UI"} />
-        <div className="flex gaps">{this.renderMetricsSelect()}</div>
+        <div className="flex gap-2">{this.renderMetricsSelect()}</div>
       </div>
     );
   }

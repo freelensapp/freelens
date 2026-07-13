@@ -66,7 +66,7 @@ export class ShowMetricsSetting extends React.Component<ShowMetricsSettingProps>
   render() {
     return (
       <Notice>
-        <div className="MetricsSelect flex wrap gaps leading-relaxed">{this.renderMetrics()}</div>
+        <div className="MetricsSelect flex flex-wrap gap-2 leading-relaxed">{this.renderMetrics()}</div>
       </Notice>
     );
   }
