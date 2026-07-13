@@ -227,7 +227,7 @@ const NonInjectedHotbarMenu = observer((props: Dependencies & HotbarMenuProps) =
       )}
       onMouseLeave={handleMouseLeave}
     >
-      <div className="HotbarItems flex flex-col gap-2">
+      <div className="HotbarItems flex flex-col">
         <DragDropContext onDragStart={() => onDragStart()} onDragEnd={(result) => onDragEnd(result)}>
           {renderGrid()}
         </DragDropContext>
