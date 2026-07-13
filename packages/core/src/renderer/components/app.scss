@@ -10,7 +10,6 @@
 
 @import "tailwindcss";
 
-@include meta.load-css("flexbox");
 @include meta.load-css("fonts");
 
 @config "../../../tailwind.config.js";
@@ -30,7 +29,6 @@
 @custom-variant dark (&:where(body:not(.theme-light), body:not(.theme-light) *));
 
 :root {
-  --flex-gap: #{$padding};
   --unit: 8px;
   --padding: var(--unit);
   --margin: var(--unit);

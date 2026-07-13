@@ -157,6 +157,62 @@ may target them directly — do not redefine them. See
 > JIT only scans core's own source, so a Tailwind class in an extension emits
 > no CSS. Write extension styles as SCSS/CSS.
 
+## Migrating off flexbox.scss
+
+Older extensions relied on the host's in-house **flexbox utility classes**
+(`flex`, `column`, `gaps`, `box`, `grow`, `align-center`, …), which the host
+used to load globally. **The host no longer ships `flexbox.scss`**, so these
+class names now do nothing — an element with `className="flex column"` will no
+longer stack vertically, `box grow` will not grow, and so on. This is a
+breaking change; extensions must provide the equivalent layout in their own
+CSS.
+
+Because Tailwind is unavailable in extensions (above), migrate to **plain CSS**
+in your own stylesheet: give the element a class and add the equivalent
+declarations. Do not depend on any host-generated Tailwind class either — it is
+generated only if core happens to use it.
+
+Legacy class → the CSS to add to your own rule:
+
+| Legacy class(es) | CSS to add |
+|---|---|
+| `flex` | `display: flex` |
+| `flex inline` | `display: inline-flex` |
+| `flex column` / `column reverse` | `display: flex; flex-direction: column` / `column-reverse` |
+| `flex reverse` | `display: flex; flex-direction: row-reverse` |
+| `flex wrap` / `wrap-reverse` | `display: flex; flex-wrap: wrap` / `wrap-reverse` |
+| `flex fullsize` | `width: 100vw; height: 100vh` |
+| `flex auto` | `> * { flex: 1 1 0%; }` |
+| `flex center` | `> * { margin: auto; }` |
+| `justify-flex-start` / `-end` / `justify-space-between` / `-around` / `justify-center` | `justify-content: flex-start` / `flex-end` / `space-between` / `space-around` / `center` |
+| `align-center` / `align-flex-start` / `-end` / `align-stretch` / `align-baseline` | `align-items: center` / `flex-start` / `flex-end` / `stretch` / `baseline` |
+| `content-*` | `align-content: *` (same value names as `align-*`) |
+| `gaps` | `gap: 8px` — the host default was `8px` (`--flex-gap`); set the value you actually need. Modern `gap` replaces the old per-child margins |
+| `box grow` | `flex: 1 0` |
+| `box grow-fixed` | `flex: 1 0 0` |
+| `box center` | `margin: auto` |
+| `box left` / `box right` | `margin-right: auto` / `margin-left: auto` |
+| `box self-flex-start` / `-end` / `self-stretch` / … | `align-self: flex-start` / `flex-end` / `stretch` / … |
+| bare `box` | delete it (it was only a marker for the `box *` child utilities) |
+
+Example — a health-checks list that used to stack vertically:
+
+```tsx
+// Before (relied on the host's flexbox.scss):
+<div className="KustomizationHealthChecks flex column">…</div>
+
+// After (own CSS):
+<div className={styles.healthChecks}>…</div>
+```
+
+```scss
+/* your-component.module.scss */
+.healthChecks {
+  display: flex;
+  flex-direction: column;
+}
+```
+
 ## Checklist
 
 - [ ] Replace any direct `@freelensapp/*` internal dependency with
@@ -164,6 +220,10 @@ may target them directly — do not redefine them. See
 - [ ] Import stylesheets normally (side-effect or CSS-module import); drop any
       `?inline` + `<style>` CSS workaround, and make sure your build emits a
       single CSS asset next to the renderer entry.
+- [ ] Replace any legacy `flexbox.scss` classes (`flex`, `column`, `gaps`,
+      `box`, `grow`, `align-center`, …) with plain CSS in your own stylesheet —
+      the host no longer provides them (see
+      [Migrating off flexbox.scss](#migrating-off-flexboxscss)).
 - [ ] Confirm your entrypoints are ESM or CommonJS and, if ESM, that
       `package.json` declares it.
 - [ ] Access only the process-appropriate namespace (`Main` in main,
