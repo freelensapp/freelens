@@ -2552,10 +2552,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
           class="WizardStep step1"
         >
           <div
-            class="step-content scrollable flow column"
+            class="step-content scrollable space-y-3"
           >
             <div
-              class="flex column gaps"
+              class="flex flex-col gap-3"
               data-testid="add-custom-helm-repository-dialog"
             >
               <div
@@ -4367,10 +4367,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
           class="WizardStep step1"
         >
           <div
-            class="step-content scrollable flow column"
+            class="step-content scrollable space-y-3"
           >
             <div
-              class="flex column gaps"
+              class="flex flex-col gap-3"
               data-testid="add-custom-helm-repository-dialog"
             >
               <div
@@ -5326,10 +5326,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
           class="WizardStep step1"
         >
           <div
-            class="step-content scrollable flow column"
+            class="step-content scrollable space-y-3"
           >
             <div
-              class="flex column gaps"
+              class="flex flex-col gap-3"
               data-testid="add-custom-helm-repository-dialog"
             >
               <div
@@ -6467,10 +6467,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
           class="WizardStep step1"
         >
           <div
-            class="step-content scrollable flow column"
+            class="step-content scrollable space-y-3"
           >
             <div
-              class="flex column gaps"
+              class="flex flex-col gap-3"
               data-testid="add-custom-helm-repository-dialog"
             >
               <div
@@ -7426,10 +7426,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
           class="WizardStep step1"
         >
           <div
-            class="step-content scrollable flow column"
+            class="step-content scrollable space-y-3"
           >
             <div
-              class="flex column gaps"
+              class="flex flex-col gap-3"
               data-testid="add-custom-helm-repository-dialog"
             >
               <div
@@ -8567,10 +8567,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
           class="WizardStep step1"
         >
           <div
-            class="step-content scrollable flow column"
+            class="step-content scrollable space-y-3"
           >
             <div
-              class="flex column gaps"
+              class="flex flex-col gap-3"
               data-testid="add-custom-helm-repository-dialog"
             >
               <div
@@ -11219,10 +11219,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
           class="WizardStep step1"
         >
           <div
-            class="step-content scrollable flow column"
+            class="step-content scrollable space-y-3"
           >
             <div
-              class="flex column gaps"
+              class="flex flex-col gap-3"
               data-testid="add-custom-helm-repository-dialog"
             >
               <div
