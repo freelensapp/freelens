@@ -196,7 +196,7 @@ export class WizardStep<D> extends React.Component<WizardStepProps<D>, WizardSte
 
   renderLoading() {
     return (
-      <div className="step-loading flex center">
+      <div className="step-loading flex items-center justify-center">
         <Spinner />
       </div>
     );
