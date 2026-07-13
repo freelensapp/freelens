@@ -1362,7 +1362,7 @@ exports[`installing helm chart from previously opened tab > given tab for instal
                   class="controls"
                 >
                   <div
-                    class="install-controls flex gaps align-center"
+                    class="install-controls flex gap-2 items-center"
                   >
                     <span>
                       Chart

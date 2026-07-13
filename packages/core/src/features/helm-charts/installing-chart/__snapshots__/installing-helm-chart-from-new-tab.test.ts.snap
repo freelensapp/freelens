@@ -3558,7 +3558,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   class="controls"
                 >
                   <div
-                    class="install-controls flex gaps align-center"
+                    class="install-controls flex gap-2 items-center"
                   >
                     <span>
                       Chart
@@ -4775,7 +4775,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   class="controls"
                 >
                   <div
-                    class="install-controls flex gaps align-center"
+                    class="install-controls flex gap-2 items-center"
                   >
                     <span>
                       Chart
@@ -5961,7 +5961,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   class="controls"
                 >
                   <div
-                    class="install-controls flex gaps align-center"
+                    class="install-controls flex gap-2 items-center"
                   >
                     <span>
                       Chart
@@ -7142,7 +7142,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   class="controls"
                 >
                   <div
-                    class="install-controls flex gaps align-center"
+                    class="install-controls flex gap-2 items-center"
                   >
                     <span>
                       Chart
@@ -8323,7 +8323,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   class="controls"
                 >
                   <div
-                    class="install-controls flex gaps align-center"
+                    class="install-controls flex gap-2 items-center"
                   >
                     <span>
                       Chart
@@ -9526,7 +9526,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   class="controls"
                 >
                   <div
-                    class="install-controls flex gaps align-center"
+                    class="install-controls flex gap-2 items-center"
                   >
                     <span>
                       Chart
@@ -10743,7 +10743,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   class="controls"
                 >
                   <div
-                    class="install-controls flex gaps align-center"
+                    class="install-controls flex gap-2 items-center"
                   >
                     <span>
                       Chart
@@ -11924,7 +11924,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   class="controls"
                 >
                   <div
-                    class="install-controls flex gaps align-center"
+                    class="install-controls flex gap-2 items-center"
                   >
                     <span>
                       Chart
@@ -13151,7 +13151,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             style="flex-basis: 300px;"
           >
             <div
-              class="InstallChartDone flex column gaps align-center justify-center"
+              class="InstallChartDone flex flex-col gap-3 items-center justify-center"
             >
               <p>
                 <i
@@ -13169,7 +13169,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 Installation complete!
               </p>
               <div
-                class="flex gaps align-center"
+                class="flex gap-3 items-center"
               >
                 <button
                   class="Button primary"
@@ -15157,7 +15157,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             style="flex-basis: 300px;"
           >
             <div
-              class="InstallChartDone flex column gaps align-center justify-center"
+              class="InstallChartDone flex flex-col gap-3 items-center justify-center"
             >
               <p>
                 <i
@@ -15175,7 +15175,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 Installation complete!
               </p>
               <div
-                class="flex gaps align-center"
+                class="flex gap-3 items-center"
               >
                 <button
                   class="Button primary"
@@ -16208,7 +16208,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   class="controls"
                 >
                   <div
-                    class="install-controls flex gaps align-center"
+                    class="install-controls flex gap-2 items-center"
                   >
                     <span>
                       Chart
@@ -18655,7 +18655,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   class="controls"
                 >
                   <div
-                    class="install-controls flex gaps align-center"
+                    class="install-controls flex gap-2 items-center"
                   >
                     <span>
                       Chart
@@ -19890,7 +19890,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   class="controls"
                 >
                   <div
-                    class="install-controls flex gaps align-center"
+                    class="install-controls flex gap-2 items-center"
                   >
                     <span>
                       Chart
@@ -21071,7 +21071,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   class="controls"
                 >
                   <div
-                    class="install-controls flex gaps align-center"
+                    class="install-controls flex gap-2 items-center"
                   >
                     <span>
                       Chart
@@ -22252,7 +22252,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   class="controls"
                 >
                   <div
-                    class="install-controls flex gaps align-center"
+                    class="install-controls flex gap-2 items-center"
                   >
                     <span>
                       Chart
