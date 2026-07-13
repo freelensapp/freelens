@@ -51,7 +51,7 @@ export const LogControls = observer(({ model }: LogControlsProps) => {
           </span>
         )}
       </div>
-      <div className="flex gaps align-center">
+      <div className="flex gap-2 items-center">
         <Checkbox
           label="Show timestamps"
           value={showTimestamps}

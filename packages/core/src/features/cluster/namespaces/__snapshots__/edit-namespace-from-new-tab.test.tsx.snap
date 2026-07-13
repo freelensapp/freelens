@@ -2463,13 +2463,13 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="EditResource flex flex-col"
             >
               <div
-                class="InfoPanel flex gaps align-center"
+                class="InfoPanel flex gap-2 items-center"
               >
                 <div
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -2528,7 +2528,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-2 items-center"
                 />
                 <button
                   class="Button plain"
@@ -4315,13 +4315,13 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="EditResource flex flex-col"
             >
               <div
-                class="InfoPanel flex gaps align-center"
+                class="InfoPanel flex gap-2 items-center"
               >
                 <div
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -4380,7 +4380,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-2 items-center"
                 />
                 <button
                   class="Button plain"
@@ -5291,13 +5291,13 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="EditResource flex flex-col"
             >
               <div
-                class="InfoPanel flex gaps align-center"
+                class="InfoPanel flex gap-2 items-center"
               >
                 <div
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -5356,7 +5356,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-2 items-center"
                 />
                 <button
                   class="Button plain"
@@ -6217,13 +6217,13 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="EditResource flex flex-col"
             >
               <div
-                class="InfoPanel flex gaps align-center"
+                class="InfoPanel flex gap-2 items-center"
               >
                 <div
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -6282,7 +6282,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-2 items-center"
                 >
                   <div
                     class="error"
@@ -7157,13 +7157,13 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="EditResource flex flex-col"
             >
               <div
-                class="InfoPanel flex gaps align-center"
+                class="InfoPanel flex gap-2 items-center"
               >
                 <div
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -7222,7 +7222,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-2 items-center"
                 >
                   <div
                     class="Spinner singleColor"
@@ -8092,13 +8092,13 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="EditResource flex flex-col"
             >
               <div
-                class="InfoPanel flex gaps align-center"
+                class="InfoPanel flex gap-2 items-center"
               >
                 <div
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -8157,7 +8157,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-2 items-center"
                 />
                 <button
                   class="Button plain"
@@ -9018,13 +9018,13 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="EditResource flex flex-col"
             >
               <div
-                class="InfoPanel flex gaps align-center"
+                class="InfoPanel flex gap-2 items-center"
               >
                 <div
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -9083,7 +9083,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-2 items-center"
                 />
                 <button
                   class="Button plain"
@@ -9944,13 +9944,13 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="EditResource flex flex-col"
             >
               <div
-                class="InfoPanel flex gaps align-center"
+                class="InfoPanel flex gap-2 items-center"
               >
                 <div
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -10009,7 +10009,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-2 items-center"
                 />
                 <button
                   class="Button plain"
@@ -11601,13 +11601,13 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="EditResource flex flex-col"
             >
               <div
-                class="InfoPanel flex gaps align-center"
+                class="InfoPanel flex gap-2 items-center"
               >
                 <div
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -11666,7 +11666,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-2 items-center"
                 >
                   <div
                     class="Spinner singleColor"
@@ -12536,13 +12536,13 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="EditResource flex flex-col"
             >
               <div
-                class="InfoPanel flex gaps align-center"
+                class="InfoPanel flex gap-2 items-center"
               >
                 <div
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -12601,7 +12601,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-2 items-center"
                 />
                 <button
                   class="Button plain"
@@ -13462,13 +13462,13 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="EditResource flex flex-col"
             >
               <div
-                class="InfoPanel flex gaps align-center"
+                class="InfoPanel flex gap-2 items-center"
               >
                 <div
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -13527,7 +13527,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-2 items-center"
                 />
                 <button
                   class="Button plain"
@@ -16736,7 +16736,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -18588,7 +18588,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -19564,7 +19564,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -20490,7 +20490,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -21430,7 +21430,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -22365,7 +22365,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -23291,7 +23291,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -24217,7 +24217,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -25874,7 +25874,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -26809,7 +26809,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -27735,7 +27735,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:

@@ -45,7 +45,7 @@ const NonInjectedPageFiltersList = observer(
 
       return (
         <>
-          <div className="header flex gaps">
+          <div className="header flex gap-2">
             <span>Currently applied filters:</span>
             <a onClick={reset} className="reset">
               Reset
@@ -59,7 +59,7 @@ const NonInjectedPageFiltersList = observer(
                 <Badge
                   key={`${type}-${value}`}
                   title={type}
-                  className={cssNames("Badge flex gaps filter align-center", type)}
+                  className={cssNames("Badge flex gap-[0.25em] filter items-center", type)}
                   label={
                     <>
                       <FilterIcon type={type} />

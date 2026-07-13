@@ -58,8 +58,13 @@ class NonInjectedEndpointSliceDetails extends React.Component<EndpointSliceDetai
           <DrawerTitle>Endpoints</DrawerTitle>
           {endpointSlice.endpoints && endpointSlice.endpoints.length > 0 && (
             <>
-              <div className="title flex gaps">Addresses</div>
-              <Table items={endpointSlice.endpoints} selectable={false} scrollable={false} className="box grow">
+              <div className="title flex gap-2">Addresses</div>
+              <Table
+                items={endpointSlice.endpoints}
+                selectable={false}
+                scrollable={false}
+                className="grow shrink-0 basis-0"
+              >
                 <TableHead>
                   <TableCell className="ip">IP</TableCell>
                   <TableCell className="host">Hostname</TableCell>
@@ -114,8 +119,8 @@ class NonInjectedEndpointSliceDetails extends React.Component<EndpointSliceDetai
 
           {endpointSlice.ports && endpointSlice.ports.length > 0 && (
             <>
-              <div className="title flex gaps">Ports</div>
-              <Table selectable={false} virtual={false} scrollable={false} className="box grow">
+              <div className="title flex gap-2">Ports</div>
+              <Table selectable={false} virtual={false} scrollable={false} className="grow shrink-0 basis-0">
                 <TableHead>
                   <TableCell className="port">Port</TableCell>
                   <TableCell className="name">Name</TableCell>

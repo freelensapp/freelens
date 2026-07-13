@@ -27,7 +27,7 @@ export function RemovableItem({
   ...rest
 }: RemovableItemProps) {
   return (
-    <div className={cssNames(styles.item, "flex gaps align-center justify-space-between", className)} {...rest}>
+    <div className={cssNames(styles.item, "flex gap-2 items-center justify-between", className)} {...rest}>
       {icon && <Icon material={icon} />}
       {children}
       <Icon material="delete" onClick={onRemove} tooltip="Remove" data-testid={testId} />

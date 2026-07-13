@@ -69,7 +69,7 @@ export class NonInjectedUpgradeChart extends React.Component<UpgradeChartProps &
           submitLabel="Upgrade"
           submittingMessage="Updating.."
           controls={
-            <div className="upgrade flex gaps align-center">
+            <div className="upgrade flex gap-2 items-center">
               <span>Release</span> <Badge label={release.getName()} />
               <span>Namespace</span> <Badge label={release.getNs()} />
               <span>Version</span> <Badge label={release.getVersion()} />

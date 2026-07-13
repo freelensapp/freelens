@@ -81,7 +81,7 @@ class NonInjectedAddNamespaceDialog extends React.Component<AddNamespaceDialogPr
     return (
       <Dialog {...dialogProps} className="AddNamespaceDialog" isOpen={isOpen} onClose={this.reset} close={this.close}>
         <Wizard header={<h5>Create Namespace</h5>} done={this.close}>
-          <WizardStep contentClass="flex gaps column" nextLabel="Create" next={this.addNamespace}>
+          <WizardStep contentClass="flex gap-2 flex-col" nextLabel="Create" next={this.addNamespace}>
             <Input
               required
               autoFocus

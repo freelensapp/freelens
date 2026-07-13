@@ -115,9 +115,9 @@ class NonInjectedWorkloadsOverview extends React.Component<Dependencies> {
   render() {
     return (
       <SiblingsInTabLayout scrollable>
-        <div className="WorkloadsOverview flex column gaps" data-testid="page-for-workloads-overview">
-          <div className="header flex gaps align-center">
-            <h5 className="box grow">Overview</h5>
+        <div className="WorkloadsOverview flex flex-col gap-4" data-testid="page-for-workloads-overview">
+          <div className="header flex gap-4 items-center">
+            <h5 className="grow shrink-0 basis-0">Overview</h5>
             {this.renderLoadErrors()}
             <NamespaceSelectFilter id="overview-namespace-select-filter-input" />
           </div>

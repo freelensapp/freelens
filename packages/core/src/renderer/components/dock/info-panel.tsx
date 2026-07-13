@@ -150,10 +150,10 @@ class NonInjectedInfoPanel extends Component<InfoPanelProps & Dependencies> {
     const isDisabled = !!(disableSubmit || waiting || error);
 
     return (
-      <div className={cssNames("InfoPanel flex gaps align-center", className)}>
+      <div className={cssNames("InfoPanel flex gap-2 items-center", className)}>
         <div className="controls">{controls}</div>
         {showStatusPanel && (
-          <div className="flex gaps align-center">
+          <div className="flex gap-2 items-center">
             {waiting ? (
               <>
                 <Spinner data-testid={this.props.submittingTestId} /> {submittingMessage}

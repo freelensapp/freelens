@@ -145,7 +145,9 @@ class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Depe
 
     if (!warnings.length) {
       return (
-        <div className={cssNames(styles.noIssues, "flex column box grow gaps align-center justify-center")}>
+        <div
+          className={cssNames(styles.noIssues, "flex flex-col grow shrink-0 basis-0 gap-2 items-center justify-center")}
+        >
           <Icon className={styles.Icon} material="check" big sticker />
           <p className={styles.title}>No issues found</p>
           <p>Everything is fine in the Cluster</p>
@@ -172,7 +174,7 @@ class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Depe
           sortByDefault={{ sortBy: sortBy.object, orderBy: "asc" }}
           sortSyncWithUrl={false}
           getTableRow={this.getTableRow}
-          className={cssNames("box grow", this.props.activeTheme.get().type)}
+          className={cssNames("grow shrink-0 basis-0", this.props.activeTheme.get().type)}
         >
           <TableHead nowrap>
             <TableCell className={cssNames(styles.TableCell, styles.message)}>Message</TableCell>
@@ -193,7 +195,9 @@ class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Depe
 
   render() {
     return (
-      <div className={cssNames(styles.ClusterIssues, "flex column", this.props.className)}>{this.renderContent()}</div>
+      <div className={cssNames(styles.ClusterIssues, "flex flex-col", this.props.className)}>
+        {this.renderContent()}
+      </div>
     );
   }
 }

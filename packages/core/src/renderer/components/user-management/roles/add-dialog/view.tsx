@@ -62,7 +62,7 @@ class NonInjectedAddRoleDialog extends React.Component<AddRoleDialogProps & Depe
     return (
       <Dialog {...dialogProps} className="AddRoleDialog" isOpen={state.isOpen.get()} close={closeAddRoleDialog}>
         <Wizard header={header} done={closeAddRoleDialog}>
-          <WizardStep contentClass="flex gaps column" nextLabel="Create" next={this.createRole}>
+          <WizardStep contentClass="flex gap-2 flex-col" nextLabel="Create" next={this.createRole}>
             <SubTitle title="Role Name" />
             <Input
               required

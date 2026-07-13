@@ -35,7 +35,7 @@ const newVersionNotificationInjectable = getInjectable({
 
       if (newVersion && semver.gt(newVersion, currentVersion)) {
         showInfoNotification(
-          <div className="flex column gaps">
+          <div className="flex flex-col gap-2">
             <div>
               {productName} v{newVersion} is available! Open the{" "}
               <a

@@ -435,14 +435,14 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="scrollable"
           >
             <div
-              class="WorkloadsOverview flex column gaps"
+              class="WorkloadsOverview flex flex-col gap-4"
               data-testid="page-for-workloads-overview"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
-                  class="box grow"
+                  class="grow shrink-0 basis-0"
                 >
                   Overview
                 </h5>
@@ -3552,7 +3552,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="InstallChart flex flex-col"
             >
               <div
-                class="InfoPanel flex gaps align-center"
+                class="InfoPanel flex gap-2 items-center"
               >
                 <div
                   class="controls"
@@ -3762,7 +3762,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-2 items-center"
                 />
                 <button
                   class="Button plain"
@@ -4769,7 +4769,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="InstallChart flex flex-col"
             >
               <div
-                class="InfoPanel flex gaps align-center"
+                class="InfoPanel flex gap-2 items-center"
               >
                 <div
                   class="controls"
@@ -4978,7 +4978,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-2 items-center"
                 />
                 <button
                   class="Button plain"
@@ -5955,7 +5955,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="InstallChart flex flex-col"
             >
               <div
-                class="InfoPanel flex gaps align-center"
+                class="InfoPanel flex gap-2 items-center"
               >
                 <div
                   class="controls"
@@ -6164,7 +6164,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-2 items-center"
                 />
                 <button
                   class="Button plain"
@@ -7136,7 +7136,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="InstallChart flex flex-col"
             >
               <div
-                class="InfoPanel flex gaps align-center"
+                class="InfoPanel flex gap-2 items-center"
               >
                 <div
                   class="controls"
@@ -7345,7 +7345,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-2 items-center"
                 />
                 <button
                   class="Button plain"
@@ -8317,7 +8317,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="InstallChart flex flex-col"
             >
               <div
-                class="InfoPanel flex gaps align-center"
+                class="InfoPanel flex gap-2 items-center"
               >
                 <div
                   class="controls"
@@ -8526,7 +8526,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-2 items-center"
                 >
                   <div
                     class="error"
@@ -9520,7 +9520,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="InstallChart flex flex-col"
             >
               <div
-                class="InfoPanel flex gaps align-center"
+                class="InfoPanel flex gap-2 items-center"
               >
                 <div
                   class="controls"
@@ -9730,7 +9730,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-2 items-center"
                 />
                 <button
                   class="Button plain"
@@ -10737,7 +10737,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="InstallChart flex flex-col"
             >
               <div
-                class="InfoPanel flex gaps align-center"
+                class="InfoPanel flex gap-2 items-center"
               >
                 <div
                   class="controls"
@@ -10946,7 +10946,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-2 items-center"
                 />
                 <button
                   class="Button plain"
@@ -11918,7 +11918,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="InstallChart flex flex-col"
             >
               <div
-                class="InfoPanel flex gaps align-center"
+                class="InfoPanel flex gap-2 items-center"
               >
                 <div
                   class="controls"
@@ -12127,7 +12127,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-2 items-center"
                 >
                   <div
                     class="Spinner singleColor"
@@ -16202,7 +16202,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="InstallChart flex flex-col"
             >
               <div
-                class="InfoPanel flex gaps align-center"
+                class="InfoPanel flex gap-2 items-center"
               >
                 <div
                   class="controls"
@@ -16411,7 +16411,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-2 items-center"
                 />
                 <button
                   class="Button plain"
@@ -18649,7 +18649,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="InstallChart flex flex-col"
             >
               <div
-                class="InfoPanel flex gaps align-center"
+                class="InfoPanel flex gap-2 items-center"
               >
                 <div
                   class="controls"
@@ -18860,7 +18860,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-2 items-center"
                 />
                 <button
                   class="Button plain"
@@ -19884,7 +19884,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="InstallChart flex flex-col"
             >
               <div
-                class="InfoPanel flex gaps align-center"
+                class="InfoPanel flex gap-2 items-center"
               >
                 <div
                   class="controls"
@@ -20093,7 +20093,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-2 items-center"
                 />
                 <button
                   class="Button plain"
@@ -21065,7 +21065,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="InstallChart flex flex-col"
             >
               <div
-                class="InfoPanel flex gaps align-center"
+                class="InfoPanel flex gap-2 items-center"
               >
                 <div
                   class="controls"
@@ -21274,7 +21274,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-2 items-center"
                 />
                 <button
                   class="Button plain"
@@ -22246,7 +22246,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="InstallChart flex flex-col"
             >
               <div
-                class="InfoPanel flex gaps align-center"
+                class="InfoPanel flex gap-2 items-center"
               >
                 <div
                   class="controls"
@@ -22455,7 +22455,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-2 items-center"
                 />
                 <button
                   class="Button plain"

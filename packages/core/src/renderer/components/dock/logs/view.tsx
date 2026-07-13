@@ -78,7 +78,7 @@ const NonInjectedLogsDockTab = observer(
         <InfoPanel
           tabId={tab.id}
           controls={
-            <div className="flex gaps">
+            <div className="flex gap-2">
               <LogResourceSelector model={model} />
               <LogSearch model={model} scrollToOverlay={scrollToOverlay} />
             </div>

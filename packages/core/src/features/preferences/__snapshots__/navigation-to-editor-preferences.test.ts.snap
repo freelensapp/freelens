@@ -953,10 +953,10 @@ exports[`preferences - navigation to editor preferences > given in preferences, 
                      
                   </div>
                   <div
-                    class="flex gaps justify-space-between"
+                    class="flex gap-2 justify-between"
                   >
                     <div
-                      class="flex gaps align-center"
+                      class="flex gap-2 items-center"
                     >
                       <label
                         class="Switch"
@@ -971,7 +971,7 @@ exports[`preferences - navigation to editor preferences > given in preferences, 
                       </label>
                     </div>
                     <div
-                      class="flex gaps align-center"
+                      class="flex gap-2 items-center"
                     >
                       <div
                         class="SubHeader compact"

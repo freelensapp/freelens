@@ -101,11 +101,11 @@ class NonInjectedSecretDetails extends React.Component<SecretDetailsProps & Depe
     return (
       <div key={name} className="data" data-testid={`${name}-secret-entry`}>
         <div className="name">{name}</div>
-        <div className="flex gaps align-center">
+        <div className="flex gap-2 items-center">
           <Input
             multiLine
             theme="round-black"
-            className="box grow"
+            className="grow shrink-0 basis-0"
             value={value || ""}
             onChange={(value) => this.editData(name, value, !revealSecret)}
           />

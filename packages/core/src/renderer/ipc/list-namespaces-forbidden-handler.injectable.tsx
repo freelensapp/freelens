@@ -47,14 +47,14 @@ const listNamespacesForbiddenHandlerInjectable = getInjectable({
       }
 
       showSuccessNotification(
-        <div className="flex column gaps">
+        <div className="flex flex-col gap-2">
           <b>Add Accessible Namespaces</b>
           <p>
             {"Cluster "}
             <b>{getClusterById(clusterId)?.name.get() ?? "<unknown cluster>"}</b>
             {" does not have permissions to list namespaces. Please add the namespaces you have access to."}
           </p>
-          <div className="flex gaps row align-left box grow">
+          <div className="flex gap-2 grow shrink-0 basis-0">
             <Button
               active
               outlined

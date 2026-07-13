@@ -159,12 +159,12 @@ class NonInjectedAddQuotaDialog extends React.Component<AddQuotaDialogProps & De
       <Dialog {...dialogProps} className="AddQuotaDialog" isOpen={isAddQuotaDialogOpen.get()} close={this.close}>
         <Wizard header={header} done={this.close}>
           <WizardStep
-            contentClass="flex gaps column"
+            contentClass="flex gap-2 flex-col"
             disabledNext={!this.namespace || !this.quotaName}
             nextLabel="Create"
             next={this.addQuota}
           >
-            <div className="flex gaps">
+            <div className="flex gap-2">
               <Input
                 required
                 autoFocus
@@ -173,7 +173,7 @@ class NonInjectedAddQuotaDialog extends React.Component<AddQuotaDialogProps & De
                 validators={systemName}
                 value={this.quotaName}
                 onChange={(v) => (this.quotaName = v.toLowerCase())}
-                className="box grow"
+                className="grow shrink-0 basis-0"
               />
             </div>
 
@@ -183,12 +183,12 @@ class NonInjectedAddQuotaDialog extends React.Component<AddQuotaDialogProps & De
               value={this.namespace}
               placeholder="Namespace"
               themeName="light"
-              className="box grow"
+              className="grow shrink-0 basis-0"
               onChange={(option) => (this.namespace = option?.value ?? null)}
             />
 
             <SubTitle title="Values" />
-            <div className="flex gaps align-center">
+            <div className="flex gap-2 items-center">
               <Select
                 id="quota-input"
                 className="quota-select"
@@ -218,7 +218,7 @@ class NonInjectedAddQuotaDialog extends React.Component<AddQuotaDialogProps & De
                 value={this.quotaInputValue}
                 onChange={(v) => (this.quotaInputValue = v)}
                 onKeyDown={this.onInputQuota}
-                className="box grow"
+                className="grow shrink-0 basis-0"
               />
               <Button round primary onClick={this.setQuota}>
                 <Icon
@@ -229,7 +229,7 @@ class NonInjectedAddQuotaDialog extends React.Component<AddQuotaDialogProps & De
             </div>
             <div className="quota-entries">
               {this.quotaEntries.map(([quota, value]) => (
-                <div key={quota} className="quota gaps inline align-center">
+                <div key={quota} className="quota">
                   <div className="name">{quota}</div>
                   <div className="value">{value}</div>
                   <Icon material="clear" onClick={() => (this.quotas.get()[quota] = "")} />

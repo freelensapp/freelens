@@ -472,14 +472,14 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
           class="scrollable"
         >
           <div
-            class="WorkloadsOverview flex column gaps"
+            class="WorkloadsOverview flex flex-col gap-4"
             data-testid="page-for-workloads-overview"
           >
             <div
-              class="header flex gaps align-center"
+              class="header flex gap-4 items-center"
             >
               <h5
-                class="box grow"
+                class="grow shrink-0 basis-0"
               >
                 Overview
               </h5>
@@ -1180,14 +1180,14 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
           class="scrollable"
         >
           <div
-            class="WorkloadsOverview flex column gaps"
+            class="WorkloadsOverview flex flex-col gap-4"
             data-testid="page-for-workloads-overview"
           >
             <div
-              class="header flex gaps align-center"
+              class="header flex gap-4 items-center"
             >
               <h5
-                class="box grow"
+                class="grow shrink-0 basis-0"
               >
                 Overview
               </h5>
@@ -1928,14 +1928,14 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
           class="scrollable"
         >
           <div
-            class="WorkloadsOverview flex column gaps"
+            class="WorkloadsOverview flex flex-col gap-4"
             data-testid="page-for-workloads-overview"
           >
             <div
-              class="header flex gaps align-center"
+              class="header flex gap-4 items-center"
             >
               <h5
-                class="box grow"
+                class="grow shrink-0 basis-0"
               >
                 Overview
               </h5>
@@ -3883,14 +3883,14 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
           class="scrollable"
         >
           <div
-            class="WorkloadsOverview flex column gaps"
+            class="WorkloadsOverview flex flex-col gap-4"
             data-testid="page-for-workloads-overview"
           >
             <div
-              class="header flex gaps align-center"
+              class="header flex gap-4 items-center"
             >
               <h5
-                class="box grow"
+                class="grow shrink-0 basis-0"
               >
                 Overview
               </h5>
@@ -4591,14 +4591,14 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
           class="scrollable"
         >
           <div
-            class="WorkloadsOverview flex column gaps"
+            class="WorkloadsOverview flex flex-col gap-4"
             data-testid="page-for-workloads-overview"
           >
             <div
-              class="header flex gaps align-center"
+              class="header flex gap-4 items-center"
             >
               <h5
-                class="box grow"
+                class="grow shrink-0 basis-0"
               >
                 Overview
               </h5>

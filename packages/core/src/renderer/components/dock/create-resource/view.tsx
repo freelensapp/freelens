@@ -140,7 +140,7 @@ class NonInjectedCreateResource extends React.Component<CreateResourceProps & De
 
   renderControls() {
     return (
-      <div className="flex gaps align-center">
+      <div className="flex gap-2 items-center">
         <Select<string, SelectOption<string>, false>
           id="create-resource-resource-templates-input"
           controlShouldRenderValue={false} // always keep initial placeholder

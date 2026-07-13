@@ -149,7 +149,7 @@ class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & De
               loadBalancerStatus.ingress?.map((lb) => {
                 return (
                   <>
-                    <div className="title flex gaps">
+                    <div className="title flex gap-2">
                       <Icon small material="list" />
                     </div>
                     <DrawerItem name="Hostname" hidden={!lb.hostname}>
@@ -172,7 +172,7 @@ class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & De
                         }}
                         sortByDefault={{ sortBy: "port", orderBy: "asc" }}
                         sortSyncWithUrl={false}
-                        className="box grow LoadBalancerStatusPorts"
+                        className="grow shrink-0 basis-0 LoadBalancerStatusPorts"
                       >
                         <TableHead flat sticky={false}>
                           <TableCell className="port" sortBy="port">
@@ -258,7 +258,7 @@ class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & De
             <DrawerTitle>Conditions</DrawerTitle>
             {loadBalancerStatus?.conditions?.map((condition, idx) => (
               <div className="condition" key={idx}>
-                <div className="title flex gaps">
+                <div className="title flex gap-2">
                   <Icon small material="list" />
                 </div>
                 <DrawerItem name="Last Transition Time">{condition.lastTransitionTime}</DrawerItem>

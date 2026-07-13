@@ -128,7 +128,7 @@ class NonInjectedCronJobDetails extends React.Component<CronJobDetailsProps & De
 
               return (
                 <div className="job" key={cronJob.getId()}>
-                  <div className="title flex gaps">
+                  <div className="title flex gap-2">
                     <Icon small material="list" />
                     <span>
                       <LinkToJob name={job.getName()} namespace={job.getNs()} />

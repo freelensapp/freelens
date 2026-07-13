@@ -1370,7 +1370,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="repos"
                         >
                           <div
-                            class="item flex gaps align-center justify-space-between repo"
+                            class="item flex gap-2 items-center justify-between repo"
                           >
                             <div>
                               <div
@@ -1441,7 +1441,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                     </div>
                     <div>
                       <div
-                        class="item flex gaps align-center justify-space-between mt-3"
+                        class="item flex gap-2 items-center justify-between mt-3"
                       >
                         <i
                           class="Icon material focusable"
@@ -2219,7 +2219,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="repos"
                         >
                           <div
-                            class="item flex gaps align-center justify-space-between repo"
+                            class="item flex gap-2 items-center justify-between repo"
                           >
                             <div>
                               <div
@@ -2290,7 +2290,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                     </div>
                     <div>
                       <div
-                        class="item flex gaps align-center justify-space-between mt-3"
+                        class="item flex gap-2 items-center justify-between mt-3"
                       >
                         <i
                           class="Icon material focusable"
@@ -3124,7 +3124,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="repos"
                         >
                           <div
-                            class="item flex gaps align-center justify-space-between repo"
+                            class="item flex gap-2 items-center justify-between repo"
                           >
                             <div>
                               <div
@@ -3195,7 +3195,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                     </div>
                     <div>
                       <div
-                        class="item flex gaps align-center justify-space-between mt-3"
+                        class="item flex gap-2 items-center justify-between mt-3"
                       >
                         <i
                           class="Icon material focusable"
@@ -3972,7 +3972,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="repos"
                         >
                           <div
-                            class="item flex gaps align-center justify-space-between repo"
+                            class="item flex gap-2 items-center justify-between repo"
                           >
                             <div>
                               <div
@@ -4043,7 +4043,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                     </div>
                     <div>
                       <div
-                        class="item flex gaps align-center justify-space-between mt-3"
+                        class="item flex gap-2 items-center justify-between mt-3"
                       >
                         <i
                           class="Icon material focusable"
@@ -4881,7 +4881,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                     </div>
                     <div>
                       <div
-                        class="item flex gaps align-center justify-space-between mt-3"
+                        class="item flex gap-2 items-center justify-between mt-3"
                       >
                         <i
                           class="Icon material focusable"
@@ -5658,7 +5658,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="repos"
                         >
                           <div
-                            class="item flex gaps align-center justify-space-between repo"
+                            class="item flex gap-2 items-center justify-between repo"
                           >
                             <div>
                               <div
@@ -5692,7 +5692,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                             </div>
                           </div>
                           <div
-                            class="item flex gaps align-center justify-space-between repo"
+                            class="item flex gap-2 items-center justify-between repo"
                           >
                             <div>
                               <div
@@ -5763,7 +5763,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                     </div>
                     <div>
                       <div
-                        class="item flex gaps align-center justify-space-between mt-3"
+                        class="item flex gap-2 items-center justify-between mt-3"
                       >
                         <i
                           class="Icon material focusable"
@@ -6541,7 +6541,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="repos"
                         >
                           <div
-                            class="item flex gaps align-center justify-space-between repo"
+                            class="item flex gap-2 items-center justify-between repo"
                           >
                             <div>
                               <div
@@ -6575,7 +6575,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                             </div>
                           </div>
                           <div
-                            class="item flex gaps align-center justify-space-between repo"
+                            class="item flex gap-2 items-center justify-between repo"
                           >
                             <div>
                               <div
@@ -6646,7 +6646,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                     </div>
                     <div>
                       <div
-                        class="item flex gaps align-center justify-space-between mt-3"
+                        class="item flex gap-2 items-center justify-between mt-3"
                       >
                         <i
                           class="Icon material focusable"
@@ -7490,7 +7490,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                           class="repos"
                         >
                           <div
-                            class="item flex gaps align-center justify-space-between repo"
+                            class="item flex gap-2 items-center justify-between repo"
                           >
                             <div>
                               <div
@@ -7524,7 +7524,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                             </div>
                           </div>
                           <div
-                            class="item flex gaps align-center justify-space-between repo"
+                            class="item flex gap-2 items-center justify-between repo"
                           >
                             <div>
                               <div
@@ -7595,7 +7595,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                     </div>
                     <div>
                       <div
-                        class="item flex gaps align-center justify-space-between mt-3"
+                        class="item flex gap-2 items-center justify-between mt-3"
                       >
                         <i
                           class="Icon material focusable"
@@ -8433,7 +8433,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
                     </div>
                     <div>
                       <div
-                        class="item flex gaps align-center justify-space-between mt-3"
+                        class="item flex gap-2 items-center justify-between mt-3"
                       >
                         <i
                           class="Icon material focusable"
