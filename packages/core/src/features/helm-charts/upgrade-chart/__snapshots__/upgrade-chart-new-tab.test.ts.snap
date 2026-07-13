@@ -805,7 +805,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                   />
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -1811,7 +1811,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -2817,7 +2817,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -3839,7 +3839,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -4897,7 +4897,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -6112,7 +6112,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -7329,7 +7329,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>

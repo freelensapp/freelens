@@ -469,7 +469,7 @@ exports[`kube-object-list-layout > given pod store > renders 1`] = `
             />
           </div>
           <div
-            class="AddRemoveButtons flex gaps"
+            class="AddRemoveButtons flex gap-2"
           />
         </div>
       </div>

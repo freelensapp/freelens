@@ -653,7 +653,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -1475,7 +1475,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -2302,7 +2302,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -3228,7 +3228,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -4102,7 +4102,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -5078,7 +5078,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -6056,7 +6056,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -6996,7 +6996,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -7931,7 +7931,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -8857,7 +8857,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -9783,7 +9783,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -10709,7 +10709,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -11440,7 +11440,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -12375,7 +12375,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -13301,7 +13301,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -14227,7 +14227,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -14920,7 +14920,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -15742,7 +15742,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -16569,7 +16569,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -17495,7 +17495,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -18369,7 +18369,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -19345,7 +19345,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -20323,7 +20323,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -21263,7 +21263,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -22198,7 +22198,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -23124,7 +23124,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -24050,7 +24050,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -24976,7 +24976,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -25707,7 +25707,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -26642,7 +26642,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -27568,7 +27568,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -28494,7 +28494,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"

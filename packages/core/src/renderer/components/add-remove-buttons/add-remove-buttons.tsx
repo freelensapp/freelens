@@ -47,6 +47,6 @@ export class AddRemoveButtons extends React.PureComponent<AddRemoveButtonsProps>
   }
 
   render() {
-    return <div className={cssNames("AddRemoveButtons flex gaps", this.props.className)}>{this.renderButtons()}</div>;
+    return <div className={cssNames("AddRemoveButtons flex gap-2", this.props.className)}>{this.renderButtons()}</div>;
   }
 }

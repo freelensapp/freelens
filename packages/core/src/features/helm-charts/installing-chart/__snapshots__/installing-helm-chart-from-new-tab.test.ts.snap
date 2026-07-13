@@ -1390,7 +1390,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -2461,7 +2461,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -3410,7 +3410,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -4627,7 +4627,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -5813,7 +5813,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -6994,7 +6994,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -8175,7 +8175,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -9378,7 +9378,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -10595,7 +10595,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -11776,7 +11776,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -13012,7 +13012,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -14052,7 +14052,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -15018,7 +15018,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -16060,7 +16060,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -17454,7 +17454,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -18455,7 +18455,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -19690,7 +19690,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -20923,7 +20923,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -22104,7 +22104,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -23285,7 +23285,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>

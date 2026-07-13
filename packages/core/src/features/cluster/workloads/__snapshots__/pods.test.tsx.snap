@@ -1042,7 +1042,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -2076,7 +2076,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -3105,7 +3105,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
                   />
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>

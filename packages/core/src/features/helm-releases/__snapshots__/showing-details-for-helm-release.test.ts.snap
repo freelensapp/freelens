@@ -805,7 +805,7 @@ exports[`showing details for helm release > given application is started > when 
                   />
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -2023,7 +2023,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -3241,7 +3241,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -4520,7 +4520,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -5799,7 +5799,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -7324,7 +7324,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -8849,7 +8849,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -10101,7 +10101,7 @@ exports[`showing details for helm release > given application is started > when 
                   />
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -11353,7 +11353,7 @@ exports[`showing details for helm release > given application is started > when 
                   />
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -12880,7 +12880,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -14405,7 +14405,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -15684,7 +15684,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -16965,7 +16965,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -18183,7 +18183,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -19462,7 +19462,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -20741,7 +20741,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -22020,7 +22020,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -23031,7 +23031,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>

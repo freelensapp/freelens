@@ -539,7 +539,7 @@ exports[`custom category columns for catalog > renders 1`] = `
                     </div>
                   </div>
                   <div
-                    class="AddRemoveButtons flex gaps"
+                    class="AddRemoveButtons flex gap-2"
                   />
                 </div>
               </div>
@@ -1263,7 +1263,7 @@ exports[`custom category columns for catalog > when category is added using defa
                     </div>
                   </div>
                   <div
-                    class="AddRemoveButtons flex gaps"
+                    class="AddRemoveButtons flex gap-2"
                   />
                 </div>
               </div>
@@ -1977,7 +1977,7 @@ exports[`custom category columns for catalog > when category is added using defa
                     </div>
                   </div>
                   <div
-                    class="AddRemoveButtons flex gaps"
+                    class="AddRemoveButtons flex gap-2"
                   />
                 </div>
               </div>
@@ -2677,7 +2677,7 @@ exports[`custom category columns for catalog > when category is added using defa
                     </div>
                   </div>
                   <div
-                    class="AddRemoveButtons flex gaps"
+                    class="AddRemoveButtons flex gap-2"
                   />
                 </div>
               </div>
@@ -3401,7 +3401,7 @@ exports[`custom category columns for catalog > when category is added with custo
                     </div>
                   </div>
                   <div
-                    class="AddRemoveButtons flex gaps"
+                    class="AddRemoveButtons flex gap-2"
                   />
                 </div>
               </div>
@@ -4053,7 +4053,7 @@ exports[`custom category columns for catalog > when category is added with custo
                     </div>
                   </div>
                   <div
-                    class="AddRemoveButtons flex gaps"
+                    class="AddRemoveButtons flex gap-2"
                   />
                 </div>
               </div>
@@ -4777,7 +4777,7 @@ exports[`custom category columns for catalog > when category is added without de
                     </div>
                   </div>
                   <div
-                    class="AddRemoveButtons flex gaps"
+                    class="AddRemoveButtons flex gap-2"
                   />
                 </div>
               </div>
@@ -5415,7 +5415,7 @@ exports[`custom category columns for catalog > when category is added without de
                     </div>
                   </div>
                   <div
-                    class="AddRemoveButtons flex gaps"
+                    class="AddRemoveButtons flex gap-2"
                   />
                 </div>
               </div>

@@ -631,7 +631,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                   />
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -1489,7 +1489,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -2347,7 +2347,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -3262,7 +3262,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -4327,7 +4327,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -5402,7 +5402,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -6467,7 +6467,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -7536,7 +7536,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -8611,7 +8611,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
