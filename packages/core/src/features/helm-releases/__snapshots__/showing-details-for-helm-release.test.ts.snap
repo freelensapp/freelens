@@ -6056,13 +6056,13 @@ exports[`showing details for helm release > given application is started > when 
               class="value"
             >
               <div
-                class="flex gaps align-center"
+                class="flex gap-2 items-center"
               >
                 <span>
                   some-chart-1.0.0
                 </span>
                 <button
-                  class="Button box right upgrade primary"
+                  class="Button ml-auto mr-0 upgrade primary"
                   data-testid="helm-release-upgrade-button"
                   type="button"
                 >
@@ -6111,7 +6111,7 @@ exports[`showing details for helm release > given application is started > when 
               class="value"
             >
               <div
-                class="version flex gaps align-center"
+                class="version flex gap-2 items-center"
               >
                 <span>
                   1.0.0
@@ -6146,7 +6146,7 @@ exports[`showing details for helm release > given application is started > when 
               Values
             </div>
             <div
-              class="flex column gaps"
+              class="flex flex-col gap-2"
             >
               <label
                 class="Checkbox flex items-center"
@@ -7581,13 +7581,13 @@ exports[`showing details for helm release > given application is started > when 
               class="value"
             >
               <div
-                class="flex gaps align-center"
+                class="flex gap-2 items-center"
               >
                 <span>
                   some-chart-1.0.0
                 </span>
                 <button
-                  class="Button box right upgrade primary"
+                  class="Button ml-auto mr-0 upgrade primary"
                   data-testid="helm-release-upgrade-button"
                   type="button"
                 >
@@ -7636,7 +7636,7 @@ exports[`showing details for helm release > given application is started > when 
               class="value"
             >
               <div
-                class="version flex gaps align-center"
+                class="version flex gap-2 items-center"
               >
                 <span>
                   1.0.0
@@ -7671,7 +7671,7 @@ exports[`showing details for helm release > given application is started > when 
               Values
             </div>
             <div
-              class="flex column gaps"
+              class="flex flex-col gap-2"
             >
               <label
                 class="Checkbox flex items-center"
@@ -9106,13 +9106,13 @@ exports[`showing details for helm release > given application is started > when 
               class="value"
             >
               <div
-                class="flex gaps align-center"
+                class="flex gap-2 items-center"
               >
                 <span>
                   some-chart-1.0.0
                 </span>
                 <button
-                  class="Button box right upgrade primary"
+                  class="Button ml-auto mr-0 upgrade primary"
                   data-testid="helm-release-upgrade-button"
                   type="button"
                 >
@@ -9161,7 +9161,7 @@ exports[`showing details for helm release > given application is started > when 
               class="value"
             >
               <div
-                class="version flex gaps align-center"
+                class="version flex gap-2 items-center"
               >
                 <span>
                   1.0.0
@@ -9196,7 +9196,7 @@ exports[`showing details for helm release > given application is started > when 
               Values
             </div>
             <div
-              class="flex column gaps"
+              class="flex flex-col gap-2"
             >
               <label
                 class="Checkbox flex items-center"
@@ -10358,13 +10358,13 @@ exports[`showing details for helm release > given application is started > when 
               class="value"
             >
               <div
-                class="flex gaps align-center"
+                class="flex gap-2 items-center"
               >
                 <span>
                   some-chart-1.0.0
                 </span>
                 <button
-                  class="Button box right upgrade primary"
+                  class="Button ml-auto mr-0 upgrade primary"
                   data-testid="helm-release-upgrade-button"
                   type="button"
                 >
@@ -10413,7 +10413,7 @@ exports[`showing details for helm release > given application is started > when 
               class="value"
             >
               <div
-                class="version flex gaps align-center"
+                class="version flex gap-2 items-center"
               >
                 <span>
                   1.0.0
@@ -10448,7 +10448,7 @@ exports[`showing details for helm release > given application is started > when 
               Values
             </div>
             <div
-              class="flex column gaps"
+              class="flex flex-col gap-2"
             >
               <label
                 class="Checkbox flex items-center"
@@ -11610,13 +11610,13 @@ exports[`showing details for helm release > given application is started > when 
               class="value"
             >
               <div
-                class="flex gaps align-center"
+                class="flex gap-2 items-center"
               >
                 <span>
                   some-chart-1.0.0
                 </span>
                 <button
-                  class="Button box right upgrade primary"
+                  class="Button ml-auto mr-0 upgrade primary"
                   data-testid="helm-release-upgrade-button"
                   type="button"
                 >
@@ -11665,7 +11665,7 @@ exports[`showing details for helm release > given application is started > when 
               class="value"
             >
               <div
-                class="version flex gaps align-center"
+                class="version flex gap-2 items-center"
               >
                 <span>
                   1.0.0
@@ -11700,7 +11700,7 @@ exports[`showing details for helm release > given application is started > when 
               Values
             </div>
             <div
-              class="flex column gaps"
+              class="flex flex-col gap-2"
             >
               <label
                 class="Checkbox flex items-center disabled"
@@ -13137,13 +13137,13 @@ exports[`showing details for helm release > given application is started > when 
               class="value"
             >
               <div
-                class="flex gaps align-center"
+                class="flex gap-2 items-center"
               >
                 <span>
                   some-chart-1.0.0
                 </span>
                 <button
-                  class="Button box right upgrade primary"
+                  class="Button ml-auto mr-0 upgrade primary"
                   data-testid="helm-release-upgrade-button"
                   type="button"
                 >
@@ -13192,7 +13192,7 @@ exports[`showing details for helm release > given application is started > when 
               class="value"
             >
               <div
-                class="version flex gaps align-center"
+                class="version flex gap-2 items-center"
               >
                 <span>
                   1.0.0
@@ -13227,7 +13227,7 @@ exports[`showing details for helm release > given application is started > when 
               Values
             </div>
             <div
-              class="flex column gaps"
+              class="flex flex-col gap-2"
             >
               <label
                 class="Checkbox flex items-center checked"
