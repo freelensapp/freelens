@@ -56,7 +56,10 @@ the public surface.
 Tailwind JIT scans **only core's own TSX**. A Tailwind class written in
 `packages/ui-components` or in an extension that core does not *also* happen to
 use produces **no CSS** — it silently does nothing. Never use Tailwind
-utilities outside core TSX.
+utilities outside core TSX expecting the host to emit them. (An extension can
+still run its **own** Tailwind build and ship the generated utilities in its
+stylesheet — see
+[Bringing your own Tailwind](./v2-extension-migration.md#bringing-your-own-tailwind).)
 
 ### Why ui-components stay global
 
@@ -76,9 +79,11 @@ they are no longer loaded, so those class names now do nothing.
 
 - Use Tailwind layout utilities in core TSX; never reintroduce the legacy
   vocabulary, and do not mix vocabularies in one `className`.
-- `packages/ui-components` and extensions cannot use Tailwind (its JIT scans
-  only core TSX — see above); style layout with plain rules in the component's
-  own SCSS.
+- `packages/ui-components` cannot use Tailwind (the host JIT scans only core
+  TSX — see above); style layout with plain rules in the component's own SCSS.
+  Extensions cannot use the *host's* Tailwind either, but may run their own
+  Tailwind build (see
+  [Bringing your own Tailwind](./v2-extension-migration.md#bringing-your-own-tailwind)).
 - Extension authors migrating code that still uses the old classes: the
   legacy-token → plain-CSS mapping lives in
   [migrating off `flexbox.scss`](./v2-extension-migration.md#migrating-off-flexboxscss).

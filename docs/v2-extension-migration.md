@@ -153,9 +153,12 @@ the host or with other extensions. For the host's shared component classes
 may target them directly — do not redefine them. See
 [`docs/v2-styling.md`](./v2-styling.md) for the full styling model.
 
-> Note: Tailwind utilities do **not** work in extensions. The host's Tailwind
-> JIT only scans core's own source, so a Tailwind class in an extension emits
-> no CSS. Write extension styles as SCSS/CSS.
+> Note: the **host's** Tailwind does not reach extensions — its JIT only scans
+> core's own source, so a Tailwind class you write expecting the host to have
+> emitted it produces no CSS. You are not limited to SCSS/CSS, though: an
+> extension can **bring its own Tailwind** by running Tailwind in its own build
+> and shipping the generated utilities in its stylesheet. See
+> [Bringing your own Tailwind](#bringing-your-own-tailwind).
 
 ## Migrating off flexbox.scss
 
@@ -167,10 +170,13 @@ longer stack vertically, `box grow` will not grow, and so on. This is a
 breaking change; extensions must provide the equivalent layout in their own
 CSS.
 
-Because Tailwind is unavailable in extensions (above), migrate to **plain CSS**
-in your own stylesheet: give the element a class and add the equivalent
-declarations. Do not depend on any host-generated Tailwind class either — it is
-generated only if core happens to use it.
+Migrate to **plain CSS** in your own stylesheet: give the element a class and
+add the equivalent declarations. Do not depend on any host-generated Tailwind
+class — it is emitted only if core happens to use it. (If your extension has
+substantial UI and you would rather write utilities inline, you can instead
+run your own Tailwind build — see
+[Bringing your own Tailwind](#bringing-your-own-tailwind) — but for a handful of
+flex rules plain CSS is the lighter option.)
 
 Legacy class → the CSS to add to your own rule:
 
@@ -213,6 +219,74 @@ Example — a health-checks list that used to stack vertically:
 }
 ```
 
+## Bringing your own Tailwind
+
+The host cannot hand its Tailwind to extensions: `packages/core/tailwind.config.js`
+sets `content: ["src/**/*.tsx"]` and the host CSS is generated at **host build
+time**, while extensions are installed at **runtime** — the host JIT can never
+see an extension's class usage, so a class only "works" if core happens to emit
+it (the trap [`docs/v2-styling.md`](./v2-styling.md) warns about). But nothing
+stops an extension from running **its own** Tailwind v4 build and shipping the
+generated utilities in the single CSS asset the host already injects (the loader
+appends your sibling `style.css`/`<entry>.css` — see
+[Styling and CSS](#styling-and-css)). With three adjustments this composes with
+the host's styling model and needs **no host-side changes**.
+
+1. Add `tailwindcss` and `@tailwindcss/vite` as devDependencies and the plugin
+   to your Vite config. Keep the single-CSS-asset output the styling section
+   above already requires.
+
+2. In your stylesheet entry, import Tailwind **granularly** — theme and
+   utilities only, with a per-extension `prefix()`, and **never preflight**:
+
+   ```css
+   @layer theme, utilities;
+   @import "tailwindcss/theme.css" layer(theme) prefix(myext);
+   @import "tailwindcss/utilities.css" layer(utilities) prefix(myext);
+   ```
+
+   - **No preflight** (`tailwindcss/preflight.css`): the injected `<style>`
+     applies to the whole host document, so preflight would re-reset the entire
+     app.
+   - **Prefix**: utilities become `myext:flex`, `myext:gap-2`, and the theme
+     variables are namespaced too. This keeps two builds (host + extension) from
+     emitting the same class name with diverging definitions, and makes it
+     impossible to accidentally lean on a host-generated class.
+   - **Layers compose**: the host declares the layer order first in `app.scss`,
+     so your `@layer utilities` rules merge into the same document layer.
+     Unlayered component CSS (including your own CSS Modules) still beats
+     utilities, exactly as in core.
+
+3. Bridge the host theme tokens instead of hardcoding colors, mirroring what
+   core does in `tailwind.config.js`. `@theme inline` makes the utility emit the
+   `var()` reference rather than a build-time value, so it re-themes at runtime:
+
+   ```css
+   @theme inline {
+     --color-text-primary: var(--textColorPrimary);
+     --color-text-accent: var(--textColorAccent);
+   }
+   ```
+
+   The `var(--…)` custom properties are set on `:root` by the host theme system,
+   so `myext:text-text-primary` re-themes automatically.
+
+4. If you need a dark variant, wire it to the real theme mechanism the way
+   `app.scss` does — there is no `.dark` class; the host toggles
+   `body.theme-light`:
+
+   ```css
+   @custom-variant dark (&:where(body:not(.theme-light), body:not(.theme-light) *));
+   ```
+
+   Prefer `var(--…)` tokens over `dark:` regardless — they re-theme on their own.
+
+Rules that follow: never use an **unprefixed** Tailwind class expecting the host
+to have emitted it; keep utilities in the disposable-layout role (component
+styling stays CSS Modules, host public classes stay plain-CSS targets); and for
+just a few flex rules, the [plain-CSS mapping](#migrating-off-flexboxscss) above
+is still lighter than wiring up a Tailwind build.
+
 ## Checklist
 
 - [ ] Replace any direct `@freelensapp/*` internal dependency with
@@ -223,7 +297,9 @@ Example — a health-checks list that used to stack vertically:
 - [ ] Replace any legacy `flexbox.scss` classes (`flex`, `column`, `gaps`,
       `box`, `grow`, `align-center`, …) with plain CSS in your own stylesheet —
       the host no longer provides them (see
-      [Migrating off flexbox.scss](#migrating-off-flexboxscss)).
+      [Migrating off flexbox.scss](#migrating-off-flexboxscss)). For substantial
+      UI you can instead run your own Tailwind build (see
+      [Bringing your own Tailwind](#bringing-your-own-tailwind)).
 - [ ] Confirm your entrypoints are ESM or CommonJS and, if ESM, that
       `package.json` declares it.
 - [ ] Access only the process-appropriate namespace (`Main` in main,
