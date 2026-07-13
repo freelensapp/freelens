@@ -470,10 +470,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                         data-testid="helm-controls"
                       >
                         <div
-                          class="flex gaps"
+                          class="flex gap-2"
                         >
                           <div
-                            class="Select theme-lens box grow Select--is-disabled css-3iigni-container"
+                            class="Select theme-lens grow shrink-0 basis-0 Select--is-disabled css-3iigni-container"
                           >
                             <span
                               class="css-1f43avz-a11yText-A11yText"
@@ -1308,10 +1308,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                         data-testid="helm-controls"
                       >
                         <div
-                          class="flex gaps"
+                          class="flex gap-2"
                         >
                           <div
-                            class="Select theme-lens box grow css-b62m3t-container"
+                            class="Select theme-lens grow shrink-0 basis-0 css-b62m3t-container"
                           >
                             <span
                               class="css-1f43avz-a11yText-A11yText"
@@ -2156,10 +2156,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                         data-testid="helm-controls"
                       >
                         <div
-                          class="flex gaps"
+                          class="flex gap-2"
                         >
                           <div
-                            class="Select theme-lens box grow css-b62m3t-container"
+                            class="Select theme-lens grow shrink-0 basis-0 css-b62m3t-container"
                           >
                             <span
                               class="css-1f43avz-a11yText-A11yText"
@@ -3115,10 +3115,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                         data-testid="helm-controls"
                       >
                         <div
-                          class="flex gaps"
+                          class="flex gap-2"
                         >
                           <div
-                            class="Select theme-lens box grow css-b62m3t-container"
+                            class="Select theme-lens grow shrink-0 basis-0 css-b62m3t-container"
                           >
                             <span
                               class="css-1f43avz-a11yText-A11yText"
@@ -3971,10 +3971,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                         data-testid="helm-controls"
                       >
                         <div
-                          class="flex gaps"
+                          class="flex gap-2"
                         >
                           <div
-                            class="Select theme-lens box grow css-b62m3t-container"
+                            class="Select theme-lens grow shrink-0 basis-0 css-b62m3t-container"
                           >
                             <span
                               class="css-1f43avz-a11yText-A11yText"
@@ -4930,10 +4930,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                         data-testid="helm-controls"
                       >
                         <div
-                          class="flex gaps"
+                          class="flex gap-2"
                         >
                           <div
-                            class="Select theme-lens box grow css-b62m3t-container"
+                            class="Select theme-lens grow shrink-0 basis-0 css-b62m3t-container"
                           >
                             <span
                               class="css-1f43avz-a11yText-A11yText"
@@ -6071,10 +6071,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                         data-testid="helm-controls"
                       >
                         <div
-                          class="flex gaps"
+                          class="flex gap-2"
                         >
                           <div
-                            class="Select theme-lens box grow css-b62m3t-container"
+                            class="Select theme-lens grow shrink-0 basis-0 css-b62m3t-container"
                           >
                             <span
                               class="css-1f43avz-a11yText-A11yText"
@@ -7030,10 +7030,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                         data-testid="helm-controls"
                       >
                         <div
-                          class="flex gaps"
+                          class="flex gap-2"
                         >
                           <div
-                            class="Select theme-lens box grow css-b62m3t-container"
+                            class="Select theme-lens grow shrink-0 basis-0 css-b62m3t-container"
                           >
                             <span
                               class="css-1f43avz-a11yText-A11yText"
@@ -8171,10 +8171,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                         data-testid="helm-controls"
                       >
                         <div
-                          class="flex gaps"
+                          class="flex gap-2"
                         >
                           <div
-                            class="Select theme-lens box grow css-b62m3t-container"
+                            class="Select theme-lens grow shrink-0 basis-0 css-b62m3t-container"
                           >
                             <span
                               class="css-1f43avz-a11yText-A11yText"
@@ -9131,10 +9131,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                         data-testid="helm-controls"
                       >
                         <div
-                          class="flex gaps"
+                          class="flex gap-2"
                         >
                           <div
-                            class="Select theme-lens box grow css-b62m3t-container"
+                            class="Select theme-lens grow shrink-0 basis-0 css-b62m3t-container"
                           >
                             <span
                               class="css-1f43avz-a11yText-A11yText"
@@ -9987,10 +9987,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                         data-testid="helm-controls"
                       >
                         <div
-                          class="flex gaps"
+                          class="flex gap-2"
                         >
                           <div
-                            class="Select theme-lens box grow Select--is-disabled css-3iigni-container"
+                            class="Select theme-lens grow shrink-0 basis-0 Select--is-disabled css-3iigni-container"
                           >
                             <span
                               class="css-1f43avz-a11yText-A11yText"
@@ -10833,10 +10833,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                         data-testid="helm-controls"
                       >
                         <div
-                          class="flex gaps"
+                          class="flex gap-2"
                         >
                           <div
-                            class="Select theme-lens box grow Select--is-disabled css-3iigni-container"
+                            class="Select theme-lens grow shrink-0 basis-0 Select--is-disabled css-3iigni-container"
                           >
                             <span
                               class="css-1f43avz-a11yText-A11yText"

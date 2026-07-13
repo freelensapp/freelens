@@ -1236,10 +1236,10 @@ exports[`preferences - navigation to kubernetes preferences > given in preferenc
                       data-testid="helm-controls"
                     >
                       <div
-                        class="flex gaps"
+                        class="flex gap-2"
                       >
                         <div
-                          class="Select theme-lens box grow css-b62m3t-container"
+                          class="Select theme-lens grow shrink-0 basis-0 css-b62m3t-container"
                         >
                           <span
                             class="css-1f43avz-a11yText-A11yText"

@@ -38,7 +38,7 @@ const NonInjectedHelmCharts = observer(({ helmRepositoriesErrorState }: Dependen
 
         {state.controlsAreShown && (
           <div data-testid="helm-controls">
-            <div className="flex gaps">
+            <div className="flex gap-2">
               <AddingOfPublicHelmRepository />
 
               <AddingOfCustomHelmRepositoryOpenButton />
