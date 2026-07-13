@@ -220,9 +220,9 @@ class NonInjectedDrawer extends React.Component<DrawerProps & Dependencies & typ
           ref={(e) => (this.contentElem = e)}
           data-testid={testId}
         >
-          <div className="drawer-wrapper flex column">
-            <div className="drawer-title flex align-center">
-              <div className="drawer-title-text flex gaps align-center">
+          <div className="drawer-wrapper flex flex-col">
+            <div className="drawer-title flex items-center">
+              <div className="drawer-title-text flex gap-2 items-center">
                 {title}
                 {canCopyTitle && (
                   <Icon material={copyIcon} tooltip={copyTooltip} onClick={() => this.copyTitle(title)} />
@@ -232,7 +232,7 @@ class NonInjectedDrawer extends React.Component<DrawerProps & Dependencies & typ
               <Icon material="close" tooltip="Close" onClick={this.close} data-testid={testIdForClose} />
             </div>
             <div
-              className={cssNames("drawer-content flex column box grow", contentClass)}
+              className={cssNames("drawer-content flex flex-col grow shrink-0 basis-0", contentClass)}
               onScroll={this.saveScrollPos}
               ref={(e) => (this.scrollElem = e)}
             >

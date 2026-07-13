@@ -11,14 +11,14 @@ exports[`reactively hide kube object detail item > renders 1`] = `
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
           style="position: relative;"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             some-kind: some-name
             <i
@@ -57,7 +57,7 @@ exports[`reactively hide kube object detail item > renders 1`] = `
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         >
           <div
             class="DrawerItem"
@@ -757,14 +757,14 @@ exports[`reactively hide kube object detail item > when the item is shown > rend
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
           style="position: relative;"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             some-kind: some-name
             <i
@@ -803,7 +803,7 @@ exports[`reactively hide kube object detail item > when the item is shown > rend
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         >
           <div
             class="DrawerItem"

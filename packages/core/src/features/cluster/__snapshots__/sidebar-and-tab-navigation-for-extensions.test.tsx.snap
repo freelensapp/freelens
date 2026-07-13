@@ -10,13 +10,13 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           
         </div>
@@ -36,7 +36,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       />
     </div>
     <div
@@ -726,13 +726,13 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           
         </div>
@@ -752,7 +752,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       />
     </div>
     <div
@@ -1442,13 +1442,13 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           
         </div>
@@ -1468,7 +1468,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       />
     </div>
     <div
@@ -2234,13 +2234,13 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           
         </div>
@@ -2260,7 +2260,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       />
     </div>
     <div
@@ -2943,13 +2943,13 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           
         </div>
@@ -2969,7 +2969,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       />
     </div>
     <div
@@ -3652,13 +3652,13 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           
         </div>
@@ -3678,7 +3678,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       />
     </div>
     <div
@@ -4284,13 +4284,13 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           
         </div>
@@ -4310,7 +4310,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       />
     </div>
     <div
@@ -5076,13 +5076,13 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           
         </div>
@@ -5102,7 +5102,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       />
     </div>
     <div
@@ -5792,13 +5792,13 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           
         </div>
@@ -5818,7 +5818,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       />
     </div>
     <div

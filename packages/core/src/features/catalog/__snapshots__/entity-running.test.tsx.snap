@@ -1659,13 +1659,13 @@ exports[`entity running technical tests > when navigated to catalog > when detai
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           Mock: a catalog entity
           <i
@@ -1699,7 +1699,7 @@ exports[`entity running technical tests > when navigated to catalog > when detai
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       >
         <div
           class="flex"

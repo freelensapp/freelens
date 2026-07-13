@@ -4269,14 +4269,14 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
         style="position: relative;"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           KubernetesCluster: some-kubernetes-cluster
           <i
@@ -4372,7 +4372,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       >
         <div
           class="flex"
@@ -7425,13 +7425,13 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           WebLink: some-weblink
           <i
@@ -7465,7 +7465,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       >
         <div
           class="flex"
@@ -7974,13 +7974,13 @@ exports[`opening catalog entity details panel > when not navigated to the catalo
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           WebLink: some-weblink
           <i
@@ -8014,7 +8014,7 @@ exports[`opening catalog entity details panel > when not navigated to the catalo
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       >
         <div
           class="flex"
