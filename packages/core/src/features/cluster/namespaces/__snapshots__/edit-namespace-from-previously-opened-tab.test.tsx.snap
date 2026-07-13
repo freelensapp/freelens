@@ -1414,7 +1414,7 @@ exports[`cluster/namespaces - edit namespaces from previously opened tab > given
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:

@@ -102,9 +102,9 @@ class NonInjectedCronJobTriggerDialog extends Component<CronJobTriggerDialogProp
         }
         done={this.props.closeCronJobTriggerDialog}
       >
-        <WizardStep contentClass="flex gaps column" next={() => this.trigger(cronJob)} nextLabel="Trigger">
-          <div className="flex gaps">Job name:</div>
-          <div className="flex gaps">
+        <WizardStep contentClass="flex gap-2 flex-col" next={() => this.trigger(cronJob)} nextLabel="Trigger">
+          <div className="flex gap-2">Job name:</div>
+          <div className="flex gap-2">
             <Input
               required
               autoFocus
@@ -114,7 +114,7 @@ class NonInjectedCronJobTriggerDialog extends Component<CronJobTriggerDialogProp
               maxLength={63}
               value={this.jobName}
               onChange={(v) => (this.jobName = v.toLowerCase())}
-              className="box grow"
+              className="grow shrink-0 basis-0"
             />
           </div>
         </WizardStep>

@@ -5046,7 +5046,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                   class="controls"
                 >
                   <div
-                    class="upgrade flex gaps align-center"
+                    class="upgrade flex gap-2 items-center"
                   >
                     <span>
                       Release
@@ -6261,7 +6261,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                   class="controls"
                 >
                   <div
-                    class="upgrade flex gaps align-center"
+                    class="upgrade flex gap-2 items-center"
                   >
                     <span>
                       Release

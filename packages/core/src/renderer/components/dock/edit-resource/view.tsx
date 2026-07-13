@@ -43,7 +43,7 @@ const NonInjectedEditResource = observer(({ model, tabId }: EditResourceProps & 
           cancelTestId={`cancel-edit-resource-from-tab-for-${tabId}`}
           submittingTestId={`saving-edit-resource-from-tab-for-${tabId}`}
           controls={
-            <div className="resource-info flex gaps align-center">
+            <div className="resource-info flex gap-2 items-center">
               <span>Kind:</span>
               <Badge label={model.kind} />
               <span>Name:</span>

@@ -2469,7 +2469,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -4321,7 +4321,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -5297,7 +5297,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -6223,7 +6223,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -7163,7 +7163,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -8098,7 +8098,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -9024,7 +9024,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -9950,7 +9950,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -11607,7 +11607,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -12542,7 +12542,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -13468,7 +13468,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -16736,7 +16736,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -18588,7 +18588,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -19564,7 +19564,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -20490,7 +20490,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -21430,7 +21430,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -22365,7 +22365,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -23291,7 +23291,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -24217,7 +24217,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -25874,7 +25874,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -26809,7 +26809,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
@@ -27735,7 +27735,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   class="controls"
                 >
                   <div
-                    class="resource-info flex gaps align-center"
+                    class="resource-info flex gap-2 items-center"
                   >
                     <span>
                       Kind:
