@@ -4,7 +4,7 @@ exports[`extendability-using-extension-api > given an extension with a weakly ty
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -382,7 +382,7 @@ exports[`extendability-using-extension-api > given an extension with top-bar ite
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -769,7 +769,7 @@ exports[`extendability-using-extension-api > given an extension with top-bar ite
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -1147,7 +1147,7 @@ exports[`extendability-using-extension-api > renders 1`] = `
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"

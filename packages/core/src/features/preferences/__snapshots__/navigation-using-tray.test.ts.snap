@@ -4,7 +4,7 @@ exports[`show-about-using-tray > renders 1`] = `
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -382,7 +382,7 @@ exports[`show-about-using-tray > when navigating using tray > renders 1`] = `
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"

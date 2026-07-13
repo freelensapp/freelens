@@ -4,7 +4,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on linux > renders 1`] =
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -473,7 +473,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on linux > when pressing
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -942,7 +942,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on linux > when pressing
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -1405,10 +1405,10 @@ exports[`Command Pallet: keyboard shortcut tests > when on linux > when pressing
     </div>
   </div>
   <div
-    class="Dialog flex center"
+    class="Dialog flex items-center justify-center"
   >
     <div
-      class="box"
+      class="dialog-content"
     >
       <div
         class="CommandContainer"
@@ -1423,7 +1423,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on linux > when pressing
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -1892,7 +1892,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on macOS > renders 1`] =
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -2270,7 +2270,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on macOS > when pressing
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -2648,7 +2648,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on macOS > when pressing
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -3020,10 +3020,10 @@ exports[`Command Pallet: keyboard shortcut tests > when on macOS > when pressing
     </div>
   </div>
   <div
-    class="Dialog flex center"
+    class="Dialog flex items-center justify-center"
   >
     <div
-      class="box"
+      class="dialog-content"
     >
       <div
         class="CommandContainer"
@@ -3038,7 +3038,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on macOS > when pressing
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"

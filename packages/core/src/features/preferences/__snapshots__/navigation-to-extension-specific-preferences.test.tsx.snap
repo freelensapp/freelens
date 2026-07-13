@@ -4,7 +4,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -784,7 +784,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
 exports[`preferences - navigation to extension specific preferences > given in preferences, when rendered > given extension with registered tab > when navigating to specific extension tab > renders 1`] = `
 <div>
   <div
-    class="Notifications flex column align-flex-end"
+    class="Notifications"
   />
   <div
     class="ClusterManager"
@@ -1180,7 +1180,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
 exports[`preferences - navigation to extension specific preferences > given in preferences, when rendered > given extensions with tabs having same id > when navigating to first extension tab > renders 1`] = `
 <div>
   <div
-    class="Notifications flex column align-flex-end"
+    class="Notifications"
   />
   <div
     class="ClusterManager"
@@ -1588,7 +1588,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
 exports[`preferences - navigation to extension specific preferences > given in preferences, when rendered > given extensions with tabs having same id > when navigating to second extension tab > renders 1`] = `
 <div>
   <div
-    class="Notifications flex column align-flex-end"
+    class="Notifications"
   />
   <div
     class="ClusterManager"
@@ -1996,7 +1996,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
 exports[`preferences - navigation to extension specific preferences > given in preferences, when rendered > given multiple extensions with specific preferences, when navigating to extension specific preferences page > renders 1`] = `
 <div>
   <div
-    class="Notifications flex column align-flex-end"
+    class="Notifications"
   />
   <div
     class="ClusterManager"
@@ -2430,7 +2430,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
 exports[`preferences - navigation to extension specific preferences > given in preferences, when rendered > renders 1`] = `
 <div>
   <div
-    class="Notifications flex column align-flex-end"
+    class="Notifications"
   />
   <div
     class="ClusterManager"
@@ -3197,7 +3197,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
 exports[`preferences - navigation to extension specific preferences > given in preferences, when rendered > when extension with specific preferences is enabled > renders 1`] = `
 <div>
   <div
-    class="Notifications flex column align-flex-end"
+    class="Notifications"
   />
   <div
     class="ClusterManager"
@@ -4002,7 +4002,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
 exports[`preferences - navigation to extension specific preferences > given in preferences, when rendered > when extension with specific preferences is enabled > when navigating to extension preferences using navigation > renders 1`] = `
 <div>
   <div
-    class="Notifications flex column align-flex-end"
+    class="Notifications"
   />
   <div
     class="ClusterManager"
@@ -4425,7 +4425,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"

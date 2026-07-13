@@ -71,7 +71,7 @@ class NonInjectedNotifications extends React.Component<Dependencies> {
     const { notifications, remove, addAutoHideTimer, removeAutoHideTimer } = this.props.store;
 
     return (
-      <div className="Notifications flex column align-flex-end" ref={(e) => (this.elem = e)}>
+      <div className="Notifications" ref={(e) => (this.elem = e)}>
         {notifications.map((notification) => {
           const { id, status, onClose } = notification;
           const msgText = this.getMessage(notification);
@@ -79,16 +79,16 @@ class NonInjectedNotifications extends React.Component<Dependencies> {
           return (
             <Animate key={id}>
               <div
-                className={cssNames("notification flex", status)}
+                className={cssNames("notification", status)}
                 onMouseLeave={() => addAutoHideTimer(id)}
                 onMouseEnter={() => removeAutoHideTimer(id)}
               >
-                <div className="box">
+                <div className="info-icon">
                   <Icon material="info_outline" />
                 </div>
-                <div className="message box grow">{msgText}</div>
+                <div className="message">{msgText}</div>
                 <div
-                  className="box close-icon"
+                  className="close-icon"
                   onClick={prevDefault(() => {
                     remove(id);
                     onClose?.();

@@ -3,7 +3,7 @@
 exports[`cluster - custom resources in sidebar > renders 1`] = `
 <div>
   <div
-    class="Notifications flex column align-flex-end"
+    class="Notifications"
   />
   <div
     class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter"
@@ -673,7 +673,7 @@ exports[`cluster - custom resources in sidebar > renders 1`] = `
 exports[`cluster - custom resources in sidebar > when custom resource definitions are an allowed resource > renders 1`] = `
 <div>
   <div
-    class="Notifications flex column align-flex-end"
+    class="Notifications"
   />
   <div
     class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -1380,7 +1380,7 @@ exports[`cluster - custom resources in sidebar > when custom resource definition
 exports[`cluster - custom resources in sidebar > when custom resource exists > renders 1`] = `
 <div>
   <div
-    class="Notifications flex column align-flex-end"
+    class="Notifications"
   />
   <div
     class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -2050,7 +2050,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > r
 exports[`cluster - custom resources in sidebar > when custom resource exists > when custom resource definitions are an allowed resource > renders 1`] = `
 <div>
   <div
-    class="Notifications flex column align-flex-end"
+    class="Notifications"
   />
   <div
     class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -2757,7 +2757,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
 exports[`cluster - custom resources in sidebar > when custom resource exists > when custom resource definitions are an allowed resource > when custom resources sidebar item is expanded > renders 1`] = `
 <div>
   <div
-    class="Notifications flex column align-flex-end"
+    class="Notifications"
   />
   <div
     class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -3504,7 +3504,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
 exports[`cluster - custom resources in sidebar > when custom resource exists > when specific custom resource is an allowed resource > renders 1`] = `
 <div>
   <div
-    class="Notifications flex column align-flex-end"
+    class="Notifications"
   />
   <div
     class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -4174,7 +4174,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
 exports[`cluster - custom resources in sidebar > when custom resource exists > when specific custom resource is an allowed resource > when custom resources sidebar item is expanded > renders 1`] = `
 <div>
   <div
-    class="Notifications flex column align-flex-end"
+    class="Notifications"
   />
   <div
     class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -4912,7 +4912,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
 exports[`cluster - custom resources in sidebar > when custom resource exists > when specific custom resource is an allowed resource > when custom resources sidebar item is expanded > when custom resources group sidebar item is expanded > renders 1`] = `
 <div>
   <div
-    class="Notifications flex column align-flex-end"
+    class="Notifications"
   />
   <div
     class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"

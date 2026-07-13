@@ -4,7 +4,7 @@ exports[`hovering hotbar menu tests > renders 1`] = `
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"

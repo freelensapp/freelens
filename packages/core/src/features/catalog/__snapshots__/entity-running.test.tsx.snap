@@ -4,7 +4,7 @@ exports[`entity running technical tests > when navigated to catalog > renders 1`
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -822,7 +822,7 @@ exports[`entity running technical tests > when navigated to catalog > when detai
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"

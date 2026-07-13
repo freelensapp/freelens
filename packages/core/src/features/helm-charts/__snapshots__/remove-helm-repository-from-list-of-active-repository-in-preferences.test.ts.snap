@@ -4,7 +4,7 @@ exports[`remove helm repository from list of active repositories in preferences 
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -842,7 +842,7 @@ exports[`remove helm repository from list of active repositories in preferences 
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -1662,7 +1662,7 @@ exports[`remove helm repository from list of active repositories in preferences 
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -2510,7 +2510,7 @@ exports[`remove helm repository from list of active repositories in preferences 
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"

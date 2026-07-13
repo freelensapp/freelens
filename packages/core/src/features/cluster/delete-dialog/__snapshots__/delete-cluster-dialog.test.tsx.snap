@@ -4,7 +4,7 @@ exports[`Deleting a cluster > when an internal kubeconfig cluster is used > when
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -691,12 +691,12 @@ exports[`Deleting a cluster > when an internal kubeconfig cluster is used > when
     </div>
   </div>
   <div
-    class="Animate opacity-scale Dialog flex center dialog modal enter"
+    class="Animate opacity-scale Dialog flex items-center justify-center dialog modal enter"
     data-testid="delete-cluster-dialog"
     style="--enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="box"
+      class="dialog-content"
     >
       <div
         class="dialogContent"
@@ -753,7 +753,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -1440,12 +1440,12 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
     </div>
   </div>
   <div
-    class="Animate opacity-scale Dialog flex center dialog modal enter"
+    class="Animate opacity-scale Dialog flex items-center justify-center dialog modal enter"
     data-testid="delete-cluster-dialog"
     style="--enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="box"
+      class="dialog-content"
     >
       <div
         class="dialogContent"
@@ -1494,7 +1494,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
               type="checkbox"
             />
             <i
-              class="box flex align-center"
+              class="check-icon flex items-center"
             />
             <span
               class="label"
@@ -1535,7 +1535,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -2222,12 +2222,12 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
     </div>
   </div>
   <div
-    class="Animate opacity-scale Dialog flex center dialog modal enter"
+    class="Animate opacity-scale Dialog flex items-center justify-center dialog modal enter"
     data-testid="delete-cluster-dialog"
     style="--enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="box"
+      class="dialog-content"
     >
       <div
         class="dialogContent"
@@ -2276,7 +2276,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
               type="checkbox"
             />
             <i
-              class="box flex align-center"
+              class="check-icon flex items-center"
             />
             <span
               class="label"
@@ -2398,7 +2398,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -3085,12 +3085,12 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
     </div>
   </div>
   <div
-    class="Animate opacity-scale Dialog flex center dialog modal enter"
+    class="Animate opacity-scale Dialog flex items-center justify-center dialog modal enter"
     data-testid="delete-cluster-dialog"
     style="--enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="box"
+      class="dialog-content"
     >
       <div
         class="dialogContent"
@@ -3140,7 +3140,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
               type="checkbox"
             />
             <i
-              class="box flex align-center"
+              class="check-icon flex items-center"
             />
             <span
               class="label"
@@ -3261,7 +3261,7 @@ exports[`Deleting a cluster > when the kubeconfig has only one cluster > when th
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -3948,12 +3948,12 @@ exports[`Deleting a cluster > when the kubeconfig has only one cluster > when th
     </div>
   </div>
   <div
-    class="Animate opacity-scale Dialog flex center dialog modal enter"
+    class="Animate opacity-scale Dialog flex items-center justify-center dialog modal enter"
     data-testid="delete-cluster-dialog"
     style="--enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="box"
+      class="dialog-content"
     >
       <div
         class="dialogContent"

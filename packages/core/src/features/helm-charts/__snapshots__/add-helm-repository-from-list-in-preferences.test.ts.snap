@@ -4,7 +4,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -814,7 +814,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -1662,7 +1662,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -2568,7 +2568,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -3416,7 +3416,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -4264,7 +4264,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -5102,7 +5102,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -5984,7 +5984,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -6934,7 +6934,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -7816,7 +7816,7 @@ exports[`add helm repository from list in preferences > when navigating to prefe
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"

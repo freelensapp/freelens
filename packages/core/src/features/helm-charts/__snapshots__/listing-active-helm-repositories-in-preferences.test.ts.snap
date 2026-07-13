@@ -4,7 +4,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -842,7 +842,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -1680,7 +1680,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -2407,7 +2407,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -3220,7 +3220,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -4102,7 +4102,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -4829,7 +4829,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -5556,7 +5556,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"

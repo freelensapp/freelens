@@ -3,7 +3,7 @@
 exports[`Viewing Custom Resources with extra columns > renders 1`] = `
 <div>
   <div
-    class="Notifications flex column align-flex-end"
+    class="Notifications"
   />
   <div
     class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -497,7 +497,7 @@ exports[`Viewing Custom Resources with extra columns > renders 1`] = `
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                     </label>
                   </div>
@@ -620,7 +620,7 @@ exports[`Viewing Custom Resources with extra columns > renders 1`] = `
                                   type="checkbox"
                                 />
                                 <i
-                                  class="box flex align-center"
+                                  class="check-icon flex items-center"
                                 />
                               </label>
                             </div>

@@ -4,7 +4,7 @@ exports[`opening catalog entity details panel > renders 1`] = `
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -382,7 +382,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -1330,7 +1330,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -2310,7 +2310,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -3290,7 +3290,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -4522,7 +4522,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -5490,7 +5490,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -6458,7 +6458,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -7597,7 +7597,7 @@ exports[`opening catalog entity details panel > when not navigated to the catalo
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"

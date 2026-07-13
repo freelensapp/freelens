@@ -3,7 +3,7 @@
 exports[`welcome - navigation using application menu > renders 1`] = `
 <div>
   <div
-    class="Notifications flex column align-flex-end"
+    class="Notifications"
   />
   <div
     class="ClusterManager"
@@ -380,7 +380,7 @@ exports[`welcome - navigation using application menu > when navigated somewhere 
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -1148,7 +1148,7 @@ exports[`welcome - navigation using application menu > when navigated somewhere 
 exports[`welcome - navigation using application menu > when navigated somewhere else > when navigated to welcome using application menu > renders 1`] = `
 <div>
   <div
-    class="Notifications flex column align-flex-end"
+    class="Notifications"
   />
   <div
     class="ClusterManager"

@@ -4,7 +4,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -525,7 +525,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -826,7 +826,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -1347,7 +1347,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -1653,7 +1653,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -2174,7 +2174,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -2502,7 +2502,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -2517,7 +2517,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -2579,7 +2579,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -3100,7 +3100,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -3453,7 +3453,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -3974,7 +3974,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -4354,7 +4354,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -4369,7 +4369,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -4429,7 +4429,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -4950,7 +4950,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -5330,7 +5330,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -5345,7 +5345,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -5407,7 +5407,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -5928,7 +5928,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -6256,7 +6256,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -6271,7 +6271,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -6347,7 +6347,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -6868,7 +6868,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -7196,7 +7196,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -7211,7 +7211,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -7282,7 +7282,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -7803,7 +7803,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -8131,7 +8131,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -8146,7 +8146,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -8208,7 +8208,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -8729,7 +8729,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -9057,7 +9057,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -9072,7 +9072,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -9134,7 +9134,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -9655,7 +9655,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -9983,7 +9983,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -9998,7 +9998,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -10060,7 +10060,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -10581,7 +10581,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -10791,7 +10791,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -11312,7 +11312,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -11640,7 +11640,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -11655,7 +11655,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -11726,7 +11726,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -12247,7 +12247,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -12575,7 +12575,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -12590,7 +12590,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -12652,7 +12652,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -13173,7 +13173,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -13501,7 +13501,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -13516,7 +13516,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -13578,7 +13578,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -14099,7 +14099,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>

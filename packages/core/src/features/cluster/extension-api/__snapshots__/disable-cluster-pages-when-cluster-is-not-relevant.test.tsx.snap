@@ -4,7 +4,7 @@ exports[`disable-cluster-pages-when-cluster-is-not-relevant > given extension sh
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -552,7 +552,7 @@ exports[`disable-cluster-pages-when-cluster-is-not-relevant > given extension sh
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -1224,7 +1224,7 @@ exports[`disable-cluster-pages-when-cluster-is-not-relevant > given not yet know
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter"

@@ -3,7 +3,7 @@
 exports[`preferences - navigation to application preferences > given in preferences, when rendered > renders 1`] = `
 <div>
   <div
-    class="Notifications flex column align-flex-end"
+    class="Notifications"
   />
   <div
     class="ClusterManager"
@@ -770,7 +770,7 @@ exports[`preferences - navigation to application preferences > given in preferen
 exports[`preferences - navigation to application preferences > given in preferences, when rendered > when extension with application preference items gets enabled > renders 1`] = `
 <div>
   <div
-    class="Notifications flex column align-flex-end"
+    class="Notifications"
   />
   <div
     class="ClusterManager"
@@ -1568,7 +1568,7 @@ exports[`preferences - navigation to application preferences > given in preferen
 exports[`preferences - navigation to application preferences > given in some child page of preferences, when rendered > renders 1`] = `
 <div>
   <div
-    class="Notifications flex column align-flex-end"
+    class="Notifications"
   />
   <div
     class="ClusterManager"
@@ -1991,7 +1991,7 @@ exports[`preferences - navigation to application preferences > given in some chi
 exports[`preferences - navigation to application preferences > given in some child page of preferences, when rendered > when navigating to application preferences using navigation > renders 1`] = `
 <div>
   <div
-    class="Notifications flex column align-flex-end"
+    class="Notifications"
   />
   <div
     class="ClusterManager"
@@ -2759,7 +2759,7 @@ exports[`preferences - navigation to application preferences > given in some chi
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"

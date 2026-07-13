@@ -4,7 +4,7 @@ exports[`custom category columns for catalog > renders 1`] = `
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -697,7 +697,7 @@ exports[`custom category columns for catalog > when category is added using defa
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -1421,7 +1421,7 @@ exports[`custom category columns for catalog > when category is added using defa
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -2135,7 +2135,7 @@ exports[`custom category columns for catalog > when category is added using defa
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -2835,7 +2835,7 @@ exports[`custom category columns for catalog > when category is added with custo
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -3559,7 +3559,7 @@ exports[`custom category columns for catalog > when category is added with custo
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -4211,7 +4211,7 @@ exports[`custom category columns for catalog > when category is added without de
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -4935,7 +4935,7 @@ exports[`custom category columns for catalog > when category is added without de
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
