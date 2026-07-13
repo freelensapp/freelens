@@ -708,7 +708,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
-                  class="header flex gaps align-center"
+                  class="header flex gap-4 items-center"
                 >
                   <h5
                     class="title"
@@ -716,7 +716,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                     Browse All
                   </h5>
                   <div
-                    class="info-panel box grow"
+                    class="info-panel grow shrink-0 basis-0"
                   >
                     3 items
                   </div>
@@ -1656,7 +1656,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
-                  class="header flex gaps align-center"
+                  class="header flex gap-4 items-center"
                 >
                   <h5
                     class="title"
@@ -1664,7 +1664,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                     Browse All
                   </h5>
                   <div
-                    class="info-panel box grow"
+                    class="info-panel grow shrink-0 basis-0"
                   >
                     3 items
                   </div>
@@ -2636,7 +2636,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
-                  class="header flex gaps align-center"
+                  class="header flex gap-4 items-center"
                 >
                   <h5
                     class="title"
@@ -2644,7 +2644,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                     Browse All
                   </h5>
                   <div
-                    class="info-panel box grow"
+                    class="info-panel grow shrink-0 basis-0"
                   >
                     3 items
                   </div>
@@ -3616,7 +3616,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
-                  class="header flex gaps align-center"
+                  class="header flex gap-4 items-center"
                 >
                   <h5
                     class="title"
@@ -3624,7 +3624,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                     Browse All
                   </h5>
                   <div
-                    class="info-panel box grow"
+                    class="info-panel grow shrink-0 basis-0"
                   >
                     3 items
                   </div>
@@ -4848,7 +4848,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
-                  class="header flex gaps align-center"
+                  class="header flex gap-4 items-center"
                 >
                   <h5
                     class="title"
@@ -4856,7 +4856,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                     Browse All
                   </h5>
                   <div
-                    class="info-panel box grow"
+                    class="info-panel grow shrink-0 basis-0"
                   >
                     3 items
                   </div>
@@ -5816,7 +5816,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
-                  class="header flex gaps align-center"
+                  class="header flex gap-4 items-center"
                 >
                   <h5
                     class="title"
@@ -5824,7 +5824,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                     Browse All
                   </h5>
                   <div
-                    class="info-panel box grow"
+                    class="info-panel grow shrink-0 basis-0"
                   >
                     3 items
                   </div>
@@ -6784,7 +6784,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
-                  class="header flex gaps align-center"
+                  class="header flex gap-4 items-center"
                 >
                   <h5
                     class="title"
@@ -6792,7 +6792,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                     Browse All
                   </h5>
                   <div
-                    class="info-panel box grow"
+                    class="info-panel grow shrink-0 basis-0"
                   >
                     3 items
                   </div>

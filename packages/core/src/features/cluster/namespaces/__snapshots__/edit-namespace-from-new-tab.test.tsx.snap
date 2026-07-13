@@ -447,7 +447,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -455,7 +455,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -1269,7 +1269,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -1277,7 +1277,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -2096,7 +2096,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -2104,7 +2104,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -3022,7 +3022,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -3030,7 +3030,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -3896,7 +3896,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -3904,7 +3904,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -4872,7 +4872,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -4880,7 +4880,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -5850,7 +5850,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -5858,7 +5858,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -6790,7 +6790,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -6798,7 +6798,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -7725,7 +7725,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -7733,7 +7733,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -8651,7 +8651,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -8659,7 +8659,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -9577,7 +9577,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -9585,7 +9585,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -10503,7 +10503,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -10511,7 +10511,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -11234,7 +11234,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -11242,7 +11242,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -12169,7 +12169,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -12177,7 +12177,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -13095,7 +13095,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -13103,7 +13103,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -14021,7 +14021,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -14029,7 +14029,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>

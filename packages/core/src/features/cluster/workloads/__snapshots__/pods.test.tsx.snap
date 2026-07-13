@@ -451,7 +451,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
               class="ItemListLayout flex flex-col KubeObjectListLayout Pods"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -459,7 +459,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
                   Pods
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   1 item
                 </div>
@@ -1633,7 +1633,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
               class="ItemListLayout flex flex-col KubeObjectListLayout Pods"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -1641,7 +1641,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
                   Pods
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -2667,7 +2667,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
               class="ItemListLayout flex flex-col KubeObjectListLayout Pods"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -2675,7 +2675,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
                   Pods
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>

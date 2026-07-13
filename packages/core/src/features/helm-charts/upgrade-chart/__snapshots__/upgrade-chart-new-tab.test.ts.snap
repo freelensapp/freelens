@@ -451,7 +451,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -459,7 +459,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -1315,7 +1315,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -1323,7 +1323,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   1 item
                 </div>
@@ -2321,7 +2321,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -2329,7 +2329,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   1 item
                 </div>
@@ -3343,7 +3343,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -3351,7 +3351,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   1 item
                 </div>
@@ -4401,7 +4401,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -4409,7 +4409,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   1 item
                 </div>
@@ -5616,7 +5616,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -5624,7 +5624,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   1 item
                 </div>
@@ -6833,7 +6833,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -6841,7 +6841,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   1 item
                 </div>

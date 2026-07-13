@@ -1046,7 +1046,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -2117,7 +2117,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -3066,7 +3066,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -4283,7 +4283,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -5469,7 +5469,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -6650,7 +6650,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -7831,7 +7831,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -9034,7 +9034,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -10251,7 +10251,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -11432,7 +11432,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -12668,7 +12668,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -13693,7 +13693,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -13701,7 +13701,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -14674,7 +14674,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -15716,7 +15716,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -17110,7 +17110,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -18111,7 +18111,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -19346,7 +19346,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -20579,7 +20579,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -21760,7 +21760,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -22941,7 +22941,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"

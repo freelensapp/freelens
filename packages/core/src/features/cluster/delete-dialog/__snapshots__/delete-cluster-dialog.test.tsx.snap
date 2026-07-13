@@ -330,7 +330,7 @@ exports[`Deleting a cluster > when an internal kubeconfig cluster is used > when
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
-                  class="header flex gaps align-center"
+                  class="header flex gap-4 items-center"
                 >
                   <h5
                     class="title"
@@ -338,7 +338,7 @@ exports[`Deleting a cluster > when an internal kubeconfig cluster is used > when
                     Browse All
                   </h5>
                   <div
-                    class="info-panel box grow"
+                    class="info-panel grow shrink-0 basis-0"
                   >
                     0 items
                   </div>
@@ -1079,7 +1079,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
-                  class="header flex gaps align-center"
+                  class="header flex gap-4 items-center"
                 >
                   <h5
                     class="title"
@@ -1087,7 +1087,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
                     Browse All
                   </h5>
                   <div
-                    class="info-panel box grow"
+                    class="info-panel grow shrink-0 basis-0"
                   >
                     0 items
                   </div>
@@ -1861,7 +1861,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
-                  class="header flex gaps align-center"
+                  class="header flex gap-4 items-center"
                 >
                   <h5
                     class="title"
@@ -1869,7 +1869,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
                     Browse All
                   </h5>
                   <div
-                    class="info-panel box grow"
+                    class="info-panel grow shrink-0 basis-0"
                   >
                     0 items
                   </div>
@@ -2724,7 +2724,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
-                  class="header flex gaps align-center"
+                  class="header flex gap-4 items-center"
                 >
                   <h5
                     class="title"
@@ -2732,7 +2732,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
                     Browse All
                   </h5>
                   <div
-                    class="info-panel box grow"
+                    class="info-panel grow shrink-0 basis-0"
                   >
                     0 items
                   </div>
@@ -3587,7 +3587,7 @@ exports[`Deleting a cluster > when the kubeconfig has only one cluster > when th
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
-                  class="header flex gaps align-center"
+                  class="header flex gap-4 items-center"
                 >
                   <h5
                     class="title"
@@ -3595,7 +3595,7 @@ exports[`Deleting a cluster > when the kubeconfig has only one cluster > when th
                     Browse All
                   </h5>
                   <div
-                    class="info-panel box grow"
+                    class="info-panel grow shrink-0 basis-0"
                   >
                     0 items
                   </div>

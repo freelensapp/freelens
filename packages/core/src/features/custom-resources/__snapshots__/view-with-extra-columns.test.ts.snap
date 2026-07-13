@@ -419,7 +419,7 @@ exports[`Viewing Custom Resources with extra columns > renders 1`] = `
             class="ItemListLayout flex flex-col KubeObjectListLayout CustomResources"
           >
             <div
-              class="header flex gaps align-center"
+              class="header flex gap-4 items-center"
             >
               <h5
                 class="title"
@@ -427,7 +427,7 @@ exports[`Viewing Custom Resources with extra columns > renders 1`] = `
                 SomeResource
               </h5>
               <div
-                class="info-panel box grow"
+                class="info-panel grow shrink-0 basis-0"
               >
                 1 item
               </div>

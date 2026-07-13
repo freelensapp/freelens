@@ -455,7 +455,7 @@ exports[`opening dock tab for installing helm chart > given application is start
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -1145,7 +1145,7 @@ exports[`opening dock tab for installing helm chart > given application is start
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -2003,7 +2003,7 @@ exports[`opening dock tab for installing helm chart > given application is start
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -2918,7 +2918,7 @@ exports[`opening dock tab for installing helm chart > given application is start
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -3983,7 +3983,7 @@ exports[`opening dock tab for installing helm chart > given application is start
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -5058,7 +5058,7 @@ exports[`opening dock tab for installing helm chart > given application is start
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -6123,7 +6123,7 @@ exports[`opening dock tab for installing helm chart > given application is start
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -7192,7 +7192,7 @@ exports[`opening dock tab for installing helm chart > given application is start
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -8267,7 +8267,7 @@ exports[`opening dock tab for installing helm chart > given application is start
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"

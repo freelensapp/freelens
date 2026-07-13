@@ -361,7 +361,7 @@ exports[`entity running technical tests > when navigated to catalog > renders 1`
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
-                  class="header flex gaps align-center"
+                  class="header flex gap-4 items-center"
                 >
                   <h5
                     class="title"
@@ -369,7 +369,7 @@ exports[`entity running technical tests > when navigated to catalog > renders 1`
                     Browse All
                   </h5>
                   <div
-                    class="info-panel box grow"
+                    class="info-panel grow shrink-0 basis-0"
                   >
                     1 item
                   </div>
@@ -1179,7 +1179,7 @@ exports[`entity running technical tests > when navigated to catalog > when detai
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
-                  class="header flex gaps align-center"
+                  class="header flex gap-4 items-center"
                 >
                   <h5
                     class="title"
@@ -1187,7 +1187,7 @@ exports[`entity running technical tests > when navigated to catalog > when detai
                     Browse All
                   </h5>
                   <div
-                    class="info-panel box grow"
+                    class="info-panel grow shrink-0 basis-0"
                   >
                     1 item
                   </div>

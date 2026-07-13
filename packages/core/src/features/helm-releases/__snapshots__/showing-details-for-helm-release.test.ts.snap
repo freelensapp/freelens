@@ -451,7 +451,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -459,7 +459,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -1396,7 +1396,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -1404,7 +1404,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   2 items
                 </div>
@@ -2614,7 +2614,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -2622,7 +2622,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   2 items
                 </div>
@@ -3893,7 +3893,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -3901,7 +3901,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   2 items
                 </div>
@@ -5172,7 +5172,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -5180,7 +5180,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   2 items
                 </div>
@@ -6697,7 +6697,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -6705,7 +6705,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   2 items
                 </div>
@@ -8222,7 +8222,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -8230,7 +8230,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   2 items
                 </div>
@@ -9747,7 +9747,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -9755,7 +9755,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -10999,7 +10999,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -11007,7 +11007,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -12253,7 +12253,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -12261,7 +12261,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   2 items
                 </div>
@@ -13778,7 +13778,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -13786,7 +13786,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   2 items
                 </div>
@@ -15057,7 +15057,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -15065,7 +15065,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   2 items
                 </div>
@@ -16338,7 +16338,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -16346,7 +16346,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   2 items
                 </div>
@@ -17556,7 +17556,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -17564,7 +17564,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   2 items
                 </div>
@@ -18835,7 +18835,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -18843,7 +18843,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   2 items
                 </div>
@@ -20114,7 +20114,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -20122,7 +20122,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   2 items
                 </div>
@@ -21393,7 +21393,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -21401,7 +21401,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   2 items
                 </div>
@@ -22672,7 +22672,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -22680,7 +22680,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
