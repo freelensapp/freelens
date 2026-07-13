@@ -11,13 +11,13 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -37,7 +37,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -418,7 +418,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-workloads-overview"
               role="tab"
@@ -550,7 +550,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="ResizingAnchor vertical leading disabled"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -561,10 +561,10 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               />
             </div>
             <div
-              class="toolbar flex gaps align-center box grow pl-0"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0 pl-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -602,13 +602,13 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -628,7 +628,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -1009,7 +1009,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -1022,7 +1022,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -1046,7 +1046,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -1390,7 +1390,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -1408,7 +1408,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="ResizingAnchor vertical leading disabled"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -1419,10 +1419,10 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               />
             </div>
             <div
-              class="toolbar flex gaps align-center box grow pl-0"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0 pl-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -1451,13 +1451,13 @@ exports[`installing helm chart from new tab > given tab for installing chart was
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           Chart: some-repository/some-name
           <i
@@ -1491,7 +1491,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       >
         <div
           class="grow shrink-0 basis-0"
@@ -1673,13 +1673,13 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -1699,7 +1699,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -2080,7 +2080,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -2093,7 +2093,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -2117,7 +2117,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -2461,7 +2461,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -2479,7 +2479,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -2489,7 +2489,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -2543,10 +2543,10 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -2622,13 +2622,13 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -2648,7 +2648,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -3029,7 +3029,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -3042,7 +3042,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -3066,7 +3066,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -3410,7 +3410,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -3428,7 +3428,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -3438,7 +3438,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -3492,10 +3492,10 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -3558,7 +3558,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   class="controls"
                 >
                   <div
-                    class="install-controls flex gaps align-center"
+                    class="install-controls flex gap-2 items-center"
                   >
                     <span>
                       Chart
@@ -3839,13 +3839,13 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -3865,7 +3865,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -4246,7 +4246,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -4259,7 +4259,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -4283,7 +4283,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -4627,7 +4627,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -4645,7 +4645,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -4655,7 +4655,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -4709,10 +4709,10 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -4775,7 +4775,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   class="controls"
                 >
                   <div
-                    class="install-controls flex gaps align-center"
+                    class="install-controls flex gap-2 items-center"
                   >
                     <span>
                       Chart
@@ -5025,13 +5025,13 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -5051,7 +5051,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -5432,7 +5432,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -5445,7 +5445,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -5469,7 +5469,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -5813,7 +5813,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -5831,7 +5831,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -5841,7 +5841,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -5895,10 +5895,10 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -5961,7 +5961,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   class="controls"
                 >
                   <div
-                    class="install-controls flex gaps align-center"
+                    class="install-controls flex gap-2 items-center"
                   >
                     <span>
                       Chart
@@ -6206,13 +6206,13 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -6232,7 +6232,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -6613,7 +6613,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -6626,7 +6626,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -6650,7 +6650,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -6994,7 +6994,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -7012,7 +7012,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -7022,7 +7022,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -7076,10 +7076,10 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -7142,7 +7142,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   class="controls"
                 >
                   <div
-                    class="install-controls flex gaps align-center"
+                    class="install-controls flex gap-2 items-center"
                   >
                     <span>
                       Chart
@@ -7387,13 +7387,13 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -7413,7 +7413,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -7794,7 +7794,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -7807,7 +7807,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -7831,7 +7831,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -8175,7 +8175,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -8193,7 +8193,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -8203,7 +8203,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -8257,10 +8257,10 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -8323,7 +8323,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   class="controls"
                 >
                   <div
-                    class="install-controls flex gaps align-center"
+                    class="install-controls flex gap-2 items-center"
                   >
                     <span>
                       Chart
@@ -8590,13 +8590,13 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -8616,7 +8616,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -8997,7 +8997,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -9010,7 +9010,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -9034,7 +9034,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -9378,7 +9378,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -9396,7 +9396,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -9406,7 +9406,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -9460,10 +9460,10 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -9526,7 +9526,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   class="controls"
                 >
                   <div
-                    class="install-controls flex gaps align-center"
+                    class="install-controls flex gap-2 items-center"
                   >
                     <span>
                       Chart
@@ -9807,13 +9807,13 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -9833,7 +9833,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -10214,7 +10214,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -10227,7 +10227,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -10251,7 +10251,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -10595,7 +10595,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -10613,7 +10613,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -10623,7 +10623,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -10677,10 +10677,10 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -10743,7 +10743,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   class="controls"
                 >
                   <div
-                    class="install-controls flex gaps align-center"
+                    class="install-controls flex gap-2 items-center"
                   >
                     <span>
                       Chart
@@ -10988,13 +10988,13 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -11014,7 +11014,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -11395,7 +11395,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -11408,7 +11408,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -11432,7 +11432,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -11776,7 +11776,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -11794,7 +11794,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -11804,7 +11804,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -11858,10 +11858,10 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -11924,7 +11924,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   class="controls"
                 >
                   <div
-                    class="install-controls flex gaps align-center"
+                    class="install-controls flex gap-2 items-center"
                   >
                     <span>
                       Chart
@@ -12224,13 +12224,13 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -12250,7 +12250,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -12631,7 +12631,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -12644,7 +12644,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -12668,7 +12668,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -13012,7 +13012,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -13030,7 +13030,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -13040,7 +13040,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -13094,10 +13094,10 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -13151,7 +13151,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             style="flex-basis: 300px;"
           >
             <div
-              class="InstallChartDone flex column gaps align-center justify-center"
+              class="InstallChartDone flex flex-col gap-3 items-center justify-center"
             >
               <p>
                 <i
@@ -13169,7 +13169,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 Installation complete!
               </p>
               <div
-                class="flex gaps align-center"
+                class="flex gap-3 items-center"
               >
                 <button
                   class="Button primary"
@@ -13253,13 +13253,13 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -13279,7 +13279,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -13660,7 +13660,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -13673,7 +13673,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -13693,7 +13693,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -13701,7 +13701,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -14052,7 +14052,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -14070,7 +14070,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="ResizingAnchor vertical leading disabled"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -14081,10 +14081,10 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               />
             </div>
             <div
-              class="toolbar flex gaps align-center box grow pl-0"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0 pl-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -14114,13 +14114,13 @@ exports[`installing helm chart from new tab > given tab for installing chart was
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           some-release
           <i
@@ -14157,7 +14157,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       >
         <div
           class="Spinner singleColor center"
@@ -14230,13 +14230,13 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -14256,7 +14256,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -14637,7 +14637,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -14650,7 +14650,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -14674,7 +14674,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -15018,7 +15018,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -15036,7 +15036,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -15046,7 +15046,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -15100,10 +15100,10 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -15157,7 +15157,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             style="flex-basis: 300px;"
           >
             <div
-              class="InstallChartDone flex column gaps align-center justify-center"
+              class="InstallChartDone flex flex-col gap-3 items-center justify-center"
             >
               <p>
                 <i
@@ -15175,7 +15175,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 Installation complete!
               </p>
               <div
-                class="flex gaps align-center"
+                class="flex gap-3 items-center"
               >
                 <button
                   class="Button primary"
@@ -15229,7 +15229,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             </code>
           </div>
           <div
-            class="buttons flex gaps align-center justify-space-between"
+            class="buttons flex gap-2 items-center justify-between"
           >
             <button
               class="Button plain"
@@ -15272,13 +15272,13 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -15298,7 +15298,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -15679,7 +15679,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -15692,7 +15692,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -15716,7 +15716,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -16060,7 +16060,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -16078,7 +16078,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -16088,7 +16088,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -16142,10 +16142,10 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -16208,7 +16208,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   class="controls"
                 >
                   <div
-                    class="install-controls flex gaps align-center"
+                    class="install-controls flex gap-2 items-center"
                   >
                     <span>
                       Chart
@@ -16444,13 +16444,13 @@ exports[`installing helm chart from new tab > given tab for installing chart was
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           Chart: some-repository/some-other-name
           <i
@@ -16484,7 +16484,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       >
         <div
           class="grow shrink-0 basis-0"
@@ -16666,13 +16666,13 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -16692,7 +16692,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -17073,7 +17073,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -17086,7 +17086,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -17110,7 +17110,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -17454,7 +17454,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -17472,7 +17472,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -17482,7 +17482,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab"
+                  class="Tab flex gap-2 items-center DockTab"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -17534,7 +17534,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-second-tab-id"
                   id="tab-some-second-tab-id"
                   role="tab"
@@ -17588,10 +17588,10 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -17667,13 +17667,13 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -17693,7 +17693,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -18074,7 +18074,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -18087,7 +18087,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -18111,7 +18111,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -18455,7 +18455,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -18473,7 +18473,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -18483,7 +18483,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab"
+                  class="Tab flex gap-2 items-center DockTab"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -18535,7 +18535,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-second-tab-id"
                   id="tab-some-second-tab-id"
                   role="tab"
@@ -18589,10 +18589,10 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -18655,7 +18655,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   class="controls"
                 >
                   <div
-                    class="install-controls flex gaps align-center"
+                    class="install-controls flex gap-2 items-center"
                   >
                     <span>
                       Chart
@@ -18902,13 +18902,13 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -18928,7 +18928,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -19309,7 +19309,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -19322,7 +19322,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -19346,7 +19346,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -19690,7 +19690,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -19708,7 +19708,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -19718,7 +19718,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -19770,7 +19770,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center DockTab"
+                  class="Tab flex gap-2 items-center DockTab"
                   data-testid="dock-tab-for-some-second-tab-id"
                   id="tab-some-second-tab-id"
                   role="tab"
@@ -19824,10 +19824,10 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -19890,7 +19890,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   class="controls"
                 >
                   <div
-                    class="install-controls flex gaps align-center"
+                    class="install-controls flex gap-2 items-center"
                   >
                     <span>
                       Chart
@@ -20135,13 +20135,13 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -20161,7 +20161,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -20542,7 +20542,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -20555,7 +20555,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -20579,7 +20579,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -20923,7 +20923,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -20941,7 +20941,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -20951,7 +20951,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -21005,10 +21005,10 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -21071,7 +21071,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   class="controls"
                 >
                   <div
-                    class="install-controls flex gaps align-center"
+                    class="install-controls flex gap-2 items-center"
                   >
                     <span>
                       Chart
@@ -21316,13 +21316,13 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -21342,7 +21342,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -21723,7 +21723,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -21736,7 +21736,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -21760,7 +21760,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -22104,7 +22104,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -22122,7 +22122,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -22132,7 +22132,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -22186,10 +22186,10 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -22252,7 +22252,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   class="controls"
                 >
                   <div
-                    class="install-controls flex gaps align-center"
+                    class="install-controls flex gap-2 items-center"
                   >
                     <span>
                       Chart
@@ -22497,13 +22497,13 @@ exports[`installing helm chart from new tab > given tab for installing chart was
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -22523,7 +22523,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -22904,7 +22904,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -22917,7 +22917,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -22941,7 +22941,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               class="ItemListLayout flex flex-col HelmCharts"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <div
                   style="display: flex; align-items: center; gap: 8px;"
@@ -23285,7 +23285,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -23303,7 +23303,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
             class="ResizingAnchor vertical leading disabled"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -23314,10 +23314,10 @@ exports[`installing helm chart from new tab > given tab for installing chart was
               />
             </div>
             <div
-              class="toolbar flex gaps align-center box grow pl-0"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0 pl-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"

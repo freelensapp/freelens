@@ -10,13 +10,13 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           
         </div>
@@ -36,7 +36,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       />
     </div>
     <div
@@ -455,7 +455,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
           class="Tabs center scrollable"
         >
           <div
-            class="Tab flex gaps align-center active"
+            class="Tab flex gap-2 items-center active"
             data-is-active-test="true"
             data-testid="tab-link-for-sidebar-item-workloads-overview"
             role="tab"
@@ -587,7 +587,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
           class="ResizingAnchor vertical leading"
         />
         <div
-          class="tabs-container flex align-center"
+          class="tabs-container flex items-center"
         >
           <div
             class="dockTabs"
@@ -597,7 +597,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
               class="Tabs tabs"
             >
               <div
-                class="Tab flex gaps align-center DockTab TerminalTab active"
+                class="Tab flex gap-2 items-center DockTab TerminalTab active"
                 data-testid="dock-tab-for-terminal"
                 id="tab-terminal"
                 role="tab"
@@ -651,10 +651,10 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
             </div>
           </div>
           <div
-            class="toolbar flex gaps align-center box grow"
+            class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
           >
             <div
-              class="dock-menu box grow"
+              class="dock-menu grow shrink-0 basis-0"
             >
               <i
                 class="Icon new-dock-tab material interactive focusable"
@@ -718,13 +718,13 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           
         </div>
@@ -744,7 +744,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       />
     </div>
     <div
@@ -1163,7 +1163,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
           class="Tabs center scrollable"
         >
           <div
-            class="Tab flex gaps align-center active"
+            class="Tab flex gap-2 items-center active"
             data-is-active-test="true"
             data-testid="tab-link-for-sidebar-item-workloads-overview"
             role="tab"
@@ -1295,7 +1295,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
           class="ResizingAnchor vertical leading"
         />
         <div
-          class="tabs-container flex align-center"
+          class="tabs-container flex items-center"
         >
           <div
             class="dockTabs"
@@ -1305,7 +1305,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
               class="Tabs tabs"
             >
               <div
-                class="Tab flex gaps align-center DockTab TerminalTab active"
+                class="Tab flex gap-2 items-center DockTab TerminalTab active"
                 data-testid="dock-tab-for-terminal"
                 id="tab-terminal"
                 role="tab"
@@ -1359,10 +1359,10 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
             </div>
           </div>
           <div
-            class="toolbar flex gaps align-center box grow"
+            class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
           >
             <div
-              class="dock-menu box grow"
+              class="dock-menu grow shrink-0 basis-0"
             >
               <i
                 class="Icon new-dock-tab material interactive focusable"
@@ -1426,13 +1426,13 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           
         </div>
@@ -1452,7 +1452,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       />
     </div>
     <div
@@ -1911,7 +1911,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
           class="Tabs center scrollable"
         >
           <div
-            class="Tab flex gaps align-center active"
+            class="Tab flex gap-2 items-center active"
             data-is-active-test="true"
             data-testid="tab-link-for-sidebar-item-workloads-overview"
             role="tab"
@@ -2043,7 +2043,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
           class="ResizingAnchor vertical leading"
         />
         <div
-          class="tabs-container flex align-center"
+          class="tabs-container flex items-center"
         >
           <div
             class="dockTabs"
@@ -2053,7 +2053,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
               class="Tabs tabs"
             >
               <div
-                class="Tab flex gaps align-center DockTab TerminalTab active"
+                class="Tab flex gap-2 items-center DockTab TerminalTab active"
                 data-testid="dock-tab-for-terminal"
                 id="tab-terminal"
                 role="tab"
@@ -2107,10 +2107,10 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
             </div>
           </div>
           <div
-            class="toolbar flex gaps align-center box grow"
+            class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
           >
             <div
-              class="dock-menu box grow"
+              class="dock-menu grow shrink-0 basis-0"
             >
               <i
                 class="Icon new-dock-tab material interactive focusable"
@@ -2174,13 +2174,13 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           
         </div>
@@ -2200,7 +2200,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       />
     </div>
     <div
@@ -2667,7 +2667,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
           class="ResizingAnchor vertical leading"
         />
         <div
-          class="tabs-container flex align-center"
+          class="tabs-container flex items-center"
         >
           <div
             class="dockTabs"
@@ -2677,7 +2677,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
               class="Tabs tabs"
             >
               <div
-                class="Tab flex gaps align-center DockTab TerminalTab active"
+                class="Tab flex gap-2 items-center DockTab TerminalTab active"
                 data-testid="dock-tab-for-terminal"
                 id="tab-terminal"
                 role="tab"
@@ -2731,10 +2731,10 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
             </div>
           </div>
           <div
-            class="toolbar flex gaps align-center box grow"
+            class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
           >
             <div
-              class="dock-menu box grow"
+              class="dock-menu grow shrink-0 basis-0"
             >
               <i
                 class="Icon new-dock-tab material interactive focusable"
@@ -2798,13 +2798,13 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           
         </div>
@@ -2824,7 +2824,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       />
     </div>
     <div
@@ -3250,7 +3250,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
           class="ResizingAnchor vertical leading"
         />
         <div
-          class="tabs-container flex align-center"
+          class="tabs-container flex items-center"
         >
           <div
             class="dockTabs"
@@ -3260,7 +3260,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
               class="Tabs tabs"
             >
               <div
-                class="Tab flex gaps align-center DockTab TerminalTab active"
+                class="Tab flex gap-2 items-center DockTab TerminalTab active"
                 data-testid="dock-tab-for-terminal"
                 id="tab-terminal"
                 role="tab"
@@ -3314,10 +3314,10 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
             </div>
           </div>
           <div
-            class="toolbar flex gaps align-center box grow"
+            class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
           >
             <div
-              class="dock-menu box grow"
+              class="dock-menu grow shrink-0 basis-0"
             >
               <i
                 class="Icon new-dock-tab material interactive focusable"
@@ -3381,13 +3381,13 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           
         </div>
@@ -3407,7 +3407,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       />
     </div>
     <div
@@ -3866,7 +3866,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
           class="Tabs center scrollable"
         >
           <div
-            class="Tab flex gaps align-center active"
+            class="Tab flex gap-2 items-center active"
             data-is-active-test="true"
             data-testid="tab-link-for-sidebar-item-workloads-overview"
             role="tab"
@@ -3998,7 +3998,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
           class="ResizingAnchor vertical leading"
         />
         <div
-          class="tabs-container flex align-center"
+          class="tabs-container flex items-center"
         >
           <div
             class="dockTabs"
@@ -4008,7 +4008,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
               class="Tabs tabs"
             >
               <div
-                class="Tab flex gaps align-center DockTab TerminalTab active"
+                class="Tab flex gap-2 items-center DockTab TerminalTab active"
                 data-testid="dock-tab-for-terminal"
                 id="tab-terminal"
                 role="tab"
@@ -4062,10 +4062,10 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
             </div>
           </div>
           <div
-            class="toolbar flex gaps align-center box grow"
+            class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
           >
             <div
-              class="dock-menu box grow"
+              class="dock-menu grow shrink-0 basis-0"
             >
               <i
                 class="Icon new-dock-tab material interactive focusable"
@@ -4129,13 +4129,13 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           
         </div>
@@ -4155,7 +4155,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       />
     </div>
     <div
@@ -4574,7 +4574,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
           class="Tabs center scrollable"
         >
           <div
-            class="Tab flex gaps align-center active"
+            class="Tab flex gap-2 items-center active"
             data-is-active-test="true"
             data-testid="tab-link-for-sidebar-item-workloads-overview"
             role="tab"
@@ -4706,7 +4706,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
           class="ResizingAnchor vertical leading"
         />
         <div
-          class="tabs-container flex align-center"
+          class="tabs-container flex items-center"
         >
           <div
             class="dockTabs"
@@ -4716,7 +4716,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
               class="Tabs tabs"
             >
               <div
-                class="Tab flex gaps align-center DockTab TerminalTab active"
+                class="Tab flex gap-2 items-center DockTab TerminalTab active"
                 data-testid="dock-tab-for-terminal"
                 id="tab-terminal"
                 role="tab"
@@ -4770,10 +4770,10 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
             </div>
           </div>
           <div
-            class="toolbar flex gaps align-center box grow"
+            class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
           >
             <div
-              class="dock-menu box grow"
+              class="dock-menu grow shrink-0 basis-0"
             >
               <i
                 class="Icon new-dock-tab material interactive focusable"

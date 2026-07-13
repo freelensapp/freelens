@@ -11,13 +11,13 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -37,7 +37,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -447,7 +447,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -455,7 +455,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -653,7 +653,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -690,7 +690,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -700,7 +700,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -754,10 +754,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -833,13 +833,13 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -859,7 +859,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -1269,7 +1269,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -1277,7 +1277,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -1475,7 +1475,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -1512,7 +1512,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -1522,7 +1522,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -1576,10 +1576,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -1660,13 +1660,13 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -1686,7 +1686,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -2096,7 +2096,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -2104,7 +2104,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -2302,7 +2302,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -2339,7 +2339,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -2349,7 +2349,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -2403,10 +2403,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -2586,13 +2586,13 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -2612,7 +2612,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -3022,7 +3022,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -3030,7 +3030,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -3228,7 +3228,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -3265,7 +3265,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -3275,7 +3275,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab"
+                  class="Tab flex gap-2 items-center DockTab"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -3327,7 +3327,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-second-tab-id"
                   id="tab-some-second-tab-id"
                   role="tab"
@@ -3381,10 +3381,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -3460,13 +3460,13 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -3486,7 +3486,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -3896,7 +3896,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -3904,7 +3904,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -4102,7 +4102,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -4139,7 +4139,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -4149,7 +4149,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab"
+                  class="Tab flex gap-2 items-center DockTab"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -4201,7 +4201,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-second-tab-id"
                   id="tab-some-second-tab-id"
                   role="tab"
@@ -4255,10 +4255,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -4436,13 +4436,13 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -4462,7 +4462,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -4872,7 +4872,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -4880,7 +4880,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -5078,7 +5078,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -5115,7 +5115,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -5125,7 +5125,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -5177,7 +5177,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center DockTab"
+                  class="Tab flex gap-2 items-center DockTab"
                   data-testid="dock-tab-for-some-second-tab-id"
                   id="tab-some-second-tab-id"
                   role="tab"
@@ -5231,10 +5231,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -5414,13 +5414,13 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -5440,7 +5440,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -5850,7 +5850,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -5858,7 +5858,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -6056,7 +6056,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -6093,7 +6093,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -6103,7 +6103,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -6157,10 +6157,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -6354,13 +6354,13 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -6380,7 +6380,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -6790,7 +6790,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -6798,7 +6798,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -6996,7 +6996,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -7033,7 +7033,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -7043,7 +7043,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -7097,10 +7097,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -7289,13 +7289,13 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -7315,7 +7315,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -7725,7 +7725,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -7733,7 +7733,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -7931,7 +7931,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -7968,7 +7968,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -7978,7 +7978,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -8032,10 +8032,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -8215,13 +8215,13 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -8241,7 +8241,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -8651,7 +8651,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -8659,7 +8659,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -8857,7 +8857,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -8894,7 +8894,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -8904,7 +8904,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -8958,10 +8958,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -9141,13 +9141,13 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -9167,7 +9167,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -9577,7 +9577,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -9585,7 +9585,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -9783,7 +9783,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -9820,7 +9820,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -9830,7 +9830,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -9884,10 +9884,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -10067,13 +10067,13 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -10093,7 +10093,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -10503,7 +10503,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -10511,7 +10511,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -10709,7 +10709,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -10746,7 +10746,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
             class="ResizingAnchor vertical leading disabled"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -10757,10 +10757,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               />
             </div>
             <div
-              class="toolbar flex gaps align-center box grow pl-0"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0 pl-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -10798,13 +10798,13 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -10824,7 +10824,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -11234,7 +11234,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -11242,7 +11242,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -11440,7 +11440,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -11477,7 +11477,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -11487,7 +11487,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -11541,10 +11541,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -11733,13 +11733,13 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -11759,7 +11759,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -12169,7 +12169,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -12177,7 +12177,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -12375,7 +12375,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -12412,7 +12412,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -12422,7 +12422,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -12476,10 +12476,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -12659,13 +12659,13 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -12685,7 +12685,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -13095,7 +13095,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -13103,7 +13103,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -13301,7 +13301,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -13338,7 +13338,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -13348,7 +13348,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -13402,10 +13402,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -13585,13 +13585,13 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -13611,7 +13611,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -14021,7 +14021,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               class="ItemListLayout flex flex-col KubeObjectListLayout Namespaces"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -14029,7 +14029,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   Namespaces
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -14227,7 +14227,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -14264,7 +14264,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
             class="ResizingAnchor vertical leading disabled"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -14275,10 +14275,10 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               />
             </div>
             <div
-              class="toolbar flex gaps align-center box grow pl-0"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0 pl-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -14920,7 +14920,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -15742,7 +15742,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -16569,7 +16569,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -17495,7 +17495,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -18369,7 +18369,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -19345,7 +19345,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -20323,7 +20323,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -21263,7 +21263,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -22198,7 +22198,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -23124,7 +23124,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -24050,7 +24050,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -24976,7 +24976,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -25707,7 +25707,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -26642,7 +26642,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -27568,7 +27568,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"
@@ -28494,7 +28494,7 @@ exports[`cluster/namespaces - edit namespace from new tab when navigating to nam
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 >
                   <button
                     class="Button add-button primary big round"

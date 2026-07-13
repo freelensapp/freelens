@@ -91,7 +91,7 @@ class NonInjectedReleaseRollbackDialog extends React.Component<ReleaseRollbackDi
     }
 
     return (
-      <div className="flex gaps align-center">
+      <div className="flex gap-2 items-center">
         <b>Revision</b>
         <Select
           id="revision-input"

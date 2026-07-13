@@ -235,10 +235,10 @@ exports[`add-cluster - navigation using application menu > renders 1`] = `
       </div>
     </main>
     <div
-      class="HotbarMenu flex column"
+      class="HotbarMenu flex flex-col"
     >
       <div
-        class="HotbarItems flex column gaps"
+        class="HotbarItems flex flex-col gap-2"
       >
         <div
           class="HotbarCell isDraggingOwner animateDown"
@@ -460,7 +460,7 @@ exports[`add-cluster - navigation using application menu > when navigating to ad
           id="ScrollSpyRoot"
         >
           <div
-            class="content flex column gaps"
+            class="content flex flex-col gap-2"
           >
             <h2>
               Add Clusters from Kubeconfig
@@ -540,10 +540,10 @@ exports[`add-cluster - navigation using application menu > when navigating to ad
       </div>
     </main>
     <div
-      class="HotbarMenu flex column"
+      class="HotbarMenu flex flex-col"
     >
       <div
-        class="HotbarItems flex column gaps"
+        class="HotbarItems flex flex-col gap-2"
       >
         <div
           class="HotbarCell isDraggingOwner animateDown"

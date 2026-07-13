@@ -235,10 +235,10 @@ exports[`navigate to extension page > renders 1`] = `
       </div>
     </main>
     <div
-      class="HotbarMenu flex column"
+      class="HotbarMenu flex flex-col"
     >
       <div
-        class="HotbarItems flex column gaps"
+        class="HotbarItems flex flex-col gap-2"
       >
         <div
           class="HotbarCell isDraggingOwner animateDown"
@@ -456,10 +456,10 @@ exports[`navigate to extension page > when extension navigates to child route > 
       </div>
     </main>
     <div
-      class="HotbarMenu flex column"
+      class="HotbarMenu flex flex-col"
     >
       <div
-        class="HotbarItems flex column gaps"
+        class="HotbarItems flex flex-col gap-2"
       >
         <div
           class="HotbarCell isDraggingOwner animateDown"
@@ -693,10 +693,10 @@ exports[`navigate to extension page > when extension navigates to route with par
       </div>
     </main>
     <div
-      class="HotbarMenu flex column"
+      class="HotbarMenu flex flex-col"
     >
       <div
-        class="HotbarItems flex column gaps"
+        class="HotbarItems flex flex-col gap-2"
       >
         <div
           class="HotbarCell isDraggingOwner animateDown"
@@ -930,10 +930,10 @@ exports[`navigate to extension page > when extension navigates to route without 
       </div>
     </main>
     <div
-      class="HotbarMenu flex column"
+      class="HotbarMenu flex flex-col"
     >
       <div
-        class="HotbarItems flex column gaps"
+        class="HotbarItems flex flex-col gap-2"
       >
         <div
           class="HotbarCell isDraggingOwner animateDown"
@@ -1167,10 +1167,10 @@ exports[`navigate to extension page > when extension navigates to route without 
       </div>
     </main>
     <div
-      class="HotbarMenu flex column"
+      class="HotbarMenu flex flex-col"
     >
       <div
-        class="HotbarItems flex column gaps"
+        class="HotbarItems flex flex-col gap-2"
       >
         <div
           class="HotbarCell isDraggingOwner animateDown"

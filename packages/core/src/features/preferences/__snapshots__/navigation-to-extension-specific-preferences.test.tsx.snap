@@ -97,7 +97,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                     Preferences
                   </div>
                   <div
-                    class="Tab flex gaps align-center active"
+                    class="Tab flex gap-2 items-center active"
                     data-preference-tab-link-test="app"
                     role="tab"
                     tabindex="0"
@@ -109,7 +109,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -121,7 +121,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
                     tabindex="0"
@@ -133,7 +133,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="editor"
                     role="tab"
                     tabindex="0"
@@ -145,7 +145,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="terminal"
                     role="tab"
                     tabindex="0"
@@ -157,7 +157,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="extension-registered-tab-page-id-metrics-extension-tab"
                     role="tab"
                     tabindex="0"
@@ -639,10 +639,10 @@ exports[`preferences - navigation to extension specific preferences > given in p
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col gap-2"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -877,7 +877,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   Preferences
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="app"
                   role="tab"
                   tabindex="0"
@@ -889,7 +889,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="proxy"
                   role="tab"
                   tabindex="0"
@@ -901,7 +901,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="kubernetes"
                   role="tab"
                   tabindex="0"
@@ -913,7 +913,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="editor"
                   role="tab"
                   tabindex="0"
@@ -925,7 +925,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="terminal"
                   role="tab"
                   tabindex="0"
@@ -937,7 +937,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center active"
+                  class="Tab flex gap-2 items-center active"
                   data-preference-tab-link-test="extension-registered-tab-page-id-metrics-extension-tab"
                   role="tab"
                   tabindex="0"
@@ -1036,10 +1036,10 @@ exports[`preferences - navigation to extension specific preferences > given in p
       </div>
     </main>
     <div
-      class="HotbarMenu flex column"
+      class="HotbarMenu flex flex-col"
     >
       <div
-        class="HotbarItems flex column gaps"
+        class="HotbarItems flex flex-col gap-2"
       >
         <div
           class="HotbarCell isDraggingOwner animateDown"
@@ -1273,7 +1273,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   Preferences
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="app"
                   role="tab"
                   tabindex="0"
@@ -1285,7 +1285,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="proxy"
                   role="tab"
                   tabindex="0"
@@ -1297,7 +1297,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="kubernetes"
                   role="tab"
                   tabindex="0"
@@ -1309,7 +1309,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="editor"
                   role="tab"
                   tabindex="0"
@@ -1321,7 +1321,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="terminal"
                   role="tab"
                   tabindex="0"
@@ -1333,7 +1333,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center active"
+                  class="Tab flex gap-2 items-center active"
                   data-preference-tab-link-test="extension-registered-tab-page-id-metrics-extension-tab"
                   role="tab"
                   tabindex="0"
@@ -1345,7 +1345,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="extension-duplicated-tab-page-id-metrics-extension-tab"
                   role="tab"
                   tabindex="0"
@@ -1444,10 +1444,10 @@ exports[`preferences - navigation to extension specific preferences > given in p
       </div>
     </main>
     <div
-      class="HotbarMenu flex column"
+      class="HotbarMenu flex flex-col"
     >
       <div
-        class="HotbarItems flex column gaps"
+        class="HotbarItems flex flex-col gap-2"
       >
         <div
           class="HotbarCell isDraggingOwner animateDown"
@@ -1681,7 +1681,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   Preferences
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="app"
                   role="tab"
                   tabindex="0"
@@ -1693,7 +1693,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="proxy"
                   role="tab"
                   tabindex="0"
@@ -1705,7 +1705,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="kubernetes"
                   role="tab"
                   tabindex="0"
@@ -1717,7 +1717,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="editor"
                   role="tab"
                   tabindex="0"
@@ -1729,7 +1729,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="terminal"
                   role="tab"
                   tabindex="0"
@@ -1741,7 +1741,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="extension-registered-tab-page-id-metrics-extension-tab"
                   role="tab"
                   tabindex="0"
@@ -1753,7 +1753,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center active"
+                  class="Tab flex gap-2 items-center active"
                   data-preference-tab-link-test="extension-duplicated-tab-page-id-metrics-extension-tab"
                   role="tab"
                   tabindex="0"
@@ -1852,10 +1852,10 @@ exports[`preferences - navigation to extension specific preferences > given in p
       </div>
     </main>
     <div
-      class="HotbarMenu flex column"
+      class="HotbarMenu flex flex-col"
     >
       <div
-        class="HotbarItems flex column gaps"
+        class="HotbarItems flex flex-col gap-2"
       >
         <div
           class="HotbarCell isDraggingOwner animateDown"
@@ -2089,7 +2089,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   Preferences
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="app"
                   role="tab"
                   tabindex="0"
@@ -2101,7 +2101,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="proxy"
                   role="tab"
                   tabindex="0"
@@ -2113,7 +2113,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="kubernetes"
                   role="tab"
                   tabindex="0"
@@ -2125,7 +2125,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="editor"
                   role="tab"
                   tabindex="0"
@@ -2137,7 +2137,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="terminal"
                   role="tab"
                   tabindex="0"
@@ -2175,7 +2175,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   Extensions
                 </div>
                 <div
-                  class="Tab flex gaps align-center active"
+                  class="Tab flex gap-2 items-center active"
                   data-preference-tab-link-test="some-test-extension-id"
                   role="tab"
                   tabindex="0"
@@ -2187,7 +2187,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="some-other-test-extension-id"
                   role="tab"
                   tabindex="0"
@@ -2286,10 +2286,10 @@ exports[`preferences - navigation to extension specific preferences > given in p
       </div>
     </main>
     <div
-      class="HotbarMenu flex column"
+      class="HotbarMenu flex flex-col"
     >
       <div
-        class="HotbarItems flex column gaps"
+        class="HotbarItems flex flex-col gap-2"
       >
         <div
           class="HotbarCell isDraggingOwner animateDown"
@@ -2523,7 +2523,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   Preferences
                 </div>
                 <div
-                  class="Tab flex gaps align-center active"
+                  class="Tab flex gap-2 items-center active"
                   data-preference-tab-link-test="app"
                   role="tab"
                   tabindex="0"
@@ -2535,7 +2535,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="proxy"
                   role="tab"
                   tabindex="0"
@@ -2547,7 +2547,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="kubernetes"
                   role="tab"
                   tabindex="0"
@@ -2559,7 +2559,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="editor"
                   role="tab"
                   tabindex="0"
@@ -2571,7 +2571,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="terminal"
                   role="tab"
                   tabindex="0"
@@ -3053,10 +3053,10 @@ exports[`preferences - navigation to extension specific preferences > given in p
       </div>
     </main>
     <div
-      class="HotbarMenu flex column"
+      class="HotbarMenu flex flex-col"
     >
       <div
-        class="HotbarItems flex column gaps"
+        class="HotbarItems flex flex-col gap-2"
       >
         <div
           class="HotbarCell isDraggingOwner animateDown"
@@ -3290,7 +3290,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   Preferences
                 </div>
                 <div
-                  class="Tab flex gaps align-center active"
+                  class="Tab flex gap-2 items-center active"
                   data-preference-tab-link-test="app"
                   role="tab"
                   tabindex="0"
@@ -3302,7 +3302,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="proxy"
                   role="tab"
                   tabindex="0"
@@ -3314,7 +3314,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="kubernetes"
                   role="tab"
                   tabindex="0"
@@ -3326,7 +3326,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="editor"
                   role="tab"
                   tabindex="0"
@@ -3338,7 +3338,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="terminal"
                   role="tab"
                   tabindex="0"
@@ -3376,7 +3376,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   Extensions
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="some-test-extension-id"
                   role="tab"
                   tabindex="0"
@@ -3858,10 +3858,10 @@ exports[`preferences - navigation to extension specific preferences > given in p
       </div>
     </main>
     <div
-      class="HotbarMenu flex column"
+      class="HotbarMenu flex flex-col"
     >
       <div
-        class="HotbarItems flex column gaps"
+        class="HotbarItems flex flex-col gap-2"
       >
         <div
           class="HotbarCell isDraggingOwner animateDown"
@@ -4095,7 +4095,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   Preferences
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="app"
                   role="tab"
                   tabindex="0"
@@ -4107,7 +4107,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="proxy"
                   role="tab"
                   tabindex="0"
@@ -4119,7 +4119,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="kubernetes"
                   role="tab"
                   tabindex="0"
@@ -4131,7 +4131,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="editor"
                   role="tab"
                   tabindex="0"
@@ -4143,7 +4143,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="terminal"
                   role="tab"
                   tabindex="0"
@@ -4181,7 +4181,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                   Extensions
                 </div>
                 <div
-                  class="Tab flex gaps align-center active"
+                  class="Tab flex gap-2 items-center active"
                   data-preference-tab-link-test="some-test-extension-id"
                   role="tab"
                   tabindex="0"
@@ -4280,10 +4280,10 @@ exports[`preferences - navigation to extension specific preferences > given in p
       </div>
     </main>
     <div
-      class="HotbarMenu flex column"
+      class="HotbarMenu flex flex-col"
     >
       <div
-        class="HotbarItems flex column gaps"
+        class="HotbarItems flex flex-col gap-2"
       >
         <div
           class="HotbarCell isDraggingOwner animateDown"
@@ -4518,7 +4518,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                     Preferences
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="app"
                     role="tab"
                     tabindex="0"
@@ -4530,7 +4530,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -4542,7 +4542,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
                     tabindex="0"
@@ -4554,7 +4554,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="editor"
                     role="tab"
                     tabindex="0"
@@ -4566,7 +4566,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="terminal"
                     role="tab"
                     tabindex="0"
@@ -4633,10 +4633,10 @@ exports[`preferences - navigation to extension specific preferences > given in p
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col gap-2"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"

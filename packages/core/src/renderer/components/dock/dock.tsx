@@ -154,10 +154,12 @@ class NonInjectedDock extends React.Component<DockProps & Dependencies> {
           onMinExtentExceed={dockStore.open}
           onDrag={(extent) => (dockStore.height = extent)}
         />
-        <div className="tabs-container flex align-center">
+        <div className="tabs-container flex items-center">
           <DockTabs tabs={tabs} selectedTab={selectedTab} autoFocus={isOpen} onChangeTab={this.onChangeTab} />
-          <div className={cssNames("toolbar flex gaps align-center box grow", { "pl-0": tabs.length == 0 })}>
-            <div className="dock-menu box grow">
+          <div
+            className={cssNames("toolbar flex gap-2 items-center grow shrink-0 basis-0", { "pl-0": tabs.length == 0 })}
+          >
+            <div className="dock-menu grow shrink-0 basis-0">
               <MenuActions
                 id="menu-actions-for-dock"
                 usePortal

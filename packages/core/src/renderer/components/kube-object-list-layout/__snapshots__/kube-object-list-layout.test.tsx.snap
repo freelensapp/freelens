@@ -8,7 +8,7 @@ exports[`kube-object-list-layout > given pod store > renders 1`] = `
         class="ItemListLayout flex flex-col KubeObjectListLayout Pods"
       >
         <div
-          class="header flex gaps align-center"
+          class="header flex gap-4 items-center"
         >
           <h5
             class="title"
@@ -16,7 +16,7 @@ exports[`kube-object-list-layout > given pod store > renders 1`] = `
             Pods
           </h5>
           <div
-            class="info-panel box grow"
+            class="info-panel grow shrink-0 basis-0"
           >
             0 items
           </div>
@@ -469,7 +469,7 @@ exports[`kube-object-list-layout > given pod store > renders 1`] = `
             />
           </div>
           <div
-            class="AddRemoveButtons flex gaps"
+            class="AddRemoveButtons flex gap-2"
           />
         </div>
       </div>

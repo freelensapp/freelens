@@ -38,12 +38,12 @@ const NonInjectedInstallChart = observer(({ model: model, tabId }: InstallChartP
 
   if (installed) {
     return (
-      <div className="InstallChartDone flex column gaps align-center justify-center">
+      <div className="InstallChartDone flex flex-col gap-3 items-center justify-center">
         <p>
           <Icon material="check" big sticker />
         </p>
         <p>Installation complete!</p>
-        <div className="flex gaps align-center">
+        <div className="flex gap-3 items-center">
           <Button
             autoFocus
             primary
@@ -76,7 +76,7 @@ const NonInjectedInstallChart = observer(({ model: model, tabId }: InstallChartP
       <InfoPanel
         tabId={tabId}
         controls={
-          <div className="install-controls flex gaps align-center">
+          <div className="install-controls flex gap-2 items-center">
             <span>Chart</span>
             <Badge label={model.chartName} title="Repo/Name" />
             <span>Version</span>

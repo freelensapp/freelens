@@ -39,13 +39,13 @@ const NonInjectedActivationOfCustomHelmRepositoryDialogContent = observer(
   ({ helmRepo, submitCustomRepository, maximalOptionsAreShown, hideDialog }: Dependencies) => (
     <Wizard header={<h5>Add custom Helm Repo</h5>} done={hideDialog}>
       <WizardStep
-        contentClass="flow column"
+        contentClass="space-y-3"
         nextLabel="Add"
         next={() => submitCustomRepository(toJS(helmRepo))}
         testIdForNext="custom-helm-repository-submit-button"
         testIdForPrev="custom-helm-repository-cancel-button"
       >
-        <div className="flex column gaps" data-testid="add-custom-helm-repository-dialog">
+        <div className="flex flex-col gap-3" data-testid="add-custom-helm-repository-dialog">
           <Input
             autoFocus
             required

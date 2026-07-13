@@ -97,7 +97,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     Preferences
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="app"
                     role="tab"
                     tabindex="0"
@@ -109,7 +109,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -121,7 +121,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center active"
+                    class="Tab flex gap-2 items-center active"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
                     tabindex="0"
@@ -133,7 +133,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="editor"
                     role="tab"
                     tabindex="0"
@@ -145,7 +145,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="terminal"
                     role="tab"
                     tabindex="0"
@@ -470,10 +470,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                         data-testid="helm-controls"
                       >
                         <div
-                          class="flex gaps"
+                          class="flex gap-2"
                         >
                           <div
-                            class="Select theme-lens box grow Select--is-disabled css-3iigni-container"
+                            class="Select theme-lens grow shrink-0 basis-0 Select--is-disabled css-3iigni-container"
                           >
                             <span
                               class="css-1f43avz-a11yText-A11yText"
@@ -696,10 +696,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col gap-2"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -935,7 +935,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     Preferences
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="app"
                     role="tab"
                     tabindex="0"
@@ -947,7 +947,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -959,7 +959,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center active"
+                    class="Tab flex gap-2 items-center active"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
                     tabindex="0"
@@ -971,7 +971,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="editor"
                     role="tab"
                     tabindex="0"
@@ -983,7 +983,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="terminal"
                     role="tab"
                     tabindex="0"
@@ -1308,10 +1308,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                         data-testid="helm-controls"
                       >
                         <div
-                          class="flex gaps"
+                          class="flex gap-2"
                         >
                           <div
-                            class="Select theme-lens box grow css-b62m3t-container"
+                            class="Select theme-lens grow shrink-0 basis-0 css-b62m3t-container"
                           >
                             <span
                               class="css-1f43avz-a11yText-A11yText"
@@ -1544,10 +1544,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col gap-2"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -1783,7 +1783,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     Preferences
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="app"
                     role="tab"
                     tabindex="0"
@@ -1795,7 +1795,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -1807,7 +1807,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center active"
+                    class="Tab flex gap-2 items-center active"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
                     tabindex="0"
@@ -1819,7 +1819,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="editor"
                     role="tab"
                     tabindex="0"
@@ -1831,7 +1831,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="terminal"
                     role="tab"
                     tabindex="0"
@@ -2156,10 +2156,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                         data-testid="helm-controls"
                       >
                         <div
-                          class="flex gaps"
+                          class="flex gap-2"
                         >
                           <div
-                            class="Select theme-lens box grow css-b62m3t-container"
+                            class="Select theme-lens grow shrink-0 basis-0 css-b62m3t-container"
                           >
                             <span
                               class="css-1f43avz-a11yText-A11yText"
@@ -2392,10 +2392,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col gap-2"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -2552,10 +2552,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
           class="WizardStep step1"
         >
           <div
-            class="step-content scrollable flow column"
+            class="step-content scrollable space-y-3"
           >
             <div
-              class="flex column gaps"
+              class="flex flex-col gap-3"
               data-testid="add-custom-helm-repository-dialog"
             >
               <div
@@ -2742,7 +2742,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     Preferences
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="app"
                     role="tab"
                     tabindex="0"
@@ -2754,7 +2754,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -2766,7 +2766,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center active"
+                    class="Tab flex gap-2 items-center active"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
                     tabindex="0"
@@ -2778,7 +2778,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="editor"
                     role="tab"
                     tabindex="0"
@@ -2790,7 +2790,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="terminal"
                     role="tab"
                     tabindex="0"
@@ -3115,10 +3115,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                         data-testid="helm-controls"
                       >
                         <div
-                          class="flex gaps"
+                          class="flex gap-2"
                         >
                           <div
-                            class="Select theme-lens box grow css-b62m3t-container"
+                            class="Select theme-lens grow shrink-0 basis-0 css-b62m3t-container"
                           >
                             <span
                               class="css-1f43avz-a11yText-A11yText"
@@ -3351,10 +3351,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col gap-2"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -3598,7 +3598,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     Preferences
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="app"
                     role="tab"
                     tabindex="0"
@@ -3610,7 +3610,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -3622,7 +3622,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center active"
+                    class="Tab flex gap-2 items-center active"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
                     tabindex="0"
@@ -3634,7 +3634,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="editor"
                     role="tab"
                     tabindex="0"
@@ -3646,7 +3646,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="terminal"
                     role="tab"
                     tabindex="0"
@@ -3971,10 +3971,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                         data-testid="helm-controls"
                       >
                         <div
-                          class="flex gaps"
+                          class="flex gap-2"
                         >
                           <div
-                            class="Select theme-lens box grow css-b62m3t-container"
+                            class="Select theme-lens grow shrink-0 basis-0 css-b62m3t-container"
                           >
                             <span
                               class="css-1f43avz-a11yText-A11yText"
@@ -4207,10 +4207,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col gap-2"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -4367,10 +4367,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
           class="WizardStep step1"
         >
           <div
-            class="step-content scrollable flow column"
+            class="step-content scrollable space-y-3"
           >
             <div
-              class="flex column gaps"
+              class="flex flex-col gap-3"
               data-testid="add-custom-helm-repository-dialog"
             >
               <div
@@ -4557,7 +4557,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     Preferences
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="app"
                     role="tab"
                     tabindex="0"
@@ -4569,7 +4569,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -4581,7 +4581,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center active"
+                    class="Tab flex gap-2 items-center active"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
                     tabindex="0"
@@ -4593,7 +4593,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="editor"
                     role="tab"
                     tabindex="0"
@@ -4605,7 +4605,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="terminal"
                     role="tab"
                     tabindex="0"
@@ -4930,10 +4930,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                         data-testid="helm-controls"
                       >
                         <div
-                          class="flex gaps"
+                          class="flex gap-2"
                         >
                           <div
-                            class="Select theme-lens box grow css-b62m3t-container"
+                            class="Select theme-lens grow shrink-0 basis-0 css-b62m3t-container"
                           >
                             <span
                               class="css-1f43avz-a11yText-A11yText"
@@ -5166,10 +5166,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col gap-2"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -5326,10 +5326,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
           class="WizardStep step1"
         >
           <div
-            class="step-content scrollable flow column"
+            class="step-content scrollable space-y-3"
           >
             <div
-              class="flex column gaps"
+              class="flex flex-col gap-3"
               data-testid="add-custom-helm-repository-dialog"
             >
               <div
@@ -5418,10 +5418,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                   </span>
                 </label>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-3 items-center"
                 >
                   <div
-                    class="Input box grow invalid validating validatingLine"
+                    class="Input grow shrink-0 basis-0 invalid validating validatingLine"
                   >
                     <label
                       class="input-area flex gaps align-center"
@@ -5455,10 +5455,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-3 items-center"
                 >
                   <div
-                    class="Input box grow invalid validating validatingLine"
+                    class="Input grow shrink-0 basis-0 invalid validating validatingLine"
                   >
                     <label
                       class="input-area flex gaps align-center"
@@ -5492,10 +5492,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-3 items-center"
                 >
                   <div
-                    class="Input box grow invalid validating validatingLine"
+                    class="Input grow shrink-0 basis-0 invalid validating validatingLine"
                   >
                     <label
                       class="input-area flex gaps align-center"
@@ -5698,7 +5698,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     Preferences
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="app"
                     role="tab"
                     tabindex="0"
@@ -5710,7 +5710,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -5722,7 +5722,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center active"
+                    class="Tab flex gap-2 items-center active"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
                     tabindex="0"
@@ -5734,7 +5734,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="editor"
                     role="tab"
                     tabindex="0"
@@ -5746,7 +5746,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="terminal"
                     role="tab"
                     tabindex="0"
@@ -6071,10 +6071,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                         data-testid="helm-controls"
                       >
                         <div
-                          class="flex gaps"
+                          class="flex gap-2"
                         >
                           <div
-                            class="Select theme-lens box grow css-b62m3t-container"
+                            class="Select theme-lens grow shrink-0 basis-0 css-b62m3t-container"
                           >
                             <span
                               class="css-1f43avz-a11yText-A11yText"
@@ -6307,10 +6307,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col gap-2"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -6467,10 +6467,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
           class="WizardStep step1"
         >
           <div
-            class="step-content scrollable flow column"
+            class="step-content scrollable space-y-3"
           >
             <div
-              class="flex column gaps"
+              class="flex flex-col gap-3"
               data-testid="add-custom-helm-repository-dialog"
             >
               <div
@@ -6657,7 +6657,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     Preferences
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="app"
                     role="tab"
                     tabindex="0"
@@ -6669,7 +6669,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -6681,7 +6681,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center active"
+                    class="Tab flex gap-2 items-center active"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
                     tabindex="0"
@@ -6693,7 +6693,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="editor"
                     role="tab"
                     tabindex="0"
@@ -6705,7 +6705,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="terminal"
                     role="tab"
                     tabindex="0"
@@ -7030,10 +7030,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                         data-testid="helm-controls"
                       >
                         <div
-                          class="flex gaps"
+                          class="flex gap-2"
                         >
                           <div
-                            class="Select theme-lens box grow css-b62m3t-container"
+                            class="Select theme-lens grow shrink-0 basis-0 css-b62m3t-container"
                           >
                             <span
                               class="css-1f43avz-a11yText-A11yText"
@@ -7266,10 +7266,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col gap-2"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -7426,10 +7426,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
           class="WizardStep step1"
         >
           <div
-            class="step-content scrollable flow column"
+            class="step-content scrollable space-y-3"
           >
             <div
-              class="flex column gaps"
+              class="flex flex-col gap-3"
               data-testid="add-custom-helm-repository-dialog"
             >
               <div
@@ -7518,10 +7518,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                   </span>
                 </label>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-3 items-center"
                 >
                   <div
-                    class="Input box grow dirty"
+                    class="Input grow shrink-0 basis-0 dirty"
                   >
                     <label
                       class="input-area flex gaps align-center"
@@ -7555,10 +7555,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-3 items-center"
                 >
                   <div
-                    class="Input box grow invalid dirty validating validatingLine"
+                    class="Input grow shrink-0 basis-0 invalid dirty validating validatingLine"
                   >
                     <label
                       class="input-area flex gaps align-center"
@@ -7592,10 +7592,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-3 items-center"
                 >
                   <div
-                    class="Input box grow invalid dirty validating validatingLine"
+                    class="Input grow shrink-0 basis-0 invalid dirty validating validatingLine"
                   >
                     <label
                       class="input-area flex gaps align-center"
@@ -7798,7 +7798,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     Preferences
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="app"
                     role="tab"
                     tabindex="0"
@@ -7810,7 +7810,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -7822,7 +7822,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center active"
+                    class="Tab flex gap-2 items-center active"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
                     tabindex="0"
@@ -7834,7 +7834,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="editor"
                     role="tab"
                     tabindex="0"
@@ -7846,7 +7846,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="terminal"
                     role="tab"
                     tabindex="0"
@@ -8171,10 +8171,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                         data-testid="helm-controls"
                       >
                         <div
-                          class="flex gaps"
+                          class="flex gap-2"
                         >
                           <div
-                            class="Select theme-lens box grow css-b62m3t-container"
+                            class="Select theme-lens grow shrink-0 basis-0 css-b62m3t-container"
                           >
                             <span
                               class="css-1f43avz-a11yText-A11yText"
@@ -8407,10 +8407,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col gap-2"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -8567,10 +8567,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
           class="WizardStep step1"
         >
           <div
-            class="step-content scrollable flow column"
+            class="step-content scrollable space-y-3"
           >
             <div
-              class="flex column gaps"
+              class="flex flex-col gap-3"
               data-testid="add-custom-helm-repository-dialog"
             >
               <div
@@ -8758,7 +8758,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     Preferences
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="app"
                     role="tab"
                     tabindex="0"
@@ -8770,7 +8770,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -8782,7 +8782,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center active"
+                    class="Tab flex gap-2 items-center active"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
                     tabindex="0"
@@ -8794,7 +8794,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="editor"
                     role="tab"
                     tabindex="0"
@@ -8806,7 +8806,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="terminal"
                     role="tab"
                     tabindex="0"
@@ -9131,10 +9131,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                         data-testid="helm-controls"
                       >
                         <div
-                          class="flex gaps"
+                          class="flex gap-2"
                         >
                           <div
-                            class="Select theme-lens box grow css-b62m3t-container"
+                            class="Select theme-lens grow shrink-0 basis-0 css-b62m3t-container"
                           >
                             <span
                               class="css-1f43avz-a11yText-A11yText"
@@ -9367,10 +9367,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col gap-2"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -9614,7 +9614,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     Preferences
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="app"
                     role="tab"
                     tabindex="0"
@@ -9626,7 +9626,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -9638,7 +9638,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center active"
+                    class="Tab flex gap-2 items-center active"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
                     tabindex="0"
@@ -9650,7 +9650,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="editor"
                     role="tab"
                     tabindex="0"
@@ -9662,7 +9662,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="terminal"
                     role="tab"
                     tabindex="0"
@@ -9987,10 +9987,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                         data-testid="helm-controls"
                       >
                         <div
-                          class="flex gaps"
+                          class="flex gap-2"
                         >
                           <div
-                            class="Select theme-lens box grow Select--is-disabled css-3iigni-container"
+                            class="Select theme-lens grow shrink-0 basis-0 Select--is-disabled css-3iigni-container"
                           >
                             <span
                               class="css-1f43avz-a11yText-A11yText"
@@ -10213,10 +10213,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col gap-2"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -10460,7 +10460,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     Preferences
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="app"
                     role="tab"
                     tabindex="0"
@@ -10472,7 +10472,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -10484,7 +10484,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center active"
+                    class="Tab flex gap-2 items-center active"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
                     tabindex="0"
@@ -10496,7 +10496,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="editor"
                     role="tab"
                     tabindex="0"
@@ -10508,7 +10508,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="terminal"
                     role="tab"
                     tabindex="0"
@@ -10833,10 +10833,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                         data-testid="helm-controls"
                       >
                         <div
-                          class="flex gaps"
+                          class="flex gap-2"
                         >
                           <div
-                            class="Select theme-lens box grow Select--is-disabled css-3iigni-container"
+                            class="Select theme-lens grow shrink-0 basis-0 Select--is-disabled css-3iigni-container"
                           >
                             <span
                               class="css-1f43avz-a11yText-A11yText"
@@ -11059,10 +11059,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col gap-2"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -11219,10 +11219,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
           class="WizardStep step1"
         >
           <div
-            class="step-content scrollable flow column"
+            class="step-content scrollable space-y-3"
           >
             <div
-              class="flex column gaps"
+              class="flex flex-col gap-3"
               data-testid="add-custom-helm-repository-dialog"
             >
               <div
@@ -12018,10 +12018,10 @@ exports[`add custom helm repository in preferences when navigating to preference
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col gap-2"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -13159,10 +13159,10 @@ exports[`add custom helm repository in preferences when navigating to preference
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col gap-2"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -14118,10 +14118,10 @@ exports[`add custom helm repository in preferences when navigating to preference
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col gap-2"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -15259,10 +15259,10 @@ exports[`add custom helm repository in preferences when navigating to preference
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col gap-2"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -16219,10 +16219,10 @@ exports[`add custom helm repository in preferences when navigating to preference
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col gap-2"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -17065,10 +17065,10 @@ exports[`add custom helm repository in preferences when navigating to preference
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col gap-2"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -17911,10 +17911,10 @@ exports[`add custom helm repository in preferences when navigating to preference
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col gap-2"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"

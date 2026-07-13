@@ -330,7 +330,7 @@ exports[`custom category columns for catalog > renders 1`] = `
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
-                  class="header flex gaps align-center"
+                  class="header flex gap-4 items-center"
                 >
                   <h5
                     class="title"
@@ -338,7 +338,7 @@ exports[`custom category columns for catalog > renders 1`] = `
                     Browse All
                   </h5>
                   <div
-                    class="info-panel box grow"
+                    class="info-panel grow shrink-0 basis-0"
                   >
                     0 items
                   </div>
@@ -539,7 +539,7 @@ exports[`custom category columns for catalog > renders 1`] = `
                     </div>
                   </div>
                   <div
-                    class="AddRemoveButtons flex gaps"
+                    class="AddRemoveButtons flex gap-2"
                   />
                 </div>
               </div>
@@ -551,10 +551,10 @@ exports[`custom category columns for catalog > renders 1`] = `
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col gap-2"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -1054,7 +1054,7 @@ exports[`custom category columns for catalog > when category is added using defa
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
-                  class="header flex gaps align-center"
+                  class="header flex gap-4 items-center"
                 >
                   <h5
                     class="title"
@@ -1062,7 +1062,7 @@ exports[`custom category columns for catalog > when category is added using defa
                     Browse All
                   </h5>
                   <div
-                    class="info-panel box grow"
+                    class="info-panel grow shrink-0 basis-0"
                   >
                     0 items
                   </div>
@@ -1263,7 +1263,7 @@ exports[`custom category columns for catalog > when category is added using defa
                     </div>
                   </div>
                   <div
-                    class="AddRemoveButtons flex gaps"
+                    class="AddRemoveButtons flex gap-2"
                   />
                 </div>
               </div>
@@ -1275,10 +1275,10 @@ exports[`custom category columns for catalog > when category is added using defa
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col gap-2"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -1778,7 +1778,7 @@ exports[`custom category columns for catalog > when category is added using defa
                 data-testid="catalog-list-for-Test"
               >
                 <div
-                  class="header flex gaps align-center"
+                  class="header flex gap-4 items-center"
                 >
                   <h5
                     class="title"
@@ -1786,7 +1786,7 @@ exports[`custom category columns for catalog > when category is added using defa
                     Test
                   </h5>
                   <div
-                    class="info-panel box grow"
+                    class="info-panel grow shrink-0 basis-0"
                   >
                     0 items
                   </div>
@@ -1977,7 +1977,7 @@ exports[`custom category columns for catalog > when category is added using defa
                     </div>
                   </div>
                   <div
-                    class="AddRemoveButtons flex gaps"
+                    class="AddRemoveButtons flex gap-2"
                   />
                 </div>
               </div>
@@ -1989,10 +1989,10 @@ exports[`custom category columns for catalog > when category is added using defa
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col gap-2"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -2492,7 +2492,7 @@ exports[`custom category columns for catalog > when category is added using defa
                 data-testid="catalog-list-for-Test"
               >
                 <div
-                  class="header flex gaps align-center"
+                  class="header flex gap-4 items-center"
                 >
                   <h5
                     class="title"
@@ -2500,7 +2500,7 @@ exports[`custom category columns for catalog > when category is added using defa
                     Test
                   </h5>
                   <div
-                    class="info-panel box grow"
+                    class="info-panel grow shrink-0 basis-0"
                   >
                     0 items
                   </div>
@@ -2677,7 +2677,7 @@ exports[`custom category columns for catalog > when category is added using defa
                     </div>
                   </div>
                   <div
-                    class="AddRemoveButtons flex gaps"
+                    class="AddRemoveButtons flex gap-2"
                   />
                 </div>
               </div>
@@ -2689,10 +2689,10 @@ exports[`custom category columns for catalog > when category is added using defa
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col gap-2"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -3192,7 +3192,7 @@ exports[`custom category columns for catalog > when category is added with custo
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
-                  class="header flex gaps align-center"
+                  class="header flex gap-4 items-center"
                 >
                   <h5
                     class="title"
@@ -3200,7 +3200,7 @@ exports[`custom category columns for catalog > when category is added with custo
                     Browse All
                   </h5>
                   <div
-                    class="info-panel box grow"
+                    class="info-panel grow shrink-0 basis-0"
                   >
                     0 items
                   </div>
@@ -3401,7 +3401,7 @@ exports[`custom category columns for catalog > when category is added with custo
                     </div>
                   </div>
                   <div
-                    class="AddRemoveButtons flex gaps"
+                    class="AddRemoveButtons flex gap-2"
                   />
                 </div>
               </div>
@@ -3413,10 +3413,10 @@ exports[`custom category columns for catalog > when category is added with custo
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col gap-2"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -3916,7 +3916,7 @@ exports[`custom category columns for catalog > when category is added with custo
                 data-testid="catalog-list-for-Test"
               >
                 <div
-                  class="header flex gaps align-center"
+                  class="header flex gap-4 items-center"
                 >
                   <h5
                     class="title"
@@ -3924,7 +3924,7 @@ exports[`custom category columns for catalog > when category is added with custo
                     Test
                   </h5>
                   <div
-                    class="info-panel box grow"
+                    class="info-panel grow shrink-0 basis-0"
                   >
                     0 items
                   </div>
@@ -4053,7 +4053,7 @@ exports[`custom category columns for catalog > when category is added with custo
                     </div>
                   </div>
                   <div
-                    class="AddRemoveButtons flex gaps"
+                    class="AddRemoveButtons flex gap-2"
                   />
                 </div>
               </div>
@@ -4065,10 +4065,10 @@ exports[`custom category columns for catalog > when category is added with custo
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col gap-2"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -4568,7 +4568,7 @@ exports[`custom category columns for catalog > when category is added without de
                 data-testid="catalog-list-for-browse-all"
               >
                 <div
-                  class="header flex gaps align-center"
+                  class="header flex gap-4 items-center"
                 >
                   <h5
                     class="title"
@@ -4576,7 +4576,7 @@ exports[`custom category columns for catalog > when category is added without de
                     Browse All
                   </h5>
                   <div
-                    class="info-panel box grow"
+                    class="info-panel grow shrink-0 basis-0"
                   >
                     0 items
                   </div>
@@ -4777,7 +4777,7 @@ exports[`custom category columns for catalog > when category is added without de
                     </div>
                   </div>
                   <div
-                    class="AddRemoveButtons flex gaps"
+                    class="AddRemoveButtons flex gap-2"
                   />
                 </div>
               </div>
@@ -4789,10 +4789,10 @@ exports[`custom category columns for catalog > when category is added without de
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col gap-2"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -5292,7 +5292,7 @@ exports[`custom category columns for catalog > when category is added without de
                 data-testid="catalog-list-for-Test"
               >
                 <div
-                  class="header flex gaps align-center"
+                  class="header flex gap-4 items-center"
                 >
                   <h5
                     class="title"
@@ -5300,7 +5300,7 @@ exports[`custom category columns for catalog > when category is added without de
                     Test
                   </h5>
                   <div
-                    class="info-panel box grow"
+                    class="info-panel grow shrink-0 basis-0"
                   >
                     0 items
                   </div>
@@ -5415,7 +5415,7 @@ exports[`custom category columns for catalog > when category is added without de
                     </div>
                   </div>
                   <div
-                    class="AddRemoveButtons flex gaps"
+                    class="AddRemoveButtons flex gap-2"
                   />
                 </div>
               </div>
@@ -5427,10 +5427,10 @@ exports[`custom category columns for catalog > when category is added without de
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col gap-2"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"

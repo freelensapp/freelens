@@ -11,13 +11,13 @@ exports[`showing details for helm release > given application is started > when 
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -37,7 +37,7 @@ exports[`showing details for helm release > given application is started > when 
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -418,7 +418,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -431,7 +431,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -451,7 +451,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -459,7 +459,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -805,7 +805,7 @@ exports[`showing details for helm release > given application is started > when 
                   />
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -823,7 +823,7 @@ exports[`showing details for helm release > given application is started > when 
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -833,7 +833,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -887,10 +887,10 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -956,13 +956,13 @@ exports[`showing details for helm release > given application is started > when 
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -982,7 +982,7 @@ exports[`showing details for helm release > given application is started > when 
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -1363,7 +1363,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -1376,7 +1376,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -1396,7 +1396,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -1404,7 +1404,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   2 items
                 </div>
@@ -2023,7 +2023,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -2041,7 +2041,7 @@ exports[`showing details for helm release > given application is started > when 
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -2051,7 +2051,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -2105,10 +2105,10 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -2174,13 +2174,13 @@ exports[`showing details for helm release > given application is started > when 
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -2200,7 +2200,7 @@ exports[`showing details for helm release > given application is started > when 
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -2581,7 +2581,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -2594,7 +2594,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -2614,7 +2614,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -2622,7 +2622,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   2 items
                 </div>
@@ -3241,7 +3241,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -3259,7 +3259,7 @@ exports[`showing details for helm release > given application is started > when 
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -3269,7 +3269,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -3323,10 +3323,10 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -3384,13 +3384,13 @@ exports[`showing details for helm release > given application is started > when 
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           some-name
           <i
@@ -3427,7 +3427,7 @@ exports[`showing details for helm release > given application is started > when 
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       >
         <div
           class="Spinner singleColor center"
@@ -3453,13 +3453,13 @@ exports[`showing details for helm release > given application is started > when 
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -3479,7 +3479,7 @@ exports[`showing details for helm release > given application is started > when 
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -3860,7 +3860,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -3873,7 +3873,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -3893,7 +3893,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -3901,7 +3901,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   2 items
                 </div>
@@ -4520,7 +4520,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -4538,7 +4538,7 @@ exports[`showing details for helm release > given application is started > when 
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -4548,7 +4548,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -4602,10 +4602,10 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -4663,13 +4663,13 @@ exports[`showing details for helm release > given application is started > when 
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           some-name
           <i
@@ -4706,7 +4706,7 @@ exports[`showing details for helm release > given application is started > when 
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       >
         <div
           class="Spinner singleColor center"
@@ -4732,13 +4732,13 @@ exports[`showing details for helm release > given application is started > when 
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -4758,7 +4758,7 @@ exports[`showing details for helm release > given application is started > when 
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -5139,7 +5139,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -5152,7 +5152,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -5172,7 +5172,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -5180,7 +5180,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   2 items
                 </div>
@@ -5799,7 +5799,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -5817,7 +5817,7 @@ exports[`showing details for helm release > given application is started > when 
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -5827,7 +5827,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -5881,10 +5881,10 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -5942,14 +5942,14 @@ exports[`showing details for helm release > given application is started > when 
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
         style="position: relative;"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           some-name
           <i
@@ -6041,7 +6041,7 @@ exports[`showing details for helm release > given application is started > when 
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       >
         <div>
           <div
@@ -6056,13 +6056,13 @@ exports[`showing details for helm release > given application is started > when 
               class="value"
             >
               <div
-                class="flex gaps align-center"
+                class="flex gap-2 items-center"
               >
                 <span>
                   some-chart-1.0.0
                 </span>
                 <button
-                  class="Button box right upgrade primary"
+                  class="Button ml-auto mr-0 upgrade primary"
                   data-testid="helm-release-upgrade-button"
                   type="button"
                 >
@@ -6111,7 +6111,7 @@ exports[`showing details for helm release > given application is started > when 
               class="value"
             >
               <div
-                class="version flex gaps align-center"
+                class="version flex gap-2 items-center"
               >
                 <span>
                   1.0.0
@@ -6146,7 +6146,7 @@ exports[`showing details for helm release > given application is started > when 
               Values
             </div>
             <div
-              class="flex column gaps"
+              class="flex flex-col gap-2"
             >
               <label
                 class="Checkbox flex items-center"
@@ -6257,13 +6257,13 @@ exports[`showing details for helm release > given application is started > when 
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -6283,7 +6283,7 @@ exports[`showing details for helm release > given application is started > when 
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -6664,7 +6664,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -6677,7 +6677,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -6697,7 +6697,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -6705,7 +6705,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   2 items
                 </div>
@@ -7324,7 +7324,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -7342,7 +7342,7 @@ exports[`showing details for helm release > given application is started > when 
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -7352,7 +7352,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -7406,10 +7406,10 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -7467,14 +7467,14 @@ exports[`showing details for helm release > given application is started > when 
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
         style="position: relative;"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           some-name
           <i
@@ -7566,7 +7566,7 @@ exports[`showing details for helm release > given application is started > when 
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       >
         <div>
           <div
@@ -7581,13 +7581,13 @@ exports[`showing details for helm release > given application is started > when 
               class="value"
             >
               <div
-                class="flex gaps align-center"
+                class="flex gap-2 items-center"
               >
                 <span>
                   some-chart-1.0.0
                 </span>
                 <button
-                  class="Button box right upgrade primary"
+                  class="Button ml-auto mr-0 upgrade primary"
                   data-testid="helm-release-upgrade-button"
                   type="button"
                 >
@@ -7636,7 +7636,7 @@ exports[`showing details for helm release > given application is started > when 
               class="value"
             >
               <div
-                class="version flex gaps align-center"
+                class="version flex gap-2 items-center"
               >
                 <span>
                   1.0.0
@@ -7671,7 +7671,7 @@ exports[`showing details for helm release > given application is started > when 
               Values
             </div>
             <div
-              class="flex column gaps"
+              class="flex flex-col gap-2"
             >
               <label
                 class="Checkbox flex items-center"
@@ -7782,13 +7782,13 @@ exports[`showing details for helm release > given application is started > when 
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -7808,7 +7808,7 @@ exports[`showing details for helm release > given application is started > when 
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -8189,7 +8189,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -8202,7 +8202,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -8222,7 +8222,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -8230,7 +8230,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   2 items
                 </div>
@@ -8849,7 +8849,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -8867,7 +8867,7 @@ exports[`showing details for helm release > given application is started > when 
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -8877,7 +8877,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -8931,10 +8931,10 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -8992,14 +8992,14 @@ exports[`showing details for helm release > given application is started > when 
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
         style="position: relative;"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           some-name
           <i
@@ -9091,7 +9091,7 @@ exports[`showing details for helm release > given application is started > when 
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       >
         <div>
           <div
@@ -9106,13 +9106,13 @@ exports[`showing details for helm release > given application is started > when 
               class="value"
             >
               <div
-                class="flex gaps align-center"
+                class="flex gap-2 items-center"
               >
                 <span>
                   some-chart-1.0.0
                 </span>
                 <button
-                  class="Button box right upgrade primary"
+                  class="Button ml-auto mr-0 upgrade primary"
                   data-testid="helm-release-upgrade-button"
                   type="button"
                 >
@@ -9161,7 +9161,7 @@ exports[`showing details for helm release > given application is started > when 
               class="value"
             >
               <div
-                class="version flex gaps align-center"
+                class="version flex gap-2 items-center"
               >
                 <span>
                   1.0.0
@@ -9196,7 +9196,7 @@ exports[`showing details for helm release > given application is started > when 
               Values
             </div>
             <div
-              class="flex column gaps"
+              class="flex flex-col gap-2"
             >
               <label
                 class="Checkbox flex items-center"
@@ -9307,13 +9307,13 @@ exports[`showing details for helm release > given application is started > when 
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -9333,7 +9333,7 @@ exports[`showing details for helm release > given application is started > when 
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -9714,7 +9714,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -9727,7 +9727,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -9747,7 +9747,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -9755,7 +9755,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -10101,7 +10101,7 @@ exports[`showing details for helm release > given application is started > when 
                   />
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -10119,7 +10119,7 @@ exports[`showing details for helm release > given application is started > when 
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -10129,7 +10129,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -10183,10 +10183,10 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -10244,14 +10244,14 @@ exports[`showing details for helm release > given application is started > when 
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
         style="position: relative;"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           some-name
           <i
@@ -10343,7 +10343,7 @@ exports[`showing details for helm release > given application is started > when 
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       >
         <div>
           <div
@@ -10358,13 +10358,13 @@ exports[`showing details for helm release > given application is started > when 
               class="value"
             >
               <div
-                class="flex gaps align-center"
+                class="flex gap-2 items-center"
               >
                 <span>
                   some-chart-1.0.0
                 </span>
                 <button
-                  class="Button box right upgrade primary"
+                  class="Button ml-auto mr-0 upgrade primary"
                   data-testid="helm-release-upgrade-button"
                   type="button"
                 >
@@ -10413,7 +10413,7 @@ exports[`showing details for helm release > given application is started > when 
               class="value"
             >
               <div
-                class="version flex gaps align-center"
+                class="version flex gap-2 items-center"
               >
                 <span>
                   1.0.0
@@ -10448,7 +10448,7 @@ exports[`showing details for helm release > given application is started > when 
               Values
             </div>
             <div
-              class="flex column gaps"
+              class="flex flex-col gap-2"
             >
               <label
                 class="Checkbox flex items-center"
@@ -10559,13 +10559,13 @@ exports[`showing details for helm release > given application is started > when 
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -10585,7 +10585,7 @@ exports[`showing details for helm release > given application is started > when 
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -10966,7 +10966,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -10979,7 +10979,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -10999,7 +10999,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -11007,7 +11007,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -11353,7 +11353,7 @@ exports[`showing details for helm release > given application is started > when 
                   />
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -11371,7 +11371,7 @@ exports[`showing details for helm release > given application is started > when 
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -11381,7 +11381,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -11435,10 +11435,10 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -11496,14 +11496,14 @@ exports[`showing details for helm release > given application is started > when 
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
         style="position: relative;"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           some-name
           <i
@@ -11595,7 +11595,7 @@ exports[`showing details for helm release > given application is started > when 
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       >
         <div>
           <div
@@ -11610,13 +11610,13 @@ exports[`showing details for helm release > given application is started > when 
               class="value"
             >
               <div
-                class="flex gaps align-center"
+                class="flex gap-2 items-center"
               >
                 <span>
                   some-chart-1.0.0
                 </span>
                 <button
-                  class="Button box right upgrade primary"
+                  class="Button ml-auto mr-0 upgrade primary"
                   data-testid="helm-release-upgrade-button"
                   type="button"
                 >
@@ -11665,7 +11665,7 @@ exports[`showing details for helm release > given application is started > when 
               class="value"
             >
               <div
-                class="version flex gaps align-center"
+                class="version flex gap-2 items-center"
               >
                 <span>
                   1.0.0
@@ -11700,7 +11700,7 @@ exports[`showing details for helm release > given application is started > when 
               Values
             </div>
             <div
-              class="flex column gaps"
+              class="flex flex-col gap-2"
             >
               <label
                 class="Checkbox flex items-center disabled"
@@ -11813,13 +11813,13 @@ exports[`showing details for helm release > given application is started > when 
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -11839,7 +11839,7 @@ exports[`showing details for helm release > given application is started > when 
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -12220,7 +12220,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -12233,7 +12233,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -12253,7 +12253,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -12261,7 +12261,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   2 items
                 </div>
@@ -12880,7 +12880,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -12898,7 +12898,7 @@ exports[`showing details for helm release > given application is started > when 
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -12908,7 +12908,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -12962,10 +12962,10 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -13023,14 +13023,14 @@ exports[`showing details for helm release > given application is started > when 
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
         style="position: relative;"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           some-name
           <i
@@ -13122,7 +13122,7 @@ exports[`showing details for helm release > given application is started > when 
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       >
         <div>
           <div
@@ -13137,13 +13137,13 @@ exports[`showing details for helm release > given application is started > when 
               class="value"
             >
               <div
-                class="flex gaps align-center"
+                class="flex gap-2 items-center"
               >
                 <span>
                   some-chart-1.0.0
                 </span>
                 <button
-                  class="Button box right upgrade primary"
+                  class="Button ml-auto mr-0 upgrade primary"
                   data-testid="helm-release-upgrade-button"
                   type="button"
                 >
@@ -13192,7 +13192,7 @@ exports[`showing details for helm release > given application is started > when 
               class="value"
             >
               <div
-                class="version flex gaps align-center"
+                class="version flex gap-2 items-center"
               >
                 <span>
                   1.0.0
@@ -13227,7 +13227,7 @@ exports[`showing details for helm release > given application is started > when 
               Values
             </div>
             <div
-              class="flex column gaps"
+              class="flex flex-col gap-2"
             >
               <label
                 class="Checkbox flex items-center checked"
@@ -13338,13 +13338,13 @@ exports[`showing details for helm release > given application is started > when 
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -13364,7 +13364,7 @@ exports[`showing details for helm release > given application is started > when 
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -13745,7 +13745,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -13758,7 +13758,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -13778,7 +13778,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -13786,7 +13786,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   2 items
                 </div>
@@ -14405,7 +14405,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -14423,7 +14423,7 @@ exports[`showing details for helm release > given application is started > when 
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -14433,7 +14433,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -14485,7 +14485,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-tab-id"
                   id="tab-some-tab-id"
                   role="tab"
@@ -14539,10 +14539,10 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -14617,13 +14617,13 @@ exports[`showing details for helm release > given application is started > when 
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -14643,7 +14643,7 @@ exports[`showing details for helm release > given application is started > when 
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -15024,7 +15024,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -15037,7 +15037,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -15057,7 +15057,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -15065,7 +15065,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   2 items
                 </div>
@@ -15684,7 +15684,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -15702,7 +15702,7 @@ exports[`showing details for helm release > given application is started > when 
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -15712,7 +15712,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -15766,10 +15766,10 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -15827,13 +15827,13 @@ exports[`showing details for helm release > given application is started > when 
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           some-name
           <i
@@ -15870,7 +15870,7 @@ exports[`showing details for helm release > given application is started > when 
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       >
         <div
           data-testid="helm-release-detail-error"
@@ -15898,13 +15898,13 @@ exports[`showing details for helm release > given application is started > when 
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -15924,7 +15924,7 @@ exports[`showing details for helm release > given application is started > when 
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -16305,7 +16305,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -16318,7 +16318,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -16338,7 +16338,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -16346,7 +16346,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   2 items
                 </div>
@@ -16965,7 +16965,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -16983,7 +16983,7 @@ exports[`showing details for helm release > given application is started > when 
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -16993,7 +16993,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -17047,10 +17047,10 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -17116,13 +17116,13 @@ exports[`showing details for helm release > given application is started > when 
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -17142,7 +17142,7 @@ exports[`showing details for helm release > given application is started > when 
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -17523,7 +17523,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -17536,7 +17536,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -17556,7 +17556,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -17564,7 +17564,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   2 items
                 </div>
@@ -18183,7 +18183,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -18201,7 +18201,7 @@ exports[`showing details for helm release > given application is started > when 
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -18211,7 +18211,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -18265,10 +18265,10 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -18326,13 +18326,13 @@ exports[`showing details for helm release > given application is started > when 
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           some-name
           <i
@@ -18369,7 +18369,7 @@ exports[`showing details for helm release > given application is started > when 
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       >
         <div
           class="Spinner singleColor center"
@@ -18395,13 +18395,13 @@ exports[`showing details for helm release > given application is started > when 
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -18421,7 +18421,7 @@ exports[`showing details for helm release > given application is started > when 
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -18802,7 +18802,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -18815,7 +18815,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -18835,7 +18835,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -18843,7 +18843,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   2 items
                 </div>
@@ -19462,7 +19462,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -19480,7 +19480,7 @@ exports[`showing details for helm release > given application is started > when 
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -19490,7 +19490,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -19544,10 +19544,10 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -19605,13 +19605,13 @@ exports[`showing details for helm release > given application is started > when 
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           some-other-name
           <i
@@ -19648,7 +19648,7 @@ exports[`showing details for helm release > given application is started > when 
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       >
         <div
           class="Spinner singleColor center"
@@ -19674,13 +19674,13 @@ exports[`showing details for helm release > given application is started > when 
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -19700,7 +19700,7 @@ exports[`showing details for helm release > given application is started > when 
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -20081,7 +20081,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -20094,7 +20094,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -20114,7 +20114,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -20122,7 +20122,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   2 items
                 </div>
@@ -20741,7 +20741,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -20759,7 +20759,7 @@ exports[`showing details for helm release > given application is started > when 
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -20769,7 +20769,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -20823,10 +20823,10 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -20884,13 +20884,13 @@ exports[`showing details for helm release > given application is started > when 
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           some-other-name
           <i
@@ -20927,7 +20927,7 @@ exports[`showing details for helm release > given application is started > when 
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       >
         <div
           class="Spinner singleColor center"
@@ -20953,13 +20953,13 @@ exports[`showing details for helm release > given application is started > when 
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -20979,7 +20979,7 @@ exports[`showing details for helm release > given application is started > when 
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -21360,7 +21360,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -21373,7 +21373,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -21393,7 +21393,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -21401,7 +21401,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   2 items
                 </div>
@@ -22020,7 +22020,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -22038,7 +22038,7 @@ exports[`showing details for helm release > given application is started > when 
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -22048,7 +22048,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -22102,10 +22102,10 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -22163,13 +22163,13 @@ exports[`showing details for helm release > given application is started > when 
     style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="drawer-wrapper flex column"
+      class="drawer-wrapper flex flex-col"
     >
       <div
-        class="drawer-title flex align-center"
+        class="drawer-title flex items-center"
       >
         <div
-          class="drawer-title-text flex gaps align-center"
+          class="drawer-title-text flex gap-2 items-center"
         >
           some-other-name
           <i
@@ -22206,7 +22206,7 @@ exports[`showing details for helm release > given application is started > when 
         </div>
       </div>
       <div
-        class="drawer-content flex column box grow"
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
       >
         <div
           class="Spinner singleColor center"
@@ -22232,13 +22232,13 @@ exports[`showing details for helm release > given application is started > when 
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
-        class="drawer-wrapper flex column"
+        class="drawer-wrapper flex flex-col"
       >
         <div
-          class="drawer-title flex align-center"
+          class="drawer-title flex items-center"
         >
           <div
-            class="drawer-title-text flex gaps align-center"
+            class="drawer-title-text flex gap-2 items-center"
           >
             
           </div>
@@ -22258,7 +22258,7 @@ exports[`showing details for helm release > given application is started > when 
           </div>
         </div>
         <div
-          class="drawer-content flex column box grow"
+          class="drawer-content flex flex-col grow shrink-0 basis-0"
         />
       </div>
       <div
@@ -22639,7 +22639,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -22652,7 +22652,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -22672,7 +22672,7 @@ exports[`showing details for helm release > given application is started > when 
               class="ItemListLayout flex flex-col HelmReleases"
             >
               <div
-                class="header flex gaps align-center"
+                class="header flex gap-4 items-center"
               >
                 <h5
                   class="title"
@@ -22680,7 +22680,7 @@ exports[`showing details for helm release > given application is started > when 
                   Releases
                 </h5>
                 <div
-                  class="info-panel box grow"
+                  class="info-panel grow shrink-0 basis-0"
                 >
                   0 items
                 </div>
@@ -23031,7 +23031,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="AddRemoveButtons flex gaps"
+                  class="AddRemoveButtons flex gap-2"
                 />
               </div>
             </div>
@@ -23049,7 +23049,7 @@ exports[`showing details for helm release > given application is started > when 
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -23059,7 +23059,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -23113,10 +23113,10 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"

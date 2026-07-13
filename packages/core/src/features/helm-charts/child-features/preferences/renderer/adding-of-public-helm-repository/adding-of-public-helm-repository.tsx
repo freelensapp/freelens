@@ -50,7 +50,7 @@ const NonInjectedAddingOfPublicHelmRepository = observer(
         value={dereferencesPublicRepositories}
         formatOptionLabel={formatOptionLabel}
         controlShouldRenderValue={false}
-        className="box grow"
+        className="grow shrink-0 basis-0"
         themeName="lens"
       />
     );
@@ -70,8 +70,8 @@ export const AddingOfPublicHelmRepository = withInjectables<Dependencies>(
 );
 
 const formatOptionLabel = ({ value, isSelected }: SelectOption<HelmRepo>) => (
-  <div className="flex gaps">
+  <div className="flex gap-2">
     <span>{value.name}</span>
-    {isSelected && <Icon small material="check" className="box right" />}
+    {isSelected && <Icon small material="check" className="ml-auto mr-0" />}
   </div>
 );

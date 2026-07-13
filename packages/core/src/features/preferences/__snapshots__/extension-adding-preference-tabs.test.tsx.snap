@@ -97,7 +97,7 @@ exports[`preferences: extension adding preference tabs > given in preferences, w
                     Preferences
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="extension-some-extension-some-other-preference-tab-id"
                     role="tab"
                     tabindex="0"
@@ -109,7 +109,7 @@ exports[`preferences: extension adding preference tabs > given in preferences, w
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="extension-some-extension-some-preference-tab-id"
                     role="tab"
                     tabindex="0"
@@ -121,7 +121,7 @@ exports[`preferences: extension adding preference tabs > given in preferences, w
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center active"
+                    class="Tab flex gap-2 items-center active"
                     data-preference-tab-link-test="app"
                     role="tab"
                     tabindex="0"
@@ -133,7 +133,7 @@ exports[`preferences: extension adding preference tabs > given in preferences, w
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -145,7 +145,7 @@ exports[`preferences: extension adding preference tabs > given in preferences, w
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
                     tabindex="0"
@@ -157,7 +157,7 @@ exports[`preferences: extension adding preference tabs > given in preferences, w
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="editor"
                     role="tab"
                     tabindex="0"
@@ -169,7 +169,7 @@ exports[`preferences: extension adding preference tabs > given in preferences, w
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="terminal"
                     role="tab"
                     tabindex="0"
@@ -651,10 +651,10 @@ exports[`preferences: extension adding preference tabs > given in preferences, w
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col gap-2"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
