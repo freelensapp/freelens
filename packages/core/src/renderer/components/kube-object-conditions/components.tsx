@@ -25,7 +25,7 @@ export function getTooltip(condition: Condition, id: string) {
             value = yaml.dump(value, defaultYamlDumpOptions);
           }
           return (
-            <div key={key} className="flex gaps align-center">
+            <div key={key} className="flex gap-2 items-center">
               <div className="name">{upperFirst(key)}</div>
               <div className="value">{value}</div>
             </div>

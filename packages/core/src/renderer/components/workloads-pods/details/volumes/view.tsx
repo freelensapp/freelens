@@ -28,7 +28,7 @@ export const PodVolumes = observer(({ pod }: PodVolumesProps) => {
       <DrawerTitle>Volumes</DrawerTitle>
       {volumes.map((volume) => (
         <div key={volume.name} className="volume">
-          <div className="title flex gaps">
+          <div className="title flex gap-2">
             <Icon small material="storage" />
             <span>{volume.name}</span>
           </div>
