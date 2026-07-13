@@ -52,14 +52,14 @@ class NonInjectedEndpointSubsetList extends React.Component<EndpointSubsetListPr
   renderAddressTable(addresses: EndpointAddress[], virtual: boolean) {
     return (
       <div>
-        <div className="title flex gaps">Addresses</div>
+        <div className="title flex gap-2">Addresses</div>
         <Table
           items={addresses}
           selectable={false}
           virtual={virtual}
           scrollable={false}
           getTableRow={this.getAddressTableRow}
-          className="box grow"
+          className="grow shrink-0 basis-0"
         >
           <TableHead>
             <TableCell className="ip">IP</TableCell>
@@ -102,17 +102,17 @@ class NonInjectedEndpointSubsetList extends React.Component<EndpointSubsetListPr
     const notReadyAddressesVirtual = notReadyAddresses.length > 100;
 
     return (
-      <div className="EndpointSubsetList flex column">
+      <div className="EndpointSubsetList flex flex-col">
         {addresses.length > 0 && (
           <div>
-            <div className="title flex gaps">Addresses</div>
+            <div className="title flex gap-2">Addresses</div>
             <Table
               items={addresses}
               selectable={false}
               virtual={addressesVirtual}
               scrollable={false}
               getTableRow={this.getAddressTableRow}
-              className="box grow"
+              className="grow shrink-0 basis-0"
             >
               <TableHead>
                 <TableCell className="ip">IP</TableCell>
@@ -126,14 +126,14 @@ class NonInjectedEndpointSubsetList extends React.Component<EndpointSubsetListPr
 
         {notReadyAddresses.length > 0 && (
           <div>
-            <div className="title flex gaps">Not Ready Addresses</div>
+            <div className="title flex gap-2">Not Ready Addresses</div>
             <Table
               items={notReadyAddresses}
               selectable
               virtual={notReadyAddressesVirtual}
               scrollable={false}
               getTableRow={this.getNotReadyAddressTableRow}
-              className="box grow"
+              className="grow shrink-0 basis-0"
             >
               <TableHead>
                 <TableCell className="ip">IP</TableCell>
@@ -146,8 +146,8 @@ class NonInjectedEndpointSubsetList extends React.Component<EndpointSubsetListPr
           </div>
         )}
 
-        <div className="title flex gaps">Ports</div>
-        <Table selectable={false} virtual={false} scrollable={false} className="box grow">
+        <div className="title flex gap-2">Ports</div>
+        <Table selectable={false} virtual={false} scrollable={false} className="grow shrink-0 basis-0">
           <TableHead>
             <TableCell className="port">Port</TableCell>
             <TableCell className="name">Name</TableCell>
