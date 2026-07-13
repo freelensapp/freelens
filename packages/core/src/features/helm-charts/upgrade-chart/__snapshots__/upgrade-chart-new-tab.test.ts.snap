@@ -5040,7 +5040,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               data-testid="upgrade-chart-dock-tab-contents-for-my-second-namespace/some-name"
             >
               <div
-                class="InfoPanel flex gaps align-center"
+                class="InfoPanel flex gap-2 items-center"
               >
                 <div
                   class="controls"
@@ -5170,7 +5170,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-2 items-center"
                 />
                 <button
                   class="Button plain"
@@ -6255,7 +6255,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
               data-testid="upgrade-chart-dock-tab-contents-for-my-second-namespace/some-name"
             >
               <div
-                class="InfoPanel flex gaps align-center"
+                class="InfoPanel flex gap-2 items-center"
               >
                 <div
                   class="controls"
@@ -6385,7 +6385,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-2 items-center"
                 />
                 <button
                   class="Button plain"

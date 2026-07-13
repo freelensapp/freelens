@@ -164,7 +164,7 @@ export const LogSearch = observer(
     }, [setSearch]);
 
     return (
-      <div className="LogSearch flex box grow justify-flex-end gaps align-center">
+      <div className="LogSearch flex grow shrink-0 basis-0 justify-end gap-2 items-center">
         <SearchInput
           value={inputValue}
           onChange={onInputChange}

@@ -1,6 +1,6 @@
 {
   "comment": "Ratchet baseline for the legacy flexbox -> Tailwind migration. This number may only decrease. See scripts/check-legacy-flexbox.mjs and docs/v2-styling.md.",
-  "total": 320,
+  "total": 306,
   "files": {
     "packages/core/src/features/catalog/custom-columns.test.tsx": 23,
     "packages/core/src/features/helm-charts/child-features/preferences/renderer/adding-of-custom-helm-repository/adding-of-custom-helm-repository-dialog-content.tsx": 3,
@@ -27,12 +27,7 @@
     "packages/core/src/renderer/components/dock/create-resource/view.tsx": 2,
     "packages/core/src/renderer/components/dock/dock.tsx": 7,
     "packages/core/src/renderer/components/dock/edit-resource/view.tsx": 2,
-    "packages/core/src/renderer/components/dock/info-panel.tsx": 4,
     "packages/core/src/renderer/components/dock/install-chart/view.tsx": 7,
-    "packages/core/src/renderer/components/dock/logs/controls.tsx": 2,
-    "packages/core/src/renderer/components/dock/logs/resource-selector.tsx": 2,
-    "packages/core/src/renderer/components/dock/logs/search.tsx": 5,
-    "packages/core/src/renderer/components/dock/logs/view.tsx": 1,
     "packages/core/src/renderer/components/dock/upgrade-chart/view.tsx": 2,
     "packages/core/src/renderer/components/drawer/drawer-param-toggler.tsx": 2,
     "packages/core/src/renderer/components/drawer/drawer.tsx": 7,

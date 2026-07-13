@@ -86,7 +86,7 @@ export const LogResourceSelector = observer(({ model }: LogResourceSelectorProps
   ];
 
   return (
-    <div className="LogResourceSelector flex gaps align-center">
+    <div className="LogResourceSelector flex gap-2 items-center">
       <span>Namespace</span> <Badge data-testid="namespace-badge" label={pod.getNs()} />
       {owner && (
         <>
