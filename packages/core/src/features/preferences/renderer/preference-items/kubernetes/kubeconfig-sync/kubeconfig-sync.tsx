@@ -127,7 +127,7 @@ class NonInjectedKubeconfigSync extends React.Component<Dependencies> {
   renderSyncButtons() {
     if (this.props.isWindows) {
       return (
-        <div className="flex gaps align-center mb-5">
+        <div className="flex gap-2 items-center mb-5">
           <PathPicker
             message="Sync file(s)"
             onPick={this.onPick}
