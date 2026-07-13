@@ -629,7 +629,7 @@ exports[`disable kube object detail items when cluster is not relevant > given e
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -693,10 +693,10 @@ exports[`disable kube object detail items when cluster is not relevant > given e
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -1375,7 +1375,7 @@ exports[`disable kube object detail items when cluster is not relevant > given e
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -1439,10 +1439,10 @@ exports[`disable kube object detail items when cluster is not relevant > given e
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
@@ -2121,7 +2121,7 @@ exports[`disable kube object detail items when cluster is not relevant > given n
             class="ResizingAnchor vertical leading"
           />
           <div
-            class="tabs-container flex align-center"
+            class="tabs-container flex items-center"
           >
             <div
               class="dockTabs"
@@ -2185,10 +2185,10 @@ exports[`disable kube object detail items when cluster is not relevant > given n
               </div>
             </div>
             <div
-              class="toolbar flex gaps align-center box grow"
+              class="toolbar flex gap-2 items-center grow shrink-0 basis-0"
             >
               <div
-                class="dock-menu box grow"
+                class="dock-menu grow shrink-0 basis-0"
               >
                 <i
                   class="Icon new-dock-tab material interactive focusable"
