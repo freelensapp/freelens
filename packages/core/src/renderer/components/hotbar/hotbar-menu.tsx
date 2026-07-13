@@ -217,7 +217,7 @@ const NonInjectedHotbarMenu = observer((props: Dependencies & HotbarMenuProps) =
   return (
     <div
       className={cssNames(
-        "HotbarMenu flex column",
+        "HotbarMenu flex flex-col",
         {
           draggingOver,
           autoHide: userPreferencesState.hotbarAutoHide,
@@ -227,7 +227,7 @@ const NonInjectedHotbarMenu = observer((props: Dependencies & HotbarMenuProps) =
       )}
       onMouseLeave={handleMouseLeave}
     >
-      <div className="HotbarItems flex column gaps">
+      <div className="HotbarItems flex flex-col gap-2">
         <DragDropContext onDragStart={() => onDragStart()} onDragEnd={(result) => onDragEnd(result)}>
           {renderGrid()}
         </DragDropContext>

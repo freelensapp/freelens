@@ -235,10 +235,10 @@ exports[`welcome - navigation using application menu > renders 1`] = `
       </div>
     </main>
     <div
-      class="HotbarMenu flex column"
+      class="HotbarMenu flex flex-col"
     >
       <div
-        class="HotbarItems flex column gaps"
+        class="HotbarItems flex flex-col gap-2"
       >
         <div
           class="HotbarCell isDraggingOwner animateDown"
@@ -1003,10 +1003,10 @@ exports[`welcome - navigation using application menu > when navigated somewhere 
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col gap-2"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -1380,10 +1380,10 @@ exports[`welcome - navigation using application menu > when navigated somewhere 
       </div>
     </main>
     <div
-      class="HotbarMenu flex column"
+      class="HotbarMenu flex flex-col"
     >
       <div
-        class="HotbarItems flex column gaps"
+        class="HotbarItems flex flex-col gap-2"
       >
         <div
           class="HotbarCell isDraggingOwner animateDown"

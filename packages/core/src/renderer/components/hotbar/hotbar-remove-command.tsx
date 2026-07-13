@@ -47,7 +47,7 @@ const NonInjectedHotbarRemoveCommand = observer(
           },
           ok: () => removeHotbar(option.value),
           message: (
-            <div className="confirm flex column gaps">
+            <div className="confirm flex flex-col gap-2">
               <p>
                 Are you sure you want remove hotbar <b>{option.value.name.get()}</b>?
               </p>

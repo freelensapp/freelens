@@ -83,10 +83,10 @@ exports[`navigating between routes > given route with optional path parameters >
       </pre>
     </main>
     <div
-      class="HotbarMenu flex column"
+      class="HotbarMenu flex flex-col"
     >
       <div
-        class="HotbarItems flex column gaps"
+        class="HotbarItems flex flex-col gap-2"
       >
         <div
           class="HotbarCell isDraggingOwner animateDown"
@@ -304,10 +304,10 @@ exports[`navigating between routes > given route without path parameters > when 
       </div>
     </main>
     <div
-      class="HotbarMenu flex column"
+      class="HotbarMenu flex flex-col"
     >
       <div
-        class="HotbarItems flex column gaps"
+        class="HotbarItems flex flex-col gap-2"
       >
         <div
           class="HotbarCell isDraggingOwner animateDown"
