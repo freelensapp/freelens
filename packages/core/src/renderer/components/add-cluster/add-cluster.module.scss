@@ -19,8 +19,14 @@
 }
 
 .editor {
-  min-height: 600px;
-  max-height: 600px;
+  // The MonacoEditor sets an inline `height` from its line count, so the box
+  // height is pinned via min/max-height (which constrain that inline value)
+  // rather than `height` (which the inline style would override). Make it
+  // responsive so a multi-line validation error does not push the actions
+  // panel below the fold on shorter viewports.
+  --editor-height: clamp(300px, 50vh, 600px);
+  min-height: var(--editor-height);
+  max-height: var(--editor-height);
   border: 1px solid var(--colorVague);
   border-radius: var(--border-radius);
 }
