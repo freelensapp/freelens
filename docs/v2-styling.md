@@ -119,25 +119,15 @@ extensions: the Tailwind JIT only scans core TSX (see above), so those classes
 would produce no CSS. Replace them with plain rules in the component's own
 SCSS.
 
-### Ratchet guardrail
+### Migration status
 
-`scripts/check-legacy-flexbox.mjs` counts legacy flexbox tokens in core TSX
-`className` attributes and fails when the count rises above the committed
-baseline in `scripts/legacy-flexbox-baseline.json`. This keeps new mixed
-classnames out while the migration proceeds in batches. Tokens whose spelling
-collides with ordinary prose or Tailwind (`column`, `center`, `grow`, ...) are
-only counted when the same string literal also carries their anchor (`flex` or
-`box`), so the English word "column" in a test description is not mistaken for
-the legacy `.flex.column` class. After a batch lowers the count, ratchet the
-baseline down:
-
-```bash
-node scripts/check-legacy-flexbox.mjs           # verify (CI)
-node scripts/check-legacy-flexbox.mjs --update   # lower the baseline
-```
-
-The endgame is a baseline of `0`, a deprecation notice on `flexbox.scss`, and
-removal in a later major after an extension audit.
+The first-party migration is **complete** — no core TSX carries legacy flexbox
+classes. `flexbox.scss` stays loaded and **frozen** for extension compatibility
+(above): add no new usages in core, and migrate any that reappear. This is now
+upheld by convention; the batch migration's ratchet guardrail
+(`scripts/check-legacy-flexbox.mjs` plus a baseline JSON) has been retired.
+Removing `flexbox.scss` itself is deferred to a later major after an extension
+audit.
 
 ## Tailwind configuration caveats
 
@@ -153,6 +143,25 @@ removal in a later major after an extension audit.
   be dead. Prefer `var(--…)` theme tokens over `dark:` variants — the token
   layer already re-themes automatically, which is why `dark:` is rarely
   needed.
+
+### Cascade layers: what beats what
+
+`@import "tailwindcss"` emits Tailwind's utilities into `@layer utilities` and
+its preflight into `@layer base`. In the CSS cascade **unlayered rules beat
+every `@layer`, regardless of specificity**. Two consequences to keep in mind:
+
+- The global reset in `app.scss` (`*, *:before, *:after { margin: 0; padding:
+  0; border: 0 }`) is wrapped in `@layer base` **on purpose**. Left unlayered it
+  would override *every* margin/padding utility (`mb-5`, `ml-auto`, ...)
+  app-wide — only `gap`/flex utilities, which the reset does not touch, would
+  survive, which is a trap: `flex`/`gap-*` work but `m-*`/`p-*` silently do
+  nothing. Keep any app-wide reset in a layer so utilities can win. Note that
+  `app.scss` is parsed by the Tailwind PostCSS plugin, so use `/* */` block
+  comments in it, never `//`.
+- Component SCSS (global `.scss` and `*.module.scss`) is **unlayered**, so it
+  still overrides Tailwind utilities without needing higher specificity. To
+  override a utility, a component rule just has to exist; to let a utility take
+  effect, don't fight it from unlayered CSS on the same element.
 
 ## `@apply` in stylesheets
 
