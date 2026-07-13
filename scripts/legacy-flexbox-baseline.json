@@ -1,6 +1,6 @@
 {
   "comment": "Ratchet baseline for the legacy flexbox -> Tailwind migration. This number may only decrease. See scripts/check-legacy-flexbox.mjs and docs/v2-styling.md.",
-  "total": 221,
+  "total": 205,
   "files": {
     "packages/core/src/features/catalog/custom-columns.test.tsx": 23,
     "packages/core/src/features/helm-charts/child-features/preferences/renderer/adding-of-custom-helm-repository/adding-of-custom-helm-repository-dialog-content.tsx": 3,
@@ -12,8 +12,6 @@
     "packages/core/src/renderer/components/add-remove-buttons/add-remove-buttons.tsx": 1,
     "packages/core/src/renderer/components/chart/chart.tsx": 4,
     "packages/core/src/renderer/components/checkbox/checkbox.tsx": 2,
-    "packages/core/src/renderer/components/cluster/cluster-issues.tsx": 8,
-    "packages/core/src/renderer/components/cluster/cluster-metric-switchers.tsx": 8,
     "packages/core/src/renderer/components/cluster/cluster-pie-charts.tsx": 24,
     "packages/core/src/renderer/components/config-secrets/add-dialog/view.tsx": 6,
     "packages/core/src/renderer/components/dialog/dialog.tsx": 2,
