@@ -141,10 +141,10 @@ class NonInjectedCustomResourceDefinitions extends React.Component<Dependencies>
                   controlShouldRenderValue={false}
                   isMulti={true}
                   formatOptionLabel={({ value, isSelected }) => (
-                    <div className="flex gaps align-center">
+                    <div className="flex gap-2 items-center">
                       {value !== this.ALL_GROUPS && <Icon small material="folder" />}
                       <span>{value}</span>
-                      {isSelected && <Icon small material="check" className="box right" />}
+                      {isSelected && <Icon small material="check" className="ml-auto" />}
                     </div>
                   )}
                 />
