@@ -4,7 +4,7 @@ exports[`installing helm chart from previously opened tab > given tab for instal
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter"
@@ -686,7 +686,7 @@ exports[`installing helm chart from previously opened tab > given tab for instal
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"

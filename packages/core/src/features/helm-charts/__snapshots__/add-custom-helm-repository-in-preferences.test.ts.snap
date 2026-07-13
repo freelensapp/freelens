@@ -4,7 +4,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -842,7 +842,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -1690,7 +1690,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -2649,7 +2649,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -3505,7 +3505,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -4464,7 +4464,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -5605,7 +5605,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -6564,7 +6564,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -7705,7 +7705,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -8665,7 +8665,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -9521,7 +9521,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -10367,7 +10367,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"

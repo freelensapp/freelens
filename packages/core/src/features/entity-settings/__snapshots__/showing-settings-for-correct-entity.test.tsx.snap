@@ -4,7 +4,7 @@ exports[`Showing correct entity settings > renders 1`] = `
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -382,7 +382,7 @@ exports[`Showing correct entity settings > when navigating to local cluster enti
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -761,7 +761,7 @@ exports[`Showing correct entity settings > when navigating to non-local cluster 
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -1161,7 +1161,7 @@ exports[`Showing correct entity settings > when navigating to weblink entity set
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"

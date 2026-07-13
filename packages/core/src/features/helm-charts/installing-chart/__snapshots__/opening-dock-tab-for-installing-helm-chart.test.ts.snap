@@ -4,7 +4,7 @@ exports[`opening dock tab for installing helm chart > given application is start
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -694,7 +694,7 @@ exports[`opening dock tab for installing helm chart > given application is start
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -1552,7 +1552,7 @@ exports[`opening dock tab for installing helm chart > given application is start
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -2467,7 +2467,7 @@ exports[`opening dock tab for installing helm chart > given application is start
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -3532,7 +3532,7 @@ exports[`opening dock tab for installing helm chart > given application is start
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -4607,7 +4607,7 @@ exports[`opening dock tab for installing helm chart > given application is start
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -5672,7 +5672,7 @@ exports[`opening dock tab for installing helm chart > given application is start
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -6741,7 +6741,7 @@ exports[`opening dock tab for installing helm chart > given application is start
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -7816,7 +7816,7 @@ exports[`opening dock tab for installing helm chart > given application is start
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"

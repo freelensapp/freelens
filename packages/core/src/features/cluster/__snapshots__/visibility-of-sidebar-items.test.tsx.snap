@@ -3,7 +3,7 @@
 exports[`cluster - visibility of sidebar items > given kube resource for route is not allowed > renders 1`] = `
 <div>
   <div
-    class="Notifications flex column align-flex-end"
+    class="Notifications"
   />
   <div
     class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter"
@@ -681,7 +681,7 @@ exports[`cluster - visibility of sidebar items > given kube resource for route i
 exports[`cluster - visibility of sidebar items > given kube resource for route is not allowed > when kube resource becomes allowed > renders 1`] = `
 <div>
   <div
-    class="Notifications flex column align-flex-end"
+    class="Notifications"
   />
   <div
     class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"

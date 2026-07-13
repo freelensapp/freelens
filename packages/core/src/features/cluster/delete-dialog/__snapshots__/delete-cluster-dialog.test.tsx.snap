@@ -4,7 +4,7 @@ exports[`Deleting a cluster > when an internal kubeconfig cluster is used > when
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -753,7 +753,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -1535,7 +1535,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -2398,7 +2398,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -3261,7 +3261,7 @@ exports[`Deleting a cluster > when the kubeconfig has only one cluster > when th
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"

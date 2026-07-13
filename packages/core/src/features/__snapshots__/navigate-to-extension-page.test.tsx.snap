@@ -3,7 +3,7 @@
 exports[`navigate to extension page > renders 1`] = `
 <div>
   <div
-    class="Notifications flex column align-flex-end"
+    class="Notifications"
   />
   <div
     class="ClusterManager"
@@ -379,7 +379,7 @@ exports[`navigate to extension page > renders 1`] = `
 exports[`navigate to extension page > when extension navigates to child route > renders 1`] = `
 <div>
   <div
-    class="Notifications flex column align-flex-end"
+    class="Notifications"
   />
   <div
     class="ClusterManager"
@@ -600,7 +600,7 @@ exports[`navigate to extension page > when extension navigates to child route > 
 exports[`navigate to extension page > when extension navigates to route with parameters > renders 1`] = `
 <div>
   <div
-    class="Notifications flex column align-flex-end"
+    class="Notifications"
   />
   <div
     class="ClusterManager"
@@ -837,7 +837,7 @@ exports[`navigate to extension page > when extension navigates to route with par
 exports[`navigate to extension page > when extension navigates to route without parameters > renders 1`] = `
 <div>
   <div
-    class="Notifications flex column align-flex-end"
+    class="Notifications"
   />
   <div
     class="ClusterManager"
@@ -1074,7 +1074,7 @@ exports[`navigate to extension page > when extension navigates to route without 
 exports[`navigate to extension page > when extension navigates to route without parameters > when changing page parameters > renders 1`] = `
 <div>
   <div
-    class="Notifications flex column align-flex-end"
+    class="Notifications"
   />
   <div
     class="ClusterManager"

@@ -4,7 +4,7 @@ exports[`preferences: URLs of legacy extensions > given extension with both cust
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -450,7 +450,7 @@ exports[`preferences: URLs of legacy extensions > given extension with both cust
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -896,7 +896,7 @@ exports[`preferences: URLs of legacy extensions > given extension with custom pr
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -1304,7 +1304,7 @@ exports[`preferences: URLs of legacy extensions > given extension with custom pr
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -1686,7 +1686,7 @@ exports[`preferences: URLs of legacy extensions > given extension with custom pr
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"

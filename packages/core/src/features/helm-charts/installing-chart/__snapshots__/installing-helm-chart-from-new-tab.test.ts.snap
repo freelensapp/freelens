@@ -4,7 +4,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -595,7 +595,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -1666,7 +1666,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -2615,7 +2615,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -3832,7 +3832,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -5018,7 +5018,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -6199,7 +6199,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -7380,7 +7380,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -8583,7 +8583,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -9800,7 +9800,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -10981,7 +10981,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -12170,14 +12170,14 @@ exports[`installing helm chart from new tab > given tab for installing chart was
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     >
       <div
-        class="Animate opacity notification flex ok enter"
+        class="Animate opacity notification ok enter"
         style="--enter-duration: 100ms; --leave-duration: 100ms;"
       >
         <div
-          class="box"
+          class="info-icon"
         >
           <i
             class="Icon material focusable"
@@ -12191,7 +12191,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
           </i>
         </div>
         <div
-          class="message box grow"
+          class="message"
         >
           <p>
             Chart Release 
@@ -12202,7 +12202,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
           </p>
         </div>
         <div
-          class="box close-icon"
+          class="close-icon"
         >
           <i
             class="Icon close material interactive focusable"
@@ -13199,14 +13199,14 @@ exports[`installing helm chart from new tab > given tab for installing chart was
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     >
       <div
-        class="Animate opacity notification flex ok enter"
+        class="Animate opacity notification ok enter"
         style="--enter-duration: 100ms; --leave-duration: 100ms;"
       >
         <div
-          class="box"
+          class="info-icon"
         >
           <i
             class="Icon material focusable"
@@ -13220,7 +13220,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
           </i>
         </div>
         <div
-          class="message box grow"
+          class="message"
         >
           <p>
             Chart Release 
@@ -13231,7 +13231,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
           </p>
         </div>
         <div
-          class="box close-icon"
+          class="close-icon"
         >
           <i
             class="Icon close material interactive focusable"
@@ -14176,14 +14176,14 @@ exports[`installing helm chart from new tab > given tab for installing chart was
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     >
       <div
-        class="Animate opacity notification flex ok enter"
+        class="Animate opacity notification ok enter"
         style="--enter-duration: 100ms; --leave-duration: 100ms;"
       >
         <div
-          class="box"
+          class="info-icon"
         >
           <i
             class="Icon material focusable"
@@ -14197,7 +14197,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
           </i>
         </div>
         <div
-          class="message box grow"
+          class="message"
         >
           <p>
             Chart Release 
@@ -14208,7 +14208,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
           </p>
         </div>
         <div
-          class="box close-icon"
+          class="close-icon"
         >
           <i
             class="Icon close material interactive focusable"
@@ -15265,7 +15265,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -16659,7 +16659,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -17660,7 +17660,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -18895,7 +18895,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -20128,7 +20128,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -21309,7 +21309,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
@@ -22490,7 +22490,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
