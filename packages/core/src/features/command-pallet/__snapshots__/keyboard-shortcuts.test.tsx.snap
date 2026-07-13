@@ -1405,10 +1405,10 @@ exports[`Command Pallet: keyboard shortcut tests > when on linux > when pressing
     </div>
   </div>
   <div
-    class="Dialog flex center"
+    class="Dialog flex items-center justify-center"
   >
     <div
-      class="box"
+      class="dialog-content"
     >
       <div
         class="CommandContainer"
@@ -3020,10 +3020,10 @@ exports[`Command Pallet: keyboard shortcut tests > when on macOS > when pressing
     </div>
   </div>
   <div
-    class="Dialog flex center"
+    class="Dialog flex items-center justify-center"
   >
     <div
-      class="box"
+      class="dialog-content"
     >
       <div
         class="CommandContainer"

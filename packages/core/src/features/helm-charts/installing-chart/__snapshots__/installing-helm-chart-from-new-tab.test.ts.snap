@@ -15199,12 +15199,12 @@ exports[`installing helm chart from new tab > given tab for installing chart was
     </div>
   </div>
   <div
-    class="Animate opacity-scale Dialog flex center LogsDialog modal enter"
+    class="Animate opacity-scale Dialog flex items-center justify-center LogsDialog modal enter"
     data-testid="logs-dialog-for-helm-chart-install"
     style="--enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="box"
+      class="dialog-content"
     >
       <div
         class="Wizard"

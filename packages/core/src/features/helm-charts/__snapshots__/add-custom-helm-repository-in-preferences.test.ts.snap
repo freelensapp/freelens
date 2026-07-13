@@ -2532,11 +2532,11 @@ exports[`add custom helm repository in preferences > when navigating to preferen
     </div>
   </div>
   <div
-    class="Animate opacity-scale Dialog flex center AddHelmRepoDialog modal enter"
+    class="Animate opacity-scale Dialog flex items-center justify-center AddHelmRepoDialog modal enter"
     style="--enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="box"
+      class="dialog-content"
     >
       <div
         class="Wizard"
@@ -3491,11 +3491,11 @@ exports[`add custom helm repository in preferences > when navigating to preferen
     </div>
   </div>
   <div
-    class="Animate opacity-scale Dialog flex center AddHelmRepoDialog modal enter leave"
+    class="Animate opacity-scale Dialog flex items-center justify-center AddHelmRepoDialog modal enter leave"
     style="--enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="box"
+      class="dialog-content"
     />
   </div>
 </body>
@@ -4347,11 +4347,11 @@ exports[`add custom helm repository in preferences > when navigating to preferen
     </div>
   </div>
   <div
-    class="Animate opacity-scale Dialog flex center AddHelmRepoDialog modal enter"
+    class="Animate opacity-scale Dialog flex items-center justify-center AddHelmRepoDialog modal enter"
     style="--enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="box"
+      class="dialog-content"
     >
       <div
         class="Wizard"
@@ -5306,11 +5306,11 @@ exports[`add custom helm repository in preferences > when navigating to preferen
     </div>
   </div>
   <div
-    class="Animate opacity-scale Dialog flex center AddHelmRepoDialog modal enter"
+    class="Animate opacity-scale Dialog flex items-center justify-center AddHelmRepoDialog modal enter"
     style="--enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="box"
+      class="dialog-content"
     >
       <div
         class="Wizard"
@@ -6447,11 +6447,11 @@ exports[`add custom helm repository in preferences > when navigating to preferen
     </div>
   </div>
   <div
-    class="Animate opacity-scale Dialog flex center AddHelmRepoDialog modal enter"
+    class="Animate opacity-scale Dialog flex items-center justify-center AddHelmRepoDialog modal enter"
     style="--enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="box"
+      class="dialog-content"
     >
       <div
         class="Wizard"
@@ -7406,11 +7406,11 @@ exports[`add custom helm repository in preferences > when navigating to preferen
     </div>
   </div>
   <div
-    class="Animate opacity-scale Dialog flex center AddHelmRepoDialog modal enter"
+    class="Animate opacity-scale Dialog flex items-center justify-center AddHelmRepoDialog modal enter"
     style="--enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="box"
+      class="dialog-content"
     >
       <div
         class="Wizard"
@@ -8547,11 +8547,11 @@ exports[`add custom helm repository in preferences > when navigating to preferen
     </div>
   </div>
   <div
-    class="Animate opacity-scale Dialog flex center AddHelmRepoDialog modal enter"
+    class="Animate opacity-scale Dialog flex items-center justify-center AddHelmRepoDialog modal enter"
     style="--enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="box"
+      class="dialog-content"
     >
       <div
         class="Wizard"
@@ -9507,11 +9507,11 @@ exports[`add custom helm repository in preferences > when navigating to preferen
     </div>
   </div>
   <div
-    class="Animate opacity-scale Dialog flex center AddHelmRepoDialog modal enter leave"
+    class="Animate opacity-scale Dialog flex items-center justify-center AddHelmRepoDialog modal enter leave"
     style="--enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="box"
+      class="dialog-content"
     />
   </div>
 </body>
@@ -10353,11 +10353,11 @@ exports[`add custom helm repository in preferences > when navigating to preferen
     </div>
   </div>
   <div
-    class="Animate opacity-scale Dialog flex center AddHelmRepoDialog modal enter leave"
+    class="Animate opacity-scale Dialog flex items-center justify-center AddHelmRepoDialog modal enter leave"
     style="--enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="box"
+      class="dialog-content"
     />
   </div>
 </body>
@@ -11199,11 +11199,11 @@ exports[`add custom helm repository in preferences > when navigating to preferen
     </div>
   </div>
   <div
-    class="Animate opacity-scale Dialog flex center AddHelmRepoDialog modal enter leave"
+    class="Animate opacity-scale Dialog flex items-center justify-center AddHelmRepoDialog modal enter leave"
     style="--enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
-      class="box"
+      class="dialog-content"
     >
       <div
         class="Wizard"
