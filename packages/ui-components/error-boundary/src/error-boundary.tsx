@@ -50,7 +50,7 @@ class NonInjectedErrorBoundary extends React.Component<ErrorBoundaryProps & Depe
 
     if (error) {
       return (
-        <div className="ErrorBoundary flex column gaps">
+        <div className="ErrorBoundary">
           <h5>
             {"App crash at "}
             <span className="contrast">{window.location.pathname}</span>
@@ -72,7 +72,7 @@ class NonInjectedErrorBoundary extends React.Component<ErrorBoundaryProps & Depe
               {error.stack}
             </code>
           </div>
-          <Button className="box self-flex-start" primary label="Back" onClick={this.back} />
+          <Button className="back-button" primary label="Back" onClick={this.back} />
         </div>
       );
     }
