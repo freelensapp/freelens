@@ -96,7 +96,7 @@ export class SettingLayout extends React.Component<SettingLayoutProps> {
           </nav>
         )}
         <div className="contentRegion" id="ScrollSpyRoot">
-          <div className={cssNames("content", contentClass, contentGaps && "flex column gaps")}>{children}</div>
+          <div className={cssNames("content", contentClass, contentGaps && "flex flex-col gap-2")}>{children}</div>
           <div className="toolsRegion">
             {this.props.provideBackButtonNavigation && (
               <div className="fixed top-[60px]">
