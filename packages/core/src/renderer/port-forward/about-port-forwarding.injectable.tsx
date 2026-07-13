@@ -19,10 +19,10 @@ const aboutPortForwardingInjectable = getInjectable({
 
     return () => {
       const removeNotification = showSuccessNotification(
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
           <b>Port Forwarding</b>
           <p>You can manage your port forwards on the Port Forwarding Page.</p>
-          <div className="flex gap-4 grow shrink-0 basis-0">
+          <div className="flex gap-2 grow shrink-0 basis-0">
             <Button
               active
               outlined

@@ -133,11 +133,11 @@ class NonInjectedPortForwardDialog extends Component<PortForwardDialogProps & De
         done={this.props.model.close}
       >
         <WizardStep
-          contentClass="flex gap-4 flex-col"
+          contentClass="flex gap-2 flex-col"
           next={() => this.startPortForward(data)}
           nextLabel={this.currentPort === 0 ? "Start" : "Modify"}
         >
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
             <div className="input-container flex items-center">
               <div className="current-address" data-testid="current-address">
                 Addresses to listen on (comma separated):
