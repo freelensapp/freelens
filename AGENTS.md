@@ -199,10 +199,9 @@ Uses pnpm workspaces for:
 ## Styling
 
 Freelens v2 carries four styling systems (theme CSS custom properties, global
-plain SCSS, CSS Modules, and Tailwind v4), plus legacy `flexbox.scss`
-utilities. Which one to use is not a matter of taste — each has a defined role.
-Before adding or changing any stylesheet or `className`, read
-[`docs/v2-styling.md`](./docs/v2-styling.md). In short:
+plain SCSS, CSS Modules, and Tailwind v4). Which one to use is not a matter of
+taste — each has a defined role. Before adding or changing any stylesheet or
+`className`, read [`docs/v2-styling.md`](./docs/v2-styling.md). In short:
 
 - **Theme values** (colors, fonts): CSS custom properties from the TS theme
   system (`var(--…)`) — the single contract every other system reads.
@@ -211,9 +210,8 @@ Before adding or changing any stylesheet or `className`, read
   (its JIT only scans core TSX), no CSS Modules (the class names are public
   API).
 - **Core single components / full views**: CSS Modules (`*.module.scss`).
-- **Local layout inside core-only TSX**: Tailwind utilities. Do not add new
-  `flexbox.scss` usages (that file is frozen for extension compatibility) and
-  do not mix the two utility vocabularies in one `className`.
+- **Local layout inside core-only TSX**: Tailwind utilities. The legacy
+  `flexbox.scss` utilities have been removed — do not reintroduce them.
 - **Extensions**: see the styling section of
   [`docs/v2-extension-migration.md`](./docs/v2-extension-migration.md).
 

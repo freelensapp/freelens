@@ -17,7 +17,6 @@
   grid-template-columns: 1fr 40%;
 
   > * {
-    --flex-gap: #{$spacing};
     overflow: auto;
     padding: $spacing;
   }

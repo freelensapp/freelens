@@ -29,10 +29,11 @@ role (see [Roles](#roles-which-mechanism-to-use)):
    `packages/core/src/renderer/components/app.scss`; utility classes appear
    inline in core TSX.
 
-A fifth, legacy layer overlaps Tailwind: the in-house **flexbox utilities**
-(`packages/core/src/renderer/components/flexbox.scss` — `.flex`, `.column`,
-`.gaps`, `.align-center`, `.box`, `.grow`). They predate Tailwind and are still
-loaded globally. See [Utility vocabulary](#utility-vocabulary-flexboxscss-vs-tailwind).
+The v2 migration also **removed** a fifth, legacy layer that used to overlap
+Tailwind: the in-house **flexbox utilities** (`flexbox.scss` — `.flex`,
+`.column`, `.gaps`, `.box`, `.grow`, `.align-center`, …). Core no longer ships
+them; use Tailwind for layout. Extension authors still using those classes: see
+[migrating off `flexbox.scss`](./v2-extension-migration.md#migrating-off-flexboxscss).
 
 ## Roles: which mechanism to use
 
@@ -55,7 +56,10 @@ the public surface.
 Tailwind JIT scans **only core's own TSX**. A Tailwind class written in
 `packages/ui-components` or in an extension that core does not *also* happen to
 use produces **no CSS** — it silently does nothing. Never use Tailwind
-utilities outside core TSX.
+utilities outside core TSX expecting the host to emit them. (An extension can
+still run its **own** Tailwind build and ship the generated utilities in its
+stylesheet — see
+[Bringing your own Tailwind](./v2-extension-migration.md#bringing-your-own-tailwind).)
 
 ### Why ui-components stay global
 
@@ -66,68 +70,23 @@ consumed by extensions and by the host's already-loaded global stylesheet;
 mangling them (CSS Modules) or moving them to Tailwind (unreachable, above)
 would break that public contract.
 
-## Utility vocabulary: flexbox.scss vs Tailwind
+## Layout utilities: Tailwind (flexbox.scss removed)
 
-The most common inconsistency today is mixing three utility vocabularies in a
-single `className`, e.g. `className="flex justify-center Welcome align-center"`
-— `justify-center` is Tailwind, `align-center` is legacy `flexbox.scss`,
-`Welcome` is a global component class. Near-synonyms (`align-center` vs
-`items-center`, `column` vs `flex-col`) invite silent mistakes.
+Core uses **Tailwind** for layout (`flex`, `items-center`, `justify-center`,
+`flex-col`, `gap-*`). The legacy in-house `flexbox.scss` utilities (`.flex`,
+`.column`, `.gaps`, `.box`, `.grow`, `.align-center`, …) have been **removed** —
+they are no longer loaded, so those class names now do nothing.
 
-Convention going forward:
-
-- **In new or touched core TSX, use Tailwind for layout utilities**
-  (`flex`, `items-center`, `justify-center`, `flex-col`, `gap-*`). Do not
-  reach for `flexbox.scss` classes.
-- **Do not delete `flexbox.scss`.** Its classes are extension-visible
-  (shared components such as `error-boundary` ship `"flex column gaps"`), so
-  removing it is a breaking change. It is **frozen**: no new usages in core,
-  migrate existing ones opportunistically.
-- Do not mix the two vocabularies in the same `className`.
-
-### Legacy-to-Tailwind mapping
-
-When migrating an existing `className`, translate each legacy token as
-follows. Migrate a container **together with its flex children in the same
-change** — the two systems coexist during the migration and the legacy
-compound selectors (`.flex.gaps > :not(:last-child)`, `.flex > .box.grow`) win
-on specificity, so a half-migrated subtree double-spaces or loses `grow`.
-
-| Legacy | Tailwind | Note |
-|---|---|---|
-| `flex` | `flex` | Same name, same rule |
-| `flex inline` | `inline-flex` | |
-| `flex column` / `column reverse` | `flex flex-col` / `flex-col-reverse` | |
-| `flex reverse` | `flex flex-row-reverse` | |
-| `flex wrap` / `wrap-reverse` | `flex flex-wrap` / `flex-wrap-reverse` | |
-| `flex fullsize` | `flex w-screen h-screen` | |
-| `flex auto` | `flex-1` on each child | Parent-side rule has no Tailwind equivalent |
-| `flex center` | `items-center justify-center` on parent | Legacy sets `margin: auto` per child; verify multi-child sites |
-| `justify-flex-start` / `-end`, `justify-space-between` / `-around` | `justify-start` / `end`, `justify-between` / `around` | |
-| `align-center`, `align-flex-start` / `-end`, `align-stretch`, `align-baseline` | `items-center`, `items-start` / `end`, `items-stretch`, `items-baseline` | |
-| `content-flex-start` / `-end`, `content-space-between` / `-around`, `content-stretch` | `content-start` / `end`, `content-between` / `around`, `content-stretch` | |
-| `gaps` | `gap-*` on the container | Legacy `gaps` is margin-based and parametrized by `--flex-gap`; compute the effective value and set an explicit `gap-*`. Real `gap` also applies between wrapped lines — check wrapping containers |
-| `box grow` | `grow shrink-0` (exact: `flex: 1 0`) or `flex-1` where shrinking is fine | Do not translate to bare `grow` — legacy forbids shrinking |
-| `box grow-fixed` | `grow shrink-0 basis-0` | `flex: 1 0 0` |
-| `box center` | `m-auto` | |
-| `box left` / `box right` | `mr-auto` / `ml-auto` | |
-| `box self-flex-start` / `-end`, `self-stretch`, ... | `self-start` / `end`, `self-stretch`, ... | |
-| bare `box` | usually delete | Except where a stylesheet structurally selects `.box` (`confirm-dialog`, `checkbox`, `notifications`) — give those elements a named class and rewrite the selector in the same change |
-
-Do not translate legacy utilities to Tailwind in `packages/ui-components` or
-extensions: the Tailwind JIT only scans core TSX (see above), so those classes
-would produce no CSS. Replace them with plain rules in the component's own
-SCSS.
-
-### Migration status
-
-The first-party migration is **complete** — no core TSX carries legacy flexbox
-classes. `flexbox.scss` stays loaded and **frozen** for extension compatibility
-(above): add no new usages in core, and migrate any that reappear. This is now
-upheld by convention; the batch migration's ratchet guardrail
-(`scripts/check-legacy-flexbox.mjs` plus a baseline JSON) has been retired.
-Removing `flexbox.scss` itself is deferred to a later major after an extension
-audit.
+- Use Tailwind layout utilities in core TSX; never reintroduce the legacy
+  vocabulary, and do not mix vocabularies in one `className`.
+- `packages/ui-components` cannot use Tailwind (the host JIT scans only core
+  TSX — see above); style layout with plain rules in the component's own SCSS.
+  Extensions cannot use the *host's* Tailwind either, but may run their own
+  Tailwind build (see
+  [Bringing your own Tailwind](./v2-extension-migration.md#bringing-your-own-tailwind)).
+- Extension authors migrating code that still uses the old classes: the
+  legacy-token → plain-CSS mapping lives in
+  [migrating off `flexbox.scss`](./v2-extension-migration.md#migrating-off-flexboxscss).
 
 ## Tailwind configuration caveats
 
