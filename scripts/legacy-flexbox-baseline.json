@@ -1,8 +1,5 @@
 {
   "comment": "Ratchet baseline for the legacy flexbox -> Tailwind migration. This number may only decrease. See scripts/check-legacy-flexbox.mjs and docs/v2-styling.md.",
-  "total": 13,
-  "files": {
-    "packages/core/src/renderer/components/input/input.tsx": 11,
-    "packages/core/src/renderer/components/wizard/wizard.tsx": 2
-  }
+  "total": 0,
+  "files": {}
 }

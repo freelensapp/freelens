@@ -256,7 +256,7 @@ export class WizardStep<D> extends React.Component<WizardStepProps<D>, WizardSte
           {loading ? this.renderLoading() : children}
         </div>
         {customButtons ?? (
-          <div className="buttons flex gaps align-center">
+          <div className="buttons flex items-center gap-2">
             {moreButtons}
             <Button
               className="back-btn"

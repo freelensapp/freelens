@@ -32,7 +32,6 @@
   }
 
   label {
-    --flex-gap: $padding * 0.6667;
     position: relative;
     padding: $padding * 0.75 0;
     border-bottom: 1px solid var(--halfGray);
@@ -91,6 +90,7 @@
     }
 
     .maxLengthIndicator {
+      margin-left: auto;
       text-align: right;
       font-size: 80%;
       padding: $padding * 0.33333;
