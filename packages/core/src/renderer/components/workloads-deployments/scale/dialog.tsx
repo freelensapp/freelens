@@ -118,7 +118,7 @@ class NonInjectedDeploymentScaleDialog extends Component<DeploymentScaleDialogPr
         done={this.close}
       >
         <WizardStep
-          contentClass="flex gaps column"
+          contentClass="flex gap-2 flex-col"
           next={() => this.scale(deployment)}
           nextLabel="Scale"
           disabledNext={!this.ready}
@@ -126,14 +126,14 @@ class NonInjectedDeploymentScaleDialog extends Component<DeploymentScaleDialogPr
           <div className="current-scale" data-testid="current-scale">
             Current replica scale: {currentReplicas}
           </div>
-          <div className="flex gaps align-center">
+          <div className="flex gap-2 items-center">
             <div className="desired-scale" data-testid="desired-scale">
               Desired number of replicas: {desiredReplicas}
             </div>
-            <div className="slider-container flex align-center">
+            <div className="slider-container flex items-center">
               <Slider value={desiredReplicas} max={scaleMax} onChange={onChange} />
             </div>
-            <div className="plus-minus-container flex gaps">
+            <div className="plus-minus-container flex gap-2">
               <Icon
                 material="remove_circle_outline"
                 onClick={this.desiredReplicasDown}

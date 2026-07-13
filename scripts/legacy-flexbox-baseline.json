@@ -1,6 +1,6 @@
 {
   "comment": "Ratchet baseline for the legacy flexbox -> Tailwind migration. This number may only decrease. See scripts/check-legacy-flexbox.mjs and docs/v2-styling.md.",
-  "total": 306,
+  "total": 288,
   "files": {
     "packages/core/src/features/catalog/custom-columns.test.tsx": 23,
     "packages/core/src/features/helm-charts/child-features/preferences/renderer/adding-of-custom-helm-repository/adding-of-custom-helm-repository-dialog-content.tsx": 3,
@@ -59,10 +59,7 @@
     "packages/core/src/renderer/components/wizard/wizard.tsx": 3,
     "packages/core/src/renderer/components/workloads-cronjobs/cronjob-details.tsx": 1,
     "packages/core/src/renderer/components/workloads-cronjobs/trigger-dialog/view.tsx": 6,
-    "packages/core/src/renderer/components/workloads-deployments/scale/dialog.tsx": 6,
     "packages/core/src/renderer/components/workloads-pods/details/volumes/view.tsx": 1,
-    "packages/core/src/renderer/components/workloads-replicasets/scale-dialog/dialog.tsx": 6,
-    "packages/core/src/renderer/components/workloads-statefulsets/scale/dialog.tsx": 6,
     "packages/core/src/renderer/ipc/list-namespaces-forbidden-handler.injectable.tsx": 5
   }
 }
