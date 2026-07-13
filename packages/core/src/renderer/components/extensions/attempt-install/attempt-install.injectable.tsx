@@ -74,7 +74,7 @@ const attemptInstall =
       dispose();
 
       return void showErrorNotification(
-        <div className="flex column gaps">
+        <div className="flex flex-col gap-2">
           <b>Extension Install Collision:</b>
           <p>
             {"The "}
@@ -94,8 +94,8 @@ const attemptInstall =
 
       // confirm to uninstall old version before installing new version
       const removeNotification = showInfoNotification(
-        <div className="InstallingExtensionNotification flex gaps align-center">
-          <div className="flex column gaps">
+        <div className="InstallingExtensionNotification flex gap-2 items-center">
+          <div className="flex flex-col gap-2">
             <p>
               {"Install extension "}
               <b>{`${name}@${version}`}</b>?
