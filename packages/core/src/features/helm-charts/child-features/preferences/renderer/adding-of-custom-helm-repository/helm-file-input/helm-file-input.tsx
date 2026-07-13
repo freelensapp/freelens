@@ -36,11 +36,11 @@ const NonInjectedHelmFileInput = ({
   isPath,
   "data-testid": testId,
 }: Dependencies & HelmFileInputProps) => (
-  <div className="flex gaps align-center">
+  <div className="flex gap-3 items-center">
     <Input
       placeholder={placeholder}
       validators={isPath}
-      className="box grow"
+      className="grow shrink-0 basis-0"
       value={value}
       onChange={(v) => setValue(v)}
       data-testid={testId}

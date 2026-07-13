@@ -5418,10 +5418,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                   </span>
                 </label>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-3 items-center"
                 >
                   <div
-                    class="Input box grow invalid validating validatingLine"
+                    class="Input grow shrink-0 basis-0 invalid validating validatingLine"
                   >
                     <label
                       class="input-area flex gaps align-center"
@@ -5455,10 +5455,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-3 items-center"
                 >
                   <div
-                    class="Input box grow invalid validating validatingLine"
+                    class="Input grow shrink-0 basis-0 invalid validating validatingLine"
                   >
                     <label
                       class="input-area flex gaps align-center"
@@ -5492,10 +5492,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-3 items-center"
                 >
                   <div
-                    class="Input box grow invalid validating validatingLine"
+                    class="Input grow shrink-0 basis-0 invalid validating validatingLine"
                   >
                     <label
                       class="input-area flex gaps align-center"
@@ -7518,10 +7518,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                   </span>
                 </label>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-3 items-center"
                 >
                   <div
-                    class="Input box grow dirty"
+                    class="Input grow shrink-0 basis-0 dirty"
                   >
                     <label
                       class="input-area flex gaps align-center"
@@ -7555,10 +7555,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-3 items-center"
                 >
                   <div
-                    class="Input box grow invalid dirty validating validatingLine"
+                    class="Input grow shrink-0 basis-0 invalid dirty validating validatingLine"
                   >
                     <label
                       class="input-area flex gaps align-center"
@@ -7592,10 +7592,10 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                   </div>
                 </div>
                 <div
-                  class="flex gaps align-center"
+                  class="flex gap-3 items-center"
                 >
                   <div
-                    class="Input box grow invalid dirty validating validatingLine"
+                    class="Input grow shrink-0 basis-0 invalid dirty validating validatingLine"
                   >
                     <label
                       class="input-area flex gaps align-center"
