@@ -32,7 +32,6 @@ const baselineFile = path.join(repoRoot, "scripts", "legacy-flexbox-baseline.jso
 const ALWAYS_LEGACY = new Set([
   "box",
   "gaps",
-  "column",
   "fullsize",
   "grow-fixed",
   "wrap-reverse",
@@ -60,11 +59,14 @@ const ALWAYS_LEGACY = new Set([
 // migrated className drops `box`, which is what lets the ratchet reach zero.
 const CHILD_LEGACY = new Set(["grow", "center", "left", "right", "self-stretch", "self-baseline", "self-center"]);
 
-// Legacy parent modifiers (`.flex.inline`, `.flex.center`, ...). Counted only
-// when the className carries `flex`. Their migrated Tailwind equivalents are
-// spelled differently (`inline-flex`, `flex-row-reverse`, `items-center`), so
-// this does not count migrated code.
-const PARENT_LEGACY = new Set(["inline", "reverse", "wrap", "auto", "center"]);
+// Legacy parent modifiers (`.flex.inline`, `.flex.center`, `.flex.column`, ...).
+// Counted only when the className carries `flex`. Their migrated Tailwind
+// equivalents are spelled differently (`inline-flex`, `flex-row-reverse`,
+// `items-center`, `flex-col`), so this does not count migrated code. Anchoring
+// `column` to `flex` also keeps prose out of the count: the English word
+// "column" in test descriptions (`it("... shows the 'Kind' column")`) has no
+// `flex` in the same literal, so it is not mistaken for the legacy class.
+const PARENT_LEGACY = new Set(["inline", "reverse", "wrap", "auto", "center", "column"]);
 
 /** Recursively collect *.tsx files under a directory. */
 function collectTsx(dir, out) {

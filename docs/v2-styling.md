@@ -124,8 +124,12 @@ SCSS.
 `scripts/check-legacy-flexbox.mjs` counts legacy flexbox tokens in core TSX
 `className` attributes and fails when the count rises above the committed
 baseline in `scripts/legacy-flexbox-baseline.json`. This keeps new mixed
-classnames out while the migration proceeds in batches. After a batch lowers
-the count, ratchet the baseline down:
+classnames out while the migration proceeds in batches. Tokens whose spelling
+collides with ordinary prose or Tailwind (`column`, `center`, `grow`, ...) are
+only counted when the same string literal also carries their anchor (`flex` or
+`box`), so the English word "column" in a test description is not mistaken for
+the legacy `.flex.column` class. After a batch lowers the count, ratchet the
+baseline down:
 
 ```bash
 node scripts/check-legacy-flexbox.mjs           # verify (CI)
