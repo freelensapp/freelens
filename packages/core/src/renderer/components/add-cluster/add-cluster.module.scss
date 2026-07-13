@@ -7,8 +7,6 @@
 @use "../../components/mixins.scss";
 
 .AddClusters {
-  --flex-gap: calc(var(--unit) * 2);
-
   code {
     color: rgb(236, 64, 122);
   }
