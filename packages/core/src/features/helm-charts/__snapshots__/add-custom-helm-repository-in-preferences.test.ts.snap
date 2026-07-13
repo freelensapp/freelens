@@ -5409,7 +5409,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     type="checkbox"
                   />
                   <i
-                    class="box flex align-center"
+                    class="check-icon flex items-center"
                   />
                   <span
                     class="label"
@@ -7509,7 +7509,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                     type="checkbox"
                   />
                   <i
-                    class="box flex align-center"
+                    class="check-icon flex items-center"
                   />
                   <span
                     class="label"

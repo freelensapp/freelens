@@ -121,7 +121,7 @@ exports[`kube-object-list-layout > given pod store > renders 1`] = `
                     type="checkbox"
                   />
                   <i
-                    class="box flex align-center"
+                    class="check-icon flex items-center"
                   />
                 </label>
               </div>

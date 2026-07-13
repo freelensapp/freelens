@@ -46,7 +46,7 @@ export function Checkbox({
         disabled={disabled}
         onChange={(event) => onChange(event.target.checked, event)}
       />
-      <i className="box flex align-center" />
+      <i className="check-icon flex items-center" />
       {label ? <span className="label">{label}</span> : null}
       {children}
     </label>

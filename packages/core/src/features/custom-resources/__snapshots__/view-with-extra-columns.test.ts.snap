@@ -497,7 +497,7 @@ exports[`Viewing Custom Resources with extra columns > renders 1`] = `
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                     </label>
                   </div>
@@ -620,7 +620,7 @@ exports[`Viewing Custom Resources with extra columns > renders 1`] = `
                                   type="checkbox"
                                 />
                                 <i
-                                  class="box flex align-center"
+                                  class="check-icon flex items-center"
                                 />
                               </label>
                             </div>

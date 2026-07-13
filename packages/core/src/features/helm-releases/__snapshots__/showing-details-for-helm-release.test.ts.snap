@@ -610,7 +610,7 @@ exports[`showing details for helm release > given application is started > when 
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -1555,7 +1555,7 @@ exports[`showing details for helm release > given application is started > when 
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -1772,7 +1772,7 @@ exports[`showing details for helm release > given application is started > when 
                                     type="checkbox"
                                   />
                                   <i
-                                    class="box flex align-center"
+                                    class="check-icon flex items-center"
                                   />
                                 </label>
                               </div>
@@ -1903,7 +1903,7 @@ exports[`showing details for helm release > given application is started > when 
                                     type="checkbox"
                                   />
                                   <i
-                                    class="box flex align-center"
+                                    class="check-icon flex items-center"
                                   />
                                 </label>
                               </div>
@@ -2773,7 +2773,7 @@ exports[`showing details for helm release > given application is started > when 
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -2990,7 +2990,7 @@ exports[`showing details for helm release > given application is started > when 
                                     type="checkbox"
                                   />
                                   <i
-                                    class="box flex align-center"
+                                    class="check-icon flex items-center"
                                   />
                                 </label>
                               </div>
@@ -3121,7 +3121,7 @@ exports[`showing details for helm release > given application is started > when 
                                     type="checkbox"
                                   />
                                   <i
-                                    class="box flex align-center"
+                                    class="check-icon flex items-center"
                                   />
                                 </label>
                               </div>
@@ -4052,7 +4052,7 @@ exports[`showing details for helm release > given application is started > when 
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -4269,7 +4269,7 @@ exports[`showing details for helm release > given application is started > when 
                                     type="checkbox"
                                   />
                                   <i
-                                    class="box flex align-center"
+                                    class="check-icon flex items-center"
                                   />
                                 </label>
                               </div>
@@ -4400,7 +4400,7 @@ exports[`showing details for helm release > given application is started > when 
                                     type="checkbox"
                                   />
                                   <i
-                                    class="box flex align-center"
+                                    class="check-icon flex items-center"
                                   />
                                 </label>
                               </div>
@@ -5331,7 +5331,7 @@ exports[`showing details for helm release > given application is started > when 
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -5548,7 +5548,7 @@ exports[`showing details for helm release > given application is started > when 
                                     type="checkbox"
                                   />
                                   <i
-                                    class="box flex align-center"
+                                    class="check-icon flex items-center"
                                   />
                                 </label>
                               </div>
@@ -5679,7 +5679,7 @@ exports[`showing details for helm release > given application is started > when 
                                     type="checkbox"
                                   />
                                   <i
-                                    class="box flex align-center"
+                                    class="check-icon flex items-center"
                                   />
                                 </label>
                               </div>
@@ -6156,7 +6156,7 @@ exports[`showing details for helm release > given application is started > when 
                   type="checkbox"
                 />
                 <i
-                  class="box flex align-center"
+                  class="check-icon flex items-center"
                 />
                 <span
                   class="label"
@@ -6856,7 +6856,7 @@ exports[`showing details for helm release > given application is started > when 
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -7073,7 +7073,7 @@ exports[`showing details for helm release > given application is started > when 
                                     type="checkbox"
                                   />
                                   <i
-                                    class="box flex align-center"
+                                    class="check-icon flex items-center"
                                   />
                                 </label>
                               </div>
@@ -7204,7 +7204,7 @@ exports[`showing details for helm release > given application is started > when 
                                     type="checkbox"
                                   />
                                   <i
-                                    class="box flex align-center"
+                                    class="check-icon flex items-center"
                                   />
                                 </label>
                               </div>
@@ -7681,7 +7681,7 @@ exports[`showing details for helm release > given application is started > when 
                   type="checkbox"
                 />
                 <i
-                  class="box flex align-center"
+                  class="check-icon flex items-center"
                 />
                 <span
                   class="label"
@@ -8381,7 +8381,7 @@ exports[`showing details for helm release > given application is started > when 
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -8598,7 +8598,7 @@ exports[`showing details for helm release > given application is started > when 
                                     type="checkbox"
                                   />
                                   <i
-                                    class="box flex align-center"
+                                    class="check-icon flex items-center"
                                   />
                                 </label>
                               </div>
@@ -8729,7 +8729,7 @@ exports[`showing details for helm release > given application is started > when 
                                     type="checkbox"
                                   />
                                   <i
-                                    class="box flex align-center"
+                                    class="check-icon flex items-center"
                                   />
                                 </label>
                               </div>
@@ -9206,7 +9206,7 @@ exports[`showing details for helm release > given application is started > when 
                   type="checkbox"
                 />
                 <i
-                  class="box flex align-center"
+                  class="check-icon flex items-center"
                 />
                 <span
                   class="label"
@@ -9906,7 +9906,7 @@ exports[`showing details for helm release > given application is started > when 
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -10458,7 +10458,7 @@ exports[`showing details for helm release > given application is started > when 
                   type="checkbox"
                 />
                 <i
-                  class="box flex align-center"
+                  class="check-icon flex items-center"
                 />
                 <span
                   class="label"
@@ -11158,7 +11158,7 @@ exports[`showing details for helm release > given application is started > when 
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -11711,7 +11711,7 @@ exports[`showing details for helm release > given application is started > when 
                   type="checkbox"
                 />
                 <i
-                  class="box flex align-center"
+                  class="check-icon flex items-center"
                 />
                 <span
                   class="label"
@@ -12412,7 +12412,7 @@ exports[`showing details for helm release > given application is started > when 
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -12629,7 +12629,7 @@ exports[`showing details for helm release > given application is started > when 
                                     type="checkbox"
                                   />
                                   <i
-                                    class="box flex align-center"
+                                    class="check-icon flex items-center"
                                   />
                                 </label>
                               </div>
@@ -12760,7 +12760,7 @@ exports[`showing details for helm release > given application is started > when 
                                     type="checkbox"
                                   />
                                   <i
-                                    class="box flex align-center"
+                                    class="check-icon flex items-center"
                                   />
                                 </label>
                               </div>
@@ -13237,7 +13237,7 @@ exports[`showing details for helm release > given application is started > when 
                   type="checkbox"
                 />
                 <i
-                  class="box flex align-center"
+                  class="check-icon flex items-center"
                 />
                 <span
                   class="label"
@@ -13937,7 +13937,7 @@ exports[`showing details for helm release > given application is started > when 
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -14154,7 +14154,7 @@ exports[`showing details for helm release > given application is started > when 
                                     type="checkbox"
                                   />
                                   <i
-                                    class="box flex align-center"
+                                    class="check-icon flex items-center"
                                   />
                                 </label>
                               </div>
@@ -14285,7 +14285,7 @@ exports[`showing details for helm release > given application is started > when 
                                     type="checkbox"
                                   />
                                   <i
-                                    class="box flex align-center"
+                                    class="check-icon flex items-center"
                                   />
                                 </label>
                               </div>
@@ -15216,7 +15216,7 @@ exports[`showing details for helm release > given application is started > when 
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -15433,7 +15433,7 @@ exports[`showing details for helm release > given application is started > when 
                                     type="checkbox"
                                   />
                                   <i
-                                    class="box flex align-center"
+                                    class="check-icon flex items-center"
                                   />
                                 </label>
                               </div>
@@ -15564,7 +15564,7 @@ exports[`showing details for helm release > given application is started > when 
                                     type="checkbox"
                                   />
                                   <i
-                                    class="box flex align-center"
+                                    class="check-icon flex items-center"
                                   />
                                 </label>
                               </div>
@@ -16497,7 +16497,7 @@ exports[`showing details for helm release > given application is started > when 
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -16714,7 +16714,7 @@ exports[`showing details for helm release > given application is started > when 
                                     type="checkbox"
                                   />
                                   <i
-                                    class="box flex align-center"
+                                    class="check-icon flex items-center"
                                   />
                                 </label>
                               </div>
@@ -16845,7 +16845,7 @@ exports[`showing details for helm release > given application is started > when 
                                     type="checkbox"
                                   />
                                   <i
-                                    class="box flex align-center"
+                                    class="check-icon flex items-center"
                                   />
                                 </label>
                               </div>
@@ -17715,7 +17715,7 @@ exports[`showing details for helm release > given application is started > when 
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -17932,7 +17932,7 @@ exports[`showing details for helm release > given application is started > when 
                                     type="checkbox"
                                   />
                                   <i
-                                    class="box flex align-center"
+                                    class="check-icon flex items-center"
                                   />
                                 </label>
                               </div>
@@ -18063,7 +18063,7 @@ exports[`showing details for helm release > given application is started > when 
                                     type="checkbox"
                                   />
                                   <i
-                                    class="box flex align-center"
+                                    class="check-icon flex items-center"
                                   />
                                 </label>
                               </div>
@@ -18994,7 +18994,7 @@ exports[`showing details for helm release > given application is started > when 
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -19211,7 +19211,7 @@ exports[`showing details for helm release > given application is started > when 
                                     type="checkbox"
                                   />
                                   <i
-                                    class="box flex align-center"
+                                    class="check-icon flex items-center"
                                   />
                                 </label>
                               </div>
@@ -19342,7 +19342,7 @@ exports[`showing details for helm release > given application is started > when 
                                     type="checkbox"
                                   />
                                   <i
-                                    class="box flex align-center"
+                                    class="check-icon flex items-center"
                                   />
                                 </label>
                               </div>
@@ -20273,7 +20273,7 @@ exports[`showing details for helm release > given application is started > when 
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -20490,7 +20490,7 @@ exports[`showing details for helm release > given application is started > when 
                                     type="checkbox"
                                   />
                                   <i
-                                    class="box flex align-center"
+                                    class="check-icon flex items-center"
                                   />
                                 </label>
                               </div>
@@ -20621,7 +20621,7 @@ exports[`showing details for helm release > given application is started > when 
                                     type="checkbox"
                                   />
                                   <i
-                                    class="box flex align-center"
+                                    class="check-icon flex items-center"
                                   />
                                 </label>
                               </div>
@@ -21552,7 +21552,7 @@ exports[`showing details for helm release > given application is started > when 
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -21769,7 +21769,7 @@ exports[`showing details for helm release > given application is started > when 
                                     type="checkbox"
                                   />
                                   <i
-                                    class="box flex align-center"
+                                    class="check-icon flex items-center"
                                   />
                                 </label>
                               </div>
@@ -21900,7 +21900,7 @@ exports[`showing details for helm release > given application is started > when 
                                     type="checkbox"
                                   />
                                   <i
-                                    class="box flex align-center"
+                                    class="check-icon flex items-center"
                                   />
                                 </label>
                               </div>
@@ -22831,7 +22831,7 @@ exports[`showing details for helm release > given application is started > when 
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>

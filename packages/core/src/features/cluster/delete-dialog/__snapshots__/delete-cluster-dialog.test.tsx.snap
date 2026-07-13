@@ -1494,7 +1494,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
               type="checkbox"
             />
             <i
-              class="box flex align-center"
+              class="check-icon flex items-center"
             />
             <span
               class="label"
@@ -2276,7 +2276,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
               type="checkbox"
             />
             <i
-              class="box flex align-center"
+              class="check-icon flex items-center"
             />
             <span
               class="label"
@@ -3140,7 +3140,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
               type="checkbox"
             />
             <i
-              class="box flex align-center"
+              class="check-icon flex items-center"
             />
             <span
               class="label"

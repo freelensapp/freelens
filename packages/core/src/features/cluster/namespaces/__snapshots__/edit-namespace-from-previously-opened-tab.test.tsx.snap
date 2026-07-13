@@ -1447,7 +1447,7 @@ exports[`cluster/namespaces - edit namespaces from previously opened tab > given
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -1462,7 +1462,7 @@ exports[`cluster/namespaces - edit namespaces from previously opened tab > given
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"

@@ -610,7 +610,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -911,7 +911,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
                                     type="checkbox"
                                   />
                                   <i
-                                    class="box flex align-center"
+                                    class="check-icon flex items-center"
                                   />
                                 </label>
                               </div>
@@ -1792,7 +1792,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -2826,7 +2826,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>

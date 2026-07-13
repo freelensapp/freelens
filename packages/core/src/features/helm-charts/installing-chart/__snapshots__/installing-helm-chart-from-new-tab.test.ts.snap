@@ -3751,7 +3751,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -4967,7 +4967,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -6153,7 +6153,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -7334,7 +7334,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -8515,7 +8515,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -9719,7 +9719,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -10935,7 +10935,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -12116,7 +12116,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -13852,7 +13852,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                           type="checkbox"
                         />
                         <i
-                          class="box flex align-center"
+                          class="check-icon flex items-center"
                         />
                       </label>
                     </div>
@@ -16400,7 +16400,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -18849,7 +18849,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -20082,7 +20082,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -21263,7 +21263,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
@@ -22444,7 +22444,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                         type="checkbox"
                       />
                       <i
-                        class="box flex align-center"
+                        class="check-icon flex items-center"
                       />
                       <span
                         class="label"
