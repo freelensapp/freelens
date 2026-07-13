@@ -166,14 +166,14 @@ export function namespaceSelectFilterModelFor(dependencies: Dependencies): Names
       }
 
       return (
-        <div className="flex gaps align-center">
+        <div className="flex gap-2 items-center">
           <Icon small material="layers" />
           <span>{option.value}</span>
           {isOptionSelected(option) && (
             <Icon
               small
               material="check"
-              className="box right"
+              className="ml-auto"
               data-testid={`namespace-select-filter-option-${option.value}-selected`}
             />
           )}

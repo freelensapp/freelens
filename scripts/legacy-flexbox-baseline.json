@@ -1,6 +1,6 @@
 {
   "comment": "Ratchet baseline for the legacy flexbox -> Tailwind migration. This number may only decrease. See scripts/check-legacy-flexbox.mjs and docs/v2-styling.md.",
-  "total": 176,
+  "total": 167,
   "files": {
     "packages/core/src/features/catalog/custom-columns.test.tsx": 23,
     "packages/core/src/features/helm-charts/child-features/preferences/renderer/adding-of-custom-helm-repository/adding-of-custom-helm-repository-dialog-content.tsx": 3,
@@ -28,14 +28,11 @@
     "packages/core/src/renderer/components/input/input.tsx": 11,
     "packages/core/src/renderer/components/item-object-list/__tests__/column-resize.test.tsx": 1,
     "packages/core/src/renderer/components/item-object-list/header.tsx": 4,
-    "packages/core/src/renderer/components/item-object-list/page-filters/list.tsx": 3,
     "packages/core/src/renderer/components/kubeconfig-dialog/kubeconfig-dialog.tsx": 3,
     "packages/core/src/renderer/components/layout/setting-layout.tsx": 2,
     "packages/core/src/renderer/components/layout/wizard-layout.tsx": 8,
-    "packages/core/src/renderer/components/namespaces/namespace-select-filter-model/namespace-select-filter-model.tsx": 4,
     "packages/core/src/renderer/components/resource-metrics/resource-metrics.tsx": 7,
     "packages/core/src/renderer/components/tabs/tabs.tsx": 2,
-    "packages/core/src/renderer/components/welcome/new-version-notification.injectable.tsx": 2,
     "packages/core/src/renderer/components/wizard/wizard.tsx": 3
   }
 }
