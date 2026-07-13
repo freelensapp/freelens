@@ -551,11 +551,11 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                     class="Input SearchInput focused"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Releases..."
                         spellcheck="false"
                         value=""
@@ -572,7 +572,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -1415,11 +1415,11 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                     class="Input SearchInput focused"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Releases..."
                         spellcheck="false"
                         value=""
@@ -1436,7 +1436,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -2421,11 +2421,11 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                     class="Input SearchInput focused"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Releases..."
                         spellcheck="false"
                         value=""
@@ -2442,7 +2442,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -3443,11 +3443,11 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                     class="Input SearchInput"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Releases..."
                         spellcheck="false"
                         value=""
@@ -3464,7 +3464,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -4501,11 +4501,11 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                     class="Input SearchInput"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Releases..."
                         spellcheck="false"
                         value=""
@@ -4522,7 +4522,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -5716,11 +5716,11 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                     class="Input SearchInput"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Releases..."
                         spellcheck="false"
                         value=""
@@ -5737,7 +5737,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -6933,11 +6933,11 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                     class="Input SearchInput"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Releases..."
                         spellcheck="false"
                         value=""
@@ -6954,7 +6954,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i

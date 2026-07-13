@@ -51,15 +51,27 @@
   --status-bar-height: 21px;
 }
 
-*,
-*:before,
-*:after {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-  border: 0;
-  outline: none;
-  -webkit-font-smoothing: antialiased;
+/*
+ * NOTE: block comment on purpose (see the file header) -- a "//" line comment
+ * is not stripped here and its apostrophes break the Tailwind CSS parser.
+ *
+ * The reset lives in Tailwind's `base` layer so utility classes (loaded in the
+ * later `utilities` layer) win over it. An unlayered reset would beat every
+ * layered utility regardless of specificity, silently killing all margin and
+ * padding utilities (`mb-5`, `ml-auto`, ...) across the app. Component SCSS
+ * stays unlayered and therefore still overrides both.
+ */
+@layer base {
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    outline: none;
+    -webkit-font-smoothing: antialiased;
+  }
 }
 
 ::-webkit-scrollbar {

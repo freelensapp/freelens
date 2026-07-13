@@ -464,11 +464,11 @@ exports[`opening dock tab for installing helm chart > given application is start
                     class="Input SearchInput focused"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -485,7 +485,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -1154,11 +1154,11 @@ exports[`opening dock tab for installing helm chart > given application is start
                     class="Input SearchInput focused"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -1175,7 +1175,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -2012,11 +2012,11 @@ exports[`opening dock tab for installing helm chart > given application is start
                     class="Input SearchInput focused"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -2033,7 +2033,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -2927,11 +2927,11 @@ exports[`opening dock tab for installing helm chart > given application is start
                     class="Input SearchInput focused"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -2948,7 +2948,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -3992,11 +3992,11 @@ exports[`opening dock tab for installing helm chart > given application is start
                     class="Input SearchInput focused"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -4013,7 +4013,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -5067,11 +5067,11 @@ exports[`opening dock tab for installing helm chart > given application is start
                     class="Input SearchInput"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -5088,7 +5088,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -6132,11 +6132,11 @@ exports[`opening dock tab for installing helm chart > given application is start
                     class="Input SearchInput"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -6153,7 +6153,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -7201,11 +7201,11 @@ exports[`opening dock tab for installing helm chart > given application is start
                     class="Input SearchInput"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -7222,7 +7222,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i
@@ -8276,11 +8276,11 @@ exports[`opening dock tab for installing helm chart > given application is start
                     class="Input SearchInput"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         placeholder="Search Helm Charts..."
                         spellcheck="false"
                         value=""
@@ -8297,7 +8297,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                       </i>
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                   <i

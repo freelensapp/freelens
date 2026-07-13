@@ -239,7 +239,7 @@ exports[`opening catalog entity details panel > renders 1`] = `
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -727,11 +727,11 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                       class="Input SearchInput focused"
                     >
                       <label
-                        class="input-area flex gaps align-center"
+                        class="input-area flex items-center gap-2"
                         id=""
                       >
                         <input
-                          class="input box grow"
+                          class="input grow"
                           placeholder="Search..."
                           spellcheck="false"
                           value=""
@@ -748,7 +748,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                         </i>
                       </label>
                       <div
-                        class="input-info flex gaps"
+                        class="input-info flex gap-2"
                       />
                     </div>
                     <i
@@ -1187,7 +1187,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -1675,11 +1675,11 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                       class="Input SearchInput focused"
                     >
                       <label
-                        class="input-area flex gaps align-center"
+                        class="input-area flex items-center gap-2"
                         id=""
                       >
                         <input
-                          class="input box grow"
+                          class="input grow"
                           placeholder="Search..."
                           spellcheck="false"
                           value=""
@@ -1696,7 +1696,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                         </i>
                       </label>
                       <div
-                        class="input-info flex gaps"
+                        class="input-info flex gap-2"
                       />
                     </div>
                     <i
@@ -2135,7 +2135,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -2655,11 +2655,11 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                       class="Input SearchInput focused"
                     >
                       <label
-                        class="input-area flex gaps align-center"
+                        class="input-area flex items-center gap-2"
                         id=""
                       >
                         <input
-                          class="input box grow"
+                          class="input grow"
                           placeholder="Search..."
                           spellcheck="false"
                           value=""
@@ -2676,7 +2676,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                         </i>
                       </label>
                       <div
-                        class="input-info flex gaps"
+                        class="input-info flex gap-2"
                       />
                     </div>
                     <i
@@ -3115,7 +3115,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -3635,11 +3635,11 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                       class="Input SearchInput focused"
                     >
                       <label
-                        class="input-area flex gaps align-center"
+                        class="input-area flex items-center gap-2"
                         id=""
                       >
                         <input
-                          class="input box grow"
+                          class="input grow"
                           placeholder="Search..."
                           spellcheck="false"
                           value=""
@@ -3656,7 +3656,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                         </i>
                       </label>
                       <div
-                        class="input-info flex gaps"
+                        class="input-info flex gap-2"
                       />
                     </div>
                     <i
@@ -4095,7 +4095,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -4867,11 +4867,11 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                       class="Input SearchInput focused"
                     >
                       <label
-                        class="input-area flex gaps align-center"
+                        class="input-area flex items-center gap-2"
                         id=""
                       >
                         <input
-                          class="input box grow"
+                          class="input grow"
                           placeholder="Search..."
                           spellcheck="false"
                           value=""
@@ -4888,7 +4888,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                         </i>
                       </label>
                       <div
-                        class="input-info flex gaps"
+                        class="input-info flex gap-2"
                       />
                     </div>
                     <i
@@ -5327,7 +5327,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -5835,11 +5835,11 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                       class="Input SearchInput focused"
                     >
                       <label
-                        class="input-area flex gaps align-center"
+                        class="input-area flex items-center gap-2"
                         id=""
                       >
                         <input
-                          class="input box grow"
+                          class="input grow"
                           placeholder="Search..."
                           spellcheck="false"
                           value=""
@@ -5856,7 +5856,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                         </i>
                       </label>
                       <div
-                        class="input-info flex gaps"
+                        class="input-info flex gap-2"
                       />
                     </div>
                     <i
@@ -6295,7 +6295,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -6803,11 +6803,11 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                       class="Input SearchInput focused"
                     >
                       <label
-                        class="input-area flex gaps align-center"
+                        class="input-area flex items-center gap-2"
                         id=""
                       >
                         <input
-                          class="input box grow"
+                          class="input grow"
                           placeholder="Search..."
                           spellcheck="false"
                           value=""
@@ -6824,7 +6824,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                         </i>
                       </label>
                       <div
-                        class="input-info flex gaps"
+                        class="input-info flex gap-2"
                       />
                     </div>
                     <i
@@ -7263,7 +7263,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -7832,7 +7832,7 @@ exports[`opening catalog entity details panel > when not navigated to the catalo
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"

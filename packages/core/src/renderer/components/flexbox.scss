@@ -1,4 +1,12 @@
 @use "sass:list";
+
+// FROZEN legacy layer. These in-house flexbox utilities predate Tailwind and
+// are kept only because their class names are extension-visible (shared
+// components ship e.g. "flex column gaps"). The first-party migration to
+// Tailwind is complete: do NOT add new usages in core -- use Tailwind layout
+// utilities instead (see docs/v2-styling.md). Removal is deferred to a later
+// major after an extension audit.
+
 //-- Flexbox
 .flex {
   display: flex;

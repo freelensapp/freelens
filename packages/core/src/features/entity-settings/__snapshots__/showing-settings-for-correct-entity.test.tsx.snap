@@ -239,7 +239,7 @@ exports[`Showing correct entity settings > renders 1`] = `
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -618,7 +618,7 @@ exports[`Showing correct entity settings > when navigating to local cluster enti
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -956,18 +956,18 @@ exports[`Showing correct entity settings > when navigating to non-local cluster 
                       class="Input theme round black"
                     >
                       <label
-                        class="input-area flex gaps align-center"
+                        class="input-area flex items-center gap-2"
                         id=""
                       >
                         <input
-                          class="input box grow"
+                          class="input grow"
                           placeholder="http://<address>:<port>"
                           spellcheck="false"
                           value=""
                         />
                       </label>
                       <div
-                        class="input-info flex gaps"
+                        class="input-info flex gap-2"
                       />
                     </div>
                     <small
@@ -1018,7 +1018,7 @@ exports[`Showing correct entity settings > when navigating to non-local cluster 
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -1319,7 +1319,7 @@ exports[`Showing correct entity settings > when navigating to weblink entity set
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"

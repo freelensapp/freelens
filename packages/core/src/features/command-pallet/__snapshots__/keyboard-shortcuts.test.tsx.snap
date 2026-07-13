@@ -330,7 +330,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on linux > renders 1`] =
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -799,7 +799,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on linux > when pressing
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -1268,7 +1268,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on linux > when pressing
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -1749,7 +1749,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on linux > when pressing
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -2127,7 +2127,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on macOS > renders 1`] =
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -2505,7 +2505,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on macOS > when pressing
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -2883,7 +2883,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on macOS > when pressing
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -3273,7 +3273,7 @@ exports[`Command Pallet: keyboard shortcut tests > when on macOS > when pressing
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"

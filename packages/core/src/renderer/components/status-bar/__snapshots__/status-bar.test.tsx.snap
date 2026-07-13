@@ -239,7 +239,7 @@ exports[`<StatusBar /> > when StatusBar's status is set to %p > renders 1`] = `
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -617,7 +617,7 @@ exports[`<StatusBar /> > when StatusBar's status is set to %p > renders 2`] = `
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -995,7 +995,7 @@ exports[`<StatusBar /> > when an extension is enabled specifying the side the el
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -1415,7 +1415,7 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -1793,7 +1793,7 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -2171,7 +2171,7 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -2549,7 +2549,7 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -2927,7 +2927,7 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -3305,7 +3305,7 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -3683,7 +3683,7 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -4061,7 +4061,7 @@ exports[`<StatusBar /> > when an extension is enabled with no status items > ren
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"

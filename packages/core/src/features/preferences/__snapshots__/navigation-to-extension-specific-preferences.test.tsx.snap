@@ -379,11 +379,11 @@ exports[`preferences - navigation to extension specific preferences > given in p
                       class="Input theme round black disabled invalid"
                     >
                       <label
-                        class="input-area flex gaps align-center"
+                        class="input-area flex items-center gap-2"
                         id=""
                       >
                         <input
-                          class="input box grow"
+                          class="input grow"
                           disabled=""
                           placeholder="Custom Extension Registry URL..."
                           spellcheck="false"
@@ -391,7 +391,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                         />
                       </label>
                       <div
-                        class="input-info flex gaps"
+                        class="input-info flex gap-2"
                       />
                     </div>
                   </section>
@@ -642,7 +642,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -1039,7 +1039,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
       class="HotbarMenu flex flex-col"
     >
       <div
-        class="HotbarItems flex flex-col gap-2"
+        class="HotbarItems flex flex-col"
       >
         <div
           class="HotbarCell isDraggingOwner animateDown"
@@ -1447,7 +1447,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
       class="HotbarMenu flex flex-col"
     >
       <div
-        class="HotbarItems flex flex-col gap-2"
+        class="HotbarItems flex flex-col"
       >
         <div
           class="HotbarCell isDraggingOwner animateDown"
@@ -1855,7 +1855,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
       class="HotbarMenu flex flex-col"
     >
       <div
-        class="HotbarItems flex flex-col gap-2"
+        class="HotbarItems flex flex-col"
       >
         <div
           class="HotbarCell isDraggingOwner animateDown"
@@ -2289,7 +2289,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
       class="HotbarMenu flex flex-col"
     >
       <div
-        class="HotbarItems flex flex-col gap-2"
+        class="HotbarItems flex flex-col"
       >
         <div
           class="HotbarCell isDraggingOwner animateDown"
@@ -2793,11 +2793,11 @@ exports[`preferences - navigation to extension specific preferences > given in p
                     class="Input theme round black disabled invalid"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         disabled=""
                         placeholder="Custom Extension Registry URL..."
                         spellcheck="false"
@@ -2805,7 +2805,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                       />
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                 </section>
@@ -3056,7 +3056,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
       class="HotbarMenu flex flex-col"
     >
       <div
-        class="HotbarItems flex flex-col gap-2"
+        class="HotbarItems flex flex-col"
       >
         <div
           class="HotbarCell isDraggingOwner animateDown"
@@ -3598,11 +3598,11 @@ exports[`preferences - navigation to extension specific preferences > given in p
                     class="Input theme round black disabled invalid"
                   >
                     <label
-                      class="input-area flex gaps align-center"
+                      class="input-area flex items-center gap-2"
                       id=""
                     >
                       <input
-                        class="input box grow"
+                        class="input grow"
                         disabled=""
                         placeholder="Custom Extension Registry URL..."
                         spellcheck="false"
@@ -3610,7 +3610,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
                       />
                     </label>
                     <div
-                      class="input-info flex gaps"
+                      class="input-info flex gap-2"
                     />
                   </div>
                 </section>
@@ -3861,7 +3861,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
       class="HotbarMenu flex flex-col"
     >
       <div
-        class="HotbarItems flex flex-col gap-2"
+        class="HotbarItems flex flex-col"
       >
         <div
           class="HotbarCell isDraggingOwner animateDown"
@@ -4283,7 +4283,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
       class="HotbarMenu flex flex-col"
     >
       <div
-        class="HotbarItems flex flex-col gap-2"
+        class="HotbarItems flex flex-col"
       >
         <div
           class="HotbarCell isDraggingOwner animateDown"
@@ -4636,7 +4636,7 @@ exports[`preferences - navigation to extension specific preferences > given in p
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"

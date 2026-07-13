@@ -349,11 +349,11 @@ exports[`Deleting a cluster > when an internal kubeconfig cluster is used > when
                       class="Input SearchInput"
                     >
                       <label
-                        class="input-area flex gaps align-center"
+                        class="input-area flex items-center gap-2"
                         id=""
                       >
                         <input
-                          class="input box grow"
+                          class="input grow"
                           placeholder="Search..."
                           spellcheck="false"
                           value=""
@@ -370,7 +370,7 @@ exports[`Deleting a cluster > when an internal kubeconfig cluster is used > when
                         </i>
                       </label>
                       <div
-                        class="input-info flex gaps"
+                        class="input-info flex gap-2"
                       />
                     </div>
                     <i
@@ -554,7 +554,7 @@ exports[`Deleting a cluster > when an internal kubeconfig cluster is used > when
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -1098,11 +1098,11 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
                       class="Input SearchInput"
                     >
                       <label
-                        class="input-area flex gaps align-center"
+                        class="input-area flex items-center gap-2"
                         id=""
                       >
                         <input
-                          class="input box grow"
+                          class="input grow"
                           placeholder="Search..."
                           spellcheck="false"
                           value=""
@@ -1119,7 +1119,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
                         </i>
                       </label>
                       <div
-                        class="input-info flex gaps"
+                        class="input-info flex gap-2"
                       />
                     </div>
                     <i
@@ -1303,7 +1303,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -1880,11 +1880,11 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
                       class="Input SearchInput"
                     >
                       <label
-                        class="input-area flex gaps align-center"
+                        class="input-area flex items-center gap-2"
                         id=""
                       >
                         <input
-                          class="input box grow"
+                          class="input grow"
                           placeholder="Search..."
                           spellcheck="false"
                           value=""
@@ -1901,7 +1901,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
                         </i>
                       </label>
                       <div
-                        class="input-info flex gaps"
+                        class="input-info flex gap-2"
                       />
                     </div>
                     <i
@@ -2085,7 +2085,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -2743,11 +2743,11 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
                       class="Input SearchInput focused"
                     >
                       <label
-                        class="input-area flex gaps align-center"
+                        class="input-area flex items-center gap-2"
                         id=""
                       >
                         <input
-                          class="input box grow"
+                          class="input grow"
                           placeholder="Search..."
                           spellcheck="false"
                           value=""
@@ -2764,7 +2764,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
                         </i>
                       </label>
                       <div
-                        class="input-info flex gaps"
+                        class="input-info flex gap-2"
                       />
                     </div>
                     <i
@@ -2948,7 +2948,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
@@ -3606,11 +3606,11 @@ exports[`Deleting a cluster > when the kubeconfig has only one cluster > when th
                       class="Input SearchInput"
                     >
                       <label
-                        class="input-area flex gaps align-center"
+                        class="input-area flex items-center gap-2"
                         id=""
                       >
                         <input
-                          class="input box grow"
+                          class="input grow"
                           placeholder="Search..."
                           spellcheck="false"
                           value=""
@@ -3627,7 +3627,7 @@ exports[`Deleting a cluster > when the kubeconfig has only one cluster > when th
                         </i>
                       </label>
                       <div
-                        class="input-info flex gaps"
+                        class="input-info flex gap-2"
                       />
                     </div>
                     <i
@@ -3811,7 +3811,7 @@ exports[`Deleting a cluster > when the kubeconfig has only one cluster > when th
         class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex flex-col gap-2"
+          class="HotbarItems flex flex-col"
         >
           <div
             class="HotbarCell isDraggingOwner animateDown"
