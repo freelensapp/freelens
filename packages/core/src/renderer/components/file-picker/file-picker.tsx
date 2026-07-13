@@ -207,7 +207,7 @@ class DefaultedFilePicker extends React.Component<FilePickerProps & typeof defau
 
     return (
       <div className="FilePicker">
-        <label className="flex gaps align-center" htmlFor="file-upload">
+        <label className="flex gap-2 items-center" htmlFor="file-upload">
           {label} {this.getIconRight()}
         </label>
         <input

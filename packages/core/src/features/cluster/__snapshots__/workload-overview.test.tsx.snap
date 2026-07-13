@@ -577,11 +577,11 @@ exports[`workload overview > when navigating to workload overview > renders 1`] 
                               width="0"
                             />
                             <div
-                              class="chartjs-tooltip flex column"
+                              class="chartjs-tooltip flex flex-col"
                             />
                           </div>
                           <div
-                            class="legend flex wrap"
+                            class="legend flex flex-wrap"
                           />
                         </div>
                       </div>
