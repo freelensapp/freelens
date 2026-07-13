@@ -489,7 +489,7 @@ exports[`Showing correct entity settings > when navigating to local cluster enti
                   Settings
                 </div>
                 <div
-                  class="Tab flex gaps align-center active"
+                  class="Tab flex gap-2 items-center active"
                   data-testid="general-tab"
                   role="tab"
                   tabindex="0"
@@ -501,7 +501,7 @@ exports[`Showing correct entity settings > when navigating to local cluster enti
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-testid="proxy-tab"
                   role="tab"
                   tabindex="0"
@@ -513,7 +513,7 @@ exports[`Showing correct entity settings > when navigating to local cluster enti
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-testid="terminal-tab"
                   role="tab"
                   tabindex="0"
@@ -525,7 +525,7 @@ exports[`Showing correct entity settings > when navigating to local cluster enti
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-testid="namespace-tab"
                   role="tab"
                   tabindex="0"
@@ -537,7 +537,7 @@ exports[`Showing correct entity settings > when navigating to local cluster enti
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-testid="metrics-tab"
                   role="tab"
                   tabindex="0"
@@ -549,7 +549,7 @@ exports[`Showing correct entity settings > when navigating to local cluster enti
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-testid="node-shell-tab"
                   role="tab"
                   tabindex="0"
@@ -868,7 +868,7 @@ exports[`Showing correct entity settings > when navigating to non-local cluster 
                   Settings
                 </div>
                 <div
-                  class="Tab flex gaps align-center active"
+                  class="Tab flex gap-2 items-center active"
                   data-testid="proxy-tab"
                   role="tab"
                   tabindex="0"
@@ -880,7 +880,7 @@ exports[`Showing correct entity settings > when navigating to non-local cluster 
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-testid="terminal-tab"
                   role="tab"
                   tabindex="0"
@@ -892,7 +892,7 @@ exports[`Showing correct entity settings > when navigating to non-local cluster 
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-testid="namespace-tab"
                   role="tab"
                   tabindex="0"
@@ -904,7 +904,7 @@ exports[`Showing correct entity settings > when navigating to non-local cluster 
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-testid="metrics-tab"
                   role="tab"
                   tabindex="0"
@@ -916,7 +916,7 @@ exports[`Showing correct entity settings > when navigating to non-local cluster 
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-testid="node-shell-tab"
                   role="tab"
                   tabindex="0"

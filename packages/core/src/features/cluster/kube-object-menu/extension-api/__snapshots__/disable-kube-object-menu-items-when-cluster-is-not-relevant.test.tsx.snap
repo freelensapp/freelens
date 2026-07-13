@@ -443,7 +443,7 @@ exports[`disable kube object menu items when cluster is not relevant > given ext
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -992,7 +992,7 @@ exports[`disable kube object menu items when cluster is not relevant > given ext
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -1541,7 +1541,7 @@ exports[`disable kube object menu items when cluster is not relevant > given not
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"

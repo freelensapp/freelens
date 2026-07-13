@@ -96,7 +96,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
                   Preferences
                 </div>
                 <div
-                  class="Tab flex gaps align-center active"
+                  class="Tab flex gap-2 items-center active"
                   data-preference-tab-link-test="app"
                   role="tab"
                   tabindex="0"
@@ -108,7 +108,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="proxy"
                   role="tab"
                   tabindex="0"
@@ -120,7 +120,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="kubernetes"
                   role="tab"
                   tabindex="0"
@@ -132,7 +132,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="editor"
                   role="tab"
                   tabindex="0"
@@ -144,7 +144,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="terminal"
                   role="tab"
                   tabindex="0"
@@ -863,7 +863,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
                   Preferences
                 </div>
                 <div
-                  class="Tab flex gaps align-center active"
+                  class="Tab flex gap-2 items-center active"
                   data-preference-tab-link-test="app"
                   role="tab"
                   tabindex="0"
@@ -875,7 +875,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="proxy"
                   role="tab"
                   tabindex="0"
@@ -887,7 +887,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="kubernetes"
                   role="tab"
                   tabindex="0"
@@ -899,7 +899,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="editor"
                   role="tab"
                   tabindex="0"
@@ -911,7 +911,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="terminal"
                   role="tab"
                   tabindex="0"
@@ -939,7 +939,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
                   Some tab group label
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="some-path-id-for-some-tab-id"
                   role="tab"
                   tabindex="0"
@@ -1658,7 +1658,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
                   Preferences
                 </div>
                 <div
-                  class="Tab flex gaps align-center active"
+                  class="Tab flex gap-2 items-center active"
                   data-preference-tab-link-test="app"
                   role="tab"
                   tabindex="0"
@@ -1670,7 +1670,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="proxy"
                   role="tab"
                   tabindex="0"
@@ -1682,7 +1682,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="kubernetes"
                   role="tab"
                   tabindex="0"
@@ -1694,7 +1694,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="editor"
                   role="tab"
                   tabindex="0"
@@ -1706,7 +1706,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="terminal"
                   role="tab"
                   tabindex="0"
@@ -1734,7 +1734,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
                   Some tab group label
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="some-path-id-for-some-tab-id"
                   role="tab"
                   tabindex="0"
@@ -1746,7 +1746,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-preference-tab-link-test="some-path-id-for-some-other-tab-id"
                   role="tab"
                   tabindex="0"

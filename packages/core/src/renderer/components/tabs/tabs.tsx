@@ -120,7 +120,7 @@ export class Tab<D> extends React.PureComponent<TabProps<D>> {
     const { active, disabled, icon, label, value, ...elemProps } = this.props;
     let { className } = this.props;
 
-    className = cssNames("Tab flex gaps align-center", className, {
+    className = cssNames("Tab flex gap-2 items-center", className, {
       active: this.isActive,
       disabled,
     });

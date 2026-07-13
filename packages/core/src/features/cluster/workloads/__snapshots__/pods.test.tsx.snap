@@ -418,7 +418,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-workloads-overview"
               role="tab"
@@ -431,7 +431,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-pods"
               role="tab"
@@ -1070,7 +1070,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -1600,7 +1600,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-workloads-overview"
               role="tab"
@@ -1613,7 +1613,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-pods"
               role="tab"
@@ -2104,7 +2104,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -2634,7 +2634,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-workloads-overview"
               role="tab"
@@ -2647,7 +2647,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-pods"
               role="tab"
@@ -3133,7 +3133,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"

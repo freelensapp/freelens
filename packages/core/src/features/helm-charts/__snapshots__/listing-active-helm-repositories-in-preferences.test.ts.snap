@@ -97,7 +97,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     Preferences
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="app"
                     role="tab"
                     tabindex="0"
@@ -109,7 +109,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -121,7 +121,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center active"
+                    class="Tab flex gap-2 items-center active"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
                     tabindex="0"
@@ -133,7 +133,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="editor"
                     role="tab"
                     tabindex="0"
@@ -145,7 +145,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="terminal"
                     role="tab"
                     tabindex="0"
@@ -935,7 +935,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     Preferences
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="app"
                     role="tab"
                     tabindex="0"
@@ -947,7 +947,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -959,7 +959,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center active"
+                    class="Tab flex gap-2 items-center active"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
                     tabindex="0"
@@ -971,7 +971,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="editor"
                     role="tab"
                     tabindex="0"
@@ -983,7 +983,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="terminal"
                     role="tab"
                     tabindex="0"
@@ -1773,7 +1773,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     Preferences
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="app"
                     role="tab"
                     tabindex="0"
@@ -1785,7 +1785,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -1797,7 +1797,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center active"
+                    class="Tab flex gap-2 items-center active"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
                     tabindex="0"
@@ -1809,7 +1809,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="editor"
                     role="tab"
                     tabindex="0"
@@ -1821,7 +1821,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="terminal"
                     role="tab"
                     tabindex="0"
@@ -2500,7 +2500,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     Preferences
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="app"
                     role="tab"
                     tabindex="0"
@@ -2512,7 +2512,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -2524,7 +2524,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center active"
+                    class="Tab flex gap-2 items-center active"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
                     tabindex="0"
@@ -2536,7 +2536,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="editor"
                     role="tab"
                     tabindex="0"
@@ -2548,7 +2548,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="terminal"
                     role="tab"
                     tabindex="0"
@@ -3313,7 +3313,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     Preferences
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="app"
                     role="tab"
                     tabindex="0"
@@ -3325,7 +3325,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -3337,7 +3337,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center active"
+                    class="Tab flex gap-2 items-center active"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
                     tabindex="0"
@@ -3349,7 +3349,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="editor"
                     role="tab"
                     tabindex="0"
@@ -3361,7 +3361,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="terminal"
                     role="tab"
                     tabindex="0"
@@ -4195,7 +4195,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     Preferences
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="app"
                     role="tab"
                     tabindex="0"
@@ -4207,7 +4207,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -4219,7 +4219,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center active"
+                    class="Tab flex gap-2 items-center active"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
                     tabindex="0"
@@ -4231,7 +4231,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="editor"
                     role="tab"
                     tabindex="0"
@@ -4243,7 +4243,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="terminal"
                     role="tab"
                     tabindex="0"
@@ -4922,7 +4922,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     Preferences
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="app"
                     role="tab"
                     tabindex="0"
@@ -4934,7 +4934,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -4946,7 +4946,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center active"
+                    class="Tab flex gap-2 items-center active"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
                     tabindex="0"
@@ -4958,7 +4958,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="editor"
                     role="tab"
                     tabindex="0"
@@ -4970,7 +4970,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="terminal"
                     role="tab"
                     tabindex="0"
@@ -5649,7 +5649,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     Preferences
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="app"
                     role="tab"
                     tabindex="0"
@@ -5661,7 +5661,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="proxy"
                     role="tab"
                     tabindex="0"
@@ -5673,7 +5673,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center active"
+                    class="Tab flex gap-2 items-center active"
                     data-preference-tab-link-test="kubernetes"
                     role="tab"
                     tabindex="0"
@@ -5685,7 +5685,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="editor"
                     role="tab"
                     tabindex="0"
@@ -5697,7 +5697,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
                     </div>
                   </div>
                   <div
-                    class="Tab flex gaps align-center"
+                    class="Tab flex gap-2 items-center"
                     data-preference-tab-link-test="terminal"
                     role="tab"
                     tabindex="0"

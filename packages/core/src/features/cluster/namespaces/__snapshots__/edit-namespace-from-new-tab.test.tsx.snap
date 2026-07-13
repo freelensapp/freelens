@@ -700,7 +700,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -1522,7 +1522,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -2349,7 +2349,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -3275,7 +3275,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab"
+                  class="Tab flex gap-2 items-center DockTab"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -3327,7 +3327,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-second-tab-id"
                   id="tab-some-second-tab-id"
                   role="tab"
@@ -4149,7 +4149,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab"
+                  class="Tab flex gap-2 items-center DockTab"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -4201,7 +4201,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-second-tab-id"
                   id="tab-some-second-tab-id"
                   role="tab"
@@ -5125,7 +5125,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -5177,7 +5177,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center DockTab"
+                  class="Tab flex gap-2 items-center DockTab"
                   data-testid="dock-tab-for-some-second-tab-id"
                   id="tab-some-second-tab-id"
                   role="tab"
@@ -6103,7 +6103,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -7043,7 +7043,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -7978,7 +7978,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -8904,7 +8904,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -9830,7 +9830,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -11487,7 +11487,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -12422,7 +12422,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"
@@ -13348,7 +13348,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-first-tab-id"
                   id="tab-some-first-tab-id"
                   role="tab"

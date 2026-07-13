@@ -418,7 +418,7 @@ exports[`opening dock tab for installing helm chart > given application is start
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -431,7 +431,7 @@ exports[`opening dock tab for installing helm chart > given application is start
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -1108,7 +1108,7 @@ exports[`opening dock tab for installing helm chart > given application is start
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -1121,7 +1121,7 @@ exports[`opening dock tab for installing helm chart > given application is start
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -1966,7 +1966,7 @@ exports[`opening dock tab for installing helm chart > given application is start
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -1979,7 +1979,7 @@ exports[`opening dock tab for installing helm chart > given application is start
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -2881,7 +2881,7 @@ exports[`opening dock tab for installing helm chart > given application is start
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -2894,7 +2894,7 @@ exports[`opening dock tab for installing helm chart > given application is start
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -3946,7 +3946,7 @@ exports[`opening dock tab for installing helm chart > given application is start
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -3959,7 +3959,7 @@ exports[`opening dock tab for installing helm chart > given application is start
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -5021,7 +5021,7 @@ exports[`opening dock tab for installing helm chart > given application is start
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -5034,7 +5034,7 @@ exports[`opening dock tab for installing helm chart > given application is start
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -6086,7 +6086,7 @@ exports[`opening dock tab for installing helm chart > given application is start
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -6099,7 +6099,7 @@ exports[`opening dock tab for installing helm chart > given application is start
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -7155,7 +7155,7 @@ exports[`opening dock tab for installing helm chart > given application is start
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -7168,7 +7168,7 @@ exports[`opening dock tab for installing helm chart > given application is start
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -8230,7 +8230,7 @@ exports[`opening dock tab for installing helm chart > given application is start
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -8243,7 +8243,7 @@ exports[`opening dock tab for installing helm chart > given application is start
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -8639,7 +8639,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-tab-id"
                   id="tab-some-tab-id"
                   role="tab"

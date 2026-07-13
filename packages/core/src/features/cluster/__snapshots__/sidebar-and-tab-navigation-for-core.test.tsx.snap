@@ -455,7 +455,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
           class="Tabs center scrollable"
         >
           <div
-            class="Tab flex gaps align-center active"
+            class="Tab flex gap-2 items-center active"
             data-is-active-test="true"
             data-testid="tab-link-for-sidebar-item-workloads-overview"
             role="tab"
@@ -597,7 +597,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
               class="Tabs tabs"
             >
               <div
-                class="Tab flex gaps align-center DockTab TerminalTab active"
+                class="Tab flex gap-2 items-center DockTab TerminalTab active"
                 data-testid="dock-tab-for-terminal"
                 id="tab-terminal"
                 role="tab"
@@ -1163,7 +1163,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
           class="Tabs center scrollable"
         >
           <div
-            class="Tab flex gaps align-center active"
+            class="Tab flex gap-2 items-center active"
             data-is-active-test="true"
             data-testid="tab-link-for-sidebar-item-workloads-overview"
             role="tab"
@@ -1305,7 +1305,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
               class="Tabs tabs"
             >
               <div
-                class="Tab flex gaps align-center DockTab TerminalTab active"
+                class="Tab flex gap-2 items-center DockTab TerminalTab active"
                 data-testid="dock-tab-for-terminal"
                 id="tab-terminal"
                 role="tab"
@@ -1911,7 +1911,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
           class="Tabs center scrollable"
         >
           <div
-            class="Tab flex gaps align-center active"
+            class="Tab flex gap-2 items-center active"
             data-is-active-test="true"
             data-testid="tab-link-for-sidebar-item-workloads-overview"
             role="tab"
@@ -2053,7 +2053,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
               class="Tabs tabs"
             >
               <div
-                class="Tab flex gaps align-center DockTab TerminalTab active"
+                class="Tab flex gap-2 items-center DockTab TerminalTab active"
                 data-testid="dock-tab-for-terminal"
                 id="tab-terminal"
                 role="tab"
@@ -2677,7 +2677,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
               class="Tabs tabs"
             >
               <div
-                class="Tab flex gaps align-center DockTab TerminalTab active"
+                class="Tab flex gap-2 items-center DockTab TerminalTab active"
                 data-testid="dock-tab-for-terminal"
                 id="tab-terminal"
                 role="tab"
@@ -3260,7 +3260,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
               class="Tabs tabs"
             >
               <div
-                class="Tab flex gaps align-center DockTab TerminalTab active"
+                class="Tab flex gap-2 items-center DockTab TerminalTab active"
                 data-testid="dock-tab-for-terminal"
                 id="tab-terminal"
                 role="tab"
@@ -3866,7 +3866,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
           class="Tabs center scrollable"
         >
           <div
-            class="Tab flex gaps align-center active"
+            class="Tab flex gap-2 items-center active"
             data-is-active-test="true"
             data-testid="tab-link-for-sidebar-item-workloads-overview"
             role="tab"
@@ -4008,7 +4008,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
               class="Tabs tabs"
             >
               <div
-                class="Tab flex gaps align-center DockTab TerminalTab active"
+                class="Tab flex gap-2 items-center DockTab TerminalTab active"
                 data-testid="dock-tab-for-terminal"
                 id="tab-terminal"
                 role="tab"
@@ -4574,7 +4574,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
           class="Tabs center scrollable"
         >
           <div
-            class="Tab flex gaps align-center active"
+            class="Tab flex gap-2 items-center active"
             data-is-active-test="true"
             data-testid="tab-link-for-sidebar-item-workloads-overview"
             role="tab"
@@ -4716,7 +4716,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
               class="Tabs tabs"
             >
               <div
-                class="Tab flex gaps align-center DockTab TerminalTab active"
+                class="Tab flex gap-2 items-center DockTab TerminalTab active"
                 data-testid="dock-tab-for-terminal"
                 id="tab-terminal"
                 role="tab"

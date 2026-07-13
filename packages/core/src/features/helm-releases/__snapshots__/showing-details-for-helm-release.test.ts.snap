@@ -418,7 +418,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -431,7 +431,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -833,7 +833,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -1363,7 +1363,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -1376,7 +1376,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -2051,7 +2051,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -2581,7 +2581,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -2594,7 +2594,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -3269,7 +3269,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -3860,7 +3860,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -3873,7 +3873,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -4548,7 +4548,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -5139,7 +5139,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -5152,7 +5152,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -5827,7 +5827,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -6664,7 +6664,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -6677,7 +6677,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -7352,7 +7352,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -8189,7 +8189,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -8202,7 +8202,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -8877,7 +8877,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -9714,7 +9714,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -9727,7 +9727,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -10129,7 +10129,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -10966,7 +10966,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -10979,7 +10979,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -11381,7 +11381,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -12220,7 +12220,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -12233,7 +12233,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -12908,7 +12908,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -13745,7 +13745,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -13758,7 +13758,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -14433,7 +14433,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -14485,7 +14485,7 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center DockTab active"
+                  class="Tab flex gap-2 items-center DockTab active"
                   data-testid="dock-tab-for-some-tab-id"
                   id="tab-some-tab-id"
                   role="tab"
@@ -15024,7 +15024,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -15037,7 +15037,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -15712,7 +15712,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -16305,7 +16305,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -16318,7 +16318,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -16993,7 +16993,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -17523,7 +17523,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -17536,7 +17536,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -18211,7 +18211,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -18802,7 +18802,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -18815,7 +18815,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -19490,7 +19490,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -20081,7 +20081,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -20094,7 +20094,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -20769,7 +20769,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -21360,7 +21360,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -21373,7 +21373,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -22048,7 +22048,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
@@ -22639,7 +22639,7 @@ exports[`showing details for helm release > given application is started > when 
             class="Tabs center scrollable"
           >
             <div
-              class="Tab flex gaps align-center"
+              class="Tab flex gap-2 items-center"
               data-is-active-test="false"
               data-testid="tab-link-for-sidebar-item-helm-charts"
               role="tab"
@@ -22652,7 +22652,7 @@ exports[`showing details for helm release > given application is started > when 
               </div>
             </div>
             <div
-              class="Tab flex gaps align-center active"
+              class="Tab flex gap-2 items-center active"
               data-is-active-test="true"
               data-testid="tab-link-for-sidebar-item-helm-releases"
               role="tab"
@@ -23059,7 +23059,7 @@ exports[`showing details for helm release > given application is started > when 
                 class="Tabs tabs"
               >
                 <div
-                  class="Tab flex gaps align-center DockTab TerminalTab active"
+                  class="Tab flex gap-2 items-center DockTab TerminalTab active"
                   data-testid="dock-tab-for-terminal"
                   id="tab-terminal"
                   role="tab"
