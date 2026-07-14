@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import process from "node:process";
 import { getInjectable } from "@ogre-tools/injectable";
-import process from "process";
 
 const processExecPathInjectable = getInjectable({
   id: "process-exec-path",

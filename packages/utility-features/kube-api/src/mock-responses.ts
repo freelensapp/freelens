@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { PassThrough } from "node:stream";
 import { Headers as NodeFetchHeaders, Response } from "node-fetch";
-import { PassThrough } from "stream";
 import { type Mocked, vi } from "vitest";
 
 export const createMockResponseFromString = (url: string, data: string, statusCode = 200) => {

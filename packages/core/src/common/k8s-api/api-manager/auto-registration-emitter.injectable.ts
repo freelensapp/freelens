@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import EventEmitter from "node:events";
 import { getInjectable } from "@ogre-tools/injectable";
-import EventEmitter from "events";
 
 import type { KubeApi } from "@freelensapp/kube-api";
 

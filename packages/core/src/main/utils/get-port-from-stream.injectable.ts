@@ -7,7 +7,7 @@
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import URLParse from "url-parse";
-import type { Readable } from "stream";
+import type { Readable } from "node:stream";
 
 export interface GetPortFromStreamArgs {
   /**

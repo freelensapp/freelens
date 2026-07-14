@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import os from "node:os";
+import path from "node:path";
 import { getOrInsertWith } from "@freelensapp/utilities";
-import os from "os";
-import path from "path";
 import { TerminalChannels, type TerminalMessage } from "../../common/terminal/channels";
 import { clearKubeconfigEnvVars } from "../utils/clear-kube-env-vars";
 

@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { fork } from "node:child_process";
 import { prefixedLoggerInjectable } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import { fork } from "child_process";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import pathToPnpmCliInjectable from "../../common/app-paths/path-to-pnpm-cli.injectable";
 import joinPathsInjectable from "../../common/path/join-paths.injectable";

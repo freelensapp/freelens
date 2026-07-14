@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { EventEmitter } from "stream";
+import { EventEmitter } from "node:stream";
 import { mock, mockDeep } from "vitest-mock-extended";
 import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
@@ -21,8 +21,8 @@ import waitUntilPortIsUsedInjectable from "../kube-auth-proxy/wait-until-port-is
 import kubectlBinaryNameInjectable from "../kubectl/binary-name.injectable";
 import { Kubectl } from "../kubectl/kubectl";
 import kubectlDownloadingNormalizedArchInjectable from "../kubectl/normalized-arch.injectable";
-import type { ChildProcess } from "child_process";
-import type { Readable } from "stream";
+import type { ChildProcess } from "node:child_process";
+import type { Readable } from "node:stream";
 
 import type { Mock } from "vitest";
 import type { DeepMockProxy } from "vitest-mock-extended";

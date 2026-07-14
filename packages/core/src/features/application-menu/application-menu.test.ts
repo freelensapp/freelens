@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { inspect } from "util";
+import { inspect } from "node:util";
 import { getCompositePaths } from "../../common/utils/composite/get-composite-paths/get-composite-paths";
 import platformInjectable, { allPlatforms } from "../../common/vars/platform.injectable";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";

@@ -4,10 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { PassThrough } from "node:stream";
 import asyncFn from "@async-fn/vitest";
 import { Deployment, Pod } from "@freelensapp/kube-object";
 import { flushPromises } from "@freelensapp/test-utils";
-import { PassThrough } from "stream";
 import { DeploymentApi, NamespaceApi, PodApi } from "./endpoints";
 import { KubeJsonApi } from "./kube-json-api";
 import { createMockResponseFromStream, createMockResponseFromString } from "./mock-responses";

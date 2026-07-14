@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import EventEmitter from "events";
+import EventEmitter from "node:events";
 import { convertToWithIdWith, verifyRunnablesAreDAG } from "./helpers";
 
 import type { Disposer } from "@freelensapp/utilities";

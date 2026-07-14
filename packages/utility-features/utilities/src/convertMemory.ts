@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
+import assert from "node:assert";
 import { iter } from "./iter";
 
 // Helper to convert memory from units Ki, Mi, Gi, Ti, Pi, Ei to bytes and vise versa

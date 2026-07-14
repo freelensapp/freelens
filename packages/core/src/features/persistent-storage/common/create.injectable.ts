@@ -4,13 +4,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { nextTick } from "node:process";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { enlistMessageChannelListenerInjectionToken, sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import { disposer, isPromiseLike } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { isEqual, kebabCase } from "lodash";
 import { reaction } from "mobx";
-import { nextTick } from "process";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import getConfigurationFileModelInjectable from "../../../common/get-configuration-file-model/get-configuration-file-model.injectable";
 import getBasenameOfPathInjectable from "../../../common/path/get-basename.injectable";

@@ -8,7 +8,7 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { object } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { contentTypes } from "./router-content-types";
-import type { ServerResponse } from "http";
+import type { ServerResponse } from "node:http";
 
 import type { LensApiRequest, Route } from "./route";
 

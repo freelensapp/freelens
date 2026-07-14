@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type http from "http";
-import type { URLSearchParams } from "url";
+import type http from "node:http";
+import type { URLSearchParams } from "node:url";
 
 import type httpProxy from "http-proxy-node16";
 import type Joi from "joi";

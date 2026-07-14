@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import EventEmitter from "node:events";
 import asyncFn from "@async-fn/vitest";
 import { iter, strictGet } from "@freelensapp/utilities";
-import EventEmitter from "events";
 import { ObservableMap, observable, runInAction } from "mobx";
 import directoryForTempInjectable from "../../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
@@ -26,7 +26,7 @@ import computeKubeconfigDiffInjectable from "../kubeconfig-sync/compute-diff.inj
 import configToModelsInjectable from "../kubeconfig-sync/config-to-models.injectable";
 import kubeconfigSyncLoggerInjectable from "../kubeconfig-sync/logger.injectable";
 import kubeconfigSyncManagerInjectable from "../kubeconfig-sync/manager.injectable";
-import type { ReadStream, Stats } from "fs";
+import type { ReadStream, Stats } from "node:fs";
 
 import type { Logger } from "@freelensapp/logger";
 

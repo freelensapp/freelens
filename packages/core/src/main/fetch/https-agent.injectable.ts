@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import https from "node:https";
 import { getInjectable, type Injectable } from "@ogre-tools/injectable";
 import { HttpsProxyAgent } from "hpagent";
-import https from "https";
 import caCertificatesInjectable from "../../common/certificate/ca-certificates.injectable";
 import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
 

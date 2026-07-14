@@ -6,7 +6,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { watch } from "chokidar";
-import type { Stats } from "fs";
+import type { Stats } from "node:fs";
 
 import type { SingleOrMany } from "@freelensapp/utilities";
 

@@ -4,13 +4,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
-import https from "https";
-import net from "net";
+import assert from "node:assert";
+import https from "node:https";
+import net from "node:net";
 import stoppable from "stoppable";
 import { apiKubePrefix, apiPrefix } from "../../common/vars";
 import { getBoolean } from "../utils/parse-query";
-import type http from "http";
+import type http from "node:http";
 
 import type { Logger } from "@freelensapp/logger";
 

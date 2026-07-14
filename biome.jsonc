@@ -91,6 +91,7 @@
             "strictCase": false
           }
         },
+        "useNodejsImportProtocol": "error",
         // should be error later
         "useTemplate": "off"
       },

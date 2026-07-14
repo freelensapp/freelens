@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { timingSafeEqual, X509Certificate } from "node:crypto";
 import { getInjectable } from "@ogre-tools/injectable";
-import { timingSafeEqual, X509Certificate } from "crypto";
 import lensProxyCertificateInjectable from "../../../../common/certificate/lens-proxy-certificate.injectable";
 
 import type { Request } from "electron";

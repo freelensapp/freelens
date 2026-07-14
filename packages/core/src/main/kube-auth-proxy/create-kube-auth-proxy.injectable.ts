@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import assert from "node:assert";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import assert from "assert";
 import { observable, when } from "mobx";
 import { TypedRegEx } from "typed-regex";
 import getDirnameOfPathInjectable from "../../common/path/get-dirname.injectable";
@@ -18,7 +18,7 @@ import getPortFromStreamInjectable from "../utils/get-port-from-stream.injectabl
 import freeLensK8sProxyPathInjectable from "./freelens-k8s-proxy-path.injectable";
 import kubeAuthProxyCertificateInjectable from "./kube-auth-proxy-certificate.injectable";
 import waitUntilPortIsUsedInjectable from "./wait-until-port-is-used/wait-until-port-is-used.injectable";
-import type { ChildProcess } from "child_process";
+import type { ChildProcess } from "node:child_process";
 
 import type { Cluster } from "../../common/cluster/cluster";
 

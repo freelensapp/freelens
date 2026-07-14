@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { execFile } from "node:child_process";
 import { getInjectable } from "@ogre-tools/injectable";
-import { execFile } from "child_process";
-import type { ExecFileException, ExecFileOptions } from "child_process";
+import type { ExecFileException, ExecFileOptions } from "node:child_process";
 
 import type { AsyncResult } from "@freelensapp/utilities";
 

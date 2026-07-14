@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import EventEmitter from "node:events";
 import { iter } from "@freelensapp/utilities";
-import EventEmitter from "events";
 import { once } from "lodash";
 import { makeObservable, observable } from "mobx";
 

@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type http from "http";
+import type http from "node:http";
 
 /**
  * Respond to a HTTP request with a body of JSON data

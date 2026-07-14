@@ -6,13 +6,13 @@
 
 import "./file-picker.scss";
 
+import path from "node:path";
 import { Icon } from "@freelensapp/icon";
 import { Spinner } from "@freelensapp/spinner";
 import fse from "fs-extra";
 import _ from "lodash";
 import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
-import path from "path";
 import React from "react";
 
 import type { StrictReactNode } from "@freelensapp/utilities";

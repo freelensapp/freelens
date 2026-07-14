@@ -4,11 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { inspect } from "node:util";
 import chalk from "chalk";
 import { omit } from "lodash";
 import { LEVEL, MESSAGE, SPLAT } from "triple-beam";
-import { inspect } from "util";
-import type { InspectOptions } from "util";
+import type { InspectOptions } from "node:util";
 
 import type { Format, TransformableInfo } from "logform";
 

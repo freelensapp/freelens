@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import fs from "node:fs";
 import { hasTypedProperty, isObject, isString, json } from "@freelensapp/utilities";
-import fs from "fs";
 import { ensureDir, pathExists } from "fs-extra";
 import { noop } from "lodash/fp";
 import * as lockFile from "proper-lockfile";

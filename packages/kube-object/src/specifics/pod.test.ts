@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "assert";
+import assert from "node:assert";
 import { Pod, type PodContainerStatus } from "./pod";
 
 import type { Container } from "../types/container";

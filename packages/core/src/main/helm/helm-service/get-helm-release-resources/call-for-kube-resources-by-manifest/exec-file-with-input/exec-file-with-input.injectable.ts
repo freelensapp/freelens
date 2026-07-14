@@ -4,11 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import assert from "node:assert";
 import { isNumber } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import assert from "assert";
 import nonPromiseExecFileInjectable from "./non-promise-exec-file.injectable";
-import type { ChildProcess } from "child_process";
+import type { ChildProcess } from "node:child_process";
 
 import type { AsyncResult } from "@freelensapp/utilities";
 
