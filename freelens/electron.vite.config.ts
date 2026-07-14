@@ -74,8 +74,8 @@ const workspacePackages = Object.keys(packageJson.dependencies).filter((name) =>
 //   ESM interop binds the default import to the whole `module.exports` object
 //   (`{ __esModule: true, default: [class] }`), so `new AwaitLock()` throws
 //   "AwaitLock is not a constructor".
-// Bundling lets Vite resolve the subpaths, named exports and default interop
-// at build time, sidestepping runtime ESM resolution.
+// Bundling lets Vite resolve the named exports and default interop at build
+// time, sidestepping runtime ESM resolution.
 const bundledCjsPackages = [
   "await-lock",
   "@ogre-tools/injectable",
