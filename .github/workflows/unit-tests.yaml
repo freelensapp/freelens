@@ -104,14 +104,12 @@ jobs:
       - name: Build packages
         run: pnpm --color=always --stream build
 
-      # The core project carries the whole regression, so only it is sharded.
-      # The cheap non-core package projects run once, on the first shard.
-      - name: Run non-core unit tests
-        if: matrix.shard == 1
-        run: pnpm --color=always --stream --no-bail --filter='!@freelensapp/core' -r test:unit
-
-      - name: Run core unit tests (shard ${{ matrix.shard }}/${{ needs.setup.outputs.total }})
-        run: cd packages/core && pnpm test:unit --shard=${{ matrix.shard }}/${{ needs.setup.outputs.total }}
+      # All package projects are sharded together through the root Vitest
+      # config, which declares every package as a project. Vitest splits the
+      # full set of collected test files across shards, so no project is
+      # singled out and every shard runs a balanced slice of the whole suite.
+      - name: Run unit tests (shard ${{ matrix.shard }}/${{ needs.setup.outputs.total }})
+        run: pnpm --color=always test:unit --shard=${{ matrix.shard }}/${{ needs.setup.outputs.total }}
 
       - name: Clean after tests
         run: pnpm --color=always --parallel clean
