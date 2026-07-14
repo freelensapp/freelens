@@ -6,7 +6,6 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import URLParse from "url-parse";
 import { WebSocketServer } from "ws";
 import openShellSessionInjectable from "../../shell-session/create-shell-session.injectable";
 import getClusterForRequestInjectable from "../get-cluster-for-request.injectable";
@@ -25,9 +24,10 @@ const shellApiRequestInjectable = getInjectable({
 
     return ({ req, socket, head }) => {
       const cluster = getClusterForRequest(req);
-      const {
-        query: { node: nodeName, shellToken, id: tabId },
-      } = new URLParse(req.url, true);
+      const { searchParams } = new URL(req.url ?? "", "http://localhost");
+      const nodeName = searchParams.get("node") ?? undefined;
+      const shellToken = searchParams.get("shellToken") ?? undefined;
+      const tabId = searchParams.get("id") ?? undefined;
 
       if (!tabId || !cluster || !authenticateRequest(cluster.id, tabId, shellToken)) {
         socket.write("Invalid shell request");

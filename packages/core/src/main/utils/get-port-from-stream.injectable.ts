@@ -6,7 +6,6 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import URLParse from "url-parse";
 import type { Readable } from "node:stream";
 
 export interface GetPortFromStreamArgs {
@@ -54,7 +53,7 @@ const getPortFromStreamInjectable = getInjectable({
 
           if (match.matched) {
             // use unknown protocol so that there is no default port
-            const addr = new URLParse(`s://${match.groups?.address?.trim()}`);
+            const addr = new URL(`s://${match.groups?.address?.trim()}`);
 
             args.onFind?.();
             stream.off("data", handler);
