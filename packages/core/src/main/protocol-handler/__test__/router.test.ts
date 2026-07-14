@@ -23,7 +23,7 @@ import lensProtocolRouterMainInjectable from "../lens-protocol-router-main/lens-
 import type { ObservableMap } from "mobx";
 import type { Mock } from "vitest";
 
-import type { LegacyLensExtension, LensExtensionId } from "../../../extensions/installed-extension";
+import type { LensExtensionId, LensExtensionInstance } from "../../../extensions/installed-extension";
 import type { LensExtensionState } from "../../../features/extensions/enabled/common/state.injectable";
 import type { LensProtocolRouterMain } from "../lens-protocol-router-main/lens-protocol-router-main";
 
@@ -34,7 +34,7 @@ function throwIfDefined(val: any): void {
 }
 
 describe("protocol router tests", () => {
-  let extensionInstances: ObservableMap<LensExtensionId, LegacyLensExtension>;
+  let extensionInstances: ObservableMap<LensExtensionId, LensExtensionInstance>;
   let lpr: LensProtocolRouterMain;
   let enabledExtensions: ObservableMap<LensExtensionId, LensExtensionState>;
   let broadcastMessageMock: Mock;

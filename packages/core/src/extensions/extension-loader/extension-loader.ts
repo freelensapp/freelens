@@ -29,9 +29,9 @@ import type { JoinPaths } from "../../common/path/join-paths.injectable";
 import type { UpdateExtensionsState } from "../../features/extensions/enabled/common/update-state.injectable";
 import type {
   InstalledExtension,
-  LegacyLensExtension,
   LensExtensionConstructor,
   LensExtensionId,
+  LensExtensionInstance,
 } from "../installed-extension";
 import type { LensExtension } from "../lens-extension";
 import type { Extension } from "./extension/extension.injectable";
@@ -47,11 +47,11 @@ const logModule = "[EXTENSIONS-LOADER]";
 const extensionRequire = globalThis.require ?? createRequire(import.meta.url);
 
 interface Dependencies {
-  readonly extensionInstances: ObservableMap<LensExtensionId, LegacyLensExtension>;
+  readonly extensionInstances: ObservableMap<LensExtensionId, LensExtensionInstance>;
   readonly logger: Logger;
   readonly extensionEntryPointName: "main" | "renderer";
   updateExtensionsState: UpdateExtensionsState;
-  getExtension: (instance: LegacyLensExtension) => Extension;
+  getExtension: (instance: LensExtensionInstance) => Extension;
   joinPaths: JoinPaths;
   getDirnameOfPath: GetDirnameOfPath;
   readFile: ReadFile;
@@ -110,7 +110,7 @@ export class ExtensionLoader {
    * - `null` if no class definition is provided for the current process
    * - `undefined` if the name is not known about
    */
-  getInstanceByName(name: string): LegacyLensExtension | null | undefined {
+  getInstanceByName(name: string): LensExtensionInstance | null | undefined {
     if (this.nonInstancesByName.has(name)) {
       return null;
     }

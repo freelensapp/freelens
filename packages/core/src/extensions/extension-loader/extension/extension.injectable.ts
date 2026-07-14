@@ -10,7 +10,7 @@ import { reaction, runInAction } from "mobx";
 import { injectableDifferencingRegistratorWith } from "../../../common/utils/registrator-helper";
 import { extensionRegistratorInjectionToken } from "../extension-registrator-injection-token";
 
-import type { LegacyLensExtension } from "../../installed-extension";
+import type { LensExtensionInstance } from "../../installed-extension";
 
 export interface Extension {
   register: () => void;
@@ -67,7 +67,7 @@ const extensionInjectable = getInjectable({
   },
 
   lifecycle: lifecycleEnum.keyedSingleton({
-    getInstanceKey: (di, instance: LegacyLensExtension) => instance,
+    getInstanceKey: (di, instance: LensExtensionInstance) => instance,
   }),
 });
 

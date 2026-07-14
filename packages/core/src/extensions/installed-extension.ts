@@ -6,7 +6,7 @@
 
 export type LensExtensionId = string;
 
-export type LensExtensionConstructor = new (ext: InstalledExtension) => LegacyLensExtension;
+export type LensExtensionConstructor = new (ext: InstalledExtension) => LensExtensionInstance;
 
 export interface InstalledExtension {
   readonly id: LensExtensionId;
@@ -20,7 +20,7 @@ export interface InstalledExtension {
   isEnabled: boolean;
 }
 
-export interface LegacyLensExtension {
+export interface LensExtensionInstance {
   readonly id: LensExtensionId;
   readonly manifest: LensExtensionManifest;
   readonly manifestPath: string;
