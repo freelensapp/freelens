@@ -269,7 +269,7 @@ jobs:
         run: |
           sudo chown root:root freelens/dist/linux*-unpacked/chrome-sandbox
           sudo chmod 4755 freelens/dist/linux*-unpacked/chrome-sandbox
-          timeout 600 xvfb-run -a pnpm --color=always test:integration
+          timeout 600 xvfb-run -a pnpm --color=always test:integration --reporter=verbose --reporter=github-actions --includeTaskLocation
         env:
           DEBUG: pw:browser
           TEST_KIND_CLUSTER_NAME: freelens
@@ -280,7 +280,7 @@ jobs:
         run: |
           sudo chown root:root freelens/dist/linux*-unpacked/chrome-sandbox
           sudo chmod 4755 freelens/dist/linux*-unpacked/chrome-sandbox
-          timeout 600 xvfb-run -a pnpm --color=always test:integration
+          timeout 600 xvfb-run -a pnpm --color=always test:integration --reporter=verbose --reporter=github-actions --includeTaskLocation
         env:
           DEBUG: pw:browser
 
@@ -288,7 +288,7 @@ jobs:
         id: integration-tests-macos
         if: runner.os == 'macOS'
         shell: bash
-        run: timeout 600 pnpm --color=always test:integration
+        run: timeout 600 pnpm --color=always test:integration --reporter=verbose --reporter=github-actions --includeTaskLocation
         env:
           DEBUG: pw:browser
         continue-on-error: true
@@ -296,7 +296,7 @@ jobs:
       - name: Run integration tests (macOS) (retry)
         if: runner.os == 'macOS' && steps.integration-tests-macos.outcome == 'failure'
         shell: bash
-        run: timeout 600 pnpm --color=always test:integration
+        run: timeout 600 pnpm --color=always test:integration --reporter=verbose --reporter=github-actions --includeTaskLocation
         env:
           DEBUG: pw:browser
 
@@ -304,7 +304,7 @@ jobs:
         id: integration-tests-windows
         if: runner.os == 'Windows'
         shell: bash
-        run: timeout 600 pnpm --color=always test:integration
+        run: timeout 600 pnpm --color=always test:integration --reporter=verbose --reporter=github-actions --includeTaskLocation
         env:
           DEBUG: pw:browser
           EXTENSION_PATH: skip
@@ -313,7 +313,7 @@ jobs:
       - name: Run integration tests (Windows) (retry)
         if: runner.os == 'Windows' && steps.integration-tests-windows.outcome == 'failure'
         shell: bash
-        run: timeout 600 pnpm --color=always test:integration
+        run: timeout 600 pnpm --color=always test:integration --reporter=verbose --reporter=github-actions --includeTaskLocation
         env:
           DEBUG: pw:browser
           EXTENSION_PATH: skip
