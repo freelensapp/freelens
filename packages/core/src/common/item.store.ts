@@ -5,7 +5,7 @@
  */
 
 import autoBind from "auto-bind";
-import orderBy from "lodash/orderBy";
+import { orderBy } from "es-toolkit/compat";
 import { action, computed, makeObservable, observable, when } from "mobx";
 
 import type { ItemObject } from "@freelensapp/list-layout";
