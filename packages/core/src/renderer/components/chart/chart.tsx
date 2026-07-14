@@ -8,18 +8,35 @@ import "./chart.scss";
 import "chartjs-adapter-moment";
 
 import { cssNames } from "@freelensapp/utilities";
-import { Chart as ChartJS, registerables } from "chart.js";
+import { Chart as ChartJS, registerables, Tooltip } from "chart.js";
 import { merge, remove } from "es-toolkit/compat";
 import React from "react";
 import { Badge } from "../badge";
 import { StatusBrick } from "../status-brick";
 
-import type { ChartData as ChartJSData, ChartDataset, ChartOptions, ChartType, Plugin } from "chart.js";
+import type {
+  ChartData as ChartJSData,
+  ChartDataset,
+  ChartOptions,
+  ChartType,
+  Plugin,
+  TooltipPositionerFunction,
+} from "chart.js";
 import type { CSSProperties } from "react";
 
 // Register all controllers, elements, scales and plugins once. Individual
 // tree-shaken registrations can be a later optimization.
 ChartJS.register(...registerables);
+
+// Custom tooltip positioner that places the tooltip at the cursor position.
+// Used by both the bar and pie charts via `position: "cursor"`.
+declare module "chart.js" {
+  interface TooltipPositionerMap {
+    cursor: TooltipPositionerFunction<ChartType>;
+  }
+}
+
+Tooltip.positioners.cursor = (_elements, eventPosition) => eventPosition;
 
 export interface ChartData extends Omit<ChartJSData, "datasets"> {
   datasets?: ChartDataSets[];
