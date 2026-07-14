@@ -6,7 +6,7 @@
 
 import { isErrnoException } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import { lowerFirst } from "lodash/fp";
+import { lowerFirst } from "es-toolkit";
 import statInjectable from "./stat.injectable";
 
 import type { AsyncResult } from "@freelensapp/utilities";

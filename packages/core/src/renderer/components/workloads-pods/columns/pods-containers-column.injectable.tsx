@@ -7,7 +7,7 @@
 import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
 import { object } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import startCase from "lodash/startCase";
+import { startCase } from "es-toolkit";
 import React from "react";
 import { StatusBrick } from "../../status-brick";
 import { containerStatusClassName } from "../container-status-class-name";

@@ -5,8 +5,6 @@
  */
 
 import { describeIf } from "@freelensapp/test-utils";
-import { pipeline } from "@ogre-tools/fp";
-import { groupBy, toPairs } from "lodash/fp";
 import { kindReady } from "../helpers/kind";
 /*
   Cluster tests are run if there is a pre-existing kind cluster. Before running cluster tests the TEST_NAMESPACE
@@ -60,7 +58,14 @@ describeIf(kindReady(TEST_KIND_CLUSTER_NAME, TEST_NAMESPACE))("KinD based tests"
   it(
     "should navigate around common cluster pages",
     async () => {
-      const scenariosByParent = pipeline(scenarios, groupBy("parentSidebarItemTestId"), toPairs);
+      const scenariosByParent = Object.entries(
+        scenarios.reduce<Record<string, typeof scenarios>>((grouped, scenario) => {
+          const key = String(scenario.parentSidebarItemTestId);
+
+          (grouped[key] ??= []).push(scenario);
+          return grouped;
+        }, {}),
+      );
 
       for (const [parentSidebarItemTestId, scenarios] of scenariosByParent) {
         if (parentSidebarItemTestId !== "null") {

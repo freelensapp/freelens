@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { pick } from "lodash";
+import { pick } from "es-toolkit/compat";
 import { computed, observable, runInAction, toJS } from "mobx";
 import { ClusterMetadataKey, clusterModelIdChecker, updateClusterModelChecker } from "../cluster-types";
 import { replaceObservableObject } from "../utils/replace-observable-object";

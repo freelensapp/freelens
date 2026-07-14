@@ -10,7 +10,7 @@ import { Spinner } from "@freelensapp/spinner";
 import { bytesToUnits, cssNames, interval, prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
-import kebabCase from "lodash/kebabCase";
+import { kebabCase } from "es-toolkit";
 import { reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";

@@ -4,10 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { pipeline } from "@ogre-tools/fp";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
-import { filter, map, sortBy } from "lodash/fp";
+import { sortBy } from "es-toolkit";
 import { computed } from "mobx";
 import { kubeObjectMenuItemInjectionToken } from "./kube-object-menu-item-injection-token";
 
@@ -21,17 +20,15 @@ const kubeObjectMenuItemsInjectable = getInjectable({
     const menuItems = computedInjectMany(kubeObjectMenuItemInjectionToken);
 
     return computed(() =>
-      pipeline(
-        menuItems.get(),
-
-        filter(
-          (item) =>
-            item.kind === kubeObject?.kind && item.apiVersions.includes(kubeObject?.apiVersion) && item.enabled.get(),
-        ),
-
-        sortBy((item) => item.orderNumber),
-        map((item) => item.Component),
-      ),
+      sortBy(
+        menuItems
+          .get()
+          .filter(
+            (item) =>
+              item.kind === kubeObject?.kind && item.apiVersions.includes(kubeObject?.apiVersion) && item.enabled.get(),
+          ),
+        [(item) => item.orderNumber],
+      ).map((item) => item.Component),
     );
   },
 

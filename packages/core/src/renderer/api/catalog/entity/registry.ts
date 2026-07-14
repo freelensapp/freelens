@@ -20,7 +20,7 @@ import type {
 import "../../../../common/catalog-entities";
 import { iter } from "@freelensapp/utilities";
 import { ipcRenderer } from "electron";
-import { once } from "lodash";
+import { once } from "es-toolkit";
 import { CatalogRunEvent } from "../../../../common/catalog/catalog-run-event";
 import { catalogEntityRunListener, catalogInitChannel, catalogItemsChannel } from "../../../../common/ipc/catalog";
 

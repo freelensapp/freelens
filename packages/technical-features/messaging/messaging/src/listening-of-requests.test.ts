@@ -2,7 +2,7 @@ import { applicationFeature, startApplicationInjectionToken } from "@freelensapp
 import { registerFeature } from "@freelensapp/feature-core";
 import { createContainer, type DiContainer, type Injectable } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
-import { noop } from "lodash/fp";
+import { noop } from "es-toolkit";
 import { _resetGlobalState, configure, runInAction } from "mobx";
 import { listeningOfChannelsInjectionToken } from "./features/actual/listening-of-channels/listening-of-channels.injectable";
 import {

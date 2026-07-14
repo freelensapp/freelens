@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { pipeline } from "@ogre-tools/fp";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import withErrorLoggingInjectable from "../../../../../../common/utils/with-error-logging/with-error-logging.injectable";
@@ -27,14 +26,8 @@ const openPreferencesTrayItemInjectable = getInjectable({
       enabled: computed(() => true),
       visible: computed(() => true),
 
-      click: pipeline(
-        navigateToPreferences,
-
-        withErrorLoggingFor(() => "[TRAY]: Opening of preferences failed."),
-
-        // TODO: Find out how to improve typing so that instead of
-        // x => withErrorSuppression(x) there could only be withErrorSuppression
-        (x) => withErrorSuppression(x),
+      click: withErrorSuppression(
+        withErrorLoggingFor(() => "[TRAY]: Opening of preferences failed.")(navigateToPreferences),
       ),
     };
   },

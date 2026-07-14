@@ -11,7 +11,7 @@ import { Icon } from "@freelensapp/icon";
 import { cssNames, noop } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
-import isEqual from "lodash/isEqual";
+import { isEqual } from "es-toolkit";
 import React, { Fragment } from "react";
 import { createPortal } from "react-dom";
 

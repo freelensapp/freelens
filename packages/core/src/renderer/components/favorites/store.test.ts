@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { noop } from "lodash/fp";
+import { noop } from "es-toolkit";
 import { computed, type IObservableValue, observable } from "mobx";
 import { FavoritesStore } from "./store.injectable";
 

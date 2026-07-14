@@ -5,7 +5,6 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { matches } from "lodash/fp";
 import prometheusProvidersInjectable from "./providers.injectable";
 
 import type { PrometheusProvider } from "@freelensapp/prometheus";
@@ -18,7 +17,7 @@ const getPrometheusProviderByKindInjectable = getInjectable({
     const providers = di.inject(prometheusProvidersInjectable);
 
     return (kind) => {
-      const provider = providers.get().find(matches({ kind }));
+      const provider = providers.get().find((provider) => provider.kind === kind);
 
       if (!provider) {
         throw new Error(`Provider of kind "${kind}" does not exist`);

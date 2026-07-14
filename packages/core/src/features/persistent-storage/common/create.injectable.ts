@@ -9,7 +9,7 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { enlistMessageChannelListenerInjectionToken, sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import { disposer, isPromiseLike } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import { isEqual, kebabCase } from "lodash";
+import { isEqual, kebabCase } from "es-toolkit";
 import { reaction } from "mobx";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import getConfigurationFileModelInjectable from "../../../common/get-configuration-file-model/get-configuration-file-model.injectable";

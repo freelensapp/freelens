@@ -7,7 +7,7 @@
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
 import { computedAnd, iter, noop } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import { matches } from "lodash";
+import { matches } from "es-toolkit/compat";
 import { computed } from "mobx";
 import customResourcesRouteInjectable from "../../../common/front-end-routing/routes/cluster/custom-resources/custom-resources-route.injectable";
 import navigateToCustomResourcesInjectable from "../../../common/front-end-routing/routes/cluster/custom-resources/navigate-to-custom-resources.injectable";

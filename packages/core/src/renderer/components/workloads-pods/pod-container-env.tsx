@@ -8,7 +8,7 @@ import "./pod-container-env.scss";
 
 import { cpuUnitsToNumber, metricUnitsToNumber, object, unitsToBytes } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import _ from "lodash";
+import { ceil, get, last, round, sortBy, toPath } from "es-toolkit/compat";
 import { autorun } from "mobx";
 import { observer } from "mobx-react";
 import React, { useEffect } from "react";
@@ -34,7 +34,7 @@ interface Dependencies {
 }
 
 function resolvePodRef(pod: Pod, ref: string) {
-  const value = _.get(pod, ref);
+  const value = get(pod, ref);
   if (Array.isArray(value) && value.every((v) => typeof v === "string" || typeof v === "number")) {
     return value.join(",");
   }
@@ -48,9 +48,9 @@ function resolvePodRef(pod: Pod, ref: string) {
 }
 
 function resolveResourcesRef(requirements: ResourceRequirements, ref: string) {
-  const path = _.toPath(ref);
-  const name = _.last(path);
-  const value = _.get(requirements, path);
+  const path = toPath(ref);
+  const name = last(path);
+  const value = get(requirements, path);
 
   if (!name || (typeof value !== "string" && typeof value !== "number")) return NaN;
 
@@ -59,7 +59,7 @@ function resolveResourcesRef(requirements: ResourceRequirements, ref: string) {
   }
 
   if (name.includes("cpu")) {
-    return _.ceil(cpuUnitsToNumber(String(value)) ?? 0);
+    return ceil(cpuUnitsToNumber(String(value)) ?? 0);
   }
 
   return metricUnitsToNumber(String(value));
@@ -98,7 +98,7 @@ const NonInjectedContainerEnvironment = observer((props: Dependencies & Containe
   );
 
   const renderEnv = () => {
-    const orderedEnv = _.sortBy(env, "name");
+    const orderedEnv = sortBy(env, "name");
 
     return orderedEnv.map((variable) => {
       const { name, value, valueFrom } = variable;
@@ -124,7 +124,7 @@ const NonInjectedContainerEnvironment = observer((props: Dependencies & Containe
             ? pod.getAllContainers().find((c) => c.name === containerName)
             : container;
           if (resourceContainer && resourceContainer.resources) {
-            secretValue = _.round(resolveResourcesRef(resourceContainer.resources, resource) / (Number(divisor) || 1));
+            secretValue = round(resolveResourcesRef(resourceContainer.resources, resource) / (Number(divisor) || 1));
           }
           if (!secretValue) {
             let divisorInfo = "";

@@ -27,7 +27,7 @@
   "dependencies": {
     "@astronautlabs/jsonpath": "^1.1.2",
     "crypto-js": "^4.2.0",
-    "lodash": "^4.18.1",
+    "es-toolkit": "^1.49.0",
     "mobx": "^6.15.0",
     "moment": "^2.30.1",
     "p-limit": "^3.1.0",
@@ -40,7 +40,6 @@
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
     "@types/crypto-js": "^4.2.2",
-    "@types/lodash": "^4.17.24",
     "@types/node": "~24.12.4",
     "@types/react": "^17.0.93",
     "@types/react-router": "^5.1.20",

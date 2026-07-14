@@ -27,8 +27,7 @@
   "dependencies": {
     "@async-fn/vitest": "^1.8.0",
     "@freelensapp/messaging": "workspace:^",
-    "@ogre-tools/fp": "^17.11.1",
-    "lodash": "^4.18.1"
+    "@ogre-tools/fp": "^17.11.1"
   },
   "devDependencies": {
     "@freelensapp/application": "workspace:^",
@@ -38,7 +37,6 @@
     "@ogre-tools/injectable": "^17.11.1",
     "@ogre-tools/injectable-extension-for-mobx": "^17.11.1",
     "@testing-library/react": "^12.1.5",
-    "@types/lodash": "^4.17.24",
     "jsdom": "^29.1.1",
     "mobx": "^6.15.0",
     "typescript": "^6.0.3",

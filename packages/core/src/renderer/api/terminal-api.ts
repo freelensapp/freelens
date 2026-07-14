@@ -6,8 +6,7 @@
 
 import url from "node:url";
 import { ipcRenderer } from "electron";
-import { once } from "lodash";
-import isEqual from "lodash/isEqual";
+import { isEqual, once } from "es-toolkit";
 import { makeObservable, observable } from "mobx";
 import { TerminalChannels, type TerminalMessage } from "../../common/terminal/channels";
 import { WebSocketApi } from "./websocket-api";

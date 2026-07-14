@@ -8,7 +8,6 @@ import { Icon } from "@freelensapp/icon";
 import { Spinner } from "@freelensapp/spinner";
 import { bytesToUnits, cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { isNumber } from "lodash";
 import { observer } from "mobx-react";
 import React, { useRef } from "react";
 import { getMetricLastPoints } from "../../../common/k8s-api/endpoints/metrics.api";
@@ -70,14 +69,14 @@ const renderCharts = (defaultColor: string, lastPoints: Partial<Record<keyof Clu
   } = lastPoints;
 
   if (
-    !isNumber(cpuCapacity) ||
-    !isNumber(cpuAllocatableCapacity) ||
-    !isNumber(podCapacity) ||
-    !isNumber(podAllocatableCapacity) ||
-    !isNumber(memoryAllocatableCapacity) ||
-    !isNumber(memoryCapacity) ||
-    !isNumber(memoryUsage) ||
-    !isNumber(memoryRequests)
+    typeof cpuCapacity !== "number" ||
+    typeof cpuAllocatableCapacity !== "number" ||
+    typeof podCapacity !== "number" ||
+    typeof podAllocatableCapacity !== "number" ||
+    typeof memoryAllocatableCapacity !== "number" ||
+    typeof memoryCapacity !== "number" ||
+    typeof memoryUsage !== "number" ||
+    typeof memoryRequests !== "number"
   ) {
     return null;
   }

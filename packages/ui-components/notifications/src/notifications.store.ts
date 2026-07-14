@@ -5,7 +5,7 @@
  */
 
 import autoBind from "auto-bind";
-import uniqueId from "lodash/uniqueId";
+import { uniqueId } from "es-toolkit/compat";
 import { action, makeObservable, observable } from "mobx";
 
 import type { JsonApiErrorParsed } from "@freelensapp/json-api";

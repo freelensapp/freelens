@@ -6,7 +6,7 @@
 
 import "./runtime-classes-tolerations.scss";
 
-import uniqueId from "lodash/uniqueId";
+import { uniqueId } from "es-toolkit/compat";
 import React from "react";
 import { Table, TableCell, TableHead, TableRow } from "../table";
 

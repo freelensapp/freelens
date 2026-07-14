@@ -6,7 +6,7 @@
 
 import { formatDuration, isObject, isString } from "@freelensapp/utilities";
 import autoBind from "auto-bind";
-import { omit } from "lodash";
+import { omit } from "es-toolkit/compat";
 import moment from "moment";
 import { KubeCreationError } from "./api-types";
 import {

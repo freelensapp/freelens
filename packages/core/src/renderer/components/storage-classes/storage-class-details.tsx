@@ -9,7 +9,7 @@ import "./storage-class-details.scss";
 import { StorageClass } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import startCase from "lodash/startCase";
+import { startCase } from "es-toolkit";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";

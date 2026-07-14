@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { cloneDeep } from "lodash";
+import { cloneDeep } from "es-toolkit";
 import { getSorted } from "../sorting";
 
 describe("Table tests", () => {

@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import startCase from "lodash/startCase";
+import { startCase } from "es-toolkit";
 import "./volume-details.scss";
 
 import { persistentVolumeClaimApiInjectable, storageClassApiInjectable } from "@freelensapp/kube-api-specifics";

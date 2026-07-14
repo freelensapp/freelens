@@ -6,7 +6,7 @@
 
 import { cpuUnitsToNumber, unitsToBytes } from "@freelensapp/utilities";
 import autoBind from "auto-bind";
-import { sum } from "lodash";
+import { sum } from "es-toolkit";
 import { computed, makeObservable, observable } from "mobx";
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
 

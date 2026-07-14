@@ -5,7 +5,6 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { isEmpty } from "lodash/fp";
 import getVisibleWindowsInjectable from "../../../start-main-application/lens-window/get-visible-windows.injectable";
 import { afterQuitOfFrontEndInjectionToken } from "../../../start-main-application/runnable-tokens/phases";
 import electronAppInjectable from "../../electron-app.injectable";
@@ -19,7 +18,7 @@ const hideDockForLastClosedWindowInjectable = getInjectable({
       const getVisibleWindows = di.inject(getVisibleWindowsInjectable);
       const visibleWindows = getVisibleWindows();
 
-      if (isEmpty(visibleWindows)) {
+      if (visibleWindows.length === 0) {
         app.dock?.hide();
       }
 

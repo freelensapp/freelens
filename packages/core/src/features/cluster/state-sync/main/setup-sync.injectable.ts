@@ -6,7 +6,7 @@
 
 import { beforeApplicationIsLoadingInjectionToken } from "@freelensapp/application";
 import { getInjectable } from "@ogre-tools/injectable";
-import { isEqual } from "lodash";
+import { isEqual } from "es-toolkit";
 import { autorun } from "mobx";
 import clustersInjectable from "../../storage/common/clusters.injectable";
 import initClusterStoreInjectable from "../../storage/main/init.injectable";

@@ -11,7 +11,7 @@ import { Icon } from "@freelensapp/icon";
 import { showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { clipboard } from "electron";
-import { kebabCase } from "lodash/fp";
+import { kebabCase } from "es-toolkit";
 import React from "react";
 import { Dialog } from "../dialog";
 import { Wizard, WizardStep } from "../wizard";

@@ -5,7 +5,7 @@
  */
 
 import { disposer, getOrInsert, noop, WrappedAbortController } from "@freelensapp/utilities";
-import { once } from "lodash";
+import { once } from "es-toolkit";
 import { comparer, reaction } from "mobx";
 
 import type { Logger } from "@freelensapp/logger";

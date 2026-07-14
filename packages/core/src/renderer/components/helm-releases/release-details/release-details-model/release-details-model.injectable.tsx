@@ -7,9 +7,8 @@
 import assert from "node:assert";
 import { showCheckedErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { waitUntilDefined } from "@freelensapp/utilities";
-import { pipeline } from "@ogre-tools/fp";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import { groupBy, map } from "lodash/fp";
+import { groupBy } from "es-toolkit";
 import { action, computed, observable, runInAction } from "mobx";
 import React from "react";
 import navigateToHelmReleasesInjectable from "../../../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
@@ -236,18 +235,14 @@ export class ReleaseDetailsModel {
   }
 
   @computed get groupedResources(): MinimalResourceGroup[] {
-    return pipeline(
-      this.details.resources ?? [],
-      groupBy((resource) => resource.kind),
-      (grouped) => Object.entries(grouped),
-
-      map(([kind, resources]) => ({
+    return Object.entries(groupBy(this.details.resources ?? [], (resource) => resource.kind)).map(
+      ([kind, resources]) => ({
         kind,
 
         resources: resources.map(toMinimalResourceFor(this.dependencies.getResourceDetailsUrl, kind)),
 
         isNamespaced: resources.some((resource) => !!resource.metadata.namespace),
-      })),
+      }),
     );
   }
 

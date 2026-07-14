@@ -11,7 +11,7 @@ import { kubeObjectListLayoutColumnInjectionToken } from "@freelensapp/list-layo
 import { TooltipPosition } from "@freelensapp/tooltip";
 import { cssNames, hasTypedProperty, isDefined, isObject, isString } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { sortBy } from "lodash";
+import { sortBy } from "es-toolkit/compat";
 import { computed, observable, reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";

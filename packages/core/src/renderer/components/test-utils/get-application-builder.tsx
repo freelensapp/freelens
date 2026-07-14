@@ -18,11 +18,9 @@ import { getMessageBridgeFake } from "@freelensapp/messaging-fake-bridge";
 import { discoverFor } from "@freelensapp/react-testing-library-discovery";
 import { historyInjectionToken } from "@freelensapp/routing";
 import { renderFor } from "@freelensapp/test-utils";
-import { pipeline } from "@ogre-tools/fp";
 import { getInjectable } from "@ogre-tools/injectable";
 import { fireEvent, queryByText } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { filter, first, join, last, map, matches } from "lodash/fp";
 import { action, computed, observable, runInAction } from "mobx";
 import React from "react";
 import { Router } from "react-router";
@@ -361,7 +359,7 @@ export const getApplicationBuilder = (user: UserEvent = userEvent.setup()) => {
           throw new Error("Tried to get only application window when there are multiple windows.");
         }
 
-        const applicationWindow = first(applicationWindows);
+        const applicationWindow = applicationWindows.at(0);
 
         if (!applicationWindow) {
           throw new Error("Tried to get only application window when there are no windows.");
@@ -433,31 +431,29 @@ export const getApplicationBuilder = (user: UserEvent = userEvent.setup()) => {
 
     tray: {
       get: (id: string) => {
-        const lastCall = last(traySetMenuItemsMock.mock.calls);
+        const lastCall = traySetMenuItemsMock.mock.calls.at(-1);
 
         assert(lastCall);
 
-        return lastCall[0].find(matches({ id })) ?? null;
+        return lastCall[0].find((item: MinimalTrayMenuItem) => item.id === id) ?? null;
       },
 
       getIconPath: () => trayMenuIconPath,
 
       click: async (id: string) => {
-        const lastCall = last(traySetMenuItemsMock.mock.calls);
+        const lastCall = traySetMenuItemsMock.mock.calls.at(-1);
 
         assert(lastCall);
 
         const trayMenuItems = lastCall[0];
 
-        const menuItem = trayMenuItems.find(matches({ id })) ?? null;
+        const menuItem = trayMenuItems.find((item: MinimalTrayMenuItem) => item.id === id) ?? null;
 
         if (!menuItem) {
-          const availableIds = pipeline(
-            trayMenuItems,
-            filter((item) => !!item.click),
-            map((item) => item.id),
-            join(", "),
-          );
+          const availableIds = trayMenuItems
+            .filter((item: MinimalTrayMenuItem) => !!item.click)
+            .map((item: MinimalTrayMenuItem) => item.id)
+            .join(", ");
 
           throw new Error(
             `Tried to click tray menu item with ID ${id} which does not exist. Available IDs are: "${availableIds}"`,
@@ -610,15 +606,13 @@ export const getApplicationBuilder = (user: UserEvent = userEvent.setup()) => {
 
     extensions: {
       get: (id: string) => {
-        const windowInstances = pipeline(
-          builder.applicationWindow.getAll(),
-
-          map((window): [string, LensRendererExtension] => [
-            window.id,
-            findExtensionInstance(window.di, rendererExtensionsInjectable, id),
-          ]),
-
-          (items) => Object.fromEntries(items),
+        const windowInstances = Object.fromEntries(
+          builder.applicationWindow
+            .getAll()
+            .map((window): [string, LensRendererExtension] => [
+              window.id,
+              findExtensionInstance(window.di, rendererExtensionsInjectable, id),
+            ]),
         );
 
         return {

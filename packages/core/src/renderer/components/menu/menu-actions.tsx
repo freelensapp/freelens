@@ -11,7 +11,6 @@ import { getRandomIdInjectionToken } from "@freelensapp/random";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
-import isString from "lodash/isString";
 import { makeObservable, observable, reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React, { isValidElement } from "react";
@@ -154,7 +153,7 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
     const iconProps: IconProps & TooltipDecoratorProps = {
       id: this.props.id,
       interactive: true,
-      material: isString(triggerIcon) ? triggerIcon : undefined,
+      material: typeof triggerIcon === "string" ? triggerIcon : undefined,
       active: isActive,
       ...(typeof triggerIcon === "object" ? triggerIcon : {}),
     };

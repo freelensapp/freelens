@@ -6,7 +6,6 @@
 
 import { Icon } from "@freelensapp/icon";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { matches } from "lodash/fp";
 import { observer } from "mobx-react";
 import React from "react";
 import { Select } from "../../../../../../renderer/components/select";
@@ -36,7 +35,9 @@ const NonInjectedAddingOfPublicHelmRepository = observer(
     const repositoryOptions = dereferencesPublicRepositories.map((repository) => ({
       value: repository,
       label: repository.name,
-      isSelected: !!dereferencesActiveRepositories.find(matches({ name: repository.name })),
+      isSelected: !!dereferencesActiveRepositories.find(
+        (activeRepository) => activeRepository.name === repository.name,
+      ),
     }));
 
     return (

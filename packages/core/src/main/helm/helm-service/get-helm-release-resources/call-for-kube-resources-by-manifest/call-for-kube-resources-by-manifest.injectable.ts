@@ -4,10 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { pipeline } from "@ogre-tools/fp";
 import { getInjectable } from "@ogre-tools/injectable";
 import * as yaml from "js-yaml";
-import { map } from "lodash/fp";
 import { defaultYamlDumpOptions } from "../../../../../common/kube-helpers";
 import { getErrorMessage } from "../../../../../common/utils/get-error-message";
 import execFileWithInputInjectable from "./exec-file-with-input/exec-file-with-input.injectable";
@@ -30,11 +28,7 @@ const callForKubeResourcesByManifestInjectable = getInjectable({
     const execFileWithInput = di.inject(execFileWithInputInjectable);
 
     return async (namespace, kubeconfigPath, kubectlPath, resourceManifests) => {
-      const input = pipeline(
-        resourceManifests,
-        map((manifest) => yaml.dump(manifest, defaultYamlDumpOptions)),
-        wideJoin("---\n"),
-      );
+      const input = wideJoin("---\n")(resourceManifests.map((manifest) => yaml.dump(manifest, defaultYamlDumpOptions)));
 
       const result = await execFileWithInput({
         filePath: kubectlPath,

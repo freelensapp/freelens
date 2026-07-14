@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { sortBy } from "lodash/fp";
+import { sortBy } from "es-toolkit";
 import { getCompositeFor } from "../get-composite/get-composite";
 import { getCompositePaths } from "./get-composite-paths";
 
@@ -55,7 +55,7 @@ describe("get-composite-paths", () => {
       rootId: "some-root-id",
       getId: (x) => x.id,
       getParentId: (x) => x.parentId,
-      transformChildren: (children) => sortBy((child) => child.orderNumber, children),
+      transformChildren: (children) => sortBy(children, [(child) => child.orderNumber]),
     });
 
     const composite = getComposite(items);

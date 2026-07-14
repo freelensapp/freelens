@@ -4,9 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { pipeline } from "@ogre-tools/fp";
 import { type DiContainerForInjection, getInjectable, getInjectionToken, lifecycleEnum } from "@ogre-tools/injectable";
-import { kebabCase, toUpper } from "lodash/fp";
+import { kebabCase } from "es-toolkit";
 import { winstonLoggerInjectable } from "./winston-logger.injectable";
 
 export interface Logger {
@@ -22,7 +21,7 @@ export const loggerInjectionToken = getInjectionToken<Logger>({
   id: "logger-injection-token",
 });
 
-const screamingKebabCase = (str: string) => pipeline(str, kebabCase, toUpper);
+const screamingKebabCase = (str: string) => kebabCase(str).toUpperCase();
 
 const getLogFunctionFor = (scenario: keyof Logger, namespace: string | undefined) => {
   const prefix = namespace ? `[${screamingKebabCase(namespace.replace(/-feature$/, ""))}]: ` : "";

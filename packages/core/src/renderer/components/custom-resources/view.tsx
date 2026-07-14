@@ -8,7 +8,7 @@ import "./view.scss";
 
 import { formatJSONValue, safeJSONPathValue } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { startCase } from "lodash/fp";
+import { startCase } from "es-toolkit";
 import { computed, makeObservable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";

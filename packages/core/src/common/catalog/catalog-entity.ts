@@ -6,7 +6,7 @@
 
 import EventEmitter from "node:events";
 import { iter } from "@freelensapp/utilities";
-import { once } from "lodash";
+import { once } from "es-toolkit";
 import { makeObservable, observable } from "mobx";
 
 import type { Disposer, StrictReactNode } from "@freelensapp/utilities";

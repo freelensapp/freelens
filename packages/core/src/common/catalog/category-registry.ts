@@ -5,7 +5,7 @@
  */
 
 import { getOrInsertMap, iter, strictSet } from "@freelensapp/utilities";
-import { once } from "lodash";
+import { once } from "es-toolkit";
 import { action, computed, makeObservable, observable } from "mobx";
 
 import type { Disposer } from "@freelensapp/utilities";

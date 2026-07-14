@@ -7,7 +7,7 @@
 import "./resizing-anchor.scss";
 
 import { cssNames, noop } from "@freelensapp/utilities";
-import _ from "lodash";
+import { throttle } from "es-toolkit";
 import { action, makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
@@ -237,7 +237,7 @@ export class ResizingAnchor extends React.PureComponent<ResizingAnchorProps> {
     }
   }
 
-  onDrag = _.throttle((event: MouseEvent) => {
+  onDrag = throttle((event: MouseEvent) => {
     /**
      * Some notes to help understand the following:
      *  - A browser's origin point is in the top left of the screen

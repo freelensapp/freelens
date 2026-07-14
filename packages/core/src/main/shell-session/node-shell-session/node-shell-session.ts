@@ -6,7 +6,8 @@
 
 import { NodeApi } from "@freelensapp/kube-api";
 import { CoreV1Api, Watch } from "@kubernetes/client-node";
-import { get, once } from "lodash";
+import { once } from "es-toolkit";
+import { get } from "es-toolkit/compat";
 import { v4 as uuid } from "uuid";
 import { initialNodeShellImage, initialNodeShellWindowsImage } from "../../../common/cluster-types";
 import { TerminalChannels } from "../../../common/terminal/channels";

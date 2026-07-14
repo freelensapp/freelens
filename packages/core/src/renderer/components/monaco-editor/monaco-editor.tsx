@@ -13,7 +13,7 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { cssNames, disposer } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
-import { debounce, merge } from "lodash";
+import { debounce, merge } from "es-toolkit/compat";
 import { action, computed, makeObservable, observable, reaction } from "mobx";
 import { observer } from "mobx-react";
 import { editor, Uri } from "monaco-editor";

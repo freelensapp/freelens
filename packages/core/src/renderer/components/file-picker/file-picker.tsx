@@ -9,8 +9,9 @@ import "./file-picker.scss";
 import path from "node:path";
 import { Icon } from "@freelensapp/icon";
 import { Spinner } from "@freelensapp/spinner";
+import { sum } from "es-toolkit";
+import { orderBy } from "es-toolkit/compat";
 import fse from "fs-extra";
-import _ from "lodash";
 import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
@@ -136,7 +137,7 @@ class DefaultedFilePicker extends React.Component<FilePickerProps & typeof defau
   handleTotalFileSizes(files: File[]): File[] {
     const { maxTotalSize, onOverTotalSizeLimit } = this.props;
 
-    const totalSize = _.sum(files.map((f) => f.size));
+    const totalSize = sum(files.map((f) => f.size));
 
     if (totalSize <= maxTotalSize) {
       return files;
@@ -144,7 +145,7 @@ class DefaultedFilePicker extends React.Component<FilePickerProps & typeof defau
 
     switch (onOverTotalSizeLimit) {
       case OverTotalSizeLimitStyle.FILTER_LARGEST:
-        files = _.orderBy(files, ["size"]);
+        files = orderBy(files, ["size"]);
 
       // fallthrough
       case OverTotalSizeLimitStyle.FILTER_LAST: {

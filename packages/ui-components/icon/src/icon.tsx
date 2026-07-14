@@ -10,7 +10,6 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { withTooltip } from "@freelensapp/tooltip";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import isNumber from "lodash/isNumber";
 import React, { createRef } from "react";
 import { NavLink } from "react-router-dom";
 import Configuration from "../assets/configuration.svg?raw";
@@ -242,7 +241,7 @@ const RawIcon = (props: IconProps & Dependencies) => {
     tabIndex: isInteractive && focusable && !disabled ? 0 : undefined,
     style: size
       ? ({
-          "--size": size + (isNumber(size) ? "px" : ""),
+          "--size": size + (typeof size === "number" ? "px" : ""),
         } as React.CSSProperties)
       : undefined,
     ...elemProps,

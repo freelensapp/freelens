@@ -7,7 +7,7 @@
 import { NetworkPolicy } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { isEmpty } from "lodash";
+import { isEmpty } from "es-toolkit/compat";
 import { observer } from "mobx-react";
 import React from "react";
 import { Badge } from "../badge";

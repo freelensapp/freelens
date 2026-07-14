@@ -6,7 +6,6 @@
 
 import { isDefined, iter } from "@freelensapp/utilities";
 import { ipcRenderer } from "electron";
-import { countBy } from "lodash";
 import { when } from "mobx";
 import { pathToRegexp } from "path-to-regexp";
 import { matchPath } from "react-router";
@@ -130,7 +129,8 @@ export abstract class LensProtocolRouter {
           return -1;
         }
 
-        return countBy(b.path)["/"] - countBy(a.path)["/"];
+        // sort by number of "/" segments so the most specific path wins
+        return b.path.split("/").length - a.path.split("/").length;
       })[0] ?? null
     );
   }

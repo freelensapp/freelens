@@ -6,7 +6,7 @@
 
 import { cssNames, disposer } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import throttle from "lodash/throttle";
+import { throttle } from "es-toolkit/compat";
 import { reaction } from "mobx";
 import { observer } from "mobx-react";
 import React, { createRef, useEffect } from "react";

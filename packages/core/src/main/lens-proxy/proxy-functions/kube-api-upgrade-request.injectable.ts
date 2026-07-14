@@ -7,7 +7,7 @@
 import { connect } from "node:tls";
 import url from "node:url";
 import { getInjectable } from "@ogre-tools/injectable";
-import { chunk } from "lodash";
+import { chunk } from "es-toolkit";
 import { apiKubePrefix } from "../../../common/vars";
 import clusterApiUrlInjectable from "../../../features/cluster/connections/main/api-url.injectable";
 import kubeAuthProxyServerInjectable from "../../cluster/kube-auth-proxy-server.injectable";

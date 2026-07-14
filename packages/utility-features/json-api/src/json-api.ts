@@ -9,7 +9,7 @@ import { Agent as HttpsAgent } from "node:https";
 import { stringify } from "node:querystring";
 import { EventEmitter } from "@freelensapp/event-emitter";
 import { isObject, isString, json } from "@freelensapp/utilities";
-import { merge } from "lodash";
+import { merge } from "es-toolkit/compat";
 
 import type { Logger } from "@freelensapp/logger";
 import type { Defaulted } from "@freelensapp/utilities";

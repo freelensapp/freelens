@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { camelCase } from "lodash/fp";
+import { camelCase } from "es-toolkit";
 import { getGlobalOverride } from "./get-global-override";
 
 import type { Injectable } from "@ogre-tools/injectable";

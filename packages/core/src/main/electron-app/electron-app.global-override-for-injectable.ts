@@ -7,7 +7,7 @@
 import EventEmitter from "node:events";
 import { getGlobalOverride } from "@freelensapp/test-utils";
 import { getOrInsert } from "@freelensapp/utilities";
-import { kebabCase } from "lodash";
+import { kebabCase } from "es-toolkit";
 import electronAppInjectable from "./electron-app.injectable";
 
 import type { ClientCertRequestParams, ProxyConfig } from "electron";

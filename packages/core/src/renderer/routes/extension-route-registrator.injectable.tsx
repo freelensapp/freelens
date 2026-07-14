@@ -5,7 +5,6 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { isEmpty, matches } from "lodash/fp";
 import { computed } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
@@ -86,17 +85,17 @@ const toRouteInjectableFor =
     });
 
     const currentSidebarRegistration = extension.clusterPageMenus.find(
-      matches({ target: { pageId: registration.id } }),
+      (menu) => menu.target?.pageId === registration.id,
     );
 
     const siblingRegistrations = currentSidebarRegistration?.parentId
-      ? extension.clusterPageMenus.filter(matches({ parentId: currentSidebarRegistration.parentId }))
+      ? extension.clusterPageMenus.filter((menu) => menu.parentId === currentSidebarRegistration.parentId)
       : [];
 
     const ObserverPage = observer(registration.components.Page);
 
     const Component = () => {
-      if (isEmpty(siblingRegistrations)) {
+      if (siblingRegistrations.length === 0) {
         return <ObserverPage params={normalizedParams} />;
       }
 

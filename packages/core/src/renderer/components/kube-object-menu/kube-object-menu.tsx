@@ -8,7 +8,7 @@ import { Icon } from "@freelensapp/icon";
 import { PodStatusPhase } from "@freelensapp/kube-object";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import identity from "lodash/identity";
+import { identity } from "es-toolkit";
 import { observable, reaction, runInAction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";

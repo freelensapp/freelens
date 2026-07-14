@@ -10,7 +10,7 @@ import { KubeEvent } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import kebabCase from "lodash/kebabCase";
+import { kebabCase } from "es-toolkit/compat";
 import { observer } from "mobx-react";
 import React from "react";
 import { Link } from "react-router-dom";
