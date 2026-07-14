@@ -7,7 +7,7 @@
  */
 
 import { registerInjectables as registerClosePreferencesInjectables } from "./close-preferences/register-injectables";
-import { registerInjectables as registerComplianceForLegacyExtensionApiInjectables } from "./compliance-for-legacy-extension-api/register-injectables";
+import { registerInjectables as registerExtensionPreferencesInjectables } from "./extension-preferences/register-injectables";
 import { registerInjectables as registerPreferenceItemsInjectables } from "./preference-items/register-injectables";
 import { registerInjectables as registerPreferenceNavigationInjectables } from "./preference-navigation/register-injectables";
 import PreferencesRouteComponent from "./preferences-route-component.injectable";
@@ -32,7 +32,7 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
-    registerComplianceForLegacyExtensionApiInjectables(di);
+    registerExtensionPreferencesInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }
