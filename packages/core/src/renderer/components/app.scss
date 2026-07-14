@@ -8,7 +8,15 @@
 @use "../components/mixins";
 @use "../components/vars" as *;
 
-@import "tailwindcss";
+/*
+ * Import Tailwind through its explicit `.css` entry rather than the bare
+ * "tailwindcss" specifier. Dart Sass resolves the bare form to
+ * node_modules/tailwindcss/index.css and inlines it as a Sass @import, which
+ * is deprecated (removed in Dart Sass 3.0). A URL ending in ".css" is instead
+ * emitted verbatim as a plain CSS @import, so Sass never touches it and the
+ * @tailwindcss/postcss plugin still expands it (theme, preflight, utilities).
+ */
+@import "tailwindcss/index.css";
 
 @include meta.load-css("fonts");
 
