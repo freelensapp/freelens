@@ -25,4 +25,9 @@ describe("base64", () => {
     expect(base64.encode("")).toBe("");
     expect(base64.decode("")).toBe("");
   });
+
+  it("throws when decoding input that is not valid base64-encoded utf-8", () => {
+    // Callers (e.g. secret-key.tsx) rely on this to fall back to the raw value.
+    expect(() => base64.decode("some-data-for-some-key")).toThrow();
+  });
 });
