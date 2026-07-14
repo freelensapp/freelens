@@ -138,7 +138,14 @@ export class Chart extends React.Component<ChartProps> {
 
     if (!this.chart) return;
 
-    this.chart.options = merge(this.chart.options, options);
+    // Merge into the raw config options, not `this.chart.options` (the resolved
+    // options proxy). The proxy exposes Chart.js's internal descriptor keys
+    // `_scriptable`/`_indexable` (functions); es-toolkit `merge` would copy them
+    // into the options object, and on the next update Chart.js would resolve
+    // them as scriptable options and call them, throwing "name.startsWith is not
+    // a function". Chart.js v4 removed `helpers.configMerge`, which used to skip
+    // these keys.
+    this.chart.options = merge(this.chart.config.options ?? {}, options);
 
     this.memoizeDataProps();
 
