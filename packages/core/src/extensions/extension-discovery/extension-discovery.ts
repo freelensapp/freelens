@@ -15,12 +15,6 @@ import { toJS } from "../../common/utils";
 import { requestInitialExtensionDiscovery } from "../../renderer/ipc";
 import type { Stats } from "node:fs";
 
-import type {
-  ExternalInstalledExtension,
-  InstalledExtension,
-  LensExtensionId,
-  LensExtensionManifest,
-} from "@freelensapp/legacy-extensions";
 import type { Logger } from "@freelensapp/logger";
 
 import type TypedEventEmitter from "typed-emitter";
@@ -44,6 +38,7 @@ import type { ExtensionInstallationStateStore } from "../extension-installation-
 import type { ExtensionLoader } from "../extension-loader";
 import type { ForkPnpm } from "../install-extension/fork-pnpm.injectable";
 import type { InstallExtension } from "../install-extension/install-extension.injectable";
+import type { InstalledExtension, LensExtensionId, LensExtensionManifest } from "../installed-extension";
 
 interface Dependencies {
   readonly extensionLoader: ExtensionLoader;
@@ -383,7 +378,7 @@ export class ExtensionDiscovery {
    * Returns InstalledExtension from path to package.json file.
    * Also updates this.packagesJson.
    */
-  protected async loadExtensionFromFolder(folderPath: string): Promise<ExternalInstalledExtension | null> {
+  protected async loadExtensionFromFolder(folderPath: string): Promise<InstalledExtension | null> {
     const manifestPath = this.dependencies.joinPaths(folderPath, manifestFilename);
 
     try {
@@ -401,7 +396,6 @@ export class ExtensionDiscovery {
         absolutePath,
         manifestPath: id,
         manifest,
-        isBundled: false,
         isEnabled,
         isCompatible,
       };
@@ -419,14 +413,14 @@ export class ExtensionDiscovery {
     }
   }
 
-  async ensureExtensions(): Promise<Map<LensExtensionId, ExternalInstalledExtension>> {
+  async ensureExtensions(): Promise<Map<LensExtensionId, InstalledExtension>> {
     const userExtensions = await this.loadFromFolder(this.localFolderPath);
 
     return (this.extensions = new Map(userExtensions.map((extension) => [extension.id, extension])));
   }
 
-  async loadFromFolder(folderPath: string): Promise<ExternalInstalledExtension[]> {
-    const extensions: ExternalInstalledExtension[] = [];
+  async loadFromFolder(folderPath: string): Promise<InstalledExtension[]> {
+    const extensions: InstalledExtension[] = [];
     const paths = await this.dependencies.readDirectory(folderPath);
 
     for (const fileName of paths) {

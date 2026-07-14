@@ -19,12 +19,12 @@ import createTempFilesAndValidateInjectable from "./create-temp-files-and-valida
 import getExtensionDestFolderInjectable from "./get-extension-dest-folder.injectable";
 import unpackExtensionInjectable from "./unpack-extension.injectable";
 
-import type { LensExtensionId } from "@freelensapp/legacy-extensions";
 import type { ShowNotification } from "@freelensapp/notifications";
 import type { Disposer } from "@freelensapp/utilities";
 
 import type { ExtensionInstallationStateStore } from "../../../../extensions/extension-installation-state-store/extension-installation-state-store";
 import type { ExtensionLoader } from "../../../../extensions/extension-loader";
+import type { LensExtensionId } from "../../../../extensions/installed-extension";
 import type { CreateTempFilesAndValidate } from "./create-temp-files-and-validate.injectable";
 import type { GetExtensionDestFolder } from "./get-extension-dest-folder.injectable";
 import type { UnpackExtension } from "./unpack-extension.injectable";

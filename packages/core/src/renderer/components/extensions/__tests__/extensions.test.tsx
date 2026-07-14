@@ -74,7 +74,6 @@ describe("Extensions", () => {
         },
         absolutePath: "/absolute/path",
         manifestPath: "/symlinked/path/package.json",
-        isBundled: false,
         isEnabled: true,
         isCompatible: true,
       });

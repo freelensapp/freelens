@@ -18,15 +18,6 @@ import {
 } from "../../common/ipc/extension-handling";
 import { requestExtensionLoaderInitialState } from "../../renderer/ipc";
 
-import type {
-  BundledExtension,
-  BundledInstalledExtension,
-  ExternalInstalledExtension,
-  InstalledExtension,
-  LegacyLensExtension,
-  LensExtensionConstructor,
-  LensExtensionId,
-} from "@freelensapp/legacy-extensions";
 import type { Logger } from "@freelensapp/logger";
 
 import type { ObservableMap } from "mobx";
@@ -36,6 +27,12 @@ import type { ReadFile } from "../../common/fs/read-file.injectable";
 import type { GetDirnameOfPath } from "../../common/path/get-dirname.injectable";
 import type { JoinPaths } from "../../common/path/join-paths.injectable";
 import type { UpdateExtensionsState } from "../../features/extensions/enabled/common/update-state.injectable";
+import type {
+  InstalledExtension,
+  LegacyLensExtension,
+  LensExtensionConstructor,
+  LensExtensionId,
+} from "../installed-extension";
 import type { LensExtension } from "../lens-extension";
 import type { Extension } from "./extension/extension.injectable";
 
@@ -51,7 +48,6 @@ const extensionRequire = globalThis.require ?? createRequire(import.meta.url);
 
 interface Dependencies {
   readonly extensionInstances: ObservableMap<LensExtensionId, LegacyLensExtension>;
-  readonly bundledExtensions: BundledExtension[];
   readonly logger: Logger;
   readonly extensionEntryPointName: "main" | "renderer";
   updateExtensionsState: UpdateExtensionsState;
@@ -69,7 +65,6 @@ interface ExtensionBeingActivated {
 }
 
 export interface ExtensionLoading {
-  isBundled: boolean;
   loaded: Promise<void>;
 }
 
@@ -104,9 +99,7 @@ export class ExtensionLoader {
 
   constructor(protected readonly dependencies: Dependencies) {}
 
-  readonly userExtensions = computed(
-    () => new Map(this.extensions.toJSON().filter(([, extension]) => !extension.isBundled)),
-  );
+  readonly userExtensions = computed(() => new Map(this.extensions.toJSON()));
 
   /**
    * Get the extension instance by its manifest name
@@ -210,7 +203,6 @@ export class ExtensionLoader {
     const extension = this.extensions.get(lensExtensionId);
 
     assert(extension, `Extension "${lensExtensionId}" must be registered before it can be enabled.`);
-    assert(!extension.isBundled, `Cannot change the enabled state of a bundled extension`);
 
     extension.isEnabled = isEnabled;
   }
@@ -266,45 +258,6 @@ export class ExtensionLoader {
     });
   }
 
-  protected async loadBundledExtensions() {
-    const bundledExtensions = await Promise.all(
-      this.dependencies.bundledExtensions.map(async (extension) => {
-        try {
-          const LensExtensionClass = await extension[this.dependencies.extensionEntryPointName]();
-
-          if (!LensExtensionClass) {
-            return null;
-          }
-
-          const installedExtension: BundledInstalledExtension = {
-            absolutePath: "irrelevant",
-            id: extension.manifest.name,
-            isBundled: true,
-            isCompatible: true,
-            isEnabled: true,
-            manifest: extension.manifest,
-            manifestPath: "irrelevant",
-          };
-          const instance = new LensExtensionClass(installedExtension);
-
-          this.dependencies.extensionInstances.set(extension.manifest.name, instance);
-
-          return {
-            instance,
-            installedExtension,
-            activated: instance.activate(),
-          } as ExtensionBeingActivated;
-        } catch (err) {
-          this.dependencies.logger.error(`${logModule}: error loading extension`, { ext: extension, err });
-
-          return null;
-        }
-      }),
-    );
-
-    return bundledExtensions.filter(isDefined);
-  }
-
   protected async loadExtensions(extensions: ExtensionBeingActivated[]): Promise<ExtensionLoading[]> {
     // We first need to wait until each extension's `onActivate` is resolved or rejected,
     // as this might register new catalog categories. Afterwards we can safely .enable the extension.
@@ -331,10 +284,7 @@ export class ExtensionLoader {
         this.dependencies.logger.error(`${logModule}: failed to enable`, { ext: extension, err });
       });
 
-      return {
-        isBundled: extension.installedExtension.isBundled,
-        loaded,
-      };
+      return { loaded };
     });
   }
 
@@ -346,7 +296,6 @@ export class ExtensionLoader {
     // 4. Return ExtensionLoading[]
 
     return [...installedExtensions.entries()]
-      .filter((entry): entry is [string, ExternalInstalledExtension] => !entry[1].isBundled)
       .map(([extId, installedExtension]) => {
         const alreadyInit =
           this.dependencies.extensionInstances.has(extId) ||
@@ -386,9 +335,8 @@ export class ExtensionLoader {
   async autoInitExtensions() {
     this.dependencies.logger.info(`${logModule}: auto initializing extensions`);
 
-    const bundledExtensions = await this.loadBundledExtensions();
     const userExtensions = await this.loadUserExtensions(this.toJSON());
-    const loadedExtensions = await this.loadExtensions([...bundledExtensions, ...userExtensions]);
+    const loadedExtensions = await this.loadExtensions(userExtensions);
 
     // Setup reaction to load extensions on JSON changes
     reaction(
@@ -405,7 +353,7 @@ export class ExtensionLoader {
     return loadedExtensions;
   }
 
-  protected requireExtension(extension: ExternalInstalledExtension): LensExtensionConstructor | null {
+  protected requireExtension(extension: InstalledExtension): LensExtensionConstructor | null {
     const extRelativePath = extension.manifest[this.dependencies.extensionEntryPointName];
 
     if (!extRelativePath) {
@@ -456,7 +404,7 @@ export class ExtensionLoader {
    * unaffected. Renderer-only: guarded on the entry-point name and on the
    * presence of `document`.
    */
-  private async injectRendererStyles(extEntryPath: string, extension: ExternalInstalledExtension): Promise<void> {
+  private async injectRendererStyles(extEntryPath: string, extension: InstalledExtension): Promise<void> {
     if (this.dependencies.extensionEntryPointName !== "renderer" || typeof document === "undefined") {
       return;
     }

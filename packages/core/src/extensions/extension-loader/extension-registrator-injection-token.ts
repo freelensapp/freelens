@@ -6,10 +6,10 @@
 
 import { getInjectionToken } from "@ogre-tools/injectable";
 
-import type { LegacyLensExtension } from "@freelensapp/legacy-extensions";
-
 import type { Injectable } from "@ogre-tools/injectable";
 import type { IComputedValue } from "mobx";
+
+import type { LegacyLensExtension } from "../installed-extension";
 
 export type Injectables = Injectable<any, any, any>[];
 export type Registration = Injectables | IComputedValue<Injectables>;

@@ -29,7 +29,6 @@ describe("lens extension", () => {
       id: "/this/is/fake/package.json",
       absolutePath: "/absolute/fake/",
       manifestPath: "/this/is/fake/package.json",
-      isBundled: false,
       isEnabled: true,
       isCompatible: true,
     });

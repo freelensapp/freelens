@@ -7,7 +7,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { observable } from "mobx";
 
-import type { LensExtensionId } from "@freelensapp/legacy-extensions";
+import type { LensExtensionId } from "../../../../extensions/installed-extension";
 
 export interface LensExtensionState {
   enabled?: boolean;

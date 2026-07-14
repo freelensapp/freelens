@@ -8,7 +8,7 @@ import path from "node:path";
 import { isObject, isString, listTarEntries, readFileFromTar } from "@freelensapp/utilities";
 import { manifestFilename } from "../../../../extensions/extension-discovery/extension-discovery";
 
-import type { LensExtensionManifest } from "@freelensapp/legacy-extensions";
+import type { LensExtensionManifest } from "../../../../extensions/installed-extension";
 
 export async function validatePackage(filePath: string): Promise<LensExtensionManifest> {
   const tarFiles = await listTarEntries(filePath);

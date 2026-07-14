@@ -9,7 +9,7 @@ import extensionLoaderInjectable from "../../../extensions/extension-loader/exte
 import { getExtensionId, sanitizeExtensionName } from "../../../extensions/lens-extension";
 import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 
-import type { LensExtensionId } from "@freelensapp/legacy-extensions";
+import type { LensExtensionId } from "../../../extensions/installed-extension";
 
 export type DisableExtension = (extId: LensExtensionId) => void;
 
@@ -23,7 +23,7 @@ const disableExtensionInjectable = getInjectable({
     return (extId) => {
       const ext = extensionLoader.getExtensionById(extId);
 
-      if (ext && !ext.isBundled) {
+      if (ext) {
         ext.isEnabled = false;
 
         // Remove extension order from user store

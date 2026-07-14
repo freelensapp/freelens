@@ -1,38 +1,29 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
 export type LensExtensionId = string;
 
 export type LensExtensionConstructor = new (ext: InstalledExtension) => LegacyLensExtension;
-export type BundledLensExtensionConstructor = new (ext: BundledInstalledExtension) => LegacyLensExtension;
 
-export interface BaseInstalledExtension {
+export interface InstalledExtension {
   readonly id: LensExtensionId;
   // Absolute path to the non-symlinked source folder,
   // e.g. "/Users/user/.freelens/extensions/helloworld"
   readonly absolutePath: string;
   // Absolute to the symlinked package.json file
   readonly manifestPath: string;
-}
-
-export interface BundledInstalledExtension extends BaseInstalledExtension {
-  readonly manifest: BundledLensExtensionManifest;
-  readonly isBundled: true;
-  readonly isCompatible: true;
-  readonly isEnabled: true;
-}
-
-export interface ExternalInstalledExtension extends BaseInstalledExtension {
   readonly manifest: LensExtensionManifest;
-  readonly isBundled: false;
   readonly isCompatible: boolean;
   isEnabled: boolean;
 }
-
-export type InstalledExtension = BundledInstalledExtension | ExternalInstalledExtension;
 
 export interface LegacyLensExtension {
   readonly id: LensExtensionId;
   readonly manifest: LensExtensionManifest;
   readonly manifestPath: string;
-  readonly isBundled: boolean;
   readonly sanitizedExtensionId: string;
   readonly name: string;
   readonly version: string;
@@ -45,7 +36,7 @@ export interface LegacyLensExtension {
   activate(): Promise<void>;
 }
 
-export interface BundledLensExtensionManifest {
+export interface LensExtensionManifest {
   name: string;
   version: string;
   description?: string;
@@ -56,9 +47,7 @@ export interface BundledLensExtensionManifest {
    * Useful if extension is renamed but the data should not be lost.
    */
   storeName?: string;
-}
 
-export interface LensExtensionManifest extends BundledLensExtensionManifest {
   main?: string; // path to %ext/dist/main.js
   renderer?: string; // path to %ext/dist/renderer.js
 

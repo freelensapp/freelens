@@ -20,11 +20,10 @@ import enabledExtensionsStateInjectable from "../../../features/extensions/enabl
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import lensProtocolRouterMainInjectable from "../lens-protocol-router-main/lens-protocol-router-main.injectable";
 
-import type { LegacyLensExtension, LensExtensionId } from "@freelensapp/legacy-extensions";
-
 import type { ObservableMap } from "mobx";
 import type { Mock } from "vitest";
 
+import type { LegacyLensExtension, LensExtensionId } from "../../../extensions/installed-extension";
 import type { LensExtensionState } from "../../../features/extensions/enabled/common/state.injectable";
 import type { LensProtocolRouterMain } from "../lens-protocol-router-main/lens-protocol-router-main";
 
@@ -89,7 +88,6 @@ describe("protocol router tests", () => {
         version: "0.1.1",
         engines: { freelens: "^0.1.0" },
       },
-      isBundled: false,
       isEnabled: true,
       isCompatible: true,
       absolutePath: "/foo/bar",
@@ -175,7 +173,6 @@ describe("protocol router tests", () => {
         version: "0.1.1",
         engines: { freelens: "^0.1.0" },
       },
-      isBundled: false,
       isEnabled: true,
       isCompatible: true,
       absolutePath: "/foo/bar",
@@ -226,7 +223,6 @@ describe("protocol router tests", () => {
           version: "0.1.1",
           engines: { freelens: "^0.1.0" },
         },
-        isBundled: false,
         isEnabled: true,
         isCompatible: true,
         absolutePath: "/foo/bar",
@@ -253,7 +249,6 @@ describe("protocol router tests", () => {
           version: "0.1.1",
           engines: { freelens: "^0.1.0" },
         },
-        isBundled: false,
         isEnabled: true,
         isCompatible: true,
         absolutePath: "/foo/bar",

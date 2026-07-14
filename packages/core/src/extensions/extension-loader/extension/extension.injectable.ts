@@ -10,7 +10,7 @@ import { reaction, runInAction } from "mobx";
 import { injectableDifferencingRegistratorWith } from "../../../common/utils/registrator-helper";
 import { extensionRegistratorInjectionToken } from "../extension-registrator-injection-token";
 
-import type { LegacyLensExtension } from "@freelensapp/legacy-extensions";
+import type { LegacyLensExtension } from "../../installed-extension";
 
 export interface Extension {
   register: () => void;

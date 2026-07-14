@@ -473,9 +473,6 @@ importers:
       '@freelensapp/kubectl-versions':
         specifier: workspace:^
         version: link:../kubectl-versions
-      '@freelensapp/legacy-extensions':
-        specifier: workspace:^
-        version: link:../technical-features/application/legacy-extensions
       '@freelensapp/list-layout':
         specifier: workspace:^
         version: link:../list-layout
@@ -1347,22 +1344,6 @@ importers:
       '@ogre-tools/test-utils':
         specifier: ^17.11.1
         version: 17.11.1(lodash@4.18.1)
-      typescript:
-        specifier: ^6.0.3
-        version: 6.0.3
-      vitest:
-        specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
-
-  packages/technical-features/application/legacy-extensions:
-    dependencies:
-      '@ogre-tools/injectable':
-        specifier: ^17.11.1
-        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(lodash@4.18.1)
-    devDependencies:
-      '@freelensapp/typescript':
-        specifier: workspace:^
-        version: link:../../../infrastructure/typescript
       typescript:
         specifier: ^6.0.3
         version: 6.0.3

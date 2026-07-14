@@ -6,7 +6,7 @@
 
 import semver from "semver";
 
-import type { LensExtensionManifest } from "@freelensapp/legacy-extensions";
+import type { LensExtensionManifest } from "../../installed-extension";
 
 interface Dependencies {
   extensionApiVersion: string;

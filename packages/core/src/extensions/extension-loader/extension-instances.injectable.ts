@@ -7,7 +7,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { observable } from "mobx";
 
-import type { LegacyLensExtension, LensExtensionId } from "@freelensapp/legacy-extensions";
+import type { LegacyLensExtension, LensExtensionId } from "../installed-extension";
 
 const extensionInstancesInjectable = getInjectable({
   id: "extension-instances",
