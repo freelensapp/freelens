@@ -143,36 +143,39 @@ rebuilt on change. If dev mode misbehaves, the packaged-app workflow
 
 The `pnpm dev` script launches Electron with `--remoteDebuggingPort 9223`, so
 the running app exposes a Chrome DevTools Protocol (CDP) endpoint. An AI coding
-agent (Claude Code, Cursor, …) can attach to it to inspect the renderer — read
-the DOM, evaluate JavaScript, capture screenshots, and stream console/main-process
-logs — which is useful for debugging renderer-side startup issues that never
-reach the terminal.
+agent (Claude Code, Cursor, …) can attach to it to drive and inspect the app —
+snapshot the accessibility tree, click, read the DOM, capture screenshots —
+which is useful for debugging renderer-side issues that never reach the terminal.
+
+Use a **frame-aware** CDP client. Freelens renders each cluster in a
+cross-origin `<clusterId>.renderer.freelens.app` iframe, so a tool that only
+sees the top document (e.g. `@laststance/electron-mcp-server`) can drive the
+catalog/welcome shell but is blind to everything inside a cluster (Nodes,
+Workloads, Pods, …). Playwright and Puppeteer traverse cross-origin frames and
+reach the cluster views, so prefer one of them:
+
+- [Playwright MCP](https://github.com/microsoft/playwright-mcp) — `@playwright/mcp`, connect with `--cdp-endpoint`
+- [chrome-devtools-mcp](https://github.com/ChromeDevTools/chrome-devtools-mcp) — connect with `--browser-url`
 
 This is a per-developer, opt-in tool and is intentionally **not** committed to
-`.mcp.json` (that would prompt every contributor). Install it in your own local
-Claude Code config instead:
+`.mcp.json` (that would prompt every contributor). Add it to your own local
+Claude Code config, pointed at the dev CDP port:
 
 ```sh
-# Local scope: stored in .claude/settings.local.json (git-ignored), not shared
-claude mcp add electron-devtools --scope local -- npx -y @laststance/electron-mcp-server@latest
+# Local scope: stored per-project in ~/.claude.json, not shared
+claude mcp add playwright --scope local -- npx -y @playwright/mcp@latest --cdp-endpoint http://127.0.0.1:9223
 ```
 
 Then:
 
-1. Start the app first with `pnpm dev` (the MCP server auto-scans ports
-   9222–9225 and detects the app on 9223).
-2. In Claude Code, run `/mcp` to confirm the `electron-devtools` server is
-   connected.
-3. Ask the agent to inspect the app; it should target the renderer window
-   (`https://renderer.freelens.app:<port>/…`), not the `splash.html` target.
+1. Start the app with `pnpm dev` (it must be running before the agent connects).
+2. In Claude Code, run `/mcp` to confirm the `playwright` server is connected.
+3. Ask the agent to drive the app; to reach a cluster's resources it targets the
+   `…renderer.freelens.app/…` cluster frame, not just the top page.
 
-The server writes runtime artifacts (screenshots, a SQLite metadata database
-and a generated `.security-key`) under `logs/` in the project root; that
-directory is git-ignored, so the key is never committed.
-
-See [laststance/electron-mcp-server](https://github.com/laststance/electron-mcp-server)
-for the full tool list. Remove it any time with
-`claude mcp remove electron-devtools --scope local`.
+Remove it any time with `claude mcp remove playwright --scope local`. Some MCP
+servers write runtime artifacts (screenshots, databases, keys) under `logs/` in
+the project root, which is git-ignored.
 
 ### Running tests
 
