@@ -6,7 +6,6 @@
 
 import asyncFn from "@async-fn/vitest";
 import { getPromiseStatus } from "@freelensapp/test-utils";
-import { pipeline } from "@ogre-tools/fp";
 import { getDiForUnitTesting } from "../../../main/getDiForUnitTesting";
 import logErrorInjectable from "../../log-error.injectable";
 import withErrorLoggingInjectable from "./with-error-logging.injectable";
@@ -31,10 +30,7 @@ describe("with-error-logging", () => {
 
       toBeDecorated = vi.fn();
 
-      decorated = pipeline(
-        toBeDecorated,
-        withErrorLoggingFor((error: any) => `some-error-message-for-${error.message}`),
-      );
+      decorated = withErrorLoggingFor((error: any) => `some-error-message-for-${error.message}`)(toBeDecorated);
     });
 
     describe("when function does not throw and returns value", () => {
@@ -126,10 +122,8 @@ describe("with-error-logging", () => {
 
       toBeDecorated = asyncFn();
 
-      decorated = pipeline(
+      decorated = withErrorLoggingFor((error: any) => `some-error-message-for-${error.message || error.someProperty}`)(
         toBeDecorated,
-
-        withErrorLoggingFor((error: any) => `some-error-message-for-${error.message || error.someProperty}`),
       );
     });
 
