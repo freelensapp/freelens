@@ -27,7 +27,6 @@
   "dependencies": {
     "@freelensapp/messaging": "workspace:^",
     "@ogre-tools/injectable": "^17.11.1",
-    "es-toolkit": "^1.49.0",
     "mobx": "^6.15.0"
   },
   "devDependencies": {
@@ -37,6 +36,7 @@
     "@freelensapp/test-utils": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@ogre-tools/injectable-extension-for-mobx": "^17.11.1",
+    "es-toolkit": "^1.49.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^12.1.5",
     "@types/react": "^17.0.93",
