@@ -5,8 +5,7 @@
  */
 
 // Encode/decode utf-8 base64 string
-import * as Base64 from "crypto-js/enc-base64";
-import * as Utf8 from "crypto-js/enc-utf8";
+import { Buffer } from "node:buffer";
 
 /**
  * Computes utf-8 from base64
@@ -14,7 +13,7 @@ import * as Utf8 from "crypto-js/enc-utf8";
  * @returns The original utf-8 string
  */
 function decode(data: string): string {
-  return Base64.parse(data).toString(Utf8);
+  return Buffer.from(data, "base64").toString("utf-8");
 }
 
 /**
@@ -23,7 +22,7 @@ function decode(data: string): string {
  * @returns A base64 encoded version
  */
 function encode(data: string): string {
-  return Utf8.parse(data).toString(Base64);
+  return Buffer.from(data, "utf-8").toString("base64");
 }
 
 export const base64 = {
