@@ -22,7 +22,7 @@ import selectedNodeRoleForMetricsInjectable from "./overview/selected-node-role-
 import { createMetricsTimeRangeKey } from "./overview/time-range-key";
 
 import type { IAsyncComputed } from "@ogre-tools/injectable-react";
-import type { ChartOptions, ChartPoint } from "chart.js";
+import type { ChartOptions, TooltipItem } from "chart.js";
 
 import type { ClusterMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
 import type { SelectedMetricsTimeRange } from "./overview/selected-metrics-time-range.injectable";
@@ -75,50 +75,50 @@ const NonInjectedClusterMetrics = observer((props: Dependencies) => {
   ];
   const cpuOptions: ChartOptions = {
     scales: {
-      yAxes: [
-        {
-          ticks: {
-            suggestedMax: cpuCapacity,
-            callback: (value) => value,
-          },
+      y: {
+        suggestedMax: cpuCapacity,
+        ticks: {
+          callback: (value) => value,
         },
-      ],
+      },
     },
-    tooltips: {
-      callbacks: {
-        label: ({ index }, data) => {
-          if (!index) {
-            return "<unknown>";
-          }
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: (context: TooltipItem<"bar" | "line">) => {
+            if (!context.dataIndex) {
+              return "<unknown>";
+            }
 
-          const value = data.datasets?.[0].data?.[index] as ChartPoint;
+            const value = context.parsed.y;
 
-          return value.y?.toString() ?? "<unknown>";
+            return value?.toString() ?? "<unknown>";
+          },
         },
       },
     },
   };
   const memoryOptions: ChartOptions = {
     scales: {
-      yAxes: [
-        {
-          ticks: {
-            suggestedMax: memoryCapacity,
-            callback: (value: string) => (!value ? 0 : bytesToUnits(parseInt(value))),
-          },
+      y: {
+        suggestedMax: memoryCapacity,
+        ticks: {
+          callback: (value) => (!value ? 0 : bytesToUnits(parseInt(`${value}`))),
         },
-      ],
+      },
     },
-    tooltips: {
-      callbacks: {
-        label: ({ index }, data) => {
-          if (!index) {
-            return "<unknown>";
-          }
+    plugins: {
+      tooltip: {
+        callbacks: {
+          label: (context: TooltipItem<"bar" | "line">) => {
+            if (!context.dataIndex) {
+              return "<unknown>";
+            }
 
-          const value = data.datasets?.[0].data?.[index] as ChartPoint;
+            const value = context.parsed.y;
 
-          return bytesToUnits(parseInt(value.y as string), { precision: 3 });
+            return bytesToUnits(parseInt(`${value}`), { precision: 3 });
+          },
         },
       },
     },
