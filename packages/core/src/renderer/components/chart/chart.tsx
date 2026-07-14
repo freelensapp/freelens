@@ -14,14 +14,7 @@ import React from "react";
 import { Badge } from "../badge";
 import { StatusBrick } from "../status-brick";
 
-import type {
-  ChartData as ChartJSData,
-  ChartDataset,
-  ChartOptions,
-  ChartType,
-  Plugin,
-  TooltipPositionerFunction,
-} from "chart.js";
+import type { ChartData as ChartJSData, ChartOptions, ChartType, Plugin, TooltipPositionerFunction } from "chart.js";
 import type { CSSProperties } from "react";
 
 // Register all controllers, elements, scales and plugins once. Individual
@@ -38,14 +31,25 @@ declare module "chart.js" {
 
 Tooltip.positioners.cursor = (_elements, eventPosition) => eventPosition;
 
-export interface ChartData extends Omit<ChartJSData, "datasets"> {
-  datasets?: ChartDataSets[];
-}
+// The wrapper accepts loosely typed data and casts it to the strict v4
+// ChartData at the ChartJS boundary (see renderChart). Chart.js v4 parses data
+// internally, so string/number-y point values are tolerated at runtime.
+export type ChartDataPoint = number | { x: number | string; y: number | string } | null | undefined;
 
-export interface ChartDataSets extends Omit<ChartDataset, "data"> {
+export interface ChartDataSets {
   id?: string;
   tooltip?: string;
-  data?: (number | { x: number | string; y: number | string } | null)[];
+  label?: string;
+  data?: ChartDataPoint[];
+  backgroundColor?: string | string[];
+  borderColor?: string | string[];
+  [key: string]: unknown;
+}
+
+export interface ChartData {
+  labels?: unknown[];
+  datasets?: ChartDataSets[];
+  [key: string]: unknown;
 }
 
 export interface ChartProps {

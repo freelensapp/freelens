@@ -52,7 +52,7 @@ interface Dependencies {
 const NonInjectedPieChart = observer(
   ({ activeTheme, data, className, options, showChart, ...chartProps }: Dependencies & PieChartProps) => {
     const { contentColor } = activeTheme.get().colors;
-    const opts: ChartOptions = {
+    const opts: ChartOptions & { cutout?: string } = {
       maintainAspectRatio: false,
       plugins: {
         tooltip: {

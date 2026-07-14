@@ -37,7 +37,7 @@ export class ZebraStripesPlugin implements Plugin<ChartType, ZebraStripesOptions
     this.options = Object.assign({}, defaultOptions, options);
   }
 
-  getOptions(chart: Chart): ZebraStripesOptions | undefined {
+  getOptions(chart: Chart): Partial<ZebraStripesOptions> | undefined {
     return chart.options.plugins?.zebraStripes;
   }
 
@@ -59,7 +59,7 @@ export class ZebraStripesPlugin implements Plugin<ChartType, ZebraStripesOptions
     }
   }
 
-  updateOptions(chart: Chart, options?: ZebraStripesOptions) {
+  updateOptions(chart: Chart, options?: Partial<ZebraStripesOptions>) {
     this.options = {
       ...defaultOptions,
       ...(options ?? this.getOptions(chart)),

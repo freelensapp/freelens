@@ -162,7 +162,9 @@ describe("BarChart", () => {
     const tooltipTitle = options.plugins.tooltip.callbacks.title;
 
     expect(tooltipTitle([{ parsed: { x: "1710000000000" } }])).toBe(moment(1_710_000_000_000).format("MMM DD, HH:mm"));
-    expect(tooltipTitle([{ parsed: { x: 1_710_000_000_000 } }])).toBe(moment(1_710_000_000_000).format("MMM DD, HH:mm"));
+    expect(tooltipTitle([{ parsed: { x: 1_710_000_000_000 } }])).toBe(
+      moment(1_710_000_000_000).format("MMM DD, HH:mm"),
+    );
     expect(tooltipTitle([{ parsed: { x: "9999999999999" } }])).toBe("");
     expect(tooltipTitle([])).toBe("");
   });
