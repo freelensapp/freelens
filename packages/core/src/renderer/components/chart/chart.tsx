@@ -5,29 +5,35 @@
  */
 
 import "./chart.scss";
+import "chartjs-adapter-moment";
 
 import { cssNames } from "@freelensapp/utilities";
-import ChartJS from "chart.js";
-import { remove } from "es-toolkit/compat";
+import { Chart as ChartJS, registerables } from "chart.js";
+import { merge, remove } from "es-toolkit/compat";
 import React from "react";
 import { Badge } from "../badge";
 import { StatusBrick } from "../status-brick";
 
-import type { PluginServiceRegistrationOptions } from "chart.js";
+import type { ChartData as ChartJSData, ChartDataset, ChartOptions, ChartType, Plugin } from "chart.js";
 import type { CSSProperties } from "react";
 
-export interface ChartData extends ChartJS.ChartData {
+// Register all controllers, elements, scales and plugins once. Individual
+// tree-shaken registrations can be a later optimization.
+ChartJS.register(...registerables);
+
+export interface ChartData extends Omit<ChartJSData, "datasets"> {
   datasets?: ChartDataSets[];
 }
 
-export interface ChartDataSets extends ChartJS.ChartDataSets {
+export interface ChartDataSets extends Omit<ChartDataset, "data"> {
   id?: string;
   tooltip?: string;
+  data?: (number | { x: number | string; y: number | string } | null)[];
 }
 
 export interface ChartProps {
   data: ChartData;
-  options?: ChartJS.ChartOptions; // Passed to ChartJS instance
+  options?: ChartOptions; // Passed to ChartJS instance
   width?: number | string;
   height?: number | string;
   type?: ChartKind;
@@ -35,7 +41,7 @@ export interface ChartProps {
   showLegend?: boolean;
   legendPosition?: "bottom";
   legendColors?: string[]; // Hex colors for each of the labels in data object
-  plugins?: PluginServiceRegistrationOptions[];
+  plugins?: Plugin[];
   redraw?: boolean; // If true - recreate chart instance with no animation
   title?: string;
   className?: string;
@@ -111,11 +117,11 @@ export class Chart extends React.Component<ChartProps> {
 
     if (!this.chart) return;
 
-    this.chart.options = ChartJS.helpers.configMerge(this.chart.options, options);
+    this.chart.options = merge(this.chart.options, options);
 
     this.memoizeDataProps();
 
-    const datasets: ChartDataSets[] = ((this.chart.config.data ??= {}).datasets ??= []);
+    const datasets = this.chart.config.data.datasets as unknown as ChartDataSets[];
     const nextDatasets: ChartDataSets[] = ((this.currentChartData ??= {}).datasets ??= []);
 
     // Remove stale datasets if they're not available in nextDatasets
@@ -205,15 +211,18 @@ export class Chart extends React.Component<ChartProps> {
     this.memoizeDataProps();
 
     this.chart = new ChartJS(canvas, {
-      type,
-      plugins,
+      type: type as ChartType,
+      plugins: plugins as Plugin<ChartType>[],
       options: {
         ...options,
-        legend: {
-          display: false,
+        plugins: {
+          ...options?.plugins,
+          legend: {
+            display: false,
+          },
         },
       },
-      data: this.currentChartData,
+      data: this.currentChartData as unknown as ChartJSData,
     });
   }
 
