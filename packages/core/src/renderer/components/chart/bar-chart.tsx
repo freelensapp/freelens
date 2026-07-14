@@ -17,7 +17,7 @@ import { NoMetrics } from "../resource-metrics/no-metrics";
 import { Chart, ChartKind } from "./chart";
 import { ZebraStripesPlugin } from "./zebra-stripes.plugin";
 
-import type { ChartOptions, ChartTooltipCallback, ChartTooltipItem, Scriptable } from "chart.js";
+import type { ChartOptions, ScriptableContext, TooltipItem } from "chart.js";
 import type { IComputedValue } from "mobx";
 
 import type { LensTheme } from "../../themes/lens-theme";
@@ -29,7 +29,8 @@ export interface BarChartProps extends ChartProps {
   maxTime?: number; // Maximum timestamp (unix seconds) for x-axis
 }
 
-const getBarColor: Scriptable<string> = ({ dataset }) => Color(dataset?.borderColor).alpha(0.2).string();
+const getBarColor = ({ dataset }: ScriptableContext<"bar" | "line">): string =>
+  Color(dataset?.borderColor).alpha(0.2).string();
 
 interface Dependencies {
   activeTheme: IComputedValue<LensTheme>;
@@ -123,9 +124,8 @@ const NonInjectedBarChart = observer(
         borderWidth: useSteppedStyle ? 2 : { top: 3 },
         barPercentage: useSteppedStyle ? undefined : 1,
         categoryPercentage: useSteppedStyle ? undefined : 1,
-        steppedLine: useSteppedStyle,
         stepped: useSteppedStyle,
-        lineTension: useSteppedStyle ? 0 : undefined,
+        tension: useSteppedStyle ? 0 : undefined,
         pointRadius: useSteppedStyle ? 0 : undefined,
         pointHoverRadius: useSteppedStyle ? 2 : undefined,
         fill: useSteppedStyle,
@@ -186,98 +186,100 @@ const NonInjectedBarChart = observer(
       maintainAspectRatio: false,
       responsive: true,
       scales: {
-        xAxes: [
-          {
-            type: "time",
-            offset: false,
-            gridLines: {
-              display: false,
+        x: {
+          type: "time",
+          offset: false,
+          grid: {
+            display: false,
+          },
+          stacked: true,
+          min: requestedMin,
+          max: requestedMax,
+          bounds: "data",
+          ticks: {
+            callback: formatTimeLabels,
+            autoSkip: true,
+            autoSkipPadding: 12,
+            maxTicksLimit: maxTimeTicks,
+            source: "auto",
+            color: textColorPrimary,
+            font: {
+              size: 11,
             },
-            stacked: true,
-            ticks: {
-              callback: formatTimeLabels,
-              autoSkip: true,
-              autoSkipPadding: 12,
-              maxTicksLimit: maxTimeTicks,
-              source: "auto",
-              backdropColor: "white",
-              fontColor: textColorPrimary,
-              fontSize: 11,
-              maxRotation: 0,
-              minRotation: 0,
-              min: requestedMin,
-              max: requestedMax,
+            maxRotation: 0,
+            minRotation: 0,
+          },
+          time: {
+            unit: timeUnit,
+            displayFormats: {
+              minute: "x",
+              hour: "x",
+              day: "x",
             },
-            bounds: "data",
-            time: {
-              unit: timeUnit,
-              displayFormats: {
-                minute: "x",
-                hour: "x",
-                day: "x",
-              },
-              parser: (timestamp: string | number) => {
-                return parseBarChartTimestamp(timestamp);
-              },
+            parser: (timestamp: unknown) => {
+              return parseBarChartTimestamp(timestamp as string | number);
             },
           },
-        ],
-        yAxes: [
-          {
-            position: "left",
-            gridLines: {
-              color: borderFaintColor,
-              drawBorder: false,
-              tickMarkLength: 0,
-              zeroLineWidth: 0,
-            },
-            ticks: {
-              maxTicksLimit: 6,
-              fontColor: textColorPrimary,
-              fontSize: 11,
-              padding: 8,
-              min: 0,
-            },
+        },
+        y: {
+          position: "left",
+          min: 0,
+          grid: {
+            color: borderFaintColor,
+            tickLength: 0,
           },
-        ],
-      },
-      tooltips: {
-        mode: "index",
-        position: "cursor",
-        callbacks: {
-          title([tooltip]: ChartTooltipItem[]) {
-            const xLabel = tooltip?.xLabel;
-
-            if (xLabel == null) {
-              return "";
-            }
-
-            const timestamp = parseBarChartTimestamp(getBarChartTickTimestamp(xLabel));
-
-            if (!Number.isFinite(timestamp) || timestamp > Date.now()) {
-              return "";
-            }
-
-            return moment(timestamp).format("MMM DD, HH:mm");
+          border: {
+            display: false,
           },
-          labelColor: ({ datasetIndex }) =>
-            typeof datasetIndex === "number"
-              ? {
-                  borderColor: "darkgray",
-                  backgroundColor: datasets[datasetIndex].borderColor as string,
-                }
-              : {
-                  borderColor: "darkgray",
-                  backgroundColor: "gray",
-                },
+          ticks: {
+            maxTicksLimit: 6,
+            color: textColorPrimary,
+            font: {
+              size: 11,
+            },
+            padding: 8,
+          },
         },
       },
       animation: {
         duration: 0,
       },
       elements: {
-        rectangle: {
-          backgroundColor: getBarColor.bind(null),
+        bar: {
+          backgroundColor: getBarColor,
+        },
+      },
+      plugins: {
+        tooltip: {
+          mode: "index",
+          position: "cursor",
+          callbacks: {
+            title([item]: TooltipItem<"bar" | "line">[]) {
+              const xValue = item?.parsed?.x;
+
+              if (xValue == null) {
+                return "";
+              }
+
+              const timestamp = parseBarChartTimestamp(getBarChartTickTimestamp(xValue));
+
+              if (!Number.isFinite(timestamp) || timestamp > Date.now()) {
+                return "";
+              }
+
+              return moment(timestamp).format("MMM DD, HH:mm");
+            },
+            labelColor: ({ datasetIndex }: TooltipItem<"bar" | "line">) =>
+              typeof datasetIndex === "number"
+                ? {
+                    borderColor: "darkgray",
+                    backgroundColor: datasets[datasetIndex].borderColor as string,
+                  }
+                : {
+                    borderColor: "darkgray",
+                    backgroundColor: "gray",
+                  },
+          },
         },
       },
     };
@@ -303,52 +305,47 @@ export const BarChart = withInjectables<Dependencies, BarChartProps>(NonInjected
 });
 
 const tooltipCallbackWith =
-  (precision: number): ChartTooltipCallback["label"] =>
-  ({ datasetIndex, index }, { datasets = [] }) => {
-    if (typeof datasetIndex !== "number" || typeof index !== "number") {
-      return "";
-    }
+  (precision: number) =>
+  (context: TooltipItem<"bar" | "line">): string => {
+    const { label } = context.dataset;
+    const value = context.parsed.y;
 
-    const { label, data } = datasets[datasetIndex];
-
-    if (!label || !data) {
+    if (!label) {
       return "<unknown>";
     }
 
-    const value = data[index];
+    assert(typeof value === "number");
 
-    assert(isObject(value) && !Array.isArray(value) && typeof value.y === "number");
-
-    return `${label}: ${bytesToUnits(parseInt(value.y.toString()), { precision })}`;
+    return `${label}: ${bytesToUnits(parseInt(value.toString()), { precision })}`;
   };
 
 // Default options for all charts containing memory units (network, disk, memory, etc)
 export const memoryOptions: ChartOptions = {
   scales: {
-    yAxes: [
-      {
-        ticks: {
-          callback: (value) => {
-            if (typeof value == "string") {
-              const float = parseFloat(value);
+    y: {
+      ticks: {
+        callback: (value) => {
+          if (typeof value == "string") {
+            const float = parseFloat(value);
 
-              if (float < 1) {
-                return float.toFixed(3);
-              }
-
-              return bytesToUnits(parseInt(value));
+            if (float < 1) {
+              return float.toFixed(3);
             }
 
-            return bytesToUnits(value);
-          },
-          stepSize: 1,
+            return bytesToUnits(parseInt(value));
+          }
+
+          return bytesToUnits(value);
         },
+        stepSize: 1,
       },
-    ],
+    },
   },
-  tooltips: {
-    callbacks: {
-      label: tooltipCallbackWith(3),
+  plugins: {
+    tooltip: {
+      callbacks: {
+        label: tooltipCallbackWith(3),
+      },
     },
   },
 };
@@ -356,25 +353,25 @@ export const memoryOptions: ChartOptions = {
 // Default options for all charts with cpu units or other decimal numbers
 export const cpuOptions: ChartOptions = {
   scales: {
-    yAxes: [
-      {
-        ticks: {
-          callback: (value) => {
-            const float = parseFloat(`${value}`);
+    y: {
+      ticks: {
+        callback: (value) => {
+          const float = parseFloat(`${value}`);
 
-            if (float == 0) return "0";
-            if (float < 10) return float.toFixed(3);
-            if (float < 100) return float.toFixed(2);
+          if (float == 0) return "0";
+          if (float < 10) return float.toFixed(3);
+          if (float < 100) return float.toFixed(2);
 
-            return float.toFixed(1);
-          },
+          return float.toFixed(1);
         },
       },
-    ],
+    },
   },
-  tooltips: {
-    callbacks: {
-      label: tooltipCallbackWith(2),
+  plugins: {
+    tooltip: {
+      callbacks: {
+        label: tooltipCallbackWith(2),
+      },
     },
   },
 };
