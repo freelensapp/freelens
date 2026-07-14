@@ -7,7 +7,6 @@
 import assert from "node:assert";
 import { flushPromises } from "@freelensapp/test-utils";
 import { fireEvent } from "@testing-library/react";
-import { matches } from "lodash/fp";
 import { computed, observable, runInAction } from "mobx";
 import React from "react";
 import directoryForLensLocalStorageInjectable from "../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
@@ -139,11 +138,7 @@ describe("cluster - sidebar and tab navigation for extensions", () => {
         const route = windowDi
           .inject(routesInjectable)
           .get()
-          .find(
-            matches({
-              path: "/extension/some-extension-name/some-child-page-id",
-            }),
-          );
+          .find((route) => route.path === "/extension/some-extension-name/some-child-page-id");
 
         assert(route);
         navigateToRoute(route);
@@ -510,11 +505,7 @@ describe("cluster - sidebar and tab navigation for extensions", () => {
         const route = windowDi
           .inject(routesInjectable)
           .get()
-          .find(
-            matches({
-              path: "/extension/some-extension-name/some-child-page-id",
-            }),
-          );
+          .find((route) => route.path === "/extension/some-extension-name/some-child-page-id");
 
         assert(route);
         navigateToRoute(route);
