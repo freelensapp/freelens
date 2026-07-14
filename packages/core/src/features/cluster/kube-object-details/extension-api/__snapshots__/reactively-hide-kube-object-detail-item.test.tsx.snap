@@ -37,7 +37,7 @@ exports[`reactively hide kube object detail item > renders 1`] = `
             </div>
           </div>
           <ul
-            class="Menu MenuActions flex KubeObjectMenu toolbar gaps right bottom"
+            class="Menu MenuActions flex KubeObjectMenu toolbar right bottom"
             data-testid="menu-actions-for-kube-object-menu-for-some-uid"
             id="menu-actions-for-kube-object-menu-for-some-uid"
           />
@@ -783,7 +783,7 @@ exports[`reactively hide kube object detail item > when the item is shown > rend
             </div>
           </div>
           <ul
-            class="Menu MenuActions flex KubeObjectMenu toolbar gaps right bottom"
+            class="Menu MenuActions flex KubeObjectMenu toolbar right bottom"
             data-testid="menu-actions-for-kube-object-menu-for-some-uid"
             id="menu-actions-for-kube-object-menu-for-some-uid"
           />

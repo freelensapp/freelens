@@ -5968,7 +5968,7 @@ exports[`showing details for helm release > given application is started > when 
           </div>
         </div>
         <ul
-          class="Menu MenuActions flex HelmReleaseMenu toolbar gaps right bottom"
+          class="Menu MenuActions flex HelmReleaseMenu toolbar right bottom"
           id="menu-actions-for-release-menu-for-some-namespace/some-name"
         >
           <li
@@ -7493,7 +7493,7 @@ exports[`showing details for helm release > given application is started > when 
           </div>
         </div>
         <ul
-          class="Menu MenuActions flex HelmReleaseMenu toolbar gaps right bottom"
+          class="Menu MenuActions flex HelmReleaseMenu toolbar right bottom"
           id="menu-actions-for-release-menu-for-some-namespace/some-name"
         >
           <li
@@ -9018,7 +9018,7 @@ exports[`showing details for helm release > given application is started > when 
           </div>
         </div>
         <ul
-          class="Menu MenuActions flex HelmReleaseMenu toolbar gaps right bottom"
+          class="Menu MenuActions flex HelmReleaseMenu toolbar right bottom"
           id="menu-actions-for-release-menu-for-some-namespace/some-name"
         >
           <li
@@ -10270,7 +10270,7 @@ exports[`showing details for helm release > given application is started > when 
           </div>
         </div>
         <ul
-          class="Menu MenuActions flex HelmReleaseMenu toolbar gaps right bottom"
+          class="Menu MenuActions flex HelmReleaseMenu toolbar right bottom"
           id="menu-actions-for-release-menu-for-some-namespace/some-name"
         >
           <li
@@ -11522,7 +11522,7 @@ exports[`showing details for helm release > given application is started > when 
           </div>
         </div>
         <ul
-          class="Menu MenuActions flex HelmReleaseMenu toolbar gaps right bottom"
+          class="Menu MenuActions flex HelmReleaseMenu toolbar right bottom"
           id="menu-actions-for-release-menu-for-some-namespace/some-name"
         >
           <li
@@ -13049,7 +13049,7 @@ exports[`showing details for helm release > given application is started > when 
           </div>
         </div>
         <ul
-          class="Menu MenuActions flex HelmReleaseMenu toolbar gaps right bottom"
+          class="Menu MenuActions flex HelmReleaseMenu toolbar right bottom"
           id="menu-actions-for-release-menu-for-some-namespace/some-name"
         >
           <li
