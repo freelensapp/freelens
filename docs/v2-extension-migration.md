@@ -105,6 +105,31 @@ namespace path, re-check it against the current
 between `Common`, `Main`, and `Renderer`. The concrete rename table is filled
 in from the freelens-example-extension port and will be appended here.
 
+## Chart.js v4 (`Renderer.Component.BarChart` / `PieChart`)
+
+Freelens bundles Chart.js **v4** (previously v2.9). The `BarChart` and
+`PieChart` components re-exported from `Renderer.Component` are thin wrappers
+around Chart.js, so their `options` prop is a Chart.js **v4** `ChartOptions`
+object. If your extension passes a chart `options` object shaped for the old
+v2 API, it must be migrated. The most common changes:
+
+- Scales are keyed objects, not arrays: `scales.xAxes: [{…}]` /
+  `scales.yAxes: [{…}]` become `scales.x: {…}` / `scales.y: {…}`.
+- Grid/tick styling moved: `gridLines` becomes `grid` (with the axis line
+  under `border`), `ticks.fontColor` / `ticks.fontSize` become `ticks.color`
+  / `ticks.font.size`.
+- Tooltips moved under plugins: `options.tooltips` becomes
+  `options.plugins.tooltip`, and the callback signatures now receive a single
+  `TooltipItem` context (read `context.parsed.y`, `context.dataset.label`,
+  `context.dataIndex`) instead of `(item, data)`.
+- Doughnut/pie `cutoutPercentage: 63` becomes `cutout: "63%"`.
+- Custom plugins must implement the v4 `Plugin` interface (a required `id`
+  and `(chart, args, options)` hook signatures).
+
+See the Chart.js [v3](https://www.chartjs.org/docs/latest/migration/v3-migration.html)
+and [v4](https://www.chartjs.org/docs/latest/migration/v4-migration.html)
+migration guides for the full list.
+
 ## Styling and CSS
 
 In v1 the extension bundler ran a `style-loader`, which injected each imported
