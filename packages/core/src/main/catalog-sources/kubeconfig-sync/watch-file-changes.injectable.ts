@@ -4,12 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import path from "node:path";
+import { inspect } from "node:util";
 import { getOrInsertWith, isErrnoException, iter } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import GlobToRegExp from "glob-to-regexp";
 import { computed, observable } from "mobx";
-import path from "path";
-import { inspect } from "util";
 import statInjectable from "../../../common/fs/stat.injectable";
 import watchInjectable from "../../../common/fs/watch/watch.injectable";
 import diffChangedKubeconfigInjectable from "./diff-changed-kubeconfig.injectable";

@@ -8,7 +8,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import execFileInjectable from "../../../common/fs/exec-file.injectable";
 import helmBinaryPathInjectable from "../helm-binary-path.injectable";
 import execHelmEnvInjectable from "./exec-env.injectable";
-import type { ExecFileException } from "child_process";
+import type { ExecFileException } from "node:child_process";
 
 import type { AsyncResult } from "@freelensapp/utilities";
 

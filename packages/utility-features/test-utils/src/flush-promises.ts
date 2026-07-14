@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { setImmediate, setTimeout } from "timers/promises";
+import { setImmediate, setTimeout } from "node:timers/promises";
 
 export const flushPromises = async () => {
   await setImmediate();

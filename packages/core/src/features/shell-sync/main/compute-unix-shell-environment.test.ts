@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import EventEmitter from "node:events";
 import { flushPromises } from "@freelensapp/test-utils";
-import EventEmitter from "events";
 import MemoryStream from "memorystream";
 import spawnInjectable from "../../../main/child-process/spawn.injectable";
 import randomUUIDInjectable from "../../../main/crypto/random-uuid.injectable";
@@ -13,7 +13,7 @@ import { getDiForUnitTesting } from "../../../main/getDiForUnitTesting";
 import computeUnixShellEnvironmentInjectable from "./compute-unix-shell-environment.injectable";
 import processEnvInjectable from "./env.injectable";
 import processExecPathInjectable from "./execPath.injectable";
-import type { ChildProcessWithoutNullStreams } from "child_process";
+import type { ChildProcessWithoutNullStreams } from "node:child_process";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { MockedFunction } from "vitest";

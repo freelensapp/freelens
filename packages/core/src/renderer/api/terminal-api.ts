@@ -4,11 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import url from "node:url";
 import { ipcRenderer } from "electron";
 import { once } from "lodash";
 import isEqual from "lodash/isEqual";
 import { makeObservable, observable } from "mobx";
-import url from "url";
 import { TerminalChannels, type TerminalMessage } from "../../common/terminal/channels";
 import { WebSocketApi } from "./websocket-api";
 

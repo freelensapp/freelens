@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import os from "node:os";
 import { Pod } from "@freelensapp/kube-object";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import os from "os";
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
 import { App } from "../../../extensions/common-api";

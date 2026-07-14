@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import assert from "node:assert";
 import { flushPromises } from "@freelensapp/test-utils";
 import { fireEvent } from "@testing-library/react";
-import assert from "assert";
 import { matches } from "lodash/fp";
 import { computed, observable, runInAction } from "mobx";
 import React from "react";

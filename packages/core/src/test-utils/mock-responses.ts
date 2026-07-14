@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { PassThrough } from "stream";
+import { PassThrough } from "node:stream";
 
 import type { Headers as NodeFetchHeaders, Response } from "node-fetch";
 import type { Mocked } from "vitest";

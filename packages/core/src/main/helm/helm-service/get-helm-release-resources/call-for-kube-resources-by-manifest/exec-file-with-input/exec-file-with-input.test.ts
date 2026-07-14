@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import EventEmitter from "node:events";
 import { getPromiseStatus } from "@freelensapp/test-utils";
-import EventEmitter from "events";
 import { getDiForUnitTesting } from "../../../../../getDiForUnitTesting";
 import execFileWithInputInjectable from "./exec-file-with-input.injectable";
 import nonPromiseExecFileInjectable from "./non-promise-exec-file.injectable";

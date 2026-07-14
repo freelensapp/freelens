@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import assert from "node:assert";
 import { KubeApi } from "@freelensapp/kube-api";
 import { maybeKubeApiInjectable } from "@freelensapp/kube-api-specifics";
 import { KubeObject } from "@freelensapp/kube-object";
@@ -15,7 +16,6 @@ import {
   logWarningInjectionToken,
 } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import assert from "assert";
 import { runInAction } from "mobx";
 import { KubeApi as ExternalKubeApi } from "../../../extensions/common-api/k8s-api";
 import clusterFrameContextForNamespacedResourcesInjectable from "../../../renderer/cluster-frame-context/for-namespaced-resources.injectable";

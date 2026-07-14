@@ -8,8 +8,8 @@ import React from "react";
 
 import type { MockedFunction } from "vitest";
 import "@testing-library/jest-dom/vitest";
+import assert from "node:assert";
 import userEvent from "@testing-library/user-event";
-import assert from "assert";
 import * as selectEvent from "react-select-event";
 import directoryForUserDataInjectable from "../../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import fsInjectable from "../../../../../common/fs/fs.injectable";

@@ -7,8 +7,8 @@
 import type { MockedFunction } from "vitest";
 
 import "@testing-library/jest-dom/vitest";
+import assert from "node:assert";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
-import assert from "assert";
 import { observable, when } from "mobx";
 import React from "react";
 import directoryForDownloadsInjectable from "../../../../common/app-paths/directory-for-downloads/directory-for-downloads.injectable";

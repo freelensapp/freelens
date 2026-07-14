@@ -4,10 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { spawn } from "child_process";
+import { spawn } from "node:child_process";
 import * as tcpPortUsed from "tcp-port-used";
 import { TypedRegEx } from "typed-regex";
-import type { ChildProcessWithoutNullStreams } from "child_process";
+import type { ChildProcessWithoutNullStreams } from "node:child_process";
 
 import type { Logger } from "@freelensapp/logger";
 

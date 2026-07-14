@@ -4,10 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import assert from "node:assert";
+import path from "node:path";
 import { getInjectable } from "@ogre-tools/injectable";
-import assert from "assert";
 import httpProxy from "http-proxy-node16";
-import path from "path";
 
 import type { LensApiRequest, RouteResponse } from "../../router/route";
 

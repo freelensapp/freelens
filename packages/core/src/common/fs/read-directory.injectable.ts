@@ -6,7 +6,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import fsInjectable from "./fs.injectable";
-import type { Dirent } from "fs";
+import type { Dirent } from "node:fs";
 
 export interface ReadDirectory {
   (path: string, options: "buffer" | { encoding: "buffer"; withFileTypes?: false | undefined }): Promise<Buffer[]>;

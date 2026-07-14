@@ -4,13 +4,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import assert from "node:assert";
+import { createRequire } from "node:module";
 import { EventEmitter } from "@freelensapp/event-emitter";
 import { isDefined, iter } from "@freelensapp/utilities";
-import assert from "assert";
 import { ipcMain, ipcRenderer } from "electron";
 import { isEqual } from "lodash";
 import { action, computed, observable, reaction, runInAction, toJS, when } from "mobx";
-import { createRequire } from "module";
 import { broadcastMessage, ipcMainHandle, ipcMainOn, ipcRendererOn } from "../../common/ipc";
 import {
   extensionLoaderFromMainChannel,

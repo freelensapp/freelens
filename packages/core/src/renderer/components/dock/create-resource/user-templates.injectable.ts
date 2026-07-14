@@ -4,10 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { readFile } from "node:fs/promises";
 import { prefixedLoggerInjectable } from "@freelensapp/logger";
 import { delay, getOrInsert, isErrnoException } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import { readFile } from "fs/promises";
 import { computed, observable } from "mobx";
 import watchInjectable from "../../../../common/fs/watch/watch.injectable";
 import homeDirectoryPathInjectable from "../../../../common/os/home-directory-path.injectable";

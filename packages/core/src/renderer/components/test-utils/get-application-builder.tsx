@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import assert from "node:assert";
 import { applicationFeature, startApplicationInjectionToken } from "@freelensapp/application";
 import {
   applicationFeatureForElectronMain,
@@ -21,7 +22,6 @@ import { pipeline } from "@ogre-tools/fp";
 import { getInjectable } from "@ogre-tools/injectable";
 import { fireEvent, queryByText } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import assert from "assert";
 import { filter, first, join, last, map, matches } from "lodash/fp";
 import { action, computed, observable, runInAction } from "mobx";
 import React from "react";

@@ -4,11 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { TextDecoder as TextDecoderNode, TextEncoder } from "node:util";
 import { enableMapSet, setAutoFreeze } from "immer";
 import { configure } from "mobx";
 import freelensFetch from "node-fetch";
 import React from "react";
-import { TextDecoder as TextDecoderNode, TextEncoder } from "util";
 
 import type * as K8slensTooltip from "@freelensapp/tooltip";
 

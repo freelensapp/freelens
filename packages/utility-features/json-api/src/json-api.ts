@@ -4,12 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { Agent as HttpAgent } from "node:http";
+import { Agent as HttpsAgent } from "node:https";
+import { stringify } from "node:querystring";
 import { EventEmitter } from "@freelensapp/event-emitter";
 import { isObject, isString, json } from "@freelensapp/utilities";
-import { Agent as HttpAgent } from "http";
-import { Agent as HttpsAgent } from "https";
 import { merge } from "lodash";
-import { stringify } from "querystring";
 
 import type { Logger } from "@freelensapp/logger";
 import type { Defaulted } from "@freelensapp/utilities";

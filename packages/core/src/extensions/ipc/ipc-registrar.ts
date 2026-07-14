@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { createHash } from "crypto";
+import { createHash } from "node:crypto";
 import { broadcastMessage } from "../../common/ipc";
 import { Singleton } from "../../common/utils/singleton";
 

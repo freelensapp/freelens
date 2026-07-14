@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import assert from "node:assert";
 import { bytesToUnits, cssNames, isObject } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import assert from "assert";
 import Color from "color";
 import merge from "lodash/merge";
 import { observer } from "mobx-react";

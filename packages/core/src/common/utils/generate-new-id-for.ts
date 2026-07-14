@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { createHash } from "crypto";
+import { createHash } from "node:crypto";
 
 export function generateNewIdFor(cluster: { kubeConfigPath: string; contextName: string }): string {
   return createHash("md5").update(`${cluster.kubeConfigPath}:${cluster.contextName}`).digest("hex");

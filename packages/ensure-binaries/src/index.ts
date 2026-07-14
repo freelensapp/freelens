@@ -6,17 +6,17 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { constants, type WriteStream } from "node:fs";
+import { type FileHandle, mkdir, open, readFile, unlink } from "node:fs/promises";
+import path from "node:path";
+import { arch } from "node:process";
+import { pipeline as _pipeline, Transform, Writable } from "node:stream";
+import { promisify } from "node:util";
 import arg from "arg";
 import { MultiBar } from "cli-progress";
-import { constants, type WriteStream } from "fs";
-import { type FileHandle, mkdir, open, readFile, unlink } from "fs/promises";
 import gunzip from "gunzip-maybe";
 import fetch from "node-fetch";
-import path from "path";
-import { arch } from "process";
-import { pipeline as _pipeline, Transform, Writable } from "stream";
 import { extract } from "tar-stream";
-import { promisify } from "util";
 import z from "zod";
 
 import type { SingleBar } from "cli-progress";

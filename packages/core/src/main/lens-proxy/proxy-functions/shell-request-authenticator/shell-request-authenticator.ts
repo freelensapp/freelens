@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import crypto from "node:crypto";
+import { promisify } from "node:util";
 import { getOrInsertMap } from "@freelensapp/utilities";
-import crypto from "crypto";
-import { promisify } from "util";
 import { ipcMainHandle } from "../../../../common/ipc";
 
 import type { ClusterId } from "../../../../common/cluster-types";

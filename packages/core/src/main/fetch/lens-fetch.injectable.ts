@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { Agent } from "node:https";
 import { getInjectable } from "@ogre-tools/injectable";
-import { Agent } from "https";
 import lensProxyCertificateInjectable from "../../common/certificate/lens-proxy-certificate.injectable";
 import nodeFetchInjectable, {
   type NodeFetchRequestInit,

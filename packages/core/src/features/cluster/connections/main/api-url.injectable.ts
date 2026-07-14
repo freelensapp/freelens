@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { URL } from "node:url";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import { URL } from "url";
 import statInjectable from "../../../../common/fs/stat.injectable";
 import loadValidatedClusterConfigInjectable from "../../../../common/kube-helpers/load-validated-config-from-file.injectable";
 

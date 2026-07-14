@@ -14,7 +14,7 @@ import statInjectable from "../../../../common/fs/stat.injectable";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import { renderFor } from "../../test-utils/renderFor";
 import { ClusterLocalTerminalSetting } from "../local-terminal-settings";
-import type { Stats } from "fs";
+import type { Stats } from "node:fs";
 
 import type { UserEvent } from "@testing-library/user-event";
 import type { Mock } from "vitest";

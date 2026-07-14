@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import assert from "node:assert";
+import * as path from "node:path";
 import { getOrInsertWith } from "@freelensapp/utilities";
-import assert from "assert";
-import * as path from "path";
 import directoryForUserDataInjectable from "../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import createPersistentStorageInjectable, {
   type PersistentStorage,

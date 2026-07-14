@@ -5,7 +5,7 @@
  */
 
 import Call from "@hapi/call";
-import type http from "http";
+import type http from "node:http";
 
 import type { Cluster } from "../../common/cluster/cluster";
 import type { ServerIncomingMessage } from "../lens-proxy/lens-proxy";

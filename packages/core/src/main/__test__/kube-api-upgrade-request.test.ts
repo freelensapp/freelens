@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-vi.mock("tls", () => {
+vi.mock("node:tls", () => {
   const connect = vi.fn();
 
   // Some modules in the graph import tls as a default import, so the mock has
@@ -12,8 +12,8 @@ vi.mock("tls", () => {
   return { connect, default: { connect } };
 });
 
-import { EventEmitter } from "events";
-import { connect } from "tls";
+import { EventEmitter } from "node:events";
+import { connect } from "node:tls";
 import { Cluster } from "../../common/cluster/cluster";
 import { apiKubePrefix } from "../../common/vars";
 import clusterApiUrlInjectable from "../../features/cluster/connections/main/api-url.injectable";

@@ -6,9 +6,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import fs from "node:fs/promises";
+import path from "node:path";
 import { getDependencies, getLicenseText } from "@quantco/pnpm-licenses/dist/api.mjs";
-import fs from "fs/promises";
-import path from "path";
 import spdxLicenseList from "spdx-license-list/full.js";
 
 type Dependency = Awaited<ReturnType<typeof getDependencies>>[number];
