@@ -7,7 +7,7 @@ exports[`kube-object-menu > given kube object > renders 1`] = `
       style="position: relative;"
     >
       <ul
-        class="Menu MenuActions flex KubeObjectMenu toolbar gaps right bottom"
+        class="Menu MenuActions flex KubeObjectMenu toolbar right bottom"
         data-testid="menu-actions-for-kube-object-menu-for-some-uid"
         id="menu-actions-for-kube-object-menu-for-some-uid"
       >
@@ -52,7 +52,7 @@ exports[`kube-object-menu > given kube object > when removing kube object > rend
       style="position: relative;"
     >
       <ul
-        class="Menu MenuActions flex KubeObjectMenu toolbar gaps right bottom"
+        class="Menu MenuActions flex KubeObjectMenu toolbar right bottom"
         data-testid="menu-actions-for-kube-object-menu-for-some-uid"
         id="menu-actions-for-kube-object-menu-for-some-uid"
       >
@@ -150,7 +150,7 @@ exports[`kube-object-menu > given kube object > when rerendered with different k
       style="position: relative;"
     >
       <ul
-        class="Menu MenuActions flex KubeObjectMenu toolbar gaps right bottom"
+        class="Menu MenuActions flex KubeObjectMenu toolbar right bottom"
         data-testid="menu-actions-for-kube-object-menu-for-some-other-uid"
         id="menu-actions-for-kube-object-menu-for-some-other-uid"
       >
@@ -192,7 +192,7 @@ exports[`kube-object-menu > given kube object > when rerendered with different k
       style="position: relative;"
     >
       <ul
-        class="Menu MenuActions flex KubeObjectMenu toolbar gaps right bottom"
+        class="Menu MenuActions flex KubeObjectMenu toolbar right bottom"
         data-testid="menu-actions-for-kube-object-menu-for-some-other-uid"
         id="menu-actions-for-kube-object-menu-for-some-other-uid"
       >
@@ -287,7 +287,7 @@ exports[`kube-object-menu > given kube object with namespace > when removing kub
       style="position: relative;"
     >
       <ul
-        class="Menu MenuActions flex KubeObjectMenu toolbar gaps right bottom"
+        class="Menu MenuActions flex KubeObjectMenu toolbar right bottom"
         data-testid="menu-actions-for-kube-object-menu-for-some-uid"
         id="menu-actions-for-kube-object-menu-for-some-uid"
       >
@@ -385,7 +385,7 @@ exports[`kube-object-menu > given kube object without namespace > when removing 
       style="position: relative;"
     >
       <ul
-        class="Menu MenuActions flex KubeObjectMenu toolbar gaps right bottom"
+        class="Menu MenuActions flex KubeObjectMenu toolbar right bottom"
         data-testid="menu-actions-for-kube-object-menu-for-some-uid"
         id="menu-actions-for-kube-object-menu-for-some-uid"
       >
@@ -482,7 +482,7 @@ exports[`kube-object-menu > given no kube object, renders 1`] = `
     style="position: relative;"
   >
     <ul
-      class="Menu MenuActions flex KubeObjectMenu toolbar gaps right bottom"
+      class="Menu MenuActions flex KubeObjectMenu toolbar right bottom"
       data-testid="menu-actions-for-kube-object-menu-for-undefined"
       id="menu-actions-for-kube-object-menu-for-undefined"
     />

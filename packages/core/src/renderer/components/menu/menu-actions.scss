@@ -15,6 +15,7 @@
     background: none;
     border: none;
     flex-direction: row;
+    gap: var(--flex-gap);
     margin-right: var(--flex-gap) !important;
 
     .Icon {

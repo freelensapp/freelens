@@ -4295,7 +4295,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
           </div>
         </div>
         <ul
-          class="Menu MenuActions flex CatalogEntityDrawerMenu toolbar gaps right bottom"
+          class="Menu MenuActions flex CatalogEntityDrawerMenu toolbar right bottom"
           id="menu-actions-for-catalog-entity-drawer-menu-some-entity-id"
         >
           <li
