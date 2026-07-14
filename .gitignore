@@ -18,6 +18,10 @@ icon.iconset/
 .pnpm/
 .turbo/
 
+# Runtime artifacts (screenshots, SQLite metadata, encryption key) written by
+# the optional Electron DevTools MCP server, see DEVELOPMENT.md
+logs/
+
 .npmrc
 
 .DS_Store

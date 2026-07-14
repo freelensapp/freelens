@@ -166,6 +166,10 @@ Then:
 3. Ask the agent to inspect the app; it should target the renderer window
    (`https://renderer.freelens.app:<port>/…`), not the `splash.html` target.
 
+The server writes runtime artifacts (screenshots, a SQLite metadata database
+and a generated `.security-key`) under `logs/` in the project root; that
+directory is git-ignored, so the key is never committed.
+
 See [laststance/electron-mcp-server](https://github.com/laststance/electron-mcp-server)
 for the full tool list. Remove it any time with
 `claude mcp remove electron-devtools --scope local`.
