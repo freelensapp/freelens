@@ -8,7 +8,7 @@ import "./chart.scss";
 
 import { cssNames } from "@freelensapp/utilities";
 import ChartJS from "chart.js";
-import { remove } from "lodash";
+import { remove } from "es-toolkit/compat";
 import React from "react";
 import { Badge } from "../badge";
 import { StatusBrick } from "../status-brick";

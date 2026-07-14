@@ -6,7 +6,7 @@
 
 import "../../common/ipc/cluster";
 
-import { once } from "lodash";
+import { once } from "es-toolkit";
 import { action, makeObservable, observe, reaction, toJS } from "mobx";
 import {
   isKubernetesCluster,

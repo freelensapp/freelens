@@ -7,7 +7,7 @@
 import { Icon } from "@freelensapp/icon";
 import { storesAndApisCanBeCreatedInjectionToken } from "@freelensapp/kube-api-specifics";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import debounce from "lodash/debounce";
+import { debounce } from "es-toolkit/compat";
 import { comparer, makeObservable, observable, reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";

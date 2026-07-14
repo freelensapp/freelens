@@ -9,7 +9,7 @@
 import "./virtual-list.scss";
 
 import { cssNames, noop } from "@freelensapp/utilities";
-import isEqual from "lodash/isEqual";
+import { isEqual } from "es-toolkit";
 import { observer } from "mobx-react";
 import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef, useState } from "react";
 import AutoSizer from "react-virtualized-auto-sizer";

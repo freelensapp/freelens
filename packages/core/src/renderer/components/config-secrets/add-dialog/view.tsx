@@ -12,7 +12,7 @@ import { reverseSecretTypeMap, SecretType } from "@freelensapp/kube-object";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 import { base64, iter, object } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import upperFirst from "lodash/upperFirst";
+import { upperFirst } from "es-toolkit";
 import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";

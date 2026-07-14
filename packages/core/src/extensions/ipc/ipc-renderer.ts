@@ -5,7 +5,7 @@
  */
 
 import { ipcRenderer } from "electron";
-import { once } from "lodash";
+import { once } from "es-toolkit";
 import { Disposers } from "../lens-extension";
 import { IpcPrefix, IpcRegistrar } from "./ipc-registrar";
 

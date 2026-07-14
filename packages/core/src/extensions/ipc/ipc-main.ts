@@ -6,7 +6,7 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { ipcMain } from "electron";
-import { once } from "lodash";
+import { once } from "es-toolkit";
 import { ipcMainHandle } from "../../common/ipc";
 import { getEnvironmentSpecificDiForExtensionApi } from "../extension-api-di";
 import { Disposers } from "../lens-extension";

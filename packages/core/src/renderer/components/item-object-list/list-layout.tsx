@@ -9,7 +9,7 @@ import "./item-list-layout.scss";
 import { cssNames, noop } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
-import groupBy from "lodash/groupBy";
+import { groupBy } from "es-toolkit";
 import { computed, makeObservable, untracked } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";

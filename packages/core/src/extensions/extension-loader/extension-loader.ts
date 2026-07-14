@@ -9,7 +9,7 @@ import { createRequire } from "node:module";
 import { EventEmitter } from "@freelensapp/event-emitter";
 import { isDefined, iter } from "@freelensapp/utilities";
 import { ipcMain, ipcRenderer } from "electron";
-import { isEqual } from "lodash";
+import { isEqual } from "es-toolkit";
 import { action, computed, observable, reaction, runInAction, toJS, when } from "mobx";
 import { broadcastMessage, ipcMainHandle, ipcMainOn, ipcRendererOn } from "../../common/ipc";
 import {

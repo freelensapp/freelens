@@ -8,7 +8,7 @@ import assert from "node:assert";
 import { bytesToUnits, cssNames, isObject } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import Color from "color";
-import merge from "lodash/merge";
+import { merge } from "es-toolkit/compat";
 import { observer } from "mobx-react";
 import moment from "moment";
 import React from "react";

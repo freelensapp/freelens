@@ -8,7 +8,7 @@ import "./dialog.scss";
 
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import orderBy from "lodash/orderBy";
+import { orderBy } from "es-toolkit/compat";
 import { computed, observable, runInAction } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";

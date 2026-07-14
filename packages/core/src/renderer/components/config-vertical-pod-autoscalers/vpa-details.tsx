@@ -16,7 +16,7 @@ import {
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import startCase from "lodash/startCase";
+import { startCase } from "es-toolkit";
 import { observer } from "mobx-react";
 import React from "react";
 import { Link } from "react-router-dom";

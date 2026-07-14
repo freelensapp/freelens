@@ -7,7 +7,7 @@
 import { hasDefinedTupleValue, isDefined, object } from "@freelensapp/utilities";
 import { pipeline } from "@ogre-tools/fp";
 import { getInjectable } from "@ogre-tools/injectable";
-import { groupBy, reduce } from "lodash";
+import { groupBy, reduce } from "es-toolkit/compat";
 import { filter, map } from "lodash/fp";
 import { clusterMetadataDetectorInjectionToken } from "./token";
 

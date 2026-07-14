@@ -6,8 +6,7 @@
 
 import { Pod } from "@freelensapp/kube-object";
 import autoBind from "auto-bind";
-import compact from "lodash/compact";
-import groupBy from "lodash/groupBy";
+import { compact, groupBy } from "es-toolkit";
 import { computed, makeObservable } from "mobx";
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
 

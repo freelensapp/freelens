@@ -608,6 +608,9 @@ importers:
       electron-window-state:
         specifier: ^5.0.3
         version: 5.0.3
+      es-toolkit:
+        specifier: ^1.49.0
+        version: 1.49.0
       fs-extra:
         specifier: ^11.3.6
         version: 11.3.6

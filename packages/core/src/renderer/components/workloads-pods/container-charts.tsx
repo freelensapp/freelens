@@ -5,7 +5,7 @@
  */
 
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { mapValues } from "lodash";
+import { mapValues } from "es-toolkit";
 import { toJS } from "mobx";
 import { observer } from "mobx-react";
 import React, { useContext } from "react";

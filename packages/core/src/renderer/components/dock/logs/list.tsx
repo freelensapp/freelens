@@ -12,7 +12,7 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import AnsiUp from "ansi_up";
 import autoBindReact from "auto-bind/react";
 import DOMPurify from "dompurify";
-import debounce from "lodash/debounce";
+import { debounce } from "es-toolkit/compat";
 import { action, computed, makeObservable, observable, reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import moment from "moment-timezone";

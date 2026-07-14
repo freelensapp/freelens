@@ -5,8 +5,8 @@
  */
 
 import assert from "node:assert";
+import { isEqual, isPlainObject } from "es-toolkit";
 import { isDraft, produce } from "immer";
-import { isEqual, isPlainObject } from "lodash";
 // Helper for working with storages (e.g. window.localStorage, NodeJS/file-system, etc.)
 import { action, comparer, computed, makeObservable, observable, observe, toJS } from "mobx";
 

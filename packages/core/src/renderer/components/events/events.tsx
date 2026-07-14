@@ -9,7 +9,7 @@ import "./events.scss";
 import { Icon } from "@freelensapp/icon";
 import { cssNames, stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { orderBy } from "lodash";
+import { orderBy } from "es-toolkit/compat";
 import { computed, makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import moment from "moment-timezone";

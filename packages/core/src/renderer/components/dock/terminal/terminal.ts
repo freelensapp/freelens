@@ -10,8 +10,8 @@ import { FitAddon } from "@xterm/addon-fit";
 import { WebLinksAddon } from "@xterm/addon-web-links";
 import { Terminal as XTerm } from "@xterm/xterm";
 import { clipboard } from "electron";
-import { once } from "lodash";
-import debounce from "lodash/debounce";
+import { once } from "es-toolkit";
+import { debounce } from "es-toolkit/compat";
 import { reaction } from "mobx";
 import { TerminalChannels } from "../../../../common/terminal/channels";
 

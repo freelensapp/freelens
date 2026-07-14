@@ -6,7 +6,7 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { isRequestError, object } from "@freelensapp/utilities";
-import { isObject } from "lodash";
+import { isObject } from "es-toolkit/compat";
 import { runInAction } from "mobx";
 import { ClusterMetadataKey, initialFilesystemMountpoints } from "../../../common/cluster-types";
 import { apiPrefix } from "../../../common/vars";

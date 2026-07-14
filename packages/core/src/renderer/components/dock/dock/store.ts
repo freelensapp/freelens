@@ -5,7 +5,7 @@
  */
 
 import autoBind from "auto-bind";
-import throttle from "lodash/throttle";
+import { throttle } from "es-toolkit/compat";
 import { action, comparer, computed, makeObservable, observable, reaction, runInAction } from "mobx";
 import * as uuid from "uuid";
 

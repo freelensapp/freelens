@@ -5,7 +5,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { debounce } from "lodash";
+import { debounce } from "es-toolkit/compat";
 import broadcastMessageInjectable from "../../common/ipc/broadcast-message.injectable";
 import { catalogItemsChannel } from "../../common/ipc/catalog";
 

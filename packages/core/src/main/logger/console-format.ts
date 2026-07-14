@@ -6,7 +6,7 @@
 
 import { inspect } from "node:util";
 import chalk from "chalk";
-import { omit } from "lodash";
+import { omit } from "es-toolkit/compat";
 import { LEVEL, MESSAGE, SPLAT } from "triple-beam";
 import type { InspectOptions } from "node:util";
 

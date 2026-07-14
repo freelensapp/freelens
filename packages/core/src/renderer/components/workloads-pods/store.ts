@@ -5,7 +5,7 @@
  */
 
 import { cpuUnitsToNumber, unitsToBytes } from "@freelensapp/utilities";
-import countBy from "lodash/countBy";
+import { countBy } from "es-toolkit/compat";
 import { computed, makeObservable, observable } from "mobx";
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
 

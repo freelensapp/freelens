@@ -122,6 +122,7 @@
     "dompurify": "^3.4.11",
     "electron-devtools-installer": "^4.0.0",
     "electron-window-state": "^5.0.3",
+    "es-toolkit": "^1.49.0",
     "fs-extra": "^11.3.6",
     "glob-to-regexp": "^0.4.1",
     "grapheme-splitter": "^1.0.4",

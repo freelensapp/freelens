@@ -5,7 +5,7 @@
  */
 
 import { fireEvent } from "@testing-library/react";
-import isEmpty from "lodash/isEmpty";
+import { isEmpty } from "es-toolkit/compat";
 import React from "react";
 import { getApplicationBuilder } from "../renderer/components/test-utils/get-application-builder";
 import currentPathInjectable from "../renderer/routes/current-path.injectable";

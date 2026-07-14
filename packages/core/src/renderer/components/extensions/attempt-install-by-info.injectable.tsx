@@ -8,7 +8,7 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { isObject } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import { reduce } from "lodash";
+import { reduce } from "es-toolkit/compat";
 import React from "react";
 import { SemVer } from "semver";
 import URLParse from "url-parse";
