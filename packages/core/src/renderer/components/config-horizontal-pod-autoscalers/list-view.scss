@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+@use "sass:map";
 @use "autoscaler.mixins";
 @use "../table/table.mixins";
 @use "../vars" as *;
@@ -30,13 +31,13 @@
         margin-right: $margin;
 
         &.AbleToScale {
-          color: map-get(autoscaler.$hpa-status-colors, AbleToScale);
+          color: map.get(autoscaler.$hpa-status-colors, AbleToScale);
         }
         &.ScalingActive {
-          color: map-get(autoscaler.$hpa-status-colors, ScalingActive);
+          color: map.get(autoscaler.$hpa-status-colors, ScalingActive);
         }
         &.ScalingLimited {
-          color: map-get(autoscaler.$hpa-status-colors, ScalingLimited);
+          color: map.get(autoscaler.$hpa-status-colors, ScalingLimited);
         }
       }
     }
