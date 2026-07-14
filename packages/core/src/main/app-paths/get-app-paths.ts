@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { fromPairs } from "lodash/fp";
 import { pathNames } from "../../common/app-paths/app-path-names";
 
 import type { AppPaths } from "../../common/app-paths/app-path-injection-token";
@@ -15,4 +14,4 @@ interface Dependencies {
 }
 
 export const getAppPaths = ({ getAppPath }: Dependencies) =>
-  fromPairs(pathNames.map((name) => [name, getAppPath(name)])) as AppPaths;
+  Object.fromEntries(pathNames.map((name) => [name, getAppPath(name)])) as AppPaths;

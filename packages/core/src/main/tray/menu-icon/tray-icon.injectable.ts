@@ -4,9 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { pipeline } from "@ogre-tools/fp";
 import { getInjectable } from "@ogre-tools/injectable";
-import { find, sortBy } from "lodash/fp";
+import { sortBy } from "es-toolkit";
 import { computed } from "mobx";
 import { trayIconInjectionToken } from "./tray-icon-injection-token";
 
@@ -17,10 +16,8 @@ const trayIconInjectable = getInjectable({
     const availableIcons = di.injectMany(trayIconInjectionToken);
 
     return computed(() => {
-      const mostPrioritizedIcon = pipeline(
-        availableIcons,
-        sortBy((icon) => icon.priority),
-        find((icon) => icon.shouldBeShown.get()),
+      const mostPrioritizedIcon = sortBy(availableIcons, [(icon) => icon.priority]).find((icon) =>
+        icon.shouldBeShown.get(),
       );
 
       if (!mostPrioritizedIcon) {

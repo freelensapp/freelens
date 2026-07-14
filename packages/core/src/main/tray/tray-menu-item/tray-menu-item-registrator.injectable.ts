@@ -6,7 +6,6 @@
 
 import { getRandomIdInjectionToken } from "@freelensapp/random";
 import { isBoolean, isString } from "@freelensapp/utilities";
-import { pipeline } from "@ogre-tools/fp";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import withErrorLoggingInjectable from "../../../common/utils/with-error-logging/with-error-logging.injectable";
@@ -79,17 +78,11 @@ const toItemInjectablesFor = (
           tooltip: registration.toolTip,
 
           click: () => {
-            const decorated = pipeline(
-              registration.click || (() => {}),
-
+            const decorated = withErrorSuppression(
               withErrorLoggingFor(
                 () =>
                   `[TRAY]: Clicking of tray item "${trayItemId}" from extension "${extension.sanitizedExtensionId}" failed.`,
-              ),
-
-              // TODO: Find out how to improve typing so that instead of
-              // x => withErrorSuppression(x) there could only be withErrorSuppression
-              (x) => withErrorSuppression(x),
+              )(registration.click || (() => {})),
             );
 
             return decorated(registration);

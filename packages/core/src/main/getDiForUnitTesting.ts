@@ -12,7 +12,7 @@ import { notificationsFeature } from "@freelensapp/notifications";
 import { randomFeature } from "@freelensapp/random";
 import { createContainer, isInjectable } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
-import { chunk } from "lodash/fp";
+import { chunk } from "es-toolkit";
 import { runInAction } from "mobx";
 import broadcastMessageInjectable from "../common/ipc/broadcast-message.injectable";
 import { setDiForExtensionApi } from "../extensions/extension-api-di";
@@ -87,7 +87,7 @@ export function getDiForUnitTesting() {
   runInAction(() => {
     const injectables = Object.values(injectableModules).flatMap(Object.values).filter(isInjectable);
 
-    for (const block of chunk(100)(injectables)) {
+    for (const block of chunk(injectables, 100)) {
       di.register(...block);
     }
   });
