@@ -7,6 +7,16 @@
 // Encode/decode utf-8 base64 string
 import { Buffer } from "node:buffer";
 
+const base64Regex = /^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2,3})?$/;
+
+function assertBase64(data: string): string {
+  if (!base64Regex.test(data)) {
+    throw new Error("Input is not valid base64");
+  }
+
+  return data.padEnd(data.length + ((4 - (data.length % 4)) % 4), "=");
+}
+
 /**
  * Computes utf-8 from base64
  * @param data A Base64 encoded string
@@ -16,10 +26,7 @@ import { Buffer } from "node:buffer";
  *   callers rely on to detect non-base64 input
  */
 function decode(data: string): string {
-  // `Buffer.from(..., "base64")` is lenient and never throws, but
-  // `TextDecoder` with `fatal: true` throws on malformed utf-8, preserving the
-  // throw-on-invalid contract callers depend on.
-  return new TextDecoder("utf-8", { fatal: true }).decode(Buffer.from(data, "base64"));
+  return new TextDecoder("utf-8", { fatal: true }).decode(Buffer.from(assertBase64(data), "base64"));
 }
 
 /**

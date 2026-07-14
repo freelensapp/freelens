@@ -30,4 +30,14 @@ describe("base64", () => {
     // Callers (e.g. secret-key.tsx) rely on this to fall back to the raw value.
     expect(() => base64.decode("some-data-for-some-key")).toThrow();
   });
+
+  it("throws when decoding input that Buffer.from would otherwise ignore", () => {
+    expect(() => base64.decode("!!!!")).toThrow();
+    expect(() => base64.decode("Zm9v$")).toThrow();
+    expect(() => base64.decode("Zm9v=")).toThrow();
+  });
+
+  it("decodes valid unpadded base64", () => {
+    expect(base64.decode("Zg")).toBe("f");
+  });
 });
