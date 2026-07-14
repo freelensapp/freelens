@@ -11,7 +11,7 @@ import { registerInjectables as registerExtensionPreferencesInjectables } from "
 import { registerInjectables as registerPreferenceItemsInjectables } from "./preference-items/register-injectables";
 import { registerInjectables as registerPreferenceNavigationInjectables } from "./preference-navigation/register-injectables";
 import PreferencesRouteComponent from "./preferences-route-component.injectable";
-import preferencesRouteComponentInjectable from "./preferences-route-component-for-legacy-extensions.injectable";
+import preferencesRouteComponentInjectable from "./preferences-route-component-for-extensions.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 

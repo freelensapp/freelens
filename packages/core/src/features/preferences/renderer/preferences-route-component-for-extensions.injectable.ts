@@ -6,14 +6,14 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { routeSpecificComponentInjectionToken } from "../../../renderer/routes/route-specific-component-injection-token";
-import preferencesRouteForLegacyExtensions from "../common/preferences-route-for-legacy-extensions.injectable";
+import preferencesRouteForExtensions from "../common/preferences-route-for-extensions.injectable";
 import { Preferences } from "./preferences";
 
 const preferencesRouteComponentInjectable = getInjectable({
-  id: "preferences-route-component-for-legacy-extensions",
+  id: "preferences-route-component-for-extensions",
 
   instantiate: (di) => ({
-    route: di.inject(preferencesRouteForLegacyExtensions),
+    route: di.inject(preferencesRouteForExtensions),
     Component: Preferences,
   }),
 
