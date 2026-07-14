@@ -9,8 +9,7 @@
 
 import moment from "moment";
 
-import type ChartJS from "chart.js";
-import type { PluginServiceRegistrationOptions } from "chart.js";
+import type { Chart, ChartType, Plugin } from "chart.js";
 import type { Moment } from "moment";
 
 const defaultOptions = {
@@ -23,7 +22,14 @@ export interface ZebraStripesOptions {
   interval: number;
 }
 
-export class ZebraStripesPlugin implements PluginServiceRegistrationOptions {
+declare module "chart.js" {
+  interface PluginOptionsByType<TType extends ChartType> {
+    zebraStripes?: ZebraStripesOptions;
+  }
+}
+
+export class ZebraStripesPlugin implements Plugin<ChartType, ZebraStripesOptions> {
+  readonly id = "zebraStripes";
   updated: Moment | null = null;
   options: ZebraStripesOptions;
 
@@ -31,21 +37,21 @@ export class ZebraStripesPlugin implements PluginServiceRegistrationOptions {
     this.options = Object.assign({}, defaultOptions, options);
   }
 
-  getOptions(chart: ChartJS): ZebraStripesOptions | undefined {
-    return chart.options.plugins?.ZebraStripes;
+  getOptions(chart: Chart): ZebraStripesOptions | undefined {
+    return chart.options.plugins?.zebraStripes;
   }
 
-  getLastUpdate(chart: ChartJS) {
-    const data = chart.data.datasets?.[0]?.data?.[0] as ChartJS.ChartPoint;
+  getLastUpdate(chart: Chart) {
+    const data = chart.data.datasets?.[0]?.data?.[0] as { x?: number | string };
 
     return moment.unix(parseInt(data.x as string));
   }
 
-  getStripesElem(chart: ChartJS) {
+  getStripesElem(chart: Chart) {
     return chart.canvas?.parentElement?.querySelector<HTMLElement>(".zebra-cover");
   }
 
-  removeStripesElem(chart: ChartJS) {
+  removeStripesElem(chart: Chart) {
     const elem = this.getStripesElem(chart);
 
     if (elem) {
@@ -53,10 +59,10 @@ export class ZebraStripesPlugin implements PluginServiceRegistrationOptions {
     }
   }
 
-  updateOptions(chart: ChartJS) {
+  updateOptions(chart: Chart, options?: ZebraStripesOptions) {
     this.options = {
       ...defaultOptions,
-      ...this.getOptions(chart),
+      ...(options ?? this.getOptions(chart)),
     };
   }
 
@@ -64,7 +70,7 @@ export class ZebraStripesPlugin implements PluginServiceRegistrationOptions {
     return this.options.interval < 10 ? 0 : 10;
   }
 
-  renderStripes(chart: ChartJS) {
+  renderStripes(chart: Chart) {
     if (!chart.data.datasets?.length) return;
     const { interval, stripeColor } = this.options;
     const { top, left, bottom, right } = chart.chartArea;
@@ -87,22 +93,22 @@ export class ZebraStripesPlugin implements PluginServiceRegistrationOptions {
     chart.canvas?.parentElement?.appendChild(cover);
   }
 
-  afterInit(chart: ChartJS) {
+  afterInit(chart: Chart, _args: unknown, options: ZebraStripesOptions) {
     if (!chart.data.datasets?.length) return;
-    this.updateOptions(chart);
+    this.updateOptions(chart, options);
     this.updated = this.getLastUpdate(chart);
   }
 
-  afterUpdate(chart: ChartJS) {
-    this.updateOptions(chart);
+  afterUpdate(chart: Chart, _args: unknown, options: ZebraStripesOptions) {
+    this.updateOptions(chart, options);
     this.renderStripes(chart);
   }
 
-  resize(chart: ChartJS) {
+  resize(chart: Chart) {
     this.removeStripesElem(chart);
   }
 
-  afterDatasetUpdate(chart: ChartJS): void {
+  afterDatasetUpdate(chart: Chart): void {
     this.updated ??= this.getLastUpdate(chart);
 
     const { interval } = this.options;
