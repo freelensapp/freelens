@@ -142,9 +142,6 @@ importers:
       js-yaml:
         specifier: ^5.2.1
         version: 5.2.1
-      lodash:
-        specifier: ^4.18.1
-        version: 4.18.1
       mobx:
         specifier: ^6.15.0
         version: 6.15.0
@@ -284,9 +281,6 @@ importers:
       '@types/fs-extra':
         specifier: ^11.0.4
         version: 11.0.4
-      '@types/lodash':
-        specifier: ^4.17.24
-        version: 4.17.24
       '@types/node':
         specifier: ~24.12.4
         version: 24.12.4
@@ -967,9 +961,6 @@ importers:
       '@types/history':
         specifier: ^4.7.11
         version: 4.7.11
-      '@types/lodash':
-        specifier: ^4.17.24
-        version: 4.17.24
       '@types/node':
         specifier: ~24.12.4
         version: 24.12.4
@@ -1006,9 +997,6 @@ importers:
       immer:
         specifier: ^11.1.8
         version: 11.1.8
-      lodash:
-        specifier: ^4.18.1
-        version: 4.18.1
       mobx:
         specifier: ^6.15.0
         version: 6.15.0
@@ -3980,9 +3968,6 @@ packages:
 
   '@types/keyv@3.1.4':
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
-
-  '@types/lodash@4.17.24':
-    resolution: {integrity: sha512-gIW7lQLZbue7lRSWEFql49QJJWThrTFFeIMJdp3eH4tKoxm1OvEPg02rm4wCCSHS0cL3/Fizimb35b7k8atwsQ==}
 
   '@types/memorystream@0.3.4':
     resolution: {integrity: sha512-AVVe8unTnhTecg9GmRVddQFvi5K7+QcvLTfUstT+5dhQ633+JX4bK/sKaHTj8Z5RUOoVNS6u1gfby29ArDj4Gw==}
@@ -9012,8 +8997,6 @@ snapshots:
   '@types/keyv@3.1.4':
     dependencies:
       '@types/node': 24.12.4
-
-  '@types/lodash@4.17.24': {}
 
   '@types/memorystream@0.3.4':
     dependencies:
