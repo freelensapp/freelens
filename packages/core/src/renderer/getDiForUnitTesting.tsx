@@ -16,7 +16,7 @@ import { routingFeature } from "@freelensapp/routing";
 import { createContainer, isInjectable } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { registerInjectableReact } from "@ogre-tools/injectable-react";
-import { chunk, noop } from "lodash/fp";
+import { chunk, noop } from "es-toolkit";
 import { runInAction } from "mobx";
 import { setDiForExtensionApi } from "../extensions/extension-api-di";
 import { getOverrideFsWithFakes } from "../test-utils/override-fs-with-fakes";
@@ -85,7 +85,7 @@ export const getDiForUnitTesting = () => {
   runInAction(() => {
     const injectables = Object.values(injectableModules).flatMap(Object.values).filter(isInjectable);
 
-    for (const block of chunk(100)(injectables)) {
+    for (const block of chunk(injectables, 100)) {
       di.register(...block);
     }
   });

@@ -5,9 +5,7 @@
  */
 
 import { clusterFrameChildComponentInjectionToken } from "@freelensapp/react-application";
-import { pipeline } from "@ogre-tools/fp";
 import { getInjectable } from "@ogre-tools/injectable";
-import { map } from "lodash/fp";
 import { extensionRegistratorInjectionToken } from "../../../extensions/extension-loader/extension-registrator-injection-token";
 
 import type { ExtensionRegistrator } from "../../../extensions/extension-loader/extension-registrator-injection-token";
@@ -20,23 +18,19 @@ const clusterFrameComponentRegistratorInjectable = getInjectable({
     return (ext) => {
       const extension = ext as LensRendererExtension;
 
-      return pipeline(
-        extension.clusterFrameComponents,
+      return extension.clusterFrameComponents.map((clusterFrameComponentRegistration) => {
+        const id = `${extension.sanitizedExtensionId}-${clusterFrameComponentRegistration.id}`;
 
-        map((clusterFrameComponentRegistration) => {
-          const id = `${extension.sanitizedExtensionId}-${clusterFrameComponentRegistration.id}`;
-
-          return getInjectable({
+        return getInjectable({
+          id,
+          injectionToken: clusterFrameChildComponentInjectionToken,
+          instantiate: () => ({
             id,
-            injectionToken: clusterFrameChildComponentInjectionToken,
-            instantiate: () => ({
-              id,
-              shouldRender: clusterFrameComponentRegistration.shouldRender,
-              Component: clusterFrameComponentRegistration.Component,
-            }),
-          });
-        }),
-      );
+            shouldRender: clusterFrameComponentRegistration.shouldRender,
+            Component: clusterFrameComponentRegistration.Component,
+          }),
+        });
+      });
     };
   },
   injectionToken: extensionRegistratorInjectionToken,
