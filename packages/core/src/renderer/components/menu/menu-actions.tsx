@@ -194,7 +194,6 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
           close={this.close}
           className={cssNames("MenuActions flex", className, {
             toolbar,
-            gaps: toolbar, // add spacing for .flex
           })}
           animated={!toolbar}
           usePortal={autoClose}
