@@ -152,28 +152,36 @@ The build process automatically runs this, but you can run it manually to verify
 - Open DevTools in the app
 - Check Console tab for errors and logs
 - Use React DevTools for component inspection
+- `pnpm dev` also exposes a Chrome DevTools Protocol endpoint on port 9223
+  (`--remoteDebuggingPort`). Note that each cluster's UI renders in a
+  cross-origin `<clusterId>.renderer.freelens.app` iframe, so inspecting or
+  automating cluster views requires a frame-aware CDP client — see the
+  AI-agent inspection notes in DEVELOPMENT.md.
 
 **Common Errors:**
 - `Tried to register same injectable multiple times` - See DI section above
 - `Tried to inject non-registered injectable` - Check registration files were generated
 - Permission errors on macOS - Expected during development
 
-### Working with Webpack
+### Working with the bundler (electron-vite)
 
-The project uses Webpack for bundling:
+The project bundles with electron-vite (Vite + Rollup); the legacy Webpack
+layer was removed in #2118.
 
-- `freelens/webpack/` - Webpack configuration
-- Changes to source files auto-rebuild in dev mode
-- Changes to generated files require full rebuild
+- `freelens/electron.vite.config.ts` - main/renderer build and dev-server config
+- `pnpm dev` runs `electron-vite dev` with Vite HMR; renderer source changes
+  hot-reload, main-process changes rebuild and relaunch (via `--watch`)
+- Changes to generated files (e.g. DI registration) require a full rebuild
 
-**Cache issues:** Delete `dist` folders and rebuild
+**Cache issues:** Delete the build output and rebuild
+(`rm -rf .turbo packages/core/dist freelens/dist`)
 
 ## Troubleshooting Patterns
 
 ### Changes Not Appearing
 
 1. Check if file is in ignored directory (`dist/`, `node_modules/`)
-2. Clear webpack cache: `rm -rf packages/core/dist freelens/dist`
+2. Clear the build output: `rm -rf .turbo packages/core/dist freelens/dist`
 3. Full rebuild: `pnpm build`
 4. Restart application: `pnpm start`
 
