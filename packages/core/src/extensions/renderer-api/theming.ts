@@ -16,11 +16,4 @@ import type { LensTheme } from "../../renderer/themes/lens-theme";
 export const activeTheme: IComputedValue<ReadonlyDeep<LensTheme>> =
   asLazyInjectedForExtensionApi(activeThemeInjectable);
 
-/**
- * @deprecated This hides the reactivity of active theme, use {@link activeTheme} instead
- */
-export function getActiveTheme(): ReadonlyDeep<LensTheme> {
-  return activeTheme.get();
-}
-
 export type { LensTheme };

@@ -23,8 +23,6 @@ import logTabStoreInjectable from "../../renderer/components/dock/logs/tab-store
 import createTerminalTabInjectable from "../../renderer/components/dock/terminal/create-terminal-tab.injectable";
 import sendCommandInjectable from "../../renderer/components/dock/terminal/send-command.injectable";
 import terminalStoreInjectable from "../../renderer/components/dock/terminal/store.injectable";
-import getDetailsUrlInjectable from "../../renderer/components/kube-detail-params/get-details-url.injectable";
-import showDetailsInjectable from "../../renderer/components/kube-detail-params/show-details.injectable";
 import podStoreInjectable from "../../renderer/components/workloads-pods/store.injectable";
 import { asLazyInjectedForExtensionApi, asLazyInjectedFunctionForExtensionApi } from "../extension-api-di";
 
@@ -133,16 +131,6 @@ export const Notifications = {
   info: asLazyInjectedFunctionForExtensionApi(showInfoNotificationInjectable),
   shortInfo: asLazyInjectedFunctionForExtensionApi(showShortInfoNotificationInjectable),
 };
-
-/**
- * @deprecated Use `Renderer.Navigation.getDetailsUrl`
- */
-export const getDetailsUrl = asLazyInjectedFunctionForExtensionApi(getDetailsUrlInjectable);
-
-/**
- * @deprecated Use `Renderer.Navigation.showDetails`
- */
-export const showDetails = asLazyInjectedFunctionForExtensionApi(showDetailsInjectable);
 
 export const createTerminalTab = asLazyInjectedFunctionForExtensionApi(createTerminalTabInjectable);
 
