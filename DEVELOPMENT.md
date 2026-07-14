@@ -139,6 +139,37 @@ The renderer is served by the Vite dev server (port 9191, overridable with
 rebuilt on change. If dev mode misbehaves, the packaged-app workflow
 `pnpm build && pnpm build:app:dir && pnpm start` always works.
 
+### Inspecting the running dev app from an AI agent (optional)
+
+The `pnpm dev` script launches Electron with `--remoteDebuggingPort 9223`, so
+the running app exposes a Chrome DevTools Protocol (CDP) endpoint. An AI coding
+agent (Claude Code, Cursor, …) can attach to it to inspect the renderer — read
+the DOM, evaluate JavaScript, capture screenshots, and stream console/main-process
+logs — which is useful for debugging renderer-side startup issues that never
+reach the terminal.
+
+This is a per-developer, opt-in tool and is intentionally **not** committed to
+`.mcp.json` (that would prompt every contributor). Install it in your own local
+Claude Code config instead:
+
+```sh
+# Local scope: stored in .claude/settings.local.json (git-ignored), not shared
+claude mcp add electron-devtools --scope local -- npx -y @laststance/electron-mcp-server@latest
+```
+
+Then:
+
+1. Start the app first with `pnpm dev` (the MCP server auto-scans ports
+   9222–9225 and detects the app on 9223).
+2. In Claude Code, run `/mcp` to confirm the `electron-devtools` server is
+   connected.
+3. Ask the agent to inspect the app; it should target the renderer window
+   (`https://renderer.freelens.app:<port>/…`), not the `splash.html` target.
+
+See [laststance/electron-mcp-server](https://github.com/laststance/electron-mcp-server)
+for the full tool list. Remove it any time with
+`claude mcp remove electron-devtools --scope local`.
+
 ### Running tests
 
 ```sh
