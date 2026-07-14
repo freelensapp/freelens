@@ -5,7 +5,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { noop } from "lodash/fp";
+import { noop } from "es-toolkit";
 import { runInAction } from "mobx";
 import logErrorInjectable from "../../common/log-error.injectable";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";

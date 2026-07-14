@@ -7,7 +7,7 @@
 import { clusterSidebarFeature, sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
 import { createContainer, type DiContainer, getInjectable } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
-import { noop } from "lodash/fp";
+import { noop } from "es-toolkit";
 import { computed, type IComputedValue } from "mobx";
 import favoritesStateInjectable from "../../../features/favorites/common/state.injectable";
 import { getClusterPageMenuOrderInjectable } from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";

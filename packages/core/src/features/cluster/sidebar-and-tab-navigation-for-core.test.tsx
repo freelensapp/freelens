@@ -8,7 +8,7 @@ import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
 import { flushPromises } from "@freelensapp/test-utils";
 import { getInjectable } from "@ogre-tools/injectable";
 import { fireEvent } from "@testing-library/react";
-import { noop } from "lodash/fp";
+import { noop } from "es-toolkit";
 import { computed, runInAction } from "mobx";
 import React from "react";
 import { frontEndRouteInjectionToken } from "../../common/front-end-routing/front-end-route-injection-token";

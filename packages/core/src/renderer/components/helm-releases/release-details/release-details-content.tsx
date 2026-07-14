@@ -10,7 +10,7 @@ import { Button } from "@freelensapp/button";
 import { Spinner } from "@freelensapp/spinner";
 import { stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { kebabCase } from "lodash/fp";
+import { kebabCase } from "es-toolkit";
 import { observer } from "mobx-react";
 import React from "react";
 import { Link } from "react-router-dom";

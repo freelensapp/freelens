@@ -6,8 +6,8 @@
 
 import fs from "node:fs";
 import { hasTypedProperty, isObject, isString, json } from "@freelensapp/utilities";
+import { noop } from "es-toolkit";
 import { ensureDir, pathExists } from "fs-extra";
-import { noop } from "lodash/fp";
 import * as lockFile from "proper-lockfile";
 import { coerce, SemVer } from "semver";
 import {
