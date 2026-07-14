@@ -13,44 +13,16 @@ permissions:
   contents: read
 
 jobs:
-  setup:
-    name: compute shards
-    runs-on: ubuntu-24.04-arm
-    outputs:
-      shards: ${{ steps.compute.outputs.shards }}
-      total: ${{ steps.compute.outputs.total }}
-    steps:
-      - name: Compute shard count from CPU cores and memory
-        id: compute
-        shell: bash
-        run: |
-          cores=$(nproc)
-          mem_gb=$(awk '/MemTotal/ { printf "%d", $2 / 1024 / 1024 }' /proc/meminfo)
-
-          # Aim for roughly one shard per two cores, but never request more
-          # shards than memory comfortably allows (~2 GB headroom per shard),
-          # and cap the fan-out at 4 to keep the matrix and build duplication
-          # bounded. Floor at 1 so a tiny runner still runs the whole suite.
-          by_cores=$(( (cores + 1) / 2 ))
-          by_mem=$(( mem_gb / 2 ))
-          total=$by_cores
-          if [ "$by_mem" -lt "$total" ]; then total=$by_mem; fi
-          if [ "$total" -lt 1 ]; then total=1; fi
-          if [ "$total" -gt 4 ]; then total=4; fi
-
-          shards="[$(seq -s, 1 "$total")]"
-          echo "total=$total" >> "$GITHUB_OUTPUT"
-          echo "shards=$shards" >> "$GITHUB_OUTPUT"
-          echo "cores=${cores} mem_gb=${mem_gb} -> total=${total} shards=${shards}"
-
   test-unit:
-    name: unit tests (shard ${{ matrix.shard }})
-    needs: setup
+    name: unit tests (shard ${{ matrix.shard }}/${{ strategy.job-total }})
 
     strategy:
       fail-fast: false
       matrix:
-        shard: ${{ fromJson(needs.setup.outputs.shards) }}
+        # Each shard runs on its own runner, so the count is a wall-clock
+        # parallelism choice, not a per-runner resource bound. The shard
+        # denominator is derived from strategy.job-total to stay in sync.
+        shard: [1, 2, 3, 4]
 
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 60
@@ -111,8 +83,8 @@ jobs:
       # --reporter=github-actions surfaces failing tests as inline annotations
       # on the PR/commit; --includeTaskLocation gives them accurate file:line.
       # verbose keeps a full per-test log in the shard's job output.
-      - name: Run unit tests (shard ${{ matrix.shard }}/${{ needs.setup.outputs.total }})
-        run: pnpm --color=always test:unit --shard=${{ matrix.shard }}/${{ needs.setup.outputs.total }} --reporter=verbose --reporter=github-actions --includeTaskLocation
+      - name: Run unit tests (shard ${{ matrix.shard }}/${{ strategy.job-total }})
+        run: pnpm --color=always test:unit --shard=${{ matrix.shard }}/${{ strategy.job-total }} --reporter=verbose --reporter=github-actions --includeTaskLocation
 
       - name: Clean after tests
         run: pnpm --color=always --parallel clean
