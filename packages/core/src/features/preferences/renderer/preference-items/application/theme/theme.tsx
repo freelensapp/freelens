@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { action } from "mobx";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
@@ -21,6 +22,24 @@ interface Dependencies {
   themes: LensTheme[];
 }
 
+const accentColorNames = [
+  "primary",
+  "blue",
+  "buttonPrimaryBackground",
+  "menuActiveBackground",
+  "helmStableRepo",
+];
+
+const getDerivedColors = (accent: string): Record<string, string> => {
+  const colors: Record<string, string> = {};
+
+  for (const name of accentColorNames) {
+    colors[name] = accent;
+  }
+
+  return colors;
+};
+
 const NonInjectedTheme = observer(({ state, themes }: Dependencies) => {
   const themeOptions = [
     {
@@ -33,6 +52,8 @@ const NonInjectedTheme = observer(({ state, themes }: Dependencies) => {
     })),
   ];
 
+  const currentAccent = state.customThemeColors?.primary ?? "";
+
   return (
     <section id="appearance">
       <SubTitle title="Theme" />
@@ -43,6 +64,30 @@ const NonInjectedTheme = observer(({ state, themes }: Dependencies) => {
         onChange={(value) => (state.colorTheme = value?.value ?? defaultColorThemePreference)}
         themeName="lens"
       />
+      <div style={{ marginTop: "16px" }}>
+        <SubTitle title="Accent Color" />
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <input
+            type="color"
+            value={currentAccent || "#00a7a0"}
+            onChange={action((e: React.ChangeEvent<HTMLInputElement>) => {
+              state.customThemeColors = getDerivedColors(e.target.value);
+            })}
+            style={{ width: 40, height: 30, padding: 0, border: "none", cursor: "pointer" }}
+          />
+          {currentAccent ? (
+            <button
+              className="btn btn-link"
+              onClick={action(() => {
+                state.customThemeColors = {};
+              })}
+              type="button"
+            >
+              Reset
+            </button>
+          ) : null}
+        </div>
+      </div>
     </section>
   );
 });
