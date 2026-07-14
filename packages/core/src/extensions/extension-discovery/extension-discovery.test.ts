@@ -105,7 +105,6 @@ describe("ExtensionDiscovery", () => {
       expect(extension).toEqual({
         absolutePath: expect.any(String),
         id: "/some-directory-for-user-data/node_modules/my-extension/package.json",
-        isBundled: false,
         isEnabled: false,
         isCompatible: true,
         manifest: {

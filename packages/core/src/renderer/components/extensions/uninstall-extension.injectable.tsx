@@ -16,7 +16,7 @@ import { extensionDisplayName, getExtensionId, sanitizeExtensionName } from "../
 import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 import { getMessageFromError } from "./get-message-from-error/get-message-from-error";
 
-import type { LensExtensionId } from "@freelensapp/legacy-extensions";
+import type { LensExtensionId } from "../../../extensions/installed-extension";
 
 const uninstallExtensionInjectable = getInjectable({
   id: "uninstall-extension",

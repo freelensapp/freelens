@@ -17,8 +17,9 @@ export * as Store from "./stores";
 export * as Types from "./types";
 export { Util } from "./utils";
 
-export type { InstalledExtension, LensExtensionManifest } from "@freelensapp/legacy-extensions";
 export type { Logger } from "@freelensapp/logger";
+
+export type { InstalledExtension, LensExtensionManifest } from "../installed-extension";
 
 // A plain alias instead of a re-export: type-fest declares PackageJson as a
 // type plus a same-named namespace, and rollup-plugin-dts turns a namespace

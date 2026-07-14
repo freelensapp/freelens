@@ -15,8 +15,7 @@ import extensionDiscoveryInjectable from "../../../../extensions/extension-disco
 import { getMessageFromError } from "../get-message-from-error/get-message-from-error";
 import { validatePackage } from "./validate-package";
 
-import type { LensExtensionId, LensExtensionManifest } from "@freelensapp/legacy-extensions";
-
+import type { LensExtensionId, LensExtensionManifest } from "../../../../extensions/installed-extension";
 import type { InstallRequest } from "./attempt-install.injectable";
 
 export interface InstallRequestValidated {

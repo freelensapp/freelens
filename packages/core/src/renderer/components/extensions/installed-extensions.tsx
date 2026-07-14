@@ -25,13 +25,12 @@ import enableExtensionInjectable from "./enable-extension.injectable";
 import styles from "./installed-extensions.module.scss";
 import userExtensionsInjectable from "./user-extensions/user-extensions.injectable";
 
-import type { InstalledExtension } from "@freelensapp/legacy-extensions";
-
 import type { IComputedValue } from "mobx";
 import type { Row } from "react-table";
 
 import type { ExtensionDiscovery } from "../../../extensions/extension-discovery/extension-discovery";
 import type { ExtensionInstallationStateStore } from "../../../extensions/extension-installation-state-store/extension-installation-state-store";
+import type { InstalledExtension } from "../../../extensions/installed-extension";
 import type { ConfirmUninstallExtension } from "./confirm-uninstall-extension.injectable";
 import type { DisableExtension } from "./disable-extension.injectable";
 import type { EnableExtension } from "./enable-extension.injectable";

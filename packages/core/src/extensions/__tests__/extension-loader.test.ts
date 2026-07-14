@@ -50,7 +50,6 @@ describe("ExtensionLoader", () => {
                     id: manifestPath,
                     absolutePath: "/test/1",
                     manifestPath,
-                    isBundled: false,
                     isEnabled: true,
                   },
                 ],
@@ -64,7 +63,6 @@ describe("ExtensionLoader", () => {
                     id: manifestPath2,
                     absolutePath: "/test/2",
                     manifestPath: manifestPath2,
-                    isBundled: false,
                     isEnabled: true,
                   },
                 ],
@@ -90,7 +88,6 @@ describe("ExtensionLoader", () => {
                       id: manifestPath,
                       absolutePath: "/test/1",
                       manifestPath,
-                      isBundled: false,
                       isEnabled: true,
                     },
                   ],
@@ -104,7 +101,6 @@ describe("ExtensionLoader", () => {
                       id: manifestPath3,
                       absolutePath: "/test/3",
                       manifestPath: manifestPath3,
-                      isBundled: false,
                       isEnabled: true,
                     },
                   ],
@@ -133,7 +129,6 @@ describe("ExtensionLoader", () => {
           {
             absolutePath: "/test/1",
             id: "manifest/path",
-            isBundled: false,
             isEnabled: true,
             manifest: {
               name: "TestExtension",
@@ -147,7 +142,6 @@ describe("ExtensionLoader", () => {
           {
             absolutePath: "/test/3",
             id: "manifest/path3",
-            isBundled: false,
             isEnabled: true,
             manifest: {
               name: "TestExtension3",

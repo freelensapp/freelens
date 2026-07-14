@@ -226,7 +226,7 @@ export abstract class LensProtocolRouter {
       return name;
     }
 
-    if (!extension.isBundled && !this.dependencies.isExtensionEnabled(extension.id)) {
+    if (!this.dependencies.isExtensionEnabled(extension.id)) {
       this.dependencies.logger.info(`${LensProtocolRouter.LoggingPrefix}: Extension ${name} matched, but not enabled`);
 
       return name;

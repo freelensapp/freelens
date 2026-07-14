@@ -69,9 +69,5 @@ export const App = {
 
     return di.inject(lensBuildEnvironmentInjectionToken);
   },
-  /**
-   * @deprecated This value is now `""` and is left here for backwards compatibility.
-   */
-  slackUrl: "",
   issuesTrackerUrl,
 } as const;

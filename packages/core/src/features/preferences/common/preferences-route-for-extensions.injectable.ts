@@ -8,8 +8,8 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import { frontEndRouteInjectionToken } from "../../../common/front-end-routing/front-end-route-injection-token";
 
-const preferencesRouteForLegacyExtensionsInjectable = getInjectable({
-  id: "preferences-route-for-legacy-extensions",
+const preferencesRouteForExtensionsInjectable = getInjectable({
+  id: "preferences-route-for-extensions",
 
   instantiate: () => ({
     path: "/preferences/extension/:extensionId/:preferenceTabId?",
@@ -20,4 +20,4 @@ const preferencesRouteForLegacyExtensionsInjectable = getInjectable({
   injectionToken: frontEndRouteInjectionToken,
 });
 
-export default preferencesRouteForLegacyExtensionsInjectable;
+export default preferencesRouteForExtensionsInjectable;

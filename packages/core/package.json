@@ -79,7 +79,6 @@
     "@freelensapp/kube-api-specifics": "workspace:^",
     "@freelensapp/kube-object": "workspace:^",
     "@freelensapp/kubectl-versions": "workspace:^",
-    "@freelensapp/legacy-extensions": "workspace:^",
     "@freelensapp/list-layout": "workspace:^",
     "@freelensapp/logger": "workspace:^",
     "@freelensapp/messaging": "workspace:^",

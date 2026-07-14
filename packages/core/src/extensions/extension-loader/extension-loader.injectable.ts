@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { bundledExtensionInjectionToken } from "@freelensapp/legacy-extensions";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import pathExistsInjectable from "../../common/fs/path-exists.injectable";
@@ -25,7 +24,6 @@ const extensionLoaderInjectable = getInjectable({
       updateExtensionsState: di.inject(updateExtensionsStateInjectable),
       extensionInstances: di.inject(extensionInstancesInjectable),
       getExtension: (instance) => di.inject(extensionInjectable, instance),
-      bundledExtensions: di.injectMany(bundledExtensionInjectionToken),
       extensionEntryPointName: di.inject(extensionEntryPointNameInjectionToken),
       logger: di.inject(loggerInjectionToken),
       joinPaths: di.inject(joinPathsInjectable),

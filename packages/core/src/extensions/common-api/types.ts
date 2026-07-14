@@ -17,7 +17,7 @@ export type { MenuRegistration } from "../../features/application-menu/main/menu
 export type {
   AppPreferenceComponents,
   AppPreferenceRegistration,
-} from "../../features/preferences/renderer/compliance-for-legacy-extension-api/app-preference-registration";
+} from "../../features/preferences/renderer/extension-preferences/app-preference-registration";
 export type {
   ShellEnvContext,
   ShellEnvModifier,

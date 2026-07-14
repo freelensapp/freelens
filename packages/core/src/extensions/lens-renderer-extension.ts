@@ -25,8 +25,8 @@ import type { CatalogCategoryRegistry, CatalogEntity, CategoryFilter } from "../
 import type { KubernetesCluster } from "../common/catalog-entities";
 import type { Route } from "../common/front-end-routing/front-end-route-injection-token";
 import type { NavigateToRoute } from "../common/front-end-routing/navigate-to-route-injection-token";
-import type { AppPreferenceRegistration } from "../features/preferences/renderer/compliance-for-legacy-extension-api/app-preference-registration";
-import type { AppPreferenceTabRegistration } from "../features/preferences/renderer/compliance-for-legacy-extension-api/app-preference-tab-registration";
+import type { AppPreferenceRegistration } from "../features/preferences/renderer/extension-preferences/app-preference-registration";
+import type { AppPreferenceTabRegistration } from "../features/preferences/renderer/extension-preferences/app-preference-tab-registration";
 import type { CatalogEntityRegistry, EntityFilter } from "../renderer/api/catalog/entity/registry";
 import type { AdditionalCategoryColumnRegistration } from "../renderer/components/catalog/custom-category-columns";
 import type { CustomCategoryViewRegistration } from "../renderer/components/catalog/custom-views";
