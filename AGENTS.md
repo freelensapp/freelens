@@ -31,6 +31,24 @@ Never read, display, reference, or include the contents of the following files i
 - `*.pem`
 - `*.key`
 
+## Session and temporary files
+
+Files created while working on a task — scratch scripts, command output,
+screenshots, DOM/accessibility snapshots, and AI-agent / MCP-server runtime
+artifacts — must never be written into the tracked working tree, or they leak
+into git history. Write them to a system temporary directory outside the repo
+(e.g. under `$TMPDIR`, or `mktemp -d`), not to the repo root.
+
+When a tool insists on writing inside the repo, keep it out of git:
+
+- point it at a temp path if it accepts one (e.g. pass an absolute
+  `$TMPDIR/...` filename), otherwise
+- git-ignore its default output directory. Already ignored:
+  `.playwright-mcp/` (Playwright MCP), `logs/` (electron-mcp-server).
+
+Never `git add -A` / `git add .` blindly: review `git status` first and stage
+only the files your change actually touches, never these artifacts.
+
 ## Build System
 
 ### Commands

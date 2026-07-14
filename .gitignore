@@ -18,8 +18,9 @@ icon.iconset/
 .pnpm/
 .turbo/
 
-# Runtime artifacts (screenshots, databases, keys) written by optional local
-# AI-agent / MCP tooling, see DEVELOPMENT.md
+# Runtime artifacts (screenshots, databases, keys, snapshots) written by
+# optional local AI-agent / MCP tooling, see DEVELOPMENT.md and AGENTS.md
+.playwright-mcp/
 logs/
 
 .npmrc
