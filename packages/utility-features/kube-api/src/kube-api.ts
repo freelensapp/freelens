@@ -17,8 +17,7 @@ import {
 } from "@freelensapp/kube-object";
 import { isDefined, noop, WrappedAbortController } from "@freelensapp/utilities";
 import byline from "byline";
-import { merge } from "lodash";
-import { matches } from "lodash/fp";
+import { matches, merge } from "es-toolkit/compat";
 import { makeObservable, observable } from "mobx";
 import { createKubeApiURL, parseKubeApi } from "./kube-api-parse";
 

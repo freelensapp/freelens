@@ -6,7 +6,6 @@ import {
   sendMessageToChannelInjectionToken,
 } from "@freelensapp/messaging";
 import { pipeline } from "@ogre-tools/fp";
-import { filter, map } from "lodash/fp";
 
 import type {
   MessageChannel,
@@ -112,8 +111,8 @@ const overrideRequesting = ({
       (async (channel, request) =>
         pipeline(
           [...requestListenersByDi.values()],
-          map((listenersByChannel) => listenersByChannel?.get(channel.id)),
-          filter((x) => !!x),
+          (listenersByDi) => listenersByDi.map((listenersByChannel) => listenersByChannel?.get(channel.id)),
+          (listeners) => listeners.filter((x) => !!x),
 
           (channelSpecificListeners) => {
             if (channelSpecificListeners.length === 0) {

@@ -27,13 +27,12 @@
   "dependencies": {
     "@freelensapp/utilities": "workspace:^",
     "auto-bind": "^4.0.0",
-    "lodash": "^4.18.1",
+    "es-toolkit": "^1.49.0",
     "moment": "^2.30.1",
     "typed-regex": "^0.0.8"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
-    "@types/lodash": "^4.17.24",
     "jsdom": "^29.1.1",
     "type-fest": "^5.6.0",
     "vitest": "^4.1.10"

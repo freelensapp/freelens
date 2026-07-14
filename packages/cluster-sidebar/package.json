@@ -33,9 +33,8 @@
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
-    "@types/lodash": "^4.17.24",
+    "es-toolkit": "^1.49.0",
     "jsdom": "^29.1.1",
-    "lodash": "^4.18.1",
     "vitest": "^4.1.10"
   },
   "publishConfig": {
