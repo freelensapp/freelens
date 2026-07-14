@@ -108,8 +108,11 @@ jobs:
       # config, which declares every package as a project. Vitest splits the
       # full set of collected test files across shards, so no project is
       # singled out and every shard runs a balanced slice of the whole suite.
+      # --reporter=github-actions surfaces failing tests as inline annotations
+      # on the PR/commit; --includeTaskLocation gives them accurate file:line.
+      # verbose keeps a full per-test log in the shard's job output.
       - name: Run unit tests (shard ${{ matrix.shard }}/${{ needs.setup.outputs.total }})
-        run: pnpm --color=always test:unit --shard=${{ matrix.shard }}/${{ needs.setup.outputs.total }}
+        run: pnpm --color=always test:unit --shard=${{ matrix.shard }}/${{ needs.setup.outputs.total }} --reporter=verbose --reporter=github-actions --includeTaskLocation
 
       - name: Clean after tests
         run: pnpm --color=always --parallel clean
