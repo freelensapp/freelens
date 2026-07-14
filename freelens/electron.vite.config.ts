@@ -65,12 +65,6 @@ const workspacePackages = Object.keys(packageJson.dependencies).filter((name) =>
 
 // CommonJS dependencies that must be bundled into the ESM main process
 // because Node cannot consume them as externals at runtime:
-// - crypto-js: imported through extensionless subpaths (e.g.
-//   `crypto-js/enc-base64`) and does not ship an `exports` map, so once the
-//   main bundle is real ESM (D2/D3, formats: ["es"]) Node's ESM resolver
-//   refuses the specifiers at runtime with ERR_MODULE_NOT_FOUND /
-//   ERR_UNSUPPORTED_DIR_IMPORT (it does not append `.js` or resolve a
-//   directory index the way CommonJS require did).
 // - @ogre-tools/*: webpack-bundled CJS whose exports are defined via
 //   Object.defineProperty getters; cjs-module-lexer cannot detect them, so
 //   named imports fail at ESM link time ("Named export ... not found").
@@ -83,7 +77,6 @@ const workspacePackages = Object.keys(packageJson.dependencies).filter((name) =>
 // Bundling lets Vite resolve the subpaths, named exports and default interop
 // at build time, sidestepping runtime ESM resolution.
 const bundledCjsPackages = [
-  "crypto-js",
   "await-lock",
   "@ogre-tools/injectable",
   "@ogre-tools/fp",

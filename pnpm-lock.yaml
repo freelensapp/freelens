@@ -584,9 +584,6 @@ importers:
       cronstrue:
         specifier: ^3.24.0
         version: 3.24.0
-      crypto-js:
-        specifier: ^4.2.0
-        version: 4.2.0
       dompurify:
         specifier: ^3.4.11
         version: 3.4.11
@@ -783,9 +780,6 @@ importers:
       '@types/color':
         specifier: ^4.2.1
         version: 4.2.1
-      '@types/crypto-js':
-        specifier: ^4.2.2
-        version: 4.2.2
       '@types/fs-extra':
         specifier: ^11.0.4
         version: 11.0.4
@@ -2245,9 +2239,6 @@ importers:
       '@astronautlabs/jsonpath':
         specifier: ^1.1.2
         version: 1.1.2
-      crypto-js:
-        specifier: ^4.2.0
-        version: 4.2.0
       es-toolkit:
         specifier: ^1.49.0
         version: 1.49.0
@@ -2279,9 +2270,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
-      '@types/crypto-js':
-        specifier: ^4.2.2
-        version: 4.2.2
       '@types/node':
         specifier: ~24.12.4
         version: 24.12.4
@@ -3899,9 +3887,6 @@ packages:
   '@types/command-line-args@5.2.3':
     resolution: {integrity: sha512-uv0aG6R0Y8WHZLTamZwtfsDLVRnOa+n+n5rEvFWL5Na5gZ8V2Teab/duDPFzIIIhs9qizDpcavCusCLJZu62Kw==}
 
-  '@types/crypto-js@4.2.2':
-    resolution: {integrity: sha512-sDOLlVbHhXpAUAL0YHDUUwDZf3iN4Bwi4W6a0W0b+QcAezUbRtH4FVb+9J4h+XFPW7l/gQ9F8qC7P+Ec4k8QVQ==}
-
   '@types/debug@4.1.8':
     resolution: {integrity: sha512-/vPO1EPOs306Cvhwv7KfVfYvOJqA/S/AXjaHQiJboCZzcNDb+TIJFN9/2C9DZ//ijSKWioNyUxD792QmDJ+HKQ==}
 
@@ -4596,9 +4581,6 @@ packages:
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
     engines: {node: '>= 8'}
-
-  crypto-js@4.2.0:
-    resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
 
   crypto-random-string@2.0.0:
     resolution: {integrity: sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==}
@@ -8920,8 +8902,6 @@ snapshots:
 
   '@types/command-line-args@5.2.3': {}
 
-  '@types/crypto-js@4.2.2': {}
-
   '@types/debug@4.1.8':
     dependencies:
       '@types/ms': 0.7.31
@@ -9693,8 +9673,6 @@ snapshots:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
-
-  crypto-js@4.2.0: {}
 
   crypto-random-string@2.0.0: {}
 
