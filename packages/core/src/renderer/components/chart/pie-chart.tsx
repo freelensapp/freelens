@@ -8,28 +8,26 @@ import "./pie-chart.scss";
 
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import ChartJS from "chart.js";
 import { observer } from "mobx-react";
 import React from "react";
 import activeThemeInjectable from "../../themes/active.injectable";
 import { Chart } from "./chart";
 
-import type { ChartOptions } from "chart.js";
+import type { ChartOptions, TooltipItem } from "chart.js";
 import type { IComputedValue } from "mobx";
 
 import type { LensTheme } from "../../themes/lens-theme";
-import type { ChartProps } from "./chart";
+import type { ChartData, ChartDataSets, ChartProps } from "./chart";
 
 export interface PieChartProps extends ChartProps {}
 
-export interface PieChartData extends ChartJS.ChartData {
+export interface PieChartData extends ChartData {
   datasets?: PieChartDataSets[];
 }
 
 export type DatasetTooltipLabel = (percent: string) => string | string;
 
-interface PieChartDataSets extends ChartJS.ChartDataSets {
-  id?: string;
+interface PieChartDataSets extends ChartDataSets {
   tooltipLabels?: DatasetTooltipLabel[];
 }
 
@@ -56,33 +54,39 @@ const NonInjectedPieChart = observer(
     const { contentColor } = activeTheme.get().colors;
     const opts: ChartOptions = {
       maintainAspectRatio: false,
-      tooltips: {
-        mode: "index",
-        callbacks: {
-          title: () => "",
-          label: (tooltipItem: { datasetIndex: number; index: number }, data: PieChartData) => {
-            const dataset = data.datasets?.[tooltipItem.datasetIndex] ?? {};
-            const datasetData = (dataset.data ?? []) as number[];
-            const total = datasetData.reduce((acc, cur) => acc + cur, 0);
-            const percent = Math.round(((datasetData[tooltipItem.index] as number) / total) * 100);
-            const percentLabel = isNaN(percent) ? "N/A" : `${percent}%`;
-            const tooltipLabelCustomizer = dataset.tooltipLabels?.[tooltipItem.index];
+      plugins: {
+        tooltip: {
+          mode: "index",
+          position: "cursor",
+          callbacks: {
+            title: () => "",
+            label: (context: TooltipItem<"doughnut" | "pie">) => {
+              const dataset = context.dataset as PieChartDataSets;
+              const datasetData = (dataset.data ?? []) as number[];
+              const total = datasetData.reduce((acc, cur) => acc + cur, 0);
+              const percent = Math.round(((datasetData[context.dataIndex] as number) / total) * 100);
+              const percentLabel = isNaN(percent) ? "N/A" : `${percent}%`;
+              const tooltipLabelCustomizer = dataset.tooltipLabels?.[context.dataIndex];
 
-            return tooltipLabelCustomizer ? tooltipLabelCustomizer(percentLabel) : `${dataset.label}: ${percentLabel}`;
+              return tooltipLabelCustomizer
+                ? tooltipLabelCustomizer(percentLabel)
+                : `${dataset.label}: ${percentLabel}`;
+            },
+          },
+          filter: (context: TooltipItem<"doughnut" | "pie">) => {
+            const { datasetIndex, dataIndex, dataset } = context;
+
+            if (datasetIndex === undefined) {
+              return false;
+            }
+
+            const data = (dataset.data ?? []) as number[];
+
+            if (context.chart.data.datasets.length === 1) return true;
+
+            return dataIndex !== data.length - 1;
           },
         },
-        filter: ({ datasetIndex, index }, { datasets = [] }) => {
-          if (datasetIndex === undefined) {
-            return false;
-          }
-
-          const { data = [] } = datasets[datasetIndex];
-
-          if (datasets.length === 1) return true;
-
-          return index !== data.length - 1;
-        },
-        position: "cursor",
       },
       elements: {
         arc: {
@@ -90,7 +94,7 @@ const NonInjectedPieChart = observer(
           borderColor: contentColor,
         },
       },
-      cutoutPercentage: getCutout(data.datasets?.length),
+      cutout: `${getCutout(data.datasets?.length)}%`,
       responsive: true,
       ...options,
     };
@@ -113,7 +117,3 @@ export const PieChart = withInjectables<Dependencies, PieChartProps>(NonInjected
     activeTheme: di.inject(activeThemeInjectable),
   }),
 });
-
-ChartJS.Tooltip.positioners.cursor = function (elements: any, position: { x: number; y: number }) {
-  return position;
-};
