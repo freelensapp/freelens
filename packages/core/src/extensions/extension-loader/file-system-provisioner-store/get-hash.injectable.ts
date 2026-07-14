@@ -4,13 +4,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { createHash } from "node:crypto";
 import { getInjectable } from "@ogre-tools/injectable";
-import { SHA256 } from "crypto-js";
 
 const getHashInjectable = getInjectable({
   id: "get-hash",
 
-  instantiate: () => (text: string) => SHA256(text).toString(),
+  instantiate: () => (text: string) => createHash("sha256").update(text).digest("hex"),
 });
 
 export default getHashInjectable;
