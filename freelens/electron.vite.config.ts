@@ -347,7 +347,15 @@ export default defineConfig({
   },
   renderer: {
     root: resolve(root, "src/renderer"),
-    plugins: [react(), runtimeRequireExternalsPlugin(), rendererBuildBasePlugin("/build/")],
+    plugins: [
+      // The dev-only react-refresh Babel pass parses raw TSX and rejects the
+      // legacy @observer/@injectable decorators used across the codebase
+      // without this parser plugin; esbuild still performs the actual
+      // decorator transform per tsconfig experimentalDecorators.
+      react({ babel: { parserOpts: { plugins: ["decorators-legacy"] } } }),
+      runtimeRequireExternalsPlugin(),
+      rendererBuildBasePlugin("/build/"),
+    ],
     server: {
       // Same serving architecture as the webpack dev server it replaces: the
       // app window always loads through the lens proxy, which forwards to
