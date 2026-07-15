@@ -4,7 +4,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { getOperatorLikeQueryFor } from "./operator-provider.injectable";
+import { getHelmLikeQueryFor } from "./helm-provider.injectable";
 import {
   createPrometheusProvider,
   findFirstNamespacedService,
@@ -18,10 +18,14 @@ const thanosPrometheusProviderInjectable = getInjectable({
       kind: "thanos",
       name: "Thanos",
       isConfigurable: true,
-      // Thanos Query typically federates Prometheus instances managed by the
-      // Prometheus Operator (kube-prometheus-stack), so it shares the same
-      // label conventions and PromQL as the operator provider.
-      getQuery: getOperatorLikeQueryFor({ rateAccuracy: "1m" }),
+      // Thanos federates node-exporter/kube-state-metrics data whose series
+      // carry a direct `node` label but no `pod`/`namespace`. The Helm-style
+      // queries select node-exporter metrics directly and group `by (node)`
+      // without a `kube_pod_info` join, matching that schema. The operator
+      // style (which joins on `pod`/`namespace`) would match nothing here and
+      // yield 0% for CPU/memory/disk. A 5m rate window suits Thanos, which may
+      // serve downsampled data.
+      getQuery: getHelmLikeQueryFor({ rateAccuracy: "5m" }),
       getService: (client) =>
         findFirstNamespacedService(
           client,
