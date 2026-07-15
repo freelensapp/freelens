@@ -118,6 +118,10 @@ const NonInjectedHotbarMenu = observer((props: Dependencies & HotbarMenuProps) =
   const [overId, setOverId] = useState<number | null>(null);
   const [isHotbarVisible, setIsHotbarVisible] = useState(false);
   const isHotbarVisibleRef = useRef(false);
+  // Mirrors `draggingOver` for the window `mousemove` listener below, which
+  // closes over stale state. While a drag is in progress the auto-hide must be
+  // suppressed so the hotbar stays put until the drop.
+  const draggingOverRef = useRef(false);
   const hotbar = activeHotbar.get();
 
   // Preserve react-beautiful-dnd's ~5px drag threshold so a plain click on an
@@ -142,11 +146,11 @@ const NonInjectedHotbarMenu = observer((props: Dependencies & HotbarMenuProps) =
       if (event.clientX <= triggerZone && !isHotbarVisibleRef.current) {
         isHotbarVisibleRef.current = true;
         setIsHotbarVisible(true);
-      } else if (event.clientX > hideThreshold && isHotbarVisibleRef.current) {
+      } else if (event.clientX > hideThreshold && isHotbarVisibleRef.current && !draggingOverRef.current) {
         isHotbarVisibleRef.current = false;
         setIsHotbarVisible(false);
       }
-      // Between triggerZone and hideThreshold, maintain current state
+      // Between triggerZone and hideThreshold, or while dragging, maintain current state
     };
 
     const handleTriggerZoneEnter = () => {
@@ -181,11 +185,13 @@ const NonInjectedHotbarMenu = observer((props: Dependencies & HotbarMenuProps) =
   };
   const resetDragState = () => {
     setDraggingOver(false);
+    draggingOverRef.current = false;
     setActiveId(null);
     setOverId(null);
   };
   const onDragStart = (event: DragStartEvent) => {
     setDraggingOver(true);
+    draggingOverRef.current = true;
     setActiveId(String(event.active.id));
   };
   const onDragOver = (event: DragOverEvent) => {
@@ -295,7 +301,7 @@ const NonInjectedHotbarMenu = observer((props: Dependencies & HotbarMenuProps) =
   const activeEntity = getEntity(activeItem ?? null);
 
   const handleMouseLeave = () => {
-    if (userPreferencesState.hotbarAutoHide && isHotbarVisibleRef.current) {
+    if (userPreferencesState.hotbarAutoHide && isHotbarVisibleRef.current && !draggingOverRef.current) {
       isHotbarVisibleRef.current = false;
       setIsHotbarVisible(false);
     }
