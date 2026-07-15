@@ -27,7 +27,6 @@ const memoryLikeOptions: ChartOptions = {
 
           return bytesToUnits(value);
         },
-        stepSize: 1,
       },
     },
   },
