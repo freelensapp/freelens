@@ -70,7 +70,7 @@
     "typescript-plugin-css-modules": "^5.2.0"
   },
   "peerDependencies": {
-    "electron": ">=41.0.0"
+    "electron": ">=42.0.0"
   },
   "peerDependenciesMeta": {
     "electron": {
