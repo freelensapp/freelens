@@ -31,6 +31,16 @@ interface Dependencies {
   ingressStore: IngressStore;
 }
 
+// Keep in sync: this is also the `max` passed to showRoutes() for the row content below,
+// so the reserved row height always matches what's actually painted (1 rule + "N more..." line).
+const MAX_VISIBLE_ROUTES = 1;
+
+// Mirrors how many lines showRoutes(routes, max) actually paints: up to `max` rule lines,
+// plus one more line for the "N more..." ellipsis when there's overflow.
+function countVisibleRouteLines(routeCount: number, max: number) {
+  return Math.min(routeCount, max) + (routeCount > max ? 1 : 0) || 1;
+}
+
 function showLoadBalancers(loadBalancers: (string | undefined)[], max: number) {
   return (
     <>
@@ -100,13 +110,13 @@ const NonInjectedIngresses = observer((props: Dependencies) => {
             <WithTooltip tooltip={showLoadBalancers(loadBalancers, 20)}>
               {showLoadBalancers(loadBalancers, 1)}
             </WithTooltip>,
-            <WithTooltip tooltip={showRoutes(routes, 20)}>{showRoutes(routes, 1)}</WithTooltip>,
+            <WithTooltip tooltip={showRoutes(routes, 20)}>{showRoutes(routes, MAX_VISIBLE_ROUTES)}</WithTooltip>,
             <KubeObjectAge key="age" object={ingress} />,
           ];
         }}
         tableProps={{
           customRowHeights: (item, lineHeight, paddings) => {
-            const lines = item.getRoutes().length || 1;
+            const lines = countVisibleRouteLines(computeRouteDeclarations(item).length, MAX_VISIBLE_ROUTES);
 
             return lines * lineHeight + paddings;
           },
