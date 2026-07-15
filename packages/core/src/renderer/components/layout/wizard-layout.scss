@@ -39,7 +39,8 @@
     > .error {
       border-radius: $radius;
       padding: $padding;
-      background-color: pink;
+      color: white;
+      background-color: var(--colorError);
     }
   }
 
