@@ -671,9 +671,6 @@ importers:
       react:
         specifier: ^17.0.2
         version: 17.0.2
-      react-beautiful-dnd:
-        specifier: ^13.1.1
-        version: 13.1.1(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       react-dom:
         specifier: ^17.0.2
         version: 17.0.2(react@17.0.2)
@@ -801,9 +798,6 @@ importers:
       '@types/react':
         specifier: ^17.0.93
         version: 17.0.93
-      '@types/react-beautiful-dnd':
-        specifier: ^13.1.8
-        version: 13.1.8
       '@types/react-dom':
         specifier: ^17.0.26
         version: 17.0.26(@types/react@17.0.93)
@@ -3865,9 +3859,6 @@ packages:
   '@types/history@4.7.11':
     resolution: {integrity: sha512-qjDJRrmvBMiTx+jyLxvLfJU7UznFuokDv4f3WRuriHKERccVpFU+8XMQUAbDzoiJCsmexxRExQeMwwCdamSKDA==}
 
-  '@types/hoist-non-react-statics@3.3.1':
-    resolution: {integrity: sha512-iMIqiko6ooLrTh1joXodJK5X9xeEALT1kM5G3ZLhD3hszxBdIEd5C75U834D9mLcINgD4OyZf5uQXjkuYydWvA==}
-
   '@types/http-cache-semantics@4.0.1':
     resolution: {integrity: sha512-SZs7ekbP8CN0txVG2xVRH6EgKmEm31BOxA07vkFaETzZz1xh+cbt8BcI0slpymvwhx5dlFnQG2rTlPVQn+iRPQ==}
 
@@ -3916,16 +3907,10 @@ packages:
   '@types/randomcolor@0.5.9':
     resolution: {integrity: sha512-k58cfpkK15AKn1m+oRd9nh5BnuiowhbyvBBdAzcddtARMr3xRzP0VlFaAKovSG6N6Knx08EicjPlOMzDejerrQ==}
 
-  '@types/react-beautiful-dnd@13.1.8':
-    resolution: {integrity: sha512-E3TyFsro9pQuK4r8S/OL6G99eq7p8v29sX0PM7oT8Z+PJfZvSQTx4zTQbUJ+QZXioAF0e7TGBEcA1XhYhCweyQ==}
-
   '@types/react-dom@17.0.26':
     resolution: {integrity: sha512-Z+2VcYXJwOqQ79HreLU/1fyQ88eXSSFh6I3JdrEHQIfYSI0kCQpTGvOrbE6jFGGYXKsHuwY9tBa/w5Uo6KzrEg==}
     peerDependencies:
       '@types/react': ^17.0.0
-
-  '@types/react-redux@7.1.25':
-    resolution: {integrity: sha512-bAGh4e+w5D8dajd6InASVIyCo4pZLJ66oLb80F9OBLO1gKESbZcRCJpTT6uLXX+HAB57zw1WTdwJdAsewuTweg==}
 
   '@types/react-router-dom@5.3.3':
     resolution: {integrity: sha512-kpqnYK4wcdm5UaWI3fLcELopqLrHgLqNsdpHauzlQktfkHL3npOSwtj1Uz9oKBAzs7lFtVkV8j83voAz2D8fhw==}
@@ -4525,9 +4510,6 @@ packages:
   crypto-random-string@2.0.0:
     resolution: {integrity: sha512-v1plID3y9r/lPhviJ1wrXpLeyUIGAZ2SHNYTEapm7/8A9nLPoyvVp3RK/EPFqn5kEznyWgYZNsRtYYIWbuG8KA==}
     engines: {node: '>=8'}
-
-  css-box-model@1.2.1:
-    resolution: {integrity: sha512-a7Vr4Q/kd/aw96bnJG332W9V9LkJO69JRcaCYDUqjp6/z0w6VcZjgAcTbgFxEPfBgdnAwlh3iwu+hLopa+flJw==}
 
   css-tree@3.2.1:
     resolution: {integrity: sha512-X7sjQzceUhu1u7Y/ylrRZFU2FS6LRiFVp6rKLPg23y3x3c3DOKAwuXGDp+PAGjh6CSnCjYeAul8pcT8bAl+lSA==}
@@ -6210,18 +6192,8 @@ packages:
     resolution: {integrity: sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==}
     engines: {node: '>=10'}
 
-  raf-schd@4.0.3:
-    resolution: {integrity: sha512-tQkJl2GRWh83ui2DiPTJz9wEiMN20syf+5oKfB03yYP7ioZcJwsIK8FjrtLwH1m7C7e+Tt2yYBlrOpdT+dyeIQ==}
-
   randomcolor@0.6.2:
     resolution: {integrity: sha512-Mn6TbyYpFgwFuQ8KJKqf3bqqY9O1y37/0jgSK/61PUxV4QfIMv0+K2ioq8DfOjkBslcjwSzRfIDEXfzA9aCx7A==}
-
-  react-beautiful-dnd@13.1.1:
-    resolution: {integrity: sha512-0Lvs4tq2VcrEjEgDXHjT98r+63drkKEgqyxdA7qD3mvKwga6a5SscbdLPO2IExotU1jW8L0Ksdl0Cj2AF67nPQ==}
-    deprecated: 'react-beautiful-dnd is now deprecated. Context and options: https://github.com/atlassian/react-beautiful-dnd/issues/2672'
-    peerDependencies:
-      react: ^16.8.5 || ^17.0.0 || ^18.0.0
-      react-dom: ^16.8.5 || ^17.0.0 || ^18.0.0
 
   react-dom@17.0.2:
     resolution: {integrity: sha512-s4h96KtLDUQlsENhMn1ar8t2bEa+q/YAtj8pPPdIjPDGBDIVNsrD9aXNWqspUe6AzKCIG0C1HZZLqLV7qpOBGA==}
@@ -6239,18 +6211,6 @@ packages:
 
   react-is@19.0.0:
     resolution: {integrity: sha512-H91OHcwjZsbq3ClIDHMzBShc1rotbfACdWENsmEf0IFvZ3FgGPtdHMcsv45bQ1hAbgdfiA8SnxTKfDS+x/8m2g==}
-
-  react-redux@7.2.9:
-    resolution: {integrity: sha512-Gx4L3uM182jEEayZfRbI/G11ZpYdNAnBs70lFVMNdHJI76XYtR+7m0MN+eAs7UHBPhWXcnFPaS+9owSCJQHNpQ==}
-    peerDependencies:
-      react: ^16.8.3 || ^17 || ^18
-      react-dom: '*'
-      react-native: '*'
-    peerDependenciesMeta:
-      react-dom:
-        optional: true
-      react-native:
-        optional: true
 
   react-refresh@0.18.0:
     resolution: {integrity: sha512-QgT5//D3jfjJb6Gsjxv0Slpj23ip+HtOpnNgnb2S5zU3CB26G/IDPGoy4RJB42wzFE46DRsstbW6tKHoKbhAxw==}
@@ -6325,9 +6285,6 @@ packages:
   redent@3.0.0:
     resolution: {integrity: sha512-6tDA8g98We0zd0GvVeMT9arEOnTw9qM03L9cJXaCjrip1OO764RDBLBfrB4cwzNGDj5OA5ioymC9GkizgWJDUg==}
     engines: {node: '>=8'}
-
-  redux@4.2.1:
-    resolution: {integrity: sha512-LAUYz4lc+Do8/g7aeRa8JkyDErK6ekstQaqWQrNRW//MY1TvCEpMtpTWvlQ+FPbWCx+Xixu/6SHt5N0HR+SB4w==}
 
   regexp.prototype.flags@1.5.4:
     resolution: {integrity: sha512-dYqgNSZbDwkaJ2ceRd9ojCGjBq+mOm9LmtXnAnEGyHhN/5R7iDW2TRw3h+o/jCFxus3P2LfWIIiwowAjANm7IA==}
@@ -7067,11 +7024,6 @@ packages:
     peerDependenciesMeta:
       '@types/react':
         optional: true
-
-  use-memo-one@1.1.3:
-    resolution: {integrity: sha512-g66/K7ZQGYrI6dy8GLpVcMsBp4s17xNkYJVSMvTEevGy3nDxHOfE6z8BVE22+5G5x7t3+bhzrlTDB7ObrEE0cQ==}
-    peerDependencies:
-      react: ^16.8.0 || ^17.0.0 || ^18.0.0
 
   use-sync-external-store@1.5.0:
     resolution: {integrity: sha512-Rb46I4cGGVBmjamjphe8L/UnvJD+uPPtTkNvX5mZgqdbavhI4EbgIWJiIHXJ8bc/i9EQGPRh4DwEURJ552Do0A==}
@@ -8791,11 +8743,6 @@ snapshots:
 
   '@types/history@4.7.11': {}
 
-  '@types/hoist-non-react-statics@3.3.1':
-    dependencies:
-      '@types/react': 17.0.93
-      hoist-non-react-statics: 3.3.2
-
   '@types/http-cache-semantics@4.0.1': {}
 
   '@types/js-yaml@4.0.9': {}
@@ -8854,20 +8801,9 @@ snapshots:
 
   '@types/randomcolor@0.5.9': {}
 
-  '@types/react-beautiful-dnd@13.1.8':
-    dependencies:
-      '@types/react': 17.0.93
-
   '@types/react-dom@17.0.26(@types/react@17.0.93)':
     dependencies:
       '@types/react': 17.0.93
-
-  '@types/react-redux@7.1.25':
-    dependencies:
-      '@types/hoist-non-react-statics': 3.3.1
-      '@types/react': 17.0.93
-      hoist-non-react-statics: 3.3.2
-      redux: 4.2.1
 
   '@types/react-router-dom@5.3.3':
     dependencies:
@@ -9518,10 +9454,6 @@ snapshots:
       which: 2.0.2
 
   crypto-random-string@2.0.0: {}
-
-  css-box-model@1.2.1:
-    dependencies:
-      tiny-invariant: 1.3.1
 
   css-tree@3.2.1:
     dependencies:
@@ -11276,23 +11208,7 @@ snapshots:
 
   quick-lru@5.1.1: {}
 
-  raf-schd@4.0.3: {}
-
   randomcolor@0.6.2: {}
-
-  react-beautiful-dnd@13.1.1(react-dom@17.0.2(react@17.0.2))(react@17.0.2):
-    dependencies:
-      '@babel/runtime': 7.28.4
-      css-box-model: 1.2.1
-      memoize-one: 5.2.1
-      raf-schd: 4.0.3
-      react: 17.0.2
-      react-dom: 17.0.2(react@17.0.2)
-      react-redux: 7.2.9(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
-      redux: 4.2.1
-      use-memo-one: 1.1.3(react@17.0.2)
-    transitivePeerDependencies:
-      - react-native
 
   react-dom@17.0.2(react@17.0.2):
     dependencies:
@@ -11308,18 +11224,6 @@ snapshots:
   react-is@18.3.1: {}
 
   react-is@19.0.0: {}
-
-  react-redux@7.2.9(react-dom@17.0.2(react@17.0.2))(react@17.0.2):
-    dependencies:
-      '@babel/runtime': 7.28.4
-      '@types/react-redux': 7.1.25
-      hoist-non-react-statics: 3.3.2
-      loose-envify: 1.4.0
-      prop-types: 15.8.1
-      react: 17.0.2
-      react-is: 17.0.2
-    optionalDependencies:
-      react-dom: 17.0.2(react@17.0.2)
 
   react-refresh@0.18.0: {}
 
@@ -11428,10 +11332,6 @@ snapshots:
     dependencies:
       indent-string: 4.0.0
       strip-indent: 3.0.0
-
-  redux@4.2.1:
-    dependencies:
-      '@babel/runtime': 7.28.4
 
   regexp.prototype.flags@1.5.4:
     dependencies:
@@ -12231,10 +12131,6 @@ snapshots:
       react: 17.0.2
     optionalDependencies:
       '@types/react': 17.0.93
-
-  use-memo-one@1.1.3(react@17.0.2):
-    dependencies:
-      react: 17.0.2
 
   use-sync-external-store@1.5.0(react@17.0.2):
     dependencies:

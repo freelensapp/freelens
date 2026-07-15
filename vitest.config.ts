@@ -43,7 +43,6 @@ const coreMockAliases = {
   electron: join(coreDir, "__mocks__/electron.ts"),
   "monaco-editor": join(coreDir, "__mocks__/monaco-editor.ts"),
   "node-pty": join(coreDir, "__mocks__/node-pty.ts"),
-  "react-beautiful-dnd": join(coreDir, "__mocks__/react-beautiful-dnd.tsx"),
   "react-virtualized-auto-sizer": join(coreDir, "__mocks__/react-virtualized-auto-sizer.tsx"),
   "@sentry/electron/main": join(coreDir, "__mocks__/@sentry/electron/main.ts"),
   "@sentry/electron/renderer": join(coreDir, "__mocks__/@sentry/electron/renderer.ts"),
