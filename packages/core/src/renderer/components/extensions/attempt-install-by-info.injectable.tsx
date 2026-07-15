@@ -11,7 +11,6 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { reduce } from "es-toolkit/compat";
 import React from "react";
 import { SemVer } from "semver";
-import URLParse from "url-parse";
 import getBasenameOfPathInjectable from "../../../common/path/get-basename.injectable";
 import extensionInstallationStateStoreInjectable from "../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
 import downloadBinaryViaChannelInjectable from "../../../renderer/fetch/download-binary-via-channel.injectable";
@@ -61,11 +60,12 @@ const attemptInstallByInfoInjectable = getInjectable({
       const { name, version: versionOrTagName, requireConfirmation = false } = info;
       const disposer = extensionInstallationStateStore.startPreInstall();
       const baseUrl = await getBaseRegistryUrl();
-      const registryUrl = new URLParse(baseUrl).set("pathname", name).toString();
+      const registryUrl = new URL(baseUrl);
+      registryUrl.pathname = name;
       let json: NpmRegistryPackageDescriptor;
 
       try {
-        const result = await downloadJson(registryUrl, { timeout: 15_000 });
+        const result = await downloadJson(registryUrl.href, { timeout: 15_000 });
 
         if (!result.callWasSuccessful) {
           showErrorNotification(`Failed to get registry information for extension: ${result.error}`);

@@ -4,8 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type Url from "url-parse";
-
 export enum RoutingErrorType {
   INVALID_PROTOCOL = "invalid-protocol",
   INVALID_HOST = "invalid-host",
@@ -15,7 +13,7 @@ export enum RoutingErrorType {
   MISSING_EXTENSION = "missing-ext",
 }
 
-export class RoutingError<Query> extends Error {
+export class RoutingError extends Error {
   /**
    * Will be set if the routing error originated in an extension route table
    */
@@ -23,7 +21,7 @@ export class RoutingError<Query> extends Error {
 
   constructor(
     public type: RoutingErrorType,
-    public url: Url<Query>,
+    public url: URL,
   ) {
     super("routing error");
   }

@@ -6,7 +6,6 @@
 
 import { ipcRenderer } from "electron";
 import React from "react";
-import Url from "url-parse";
 import * as proto from "../../../common/protocol-handler";
 import { foldAttemptResults, ProtocolHandlerInvalid, RouteAttempt } from "../../../common/protocol-handler";
 
@@ -29,7 +28,7 @@ export class LensProtocolRouterRenderer extends proto.LensProtocolRouter {
    */
   public init(): void {
     ipcRenderer.on(proto.ProtocolHandlerInternal, (event, rawUrl: string, mainAttemptResult: RouteAttempt) => {
-      const rendererAttempt = this._routeToInternal(new Url(rawUrl, true));
+      const rendererAttempt = this._routeToInternal(new URL(rawUrl));
 
       if (foldAttemptResults(mainAttemptResult, rendererAttempt) === RouteAttempt.MISSING) {
         this.dependencies.showShortInfoNotification(
@@ -42,7 +41,7 @@ export class LensProtocolRouterRenderer extends proto.LensProtocolRouter {
       }
     });
     ipcRenderer.on(proto.ProtocolHandlerExtension, async (event, rawUrl: string, mainAttemptResult: RouteAttempt) => {
-      const rendererAttempt = await this._routeToExtension(new Url(rawUrl, true));
+      const rendererAttempt = await this._routeToExtension(new URL(rawUrl));
 
       switch (foldAttemptResults(mainAttemptResult, rendererAttempt)) {
         case RouteAttempt.MISSING:
