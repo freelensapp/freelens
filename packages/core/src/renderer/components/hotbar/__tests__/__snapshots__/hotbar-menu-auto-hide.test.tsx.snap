@@ -7,7 +7,25 @@ exports[`<HotbarMenu /> auto-hide functionality > when auto-hide is disabled > r
   >
     <div
       class="HotbarItems flex flex-col"
-    />
+    >
+      <div
+        id="DndDescribedBy-0"
+        style="display: none;"
+      >
+        
+    To pick up a draggable item, press the space bar.
+    While dragging, use the arrow keys to move the item.
+    Press space again to drop the item in its new position, or press escape to cancel.
+  
+      </div>
+      <div
+        aria-atomic="true"
+        aria-live="assertive"
+        id="DndLiveRegion-0"
+        role="status"
+        style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+      />
+    </div>
     <div
       class="HotbarSelector"
     >
@@ -56,7 +74,25 @@ exports[`<HotbarMenu /> auto-hide functionality > when auto-hide is enabled > re
   >
     <div
       class="HotbarItems flex flex-col"
-    />
+    >
+      <div
+        id="DndDescribedBy-3"
+        style="display: none;"
+      >
+        
+    To pick up a draggable item, press the space bar.
+    While dragging, use the arrow keys to move the item.
+    Press space again to drop the item in its new position, or press escape to cancel.
+  
+      </div>
+      <div
+        aria-atomic="true"
+        aria-live="assertive"
+        id="DndLiveRegion-3"
+        role="status"
+        style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
+      />
+    </div>
     <div
       class="HotbarSelector"
     >

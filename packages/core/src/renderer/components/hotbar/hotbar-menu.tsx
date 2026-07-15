@@ -6,11 +6,23 @@
 
 import "./hotbar-menu.scss";
 
+import {
+  closestCenter,
+  DndContext,
+  type DragEndEvent,
+  type DragOverEvent,
+  DragOverlay,
+  type DragStartEvent,
+  PointerSensor,
+  useDraggable,
+  useDroppable,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React, { useEffect, useRef, useState } from "react";
-import { DragDropContext, Draggable, Droppable, type DropResult } from "react-beautiful-dnd";
 import { UserPreferencesState } from "../../../extensions/common-api/app";
 import activeHotbarInjectable from "../../../features/hotbar/storage/common/active.injectable";
 import { defaultHotbarCells } from "../../../features/hotbar/storage/common/types";
@@ -40,13 +52,75 @@ interface Dependencies {
   userPreferencesState: UserPreferencesState;
 }
 
+// A single grid cell acting as a @dnd-kit drop target. Its `id` is the cell
+// index, so a drop resolves to `hotbar.restack(from, index)`.
+function HotbarDroppableCell({
+  index,
+  className,
+  children,
+}: {
+  index: number;
+  className?: string;
+  children?: StrictReactNode;
+}) {
+  const { setNodeRef } = useDroppable({ id: index });
+
+  return (
+    <HotbarCell index={index} innerRef={setNodeRef} className={className}>
+      {children}
+    </HotbarCell>
+  );
+}
+
+// The draggable icon inside an occupied cell. Its `id` is the entity uid and it
+// carries the source cell index in `data` so `onDragEnd` knows where the drag
+// started. The dragged visual is rendered by `<DragOverlay>`, so the in-place
+// element stays put (only its `isDragging` styling changes).
+function HotbarDraggableIcon({
+  item,
+  index,
+  children,
+}: {
+  item: HotbarItem;
+  index: number;
+  children: (isDragging: boolean) => StrictReactNode;
+}) {
+  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
+    id: item.entity.uid,
+    data: { index },
+  });
+
+  return (
+    <div
+      ref={setNodeRef}
+      {...attributes}
+      {...listeners}
+      style={{
+        zIndex: defaultHotbarCells - index,
+        position: "absolute" as const,
+      }}
+    >
+      {children(isDragging)}
+    </div>
+  );
+}
+
 const NonInjectedHotbarMenu = observer((props: Dependencies & HotbarMenuProps) => {
   const { activeHotbar, entityRegistry, userPreferencesState, className } = props;
 
   const [draggingOver, setDraggingOver] = useState(false);
+  // The uid of the entity currently being dragged, and the index of the cell it
+  // is hovering over. Together these replace react-beautiful-dnd's per-droppable
+  // snapshot (`draggingOverWith` / `isDraggingOver`) that drives the CSS state.
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const [overId, setOverId] = useState<number | null>(null);
   const [isHotbarVisible, setIsHotbarVisible] = useState(false);
   const isHotbarVisibleRef = useRef(false);
   const hotbar = activeHotbar.get();
+
+  // Preserve react-beautiful-dnd's ~5px drag threshold so a plain click on an
+  // icon still opens the entity instead of starting a drag.
+  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }));
 
   useEffect(() => {
     if (!userPreferencesState.hotbarAutoHide) {
@@ -103,21 +177,41 @@ const NonInjectedHotbarMenu = observer((props: Dependencies & HotbarMenuProps) =
 
     return entityRegistry.getById(item.entity.uid);
   };
-  const onDragStart = () => setDraggingOver(true);
-  const onDragEnd = (result: DropResult) => {
+  const resetDragState = () => {
     setDraggingOver(false);
+    setActiveId(null);
+    setOverId(null);
+  };
+  const onDragStart = (event: DragStartEvent) => {
+    setDraggingOver(true);
+    setActiveId(String(event.active.id));
+  };
+  const onDragOver = (event: DragOverEvent) => {
+    const { over } = event;
 
-    const { source, destination } = result;
+    setOverId(over ? Number(over.id) : null);
+  };
+  const onDragEnd = (event: DragEndEvent) => {
+    resetDragState();
 
-    if (!destination) {
+    const { active, over } = event;
+
+    if (!over) {
       // Dropped outside of the list
       return;
     }
 
-    const from = parseInt(source.droppableId);
-    const to = parseInt(destination.droppableId);
+    const from = active.data.current?.index as number | undefined;
+    const to = Number(over.id);
+
+    if (from === undefined) {
+      return;
+    }
 
     hotbar?.restack(from, to);
+  };
+  const onDragCancel = () => {
+    resetDragState();
   };
   const removeItem = (entityId: string) => {
     hotbar?.removeEntity(entityId);
@@ -135,77 +229,68 @@ const NonInjectedHotbarMenu = observer((props: Dependencies & HotbarMenuProps) =
     return draggableItemIndex > cellIndex ? "animateDown" : "animateUp";
   };
 
+  const renderIcon = (item: HotbarItem, entity: CatalogEntity | undefined, index: number, isDragging: boolean) =>
+    entity ? (
+      <HotbarEntityIcon
+        key={index}
+        index={index}
+        entity={entity}
+        onClick={() => entityRegistry.onRun(entity)}
+        className={cssNames({ isDragging })}
+        remove={removeItem}
+        add={addItem}
+        size={40}
+      />
+    ) : (
+      <HotbarIcon
+        uid={`hotbar-icon-${item.entity.uid}`}
+        title={item.entity.name}
+        source={item.entity.source ?? "local"}
+        tooltip={`${item.entity.name} (${item.entity.source})`}
+        menuItems={[
+          {
+            title: "Remove from Hotbar",
+            onClick: () => removeItem(item.entity.uid),
+          },
+        ]}
+        disabled
+        size={40}
+      />
+    );
+
   const renderGrid = () =>
     hotbar?.items.map((item, index) => {
       const entity = getEntity(item);
+      // react-beautiful-dnd exposed the dragged draggable id per droppable via
+      // `snapshot.draggingOverWith`; reconstruct it from the hovered cell index.
+      const draggingOverWith = overId === index ? activeId : null;
 
       return (
-        <Droppable droppableId={`${index}`} key={index}>
-          {(provided, snapshot) => (
-            <HotbarCell
-              index={index}
-              key={entity ? entity.getId() : `cell${index}`}
-              innerRef={provided.innerRef}
-              className={cssNames(
-                {
-                  isDraggingOver: snapshot.isDraggingOver,
-                  isDraggingOwner: snapshot.draggingOverWith == entity?.getId(),
-                },
-                getMoveAwayDirection(snapshot.draggingOverWith, index),
-              )}
-              {...provided.droppableProps}
-            >
-              {item && (
-                <Draggable draggableId={item.entity.uid} key={item.entity.uid} index={0}>
-                  {(provided, snapshot) => (
-                    <div
-                      key={item.entity.uid}
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      style={{
-                        zIndex: defaultHotbarCells - index,
-                        position: "absolute" as const,
-                        ...provided.draggableProps.style,
-                      }}
-                    >
-                      {entity ? (
-                        <HotbarEntityIcon
-                          key={index}
-                          index={index}
-                          entity={entity}
-                          onClick={() => entityRegistry.onRun(entity)}
-                          className={cssNames({ isDragging: snapshot.isDragging })}
-                          remove={removeItem}
-                          add={addItem}
-                          size={40}
-                        />
-                      ) : (
-                        <HotbarIcon
-                          uid={`hotbar-icon-${item.entity.uid}`}
-                          title={item.entity.name}
-                          source={item.entity.source ?? "local"}
-                          tooltip={`${item.entity.name} (${item.entity.source})`}
-                          menuItems={[
-                            {
-                              title: "Remove from Hotbar",
-                              onClick: () => removeItem(item.entity.uid),
-                            },
-                          ]}
-                          disabled
-                          size={40}
-                        />
-                      )}
-                    </div>
-                  )}
-                </Draggable>
-              )}
-              {provided.placeholder as StrictReactNode}
-            </HotbarCell>
+        <HotbarDroppableCell
+          index={index}
+          key={entity ? entity.getId() : `cell${index}`}
+          className={cssNames(
+            {
+              isDraggingOver: overId === index,
+              isDraggingOwner: draggingOverWith != null && draggingOverWith === entity?.getId(),
+            },
+            getMoveAwayDirection(draggingOverWith, index),
           )}
-        </Droppable>
+        >
+          {item && (
+            <HotbarDraggableIcon item={item} index={index}>
+              {(isDragging) => renderIcon(item, entity, index, isDragging)}
+            </HotbarDraggableIcon>
+          )}
+        </HotbarDroppableCell>
       );
     });
+
+  // The entity being dragged, rendered inside `<DragOverlay>` so it follows the
+  // cursor in a body-level portal and is never clipped by the hotbar's overflow.
+  const activeItem = activeId != null ? hotbar?.items.find((item) => item?.entity.uid === activeId) : undefined;
+  const activeIndex = activeItem ? (hotbar?.items.indexOf(activeItem) ?? -1) : -1;
+  const activeEntity = getEntity(activeItem ?? null);
 
   const handleMouseLeave = () => {
     if (userPreferencesState.hotbarAutoHide && isHotbarVisibleRef.current) {
@@ -228,9 +313,17 @@ const NonInjectedHotbarMenu = observer((props: Dependencies & HotbarMenuProps) =
       onMouseLeave={handleMouseLeave}
     >
       <div className="HotbarItems flex flex-col">
-        <DragDropContext onDragStart={() => onDragStart()} onDragEnd={(result) => onDragEnd(result)}>
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragStart={onDragStart}
+          onDragOver={onDragOver}
+          onDragEnd={onDragEnd}
+          onDragCancel={onDragCancel}
+        >
           {renderGrid()}
-        </DragDropContext>
+          <DragOverlay>{activeItem ? renderIcon(activeItem, activeEntity, activeIndex, true) : null}</DragOverlay>
+        </DndContext>
       </div>
       <HotbarSelector />
     </div>

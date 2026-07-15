@@ -632,11 +632,16 @@ exports[`preferences - navigation to application preferences > given in preferen
         class="HotbarItems flex flex-col"
       >
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="0"
         >
           <div
+            aria-describedby="DndDescribedBy-0"
+            aria-disabled="false"
+            aria-roledescription="draggable"
+            role="button"
             style="z-index: 12; position: absolute;"
+            tabindex="0"
           >
             <div
               class="HotbarIcon contextMenuAvailable"
@@ -652,11 +657,16 @@ exports[`preferences - navigation to application preferences > given in preferen
           </div>
         </div>
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="1"
         >
           <div
+            aria-describedby="DndDescribedBy-0"
+            aria-disabled="false"
+            aria-roledescription="draggable"
+            role="button"
             style="z-index: 11; position: absolute;"
+            tabindex="0"
           >
             <div
               class="HotbarIcon contextMenuAvailable"
@@ -672,44 +682,61 @@ exports[`preferences - navigation to application preferences > given in preferen
           </div>
         </div>
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="2"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="3"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="4"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="5"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="6"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="7"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="8"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="9"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="10"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="11"
+        />
+        <div
+          id="DndDescribedBy-0"
+          style="display: none;"
+        >
+          
+    To pick up a draggable item, press the space bar.
+    While dragging, use the arrow keys to move the item.
+    Press space again to drop the item in its new position, or press escape to cancel.
+  
+        </div>
+        <div
+          aria-atomic="true"
+          aria-live="assertive"
+          id="DndLiveRegion-0"
+          role="status"
+          style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
         />
       </div>
       <div
@@ -1430,11 +1457,16 @@ exports[`preferences - navigation to application preferences > given in preferen
         class="HotbarItems flex flex-col"
       >
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="0"
         >
           <div
+            aria-describedby="DndDescribedBy-2"
+            aria-disabled="false"
+            aria-roledescription="draggable"
+            role="button"
             style="z-index: 12; position: absolute;"
+            tabindex="0"
           >
             <div
               class="HotbarIcon contextMenuAvailable"
@@ -1450,11 +1482,16 @@ exports[`preferences - navigation to application preferences > given in preferen
           </div>
         </div>
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="1"
         >
           <div
+            aria-describedby="DndDescribedBy-2"
+            aria-disabled="false"
+            aria-roledescription="draggable"
+            role="button"
             style="z-index: 11; position: absolute;"
+            tabindex="0"
           >
             <div
               class="HotbarIcon contextMenuAvailable"
@@ -1470,44 +1507,61 @@ exports[`preferences - navigation to application preferences > given in preferen
           </div>
         </div>
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="2"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="3"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="4"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="5"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="6"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="7"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="8"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="9"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="10"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="11"
+        />
+        <div
+          id="DndDescribedBy-2"
+          style="display: none;"
+        >
+          
+    To pick up a draggable item, press the space bar.
+    While dragging, use the arrow keys to move the item.
+    Press space again to drop the item in its new position, or press escape to cancel.
+  
+        </div>
+        <div
+          aria-atomic="true"
+          aria-live="assertive"
+          id="DndLiveRegion-2"
+          role="status"
+          style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
         />
       </div>
       <div
@@ -1853,11 +1907,16 @@ exports[`preferences - navigation to application preferences > given in some chi
         class="HotbarItems flex flex-col"
       >
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="0"
         >
           <div
+            aria-describedby="DndDescribedBy-4"
+            aria-disabled="false"
+            aria-roledescription="draggable"
+            role="button"
             style="z-index: 12; position: absolute;"
+            tabindex="0"
           >
             <div
               class="HotbarIcon contextMenuAvailable"
@@ -1873,11 +1932,16 @@ exports[`preferences - navigation to application preferences > given in some chi
           </div>
         </div>
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="1"
         >
           <div
+            aria-describedby="DndDescribedBy-4"
+            aria-disabled="false"
+            aria-roledescription="draggable"
+            role="button"
             style="z-index: 11; position: absolute;"
+            tabindex="0"
           >
             <div
               class="HotbarIcon contextMenuAvailable"
@@ -1893,44 +1957,61 @@ exports[`preferences - navigation to application preferences > given in some chi
           </div>
         </div>
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="2"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="3"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="4"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="5"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="6"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="7"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="8"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="9"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="10"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="11"
+        />
+        <div
+          id="DndDescribedBy-4"
+          style="display: none;"
+        >
+          
+    To pick up a draggable item, press the space bar.
+    While dragging, use the arrow keys to move the item.
+    Press space again to drop the item in its new position, or press escape to cancel.
+  
+        </div>
+        <div
+          aria-atomic="true"
+          aria-live="assertive"
+          id="DndLiveRegion-4"
+          role="status"
+          style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
         />
       </div>
       <div
@@ -2620,11 +2701,16 @@ exports[`preferences - navigation to application preferences > given in some chi
         class="HotbarItems flex flex-col"
       >
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="0"
         >
           <div
+            aria-describedby="DndDescribedBy-6"
+            aria-disabled="false"
+            aria-roledescription="draggable"
+            role="button"
             style="z-index: 12; position: absolute;"
+            tabindex="0"
           >
             <div
               class="HotbarIcon contextMenuAvailable"
@@ -2640,11 +2726,16 @@ exports[`preferences - navigation to application preferences > given in some chi
           </div>
         </div>
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="1"
         >
           <div
+            aria-describedby="DndDescribedBy-6"
+            aria-disabled="false"
+            aria-roledescription="draggable"
+            role="button"
             style="z-index: 11; position: absolute;"
+            tabindex="0"
           >
             <div
               class="HotbarIcon contextMenuAvailable"
@@ -2660,44 +2751,61 @@ exports[`preferences - navigation to application preferences > given in some chi
           </div>
         </div>
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="2"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="3"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="4"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="5"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="6"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="7"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="8"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="9"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="10"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="11"
+        />
+        <div
+          id="DndDescribedBy-6"
+          style="display: none;"
+        >
+          
+    To pick up a draggable item, press the space bar.
+    While dragging, use the arrow keys to move the item.
+    Press space again to drop the item in its new position, or press escape to cancel.
+  
+        </div>
+        <div
+          aria-atomic="true"
+          aria-live="assertive"
+          id="DndLiveRegion-6"
+          role="status"
+          style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
         />
       </div>
       <div
@@ -3388,11 +3496,16 @@ exports[`preferences - navigation to application preferences > given in some chi
           class="HotbarItems flex flex-col"
         >
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="0"
           >
             <div
+              aria-describedby="DndDescribedBy-8"
+              aria-disabled="false"
+              aria-roledescription="draggable"
+              role="button"
               style="z-index: 12; position: absolute;"
+              tabindex="0"
             >
               <div
                 class="HotbarIcon contextMenuAvailable"
@@ -3408,11 +3521,16 @@ exports[`preferences - navigation to application preferences > given in some chi
             </div>
           </div>
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="1"
           >
             <div
+              aria-describedby="DndDescribedBy-8"
+              aria-disabled="false"
+              aria-roledescription="draggable"
+              role="button"
               style="z-index: 11; position: absolute;"
+              tabindex="0"
             >
               <div
                 class="HotbarIcon contextMenuAvailable"
@@ -3428,44 +3546,61 @@ exports[`preferences - navigation to application preferences > given in some chi
             </div>
           </div>
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="2"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="3"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="4"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="5"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="6"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="7"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="8"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="9"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="10"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="11"
+          />
+          <div
+            id="DndDescribedBy-8"
+            style="display: none;"
+          >
+            
+    To pick up a draggable item, press the space bar.
+    While dragging, use the arrow keys to move the item.
+    Press space again to drop the item in its new position, or press escape to cancel.
+  
+          </div>
+          <div
+            aria-atomic="true"
+            aria-live="assertive"
+            id="DndLiveRegion-8"
+            role="status"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
