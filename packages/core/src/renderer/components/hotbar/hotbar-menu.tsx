@@ -23,6 +23,7 @@ import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React, { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { UserPreferencesState } from "../../../extensions/common-api/app";
 import activeHotbarInjectable from "../../../features/hotbar/storage/common/active.injectable";
 import { defaultHotbarCells } from "../../../features/hotbar/storage/common/types";
@@ -330,7 +331,14 @@ const NonInjectedHotbarMenu = observer((props: Dependencies & HotbarMenuProps) =
           onDragCancel={onDragCancel}
         >
           {renderGrid()}
-          <DragOverlay>{activeItem ? renderIcon(activeItem, activeEntity, activeIndex, true) : null}</DragOverlay>
+          {/* Portal the overlay to <body>: when auto-hide is on, `.HotbarMenu`
+              has a `transform`, which makes it the containing block for the
+              `position: fixed` overlay and clips it to the hotbar's
+              `overflow: hidden`. Rendering it at the body escapes that context. */}
+          {createPortal(
+            <DragOverlay>{activeItem ? renderIcon(activeItem, activeEntity, activeIndex, true) : null}</DragOverlay>,
+            document.body,
+          )}
         </DndContext>
       </div>
       <HotbarSelector />
