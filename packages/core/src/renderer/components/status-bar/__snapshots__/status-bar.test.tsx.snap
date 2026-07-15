@@ -250,7 +250,7 @@ exports[`<StatusBar /> > when StatusBar's status is set to %p > renders 1`] = `
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -275,7 +275,7 @@ exports[`<StatusBar /> > when StatusBar's status is set to %p > renders 1`] = `
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -655,7 +655,7 @@ exports[`<StatusBar /> > when StatusBar's status is set to %p > renders 2`] = `
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -680,7 +680,7 @@ exports[`<StatusBar /> > when StatusBar's status is set to %p > renders 2`] = `
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -1060,7 +1060,7 @@ exports[`<StatusBar /> > when an extension is enabled specifying the side the el
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -1085,7 +1085,7 @@ exports[`<StatusBar /> > when an extension is enabled specifying the side the el
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -1507,7 +1507,7 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -1532,7 +1532,7 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -1912,7 +1912,7 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -1937,7 +1937,7 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -2317,7 +2317,7 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -2342,7 +2342,7 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -2722,7 +2722,7 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -2747,7 +2747,7 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -3127,7 +3127,7 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -3152,7 +3152,7 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -3532,7 +3532,7 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -3557,7 +3557,7 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -3937,7 +3937,7 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -3962,7 +3962,7 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -4342,7 +4342,7 @@ exports[`<StatusBar /> > when an extension is enabled with no status items > ren
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -4367,7 +4367,7 @@ exports[`<StatusBar /> > when an extension is enabled with no status items > ren
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div

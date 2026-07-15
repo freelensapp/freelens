@@ -652,7 +652,7 @@ exports[`preferences - closing-preferences > given accessing preferences directl
             aria-disabled="false"
             aria-roledescription="draggable"
             role="button"
-            style="z-index: 12; position: absolute;"
+            style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
             tabindex="0"
           >
             <div
@@ -677,7 +677,7 @@ exports[`preferences - closing-preferences > given accessing preferences directl
             aria-disabled="false"
             aria-roledescription="draggable"
             role="button"
-            style="z-index: 11; position: absolute;"
+            style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
             tabindex="0"
           >
             <div
@@ -1044,7 +1044,7 @@ exports[`preferences - closing-preferences > given accessing preferences directl
             aria-disabled="false"
             aria-roledescription="draggable"
             role="button"
-            style="z-index: 12; position: absolute;"
+            style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
             tabindex="0"
           >
             <div
@@ -1069,7 +1069,7 @@ exports[`preferences - closing-preferences > given accessing preferences directl
             aria-disabled="false"
             aria-roledescription="draggable"
             role="button"
-            style="z-index: 11; position: absolute;"
+            style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
             tabindex="0"
           >
             <div
@@ -1294,7 +1294,7 @@ exports[`preferences - closing-preferences > given accessing preferences directl
             aria-disabled="false"
             aria-roledescription="draggable"
             role="button"
-            style="z-index: 12; position: absolute;"
+            style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
             tabindex="0"
           >
             <div
@@ -1319,7 +1319,7 @@ exports[`preferences - closing-preferences > given accessing preferences directl
             aria-disabled="false"
             aria-roledescription="draggable"
             role="button"
-            style="z-index: 11; position: absolute;"
+            style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
             tabindex="0"
           >
             <div
@@ -1544,7 +1544,7 @@ exports[`preferences - closing-preferences > given accessing preferences directl
             aria-disabled="false"
             aria-roledescription="draggable"
             role="button"
-            style="z-index: 12; position: absolute;"
+            style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
             tabindex="0"
           >
             <div
@@ -1569,7 +1569,7 @@ exports[`preferences - closing-preferences > given accessing preferences directl
             aria-disabled="false"
             aria-roledescription="draggable"
             role="button"
-            style="z-index: 11; position: absolute;"
+            style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
             tabindex="0"
           >
             <div
@@ -2350,7 +2350,7 @@ exports[`preferences - closing-preferences > given already in a page and then na
             aria-disabled="false"
             aria-roledescription="draggable"
             role="button"
-            style="z-index: 12; position: absolute;"
+            style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
             tabindex="0"
           >
             <div
@@ -2375,7 +2375,7 @@ exports[`preferences - closing-preferences > given already in a page and then na
             aria-disabled="false"
             aria-roledescription="draggable"
             role="button"
-            style="z-index: 11; position: absolute;"
+            style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
             tabindex="0"
           >
             <div
@@ -2742,7 +2742,7 @@ exports[`preferences - closing-preferences > given already in a page and then na
             aria-disabled="false"
             aria-roledescription="draggable"
             role="button"
-            style="z-index: 12; position: absolute;"
+            style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
             tabindex="0"
           >
             <div
@@ -2767,7 +2767,7 @@ exports[`preferences - closing-preferences > given already in a page and then na
             aria-disabled="false"
             aria-roledescription="draggable"
             role="button"
-            style="z-index: 11; position: absolute;"
+            style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
             tabindex="0"
           >
             <div
@@ -2992,7 +2992,7 @@ exports[`preferences - closing-preferences > given already in a page and then na
             aria-disabled="false"
             aria-roledescription="draggable"
             role="button"
-            style="z-index: 12; position: absolute;"
+            style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
             tabindex="0"
           >
             <div
@@ -3017,7 +3017,7 @@ exports[`preferences - closing-preferences > given already in a page and then na
             aria-disabled="false"
             aria-roledescription="draggable"
             role="button"
-            style="z-index: 11; position: absolute;"
+            style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
             tabindex="0"
           >
             <div
@@ -3242,7 +3242,7 @@ exports[`preferences - closing-preferences > given already in a page and then na
             aria-disabled="false"
             aria-roledescription="draggable"
             role="button"
-            style="z-index: 12; position: absolute;"
+            style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
             tabindex="0"
           >
             <div
@@ -3267,7 +3267,7 @@ exports[`preferences - closing-preferences > given already in a page and then na
             aria-disabled="false"
             aria-roledescription="draggable"
             role="button"
-            style="z-index: 11; position: absolute;"
+            style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
             tabindex="0"
           >
             <div

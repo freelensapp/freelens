@@ -250,7 +250,7 @@ exports[`opening catalog entity details panel > renders 1`] = `
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -275,7 +275,7 @@ exports[`opening catalog entity details panel > renders 1`] = `
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -1225,7 +1225,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -1250,7 +1250,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -2200,7 +2200,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -2225,7 +2225,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -3207,7 +3207,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -3232,7 +3232,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -4214,7 +4214,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -4239,7 +4239,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -5473,7 +5473,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -5498,7 +5498,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -6468,7 +6468,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -6493,7 +6493,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -7463,7 +7463,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -7488,7 +7488,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -8059,7 +8059,7 @@ exports[`opening catalog entity details panel > when not navigated to the catalo
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -8084,7 +8084,7 @@ exports[`opening catalog entity details panel > when not navigated to the catalo
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div

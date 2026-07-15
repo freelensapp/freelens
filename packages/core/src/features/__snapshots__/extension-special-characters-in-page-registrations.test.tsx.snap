@@ -249,7 +249,7 @@ exports[`extension special characters in page registrations > renders 1`] = `
             aria-disabled="false"
             aria-roledescription="draggable"
             role="button"
-            style="z-index: 12; position: absolute;"
+            style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
             tabindex="0"
           >
             <div
@@ -274,7 +274,7 @@ exports[`extension special characters in page registrations > renders 1`] = `
             aria-disabled="false"
             aria-roledescription="draggable"
             role="button"
-            style="z-index: 11; position: absolute;"
+            style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
             tabindex="0"
           >
             <div
@@ -497,7 +497,7 @@ exports[`extension special characters in page registrations > when navigating to
             aria-disabled="false"
             aria-roledescription="draggable"
             role="button"
-            style="z-index: 12; position: absolute;"
+            style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
             tabindex="0"
           >
             <div
@@ -522,7 +522,7 @@ exports[`extension special characters in page registrations > when navigating to
             aria-disabled="false"
             aria-roledescription="draggable"
             role="button"
-            style="z-index: 11; position: absolute;"
+            style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
             tabindex="0"
           >
             <div

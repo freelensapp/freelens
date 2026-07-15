@@ -710,7 +710,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -735,7 +735,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -1575,7 +1575,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -1600,7 +1600,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -2329,7 +2329,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -2354,7 +2354,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -3169,7 +3169,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -3194,7 +3194,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -4078,7 +4078,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -4103,7 +4103,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -4832,7 +4832,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -4857,7 +4857,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -5586,7 +5586,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -5611,7 +5611,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -6340,7 +6340,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -6365,7 +6365,7 @@ exports[`listing active helm repositories in preferences > when navigating to pr
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div

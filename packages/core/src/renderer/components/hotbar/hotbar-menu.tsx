@@ -98,6 +98,8 @@ function HotbarDraggableIcon({
       style={{
         zIndex: defaultHotbarCells - index,
         position: "absolute" as const,
+        opacity: isDragging ? 0 : 1,
+        pointerEvents: isDragging ? "none" : "auto",
       }}
     >
       {children(isDragging)}

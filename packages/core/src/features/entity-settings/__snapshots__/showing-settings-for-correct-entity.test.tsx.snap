@@ -250,7 +250,7 @@ exports[`Showing correct entity settings > renders 1`] = `
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -275,7 +275,7 @@ exports[`Showing correct entity settings > renders 1`] = `
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -656,7 +656,7 @@ exports[`Showing correct entity settings > when navigating to local cluster enti
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -681,7 +681,7 @@ exports[`Showing correct entity settings > when navigating to local cluster enti
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -1083,7 +1083,7 @@ exports[`Showing correct entity settings > when navigating to non-local cluster 
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -1108,7 +1108,7 @@ exports[`Showing correct entity settings > when navigating to non-local cluster 
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -1411,7 +1411,7 @@ exports[`Showing correct entity settings > when navigating to weblink entity set
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 12; position: absolute;"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div
@@ -1436,7 +1436,7 @@ exports[`Showing correct entity settings > when navigating to weblink entity set
               aria-disabled="false"
               aria-roledescription="draggable"
               role="button"
-              style="z-index: 11; position: absolute;"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
               tabindex="0"
             >
               <div

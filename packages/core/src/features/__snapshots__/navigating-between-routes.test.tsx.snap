@@ -97,7 +97,7 @@ exports[`navigating between routes > given route with optional path parameters >
             aria-disabled="false"
             aria-roledescription="draggable"
             role="button"
-            style="z-index: 12; position: absolute;"
+            style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
             tabindex="0"
           >
             <div
@@ -122,7 +122,7 @@ exports[`navigating between routes > given route with optional path parameters >
             aria-disabled="false"
             aria-roledescription="draggable"
             role="button"
-            style="z-index: 11; position: absolute;"
+            style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
             tabindex="0"
           >
             <div
@@ -345,7 +345,7 @@ exports[`navigating between routes > given route without path parameters > when 
             aria-disabled="false"
             aria-roledescription="draggable"
             role="button"
-            style="z-index: 12; position: absolute;"
+            style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
             tabindex="0"
           >
             <div
@@ -370,7 +370,7 @@ exports[`navigating between routes > given route without path parameters > when 
             aria-disabled="false"
             aria-roledescription="draggable"
             role="button"
-            style="z-index: 11; position: absolute;"
+            style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
             tabindex="0"
           >
             <div
