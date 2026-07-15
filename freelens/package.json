@@ -142,7 +142,7 @@
     "electron": "^42.7.0",
     "electron-builder": "26.15.6",
     "electron-builder-squirrel-windows": "26.15.6",
-    "electron-vite": "5.0.0",
+    "electron-vite": "6.0.0-beta.1",
     "playwright": "^1.61.1",
     "sass-embedded": "1.100.0",
     "typescript": "^6.0.3",
