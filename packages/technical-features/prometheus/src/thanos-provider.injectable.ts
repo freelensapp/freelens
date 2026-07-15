@@ -19,15 +19,21 @@ import type { PrometheusProvider } from "./provider";
 // this schema — unlike the operator style, whose `kube_pod_info` join on
 // `pod`/`namespace` would return nothing here and yield 0% everywhere.
 //
-// The one exception is `workloadMemoryUsage`, which the Helm/operator styles
-// derive from cAdvisor's `container_memory_working_set_bytes`. On typical
-// Thanos setups those container series are labelled only with `instance`
-// (`<node-ip>:10250`) and carry no `node` label, so neither the Helm
-// `instance=~"<node-name>"` filter nor a `by (node)` grouping can identify a
-// node — the node list/detail memory bar (which reads `workloadMemoryUsage`)
-// stays empty. We instead derive node memory usage from node-exporter
-// (`MemTotal - MemAvailable`), which is keyed by `node` and lines up with how
-// Freelens filters by node name.
+// Two queries need overriding because the Helm/operator styles derive them
+// from kubelet-scraped metrics (cAdvisor / `kubelet_*`). On typical Thanos
+// setups those series are labelled only with `instance` (`<node-ip>:10250`)
+// and carry no `node` label, so neither the Helm `instance=~"<node-name>"`
+// filter nor a `by (node)` grouping can identify a node:
+//
+//   - `workloadMemoryUsage` (from `container_memory_working_set_bytes`) feeds
+//     the node list/detail memory bar. We derive node memory usage from
+//     node-exporter (`MemTotal - MemAvailable`), keyed by `node`.
+//   - `podUsage` (from `kubelet_running_pod_count`/`kubelet_running_pods`)
+//     feeds the node detail Pods chart. We count pods per node from
+//     kube-state-metrics' `kube_pod_info`, which carries a `node` label.
+//
+// Both replacements key on `node`, lining up with how Freelens filters node
+// metrics by node name.
 export const getThanosLikeQueryFor = ({
   rateAccuracy,
 }: {
@@ -36,13 +42,23 @@ export const getThanosLikeQueryFor = ({
   const getHelmQuery = getHelmLikeQueryFor({ rateAccuracy });
 
   return (opts, queryName) => {
-    if (queryName === "workloadMemoryUsage") {
-      switch (opts.category) {
-        case "cluster":
-          return `sum(node_memory_MemTotal_bytes{node=~"${opts.nodes}"} - node_memory_MemAvailable_bytes{node=~"${opts.nodes}"}) by (node)`;
-        case "nodes":
-          return `sum(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) by (node)`;
-      }
+    switch (queryName) {
+      case "workloadMemoryUsage":
+        switch (opts.category) {
+          case "cluster":
+            return `sum(node_memory_MemTotal_bytes{node=~"${opts.nodes}"} - node_memory_MemAvailable_bytes{node=~"${opts.nodes}"}) by (node)`;
+          case "nodes":
+            return `sum(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) by (node)`;
+        }
+        break;
+      case "podUsage":
+        switch (opts.category) {
+          case "cluster":
+            return `count(kube_pod_info{node=~"${opts.nodes}"}) by (node)`;
+          case "nodes":
+            return `count(kube_pod_info) by (node)`;
+        }
+        break;
     }
 
     return getHelmQuery(opts, queryName);
