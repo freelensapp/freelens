@@ -258,9 +258,16 @@ function runtimeRequireExternalsPlugin() {
       if (!id.startsWith(PREFIX)) return null;
       const spec = id.slice(PREFIX.length);
 
-      // Assign require to a local first so the bundler leaves the call alone.
+      // Look up `require` off the runtime global through a computed property so
+      // the bundler cannot recognise a static require() call. Under Vite 8
+      // (rolldown) a plain `require(spec)` — even behind a `const _r_ = require`
+      // alias — is re-resolved back into this same virtual module, yielding a
+      // self-referential module whose exports are all undefined. Consumers then
+      // crash with "Class extends value undefined" (e.g. minipass extending
+      // EventEmitter from `node:events`). Rollup (Vite 7) left the call alone,
+      // hence the regression.
       const lines = [
-        `const _r_ = require;`,
+        `const _r_ = globalThis[${JSON.stringify("require")}];`,
         `const _m_ = _r_(${JSON.stringify(spec)});`,
         `export default (_m_?.default ?? _m_);`,
       ];
