@@ -9,7 +9,7 @@ import "./list.scss";
 import { Spinner } from "@freelensapp/spinner";
 import { array, cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import AnsiUp from "ansi_up";
+import { AnsiUp } from "ansi_up";
 import autoBindReact from "auto-bind/react";
 import DOMPurify from "dompurify";
 import { debounce } from "es-toolkit/compat";
