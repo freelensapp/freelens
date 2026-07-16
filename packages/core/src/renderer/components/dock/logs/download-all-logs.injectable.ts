@@ -9,6 +9,7 @@ import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { getInjectable } from "@ogre-tools/injectable";
 import openSaveFileDialogInjectable from "../../../utils/save-file.injectable";
 import callForLogsInjectable from "./call-for-logs.injectable";
+import { getTimestampedLogFilename } from "./get-timestamped-log-filename";
 
 import type { ResourceDescriptor } from "@freelensapp/kube-api";
 import type { PodLogsQuery } from "@freelensapp/kube-object";
@@ -28,7 +29,7 @@ const downloadAllLogsInjectable = getInjectable({
       });
 
       if (logs) {
-        openSaveFileDialog(`${query.container}.log`, logs, "text/plain");
+        openSaveFileDialog(getTimestampedLogFilename(query.container ?? params.name), logs, "text/plain");
       } else {
         showErrorNotification("No logs to download");
       }
