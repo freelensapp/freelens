@@ -307,6 +307,11 @@ jobs:
       id-token: write
 
     steps:
+      - name: Checkout (default branch)
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
       - uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
@@ -345,6 +350,11 @@ jobs:
       actions: read
 
     steps:
+      - name: Checkout (default branch)
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
       - name: Download PowerShell script
         uses: actions/download-artifact@v8
         with:
