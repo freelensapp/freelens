@@ -552,8 +552,8 @@ importers:
         specifier: ^6.0.0
         version: 6.0.0(patch_hash=fb7ebbc29ef246137af8ea109596e698df4691ccaa0b87ed5969259bcb27e435)
       ansi_up:
-        specifier: ^5.2.1
-        version: 5.2.1
+        specifier: ^6.0.6
+        version: 6.0.6
       auto-bind:
         specifier: ^4.0.0
         version: 4.0.0
@@ -4093,8 +4093,8 @@ packages:
     resolution: {integrity: sha512-4Dj6M28JB+oAH8kFkTLUo+a2jwOFkuqb3yucU0CANcRRUbxS0cP0nZYCGjcc3BNXwRIsUVmDGgzawme7zvJHvg==}
     engines: {node: '>=12'}
 
-  ansi_up@5.2.1:
-    resolution: {integrity: sha512-5bz5T/7FRmlxA37zDXhG6cAwlcZtfnmNLDJra66EEIT3kYlw5aPJdbkJEhm59D6kA4Wi5ict6u6IDYHJaQlH+g==}
+  ansi_up@6.0.6:
+    resolution: {integrity: sha512-yIa1x3Ecf8jWP4UWEunNjqNX6gzE4vg2gGz+xqRGY+TBSucnYp6RRdPV4brmtg6bQ1ljD48mZ5iGSEj7QEpRKA==}
 
   anynum@1.0.1:
     resolution: {integrity: sha512-N6//FLET/tXYNM/F6ABca1oH6fWB+KlTt909Le28WMDBk8oaT4vY17DCrwg2MvmuqUKt3Ni4N5dGJ/EoBgcO6A==}
@@ -9000,7 +9000,7 @@ snapshots:
 
   ansi-styles@6.2.3: {}
 
-  ansi_up@5.2.1: {}
+  ansi_up@6.0.6: {}
 
   anynum@1.0.1: {}
 
