@@ -386,6 +386,11 @@ jobs:
       id-token: write
 
     steps:
+      - name: Checkout (default branch)
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
       - name: Download results from Windows
         uses: actions/download-artifact@v8
         with:
