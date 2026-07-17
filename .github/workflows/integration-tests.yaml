@@ -187,10 +187,12 @@ jobs:
       # `_electron` API, which uses Electron's own bundled Chromium, so
       # Playwright's browsers are never downloaded. `install-deps` is still
       # needed on Linux: it apt-installs the shared libraries that Chromium (and
-      # thus the Electron app) needs to launch under xvfb.
+      # thus the Electron app) needs to launch under xvfb. Scope it to `chromium`
+      # so only Chromium's libraries are installed, skipping the heavier
+      # Firefox/WebKit dependency set that the Electron app never uses.
       - name: Install Playwright's OS dependencies (Linux)
         if: runner.os == 'Linux'
-        run: pnpx playwright install-deps
+        run: pnpx playwright install-deps chromium
 
       - name: Build packages
         if: runner.os != 'Windows'
