@@ -13,7 +13,7 @@ import React from "react";
 import activeThemeInjectable from "../../themes/active.injectable";
 import { Chart } from "./chart";
 
-import type { ChartOptions, TooltipItem } from "chart.js";
+import type { ChartOptions, ChartTypeRegistry, TooltipItem } from "chart.js";
 import type { IComputedValue } from "mobx";
 
 import type { LensTheme } from "../../themes/lens-theme";
@@ -60,7 +60,7 @@ const NonInjectedPieChart = observer(
           position: "cursor",
           callbacks: {
             title: () => "",
-            label: (context: TooltipItem<"doughnut" | "pie">) => {
+            label: (context: TooltipItem<keyof ChartTypeRegistry>) => {
               const dataset = context.dataset as PieChartDataSets;
               const datasetData = (dataset.data ?? []) as number[];
               const total = datasetData.reduce((acc, cur) => acc + cur, 0);
@@ -73,7 +73,7 @@ const NonInjectedPieChart = observer(
                 : `${dataset.label}: ${percentLabel}`;
             },
           },
-          filter: (context: TooltipItem<"doughnut" | "pie">) => {
+          filter: (context: TooltipItem<keyof ChartTypeRegistry>) => {
             const { datasetIndex, dataIndex, dataset } = context;
 
             if (datasetIndex === undefined) {
