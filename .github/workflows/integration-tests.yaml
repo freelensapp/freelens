@@ -263,7 +263,6 @@ jobs:
         working-directory: freelens
         run: node "$ELECTRON_BUILDER_PATH" --publish never --${{ matrix.os }} dir --${{ matrix.arch }}
         env:
-          DEBUG: electron-builder,electron-builder:*
           npm_config_user_agent: pnpm
 
       - name: Restore dev node_modules
