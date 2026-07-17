@@ -75,7 +75,7 @@ const createKubeAuthProxyInjectable = getInjectable({
         }
 
         const apiUrl = await clusterApiUrl();
-        const certificate = di.inject(kubeAuthProxyCertificateInjectable, apiUrl.hostname);
+        const certificate = await di.inject(kubeAuthProxyCertificateInjectable, apiUrl.hostname);
 
         proxyProcess = spawn(freeLensK8sProxyPath, [], {
           env: {

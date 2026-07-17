@@ -65,11 +65,13 @@ describe("kube api upgrade request", () => {
       ensureRunning: vi.fn(),
       stop: vi.fn(),
     }));
-    di.override(kubeAuthProxyCertificateInjectable, () => ({
-      cert: "some-cert",
-      private: "some-key",
-      public: "some-public-key",
-    }));
+    di.override(kubeAuthProxyCertificateInjectable, () =>
+      Promise.resolve({
+        cert: "some-cert",
+        private: "some-key",
+        public: "some-public-key",
+      }),
+    );
 
     connectMock.mockImplementation(mockConnectImplementation(proxySocket));
 
@@ -134,11 +136,13 @@ describe("kube api upgrade request", () => {
       ensureRunning: vi.fn(),
       stop: vi.fn(),
     }));
-    di.override(kubeAuthProxyCertificateInjectable, () => ({
-      cert: "some-cert",
-      private: "some-key",
-      public: "some-public-key",
-    }));
+    di.override(kubeAuthProxyCertificateInjectable, () =>
+      Promise.resolve({
+        cert: "some-cert",
+        private: "some-key",
+        public: "some-public-key",
+      }),
+    );
 
     connectMock.mockImplementation(mockConnectImplementation(proxySocket));
 
@@ -189,11 +193,13 @@ describe("kube api upgrade request", () => {
       ensureRunning: vi.fn(),
       stop: vi.fn(),
     }));
-    di.override(kubeAuthProxyCertificateInjectable, () => ({
-      cert: "some-cert",
-      private: "some-key",
-      public: "some-public-key",
-    }));
+    di.override(kubeAuthProxyCertificateInjectable, () =>
+      Promise.resolve({
+        cert: "some-cert",
+        private: "some-key",
+        public: "some-public-key",
+      }),
+    );
 
     connectMock.mockImplementation(mockConnectImplementation(proxySocket));
 
@@ -244,11 +250,13 @@ describe("kube api upgrade request", () => {
       ensureRunning: vi.fn(),
       stop: vi.fn(),
     }));
-    di.override(kubeAuthProxyCertificateInjectable, () => ({
-      cert: "some-cert",
-      private: "some-key",
-      public: "some-public-key",
-    }));
+    di.override(kubeAuthProxyCertificateInjectable, () =>
+      Promise.resolve({
+        cert: "some-cert",
+        private: "some-key",
+        public: "some-public-key",
+      }),
+    );
 
     connectMock.mockImplementation(mockConnectImplementation(proxySocket));
 
