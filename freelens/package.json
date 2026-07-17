@@ -83,7 +83,6 @@
     "electron-window-state": "^5.0.3",
     "fs-extra": "^11.3.6",
     "glob-to-regexp": "^0.4.1",
-    "grapheme-splitter": "^1.0.4",
     "handlebars": "^4.7.9",
     "hpagent": "^1.2.0",
     "http-proxy-node16": "^1.0.6",
