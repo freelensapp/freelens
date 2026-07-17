@@ -55,7 +55,6 @@ jobs:
       DO_NOT_TRACK: "1"
       ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
       ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
-      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.cache/playwright
       TURBOREPO_CACHE: ${{ github.workspace }}/.turbo
 
     steps:
@@ -128,10 +127,6 @@ jobs:
         shell: bash
         run: echo "electron_builder_version=$(yq -r .importers.freelens.devDependencies.electron-builder.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
 
-      - name: Get Playwright version
-        shell: bash
-        run: echo "playwright_version=$(yq -r .importers.freelens.devDependencies.playwright.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
-
       - name: Use Electron cache
         uses: actions/cache@v6
         with:
@@ -148,15 +143,6 @@ jobs:
           restore-keys: |
             ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-builder-
 
-      - name: Use Playwright cache
-        id: playwright-cache
-        uses: actions/cache@v6
-        with:
-          path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
-          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-playwright-${{ env.playwright_version }}
-          restore-keys: |
-            ${{ matrix.runs-on }}-${{ matrix.arch }}-playwright-
-
       - name: Use Turborepo cache
         uses: actions/cache@v6
         with:
@@ -164,6 +150,19 @@ jobs:
           key: ${{ matrix.runs-on }}-${{ matrix.arch }}-turborepo-${{ hashFiles('package.json', 'freelens/package.json', 'packages/**/package.json', 'pnpm-lock.yaml','turbo.json') }}
           restore-keys: |
             ${{ matrix.runs-on }}-${{ matrix.arch }}-turborepo-
+
+      # Cache the .deb archives and package lists that `playwright install-deps`
+      # downloads through apt, so re-runs reuse them instead of re-downloading.
+      # apt is pointed at this project-local directory via a global config file
+      # written in the install step below.
+      - name: Use APT cache (Linux)
+        if: runner.os == 'Linux'
+        uses: actions/cache@v6
+        with:
+          path: .apt
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-apt-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-apt-
 
       - name: Start KinD cluster (Linux)
         if: runner.os == 'Linux'
@@ -197,13 +196,32 @@ jobs:
         if: runner.os == 'windows'
         run: echo "HOME=$HOME" | Out-File -FilePath $env:GITHUB_ENV -Append
 
-      - name: Install Playwright with dependencies
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: pnpx playwright install --with-deps
-
-      - name: Install Playwright's dependencies
-        if: steps.playwright-cache.outputs.cache-hit == 'true'
-        run: pnpx playwright install-deps
+      # The integration tests drive the packaged Electron app via Playwright's
+      # `_electron` API, which uses Electron's own bundled Chromium, so
+      # Playwright's browsers are never downloaded. `install-deps` is still
+      # needed on Linux: it apt-installs the shared libraries that Chromium (and
+      # thus the Electron app) needs to launch under xvfb. Scope it to `chromium`
+      # so only Chromium's libraries are installed, skipping the heavier
+      # Firefox/WebKit dependency set that the Electron app never uses.
+      - name: Install Playwright's OS dependencies (Linux)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          set -eo pipefail
+          # `playwright install-deps` runs its own `apt-get update`/`install`, so
+          # the archive/list redirect has to be a global apt config file it picks
+          # up rather than per-invocation `-o` flags. Point apt at the cached
+          # project-local dirs (see the APT cache step above); dpkg's status stays
+          # at the system default, so packages still install into the runner.
+          mkdir -p .apt/cache/archives/partial .apt/state/lists/partial
+          sudo tee /etc/apt/apt.conf.d/00freelens-cache >/dev/null <<EOF
+          Dir::Cache::archives "$PWD/.apt/cache/archives";
+          Dir::State::lists "$PWD/.apt/state/lists";
+          EOF
+          pnpx playwright install-deps chromium
+          # apt ran as root, so hand the cache dir back to the runner user for the
+          # cache-save post step to read.
+          sudo chown -R "$(id -u):$(id -g)" .apt
 
       - name: Build packages
         if: runner.os != 'Windows'
@@ -254,7 +272,6 @@ jobs:
         working-directory: freelens
         run: node "$ELECTRON_BUILDER_PATH" --publish never --${{ matrix.os }} dir --${{ matrix.arch }}
         env:
-          DEBUG: electron-builder,electron-builder:*
           npm_config_user_agent: pnpm
 
       - name: Restore dev node_modules
