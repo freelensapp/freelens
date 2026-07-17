@@ -41,7 +41,7 @@
     "@freelensapp/utilities": "workspace:^",
     "@types/react": "^17.0.93",
     "mobx-observable-history": "^2.0.3",
-    "typescript": "^6.0.3",
+    "typescript": "^7.0.2",
     "vitest": "^4.1.10"
   },
   "publishConfig": {

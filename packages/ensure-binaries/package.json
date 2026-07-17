@@ -44,7 +44,7 @@
     "@types/gunzip-maybe": "^1.4.3",
     "@types/node": "~24.12.4",
     "@types/tar-stream": "^3.1.4",
-    "typescript": "^6.0.3"
+    "typescript": "^7.0.2"
   },
   "publishConfig": {
     "access": "public",

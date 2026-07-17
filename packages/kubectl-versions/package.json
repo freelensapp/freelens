@@ -31,7 +31,7 @@
     "node-fetch": "^3.3.2",
     "semver": "^7.8.5",
     "typed-regex": "^0.0.8",
-    "typescript": "^6.0.3"
+    "typescript": "^7.0.2"
   },
   "publishConfig": {
     "access": "public",

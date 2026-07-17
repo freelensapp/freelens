@@ -36,7 +36,7 @@
     "@freelensapp/typescript": "workspace:^",
     "@ogre-tools/injectable-extension-for-mobx": "^17.11.1",
     "mobx": "^6.15.0",
-    "typescript": "^6.0.3",
+    "typescript": "^7.0.2",
     "vitest": "^4.1.10"
   },
   "publishConfig": {
