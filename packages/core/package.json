@@ -111,7 +111,7 @@
     "chalk": "^4.1.2",
     "chart.js": "^4.5.1",
     "chartjs-adapter-moment": "^1.0.1",
-    "chokidar": "^4.0.3",
+    "chokidar": "^5.0.0",
     "clsx": "^2.1.1",
     "color": "^5.0.3",
     "conf": "^10.2.0",
