@@ -55,7 +55,6 @@ jobs:
       DO_NOT_TRACK: "1"
       ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
       ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
-      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.cache/playwright
       TURBOREPO_CACHE: ${{ github.workspace }}/.turbo
 
     steps:
@@ -128,10 +127,6 @@ jobs:
         shell: bash
         run: echo "electron_builder_version=$(yq -r .importers.freelens.devDependencies.electron-builder.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
 
-      - name: Get Playwright version
-        shell: bash
-        run: echo "playwright_version=$(yq -r .importers.freelens.devDependencies.playwright.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
-
       - name: Use Electron cache
         uses: actions/cache@v6
         with:
@@ -147,24 +142,6 @@ jobs:
           key: ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-builder-${{ env.electron_builder_version }}
           restore-keys: |
             ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-builder-
-
-      # The integration tests drive the packaged Electron app through
-      # Playwright's `_electron` API, which uses Electron's own bundled Chromium
-      # and never touches Playwright's downloaded browsers. So the browser
-      # download/cache and `install-deps` are only relevant on Linux, where
-      # `install-deps` (an apt, Ubuntu/Debian-only operation) pulls the shared
-      # libraries Chromium needs. On macOS this step is a ~2s no-op, but on the
-      # Windows runners the `pnpx` (dlx) fetch of Playwright makes it cost ~3 min
-      # for no benefit, so the whole thing is gated to Linux.
-      - name: Use Playwright cache
-        id: playwright-cache
-        if: runner.os == 'Linux'
-        uses: actions/cache@v6
-        with:
-          path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
-          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-playwright-${{ env.playwright_version }}
-          restore-keys: |
-            ${{ matrix.runs-on }}-${{ matrix.arch }}-playwright-
 
       - name: Use Turborepo cache
         uses: actions/cache@v6
@@ -206,12 +183,13 @@ jobs:
         if: runner.os == 'windows'
         run: echo "HOME=$HOME" | Out-File -FilePath $env:GITHUB_ENV -Append
 
-      - name: Install Playwright with dependencies
-        if: runner.os == 'Linux' && steps.playwright-cache.outputs.cache-hit != 'true'
-        run: pnpx playwright install --with-deps
-
-      - name: Install Playwright's dependencies
-        if: runner.os == 'Linux' && steps.playwright-cache.outputs.cache-hit == 'true'
+      # The integration tests drive the packaged Electron app via Playwright's
+      # `_electron` API, which uses Electron's own bundled Chromium, so
+      # Playwright's browsers are never downloaded. `install-deps` is still
+      # needed on Linux: it apt-installs the shared libraries that Chromium (and
+      # thus the Electron app) needs to launch under xvfb.
+      - name: Install Playwright's OS dependencies (Linux)
+        if: runner.os == 'Linux'
         run: pnpx playwright install-deps
 
       - name: Build packages
