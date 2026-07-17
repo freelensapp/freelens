@@ -121,9 +121,6 @@ importers:
       glob-to-regexp:
         specifier: ^0.4.1
         version: 0.4.1
-      grapheme-splitter:
-        specifier: ^1.0.4
-        version: 1.0.4
       handlebars:
         specifier: ^4.7.9
         version: 4.7.9
@@ -599,9 +596,6 @@ importers:
       glob-to-regexp:
         specifier: ^0.4.1
         version: 0.4.1
-      grapheme-splitter:
-        specifier: ^1.0.4
-        version: 1.0.4
       handlebars:
         specifier: ^4.7.9
         version: 4.7.9
@@ -5069,9 +5063,6 @@ packages:
 
   graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
-
-  grapheme-splitter@1.0.4:
-    resolution: {integrity: sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==}
 
   gunzip-maybe@1.4.2:
     resolution: {integrity: sha512-4haO1M4mLO91PW57BMsDFf75UmwoRX0GkdD+Faw+Lr+r/OZrOCS0pIBwOL1xCKQqnQzbNFGgK2V2CpBUPeFNTw==}
@@ -10024,8 +10015,6 @@ snapshots:
       responselike: 2.0.1
 
   graceful-fs@4.2.11: {}
-
-  grapheme-splitter@1.0.4: {}
 
   gunzip-maybe@1.4.2:
     dependencies:
