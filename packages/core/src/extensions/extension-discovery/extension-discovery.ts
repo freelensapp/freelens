@@ -6,12 +6,12 @@
 
 import { EventEmitter } from "node:events";
 import { isErrnoException } from "@freelensapp/utilities";
-import AwaitLock from "await-lock";
 import { ipcRenderer } from "electron";
 import { makeObservable, observable, reaction, when } from "mobx";
 import { broadcastMessage, ipcMainHandle, ipcRendererOn } from "../../common/ipc";
 import { extensionDiscoveryStateChannel } from "../../common/ipc/extension-handling";
 import { toJS } from "../../common/utils";
+import AwaitLock from "../../common/utils/await-lock";
 import { requestInitialExtensionDiscovery } from "../../renderer/ipc";
 import type { Stats } from "node:fs";
 

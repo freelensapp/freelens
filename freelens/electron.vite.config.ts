@@ -240,10 +240,13 @@ function runtimeRequireExternalsPlugin() {
     return names;
   };
 
+  let isBuild = false;
+
   return {
     name: "freelens:runtime-require-externals",
     enforce: "pre" as const,
-    config() {
+    config(_config: unknown, env: { command: string }) {
+      isBuild = env.command === "build";
       // Keep Vite's dep pre-bundler (esbuild) from trying to resolve these as
       // browser modules; excluded ids stay external and reach resolveId below.
       return { optimizeDeps: { exclude: ["electron", ...nodeBuiltins] } };
@@ -258,12 +261,41 @@ function runtimeRequireExternalsPlugin() {
       if (!id.startsWith(PREFIX)) return null;
       const spec = id.slice(PREFIX.length);
 
-      // Assign require to a local first so the bundler leaves the call alone.
-      const lines = [
-        `const _r_ = require;`,
-        `const _m_ = _r_(${JSON.stringify(spec)});`,
-        `export default (_m_?.default ?? _m_);`,
-      ];
+      // Look up `require` off the runtime global through a computed property so
+      // the bundler cannot recognise a static require() call. Under Vite 8
+      // (rolldown) a plain `require(spec)` — even behind a `const _r_ = require`
+      // alias — is re-resolved back into this same virtual module, yielding a
+      // self-referential module whose exports are all undefined. Consumers then
+      // crash with "Class extends value undefined" (e.g. minipass extending
+      // EventEmitter from `node:events`). Rollup (Vite 7) left the call alone,
+      // hence the regression.
+      const requireExpr = `globalThis[${JSON.stringify("require")}](${JSON.stringify(spec)})`;
+
+      // Node builtins in the production build (rolldown): emit a CommonJS module
+      // so `require("fs")` and friends return the real, MUTABLE runtime module
+      // object. Modules like graceful-fs monkey-patch their `require("fs")`
+      // result (`fs.close = ...`); an ESM shim's named exports become read-only
+      // namespace bindings, which rolldown's `__toCommonJS` reconstruction turns
+      // into getter-only properties, so the monkey-patch throws "Cannot set
+      // property close ... which has only a getter". A real `module.exports`
+      // passes the runtime object through untouched, and `import { x } from "fs"`
+      // still works via rolldown's CommonJS→ESM interop.
+      //
+      // The dev server (Vite native ESM) does NOT do that interop: a consumer's
+      // `import { Buffer } from "node:buffer"` against a `module.exports = ...`
+      // module fails at runtime ("does not provide an export named 'Buffer'").
+      // So in dev, emit real ESM named exports instead. graceful-fs works there
+      // because Vite's dev interop hands it a mutable object.
+      if (isBuild && spec !== "electron" && !spec.startsWith("electron/")) {
+        return { code: `module.exports = ${requireExpr};`, moduleSideEffects: false };
+      }
+
+      // ESM shim: dev-mode Node builtins, and `electron` in every mode.
+      // `require("electron")` returns a path string at build time, so its
+      // exports cannot be introspected — hence the explicit `electronApiNames`
+      // list — whereas builtins are introspected with `Object.keys` (enumerable
+      // own keys only, never `prototype`/`length`/`name`).
+      const lines = [`const _m_ = ${requireExpr};`, `export default (_m_?.default ?? _m_);`];
 
       if (spec === "electron") {
         for (const name of electronApiNames) {

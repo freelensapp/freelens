@@ -11,7 +11,11 @@ import type { ConfirmDialogParams } from "./confirm-dialog";
 
 const confirmDialogStateInjectable = getInjectable({
   id: "confirm-dialog-state",
-  instantiate: () => observable.box<ConfirmDialogParams | undefined>(),
+  // `deep: false` keeps the params (which include an arbitrary `message`
+  // ReactNode) stored by reference. A deep observable would recursively walk
+  // the React element tree and, through it, into self-referential objects such
+  // as the global object, overflowing the stack.
+  instantiate: () => observable.box<ConfirmDialogParams | undefined>(undefined, { deep: false }),
 });
 
 export default confirmDialogStateInjectable;

@@ -45,7 +45,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   freelens:
     dependencies:
@@ -283,7 +283,7 @@ importers:
         version: 24.12.4
       '@vitejs/plugin-react':
         specifier: 5.2.0
-        version: 5.2.0(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 5.2.0(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
       electron:
         specifier: ^42.7.0
         version: 42.7.0
@@ -294,8 +294,8 @@ importers:
         specifier: 26.15.6
         version: 26.15.6(dmg-builder@26.15.6)
       electron-vite:
-        specifier: 5.0.0
-        version: 5.0.0(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        specifier: 6.0.0-beta.1
+        version: 6.0.0-beta.1(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
       playwright:
         specifier: ^1.61.1
         version: 1.61.1
@@ -309,11 +309,11 @@ importers:
         specifier: ^5.2.0
         version: 5.2.0(ts-node@10.9.2(@types/node@24.12.4)(typescript@6.0.3))(typescript@6.0.3)
       vite:
-        specifier: 7.3.6
-        version: 7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0)
+        specifier: 8.1.4
+        version: 8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0)
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/business-features/keyboard-shortcuts:
     dependencies:
@@ -368,7 +368,7 @@ importers:
         version: 6.15.0
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/cluster-settings:
     dependencies:
@@ -412,7 +412,7 @@ importers:
         version: 29.1.1(@noble/hashes@2.2.0)
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/core:
     dependencies:
@@ -872,7 +872,7 @@ importers:
         version: 5.2.0(ts-node@10.9.2(@types/node@24.12.4)(typescript@6.0.3))(typescript@6.0.3)
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
       vitest-canvas-mock:
         specifier: ^1.1.4
         version: 1.1.4(vitest@4.1.10)
@@ -1102,7 +1102,7 @@ importers:
         version: 5.6.0
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/kubectl-versions:
     devDependencies:
@@ -1167,7 +1167,7 @@ importers:
         version: 29.1.1(@noble/hashes@2.2.0)
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
       winston-transport:
         specifier: ^4.9.0
         version: 4.9.0
@@ -1235,7 +1235,7 @@ importers:
         version: 4.7.11
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/semver:
     dependencies:
@@ -1288,7 +1288,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/technical-features/application/application-for-electron-main:
     dependencies:
@@ -1322,7 +1322,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/technical-features/feature-core:
     dependencies:
@@ -1338,7 +1338,7 @@ importers:
         version: 29.1.1(@noble/hashes@2.2.0)
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/technical-features/messaging/computed-channel:
     dependencies:
@@ -1396,7 +1396,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/technical-features/messaging/messaging:
     dependencies:
@@ -1436,7 +1436,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/technical-features/messaging/messaging-fake-bridge:
     dependencies:
@@ -1482,7 +1482,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/technical-features/messaging/messaging-for-main:
     dependencies:
@@ -1513,7 +1513,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/technical-features/messaging/messaging-for-renderer:
     dependencies:
@@ -1550,7 +1550,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/technical-features/prometheus:
     dependencies:
@@ -1639,7 +1639,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/ui-components/animate:
     dependencies:
@@ -1670,7 +1670,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/ui-components/button:
     dependencies:
@@ -1695,7 +1695,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/ui-components/error-boundary:
     dependencies:
@@ -1741,7 +1741,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/ui-components/icon:
     dependencies:
@@ -1808,7 +1808,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/ui-components/notifications:
     dependencies:
@@ -1875,7 +1875,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/ui-components/resizing-anchor:
     dependencies:
@@ -1906,7 +1906,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/ui-components/spinner:
     dependencies:
@@ -1928,7 +1928,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/ui-components/tooltip:
     dependencies:
@@ -1980,7 +1980,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/utility-features/event-emitter:
     devDependencies:
@@ -1992,7 +1992,7 @@ importers:
         version: 29.1.1(@noble/hashes@2.2.0)
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/utility-features/json-api:
     dependencies:
@@ -2084,7 +2084,7 @@ importers:
         version: 6.0.3
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/utility-features/kube-api-specifics:
     dependencies:
@@ -2162,7 +2162,7 @@ importers:
         version: 1.4.0
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/utility-features/startable-stoppable:
     devDependencies:
@@ -2174,7 +2174,7 @@ importers:
         version: 29.1.1(@noble/hashes@2.2.0)
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/utility-features/test-utils:
     dependencies:
@@ -2211,7 +2211,7 @@ importers:
         version: 17.0.2(react@17.0.2)
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/utility-features/utilities:
     dependencies:
@@ -2272,7 +2272,7 @@ importers:
         version: 5.6.0
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
 packages:
 
@@ -2530,8 +2530,17 @@ packages:
     engines: {node: '>=14.14'}
     hasBin: true
 
+  '@emnapi/core@1.11.1':
+    resolution: {integrity: sha512-RSvbQmHzdKzNsLYa/wHrbc3KN4sYLKAdPZxqiM2HATqv/SBk2/ENSHpvXGaLOMcsAyz0poEGqkmmKYG3OWiJEQ==}
+
+  '@emnapi/runtime@1.11.1':
+    resolution: {integrity: sha512-vgj7R3y3Wgx24IQaGPA/R6YFXLHVMOZ0uVEyIQPaWs+rd1AzfEMXlAC22FYwO1XkKR6NPsq7mUandH8oIRdZFw==}
+
   '@emnapi/runtime@1.7.0':
     resolution: {integrity: sha512-oAYoQnCYaQZKVS53Fq23ceWMRxq5EhQsE0x0RdQ55jT7wagMu5k+fS39v1fiSLrtrLQlXwVINenqhLMtTrV/1Q==}
+
+  '@emnapi/wasi-threads@1.2.2':
+    resolution: {integrity: sha512-c95qOXkHdydNKhscBTebqEC1CVAZpyqOfVfBzQ1qgzyl3gfeldUjIggDbIZgDKsHLgnsM+igH7TJ/eAasaVuMA==}
 
   '@emotion/babel-plugin@11.13.5':
     resolution: {integrity: sha512-pxHCpT2ex+0q+HH91/zsdHkw/lXd468DIN2zvfvLtPKLLMo6gQj7oLObq8PhkrxOZb/gGCq03S3Z7PDhS8pduQ==}
@@ -3304,6 +3313,12 @@ packages:
       '@types/react':
         optional: true
 
+  '@napi-rs/wasm-runtime@1.1.6':
+    resolution: {integrity: sha512-ZLv/JdUfkvOy9eCnnBaGfiO+XimbjebAeO+MRQqD/B+FR1tnRN0tpKSJHRbE8sFfS6aqsXZ67TQjfwfsxULVbg==}
+    peerDependencies:
+      '@emnapi/core': ^1.7.1
+      '@emnapi/runtime': ^1.7.1
+
   '@noble/hashes@1.4.0':
     resolution: {integrity: sha512-V1JJ1WTRUqHHrOSh597hURcMqVKVGL/ea3kv0gSnEdsEZ0/+VyPghM1lMNGc00z7CIQorSvbKpuJkxvuHbvdbg==}
     engines: {node: '>= 16'}
@@ -3361,6 +3376,9 @@ packages:
     resolution: {integrity: sha512-cvq/Fa7P57aUXd1z2Tco02ZyTZpsO+9WMLkW7kQ0uaajNb+8xWEnShXV+J3DSLiLe/W72Jzy5CWJqkgm6U8cpg==}
     peerDependencies:
       lodash: ^4.17.21
+
+  '@oxc-project/types@0.139.0':
+    resolution: {integrity: sha512-r9gHphtCs+1M7J0pw6Sn/hh/Wpa/iQrOOkrNAlVLF/gHq+/CJmHIWKKUUhdWjcD6CIa8idarspCsASiXCXvFUw==}
 
   '@parcel/watcher-android-arm64@2.5.1':
     resolution: {integrity: sha512-KF8+j9nNbUN8vzOFDpRMsaKBHZ/mcjEjMToVMJOhTozkDonQFFrRcfdLWn6yWKCmJKmdVxSgHiYvTCef4/qcBA==}
@@ -3471,8 +3489,106 @@ packages:
     resolution: {integrity: sha512-kUdJ4V8/dr1YT9dG+jVhFDvqtPHUZbgw1WnWtc9Fx+JhOpz2fYAgpkx0tOnaszaWwpX9IdHnM1hCDJxdRUtV7w==}
     hasBin: true
 
+  '@rolldown/binding-android-arm64@1.1.5':
+    resolution: {integrity: sha512-lZg8fqIv2v7FF237bwMgzGZEJvGL79/s5knJ/i6FmsGF4XXlzccZ4jb+TrFIxtSSxFtIpdsgrPZeMk1I9AFcyQ==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [arm64]
+    os: [android]
+
+  '@rolldown/binding-darwin-arm64@1.1.5':
+    resolution: {integrity: sha512-51Bnx9pNiMRKSUNtBfySkNJ9vMU9Hh3I1ozDd6gyPPYzaXCfnptUcEZxXGYFn+ul2dtcMUiqGR1Yai2K10uoTw==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@rolldown/binding-darwin-x64@1.1.5':
+    resolution: {integrity: sha512-Tm+gbfC0aHu1tBA/JvKQh32S0K6YgCHkiAF4/W6xX0K0RmNuc94VeK419dJoE65R5aRxmo+noZQSWrAMF6yb6g==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [x64]
+    os: [darwin]
+
+  '@rolldown/binding-freebsd-x64@1.1.5':
+    resolution: {integrity: sha512-JMzDKCCXq93YccG5gz3hvOs1oXRKAf0XYpfOS88e+wZrC8Iugj6j68867vrYZkvpDDpKn/KoKORThmchMpF6TA==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [x64]
+    os: [freebsd]
+
+  '@rolldown/binding-linux-arm-gnueabihf@1.1.5':
+    resolution: {integrity: sha512-uML21j2K5TfPGutKxub+M+nLjZIrWjXQ5Grx4lCe/nimTj9B4L63zHpjXLl4y0L3mcm2htEQIb06oCG/szerNw==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [arm]
+    os: [linux]
+
+  '@rolldown/binding-linux-arm64-gnu@1.1.5':
+    resolution: {integrity: sha512-navSiuTMogvnQoZoM/v+l3ZWo50/NTwSHSzheABx/RCnmUPaKwq9qSo4Br2OYRs21+Fz8uFqITZM3H4opOB0/Q==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [arm64]
+    os: [linux]
+    libc: [glibc]
+
+  '@rolldown/binding-linux-arm64-musl@1.1.5':
+    resolution: {integrity: sha512-lAryqH7IteztmCXQXk0etKj4wBQ7Gx5S6LjKhsgp9zb8I5bsuvU/2llH1hDQcjsFeqIsovMVN339/8pUDDBXxA==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [arm64]
+    os: [linux]
+    libc: [musl]
+
+  '@rolldown/binding-linux-ppc64-gnu@1.1.5':
+    resolution: {integrity: sha512-fsK/sNBnxzBlL4O1JNrZakVQxPspqpED5dLtNsZS9oOKmtSpdNIzxH2kkol5HYTWJN47sE20ztMJPxfZ89qGOg==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [ppc64]
+    os: [linux]
+    libc: [glibc]
+
+  '@rolldown/binding-linux-s390x-gnu@1.1.5':
+    resolution: {integrity: sha512-gLYb4BIadlfTOYT5gO503n8zQjXflgzpD0FcyKh0Mzx3rqCZKnHoJWV9xe1KXUJ5lx2JfcSHr/mhzS0PC/McAA==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [s390x]
+    os: [linux]
+    libc: [glibc]
+
+  '@rolldown/binding-linux-x64-gnu@1.1.5':
+    resolution: {integrity: sha512-FjcpEKUyJygHgs1o50VYNvkt5+7Le/VEdYt0AkRpkL33MnyQfwr8l5mXwMmfmTbyMPr5vJLC+8/Gd9gXnwU1QQ==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [x64]
+    os: [linux]
+    libc: [glibc]
+
+  '@rolldown/binding-linux-x64-musl@1.1.5':
+    resolution: {integrity: sha512-Me+PfPI2TMeOQk0gYWfLQZtTktrmzbr8cDboqX83XKc7UrgAi55gF+2dUkWdxd19n55Essp2yeca+O9N5rBxHg==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [x64]
+    os: [linux]
+    libc: [musl]
+
+  '@rolldown/binding-openharmony-arm64@1.1.5':
+    resolution: {integrity: sha512-yc5WrLzXks6zCQfn9Oxr8pORKyl/pF+QjHmW/Qx3qu0oyrrNC+y2JLTU1E2rcWYAmzlnqngWXHQjy51VzW70Vw==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [arm64]
+    os: [openharmony]
+
+  '@rolldown/binding-wasm32-wasi@1.1.5':
+    resolution: {integrity: sha512-VbQGPX2b4r48TAMIM2cjgluIM1HYutm4pcTEJsle7iEP7sB1dFqtPLBVbdLAZCxy1txCcPxf4QFf4v8uvltPqA==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [wasm32]
+
+  '@rolldown/binding-win32-arm64-msvc@1.1.5':
+    resolution: {integrity: sha512-gHv82k63z4qpV5+Q1y/12KrK0ltWBukVDI8nZcbT7Tt/ZlOIVwppazneq0F93oDxTo3IgAMEDIoQh3E2n6mVsw==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [arm64]
+    os: [win32]
+
+  '@rolldown/binding-win32-x64-msvc@1.1.5':
+    resolution: {integrity: sha512-tTZuDBPw85tEN5PQi1pnEBzDy0Z49HtScLAbD5t6hyeU92A95pRWaSMw1GZZi/RwgSgUIl0xrSlXIT/9QzvYSA==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    cpu: [x64]
+    os: [win32]
+
   '@rolldown/pluginutils@1.0.0-rc.3':
     resolution: {integrity: sha512-eybk3TjzzzV97Dlj5c+XrBFW57eTNhzod66y9HrBlzJ6NsCrWCp/2kaPS3K9wJmurBC0Tdw4yPjXKZqlznim3Q==}
+
+  '@rolldown/pluginutils@1.0.1':
+    resolution: {integrity: sha512-2j9bGt5Jh8hj+vPtgzPtl72j0yRxHAyumoo6TNfAjsLB04UtpSvPbPcDcBMxz7n+9CYB0c1GxQFxYRg2jimqGw==}
 
   '@rollup/rollup-android-arm-eabi@4.62.2':
     resolution: {integrity: sha512-6o7ZLZK+BeenkZCFNDXqpbjw9bD6nuWonvS/lwQJp7NoVVxm6p3qE7qQ5jGuBjiFsgvqjD8mZAU5oWxTmbOeOg==}
@@ -3784,6 +3900,9 @@ packages:
     resolution: {integrity: sha512-Gf+S7ICAdimT/n02bOuVWKvhHnct/HYjZg3oBNIz5hZ9ZyWHbQim9J3P5Qip8WpX0ksxF7eaBVziJCuLnjhqDg==}
     cpu: [arm64]
     os: [win32]
+
+  '@tybys/wasm-util@0.10.3':
+    resolution: {integrity: sha512-F3fo1MYrRJYL3zER0OUOmkutjr1Vp23m7OsSgp7nq4SP6OqX6C/56XFIPAl5bt3zaBRjmW7SGz3u/6LwFpYcOg==}
 
   '@types/aria-query@5.0.1':
     resolution: {integrity: sha512-XTIieEY+gvJ39ChLcB4If5zHtPxt3Syj5rgZR+e1ctpmK8NjPf0zFqsz4JpLJT0xla9GFDKjy8Cpu331nrmE1Q==}
@@ -4269,9 +4388,9 @@ packages:
     resolution: {integrity: sha512-U1Z/ob71V/bXfVABvNr/Kumf5VyeQRBEm6Txb0PQ6S7V5GpBM3w4Cbqz/xPDicR5tN0uvDifng8C+5qECeGwyQ==}
     engines: {node: '>=6.0.0'}
 
-  cac@6.7.14:
-    resolution: {integrity: sha512-b6Ilus+c3RrdDk+JhLKUAQfzzgLEPy6wcXqS7f/xe1EETvsDP6GORG7SFuOs6cID5YkqchW/LXZbX5bc8j7ZcQ==}
-    engines: {node: '>=8'}
+  cac@7.0.0:
+    resolution: {integrity: sha512-tixWYgm5ZoOD+3g6UTea91eow5z6AAHaho3g0V9CNSNb45gM8SmflpAc+GRd1InC4AqN/07Unrgp56Y94N9hJQ==}
+    engines: {node: '>=20.19.0'}
 
   cacheable-lookup@5.0.4:
     resolution: {integrity: sha512-2/kNscPhpcxrOigMZzbiWF7dz8ilhb/nIHU3EyZiXWXpeq/au8qJ8VhdftMkty3n7Gj6HIGalQG8oiBNB3AJgA==}
@@ -4637,13 +4756,13 @@ packages:
   electron-to-chromium@1.5.267:
     resolution: {integrity: sha512-0Drusm6MVRXSOJpGbaSVgcQsuB4hEkMpHXaVstcPmhu5LIedxs1xNK/nIxmQIU/RPC0+1/o0AVZfBTkTNJOdUw==}
 
-  electron-vite@5.0.0:
-    resolution: {integrity: sha512-OHp/vjdlubNlhNkPkL/+3JD34ii5ov7M0GpuXEVdQeqdQ3ulvVR7Dg/rNBLfS5XPIFwgoBLDf9sjjrL+CuDyRQ==}
+  electron-vite@6.0.0-beta.1:
+    resolution: {integrity: sha512-jltST77AwNxIeTTDtYhnIEA8ZM0RW9jmSJcqS8x/dQcgeeLlxlcJoYNNJ1tv7/Swor0AbXMYteBGdezoAOt+Nw==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
       '@swc/core': ^1.0.0
-      vite: ^5.0.0 || ^6.0.0 || ^7.0.0
+      vite: ^6.0.0 || ^7.0.0 || ^8.0.0
     peerDependenciesMeta:
       '@swc/core':
         optional: true
@@ -5697,6 +5816,11 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
+  nanoid@3.3.16:
+    resolution: {integrity: sha512-bzlKTyNJ7+LdGIIwy8ijFpIqEQIvafahV7eYykJ8Cvh42EdJeODoJ6gUJXpQJvej1BddH8OqTXZNE/KfbWAu8Q==}
+    engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
+    hasBin: true
+
   needle@3.2.0:
     resolution: {integrity: sha512-oUvzXnyLiVyVGoianLijF9O/RecZUf7TkBfimjGrLM4eQhXyeJwM6GeAWccwfQ9aa4gMCZKqhAOuLaMIcQxajQ==}
     engines: {node: '>= 4.4.x'}
@@ -5971,6 +6095,10 @@ packages:
   postcss-value-parser@4.2.0:
     resolution: {integrity: sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==}
 
+  postcss@8.5.19:
+    resolution: {integrity: sha512-Mz8SaolMd8nB+G13WkORcxQKHZ/NE4xXevtkJHVuG+guo9/wYKlIMTKAqGdEmYOXR2ijPjTYNHssizdaVSUNdQ==}
+    engines: {node: ^10 || ^12 || >=14}
+
   postcss@8.5.8:
     resolution: {integrity: sha512-OW/rX8O/jXnm82Ey1k44pObPtdblfiuWnrd8X7GJ7emImCOstunGbXUpp7HdBrFQX6rJzn3sPT397Wp5aCwCHg==}
     engines: {node: ^10 || ^12 || >=14}
@@ -6203,6 +6331,11 @@ packages:
   roarr@2.15.4:
     resolution: {integrity: sha512-CHhPh+UNHD2GTXNYhPWLnU8ONHdI+5DI+4EYIAOaiD63rHeYlZvyh8P+in5999TTSFgUYuKUAjzRI4mdh/p+2A==}
     engines: {node: '>=8.0'}
+
+  rolldown@1.1.5:
+    resolution: {integrity: sha512-t9z29cJjXf/vxQ8dyhCSpt6H6aSwHTk8cT5I3iy6SMXuFpk5mB6PL6XfC8PCwrPTx93udwKUm9HRteAlTGBLiA==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    hasBin: true
 
   rollup-plugin-dts@6.4.1:
     resolution: {integrity: sha512-l//F3Zf7ID5GoOfLfD8kroBjQKEKpy1qfhtAdnpibFZMffPaylrg1CoDC2vGkPeTeyxUe4bVFCln2EFuL7IGGg==}
@@ -6868,15 +7001,16 @@ packages:
   varint@6.0.0:
     resolution: {integrity: sha512-cXEIW6cfr15lFv563k4GuVuW/fiwjknytD37jIOLSdSWuOI6WnO/oKwmP2FQTU2l01LP8/M5TSAJpzUaGe3uWg==}
 
-  vite@7.3.6:
-    resolution: {integrity: sha512-4XP60spRGjSZFf1qYH+dJIkK2znL3zQfl9KkOV9MkkRR/3Dls0dxaBsQPTloEc5BLXWPL9vsOxopxyKoMmDueg==}
+  vite@8.1.4:
+    resolution: {integrity: sha512-bTT9PsdWO+MQMNG9ZXIP/qM9wGh37DFxTV/sPq9cFpHr3w4jkgef032PkAL9jAqhk3Nz8NQw3O8n6/xFkqO4QQ==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
       '@types/node': ^20.19.0 || >=22.12.0
+      '@vitejs/devtools': ^0.3.0
+      esbuild: ^0.27.0 || ^0.28.0
       jiti: '>=1.21.0'
       less: ^4.0.0
-      lightningcss: ^1.21.0
       sass: ^1.70.0
       sass-embedded: ^1.70.0
       stylus: '>=0.54.8'
@@ -6887,11 +7021,13 @@ packages:
     peerDependenciesMeta:
       '@types/node':
         optional: true
+      '@vitejs/devtools':
+        optional: true
+      esbuild:
+        optional: true
       jiti:
         optional: true
       less:
-        optional: true
-      lightningcss:
         optional: true
       sass:
         optional: true
@@ -7152,7 +7288,7 @@ snapshots:
 
   '@async-fn/vitest@1.8.0(patch_hash=86478f697e61e0e2ca0274a6b255c31c05d0dd83078743e9e755910710d597ef)(vitest@4.1.10)':
     dependencies:
-      vitest: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+      vitest: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   '@babel/code-frame@7.29.7':
     dependencies:
@@ -7444,7 +7580,23 @@ snapshots:
       - supports-color
     optional: true
 
+  '@emnapi/core@1.11.1':
+    dependencies:
+      '@emnapi/wasi-threads': 1.2.2
+      tslib: 2.8.1
+    optional: true
+
+  '@emnapi/runtime@1.11.1':
+    dependencies:
+      tslib: 2.8.1
+    optional: true
+
   '@emnapi/runtime@1.7.0':
+    dependencies:
+      tslib: 2.8.1
+    optional: true
+
+  '@emnapi/wasi-threads@1.2.2':
     dependencies:
       tslib: 2.8.1
     optional: true
@@ -8079,6 +8231,13 @@ snapshots:
     optionalDependencies:
       '@types/react': 17.0.93
 
+  '@napi-rs/wasm-runtime@1.1.6(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)':
+    dependencies:
+      '@emnapi/core': 1.11.1
+      '@emnapi/runtime': 1.11.1
+      '@tybys/wasm-util': 0.10.3
+    optional: true
+
   '@noble/hashes@1.4.0': {}
 
   '@noble/hashes@2.2.0': {}
@@ -8126,6 +8285,8 @@ snapshots:
   '@ogre-tools/test-utils@17.11.1(lodash@4.18.1)':
     dependencies:
       lodash: 4.18.1
+
+  '@oxc-project/types@0.139.0': {}
 
   '@parcel/watcher-android-arm64@2.5.1':
     optional: true
@@ -8220,7 +8381,58 @@ snapshots:
       spdx-license-list: 6.11.0
       zod: 4.4.3
 
+  '@rolldown/binding-android-arm64@1.1.5':
+    optional: true
+
+  '@rolldown/binding-darwin-arm64@1.1.5':
+    optional: true
+
+  '@rolldown/binding-darwin-x64@1.1.5':
+    optional: true
+
+  '@rolldown/binding-freebsd-x64@1.1.5':
+    optional: true
+
+  '@rolldown/binding-linux-arm-gnueabihf@1.1.5':
+    optional: true
+
+  '@rolldown/binding-linux-arm64-gnu@1.1.5':
+    optional: true
+
+  '@rolldown/binding-linux-arm64-musl@1.1.5':
+    optional: true
+
+  '@rolldown/binding-linux-ppc64-gnu@1.1.5':
+    optional: true
+
+  '@rolldown/binding-linux-s390x-gnu@1.1.5':
+    optional: true
+
+  '@rolldown/binding-linux-x64-gnu@1.1.5':
+    optional: true
+
+  '@rolldown/binding-linux-x64-musl@1.1.5':
+    optional: true
+
+  '@rolldown/binding-openharmony-arm64@1.1.5':
+    optional: true
+
+  '@rolldown/binding-wasm32-wasi@1.1.5':
+    dependencies:
+      '@emnapi/core': 1.11.1
+      '@emnapi/runtime': 1.11.1
+      '@napi-rs/wasm-runtime': 1.1.6(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.1)
+    optional: true
+
+  '@rolldown/binding-win32-arm64-msvc@1.1.5':
+    optional: true
+
+  '@rolldown/binding-win32-x64-msvc@1.1.5':
+    optional: true
+
   '@rolldown/pluginutils@1.0.0-rc.3': {}
+
+  '@rolldown/pluginutils@1.0.1': {}
 
   '@rollup/rollup-android-arm-eabi@4.62.2':
     optional: true
@@ -8454,6 +8666,11 @@ snapshots:
   '@turbo/windows-arm64@2.10.2':
     optional: true
 
+  '@tybys/wasm-util@0.10.3':
+    dependencies:
+      tslib: 2.8.1
+    optional: true
+
   '@types/aria-query@5.0.1': {}
 
   '@types/babel__core@7.20.5':
@@ -8666,7 +8883,7 @@ snapshots:
     dependencies:
       '@types/node': 24.12.4
 
-  '@vitejs/plugin-react@5.2.0(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))':
+  '@vitejs/plugin-react@5.2.0(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))':
     dependencies:
       '@babel/core': 7.29.7
       '@babel/plugin-transform-react-jsx-self': 7.29.7(@babel/core@7.29.7)
@@ -8674,7 +8891,7 @@ snapshots:
       '@rolldown/pluginutils': 1.0.0-rc.3
       '@types/babel__core': 7.20.5
       react-refresh: 0.18.0
-      vite: 7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0)
+      vite: 8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -8690,7 +8907,7 @@ snapshots:
       obug: 2.1.3
       std-env: 4.2.0
       tinyrainbow: 3.1.0
-      vitest: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+      vitest: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   '@vitest/expect@4.1.10':
     dependencies:
@@ -8701,13 +8918,13 @@ snapshots:
       chai: 6.2.2
       tinyrainbow: 3.1.0
 
-  '@vitest/mocker@4.1.10(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))':
+  '@vitest/mocker@4.1.10(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))':
     dependencies:
       '@vitest/spy': 4.1.10
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      vite: 7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0)
+      vite: 8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0)
 
   '@vitest/pretty-format@4.1.10':
     dependencies:
@@ -9010,7 +9227,7 @@ snapshots:
 
   bytestreamjs@2.0.1: {}
 
-  cac@6.7.14: {}
+  cac@7.0.0: {}
 
   cacheable-lookup@5.0.4: {}
 
@@ -9414,15 +9631,15 @@ snapshots:
 
   electron-to-chromium@1.5.267: {}
 
-  electron-vite@5.0.0(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0)):
+  electron-vite@6.0.0-beta.1(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0)):
     dependencies:
       '@babel/core': 7.29.7
       '@babel/plugin-transform-arrow-functions': 7.29.7(@babel/core@7.29.7)
-      cac: 6.7.14
+      cac: 7.0.0
       esbuild: 0.25.12
       magic-string: 0.30.21
       picocolors: 1.1.1
-      vite: 7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0)
+      vite: 8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -9577,6 +9794,7 @@ snapshots:
       '@esbuild/win32-arm64': 0.28.1
       '@esbuild/win32-ia32': 0.28.1
       '@esbuild/win32-x64': 0.28.1
+    optional: true
 
   escalade@3.2.0: {}
 
@@ -10496,6 +10714,8 @@ snapshots:
 
   nanoid@3.3.11: {}
 
+  nanoid@3.3.16: {}
+
   needle@3.2.0:
     dependencies:
       debug: 3.2.7
@@ -10749,6 +10969,12 @@ snapshots:
       util-deprecate: 1.0.2
 
   postcss-value-parser@4.2.0: {}
+
+  postcss@8.5.19:
+    dependencies:
+      nanoid: 3.3.16
+      picocolors: 1.1.1
+      source-map-js: 1.2.1
 
   postcss@8.5.8:
     dependencies:
@@ -11012,6 +11238,27 @@ snapshots:
       semver-compare: 1.0.0
       sprintf-js: 1.1.3
     optional: true
+
+  rolldown@1.1.5:
+    dependencies:
+      '@oxc-project/types': 0.139.0
+      '@rolldown/pluginutils': 1.0.1
+    optionalDependencies:
+      '@rolldown/binding-android-arm64': 1.1.5
+      '@rolldown/binding-darwin-arm64': 1.1.5
+      '@rolldown/binding-darwin-x64': 1.1.5
+      '@rolldown/binding-freebsd-x64': 1.1.5
+      '@rolldown/binding-linux-arm-gnueabihf': 1.1.5
+      '@rolldown/binding-linux-arm64-gnu': 1.1.5
+      '@rolldown/binding-linux-arm64-musl': 1.1.5
+      '@rolldown/binding-linux-ppc64-gnu': 1.1.5
+      '@rolldown/binding-linux-s390x-gnu': 1.1.5
+      '@rolldown/binding-linux-x64-gnu': 1.1.5
+      '@rolldown/binding-linux-x64-musl': 1.1.5
+      '@rolldown/binding-openharmony-arm64': 1.1.5
+      '@rolldown/binding-wasm32-wasi': 1.1.5
+      '@rolldown/binding-win32-arm64-msvc': 1.1.5
+      '@rolldown/binding-win32-x64-msvc': 1.1.5
 
   rollup-plugin-dts@6.4.1(rollup@4.62.2)(typescript@6.0.3):
     dependencies:
@@ -11731,20 +11978,19 @@ snapshots:
 
   varint@6.0.0: {}
 
-  vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0):
+  vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0):
     dependencies:
-      esbuild: 0.28.1
-      fdir: 6.5.0(picomatch@4.0.5)
+      lightningcss: 1.32.0
       picomatch: 4.0.5
-      postcss: 8.5.8
-      rollup: 4.62.2
+      postcss: 8.5.19
+      rolldown: 1.1.5
       tinyglobby: 0.2.17
     optionalDependencies:
       '@types/node': 24.12.4
+      esbuild: 0.28.1
       fsevents: 2.3.3
       jiti: 2.6.1
       less: 4.2.2
-      lightningcss: 1.32.0
       sass: 1.101.0
       sass-embedded: 1.100.0
       stylus: 0.62.0
@@ -11754,18 +12000,18 @@ snapshots:
     dependencies:
       cssfontparser: 1.2.1
       moo-color: 1.0.3
-      vitest: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+      vitest: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   vitest-mock-extended@4.0.0(typescript@6.0.3)(vitest@4.1.10):
     dependencies:
       ts-essentials: 10.1.1(typescript@6.0.3)
       typescript: 6.0.3
-      vitest: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+      vitest: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
-  vitest@4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0)):
+  vitest@4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0)):
     dependencies:
       '@vitest/expect': 4.1.10
-      '@vitest/mocker': 4.1.10(vite@7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+      '@vitest/mocker': 4.1.10(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
       '@vitest/pretty-format': 4.1.10
       '@vitest/runner': 4.1.10
       '@vitest/snapshot': 4.1.10
@@ -11782,7 +12028,7 @@ snapshots:
       tinyexec: 1.2.4
       tinyglobby: 0.2.17
       tinyrainbow: 3.1.0
-      vite: 7.3.6(@types/node@24.12.4)(jiti@2.6.1)(less@4.2.2)(lightningcss@1.32.0)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0)
+      vite: 8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0)
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 24.12.4
