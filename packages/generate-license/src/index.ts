@@ -127,6 +127,15 @@ async function main() {
       author: "The Helm Authors",
       licenseText: spdxLicenseList["Apache-2.0"].licenseText,
     },
+    // `await-lock` is vendored as TypeScript into
+    // `packages/core/src/common/utils/await-lock.ts` (see #2209), so it is no
+    // longer an npm dependency and must be listed here to keep its copyright in
+    // the generated license manifest.
+    "await-lock:MIT": {
+      name: "await-lock",
+      author: "James Ide",
+      licenseText: spdxLicenseList.MIT.licenseText,
+    },
   };
 
   const npmDependencies = await getDependenciesFromPnpmApi(prod);

@@ -108,7 +108,6 @@
     "@xterm/xterm": "^6.0.0",
     "ansi_up": "^6.0.6",
     "auto-bind": "^4.0.0",
-    "await-lock": "^2.2.2",
     "chalk": "^4.1.2",
     "chart.js": "^4.5.1",
     "chartjs-adapter-moment": "^1.0.1",
