@@ -25,9 +25,9 @@ const setupDeveloperToolsInDevelopmentEnvironmentInjectable = getInjectable({
 
       void (async () => {
         try {
-          const { default: devToolsInstaller, REACT_DEVELOPER_TOOLS } = await import("electron-devtools-installer");
+          const { installExtension, REACT_DEVELOPER_TOOLS } = await import("electron-devtools-installer");
 
-          const name = await devToolsInstaller([REACT_DEVELOPER_TOOLS]);
+          const name = await installExtension([REACT_DEVELOPER_TOOLS]);
 
           logger.info(`[DEVTOOLS-INSTALLER]: installed ${name}`);
         } catch (error) {
