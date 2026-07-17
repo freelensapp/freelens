@@ -6,8 +6,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { createHash } from "node:crypto";
 import { constants, type WriteStream } from "node:fs";
-import { type FileHandle, mkdir, open, readFile, unlink } from "node:fs/promises";
+import { access, type FileHandle, mkdir, open, readFile, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { arch } from "node:process";
 import { pipeline as _pipeline, Transform, Writable } from "node:stream";
@@ -60,6 +61,51 @@ function setTimeoutFor(controller: AbortController, timeout: number): void {
 
 const pipeline = promisify(_pipeline);
 
+/**
+ * Suffix for the sidecar file that records the verified checksum of a downloaded
+ * binary. It lives next to the binary but is never referenced by
+ * electron-builder (which lists each packaged binary explicitly), so it does not
+ * end up in the resulting application package.
+ */
+const CHECKSUM_SUFFIX = ".sha256";
+
+/**
+ * Fetches and parses a remote `.sha256` checksum for the given download URL.
+ *
+ * The checksum file is expected to contain a hex-encoded SHA-256 digest,
+ * optionally followed by the file name (the common `sha256sum` output format).
+ * Only the first whitespace-delimited token is used.
+ *
+ * Returns `undefined` when the checksum is not available (e.g. HTTP 404), in
+ * which case the caller downloads the binary without verification.
+ */
+async function fetchChecksum(url: string): Promise<string | undefined> {
+  const controller = new AbortController();
+
+  setTimeoutFor(controller, 60 * 1000);
+
+  let response: Awaited<ReturnType<typeof fetch>>;
+
+  try {
+    response = await fetch(`${url}${CHECKSUM_SUFFIX}`, { signal: controller.signal });
+  } catch {
+    return undefined;
+  }
+
+  if (!response.ok) {
+    return undefined;
+  }
+
+  const body = await response.text();
+  const checksum = body.trim().split(/\s+/)[0]?.toLowerCase();
+
+  if (!checksum || !/^[0-9a-f]{64}$/.test(checksum)) {
+    return undefined;
+  }
+
+  return checksum;
+}
+
 function getBinaryExtension({ forPlatform }: { forPlatform: string }): string {
   if (forPlatform === "windows") {
     return ".exe";
@@ -95,8 +141,42 @@ abstract class BinaryDownloader {
     this.target = path.join(args.baseDir, args.platform, args.fileArch, args.binaryName);
   }
 
+  private get checksumSidecar(): string {
+    return `${this.target}${CHECKSUM_SUFFIX}`;
+  }
+
+  /**
+   * Returns `true` when the binary is already present and matches the given
+   * remote checksum, based on the checksum recorded in the sidecar file during
+   * the previous successful download. This avoids re-downloading unchanged
+   * binaries.
+   */
+  private async isUpToDate(expectedChecksum: string): Promise<boolean> {
+    try {
+      await access(this.target, constants.F_OK);
+      const recorded = (await readFile(this.checksumSidecar, "utf-8")).trim().toLowerCase();
+
+      return recorded === expectedChecksum;
+    } catch {
+      return false;
+    }
+  }
+
   async ensureBinary(): Promise<void> {
     if (process.env.LENS_SKIP_DOWNLOAD_BINARIES === "true") {
+      return;
+    }
+
+    const bar = this.bar;
+
+    // The remote `.sha256` covers the downloaded artifact bytes (the binary for
+    // kubectl / freelens-k8s-proxy, the archive for helm). When it is available
+    // we can both skip unchanged binaries and verify freshly downloaded ones.
+    const expectedChecksum = await fetchChecksum(this.url);
+
+    if (expectedChecksum && (await this.isUpToDate(expectedChecksum))) {
+      bar.setTotal(1);
+      bar.increment(1); // already downloaded, mark as finished
       return;
     }
 
@@ -113,7 +193,6 @@ abstract class BinaryDownloader {
     }
 
     const total = Number(stream.headers.get("content-length"));
-    const bar = this.bar;
     let fileHandle: FileHandle | undefined = undefined;
 
     if (isNaN(total)) {
@@ -127,14 +206,21 @@ abstract class BinaryDownloader {
       recursive: true,
     });
 
+    // Hash the raw downloaded bytes so the digest matches the semantics of the
+    // remote `.sha256` for every binary type.
+    const hash = createHash("sha256");
+
     try {
-      // Remove existing file if it exists to ensure we download the new version
-      try {
-        await unlink(this.target);
-      } catch (error) {
-        // Ignore ENOENT errors (file doesn't exist)
-        if ((error as any)?.code !== "ENOENT") {
-          throw error;
+      // Remove existing file and its stale checksum sidecar to ensure we
+      // download the new version cleanly.
+      for (const file of [this.target, this.checksumSidecar]) {
+        try {
+          await unlink(file);
+        } catch (error) {
+          // Ignore ENOENT errors (file doesn't exist)
+          if ((error as any)?.code !== "ENOENT") {
+            throw error;
+          }
         }
       }
 
@@ -153,6 +239,7 @@ abstract class BinaryDownloader {
         new Transform({
           transform(chunk, encoding, callback) {
             bar.increment(chunk.length);
+            hash.update(chunk);
             this.push(chunk);
             callback();
           },
@@ -168,8 +255,25 @@ abstract class BinaryDownloader {
           }),
         ),
       );
+
+      if (expectedChecksum) {
+        const actualChecksum = hash.digest("hex");
+
+        if (actualChecksum !== expectedChecksum) {
+          throw new Error(`checksum mismatch for ${this.url}: expected ${expectedChecksum}, got ${actualChecksum}`);
+        }
+      }
+
       await fileHandle.chmod(0o755);
       await fileHandle.close();
+      fileHandle = undefined;
+
+      // Record the verified checksum next to the binary so subsequent runs can
+      // skip the download. Not referenced by electron-builder, so it stays out
+      // of the packaged application.
+      if (expectedChecksum) {
+        await writeFile(this.checksumSidecar, `${expectedChecksum}\n`, { mode: 0o644 });
+      }
     } catch (error) {
       await fileHandle?.close();
 
@@ -177,7 +281,7 @@ abstract class BinaryDownloader {
         bar.increment(total); // mark as finished
         controller.abort(); // stop trying to download
       } else {
-        await unlink(this.target);
+        await unlink(this.target).catch(() => {});
         throw error;
       }
     }
