@@ -45,7 +45,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   freelens:
     dependencies:
@@ -280,7 +280,7 @@ importers:
         version: 24.12.4
       '@vitejs/plugin-react':
         specifier: 5.2.0
-        version: 5.2.0(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 5.2.0(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
       electron:
         specifier: ^42.7.0
         version: 42.7.0
@@ -292,7 +292,7 @@ importers:
         version: 26.15.6(dmg-builder@26.15.6)
       electron-vite:
         specifier: 6.0.0-beta.1
-        version: 6.0.0-beta.1(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 6.0.0-beta.1(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
       playwright:
         specifier: ^1.61.1
         version: 1.61.1
@@ -306,11 +306,11 @@ importers:
         specifier: ^5.2.0
         version: 5.2.0(ts-node@10.9.2(@types/node@24.12.4)(typescript@7.0.2))(typescript@7.0.2)
       vite:
-        specifier: 8.1.4
-        version: 8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0)
+        specifier: 8.1.5
+        version: 8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0)
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/business-features/keyboard-shortcuts:
     dependencies:
@@ -365,7 +365,7 @@ importers:
         version: 6.15.0
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/cluster-settings:
     dependencies:
@@ -409,7 +409,7 @@ importers:
         version: 29.1.1(@noble/hashes@2.2.0)
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/core:
     dependencies:
@@ -860,7 +860,7 @@ importers:
         version: 5.2.0(ts-node@10.9.2(@types/node@24.12.4)(typescript@7.0.2))(typescript@7.0.2)
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
       vitest-canvas-mock:
         specifier: ^1.1.4
         version: 1.1.4(vitest@4.1.10)
@@ -1090,7 +1090,7 @@ importers:
         version: 5.6.0
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/kubectl-versions:
     devDependencies:
@@ -1155,7 +1155,7 @@ importers:
         version: 29.1.1(@noble/hashes@2.2.0)
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
       winston-transport:
         specifier: ^4.9.0
         version: 4.9.0
@@ -1223,7 +1223,7 @@ importers:
         version: 4.7.11
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/semver:
     dependencies:
@@ -1276,7 +1276,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/technical-features/application/application-for-electron-main:
     dependencies:
@@ -1310,7 +1310,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/technical-features/feature-core:
     dependencies:
@@ -1326,7 +1326,7 @@ importers:
         version: 29.1.1(@noble/hashes@2.2.0)
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/technical-features/messaging/computed-channel:
     dependencies:
@@ -1384,7 +1384,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/technical-features/messaging/messaging:
     dependencies:
@@ -1424,7 +1424,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/technical-features/messaging/messaging-fake-bridge:
     dependencies:
@@ -1470,7 +1470,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/technical-features/messaging/messaging-for-main:
     dependencies:
@@ -1501,7 +1501,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/technical-features/messaging/messaging-for-renderer:
     dependencies:
@@ -1538,7 +1538,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/technical-features/prometheus:
     dependencies:
@@ -1627,7 +1627,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/ui-components/animate:
     dependencies:
@@ -1658,7 +1658,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/ui-components/button:
     dependencies:
@@ -1683,7 +1683,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/ui-components/error-boundary:
     dependencies:
@@ -1729,7 +1729,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/ui-components/icon:
     dependencies:
@@ -1796,7 +1796,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/ui-components/notifications:
     dependencies:
@@ -1863,7 +1863,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/ui-components/resizing-anchor:
     dependencies:
@@ -1894,7 +1894,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/ui-components/spinner:
     dependencies:
@@ -1916,7 +1916,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/ui-components/tooltip:
     dependencies:
@@ -1968,7 +1968,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/utility-features/event-emitter:
     devDependencies:
@@ -1980,7 +1980,7 @@ importers:
         version: 29.1.1(@noble/hashes@2.2.0)
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/utility-features/json-api:
     dependencies:
@@ -2072,7 +2072,7 @@ importers:
         version: 7.0.2
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/utility-features/kube-api-specifics:
     dependencies:
@@ -2150,7 +2150,7 @@ importers:
         version: 1.4.0
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/utility-features/startable-stoppable:
     devDependencies:
@@ -2162,7 +2162,7 @@ importers:
         version: 29.1.1(@noble/hashes@2.2.0)
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/utility-features/test-utils:
     dependencies:
@@ -2199,7 +2199,7 @@ importers:
         version: 17.0.2(react@17.0.2)
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   packages/utility-features/utilities:
     dependencies:
@@ -2260,7 +2260,7 @@ importers:
         version: 5.6.0
       vitest:
         specifier: ^4.1.10
-        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
 packages:
 
@@ -7081,8 +7081,8 @@ packages:
   varint@6.0.0:
     resolution: {integrity: sha512-cXEIW6cfr15lFv563k4GuVuW/fiwjknytD37jIOLSdSWuOI6WnO/oKwmP2FQTU2l01LP8/M5TSAJpzUaGe3uWg==}
 
-  vite@8.1.4:
-    resolution: {integrity: sha512-bTT9PsdWO+MQMNG9ZXIP/qM9wGh37DFxTV/sPq9cFpHr3w4jkgef032PkAL9jAqhk3Nz8NQw3O8n6/xFkqO4QQ==}
+  vite@8.1.5:
+    resolution: {integrity: sha512-7ULLwsCdYx/nRyrpiEwvqb5TFHrMVZyBt+rg/OAXT7rgj/z+DtTDyKFeLAdDkubDVDKD8jOsndmy7m55XcfUsw==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
@@ -7368,7 +7368,7 @@ snapshots:
 
   '@async-fn/vitest@1.8.0(patch_hash=86478f697e61e0e2ca0274a6b255c31c05d0dd83078743e9e755910710d597ef)(vitest@4.1.10)':
     dependencies:
-      vitest: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+      vitest: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   '@babel/code-frame@7.29.7':
     dependencies:
@@ -8867,11 +8867,11 @@ snapshots:
 
   '@types/postcss-modules-local-by-default@4.0.2':
     dependencies:
-      postcss: 8.5.8
+      postcss: 8.5.19
 
   '@types/postcss-modules-scope@3.0.4':
     dependencies:
-      postcss: 8.5.8
+      postcss: 8.5.19
 
   '@types/prop-types@15.7.14': {}
 
@@ -9013,7 +9013,7 @@ snapshots:
   '@typescript/typescript-win32-x64@7.0.2':
     optional: true
 
-  '@vitejs/plugin-react@5.2.0(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))':
+  '@vitejs/plugin-react@5.2.0(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))':
     dependencies:
       '@babel/core': 7.29.7
       '@babel/plugin-transform-react-jsx-self': 7.29.7(@babel/core@7.29.7)
@@ -9021,7 +9021,7 @@ snapshots:
       '@rolldown/pluginutils': 1.0.0-rc.3
       '@types/babel__core': 7.20.5
       react-refresh: 0.18.0
-      vite: 8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0)
+      vite: 8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -9037,7 +9037,7 @@ snapshots:
       obug: 2.1.3
       std-env: 4.2.0
       tinyrainbow: 3.1.0
-      vitest: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+      vitest: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   '@vitest/expect@4.1.10':
     dependencies:
@@ -9048,13 +9048,13 @@ snapshots:
       chai: 6.2.2
       tinyrainbow: 3.1.0
 
-  '@vitest/mocker@4.1.10(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))':
+  '@vitest/mocker@4.1.10(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))':
     dependencies:
       '@vitest/spy': 4.1.10
       estree-walker: 3.0.3
       magic-string: 0.30.21
     optionalDependencies:
-      vite: 8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0)
+      vite: 8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0)
 
   '@vitest/pretty-format@4.1.10':
     dependencies:
@@ -9749,7 +9749,7 @@ snapshots:
 
   electron-to-chromium@1.5.267: {}
 
-  electron-vite@6.0.0-beta.1(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0)):
+  electron-vite@6.0.0-beta.1(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0)):
     dependencies:
       '@babel/core': 7.29.7
       '@babel/plugin-transform-arrow-functions': 7.29.7(@babel/core@7.29.7)
@@ -9757,7 +9757,7 @@ snapshots:
       esbuild: 0.25.12
       magic-string: 0.30.21
       picocolors: 1.1.1
-      vite: 8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0)
+      vite: 8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -12109,7 +12109,7 @@ snapshots:
 
   varint@6.0.0: {}
 
-  vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0):
+  vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0):
     dependencies:
       lightningcss: 1.32.0
       picomatch: 4.0.5
@@ -12131,18 +12131,18 @@ snapshots:
     dependencies:
       cssfontparser: 1.2.1
       moo-color: 1.0.3
-      vitest: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+      vitest: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
   vitest-mock-extended@4.0.0(typescript@7.0.2)(vitest@4.1.10):
     dependencies:
       ts-essentials: 10.1.1(typescript@7.0.2)
       typescript: 7.0.2
-      vitest: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+      vitest: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
 
-  vitest@4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0)):
+  vitest@4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0)):
     dependencies:
       '@vitest/expect': 4.1.10
-      '@vitest/mocker': 4.1.10(vite@8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
+      '@vitest/mocker': 4.1.10(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
       '@vitest/pretty-format': 4.1.10
       '@vitest/runner': 4.1.10
       '@vitest/snapshot': 4.1.10
@@ -12159,7 +12159,7 @@ snapshots:
       tinyexec: 1.2.4
       tinyglobby: 0.2.17
       tinyrainbow: 3.1.0
-      vite: 8.1.4(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0)
+      vite: 8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0)
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 24.12.4
