@@ -151,6 +151,19 @@ jobs:
           restore-keys: |
             ${{ matrix.runs-on }}-${{ matrix.arch }}-turborepo-
 
+      # Cache the .deb archives and package lists that `playwright install-deps`
+      # downloads through apt, so re-runs reuse them instead of re-downloading.
+      # apt is pointed at this project-local directory via a global config file
+      # written in the install step below.
+      - name: Use APT cache (Linux)
+        if: runner.os == 'Linux'
+        uses: actions/cache@v6
+        with:
+          path: .apt
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-apt-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-apt-
+
       - name: Start KinD cluster (Linux)
         if: runner.os == 'Linux'
         uses: helm/kind-action@v1
@@ -192,7 +205,23 @@ jobs:
       # Firefox/WebKit dependency set that the Electron app never uses.
       - name: Install Playwright's OS dependencies (Linux)
         if: runner.os == 'Linux'
-        run: pnpx playwright install-deps chromium
+        shell: bash
+        run: |
+          set -eo pipefail
+          # `playwright install-deps` runs its own `apt-get update`/`install`, so
+          # the archive/list redirect has to be a global apt config file it picks
+          # up rather than per-invocation `-o` flags. Point apt at the cached
+          # project-local dirs (see the APT cache step above); dpkg's status stays
+          # at the system default, so packages still install into the runner.
+          mkdir -p .apt/cache/archives/partial .apt/state/lists/partial
+          sudo tee /etc/apt/apt.conf.d/00freelens-cache >/dev/null <<EOF
+          Dir::Cache::archives "$PWD/.apt/cache/archives";
+          Dir::State::lists "$PWD/.apt/state/lists";
+          EOF
+          pnpx playwright install-deps chromium
+          # apt ran as root, so hand the cache dir back to the runner user for the
+          # cache-save post step to read.
+          sudo chown -R "$(id -u):$(id -g)" .apt
 
       - name: Build packages
         if: runner.os != 'Windows'
