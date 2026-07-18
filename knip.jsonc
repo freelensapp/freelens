@@ -163,6 +163,14 @@
     "packages/resource-templates": {
       "entry": [],
       "project": []
+    },
+
+    "packages/ui-components/button": {
+      // JSX compiles to react/jsx-runtime under the automatic runtime, which
+      // knip's --production --strict pass does not attribute to `react`. The
+      // only explicit react import here is type-only (ButtonHTMLAttributes),
+      // so react looks unused even though it is a real runtime dependency.
+      "ignoreDependencies": ["react"]
     }
   },
 
