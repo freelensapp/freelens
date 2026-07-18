@@ -1,7 +1,6 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "lib": ["ES2025", "DOM", "DOM.Iterable"],
     "noEmit": true,
     "paths": {
       "@freelensapp/animate": ["./packages/ui-components/animate/index.ts"],
