@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { beforeElectronIsReadyInjectionToken } from "@freelensapp/application-for-electron-main";
+import { beforeApplicationIsLoadingInjectionToken } from "@freelensapp/application";
 import { getInjectable } from "@ogre-tools/injectable";
 import { generate } from "selfsigned";
 import lensProxyCertificateInjectable from "../../../common/certificate/lens-proxy-certificate.injectable";
@@ -13,10 +13,14 @@ const setupLensProxyCertificateInjectable = getInjectable({
   id: "setup-lens-proxy-certificate",
 
   instantiate: (di) => ({
-    run: () => {
+    run: async () => {
       const lensProxyCertificate = di.inject(lensProxyCertificateInjectable);
 
-      const cert = generate(
+      // selfsigned v5 dropped the `days` option in favor of explicit dates.
+      const notAfterDate = new Date();
+      notAfterDate.setFullYear(notAfterDate.getFullYear() + 1);
+
+      const cert = await generate(
         [
           { name: "commonName", value: "Freelens Certificate Authority" },
           { name: "organizationName", value: "Freelens" },
@@ -24,7 +28,7 @@ const setupLensProxyCertificateInjectable = getInjectable({
         {
           keySize: 2048,
           algorithm: "sha256",
-          days: 365,
+          notAfterDate,
           extensions: [
             {
               name: "basicConstraints",
@@ -44,12 +48,10 @@ const setupLensProxyCertificateInjectable = getInjectable({
       );
 
       lensProxyCertificate.set(cert);
-
-      return undefined;
     },
   }),
 
-  injectionToken: beforeElectronIsReadyInjectionToken,
+  injectionToken: beforeApplicationIsLoadingInjectionToken,
 });
 
 export default setupLensProxyCertificateInjectable;

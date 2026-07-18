@@ -7,9 +7,20 @@
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { generate } from "selfsigned";
 
+import type { SelfSignedCert } from "../../common/certificate/certificate";
+
+const notAfterDateInOneYear = () => {
+  const notAfterDate = new Date();
+  notAfterDate.setFullYear(notAfterDate.getFullYear() + 1);
+
+  return notAfterDate;
+};
+
 const kubeAuthProxyCertificateInjectable = getInjectable({
   id: "kube-auth-proxy-certificate",
-  instantiate: (di, hostname) =>
+  instantiate: (di, hostname): Promise<SelfSignedCert> =>
+    // selfsigned v5 returns a Promise and dropped the `days` option in favor of
+    // explicit dates; consumers await this injectable.
     generate(
       [
         { name: "commonName", value: "Freelens Certificate Authority" },
@@ -18,7 +29,7 @@ const kubeAuthProxyCertificateInjectable = getInjectable({
       {
         keySize: 2048,
         algorithm: "sha256",
-        days: 365,
+        notAfterDate: notAfterDateInOneYear(),
         extensions: [
           { name: "basicConstraints", cA: true },
           {

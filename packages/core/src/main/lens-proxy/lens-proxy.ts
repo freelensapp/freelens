@@ -15,10 +15,10 @@ import type http from "node:http";
 import type { Logger } from "@freelensapp/logger";
 
 import type httpProxy from "http-proxy-node16";
-import type { SelfSignedCert } from "selfsigned";
 import type { SetRequired } from "type-fest";
 
 import type { EmitAppEvent } from "../../common/app-event-bus/emit-event.injectable";
+import type { SelfSignedCert } from "../../common/certificate/certificate";
 import type { Cluster } from "../../common/cluster/cluster";
 import type { KubeAuthProxyServer } from "../cluster/kube-auth-proxy-server.injectable";
 import type { Router } from "../router/router";
