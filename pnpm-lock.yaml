@@ -197,8 +197,8 @@ importers:
         specifier: ^0.0.8
         version: 0.0.8
       uuid:
-        specifier: ^11.1.1
-        version: 11.1.1
+        specifier: ^14.0.1
+        version: 14.0.1
       winston:
         specifier: ^3.19.0
         version: 3.19.0
@@ -711,8 +711,8 @@ importers:
         specifier: ^0.0.8
         version: 0.0.8
       uuid:
-        specifier: ^11.1.1
-        version: 11.1.1
+        specifier: ^14.0.1
+        version: 14.0.1
       winston:
         specifier: ^3.19.0
         version: 3.19.0
@@ -1188,8 +1188,8 @@ importers:
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(lodash@4.18.1)
       uuid:
-        specifier: ^11.1.1
-        version: 11.1.1
+        specifier: ^14.0.1
+        version: 14.0.1
     devDependencies:
       '@freelensapp/typescript':
         specifier: workspace:^
@@ -2112,8 +2112,8 @@ importers:
         specifier: workspace:^
         version: link:../utilities
       uuid:
-        specifier: ^11.1.1
-        version: 11.1.1
+        specifier: ^14.0.1
+        version: 14.0.1
     devDependencies:
       '@async-fn/vitest':
         specifier: ^1.8.0
@@ -7068,8 +7068,8 @@ packages:
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
-  uuid@11.1.1:
-    resolution: {integrity: sha512-vIYxrBCC/N/K+Js3qSN88go7kIfNPssr/hHCesKCQNAjmgvYS2oqr69kIufEG+O4+PfezOH4EbIeHCfFov8ZgQ==}
+  uuid@14.0.1:
+    resolution: {integrity: sha512-6ZxzVpzDXDa3bJWaHilVayA+BH/1zmxCJoVgvmqJnid/gPoKHxUrS/aC/T6LGQtNHT+XHG9fXPJB4d+IrU30Ew==}
     hasBin: true
 
   v8-compile-cache-lib@3.0.1:
@@ -8947,7 +8947,7 @@ snapshots:
 
   '@types/uuid@11.0.0':
     dependencies:
-      uuid: 11.1.1
+      uuid: 14.0.1
 
   '@types/ws@8.18.1':
     dependencies:
@@ -12100,7 +12100,7 @@ snapshots:
 
   util-deprecate@1.0.2: {}
 
-  uuid@11.1.1: {}
+  uuid@14.0.1: {}
 
   v8-compile-cache-lib@3.0.1:
     optional: true
