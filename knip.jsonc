@@ -94,7 +94,7 @@
     },
 
     "packages/ensure-binaries": {
-      "project": ["bin/*.js!", "src/*.mts!"],
+      "project": ["bin/*.js!", "src/*.ts!"],
       "typescript": {
         "config": ["tsconfig.json"]
       }
@@ -146,7 +146,6 @@
     },
 
     "packages/generate-tray-icons": {
-      "entry": ["src/index.ts!"],
       "project": ["bin/*.js!", "src/*.ts!"],
       "ignoreDependencies": [
         // source of the tray icon SVGs passed on the command line
