@@ -5,6 +5,8 @@ packages:
 allowBuilds:
   '@parcel/watcher': true
   electron: true
+  electron-winstaller: false
+  esbuild: false
   node-pty: true
   sharp: true
 
