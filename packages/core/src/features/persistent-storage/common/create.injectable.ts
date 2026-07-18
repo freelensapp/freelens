@@ -20,6 +20,7 @@ import { persistStateToConfigInjectionToken } from "./save-to-file";
 
 import type { MessageChannel } from "@freelensapp/messaging";
 
+import type Config from "conf";
 import type { Options } from "conf";
 import type { IEqualsComparer } from "mobx";
 
@@ -33,7 +34,8 @@ export interface PersistentStorage {
   loadAndStartSyncing: () => void;
 }
 
-export interface PersistentStorageParams<T extends object = any> extends Omit<Options<T>, "migrations"> {
+export interface PersistentStorageParams<T extends object = any>
+  extends Omit<Options<T & Record<string, unknown>>, "migrations"> {
   readonly syncOptions?: {
     readonly fireImmediately?: boolean;
     equals?: IEqualsComparer<T>;
@@ -83,12 +85,12 @@ const createPersistentStorageInjectable = getInjectable({
       const loadAndStartSyncing = () => {
         logger.info(`[${displayName}]: LOADING ...`);
 
-        const config = getConfigurationFileModel({
+        const config = getConfigurationFileModel<T & Record<string, unknown>>({
           projectName: "lens",
           cwd,
-          migrations: migrations as Options<T>["migrations"],
+          migrations: migrations as Options<T & Record<string, unknown>>["migrations"],
           ...params,
-        });
+        }) as Config<T>;
 
         const res = fromStore(config.store);
 

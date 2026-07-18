@@ -21,7 +21,7 @@ import type { LensExtension } from "./lens-extension";
 
 export interface ExtensionStoreParams<T extends object>
   extends Omit<PersistentStorageParams<T>, "migrations" | "cwd" | "fromStore" | "toJSON"> {
-  migrations?: Options<T>["migrations"];
+  migrations?: Options<T & Record<string, unknown>>["migrations"];
   cwd?: string;
 }
 
