@@ -9,7 +9,6 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { computed } from "mobx";
 import { observer } from "mobx-react";
-import React from "react";
 import catalogEntityRegistryInjectable from "../../../api/catalog/entity/registry.injectable";
 import hideEntityDetailsInjectable from "./hide.injectable";
 import selectedCatalogEntityInjectable from "./selected-entity.injectable";

@@ -9,7 +9,6 @@ import { JsonApiErrorParsed } from "@freelensapp/json-api";
 import { Namespace } from "@freelensapp/kube-object";
 import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { fireEvent } from "@testing-library/react";
-import React from "react";
 import directoryForLensLocalStorageInjectable from "../../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
 import navigateToNamespacesInjectable from "../../../common/front-end-routing/routes/cluster/namespaces/navigate-to-namespaces.injectable";
 import readJsonFileInjectable from "../../../common/fs/read-json-file.injectable";

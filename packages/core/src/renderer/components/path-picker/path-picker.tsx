@@ -8,7 +8,6 @@ import { Button } from "@freelensapp/button";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import openPathPickingDialogInjectable from "../../../features/path-picking-dialog/renderer/pick-paths.injectable";
 
 import type { FileFilter, OpenDialogOptions } from "electron";

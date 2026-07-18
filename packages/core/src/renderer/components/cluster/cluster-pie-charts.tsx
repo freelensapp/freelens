@@ -9,7 +9,7 @@ import { Spinner } from "@freelensapp/spinner";
 import { bytesToUnits, cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { getMetricLastPoints } from "../../../common/k8s-api/endpoints/metrics.api";
 import activeThemeInjectable from "../../themes/active.injectable";
 import { PieChart } from "../chart";

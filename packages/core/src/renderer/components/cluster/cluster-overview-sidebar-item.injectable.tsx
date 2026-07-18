@@ -7,7 +7,6 @@
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
 import { Icon } from "@freelensapp/icon";
 import { getInjectable } from "@ogre-tools/injectable";
-import React from "react";
 import clusterOverviewRouteInjectable from "../../../common/front-end-routing/routes/cluster/overview/cluster-overview-route.injectable";
 import navigateToClusterOverviewInjectable from "../../../common/front-end-routing/routes/cluster/overview/navigate-to-cluster-overview.injectable";
 import { SidebarMenuItem, sidebarMenuItemIds } from "../../../common/sidebar-menu-items-starting-order";

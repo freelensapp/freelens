@@ -7,7 +7,6 @@
 import { Button } from "@freelensapp/button";
 import { showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { getInjectable } from "@ogre-tools/injectable";
-import React from "react";
 import navigateToPortForwardsInjectable from "../../common/front-end-routing/routes/cluster/network/port-forwards/navigate-to-port-forwards.injectable";
 
 const aboutPortForwardingInjectable = getInjectable({

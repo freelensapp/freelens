@@ -8,7 +8,6 @@ import "./namespace-select-filter.scss";
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import { components } from "react-select";
 import { Select } from "../select";
 import namespaceSelectFilterModelInjectable from "./namespace-select-filter-model/namespace-select-filter-model.injectable";

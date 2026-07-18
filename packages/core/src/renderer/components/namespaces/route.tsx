@@ -7,7 +7,6 @@
 import "./namespaces.scss";
 
 import { withInjectables } from "@ogre-tools/injectable-react";
-import React from "react";
 import { Badge } from "../badge";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";

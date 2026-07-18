@@ -7,7 +7,6 @@
 import { KubeObject } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed, observable, runInAction } from "mobx";
-import React from "react";
 import { frontEndRouteInjectionToken } from "../../../../common/front-end-routing/front-end-route-injection-token";
 import { navigateToRouteInjectionToken } from "../../../../common/front-end-routing/navigate-to-route-injection-token";
 import { KubeObjectMenu } from "../../../../renderer/components/kube-object-menu";

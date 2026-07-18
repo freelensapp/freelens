@@ -91,7 +91,7 @@ jobs:
         uses: actions/cache@v6
         with:
           path: ${{ env.TURBOREPO_CACHE }}
-          key: ${{ env.RUNS_ON }}-turborepo-${{ hashFiles('package.json', 'freelens/package.json', 'packages/**/package.json', 'pnpm-lock.yaml','turbo.json') }}
+          key: ${{ env.RUNS_ON }}-turborepo-${{ hashFiles('package.json', 'freelens/package.json', 'packages/**/package.json', 'pnpm-lock.yaml','turbo.json','tsconfig*.json','packages/infrastructure/typescript/config/*.json') }}
           restore-keys: |
             ${{ env.RUNS_ON }}-turborepo-
 

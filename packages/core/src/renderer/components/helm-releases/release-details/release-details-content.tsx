@@ -12,7 +12,6 @@ import { stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { kebabCase } from "es-toolkit";
 import { observer } from "mobx-react";
-import React from "react";
 import { Link } from "react-router-dom";
 import { Badge } from "../../badge";
 import { Checkbox } from "../../checkbox";

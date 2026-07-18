@@ -5,7 +5,6 @@
  */
 
 import moment from "moment-timezone";
-import React from "react";
 import { ReactiveDuration } from "../duration/reactive-duration";
 import { WithTooltip } from "../with-tooltip";
 

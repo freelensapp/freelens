@@ -6,7 +6,6 @@
 
 import { type IAsyncComputed, withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react-lite";
-import React from "react";
 import { TimeRangedResourceMetrics } from "../resource-metrics";
 import { PodCharts, podMetricTabs } from "../workloads-pods/pod-charts";
 import deploymentMetricsInjectable from "./metrics.injectable";

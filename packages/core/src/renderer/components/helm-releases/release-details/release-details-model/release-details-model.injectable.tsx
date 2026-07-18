@@ -10,7 +10,6 @@ import { waitUntilDefined } from "@freelensapp/utilities";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { groupBy } from "es-toolkit";
 import { action, computed, observable, runInAction } from "mobx";
-import React from "react";
 import navigateToHelmReleasesInjectable from "../../../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
 import requestHelmReleaseConfigurationInjectable from "../../../../../common/k8s-api/endpoints/helm-releases.api/request-configuration.injectable";
 import hostedClusterIdInjectable from "../../../../cluster-frame-context/hosted-cluster-id.injectable";

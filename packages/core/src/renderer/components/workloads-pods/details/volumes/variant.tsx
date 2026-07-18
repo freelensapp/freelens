@@ -5,7 +5,6 @@
  */
 
 import { Icon } from "@freelensapp/icon";
-import React from "react";
 import { DrawerItem } from "../../../drawer";
 import { AwsElasticBlockStore } from "./variants/aws-elastic-block-store";
 import { AzureDisk } from "./variants/azure-disk";

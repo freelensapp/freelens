@@ -8,7 +8,6 @@ import assert from "node:assert";
 import { flushPromises } from "@freelensapp/test-utils";
 import { fireEvent } from "@testing-library/react";
 import { computed, observable, runInAction } from "mobx";
-import React from "react";
 import directoryForLensLocalStorageInjectable from "../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
 import { navigateToRouteInjectionToken } from "../../common/front-end-routing/navigate-to-route-injection-token";
 import pathExistsInjectable from "../../common/fs/path-exists.injectable";

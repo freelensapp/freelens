@@ -7,7 +7,6 @@
 import { Icon } from "@freelensapp/icon";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import { Select } from "../../../../../../renderer/components/select";
 import activeHelmRepositoriesInjectable from "../active-helm-repositories.injectable";
 import publicHelmRepositoriesInjectable from "./public-helm-repositories/public-helm-repositories.injectable";

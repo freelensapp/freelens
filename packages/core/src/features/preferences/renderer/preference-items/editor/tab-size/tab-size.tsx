@@ -6,7 +6,6 @@
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import { Input, InputValidators } from "../../../../../../renderer/components/input";
 import { SubTitle } from "../../../../../../renderer/components/layout/sub-title";
 import userPreferencesStateInjectable from "../../../../../user-preferences/common/state.injectable";

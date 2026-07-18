@@ -6,7 +6,6 @@
 
 import { cssNames } from "@freelensapp/utilities";
 import randomColor from "randomcolor";
-import React from "react";
 import { computeDefaultShortName } from "../../../common/catalog/helpers";
 import styles from "./avatar.module.scss";
 

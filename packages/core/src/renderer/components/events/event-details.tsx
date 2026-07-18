@@ -12,7 +12,6 @@ import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { kebabCase } from "es-toolkit/compat";
 import { observer } from "mobx-react";
-import React from "react";
 import { Link } from "react-router-dom";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
 import { DrawerItem, DrawerTitle } from "../drawer";

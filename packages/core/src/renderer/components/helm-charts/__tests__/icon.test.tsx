@@ -5,7 +5,6 @@
  */
 
 import { render, screen } from "@testing-library/react";
-import React from "react";
 import { HelmChartIcon } from "../icon";
 
 const mainImageSrc = "https://example.com/main-picture.jpg";

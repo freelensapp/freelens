@@ -1,4 +1,3 @@
-import React from "react";
 import directoryForUserDataInjectable from "../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import createHotbarInjectable, {
   type CreateHotbar,

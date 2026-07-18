@@ -22,7 +22,7 @@ import {
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { UserPreferencesState } from "../../../extensions/common-api/app";
 import activeHotbarInjectable from "../../../features/hotbar/storage/common/active.injectable";

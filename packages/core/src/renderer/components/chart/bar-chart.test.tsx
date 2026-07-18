@@ -6,7 +6,6 @@
 
 import { computed } from "mobx";
 import moment from "moment";
-import React from "react";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import activeThemeInjectable from "../../themes/active.injectable";
 import { renderFor } from "../test-utils/renderFor";

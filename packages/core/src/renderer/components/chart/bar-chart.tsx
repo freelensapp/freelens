@@ -11,7 +11,6 @@ import Color from "color";
 import { merge } from "es-toolkit/compat";
 import { observer } from "mobx-react";
 import moment from "moment";
-import React from "react";
 import activeThemeInjectable from "../../themes/active.injectable";
 import { NoMetrics } from "../resource-metrics/no-metrics";
 import { Chart, ChartKind } from "./chart";

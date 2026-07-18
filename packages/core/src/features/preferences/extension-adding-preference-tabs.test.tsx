@@ -6,7 +6,6 @@
 
 import { discoverFor } from "@freelensapp/react-testing-library-discovery";
 import { computed, observable, runInAction } from "mobx";
-import React from "react";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 import type { Discover } from "@freelensapp/react-testing-library-discovery";

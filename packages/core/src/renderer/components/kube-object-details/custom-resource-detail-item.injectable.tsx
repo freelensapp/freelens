@@ -6,7 +6,6 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
-import React from "react";
 import customResourceDefinitionStoreInjectable from "../custom-resource-definitions/store.injectable";
 import { CustomResourceDetails } from "../custom-resources/details";
 import currentKubeObjectInDetailsInjectable from "./current-kube-object-in-details.injectable";

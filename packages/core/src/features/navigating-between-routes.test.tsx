@@ -7,7 +7,6 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed, runInAction } from "mobx";
 import { observer } from "mobx-react";
-import React from "react";
 import { frontEndRouteInjectionToken } from "../common/front-end-routing/front-end-route-injection-token";
 import { navigateToRouteInjectionToken } from "../common/front-end-routing/navigate-to-route-injection-token";
 import { getApplicationBuilder } from "../renderer/components/test-utils/get-application-builder";
