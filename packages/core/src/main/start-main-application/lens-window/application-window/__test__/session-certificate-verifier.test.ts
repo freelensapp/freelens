@@ -6,10 +6,34 @@
 
 import lensProxyCertificateInjectable from "../../../../../common/certificate/lens-proxy-certificate.injectable";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
-import setupLensProxyCertificateInjectable from "../../../../start-main-application/runnables/setup-lens-proxy-certificate.injectable";
 import sessionCertificateVerifierInjectable, { ChromiumNetError } from "../session-certificate-verifier.injectable";
 
 import type { DiContainer } from "@ogre-tools/injectable";
+
+// A static self-signed certificate is used instead of generating one at test
+// time: selfsigned v5 only exposes an async, native WebCrypto based API and
+// generating real keys inside a vitest worker can crash the worker at teardown.
+const lensProxyCertificate = `-----BEGIN CERTIFICATE-----
+MIIDdTCCAl2gAwIBAgIUKCuayowKL/ZUl07QWi5CIBSl8o4wDQYJKoZIhvcNAQEL
+BQAwPDEnMCUGA1UEAwweRnJlZWxlbnMgQ2VydGlmaWNhdGUgQXV0aG9yaXR5MREw
+DwYDVQQKDAhGcmVlbGVuczAeFw0yNjA3MTcyMjEwNDhaFw0zNjA3MTQyMjEwNDha
+MDwxJzAlBgNVBAMMHkZyZWVsZW5zIENlcnRpZmljYXRlIEF1dGhvcml0eTERMA8G
+A1UECgwIRnJlZWxlbnMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCm
+0pPFhhI1RfZ4cM23uF+zFceRsWnsYbfeSftQWTz7oGve7NyqUBQ9Z5N1yShoOjuh
+T81Xl1zjuo7vAAPRUmCvBFQLPS//eLNTGFwcWczDdm2fmfXfz8mBB+KQ7tt1zAbx
+B5yoE1kLnwxpaAOE0SkMWLcOREHOjJk8Jb/AIxS/FsWtm6K8/kKTjNp9iWhwW8Ma
+J8+v6zqGlmQjbxFs6qjxP6B4tPqSV8FrdSMt61s57abQS9Wi3n4luBEamzkJkgoP
+T/mgIT3lO25Ip6jytT+KTdkA5SD1yTePzi2Y+8VAMntGghyVJ+Gejw6SabiMhnaf
+pmmqxXDYaxp/ultfSdI3AgMBAAGjbzBtMB0GA1UdDgQWBBQNi1VvG3NB0hspScFy
+BM1WyfEaMjAfBgNVHSMEGDAWgBQNi1VvG3NB0hspScFyBM1WyfEaMjAPBgNVHRMB
+Af8EBTADAQH/MBoGA1UdEQQTMBGCCWxvY2FsaG9zdIcEfwAAATANBgkqhkiG9w0B
+AQsFAAOCAQEAHlV6sMiBW/n8K+amBgxotEvJagSiF/Gx3CzPdDreH9e2P3GsVE3e
+aKXaMv1jl4E0SvJm6LTf/3Kjz1Sbv4TOVJVqFyK3YYztwZ/p81ms0YfYHuwShNx5
+m03MJs7dli36wiqfT8MNLzkh+cWy5VojR1tSzGhXsfRlxIJj+hbrnuBKe+jahj/O
+Ef6xmNU788sLHzGH8tUYA0QTMcVIu0LoYL+4YWkwME7pUOyfyabYSmjERY0zko2g
+C9q1ALvRxWfNPOEvN88lV0AG7EcE35OOXalNATxPPEGVWrJo6Po2W2APYZcEM71r
+6Zi4mGlYgfGcuEht2es7Cu9TQBKeyApFdQ==
+-----END CERTIFICATE-----`;
 
 const externalCertificate = `-----BEGIN CERTIFICATE-----
 MIIFzzCCBLegAwIBAgIQByL1wEn7yGRLqHZvmBzvpTANBgkqhkiG9w0BAQsFADA8
@@ -51,18 +75,19 @@ describe("sessionCertificateVerifier", () => {
 
   beforeEach(() => {
     di = getDiForUnitTesting();
-    di.unoverride(lensProxyCertificateInjectable);
-    di.inject(setupLensProxyCertificateInjectable).run();
+    di.override(lensProxyCertificateInjectable, () => ({
+      get: () => ({ cert: lensProxyCertificate, public: "", private: "" }),
+      set: () => {},
+    }));
   });
 
   it("marks lens proxy certificate as trusted", () => {
     const sessionCertificateVerifier = di.inject(sessionCertificateVerifierInjectable);
-    const lensProxyCertificate = di.inject(lensProxyCertificateInjectable).get();
     const callback = vi.fn();
 
     sessionCertificateVerifier(
       {
-        certificate: { data: lensProxyCertificate.cert },
+        certificate: { data: lensProxyCertificate },
       } as any,
       callback,
     );

@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "@freelensapp/utilities": "workspace:^",
-    "uuid": "^11.1.1"
+    "uuid": "^14.0.1"
   },
   "devDependencies": {
     "@async-fn/vitest": "^1.8.0",
@@ -35,7 +35,6 @@
     "@ogre-tools/fp": "^17.11.1",
     "@ogre-tools/injectable": "^17.11.1",
     "@types/node": "~24.12.4",
-    "@types/uuid": "^11.0.0",
     "jsdom": "^29.1.1",
     "mobx": "^6.15.0",
     "type-fest": "^5.6.0",

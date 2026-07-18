@@ -6,7 +6,6 @@
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import siblingTabsInjectable from "../../routes/sibling-tabs.injectable";
 import { TabLayout } from "./tab-layout-2";
 

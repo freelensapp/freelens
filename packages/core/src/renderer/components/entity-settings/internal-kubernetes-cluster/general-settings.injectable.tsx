@@ -6,7 +6,6 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import React from "react";
 import getClusterByIdInjectable from "../../../../features/cluster/storage/common/get-by-id.injectable";
 import { ClusterIconSetting } from "../../cluster-settings/icon-settings";
 import { ClusterKubeconfig } from "../../cluster-settings/kubeconfig";

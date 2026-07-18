@@ -1,0 +1,64 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "paths": {
+      "@freelensapp/animate": ["./packages/ui-components/animate/index.ts"],
+      "@freelensapp/application": ["./packages/technical-features/application/application/index.ts"],
+      "@freelensapp/application-for-electron-main": [
+        "./packages/technical-features/application/application-for-electron-main/index.ts"
+      ],
+      "@freelensapp/button": ["./packages/ui-components/button/src/index.ts"],
+      "@freelensapp/cluster-settings": ["./packages/cluster-settings/index.ts"],
+      "@freelensapp/cluster-sidebar": ["./packages/cluster-sidebar/index.ts"],
+      "@freelensapp/computed-channel": ["./packages/technical-features/messaging/computed-channel/index.ts"],
+      "@freelensapp/core/main": ["./packages/core/src/main/library.ts"],
+      "@freelensapp/core/renderer": ["./packages/core/src/renderer/library.ts"],
+      "@freelensapp/error-boundary": ["./packages/ui-components/error-boundary/index.ts"],
+      "@freelensapp/event-emitter": ["./packages/utility-features/event-emitter/index.ts"],
+      "@freelensapp/extensions": ["./packages/extensions/src/extension-api.ts"],
+      "@freelensapp/feature-core": ["./packages/technical-features/feature-core/index.ts"],
+      "@freelensapp/icon": ["./packages/ui-components/icon/index.ts"],
+      "@freelensapp/json-api": ["./packages/utility-features/json-api/index.ts"],
+      "@freelensapp/keyboard-shortcuts": ["./packages/business-features/keyboard-shortcuts/index.ts"],
+      "@freelensapp/kube-api": ["./packages/utility-features/kube-api/index.ts"],
+      "@freelensapp/kube-api-specifics": ["./packages/utility-features/kube-api-specifics/index.ts"],
+      "@freelensapp/kube-object": ["./packages/kube-object/index.ts"],
+      "@freelensapp/kubectl-versions": ["./packages/kubectl-versions/index.ts"],
+      "@freelensapp/list-layout": ["./packages/list-layout/index.ts"],
+      "@freelensapp/logger": ["./packages/logger/index.ts"],
+      "@freelensapp/messaging": ["./packages/technical-features/messaging/messaging/index.ts"],
+      "@freelensapp/messaging-fake-bridge": ["./packages/technical-features/messaging/messaging-fake-bridge/index.ts"],
+      "@freelensapp/messaging-for-main": ["./packages/technical-features/messaging/messaging-for-main/index.ts"],
+      "@freelensapp/messaging-for-renderer": [
+        "./packages/technical-features/messaging/messaging-for-renderer/index.ts"
+      ],
+      "@freelensapp/metrics": ["./packages/metrics/index.ts"],
+      "@freelensapp/notifications": ["./packages/ui-components/notifications/index.ts"],
+      "@freelensapp/prometheus": ["./packages/technical-features/prometheus/index.ts"],
+      "@freelensapp/random": ["./packages/random/index.ts"],
+      "@freelensapp/react-application": ["./packages/technical-features/react-application/index.ts"],
+      "@freelensapp/react-testing-library-discovery": [
+        "./packages/utility-features/react-testing-library-discovery/index.ts"
+      ],
+      "@freelensapp/resizing-anchor": ["./packages/ui-components/resizing-anchor/index.ts"],
+      "@freelensapp/routing": ["./packages/routing/index.ts"],
+      "@freelensapp/run-many": ["./packages/utility-features/run-many/index.ts"],
+      "@freelensapp/spinner": ["./packages/ui-components/spinner/index.ts"],
+      "@freelensapp/startable-stoppable": ["./packages/utility-features/startable-stoppable/index.ts"],
+      "@freelensapp/test-utils": ["./packages/utility-features/test-utils/index.ts"],
+      "@freelensapp/tooltip": ["./packages/ui-components/tooltip/src/index.ts"],
+      "@freelensapp/utilities": ["./packages/utility-features/utilities/index.ts"]
+    },
+    "types": ["node", "vitest/globals"]
+  },
+  "include": [
+    "packages/**/*.ts",
+    "packages/**/*.tsx",
+    "packages/core/types/*.d.ts",
+    "freelens/src/**/*",
+    "freelens/integration/**/*.ts",
+    "freelens/vitest.integration.config.ts"
+  ],
+  "exclude": ["**/node_modules/**", "**/dist/**", "**/dist-types/**", "**/static/**", "**/binaries/**"]
+}

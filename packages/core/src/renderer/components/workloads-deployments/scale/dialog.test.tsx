@@ -7,7 +7,6 @@
 import { deploymentApiInjectable } from "@freelensapp/kube-api-specifics";
 import { Deployment } from "@freelensapp/kube-object";
 import { fireEvent, waitFor } from "@testing-library/react";
-import React from "react";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import storesAndApisCanBeCreatedInjectable from "../../../stores-apis-can-be-created.injectable";
 import { renderFor } from "../../test-utils/renderFor";

@@ -5,7 +5,6 @@
  */
 
 import { cssNames } from "@freelensapp/utilities";
-import React from "react";
 import styles from "./switch.module.scss";
 
 import type { ChangeEvent, HTMLProps } from "react";

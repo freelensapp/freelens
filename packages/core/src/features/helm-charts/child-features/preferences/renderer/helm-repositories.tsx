@@ -12,7 +12,6 @@
 import { Spinner } from "@freelensapp/spinner";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import { RemovableItem } from "../../../../preferences/renderer/removable-item/removable-item";
 import activeHelmRepositoriesInjectable from "./active-helm-repositories.injectable";
 import styles from "./helm-charts.module.scss";

@@ -5,7 +5,6 @@
  */
 
 import { Pod } from "@freelensapp/kube-object";
-import React from "react";
 import { getDiForUnitTesting } from "../../../../../../getDiForUnitTesting";
 import storesAndApisCanBeCreatedInjectable from "../../../../../../stores-apis-can-be-created.injectable";
 import { renderFor } from "../../../../../test-utils/renderFor";

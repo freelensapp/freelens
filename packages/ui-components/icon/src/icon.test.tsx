@@ -12,7 +12,6 @@ import { createContainer } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { registerInjectableReact } from "@ogre-tools/injectable-react";
 import { runInAction } from "mobx";
-import React from "react";
 import { Icon } from "./icon";
 
 import type { Logger } from "@freelensapp/logger";

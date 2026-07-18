@@ -5,7 +5,7 @@
  */
 
 import { Icon } from "@freelensapp/icon";
-import React, { useState } from "react";
+import { useState } from "react";
 import { act } from "react-dom/test-utils";
 import { Dropdown } from "../../dropdown/dropdown";
 import { MenuItem } from "../../menu";

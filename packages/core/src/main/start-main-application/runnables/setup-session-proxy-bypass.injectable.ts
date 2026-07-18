@@ -18,17 +18,47 @@ const setupSessionProxyBypassInjectable = getInjectable({
       try {
         logger.info("[PROXY-BYPASS] Configuring session proxy bypass for localhost connections");
 
-        const systemProxyRules = await session.defaultSession.resolveProxy("https://example.com");
+        // `resolveProxy` returns a PAC-format string (e.g. "DIRECT" or "PROXY host:port; DIRECT").
+        // It cannot be fed directly into `setProxy` with `mode: "fixed_servers"`, whose `proxyRules`
+        // expects server specs like "host:port" or "https=host:port". Passing "DIRECT" there makes
+        // Chromium route all non-local traffic through a phantom proxy named "DIRECT", which breaks
+        // every external request with ERR_PROXY_CONNECTION_FAILED.
+        const pacResult = await session.defaultSession.resolveProxy("https://example.com");
 
-        await session.defaultSession.setProxy({
-          mode: "fixed_servers",
-          proxyRules: systemProxyRules,
-          proxyBypassRules: ["<local>", "renderer.freelens.app", ".renderer.freelens.app", "127.0.0.1/8", "[::1]"].join(
-            ",",
-          ),
-        });
+        const proxyRules = pacResult
+          .split(";")
+          .map((entry) => entry.trim())
+          .filter((entry) => entry && entry.toUpperCase() !== "DIRECT")
+          .map((entry) =>
+            entry
+              .replace(/^PROXY\s+/i, "")
+              .replace(/^HTTPS\s+/i, "https://")
+              .replace(/^SOCKS5\s+/i, "socks5://")
+              .replace(/^SOCKS4\s+/i, "socks4://")
+              .replace(/^SOCKS\s+/i, "socks://"),
+          )
+          .join(",");
 
-        logger.info("[PROXY-BYPASS] Proxy bypass configured for local addresses while preserving system proxy");
+        if (proxyRules === "") {
+          // No system proxy — connect directly so external requests are not routed through a proxy.
+          await session.defaultSession.setProxy({ mode: "direct" });
+
+          logger.info("[PROXY-BYPASS] No system proxy detected; using direct connection");
+        } else {
+          await session.defaultSession.setProxy({
+            mode: "fixed_servers",
+            proxyRules,
+            proxyBypassRules: [
+              "<local>",
+              "renderer.freelens.app",
+              ".renderer.freelens.app",
+              "127.0.0.1/8",
+              "[::1]",
+            ].join(","),
+          });
+
+          logger.info("[PROXY-BYPASS] Proxy bypass configured for local addresses while preserving system proxy");
+        }
       } catch (error) {
         logger.error("[PROXY-BYPASS] Failed to configure session proxy bypass", { error });
       }

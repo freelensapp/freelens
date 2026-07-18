@@ -6,7 +6,6 @@
 
 import "@testing-library/jest-dom/vitest";
 import { waitFor } from "@testing-library/react";
-import React from "react";
 import userPreferencesStateInjectable from "../../../../../features/user-preferences/common/state.injectable";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
 import { renderFor } from "../../../test-utils/renderFor";
@@ -26,7 +25,6 @@ import type { TabId } from "../../dock/store";
 const virtualListMock = vi.fn();
 
 vi.mock("../../../virtual-list", () => {
-  const React = require("react");
 
   return {
     VirtualList: (props: any) => {

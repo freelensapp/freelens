@@ -9,7 +9,6 @@ import "./tab-layout.scss";
 import { ErrorBoundary } from "@freelensapp/error-boundary";
 import { cssNames } from "@freelensapp/utilities";
 import { observer } from "mobx-react";
-import React from "react";
 import { Tab, Tabs } from "../tabs";
 
 import type { SidebarItemDeclaration } from "@freelensapp/cluster-sidebar";

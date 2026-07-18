@@ -5,7 +5,6 @@
  */
 
 import { KubeObject } from "@freelensapp/kube-object";
-import React from "react";
 import { Badge } from "../badge";
 import { DrawerItem } from "./drawer-item";
 

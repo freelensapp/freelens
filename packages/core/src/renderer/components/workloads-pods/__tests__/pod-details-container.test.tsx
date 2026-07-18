@@ -7,7 +7,6 @@
 import { Pod } from "@freelensapp/kube-object";
 import { disposer } from "@freelensapp/utilities";
 import { screen } from "@testing-library/react";
-import React from "react";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import portForwardStoreInjectable from "../../../port-forward/port-forward-store/port-forward-store.injectable";
 import { renderFor } from "../../test-utils/renderFor";

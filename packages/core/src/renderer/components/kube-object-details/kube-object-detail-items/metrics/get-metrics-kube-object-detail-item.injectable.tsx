@@ -6,7 +6,6 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
-import React from "react";
 import metricsDetailsComponentEnabledInjectable from "../../../../api/catalog/entity/metrics-details-component-enabled.injectable";
 import { DetailsMetricsContainer } from "./details-metrics-container";
 

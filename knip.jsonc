@@ -94,7 +94,7 @@
     },
 
     "packages/ensure-binaries": {
-      "project": ["bin/*.js!", "src/*.mts!"],
+      "project": ["bin/*.js!", "src/*.ts!"],
       "typescript": {
         "config": ["tsconfig.json"]
       }
@@ -115,9 +115,7 @@
         "@mui/material",
         "@ogre-tools/injectable",
         "@ogre-tools/injectable-react",
-        "@types/chart.js",
         "@types/history",
-        "@types/lodash",
         "@types/react",
         "@types/react-router",
         "@types/react-router-dom",
@@ -128,7 +126,6 @@
         "conf",
         "history",
         "immer",
-        "lodash",
         "mobx",
         "mobx-observable-history",
         "monaco-editor",
@@ -149,7 +146,6 @@
     },
 
     "packages/generate-tray-icons": {
-      "entry": ["src/index.ts!"],
       "project": ["bin/*.js!", "src/*.ts!"],
       "ignoreDependencies": [
         // source of the tray icon SVGs passed on the command line
@@ -163,6 +159,14 @@
     "packages/resource-templates": {
       "entry": [],
       "project": []
+    },
+
+    "packages/ui-components/button": {
+      // JSX compiles to react/jsx-runtime under the automatic runtime, which
+      // knip's --production --strict pass does not attribute to `react`. The
+      // only explicit react import here is type-only (ButtonHTMLAttributes),
+      // so react looks unused even though it is a real runtime dependency.
+      "ignoreDependencies": ["react"]
     }
   },
 
