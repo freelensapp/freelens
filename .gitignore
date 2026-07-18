@@ -28,5 +28,3 @@ logs/
 .DS_Store
 .idea/
 .vscode/
-
-tsconfig.typecheck.generated.json

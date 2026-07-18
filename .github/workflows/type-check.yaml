@@ -57,4 +57,4 @@ jobs:
         run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
 
       - name: Type check
-        run: pnpm type-check
+        run: pnpm type:check
