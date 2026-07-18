@@ -614,8 +614,8 @@ importers:
         specifier: ^5.2.1
         version: 5.2.1
       marked:
-        specifier: ^15.0.12
-        version: 15.0.12
+        specifier: ^18.0.6
+        version: 18.0.6
       mobx:
         specifier: ^6.15.0
         version: 6.15.0
@@ -5661,9 +5661,9 @@ packages:
     engines: {node: '>= 18'}
     hasBin: true
 
-  marked@15.0.12:
-    resolution: {integrity: sha512-8dD6FusOQSrpv9Z1rdNMdlSgQOIP880DHqnohobOmYLElGEqAL/JvxvuxZO16r4HtjTlfPRDC1hbvxC9dPN2nA==}
-    engines: {node: '>= 18'}
+  marked@18.0.6:
+    resolution: {integrity: sha512-MrV5puXBfuiy6wl6DLaq3BtIJQAJToAd5zt/ZKhRfGRAuFPALE7/4Y7jnxRQoEgK/pBgurGqLyAuRgZ2xOjr6w==}
+    engines: {node: '>= 20'}
     hasBin: true
 
   matcher@3.0.0:
@@ -10614,7 +10614,7 @@ snapshots:
 
   marked@14.0.0: {}
 
-  marked@15.0.12: {}
+  marked@18.0.6: {}
 
   matcher@3.0.0:
     dependencies:
