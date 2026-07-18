@@ -84,10 +84,10 @@ interface ExtensionDiscoveryChannelMessage {
  */
 const isDirectoryLike = (lstat: Stats) => lstat.isDirectory() || lstat.isSymbolicLink();
 
-interface ExtensionDiscoveryEvents {
+type ExtensionDiscoveryEvents = {
   add: (ext: InstalledExtension) => void;
   remove: (extId: LensExtensionId) => void;
-}
+};
 
 /**
  * Discovers installed bundled and local extensions from the filesystem.
@@ -112,7 +112,8 @@ export class ExtensionDiscovery {
     return when(() => this.isLoaded);
   }
 
-  public readonly events: TypedEventEmitter<ExtensionDiscoveryEvents> = new EventEmitter();
+  public readonly events: TypedEventEmitter<ExtensionDiscoveryEvents> =
+    new EventEmitter() as unknown as TypedEventEmitter<ExtensionDiscoveryEvents>;
 
   constructor(protected readonly dependencies: Dependencies) {
     makeObservable(this);

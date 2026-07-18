@@ -12,27 +12,27 @@ import type { SingleOrMany } from "@freelensapp/utilities";
 
 import type TypedEventEmitter from "typed-emitter";
 
-export interface AlwaysStatWatcherEvents {
+export type AlwaysStatWatcherEvents = {
   add: (path: string, stats: Stats) => void;
   addDir: (path: string, stats: Stats) => void;
   change: (path: string, stats: Stats) => void;
-}
+};
 
-export interface MaybeStatWatcherEvents {
+export type MaybeStatWatcherEvents = {
   add: (path: string, stats?: Stats) => void;
   addDir: (path: string, stats?: Stats) => void;
   change: (path: string, stats?: Stats) => void;
-}
+};
 
 export type WatcherEvents<AlwaysStat extends boolean> = BaseWatcherEvents &
   (AlwaysStat extends true ? AlwaysStatWatcherEvents : MaybeStatWatcherEvents);
 
-export interface BaseWatcherEvents {
+export type BaseWatcherEvents = {
   error: (error: Error) => void;
   ready: () => void;
   unlink: (path: string) => void;
   unlinkDir: (path: string) => void;
-}
+};
 
 export interface Watcher<AlwaysStat extends boolean> extends TypedEventEmitter<WatcherEvents<AlwaysStat>> {
   close: () => Promise<void>;

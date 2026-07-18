@@ -60,7 +60,7 @@
     "react-window": "^1.8.11",
     "rfc6902": "^5.2.0",
     "type-fest": "^5.6.0",
-    "typed-emitter": "^1.4.0"
+    "typed-emitter": "^2.1.0"
   },
   "devDependencies": {
     "@freelensapp/core": "workspace:^",

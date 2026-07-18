@@ -38,7 +38,7 @@
     "jsdom": "^29.1.1",
     "mobx": "^6.15.0",
     "type-fest": "^5.6.0",
-    "typed-emitter": "^1.4.0",
+    "typed-emitter": "^2.1.0",
     "vitest": "^4.1.10"
   },
   "publishConfig": {
