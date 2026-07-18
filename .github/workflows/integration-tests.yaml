@@ -190,7 +190,7 @@ jobs:
 
       - name: Disable pre post scripts for pnpm
         shell: bash
-        run: pnpm config set enablePrePostScripts false
+        run: pnpm config set enablePrePostScripts false --location project
 
       - name: Put $HOME in env (Windows)
         if: runner.os == 'windows'

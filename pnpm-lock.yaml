@@ -14,12 +14,8 @@ overrides:
   tmp@^0.2.0: ^0.2.7
 
 patchedDependencies:
-  '@async-fn/vitest':
-    hash: 86478f697e61e0e2ca0274a6b255c31c05d0dd83078743e9e755910710d597ef
-    path: patches/@async-fn__vitest.patch
-  '@xterm/xterm@6.0.0':
-    hash: fb7ebbc29ef246137af8ea109596e698df4691ccaa0b87ed5969259bcb27e435
-    path: patches/@xterm__xterm@6.0.0.patch
+  '@async-fn/vitest': 86478f697e61e0e2ca0274a6b255c31c05d0dd83078743e9e755910710d597ef
+  '@xterm/xterm@6.0.0': fb7ebbc29ef246137af8ea109596e698df4691ccaa0b87ed5969259bcb27e435
 
 importers:
 
@@ -35,8 +31,8 @@ importers:
         specifier: ^29.1.1
         version: 29.1.1(@noble/hashes@2.2.0)
       pnpm:
-        specifier: 10.34.4
-        version: 10.34.4
+        specifier: 11.5.3
+        version: 11.5.3
       turbo:
         specifier: 2.10.2
         version: 2.10.2
@@ -161,8 +157,8 @@ importers:
         specifier: ^6.3.0
         version: 6.3.0
       pnpm:
-        specifier: ^10.34.4
-        version: 10.34.4
+        specifier: ^11.5.3
+        version: 11.5.3
       proper-lockfile:
         specifier: ^4.1.2
         version: 4.1.2
@@ -651,8 +647,8 @@ importers:
         specifier: ^6.3.0
         version: 6.3.0
       pnpm:
-        specifier: ^10.34.4
-        version: 10.34.4
+        specifier: ^11.5.3
+        version: 11.5.3
       proper-lockfile:
         specifier: ^4.1.2
         version: 4.1.2
@@ -2518,9 +2514,6 @@ packages:
   '@emnapi/runtime@1.11.1':
     resolution: {integrity: sha512-vgj7R3y3Wgx24IQaGPA/R6YFXLHVMOZ0uVEyIQPaWs+rd1AzfEMXlAC22FYwO1XkKR6NPsq7mUandH8oIRdZFw==}
 
-  '@emnapi/runtime@1.7.0':
-    resolution: {integrity: sha512-oAYoQnCYaQZKVS53Fq23ceWMRxq5EhQsE0x0RdQ55jT7wagMu5k+fS39v1fiSLrtrLQlXwVINenqhLMtTrV/1Q==}
-
   '@emnapi/wasi-threads@1.2.2':
     resolution: {integrity: sha512-c95qOXkHdydNKhscBTebqEC1CVAZpyqOfVfBzQ1qgzyl3gfeldUjIggDbIZgDKsHLgnsM+igH7TJ/eAasaVuMA==}
 
@@ -4290,9 +4283,6 @@ packages:
       ajv:
         optional: true
 
-  ajv@8.12.0:
-    resolution: {integrity: sha512-sRu1kpcO9yLtYxBKvqfTeh9KzZEwO3STyX1HT+4CaDzC6HpTGYhIhPIzj9XuKU7KYDwnaeh5hcOwjy1QuJzBPA==}
-
   ajv@8.20.0:
     resolution: {integrity: sha512-Thbli+OlOj+iMPYFBVBfJ3OmCAnaSyNn4M1vz9T6Gka5Jt9ba/HIR56joy65tY6kx/FCF5VXNB819Y7/GUrBGA==}
 
@@ -5911,11 +5901,6 @@ packages:
     resolution: {integrity: sha512-0D10M2/MnEyvoog7tmozlpSqL3HEU1evxUFa3v1dsKYmBDFSP1dLSX4CH2rNjpQ+4Fps8GKmUkCwiKryaKqd9A==}
     engines: {node: '>=20'}
 
-  nanoid@3.3.11:
-    resolution: {integrity: sha512-N8SpfPUnUp1bK+PMYW8qSWdl9U+wwNWI4QKxOYDy9JAro3WMX7p2OeVRF9v+347pnakNevPmiHhNmZ2HbFA76w==}
-    engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
-    hasBin: true
-
   nanoid@3.3.16:
     resolution: {integrity: sha512-bzlKTyNJ7+LdGIIwy8ijFpIqEQIvafahV7eYykJ8Cvh42EdJeODoJ6gUJXpQJvej1BddH8OqTXZNE/KfbWAu8Q==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
@@ -6145,9 +6130,9 @@ packages:
     resolution: {integrity: sha512-uysumyrvkUX0rX/dEVqt8gC3sTBzd4zoWfLeS29nb53imdaXVvLINYXTI2GNqzaMuvacNx4uJQ8+b3zXR0pkgQ==}
     engines: {node: '>=10.4.0'}
 
-  pnpm@10.34.4:
-    resolution: {integrity: sha512-h2i+VSAK4/Iia2Un/Momh+FLxOXxLXchoPJdo99HkVF3BYZI20F3uvNIEg+guidS2NjZP2vq8f5krhjajelhrw==}
-    engines: {node: '>=18.12'}
+  pnpm@11.5.3:
+    resolution: {integrity: sha512-esHJGTQcITo03A0Cr7cUPFwmrCbujEeC3uqCG4rGTSE0oIH9iUHa5uKbu0j1jfwrf7zuzMB8svCdIZ00Kklp7Q==}
+    engines: {node: '>=22.13'}
     hasBin: true
 
   possible-typed-array-names@1.1.0:
@@ -6193,10 +6178,6 @@ packages:
 
   postcss@8.5.19:
     resolution: {integrity: sha512-Mz8SaolMd8nB+G13WkORcxQKHZ/NE4xXevtkJHVuG+guo9/wYKlIMTKAqGdEmYOXR2ijPjTYNHssizdaVSUNdQ==}
-    engines: {node: ^10 || ^12 || >=14}
-
-  postcss@8.5.8:
-    resolution: {integrity: sha512-OW/rX8O/jXnm82Ey1k44pObPtdblfiuWnrd8X7GJ7emImCOstunGbXUpp7HdBrFQX6rJzn3sPT397Wp5aCwCHg==}
     engines: {node: ^10 || ^12 || >=14}
 
   postject@1.0.0-alpha.6:
@@ -7064,9 +7045,6 @@ packages:
     peerDependencies:
       browserslist: '>= 4.21.0'
 
-  uri-js@4.4.1:
-    resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
-
   use-isomorphic-layout-effect@1.2.1:
     resolution: {integrity: sha512-tpZZ+EX0gaghDAiFR37hj5MgY6ZN55kLiPkJsKxBMZ6GZdOSPJXiOzPM984oPYZ5AnehYx5WQp1+ME8I/P/pRA==}
     peerDependencies:
@@ -7690,11 +7668,6 @@ snapshots:
       tslib: 2.8.1
     optional: true
 
-  '@emnapi/runtime@1.7.0':
-    dependencies:
-      tslib: 2.8.1
-    optional: true
-
   '@emnapi/wasi-threads@1.2.2':
     dependencies:
       tslib: 2.8.1
@@ -8110,7 +8083,7 @@ snapshots:
 
   '@img/sharp-wasm32@0.34.5':
     dependencies:
-      '@emnapi/runtime': 1.7.0
+      '@emnapi/runtime': 1.11.1
     optional: true
 
   '@img/sharp-win32-arm64@0.34.5':
@@ -8771,7 +8744,7 @@ snapshots:
       '@alloc/quick-lru': 5.2.0
       '@tailwindcss/node': 4.2.4
       '@tailwindcss/oxide': 4.2.4
-      postcss: 8.5.8
+      postcss: 8.5.19
       tailwindcss: 4.2.4
 
   '@testing-library/dom@10.4.1':
@@ -9202,16 +9175,9 @@ snapshots:
       clean-stack: 2.2.0
       indent-string: 4.0.0
 
-  ajv-formats@2.1.1(ajv@8.12.0):
+  ajv-formats@2.1.1(ajv@8.20.0):
     optionalDependencies:
-      ajv: 8.12.0
-
-  ajv@8.12.0:
-    dependencies:
-      fast-deep-equal: 3.1.3
-      json-schema-traverse: 1.0.0
-      require-from-string: 2.0.2
-      uri-js: 4.4.1
+      ajv: 8.20.0
 
   ajv@8.20.0:
     dependencies:
@@ -9581,8 +9547,8 @@ snapshots:
 
   conf@10.2.0:
     dependencies:
-      ajv: 8.12.0
-      ajv-formats: 2.1.1(ajv@8.12.0)
+      ajv: 8.20.0
+      ajv-formats: 2.1.1(ajv@8.20.0)
       atomically: 1.7.0
       debounce-fn: 4.0.0
       dot-prop: 6.0.1
@@ -10345,9 +10311,9 @@ snapshots:
       safer-buffer: 2.1.2
     optional: true
 
-  icss-utils@5.1.0(postcss@8.5.8):
+  icss-utils@5.1.0(postcss@8.5.19):
     dependencies:
-      postcss: 8.5.8
+      postcss: 8.5.19
 
   ignore@5.3.2: {}
 
@@ -10921,8 +10887,6 @@ snapshots:
       array-union: 3.0.1
       minimatch: 10.2.5
 
-  nanoid@3.3.11: {}
-
   nanoid@3.3.16: {}
 
   needle@3.2.0:
@@ -11142,32 +11106,32 @@ snapshots:
       base64-js: 1.5.1
       xmlbuilder: 15.1.1
 
-  pnpm@10.34.4: {}
+  pnpm@11.5.3: {}
 
   possible-typed-array-names@1.1.0: {}
 
-  postcss-load-config@3.1.4(postcss@8.5.8)(ts-node@10.9.2(@types/node@24.12.4)(typescript@7.0.2)):
+  postcss-load-config@3.1.4(postcss@8.5.19)(ts-node@10.9.2(@types/node@24.12.4)(typescript@7.0.2)):
     dependencies:
       lilconfig: 2.1.0
       yaml: 1.10.2
     optionalDependencies:
-      postcss: 8.5.8
+      postcss: 8.5.19
       ts-node: 10.9.2(@types/node@24.12.4)(typescript@7.0.2)
 
-  postcss-modules-extract-imports@3.1.0(postcss@8.5.8):
+  postcss-modules-extract-imports@3.1.0(postcss@8.5.19):
     dependencies:
-      postcss: 8.5.8
+      postcss: 8.5.19
 
-  postcss-modules-local-by-default@4.2.0(postcss@8.5.8):
+  postcss-modules-local-by-default@4.2.0(postcss@8.5.19):
     dependencies:
-      icss-utils: 5.1.0(postcss@8.5.8)
-      postcss: 8.5.8
+      icss-utils: 5.1.0(postcss@8.5.19)
+      postcss: 8.5.19
       postcss-selector-parser: 7.1.0
       postcss-value-parser: 4.2.0
 
-  postcss-modules-scope@3.2.1(postcss@8.5.8):
+  postcss-modules-scope@3.2.1(postcss@8.5.19):
     dependencies:
-      postcss: 8.5.8
+      postcss: 8.5.19
       postcss-selector-parser: 7.1.0
 
   postcss-selector-parser@7.1.0:
@@ -11180,12 +11144,6 @@ snapshots:
   postcss@8.5.19:
     dependencies:
       nanoid: 3.3.16
-      picocolors: 1.1.1
-      source-map-js: 1.2.1
-
-  postcss@8.5.8:
-    dependencies:
-      nanoid: 3.3.11
       picocolors: 1.1.1
       source-map-js: 1.2.1
 
@@ -12099,14 +12057,14 @@ snapshots:
       '@types/postcss-modules-local-by-default': 4.0.2
       '@types/postcss-modules-scope': 3.0.4
       dotenv: 16.4.7
-      icss-utils: 5.1.0(postcss@8.5.8)
+      icss-utils: 5.1.0(postcss@8.5.19)
       less: 4.2.2
       lodash.camelcase: 4.3.0
-      postcss: 8.5.8
-      postcss-load-config: 3.1.4(postcss@8.5.8)(ts-node@10.9.2(@types/node@24.12.4)(typescript@7.0.2))
-      postcss-modules-extract-imports: 3.1.0(postcss@8.5.8)
-      postcss-modules-local-by-default: 4.2.0(postcss@8.5.8)
-      postcss-modules-scope: 3.2.1(postcss@8.5.8)
+      postcss: 8.5.19
+      postcss-load-config: 3.1.4(postcss@8.5.19)(ts-node@10.9.2(@types/node@24.12.4)(typescript@7.0.2))
+      postcss-modules-extract-imports: 3.1.0(postcss@8.5.19)
+      postcss-modules-local-by-default: 4.2.0(postcss@8.5.19)
+      postcss-modules-scope: 3.2.1(postcss@8.5.19)
       reserved-words: 0.1.2
       sass: 1.101.0
       source-map-js: 1.2.1
@@ -12181,10 +12139,6 @@ snapshots:
       browserslist: 4.28.1
       escalade: 3.2.0
       picocolors: 1.1.1
-
-  uri-js@4.4.1:
-    dependencies:
-      punycode: 2.3.1
 
   use-isomorphic-layout-effect@1.2.1(@types/react@17.0.93)(react@17.0.2):
     dependencies:
