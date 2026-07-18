@@ -37,7 +37,7 @@ import Workloads from "../assets/workloads.svg?raw";
 import type { Logger } from "@freelensapp/logger";
 import type { StrictReactNode } from "@freelensapp/utilities";
 
-import type { LocationDescriptor } from "history";
+import type { To } from "history";
 
 const hrefValidation = /https?:\/\//;
 
@@ -109,7 +109,7 @@ export interface BaseIconProps {
   /**
    * render icon as NavLink from react-router-dom
    */
-  link?: LocationDescriptor;
+  link?: To;
 
   /**
    * render icon as hyperlink

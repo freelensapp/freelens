@@ -9,9 +9,9 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { createPath } from "history";
 import { action } from "mobx";
 
-import type { LocationDescriptor } from "history";
+import type { To } from "history";
 
-export type Navigate = (location: LocationDescriptor) => void;
+export type Navigate = (location: To) => void;
 
 const navigateInjectable = getInjectable({
   id: "navigate",
