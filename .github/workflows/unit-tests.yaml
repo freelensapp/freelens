@@ -87,7 +87,7 @@ jobs:
         run: pnpm --color=always test:unit --shard=${{ matrix.shard }}/${{ strategy.job-total }} --reporter=verbose --reporter=github-actions --includeTaskLocation
 
       - name: Clean after tests
-        run: pnpm --color=always --parallel clean
+        run: pnpm --color=always --parallel run clean
 
       - name: Check untracked files
         shell: bash

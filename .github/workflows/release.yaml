@@ -150,7 +150,7 @@ jobs:
 
       - name: Disable pre post scripts for pnpm
         shell: bash
-        run: pnpm config set enablePrePostScripts false
+        run: pnpm config set enablePrePostScripts false --location project
 
       - name: Get Electron version
         shell: bash
