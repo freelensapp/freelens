@@ -8,7 +8,6 @@ import asyncFn from "@async-fn/vitest";
 import { Namespace } from "@freelensapp/kube-object";
 import { disposer } from "@freelensapp/utilities";
 import { fireEvent } from "@testing-library/react";
-import React from "react";
 import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../../common/cluster/cluster";

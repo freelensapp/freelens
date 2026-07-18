@@ -1,7 +1,6 @@
 import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
 import { DiContextProvider } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import { ReactApplicationContent } from "./react-application-content";
 import {
   ReactApplicationHigherOrderComponent,

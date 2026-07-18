@@ -6,7 +6,6 @@
 
 import { KubeObject } from "@freelensapp/kube-object";
 import { observer } from "mobx-react";
-import React from "react";
 import { Badge } from "../badge";
 import { DrawerItem } from "../drawer";
 import { getClassName, getTooltip } from "./components";

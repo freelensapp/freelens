@@ -5,7 +5,6 @@
  */
 
 import { dump } from "js-yaml";
-import React from "react";
 import { DrawerItem, DrawerItemLabels } from "../../../../drawer";
 
 import type { VolumeVariantComponent } from "../variant-helpers";

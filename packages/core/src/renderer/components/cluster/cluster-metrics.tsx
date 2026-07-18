@@ -8,7 +8,7 @@ import { Spinner } from "@freelensapp/spinner";
 import { bytesToUnits, cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { getMetricLastPoints, normalizeMetrics } from "../../../common/k8s-api/endpoints/metrics.api";
 import { BarChart } from "../chart";
 import { ZebraStripesPlugin } from "../chart/zebra-stripes.plugin";

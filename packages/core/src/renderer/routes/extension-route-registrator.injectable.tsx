@@ -7,7 +7,6 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import { observer } from "mobx-react";
-import React from "react";
 import { frontEndRouteInjectionToken } from "../../common/front-end-routing/front-end-route-injection-token";
 import { extensionRegistratorInjectionToken } from "../../extensions/extension-loader/extension-registrator-injection-token";
 import { SiblingsInTabLayout } from "../components/layout/siblings-in-tab-layout";

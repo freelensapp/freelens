@@ -6,7 +6,6 @@
 
 import { act } from "@testing-library/react";
 import { computed, observable, runInAction } from "mobx";
-import React from "react";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 import type { RenderResult } from "@testing-library/react";

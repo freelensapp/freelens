@@ -10,7 +10,7 @@ import "./releases.scss";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { kebabCase } from "es-toolkit";
 import moment from "moment-timezone";
-import React, { Component } from "react";
+import { Component } from "react";
 import navigateToHelmReleasesInjectable from "../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
 import { ItemListLayout } from "../item-object-list";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";

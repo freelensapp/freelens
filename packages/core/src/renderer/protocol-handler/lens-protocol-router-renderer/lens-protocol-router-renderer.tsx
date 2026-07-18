@@ -5,7 +5,6 @@
  */
 
 import { ipcRenderer } from "electron";
-import React from "react";
 import * as proto from "../../../common/protocol-handler";
 import { foldAttemptResults, ProtocolHandlerInvalid, RouteAttempt } from "../../../common/protocol-handler";
 

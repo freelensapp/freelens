@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React from "react";
 import { HorizontalLine } from "../../../../renderer/components/horizontal-line/horizontal-line";
 import styles from "./preference-tab-root.module.scss";
 

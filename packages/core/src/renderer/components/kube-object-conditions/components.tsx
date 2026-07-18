@@ -2,7 +2,6 @@ import { cssNames } from "@freelensapp/utilities";
 import { upperFirst } from "es-toolkit";
 import * as yaml from "js-yaml";
 import moment from "moment-timezone";
-import React from "react";
 import { defaultYamlDumpOptions } from "../../../common/kube-helpers";
 import { DurationAbsoluteTimestamp } from "../events";
 

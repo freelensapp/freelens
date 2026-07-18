@@ -5,7 +5,6 @@
  */
 
 import { CustomResourceDefinition, KubeObject } from "@freelensapp/kube-object";
-import React from "react";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import { renderFor } from "../../test-utils/renderFor";
 import { CustomResourceDetails } from "../details";

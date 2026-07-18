@@ -8,7 +8,6 @@ import "@testing-library/jest-dom/vitest";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { act, fireEvent, screen } from "@testing-library/react";
 import { computed, observable } from "mobx";
-import React from "react";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import { renderFor } from "../test-utils/renderFor";
 import { MetricsTimeRangeSelector } from "./metrics-time-range-selector";

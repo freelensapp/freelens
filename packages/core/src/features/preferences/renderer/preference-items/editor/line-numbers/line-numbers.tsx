@@ -7,7 +7,6 @@
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { capitalize } from "es-toolkit";
 import { observer } from "mobx-react";
-import React from "react";
 import { SubTitle } from "../../../../../../renderer/components/layout/sub-title";
 import { Select } from "../../../../../../renderer/components/select";
 import { defaultEditorConfig } from "../../../../../user-preferences/common/preferences-helpers";

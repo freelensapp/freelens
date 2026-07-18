@@ -9,7 +9,6 @@ import "./jobs.scss";
 import { formatDuration } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import { Badge, BadgeBoolean } from "../badge";
 import { DurationAbsoluteTimestamp } from "../events";
 import eventStoreInjectable from "../events/store.injectable";

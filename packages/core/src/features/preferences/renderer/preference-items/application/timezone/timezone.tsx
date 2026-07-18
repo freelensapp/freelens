@@ -7,7 +7,6 @@
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import moment from "moment-timezone";
-import React from "react";
 import currentTimezoneInjectable from "../../../../../../common/vars/current-timezone.injectable";
 import { SubTitle } from "../../../../../../renderer/components/layout/sub-title";
 import { Select } from "../../../../../../renderer/components/select";
