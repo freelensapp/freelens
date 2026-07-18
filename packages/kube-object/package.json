@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "@freelensapp/utilities": "workspace:^",
-    "auto-bind": "^4.0.0",
+    "auto-bind": "^5.0.1",
     "es-toolkit": "^1.49.0",
     "moment": "^2.30.1",
     "typed-regex": "^0.0.8"
