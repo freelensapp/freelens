@@ -45,7 +45,7 @@
     "@types/react-window": "^1.8.8",
     "@xterm/xterm": "^6.0.0",
     "chart.js": "^4.5.1",
-    "conf": "^10.2.0",
+    "conf": "^15.1.0",
     "history": "^4.10.1",
     "immer": "^11.1.8",
     "mobx": "^6.15.0",

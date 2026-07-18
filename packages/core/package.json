@@ -114,7 +114,7 @@
     "chokidar": "^5.0.0",
     "clsx": "^2.1.1",
     "color": "^5.0.3",
-    "conf": "^10.2.0",
+    "conf": "^15.1.0",
     "cronstrue": "^3.24.0",
     "dompurify": "^3.4.11",
     "electron-devtools-installer": "^4.0.0",
