@@ -88,10 +88,13 @@ jobs:
       # not during install. Without this step the parallel Vitest workers each
       # trigger the download and extraction at test time and clobber each other,
       # failing with "Electron failed to install correctly". Download and
-      # extract it once, serially, here; the archive is served from the
+      # extract it once, serially, here. electron/install.js reads its download
+      # cache directory from electron_config_cache, so point it at the
       # GitHub-cached ELECTRON_CACHE restored above.
       - name: Install Electron binary
         working-directory: freelens
+        env:
+          electron_config_cache: ${{ env.ELECTRON_CACHE }}
         run: |
           node "$(node -p "require.resolve('electron/install.js')")"
 
