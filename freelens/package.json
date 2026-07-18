@@ -79,7 +79,7 @@
     "byline": "^5.0.0",
     "chalk": "^4.1.2",
     "chokidar": "^5.0.0",
-    "conf": "^10.2.0",
+    "conf": "^15.1.0",
     "electron-window-state": "^5.0.3",
     "fs-extra": "^11.3.6",
     "glob-to-regexp": "^0.4.1",
