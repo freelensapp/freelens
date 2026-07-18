@@ -187,7 +187,7 @@ layer was removed in #2118.
 
 ### Build Failures
 
-1. Check for TypeScript errors: `pnpm type-check`
+1. Check for TypeScript errors: `pnpm type:check`
 2. Check for linting errors: `pnpm lint`
 3. Verify dependencies: `pnpm install`
 4. Check Node.js version matches `.nvmrc`
