@@ -75,7 +75,7 @@
     "@ogre-tools/fp": "^17.11.1",
     "@ogre-tools/injectable": "^17.11.1",
     "@ogre-tools/injectable-extension-for-mobx": "^17.11.1",
-    "auto-bind": "^4.0.0",
+    "auto-bind": "^5.0.1",
     "byline": "^5.0.0",
     "chalk": "^5.6.2",
     "chokidar": "^5.0.0",
