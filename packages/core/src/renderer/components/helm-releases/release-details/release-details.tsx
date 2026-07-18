@@ -8,7 +8,6 @@ import "./release-details.scss";
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import { ReleaseDetailsDrawer } from "./release-details-drawer";
 import targetHelmReleaseInjectable from "./target-helm-release.injectable";
 

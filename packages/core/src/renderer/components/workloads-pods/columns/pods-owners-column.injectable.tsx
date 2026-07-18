@@ -7,7 +7,6 @@
 import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
 import { stopPropagation } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import React from "react";
 import { Link } from "react-router-dom";
 import apiManagerInjectable from "../../../../common/k8s-api/api-manager/manager.injectable";
 import { Badge } from "../../badge";

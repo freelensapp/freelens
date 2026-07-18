@@ -9,7 +9,6 @@ import "./cronjobs.scss";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import moment from "moment-timezone";
-import React from "react";
 import { BadgeBoolean } from "../badge";
 import eventStoreInjectable from "../events/store.injectable";
 import { KubeObjectAge } from "../kube-object/age";

@@ -14,7 +14,7 @@ import { styled, Tooltip } from "@mui/material";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
 import { observer } from "mobx-react";
-import React, { Component } from "react";
+import { Component } from "react";
 import { Badge } from "../badge";
 import createInstallChartTabInjectable from "../dock/install-chart/create-install-chart-tab.injectable";
 import { Drawer, DrawerItem } from "../drawer";

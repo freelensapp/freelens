@@ -7,7 +7,7 @@
 import "@testing-library/jest-dom/vitest";
 import { act, screen } from "@testing-library/react";
 import { computed, observable } from "mobx";
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { renderFor } from "../test-utils/renderFor";
 import { ResourceMetrics, ResourceMetricsContext } from "./resource-metrics";
 

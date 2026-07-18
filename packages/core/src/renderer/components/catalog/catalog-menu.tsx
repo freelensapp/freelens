@@ -7,7 +7,6 @@
 import { Icon } from "@freelensapp/icon";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import filteredCategoriesInjectable from "../../../common/catalog/filtered-categories.injectable";
 import { HorizontalLine } from "../horizontal-line/horizontal-line";
 import { TreeGroup, TreeItem, TreeView } from "../tree-view/tree-view";

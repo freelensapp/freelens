@@ -10,7 +10,6 @@ import "@testing-library/jest-dom/vitest";
 import assert from "node:assert";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import { observable, when } from "mobx";
-import React from "react";
 import directoryForDownloadsInjectable from "../../../../common/app-paths/directory-for-downloads/directory-for-downloads.injectable";
 import directoryForUserDataInjectable from "../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import removePathInjectable from "../../../../common/fs/remove.injectable";

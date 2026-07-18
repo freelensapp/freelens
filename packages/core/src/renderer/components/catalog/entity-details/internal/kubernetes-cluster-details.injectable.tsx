@@ -5,7 +5,6 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import React from "react";
 import { KubernetesCluster } from "../../../../../common/catalog-entities";
 import { DrawerItem, DrawerTitle } from "../../../drawer";
 import { catalogEntityDetailItemInjectionToken } from "../token";

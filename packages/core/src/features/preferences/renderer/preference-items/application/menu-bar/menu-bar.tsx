@@ -7,7 +7,6 @@
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { ipcRenderer } from "electron";
 import { observer } from "mobx-react";
-import React from "react";
 import { SubTitle } from "../../../../../../renderer/components/layout/sub-title";
 import { Switch } from "../../../../../../renderer/components/switch";
 import userPreferencesStateInjectable from "../../../../../user-preferences/common/state.injectable";

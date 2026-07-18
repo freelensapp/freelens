@@ -5,7 +5,6 @@
  */
 
 import { getRandomIdInjectionToken } from "@freelensapp/random";
-import React from "react";
 import { getApplicationBuilder } from "../test-utils/get-application-builder";
 import setStatusBarStatusInjectable from "./set-status-bar-status.injectable";
 

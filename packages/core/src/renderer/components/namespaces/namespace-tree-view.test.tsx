@@ -6,7 +6,6 @@
 
 import { Namespace } from "@freelensapp/kube-object";
 import { fireEvent } from "@testing-library/react";
-import React from "react";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import { renderFor } from "../test-utils/renderFor";
 import hierarchicalNamespacesInjectable from "./hierarchical-namespaces.injectable";

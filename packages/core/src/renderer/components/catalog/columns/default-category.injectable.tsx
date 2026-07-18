@@ -11,7 +11,6 @@
 
 import { KubeObject } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
-import React from "react";
 import styles from "../catalog.module.scss";
 import getLabelBadgesInjectable from "../get-label-badges.injectable";
 

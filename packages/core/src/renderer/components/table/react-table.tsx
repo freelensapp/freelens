@@ -8,7 +8,7 @@ import "./react-table.scss";
 
 import { Icon } from "@freelensapp/icon";
 import { cssNames } from "@freelensapp/utilities";
-import React, { useCallback, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useFlexLayout, useSortBy, useTable } from "react-table";
 
 import type { Row, UseTableOptions } from "react-table";

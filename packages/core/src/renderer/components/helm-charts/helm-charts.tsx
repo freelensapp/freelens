@@ -9,7 +9,7 @@ import "./helm-charts.scss";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { noop } from "es-toolkit";
 import { observer } from "mobx-react";
-import React, { Component } from "react";
+import { Component } from "react";
 import navigateToHelmChartsInjectable from "../../../common/front-end-routing/routes/cluster/helm/charts/navigate-to-helm-charts.injectable";
 import { ItemListLayout } from "../item-object-list/list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";

@@ -6,7 +6,6 @@
 
 import { Icon } from "@freelensapp/icon";
 import { observer } from "mobx-react";
-import React from "react";
 import { DrawerTitle } from "../../../drawer";
 import { VolumeVariant } from "./variant";
 

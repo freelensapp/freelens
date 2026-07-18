@@ -7,7 +7,6 @@
 import "./pod-tolerations.scss";
 
 import { uniqueId } from "es-toolkit/compat";
-import React from "react";
 import { Table, TableCell, TableHead, TableRow } from "../table";
 
 import type { Toleration } from "@freelensapp/kube-object";

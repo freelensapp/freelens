@@ -8,7 +8,6 @@ import asyncFn from "@async-fn/vitest";
 import { Secret, SecretType } from "@freelensapp/kube-object";
 import { base64 } from "@freelensapp/utilities";
 import { act } from "@testing-library/react";
-import React from "react";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import secretStoreInjectable from "../config-secrets/store.injectable";
 import { renderFor } from "../test-utils/renderFor";

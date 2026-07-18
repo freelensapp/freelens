@@ -5,7 +5,6 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import React from "react";
 import { HorizontalLine } from "../../../../../renderer/components/horizontal-line/horizontal-line";
 import { PreferencePageComponent } from "../../preference-page-component";
 import { preferenceItemInjectionToken } from "../preference-item-injection-token";

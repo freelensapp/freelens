@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React from "react";
 
 import type { MockedFunction } from "vitest";
 import "@testing-library/jest-dom/vitest";

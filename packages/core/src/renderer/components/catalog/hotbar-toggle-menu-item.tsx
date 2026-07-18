@@ -5,7 +5,7 @@
  */
 
 import { withInjectables } from "@ogre-tools/injectable-react";
-import React, { useState } from "react";
+import { useState } from "react";
 import activeHotbarInjectable from "../../../features/hotbar/storage/common/active.injectable";
 import { MenuItem } from "../menu";
 

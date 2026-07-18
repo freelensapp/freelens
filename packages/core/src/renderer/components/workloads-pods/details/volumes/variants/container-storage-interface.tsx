@@ -6,7 +6,6 @@
 
 import { secretApiInjectable } from "@freelensapp/kube-api-specifics";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import React from "react";
 import { DrawerItem } from "../../../../drawer";
 import { LocalRef } from "../variant-helpers";
 

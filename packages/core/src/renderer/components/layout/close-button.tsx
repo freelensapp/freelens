@@ -5,7 +5,6 @@
  */
 
 import { Icon } from "@freelensapp/icon";
-import React from "react";
 import styles from "./close-button.module.scss";
 
 import type { HTMLAttributes } from "react";

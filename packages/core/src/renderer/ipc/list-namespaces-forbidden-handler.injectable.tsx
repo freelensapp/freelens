@@ -7,7 +7,6 @@
 import { Button } from "@freelensapp/button";
 import { notificationsStoreInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { getInjectable } from "@ogre-tools/injectable";
-import React from "react";
 import navigateToEntitySettingsInjectable from "../../common/front-end-routing/routes/entity-settings/navigate-to-entity-settings.injectable";
 import { getMillisecondsFromUnixEpoch } from "../../common/utils/date/get-current-date-time";
 import getClusterByIdInjectable from "../../features/cluster/storage/common/get-by-id.injectable";

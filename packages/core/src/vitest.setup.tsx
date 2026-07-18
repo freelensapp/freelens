@@ -8,7 +8,6 @@ import { TextDecoder as TextDecoderNode, TextEncoder } from "node:util";
 import { enableMapSet, setAutoFreeze } from "immer";
 import { configure } from "mobx";
 import freelensFetch from "node-fetch";
-import React from "react";
 
 import type * as K8slensTooltip from "@freelensapp/tooltip";
 

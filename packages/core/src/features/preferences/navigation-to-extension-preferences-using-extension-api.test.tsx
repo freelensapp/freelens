@@ -5,7 +5,6 @@
  */
 
 import { discoverFor } from "@freelensapp/react-testing-library-discovery";
-import React from "react";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import currentPathInjectable from "../../renderer/routes/current-path.injectable";
 
