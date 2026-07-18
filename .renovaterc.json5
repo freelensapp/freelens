@@ -16,9 +16,14 @@
       "security"
     ],
     "rangeStrategy": "bump",
+    // security fixes must not be delayed by minimumReleaseAge
+    "minimumReleaseAge": "0 days",
   },
   // disable autorebasing to save unecessary workflow runs
   "rebaseWhen": "conflicted",
+  // hold updates that do not yet satisfy minimumReleaseAge instead of raising a
+  // pending PR (which would run CI and fail pnpm's minimumReleaseAge policy)
+  "internalChecksFilter": "strict",
   "ignoreDeps": [
     // it must be the same as bundled in Electron
     "node",
@@ -26,6 +31,15 @@
     "ubuntu"
   ],
   "packageRules": [
+    // delay npm updates until they satisfy pnpm's minimumReleaseAge policy
+    // (default 1 day since pnpm v11); only npm packages land in pnpm-lock.yaml,
+    // so scope this to the npm datasource and leave other datasources untouched
+    {
+      "matchDatasources": [
+        "npm"
+      ],
+      "minimumReleaseAge": "3 days"
+    },
     // peerDependencies are widen
     {
       "matchDepTypes": [
