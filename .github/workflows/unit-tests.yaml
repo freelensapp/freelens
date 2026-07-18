@@ -29,6 +29,7 @@ jobs:
 
     env:
       DO_NOT_TRACK: "1"
+      ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
       TURBOREPO_CACHE: ${{ github.workspace }}/.turbo
 
     steps:
@@ -64,6 +65,16 @@ jobs:
           restore-keys: |
             ubuntu-24.04-arm-arm64-turborepo-
 
+      - name: Get Electron version
+        shell: bash
+        run: echo "electron_version=$(yq -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" >> ${GITHUB_ENV}
+
+      - name: Use Electron cache
+        uses: actions/cache@v6
+        with:
+          path: ${{ env.ELECTRON_CACHE }}
+          key: ubuntu-24.04-arm-arm64-electron-${{ env.electron_version }}
+
       - name: Install pnpm dependencies
         id: install-pnpm
         run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
@@ -72,6 +83,17 @@ jobs:
       - name: Install pnpm dependencies (retry)
         if: steps.install-pnpm.outcome == 'failure'
         run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
+
+      # Electron 42 downloads its runtime binary lazily on the first require(),
+      # not during install. Without this step the parallel Vitest workers each
+      # trigger the download and extraction at test time and clobber each other,
+      # failing with "Electron failed to install correctly". Download and
+      # extract it once, serially, here; the archive is served from the
+      # GitHub-cached ELECTRON_CACHE restored above.
+      - name: Install Electron binary
+        working-directory: freelens
+        run: |
+          node "$(node -p "require.resolve('electron/install.js')")"
 
       - name: Build packages
         run: pnpm --color=always --stream build
