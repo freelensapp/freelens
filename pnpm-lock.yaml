@@ -31,8 +31,8 @@ importers:
         specifier: ^29.1.1
         version: 29.1.1(@noble/hashes@2.2.0)
       pnpm:
-        specifier: 11.11.0
-        version: 11.11.0
+        specifier: 11.13.1
+        version: 11.13.1
       turbo:
         specifier: 2.10.2
         version: 2.10.2
@@ -157,8 +157,8 @@ importers:
         specifier: ^8.4.2
         version: 8.4.2
       pnpm:
-        specifier: ^11.11.0
-        version: 11.11.0
+        specifier: ^11.13.1
+        version: 11.13.1
       proper-lockfile:
         specifier: ^4.1.2
         version: 4.1.2
@@ -647,8 +647,8 @@ importers:
         specifier: ^8.4.2
         version: 8.4.2
       pnpm:
-        specifier: ^11.11.0
-        version: 11.11.0
+        specifier: ^11.13.1
+        version: 11.13.1
       proper-lockfile:
         specifier: ^4.1.2
         version: 4.1.2
@@ -6138,8 +6138,8 @@ packages:
     resolution: {integrity: sha512-uysumyrvkUX0rX/dEVqt8gC3sTBzd4zoWfLeS29nb53imdaXVvLINYXTI2GNqzaMuvacNx4uJQ8+b3zXR0pkgQ==}
     engines: {node: '>=10.4.0'}
 
-  pnpm@11.11.0:
-    resolution: {integrity: sha512-RGP2X9gO2A1pvB1L8WPulPYFxzgPwxi7Wy6+FfjNEtScUaTVnpUbQB52TTtsp1HL9RvFDtcAGmvLSTXmhMNIgg==}
+  pnpm@11.13.1:
+    resolution: {integrity: sha512-svx2g7imUlQU59E+G6KMqt3elr9m7FQL+ut+cCuB8+C+TR8pXt9/n+A5Z0Co3ORQnFgt33mJH0VD/qMtN2RfJQ==}
     engines: {node: '>=22.13'}
     hasBin: true
 
@@ -11159,7 +11159,7 @@ snapshots:
       base64-js: 1.5.1
       xmlbuilder: 15.1.1
 
-  pnpm@11.11.0: {}
+  pnpm@11.13.1: {}
 
   possible-typed-array-names@1.1.0: {}
 
