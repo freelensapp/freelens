@@ -187,6 +187,13 @@ jobs:
         shell: bash
         run: pnpm install --color=always --prefer-offline --frozen-lockfile
 
+      - name: Install Electron binary
+        shell: bash
+        working-directory: freelens
+        env:
+          electron_config_cache: ${{ env.ELECTRON_CACHE }}
+        run: node "$(node -p "require.resolve('electron/install.js')")"
+
       - name: Build packages
         if: runner.os != 'Windows'
         run: pnpm --color=always --stream build
