@@ -596,8 +596,8 @@ importers:
         specifier: ^4.7.9
         version: 4.7.9
       history:
-        specifier: ^4.10.1
-        version: 4.10.1
+        specifier: ^5.3.0
+        version: 5.3.0
       hpagent:
         specifier: ^1.2.0
         version: 1.2.0
@@ -764,9 +764,6 @@ importers:
       '@types/hapi__subtext':
         specifier: ^7.0.3
         version: 7.0.3
-      '@types/history':
-        specifier: ^4.7.11
-        version: 4.7.11
       '@types/memorystream':
         specifier: ^0.3.4
         version: 0.3.4
@@ -910,8 +907,8 @@ importers:
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(lodash@4.18.1))(lodash@4.18.1)(mobx-react@7.6.0(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2))(mobx@6.15.0)(react-dom@17.0.2(react@17.0.2))(react@17.0.2)
       '@types/history':
-        specifier: ^4.7.11
-        version: 4.7.11
+        specifier: ^5.0.0
+        version: 5.0.0
       '@types/node':
         specifier: ~24.12.4
         version: 24.12.4
@@ -943,8 +940,8 @@ importers:
         specifier: '>=42.0.0'
         version: 42.7.0
       history:
-        specifier: ^4.10.1
-        version: 4.10.1
+        specifier: ^5.3.0
+        version: 5.3.0
       immer:
         specifier: ^11.1.8
         version: 11.1.8
@@ -1202,8 +1199,8 @@ importers:
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(lodash@4.18.1)
       history:
-        specifier: ^4.10.1
-        version: 4.10.1
+        specifier: ^5.3.0
+        version: 5.3.0
       mobx-observable-history:
         specifier: ^2.0.3
         version: 2.0.3
@@ -1211,9 +1208,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../infrastructure/typescript
-      '@types/history':
-        specifier: ^4.7.11
-        version: 4.7.11
       vitest:
         specifier: ^4.1.10
         version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2)(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0)(terser@5.39.0))
@@ -1772,9 +1766,6 @@ importers:
       '@testing-library/jest-dom':
         specifier: ^6.9.1
         version: 6.9.1
-      '@types/history':
-        specifier: ^4.7.11
-        version: 4.7.11
       '@types/react':
         specifier: ^17.0.93
         version: 17.0.93
@@ -1782,8 +1773,8 @@ importers:
         specifier: ^5.3.3
         version: 5.3.3
       history:
-        specifier: ^4.10.1
-        version: 4.10.1
+        specifier: ^5.3.0
+        version: 5.3.0
       typescript:
         specifier: ^7.0.2
         version: 7.0.2
@@ -4060,6 +4051,10 @@ packages:
   '@types/history@4.7.11':
     resolution: {integrity: sha512-qjDJRrmvBMiTx+jyLxvLfJU7UznFuokDv4f3WRuriHKERccVpFU+8XMQUAbDzoiJCsmexxRExQeMwwCdamSKDA==}
 
+  '@types/history@5.0.0':
+    resolution: {integrity: sha512-hy8b7Y1J8OGe6LbAjj3xniQrj3v6lsivCcrmf4TzSgPzLkhIeKgc5IZnT7ReIqmEuodjfO8EYAuoFvIrHi/+jQ==}
+    deprecated: This is a stub types definition. history provides its own type definitions, so you do not need this installed.
+
   '@types/http-cache-semantics@4.0.1':
     resolution: {integrity: sha512-SZs7ekbP8CN0txVG2xVRH6EgKmEm31BOxA07vkFaETzZz1xh+cbt8BcI0slpymvwhx5dlFnQG2rTlPVQn+iRPQ==}
 
@@ -5262,6 +5257,9 @@ packages:
 
   history@4.10.1:
     resolution: {integrity: sha512-36nwAD620w12kuzPAsyINPWJqlNbij+hpK1k9XRloDtym8mxzGYl2c17LnV6IAGB2Dmg4tEa7G7DlawS0+qjew==}
+
+  history@5.3.0:
+    resolution: {integrity: sha512-ZqaKwjjrAYUYfLG+htGaIIZ4nioX2L70ZUMIFysS3xvBsSG4x/n1V6TXV3N8ZYNuFGlDirFg32T7B6WOUPDYcQ==}
 
   hoist-non-react-statics@3.3.2:
     resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
@@ -9017,6 +9015,10 @@ snapshots:
 
   '@types/history@4.7.11': {}
 
+  '@types/history@5.0.0':
+    dependencies:
+      history: 4.10.1
+
   '@types/http-cache-semantics@4.0.1': {}
 
   '@types/js-yaml@4.0.9': {}
@@ -10323,6 +10325,10 @@ snapshots:
       tiny-invariant: 1.3.1
       tiny-warning: 1.0.3
       value-equal: 1.0.1
+
+  history@5.3.0:
+    dependencies:
+      '@babel/runtime': 7.28.4
 
   hoist-non-react-statics@3.3.2:
     dependencies:

@@ -18,7 +18,10 @@ export const observableHistoryInjectable = getInjectable({
 
   instantiate: (di) => {
     const history = di.inject(historyInjectable);
-    const navigation = createObservableHistory(history, {
+    // `history` is already adapted to the history v4 surface (see
+    // `toHistoryV4`), which is what `createObservableHistory` expects at
+    // runtime. Its types still target history v4, hence the cast.
+    const navigation = createObservableHistory<unknown>(history as never, {
       searchParams: searchParamsOptions,
     });
 

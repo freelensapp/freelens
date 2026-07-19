@@ -37,7 +37,7 @@ describe("<ClusterFrame />", () => {
     render = () =>
       testingLibraryRender(
         <DiContextProvider value={{ di }}>
-          <Router history={di.inject(historyInjectionToken)}>{DefaultProps(ClusterFrame)}</Router>
+          <Router history={di.inject(historyInjectionToken) as never}>{DefaultProps(ClusterFrame)}</Router>
         </DiContextProvider>,
       );
 

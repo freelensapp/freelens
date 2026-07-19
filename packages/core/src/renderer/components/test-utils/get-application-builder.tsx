@@ -295,7 +295,7 @@ export const getApplicationBuilder = (user: UserEvent = userEvent.setup()) => {
         const render = renderFor(windowDi);
 
         rendered = render(
-          <Router history={history}>
+          <Router history={history as never}>
             <environment.RootComponent />
           </Router>,
         );
