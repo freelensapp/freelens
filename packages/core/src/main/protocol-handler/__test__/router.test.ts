@@ -283,6 +283,15 @@ describe("protocol router tests", () => {
     expect(() => lpr.addInternalHandler("/:@", noop)).toThrowError();
   });
 
+  it("should accept a react-router v5 schema with an inline optional custom pattern", () => {
+    expect(() =>
+      lpr.addInternalHandler(
+        "/extensions/install/:LENS_INTERNAL_EXTENSION_PUBLISHER_MATCH(@[A-Za-z0-9_]+)?/:LENS_INTERNAL_EXTENSION_NAME_MATCH",
+        noop,
+      ),
+    ).not.toThrow();
+  });
+
   it("should call most exact handler with 3 found handlers", async () => {
     let called: any = 0;
 
