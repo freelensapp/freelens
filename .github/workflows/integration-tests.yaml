@@ -109,7 +109,7 @@ jobs:
 
       - name: Get pnpm cache directory
         shell: bash
-        run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
+        run: echo "pnpm_cache_dir=$(pnpm store path)" | tee -a ${GITHUB_ENV}
 
       - name: Use pnpm cache
         uses: actions/cache@v6
@@ -121,11 +121,11 @@ jobs:
 
       - name: Get Electron version
         shell: bash
-        run: echo "electron_version=$(yq -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
+        run: echo "electron_version=$(yq -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a $GITHUB_ENV
 
       - name: Get Electron Builder version
         shell: bash
-        run: echo "electron_builder_version=$(yq -r .importers.freelens.devDependencies.electron-builder.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
+        run: echo "electron_builder_version=$(yq -r .importers.freelens.devDependencies.electron-builder.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a $GITHUB_ENV
 
       - name: Use Electron cache
         uses: actions/cache@v6
@@ -258,7 +258,7 @@ jobs:
         shell: bash
         run: |
           EB_PATH=$(cd freelens && node -e "console.log(require.resolve('electron-builder/cli'))")
-          echo "ELECTRON_BUILDER_PATH=$EB_PATH" >> $GITHUB_ENV
+          echo "ELECTRON_BUILDER_PATH=$EB_PATH" | tee -a $GITHUB_ENV
 
       - name: Deploy production node_modules
         shell: bash
