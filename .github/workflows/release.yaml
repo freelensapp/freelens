@@ -319,6 +319,24 @@ jobs:
         env:
           DEBUG: electron-builder,electron-builder:*
 
+      - name: Verify app.asar
+        shell: bash
+        run: |
+          set -eo pipefail
+          found=0
+          while IFS= read -r asar; do
+            tmpdir=$(mktemp -d)
+            echo "::group::asar extract ${asar}"
+            pnpm dlx @electron/asar extract "${asar}" "${tmpdir}"
+            echo "::endgroup::"
+            rm -rf "${tmpdir}"
+            found=$((found + 1))
+          done < <(find freelens/dist -type f -name app.asar)
+          if [[ "${found}" -eq 0 ]]; then
+            echo "No app.asar found under freelens/dist" >&2
+            exit 1
+          fi
+
       - name: List unpacked binaries to sign (Windows)
         id: sign-list
         if: runner.os == 'Windows'
