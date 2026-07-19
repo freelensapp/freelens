@@ -4,25 +4,25 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { requestFromChannelInjectionToken } from "@freelensapp/messaging";
 import { getInjectable } from "@ogre-tools/injectable";
 import { asyncComputed } from "@ogre-tools/injectable-react";
-import readFileInjectable from "../../../common/fs/read-file.injectable";
-import joinPathsInjectable from "../../../common/path/join-paths.injectable";
-import staticFilesDirectoryInjectable from "../../../common/vars/static-files-directory.injectable";
+import { licenseContentChannel } from "../common/license-content-channel";
 
 const licenseContentInjectable = getInjectable({
   id: "license-content",
 
   instantiate: (di) => {
-    const readFile = di.inject(readFileInjectable);
-    const joinPaths = di.inject(joinPathsInjectable);
-    const staticFilesDirectory = di.inject(staticFilesDirectoryInjectable);
+    const requestFromChannel = di.inject(requestFromChannelInjectionToken);
 
     return asyncComputed({
       getValueFromObservedPromise: async () => {
         try {
-          const licenseFilePath = joinPaths(staticFilesDirectory, "build/license.txt");
-          return await readFile(licenseFilePath);
+          // The license file is read in the main process (see
+          // features/licenses/main/license-content-request-channel-listener):
+          // reading it from the renderer is unreliable for packaged builds
+          // where it lives inside app.asar (issue #2240).
+          return await requestFromChannel(licenseContentChannel);
         } catch (error) {
           return `Error loading license file: ${error}`;
         }
