@@ -28,8 +28,7 @@
     "build:dist:declarations": "node scripts/generate-dts-tsconfig.mjs && tsc -p tsconfig.dts.generated.json",
     "build:dist:bundle": "rollup -c rollup.dts.config.mjs",
     "build:dist:shim": "node scripts/build-shim.mjs",
-    "clean": "pnpm dlx rimraf@6.1.3 dist dist-types",
-    "clean:node_modules": "pnpm dlx rimraf@6.1.3 node_modules",
+    "clean:dist": "pnpm dlx rimraf@6.1.3 dist dist-types",
     "prepack": "pnpm build:dist"
   },
   "dependencies": {
