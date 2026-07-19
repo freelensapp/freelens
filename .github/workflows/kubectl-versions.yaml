@@ -73,9 +73,9 @@ jobs:
       - name: Check for changes
         run: |
           if git diff --exit-code; then
-            echo "changes=false" >> $GITHUB_ENV
+            echo "changes=false" | tee -a $GITHUB_ENV
           else
-            echo "changes=true" >> $GITHUB_ENV
+            echo "changes=true" | tee -a $GITHUB_ENV
           fi
 
       - name: Commit and push to branch
