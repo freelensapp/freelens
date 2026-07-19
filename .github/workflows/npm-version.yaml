@@ -50,7 +50,7 @@ jobs:
 
       - name: Get pnpm cache directory
         shell: bash
-        run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
+        run: echo "pnpm_cache_dir=$(pnpm store path)" | tee -a ${GITHUB_ENV}
 
       - name: Use pnpm cache
         uses: actions/cache@v6
@@ -91,9 +91,9 @@ jobs:
       - name: Check for changes
         run: |
           if git diff --exit-code; then
-            echo "changes=false" >> $GITHUB_ENV
+            echo "changes=false" | tee -a $GITHUB_ENV
           else
-            echo "changes=true" >> $GITHUB_ENV
+            echo "changes=true" | tee -a $GITHUB_ENV
           fi
 
       - name: Commit and push to branch
