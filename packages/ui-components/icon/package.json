@@ -27,9 +27,7 @@
   "files": [
     "assets"
   ],
-  "scripts": {
-    "clean:node_modules": "pnpm dlx rimraf@6.1.3 node_modules"
-  },
+  "scripts": {},
   "dependencies": {
     "@freelensapp/logger": "workspace:^",
     "@freelensapp/tooltip": "workspace:^",

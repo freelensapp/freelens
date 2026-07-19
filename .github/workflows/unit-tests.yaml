@@ -111,8 +111,12 @@ jobs:
       - name: Run unit tests (shard ${{ matrix.shard }}/${{ strategy.job-total }})
         run: pnpm --color=always test:unit --shard=${{ matrix.shard }}/${{ strategy.job-total }} --reporter=verbose --reporter=github-actions --includeTaskLocation
 
+      # Must run the root `clean:dist` script directly (not `--parallel`,
+      # which skips the workspace root) so its dlx cache warmup stays ahead
+      # of the parallel per-package rimraf calls - otherwise they race on
+      # the same dlx cache slot and fail with ENOENT (#2231, #2235).
       - name: Clean after tests
-        run: pnpm --color=always --parallel run clean
+        run: pnpm --color=always run clean:dist
 
       - name: Check untracked files
         shell: bash

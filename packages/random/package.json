@@ -22,9 +22,7 @@
   },
   "main": "./index.ts",
   "types": "./index.ts",
-  "scripts": {
-    "clean:node_modules": "pnpm dlx rimraf@6.1.3 node_modules"
-  },
+  "scripts": {},
   "dependencies": {
     "@freelensapp/feature-core": "workspace:^",
     "@ogre-tools/injectable": "^17.11.1",
