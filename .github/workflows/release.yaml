@@ -514,7 +514,7 @@ jobs:
               key="${key/+//}"
               printf '%s\t%s\n' "$key" "node_modules/.pnpm/$d/node_modules/${key%@*}"
             done
-          ) | yq -p tsv -o json 'from_entries' > "$out"
+          ) | yq -pt -oj '.[] as $i ireduce ({}; . * {$i.key: $i.value})' > "$out"
           echo "runtime packages: $(yq -pj -oj 'length' "$out")"
 
       - name: Upload runtime package list
@@ -631,7 +631,7 @@ jobs:
           # native binaries) shipped under freelens/dist or freelens/binaries.
           # This drops build-time dev tools (esbuild, typescript, ...) and the Go
           # binaries bundled with them, which never reach users.
-          yq ea -pj -oj '. as $item ireduce ({}; . * $item)' prod/*-prod-packages.json > prod-set.json
+          yq ea -pj -oj '. as $i ireduce ({}; . * $i)' prod/*-prod-packages.json > prod-set.json
           if [[ "$(yq -pj -oj 'length' prod-set.json)" -eq 0 ]]; then
             echo "Runtime package set is empty - refusing to scan (every npm finding would be dropped)" >&2
             exit 1
