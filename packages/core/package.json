@@ -181,7 +181,6 @@
     "@types/glob-to-regexp": "^0.4.4",
     "@types/hapi__call": "^9.0.3",
     "@types/hapi__subtext": "^7.0.3",
-    "@types/history": "^5.0.0",
     "@types/memorystream": "^0.3.4",
     "@types/node": "~24.12.4",
     "@types/proper-lockfile": "^4.1.4",

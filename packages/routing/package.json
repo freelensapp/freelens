@@ -31,7 +31,6 @@
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
-    "@types/history": "^5.0.0",
     "vitest": "^4.1.10"
   },
   "publishConfig": {
