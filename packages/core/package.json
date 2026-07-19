@@ -200,7 +200,7 @@
     "electron": "^42.7.0",
     "jsdom": "^29.1.1",
     "logform": "^2.7.0",
-    "memfs": "^4.17.1",
+    "memfs": "^4.64.0",
     "memorystream": "^0.3.1",
     "mobx-observable-history": "^2.0.3",
     "mock-http": "^1.1.1",

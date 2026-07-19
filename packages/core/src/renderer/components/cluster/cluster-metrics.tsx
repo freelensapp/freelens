@@ -22,7 +22,7 @@ import selectedNodeRoleForMetricsInjectable from "./overview/selected-node-role-
 import { createMetricsTimeRangeKey } from "./overview/time-range-key";
 
 import type { IAsyncComputed } from "@ogre-tools/injectable-react";
-import type { ChartOptions, TooltipItem } from "chart.js";
+import type { ChartOptions, ChartType, TooltipItem } from "chart.js";
 
 import type { ClusterMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
 import type { SelectedMetricsTimeRange } from "./overview/selected-metrics-time-range.injectable";
@@ -85,7 +85,7 @@ const NonInjectedClusterMetrics = observer((props: Dependencies) => {
     plugins: {
       tooltip: {
         callbacks: {
-          label: (context: TooltipItem<"bar" | "line">) => {
+          label: (context: TooltipItem<ChartType>) => {
             if (!context.dataIndex) {
               return "<unknown>";
             }
@@ -110,7 +110,7 @@ const NonInjectedClusterMetrics = observer((props: Dependencies) => {
     plugins: {
       tooltip: {
         callbacks: {
-          label: (context: TooltipItem<"bar" | "line">) => {
+          label: (context: TooltipItem<ChartType>) => {
             if (!context.dataIndex) {
               return "<unknown>";
             }
