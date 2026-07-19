@@ -298,6 +298,59 @@ jobs:
           mv freelens/node_modules freelens/node_modules_prod
           mv freelens/node_modules_dev freelens/node_modules
 
+      # Produce the SBOM and runtime package list only for the real branch build
+      # (push/dispatch on main), never for PRs. The combine-and-scan job below
+      # consumes both as run artifacts.
+      - name: Create SBOM
+        if: github.ref_name == 'main' && github.event_name != 'pull_request'
+        uses: anchore/sbom-action@v0
+        with:
+          format: spdx-json
+          output-file: "freelens/dist/${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-sbom.spdx.json"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          artifact-name: "${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-sbom.spdx.json"
+          upload-release-assets: false
+
+      - name: Create runtime package list
+        if: github.ref_name == 'main' && github.event_name != 'pull_request'
+        shell: bash
+        run: |
+          set -eo pipefail
+          # Assemble a production-only dependency tree (no devDependencies) from
+          # the already-populated pnpm store, then map each runtime package
+          # <name>@<version> to its path in the pnpm store. security-scan uses the
+          # keys as the runtime closure (to drop build-time findings) and the
+          # paths as the code-scanning location for npm findings (grype otherwise
+          # reports them against pnpm-lock.yaml). --legacy is required because the
+          # workspace does not set inject-workspace-packages.
+          deploy_dir="$RUNNER_TEMP/freelens-prod"
+          rm -rf "$deploy_dir"
+          pnpm --filter freelens deploy --prod --legacy --ignore-scripts "$deploy_dir"
+          os="${{ matrix.os }}"
+          arch="${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}"
+          out="freelens/dist/${{ github.event.repository.name }}-${os}-${arch}-prod-packages.json"
+          (
+            cd "$deploy_dir"
+            for d in node_modules/.pnpm/*/; do
+              d="${d#node_modules/.pnpm/}"
+              d="${d%/}"
+              [ "$d" = "node_modules" ] && continue
+              # dir name is <name>@<version>[_<peer>]; drop the peer suffix and
+              # decode the scoped-package separator (@scope+name -> @scope/name).
+              key="${d%%_*}"
+              key="${key/+//}"
+              printf '%s\t%s\n' "$key" "node_modules/.pnpm/$d/node_modules/${key%@*}"
+            done
+          ) | jq -R -n '[inputs | split("\t") | {key: .[0], value: .[1]}] | from_entries' > "$out"
+          echo "runtime packages: $(jq 'length' "$out")"
+
+      - name: Upload runtime package list
+        if: github.ref_name == 'main' && github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v7
+        with:
+          name: "${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-prod-packages.json"
+          path: "freelens/dist/${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-prod-packages.json"
+
       - name: Run integration tests (Linux)
         id: integration-tests-linux
         if: runner.os == 'Linux'
@@ -352,3 +405,163 @@ jobs:
         env:
           DEBUG: pw:browser
           EXTENSION_PATH: skip
+
+  security-scan:
+    name: security scan
+
+    # Combines the per-arch SBOMs and runtime package lists produced by the
+    # test-integration matrix (both pulled as run artifacts) and scans only the
+    # runtime dependency closure. Runs for the real branch build (push/dispatch
+    # on main) only, never for PRs.
+    if: github.ref_name == 'main' && github.event_name != 'pull_request'
+
+    needs:
+      - test-integration
+
+    runs-on: ubuntu-24.04-arm
+
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    env:
+      # Renovate keeps this version up to date via the inline datasource hint
+      # below (see .renovaterc.json5 customManagers).
+      GRYPE_VERSION: v0.116.0 # datasource=github-releases depName=anchore/grype
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Download SBOMs
+        uses: actions/download-artifact@v8
+        with:
+          pattern: "*-sbom.spdx.json"
+          path: sboms
+          merge-multiple: true
+
+      - name: Download runtime package lists
+        uses: actions/download-artifact@v8
+        with:
+          pattern: "*-prod-packages.json"
+          path: prod
+          merge-multiple: true
+
+      - name: Install Grype
+        id: grype
+        uses: anchore/scan-action/download-grype@v7
+        with:
+          grype-version: ${{ env.GRYPE_VERSION }}
+          cache-db: true
+
+      - name: Scan SBOMs with Grype
+        run: |
+          set -eo pipefail
+          grype="${{ steps.grype.outputs.cmd }}"
+          mkdir -p sarifs
+          shopt -s nullglob
+          # Merge the per-arch runtime package maps (from test-integration) into
+          # one <name>@<version> -> pnpm-store-path object. Only runtime findings
+          # are reported: npm packages in this map, plus non-npm packages (Go
+          # modules, native binaries) shipped under freelens/dist or
+          # freelens/binaries. This drops build-time dev tools (esbuild,
+          # typescript, ...) and the Go binaries bundled with them, which never
+          # reach users.
+          jq -s 'add' prod/*-prod-packages.json > prod-set.json
+          if [[ "$(jq 'length' prod-set.json)" -eq 0 ]]; then
+            echo "Runtime package set is empty - refusing to scan (every npm finding would be dropped)" >&2
+            exit 1
+          fi
+          found=0
+          for sbom in sboms/*-sbom.spdx.json; do
+            name=$(basename "$sbom" .spdx.json)
+            # Reduce the SBOM to runtime packages before scanning.
+            yq -pj -oj '
+              (load("prod-set.json")) as $set |
+              .packages |= map(
+                ( ((.externalRefs // []) | map(select(.referenceType == "purl")))[0].referenceLocator // "" ) as $purl |
+                (.name + "@" + (.versionInfo // "")) as $key |
+                ((.sourceInfo // "") | (capture("(?<p>/[^,]*)").p // "")) as $path |
+                select(
+                  (($purl | test("^pkg:npm/")) and ($set[$key] != null))
+                  or
+                  (($purl | test("^pkg:npm/") | not) and ($path | test("^/freelens/(dist|binaries)/")))
+                )
+              )
+            ' "$sbom" > "runtime-${name}.spdx.json"
+            all=$(yq -pj -oj '.packages | length' "$sbom")
+            run=$(yq -pj -oj '.packages | length' "runtime-${name}.spdx.json")
+            echo "::group::grype ${sbom} (${all} -> ${run} runtime packages)"
+            "$grype" "sbom:runtime-${name}.spdx.json" -o sarif > "sarifs/${name}.sarif"
+            echo "::endgroup::"
+            found=$((found + 1))
+          done
+          if [[ "$found" -eq 0 ]]; then
+            echo "No SBOM files found to scan under sboms/" >&2
+            exit 1
+          fi
+          # grype leaves the SARIF artifact location empty for SBOM scans, which
+          # code scanning rejects with "expected artifact location". For non-npm
+          # packages (Go modules, native binaries) the SPDX sourceInfo carries a
+          # real path, so build a <name>@<version> -> path map. Build it from the
+          # filtered SBOMs so a package present in several binaries (e.g. the Go
+          # stdlib in kubectl and in the dev-only tsc binary) maps to a shipped
+          # location, not a dropped build-time one.
+          yq ea -pj -oj -I0 '[.]' runtime-*.spdx.json |
+            yq -pj -oj '
+                [ .[].packages[]
+                  | select(has("sourceInfo"))
+                  | {
+                      "key": (.name + "@" + (.versionInfo // "")),
+                      "value": ((.sourceInfo | capture("(?<p>/[^,]*)").p) // "" | sub("^/"; ""))
+                    }
+                  | select(.value != "")
+                ] | from_entries
+              ' > sbom-paths.json
+          # Code scanning accepts only one SARIF run per category, and the
+          # per-architecture SBOMs differ (bundled kubectl/helm/proxy CLIs and
+          # their Go modules, native npm build variants), so scan them all and
+          # merge the runs into one: slurp the SARIFs into an array, union the
+          # rules by id and concatenate + de-duplicate the results (grype gives
+          # SBOM findings an empty location, so identical cross-arch findings
+          # collapse cleanly). Then set each result's artifact location from the
+          # finding's <name>@<version>: the pnpm-store path for npm packages, the
+          # sourceInfo path for non-npm ones, and a synthetic
+          # "sbom/<package>@<version>" as a last resort. Done after the dedup so
+          # empty locations collapse first.
+          yq ea -pj -oj -I0 '[.]' sarifs/*.sarif |
+            yq -pj -oj '
+                (load("prod-set.json")) as $prod |
+                (load("sbom-paths.json")) as $paths |
+                . as $x |
+                {
+                  "$schema": $x[0]["$schema"],
+                  "version": $x[0].version,
+                  "runs": [
+                    {
+                      "tool": {
+                        "driver": (
+                          $x[0].runs[0].tool.driver |
+                          .rules = ([$x[].runs[0].tool.driver.rules[]] | unique_by(.id))
+                        )
+                      },
+                      "results": (
+                        [$x[].runs[0].results[]] |
+                        unique |
+                        map(
+                          ((.message.text | capture("package: (?<n>.+?), version (?<v>.*?) was found at:")) // {"n": "unknown", "v": "unknown"}) as $p |
+                          ($p.n + "@" + $p.v) as $key |
+                          .locations[0].physicalLocation.artifactLocation.uri = ($prod[$key] // $paths[$key] // ("sbom/" + $key))
+                        )
+                      )
+                    }
+                  ]
+                }
+              ' > grype.sarif
+
+      - name: Upload Grype SARIF to code scanning
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: grype.sarif
+          category: grype
