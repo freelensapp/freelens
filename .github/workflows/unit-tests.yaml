@@ -111,18 +111,23 @@ jobs:
       - name: Run unit tests (shard ${{ matrix.shard }}/${{ strategy.job-total }})
         run: pnpm --color=always test:unit --shard=${{ matrix.shard }}/${{ strategy.job-total }} --reporter=verbose --reporter=github-actions --includeTaskLocation
 
+      # Only the dist outputs need clearing here so "Check untracked files"
+      # below can catch anything the build step left behind; node_modules
+      # doesn't need to survive this job, so `clean:dist` (not the `clean`
+      # umbrella, which also runs `pnpm purge`) is enough.
+      #
       # Recursive/--parallel commands skip the workspace root by default, so
-      # calling `pnpm --parallel run clean` here bypassed the root package's
-      # `clean` script entirely - including the dlx cache warmup it runs
-      # before the parallel per-package `rimraf` calls (#2231). Without that
-      # warmup, ~30 packages race to set up the same pnpm dlx cache slot for
-      # rimraf@6.1.3 at once, and one process unlinks the dlx `pkg` symlink
-      # out from under another, failing with ENOENT. Running the root
-      # `clean` script (which does the warmup, then `pnpm -r clean`) keeps
-      # the warmup in the critical path while still cleaning packages
-      # recursively.
+      # calling `pnpm --parallel run clean:dist` here would bypass the root
+      # package's `clean:dist` script entirely - including the dlx cache
+      # warmup it runs before the parallel per-package `rimraf` calls
+      # (#2231). Without that warmup, ~30 packages race to set up the same
+      # pnpm dlx cache slot for rimraf@6.1.3 at once, and one process unlinks
+      # the dlx `pkg` symlink out from under another, failing with ENOENT.
+      # Running the root `clean:dist` script (which does the warmup, then
+      # `pnpm -r run clean:dist`) keeps the warmup in the critical path
+      # while still cleaning packages recursively.
       - name: Clean after tests
-        run: pnpm --color=always run clean
+        run: pnpm --color=always run clean:dist
 
       - name: Check untracked files
         shell: bash

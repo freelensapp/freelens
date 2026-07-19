@@ -17,9 +17,7 @@
     "name": "Freelens Authors",
     "email": "freelens@freelens.app"
   },
-  "scripts": {
-    "clean:node_modules": "pnpm dlx rimraf@6.1.3 node_modules"
-  },
+  "scripts": {},
   "dependencies": {
     "typescript": "^7.0.2",
     "typescript-plugin-css-modules": "^5.2.0"
