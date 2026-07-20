@@ -152,7 +152,7 @@ export interface ApplicationBuilder {
   };
 
   applicationMenu: {
-    click: (...path: string[]) => void;
+    click: (...path: string[]) => Promise<void>;
     items: string[][];
   };
   preferences: {
@@ -426,18 +426,19 @@ export const getApplicationBuilder = () => {
         return getCompositePaths(composite);
       },
 
-      click: (...path: string[]) => {
+      click: async (...path: string[]) => {
         const composite = mainDi.inject(applicationMenuItemCompositeInjectable).get();
 
         const clickableMenuItem = findComposite(...path)(composite).value;
 
         if (clickableMenuItem.kind === "clickable-menu-item") {
           // Todo: prevent leaking of Electron
-          // The click handler typically navigates, mutating observable state
-          // rendered components react to; wrap it in act() so React 18 flushes
-          // the resulting update instead of deferring it.
-          act(() => {
-            (clickableMenuItem.onClick as any)();
+          // The click handler navigates through the async main-process route,
+          // which delivers to the window over IPC on a microtask. Await it inside
+          // an async act() so React 18 flushes the resulting renderer update
+          // instead of deferring it past the assertion.
+          await act(async () => {
+            await (clickableMenuItem.onClick as any)();
           });
         } else {
           throw new Error(
