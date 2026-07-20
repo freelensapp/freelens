@@ -9,7 +9,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { unmountComponentAtNode } from "react-dom";
 import closeRendererLogFileInjectable from "../../../features/population-of-logs-to-a-file/renderer/close-renderer-log-file.injectable";
 import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
-import frameRoutingIdInjectable from "../../frames/cluster-frame/init-cluster-frame/frame-routing-id/frame-routing-id.injectable";
+import frameTokenInjectable from "../../frames/cluster-frame/init-cluster-frame/frame-token/frame-token.injectable";
 import currentlyInClusterFrameInjectable from "../../routes/currently-in-cluster-frame.injectable";
 import { beforeFrameStartsSecondInjectionToken } from "../tokens";
 
@@ -24,9 +24,9 @@ const listenUnloadInjectable = getInjectable({
       window.addEventListener("beforeunload", () => {
         if (isClusterFrame) {
           const hostedCluster = di.inject(hostedClusterInjectable);
-          const frameRoutingId = di.inject(frameRoutingIdInjectable);
+          const frameToken = di.inject(frameTokenInjectable);
 
-          logger.info(`[CLUSTER-FRAME] Unload dashboard, clusterId=${hostedCluster?.id}, frameId=${frameRoutingId}`);
+          logger.info(`[CLUSTER-FRAME] Unload dashboard, clusterId=${hostedCluster?.id}, frameToken=${frameToken}`);
         } else {
           logger.info("[ROOT-FRAME]: Unload app");
         }
