@@ -167,6 +167,22 @@
       // only explicit react import here is type-only (ButtonHTMLAttributes),
       // so react looks unused even though it is a real runtime dependency.
       "ignoreDependencies": ["react"]
+    },
+
+    // electron is provided by the host app at runtime, so it is declared only
+    // as a devDependency; production code in these packages imports it, which
+    // the --production --strict pass reports as unlisted (same as freelens and
+    // packages/core above)
+    "packages/technical-features/application/application-for-electron-main": {
+      "ignoreDependencies": ["electron"]
+    },
+
+    "packages/technical-features/messaging/messaging-for-main": {
+      "ignoreDependencies": ["electron"]
+    },
+
+    "packages/technical-features/messaging/messaging-for-renderer": {
+      "ignoreDependencies": ["electron"]
     }
   },
 
