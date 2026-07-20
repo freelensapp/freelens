@@ -13,7 +13,7 @@ import { AnsiUp } from "ansi_up";
 import autoBindReact from "auto-bind/react";
 import DOMPurify from "dompurify";
 import { debounce } from "es-toolkit/compat";
-import { action, computed, makeObservable, observable, reaction } from "mobx";
+import { action, makeObservable, observable, reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import moment from "moment-timezone";
 import React from "react";
@@ -128,9 +128,13 @@ class NonForwardedLogList extends React.Component<
   componentDidMount() {
     this.updateContainerMetrics();
     window.addEventListener("resize", this.updateContainerMetrics);
+    // Capture the model before wiring reactions: mobx-react 9 forbids reading
+    // this.props inside a derivation (the reaction data functions below).
+    const { model } = this.props;
+
     disposeOnUnmount(this, [
       reaction(
-        () => this.props.model.logs.get(),
+        () => model.logs.get(),
         (logs, prevLogs) => {
           const didLogsResetOrPrepend =
             !prevLogs.length || !logs.length || logs[0] !== prevLogs[0] || logs.length < prevLogs.length;
@@ -146,7 +150,7 @@ class NonForwardedLogList extends React.Component<
         },
       ),
       reaction(
-        () => this.props.model.logTabData.get()?.showTimestamps,
+        () => model.logTabData.get()?.showTimestamps,
         () => {
           this.measuredRowHeights.clear();
           this.overlapVersion++;
@@ -273,8 +277,11 @@ class NonForwardedLogList extends React.Component<
 
   /**
    * Returns logs with or without timestamps regarding to showTimestamps prop
+   *
+   * Plain getter (not @computed): reads this.props, which mobx-react 9 forbids
+   * inside a derivation. Read from render, reactivity is preserved by the
+   * observer render reaction.
    */
-  @computed
   get logs(): string[] {
     const { showTimestamps } = this.props.model.logTabData.get() ?? {};
 
