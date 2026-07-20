@@ -19,9 +19,11 @@ icon.iconset/
 .turbo/
 
 # Runtime artifacts (screenshots, databases, keys, snapshots) written by
-# optional local AI-agent / MCP tooling, see DEVELOPMENT.md and AGENTS.md
-.playwright-mcp/
-logs/
+# optional local AI-agent / MCP tooling, see DEVELOPMENT.md and AGENTS.md.
+# Anchored to the repo root so they do not also match source directories such
+# as packages/core/src/renderer/components/dock/logs/.
+/.playwright-mcp/
+/logs/
 
 .npmrc
 

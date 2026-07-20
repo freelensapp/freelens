@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-
 import type { MockedFunction } from "vitest";
 import "@testing-library/jest-dom/vitest";
 import assert from "node:assert";
