@@ -5,8 +5,8 @@
  */
 
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { reactRootInjectionToken } from "@freelensapp/react-application";
 import { getInjectable } from "@ogre-tools/injectable";
-import { unmountComponentAtNode } from "react-dom";
 import closeRendererLogFileInjectable from "../../../features/population-of-logs-to-a-file/renderer/close-renderer-log-file.injectable";
 import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
 import frameTokenInjectable from "../../frames/cluster-frame/init-cluster-frame/frame-token/frame-token.injectable";
@@ -20,6 +20,7 @@ const listenUnloadInjectable = getInjectable({
       const closeRendererLogFile = di.inject(closeRendererLogFileInjectable);
       const isClusterFrame = di.inject(currentlyInClusterFrameInjectable);
       const logger = di.inject(loggerInjectionToken);
+      const reactRoot = di.inject(reactRootInjectionToken);
 
       window.addEventListener("beforeunload", () => {
         if (isClusterFrame) {
@@ -35,7 +36,7 @@ const listenUnloadInjectable = getInjectable({
         const rootElem = document.getElementById("app");
 
         if (rootElem) {
-          unmountComponentAtNode(rootElem);
+          reactRoot.unmount(rootElem);
         }
       });
     },
