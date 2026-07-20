@@ -11,8 +11,7 @@ import { bytesToUnits, cssNames, interval, prevDefault } from "@freelensapp/util
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
 import { kebabCase } from "es-toolkit";
-import { reaction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import { DrawerTitle } from "../drawer";
 import showDetailsInjectable from "../kube-detail-params/show-details.injectable";
@@ -60,12 +59,15 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
 
   componentDidMount() {
     this.metricsWatcher.start(true);
-    disposeOnUnmount(this, [
-      reaction(
-        () => this.props.owner,
-        () => this.metricsWatcher.restart(true),
-      ),
-    ]);
+  }
+
+  componentDidUpdate(prevProps: PodDetailsListProps & Dependencies) {
+    // Restart the metrics watcher when the owner prop changes. Previously a
+    // reaction on this.props.owner did this; mobx-react 9 no longer makes
+    // this.props observable, so react to the prop change in the lifecycle instead.
+    if (prevProps.owner !== this.props.owner) {
+      this.metricsWatcher.restart(true);
+    }
   }
 
   componentWillUnmount() {

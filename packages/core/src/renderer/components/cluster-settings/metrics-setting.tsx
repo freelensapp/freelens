@@ -29,13 +29,18 @@ export class ClusterMetricsSetting extends React.Component<ClusterMetricsSetting
   }
 
   componentDidMount() {
-    this.hiddenMetrics = observable.set<string>(this.props.cluster.preferences.hiddenMetrics ?? []);
+    // Capture props before the reaction: mobx-react 9 forbids reading this.props
+    // inside a derivation. The cluster object is stable and its preferences are
+    // observable, so tracking the captured cluster keeps the reaction reactive.
+    const { cluster } = this.props;
+
+    this.hiddenMetrics = observable.set<string>(cluster.preferences.hiddenMetrics ?? []);
 
     disposeOnUnmount(this, [
       reaction(
-        () => this.props.cluster.preferences.hiddenMetrics,
+        () => cluster.preferences.hiddenMetrics,
         () => {
-          this.hiddenMetrics = observable.set<string>(this.props.cluster.preferences.hiddenMetrics ?? []);
+          this.hiddenMetrics = observable.set<string>(cluster.preferences.hiddenMetrics ?? []);
         },
       ),
     ]);
