@@ -49,7 +49,7 @@
     "immer": "^11.1.8",
     "mobx": "^6.15.0",
     "mobx-observable-history": "^2.0.3",
-    "monaco-editor": "^0.54.0",
+    "monaco-editor": "^0.55.1",
     "node-fetch": "^3.3.2",
     "react": "catalog:",
     "react-router": "^5.3.4",
