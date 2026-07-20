@@ -387,22 +387,37 @@ export const getApplicationBuilder = () => {
       },
     },
     namespaces: {
-      add: action((namespace) => {
-        namespaceItems.push(createNamespace(namespace));
-      }),
-      addSubNamespace: action((namespace, parent) => {
-        const parentNamespace = namespaceItems.find((n) => n.getName() === parent);
+      // These mutate observable state that rendered components react to. When
+      // called after render() (e.g. namespaces.select), React 18 batches and
+      // defers the re-render unless flushed, so wrap in act() (a no-op flush
+      // before any window has rendered).
+      add: (namespace) =>
+        act(() => {
+          runInAction(() => {
+            namespaceItems.push(createNamespace(namespace));
+          });
+        }),
+      addSubNamespace: (namespace, parent) =>
+        act(() => {
+          runInAction(() => {
+            const parentNamespace = namespaceItems.find((n) => n.getName() === parent);
 
-        assert(parentNamespace, `Cannot find namespace with name="${parent}"`);
+            assert(parentNamespace, `Cannot find namespace with name="${parent}"`);
 
-        namespaceItems.push(createSubNamespace(namespace, parentNamespace));
-      }),
-      select: action((namespace) => {
-        const selectedNamespacesStorage = builder.applicationWindow.only.di.inject(selectedNamespacesStorageInjectable);
+            namespaceItems.push(createSubNamespace(namespace, parentNamespace));
+          });
+        }),
+      select: (namespace) =>
+        act(() => {
+          runInAction(() => {
+            const selectedNamespacesStorage = builder.applicationWindow.only.di.inject(
+              selectedNamespacesStorageInjectable,
+            );
 
-        selectedNamespaces.add(namespace);
-        selectedNamespacesStorage.set([...selectedNamespaces]);
-      }),
+            selectedNamespaces.add(namespace);
+            selectedNamespacesStorage.set([...selectedNamespaces]);
+          });
+        }),
     },
     applicationMenu: {
       get items() {
@@ -418,7 +433,12 @@ export const getApplicationBuilder = () => {
 
         if (clickableMenuItem.kind === "clickable-menu-item") {
           // Todo: prevent leaking of Electron
-          (clickableMenuItem.onClick as any)();
+          // The click handler typically navigates, mutating observable state
+          // rendered components react to; wrap it in act() so React 18 flushes
+          // the resulting update instead of deferring it.
+          act(() => {
+            (clickableMenuItem.onClick as any)();
+          });
         } else {
           throw new Error(
             `Tried to trigger clicking of an application menu item, but item at path '${path.join(" -> ")}' isn't clickable.`,
@@ -462,7 +482,11 @@ export const getApplicationBuilder = () => {
           throw new Error(`Tried to click tray menu item with ID ${id} which is disabled.`);
         }
 
-        await menuItem.click?.();
+        // The click handler typically navigates; wrap it in act() so React 18
+        // flushes the resulting update instead of deferring it.
+        await act(async () => {
+          await menuItem.click?.();
+        });
       },
     },
 
@@ -635,28 +659,38 @@ export const getApplicationBuilder = () => {
       },
 
       enable: (...extensions) => {
-        builder.afterWindowStart(
-          action(({ windowDi }) => {
-            extensions
-              .map(getExtensionFakeForRenderer)
-              .forEach(enableExtensionFor(windowDi, rendererExtensionsStateInjectable));
-          }),
-        );
+        // When the window is already rendered, afterWindowStart/afterApplicationStart
+        // run the callback immediately, mutating the observable extension state. Under
+        // React 18 that reactive re-render is batched and deferred unless flushed, so
+        // wrap it in act() (a no-op flush when the app has not started yet).
+        act(() => {
+          builder.afterWindowStart(
+            action(({ windowDi }) => {
+              extensions
+                .map(getExtensionFakeForRenderer)
+                .forEach(enableExtensionFor(windowDi, rendererExtensionsStateInjectable));
+            }),
+          );
 
-        builder.afterApplicationStart(
-          action(({ mainDi }) => {
-            extensions.map(getExtensionFakeForMain).forEach(enableExtensionFor(mainDi, mainExtensionsStateInjectable));
-          }),
-        );
+          builder.afterApplicationStart(
+            action(({ mainDi }) => {
+              extensions
+                .map(getExtensionFakeForMain)
+                .forEach(enableExtensionFor(mainDi, mainExtensionsStateInjectable));
+            }),
+          );
+        });
       },
 
       disable: (...extensions) => {
-        builder.afterWindowStart(({ windowDi }) => {
-          extensions.forEach(disableExtensionFor(windowDi, rendererExtensionsStateInjectable));
-        });
+        act(() => {
+          builder.afterWindowStart(({ windowDi }) => {
+            extensions.forEach(disableExtensionFor(windowDi, rendererExtensionsStateInjectable));
+          });
 
-        builder.afterApplicationStart(({ mainDi }) => {
-          extensions.forEach(disableExtensionFor(mainDi, mainExtensionsStateInjectable));
+          builder.afterApplicationStart(({ mainDi }) => {
+            extensions.forEach(disableExtensionFor(mainDi, mainExtensionsStateInjectable));
+          });
         });
       },
     },
