@@ -27,13 +27,13 @@
     "@freelensapp/application": "workspace:^",
     "@freelensapp/feature-core": "workspace:^",
     "@freelensapp/run-many": "workspace:^",
-    "@ogre-tools/injectable": "^17.11.1",
-    "electron": "^42.7.0"
+    "@ogre-tools/injectable": "^17.11.1"
   },
   "devDependencies": {
     "@async-fn/vitest": "^1.8.0",
     "@freelensapp/typescript": "workspace:^",
     "@ogre-tools/test-utils": "^17.11.1",
+    "electron": "^42.7.0",
     "typescript": "^7.0.2",
     "vitest": "^4.1.10"
   },
