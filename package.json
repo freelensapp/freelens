@@ -43,7 +43,7 @@
     "compute-versions": "pnpm -r compute-versions",
     "dev": "turbo run dev --parallel --",
     "fmt": "pnpm trunk fmt",
-    "knip": "pnpm dlx knip@6.24.0 --dependencies --no-gitignore",
+    "knip": "pnpm dlx knip@6.24.0 --dependencies --no-gitignore --no-config-hints",
     "knip:check": "pnpm \"/^knip:(development|production)\\$/\"",
     "knip:development": "pnpm knip",
     "knip:production": "pnpm knip --production --strict",

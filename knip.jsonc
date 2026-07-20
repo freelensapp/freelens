@@ -8,11 +8,14 @@
   // written against the enabled globals never import it directly.
   "ignoreDependencies": ["vitest"],
 
-  // Note: the ignoreDependencies entries for electron (freelens, core) and
-  // @freelensapp/core (extensions) are only needed in --production --strict
-  // mode, where devDependency imports in production files count as unlisted.
-  // The development run reports them as removable configuration hints; hints
-  // are informational and do not fail the check.
+  // Note: several ignoreDependencies entries below (electron for freelens,
+  // core, and the technical-feature packages; @freelensapp/core for extensions;
+  // react for the button package) are only needed in --production --strict
+  // mode, where devDependency imports in production files count as unlisted. In
+  // the plain development run these entries look redundant, so knip would report
+  // them as removable configuration hints. Since a single config must satisfy
+  // both runs, the shared knip script runs with --no-config-hints (see the
+  // "knip" script in package.json) to silence those unavoidable hints.
 
   "workspaces": {
     ".": {
