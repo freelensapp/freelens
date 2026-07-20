@@ -20,7 +20,6 @@ const listenUnloadInjectable = getInjectable({
       const closeRendererLogFile = di.inject(closeRendererLogFileInjectable);
       const isClusterFrame = di.inject(currentlyInClusterFrameInjectable);
       const logger = di.inject(loggerInjectionToken);
-      const reactRoot = di.inject(reactRootInjectionToken);
 
       window.addEventListener("beforeunload", () => {
         if (isClusterFrame) {
@@ -36,7 +35,10 @@ const listenUnloadInjectable = getInjectable({
         const rootElem = document.getElementById("app");
 
         if (rootElem) {
-          reactRoot.unmount(rootElem);
+          // Resolved lazily here (rather than in `run`) so this cross-feature,
+          // side-effecting root is only injected on an actual unload, keeping
+          // unit-test containers (which never dispatch `beforeunload`) unaffected.
+          di.inject(reactRootInjectionToken).unmount(rootElem);
         }
       });
     },
