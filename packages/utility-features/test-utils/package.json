@@ -28,13 +28,13 @@
     "@testing-library/react": "^12.1.5",
     "es-toolkit": "^1.49.0",
     "mobx": "^6.15.0",
-    "react": "^17.0.2"
+    "react": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
     "@types/node": "~24.12.4",
-    "@types/react": "^17.0.93",
-    "react-dom": "^17.0.2",
+    "@types/react": "catalog:",
+    "react-dom": "catalog:",
     "vitest": "^4.1.10"
   },
   "publishConfig": {

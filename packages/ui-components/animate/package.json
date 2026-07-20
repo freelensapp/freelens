@@ -29,11 +29,11 @@
     "@freelensapp/utilities": "workspace:^",
     "@ogre-tools/injectable": "^17.11.1",
     "@ogre-tools/injectable-react": "^17.11.1",
-    "react": "^17.0.2"
+    "react": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
-    "@types/react": "^17.0.93",
+    "@types/react": "catalog:",
     "typescript": "^7.0.2",
     "vitest": "^4.1.10"
   },
