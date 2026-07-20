@@ -34,7 +34,10 @@ function buildPrometheusConfig(
   https: boolean,
   directUrl?: string,
   bearerToken?: string,
+  customHeaders?: Record<string, string>,
 ): PrometheusConfig {
+  const headers = customHeaders && Object.keys(customHeaders).length > 0 ? customHeaders : undefined;
+
   return {
     namespace: parsed[0] || "",
     service: parsed[1] || "",
@@ -43,6 +46,7 @@ function buildPrometheusConfig(
     https,
     directUrl: directUrl || undefined,
     bearerToken: bearerToken || undefined,
+    customHeaders: headers,
   };
 }
 
@@ -80,6 +84,8 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
   @observable useHttps = false; // whether to use https scheme for service proxy
   @observable directUrl = ""; // direct URL to Prometheus (bypasses K8s service proxy)
   @observable bearerToken = ""; // bearer token for Prometheus authentication
+  @observable anonymousTenant = false; // Mimir: send X-Scope-OrgID: anonymous
+  @observable customHeaders = observable.array<{ key: string; value: string }>();
   @observable requestMethod: PrometheusRequestMethod = "POST";
   @observable selectedOption: ProviderValue = autoDetectPrometheus;
   @observable loading = true;
@@ -118,6 +124,10 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
     return this.selectedOption === "openshift";
   }
 
+  @computed get isMimir(): boolean {
+    return this.selectedOption === "mimir";
+  }
+
   componentDidMount() {
     disposeOnUnmount(
       this,
@@ -136,12 +146,24 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
           this.useHttps = Boolean(prometheus.https);
           this.directUrl = prometheus.directUrl || "";
           this.bearerToken = prometheus.bearerToken || "";
+
+          const headers = prometheus.customHeaders || {};
+
+          this.anonymousTenant = headers["X-Scope-OrgID"] === "anonymous";
+
+          const nonOrgIdHeaders = Object.entries(headers)
+            .filter(([key]) => key !== "X-Scope-OrgID")
+            .map(([key, value]) => ({ key, value }));
+
+          this.customHeaders.replace(nonOrgIdHeaders);
         } else {
           this.path = "";
           this.customPrefix = "";
           this.useHttps = false;
           this.directUrl = "";
           this.bearerToken = "";
+          this.anonymousTenant = false;
+          this.customHeaders.clear();
         }
 
         this.requestMethod = prometheusRequestMethod === "GET" ? "GET" : "POST";
@@ -166,9 +188,30 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
   }
 
   private sanitizePrefix(prefix: string): string {
-    if (!prefix) return "";
-    return prefix.startsWith("/") ? prefix : `/${prefix}`;
+    const trimmed = prefix.trim();
+
+    if (!trimmed) return "";
+
+    return trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
   }
+
+  buildCustomHeaders = (): Record<string, string> => {
+    const headers: Record<string, string> = {};
+
+    if (this.anonymousTenant) {
+      headers["X-Scope-OrgID"] = "anonymous";
+    }
+
+    for (const { key, value } of this.customHeaders) {
+      const trimmedKey = key.trim();
+
+      if (trimmedKey) {
+        headers[trimmedKey] = value;
+      }
+    }
+
+    return headers;
+  };
 
   parsePrometheusPath = (): PrometheusConfig | undefined => {
     if (!this.selectedOption) {
@@ -176,12 +219,13 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
     }
 
     const prefix = this.sanitizePrefix(this.customPrefix);
+    const allHeaders = this.buildCustomHeaders();
 
-    // For OpenShift, allow saving with just directUrl (no service path needed)
-    if (this.isOpenShift && this.directUrl) {
+    // For directUrl-only providers (OpenShift, Mimir) allow saving without a service path
+    if ((this.isOpenShift || this.isMimir) && this.directUrl) {
       const parsed = this.path ? this.path.split(/\/|:/, 3) : [];
 
-      return buildPrometheusConfig(parsed, prefix, this.useHttps, this.directUrl, this.bearerToken);
+      return buildPrometheusConfig(parsed, prefix, this.useHttps, this.directUrl, this.bearerToken, allHeaders);
     }
 
     if (!this.path) {
@@ -194,7 +238,7 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
       return undefined;
     }
 
-    return buildPrometheusConfig(parsed, prefix, this.useHttps, this.directUrl, this.bearerToken);
+    return buildPrometheusConfig(parsed, prefix, this.useHttps, this.directUrl, this.bearerToken, allHeaders);
   };
 
   onSaveProvider = () => {
@@ -235,46 +279,50 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
               />
               <small className="hint">
                 What query format is used to fetch metrics from Prometheus. Select &quot;OpenShift&quot; for
-                OpenShift/OKD clusters where Prometheus requires bearer token authentication.
+                OpenShift/OKD clusters, or &quot;Mimir&quot; for Grafana Mimir deployments.
               </small>
             </>
           )}
         </section>
         {this.canEditPrometheusPath && (
           <>
-            <hr />
-            <section>
-              <SubTitle title="Prometheus service address" />
-              <Input
-                theme="round-black"
-                value={this.path}
-                onChange={(value) => (this.path = value)}
-                onBlur={this.onSaveAll}
-                placeholder="<namespace>/<service>:<port>"
-              />
-              <small className="hint">
-                {this.isOpenShift
-                  ? `An address to the Prometheus service (<namespace>/<service>:<port>). For OpenShift this is typically openshift-monitoring/prometheus-k8s:9091. Can be left empty when using a Prometheus ingress/route.`
-                  : `An address to an existing Prometheus installation (<namespace>/<service>:<port>). ${this.props.productName} tries to auto-detect address if left empty.`}
-              </small>
-            </section>
-            <hr />
-            <section>
-              <SubTitle title="Prometheus HTTPS requests" />
-              <Checkbox
-                label={`Use HTTPS for Prometheus requests`}
-                value={this.useHttps}
-                onChange={(checked) => {
-                  this.useHttps = checked;
-                  this.onSaveAll();
-                }}
-              />
-              <small className="hint">
-                {this.isOpenShift
-                  ? "Enable HTTPS for the Kubernetes API service proxy path. Not needed when using a Prometheus ingress/route (the route URL scheme is used instead)."
-                  : "Externally hosted Prometheus might listen using HTTPS. Usually this is not needed."}
-              </small>
-            </section>
+            <>
+              <hr />
+              <section>
+                <SubTitle title="Prometheus service address" />
+                <Input
+                  theme="round-black"
+                  value={this.path}
+                  onChange={(value) => (this.path = value)}
+                  onBlur={this.onSaveAll}
+                  placeholder="<namespace>/<service>:<port>"
+                />
+                <small className="hint">
+                  {this.isOpenShift
+                    ? `An address to the Prometheus service (<namespace>/<service>:<port>). For OpenShift this is typically openshift-monitoring/prometheus-k8s:9091. Can be left empty when using a Prometheus ingress/route.`
+                    : this.isMimir
+                      ? `An address to the Mimir query-frontend service (<namespace>/<service>:<port>). ${this.props.productName} tries to auto-detect address if left empty. Can be left empty when using an external Mimir endpoint URL.`
+                      : `An address to an existing Prometheus installation (<namespace>/<service>:<port>). ${this.props.productName} tries to auto-detect address if left empty.`}
+                </small>
+              </section>
+              <hr />
+              <section>
+                <SubTitle title="Prometheus HTTPS requests" />
+                <Checkbox
+                  label={`Use HTTPS for Prometheus requests`}
+                  value={this.useHttps}
+                  onChange={(checked) => {
+                    this.useHttps = checked;
+                    this.onSaveAll();
+                  }}
+                />
+                <small className="hint">
+                  {this.isOpenShift
+                    ? "Enable HTTPS for the Kubernetes API service proxy path. Not needed when using a Prometheus ingress/route (the route URL scheme is used instead)."
+                    : "Externally hosted Prometheus might listen using HTTPS. Usually this is not needed."}
+                </small>
+              </section>
+            </>
             <hr />
             <section>
               <SubTitle title="Custom path prefix" />
@@ -324,6 +372,90 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
                     Service account bearer token for authenticating to Prometheus. On OpenShift, Prometheus requires
                     authentication via kube-rbac-proxy. Generate a long-lived token with: oc create token
                     &lt;service-account&gt; -n openshift-monitoring --duration=8760h
+                  </small>
+                </section>
+              </>
+            )}
+            {this.isMimir && (
+              <>
+                <hr />
+                <section>
+                  <SubTitle title="Mimir external endpoint" />
+                  <Input
+                    theme="round-black"
+                    value={this.directUrl}
+                    onChange={(value) => (this.directUrl = value)}
+                    onBlur={this.onSaveAll}
+                    placeholder="https://mimir.example.com"
+                  />
+                  <small className="hint">
+                    Optional external URL to the Mimir query endpoint. When set, queries are sent directly to this URL,
+                    bypassing the Kubernetes API service proxy. Leave empty to use the in-cluster service address above.
+                  </small>
+                </section>
+                <hr />
+                <section>
+                  <SubTitle title="Tenant" />
+                  <Checkbox
+                    label="Anonymous tenant (send X-Scope-OrgID: anonymous)"
+                    value={this.anonymousTenant}
+                    onChange={(checked) => {
+                      this.anonymousTenant = checked;
+                      this.onSaveAll();
+                    }}
+                  />
+                  <small className="hint">
+                    Enable this when Mimir is configured without authentication. Adds the{" "}
+                    <code>X-Scope-OrgID: anonymous</code> header required by multi-tenant Mimir instances running in
+                    no-auth mode.
+                  </small>
+                </section>
+                <hr />
+                <section>
+                  <SubTitle title="Additional headers" />
+                  {this.customHeaders.map((header, index) => (
+                    <div key={index} style={{ display: "flex", gap: "8px", marginBottom: "8px", alignItems: "center" }}>
+                      <Input
+                        theme="round-black"
+                        value={header.key}
+                        onChange={(value) => (this.customHeaders[index].key = value)}
+                        onBlur={this.onSaveAll}
+                        placeholder="Header name"
+                        style={{ flex: 1 }}
+                      />
+                      <Input
+                        theme="round-black"
+                        value={header.value}
+                        onChange={(value) => (this.customHeaders[index].value = value)}
+                        onBlur={this.onSaveAll}
+                        placeholder="Header value"
+                        style={{ flex: 1 }}
+                      />
+                      <button
+                        type="button"
+                        className="btn-link"
+                        onClick={() => {
+                          this.customHeaders.splice(index, 1);
+                          this.onSaveAll();
+                        }}
+                        style={{ cursor: "pointer", padding: "4px 8px", color: "var(--colorError)" }}
+                      >
+                        Remove
+                      </button>
+                    </div>
+                  ))}
+                  <button
+                    type="button"
+                    className="btn-link"
+                    onClick={() => this.customHeaders.push({ key: "", value: "" })}
+                    style={{ cursor: "pointer", padding: "4px 0" }}
+                  >
+                    + Add header
+                  </button>
+                  <br />
+                  <small className="hint">
+                    Custom HTTP headers sent with every metrics request. Useful for authentication tokens, routing, or
+                    tenant identification.
                   </small>
                 </section>
               </>
