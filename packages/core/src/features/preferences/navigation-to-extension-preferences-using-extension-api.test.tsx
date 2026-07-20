@@ -5,6 +5,7 @@
  */
 
 import { discoverFor } from "@freelensapp/react-testing-library-discovery";
+import { act } from "@testing-library/react";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import currentPathInjectable from "../../renderer/routes/current-path.injectable";
 
@@ -40,7 +41,9 @@ describe("preferences - navigation to extension preferences using extension api"
 
   describe("when extension navigates to its own preferences", () => {
     beforeEach(() => {
-      testExtension.navigateToPreferences();
+      act(() => {
+        testExtension.navigateToPreferences();
+      });
     });
 
     it("URL points to the extension's own preferences tab", () => {

@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import { HelmChartIcon } from "../icon";
 
 const mainImageSrc = "https://example.com/main-picture.jpg";
@@ -36,7 +36,9 @@ describe("HelmChartIcon", () => {
     const imageContainer = screen.getByTestId("image-container");
     const mainImage = imageContainer.querySelector("img");
 
-    mainImage?.dispatchEvent(new Event("load"));
+    act(() => {
+      mainImage?.dispatchEvent(new Event("load"));
+    });
     expect(imageContainer.style.backgroundImage).toBe('url("https://example.com/main-picture.jpg")');
   });
 
@@ -46,7 +48,9 @@ describe("HelmChartIcon", () => {
     const imageContainer = screen.getByTestId("image-container");
     const mainImage = imageContainer.querySelector("img");
 
-    mainImage?.dispatchEvent(new Event("load"));
+    act(() => {
+      mainImage?.dispatchEvent(new Event("load"));
+    });
     expect(imageContainer.style.backgroundImage).toBe('url("https://example.com/main-picture.png")');
   });
 

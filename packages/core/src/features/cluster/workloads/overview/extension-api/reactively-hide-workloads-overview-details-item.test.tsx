@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { act } from "@testing-library/react";
 import { computed, observable, runInAction } from "mobx";
 import navigateToWorkloadsOverviewInjectable from "../../../../../common/front-end-routing/routes/cluster/workloads/overview/navigate-to-workloads-overview.injectable";
 import { getApplicationBuilder } from "../../../../../renderer/components/test-utils/get-application-builder";
@@ -48,7 +49,9 @@ describe("reactively hide workloads overview details item", () => {
 
     const navigateToWorkloadsOverview = windowDi.inject(navigateToWorkloadsOverviewInjectable);
 
-    navigateToWorkloadsOverview();
+    act(() => {
+      navigateToWorkloadsOverview();
+    });
 
     builder.extensions.enable(testExtension);
   });
@@ -60,8 +63,10 @@ describe("reactively hide workloads overview details item", () => {
   });
 
   it("given item should be shown, shows the workload overview detail item", () => {
-    runInAction(() => {
-      someObservable.set(true);
+    act(() => {
+      runInAction(() => {
+        someObservable.set(true);
+      });
     });
 
     const actual = rendered.queryByTestId("some-workload-overview-detail-item");

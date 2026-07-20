@@ -6,7 +6,7 @@
 
 import asyncFn from "@async-fn/vitest";
 import { flushPromises } from "@freelensapp/test-utils";
-import { fireEvent } from "@testing-library/react";
+import { act, fireEvent } from "@testing-library/react";
 import directoryForLensLocalStorageInjectable from "../../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
 import { HelmChart } from "../../../common/k8s-api/endpoints/helm-charts.api";
 import requestHelmChartsInjectable from "../../../common/k8s-api/endpoints/helm-charts.api/request-charts.injectable";
@@ -72,7 +72,9 @@ describe("opening dock tab for installing helm chart", () => {
       const dockStore = windowDi.inject(dockStoreInjectable);
 
       // TODO: Make TerminalWindow unit testable to allow realistic behaviour
-      dockStore.closeTab("terminal");
+      act(() => {
+        dockStore.closeTab("terminal");
+      });
     });
 
     it("renders", () => {
