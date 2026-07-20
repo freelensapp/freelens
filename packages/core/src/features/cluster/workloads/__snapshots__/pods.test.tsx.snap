@@ -18,9 +18,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -1200,9 +1198,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -2234,9 +2230,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"

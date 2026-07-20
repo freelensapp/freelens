@@ -18,9 +18,7 @@ exports[`disable-cluster-pages-when-cluster-is-not-relevant > given extension sh
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -566,9 +564,7 @@ exports[`disable-cluster-pages-when-cluster-is-not-relevant > given extension sh
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -1238,9 +1234,7 @@ exports[`disable-cluster-pages-when-cluster-is-not-relevant > given not yet know
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"

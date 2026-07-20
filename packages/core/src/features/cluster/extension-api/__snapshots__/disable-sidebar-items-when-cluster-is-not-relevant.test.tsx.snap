@@ -18,9 +18,7 @@ exports[`disable sidebar items when cluster is not relevant > given extension sh
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -717,9 +715,7 @@ exports[`disable sidebar items when cluster is not relevant > given extension sh
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -1397,9 +1393,7 @@ exports[`disable sidebar items when cluster is not relevant > given not yet know
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -1747,6 +1741,14 @@ exports[`disable sidebar items when cluster is not relevant > given not yet know
                 </a>
               </div>
             </div>
+            <div
+              aria-describedby="DndDescribedBy-0"
+              aria-disabled="false"
+              aria-roledescription="sortable"
+              role="button"
+              style="pointer-events: auto; opacity: 1;"
+              tabindex="0"
+            />
             <div
               aria-describedby="DndDescribedBy-0"
               aria-disabled="false"

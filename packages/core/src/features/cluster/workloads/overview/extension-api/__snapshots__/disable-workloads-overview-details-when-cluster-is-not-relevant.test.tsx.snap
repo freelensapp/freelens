@@ -18,9 +18,7 @@ exports[`disable workloads overview details when cluster is not relevant > given
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -695,9 +693,7 @@ exports[`disable workloads overview details when cluster is not relevant > given
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -1367,9 +1363,7 @@ exports[`disable workloads overview details when cluster is not relevant > given
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"

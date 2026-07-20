@@ -18,9 +18,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -882,9 +880,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -1888,9 +1884,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"

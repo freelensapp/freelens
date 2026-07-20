@@ -18,9 +18,7 @@ exports[`cluster/namespaces - edit namespaces from previously opened tab > given
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -726,9 +724,7 @@ exports[`cluster/namespaces - edit namespaces from previously opened tab > given
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"

@@ -7,7 +7,7 @@ exports[`showing details for helm release > given application is started > when 
       class="Notifications"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -18,9 +18,7 @@ exports[`showing details for helm release > given application is started > when 
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -963,9 +961,7 @@ exports[`showing details for helm release > given application is started > when 
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -2181,9 +2177,7 @@ exports[`showing details for helm release > given application is started > when 
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -3460,9 +3454,7 @@ exports[`showing details for helm release > given application is started > when 
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -4739,9 +4731,7 @@ exports[`showing details for helm release > given application is started > when 
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -6264,9 +6254,7 @@ exports[`showing details for helm release > given application is started > when 
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -7789,9 +7777,7 @@ exports[`showing details for helm release > given application is started > when 
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -9314,9 +9300,7 @@ exports[`showing details for helm release > given application is started > when 
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -10566,9 +10550,7 @@ exports[`showing details for helm release > given application is started > when 
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -11820,9 +11802,7 @@ exports[`showing details for helm release > given application is started > when 
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -13345,9 +13325,7 @@ exports[`showing details for helm release > given application is started > when 
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -14624,9 +14602,7 @@ exports[`showing details for helm release > given application is started > when 
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -15905,9 +15881,7 @@ exports[`showing details for helm release > given application is started > when 
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -17123,9 +17097,7 @@ exports[`showing details for helm release > given application is started > when 
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -18402,9 +18374,7 @@ exports[`showing details for helm release > given application is started > when 
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -19681,9 +19651,7 @@ exports[`showing details for helm release > given application is started > when 
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -20960,9 +20928,7 @@ exports[`showing details for helm release > given application is started > when 
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -22239,9 +22205,7 @@ exports[`showing details for helm release > given application is started > when 
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"

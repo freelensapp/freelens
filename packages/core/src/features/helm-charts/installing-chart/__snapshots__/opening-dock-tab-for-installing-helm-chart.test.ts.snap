@@ -18,9 +18,7 @@ exports[`opening dock tab for installing helm chart > given application is start
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -708,9 +706,7 @@ exports[`opening dock tab for installing helm chart > given application is start
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -1566,9 +1562,7 @@ exports[`opening dock tab for installing helm chart > given application is start
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -2481,9 +2475,7 @@ exports[`opening dock tab for installing helm chart > given application is start
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -3546,9 +3538,7 @@ exports[`opening dock tab for installing helm chart > given application is start
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -4621,9 +4611,7 @@ exports[`opening dock tab for installing helm chart > given application is start
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -5064,7 +5052,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                   style="display: flex; align-items: center; gap: 8px;"
                 >
                   <div
-                    class="Input SearchInput"
+                    class="Input SearchInput focused"
                   >
                     <label
                       class="input-area flex items-center gap-2"
@@ -5686,9 +5674,7 @@ exports[`opening dock tab for installing helm chart > given application is start
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -6129,7 +6115,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                   style="display: flex; align-items: center; gap: 8px;"
                 >
                   <div
-                    class="Input SearchInput"
+                    class="Input SearchInput focused"
                   >
                     <label
                       class="input-area flex items-center gap-2"
@@ -6755,9 +6741,7 @@ exports[`opening dock tab for installing helm chart > given application is start
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
@@ -7198,7 +7182,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                   style="display: flex; align-items: center; gap: 8px;"
                 >
                   <div
-                    class="Input SearchInput"
+                    class="Input SearchInput focused"
                   >
                     <label
                       class="input-area flex items-center gap-2"
@@ -7830,9 +7814,7 @@ exports[`opening dock tab for installing helm chart > given application is start
         >
           <div
             class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
+          />
           <i
             class="Icon material interactive focusable"
             tabindex="0"
