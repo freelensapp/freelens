@@ -75,7 +75,7 @@ class NonInjectedAddRoleDialog extends React.Component<AddRoleDialogProps & Depe
             <SubTitle title="Namespace" />
             <NamespaceSelect
               id="add-dialog-namespace-select-input"
-              themeName="light"
+              themeName="lens"
               value={state.namespace.get()}
               onChange={(option) => state.namespace.set(option?.value ?? "default")}
             />

@@ -182,7 +182,7 @@ class NonInjectedAddQuotaDialog extends React.Component<AddQuotaDialogProps & De
               id="namespace-input"
               value={this.namespace}
               placeholder="Namespace"
-              themeName="light"
+              themeName="lens"
               className="grow shrink-0 basis-0"
               onChange={(option) => (this.namespace = option?.value ?? null)}
             />
@@ -192,7 +192,7 @@ class NonInjectedAddQuotaDialog extends React.Component<AddQuotaDialogProps & De
               <Select
                 id="quota-input"
                 className="quota-select"
-                themeName="light"
+                themeName="lens"
                 placeholder="Select a quota.."
                 options={Object.keys(this.quotas).map((quota) => ({
                   value: quota,

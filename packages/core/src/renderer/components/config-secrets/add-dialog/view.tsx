@@ -217,7 +217,7 @@ class NonInjectedAddSecretDialog extends React.Component<AddSecretDialogProps & 
                 <SubTitle title="Namespace" />
                 <NamespaceSelect
                   id="secret-namespace-input"
-                  themeName="light"
+                  themeName="lens"
                   value={namespace}
                   onChange={(option) => (this.namespace = option?.value ?? "default")}
                 />
@@ -226,7 +226,7 @@ class NonInjectedAddSecretDialog extends React.Component<AddSecretDialogProps & 
                 <SubTitle title="Secret type" />
                 <Select
                   id="secret-input"
-                  themeName="light"
+                  themeName="lens"
                   options={Object.keys(this.secretTemplate) as SecretType[]}
                   value={type}
                   onChange={(option) => (this.type = option?.value ?? SecretType.Opaque)}
