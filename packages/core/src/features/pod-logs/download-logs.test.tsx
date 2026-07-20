@@ -177,7 +177,11 @@ describe("download logs options in logs dock tab", () => {
           });
 
           it("shows save dialog with proper attributes", () => {
-            expect(openSaveFileDialogMock).toHaveBeenCalledWith("dockerExporter.log", "some-logs", "text/plain");
+            expect(openSaveFileDialogMock).toHaveBeenCalledWith(
+              expect.stringMatching(/^dockerExporter-\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}-\d{3}Z\.log$/),
+              "some-logs",
+              "text/plain",
+            );
           });
         });
 
@@ -203,7 +207,11 @@ describe("download logs options in logs dock tab", () => {
             });
 
             it("shows save dialog with proper attributes", () => {
-              expect(openSaveFileDialogMock).toHaveBeenCalledWith("docker-exporter.log", "all-logs", "text/plain");
+              expect(openSaveFileDialogMock).toHaveBeenCalledWith(
+                expect.stringMatching(/^docker-exporter-\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}-\d{3}Z\.log$/),
+                "all-logs",
+                "text/plain",
+              );
             });
 
             it("doesn't block download dropdown for interaction after click", () => {
