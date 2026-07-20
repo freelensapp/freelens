@@ -20,9 +20,12 @@ describe("HelmChartIcon", () => {
     expect(imageContainer.style.backgroundImage).toContain("data:image/svg+xml");
   });
 
+  // The <img> is decorative (alt=""), so its ARIA role is "presentation", not
+  // "img" (testing-library 15 / dom-accessibility-api computes this correctly).
+  // Query the element by tag within the container instead of by role.
   it("renders img tag when image url is valid", () => {
     render(<HelmChartIcon imageUrl={mainImageSrc} />);
-    const mainImage = screen.getByRole<HTMLImageElement>("img");
+    const mainImage = screen.getByTestId("image-container").querySelector("img");
 
     expect(mainImage).toBeInTheDocument();
   });
@@ -31,9 +34,9 @@ describe("HelmChartIcon", () => {
     render(<HelmChartIcon imageUrl={mainImageSrc} />);
 
     const imageContainer = screen.getByTestId("image-container");
-    const mainImage = screen.getByRole<HTMLImageElement>("img");
+    const mainImage = imageContainer.querySelector("img");
 
-    mainImage.dispatchEvent(new Event("load"));
+    mainImage?.dispatchEvent(new Event("load"));
     expect(imageContainer.style.backgroundImage).toBe('url("https://example.com/main-picture.jpg")');
   });
 
@@ -41,16 +44,16 @@ describe("HelmChartIcon", () => {
     render(<HelmChartIcon imageUrl={mainPngImageSrc} />);
 
     const imageContainer = screen.getByTestId("image-container");
-    const mainImage = screen.getByRole<HTMLImageElement>("img");
+    const mainImage = imageContainer.querySelector("img");
 
-    mainImage.dispatchEvent(new Event("load"));
+    mainImage?.dispatchEvent(new Event("load"));
     expect(imageContainer.style.backgroundImage).toBe('url("https://example.com/main-picture.png")');
   });
 
   it("does not render invalid image url", () => {
     render(<HelmChartIcon imageUrl={invalidImageSrc} />);
 
-    const mainImage = screen.queryByRole<HTMLImageElement>("img");
+    const mainImage = screen.getByTestId("image-container").querySelector("img");
 
     expect(mainImage).not.toBeInTheDocument();
   });
@@ -58,7 +61,7 @@ describe("HelmChartIcon", () => {
   it("does not render svg image", () => {
     render(<HelmChartIcon imageUrl={svgImageSrc} />);
 
-    const mainImage = screen.queryByRole<HTMLImageElement>("img");
+    const mainImage = screen.getByTestId("image-container").querySelector("img");
 
     expect(mainImage).not.toBeInTheDocument();
   });
