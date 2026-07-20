@@ -86,6 +86,16 @@ lint:
     - renovate
     - svgo
     - trufflehog
+  ignore:
+    # Vitest/testing-library snapshots are generated artifacts whose DOM
+    # serializer emits whitespace-only lines (e.g. indented empty elements and
+    # inline SVG <style> blocks). git-diff-check only flags such lines when they
+    # are newly added, so snapshot regeneration trips it inconsistently. Exclude
+    # generated snapshots from git-diff-check.
+    - linters:
+        - git-diff-check
+      paths:
+        - "**/__snapshots__/**"
 actions:
   enabled:
     - trunk-announce
