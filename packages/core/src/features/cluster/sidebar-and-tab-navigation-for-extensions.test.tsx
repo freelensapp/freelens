@@ -6,7 +6,7 @@
 
 import assert from "node:assert";
 import { flushPromises } from "@freelensapp/test-utils";
-import { fireEvent } from "@testing-library/react";
+import { act, fireEvent } from "@testing-library/react";
 import { computed, observable, runInAction } from "mobx";
 import directoryForLensLocalStorageInjectable from "../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
 import { navigateToRouteInjectionToken } from "../../common/front-end-routing/navigate-to-route-injection-token";
@@ -280,8 +280,10 @@ describe("cluster - sidebar and tab navigation for extensions", () => {
       });
 
       it("when sidebar item becomes visible, shows the sidebar item", () => {
-        runInAction(() => {
-          someObservable.set(true);
+        act(() => {
+          runInAction(() => {
+            someObservable.set(true);
+          });
         });
 
         const child = rendered.queryByTestId("sidebar-item-some-extension-name-some-menu-with-controlled-visibility");
