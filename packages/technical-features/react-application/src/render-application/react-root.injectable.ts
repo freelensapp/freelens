@@ -1,8 +1,8 @@
 import { getInjectable, getInjectionToken } from "@ogre-tools/injectable";
 import { createRoot } from "react-dom/client";
 
-import type { Root } from "react-dom/client";
 import type React from "react";
+import type { Root } from "react-dom/client";
 
 export type ReactRoot = {
   render: (container: Element, application: React.ReactElement) => void;

@@ -41,9 +41,7 @@ class NonInjectedTerminalTab<Props extends TerminalTabProps & Dependencies> exte
     // this.props, so track the underlying observable through captured props instead.
     const { value, terminalStore } = this.props;
 
-    disposeOnUnmount(this, [
-      reaction(() => (value?.id ? terminalStore.isDisconnected(value.id) : false), this.close),
-    ]);
+    disposeOnUnmount(this, [reaction(() => (value?.id ? terminalStore.isDisconnected(value.id) : false), this.close)]);
   }
 
   private close() {
