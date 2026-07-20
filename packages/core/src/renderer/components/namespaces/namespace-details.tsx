@@ -11,7 +11,6 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { Spinner } from "@freelensapp/spinner";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { computed, makeObservable } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -47,20 +46,22 @@ interface Dependencies {
 class NonInjectedNamespaceDetails extends React.Component<NamespaceDetailsProps & Dependencies> {
   constructor(props: NamespaceDetailsProps & Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   componentDidMount() {
     disposeOnUnmount(this, [this.props.subscribeStores([this.props.resourceQuotaStore, this.props.limitRangeStore])]);
   }
 
-  @computed get quotas() {
+  // Plain getters (not @computed): they read this.props, which mobx-react 9
+  // forbids inside a derivation. Read from render, reactivity is preserved by
+  // the observer render reaction.
+  get quotas() {
     const namespace = this.props.object.getName();
 
     return this.props.resourceQuotaStore.getAllByNs(namespace);
   }
 
-  @computed get limitranges() {
+  get limitranges() {
     const namespace = this.props.object.getName();
 
     return this.props.limitRangeStore.getAllByNs(namespace);

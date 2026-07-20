@@ -12,7 +12,7 @@ import { TooltipPosition } from "@freelensapp/tooltip";
 import { cssNames, hasTypedProperty, isDefined, isObject, isString } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { sortBy } from "es-toolkit/compat";
-import { computed, observable, reaction } from "mobx";
+import { observable, reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import clusterFrameContextForNamespacedResourcesInjectable from "../../cluster-frame-context/for-namespaced-resources.injectable";
@@ -102,16 +102,21 @@ class NonInjectedKubeObjectListLayout<
   private readonly loadErrors = observable.array<string>();
   private readonly menuControls = new Map<string, MenuControls>();
 
-  @computed get selectedItem() {
+  // Plain getter (not @computed): reads this.props, which mobx-react 9 forbids
+  // inside a derivation. Read from render, reactivity is preserved by the
+  // observer render reaction.
+  get selectedItem() {
     return this.props.store.getByPath(this.props.kubeSelectedUrlParam.get());
   }
 
   componentDidMount() {
-    const { store, dependentStores = [], subscribeStores } = this.props;
+    const { store, dependentStores = [], subscribeStores, clusterFrameContext } = this.props;
     const stores = Array.from(new Set([store, ...dependentStores]));
     const reactions: Disposer[] = [
       reaction(
-        () => this.props.clusterFrameContext.contextNamespaces.slice(),
+        // Read from the captured context, not this.props: mobx-react 9 forbids
+        // reading this.props inside a derivation (this reaction's data function).
+        () => clusterFrameContext.contextNamespaces.slice(),
         () => {
           // clear load errors
           this.loadErrors.length = 0;
@@ -179,7 +184,6 @@ class NonInjectedKubeObjectListLayout<
     const resourceName = this.props.resourceName || ResourceNames[ResourceKindMap[store.api.kind]] || store.api.kind;
     const targetColumns = [...(columns ?? []), ...generalColumns.filter(matchesApiFor(store.api))];
 
-    void items;
     void dependentStores;
 
     targetColumns.forEach((col) => {
@@ -232,7 +236,9 @@ class NonInjectedKubeObjectListLayout<
       <ItemListLayout<K, false>
         className={cssNames("KubeObjectListLayout", className)}
         store={store}
-        getItems={() => this.props.items || store.contextItems}
+        // Read captured locals, not this.props: ItemListLayout invokes getItems
+        // from within its own derivation, where mobx-react 9 forbids this.props.
+        getItems={() => items || store.contextItems}
         preloadStores={false} // loading handled in kubeWatchApi.subscribeStores()
         detailsItem={this.selectedItem}
         customizeHeader={[

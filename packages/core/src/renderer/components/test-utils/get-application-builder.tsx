@@ -19,8 +19,7 @@ import { discoverFor } from "@freelensapp/react-testing-library-discovery";
 import { historyInjectionToken } from "@freelensapp/routing";
 import { renderFor } from "@freelensapp/test-utils";
 import { getInjectable } from "@ogre-tools/injectable";
-import { fireEvent, queryByText } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { act, fireEvent, queryByText } from "@testing-library/react";
 import { action, computed, observable, runInAction } from "mobx";
 import React from "react";
 import { Router } from "react-router";
@@ -62,7 +61,6 @@ import { getExtensionFakeForMain, getExtensionFakeForRenderer } from "./get-exte
 
 import type { DiContainer, Injectable } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
-import type { UserEvent } from "@testing-library/user-event";
 import type { IComputedValue, ObservableMap } from "mobx";
 
 import type { Route } from "../../../common/front-end-routing/front-end-route-injection-token";
@@ -154,7 +152,7 @@ export interface ApplicationBuilder {
   };
 
   applicationMenu: {
-    click: (...path: string[]) => void;
+    click: (...path: string[]) => Promise<void>;
     items: string[][];
   };
   preferences: {
@@ -186,7 +184,7 @@ interface Environment {
   onAllowKubeResource: () => void;
 }
 
-export const getApplicationBuilder = (user: UserEvent = userEvent.setup()) => {
+export const getApplicationBuilder = () => {
   const mainDi = getMainDi();
 
   runInAction(() => {
@@ -389,22 +387,37 @@ export const getApplicationBuilder = (user: UserEvent = userEvent.setup()) => {
       },
     },
     namespaces: {
-      add: action((namespace) => {
-        namespaceItems.push(createNamespace(namespace));
-      }),
-      addSubNamespace: action((namespace, parent) => {
-        const parentNamespace = namespaceItems.find((n) => n.getName() === parent);
+      // These mutate observable state that rendered components react to. When
+      // called after render() (e.g. namespaces.select), React 18 batches and
+      // defers the re-render unless flushed, so wrap in act() (a no-op flush
+      // before any window has rendered).
+      add: (namespace) =>
+        act(() => {
+          runInAction(() => {
+            namespaceItems.push(createNamespace(namespace));
+          });
+        }),
+      addSubNamespace: (namespace, parent) =>
+        act(() => {
+          runInAction(() => {
+            const parentNamespace = namespaceItems.find((n) => n.getName() === parent);
 
-        assert(parentNamespace, `Cannot find namespace with name="${parent}"`);
+            assert(parentNamespace, `Cannot find namespace with name="${parent}"`);
 
-        namespaceItems.push(createSubNamespace(namespace, parentNamespace));
-      }),
-      select: action((namespace) => {
-        const selectedNamespacesStorage = builder.applicationWindow.only.di.inject(selectedNamespacesStorageInjectable);
+            namespaceItems.push(createSubNamespace(namespace, parentNamespace));
+          });
+        }),
+      select: (namespace) =>
+        act(() => {
+          runInAction(() => {
+            const selectedNamespacesStorage = builder.applicationWindow.only.di.inject(
+              selectedNamespacesStorageInjectable,
+            );
 
-        selectedNamespaces.add(namespace);
-        selectedNamespacesStorage.set([...selectedNamespaces]);
-      }),
+            selectedNamespaces.add(namespace);
+            selectedNamespacesStorage.set([...selectedNamespaces]);
+          });
+        }),
     },
     applicationMenu: {
       get items() {
@@ -413,14 +426,20 @@ export const getApplicationBuilder = (user: UserEvent = userEvent.setup()) => {
         return getCompositePaths(composite);
       },
 
-      click: (...path: string[]) => {
+      click: async (...path: string[]) => {
         const composite = mainDi.inject(applicationMenuItemCompositeInjectable).get();
 
         const clickableMenuItem = findComposite(...path)(composite).value;
 
         if (clickableMenuItem.kind === "clickable-menu-item") {
           // Todo: prevent leaking of Electron
-          (clickableMenuItem.onClick as any)();
+          // The click handler navigates through the async main-process route,
+          // which delivers to the window over IPC on a microtask. Await it inside
+          // an async act() so React 18 flushes the resulting renderer update
+          // instead of deferring it past the assertion.
+          await act(async () => {
+            await (clickableMenuItem.onClick as any)();
+          });
         } else {
           throw new Error(
             `Tried to trigger clicking of an application menu item, but item at path '${path.join(" -> ")}' isn't clickable.`,
@@ -464,7 +483,11 @@ export const getApplicationBuilder = (user: UserEvent = userEvent.setup()) => {
           throw new Error(`Tried to click tray menu item with ID ${id} which is disabled.`);
         }
 
-        await menuItem.click?.();
+        // The click handler typically navigates; wrap it in act() so React 18
+        // flushes the resulting update instead of deferring it.
+        await act(async () => {
+          await menuItem.click?.();
+        });
       },
     },
 
@@ -482,7 +505,9 @@ export const getApplicationBuilder = (user: UserEvent = userEvent.setup()) => {
 
         const navigateToPreferences = windowDi.inject(navigateToPreferencesInjectable);
 
-        navigateToPreferences();
+        act(() => {
+          navigateToPreferences();
+        });
       },
 
       navigateTo: (route: Route<any>, params: Partial<NavigateToRouteOptions<any>>) => {
@@ -490,7 +515,9 @@ export const getApplicationBuilder = (user: UserEvent = userEvent.setup()) => {
 
         const navigateToRoute = windowDi.inject(navigateToRouteInjectionToken);
 
-        navigateToRoute(route, params);
+        act(() => {
+          navigateToRoute(route, params);
+        });
       },
 
       navigation: {
@@ -512,7 +539,9 @@ export const getApplicationBuilder = (user: UserEvent = userEvent.setup()) => {
 
         const navigateToHelmCharts = windowDi.inject(navigateToHelmChartsInjectable);
 
-        navigateToHelmCharts(parameters);
+        act(() => {
+          navigateToHelmCharts(parameters);
+        });
       },
     },
 
@@ -520,7 +549,9 @@ export const getApplicationBuilder = (user: UserEvent = userEvent.setup()) => {
       const windowDi = builder.applicationWindow.only.di;
       const navigate = windowDi.inject(token);
 
-      navigate();
+      act(() => {
+        navigate();
+      });
     },
 
     setEnvironmentToClusterFrame: () => {
@@ -629,28 +660,38 @@ export const getApplicationBuilder = (user: UserEvent = userEvent.setup()) => {
       },
 
       enable: (...extensions) => {
-        builder.afterWindowStart(
-          action(({ windowDi }) => {
-            extensions
-              .map(getExtensionFakeForRenderer)
-              .forEach(enableExtensionFor(windowDi, rendererExtensionsStateInjectable));
-          }),
-        );
+        // When the window is already rendered, afterWindowStart/afterApplicationStart
+        // run the callback immediately, mutating the observable extension state. Under
+        // React 18 that reactive re-render is batched and deferred unless flushed, so
+        // wrap it in act() (a no-op flush when the app has not started yet).
+        act(() => {
+          builder.afterWindowStart(
+            action(({ windowDi }) => {
+              extensions
+                .map(getExtensionFakeForRenderer)
+                .forEach(enableExtensionFor(windowDi, rendererExtensionsStateInjectable));
+            }),
+          );
 
-        builder.afterApplicationStart(
-          action(({ mainDi }) => {
-            extensions.map(getExtensionFakeForMain).forEach(enableExtensionFor(mainDi, mainExtensionsStateInjectable));
-          }),
-        );
+          builder.afterApplicationStart(
+            action(({ mainDi }) => {
+              extensions
+                .map(getExtensionFakeForMain)
+                .forEach(enableExtensionFor(mainDi, mainExtensionsStateInjectable));
+            }),
+          );
+        });
       },
 
       disable: (...extensions) => {
-        builder.afterWindowStart(({ windowDi }) => {
-          extensions.forEach(disableExtensionFor(windowDi, rendererExtensionsStateInjectable));
-        });
+        act(() => {
+          builder.afterWindowStart(({ windowDi }) => {
+            extensions.forEach(disableExtensionFor(windowDi, rendererExtensionsStateInjectable));
+          });
 
-        builder.afterApplicationStart(({ mainDi }) => {
-          extensions.forEach(disableExtensionFor(mainDi, mainExtensionsStateInjectable));
+          builder.afterApplicationStart(({ mainDi }) => {
+            extensions.forEach(disableExtensionFor(mainDi, mainExtensionsStateInjectable));
+          });
         });
       },
     },
@@ -735,14 +776,19 @@ export const getApplicationBuilder = (user: UserEvent = userEvent.setup()) => {
 
         assert(select, `Could not find select with ID "${menuId}"`);
 
-        openMenu(select);
+        // react-select-event's openMenu fires events without wrapping them in
+        // act, so React 18 warns and defers the resulting update. Wrap it so the
+        // menu is committed before the test queries or clicks an option.
+        act(() => {
+          openMenu(select);
+        });
 
         return {
-          selectOption: selectOptionFor(builder, user, menuId),
+          selectOption: selectOptionFor(builder, menuId),
         };
       },
 
-      selectOption: async (menuId, labelText) => await selectOptionFor(builder, user, menuId)(labelText),
+      selectOption: async (menuId, labelText) => await selectOptionFor(builder, menuId)(labelText),
 
       getValue: (menuId) => {
         const rendered = builder.applicationWindow.only.rendered;
@@ -829,7 +875,7 @@ const environments = {
   } as Environment,
 };
 
-const selectOptionFor = (builder: ApplicationBuilder, user: UserEvent, menuId: string) => async (labelText: string) => {
+const selectOptionFor = (builder: ApplicationBuilder, menuId: string) => async (labelText: string) => {
   const rendered = builder.applicationWindow.only.rendered;
 
   const menuOptions = rendered.baseElement.querySelector<HTMLElement>(`.${menuId}-options`);
@@ -840,7 +886,14 @@ const selectOptionFor = (builder: ApplicationBuilder, user: UserEvent, menuId: s
 
   assert(option, `Could not find select option with label "${labelText}" for menu with ID "${menuId}"`);
 
-  await user.click(option);
+  // userEvent.click drives a multi-step pointer sequence whose internal async
+  // waits never settle under React 18's async act with fully-faked timers, so
+  // it hangs on react-select options. react-select-event selects the same way:
+  // a single act-wrapped fireEvent.click, which commits the change and flushes
+  // the effects (e.g. the follow-up request) before the test resolves them.
+  act(() => {
+    fireEvent.click(option);
+  });
 };
 
 function enableExtensionFor(di: DiContainer, stateInjectable: Injectable<ObservableMap<string, any>, any, any>) {

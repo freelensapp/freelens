@@ -64,14 +64,17 @@ class NonInjectedClusterRoleBindingDialog extends React.Component<ClusterRoleBin
     makeObservable(this);
   }
 
-  @computed get clusterRoleOptions() {
+  // Plain getters (not @computed): they read this.props, which mobx-react 9
+  // forbids inside a derivation. Read from render, reactivity is preserved by
+  // the observer render reaction.
+  get clusterRoleOptions() {
     return this.props.clusterRoleStore.items.map((clusterRole) => ({
       value: clusterRole,
       label: clusterRole.getName(),
     }));
   }
 
-  @computed get serviceAccountOptions() {
+  get serviceAccountOptions() {
     return this.props.serviceAccountStore.items.map((serviceAccount) => ({
       value: serviceAccount,
       label: `${serviceAccount.getName()} (${serviceAccount.getNs()})`,

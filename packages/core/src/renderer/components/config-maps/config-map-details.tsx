@@ -44,10 +44,12 @@ class NonInjectedConfigMapDetails extends React.Component<ConfigMapDetailsProps 
   }
 
   componentDidMount() {
+    // Capture the object before the autorun: mobx-react 9 forbids reading
+    // this.props inside a derivation (the autorun below).
+    const { object: configMap } = this.props;
+
     disposeOnUnmount(this, [
       autorun(() => {
-        const { object: configMap } = this.props;
-
         if (configMap) {
           this.data.replace(configMap.data); // refresh
         }

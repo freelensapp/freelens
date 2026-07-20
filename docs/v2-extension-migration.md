@@ -73,6 +73,26 @@ runtime.
   binary into every extension install). Add it as a `devDependency` for its
   types.
 
+## React version (host-provided, must match majors)
+
+Freelens v2 ships **React 18.3**. React is **host-provided**: the running app
+injects a single React instance and re-exports it to extensions through the
+extension API (`Renderer.React` / `Renderer.ReactDOM`). Extensions must render
+through that shared instance.
+
+- **Do not bundle your own React.** Two copies of React in the same renderer
+  break the [Rules of Hooks](https://react.dev/warnings/invalid-hook-call-warning):
+  any hook (including those inside host components you render) throws an
+  "invalid hook call" at runtime. This fails only at runtime, not at build
+  time, so it is easy to miss.
+- Declare `react` / `react-dom` (and `@types/react*`) as **peer dependencies**
+  matching the host major — `^18` for this release — and keep them out of your
+  bundle (mark them external). The `@freelensapp/extensions` types already pin
+  the React 18 major, so authoring against them keeps type-checking honest.
+- When Freelens later bumps to React 19 (a future phase), extensions relying on
+  host-provided React move with it automatically; extensions that bundled their
+  own React would need a matching bump to avoid the mismatch above.
+
 ## `tsconfig.json` for an extension
 
 The bundled `extension-api.d.ts` sets two floors for consumer compilers:

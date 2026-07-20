@@ -15,6 +15,6 @@ export const renderFor: DiRenderFor = (di) => (ui) => {
   return {
     ...result,
 
-    rerender: (ui: React.ReactElement) => result.rerender(<DiContextProvider value={{ di }}>{ui}</DiContextProvider>),
+    rerender: (ui: React.ReactNode) => result.rerender(<DiContextProvider value={{ di }}>{ui}</DiContextProvider>),
   };
 };

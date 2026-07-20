@@ -7,7 +7,7 @@ exports[`reactively hide kube object detail item > renders 1`] = `
       class="Notifications"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div
@@ -753,7 +753,7 @@ exports[`reactively hide kube object detail item > when the item is shown > rend
       class="Notifications"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
+      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter"
       style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
     >
       <div

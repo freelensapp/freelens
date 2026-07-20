@@ -7,44 +7,6 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
       class="Notifications"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
-      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
-    >
-      <div
-        class="drawer-wrapper flex flex-col"
-      >
-        <div
-          class="drawer-title flex items-center"
-        >
-          <div
-            class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
-          <i
-            class="Icon material interactive focusable"
-            tabindex="0"
-          >
-            <span
-              class="icon"
-              data-icon-name="close"
-            >
-              close
-            </span>
-          </i>
-          <div>
-            Close
-          </div>
-        </div>
-        <div
-          class="drawer-content flex flex-col grow shrink-0 basis-0"
-        />
-      </div>
-      <div
-        class="ResizingAnchor horizontal leading"
-      />
-    </div>
-    <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
     >
@@ -828,44 +790,6 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
     <div
       class="Notifications"
     />
-    <div
-      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
-      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
-    >
-      <div
-        class="drawer-wrapper flex flex-col"
-      >
-        <div
-          class="drawer-title flex items-center"
-        >
-          <div
-            class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
-          <i
-            class="Icon material interactive focusable"
-            tabindex="0"
-          >
-            <span
-              class="icon"
-              data-icon-name="close"
-            >
-              close
-            </span>
-          </i>
-          <div>
-            Close
-          </div>
-        </div>
-        <div
-          class="drawer-content flex flex-col grow shrink-0 basis-0"
-        />
-      </div>
-      <div
-        class="ResizingAnchor horizontal leading"
-      />
-    </div>
     <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
@@ -1655,44 +1579,6 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
     <div
       class="Notifications"
     />
-    <div
-      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
-      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
-    >
-      <div
-        class="drawer-wrapper flex flex-col"
-      >
-        <div
-          class="drawer-title flex items-center"
-        >
-          <div
-            class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
-          <i
-            class="Icon material interactive focusable"
-            tabindex="0"
-          >
-            <span
-              class="icon"
-              data-icon-name="close"
-            >
-              close
-            </span>
-          </i>
-          <div>
-            Close
-          </div>
-        </div>
-        <div
-          class="drawer-content flex flex-col grow shrink-0 basis-0"
-        />
-      </div>
-      <div
-        class="ResizingAnchor horizontal leading"
-      />
-    </div>
     <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
@@ -2582,44 +2468,6 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
       class="Notifications"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
-      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
-    >
-      <div
-        class="drawer-wrapper flex flex-col"
-      >
-        <div
-          class="drawer-title flex items-center"
-        >
-          <div
-            class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
-          <i
-            class="Icon material interactive focusable"
-            tabindex="0"
-          >
-            <span
-              class="icon"
-              data-icon-name="close"
-            >
-              close
-            </span>
-          </i>
-          <div>
-            Close
-          </div>
-        </div>
-        <div
-          class="drawer-content flex flex-col grow shrink-0 basis-0"
-        />
-      </div>
-      <div
-        class="ResizingAnchor horizontal leading"
-      />
-    </div>
-    <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
     >
@@ -3455,44 +3303,6 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
     <div
       class="Notifications"
     />
-    <div
-      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
-      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
-    >
-      <div
-        class="drawer-wrapper flex flex-col"
-      >
-        <div
-          class="drawer-title flex items-center"
-        >
-          <div
-            class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
-          <i
-            class="Icon material interactive focusable"
-            tabindex="0"
-          >
-            <span
-              class="icon"
-              data-icon-name="close"
-            >
-              close
-            </span>
-          </i>
-          <div>
-            Close
-          </div>
-        </div>
-        <div
-          class="drawer-content flex flex-col grow shrink-0 basis-0"
-        />
-      </div>
-      <div
-        class="ResizingAnchor horizontal leading"
-      />
-    </div>
     <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
@@ -4431,44 +4241,6 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
     <div
       class="Notifications"
     />
-    <div
-      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
-      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
-    >
-      <div
-        class="drawer-wrapper flex flex-col"
-      >
-        <div
-          class="drawer-title flex items-center"
-        >
-          <div
-            class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
-          <i
-            class="Icon material interactive focusable"
-            tabindex="0"
-          >
-            <span
-              class="icon"
-              data-icon-name="close"
-            >
-              close
-            </span>
-          </i>
-          <div>
-            Close
-          </div>
-        </div>
-        <div
-          class="drawer-content flex flex-col grow shrink-0 basis-0"
-        />
-      </div>
-      <div
-        class="ResizingAnchor horizontal leading"
-      />
-    </div>
     <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
@@ -5410,44 +5182,6 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
       class="Notifications"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
-      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
-    >
-      <div
-        class="drawer-wrapper flex flex-col"
-      >
-        <div
-          class="drawer-title flex items-center"
-        >
-          <div
-            class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
-          <i
-            class="Icon material interactive focusable"
-            tabindex="0"
-          >
-            <span
-              class="icon"
-              data-icon-name="close"
-            >
-              close
-            </span>
-          </i>
-          <div>
-            Close
-          </div>
-        </div>
-        <div
-          class="drawer-content flex flex-col grow shrink-0 basis-0"
-        />
-      </div>
-      <div
-        class="ResizingAnchor horizontal leading"
-      />
-    </div>
-    <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
     >
@@ -6350,44 +6084,6 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
       class="Notifications"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
-      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
-    >
-      <div
-        class="drawer-wrapper flex flex-col"
-      >
-        <div
-          class="drawer-title flex items-center"
-        >
-          <div
-            class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
-          <i
-            class="Icon material interactive focusable"
-            tabindex="0"
-          >
-            <span
-              class="icon"
-              data-icon-name="close"
-            >
-              close
-            </span>
-          </i>
-          <div>
-            Close
-          </div>
-        </div>
-        <div
-          class="drawer-content flex flex-col grow shrink-0 basis-0"
-        />
-      </div>
-      <div
-        class="ResizingAnchor horizontal leading"
-      />
-    </div>
-    <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
     >
@@ -7285,44 +6981,6 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
       class="Notifications"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
-      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
-    >
-      <div
-        class="drawer-wrapper flex flex-col"
-      >
-        <div
-          class="drawer-title flex items-center"
-        >
-          <div
-            class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
-          <i
-            class="Icon material interactive focusable"
-            tabindex="0"
-          >
-            <span
-              class="icon"
-              data-icon-name="close"
-            >
-              close
-            </span>
-          </i>
-          <div>
-            Close
-          </div>
-        </div>
-        <div
-          class="drawer-content flex flex-col grow shrink-0 basis-0"
-        />
-      </div>
-      <div
-        class="ResizingAnchor horizontal leading"
-      />
-    </div>
-    <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
     >
@@ -8210,44 +7868,6 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
     <div
       class="Notifications"
     />
-    <div
-      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
-      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
-    >
-      <div
-        class="drawer-wrapper flex flex-col"
-      >
-        <div
-          class="drawer-title flex items-center"
-        >
-          <div
-            class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
-          <i
-            class="Icon material interactive focusable"
-            tabindex="0"
-          >
-            <span
-              class="icon"
-              data-icon-name="close"
-            >
-              close
-            </span>
-          </i>
-          <div>
-            Close
-          </div>
-        </div>
-        <div
-          class="drawer-content flex flex-col grow shrink-0 basis-0"
-        />
-      </div>
-      <div
-        class="ResizingAnchor horizontal leading"
-      />
-    </div>
     <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
@@ -9137,44 +8757,6 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
       class="Notifications"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
-      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
-    >
-      <div
-        class="drawer-wrapper flex flex-col"
-      >
-        <div
-          class="drawer-title flex items-center"
-        >
-          <div
-            class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
-          <i
-            class="Icon material interactive focusable"
-            tabindex="0"
-          >
-            <span
-              class="icon"
-              data-icon-name="close"
-            >
-              close
-            </span>
-          </i>
-          <div>
-            Close
-          </div>
-        </div>
-        <div
-          class="drawer-content flex flex-col grow shrink-0 basis-0"
-        />
-      </div>
-      <div
-        class="ResizingAnchor horizontal leading"
-      />
-    </div>
-    <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
     >
@@ -10063,44 +9645,6 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
       class="Notifications"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
-      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
-    >
-      <div
-        class="drawer-wrapper flex flex-col"
-      >
-        <div
-          class="drawer-title flex items-center"
-        >
-          <div
-            class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
-          <i
-            class="Icon material interactive focusable"
-            tabindex="0"
-          >
-            <span
-              class="icon"
-              data-icon-name="close"
-            >
-              close
-            </span>
-          </i>
-          <div>
-            Close
-          </div>
-        </div>
-        <div
-          class="drawer-content flex flex-col grow shrink-0 basis-0"
-        />
-      </div>
-      <div
-        class="ResizingAnchor horizontal leading"
-      />
-    </div>
-    <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
     >
@@ -10793,44 +10337,6 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
     <div
       class="Notifications"
     />
-    <div
-      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
-      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
-    >
-      <div
-        class="drawer-wrapper flex flex-col"
-      >
-        <div
-          class="drawer-title flex items-center"
-        >
-          <div
-            class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
-          <i
-            class="Icon material interactive focusable"
-            tabindex="0"
-          >
-            <span
-              class="icon"
-              data-icon-name="close"
-            >
-              close
-            </span>
-          </i>
-          <div>
-            Close
-          </div>
-        </div>
-        <div
-          class="drawer-content flex flex-col grow shrink-0 basis-0"
-        />
-      </div>
-      <div
-        class="ResizingAnchor horizontal leading"
-      />
-    </div>
     <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
@@ -11729,44 +11235,6 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
       class="Notifications"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
-      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
-    >
-      <div
-        class="drawer-wrapper flex flex-col"
-      >
-        <div
-          class="drawer-title flex items-center"
-        >
-          <div
-            class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
-          <i
-            class="Icon material interactive focusable"
-            tabindex="0"
-          >
-            <span
-              class="icon"
-              data-icon-name="close"
-            >
-              close
-            </span>
-          </i>
-          <div>
-            Close
-          </div>
-        </div>
-        <div
-          class="drawer-content flex flex-col grow shrink-0 basis-0"
-        />
-      </div>
-      <div
-        class="ResizingAnchor horizontal leading"
-      />
-    </div>
-    <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
     >
@@ -12655,44 +12123,6 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
       class="Notifications"
     />
     <div
-      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
-      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
-    >
-      <div
-        class="drawer-wrapper flex flex-col"
-      >
-        <div
-          class="drawer-title flex items-center"
-        >
-          <div
-            class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
-          <i
-            class="Icon material interactive focusable"
-            tabindex="0"
-          >
-            <span
-              class="icon"
-              data-icon-name="close"
-            >
-              close
-            </span>
-          </i>
-          <div>
-            Close
-          </div>
-        </div>
-        <div
-          class="drawer-content flex flex-col grow shrink-0 basis-0"
-        />
-      </div>
-      <div
-        class="ResizingAnchor horizontal leading"
-      />
-    </div>
-    <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
     >
@@ -13580,44 +13010,6 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
     <div
       class="Notifications"
     />
-    <div
-      class="Animate slide-right Drawer KubeObjectDetails flex flex-col right enter leave"
-      style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
-    >
-      <div
-        class="drawer-wrapper flex flex-col"
-      >
-        <div
-          class="drawer-title flex items-center"
-        >
-          <div
-            class="drawer-title-text flex gap-2 items-center"
-          >
-            
-          </div>
-          <i
-            class="Icon material interactive focusable"
-            tabindex="0"
-          >
-            <span
-              class="icon"
-              data-icon-name="close"
-            >
-              close
-            </span>
-          </i>
-          <div>
-            Close
-          </div>
-        </div>
-        <div
-          class="drawer-content flex flex-col grow shrink-0 basis-0"
-        />
-      </div>
-      <div
-        class="ResizingAnchor horizontal leading"
-      />
-    </div>
     <div
       class="mainLayout"
       style="--sidebar-width: 200px;"

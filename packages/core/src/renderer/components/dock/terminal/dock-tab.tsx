@@ -36,7 +36,12 @@ class NonInjectedTerminalTab<Props extends TerminalTabProps & Dependencies> exte
   }
 
   componentDidMount() {
-    disposeOnUnmount(this, [reaction(() => this.isDisconnected, this.close)]);
+    // Capture props before the reaction: mobx-react 9 forbids reading this.props
+    // inside a derivation (the reaction's data function). this.isDisconnected reads
+    // this.props, so track the underlying observable through captured props instead.
+    const { value, terminalStore } = this.props;
+
+    disposeOnUnmount(this, [reaction(() => (value?.id ? terminalStore.isDisconnected(value.id) : false), this.close)]);
   }
 
   private close() {

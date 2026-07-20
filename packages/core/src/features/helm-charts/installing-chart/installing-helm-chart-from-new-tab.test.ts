@@ -6,8 +6,7 @@
 
 import asyncFn from "@async-fn/vitest";
 import { flushPromises } from "@freelensapp/test-utils";
-import { fireEvent } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { act, fireEvent } from "@testing-library/react";
 import directoryForLensLocalStorageInjectable from "../../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
 import readJsonFileInjectable from "../../../common/fs/read-json-file.injectable";
 import writeJsonFileInjectable from "../../../common/fs/write-json-file.injectable";
@@ -48,7 +47,7 @@ describe("installing helm chart from new tab", () => {
   let listClusterHelmReleasesMock: AsyncFnMock<ListClusterHelmReleases>;
 
   beforeEach(() => {
-    builder = getApplicationBuilder(userEvent.setup({ delay: null }));
+    builder = getApplicationBuilder();
 
     builder.setEnvironmentToClusterFrame();
 
@@ -107,7 +106,9 @@ describe("installing helm chart from new tab", () => {
       const dockStore = windowDi.inject(dockStoreInjectable);
 
       // TODO: Make TerminalWindow unit testable to allow realistic behaviour
-      dockStore.closeTab("terminal");
+      act(() => {
+        dockStore.closeTab("terminal");
+      });
     });
 
     it("renders", () => {

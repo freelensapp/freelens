@@ -36,9 +36,13 @@ class NonInjectedNotifications extends React.Component<Dependencies> {
   public elem: HTMLDivElement | null = null;
 
   componentDidMount() {
+    // Capture props before the reaction: mobx-react 9 forbids reading this.props
+    // inside a derivation (the reaction's data function below).
+    const { store } = this.props;
+
     disposeOnUnmount(this, [
       reaction(
-        () => this.props.store.notifications.length,
+        () => store.notifications.length,
         () => {
           this.scrollToLastNotification();
         },

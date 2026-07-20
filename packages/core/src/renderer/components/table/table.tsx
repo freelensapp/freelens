@@ -10,7 +10,6 @@ import assert from "node:assert";
 import { cssNames, isDefined } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
-import { computed, makeObservable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { VirtualList } from "../virtual-list";
@@ -139,7 +138,6 @@ class NonInjectedTable<Item extends ItemObject> extends React.Component<TablePro
 
   constructor(props: TableProps<Item> & Dependencies) {
     super(props);
-    makeObservable(this);
     autoBindReact(this);
   }
 
@@ -151,13 +149,16 @@ class NonInjectedTable<Item extends ItemObject> extends React.Component<TablePro
     }
   }
 
-  @computed get isSortable() {
+  // Plain getters (not @computed): they read this.props, which mobx-react 9
+  // forbids inside a derivation. Read from render, reactivity is preserved by
+  // the observer render reaction.
+  get isSortable() {
     const { sortable, tableId } = this.props;
 
     return Boolean(sortable && tableId);
   }
 
-  @computed get sortParams() {
+  get sortParams() {
     const modelParams = this.props.tableId ? this.props.model.getSortParams(this.props.tableId) : {};
 
     return Object.assign({}, this.props.sortByDefault, modelParams);

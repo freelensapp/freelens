@@ -8,7 +8,7 @@ import asyncFn from "@async-fn/vitest";
 import { JsonApiErrorParsed } from "@freelensapp/json-api";
 import { Namespace } from "@freelensapp/kube-object";
 import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
-import { fireEvent } from "@testing-library/react";
+import { act, fireEvent } from "@testing-library/react";
 import directoryForLensLocalStorageInjectable from "../../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
 import navigateToNamespacesInjectable from "../../../common/front-end-routing/routes/cluster/namespaces/navigate-to-namespaces.injectable";
 import readJsonFileInjectable from "../../../common/fs/read-json-file.injectable";
@@ -89,10 +89,14 @@ describe("cluster/namespaces - edit namespace from new tab", () => {
       const navigateToNamespaces = windowDi.inject(navigateToNamespacesInjectable);
       const dockStore = windowDi.inject(dockStoreInjectable);
 
-      navigateToNamespaces();
+      act(() => {
+        navigateToNamespaces();
+      });
 
       // TODO: Make TerminalWindow unit testable to allow realistic behaviour
-      dockStore.closeTab("terminal");
+      act(() => {
+        dockStore.closeTab("terminal");
+      });
     });
 
     // TODO: Implement skipped tests when loading of resources can be tested

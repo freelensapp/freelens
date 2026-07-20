@@ -1,5 +1,5 @@
 import { getInjectable, getInjectionToken } from "@ogre-tools/injectable";
-import { render } from "react-dom";
+import reactRootInjectable from "./react-root.injectable";
 
 import type React from "react";
 
@@ -12,8 +12,19 @@ export const renderInjectionToken = getInjectionToken<Render>({
 const renderInjectable = getInjectable({
   id: "render",
 
-  /* c8 ignore next */
-  instantiate: () => (application) => render(application, document.getElementById("app")),
+  /* c8 ignore start */
+  instantiate: (di) => {
+    const reactRoot = di.inject(reactRootInjectable);
+
+    return (application) => {
+      const container = document.getElementById("app");
+
+      if (container) {
+        reactRoot.render(container, application);
+      }
+    };
+  },
+  /* c8 ignore stop */
 
   causesSideEffects: true,
 

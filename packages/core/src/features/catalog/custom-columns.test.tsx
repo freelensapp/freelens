@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { act, fireEvent } from "@testing-library/react";
 import { CatalogCategory, type CatalogCategorySpec, type CategoryColumnRegistration } from "../../common/catalog";
 import catalogCategoryRegistryInjectable from "../../common/catalog/category-registry.injectable";
 import navigateToCatalogInjectable from "../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
@@ -24,7 +25,9 @@ describe("custom category columns for catalog", () => {
 
     const navigateToCatalog = builder.applicationWindow.only.di.inject(navigateToCatalogInjectable);
 
-    navigateToCatalog();
+    act(() => {
+      navigateToCatalog();
+    });
   });
 
   it("renders", () => {
@@ -55,7 +58,9 @@ describe("custom category columns for catalog", () => {
     beforeEach(() => {
       const catalogCategoryRegistry = builder.applicationWindow.only.di.inject(catalogCategoryRegistryInjectable);
 
-      catalogCategoryRegistry.add(new TestCategory());
+      act(() => {
+        catalogCategoryRegistry.add(new TestCategory());
+      });
     });
 
     it("renders", () => {
@@ -74,7 +79,7 @@ describe("custom category columns for catalog", () => {
       beforeEach(async () => {
         const testCategory = renderResult.getByTestId("foo.bar.bat/Test-tab");
 
-        testCategory.click();
+        fireEvent.click(testCategory);
       });
 
       it("renders", () => {
@@ -138,7 +143,7 @@ describe("custom category columns for catalog", () => {
         beforeEach(async () => {
           const testCategory = renderResult.getByTestId("foo.bar.bat/Test-tab");
 
-          testCategory.click();
+          fireEvent.click(testCategory);
         });
 
         it("renders", () => {
@@ -180,18 +185,20 @@ describe("custom category columns for catalog", () => {
     beforeEach(() => {
       const catalogCategoryRegistry = builder.applicationWindow.only.di.inject(catalogCategoryRegistryInjectable);
 
-      catalogCategoryRegistry.add(
-        new TestCategory([
-          {
-            id: "foo",
-            renderCell: () => null,
-            titleProps: {
-              title: "Foo",
-              "data-testid": "my-custom-column",
+      act(() => {
+        catalogCategoryRegistry.add(
+          new TestCategory([
+            {
+              id: "foo",
+              renderCell: () => null,
+              titleProps: {
+                title: "Foo",
+                "data-testid": "my-custom-column",
+              },
             },
-          },
-        ]),
-      );
+          ]),
+        );
+      });
     });
 
     it("renders", () => {
@@ -210,7 +217,7 @@ describe("custom category columns for catalog", () => {
       beforeEach(async () => {
         const testCategory = renderResult.getByTestId("foo.bar.bat/Test-tab");
 
-        testCategory.click();
+        fireEvent.click(testCategory);
       });
 
       it("renders", () => {
@@ -247,7 +254,9 @@ describe("custom category columns for catalog", () => {
     beforeEach(() => {
       const catalogCategoryRegistry = builder.applicationWindow.only.di.inject(catalogCategoryRegistryInjectable);
 
-      catalogCategoryRegistry.add(new TestCategory([]));
+      act(() => {
+        catalogCategoryRegistry.add(new TestCategory([]));
+      });
     });
 
     it("renders", () => {
@@ -266,7 +275,7 @@ describe("custom category columns for catalog", () => {
       beforeEach(async () => {
         const testCategory = renderResult.getByTestId("foo.bar.bat/Test-tab");
 
-        testCategory.click();
+        fireEvent.click(testCategory);
       });
 
       it("renders", () => {

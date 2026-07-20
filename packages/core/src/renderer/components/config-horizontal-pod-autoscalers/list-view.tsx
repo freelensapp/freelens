@@ -7,6 +7,7 @@
 import "./list-view.scss";
 
 import { withInjectables } from "@ogre-tools/injectable-react";
+import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { KubeObjectAge } from "../kube-object/age";
@@ -40,7 +41,24 @@ interface Dependencies {
 
 @observer
 class NonInjectedHorizontalPodAutoscalers extends React.Component<Dependencies> {
+  // mobx-react 9 forbids reading this.props inside a derivation. getTargets is
+  // called from renderTableContents, invoked by the KubeObjectListLayout/Table
+  // render (a foreign derivation), so it reads props from this observable
+  // snapshot, refreshed on every update, instead of this.props.
+  @observable.ref private observableProps: Readonly<Dependencies>;
+
+  constructor(props: Dependencies) {
+    super(props);
+    this.observableProps = props;
+    makeObservable(this);
+  }
+
+  componentDidUpdate() {
+    this.observableProps = this.props;
+  }
+
   getTargets(hpa: HorizontalPodAutoscaler) {
+    const { getMetrics } = this.observableProps;
     const metrics = hpa.getMetrics();
 
     if (metrics.length === 0 && !hpa.spec?.targetCPUUtilizationPercentage) {
@@ -51,7 +69,7 @@ class NonInjectedHorizontalPodAutoscalers extends React.Component<Dependencies> 
 
     return (
       <p>
-        {this.props.getMetrics(hpa)[0]} {metricsRemain}
+        {getMetrics(hpa)[0]} {metricsRemain}
       </p>
     );
   }

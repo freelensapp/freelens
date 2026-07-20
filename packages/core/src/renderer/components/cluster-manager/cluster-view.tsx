@@ -7,7 +7,7 @@
 import "./cluster-view.scss";
 
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { computed, makeObservable, reaction } from "mobx";
+import { reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import navigateToCatalogInjectable from "../../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
@@ -42,30 +42,30 @@ interface Dependencies {
 class NonInjectedClusterView extends React.Component<Dependencies> {
   constructor(props: Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   get clusterId() {
     return this.props.clusterId.get();
   }
 
-  @computed get cluster(): Cluster | undefined {
+  // Plain getter (not @computed): reads this.props, which mobx-react 9 forbids
+  // inside a derivation. Read from render, reactivity is preserved by the
+  // observer render reaction.
+  get cluster(): Cluster | undefined {
     return this.props.getClusterById(this.clusterId);
   }
 
-  private readonly isViewLoaded = computed(() => this.props.clusterFrames.hasLoadedView(this.clusterId), {
-    keepAlive: true,
-    requiresReaction: true,
-  });
-
-  @computed get isReady(): boolean {
+  // Plain getter (not @computed): reads this.props, which mobx-react 9 forbids
+  // inside a derivation. Read from render, reactivity is preserved by the
+  // observer render reaction.
+  get isReady(): boolean {
     const { cluster } = this;
 
     if (!cluster) {
       return false;
     }
 
-    return cluster.ready.get() && cluster.available.get() && this.isViewLoaded.get();
+    return cluster.ready.get() && cluster.available.get() && this.props.clusterFrames.hasLoadedView(this.clusterId);
   }
 
   componentDidMount() {
@@ -78,23 +78,28 @@ class NonInjectedClusterView extends React.Component<Dependencies> {
   }
 
   bindEvents() {
+    // Capture props before the reaction: mobx-react 9 forbids reading this.props
+    // inside a derivation. The reaction's data function reads the captured
+    // clusterId observable directly instead of this.props.
+    const { clusterId, clusterFrames, entityRegistry, navigateToCatalog, requestClusterActivation } = this.props;
+
     disposeOnUnmount(this, [
       reaction(
-        () => this.clusterId,
-        async (clusterId) => {
+        () => clusterId.get(),
+        async (id) => {
           // TODO: replace with better handling
-          if (!this.clusterId) {
+          if (!id) {
             return;
           }
 
-          if (!this.props.entityRegistry.getById(clusterId)) {
-            return this.props.navigateToCatalog(); // redirect to catalog when the clusterId does not correspond to an entity
+          if (!entityRegistry.getById(id)) {
+            return navigateToCatalog(); // redirect to catalog when the clusterId does not correspond to an entity
           }
 
-          this.props.clusterFrames.setVisibleCluster(clusterId);
-          this.props.clusterFrames.initView(clusterId);
-          this.props.requestClusterActivation({ clusterId });
-          this.props.entityRegistry.activeEntity = clusterId;
+          clusterFrames.setVisibleCluster(id);
+          clusterFrames.initView(id);
+          requestClusterActivation({ clusterId: id });
+          entityRegistry.activeEntity = id;
         },
         {
           fireImmediately: true,

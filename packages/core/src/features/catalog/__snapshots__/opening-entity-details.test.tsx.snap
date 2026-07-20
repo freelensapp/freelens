@@ -3360,7 +3360,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
     </div>
   </div>
   <ul
-    class="Animate opacity Menu MenuActions flex bottom right portal enter"
+    class="Animate opacity Menu MenuActions flex bottom right portal enter leave"
     data-testid="menu-actions-for-catalog-for-some-entity-id"
     id="menu-actions-for-catalog-for-some-entity-id"
     style="--enter-duration: 100ms; --leave-duration: 100ms; left: 0px; top: 8px;"
@@ -3391,6 +3391,258 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
       Add to Hotbar
     </li>
   </ul>
+  <div
+    class="Animate slide-right Drawer entityDetails right enter"
+    data-testid="catalog-entity-details-drawer"
+    style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
+  >
+    <div
+      class="drawer-wrapper flex flex-col"
+    >
+      <div
+        class="drawer-title flex items-center"
+        style="position: relative;"
+      >
+        <div
+          class="drawer-title-text flex gap-2 items-center"
+        >
+          KubernetesCluster: some-kubernetes-cluster
+          <i
+            class="Icon material interactive focusable"
+            tabindex="0"
+          >
+            <span
+              class="icon"
+              data-icon-name="content_copy"
+            >
+              content_copy
+            </span>
+          </i>
+          <div>
+            Copy
+          </div>
+        </div>
+        <ul
+          class="Menu MenuActions flex CatalogEntityDrawerMenu toolbar right bottom"
+          id="menu-actions-for-catalog-entity-drawer-menu-some-entity-id"
+        >
+          <li
+            class="MenuItem"
+            tabindex="0"
+          >
+            <i
+              class="Icon material interactive focusable"
+              tabindex="0"
+            >
+              <span
+                class="icon"
+                data-icon-name="settings"
+              >
+                settings
+              </span>
+            </i>
+            <div>
+              Settings
+            </div>
+          </li>
+          <li
+            class="MenuItem"
+            tabindex="0"
+          >
+            <i
+              class="Icon material interactive focusable"
+              tabindex="0"
+            >
+              <span
+                class="icon"
+                data-icon-name="link_off"
+              >
+                link_off
+              </span>
+            </i>
+            <div>
+              Disconnect
+            </div>
+          </li>
+          <li
+            class="MenuItem"
+            tabindex="0"
+          >
+            <i
+              class="Icon material interactive focusable small"
+              tabindex="0"
+            >
+              <span
+                class="icon"
+                data-icon-name="push_pin"
+              >
+                push_pin
+              </span>
+            </i>
+            <div>
+              Add to Hotbar
+            </div>
+          </li>
+        </ul>
+        <i
+          class="Icon material interactive focusable"
+          tabindex="0"
+        >
+          <span
+            class="icon"
+            data-icon-name="close"
+          >
+            close
+          </span>
+        </i>
+        <div>
+          Close
+        </div>
+      </div>
+      <div
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
+      >
+        <div
+          class="flex"
+          data-testid="catalog-entity-details-content-for-some-entity-id"
+        >
+          <div
+            class="entityIcon"
+          >
+            <div
+              class="Avatar rounded avatar"
+              data-testid="detail-panel-hot-bar-icon"
+              style="width: 128px; height: 128px; background: rgb(140, 4, 8);"
+            >
+              skc
+            </div>
+            <div
+              class="hint"
+            >
+              Click to open
+            </div>
+          </div>
+          <div
+            class="grow shrink-0 basis-0 metadata"
+          >
+            <div
+              class="DrawerItem"
+            >
+              <span
+                class="name"
+              >
+                Name
+              </span>
+              <span
+                class="value"
+              >
+                some-kubernetes-cluster
+              </span>
+            </div>
+            <div
+              class="DrawerItem"
+            >
+              <span
+                class="name"
+              >
+                Kind
+              </span>
+              <span
+                class="value"
+              >
+                KubernetesCluster
+              </span>
+            </div>
+            <div
+              class="DrawerItem"
+            >
+              <span
+                class="name"
+              >
+                Source
+              </span>
+              <span
+                class="value"
+              >
+                unknown
+              </span>
+            </div>
+            <div
+              class="DrawerItem"
+            >
+              <span
+                class="name"
+              >
+                Status
+              </span>
+              <span
+                class="value"
+              >
+                connecting
+              </span>
+            </div>
+            <div
+              class="DrawerItem"
+            >
+              <span
+                class="name"
+              >
+                Labels
+              </span>
+              <span
+                class="value"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="grow shrink-0 basis-0"
+        >
+          <div
+            class="DrawerTitle title"
+          >
+            Kubernetes Information
+          </div>
+          <div
+            class="grow shrink-0 basis-0 EntityMetadata"
+          >
+            <div
+              class="DrawerItem"
+              data-testid="kubernetes-distro-for-some-entity-id"
+            >
+              <span
+                class="name"
+              >
+                Distribution
+              </span>
+              <span
+                class="value"
+              >
+                unknown
+              </span>
+            </div>
+            <div
+              class="DrawerItem"
+            >
+              <span
+                class="name"
+              >
+                Kubelet Version
+              </span>
+              <span
+                class="value"
+              >
+                unknown
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ResizingAnchor horizontal leading"
+    />
+  </div>
 </body>
 `;
 
@@ -4366,38 +4618,6 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
       </div>
     </div>
   </div>
-  <ul
-    class="Animate opacity Menu MenuActions flex bottom right portal enter leave"
-    data-testid="menu-actions-for-catalog-for-some-entity-id"
-    id="menu-actions-for-catalog-for-some-entity-id"
-    style="--enter-duration: 100ms; --leave-duration: 100ms; left: 0px; top: 8px;"
-  >
-    <li
-      class="MenuItem"
-      data-testid="open-details-menu-item-for-some-entity-id"
-      tabindex="0"
-    >
-      View Details
-    </li>
-    <li
-      class="MenuItem"
-      tabindex="0"
-    >
-      Settings
-    </li>
-    <li
-      class="MenuItem"
-      tabindex="0"
-    >
-      Disconnect
-    </li>
-    <li
-      class="MenuItem"
-      tabindex="0"
-    >
-      Add to Hotbar
-    </li>
-  </ul>
   <div
     class="Animate slide-right Drawer entityDetails right enter"
     data-testid="catalog-entity-details-drawer"
@@ -6621,7 +6841,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
     </div>
   </div>
   <ul
-    class="Animate opacity Menu MenuActions flex right bottom portal enter"
+    class="Animate opacity Menu MenuActions flex right bottom portal enter leave"
     data-testid="menu-actions-for-catalog-for-some-weblink-id"
     id="menu-actions-for-catalog-for-some-weblink-id"
     style="--enter-duration: 100ms; --leave-duration: 100ms;"
@@ -6640,6 +6860,177 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
       Add to Hotbar
     </li>
   </ul>
+  <div
+    class="Animate slide-right Drawer entityDetails right enter"
+    data-testid="catalog-entity-details-drawer"
+    style="--size: 725px; --enter-duration: 100ms; --leave-duration: 100ms;"
+  >
+    <div
+      class="drawer-wrapper flex flex-col"
+    >
+      <div
+        class="drawer-title flex items-center"
+      >
+        <div
+          class="drawer-title-text flex gap-2 items-center"
+        >
+          WebLink: some-weblink
+          <i
+            class="Icon material interactive focusable"
+            tabindex="0"
+          >
+            <span
+              class="icon"
+              data-icon-name="content_copy"
+            >
+              content_copy
+            </span>
+          </i>
+          <div>
+            Copy
+          </div>
+        </div>
+        <i
+          class="Icon material interactive focusable"
+          tabindex="0"
+        >
+          <span
+            class="icon"
+            data-icon-name="close"
+          >
+            close
+          </span>
+        </i>
+        <div>
+          Close
+        </div>
+      </div>
+      <div
+        class="drawer-content flex flex-col grow shrink-0 basis-0"
+      >
+        <div
+          class="flex"
+          data-testid="catalog-entity-details-content-for-some-weblink-id"
+        >
+          <div
+            class="entityIcon"
+          >
+            <div
+              class="Avatar rounded avatar"
+              data-testid="detail-panel-hot-bar-icon"
+              style="width: 128px; height: 128px; background: rgb(77, 163, 16);"
+            >
+              sw
+            </div>
+            <div
+              class="hint"
+            >
+              Click to open
+            </div>
+          </div>
+          <div
+            class="grow shrink-0 basis-0 metadata"
+          >
+            <div
+              class="DrawerItem"
+            >
+              <span
+                class="name"
+              >
+                Name
+              </span>
+              <span
+                class="value"
+              >
+                some-weblink
+              </span>
+            </div>
+            <div
+              class="DrawerItem"
+            >
+              <span
+                class="name"
+              >
+                Kind
+              </span>
+              <span
+                class="value"
+              >
+                WebLink
+              </span>
+            </div>
+            <div
+              class="DrawerItem"
+            >
+              <span
+                class="name"
+              >
+                Source
+              </span>
+              <span
+                class="value"
+              >
+                unknown
+              </span>
+            </div>
+            <div
+              class="DrawerItem"
+            >
+              <span
+                class="name"
+              >
+                Status
+              </span>
+              <span
+                class="value"
+              >
+                available
+              </span>
+            </div>
+            <div
+              class="DrawerItem"
+            >
+              <span
+                class="name"
+              >
+                Labels
+              </span>
+              <span
+                class="value"
+              />
+            </div>
+          </div>
+        </div>
+        <div
+          class="grow shrink-0 basis-0"
+        >
+          <div
+            class="DrawerTitle title"
+          >
+            More Information
+          </div>
+          <div
+            class="DrawerItem"
+            data-testid="weblink-url-for-some-weblink-id"
+          >
+            <span
+              class="name"
+            >
+              URL
+            </span>
+            <span
+              class="value"
+            >
+              https://my-websome.com
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="ResizingAnchor horizontal leading"
+    />
+  </div>
 </body>
 `;
 

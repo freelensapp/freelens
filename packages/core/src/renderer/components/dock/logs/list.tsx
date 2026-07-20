@@ -13,7 +13,7 @@ import { AnsiUp } from "ansi_up";
 import autoBindReact from "auto-bind/react";
 import DOMPurify from "dompurify";
 import { debounce } from "es-toolkit/compat";
-import { action, computed, makeObservable, observable, reaction } from "mobx";
+import { action, makeObservable, observable, reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import moment from "moment-timezone";
 import React from "react";
@@ -53,6 +53,15 @@ class NonForwardedLogList extends React.Component<
   @observable isLastLineVisible = true;
   @observable.ref private containerWidth = 0;
   @observable private overlapVersion = 0;
+
+  // mobx-react 9 forbids reading this.props inside a derivation. getLogRow is
+  // invoked from the VirtualList row renderer (a derivation other than this
+  // component's own render), so it — and the logs/showWordWrap getters it calls —
+  // read props from this observable snapshot, refreshed on every update, instead
+  // of this.props.
+  @observable.ref private observableProps: Readonly<
+    Dependencies & LogListProps & { innerRef: ForwardedRef<LogListRef> }
+  >;
 
   private virtualListDivElement: HTMLDivElement | null = null;
   private resizeObserver: ResizeObserver | null = null;
@@ -121,6 +130,7 @@ class NonForwardedLogList extends React.Component<
 
   constructor(props: any) {
     super(props);
+    this.observableProps = props;
     makeObservable(this);
     autoBindReact(this);
   }
@@ -128,9 +138,13 @@ class NonForwardedLogList extends React.Component<
   componentDidMount() {
     this.updateContainerMetrics();
     window.addEventListener("resize", this.updateContainerMetrics);
+    // Capture the model before wiring reactions: mobx-react 9 forbids reading
+    // this.props inside a derivation (the reaction data functions below).
+    const { model } = this.props;
+
     disposeOnUnmount(this, [
       reaction(
-        () => this.props.model.logs.get(),
+        () => model.logs.get(),
         (logs, prevLogs) => {
           const didLogsResetOrPrepend =
             !prevLogs.length || !logs.length || logs[0] !== prevLogs[0] || logs.length < prevLogs.length;
@@ -146,7 +160,7 @@ class NonForwardedLogList extends React.Component<
         },
       ),
       reaction(
-        () => this.props.model.logTabData.get()?.showTimestamps,
+        () => model.logTabData.get()?.showTimestamps,
         () => {
           this.measuredRowHeights.clear();
           this.overlapVersion++;
@@ -186,6 +200,7 @@ class NonForwardedLogList extends React.Component<
   }
 
   componentDidUpdate() {
+    this.observableProps = this.props;
     this.bindInnerRef({
       scrollToItem: this.scrollToItem,
     });
@@ -273,25 +288,26 @@ class NonForwardedLogList extends React.Component<
 
   /**
    * Returns logs with or without timestamps regarding to showTimestamps prop
+   *
+   * Plain getter (not @computed): reads props, which mobx-react 9 forbids inside
+   * a derivation. Reads from the observable snapshot so it is safe both from
+   * render and from the VirtualList row renderer (getLogRow).
    */
-  @computed
   get logs(): string[] {
-    const { showTimestamps } = this.props.model.logTabData.get() ?? {};
+    const { model, state } = this.observableProps;
+    const { showTimestamps } = model.logTabData.get() ?? {};
 
     if (!showTimestamps) {
-      return this.props.model.logsWithoutTimestamps.get();
+      return model.logsWithoutTimestamps.get();
     }
 
-    return this.props.model.timestampSplitLogs
+    return model.timestampSplitLogs
       .get()
-      .map(
-        ([logTimestamp, log]) =>
-          `${logTimestamp && moment.tz(logTimestamp, this.props.state.localeTimezone).format()}${log}`,
-      );
+      .map(([logTimestamp, log]) => `${logTimestamp && moment.tz(logTimestamp, state.localeTimezone).format()}${log}`);
   }
 
   get showWordWrap(): boolean {
-    return this.props.model.logTabData.get()?.showWordWrap ?? false;
+    return this.observableProps.model.logTabData.get()?.showWordWrap ?? false;
   }
 
   getRowHeights(): number[] {
@@ -394,7 +410,7 @@ class NonForwardedLogList extends React.Component<
    * @returns A react element with a row itself
    */
   getLogRow = (rowIndex: number) => {
-    const { searchQuery, isActiveOverlay } = this.props.model.searchStore;
+    const { searchQuery, isActiveOverlay } = this.observableProps.model.searchStore;
     const item = this.logs[rowIndex];
     const contents: React.ReactElement[] = [];
     const ansiToHtml = (ansi: string) => DOMPurify.sanitize(colorConverter.ansi_to_html(ansi));

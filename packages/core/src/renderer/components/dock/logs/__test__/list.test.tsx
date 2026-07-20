@@ -25,7 +25,6 @@ import type { TabId } from "../../dock/store";
 const virtualListMock = vi.fn();
 
 vi.mock("../../../virtual-list", () => {
-
   return {
     VirtualList: (props: any) => {
       virtualListMock(props);

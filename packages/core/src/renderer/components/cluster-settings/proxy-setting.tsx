@@ -26,10 +26,14 @@ export class ClusterProxySetting extends React.Component<ClusterProxySettingProp
   }
 
   componentDidMount() {
+    // Capture the cluster before the autorun: mobx-react 9 forbids reading
+    // this.props inside a derivation (the autorun below).
+    const { cluster } = this.props;
+
     disposeOnUnmount(
       this,
       autorun(() => {
-        this.proxy = this.props.cluster.preferences.httpsProxy || "";
+        this.proxy = cluster.preferences.httpsProxy || "";
       }),
     );
   }

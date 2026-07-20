@@ -29,10 +29,14 @@ export class ClusterNameSetting extends React.Component<ClusterNameSettingProps>
   }
 
   componentDidMount() {
+    // Capture props before the autorun: mobx-react 9 forbids reading this.props
+    // inside a derivation (the autorun below).
+    const { cluster, entity } = this.props;
+
     disposeOnUnmount(
       this,
       autorun(() => {
-        this.name = this.props.cluster.preferences.clusterName || this.props.entity.getName();
+        this.name = cluster.preferences.clusterName || entity.getName();
       }),
     );
   }

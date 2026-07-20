@@ -7,7 +7,7 @@
 import "./port-forwards.scss";
 
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { computed, makeObservable } from "mobx";
+import { makeObservable, observable } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import navigateToPortForwardsInjectable from "../../../common/front-end-routing/routes/cluster/network/port-forwards/navigate-to-port-forwards.injectable";
@@ -44,9 +44,15 @@ interface Dependencies {
 
 @observer
 class NonInjectedPortForwards extends React.Component<Dependencies> {
+  // mobx-react 9 forbids reading this.props inside a derivation. getItems is invoked
+  // from ItemListLayout's render (a derivation other than this component's own render),
+  // so it reads props from this observable snapshot, refreshed on every update, instead
+  // of this.props.
+  @observable.ref private observableProps: Readonly<Dependencies>;
+
   constructor(props: Dependencies) {
     super(props);
-
+    this.observableProps = props;
     makeObservable(this);
   }
 
@@ -54,7 +60,13 @@ class NonInjectedPortForwards extends React.Component<Dependencies> {
     disposeOnUnmount(this, [this.props.portForwardStore.watch()]);
   }
 
-  @computed
+  componentDidUpdate() {
+    this.observableProps = this.props;
+  }
+
+  // Plain getter (not @computed): reads this.props, which mobx-react 9 forbids
+  // inside a derivation. Read from render, reactivity is preserved by the
+  // observer render reaction.
   get selectedPortForward() {
     const forwardport = this.props.forwardport.get();
 
@@ -104,7 +116,7 @@ class NonInjectedPortForwards extends React.Component<Dependencies> {
           tableId="port_forwards"
           className="PortForwards"
           store={this.props.portForwardStore}
-          getItems={() => this.props.portForwardStore.items}
+          getItems={() => this.observableProps.portForwardStore.items}
           sortingCallbacks={{
             [columnId.name]: (item) => item.getName(),
             [columnId.namespace]: (item) => item.getNs(),

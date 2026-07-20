@@ -119,11 +119,14 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
   }
 
   componentDidMount() {
+    // Capture the cluster before the autorun: mobx-react 9 forbids reading
+    // this.props inside a derivation (the autorun below).
+    const { cluster } = this.props;
+
     disposeOnUnmount(
       this,
       autorun(() => {
-        const { prometheus, prometheusProvider, filesystemMountpoints, prometheusRequestMethod } =
-          this.props.cluster.preferences;
+        const { prometheus, prometheusProvider, filesystemMountpoints, prometheusRequestMethod } = cluster.preferences;
 
         if (prometheus) {
           const prefix = prometheus.prefix || "";

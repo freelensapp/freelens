@@ -69,8 +69,8 @@ describe("legacy extension adding cluster frame components", () => {
     });
 
     it("when injectable component becomes visible, shows it", () => {
-      runInAction(() => {
-        act(() => someObservable.set(true));
+      act(() => {
+        runInAction(() => someObservable.set(true));
       });
 
       const dialog = rendered.getByTestId("dialog-with-observable-visibility");

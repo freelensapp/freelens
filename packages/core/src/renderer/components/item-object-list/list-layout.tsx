@@ -10,7 +10,7 @@ import { cssNames, noop } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
 import { groupBy } from "es-toolkit";
-import { computed, makeObservable, untracked } from "mobx";
+import { makeObservable, observable, untracked } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import selectedFilterNamespacesInjectable from "../../../common/k8s-api/selected-filter-namespaces.injectable";
@@ -185,10 +185,21 @@ class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends bool
 > {
   static defaultProps = defaultProps as object;
 
+  // mobx-react 9 forbids reading this.props inside a derivation, and the child
+  // header/filters/content observers invoke the getters below from within their
+  // own render reactions. Keep an observable snapshot of props (updated on every
+  // update) so those getters can be read reactively from any derivation.
+  @observable.ref private observableProps: Readonly<ItemListLayoutProps<I, PreLoadStores> & Dependencies>;
+
   constructor(props: ItemListLayoutProps<I, PreLoadStores> & Dependencies) {
     super(props);
+    this.observableProps = props;
     makeObservable(this);
     autoBindReact(this);
+  }
+
+  componentDidUpdate() {
+    this.observableProps = this.props;
   }
 
   async componentDidMount() {
@@ -214,16 +225,20 @@ class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends bool
   }
 
   get showFilters(): boolean {
-    return this.props.itemListLayoutStorage.get().showFilters;
+    return this.observableProps.itemListLayoutStorage.get().showFilters;
   }
 
   set showFilters(showFilters: boolean) {
-    this.props.itemListLayoutStorage.merge({ showFilters });
+    this.observableProps.itemListLayoutStorage.merge({ showFilters });
   }
 
-  @computed get filters() {
-    let { activeFilters } = this.props.pageFiltersStore;
-    const { searchFilters = [] } = this.props;
+  // These getters read props from the observable snapshot (observableProps), not
+  // this.props: mobx-react 9 forbids reading this.props inside a derivation, and
+  // the child header/filters/content observers call them from their own render
+  // reactions. observableProps keeps the reads reactive across those boundaries.
+  get filters() {
+    let { activeFilters } = this.observableProps.pageFiltersStore;
+    const { searchFilters = [] } = this.observableProps;
 
     if (searchFilters.length === 0) {
       activeFilters = activeFilters.filter(({ type }) => type !== FilterType.SEARCH);
@@ -236,8 +251,8 @@ class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends bool
     this.showFilters = !this.showFilters;
   }
 
-  @computed get isReady() {
-    return this.props.isReady ?? this.props.store.isLoaded;
+  get isReady() {
+    return this.observableProps.isReady ?? this.observableProps.store.isLoaded;
   }
 
   renderFilters() {
@@ -253,8 +268,8 @@ class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends bool
 
   private filterCallbacks: ListLayoutItemsFilters<I> = {
     [FilterType.SEARCH]: (items) => {
-      const { searchFilters = [] } = this.props;
-      const search = this.props.pageFiltersStore.getValues(FilterType.SEARCH)[0] || "";
+      const { searchFilters = [] } = this.observableProps;
+      const search = this.observableProps.pageFiltersStore.getValues(FilterType.SEARCH)[0] || "";
 
       if (search && searchFilters.length) {
         const searchTexts = [search].map(normalizeText);
@@ -273,21 +288,21 @@ class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends bool
     },
   };
 
-  @computed get items() {
+  get items() {
     const filterGroups = groupBy(this.filters, ({ type }) => type);
     const filterItems: ListLayoutItemsFilter<I>[] = [];
 
     for (const [type, filtersGroup] of Object.entries(filterGroups)) {
-      const filterCallback = this.filterCallbacks[type] ?? this.props.filterCallbacks?.[type];
+      const filterCallback = this.filterCallbacks[type] ?? this.observableProps.filterCallbacks?.[type];
 
       if (filterCallback && filtersGroup.length > 0) {
         filterItems.push(filterCallback);
       }
     }
 
-    const items = this.props.getItems();
+    const items = this.observableProps.getItems();
 
-    return applyFilters(filterItems.concat(this.props.filterItems ?? []), items);
+    return applyFilters(filterItems.concat(this.observableProps.filterItems ?? []), items);
   }
 
   render() {

@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { act } from "@testing-library/react";
 import { computed, observable, runInAction } from "mobx";
 import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 
@@ -51,7 +52,9 @@ describe("reactively disable cluster pages", () => {
   });
 
   it("when navigating to the page, does not show the page", () => {
-    testExtensionInstance.navigate();
+    act(() => {
+      testExtensionInstance.navigate();
+    });
 
     const actual = rendered.queryByTestId("some-test-page");
 
@@ -59,11 +62,15 @@ describe("reactively disable cluster pages", () => {
   });
 
   it("given page becomes enabled, when navigating to the page, shows the page", () => {
-    runInAction(() => {
-      someObservable.set(true);
+    act(() => {
+      runInAction(() => {
+        someObservable.set(true);
+      });
     });
 
-    testExtensionInstance.navigate();
+    act(() => {
+      testExtensionInstance.navigate();
+    });
 
     const actual = rendered.queryByTestId("some-test-page");
 

@@ -1687,26 +1687,6 @@ exports[`entity running technical tests > when navigated to catalog > when detai
       </div>
     </div>
   </div>
-  <ul
-    class="Animate opacity Menu MenuActions flex bottom right portal enter leave"
-    data-testid="menu-actions-for-catalog-for-a_catalogEntity_uid"
-    id="menu-actions-for-catalog-for-a_catalogEntity_uid"
-    style="--enter-duration: 100ms; --leave-duration: 100ms; left: 0px; top: 8px;"
-  >
-    <li
-      class="MenuItem"
-      data-testid="open-details-menu-item-for-a_catalogEntity_uid"
-      tabindex="0"
-    >
-      View Details
-    </li>
-    <li
-      class="MenuItem"
-      tabindex="0"
-    >
-      Add to Hotbar
-    </li>
-  </ul>
   <div
     class="Animate slide-right Drawer entityDetails right enter"
     data-testid="catalog-entity-details-drawer"

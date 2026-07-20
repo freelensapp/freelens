@@ -69,9 +69,14 @@ class NonInjectedKubeObjectMenu<Kube extends KubeObject> extends React.Component
   }
 
   componentDidMount(): void {
+    // Capture props before the reactions: mobx-react 9 forbids reading this.props
+    // inside a derivation (the reaction data functions). The kube object is updated
+    // in place, so tracking the captured instance keeps its observable fields live.
+    const { object } = this.props;
+
     disposeOnUnmount(this, [
       reaction(
-        () => this.props.object?.metadata?.deletionTimestamp,
+        () => object?.metadata?.deletionTimestamp,
         () => {
           if (this.props.object) {
             this.emitOnContextMenuOpen(this.props.object);
@@ -79,7 +84,7 @@ class NonInjectedKubeObjectMenu<Kube extends KubeObject> extends React.Component
         },
       ),
       reaction(
-        () => this.props.object?.getFinalizers(),
+        () => object?.getFinalizers(),
         () => {
           if (this.props.object) {
             this.emitOnContextMenuOpen(this.props.object);

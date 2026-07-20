@@ -47,10 +47,12 @@ class NonInjectedSecretDetails extends React.Component<SecretDetailsProps & Depe
   }
 
   componentDidMount() {
+    // Capture the object before the autorun: mobx-react 9 forbids reading
+    // this.props inside a derivation (the autorun below).
+    const { object: secret } = this.props;
+
     disposeOnUnmount(this, [
       autorun(() => {
-        const { object: secret } = this.props;
-
         if (secret) {
           this.data = secret.data;
           this.revealSecret.clear();

@@ -14,7 +14,7 @@ import { cssNames, disposer } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
 import { debounce, merge } from "es-toolkit/compat";
-import { action, computed, makeObservable, observable, reaction } from "mobx";
+import { action, makeObservable, observable, reaction } from "mobx";
 import { observer } from "mobx-react";
 import { editor, Uri } from "monaco-editor";
 import React from "react";
@@ -89,21 +89,35 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
   //  e.g. happens on tab change/create, maybe some other cases too.
   private logger = console;
 
+  // mobx-react 9 forbids reading this.props inside a derivation, and the getters
+  // below are read from the componentDidMount reactions (their own derivations).
+  // Keep an observable snapshot of props (refreshed on update) so those getters
+  // stay reactive across that boundary.
+  @observable.ref private observableProps: Readonly<MonacoEditorProps & Dependencies>;
+
   constructor(props: MonacoEditorProps & Dependencies) {
     super(props);
+    this.observableProps = props;
     makeObservable(this);
     autoBindReact(this);
   }
 
-  @computed get id(): MonacoEditorId {
-    return this.props.id ?? this.staticId;
+  componentDidUpdate() {
+    this.observableProps = this.props;
   }
 
-  @computed get theme() {
-    return this.props.theme ?? this.props.activeTheme.get().monacoTheme;
+  // These getters read props from the observable snapshot (observableProps), not
+  // this.props: mobx-react 9 forbids reading this.props inside a derivation, and
+  // they are evaluated from the componentDidMount reactions below.
+  get id(): MonacoEditorId {
+    return this.observableProps.id ?? this.staticId;
   }
 
-  @computed get model(): editor.ITextModel {
+  get theme() {
+    return this.observableProps.theme ?? this.observableProps.activeTheme.get().monacoTheme;
+  }
+
+  get model(): editor.ITextModel {
     const uri = createMonacoUri(this.id);
     const model = editor.getModel(uri);
 
@@ -111,21 +125,20 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
       return model; // already exists
     }
 
-    const { language, value: rawValue } = this.props;
+    const { language, value: rawValue } = this.observableProps;
     const value = typeof rawValue === "string" ? rawValue : "";
 
     if (typeof rawValue !== "string") {
-      this.props.logger.error(`[MONACO-EDITOR]: Passed a non-string default value`, { rawValue });
+      this.observableProps.logger.error(`[MONACO-EDITOR]: Passed a non-string default value`, { rawValue });
     }
 
     return editor.createModel(value, language, uri);
   }
 
-  @computed get options(): editor.IStandaloneEditorConstructionOptions {
-    return merge({}, this.props.state.editorConfiguration, this.props.options);
+  get options(): editor.IStandaloneEditorConstructionOptions {
+    return merge({}, this.observableProps.state.editorConfiguration, this.observableProps.options);
   }
 
-  @computed
   private get logMetadata() {
     return {
       editorId: this.id,
@@ -251,7 +264,7 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
       reaction(() => this.model, this.onModelChange),
       reaction(() => this.theme, editor.setTheme),
       reaction(
-        () => this.props.value,
+        () => this.observableProps.value,
         (value) => this.setValue(value),
         {
           fireImmediately: true,

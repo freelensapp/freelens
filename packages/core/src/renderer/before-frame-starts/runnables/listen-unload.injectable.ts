@@ -5,8 +5,8 @@
  */
 
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { reactRootInjectionToken } from "@freelensapp/react-application";
 import { getInjectable } from "@ogre-tools/injectable";
-import { unmountComponentAtNode } from "react-dom";
 import closeRendererLogFileInjectable from "../../../features/population-of-logs-to-a-file/renderer/close-renderer-log-file.injectable";
 import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
 import frameTokenInjectable from "../../frames/cluster-frame/init-cluster-frame/frame-token/frame-token.injectable";
@@ -35,7 +35,10 @@ const listenUnloadInjectable = getInjectable({
         const rootElem = document.getElementById("app");
 
         if (rootElem) {
-          unmountComponentAtNode(rootElem);
+          // Resolved lazily here (rather than in `run`) so this cross-feature,
+          // side-effecting root is only injected on an actual unload, keeping
+          // unit-test containers (which never dispatch `beforeunload`) unaffected.
+          di.inject(reactRootInjectionToken).unmount(rootElem);
         }
       });
     },
