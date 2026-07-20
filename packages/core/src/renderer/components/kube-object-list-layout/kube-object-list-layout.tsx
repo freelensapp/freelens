@@ -184,7 +184,6 @@ class NonInjectedKubeObjectListLayout<
     const resourceName = this.props.resourceName || ResourceNames[ResourceKindMap[store.api.kind]] || store.api.kind;
     const targetColumns = [...(columns ?? []), ...generalColumns.filter(matchesApiFor(store.api))];
 
-    void items;
     void dependentStores;
 
     targetColumns.forEach((col) => {
@@ -237,7 +236,9 @@ class NonInjectedKubeObjectListLayout<
       <ItemListLayout<K, false>
         className={cssNames("KubeObjectListLayout", className)}
         store={store}
-        getItems={() => this.props.items || store.contextItems}
+        // Read captured locals, not this.props: ItemListLayout invokes getItems
+        // from within its own derivation, where mobx-react 9 forbids this.props.
+        getItems={() => items || store.contextItems}
         preloadStores={false} // loading handled in kubeWatchApi.subscribeStores()
         detailsItem={this.selectedItem}
         customizeHeader={[

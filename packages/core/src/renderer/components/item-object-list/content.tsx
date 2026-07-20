@@ -109,11 +109,22 @@ export class NonInjectedItemListLayoutContent<
   @observable private columnFlexGrow = new Map<string, number>();
   @observable private resizeGuideX: number | null = null;
 
+  // mobx-react 9 forbids reading this.props inside a derivation. getRow/getTableRow
+  // (and the showColumn they call) are invoked from foreign derivations — the inner
+  // <Observer> render prop and the <Table> row renderer — so they read props from
+  // this observable snapshot, refreshed on every update, instead of this.props.
+  @observable.ref private observableProps: Readonly<ItemListLayoutContentProps<Item, PreLoadStores> & Dependencies>;
+
   constructor(props: ItemListLayoutContentProps<Item, PreLoadStores> & Dependencies) {
     super(props);
+    this.observableProps = props;
     makeObservable(this);
     autoBindReact(this);
     this.loadSavedColumnWidths();
+  }
+
+  componentDidUpdate() {
+    this.observableProps = this.props;
   }
 
   componentWillUnmount() {
@@ -301,6 +312,9 @@ export class NonInjectedItemListLayoutContent<
   }
 
   getTableRow(item: Item) {
+    // Read from observableProps: this method is called from the <Table> row
+    // renderer and the <Observer> below, which are derivations other than this
+    // component's own render, where mobx-react 9 forbids reading this.props.
     const {
       isSelectable,
       renderTableHeader,
@@ -312,8 +326,16 @@ export class NonInjectedItemListLayoutContent<
       copyClassNameFromHeadCells,
       customizeTableRowProps = () => ({}),
       detailsItem,
-    } = this.props;
+      tableId,
+      isConfigurable,
+      isTableColumnHidden,
+    } = this.observableProps;
     const { isSelected } = store;
+
+    // Inline column-visibility check from the captured snapshot; this.showColumn
+    // reads this.props, which is forbidden here (foreign derivation).
+    const isColumnShown = ({ id: columnId, showWithColumn }: TableCellProps) =>
+      !isConfigurable || !tableId || !isTableColumnHidden(tableId, columnId, showWithColumn);
 
     return (
       <TableRow
@@ -335,7 +357,7 @@ export class NonInjectedItemListLayoutContent<
             cellProps.className = cssNames(cellProps.className, headCell.className);
           }
 
-          if (!headCell || this.showColumn(headCell)) {
+          if (!headCell || isColumnShown(headCell)) {
             return (
               <TableCell
                 key={index}
@@ -367,7 +389,8 @@ export class NonInjectedItemListLayoutContent<
       <div key={uid}>
         <Observer>
           {() => {
-            const item = this.props.getItems().find((item) => item.getId() === uid);
+            // observableProps, not this.props: this <Observer> is its own derivation.
+            const item = this.observableProps.getItems().find((item) => item.getId() === uid);
 
             if (!item) return null;
 

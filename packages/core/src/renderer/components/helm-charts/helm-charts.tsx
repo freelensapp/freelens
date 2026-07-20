@@ -95,7 +95,10 @@ class NonInjectedHelmCharts extends Component<Dependencies> {
             removeSelectedItems: async () => {},
           }}
           preloadStores={false}
-          getItems={() => this.props.charts.value.get()}
+          // Read the captured `charts`, not this.props: ItemListLayout invokes
+          // getItems from within its own derivation, where mobx-react 9 forbids
+          // reading this.props.
+          getItems={() => charts.value.get()}
           isSelectable={false}
           sortingCallbacks={{
             [columnId.name]: (chart) => chart.getName(),
