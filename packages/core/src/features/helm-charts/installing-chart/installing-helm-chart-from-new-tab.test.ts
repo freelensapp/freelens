@@ -7,7 +7,6 @@
 import asyncFn from "@async-fn/vitest";
 import { flushPromises } from "@freelensapp/test-utils";
 import { fireEvent } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import directoryForLensLocalStorageInjectable from "../../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
 import readJsonFileInjectable from "../../../common/fs/read-json-file.injectable";
 import writeJsonFileInjectable from "../../../common/fs/write-json-file.injectable";
@@ -48,7 +47,7 @@ describe("installing helm chart from new tab", () => {
   let listClusterHelmReleasesMock: AsyncFnMock<ListClusterHelmReleases>;
 
   beforeEach(() => {
-    builder = getApplicationBuilder(userEvent.setup({ delay: null }));
+    builder = getApplicationBuilder();
 
     builder.setEnvironmentToClusterFrame();
 

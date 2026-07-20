@@ -7,7 +7,6 @@
 import asyncFn from "@async-fn/vitest";
 import { flushPromises } from "@freelensapp/test-utils";
 import { fireEvent } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import directoryForLensLocalStorageInjectable from "../../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
 import { HelmChart } from "../../../common/k8s-api/endpoints/helm-charts.api";
 import requestHelmChartsInjectable from "../../../common/k8s-api/endpoints/helm-charts.api/request-charts.injectable";
@@ -37,7 +36,7 @@ describe("opening dock tab for installing helm chart", () => {
   let requestHelmChartValuesMock: Mock;
 
   beforeEach(() => {
-    builder = getApplicationBuilder(userEvent.setup({ delay: null }));
+    builder = getApplicationBuilder();
 
     requestHelmChartsMock = asyncFn();
     requestHelmChartVersionsMock = asyncFn();

@@ -7,7 +7,6 @@
 import asyncFn from "@async-fn/vitest";
 import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { type RenderResult, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import execFileInjectable from "../../common/fs/exec-file.injectable";
 import helmBinaryPathInjectable from "../../main/helm/helm-binary-path.injectable";
 import getActiveHelmRepositoriesInjectable from "../../main/helm/repositories/get-active-helm-repositories/get-active-helm-repositories.injectable";
@@ -33,7 +32,7 @@ describe("add helm repository from list in preferences", () => {
   let callForPublicHelmRepositoriesMock: AsyncFnMock<() => Promise<HelmRepo[]>>;
 
   beforeEach(async () => {
-    builder = getApplicationBuilder(userEvent.setup({ delay: null }));
+    builder = getApplicationBuilder();
 
     execFileMock = asyncFn();
     getActiveHelmRepositoriesMock = asyncFn();

@@ -20,7 +20,6 @@ import { historyInjectionToken } from "@freelensapp/routing";
 import { renderFor } from "@freelensapp/test-utils";
 import { getInjectable } from "@ogre-tools/injectable";
 import { act, fireEvent, queryByText } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { action, computed, observable, runInAction } from "mobx";
 import React from "react";
 import { Router } from "react-router";
@@ -62,7 +61,6 @@ import { getExtensionFakeForMain, getExtensionFakeForRenderer } from "./get-exte
 
 import type { DiContainer, Injectable } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
-import type { UserEvent } from "@testing-library/user-event";
 import type { IComputedValue, ObservableMap } from "mobx";
 
 import type { Route } from "../../../common/front-end-routing/front-end-route-injection-token";
@@ -186,7 +184,7 @@ interface Environment {
   onAllowKubeResource: () => void;
 }
 
-export const getApplicationBuilder = (user: UserEvent = userEvent.setup()) => {
+export const getApplicationBuilder = () => {
   const mainDi = getMainDi();
 
   runInAction(() => {
@@ -743,14 +741,19 @@ export const getApplicationBuilder = (user: UserEvent = userEvent.setup()) => {
 
         assert(select, `Could not find select with ID "${menuId}"`);
 
-        openMenu(select);
+        // react-select-event's openMenu fires events without wrapping them in
+        // act, so React 18 warns and defers the resulting update. Wrap it so the
+        // menu is committed before the test queries or clicks an option.
+        act(() => {
+          openMenu(select);
+        });
 
         return {
-          selectOption: selectOptionFor(builder, user, menuId),
+          selectOption: selectOptionFor(builder, menuId),
         };
       },
 
-      selectOption: async (menuId, labelText) => await selectOptionFor(builder, user, menuId)(labelText),
+      selectOption: async (menuId, labelText) => await selectOptionFor(builder, menuId)(labelText),
 
       getValue: (menuId) => {
         const rendered = builder.applicationWindow.only.rendered;
@@ -837,7 +840,7 @@ const environments = {
   } as Environment,
 };
 
-const selectOptionFor = (builder: ApplicationBuilder, user: UserEvent, menuId: string) => async (labelText: string) => {
+const selectOptionFor = (builder: ApplicationBuilder, menuId: string) => async (labelText: string) => {
   const rendered = builder.applicationWindow.only.rendered;
 
   const menuOptions = rendered.baseElement.querySelector<HTMLElement>(`.${menuId}-options`);
@@ -848,7 +851,14 @@ const selectOptionFor = (builder: ApplicationBuilder, user: UserEvent, menuId: s
 
   assert(option, `Could not find select option with label "${labelText}" for menu with ID "${menuId}"`);
 
-  await user.click(option);
+  // userEvent.click drives a multi-step pointer sequence whose internal async
+  // waits never settle under React 18's async act with fully-faked timers, so
+  // it hangs on react-select options. react-select-event selects the same way:
+  // a single act-wrapped fireEvent.click, which commits the change and flushes
+  // the effects (e.g. the follow-up request) before the test resolves them.
+  act(() => {
+    fireEvent.click(option);
+  });
 };
 
 function enableExtensionFor(di: DiContainer, stateInjectable: Injectable<ObservableMap<string, any>, any, any>) {
