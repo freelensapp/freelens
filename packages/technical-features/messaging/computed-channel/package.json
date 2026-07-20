@@ -37,10 +37,10 @@
     "@ogre-tools/injectable-extension-for-mobx": "^17.11.1",
     "es-toolkit": "^1.49.0",
     "@testing-library/jest-dom": "^6.9.1",
-    "@testing-library/react": "^12.1.5",
+    "@testing-library/react": "^15.0.7",
     "@types/react": "catalog:",
     "jsdom": "^29.1.1",
-    "mobx-react": "^7.6.0",
+    "mobx-react": "^9.1.1",
     "react": "catalog:",
     "typescript": "^7.0.2",
     "vitest": "^4.1.10"

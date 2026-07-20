@@ -31,14 +31,14 @@
     "auto-bind": "^5.0.1",
     "es-toolkit": "^1.49.0",
     "mobx": "^6.15.0",
-    "mobx-react": "^7.6.0",
+    "mobx-react": "^9.1.1",
     "react": "catalog:",
     "react-dom": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
     "@testing-library/jest-dom": "^6.9.1",
-    "@testing-library/react": "^12.1.5",
+    "@testing-library/react": "^15.0.7",
     "@testing-library/user-event": "^14.6.1",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
