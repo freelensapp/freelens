@@ -19,7 +19,7 @@ import { discoverFor } from "@freelensapp/react-testing-library-discovery";
 import { historyInjectionToken } from "@freelensapp/routing";
 import { renderFor } from "@freelensapp/test-utils";
 import { getInjectable } from "@ogre-tools/injectable";
-import { fireEvent, queryByText } from "@testing-library/react";
+import { act, fireEvent, queryByText } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { action, computed, observable, runInAction } from "mobx";
 import React from "react";
@@ -482,7 +482,9 @@ export const getApplicationBuilder = (user: UserEvent = userEvent.setup()) => {
 
         const navigateToPreferences = windowDi.inject(navigateToPreferencesInjectable);
 
-        navigateToPreferences();
+        act(() => {
+          navigateToPreferences();
+        });
       },
 
       navigateTo: (route: Route<any>, params: Partial<NavigateToRouteOptions<any>>) => {
@@ -490,7 +492,9 @@ export const getApplicationBuilder = (user: UserEvent = userEvent.setup()) => {
 
         const navigateToRoute = windowDi.inject(navigateToRouteInjectionToken);
 
-        navigateToRoute(route, params);
+        act(() => {
+          navigateToRoute(route, params);
+        });
       },
 
       navigation: {
@@ -512,7 +516,9 @@ export const getApplicationBuilder = (user: UserEvent = userEvent.setup()) => {
 
         const navigateToHelmCharts = windowDi.inject(navigateToHelmChartsInjectable);
 
-        navigateToHelmCharts(parameters);
+        act(() => {
+          navigateToHelmCharts(parameters);
+        });
       },
     },
 
@@ -520,7 +526,9 @@ export const getApplicationBuilder = (user: UserEvent = userEvent.setup()) => {
       const windowDi = builder.applicationWindow.only.di;
       const navigate = windowDi.inject(token);
 
-      navigate();
+      act(() => {
+        navigate();
+      });
     },
 
     setEnvironmentToClusterFrame: () => {
