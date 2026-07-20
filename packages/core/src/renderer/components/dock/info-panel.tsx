@@ -12,8 +12,8 @@ import { showCheckedErrorNotificationInjectable, showSuccessNotificationInjectab
 import { Spinner } from "@freelensapp/spinner";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { makeObservable, observable, reaction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { makeObservable, observable } from "mobx";
+import { observer } from "mobx-react";
 import React, { Component } from "react";
 import dockStoreInjectable from "./dock/store.injectable";
 
@@ -71,15 +71,13 @@ class NonInjectedInfoPanel extends Component<InfoPanelProps & Dependencies> {
     makeObservable(this);
   }
 
-  componentDidMount() {
-    disposeOnUnmount(this, [
-      reaction(
-        () => this.props.tabId,
-        () => {
-          this.waiting = false;
-        },
-      ),
-    ]);
+  componentDidUpdate(prevProps: InfoPanelProps & Dependencies) {
+    // Reset the waiting state when the panel is reused for a different dock tab.
+    // Previously a reaction on this.props.tabId did this; mobx-react 9 no longer
+    // makes this.props observable, so react to the prop change in the lifecycle.
+    if (prevProps.tabId !== this.props.tabId) {
+      this.waiting = false;
+    }
   }
 
   // Plain getter (not @computed): reads this.props, which mobx-react 9 forbids

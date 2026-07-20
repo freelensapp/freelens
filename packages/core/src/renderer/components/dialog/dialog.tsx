@@ -80,9 +80,13 @@ class NonInjectedDialog extends React.PureComponent<
       this.onOpen();
     }
 
+    // Capture props before the reaction: mobx-react 9 forbids reading this.props
+    // inside a derivation (the reaction's data function below).
+    const { navigation } = this.props;
+
     disposeOnUnmount(this, [
       reaction(
-        () => this.props.navigation.toString(),
+        () => navigation.toString(),
         () => this.close(),
       ),
     ]);

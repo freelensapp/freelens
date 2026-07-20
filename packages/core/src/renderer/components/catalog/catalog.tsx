@@ -118,12 +118,27 @@ class NonInjectedCatalog extends React.Component<Dependencies> {
       catalogCategoryRegistry,
       logger,
       showErrorNotification,
+      routeParameters,
     } = this.props;
+
+    // Capture props before the reaction: mobx-react 9 forbids reading this.props
+    // inside a derivation. Recompute routeActiveTab from the captured observables so
+    // the reaction's data function no longer touches this.props.
+    const routeActiveTab = (): string => {
+      const dereferencedGroup = routeParameters.group.get();
+      const dereferencedKind = routeParameters.kind.get();
+
+      if (dereferencedGroup && dereferencedKind) {
+        return `${dereferencedGroup}/${dereferencedKind}`;
+      }
+
+      return catalogPreviousActiveTabStorage.get() || browseCatalogTab;
+    };
 
     disposeOnUnmount(this, [
       catalogEntityStore.watch(),
       reaction(
-        () => this.routeActiveTab,
+        () => routeActiveTab(),
         async (routeTab) => {
           catalogPreviousActiveTabStorage.set(this.routeActiveTab);
 

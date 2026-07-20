@@ -63,6 +63,10 @@ class NonInjectedWorkloadsOverview extends React.Component<Dependencies> {
   }
 
   componentDidMount() {
+    // Capture props before the reaction: mobx-react 9 forbids reading this.props
+    // inside a derivation (the reaction's data function below).
+    const { clusterFrameContext } = this.props;
+
     disposeOnUnmount(this, [
       this.props.subscribeStores(
         [
@@ -80,7 +84,7 @@ class NonInjectedWorkloadsOverview extends React.Component<Dependencies> {
         },
       ),
       reaction(
-        () => this.props.clusterFrameContext.contextNamespaces.slice(),
+        () => clusterFrameContext.contextNamespaces.slice(),
         () => {
           // clear load errors
           this.loadErrors.length = 0;
