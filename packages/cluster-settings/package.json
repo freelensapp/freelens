@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
-    "@types/react": "^17.0.93"
+    "@types/react": "catalog:"
   },
   "publishConfig": {
     "access": "public",

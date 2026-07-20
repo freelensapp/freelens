@@ -38,10 +38,10 @@
     "es-toolkit": "^1.49.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^12.1.5",
-    "@types/react": "^17.0.93",
+    "@types/react": "catalog:",
     "jsdom": "^29.1.1",
     "mobx-react": "^7.6.0",
-    "react": "^17.0.2",
+    "react": "catalog:",
     "typescript": "^7.0.2",
     "vitest": "^4.1.10"
   },

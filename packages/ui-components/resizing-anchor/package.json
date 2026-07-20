@@ -29,11 +29,11 @@
     "es-toolkit": "^1.49.0",
     "mobx": "^6.15.0",
     "mobx-react": "^7.6.0",
-    "react": "^17.0.2"
+    "react": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
-    "@types/react": "^17.0.93",
+    "@types/react": "catalog:",
     "typescript": "^7.0.2",
     "vitest": "^4.1.10"
   },
