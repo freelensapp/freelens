@@ -460,7 +460,7 @@ jobs:
         run: |
           set -eo pipefail
           grype="${{ steps.grype.outputs.cmd }}"
-          mkdir -p sarifs
+          mkdir -p sarifs jsons
           shopt -s nullglob
           # Merge the per-arch runtime package maps (from test-integration) into
           # one <name>@<version> -> pnpm-store-path object. Only runtime findings
@@ -494,7 +494,7 @@ jobs:
             all=$(yq -pj -oj '.packages | length' "$sbom")
             run=$(yq -pj -oj '.packages | length' "runtime-${name}.spdx.json")
             echo "::group::grype ${sbom} (${all} -> ${run} runtime packages)"
-            "$grype" "sbom:runtime-${name}.spdx.json" -o sarif > "sarifs/${name}.sarif"
+            "$grype" "sbom:runtime-${name}.spdx.json" -o sarif="sarifs/${name}.sarif" -o json="jsons/${name}.json"
             echo "::endgroup::"
             found=$((found + 1))
           done
@@ -560,9 +560,135 @@ jobs:
                   ]
                 }
               ' > grype.sarif
+          # Same merge for the JSON report grype produced alongside the SARIF:
+          # dedupe matches by vulnerability + package + version and patch each
+          # match's artifact location the same way (grype also leaves this empty
+          # for SBOM scans). post-scan-report reads this instead of the SARIF
+          # because the JSON carries fields SARIF does not: component type,
+          # installed/fixed-in versions and the risk score.
+          yq ea -pj -oj -I0 '[.]' jsons/*.json |
+            yq -pj -oj '
+                (load("prod-set.json")) as $prod |
+                (load("sbom-paths.json")) as $paths |
+                . as $x |
+                {
+                  "matches": (
+                    [$x[].matches[]]
+                    | unique_by(.vulnerability.id + "@" + .artifact.name + "@" + .artifact.version)
+                    | map(
+                        (.artifact.name + "@" + .artifact.version) as $key
+                        | .artifact.locations = [{"path": ($prod[$key] // $paths[$key] // ("sbom/" + $key))}]
+                      )
+                  )
+                }
+              ' > grype.json
 
       - name: Upload Grype SARIF to code scanning
         uses: github/codeql-action/upload-sarif@v4
         with:
           sarif_file: grype.sarif
           category: grype
+
+      - name: Upload merged vulnerability report
+        uses: actions/upload-artifact@v7
+        with:
+          name: "${{ github.event.repository.name }}-grype.json"
+          path: grype.json
+
+  post-scan-report:
+    name: post scan report to discussion
+
+    # Turns the merged Grype JSON report from security-scan into a markdown
+    # table and replaces the tracking discussion's body with it, so the
+    # discussion always reflects the latest main-branch scan. Runs for the
+    # real branch build (push/dispatch on main) only, never for PRs.
+    if: github.ref_name == 'main' && github.event_name != 'pull_request'
+
+    needs:
+      - security-scan
+
+    runs-on: ubuntu-24.04-arm
+
+    permissions:
+      actions: read
+      discussions: write
+
+    env:
+      DISCUSSION_NUMBER: 2243
+
+    steps:
+      - name: Download merged vulnerability report
+        uses: actions/download-artifact@v8
+        with:
+          name: "${{ github.event.repository.name }}-grype.json"
+
+      - name: Build vulnerability table
+        run: |
+          set -eo pipefail
+          # Flatten each match into a table row. severity/risk/type/installed
+          # version/fixed-in version come straight from grype's JSON fields
+          # (mirroring its own default table columns); the advisory link uses
+          # vulnerability.dataSource; the location is the path security-scan
+          # already resolved (pnpm-store path for npm, shipped binary path
+          # otherwise). negrisk is a sort-only helper: yq has no unary minus, so
+          # descending-by-risk needs the value pre-negated.
+          yq -pj -oj '
+            ({"Critical":0,"High":1,"Medium":2,"Low":3,"Negligible":4,"Unknown":5}) as $rank
+            | (.matches // [])
+            | map(
+                {
+                  "severity": .vulnerability.severity,
+                  "risk": (.vulnerability.risk // 0),
+                  "package": .artifact.name,
+                  "type": .artifact.type,
+                  "installed": .artifact.version,
+                  "fixed": ((.vulnerability.fix.versions // []) | join(", ")),
+                  "advisory": ("[" + .vulnerability.id + "](" + (.vulnerability.dataSource // "") + ")"),
+                  "location": (.artifact.locations[0].path // ""),
+                  "rank": ($rank[.vulnerability.severity] // 9),
+                  "negrisk": (0 - (.vulnerability.risk // 0))
+                }
+              )
+            | sort_by(.rank, .negrisk, .package)
+            | map(del(.rank) | del(.negrisk))
+          ' grype.json > rows.json
+          count=$(yq -pj -oj 'length' rows.json)
+          {
+            echo "Grype runtime vulnerability scan for [\`${GITHUB_SHA:0:12}\`]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/commit/$GITHUB_SHA), updated $(date -u +'%Y-%m-%d %H:%M UTC') by [this run]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)."
+            echo
+            if [[ "$count" -eq 0 ]]; then
+              echo "No runtime vulnerabilities found."
+            else
+              echo "| Severity | Risk | Package | Type | Installed | Fixed In | Advisory | Location |"
+              echo "| --- | --- | --- | --- | --- | --- | --- | --- |"
+              # LC_ALL=C: printf "%.1f" must use a period regardless of the
+              # runner's locale, or it silently truncates "6.6" to "6" (parsed
+              # up to the first non-digit) and re-renders it as "6,0".
+              yq -pj -ot rows.json | tail -n +2 |
+                LC_ALL=C awk -F'\t' '{printf "| %s | %.1f | %s | %s | %s | %s | %s | %s |\n", $1, $2, $3, $4, $5, $6, $7, $8}'
+            fi
+          } > body.md
+          echo "runtime vulnerabilities: $count"
+
+      - name: Update discussion
+        run: |
+          set -eo pipefail
+          discussion_id=$(gh api graphql -f query='
+            query($owner:String!,$repo:String!,$num:Int!){
+              repository(owner:$owner,name:$repo){
+                discussion(number:$num){ id }
+              }
+            }' -f owner="${{ github.repository_owner }}" -f repo="${{ github.event.repository.name }}" -F num="$DISCUSSION_NUMBER" \
+            --jq '.data.repository.discussion.id')
+          if [[ -z "$discussion_id" || "$discussion_id" == "null" ]]; then
+            echo "Discussion #$DISCUSSION_NUMBER not found" >&2
+            exit 1
+          fi
+          gh api graphql -f query='
+            mutation($id:ID!,$body:String!){
+              updateDiscussion(input:{discussionId:$id, body:$body}){
+                discussion{ id }
+              }
+            }' -f id="$discussion_id" -F body=@body.md
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
