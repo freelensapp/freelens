@@ -10,7 +10,7 @@ import { Icon } from "@freelensapp/icon";
 import { cssNames, stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { orderBy } from "es-toolkit/compat";
-import { computed, makeObservable, observable } from "mobx";
+import { observable } from "mobx";
 import { observer } from "mobx-react";
 import moment from "moment-timezone";
 import React from "react";
@@ -86,10 +86,12 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
 
   constructor(props: Dependencies & EventsProps) {
     super(props);
-    makeObservable(this);
   }
 
-  @computed get items(): KubeEvent[] {
+  // Plain getters (not @computed): they read this.props, which mobx-react 9
+  // forbids inside a derivation. Read from render, reactivity is preserved by
+  // the observer render reaction.
+  get items(): KubeEvent[] {
     const items = this.props.eventStore.contextItems;
     const { sortBy, orderBy: order } = this.sorting;
 
@@ -98,7 +100,7 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
     return orderBy(items, this.sortingCallbacks[sortBy], order);
   }
 
-  @computed get visibleItems(): KubeEvent[] {
+  get visibleItems(): KubeEvent[] {
     const { compact, compactLimit } = this.props;
 
     if (compact) {

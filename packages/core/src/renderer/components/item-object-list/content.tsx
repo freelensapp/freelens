@@ -10,7 +10,7 @@ import { Spinner } from "@freelensapp/spinner";
 import { cssNames, isDefined, isReactNode, noop, prevDefault, stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
-import { action, computed, makeObservable, observable } from "mobx";
+import { action, makeObservable, observable } from "mobx";
 import { Observer, observer } from "mobx-react";
 import React from "react";
 import isTableColumnHiddenInjectable from "../../../features/user-preferences/common/is-table-column-hidden.injectable";
@@ -289,7 +289,10 @@ export class NonInjectedItemListLayoutContent<
     return flexGrow ? parseFloat(flexGrow) : 1;
   }
 
-  @computed get failedToLoad() {
+  // Plain getter (not @computed): reads this.props, which mobx-react 9 forbids
+  // inside a derivation. Read from render, reactivity is preserved by the
+  // observer render reaction.
+  get failedToLoad() {
     return this.props.store.failedLoading;
   }
 

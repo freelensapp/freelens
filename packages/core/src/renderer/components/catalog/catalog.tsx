@@ -12,7 +12,7 @@
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { action, computed, makeObservable, observable, reaction, runInAction, when } from "mobx";
+import { action, makeObservable, observable, reaction, runInAction, when } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import emitAppEventInjectable from "../../../common/app-event-bus/emit-event.injectable";
@@ -92,7 +92,9 @@ class NonInjectedCatalog extends React.Component<Dependencies> {
     makeObservable(this);
   }
 
-  @computed
+  // Plain getter (not @computed): reads this.props, which mobx-react 9 forbids
+  // inside a derivation. Read from render, reactivity is preserved by the
+  // observer render reaction.
   get routeActiveTab(): string {
     const {
       routeParameters: { group, kind },

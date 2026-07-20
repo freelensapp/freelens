@@ -14,7 +14,7 @@ import { cssNames, disposer } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
 import { debounce, merge } from "es-toolkit/compat";
-import { action, computed, makeObservable, observable, reaction } from "mobx";
+import { action, makeObservable, observable, reaction } from "mobx";
 import { observer } from "mobx-react";
 import { editor, Uri } from "monaco-editor";
 import React from "react";
@@ -95,15 +95,18 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
     autoBindReact(this);
   }
 
-  @computed get id(): MonacoEditorId {
+  // Plain getters (not @computed): they read this.props (directly or via id),
+  // which mobx-react 9 forbids inside a derivation. Read from render,
+  // reactivity is preserved by the observer render reaction.
+  get id(): MonacoEditorId {
     return this.props.id ?? this.staticId;
   }
 
-  @computed get theme() {
+  get theme() {
     return this.props.theme ?? this.props.activeTheme.get().monacoTheme;
   }
 
-  @computed get model(): editor.ITextModel {
+  get model(): editor.ITextModel {
     const uri = createMonacoUri(this.id);
     const model = editor.getModel(uri);
 
@@ -121,11 +124,10 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
     return editor.createModel(value, language, uri);
   }
 
-  @computed get options(): editor.IStandaloneEditorConstructionOptions {
+  get options(): editor.IStandaloneEditorConstructionOptions {
     return merge({}, this.props.state.editorConfiguration, this.props.options);
   }
 
-  @computed
   private get logMetadata() {
     return {
       editorId: this.id,

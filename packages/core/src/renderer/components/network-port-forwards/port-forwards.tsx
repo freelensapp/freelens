@@ -7,7 +7,6 @@
 import "./port-forwards.scss";
 
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { computed, makeObservable } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import navigateToPortForwardsInjectable from "../../../common/front-end-routing/routes/cluster/network/port-forwards/navigate-to-port-forwards.injectable";
@@ -46,15 +45,15 @@ interface Dependencies {
 class NonInjectedPortForwards extends React.Component<Dependencies> {
   constructor(props: Dependencies) {
     super(props);
-
-    makeObservable(this);
   }
 
   componentDidMount() {
     disposeOnUnmount(this, [this.props.portForwardStore.watch()]);
   }
 
-  @computed
+  // Plain getter (not @computed): reads this.props, which mobx-react 9 forbids
+  // inside a derivation. Read from render, reactivity is preserved by the
+  // observer render reaction.
   get selectedPortForward() {
     const forwardport = this.props.forwardport.get();
 

@@ -10,7 +10,7 @@ import { formatNodeTaint } from "@freelensapp/kube-object";
 import { Tooltip, TooltipPosition } from "@freelensapp/tooltip";
 import { bytesToUnits, cpuUnitsToNumber, interval, unitsToBytes } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { computed, makeObservable, observable } from "mobx";
+import { makeObservable, observable } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import requestAllNodeMetricsInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-metrics-for-all-nodes.injectable";
@@ -179,7 +179,10 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
     this.metricsWatcher.stop();
   }
 
-  @computed get podsByNode(): Map<string, Pod[]> {
+  // Plain getter (not @computed): reads this.props, which mobx-react 9 forbids
+  // inside a derivation. Read from render, reactivity is preserved by the
+  // observer render reaction.
+  get podsByNode(): Map<string, Pod[]> {
     const podsByNode = new Map<string, Pod[]>();
 
     if (!this.props.podStore.isLoaded) {

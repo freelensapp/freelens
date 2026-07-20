@@ -10,7 +10,7 @@ import { cssNames, noop } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
 import { groupBy } from "es-toolkit";
-import { computed, makeObservable, untracked } from "mobx";
+import { untracked } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import selectedFilterNamespacesInjectable from "../../../common/k8s-api/selected-filter-namespaces.injectable";
@@ -187,7 +187,6 @@ class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends bool
 
   constructor(props: ItemListLayoutProps<I, PreLoadStores> & Dependencies) {
     super(props);
-    makeObservable(this);
     autoBindReact(this);
   }
 
@@ -221,7 +220,10 @@ class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends bool
     this.props.itemListLayoutStorage.merge({ showFilters });
   }
 
-  @computed get filters() {
+  // Plain getters (not @computed): they read this.props (directly or via
+  // filters), which mobx-react 9 forbids inside a derivation. Read from render,
+  // reactivity is preserved by the observer render reaction.
+  get filters() {
     let { activeFilters } = this.props.pageFiltersStore;
     const { searchFilters = [] } = this.props;
 
@@ -236,7 +238,7 @@ class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends bool
     this.showFilters = !this.showFilters;
   }
 
-  @computed get isReady() {
+  get isReady() {
     return this.props.isReady ?? this.props.store.isLoaded;
   }
 
@@ -273,7 +275,7 @@ class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends bool
     },
   };
 
-  @computed get items() {
+  get items() {
     const filterGroups = groupBy(this.filters, ({ type }) => type);
     const filterItems: ListLayoutItemsFilter<I>[] = [];
 

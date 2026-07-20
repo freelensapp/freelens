@@ -9,7 +9,6 @@ import "./view.scss";
 import { Icon } from "@freelensapp/icon";
 import { iter, stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { computed, makeObservable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -44,10 +43,12 @@ class NonInjectedCustomResourceDefinitions extends React.Component<Dependencies>
 
   constructor(props: Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
-  @computed get items() {
+  // Plain getters (not @computed): they read this.props, which mobx-react 9
+  // forbids inside a derivation. Read from render, reactivity is preserved by
+  // the observer render reaction.
+  get items() {
     const selectedGroups = this.props.selectedGroups.get();
 
     if (selectedGroups.size) {
@@ -57,7 +58,7 @@ class NonInjectedCustomResourceDefinitions extends React.Component<Dependencies>
     return this.props.customResourceDefinitionStore.items; // show all by default
   }
 
-  @computed get groupSelectOptions() {
+  get groupSelectOptions() {
     const selectedGroups = this.props.selectedGroups.get();
 
     const groupList = [

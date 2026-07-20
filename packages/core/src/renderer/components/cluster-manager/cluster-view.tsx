@@ -7,7 +7,7 @@
 import "./cluster-view.scss";
 
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { computed, makeObservable, reaction } from "mobx";
+import { computed, reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import navigateToCatalogInjectable from "../../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
@@ -42,14 +42,16 @@ interface Dependencies {
 class NonInjectedClusterView extends React.Component<Dependencies> {
   constructor(props: Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   get clusterId() {
     return this.props.clusterId.get();
   }
 
-  @computed get cluster(): Cluster | undefined {
+  // Plain getter (not @computed): reads this.props, which mobx-react 9 forbids
+  // inside a derivation. Read from render, reactivity is preserved by the
+  // observer render reaction.
+  get cluster(): Cluster | undefined {
     return this.props.getClusterById(this.clusterId);
   }
 
@@ -58,7 +60,7 @@ class NonInjectedClusterView extends React.Component<Dependencies> {
     requiresReaction: true,
   });
 
-  @computed get isReady(): boolean {
+  get isReady(): boolean {
     const { cluster } = this;
 
     if (!cluster) {

@@ -8,7 +8,6 @@ import { Icon } from "@freelensapp/icon";
 import { Spinner } from "@freelensapp/spinner";
 import { cssNames, prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { computed, makeObservable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
@@ -68,7 +67,6 @@ interface Dependencies {
 class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Dependencies> {
   constructor(props: ClusterIssuesProps & Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   async componentDidMount() {
@@ -79,7 +77,10 @@ class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Depe
     this.props.eventStore.loadAll({ namespaces });
   }
 
-  @computed get warnings(): Warning[] {
+  // Plain getter (not @computed): reads this.props, which mobx-react 9 forbids
+  // inside a derivation. Read from render, reactivity is preserved by the
+  // observer render reaction.
+  get warnings(): Warning[] {
     return [
       ...this.props.nodeStore.items.flatMap((node) =>
         node.getWarningConditions().map(({ message }) => ({

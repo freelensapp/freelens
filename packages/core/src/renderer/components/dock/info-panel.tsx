@@ -12,7 +12,7 @@ import { showCheckedErrorNotificationInjectable, showSuccessNotificationInjectab
 import { Spinner } from "@freelensapp/spinner";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { computed, makeObservable, observable, reaction } from "mobx";
+import { makeObservable, observable, reaction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React, { Component } from "react";
 import dockStoreInjectable from "./dock/store.injectable";
@@ -82,7 +82,10 @@ class NonInjectedInfoPanel extends Component<InfoPanelProps & Dependencies> {
     ]);
   }
 
-  @computed get errorInfo() {
+  // Plain getter (not @computed): reads this.props, which mobx-react 9 forbids
+  // inside a derivation. Read from render, reactivity is preserved by the
+  // observer render reaction.
+  get errorInfo() {
     return this.props.error;
   }
 

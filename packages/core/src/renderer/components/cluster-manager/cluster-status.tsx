@@ -51,7 +51,10 @@ class NonInjectedClusterStatus extends React.Component<ClusterStatusProps & Depe
     return this.props.cluster;
   }
 
-  @computed get entity() {
+  // Plain getter (not @computed): reads this.props, which mobx-react 9 forbids
+  // inside a derivation. Read from render, reactivity is preserved by the
+  // observer render reaction.
+  get entity() {
     return this.props.entityRegistry.getById(this.cluster.id);
   }
 
