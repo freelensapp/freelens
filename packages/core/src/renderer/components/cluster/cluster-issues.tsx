@@ -8,6 +8,7 @@ import { Icon } from "@freelensapp/icon";
 import { Spinner } from "@freelensapp/spinner";
 import { cssNames, prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
@@ -65,8 +66,16 @@ interface Dependencies {
 
 @observer
 class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Dependencies> {
+  // mobx-react 9 forbids reading this.props inside a derivation. getTableRow is
+  // invoked from the Table/virtual-list row renderer — a derivation other than this
+  // component's own render — so it (and the warnings getter it calls) reads props
+  // from this observable snapshot, refreshed on every update, instead of this.props.
+  @observable.ref private observableProps: Readonly<ClusterIssuesProps & Dependencies>;
+
   constructor(props: ClusterIssuesProps & Dependencies) {
     super(props);
+    this.observableProps = props;
+    makeObservable(this);
   }
 
   async componentDidMount() {
@@ -77,12 +86,15 @@ class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Depe
     this.props.eventStore.loadAll({ namespaces });
   }
 
-  // Plain getter (not @computed): reads this.props, which mobx-react 9 forbids
-  // inside a derivation. Read from render, reactivity is preserved by the
-  // observer render reaction.
+  componentDidUpdate() {
+    this.observableProps = this.props;
+  }
+
   get warnings(): Warning[] {
+    const { nodeStore, eventStore, apiManager } = this.observableProps;
+
     return [
-      ...this.props.nodeStore.items.flatMap((node) =>
+      ...nodeStore.items.flatMap((node) =>
         node.getWarningConditions().map(({ message }) => ({
           selfLink: node.selfLink,
           getId: () => node.getId(),
@@ -93,21 +105,23 @@ class NonInjectedClusterIssues extends React.Component<ClusterIssuesProps & Depe
           ageMs: -node.getCreationTimestamp(),
         })),
       ),
-      ...this.props.eventStore.getWarnings().map((warning) => ({
+      ...eventStore.getWarnings().map((warning) => ({
         getId: () => warning.involvedObject.uid,
         getName: () => warning.involvedObject.name,
         renderAge: () => <KubeObjectAge key="age" object={warning} />,
         ageMs: -warning.getCreationTimestamp(),
         message: warning.message,
         kind: warning.kind,
-        selfLink: this.props.apiManager.lookupApiLink(warning.involvedObject, warning),
+        selfLink: apiManager.lookupApiLink(warning.involvedObject, warning),
       })),
     ];
   }
 
   getTableRow = (uid: string) => {
     const { warnings } = this;
-    const { kubeSelectedUrlParam, toggleKubeDetailsPane: toggleDetails } = this.props;
+    // Called from the Table/virtual-list row renderer (a foreign derivation), so read
+    // props from the observable snapshot instead of this.props (mobx-react 9).
+    const { kubeSelectedUrlParam, toggleKubeDetailsPane: toggleDetails } = this.observableProps;
     const warning = warnings.find((warn) => warn.getId() == uid);
 
     if (!warning) {

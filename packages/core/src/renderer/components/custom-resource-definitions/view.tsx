@@ -9,6 +9,7 @@ import "./view.scss";
 import { Icon } from "@freelensapp/icon";
 import { iter, stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -41,8 +42,21 @@ interface Dependencies {
 class NonInjectedCustomResourceDefinitions extends React.Component<Dependencies> {
   ALL_GROUPS = "All groups";
 
+  // mobx-react 9 forbids reading this.props inside a derivation. `groupSelectOptions` and
+  // `getPlaceholder` are reached from the `customizeHeader` render prop, which
+  // KubeObjectListLayout invokes during its own render — a derivation other than this
+  // component's — so they read props from this observable snapshot, refreshed on every
+  // update, instead of this.props.
+  @observable.ref private observableProps: Readonly<Dependencies>;
+
   constructor(props: Dependencies) {
     super(props);
+    this.observableProps = props;
+    makeObservable(this);
+  }
+
+  componentDidUpdate() {
+    this.observableProps = this.props;
   }
 
   // Plain getters (not @computed): they read this.props, which mobx-react 9
@@ -59,7 +73,7 @@ class NonInjectedCustomResourceDefinitions extends React.Component<Dependencies>
   }
 
   get groupSelectOptions() {
-    const selectedGroups = this.props.selectedGroups.get();
+    const selectedGroups = this.observableProps.selectedGroups.get();
 
     const groupList = [
       {
@@ -70,7 +84,7 @@ class NonInjectedCustomResourceDefinitions extends React.Component<Dependencies>
     ];
 
     groupList.push(
-      ...Object.keys(this.props.customResourceDefinitionStore.groups).map((group) => ({
+      ...Object.keys(this.observableProps.customResourceDefinitionStore.groups).map((group) => ({
         value: group,
         label: group,
         isSelected: selectedGroups.size === 0 || selectedGroups.has(group),
@@ -89,7 +103,7 @@ class NonInjectedCustomResourceDefinitions extends React.Component<Dependencies>
   };
 
   private getPlaceholder() {
-    const selectedGroups = this.props.selectedGroups.get();
+    const selectedGroups = this.observableProps.selectedGroups.get();
 
     if (selectedGroups.size === 0) {
       return this.ALL_GROUPS;

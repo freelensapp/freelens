@@ -8,6 +8,7 @@ import "./endpoint-subset-list.scss";
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
+import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -32,19 +33,32 @@ interface Dependencies {
 
 @observer
 class NonInjectedEndpointSubsetList extends React.Component<EndpointSubsetListProps & Dependencies> {
+  // mobx-react 9 forbids reading this.props inside a derivation. getAddressTableRow and
+  // getNotReadyAddressTableRow are invoked from the Table row renderer (a derivation
+  // other than this component's own render), so they (and renderAddressTableRow they
+  // call) read props from this observable snapshot, refreshed on every update, instead
+  // of this.props.
+  @observable.ref private observableProps: Readonly<EndpointSubsetListProps & Dependencies>;
+
   constructor(props: EndpointSubsetListProps & Dependencies) {
     super(props);
+    this.observableProps = props;
     autoBindReact(this);
+    makeObservable(this);
+  }
+
+  componentDidUpdate() {
+    this.observableProps = this.props;
   }
 
   getAddressTableRow(ip: string) {
-    const address = this.props.subset.addresses.find((address) => address.ip == ip);
+    const address = this.observableProps.subset.addresses.find((address) => address.ip == ip);
 
     return this.renderAddressTableRow(address);
   }
 
   getNotReadyAddressTableRow(ip: string) {
-    const address = this.props.subset.notReadyAddresses.find((address) => address.ip == ip);
+    const address = this.observableProps.subset.notReadyAddresses.find((address) => address.ip == ip);
 
     return this.renderAddressTableRow(address);
   }
@@ -77,7 +91,7 @@ class NonInjectedEndpointSubsetList extends React.Component<EndpointSubsetListPr
       return undefined;
     }
 
-    const { endpoint, getDetailsUrl, apiManager } = this.props;
+    const { endpoint, getDetailsUrl, apiManager } = this.observableProps;
 
     return (
       <TableRow key={address.ip} nowrap>

@@ -10,7 +10,7 @@ import { Icon } from "@freelensapp/icon";
 import { cssNames, stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { orderBy } from "es-toolkit/compat";
-import { observable } from "mobx";
+import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import moment from "moment-timezone";
 import React from "react";
@@ -70,6 +70,13 @@ interface Dependencies {
 class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
   static defaultProps = defaultProps as object;
 
+  // mobx-react 9 forbids reading this.props inside a derivation. customizeHeader,
+  // getItems and the renderTableContents closure are invoked from the
+  // KubeObjectListLayout/Table render (a foreign derivation), so they (and the
+  // items/visibleItems getters they call) read props from this observable
+  // snapshot, refreshed on every update, instead of this.props.
+  @observable.ref private observableProps: Readonly<Dependencies & EventsProps>;
+
   readonly sorting = observable.object<TableSortParams>({
     sortBy: columnId.age,
     orderBy: "asc",
@@ -86,13 +93,19 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
 
   constructor(props: Dependencies & EventsProps) {
     super(props);
+    this.observableProps = props;
+    makeObservable(this);
   }
 
-  // Plain getters (not @computed): they read this.props, which mobx-react 9
-  // forbids inside a derivation. Read from render, reactivity is preserved by
-  // the observer render reaction.
+  componentDidUpdate() {
+    this.observableProps = this.props;
+  }
+
+  // Plain getters (not @computed): they read props, which mobx-react 9
+  // forbids inside a derivation. Read from the observable snapshot, reactivity
+  // is preserved by the observer render reaction.
   get items(): KubeEvent[] {
-    const items = this.props.eventStore.contextItems;
+    const items = this.observableProps.eventStore.contextItems;
     const { sortBy, orderBy: order } = this.sorting;
 
     // we must sort items before passing to "KubeObjectListLayout -> Table"
@@ -101,7 +114,7 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
   }
 
   get visibleItems(): KubeEvent[] {
-    const { compact, compactLimit } = this.props;
+    const { compact, compactLimit } = this.observableProps;
 
     if (compact) {
       return this.items.slice(0, compactLimit);
@@ -111,7 +124,7 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
   }
 
   customizeHeader: HeaderCustomizer = ({ info, title, ...headerPlaceholders }) => {
-    const { compact, eventStore } = this.props;
+    const { compact, eventStore, navigateToEvents } = this.observableProps;
     const { items, visibleItems } = this;
     const allEventsAreShown = visibleItems.length === items.length;
 
@@ -128,7 +141,7 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
             {"("}
             {visibleItems.length}
             {" of "}
-            <a onClick={this.props.navigateToEvents}>{items.length}</a>
+            <a onClick={navigateToEvents}>{items.length}</a>
             {")"}
           </span>
         ),
@@ -197,7 +210,7 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
             <NamespaceSelectBadge key="namespace" namespace={event.getNs()} />,
             <Link
               key="link"
-              to={this.props.getDetailsUrl(apiManager.lookupApiLink(involvedObject, event))}
+              to={this.observableProps.getDetailsUrl(apiManager.lookupApiLink(involvedObject, event))}
               onClick={stopPropagation}
             >
               <WithTooltip>{`${involvedObject.kind}: ${involvedObject.name}`}</WithTooltip>
