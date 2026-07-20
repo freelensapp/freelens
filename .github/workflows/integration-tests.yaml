@@ -566,3 +566,101 @@ jobs:
         with:
           sarif_file: grype.sarif
           category: grype
+
+      - name: Upload merged SARIF
+        uses: actions/upload-artifact@v7
+        with:
+          name: "${{ github.event.repository.name }}-grype.sarif"
+          path: grype.sarif
+
+  post-scan-report:
+    name: post scan report to discussion
+
+    # Turns the merged Grype SARIF from security-scan into a markdown table and
+    # replaces the tracking discussion's body with it, so the discussion always
+    # reflects the latest main-branch scan. Runs for the real branch build
+    # (push/dispatch on main) only, never for PRs.
+    if: github.ref_name == 'main' && github.event_name != 'pull_request'
+
+    needs:
+      - security-scan
+
+    runs-on: ubuntu-24.04-arm
+
+    permissions:
+      actions: read
+      discussions: write
+
+    env:
+      DISCUSSION_NUMBER: 2243
+
+    steps:
+      - name: Download merged SARIF
+        uses: actions/download-artifact@v8
+        with:
+          name: "${{ github.event.repository.name }}-grype.sarif"
+
+      - name: Build vulnerability table
+        run: |
+          set -eo pipefail
+          # Flatten each SARIF result into a table row: severity and package/type
+          # come from the message text ("A <severity> vulnerability in <type>
+          # package: <name>, version <version> was found at: <path>"), the
+          # advisory link comes from the matching rule's helpUri, and the
+          # location is the path security-scan already resolved (pnpm-store path
+          # for npm, shipped binary path otherwise).
+          yq -pj -oj '
+            (.runs[0].tool.driver.rules // []) as $rules
+            | ($rules | map({(.id): (.helpUri // "")}) | .[] as $i ireduce ({}; . * $i)) as $links
+            | ({"critical":0,"high":1,"medium":2,"low":3,"negligible":4,"unknown":5}) as $rank
+            | (.runs[0].results // [])
+            | map(
+                ((.message.text | capture("^A (?<sev>\S+) vulnerability in (?<typ>\S+) package: (?<n>.+?), version (?<v>.*?) was found at:")) // {}) as $p
+                | {
+                    "severity": ($p.sev // "unknown"),
+                    "package": ($p.n // "unknown"),
+                    "version": ($p.v // ""),
+                    "advisory": ("[" + .ruleId + "](" + ($links[.ruleId] // "") + ")"),
+                    "location": (.locations[0].physicalLocation.artifactLocation.uri // ""),
+                    "rank": ($rank[$p.sev] // 9)
+                  }
+              )
+            | sort_by(.rank, .package)
+            | map(del(.rank))
+          ' grype.sarif > rows.json
+          count=$(yq -pj -oj 'length' rows.json)
+          {
+            echo "Grype runtime vulnerability scan for [\`${GITHUB_SHA:0:12}\`]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/commit/$GITHUB_SHA), updated $(date -u +'%Y-%m-%d %H:%M UTC') by [this run]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)."
+            echo
+            if [[ "$count" -eq 0 ]]; then
+              echo "No runtime vulnerabilities found."
+            else
+              echo "| Severity | Package | Version | Advisory | Location |"
+              echo "| --- | --- | --- | --- | --- |"
+              yq -pj -ot rows.json | tail -n +2 | awk -F'\t' '{print "| " $1 " | " $2 " | " $3 " | " $4 " | " $5 " |"}'
+            fi
+          } > body.md
+          echo "runtime vulnerabilities: $count"
+
+      - name: Update discussion
+        run: |
+          set -eo pipefail
+          discussion_id=$(gh api graphql -f query='
+            query($owner:String!,$repo:String!,$num:Int!){
+              repository(owner:$owner,name:$repo){
+                discussion(number:$num){ id }
+              }
+            }' -f owner="${{ github.repository_owner }}" -f repo="${{ github.event.repository.name }}" -F num="$DISCUSSION_NUMBER" \
+            --jq '.data.repository.discussion.id')
+          if [[ -z "$discussion_id" || "$discussion_id" == "null" ]]; then
+            echo "Discussion #$DISCUSSION_NUMBER not found" >&2
+            exit 1
+          fi
+          gh api graphql -f query='
+            mutation($id:ID!,$body:String!){
+              updateDiscussion(input:{discussionId:$id, body:$body}){
+                discussion{ id }
+              }
+            }' -f id="$discussion_id" -F body=@body.md
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
