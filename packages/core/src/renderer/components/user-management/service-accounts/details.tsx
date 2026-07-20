@@ -37,11 +37,17 @@ class NonInjectedServiceAccountsDetails extends React.Component<ServiceAccountsD
   readonly imagePullSecrets = observable.array<Secret | string>();
 
   private defensiveLoadSecretIn =
-    (namespace: string) =>
+    (secretStore: SecretStore, namespace: string) =>
     ({ name }: { name: string }) =>
-      this.props.secretStore.load({ name, namespace }).catch(() => name);
+      secretStore.load({ name, namespace }).catch(() => name);
 
   componentDidMount(): void {
+    // Capture props before the autorun: this is a single-argument autorun, so its
+    // async callback IS the tracking function and mobx-react 9 forbids reading
+    // this.props inside it (directly or via the defensiveLoadSecretIn closure it
+    // invokes before the first await).
+    const { object: serviceAccount, secretStore } = this.props;
+
     disposeOnUnmount(this, [
       autorun(async () => {
         runInAction(() => {
@@ -49,14 +55,13 @@ class NonInjectedServiceAccountsDetails extends React.Component<ServiceAccountsD
           this.imagePullSecrets.clear();
         });
 
-        const { object: serviceAccount } = this.props;
         const namespace = serviceAccount?.getNs();
 
         if (!namespace) {
           return;
         }
 
-        const defensiveLoadSecret = this.defensiveLoadSecretIn(namespace);
+        const defensiveLoadSecret = this.defensiveLoadSecretIn(secretStore, namespace);
 
         const secretLoaders = Promise.all(serviceAccount.getSecrets().map(defensiveLoadSecret));
         const imagePullSecretLoaders = Promise.all(serviceAccount.getImagePullSecrets().map(defensiveLoadSecret));
