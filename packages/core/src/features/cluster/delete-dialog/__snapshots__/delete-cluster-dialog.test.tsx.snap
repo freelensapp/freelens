@@ -2376,7 +2376,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
           class="mt-4"
         >
           <div
-            class="Select theme-light ml-[1px] mr-[1px] css-b62m3t-container"
+            class="Select theme-lens ml-[1px] mr-[1px] css-b62m3t-container"
           >
             <span
               class="css-1f43avz-a11yText-A11yText"
@@ -3266,7 +3266,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
           class="mt-4"
         >
           <div
-            class="Select theme-light ml-[1px] mr-[1px] css-b62m3t-container"
+            class="Select theme-lens ml-[1px] mr-[1px] css-b62m3t-container"
           >
             <span
               class="css-1f43avz-a11yText-A11yText"
