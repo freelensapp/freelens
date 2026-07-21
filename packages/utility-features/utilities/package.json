@@ -38,10 +38,8 @@
     "@freelensapp/typescript": "workspace:^",
     "@types/node": "~24.12.4",
     "@types/react": "catalog:",
-    "@types/react-router": "^5.1.20",
     "@types/semver": "^7.7.1",
     "jsdom": "^29.1.1",
-    "react-router": "^5.3.4",
     "type-fest": "^5.6.0",
     "vitest": "^4.1.10"
   },

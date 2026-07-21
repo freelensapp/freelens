@@ -6,20 +6,19 @@
 
 import { createMemoryHistory } from "history";
 import { autorun, runInAction } from "mobx";
-import { toHistoryV4 } from "./history-compat";
 import { createObservableHistory } from "./observable-history";
 import { searchParamsOptions } from "./search-params";
 
 import type { MemoryHistory } from "history";
 
-import type { HistoryAdapter, ObservableHistory } from "./observable-history";
+import type { ObservableHistory } from "./observable-history";
 
 function createTestObservableHistory(initialEntries: string[] = ["/"]): {
   history: MemoryHistory;
   navigation: ObservableHistory<unknown>;
 } {
   const history = createMemoryHistory({ initialEntries, initialIndex: 0 });
-  const navigation = createObservableHistory<unknown>(toHistoryV4(history) as unknown as HistoryAdapter, {
+  const navigation = createObservableHistory<unknown>(history, {
     searchParams: searchParamsOptions,
   });
 
@@ -63,7 +62,7 @@ describe("ObservableHistory", () => {
     expect(navigation.location.pathname).toBe("/first");
   });
 
-  it("exposes the history v4 length", () => {
+  it("exposes the v4-style length", () => {
     const { navigation } = createTestObservableHistory(["/first"]);
 
     expect(navigation.length).toBe(1);

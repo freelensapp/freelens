@@ -14,7 +14,6 @@ import { createMemoryHistory } from "history";
 import React, { createRef } from "react";
 import { routingFeature } from "./feature";
 import { historyInjectable } from "./history.injectable";
-import { toHistoryV4 } from "./history-compat";
 import { Link, NavLink } from "./link";
 import { observableHistoryInjectionToken } from "./observable-history.injectable";
 
@@ -33,7 +32,7 @@ function setup(initialEntries: string[] = ["/"]) {
 
   const memoryHistory = createMemoryHistory({ initialEntries, initialIndex: 0 });
 
-  di.override(historyInjectable, () => toHistoryV4(memoryHistory));
+  di.override(historyInjectable, () => memoryHistory);
 
   const history = di.inject(observableHistoryInjectionToken) as ObservableHistory;
   const renderInContext = (ui: React.ReactElement): RenderResult =>

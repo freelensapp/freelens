@@ -9,8 +9,6 @@ import { historyInjectable } from "./history.injectable";
 import { createObservableHistory, ObservableHistory } from "./observable-history";
 import { searchParamsOptions } from "./search-params";
 
-import type { HistoryAdapter } from "./observable-history";
-
 export const observableHistoryInjectionToken = getInjectionToken<ObservableHistory<unknown>>({
   id: "observable-history-injection-token",
 });
@@ -20,10 +18,7 @@ export const observableHistoryInjectable = getInjectable({
 
   instantiate: (di) => {
     const history = di.inject(historyInjectable);
-    // `history` is already adapted to the history v4 surface (see
-    // `toHistoryV4`), which is what the observable wrapper consumes at runtime.
-    // Its types still target history v5, hence the cast to `HistoryAdapter`.
-    const navigation = createObservableHistory<unknown>(history as unknown as HistoryAdapter, {
+    const navigation = createObservableHistory<unknown>(history, {
       searchParams: searchParamsOptions,
     });
 
