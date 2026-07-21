@@ -7,12 +7,12 @@
 import "./release-details.scss";
 
 import { Button } from "@freelensapp/button";
+import { Link } from "@freelensapp/routing";
 import { Spinner } from "@freelensapp/spinner";
 import { stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { kebabCase } from "es-toolkit";
 import { observer } from "mobx-react";
-import { Link } from "react-router-dom";
 import { Badge } from "../../badge";
 import { Checkbox } from "../../checkbox";
 import { DrawerItem, DrawerTitle } from "../../drawer";

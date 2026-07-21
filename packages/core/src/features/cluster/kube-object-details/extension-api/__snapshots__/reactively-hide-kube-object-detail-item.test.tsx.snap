@@ -223,7 +223,7 @@ exports[`reactively hide kube object detail item > renders 1`] = `
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon svg focusable"
@@ -1020,7 +1020,7 @@ exports[`reactively hide kube object detail item > when the item is shown > rend
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon svg focusable"

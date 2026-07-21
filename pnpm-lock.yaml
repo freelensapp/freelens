@@ -1199,16 +1199,46 @@ importers:
       '@ogre-tools/injectable':
         specifier: ^17.11.1
         version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(lodash@4.18.1)
+      '@ogre-tools/injectable-react':
+        specifier: ^17.11.1
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(lodash@4.18.1))(lodash@4.18.1)(mobx-react@9.2.2(mobx@6.15.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(mobx@6.15.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       history:
         specifier: ^5.3.0
         version: 5.3.0
       mobx:
         specifier: ^6.15.0
         version: 6.15.0
+      mobx-react:
+        specifier: ^9.1.1
+        version: 9.2.2(mobx@6.15.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react:
+        specifier: 'catalog:'
+        version: 18.3.1
+      react-dom:
+        specifier: 'catalog:'
+        version: 18.3.1(react@18.3.1)
     devDependencies:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../infrastructure/typescript
+      '@ogre-tools/injectable-extension-for-mobx':
+        specifier: ^17.11.1
+        version: 17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(@ogre-tools/injectable@17.11.1(@ogre-tools/fp@17.11.1(lodash@4.18.1))(lodash@4.18.1))(lodash@4.18.1)(mobx@6.15.0)
+      '@testing-library/jest-dom':
+        specifier: ^6.9.1
+        version: 6.9.1
+      '@testing-library/react':
+        specifier: ^15.0.7
+        version: 15.0.7(@types/react@18.3.31)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@testing-library/user-event':
+        specifier: ^14.6.1
+        version: 14.6.1(@testing-library/dom@10.4.1)
+      '@types/react':
+        specifier: 'catalog:'
+        version: 18.3.31
+      '@types/react-dom':
+        specifier: 'catalog:'
+        version: 18.3.7(@types/react@18.3.31)
       vitest:
         specifier: ^4.1.10
         version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
@@ -1721,6 +1751,9 @@ importers:
       '@freelensapp/logger':
         specifier: workspace:^
         version: link:../../logger
+      '@freelensapp/routing':
+        specifier: workspace:^
+        version: link:../../routing
       '@freelensapp/tooltip':
         specifier: workspace:^
         version: link:../tooltip
@@ -1745,9 +1778,6 @@ importers:
       react-dom:
         specifier: 'catalog:'
         version: 18.3.1(react@18.3.1)
-      react-router-dom:
-        specifier: ^5.3.4
-        version: 5.3.4(react@18.3.1)
     devDependencies:
       '@freelensapp/feature-core':
         specifier: workspace:^
@@ -1767,9 +1797,6 @@ importers:
       '@types/react':
         specifier: 'catalog:'
         version: 18.3.31
-      '@types/react-router-dom':
-        specifier: ^5.3.3
-        version: 5.3.3
       history:
         specifier: ^5.3.0
         version: 5.3.0

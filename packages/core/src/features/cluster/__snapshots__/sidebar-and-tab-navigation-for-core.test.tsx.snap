@@ -110,7 +110,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
                 aria-current="page"
                 class="navItem active"
                 data-testid="link-for-sidebar-item-workloads"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -826,7 +826,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
                 aria-current="page"
                 class="navItem active"
                 data-testid="link-for-sidebar-item-workloads"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -1480,7 +1480,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-favorites"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -1542,7 +1542,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
                 aria-current="page"
                 class="navItem active"
                 data-testid="link-for-sidebar-item-workloads"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -1649,7 +1649,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-some-parent"
-                href="/"
+                href="/workloads"
               >
                 <div
                   data-testid="some-icon-for-parent"
@@ -1681,7 +1681,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
                   <a
                     class="navItem"
                     data-testid="link-for-sidebar-item-some-child"
-                    href="/"
+                    href="/workloads"
                   >
                     <span>
                       Some child
@@ -1733,7 +1733,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-network"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -1802,7 +1802,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-helm"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -2242,7 +2242,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-favorites"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -2303,7 +2303,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-workloads"
-                href="/"
+                href="/some-child-page"
               >
                 <i
                   class="Icon svg focusable"
@@ -2411,7 +2411,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
                 aria-current="page"
                 class="navItem active"
                 data-testid="link-for-sidebar-item-some-parent"
-                href="/"
+                href="/some-child-page"
               >
                 <div
                   data-testid="some-icon-for-parent"
@@ -2444,7 +2444,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
                     aria-current="page"
                     class="navItem active"
                     data-testid="link-for-sidebar-item-some-child"
-                    href="/"
+                    href="/some-child-page"
                   >
                     <span>
                       Some child
@@ -2496,7 +2496,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-network"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -2565,7 +2565,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-helm"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -2941,7 +2941,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-workloads"
-                href="/"
+                href="/some-child-page"
               >
                 <i
                   class="Icon svg focusable"
@@ -3049,7 +3049,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
                 aria-current="page"
                 class="navItem active"
                 data-testid="link-for-sidebar-item-some-parent"
-                href="/"
+                href="/some-child-page"
               >
                 <div
                   data-testid="some-icon-for-parent"
@@ -3533,7 +3533,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
                 aria-current="page"
                 class="navItem active"
                 data-testid="link-for-sidebar-item-workloads"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -4295,7 +4295,7 @@ exports[`cluster - sidebar and tab navigation for core > given core registration
                 aria-current="page"
                 class="navItem active"
                 data-testid="link-for-sidebar-item-workloads"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"

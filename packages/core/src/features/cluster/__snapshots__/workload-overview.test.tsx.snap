@@ -111,7 +111,7 @@ exports[`workload overview > when navigating to workload overview > renders 1`] 
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon svg focusable"

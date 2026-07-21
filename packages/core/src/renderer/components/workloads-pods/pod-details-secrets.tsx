@@ -7,11 +7,11 @@
 import "./pod-details-secrets.scss";
 
 import { secretApiInjectable } from "@freelensapp/kube-api-specifics";
+import { Link } from "@freelensapp/routing";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { reaction } from "mobx";
 import { observer } from "mobx-react";
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
 
 import type { SecretApi } from "@freelensapp/kube-api";

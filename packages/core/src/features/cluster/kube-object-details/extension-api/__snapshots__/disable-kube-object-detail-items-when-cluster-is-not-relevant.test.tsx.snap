@@ -228,7 +228,7 @@ exports[`disable kube object detail items when cluster is not relevant > given e
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon svg focusable"
@@ -1020,7 +1020,7 @@ exports[`disable kube object detail items when cluster is not relevant > given e
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon svg focusable"
@@ -1812,7 +1812,7 @@ exports[`disable kube object detail items when cluster is not relevant > given n
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon svg focusable"

@@ -111,7 +111,7 @@ exports[`disable workloads overview details when cluster is not relevant > given
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon svg focusable"
@@ -796,7 +796,7 @@ exports[`disable workloads overview details when cluster is not relevant > given
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon svg focusable"
@@ -1476,7 +1476,7 @@ exports[`disable workloads overview details when cluster is not relevant > given
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon svg focusable"

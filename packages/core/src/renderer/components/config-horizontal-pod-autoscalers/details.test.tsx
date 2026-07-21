@@ -20,7 +20,8 @@ import type { RenderResult } from "@testing-library/react";
 
 import type { DiRender } from "../test-utils/renderFor";
 
-vi.mock("react-router-dom", () => ({
+vi.mock("@freelensapp/routing", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@freelensapp/routing")>()),
   Link: ({ children }: { children: StrictReactNode }) => children,
 }));
 

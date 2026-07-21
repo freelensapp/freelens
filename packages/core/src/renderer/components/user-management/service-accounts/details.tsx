@@ -7,12 +7,12 @@
 import "./details.scss";
 
 import { Icon } from "@freelensapp/icon";
+import { Link } from "@freelensapp/routing";
 import { Spinner } from "@freelensapp/spinner";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { autorun, observable, runInAction } from "mobx";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
-import { Link } from "react-router-dom";
 import secretStoreInjectable from "../../config-secrets/store.injectable";
 import { DrawerItem, DrawerTitle } from "../../drawer";
 import getDetailsUrlInjectable from "../../kube-detail-params/get-details-url.injectable";

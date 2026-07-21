@@ -49,7 +49,7 @@ exports[`disable sidebar items when cluster is not relevant > given extension sh
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon material focusable"
@@ -111,7 +111,7 @@ exports[`disable sidebar items when cluster is not relevant > given extension sh
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon svg focusable"
@@ -218,7 +218,7 @@ exports[`disable sidebar items when cluster is not relevant > given extension sh
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon material focusable"
@@ -287,7 +287,7 @@ exports[`disable sidebar items when cluster is not relevant > given extension sh
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon svg focusable"
@@ -408,7 +408,7 @@ exports[`disable sidebar items when cluster is not relevant > given extension sh
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-test-extension-sidebar-item-some"
-                  href="/"
+                  href="/workloads"
                 >
                   <div>
                     Some icon
@@ -756,7 +756,7 @@ exports[`disable sidebar items when cluster is not relevant > given extension sh
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon material focusable"
@@ -818,7 +818,7 @@ exports[`disable sidebar items when cluster is not relevant > given extension sh
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon svg focusable"
@@ -925,7 +925,7 @@ exports[`disable sidebar items when cluster is not relevant > given extension sh
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon material focusable"
@@ -994,7 +994,7 @@ exports[`disable sidebar items when cluster is not relevant > given extension sh
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon svg focusable"
@@ -1444,7 +1444,7 @@ exports[`disable sidebar items when cluster is not relevant > given not yet know
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon material focusable"
@@ -1506,7 +1506,7 @@ exports[`disable sidebar items when cluster is not relevant > given not yet know
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon svg focusable"
@@ -1613,7 +1613,7 @@ exports[`disable sidebar items when cluster is not relevant > given not yet know
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon material focusable"
@@ -1682,7 +1682,7 @@ exports[`disable sidebar items when cluster is not relevant > given not yet know
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon svg focusable"

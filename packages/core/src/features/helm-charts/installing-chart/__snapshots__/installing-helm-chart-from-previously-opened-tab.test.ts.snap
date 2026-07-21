@@ -111,7 +111,7 @@ exports[`installing helm chart from previously opened tab > given tab for instal
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon svg focusable"
@@ -801,7 +801,7 @@ exports[`installing helm chart from previously opened tab > given tab for instal
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon svg focusable"

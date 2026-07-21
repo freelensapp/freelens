@@ -110,7 +110,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
                 aria-current="page"
                 class="navItem active"
                 data-testid="link-for-sidebar-item-workloads"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -407,7 +407,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-some-extension-name-some-parent-id"
-                href="/"
+                href="/workloads"
               >
                 <div>
                   Some icon
@@ -834,7 +834,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
                 aria-current="page"
                 class="navItem active"
                 data-testid="link-for-sidebar-item-workloads"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -1131,7 +1131,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-some-extension-name-some-parent-id"
-                href="/"
+                href="/workloads"
               >
                 <div>
                   Some icon
@@ -1496,7 +1496,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-favorites"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -1558,7 +1558,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
                 aria-current="page"
                 class="navItem active"
                 data-testid="link-for-sidebar-item-workloads"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -1665,7 +1665,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-network"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -1734,7 +1734,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-helm"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -1855,7 +1855,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-some-extension-name-some-parent-id"
-                href="/"
+                href="/workloads"
               >
                 <div>
                   Some icon
@@ -1887,7 +1887,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
                   <a
                     class="navItem"
                     data-testid="link-for-sidebar-item-some-extension-name-some-child-id"
-                    href="/"
+                    href="/workloads"
                   >
                     <span>
                       Child 1
@@ -1929,7 +1929,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
                   <a
                     class="navItem"
                     data-testid="link-for-sidebar-item-some-extension-name-some-other-child-id"
-                    href="/"
+                    href="/workloads"
                   >
                     <span>
                       Child 2
@@ -2308,7 +2308,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-favorites"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -2369,7 +2369,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-workloads"
-                href="/"
+                href="/extension/some-extension-name/some-child-page-id"
               >
                 <i
                   class="Icon svg focusable"
@@ -2476,7 +2476,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-network"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -2545,7 +2545,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-helm"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -2667,7 +2667,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
                 aria-current="page"
                 class="navItem active"
                 data-testid="link-for-sidebar-item-some-extension-name-some-parent-id"
-                href="/"
+                href="/extension/some-extension-name/some-child-page-id"
               >
                 <div>
                   Some icon
@@ -2700,7 +2700,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
                     aria-current="page"
                     class="navItem active"
                     data-testid="link-for-sidebar-item-some-extension-name-some-child-id"
-                    href="/"
+                    href="/extension/some-extension-name/some-child-page-id"
                   >
                     <span>
                       Child 1
@@ -2742,7 +2742,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
                   <a
                     class="navItem"
                     data-testid="link-for-sidebar-item-some-extension-name-some-other-child-id"
-                    href="/"
+                    href="/workloads"
                   >
                     <span>
                       Child 2
@@ -3037,7 +3037,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-favorites"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -3098,7 +3098,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-workloads"
-                href="/"
+                href="/extension/some-extension-name/some-child-page-id"
               >
                 <i
                   class="Icon svg focusable"
@@ -3205,7 +3205,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-network"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -3274,7 +3274,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-helm"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -3396,7 +3396,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
                 aria-current="page"
                 class="navItem active"
                 data-testid="link-for-sidebar-item-some-extension-name-some-parent-id"
-                href="/"
+                href="/extension/some-extension-name/some-child-page-id"
               >
                 <div>
                   Some icon
@@ -3428,7 +3428,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
                   <a
                     class="navItem"
                     data-testid="link-for-sidebar-item-some-extension-name-some-child-id"
-                    href="/"
+                    href="/extension/some-extension-name/some-other-child-page-id"
                   >
                     <span>
                       Child 1
@@ -3471,7 +3471,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
                     aria-current="page"
                     class="navItem active"
                     data-testid="link-for-sidebar-item-some-extension-name-some-other-child-id"
-                    href="/"
+                    href="/extension/some-extension-name/some-other-child-page-id"
                   >
                     <span>
                       Child 2
@@ -3827,7 +3827,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-workloads"
-                href="/"
+                href="/extension/some-extension-name/some-child-page-id"
               >
                 <i
                   class="Icon svg focusable"
@@ -4125,7 +4125,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
                 aria-current="page"
                 class="navItem active"
                 data-testid="link-for-sidebar-item-some-extension-name-some-parent-id"
-                href="/"
+                href="/extension/some-extension-name/some-child-page-id"
               >
                 <div>
                   Some icon
@@ -4468,7 +4468,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
                 aria-current="page"
                 class="navItem active"
                 data-testid="link-for-sidebar-item-workloads"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -4765,7 +4765,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-some-extension-name-some-parent-id"
-                href="/"
+                href="/workloads"
               >
                 <div>
                   Some icon
@@ -4797,7 +4797,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
                   <a
                     class="navItem"
                     data-testid="link-for-sidebar-item-some-extension-name-some-child-id"
-                    href="/"
+                    href="/workloads"
                   >
                     <span>
                       Child 1
@@ -4839,7 +4839,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
                   <a
                     class="navItem"
                     data-testid="link-for-sidebar-item-some-extension-name-some-other-child-id"
-                    href="/"
+                    href="/workloads"
                   >
                     <span>
                       Child 2
@@ -5280,7 +5280,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
                 aria-current="page"
                 class="navItem active"
                 data-testid="link-for-sidebar-item-workloads"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -5577,7 +5577,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-some-extension-name-some-parent-id"
-                href="/"
+                href="/workloads"
               >
                 <div>
                   Some icon
@@ -6003,7 +6003,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-workloads"
-                href="/"
+                href="/extension/some-extension-name/some-child-page-id"
               >
                 <i
                   class="Icon svg focusable"
@@ -6301,7 +6301,7 @@ exports[`cluster - sidebar and tab navigation for extensions > given extension w
                 aria-current="page"
                 class="navItem active"
                 data-testid="link-for-sidebar-item-some-extension-name-some-parent-id"
-                href="/"
+                href="/extension/some-extension-name/some-child-page-id"
               >
                 <div>
                   Some icon

@@ -8,10 +8,10 @@ import "./endpoint-slice-details.scss";
 
 import { EndpointSlice } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { Link } from "@freelensapp/routing";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import { Link } from "react-router-dom";
 import { ApiManager } from "../../../common/k8s-api/api-manager";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
 import { Badge } from "../badge";

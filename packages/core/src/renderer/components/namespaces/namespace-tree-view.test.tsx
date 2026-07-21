@@ -18,7 +18,8 @@ import type { DiContainer } from "@ogre-tools/injectable";
 import type { DiRender } from "../test-utils/renderFor";
 import type { NamespaceTree } from "./store";
 
-vi.mock("react-router-dom", () => ({
+vi.mock("@freelensapp/routing", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@freelensapp/routing")>()),
   Link: ({ children }: { children: StrictReactNode }) => children,
 }));
 

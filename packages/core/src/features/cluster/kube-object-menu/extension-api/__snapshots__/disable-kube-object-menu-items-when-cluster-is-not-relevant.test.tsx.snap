@@ -110,7 +110,7 @@ exports[`disable kube object menu items when cluster is not relevant > given ext
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/test-route"
                 >
                   <i
                     class="Icon svg focusable"
@@ -673,7 +673,7 @@ exports[`disable kube object menu items when cluster is not relevant > given ext
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/test-route"
                 >
                   <i
                     class="Icon svg focusable"
@@ -1230,7 +1230,7 @@ exports[`disable kube object menu items when cluster is not relevant > given not
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/test-route"
                 >
                   <i
                     class="Icon svg focusable"

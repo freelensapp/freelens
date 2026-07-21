@@ -8,12 +8,12 @@ import "./namespace-details.scss";
 
 import { Namespace } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { Link } from "@freelensapp/routing";
 import { Spinner } from "@freelensapp/spinner";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
-import { Link } from "react-router-dom";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import limitRangeStoreInjectable from "../config-limit-ranges/store.injectable";
 import resourceQuotaStoreInjectable from "../config-resource-quotas/store.injectable";

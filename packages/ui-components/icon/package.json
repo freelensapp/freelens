@@ -30,6 +30,7 @@
   "scripts": {},
   "dependencies": {
     "@freelensapp/logger": "workspace:^",
+    "@freelensapp/routing": "workspace:^",
     "@freelensapp/tooltip": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
     "@ogre-tools/injectable": "^17.11.1",
@@ -37,8 +38,7 @@
     "mobx": "^6.15.0",
     "mobx-react": "^9.1.1",
     "react": "catalog:",
-    "react-dom": "catalog:",
-    "react-router-dom": "^5.3.4"
+    "react-dom": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/feature-core": "workspace:^",
@@ -47,7 +47,6 @@
     "@ogre-tools/injectable-extension-for-mobx": "^17.11.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@types/react": "catalog:",
-    "@types/react-router-dom": "^5.3.3",
     "history": "^5.3.0",
     "typescript": "^7.0.2",
     "vitest": "^4.1.10"

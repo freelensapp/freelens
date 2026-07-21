@@ -7,6 +7,7 @@
 import "./events.scss";
 
 import { Icon } from "@freelensapp/icon";
+import { Link } from "@freelensapp/routing";
 import { cssNames, stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { orderBy } from "es-toolkit/compat";
@@ -14,7 +15,6 @@ import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import moment from "moment-timezone";
 import React from "react";
-import { Link } from "react-router-dom";
 import navigateToEventsInjectable from "../../../common/front-end-routing/routes/cluster/events/navigate-to-events.injectable";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
 import { ReactiveDuration } from "../duration/reactive-duration";

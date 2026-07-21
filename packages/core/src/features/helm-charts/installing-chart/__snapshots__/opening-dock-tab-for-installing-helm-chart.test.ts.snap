@@ -110,7 +110,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -287,7 +287,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -808,7 +808,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -985,7 +985,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -1674,7 +1674,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -1851,7 +1851,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -2597,7 +2597,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -2774,7 +2774,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -3670,7 +3670,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -3847,7 +3847,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -4753,7 +4753,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -4930,7 +4930,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -5826,7 +5826,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -6003,7 +6003,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -6903,7 +6903,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -7080,7 +7080,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -7986,7 +7986,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -8163,7 +8163,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"

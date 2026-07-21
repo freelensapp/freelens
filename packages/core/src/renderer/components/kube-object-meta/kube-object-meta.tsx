@@ -6,10 +6,10 @@
 
 import { KubeObject } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { Link } from "@freelensapp/routing";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import * as yaml from "js-yaml";
 import { observer } from "mobx-react";
-import { Link } from "react-router-dom";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
 import { defaultYamlDumpOptions } from "../../../common/kube-helpers";
 import { DrawerItem, DrawerItemLabels, DrawerParamToggler } from "../drawer";

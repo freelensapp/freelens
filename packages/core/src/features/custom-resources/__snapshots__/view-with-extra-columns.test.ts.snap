@@ -109,7 +109,7 @@ exports[`Viewing Custom Resources with extra columns > renders 1`] = `
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-workloads"
-                href="/"
+                href="/crd/some-group/some-resources"
               >
                 <i
                   class="Icon svg focusable"
