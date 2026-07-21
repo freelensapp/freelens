@@ -13,41 +13,41 @@ import type { Action, Location, To } from "history";
 import type { ObservableSearchParamsOptions } from "./observable-search-params";
 
 /**
- * The `history` v4-compatible runtime surface the observable wrapper is built
- * on. Freelens injects a `history` v5 instance adapted back to this surface by
- * `toHistoryV4` (see `history-compat.ts`), which is why `listen` receives
- * `(location, action)` as two arguments and `goBack`/`goForward`/`length` exist.
+ * The native `history` v5 runtime surface the observable wrapper is built on.
+ * Freelens injects a plain `history` v5 instance (`createBrowserHistory()` /
+ * `createMemoryHistory()`), so `back`/`forward` replace v4's
+ * `goBack`/`goForward` and `listen` receives a single `{ action, location }`
+ * update object. The wrapper re-exposes the v4-style `goBack`/`goForward`/
+ * `length` and two-argument `listen` to its own consumers (see below).
  */
 export interface HistoryAdapter {
   readonly action: Action;
   readonly location: Location;
-  readonly length: number;
   push(to: To, state?: unknown): void;
   replace(to: To, state?: unknown): void;
   go(delta: number): void;
-  goBack(): void;
-  goForward(): void;
+  back(): void;
+  forward(): void;
   createHref(to: To): string;
-  listen(listener: (location: Location, action: Action) => void): () => void;
+  listen(listener: (update: { action: Action; location: Location }) => void): () => void;
 }
 
 export interface ObservableHistoryOptions {
   searchParams?: ObservableSearchParamsOptions;
 }
 
-// Native `history` methods are forwarded to the underlying instance by the
-// proxy in the constructor; declaration merging exposes them on the type. The
-// generic `S` is retained for source compatibility with consumers that write
-// `ObservableHistory<unknown>` (`history` v5 locations are no longer generic).
+// Native `history` methods with an unchanged v5 signature (`push`/`replace`/
+// `go`/`createHref`) are forwarded to the underlying instance by the proxy in
+// the constructor; declaration merging exposes them on the type. The v4-style
+// members (`goBack`/`goForward`/`length`/two-argument `listen`) are defined
+// explicitly on the class below. The generic `S` is retained for source
+// compatibility with consumers that write `ObservableHistory<unknown>`
+// (`history` v5 locations are no longer generic).
 export interface ObservableHistory<S = unknown> {
-  readonly length: number;
   push(to: To, state?: unknown): void;
   replace(to: To, state?: unknown): void;
   go(delta: number): void;
-  goBack(): void;
-  goForward(): void;
   createHref(to: To): string;
-  listen(listener: (location: Location, action: Action) => void): () => void;
 }
 
 /**
@@ -84,7 +84,7 @@ export class ObservableHistory<S = unknown> {
 
     return new Proxy(this, {
       get: (target, prop, receiver) => {
-        // Forward native history apis (push/replace/goBack/...) to the
+        // Forward native history apis (push/replace/go/createHref) to the
         // underlying instance when they are not defined on the wrapper.
         if (!(prop in target)) {
           return Reflect.get(target.history, prop, target.history);
@@ -93,6 +93,41 @@ export class ObservableHistory<S = unknown> {
         return Reflect.get(target, prop, receiver);
       },
     });
+  }
+
+  /**
+   * The number of entries in the history stack. `history` v5 dropped v4's
+   * `length`; memory history still exposes `index`, so `index + 1` reproduces
+   * the entry count that callers compare against, while browser/hash history
+   * falls back to the DOM history length.
+   */
+  get length(): number {
+    const history = this.history as HistoryAdapter & { index?: number };
+
+    if (typeof history.index === "number") {
+      return history.index + 1;
+    }
+
+    return globalThis.history?.length ?? 0;
+  }
+
+  /** Navigate to the previous entry. Bridges v4's `goBack` onto v5's `back`. */
+  goBack(): void {
+    this.history.back();
+  }
+
+  /** Navigate to the next entry. Bridges v4's `goForward` onto v5's `forward`. */
+  goForward(): void {
+    this.history.forward();
+  }
+
+  /**
+   * Subscribe to location changes. Re-exposes the v4-style two-argument
+   * `(location, action)` callback on top of v5's single `{ location, action }`
+   * update object, so existing consumers keep working unchanged.
+   */
+  listen(listener: (location: Location, action: Action) => void): () => void {
+    return this.history.listen(({ location, action }) => listener(location, action));
   }
 
   protected bindEvents(): () => void {
@@ -157,7 +192,7 @@ export class ObservableHistory<S = unknown> {
 
       // Sync updates coming from the underlying history native apis.
       this.history.listen(
-        action((location: Location, actionType: Action) => {
+        action(({ location, action: actionType }: { location: Location; action: Action }) => {
           this.action = actionType;
           this.location = this.normalize(location);
         }),

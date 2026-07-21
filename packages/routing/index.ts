@@ -7,7 +7,6 @@
 export { compileRoutePath } from "./src/compile-route-path";
 export { routingFeature } from "./src/feature";
 export { historyInjectionToken } from "./src/history.injectable";
-export { toHistoryV4 } from "./src/history-compat";
 export { Link, NavLink } from "./src/link";
 export { matchPath } from "./src/match-path";
 export { createObservableHistory, ObservableHistory } from "./src/observable-history";

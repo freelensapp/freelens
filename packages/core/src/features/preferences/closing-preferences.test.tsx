@@ -4,12 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import {
-  createObservableHistory,
-  observableHistoryInjectionToken,
-  searchParamsOptions,
-  toHistoryV4,
-} from "@freelensapp/routing";
+import { createObservableHistory, observableHistoryInjectionToken, searchParamsOptions } from "@freelensapp/routing";
 import { getInjectable } from "@ogre-tools/injectable";
 import { createMemoryHistory } from "history";
 import { computed, runInAction } from "mobx";
@@ -67,7 +62,7 @@ describe("preferences - closing-preferences", () => {
             initialIndex: 0,
           });
 
-          return createObservableHistory(toHistoryV4(historyFake) as never, {
+          return createObservableHistory(historyFake as never, {
             searchParams: searchParamsOptions,
           });
         });
@@ -146,7 +141,7 @@ describe("preferences - closing-preferences", () => {
             initialIndex: 0,
           });
 
-          return createObservableHistory(toHistoryV4(historyFake) as never, {
+          return createObservableHistory(historyFake as never, {
             searchParams: searchParamsOptions,
           });
         });

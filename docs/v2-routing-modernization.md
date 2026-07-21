@@ -49,6 +49,12 @@ done at the dependency level. What remains under that heading is deleting the
 `toHistoryV4` shim once its two consumers (RR5 and `mobx-observable-history`)
 are gone.
 
+> **Resolved (step 5).** Both consumers are gone. `toHistoryV4` /
+> `history-compat.ts` were deleted; the wrapper's `goBack`/`goForward`/`length`/
+> two-argument `listen` are now implemented directly on `ObservableHistory` over
+> native `history` v5, and `history.injectable.ts` returns a plain
+> `createBrowserHistory()`. See §5.5.
+
 ### 2.2 No `react-router` hooks are used
 
 There are **zero** usages of `useHistory`, `useParams`, `useLocation`, or
@@ -153,7 +159,16 @@ Each is its own PR to keep history bisectable:
    and `tab-layout.tsx`, then remove the `<Router>` HOC.
 5. **Remove dependencies and the shim** — drop `react-router`,
    `react-router-dom`, and the `toHistoryV4` compat shim once nothing consumes
-   the v4 surface.
+   the v4 surface. Done: the shim's compat logic (v5 `back`/`forward` →
+   v4-style `goBack`/`goForward`, `length`, two-argument `listen`) moved into
+   the in-house `ObservableHistory` wrapper, which now consumes native
+   `history` v5 directly; `history-compat.ts` was deleted. `react-router` /
+   `react-router-dom` (and `@types/*`) were removed from `core`, `extensions`,
+   and `utilities`, dropping the transitive `history` v4. The last
+   `react-router` type usage (`RouteProps` in `utilities/src/buildUrl.ts`) was
+   inlined. **Extension-facing:** the `Freelens.ReactRouter` /
+   `Freelens.ReactRouterDom` bundle re-exports were removed — extensions that
+   need react-router must now bundle their own copy.
 6. **Verify** — smoke-test cluster views, drawers, breadcrumbs/back-forward,
    deep links, and extension-registered routes; confirm the extension-facing
    routing API still works.

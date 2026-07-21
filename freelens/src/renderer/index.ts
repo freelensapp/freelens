@@ -69,15 +69,7 @@ const startApplication = di.inject(startApplicationInjectionToken);
 
 startApplication();
 
-export {
-  Mobx,
-  MobxReact,
-  React,
-  ReactDOM,
-  ReactJsxRuntime,
-  ReactRouter,
-  ReactRouterDom,
-} from "@freelensapp/core/renderer";
+export { Mobx, MobxReact, React, ReactDOM, ReactJsxRuntime } from "@freelensapp/core/renderer";
 
 // Phase 4 (D5): expose the extension API through a runtime global so the
 // published `@freelensapp/extensions` shim can re-export it in each process.

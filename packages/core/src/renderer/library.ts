@@ -14,8 +14,6 @@ import setStatusBarStatusInjectable from "./components/status-bar/set-status-bar
 export * as Mobx from "mobx";
 export * as MobxReact from "mobx-react";
 export * as ReactJsxRuntime from "react/jsx-runtime";
-export * as ReactRouter from "react-router";
-export * as ReactRouterDom from "react-router-dom";
 // @experimental
 export { nodeEnvInjectionToken } from "../common/vars/node-env-injection-token";
 export * as commonExtensionApi from "../extensions/common-api";
