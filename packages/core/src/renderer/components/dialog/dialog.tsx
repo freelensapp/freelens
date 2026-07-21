@@ -15,9 +15,8 @@ import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
 import { createPortal } from "react-dom";
 
+import type { ObservableHistory } from "@freelensapp/routing";
 import type { StrictReactNode } from "@freelensapp/utilities";
-
-import type { ObservableHistory } from "mobx-observable-history";
 
 // todo: refactor + handle animation-end in props.onClose()?
 

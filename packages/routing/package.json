@@ -25,7 +25,7 @@
     "@ogre-tools/fp": "^17.11.1",
     "@ogre-tools/injectable": "^17.11.1",
     "history": "^5.3.0",
-    "mobx-observable-history": "^2.0.3"
+    "mobx": "^6.15.0"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",

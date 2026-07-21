@@ -11,10 +11,11 @@ export type HistoryV5 = BrowserHistory | HashHistory | MemoryHistory;
 type LegacyListener = (location: Location, action: Action) => void;
 
 /**
- * Both `react-router` v5 and `mobx-observable-history` v2 are written against
- * the history v4 API. They call `history.goBack()`/`history.goForward()` and
- * expect the `listen` callback to receive `(location, action)` as two separate
- * arguments.
+ * Both `react-router` v5 and the in-house observable-history wrapper (see
+ * `observable-history.ts`, the replacement for the abandoned
+ * `mobx-observable-history`) are written against the history v4 API. They call
+ * `history.goBack()`/`history.goForward()` and expect the `listen` callback to
+ * receive `(location, action)` as two separate arguments.
  *
  * history v5 renamed those navigation methods to `back()`/`forward()` and now
  * invokes listeners with a single `{ action, location }` update object.

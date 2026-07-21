@@ -11,6 +11,7 @@ import { bytesToUnits, cssNames, interval, prevDefault } from "@freelensapp/util
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
 import { kebabCase } from "es-toolkit";
+import { untracked } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { DrawerTitle } from "../drawer";
@@ -75,7 +76,9 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
   }
 
   renderCpuUsage(id: string, usage: number) {
-    const { maxCpu } = this.props;
+    // Invoked by getTableRow from Table/VirtualList's render reaction, so
+    // read this.props untracked to avoid mobx-react 9's foreign-derivation guard.
+    const { maxCpu } = untracked(() => this.props);
     const value = usage.toFixed(3);
 
     if (!maxCpu) {
@@ -96,7 +99,9 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
   }
 
   renderMemoryUsage(id: string, usage: number) {
-    const { maxMemory } = this.props;
+    // Invoked by getTableRow from Table/VirtualList's render reaction, so
+    // read this.props untracked to avoid mobx-react 9's foreign-derivation guard.
+    const { maxMemory } = untracked(() => this.props);
 
     if (!maxMemory) return usage ? bytesToUnits(usage) : 0;
 
@@ -112,7 +117,11 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
   }
 
   getTableRow(uid: string) {
-    const { pods, owner, podStore, showDetails } = this.props;
+    // getTableRow is invoked by Table/VirtualList from *their* render
+    // reaction, so reading this.props directly trips mobx-react 9's
+    // foreign-derivation guard. Read props untracked; the podStore metric
+    // reads below stay tracked so live CPU/memory updates still work.
+    const { pods, owner, podStore, showDetails } = untracked(() => this.props);
     const pod = pods.find((pod) => pod.getId() == uid);
 
     const hideNode = owner.kind === "Node";
