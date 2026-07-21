@@ -4,16 +4,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { matchPath } from "@freelensapp/routing";
 import { isDefined, iter } from "@freelensapp/utilities";
 import { ipcRenderer } from "electron";
 import { when } from "mobx";
 import { pathToRegexp } from "path-to-regexp";
-import { matchPath } from "react-router";
 import { RoutingError, RoutingErrorType } from "./error";
 
 import type { Logger } from "@freelensapp/logger";
-
-import type { match } from "react-router";
+import type { Match } from "@freelensapp/routing";
 
 import type { ExtensionLoader } from "../../extensions/extension-loader";
 import type { LensExtension } from "../../extensions/lens-extension";
@@ -116,8 +115,8 @@ export abstract class LensProtocolRouter {
   protected _findMatchingRoute(
     routes: Iterable<[string, RouteHandler]>,
     url: URL,
-  ): null | [match<Record<string, string>>, RouteHandler] {
-    const matches: [match<Record<string, string>>, RouteHandler][] = [];
+  ): null | [Match<Record<string, string>>, RouteHandler] {
+    const matches: [Match<Record<string, string>>, RouteHandler][] = [];
 
     for (const [schema, handler] of routes) {
       const match = matchPath(url.pathname, { path: schema });
