@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import pathToRegexp from "path-to-regexp";
 import { isDefined } from "./type-narrowing";
 
 import type { RouteProps } from "react-router";
@@ -21,38 +20,30 @@ export interface URLParams<P extends object = {}, Q extends object = {}> {
 
 /**
  * Route paths in this project are authored in the `react-router` v5 dialect
- * (`path-to-regexp` v1), where an optional parameter is written as `/:param?`.
- * The same engine matches them (`@freelensapp/routing`'s `matchPath`), so URLs
- * are built from the very same dialect here — no syntax translation needed.
+ * (`path-to-regexp` v1), where a `/`-prefixed parameter is written as `/:param`
+ * and an optional one as `/:param?`. Front-end route paths never use inline
+ * `(regex)` patterns (those live only in protocol/extension schemas, which are
+ * matched, not built), so a small regex substitution over `/:name` and
+ * `/:name?` is enough to build URLs — no `path-to-regexp` dependency needed.
  *
  * Segments are substituted verbatim (identity encoding), preserving the
- * behavior the project relied on under `path-to-regexp` v6. `pathToRegexp.compile`
- * would force `encodeURIComponent`, so the path is built from parsed tokens
- * directly to keep already-formed segments intact.
+ * behavior the project relied on: already-formed segments are kept intact
+ * instead of being `encodeURIComponent`-escaped.
  */
 function fillPath(path: string, params: Record<string, unknown>): string {
-  let result = "";
-
-  for (const token of pathToRegexp.parse(path)) {
-    if (typeof token === "string") {
-      result += token;
-      continue;
-    }
-
-    const value = params[token.name];
+  return path.replace(/\/:(\w+)(\?)?/g, (_match, name: string, optional: string | undefined) => {
+    const value = params[name];
 
     if (value == null) {
-      if (token.optional) {
-        continue;
+      if (optional) {
+        return "";
       }
 
-      throw new TypeError(`Expected "${token.name}" to be defined`);
+      throw new TypeError(`Expected "${name}" to be defined`);
     }
 
-    result += token.prefix + String(value);
-  }
-
-  return result;
+    return `/${String(value)}`;
+  });
 }
 
 export function buildURL<P extends object = {}, Q extends object = {}>(
