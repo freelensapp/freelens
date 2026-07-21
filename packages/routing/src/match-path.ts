@@ -4,7 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import pathToRegexp from "path-to-regexp";
+import { pathToRegexp } from "./vendor/path-to-regexp";
+
+import type { Key, RegExpOptions } from "./vendor/path-to-regexp";
 
 /**
  * In-house port of `react-router` v5's `matchPath`.
@@ -48,14 +50,14 @@ export interface Match<Params extends { [K in keyof Params]?: string } = {}> {
 
 interface CompiledPath {
   regexp: RegExp;
-  keys: pathToRegexp.Key[];
+  keys: Key[];
 }
 
 const cache: Record<string, Record<string, CompiledPath>> = {};
 const cacheLimit = 10000;
 let cacheCount = 0;
 
-function compilePath(path: string, options: pathToRegexp.RegExpOptions): CompiledPath {
+function compilePath(path: string, options: RegExpOptions): CompiledPath {
   const cacheKey = `${options.end}${options.strict}${options.sensitive}`;
   const pathCache = cache[cacheKey] || (cache[cacheKey] = {});
 
@@ -65,7 +67,7 @@ function compilePath(path: string, options: pathToRegexp.RegExpOptions): Compile
     return cached;
   }
 
-  const keys: pathToRegexp.Key[] = [];
+  const keys: Key[] = [];
   const regexp = pathToRegexp(path, keys, options);
   const result: CompiledPath = { regexp, keys };
 

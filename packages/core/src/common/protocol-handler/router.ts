@@ -4,11 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { matchPath } from "@freelensapp/routing";
+import { compileRoutePath, matchPath } from "@freelensapp/routing";
 import { isDefined, iter } from "@freelensapp/utilities";
 import { ipcRenderer } from "electron";
 import { when } from "mobx";
-import pathToRegexp from "path-to-regexp";
 import { RoutingError, RoutingErrorType } from "./error";
 
 import type { Logger } from "@freelensapp/logger";
@@ -275,7 +274,7 @@ export abstract class LensProtocolRouter {
     // Route schemas are authored in the `react-router` v5 dialect (`/:param?`
     // optionals and inline `/:param(regex)` patterns) — the very dialect
     // `path-to-regexp` v1 parses natively, so validate the schema as-is here.
-    pathToRegexp(urlSchema); // verify now that the schema is valid
+    compileRoutePath(urlSchema); // verify now that the schema is valid
     this.dependencies.logger.info(`${LensProtocolRouter.LoggingPrefix}: internal registering ${urlSchema}`);
     this.internalRoutes.set(urlSchema, handler);
 

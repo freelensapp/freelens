@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+export { compileRoutePath } from "./src/compile-route-path";
 export { routingFeature } from "./src/feature";
 export { historyInjectionToken } from "./src/history.injectable";
 export { toHistoryV4 } from "./src/history-compat";
