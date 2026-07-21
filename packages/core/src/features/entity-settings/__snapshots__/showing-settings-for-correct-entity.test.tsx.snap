@@ -103,9 +103,9 @@ exports[`Showing correct entity settings > renders 1`] = `
     
                     <style>
                       
-      .cls-1 {
-        fill: none !important;
-      }
+    .cls-1 {
+      fill: none !important;
+    }
     
                     </style>
                     

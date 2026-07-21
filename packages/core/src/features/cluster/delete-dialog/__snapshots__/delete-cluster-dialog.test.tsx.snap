@@ -191,7 +191,7 @@ exports[`Deleting a cluster > when an internal kubeconfig cluster is used > when
                           <span
                             class="icon"
                           >
-                            <!--?xml version="1.0" encoding="utf-8"?-->
+                            <!--?xml version="1.0" encoding="utf-8" ?-->
                             
 
                             <!-- Generator: Adobe Illustrator 20.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
@@ -209,16 +209,18 @@ exports[`Deleting a cluster > when an internal kubeconfig cluster is used > when
                               y="0px"
                             >
                               
-
+  
                               <style
                                 type="text/css"
                               >
                                 
-	.st0{fill:#FFFFFF;}
-
+  .st0 {
+    fill: #ffffff;
+  }
+  
                               </style>
                               
-
+  
                               <path
                                 class="st0"
                                 d="M247.7,151.3L247.7,151.3L247.7,151.3C247.4,151.3,247.4,151.3,247.7,151.3h-0.2c-0.2,0-0.5,0-0.5-0.2
@@ -967,7 +969,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
                           <span
                             class="icon"
                           >
-                            <!--?xml version="1.0" encoding="utf-8"?-->
+                            <!--?xml version="1.0" encoding="utf-8" ?-->
                             
 
                             <!-- Generator: Adobe Illustrator 20.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
@@ -985,16 +987,18 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
                               y="0px"
                             >
                               
-
+  
                               <style
                                 type="text/css"
                               >
                                 
-	.st0{fill:#FFFFFF;}
-
+  .st0 {
+    fill: #ffffff;
+  }
+  
                               </style>
                               
-
+  
                               <path
                                 class="st0"
                                 d="M247.7,151.3L247.7,151.3L247.7,151.3C247.4,151.3,247.4,151.3,247.7,151.3h-0.2c-0.2,0-0.5,0-0.5-0.2
@@ -1776,7 +1780,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
                           <span
                             class="icon"
                           >
-                            <!--?xml version="1.0" encoding="utf-8"?-->
+                            <!--?xml version="1.0" encoding="utf-8" ?-->
                             
 
                             <!-- Generator: Adobe Illustrator 20.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
@@ -1794,16 +1798,18 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
                               y="0px"
                             >
                               
-
+  
                               <style
                                 type="text/css"
                               >
                                 
-	.st0{fill:#FFFFFF;}
-
+  .st0 {
+    fill: #ffffff;
+  }
+  
                               </style>
                               
-
+  
                               <path
                                 class="st0"
                                 d="M247.7,151.3L247.7,151.3L247.7,151.3C247.4,151.3,247.4,151.3,247.7,151.3h-0.2c-0.2,0-0.5,0-0.5-0.2
@@ -2666,7 +2672,7 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
                           <span
                             class="icon"
                           >
-                            <!--?xml version="1.0" encoding="utf-8"?-->
+                            <!--?xml version="1.0" encoding="utf-8" ?-->
                             
 
                             <!-- Generator: Adobe Illustrator 20.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
@@ -2684,16 +2690,18 @@ exports[`Deleting a cluster > when the kubeconfig has multiple clusters > when t
                               y="0px"
                             >
                               
-
+  
                               <style
                                 type="text/css"
                               >
                                 
-	.st0{fill:#FFFFFF;}
-
+  .st0 {
+    fill: #ffffff;
+  }
+  
                               </style>
                               
-
+  
                               <path
                                 class="st0"
                                 d="M247.7,151.3L247.7,151.3L247.7,151.3C247.4,151.3,247.4,151.3,247.7,151.3h-0.2c-0.2,0-0.5,0-0.5-0.2
@@ -3556,7 +3564,7 @@ exports[`Deleting a cluster > when the kubeconfig has only one cluster > when th
                           <span
                             class="icon"
                           >
-                            <!--?xml version="1.0" encoding="utf-8"?-->
+                            <!--?xml version="1.0" encoding="utf-8" ?-->
                             
 
                             <!-- Generator: Adobe Illustrator 20.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
@@ -3574,16 +3582,18 @@ exports[`Deleting a cluster > when the kubeconfig has only one cluster > when th
                               y="0px"
                             >
                               
-
+  
                               <style
                                 type="text/css"
                               >
                                 
-	.st0{fill:#FFFFFF;}
-
+  .st0 {
+    fill: #ffffff;
+  }
+  
                               </style>
                               
-
+  
                               <path
                                 class="st0"
                                 d="M247.7,151.3L247.7,151.3L247.7,151.3C247.4,151.3,247.4,151.3,247.7,151.3h-0.2c-0.2,0-0.5,0-0.5-0.2

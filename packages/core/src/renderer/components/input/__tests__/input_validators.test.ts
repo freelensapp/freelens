@@ -56,12 +56,12 @@ describe("input validation tests", () => {
       await expect(emailOrUrl.validate(input)).resolves.not.toThrow();
     });
 
-    it.each([
-      "hello",
-      "57",
-    ])("Given '%s' is neither a valid email nor URL, emailOrUrl does not match", async (input) => {
-      await expect(emailOrUrl.validate(input)).rejects.toThrow();
-    });
+    it.each(["hello", "57"])(
+      "Given '%s' is neither a valid email nor URL, emailOrUrl does not match",
+      async (input) => {
+        await expect(emailOrUrl.validate(input)).rejects.toThrow();
+      },
+    );
   });
 
   describe("isEmail tests", () => {

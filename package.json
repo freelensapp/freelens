@@ -20,7 +20,7 @@
   ],
   "scripts": {
     "asar": "pnpm dlx @electron/asar@4.2.0",
-    "biome": "pnpm dlx @biomejs/biome@2.5.2",
+    "biome": "pnpm dlx @biomejs/biome@2.5.4",
     "biome:check": "pnpm biome check",
     "biome:fix": "pnpm biome check --fix",
     "biome:migrate": "pnpm biome migrate --write",

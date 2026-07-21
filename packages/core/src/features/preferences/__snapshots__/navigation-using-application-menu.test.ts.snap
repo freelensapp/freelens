@@ -102,9 +102,9 @@ exports[`preferences - navigation using application menu > renders 1`] = `
     
                   <style>
                     
-      .cls-1 {
-        fill: none !important;
-      }
+    .cls-1 {
+      fill: none !important;
+    }
     
                   </style>
                   

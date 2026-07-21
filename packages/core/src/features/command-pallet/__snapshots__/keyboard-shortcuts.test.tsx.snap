@@ -194,9 +194,9 @@ exports[`Command Pallet: keyboard shortcut tests > when on linux > renders 1`] =
     
                     <style>
                       
-      .cls-1 {
-        fill: none !important;
-      }
+    .cls-1 {
+      fill: none !important;
+    }
     
                     </style>
                     
@@ -690,9 +690,9 @@ exports[`Command Pallet: keyboard shortcut tests > when on linux > when pressing
     
                     <style>
                       
-      .cls-1 {
-        fill: none !important;
-      }
+    .cls-1 {
+      fill: none !important;
+    }
     
                     </style>
                     
@@ -1186,9 +1186,9 @@ exports[`Command Pallet: keyboard shortcut tests > when on linux > when pressing
     
                     <style>
                       
-      .cls-1 {
-        fill: none !important;
-      }
+    .cls-1 {
+      fill: none !important;
+    }
     
                     </style>
                     
@@ -1694,9 +1694,9 @@ exports[`Command Pallet: keyboard shortcut tests > when on linux > when pressing
     
                     <style>
                       
-      .cls-1 {
-        fill: none !important;
-      }
+    .cls-1 {
+      fill: none !important;
+    }
     
                     </style>
                     
@@ -2099,9 +2099,9 @@ exports[`Command Pallet: keyboard shortcut tests > when on macOS > renders 1`] =
     
                     <style>
                       
-      .cls-1 {
-        fill: none !important;
-      }
+    .cls-1 {
+      fill: none !important;
+    }
     
                     </style>
                     
@@ -2504,9 +2504,9 @@ exports[`Command Pallet: keyboard shortcut tests > when on macOS > when pressing
     
                     <style>
                       
-      .cls-1 {
-        fill: none !important;
-      }
+    .cls-1 {
+      fill: none !important;
+    }
     
                     </style>
                     
@@ -2909,9 +2909,9 @@ exports[`Command Pallet: keyboard shortcut tests > when on macOS > when pressing
     
                     <style>
                       
-      .cls-1 {
-        fill: none !important;
-      }
+    .cls-1 {
+      fill: none !important;
+    }
     
                     </style>
                     
@@ -3326,9 +3326,9 @@ exports[`Command Pallet: keyboard shortcut tests > when on macOS > when pressing
     
                     <style>
                       
-      .cls-1 {
-        fill: none !important;
-      }
+    .cls-1 {
+      fill: none !important;
+    }
     
                     </style>
                     
