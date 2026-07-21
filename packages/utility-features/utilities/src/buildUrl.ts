@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { compile } from "path-to-regexp";
+import pathToRegexp from "path-to-regexp";
 import { isDefined } from "./type-narrowing";
 
 import type { RouteProps } from "react-router";
@@ -21,28 +21,48 @@ export interface URLParams<P extends object = {}, Q extends object = {}> {
 
 /**
  * Route paths in this project are authored in the `react-router` v5 dialect
- * (which still bundles `path-to-regexp` v1), where an optional parameter is
- * written as `/:param?`. Since v8, `path-to-regexp` expresses the same thing as
- * an optional group `{/:param}` and throws on the trailing `?` modifier.
+ * (`path-to-regexp` v1), where an optional parameter is written as `/:param?`.
+ * The same engine matches them (`@freelensapp/routing`'s `matchPath`), so URLs
+ * are built from the very same dialect here — no syntax translation needed.
  *
- * As the very same path strings are shared with `react-router` for matching,
- * they must stay in the v5 dialect; convert them to the v8 dialect here, at the
- * only boundary where `path-to-regexp` v8 compiles them.
+ * Segments are substituted verbatim (identity encoding), preserving the
+ * behavior the project relied on under `path-to-regexp` v6. `pathToRegexp.compile`
+ * would force `encodeURIComponent`, so the path is built from parsed tokens
+ * directly to keep already-formed segments intact.
  */
-function toPathToRegexpSyntax(path: string): string {
-  return path.replace(/\/(:[A-Za-z0-9_]+)\?/g, "{/$1}");
+function fillPath(path: string, params: Record<string, unknown>): string {
+  let result = "";
+
+  for (const token of pathToRegexp.parse(path)) {
+    if (typeof token === "string") {
+      result += token;
+      continue;
+    }
+
+    const value = params[token.name];
+
+    if (value == null) {
+      if (token.optional) {
+        continue;
+      }
+
+      throw new TypeError(`Expected "${token.name}" to be defined`);
+    }
+
+    result += token.prefix + String(value);
+  }
+
+  return result;
 }
 
 export function buildURL<P extends object = {}, Q extends object = {}>(
   path: string,
   { params, query, fragment }: URLParams<P, Q> = {},
 ) {
-  // `encode: false` keeps the identity encoding that `path-to-regexp` v6 used by
-  // default, so already-formed path segments are emitted verbatim.
-  const pathBuilder = compile(toPathToRegexpSyntax(String(path)), { encode: false });
+  const pathname = fillPath(String(path), (params ?? {}) as Record<string, unknown>);
 
   const queryParams = query ? new URLSearchParams(Object.entries(query)).toString() : "";
-  const parts = [pathBuilder(params), queryParams && `?${queryParams}`, fragment && `#${fragment}`];
+  const parts = [pathname, queryParams && `?${queryParams}`, fragment && `#${fragment}`];
 
   return parts.filter(isDefined).join("");
 }

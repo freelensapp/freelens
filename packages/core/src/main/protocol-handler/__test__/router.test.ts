@@ -280,7 +280,9 @@ describe("protocol router tests", () => {
   });
 
   it("should throw if urlSchema is invalid", () => {
-    expect(() => lpr.addInternalHandler("/:@", noop)).toThrowError();
+    // An inline custom pattern that is not a valid regular expression is
+    // rejected by `path-to-regexp` v1 — the very engine used to match routes.
+    expect(() => lpr.addInternalHandler("/:foo(?)", noop)).toThrowError();
   });
 
   it("should accept a react-router v5 schema with an inline optional custom pattern", () => {

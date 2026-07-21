@@ -138,7 +138,7 @@
     "monaco-editor": "^0.55.1",
     "node-fetch": "^3.3.2",
     "node-pty": "1.2.0-beta.14",
-    "path-to-regexp": "^8.4.2",
+    "path-to-regexp": "^1.9.0",
     "pnpm": "^11.15.0",
     "proper-lockfile": "^4.1.2",
     "randomcolor": "^0.6.2",

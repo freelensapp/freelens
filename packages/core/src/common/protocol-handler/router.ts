@@ -8,7 +8,7 @@ import { matchPath } from "@freelensapp/routing";
 import { isDefined, iter } from "@freelensapp/utilities";
 import { ipcRenderer } from "electron";
 import { when } from "mobx";
-import { pathToRegexp } from "path-to-regexp";
+import pathToRegexp from "path-to-regexp";
 import { RoutingError, RoutingErrorType } from "./error";
 
 import type { Logger } from "@freelensapp/logger";
@@ -52,23 +52,6 @@ export enum RouteAttempt {
    * The extension that was matched in the route was not activated
    */
   MISSING_EXTENSION = "no-extension",
-}
-
-/**
- * Route schemas in this project are authored in the `react-router` v5 dialect
- * (which still bundles `path-to-regexp` v1): optional parameters are written as
- * `/:param?` and custom patterns are inlined as `/:param(regex)`. Since v8,
- * `path-to-regexp` dropped inline patterns entirely and expresses an optional
- * parameter as the group `{/:param}`, throwing on the v5 syntax.
- *
- * The schemas are shared verbatim with `react-router` for the actual matching,
- * so they must stay in the v5 dialect. Convert them to the v8 dialect only here,
- * at the boundary where the standalone `path-to-regexp` v8 validates them.
- */
-function toPathToRegexpV8Syntax(urlSchema: string): string {
-  return urlSchema
-    .replace(/\([^)]*\)/g, "") // drop inline custom patterns (v8 has no equivalent)
-    .replace(/\/(:[A-Za-z0-9_]+)\?/g, "{/$1}"); // optional parameter -> optional group
 }
 
 export function foldAttemptResults(mainAttempt: RouteAttempt, rendererAttempt: RouteAttempt): RouteAttempt {
@@ -289,7 +272,10 @@ export abstract class LensProtocolRouter {
    * @param handler a function that will be called if a protocol path matches
    */
   public addInternalHandler(urlSchema: string, handler: RouteHandler): this {
-    pathToRegexp(toPathToRegexpV8Syntax(urlSchema)); // verify now that the schema is valid
+    // Route schemas are authored in the `react-router` v5 dialect (`/:param?`
+    // optionals and inline `/:param(regex)` patterns) — the very dialect
+    // `path-to-regexp` v1 parses natively, so validate the schema as-is here.
+    pathToRegexp(urlSchema); // verify now that the schema is valid
     this.dependencies.logger.info(`${LensProtocolRouter.LoggingPrefix}: internal registering ${urlSchema}`);
     this.internalRoutes.set(urlSchema, handler);
 
