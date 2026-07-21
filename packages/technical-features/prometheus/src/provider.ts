@@ -75,6 +75,7 @@ export async function findFirstNamespacedService(
   } catch (error) {
     throw new Error(
       `Failed to list services in all namespaces: ${isRequestError(error) ? error.response?.body.message : error}`,
+      { cause: error },
     );
   }
 
@@ -103,6 +104,7 @@ export async function findNamespacedService(
       `Failed to list services in namespace="${namespace}": ${
         isRequestError(error) ? error.response?.body.message : error
       }`,
+      { cause: error },
     );
   }
 }

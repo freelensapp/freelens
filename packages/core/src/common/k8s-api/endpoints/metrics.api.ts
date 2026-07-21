@@ -16,6 +16,14 @@ export interface MetricData {
   };
 }
 
+export type MetricsErrorReason = "not-found" | "access-denied" | "error";
+
+export interface MetricsErrorInfo {
+  reason: MetricsErrorReason;
+  message: string;
+  status?: number;
+}
+
 export interface MetricResult {
   metric: {
     [name: string]: string | undefined;

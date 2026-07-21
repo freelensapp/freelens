@@ -16,25 +16,32 @@ import { Radio, RadioGroup } from "../radio";
 import type { KubeObject } from "@freelensapp/kube-object";
 
 import type { IAsyncComputed } from "@ogre-tools/injectable-react";
+import type { IComputedValue } from "mobx";
 
-import type { MetricData } from "../../../common/k8s-api/endpoints/metrics.api";
+import type { MetricData, MetricsErrorInfo } from "../../../common/k8s-api/endpoints/metrics.api";
 import type { MetricsTab } from "../chart/options";
 
 export type AtLeastOneMetricTab = [MetricsTab, ...MetricsTab[]];
+
+export type AsyncResourceMetrics<Keys extends string> = IAsyncComputed<
+  Partial<Record<Keys, MetricData>> | null | undefined
+> & {
+  error?: IComputedValue<MetricsErrorInfo | undefined>;
+};
 
 export interface ResourceMetricsProps<Keys extends string> {
   tabs: AtLeastOneMetricTab;
   object: KubeObject;
   className?: string;
   metricsKey?: string;
-  metrics: IAsyncComputed<Partial<Record<Keys, MetricData>> | null | undefined> | Partial<Record<Keys, MetricData>>;
+  metrics: AsyncResourceMetrics<Keys> | Partial<Record<Keys, MetricData>>;
   children: React.ReactChild | React.ReactChild[];
 }
 
 function isAsyncComputedMetrics<Keys extends string>(
-  metrics: IAsyncComputed<Partial<Record<Keys, MetricData>> | null | undefined> | Partial<Record<Keys, MetricData>>,
-): metrics is IAsyncComputed<Partial<Record<Keys, MetricData>> | null | undefined> {
-  return isComputed((metrics as IAsyncComputed<unknown>).value);
+  metrics: AsyncResourceMetrics<Keys> | Partial<Record<Keys, MetricData>>,
+): metrics is AsyncResourceMetrics<Keys> {
+  return isComputed((metrics as AsyncResourceMetrics<Keys>).value);
 }
 
 export interface ResourceMetricsValue {
@@ -42,6 +49,7 @@ export interface ResourceMetricsValue {
   tab: MetricsTab;
   metrics: Partial<Record<string, MetricData>> | null | undefined;
   isPending: boolean;
+  metricsError?: MetricsErrorInfo;
 }
 
 export const ResourceMetricsContext = createContext<ResourceMetricsValue | null>(null);
@@ -60,6 +68,9 @@ export const ResourceMetrics = observer(
     }
 
     const currentMetrics = isAsyncMetrics ? (shouldHideStaleMetrics ? undefined : metrics.value.get()) : metrics;
+    // Optional-chained deliberately: hand-built test fakes for `metrics` may
+    // not provide an `.error` computed, and they should keep working.
+    const metricsError = isAsyncMetrics ? metrics.error?.get() : undefined;
 
     return (
       <div className={cssNames("ResourceMetrics flex flex-col", className)}>
@@ -76,6 +87,7 @@ export const ResourceMetrics = observer(
             tab,
             metrics: currentMetrics,
             isPending,
+            metricsError,
           }}
         >
           <div className="graph">{children}</div>

@@ -13,7 +13,7 @@ import { ResourceMetrics, ResourceMetricsContext } from "./resource-metrics";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 
-import type { MetricData } from "../../../common/k8s-api/endpoints/metrics.api";
+import type { MetricData, MetricsErrorInfo } from "../../../common/k8s-api/endpoints/metrics.api";
 
 const object = {
   getId: () => "resource-id",
@@ -43,6 +43,16 @@ function MetricsProbe() {
   }
 
   return <div data-testid="metrics-value">{context.metrics.cpuUsage?.data.result[0].values[0]?.[1]}</div>;
+}
+
+function MetricsErrorProbe() {
+  const context = useContext(ResourceMetricsContext);
+
+  if (!context?.metricsError) {
+    return null;
+  }
+
+  return <div data-testid="metrics-error">{context.metricsError.reason}</div>;
 }
 
 function renderResourceMetrics(di: DiContainer) {
@@ -176,5 +186,41 @@ describe("ResourceMetrics", () => {
 
     expect(screen.queryByTestId("metrics-value")).not.toBeInTheDocument();
     expect(result.container.querySelector(".graph")).toBeEmptyDOMElement();
+  });
+
+  it("passes an async metrics value's error through the context", () => {
+    const render = renderFor({} as never);
+    const error: MetricsErrorInfo = { reason: "not-found", message: "No Prometheus service found" };
+    const metrics = {
+      pending: computed(() => false),
+      value: computed(() => undefined),
+      error: computed(() => error),
+    } as never;
+
+    render(
+      <ResourceMetrics object={object} tabs={["CPU"]} metrics={metrics}>
+        <MetricsErrorProbe />
+      </ResourceMetrics>,
+    );
+
+    expect(screen.getByTestId("metrics-error")).toHaveTextContent("not-found");
+  });
+
+  it("does not blow up when an async metrics value has no error computed", () => {
+    const render = renderFor({} as never);
+    const metrics = {
+      pending: computed(() => false),
+      value: computed(() => ({ cpuUsage: metricWithValue("1") }) as Partial<Record<"cpuUsage", MetricData>>),
+    } as never;
+
+    render(
+      <ResourceMetrics object={object} tabs={["CPU"]} metrics={metrics}>
+        <MetricsProbe />
+        <MetricsErrorProbe />
+      </ResourceMetrics>,
+    );
+
+    expect(screen.getByTestId("metrics-value")).toHaveTextContent("1");
+    expect(screen.queryByTestId("metrics-error")).not.toBeInTheDocument();
   });
 });

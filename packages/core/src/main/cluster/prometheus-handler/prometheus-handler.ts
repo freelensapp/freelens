@@ -16,6 +16,8 @@ import type { ClusterPrometheusPreferences } from "../../../common/cluster-types
 import type { GetPrometheusProviderByKind } from "../../prometheus/get-by-kind.injectable";
 import type { LoadProxyKubeconfig } from "../load-proxy-kubeconfig.injectable";
 
+export const NO_PROMETHEUS_SERVICE_FOUND_MESSAGE = "No Prometheus service found";
+
 export interface PrometheusDetails {
   prometheusPath: string;
   provider: PrometheusProvider;
@@ -112,7 +114,7 @@ export const createClusterPrometheusHandler = (...args: [Dependencies, Cluster])
       }
     }
 
-    throw new Error("No Prometheus service found", { cause: errors });
+    throw new Error(NO_PROMETHEUS_SERVICE_FOUND_MESSAGE, { cause: errors });
   };
 
   const getPrometheusDetails: ClusterPrometheusHandler["getPrometheusDetails"] = async () => {
