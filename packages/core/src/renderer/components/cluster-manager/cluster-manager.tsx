@@ -6,11 +6,11 @@
 
 import "./cluster-manager.scss";
 
+import { Redirect } from "@freelensapp/routing";
 import { buildURL, cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
-import { Redirect } from "react-router";
 import welcomeRouteInjectable from "../../../common/front-end-routing/routes/welcome/welcome-route.injectable";
 import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 import watchForGeneralEntityNavigationInjectable from "../../api/helpers/watch-for-general-entity-navigation.injectable";
@@ -50,7 +50,7 @@ class NonInjectedClusterManager extends React.Component<Dependencies> {
     const currentPath = this.props.currentPath.get();
 
     if (currentPath !== this.props.welcomeUrl) {
-      return <Redirect exact to={this.props.welcomeUrl} />;
+      return <Redirect to={this.props.welcomeUrl} />;
     }
 
     return (

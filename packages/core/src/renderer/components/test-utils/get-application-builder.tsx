@@ -16,13 +16,11 @@ import { Namespace } from "@freelensapp/kube-object";
 import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
 import { getMessageBridgeFake } from "@freelensapp/messaging-fake-bridge";
 import { discoverFor } from "@freelensapp/react-testing-library-discovery";
-import { historyInjectionToken } from "@freelensapp/routing";
 import { renderFor } from "@freelensapp/test-utils";
 import { getInjectable } from "@ogre-tools/injectable";
 import { act, fireEvent, queryByText } from "@testing-library/react";
 import { action, computed, observable, runInAction } from "mobx";
 import React from "react";
-import { Router } from "react-router";
 import { openMenu } from "react-select-event";
 import { Cluster } from "../../../common/cluster/cluster";
 import { navigateToRouteInjectionToken } from "../../../common/front-end-routing/navigate-to-route-injection-token";
@@ -288,15 +286,9 @@ export const getApplicationBuilder = () => {
           await callback({ windowDi });
         }
 
-        const history = windowDi.inject(historyInjectionToken);
-
         const render = renderFor(windowDi);
 
-        rendered = render(
-          <Router history={history as never}>
-            <environment.RootComponent />
-          </Router>,
-        );
+        rendered = render(<environment.RootComponent />);
       },
 
       send: ({ channel: channelId, data }) => {
