@@ -76,7 +76,9 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
   }
 
   renderCpuUsage(id: string, usage: number) {
-    const { maxCpu } = this.props;
+    // Invoked by getTableRow from Table/VirtualList's render reaction, so
+    // read this.props untracked to avoid mobx-react 9's foreign-derivation guard.
+    const { maxCpu } = untracked(() => this.props);
     const value = usage.toFixed(3);
 
     if (!maxCpu) {
@@ -97,7 +99,9 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
   }
 
   renderMemoryUsage(id: string, usage: number) {
-    const { maxMemory } = this.props;
+    // Invoked by getTableRow from Table/VirtualList's render reaction, so
+    // read this.props untracked to avoid mobx-react 9's foreign-derivation guard.
+    const { maxMemory } = untracked(() => this.props);
 
     if (!maxMemory) return usage ? bytesToUnits(usage) : 0;
 
