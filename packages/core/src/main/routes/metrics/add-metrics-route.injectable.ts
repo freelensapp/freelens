@@ -10,6 +10,7 @@ import { isObject } from "es-toolkit/compat";
 import { runInAction } from "mobx";
 import { ClusterMetadataKey, initialFilesystemMountpoints } from "../../../common/cluster-types";
 import { apiPrefix } from "../../../common/vars";
+import { NO_PROMETHEUS_SERVICE_FOUND_MESSAGE } from "../../cluster/prometheus-handler/prometheus-handler";
 import prometheusHandlerInjectable from "../../cluster/prometheus-handler/prometheus-handler.injectable";
 import getMetricsInjectable from "../../get-metrics.injectable";
 import { clusterRoute } from "../../router/route";
@@ -19,10 +20,12 @@ import {
   describeError,
   METRICS_NOT_AVAILABLE_MESSAGE,
   serializeErrorForLogging,
+  statusCodeFor,
 } from "./metrics-error-classification";
 
 import type { Cluster } from "../../../common/cluster/cluster";
 import type { ClusterPrometheusMetadata } from "../../../common/cluster-types";
+import type { MetricsErrorInfo } from "../../../common/k8s-api/endpoints/metrics.api";
 import type { GetMetrics } from "../../get-metrics.injectable";
 import type { MetricsErrorDescription } from "./metrics-error-classification";
 
@@ -96,7 +99,10 @@ const addMetricsRouteInjectable = getRouteInjectable({
         if (!prometheusPath) {
           prometheusMetadata.success = false;
 
-          return { response: {} };
+          return {
+            statusCode: 503,
+            error: { reason: "not-found", message: NO_PROMETHEUS_SERVICE_FOUND_MESSAGE } satisfies MetricsErrorInfo,
+          };
         }
 
         // return data in same structure as query
@@ -143,7 +149,7 @@ const addMetricsRouteInjectable = getRouteInjectable({
           });
         }
 
-        return { response: {} };
+        return { statusCode: statusCodeFor(info), error: info };
       } finally {
         runInAction(() => {
           cluster.metadata[ClusterMetadataKey.PROMETHEUS] = prometheusMetadata;

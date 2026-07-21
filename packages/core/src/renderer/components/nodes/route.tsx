@@ -7,6 +7,7 @@
 import "./nodes.scss";
 
 import { formatNodeTaint } from "@freelensapp/kube-object";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import { Tooltip, TooltipPosition } from "@freelensapp/tooltip";
 import { bytesToUnits, cpuUnitsToNumber, interval, unitsToBytes } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
@@ -28,6 +29,7 @@ import podStoreInjectable from "../workloads-pods/store.injectable";
 import nodeStoreInjectable from "./store.injectable";
 
 import type { Node, Pod } from "@freelensapp/kube-object";
+import type { Logger } from "@freelensapp/logger";
 
 import type {
   NodeMetricData,
@@ -74,6 +76,7 @@ interface Dependencies {
   podStore: PodStore;
   subscribeStores: SubscribeStores;
   loadPodsFromAllNamespaces: () => void;
+  logger: Logger;
 }
 
 function bytesToUnitsAligned(bytes: number): string {
@@ -166,7 +169,17 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
   private metricsWatcher = interval(30, () => {
     void (async () => {
       await this.props.nodeStore.loadKubeMetrics();
-      this.metrics = await this.props.requestAllNodeMetrics();
+
+      try {
+        this.metrics = await this.props.requestAllNodeMetrics();
+      } catch (error) {
+        // `interval()` has no rejection handler of its own, so an unhandled
+        // rejection here would surface as an unhandled promise rejection.
+        // Fall back to the same "no metrics" shape the route used to resolve
+        // with before it started rejecting on failure.
+        this.props.logger.debug("[NODES-ROUTE]: failed to load node metrics", { error });
+        this.metrics = {} as NodeMetricData;
+      }
     })();
   });
 
@@ -550,5 +563,6 @@ export const NodesRoute = withInjectables<Dependencies>(NonInjectedNodesRoute, {
     podStore: di.inject(podStoreInjectable),
     subscribeStores: di.inject(subscribeStoresInjectable),
     loadPodsFromAllNamespaces: di.inject(loadPodsFromAllNamespacesInjectable),
+    logger: di.inject(loggerInjectionToken),
   }),
 });

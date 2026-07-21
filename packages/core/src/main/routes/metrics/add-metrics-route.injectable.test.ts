@@ -112,4 +112,60 @@ describe("add-metrics-route", () => {
       ],
     });
   });
+
+  it("returns a 503 with a not-found error when Prometheus detection fails", async () => {
+    const resultPromise = callRoute({});
+
+    await getPrometheusDetailsMock.reject(
+      new Error(NO_PROMETHEUS_SERVICE_FOUND_MESSAGE, {
+        cause: [
+          new Error('Failed to find Prometheus provider for "lens"', { cause: new ApiExceptionStub(500, "boom") }),
+        ],
+      }),
+    );
+
+    await expect(resultPromise).resolves.toEqual({
+      statusCode: 503,
+      error: { reason: "not-found", message: NO_PROMETHEUS_SERVICE_FOUND_MESSAGE },
+    });
+  });
+
+  it("returns a 403 with an access-denied error when detection fails due to authorization", async () => {
+    const resultPromise = callRoute({});
+
+    await getPrometheusDetailsMock.reject(
+      new Error(NO_PROMETHEUS_SERVICE_FOUND_MESSAGE, {
+        cause: [
+          new Error('Failed to find Prometheus provider for "lens"', { cause: new ApiExceptionStub(403, "Forbidden") }),
+        ],
+      }),
+    );
+
+    await expect(resultPromise).resolves.toEqual({
+      statusCode: 403,
+      error: { reason: "access-denied", message: NO_PROMETHEUS_SERVICE_FOUND_MESSAGE, status: 403 },
+    });
+  });
+
+  it("returns a 503 with a not-found error when no Prometheus service could be located", async () => {
+    const resultPromise = callRoute({});
+
+    await getPrometheusDetailsMock.resolve({ prometheusPath: "", provider: undefined as never });
+
+    await expect(resultPromise).resolves.toEqual({
+      statusCode: 503,
+      error: { reason: "not-found", message: NO_PROMETHEUS_SERVICE_FOUND_MESSAGE },
+    });
+  });
+
+  it("returns the response unchanged on success", async () => {
+    const resultPromise = callRoute("up");
+
+    await getPrometheusDetailsMock.resolve({ prometheusPath: "/api/v1/prometheus", provider: undefined as never });
+    await getMetricsMock.resolve({ status: "success", data: { resultType: "vector", result: [] } });
+
+    await expect(resultPromise).resolves.toEqual({
+      response: { status: "success", data: { resultType: "vector", result: [] } },
+    });
+  });
 });
