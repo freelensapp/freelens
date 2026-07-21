@@ -103,9 +103,9 @@ exports[`<StatusBar /> > when StatusBar's status is set to %p > renders 1`] = `
     
                     <style>
                       
-      .cls-1 {
-        fill: none !important;
-      }
+    .cls-1 {
+      fill: none !important;
+    }
     
                     </style>
                     
@@ -508,9 +508,9 @@ exports[`<StatusBar /> > when StatusBar's status is set to %p > renders 2`] = `
     
                     <style>
                       
-      .cls-1 {
-        fill: none !important;
-      }
+    .cls-1 {
+      fill: none !important;
+    }
     
                     </style>
                     
@@ -913,9 +913,9 @@ exports[`<StatusBar /> > when an extension is enabled specifying the side the el
     
                     <style>
                       
-      .cls-1 {
-        fill: none !important;
-      }
+    .cls-1 {
+      fill: none !important;
+    }
     
                     </style>
                     
@@ -1360,9 +1360,9 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
     
                     <style>
                       
-      .cls-1 {
-        fill: none !important;
-      }
+    .cls-1 {
+      fill: none !important;
+    }
     
                     </style>
                     
@@ -1765,9 +1765,9 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
     
                     <style>
                       
-      .cls-1 {
-        fill: none !important;
-      }
+    .cls-1 {
+      fill: none !important;
+    }
     
                     </style>
                     
@@ -2170,9 +2170,9 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
     
                     <style>
                       
-      .cls-1 {
-        fill: none !important;
-      }
+    .cls-1 {
+      fill: none !important;
+    }
     
                     </style>
                     
@@ -2575,9 +2575,9 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
     
                     <style>
                       
-      .cls-1 {
-        fill: none !important;
-      }
+    .cls-1 {
+      fill: none !important;
+    }
     
                     </style>
                     
@@ -2980,9 +2980,9 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
     
                     <style>
                       
-      .cls-1 {
-        fill: none !important;
-      }
+    .cls-1 {
+      fill: none !important;
+    }
     
                     </style>
                     
@@ -3385,9 +3385,9 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
     
                     <style>
                       
-      .cls-1 {
-        fill: none !important;
-      }
+    .cls-1 {
+      fill: none !important;
+    }
     
                     </style>
                     
@@ -3790,9 +3790,9 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
     
                     <style>
                       
-      .cls-1 {
-        fill: none !important;
-      }
+    .cls-1 {
+      fill: none !important;
+    }
     
                     </style>
                     
@@ -4195,9 +4195,9 @@ exports[`<StatusBar /> > when an extension is enabled with no status items > ren
     
                     <style>
                       
-      .cls-1 {
-        fill: none !important;
-      }
+    .cls-1 {
+      fill: none !important;
+    }
     
                     </style>
                     

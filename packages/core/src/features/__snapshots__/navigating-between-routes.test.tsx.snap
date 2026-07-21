@@ -103,9 +103,9 @@ exports[`navigating between routes > given route with optional path parameters >
     
                   <style>
                     
-      .cls-1 {
-        fill: none !important;
-      }
+    .cls-1 {
+      fill: none !important;
+    }
     
                   </style>
                   
@@ -507,9 +507,9 @@ exports[`navigating between routes > given route without path parameters > when 
     
                   <style>
                     
-      .cls-1 {
-        fill: none !important;
-      }
+    .cls-1 {
+      fill: none !important;
+    }
     
                   </style>
                   

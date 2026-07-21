@@ -191,7 +191,7 @@ exports[`custom category columns for catalog > renders 1`] = `
                           <span
                             class="icon"
                           >
-                            <!--?xml version="1.0" encoding="utf-8"?-->
+                            <!--?xml version="1.0" encoding="utf-8" ?-->
                             
 
                             <!-- Generator: Adobe Illustrator 20.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
@@ -209,16 +209,18 @@ exports[`custom category columns for catalog > renders 1`] = `
                               y="0px"
                             >
                               
-
+  
                               <style
                                 type="text/css"
                               >
                                 
-	.st0{fill:#FFFFFF;}
-
+  .st0 {
+    fill: #ffffff;
+  }
+  
                               </style>
                               
-
+  
                               <path
                                 class="st0"
                                 d="M247.7,151.3L247.7,151.3L247.7,151.3C247.4,151.3,247.4,151.3,247.7,151.3h-0.2c-0.2,0-0.5,0-0.5-0.2
@@ -911,7 +913,7 @@ exports[`custom category columns for catalog > when category is added using defa
                           <span
                             class="icon"
                           >
-                            <!--?xml version="1.0" encoding="utf-8"?-->
+                            <!--?xml version="1.0" encoding="utf-8" ?-->
                             
 
                             <!-- Generator: Adobe Illustrator 20.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
@@ -929,16 +931,18 @@ exports[`custom category columns for catalog > when category is added using defa
                               y="0px"
                             >
                               
-
+  
                               <style
                                 type="text/css"
                               >
                                 
-	.st0{fill:#FFFFFF;}
-
+  .st0 {
+    fill: #ffffff;
+  }
+  
                               </style>
                               
-
+  
                               <path
                                 class="st0"
                                 d="M247.7,151.3L247.7,151.3L247.7,151.3C247.4,151.3,247.4,151.3,247.7,151.3h-0.2c-0.2,0-0.5,0-0.5-0.2
@@ -1662,7 +1666,7 @@ exports[`custom category columns for catalog > when category is added using defa
                           <span
                             class="icon"
                           >
-                            <!--?xml version="1.0" encoding="utf-8"?-->
+                            <!--?xml version="1.0" encoding="utf-8" ?-->
                             
 
                             <!-- Generator: Adobe Illustrator 20.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
@@ -1680,16 +1684,18 @@ exports[`custom category columns for catalog > when category is added using defa
                               y="0px"
                             >
                               
-
+  
                               <style
                                 type="text/css"
                               >
                                 
-	.st0{fill:#FFFFFF;}
-
+  .st0 {
+    fill: #ffffff;
+  }
+  
                               </style>
                               
-
+  
                               <path
                                 class="st0"
                                 d="M247.7,151.3L247.7,151.3L247.7,151.3C247.4,151.3,247.4,151.3,247.7,151.3h-0.2c-0.2,0-0.5,0-0.5-0.2
@@ -2403,7 +2409,7 @@ exports[`custom category columns for catalog > when category is added using defa
                           <span
                             class="icon"
                           >
-                            <!--?xml version="1.0" encoding="utf-8"?-->
+                            <!--?xml version="1.0" encoding="utf-8" ?-->
                             
 
                             <!-- Generator: Adobe Illustrator 20.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
@@ -2421,16 +2427,18 @@ exports[`custom category columns for catalog > when category is added using defa
                               y="0px"
                             >
                               
-
+  
                               <style
                                 type="text/css"
                               >
                                 
-	.st0{fill:#FFFFFF;}
-
+  .st0 {
+    fill: #ffffff;
+  }
+  
                               </style>
                               
-
+  
                               <path
                                 class="st0"
                                 d="M247.7,151.3L247.7,151.3L247.7,151.3C247.4,151.3,247.4,151.3,247.7,151.3h-0.2c-0.2,0-0.5,0-0.5-0.2
@@ -3130,7 +3138,7 @@ exports[`custom category columns for catalog > when category is added with custo
                           <span
                             class="icon"
                           >
-                            <!--?xml version="1.0" encoding="utf-8"?-->
+                            <!--?xml version="1.0" encoding="utf-8" ?-->
                             
 
                             <!-- Generator: Adobe Illustrator 20.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
@@ -3148,16 +3156,18 @@ exports[`custom category columns for catalog > when category is added with custo
                               y="0px"
                             >
                               
-
+  
                               <style
                                 type="text/css"
                               >
                                 
-	.st0{fill:#FFFFFF;}
-
+  .st0 {
+    fill: #ffffff;
+  }
+  
                               </style>
                               
-
+  
                               <path
                                 class="st0"
                                 d="M247.7,151.3L247.7,151.3L247.7,151.3C247.4,151.3,247.4,151.3,247.7,151.3h-0.2c-0.2,0-0.5,0-0.5-0.2
@@ -3881,7 +3891,7 @@ exports[`custom category columns for catalog > when category is added with custo
                           <span
                             class="icon"
                           >
-                            <!--?xml version="1.0" encoding="utf-8"?-->
+                            <!--?xml version="1.0" encoding="utf-8" ?-->
                             
 
                             <!-- Generator: Adobe Illustrator 20.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
@@ -3899,16 +3909,18 @@ exports[`custom category columns for catalog > when category is added with custo
                               y="0px"
                             >
                               
-
+  
                               <style
                                 type="text/css"
                               >
                                 
-	.st0{fill:#FFFFFF;}
-
+  .st0 {
+    fill: #ffffff;
+  }
+  
                               </style>
                               
-
+  
                               <path
                                 class="st0"
                                 d="M247.7,151.3L247.7,151.3L247.7,151.3C247.4,151.3,247.4,151.3,247.7,151.3h-0.2c-0.2,0-0.5,0-0.5-0.2
@@ -4560,7 +4572,7 @@ exports[`custom category columns for catalog > when category is added without de
                           <span
                             class="icon"
                           >
-                            <!--?xml version="1.0" encoding="utf-8"?-->
+                            <!--?xml version="1.0" encoding="utf-8" ?-->
                             
 
                             <!-- Generator: Adobe Illustrator 20.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
@@ -4578,16 +4590,18 @@ exports[`custom category columns for catalog > when category is added without de
                               y="0px"
                             >
                               
-
+  
                               <style
                                 type="text/css"
                               >
                                 
-	.st0{fill:#FFFFFF;}
-
+  .st0 {
+    fill: #ffffff;
+  }
+  
                               </style>
                               
-
+  
                               <path
                                 class="st0"
                                 d="M247.7,151.3L247.7,151.3L247.7,151.3C247.4,151.3,247.4,151.3,247.7,151.3h-0.2c-0.2,0-0.5,0-0.5-0.2
@@ -5311,7 +5325,7 @@ exports[`custom category columns for catalog > when category is added without de
                           <span
                             class="icon"
                           >
-                            <!--?xml version="1.0" encoding="utf-8"?-->
+                            <!--?xml version="1.0" encoding="utf-8" ?-->
                             
 
                             <!-- Generator: Adobe Illustrator 20.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
@@ -5329,16 +5343,18 @@ exports[`custom category columns for catalog > when category is added without de
                               y="0px"
                             >
                               
-
+  
                               <style
                                 type="text/css"
                               >
                                 
-	.st0{fill:#FFFFFF;}
-
+  .st0 {
+    fill: #ffffff;
+  }
+  
                               </style>
                               
-
+  
                               <path
                                 class="st0"
                                 d="M247.7,151.3L247.7,151.3L247.7,151.3C247.4,151.3,247.4,151.3,247.7,151.3h-0.2c-0.2,0-0.5,0-0.5-0.2

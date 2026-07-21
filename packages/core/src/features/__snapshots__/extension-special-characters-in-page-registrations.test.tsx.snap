@@ -102,9 +102,9 @@ exports[`extension special characters in page registrations > renders 1`] = `
     
                   <style>
                     
-      .cls-1 {
-        fill: none !important;
-      }
+    .cls-1 {
+      fill: none !important;
+    }
     
                   </style>
                   
@@ -506,9 +506,9 @@ exports[`extension special characters in page registrations > when navigating to
     
                   <style>
                     
-      .cls-1 {
-        fill: none !important;
-      }
+    .cls-1 {
+      fill: none !important;
+    }
     
                   </style>
                   
