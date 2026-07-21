@@ -1988,6 +1988,9 @@ importers:
       '@types/node':
         specifier: ~24.12.4
         version: 24.12.4
+      jsdom:
+        specifier: ^29.1.1
+        version: 29.1.1(@noble/hashes@2.2.0)
       node-fetch:
         specifier: ^3.3.2
         version: 3.3.2
@@ -1997,6 +2000,9 @@ importers:
       type-fest:
         specifier: ^5.6.0
         version: 5.6.0
+      vitest:
+        specifier: ^4.1.10
+        version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
   packages/utility-features/kube-api:
     dependencies:

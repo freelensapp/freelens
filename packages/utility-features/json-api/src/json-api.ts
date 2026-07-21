@@ -106,6 +106,10 @@ export class JsonApiErrorParsed {
     return this.error.code === DOMException.ABORT_ERR;
   }
 
+  get data(): JsonApiError | DOMException | KubeJsonApiError {
+    return this.error;
+  }
+
   toString() {
     return this.messages.join("\n");
   }
