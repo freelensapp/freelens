@@ -840,9 +840,6 @@ importers:
       memorystream:
         specifier: ^0.3.1
         version: 0.3.1
-      mobx-observable-history:
-        specifier: ^2.0.3
-        version: 2.0.3
       mock-http:
         specifier: ^1.1.1
         version: 1.1.1
@@ -964,9 +961,6 @@ importers:
       mobx:
         specifier: ^6.15.0
         version: 6.15.0
-      mobx-observable-history:
-        specifier: ^2.0.3
-        version: 2.0.3
       monaco-editor:
         specifier: ^0.55.1
         version: 0.55.1
@@ -1217,9 +1211,9 @@ importers:
       history:
         specifier: ^5.3.0
         version: 5.3.0
-      mobx-observable-history:
-        specifier: ^2.0.3
-        version: 2.0.3
+      mobx:
+        specifier: ^6.15.0
+        version: 6.15.0
     devDependencies:
       '@freelensapp/typescript':
         specifier: workspace:^
@@ -1724,9 +1718,6 @@ importers:
       '@types/react':
         specifier: 'catalog:'
         version: 18.3.31
-      mobx-observable-history:
-        specifier: ^2.0.3
-        version: 2.0.3
       typescript:
         specifier: ^7.0.2
         version: 7.0.2
@@ -5767,9 +5758,6 @@ packages:
   mkdirp@0.5.6:
     resolution: {integrity: sha512-FP+p8RB8OWpF3YZBCrP5gtADmtXApB5AMLn+vdyA+PyxCjrCs00mjyUozssO33cwDeT3wNGdLxJ5M//YqtHAJw==}
     hasBin: true
-
-  mobx-observable-history@2.0.3:
-    resolution: {integrity: sha512-cWMG3GcT1l2Y880mfffNh9m6WldQyOtlLUvcdVUjIj++sNOQbRxKBaBUe/TPDiJ80EN6g8FGiVuFlzzyRJPykQ==}
 
   mobx-react-lite@4.1.1:
     resolution: {integrity: sha512-iUxiMpsvNraCKXU+yPotsOncNNmyeS2B5DKL+TL6Tar/xm+wwNJAubJmtRSeAoYawdZqwv8Z/+5nPRHeQxTiXg==}
@@ -10580,12 +10568,6 @@ snapshots:
   mkdirp@0.5.6:
     dependencies:
       minimist: 1.2.8
-
-  mobx-observable-history@2.0.3:
-    dependencies:
-      '@types/history': 4.7.11
-      history: 4.10.1
-      mobx: 6.15.0
 
   mobx-react-lite@4.1.1(mobx@6.15.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
     dependencies:
