@@ -136,6 +136,15 @@ async function main() {
       author: "James Ide",
       licenseText: spdxLicenseList.MIT.licenseText,
     },
+    // `path-to-regexp` v1.9.0 is vendored as TypeScript into
+    // `packages/routing/src/vendor/path-to-regexp.ts` (see #2261), so it is no
+    // longer an npm dependency and must be listed here to keep its copyright in
+    // the generated license manifest.
+    "path-to-regexp:MIT": {
+      name: "path-to-regexp",
+      author: "Blake Embrey (hello@blakeembrey.com)",
+      licenseText: spdxLicenseList.MIT.licenseText,
+    },
   };
 
   const npmDependencies = await getDependenciesFromPnpmApi(prod);
