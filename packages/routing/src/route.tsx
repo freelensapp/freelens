@@ -201,7 +201,6 @@ const NonInjectedRedirect = ({ history, to, push = false }: RedirectProps & Redi
     }
     // `to` is captured through the serialized `target`; `history` is a stable
     // singleton.
-    // biome-ignore lint/correctness/useExhaustiveDependencies: navigate on target/push change only
   }, [target, push]);
 
   return null;
