@@ -200,7 +200,6 @@
     "logform": "^2.7.0",
     "memfs": "^4.64.0",
     "memorystream": "^0.3.1",
-    "mobx-observable-history": "^2.0.3",
     "mock-http": "^1.1.1",
     "react-select-event": "^5.5.1",
     "tailwindcss": "^4.2.4",

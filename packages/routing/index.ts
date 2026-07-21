@@ -7,5 +7,10 @@
 export { routingFeature } from "./src/feature";
 export { historyInjectionToken } from "./src/history.injectable";
 export { toHistoryV4 } from "./src/history-compat";
+export { createObservableHistory, ObservableHistory } from "./src/observable-history";
 export { observableHistoryInjectionToken } from "./src/observable-history.injectable";
+export { ObservableSearchParams } from "./src/observable-search-params";
 export { searchParamsOptions } from "./src/search-params";
+
+export type { HistoryAdapter, ObservableHistoryOptions } from "./src/observable-history";
+export type { ObservableSearchParamsOptions, SearchParamsInit } from "./src/observable-search-params";

@@ -16,9 +16,8 @@ import { matchPath, Redirect, Route, Switch } from "react-router";
 import navigateInjectable from "../../navigation/navigate.injectable";
 import { Tab, Tabs } from "../tabs";
 
+import type { ObservableHistory } from "@freelensapp/routing";
 import type { IClassName, StrictReactNode } from "@freelensapp/utilities";
-
-import type { ObservableHistory } from "mobx-observable-history";
 
 import type { Navigate } from "../../navigation/navigate.injectable";
 
