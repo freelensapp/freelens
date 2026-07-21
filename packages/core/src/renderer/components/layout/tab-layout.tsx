@@ -7,12 +7,11 @@
 import "./tab-layout.scss";
 
 import { ErrorBoundary } from "@freelensapp/error-boundary";
-import { matchPath, observableHistoryInjectionToken } from "@freelensapp/routing";
+import { matchPath, observableHistoryInjectionToken, Redirect, Route, Switch } from "@freelensapp/routing";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import { Redirect, Route, Switch } from "react-router";
 import navigateInjectable from "../../navigation/navigate.injectable";
 import { Tab, Tabs } from "../tabs";
 

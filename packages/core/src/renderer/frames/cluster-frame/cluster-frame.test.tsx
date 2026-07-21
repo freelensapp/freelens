@@ -4,11 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { historyInjectionToken } from "@freelensapp/routing";
 import { DiContextProvider } from "@ogre-tools/injectable-react";
 import { render as testingLibraryRender } from "@testing-library/react";
 import { computed } from "mobx";
-import { Router } from "react-router";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../../common/cluster/cluster";
 import { getClusterPageMenuOrderInjectable } from "../../../features/user-preferences/common/cluster-page-menu-order.injectable";
@@ -35,11 +33,7 @@ describe("<ClusterFrame />", () => {
   beforeEach(() => {
     di = getDiForUnitTesting();
     render = () =>
-      testingLibraryRender(
-        <DiContextProvider value={{ di }}>
-          <Router history={di.inject(historyInjectionToken) as never}>{DefaultProps(ClusterFrame)}</Router>
-        </DiContextProvider>,
-      );
+      testingLibraryRender(<DiContextProvider value={{ di }}>{DefaultProps(ClusterFrame)}</DiContextProvider>);
 
     di.override(subscribeStoresInjectable, () => vi.fn().mockImplementation(() => vi.fn()));
     di.override(legacyOnChannelListenInjectable, () => vi.fn().mockImplementation(() => vi.fn()));
