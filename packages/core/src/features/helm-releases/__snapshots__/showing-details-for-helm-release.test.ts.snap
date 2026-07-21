@@ -110,7 +110,7 @@ exports[`showing details for helm release > given application is started > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -287,7 +287,7 @@ exports[`showing details for helm release > given application is started > when 
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -1063,7 +1063,7 @@ exports[`showing details for helm release > given application is started > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -1240,7 +1240,7 @@ exports[`showing details for helm release > given application is started > when 
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -2289,7 +2289,7 @@ exports[`showing details for helm release > given application is started > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -2466,7 +2466,7 @@ exports[`showing details for helm release > given application is started > when 
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -3576,7 +3576,7 @@ exports[`showing details for helm release > given application is started > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -3753,7 +3753,7 @@ exports[`showing details for helm release > given application is started > when 
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -4863,7 +4863,7 @@ exports[`showing details for helm release > given application is started > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -5040,7 +5040,7 @@ exports[`showing details for helm release > given application is started > when 
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -6396,7 +6396,7 @@ exports[`showing details for helm release > given application is started > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -6573,7 +6573,7 @@ exports[`showing details for helm release > given application is started > when 
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -7929,7 +7929,7 @@ exports[`showing details for helm release > given application is started > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -8106,7 +8106,7 @@ exports[`showing details for helm release > given application is started > when 
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -9462,7 +9462,7 @@ exports[`showing details for helm release > given application is started > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -9639,7 +9639,7 @@ exports[`showing details for helm release > given application is started > when 
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -10722,7 +10722,7 @@ exports[`showing details for helm release > given application is started > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -10899,7 +10899,7 @@ exports[`showing details for helm release > given application is started > when 
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -11984,7 +11984,7 @@ exports[`showing details for helm release > given application is started > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -12161,7 +12161,7 @@ exports[`showing details for helm release > given application is started > when 
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -13517,7 +13517,7 @@ exports[`showing details for helm release > given application is started > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -13694,7 +13694,7 @@ exports[`showing details for helm release > given application is started > when 
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -14804,7 +14804,7 @@ exports[`showing details for helm release > given application is started > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -14981,7 +14981,7 @@ exports[`showing details for helm release > given application is started > when 
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -16093,7 +16093,7 @@ exports[`showing details for helm release > given application is started > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -16270,7 +16270,7 @@ exports[`showing details for helm release > given application is started > when 
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -17319,7 +17319,7 @@ exports[`showing details for helm release > given application is started > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -17496,7 +17496,7 @@ exports[`showing details for helm release > given application is started > when 
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -18606,7 +18606,7 @@ exports[`showing details for helm release > given application is started > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -18783,7 +18783,7 @@ exports[`showing details for helm release > given application is started > when 
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -19893,7 +19893,7 @@ exports[`showing details for helm release > given application is started > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -20070,7 +20070,7 @@ exports[`showing details for helm release > given application is started > when 
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -21180,7 +21180,7 @@ exports[`showing details for helm release > given application is started > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -21357,7 +21357,7 @@ exports[`showing details for helm release > given application is started > when 
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -22467,7 +22467,7 @@ exports[`showing details for helm release > given application is started > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -22644,7 +22644,7 @@ exports[`showing details for helm release > given application is started > when 
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"

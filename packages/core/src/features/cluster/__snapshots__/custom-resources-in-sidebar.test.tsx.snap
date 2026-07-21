@@ -110,7 +110,7 @@ exports[`cluster - custom resources in sidebar > renders 1`] = `
                 aria-current="page"
                 class="navItem active"
                 data-testid="link-for-sidebar-item-workloads"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -788,7 +788,7 @@ exports[`cluster - custom resources in sidebar > when custom resource definition
                 aria-current="page"
                 class="navItem active"
                 data-testid="link-for-sidebar-item-workloads"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -1077,7 +1077,7 @@ exports[`cluster - custom resources in sidebar > when custom resource definition
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-custom-resources"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -1503,7 +1503,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > r
                 aria-current="page"
                 class="navItem active"
                 data-testid="link-for-sidebar-item-workloads"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -2181,7 +2181,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
                 aria-current="page"
                 class="navItem active"
                 data-testid="link-for-sidebar-item-workloads"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -2470,7 +2470,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-custom-resources"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -2834,7 +2834,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-favorites"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -2896,7 +2896,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
                 aria-current="page"
                 class="navItem active"
                 data-testid="link-for-sidebar-item-workloads"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -3003,7 +3003,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-network"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -3072,7 +3072,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-helm"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -3185,7 +3185,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-custom-resources"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -3224,7 +3224,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
                   <a
                     class="navItem"
                     data-testid="link-for-sidebar-item-custom-resource-definitions"
-                    href="/"
+                    href="/workloads"
                   >
                     <span>
                       Definitions
@@ -3657,7 +3657,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
                 aria-current="page"
                 class="navItem active"
                 data-testid="link-for-sidebar-item-workloads"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -4273,7 +4273,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-favorites"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -4335,7 +4335,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
                 aria-current="page"
                 class="navItem active"
                 data-testid="link-for-sidebar-item-workloads"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -4442,7 +4442,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-network"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -4511,7 +4511,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-helm"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -4624,7 +4624,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-custom-resources"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -4663,7 +4663,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
                   <a
                     class="navItem"
                     data-testid="link-for-sidebar-item-custom-resource-group-some.group.com"
-                    href="/"
+                    href="/workloads"
                   >
                     <span>
                       some​.group​.com
@@ -5019,7 +5019,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-favorites"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -5081,7 +5081,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
                 aria-current="page"
                 class="navItem active"
                 data-testid="link-for-sidebar-item-workloads"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -5188,7 +5188,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-network"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -5257,7 +5257,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-helm"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -5370,7 +5370,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-custom-resources"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -5409,7 +5409,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
                   <a
                     class="navItem"
                     data-testid="link-for-sidebar-item-custom-resource-group-some.group.com"
-                    href="/"
+                    href="/workloads"
                   >
                     <span>
                       some​.group​.com
@@ -5438,7 +5438,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
                       <a
                         class="navItem"
                         data-testid="link-for-sidebar-item-custom-resource-group-some.group.com/some-resources"
-                        href="/"
+                        href="/workloads"
                       >
                         <span>
                           Some Resource

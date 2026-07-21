@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { Link } from "@freelensapp/routing";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
-import { Link } from "react-router-dom";
 import { DrawerItem } from "../../../drawer";
 import getDetailsUrlInjectable from "../../../kube-detail-params/get-details-url.injectable";
 

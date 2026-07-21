@@ -94,7 +94,7 @@ exports[`<ClusterFrame /> > given cluster with list nodes and namespaces permiss
                 aria-current="page"
                 class="navItem active"
                 data-testid="link-for-sidebar-item-cluster-overview"
-                href="/"
+                href="/overview"
               >
                 <i
                   class="Icon svg focusable"
@@ -767,7 +767,7 @@ exports[`<ClusterFrame /> > given cluster with list nodes and namespaces permiss
                 aria-current="page"
                 class="navItem active"
                 data-testid="link-for-sidebar-item-cluster-overview"
-                href="/"
+                href="/overview"
               >
                 <i
                   class="Icon svg focusable"
@@ -1463,7 +1463,7 @@ exports[`<ClusterFrame /> > given cluster without list nodes, but with namespace
                 aria-current="page"
                 class="navItem active"
                 data-testid="link-for-sidebar-item-workloads"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"

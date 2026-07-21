@@ -110,7 +110,7 @@ exports[`legacy extension adding cluster frame components > given custom compone
                 aria-current="page"
                 class="navItem active"
                 data-testid="link-for-sidebar-item-workloads"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"

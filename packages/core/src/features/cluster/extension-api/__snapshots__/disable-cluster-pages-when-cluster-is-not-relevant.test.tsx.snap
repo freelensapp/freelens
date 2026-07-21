@@ -110,7 +110,7 @@ exports[`disable-cluster-pages-when-cluster-is-not-relevant > given extension sh
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/extension/test-extension"
                 >
                   <i
                     class="Icon svg focusable"
@@ -667,7 +667,7 @@ exports[`disable-cluster-pages-when-cluster-is-not-relevant > given extension sh
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon svg focusable"
@@ -1347,7 +1347,7 @@ exports[`disable-cluster-pages-when-cluster-is-not-relevant > given not yet know
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon svg focusable"

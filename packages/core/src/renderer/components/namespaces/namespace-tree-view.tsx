@@ -9,6 +9,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { Link } from "@freelensapp/routing";
 import { prevDefault } from "@freelensapp/utilities";
 import TreeItem, { useTreeItem } from "@mui/lab/TreeItem";
 import TreeView from "@mui/lab/TreeView";
@@ -17,7 +18,6 @@ import Typography from "@mui/material/Typography";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import clsx from "clsx";
 import React from "react";
-import { Link } from "react-router-dom";
 import { DrawerTitle } from "../drawer";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
 import hierarchicalNamespacesInjectable from "./hierarchical-namespaces.injectable";

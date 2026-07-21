@@ -110,7 +110,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -287,7 +287,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -982,7 +982,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -1159,7 +1159,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -1996,7 +1996,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -2173,7 +2173,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -3064,7 +3064,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -3241,7 +3241,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -4168,7 +4168,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -4345,7 +4345,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -5429,7 +5429,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -5606,7 +5606,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -6692,7 +6692,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"
@@ -6869,7 +6869,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon svg focusable"

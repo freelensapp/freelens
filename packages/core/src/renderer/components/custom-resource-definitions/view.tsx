@@ -7,12 +7,12 @@
 import "./view.scss";
 
 import { Icon } from "@freelensapp/icon";
+import { Link } from "@freelensapp/routing";
 import { iter, stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import { Link } from "react-router-dom";
 import { KubeObjectAge } from "../kube-object/age";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { TabLayout } from "../layout/tab-layout-2";

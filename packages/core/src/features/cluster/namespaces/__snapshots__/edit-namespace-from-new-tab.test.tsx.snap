@@ -110,7 +110,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -271,7 +271,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-namespaces"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -940,7 +940,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -1101,7 +1101,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-namespaces"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -1775,7 +1775,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -1936,7 +1936,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-namespaces"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -2709,7 +2709,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -2870,7 +2870,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-namespaces"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -3591,7 +3591,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -3752,7 +3752,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-namespaces"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -4575,7 +4575,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -4736,7 +4736,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-namespaces"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -5561,7 +5561,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -5722,7 +5722,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-namespaces"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -6509,7 +6509,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -6670,7 +6670,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-namespaces"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -7452,7 +7452,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -7613,7 +7613,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-namespaces"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -8386,7 +8386,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -8547,7 +8547,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-namespaces"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -9320,7 +9320,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -9481,7 +9481,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-namespaces"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -10254,7 +10254,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -10415,7 +10415,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-namespaces"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -10993,7 +10993,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -11154,7 +11154,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-namespaces"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -11936,7 +11936,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -12097,7 +12097,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-namespaces"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -12870,7 +12870,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -13031,7 +13031,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-namespaces"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -13804,7 +13804,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -13965,7 +13965,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-namespaces"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"

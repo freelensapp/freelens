@@ -50,7 +50,7 @@ exports[`favorites overview > when navigating to favorites overview > renders 1`
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/favorites"
                 >
                   <i
                     class="Icon material focusable"
@@ -111,7 +111,7 @@ exports[`favorites overview > when navigating to favorites overview > renders 1`
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/"
+                  href="/favorites"
                 >
                   <i
                     class="Icon svg focusable"

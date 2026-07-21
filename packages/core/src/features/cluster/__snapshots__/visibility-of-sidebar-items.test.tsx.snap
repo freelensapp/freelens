@@ -110,7 +110,7 @@ exports[`cluster - visibility of sidebar items > given kube resource for route i
                 aria-current="page"
                 class="navItem active"
                 data-testid="link-for-sidebar-item-workloads"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -796,7 +796,7 @@ exports[`cluster - visibility of sidebar items > given kube resource for route i
                 aria-current="page"
                 class="navItem active"
                 data-testid="link-for-sidebar-item-workloads"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -903,7 +903,7 @@ exports[`cluster - visibility of sidebar items > given kube resource for route i
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-test"
-                href="/"
+                href="/workloads"
               >
                 <span>
                   Some item
@@ -980,7 +980,7 @@ exports[`cluster - visibility of sidebar items > given kube resource for route i
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-namespaces"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
