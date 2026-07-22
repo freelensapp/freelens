@@ -12259,54 +12259,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
   <div>
     <div
       class="Notifications"
-    >
-      <div
-        class="Animate opacity notification ok enter"
-        style="--enter-duration: 100ms; --leave-duration: 100ms;"
-      >
-        <div
-          class="info-icon"
-        >
-          <i
-            class="Icon material focusable"
-          >
-            <span
-              class="icon"
-              data-icon-name="info_outline"
-            >
-              info_outline
-            </span>
-          </i>
-        </div>
-        <div
-          class="message"
-        >
-          <p>
-            Chart Release 
-            <b>
-              some-release
-            </b>
-             successfully created.
-          </p>
-        </div>
-        <div
-          class="close-icon"
-        >
-          <i
-            class="Icon close material interactive focusable"
-            data-testid="close-notification-for-notification_1"
-            tabindex="0"
-          >
-            <span
-              class="icon"
-              data-icon-name="close"
-            >
-              close
-            </span>
-          </i>
-        </div>
-      </div>
-    </div>
+    />
     <div
       class="mainLayout"
       style="--sidebar-width: 200px;"

@@ -44,7 +44,7 @@ export interface NamespaceSelectFilterModel {
   onKeyUp: React.KeyboardEventHandler;
   reset: () => void;
   isOptionSelected: (option: NamespaceSelectFilterOption) => boolean;
-  formatOptionLabel: (option: NamespaceSelectFilterOption) => JSX.Element;
+  formatOptionLabel: (option: NamespaceSelectFilterOption) => React.JSX.Element;
 }
 
 enum SelectMenuState {

@@ -45,7 +45,13 @@ export class Tabs<D> extends React.PureComponent<TabsProps<D>> {
 
     return (
       <TabsContext.Provider value={{ autoFocus, value, onChange }}>
-        <div {...elemProps} className={className} ref={(elem) => (this.elem = elem)} />
+        <div
+          {...elemProps}
+          className={className}
+          ref={(elem) => {
+            this.elem = elem;
+          }}
+        />
       </TabsContext.Provider>
     );
   }

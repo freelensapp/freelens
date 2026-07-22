@@ -171,7 +171,7 @@
     "@tailwindcss/postcss": "^4.2.4",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
-    "@testing-library/react": "^15.0.7",
+    "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
     "@types/fs-extra": "^11.0.4",
     "@types/glob-to-regexp": "^0.4.4",
