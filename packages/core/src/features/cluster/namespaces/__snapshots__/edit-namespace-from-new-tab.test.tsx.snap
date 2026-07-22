@@ -1649,9 +1649,14 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
             style="flex-basis: 300px;"
           >
             <div
-              class="Spinner singleColor center"
-              data-testid="edit-resource-tab-spinner"
-            />
+              class="EditResource flex flex-col"
+            >
+              <div
+                class="notice"
+              >
+                Resource not found
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -1709,7 +1714,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -1877,7 +1882,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -1973,7 +1978,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -4476,7 +4481,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                     <div
                       class="badge"
                     >
-                      some-name
+                      some-other-name
                     </div>
                     <span>
                       Namespace:
@@ -4523,38 +4528,36 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 />
                 <button
                   class="Button plain"
-                  data-testid="cancel-edit-resource-from-tab-for-some-first-tab-id"
+                  data-testid="cancel-edit-resource-from-tab-for-some-second-tab-id"
                   type="button"
                 >
                   Cancel
                 </button>
                 <button
                   class="Button active outlined"
-                  data-testid="save-edit-resource-from-tab-for-some-first-tab-id"
+                  data-testid="save-edit-resource-from-tab-for-some-second-tab-id"
                   type="button"
                 >
                   Save
                 </button>
                 <button
                   class="Button primary active"
-                  data-testid="save-and-close-edit-resource-from-tab-for-some-first-tab-id"
+                  data-testid="save-and-close-edit-resource-from-tab-for-some-second-tab-id"
                   type="button"
                 >
                   Save & Close
                 </button>
               </div>
               <textarea
-                data-testid="monaco-editor-for-some-first-tab-id"
+                data-testid="monaco-editor-for-some-second-tab-id"
               >
                 apiVersion: some-api-version
 kind: Namespace
 metadata:
-  uid: some-uid
-  name: some-name
+  uid: some-other-uid
+  name: some-other-name
   resourceVersion: some-resource-version
-  somePropertyToBeRemoved: some-value
-  somePropertyToBeChanged: some-old-value
-  selfLink: /api/some-api-version/namespaces/some-uid
+  selfLink: /api/some-api-version/namespaces/some-other-uid
 
               </textarea>
             </div>
@@ -5599,7 +5602,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -5767,7 +5770,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -5863,7 +5866,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -6547,7 +6550,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -6715,7 +6718,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -6811,7 +6814,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -7490,7 +7493,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -7658,7 +7661,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -7754,7 +7757,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -8424,7 +8427,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -8592,7 +8595,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -8688,7 +8691,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -10128,9 +10131,113 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
             style="flex-basis: 300px;"
           >
             <div
-              class="Spinner singleColor center"
-              data-testid="edit-resource-tab-spinner"
-            />
+              class="EditResource flex flex-col"
+            >
+              <div
+                class="InfoPanel flex gap-2 items-center"
+              >
+                <div
+                  class="controls"
+                >
+                  <div
+                    class="resource-info flex gap-2 items-center"
+                  >
+                    <span>
+                      Kind:
+                    </span>
+                    <div
+                      class="badge"
+                    >
+                      Namespace
+                    </div>
+                    <span>
+                      Name:
+                    </span>
+                    <div
+                      class="badge"
+                    >
+                      some-name
+                    </div>
+                    <span>
+                      Namespace:
+                    </span>
+                    <div
+                      class="badge"
+                    >
+                      default
+                    </div>
+                    <label
+                      class="Checkbox flex items-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="check-icon flex items-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Sort
+                      </span>
+                    </label>
+                    <label
+                      class="Checkbox flex items-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="check-icon flex items-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Managed Fields
+                      </span>
+                    </label>
+                  </div>
+                </div>
+                <div
+                  class="flex gap-2 items-center"
+                />
+                <button
+                  class="Button plain"
+                  data-testid="cancel-edit-resource-from-tab-for-some-first-tab-id"
+                  type="button"
+                >
+                  Cancel
+                </button>
+                <button
+                  class="Button active outlined"
+                  data-testid="save-edit-resource-from-tab-for-some-first-tab-id"
+                  type="button"
+                >
+                  Save
+                </button>
+                <button
+                  class="Button primary active"
+                  data-testid="save-and-close-edit-resource-from-tab-for-some-first-tab-id"
+                  type="button"
+                >
+                  Save & Close
+                </button>
+              </div>
+              <textarea
+                data-testid="monaco-editor-for-some-first-tab-id"
+              >
+                apiVersion: some-api-version
+kind: Namespace
+metadata:
+  uid: some-uid
+  name: some-name
+  resourceVersion: some-resource-version
+  somePropertyToBeRemoved: some-value
+  somePropertyToBeChanged: some-old-value
+  selfLink: /api/some-api-version/namespaces/some-uid
+
+              </textarea>
+            </div>
           </div>
         </div>
       </div>
@@ -10188,7 +10295,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -10356,7 +10463,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -10452,7 +10559,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -10871,6 +10978,89 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
               </div>
             </div>
           </div>
+          <div
+            class="ErrorBoundary"
+          >
+            <h5>
+              App crash at 
+              <span
+                class="contrast"
+              >
+                /
+              </span>
+            </h5>
+            <p>
+              To help us improve the product please report bugs on 
+              <a
+                href="https://github.com/freelensapp/freelens/issues"
+                rel="noreferrer"
+                target="_blank"
+              >
+                Github
+              </a>
+               issues tracker.
+            </p>
+            <div
+              class="wrapper"
+            >
+              <code
+                class="block"
+              >
+                <p
+                  class="contrast"
+                >
+                  Component stack:
+                </p>
+                
+    at /home/runner/work/freelens/freelens/node_modules/.pnpm/mobx-react-lite@4.1.1_mobx@6.15.0_react-dom@19.2.8_react@19.2.8__react@19.2.8/node_modules/mobx-react-lite/dist/mobxreactlite.cjs.development.js:247:12
+    at x (file:///home/runner/work/freelens/freelens/node_modules/.pnpm/@ogre-tools+injectable-react@23.2.0_@ogre-tools+fp@23.2.0_@ogre-tools+injectable@23.2.0_ec22a3ae328085ac12530db229a70a54/node_modules/@ogre-tools/injectable-react/build/index.mjs:2:81481)
+    at div (&lt;anonymous&gt;)
+    at NonInjectedErrorBoundary (/home/runner/work/freelens/freelens/packages/ui-components/error-boundary/src/error-boundary.tsx:25:32)
+    at x (file:///home/runner/work/freelens/freelens/node_modules/.pnpm/@ogre-tools+injectable-react@23.2.0_@ogre-tools+fp@23.2.0_@ogre-tools+injectable@23.2.0_ec22a3ae328085ac12530db229a70a54/node_modules/@ogre-tools/injectable-react/build/index.mjs:2:81481)
+    at div (&lt;anonymous&gt;)
+    at NonInjectedDock (/home/runner/work/freelens/freelens/packages/core/src/renderer/components/dock/dock.tsx:54:23)
+    at x (file:///home/runner/work/freelens/freelens/node_modules/.pnpm/@ogre-tools+injectable-react@23.2.0_@ogre-tools+fp@23.2.0_@ogre-tools+injectable@23.2.0_ec22a3ae328085ac12530db229a70a54/node_modules/@ogre-tools/injectable-react/build/index.mjs:2:81481)
+    at div (&lt;anonymous&gt;)
+    at div (&lt;anonymous&gt;)
+    at NonInjectedMainLayout (/home/runner/work/freelens/freelens/packages/core/src/renderer/components/layout/main-layout.tsx:33:29)
+    at x (file:///home/runner/work/freelens/freelens/node_modules/.pnpm/@ogre-tools+injectable-react@23.2.0_@ogre-tools+fp@23.2.0_@ogre-tools+injectable@23.2.0_ec22a3ae328085ac12530db229a70a54/node_modules/@ogre-tools/injectable-react/build/index.mjs:2:81481)
+    at /home/runner/work/freelens/freelens/node_modules/.pnpm/mobx-react-lite@4.1.1_mobx@6.15.0_react-dom@19.2.8_react@19.2.8__react@19.2.8/node_modules/mobx-react-lite/dist/mobxreactlite.cjs.development.js:247:12
+    at x (file:///home/runner/work/freelens/freelens/node_modules/.pnpm/@ogre-tools+injectable-react@23.2.0_@ogre-tools+fp@23.2.0_@ogre-tools+injectable@23.2.0_ec22a3ae328085ac12530db229a70a54/node_modules/@ogre-tools/injectable-react/build/index.mjs:2:81481)
+    at ObserverComponent (/home/runner/work/freelens/freelens/node_modules/.pnpm/mobx-react-lite@4.1.1_mobx@6.15.0_react-dom@19.2.8_react@19.2.8__react@19.2.8/node_modules/mobx-react-lite/dist/mobxreactlite.cjs.development.js:307:23)
+    at NonInjectedErrorBoundary (/home/runner/work/freelens/freelens/packages/ui-components/error-boundary/src/error-boundary.tsx:25:32)
+    at x (file:///home/runner/work/freelens/freelens/node_modules/.pnpm/@ogre-tools+injectable-react@23.2.0_@ogre-tools+fp@23.2.0_@ogre-tools+injectable@23.2.0_ec22a3ae328085ac12530db229a70a54/node_modules/@ogre-tools/injectable-react/build/index.mjs:2:81481)
+    at /home/runner/work/freelens/freelens/node_modules/.pnpm/mobx-react-lite@4.1.1_mobx@6.15.0_react-dom@19.2.8_react@19.2.8__react@19.2.8/node_modules/mobx-react-lite/dist/mobxreactlite.cjs.development.js:247:12
+    at x (file:///home/runner/work/freelens/freelens/node_modules/.pnpm/@ogre-tools+injectable-react@23.2.0_@ogre-tools+fp@23.2.0_@ogre-tools+injectable@23.2.0_ec22a3ae328085ac12530db229a70a54/node_modules/@ogre-tools/injectable-react/build/index.mjs:2:81481)
+    at ClusterFrame (&lt;anonymous&gt;)
+              </code>
+              <code
+                class="block"
+              >
+                <p
+                  class="contrast"
+                >
+                  Error stack:
+                </p>
+                AssertionError [ERR_ASSERTION]: Resource is not present in the store
+    at EditResourceModel.get editingResource [as editingResource] (/home/runner/work/freelens/freelens/packages/core/src/renderer/components/dock/edit-resource/edit-resource-model/edit-resource-model.injectable.tsx:251:5)
+    at /home/runner/work/freelens/freelens/packages/core/src/renderer/components/dock/edit-resource/edit-resource-model/edit-resource-model.injectable.tsx:220:32
+    at trackDerivedFunction (/home/runner/work/freelens/freelens/node_modules/.pnpm/mobx@6.15.0/node_modules/mobx/dist/mobx.cjs.development.js:1901:18)
+    at ComputedValue.computeValue_ (/home/runner/work/freelens/freelens/node_modules/.pnpm/mobx@6.15.0/node_modules/mobx/dist/mobx.cjs.development.js:1658:13)
+    at ComputedValue.trackAndCompute (/home/runner/work/freelens/freelens/node_modules/.pnpm/mobx@6.15.0/node_modules/mobx/dist/mobx.cjs.development.js:1635:25)
+    at ComputedValue.get (/home/runner/work/freelens/freelens/node_modules/.pnpm/mobx@6.15.0/node_modules/mobx/dist/mobx.cjs.development.js:1604:18)
+    at shouldCompute (/home/runner/work/freelens/freelens/node_modules/.pnpm/mobx@6.15.0/node_modules/mobx/dist/mobx.cjs.development.js:1838:21)
+    at Reaction.runReaction_ (/home/runner/work/freelens/freelens/node_modules/.pnpm/mobx@6.15.0/node_modules/mobx/dist/mobx.cjs.development.js:2452:11)
+    at runReactionsHelper (/home/runner/work/freelens/freelens/node_modules/.pnpm/mobx@6.15.0/node_modules/mobx/dist/mobx.cjs.development.js:2654:29)
+    at reactionScheduler (/home/runner/work/freelens/freelens/node_modules/.pnpm/mobx@6.15.0/node_modules/mobx/dist/mobx.cjs.development.js:2631:10)
+              </code>
+            </div>
+            <button
+              class="Button back-button primary"
+              type="button"
+            >
+              Back
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -10927,7 +11117,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -11095,7 +11285,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -11191,7 +11381,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -11870,7 +12060,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -12038,7 +12228,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -12134,7 +12324,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -12804,7 +12994,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -12972,7 +13162,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -13068,7 +13258,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -13738,7 +13928,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -13906,7 +14096,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -14002,7 +14192,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -14420,6 +14610,89 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 </div>
               </div>
             </div>
+          </div>
+          <div
+            class="ErrorBoundary"
+          >
+            <h5>
+              App crash at 
+              <span
+                class="contrast"
+              >
+                /
+              </span>
+            </h5>
+            <p>
+              To help us improve the product please report bugs on 
+              <a
+                href="https://github.com/freelensapp/freelens/issues"
+                rel="noreferrer"
+                target="_blank"
+              >
+                Github
+              </a>
+               issues tracker.
+            </p>
+            <div
+              class="wrapper"
+            >
+              <code
+                class="block"
+              >
+                <p
+                  class="contrast"
+                >
+                  Component stack:
+                </p>
+                
+    at /home/runner/work/freelens/freelens/node_modules/.pnpm/mobx-react-lite@4.1.1_mobx@6.15.0_react-dom@19.2.8_react@19.2.8__react@19.2.8/node_modules/mobx-react-lite/dist/mobxreactlite.cjs.development.js:247:12
+    at x (file:///home/runner/work/freelens/freelens/node_modules/.pnpm/@ogre-tools+injectable-react@23.2.0_@ogre-tools+fp@23.2.0_@ogre-tools+injectable@23.2.0_ec22a3ae328085ac12530db229a70a54/node_modules/@ogre-tools/injectable-react/build/index.mjs:2:81481)
+    at div (&lt;anonymous&gt;)
+    at NonInjectedErrorBoundary (/home/runner/work/freelens/freelens/packages/ui-components/error-boundary/src/error-boundary.tsx:25:32)
+    at x (file:///home/runner/work/freelens/freelens/node_modules/.pnpm/@ogre-tools+injectable-react@23.2.0_@ogre-tools+fp@23.2.0_@ogre-tools+injectable@23.2.0_ec22a3ae328085ac12530db229a70a54/node_modules/@ogre-tools/injectable-react/build/index.mjs:2:81481)
+    at div (&lt;anonymous&gt;)
+    at NonInjectedDock (/home/runner/work/freelens/freelens/packages/core/src/renderer/components/dock/dock.tsx:54:23)
+    at x (file:///home/runner/work/freelens/freelens/node_modules/.pnpm/@ogre-tools+injectable-react@23.2.0_@ogre-tools+fp@23.2.0_@ogre-tools+injectable@23.2.0_ec22a3ae328085ac12530db229a70a54/node_modules/@ogre-tools/injectable-react/build/index.mjs:2:81481)
+    at div (&lt;anonymous&gt;)
+    at div (&lt;anonymous&gt;)
+    at NonInjectedMainLayout (/home/runner/work/freelens/freelens/packages/core/src/renderer/components/layout/main-layout.tsx:33:29)
+    at x (file:///home/runner/work/freelens/freelens/node_modules/.pnpm/@ogre-tools+injectable-react@23.2.0_@ogre-tools+fp@23.2.0_@ogre-tools+injectable@23.2.0_ec22a3ae328085ac12530db229a70a54/node_modules/@ogre-tools/injectable-react/build/index.mjs:2:81481)
+    at /home/runner/work/freelens/freelens/node_modules/.pnpm/mobx-react-lite@4.1.1_mobx@6.15.0_react-dom@19.2.8_react@19.2.8__react@19.2.8/node_modules/mobx-react-lite/dist/mobxreactlite.cjs.development.js:247:12
+    at x (file:///home/runner/work/freelens/freelens/node_modules/.pnpm/@ogre-tools+injectable-react@23.2.0_@ogre-tools+fp@23.2.0_@ogre-tools+injectable@23.2.0_ec22a3ae328085ac12530db229a70a54/node_modules/@ogre-tools/injectable-react/build/index.mjs:2:81481)
+    at ObserverComponent (/home/runner/work/freelens/freelens/node_modules/.pnpm/mobx-react-lite@4.1.1_mobx@6.15.0_react-dom@19.2.8_react@19.2.8__react@19.2.8/node_modules/mobx-react-lite/dist/mobxreactlite.cjs.development.js:307:23)
+    at NonInjectedErrorBoundary (/home/runner/work/freelens/freelens/packages/ui-components/error-boundary/src/error-boundary.tsx:25:32)
+    at x (file:///home/runner/work/freelens/freelens/node_modules/.pnpm/@ogre-tools+injectable-react@23.2.0_@ogre-tools+fp@23.2.0_@ogre-tools+injectable@23.2.0_ec22a3ae328085ac12530db229a70a54/node_modules/@ogre-tools/injectable-react/build/index.mjs:2:81481)
+    at /home/runner/work/freelens/freelens/node_modules/.pnpm/mobx-react-lite@4.1.1_mobx@6.15.0_react-dom@19.2.8_react@19.2.8__react@19.2.8/node_modules/mobx-react-lite/dist/mobxreactlite.cjs.development.js:247:12
+    at x (file:///home/runner/work/freelens/freelens/node_modules/.pnpm/@ogre-tools+injectable-react@23.2.0_@ogre-tools+fp@23.2.0_@ogre-tools+injectable@23.2.0_ec22a3ae328085ac12530db229a70a54/node_modules/@ogre-tools/injectable-react/build/index.mjs:2:81481)
+    at ClusterFrame (&lt;anonymous&gt;)
+              </code>
+              <code
+                class="block"
+              >
+                <p
+                  class="contrast"
+                >
+                  Error stack:
+                </p>
+                AssertionError [ERR_ASSERTION]: Resource is not present in the store
+    at EditResourceModel.get editingResource [as editingResource] (/home/runner/work/freelens/freelens/packages/core/src/renderer/components/dock/edit-resource/edit-resource-model/edit-resource-model.injectable.tsx:251:5)
+    at /home/runner/work/freelens/freelens/packages/core/src/renderer/components/dock/edit-resource/edit-resource-model/edit-resource-model.injectable.tsx:220:32
+    at trackDerivedFunction (/home/runner/work/freelens/freelens/node_modules/.pnpm/mobx@6.15.0/node_modules/mobx/dist/mobx.cjs.development.js:1901:18)
+    at ComputedValue.computeValue_ (/home/runner/work/freelens/freelens/node_modules/.pnpm/mobx@6.15.0/node_modules/mobx/dist/mobx.cjs.development.js:1658:13)
+    at ComputedValue.trackAndCompute (/home/runner/work/freelens/freelens/node_modules/.pnpm/mobx@6.15.0/node_modules/mobx/dist/mobx.cjs.development.js:1635:25)
+    at ComputedValue.get (/home/runner/work/freelens/freelens/node_modules/.pnpm/mobx@6.15.0/node_modules/mobx/dist/mobx.cjs.development.js:1604:18)
+    at shouldCompute (/home/runner/work/freelens/freelens/node_modules/.pnpm/mobx@6.15.0/node_modules/mobx/dist/mobx.cjs.development.js:1838:21)
+    at Reaction.runReaction_ (/home/runner/work/freelens/freelens/node_modules/.pnpm/mobx@6.15.0/node_modules/mobx/dist/mobx.cjs.development.js:2452:11)
+    at runReactionsHelper (/home/runner/work/freelens/freelens/node_modules/.pnpm/mobx@6.15.0/node_modules/mobx/dist/mobx.cjs.development.js:2654:29)
+    at reactionScheduler (/home/runner/work/freelens/freelens/node_modules/.pnpm/mobx@6.15.0/node_modules/mobx/dist/mobx.cjs.development.js:2631:10)
+              </code>
+            </div>
+            <button
+              class="Button back-button primary"
+              type="button"
+            >
+              Back
+            </button>
           </div>
         </div>
       </div>
