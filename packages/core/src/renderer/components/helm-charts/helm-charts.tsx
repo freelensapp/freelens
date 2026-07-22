@@ -20,11 +20,11 @@ import selectedHelmChartInjectable from "./helm-charts/selected-helm-chart.injec
 import helmChartsRouteParametersInjectable from "./helm-charts-route-parameters.injectable";
 import { HelmChartIcon } from "./icon";
 
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import type { IComputedValue } from "mobx";
 
 import type { NavigateToHelmCharts } from "../../../common/front-end-routing/routes/cluster/helm/charts/navigate-to-helm-charts.injectable";
 import type { HelmChart } from "../../../common/k8s-api/endpoints/helm-charts.api";
+import type { IAsyncComputed } from "../../../common/utils/async-computed";
 
 enum columnId {
   name = "name",

@@ -21,10 +21,10 @@ import selectedMetricsTypeInjectable from "./overview/selected-metrics-type.inje
 import selectedNodeRoleForMetricsInjectable from "./overview/selected-node-role-for-metrics.injectable";
 import { createMetricsTimeRangeKey } from "./overview/time-range-key";
 
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import type { ChartOptions, ChartType, TooltipItem } from "chart.js";
 
 import type { ClusterMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
+import type { IAsyncComputed } from "../../../common/utils/async-computed";
 import type { SelectedMetricsTimeRange } from "./overview/selected-metrics-time-range.injectable";
 import type { SelectedMetricsType } from "./overview/selected-metrics-type.injectable";
 import type { SelectedNodeRoleForMetrics } from "./overview/selected-node-role-for-metrics.injectable";

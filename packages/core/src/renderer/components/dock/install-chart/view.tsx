@@ -33,6 +33,13 @@ interface Dependencies {
 }
 
 const NonInjectedInstallChart = observer(({ model: model, tabId }: InstallChartProps & Dependencies) => {
+  // The tab was closed and its store data removed; every field below reads the
+  // chart from the store, which would throw. Render nothing while the view
+  // unmounts (see InstallChartModel.isMissingChart).
+  if (model.isMissingChart) {
+    return null;
+  }
+
   const installed = model.installed.get();
 
   if (installed) {

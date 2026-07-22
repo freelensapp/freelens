@@ -22,23 +22,23 @@
   "scripts": {},
   "dependencies": {
     "@freelensapp/feature-core": "workspace:^",
-    "@ogre-tools/fp": "^17.11.1",
-    "@ogre-tools/injectable": "^17.11.1",
-    "@ogre-tools/injectable-react": "^17.11.1",
+    "@ogre-tools/fp": "^23.2.0",
+    "@ogre-tools/injectable": "^23.2.0",
+    "@ogre-tools/injectable-react": "^23.2.0",
     "history": "^5.3.0",
     "mobx": "^6.15.0",
     "mobx-react": "^9.1.1",
-    "react": "catalog:",
-    "react-dom": "catalog:"
+    "react": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
-    "@ogre-tools/injectable-extension-for-mobx": "^17.11.1",
+    "@ogre-tools/injectable-extension-for-mobx": "^23.2.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
+    "react-dom": "catalog:",
     "vitest": "^4.1.10"
   },
   "publishConfig": {

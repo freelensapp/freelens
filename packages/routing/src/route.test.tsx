@@ -7,7 +7,7 @@
 import { registerFeature } from "@freelensapp/feature-core";
 import { createContainer } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
-import { DiContextProvider, registerInjectableReact } from "@ogre-tools/injectable-react";
+import { DiContextProvider } from "@ogre-tools/injectable-react";
 import { render, waitFor } from "@testing-library/react";
 import { createMemoryHistory } from "history";
 import React from "react";
@@ -26,7 +26,6 @@ function setup(initialEntries: string[] = ["/"]) {
   const di = createContainer("routing-route-test");
 
   registerMobX(di);
-  registerInjectableReact(di);
   registerFeature(di, routingFeature);
 
   const memoryHistory = createMemoryHistory({ initialEntries, initialIndex: 0 });
@@ -35,7 +34,7 @@ function setup(initialEntries: string[] = ["/"]) {
 
   const history = di.inject(observableHistoryInjectionToken) as ObservableHistory;
   const renderInContext = (ui: React.ReactElement): RenderResult =>
-    render(<DiContextProvider value={{ di }}>{ui}</DiContextProvider>);
+    render(<DiContextProvider value={di}>{ui}</DiContextProvider>);
 
   return { di, history, renderInContext };
 }

@@ -26,7 +26,7 @@
   "dependencies": {
     "@freelensapp/feature-core": "workspace:^",
     "@freelensapp/messaging": "workspace:^",
-    "@ogre-tools/injectable": "^17.11.1"
+    "@ogre-tools/injectable": "^23.2.0"
   },
   "devDependencies": {
     "@async-fn/vitest": "^1.8.0",

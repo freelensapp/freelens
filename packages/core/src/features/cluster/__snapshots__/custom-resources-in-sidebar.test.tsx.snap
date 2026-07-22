@@ -48,7 +48,7 @@ exports[`cluster - custom resources in sidebar > renders 1`] = `
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-favorites"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -217,7 +217,7 @@ exports[`cluster - custom resources in sidebar > renders 1`] = `
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-network"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -286,7 +286,7 @@ exports[`cluster - custom resources in sidebar > renders 1`] = `
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-helm"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -726,7 +726,7 @@ exports[`cluster - custom resources in sidebar > when custom resource definition
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-favorites"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -895,7 +895,7 @@ exports[`cluster - custom resources in sidebar > when custom resource definition
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-network"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -964,7 +964,7 @@ exports[`cluster - custom resources in sidebar > when custom resource definition
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-helm"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -1430,7 +1430,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > r
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -1441,7 +1441,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > r
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-favorites"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -1475,7 +1475,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > r
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -1483,7 +1483,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > r
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -1491,7 +1491,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > r
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -1591,7 +1591,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > r
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -1599,7 +1599,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > r
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -1610,7 +1610,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > r
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-network"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -1644,7 +1644,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > r
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -1652,7 +1652,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > r
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -1660,7 +1660,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > r
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -1668,7 +1668,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > r
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -1679,7 +1679,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > r
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-helm"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -1773,7 +1773,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > r
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -1781,7 +1781,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > r
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -3584,7 +3584,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -3595,7 +3595,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-favorites"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -3629,7 +3629,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -3637,7 +3637,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -3645,7 +3645,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -3745,7 +3745,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -3753,7 +3753,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -3764,7 +3764,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-network"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -3798,7 +3798,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -3806,7 +3806,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -3814,7 +3814,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -3822,7 +3822,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           >
             <div
@@ -3833,7 +3833,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-helm"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -3927,7 +3927,7 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
           />
           <div
@@ -3935,9 +3935,46 @@ exports[`cluster - custom resources in sidebar > when custom resource exists > w
             aria-disabled="false"
             aria-roledescription="sortable"
             role="button"
-            style="pointer-events: auto; opacity: 1;"
+            style="pointer-events: auto; opacity: 1; transition: transform 0ms linear;"
             tabindex="0"
-          />
+          >
+            <div
+              class="SidebarItem"
+              data-is-active-test="false"
+              data-testid="sidebar-item-custom-resources"
+            >
+              <a
+                class="navItem"
+                data-testid="link-for-sidebar-item-custom-resources"
+                href="/workloads"
+              >
+                <i
+                  class="Icon material focusable"
+                >
+                  <span
+                    class="icon"
+                    data-icon-name="extension"
+                  >
+                    extension
+                  </span>
+                </i>
+                <span>
+                  Custom Resources
+                </span>
+                <i
+                  class="Icon expandIcon material focusable"
+                  data-testid="expand-icon-for-sidebar-item-custom-resources"
+                >
+                  <span
+                    class="icon"
+                    data-icon-name="keyboard_arrow_down"
+                  >
+                    keyboard_arrow_down
+                  </span>
+                </i>
+              </a>
+            </div>
+          </div>
           <div
             id="DndDescribedBy-5"
             style="display: none;"

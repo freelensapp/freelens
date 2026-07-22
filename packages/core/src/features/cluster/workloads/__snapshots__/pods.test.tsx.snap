@@ -49,7 +49,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/pods"
                 >
                   <i
                     class="Icon material focusable"
@@ -111,7 +111,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/workloads"
+                  href="/pods"
                 >
                   <i
                     class="Icon svg focusable"
@@ -218,7 +218,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/pods"
                 >
                   <i
                     class="Icon material focusable"
@@ -287,7 +287,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/pods"
                 >
                   <i
                     class="Icon svg focusable"
@@ -1239,7 +1239,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/pods"
                 >
                   <i
                     class="Icon material focusable"
@@ -1301,7 +1301,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/workloads"
+                  href="/pods"
                 >
                   <i
                     class="Icon svg focusable"
@@ -1408,7 +1408,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/pods"
                 >
                   <i
                     class="Icon material focusable"
@@ -1477,7 +1477,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/pods"
                 >
                   <i
                     class="Icon svg focusable"
@@ -2281,7 +2281,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/pods"
                 >
                   <i
                     class="Icon material focusable"
@@ -2343,7 +2343,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/workloads"
+                  href="/pods"
                 >
                   <i
                     class="Icon svg focusable"
@@ -2450,7 +2450,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/pods"
                 >
                   <i
                     class="Icon material focusable"
@@ -2519,7 +2519,7 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/pods"
                 >
                   <i
                     class="Icon svg focusable"

@@ -33,18 +33,17 @@
     "@freelensapp/routing": "workspace:^",
     "@freelensapp/tooltip": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
-    "@ogre-tools/injectable": "^17.11.1",
-    "@ogre-tools/injectable-react": "^17.11.1",
+    "@ogre-tools/injectable": "^23.2.0",
+    "@ogre-tools/injectable-react": "^23.2.0",
     "mobx": "^6.15.0",
     "mobx-react": "^9.1.1",
-    "react": "catalog:",
-    "react-dom": "catalog:"
+    "react": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/feature-core": "workspace:^",
     "@freelensapp/test-utils": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
-    "@ogre-tools/injectable-extension-for-mobx": "^17.11.1",
+    "@ogre-tools/injectable-extension-for-mobx": "^23.2.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@types/react": "catalog:",
     "history": "^5.3.0",

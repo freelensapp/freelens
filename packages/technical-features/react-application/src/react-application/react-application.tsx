@@ -1,4 +1,4 @@
-import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
+import { computedInjectManyInjectionToken } from "@ogre-tools/injectable-extension-for-mobx";
 import { DiContextProvider } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import { ReactApplicationContent } from "./react-application-content";
@@ -24,11 +24,11 @@ const render = (components: ReactApplicationHigherOrderComponent[]) => {
 };
 
 export const ReactApplication = observer(({ di }: ReactApplicationProps) => {
-  const computedInjectMany = di.inject(computedInjectManyInjectable);
+  const computedInjectMany = di.inject(computedInjectManyInjectionToken);
 
   const higherOrderComponents = computedInjectMany(reactApplicationHigherOrderComponentInjectionToken);
 
   const Components = [...higherOrderComponents.get(), ReactApplicationContent];
 
-  return <DiContextProvider value={{ di }}>{render(Components)}</DiContextProvider>;
+  return <DiContextProvider value={di}>{render(Components)}</DiContextProvider>;
 });

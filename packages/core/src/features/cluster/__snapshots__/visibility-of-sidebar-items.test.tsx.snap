@@ -48,7 +48,7 @@ exports[`cluster - visibility of sidebar items > given kube resource for route i
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-favorites"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -225,7 +225,7 @@ exports[`cluster - visibility of sidebar items > given kube resource for route i
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-network"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -294,7 +294,7 @@ exports[`cluster - visibility of sidebar items > given kube resource for route i
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-helm"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"
@@ -734,7 +734,7 @@ exports[`cluster - visibility of sidebar items > given kube resource for route i
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-favorites"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -927,7 +927,7 @@ exports[`cluster - visibility of sidebar items > given kube resource for route i
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-network"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -1022,7 +1022,7 @@ exports[`cluster - visibility of sidebar items > given kube resource for route i
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-helm"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"

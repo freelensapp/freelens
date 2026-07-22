@@ -15,6 +15,7 @@ import {
 } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import { reaction } from "mobx";
+import dependencyInjectionContainerInjectable from "../../../common/dependency-injection/dependency-injection-container.injectable";
 import { customResourceDefinitionApiInjectionToken } from "../../../common/k8s-api/api-manager/crd-api-token";
 import { injectableDifferencingRegistratorWith } from "../../../common/utils/registrator-helper";
 import customResourceDefinitionStoreInjectable from "../../components/custom-resource-definitions/store.injectable";
@@ -27,7 +28,11 @@ const setupAutoCrdApiCreationsInjectable = getInjectable({
   instantiate: (di) => ({
     run: () => {
       const customResourceDefinitionStore = di.inject(customResourceDefinitionStoreInjectable);
-      const injectableDifferencingRegistrator = injectableDifferencingRegistratorWith(di);
+      // Register against the root container so the CRD api ids stay bare (not
+      // namespaced under this registrator by @ogre-tools 23).
+      const injectableDifferencingRegistrator = injectableDifferencingRegistratorWith(
+        di.inject(dependencyInjectionContainerInjectable),
+      );
 
       reaction(
         () => customResourceDefinitionStore.getItems().map(toCrdApiInjectable),

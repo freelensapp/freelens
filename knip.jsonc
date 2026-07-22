@@ -118,7 +118,6 @@
         "@mui/material",
         "@ogre-tools/injectable",
         "@ogre-tools/injectable-react",
-        "@types/history",
         "@types/react",
         "@types/react-router",
         "@types/react-router-dom",

@@ -5,7 +5,7 @@
  */
 
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
+import { computedInjectManyInjectionToken } from "@ogre-tools/injectable-extension-for-mobx";
 import { sortBy } from "es-toolkit";
 import { computed } from "mobx";
 import { kubeObjectMenuItemInjectionToken } from "./kube-object-menu-item-injection-token";
@@ -16,7 +16,7 @@ const kubeObjectMenuItemsInjectable = getInjectable({
   id: "kube-object-menu-items",
 
   instantiate: (di, kubeObject: KubeObject) => {
-    const computedInjectMany = di.inject(computedInjectManyInjectable);
+    const computedInjectMany = di.inject(computedInjectManyInjectionToken);
     const menuItems = computedInjectMany(kubeObjectMenuItemInjectionToken);
 
     return computed(() =>

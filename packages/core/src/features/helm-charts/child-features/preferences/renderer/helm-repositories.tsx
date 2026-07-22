@@ -17,9 +17,8 @@ import activeHelmRepositoriesInjectable from "./active-helm-repositories.injecta
 import styles from "./helm-charts.module.scss";
 import removeHelmRepositoryInjectable from "./remove-helm-repository.injectable";
 
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
-
 import type { HelmRepo } from "../../../../../common/helm/helm-repo";
+import type { IAsyncComputed } from "../../../../../common/utils/async-computed";
 
 interface Dependencies {
   activeHelmRepositories: IAsyncComputed<HelmRepo[]>;

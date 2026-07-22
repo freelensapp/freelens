@@ -5,8 +5,8 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { asyncComputed } from "@ogre-tools/injectable-react";
 import requestHelmChartsInjectable from "../../../../common/k8s-api/endpoints/helm-charts.api/request-charts.injectable";
+import { asyncComputed } from "../../../../common/utils/async-computed";
 
 const helmChartsInjectable = getInjectable({
   id: "helm-charts",

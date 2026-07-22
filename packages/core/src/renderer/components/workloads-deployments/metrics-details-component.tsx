@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { type IAsyncComputed, withInjectables } from "@ogre-tools/injectable-react";
+import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react-lite";
 import { TimeRangedResourceMetrics } from "../resource-metrics";
 import { PodCharts, podMetricTabs } from "../workloads-pods/pod-charts";
@@ -13,6 +13,7 @@ import deploymentMetricsInjectable from "./metrics.injectable";
 import type { Deployment } from "@freelensapp/kube-object";
 
 import type { DeploymentPodMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-pod-metrics-for-deployments.injectable";
+import type { IAsyncComputed } from "../../../common/utils/async-computed";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 interface Dependencies {

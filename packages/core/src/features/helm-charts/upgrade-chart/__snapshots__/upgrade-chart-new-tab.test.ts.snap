@@ -49,7 +49,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon material focusable"
@@ -217,7 +217,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon material focusable"
@@ -921,7 +921,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon material focusable"
@@ -1089,7 +1089,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon material focusable"
@@ -1935,7 +1935,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon material focusable"
@@ -2103,7 +2103,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon material focusable"
@@ -3003,7 +3003,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon material focusable"
@@ -3171,7 +3171,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon material focusable"
@@ -4107,7 +4107,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon material focusable"
@@ -4275,7 +4275,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon material focusable"
@@ -5368,7 +5368,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon material focusable"
@@ -5536,7 +5536,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon material focusable"
@@ -6631,7 +6631,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon material focusable"
@@ -6799,7 +6799,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon material focusable"

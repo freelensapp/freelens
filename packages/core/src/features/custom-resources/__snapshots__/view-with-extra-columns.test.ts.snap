@@ -48,7 +48,7 @@ exports[`Viewing Custom Resources with extra columns > renders 1`] = `
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-favorites"
-                href="/"
+                href="/crd/some-group/some-resources"
               >
                 <i
                   class="Icon material focusable"
@@ -216,7 +216,7 @@ exports[`Viewing Custom Resources with extra columns > renders 1`] = `
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-network"
-                href="/"
+                href="/crd/some-group/some-resources"
               >
                 <i
                   class="Icon material focusable"
@@ -285,7 +285,7 @@ exports[`Viewing Custom Resources with extra columns > renders 1`] = `
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-helm"
-                href="/"
+                href="/crd/some-group/some-resources"
               >
                 <i
                   class="Icon svg focusable"

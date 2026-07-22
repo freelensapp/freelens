@@ -15,9 +15,8 @@ import { Radio, RadioGroup } from "../radio";
 
 import type { KubeObject } from "@freelensapp/kube-object";
 
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
-
 import type { MetricData } from "../../../common/k8s-api/endpoints/metrics.api";
+import type { IAsyncComputed } from "../../../common/utils/async-computed";
 import type { MetricsTab } from "../chart/options";
 
 export type AtLeastOneMetricTab = [MetricsTab, ...MetricsTab[]];

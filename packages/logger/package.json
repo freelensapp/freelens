@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@freelensapp/feature-core": "workspace:^",
-    "@ogre-tools/injectable": "^17.11.1",
+    "@ogre-tools/injectable": "^23.2.0",
     "es-toolkit": "^1.49.0",
     "winston": "^3.19.0"
   },

@@ -5,7 +5,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
+import { computedInjectManyInjectionToken } from "@ogre-tools/injectable-extension-for-mobx";
 import { sortBy } from "es-toolkit";
 import { computed } from "mobx";
 import { workloadOverviewDetailInjectionToken } from "./workload-overview-detail-injection-token";
@@ -14,7 +14,7 @@ const workloadOverviewDetailsInjectable = getInjectable({
   id: "workload-overview-details",
 
   instantiate: (di) => {
-    const computedInjectMany = di.inject(computedInjectManyInjectable);
+    const computedInjectMany = di.inject(computedInjectManyInjectionToken);
     const details = computedInjectMany(workloadOverviewDetailInjectionToken);
 
     return computed(() =>

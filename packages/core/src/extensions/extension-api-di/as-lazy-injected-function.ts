@@ -14,7 +14,7 @@ import type { Inject } from "@ogre-tools/injectable";
  * container only when called, after the container of the process has been
  * registered with `setDiForExtensionApi`.
  */
-export const asLazyInjectedFunctionForExtensionApi = ((injectableKey, instantiationParameter) =>
+export const asLazyInjectedFunctionForExtensionApi = ((injectableKey: any, instantiationParameter: any) =>
   (...args: unknown[]) => {
     const injected = getDiForExtensionApi().inject(injectableKey, instantiationParameter) as unknown as (
       ...args: unknown[]

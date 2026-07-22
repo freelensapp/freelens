@@ -236,7 +236,12 @@ export class EditResourceModel {
   @observable private _resource: KubeObject | undefined;
 
   @computed get shouldShowErrorAboutNoResource() {
-    return !this._resource;
+    // Also treat a missing store entry as "no resource": when the dock tab is
+    // closed (cancel / save-and-close), its data is removed from the store
+    // while this observer view can still re-render once before unmounting. The
+    // `editingResource` getter asserts on the store entry, so without this guard
+    // that transient render throws and trips the dock's ErrorBoundary.
+    return !this._resource || !this.dependencies.store.getData(this.dependencies.tabId);
   }
 
   @computed get resource() {

@@ -4,8 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/vitest";
-import { flushPromises } from "@freelensapp/test-utils";
+import { asyncFn, flushPromises } from "@freelensapp/test-utils";
 import { act, fireEvent } from "@testing-library/react";
 import directoryForLensLocalStorageInjectable from "../../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
 import readJsonFileInjectable from "../../../common/fs/read-json-file.injectable";
@@ -23,7 +22,8 @@ import requestDetailedHelmReleaseInjectable from "../../../renderer/components/h
 import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 import currentPathInjectable from "../../../renderer/routes/current-path.injectable";
 
-import type { AsyncFnMock } from "@async-fn/vitest";
+import type { AsyncFnMock } from "@freelensapp/test-utils";
+
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
 
@@ -529,13 +529,18 @@ describe("installing helm chart from new tab", () => {
                 });
 
                 describe("when selecting the dock tab for installing first chart", () => {
-                  beforeEach(() => {
+                  beforeEach(async () => {
                     requestHelmChartValuesMock.mockClear();
                     requestHelmChartVersionsMock.mockClear();
 
                     const tab = rendered.getByTestId("dock-tab-for-some-first-tab-id");
 
-                    fireEvent.click(tab);
+                    // React 19 flushes passive effects only at act() boundaries;
+                    // switching tabs re-runs the async withInjectables getProps for
+                    // the newly-shown tab, so let that resolve inside act().
+                    await act(async () => {
+                      fireEvent.click(tab);
+                    });
                   });
 
                   it("renders", () => {

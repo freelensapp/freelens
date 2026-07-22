@@ -5,7 +5,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
+import { computedInjectManyInjectionToken } from "@ogre-tools/injectable-extension-for-mobx";
 import { sortBy } from "es-toolkit";
 import { computed } from "mobx";
 import { topBarItemOnLeftSideInjectionToken } from "./top-bar-item-injection-token";
@@ -14,7 +14,7 @@ const topBarItemsOnLeftSideInjectable = getInjectable({
   id: "top-bar-items-on-left-side",
 
   instantiate: (di) => {
-    const computedInjectMany = di.inject(computedInjectManyInjectable);
+    const computedInjectMany = di.inject(computedInjectManyInjectionToken);
 
     const items = computedInjectMany(topBarItemOnLeftSideInjectionToken);
 

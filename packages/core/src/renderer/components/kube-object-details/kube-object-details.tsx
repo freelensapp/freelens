@@ -19,9 +19,9 @@ import kubeObjectDetailItemsInjectable from "./kube-object-detail-items/kube-obj
 
 import type { KubeObject } from "@freelensapp/kube-object";
 
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import type { IComputedValue } from "mobx";
 
+import type { IAsyncComputed } from "../../../common/utils/async-computed";
 import type { PageParam } from "../../navigation/page-param";
 import type { HideDetails } from "../kube-detail-params/hide-details.injectable";
 import type { CurrentKubeObject } from "./current-kube-object-in-details.injectable";

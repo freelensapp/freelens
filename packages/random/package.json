@@ -25,7 +25,7 @@
   "scripts": {},
   "dependencies": {
     "@freelensapp/feature-core": "workspace:^",
-    "@ogre-tools/injectable": "^17.11.1",
+    "@ogre-tools/injectable": "^23.2.0",
     "uuid": "^14.0.1"
   },
   "devDependencies": {

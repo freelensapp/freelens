@@ -49,7 +49,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon material focusable"
@@ -218,7 +218,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon material focusable"
@@ -287,7 +287,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon svg focusable"
@@ -648,7 +648,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/charts/some-repository/some-name"
                 >
                   <i
                     class="Icon material focusable"
@@ -816,7 +816,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/charts/some-repository/some-name"
                 >
                   <i
                     class="Icon material focusable"
@@ -1727,7 +1727,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -1788,7 +1788,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -1895,7 +1895,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -1965,7 +1965,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -2684,7 +2684,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -2745,7 +2745,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -2852,7 +2852,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -2922,7 +2922,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -3909,7 +3909,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -3970,7 +3970,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -4077,7 +4077,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -4147,7 +4147,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -5103,7 +5103,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -5164,7 +5164,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -5271,7 +5271,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -5341,7 +5341,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -6292,7 +6292,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -6353,7 +6353,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -6460,7 +6460,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -6530,7 +6530,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -7481,7 +7481,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -7542,7 +7542,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -7649,7 +7649,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -7719,7 +7719,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -8692,7 +8692,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -8753,7 +8753,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -8860,7 +8860,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -8930,7 +8930,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -9917,7 +9917,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -9978,7 +9978,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -10085,7 +10085,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -10155,7 +10155,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -11106,7 +11106,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -11167,7 +11167,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -11274,7 +11274,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -11344,7 +11344,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -12259,7 +12259,54 @@ exports[`installing helm chart from new tab > given tab for installing chart was
   <div>
     <div
       class="Notifications"
-    />
+    >
+      <div
+        class="Animate opacity notification ok enter"
+        style="--enter-duration: 100ms; --leave-duration: 100ms;"
+      >
+        <div
+          class="info-icon"
+        >
+          <i
+            class="Icon material focusable"
+          >
+            <span
+              class="icon"
+              data-icon-name="info_outline"
+            >
+              info_outline
+            </span>
+          </i>
+        </div>
+        <div
+          class="message"
+        >
+          <p>
+            Chart Release 
+            <b>
+              some-release
+            </b>
+             successfully created.
+          </p>
+        </div>
+        <div
+          class="close-icon"
+        >
+          <i
+            class="Icon close material interactive focusable"
+            data-testid="close-notification-for-notification_1"
+            tabindex="0"
+          >
+            <span
+              class="icon"
+              data-icon-name="close"
+            >
+              close
+            </span>
+          </i>
+        </div>
+      </div>
+    </div>
     <div
       class="mainLayout"
       style="--sidebar-width: 200px;"
@@ -12303,7 +12350,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -12364,7 +12411,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -12471,7 +12518,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -12541,7 +12588,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -13340,7 +13387,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/releases/default/some-release"
                 >
                   <i
                     class="Icon material focusable"
@@ -13401,7 +13448,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/releases/default/some-release"
                 >
                   <i
                     class="Icon svg focusable"
@@ -13508,7 +13555,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/releases/default/some-release"
                 >
                   <i
                     class="Icon material focusable"
@@ -13578,7 +13625,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/releases/default/some-release"
                 >
                   <i
                     class="Icon svg focusable"
@@ -14325,7 +14372,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -14386,7 +14433,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -14493,7 +14540,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -14563,7 +14610,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -15375,7 +15422,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/charts/some-repository/some-other-name"
                 >
                   <i
                     class="Icon material focusable"
@@ -15436,7 +15483,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts/some-repository/some-other-name"
                 >
                   <i
                     class="Icon svg focusable"
@@ -15543,7 +15590,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/charts/some-repository/some-other-name"
                 >
                   <i
                     class="Icon material focusable"
@@ -15613,7 +15660,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts/some-repository/some-other-name"
                 >
                   <i
                     class="Icon svg focusable"
@@ -16777,7 +16824,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -16838,7 +16885,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -16945,7 +16992,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -17015,7 +17062,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -17786,7 +17833,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -17847,7 +17894,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -17954,7 +18001,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -18024,7 +18071,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -19029,7 +19076,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -19090,7 +19137,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -19197,7 +19244,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -19267,7 +19314,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -20270,7 +20317,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -20331,7 +20378,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -20438,7 +20485,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -20508,7 +20555,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -21459,7 +21506,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -21520,7 +21567,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -21627,7 +21674,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -21697,7 +21744,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -22648,7 +22695,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -22709,7 +22756,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-workloads"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"
@@ -22816,7 +22863,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon material focusable"
@@ -22886,7 +22933,7 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   aria-current="page"
                   class="navItem active"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/helm/charts/some-repository/some-name"
+                  href="/helm/charts"
                 >
                   <i
                     class="Icon svg focusable"

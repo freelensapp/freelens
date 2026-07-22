@@ -9,6 +9,8 @@ describe("ipc-renderer", () => {
 
   beforeEach(() => {
     di = createContainer("irrelevant");
+    // ogre 23 prevents side-effect injectables by default; this test injects real ones.
+    di.permitSideEffects();
 
     registerFeature(di, messagingFeatureForRenderer);
   });
