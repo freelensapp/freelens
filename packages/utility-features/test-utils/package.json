@@ -23,6 +23,7 @@
     "clean:dist": "pnpm dlx rimraf@6.1.3 dist"
   },
   "dependencies": {
+    "@async-fn/vitest": "^1.8.0",
     "@ogre-tools/injectable": "^23.2.0",
     "@ogre-tools/injectable-react": "^23.2.0",
     "@testing-library/react": "^16.3.2",
