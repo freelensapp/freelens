@@ -332,7 +332,7 @@ When asked to implement a change on a PR:
 
 ### Pushing After Every Commit
 
-The GitHub Actions job running Claude has a total timeout of 60 minutes.
+The GitHub Actions job running Claude has a total timeout of 120 minutes.
 When the session times out, any commits that exist only in the runner's
 local checkout are lost. To make the work resumable in a follow-up session:
 

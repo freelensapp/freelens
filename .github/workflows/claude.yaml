@@ -131,7 +131,7 @@ jobs:
     if: always() && needs.parse.result == 'success' && needs.parse.outputs.is-windows != 'true'
 
     runs-on: ${{ needs.parse.outputs.runs-on }}
-    timeout-minutes: 60
+    timeout-minutes: 120
 
     env:
       DO_NOT_TRACK: "1"
@@ -259,7 +259,7 @@ jobs:
           prompt: |-
             The main Claude job in this workflow run did not finish: its result
             was "${{ needs.claude.result }}" (it either failed with an error or was
-            cancelled after hitting the 60-minute timeout). Your ONLY task is to
+            cancelled after hitting the 120-minute timeout). Your ONLY task is to
             report this back to the user. Do NOT attempt the original requested
             work — only work on the feedback.
 
