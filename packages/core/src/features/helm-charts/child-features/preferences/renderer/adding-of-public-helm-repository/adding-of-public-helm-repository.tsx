@@ -12,10 +12,10 @@ import activeHelmRepositoriesInjectable from "../active-helm-repositories.inject
 import publicHelmRepositoriesInjectable from "./public-helm-repositories/public-helm-repositories.injectable";
 import selectHelmRepositoryInjectable from "./select-helm-repository/select-helm-repository.injectable";
 
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import type { SingleValue } from "react-select";
 
 import type { HelmRepo } from "../../../../../../common/helm/helm-repo";
+import type { IAsyncComputed } from "../../../../../../common/utils/async-computed";
 import type { SelectOption } from "../../../../../../renderer/components/select";
 
 interface Dependencies {

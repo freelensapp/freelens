@@ -1,4 +1,4 @@
-import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
+import { computedInjectManyInjectionToken } from "@ogre-tools/injectable-extension-for-mobx";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { Observer, observer } from "mobx-react";
 import {
@@ -23,7 +23,7 @@ export const ReactApplicationContent = withInjectables<Dependencies>(
 
   {
     getProps: (di) => ({
-      contents: di.inject(computedInjectManyInjectable)(reactApplicationChildrenInjectionToken),
+      contents: di.inject(computedInjectManyInjectionToken)(reactApplicationChildrenInjectionToken),
     }),
   },
 );

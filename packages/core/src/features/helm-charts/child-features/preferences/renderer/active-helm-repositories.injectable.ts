@@ -7,9 +7,9 @@
 import { requestFromChannelInjectionToken } from "@freelensapp/messaging";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { getInjectable } from "@ogre-tools/injectable";
-import { asyncComputed } from "@ogre-tools/injectable-react";
 import { runInAction } from "mobx";
 import { getActiveHelmRepositoriesChannel } from "../../../../../common/helm/get-active-helm-repositories-channel";
+import { asyncComputed } from "../../../../../common/utils/async-computed";
 import helmRepositoriesErrorStateInjectable from "./helm-repositories-error-state.injectable";
 
 const activeHelmRepositoriesInjectable = getInjectable({

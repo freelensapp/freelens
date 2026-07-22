@@ -23,7 +23,6 @@ const browserLoggerTransportInjectable = getInjectable({
   id: "browser-logger-transport",
   instantiate: () => new BrowserConsole(),
   injectionToken: loggerTransportInjectionToken,
-  decorable: false,
 });
 
 export default browserLoggerTransportInjectable;

@@ -1,6 +1,6 @@
 import { byOrderNumber } from "@freelensapp/utilities";
 import { getInjectable, type InjectionInstanceWithMeta } from "@ogre-tools/injectable";
-import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
+import { computedInjectManyInjectionToken } from "@ogre-tools/injectable-extension-for-mobx";
 import { computed } from "mobx";
 import { type SidebarItemDeclaration, type SidebarItemRegistration, sidebarItemInjectionToken } from "./tokens";
 
@@ -46,7 +46,7 @@ const getSidebarItemsHierarchy = (
 const sidebarItemsInjectable = getInjectable({
   id: "sidebar-items",
   instantiate: (di) => {
-    const computedInjectMany = di.inject(computedInjectManyInjectable);
+    const computedInjectMany = di.inject(computedInjectManyInjectionToken);
     const sidebarItemRegistrations = computedInjectMany(sidebarItemInjectionToken);
 
     return computed(() => {

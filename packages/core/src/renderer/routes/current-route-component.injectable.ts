@@ -5,7 +5,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
+import { computedInjectManyInjectionToken } from "@ogre-tools/injectable-extension-for-mobx";
 import { computed } from "mobx";
 import currentRouteInjectable from "./current-route.injectable";
 import { routeSpecificComponentInjectionToken } from "./route-specific-component-injection-token";
@@ -15,7 +15,7 @@ const currentRouteComponentInjectable = getInjectable({
 
   instantiate: (di) => {
     const route = di.inject(currentRouteInjectable);
-    const computedInjectMany = di.inject(computedInjectManyInjectable);
+    const computedInjectMany = di.inject(computedInjectManyInjectionToken);
     const routeComponents = computedInjectMany(routeSpecificComponentInjectionToken);
 
     return computed(() => {

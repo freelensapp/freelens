@@ -15,9 +15,11 @@ import { registerInjectables as registerMainInjectables } from "./register-injec
 
 const environment = "main";
 
-const di = createContainer(environment, {
-  detectCycles: false,
-});
+const di = createContainer(environment);
+
+// @ogre-tools 23 prevents side-effect injectables by default; the production
+// container must opt back in to allow them.
+di.permitSideEffects();
 
 registerMobX(di);
 

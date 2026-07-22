@@ -6,7 +6,7 @@
 
 import { getOrInsert, getOrInsertMap } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
+import { computedInjectManyInjectionToken } from "@ogre-tools/injectable-extension-for-mobx";
 import { computed } from "mobx";
 import { customCatalogCategoryColumnInjectionToken } from "./columns/custom-token";
 
@@ -15,7 +15,7 @@ import type { RegisteredAdditionalCategoryColumn } from "./custom-category-colum
 const categoryColumnsInjectable = getInjectable({
   id: "category-columns",
   instantiate: (di) => {
-    const computedInjectMany = di.inject(computedInjectManyInjectable);
+    const computedInjectMany = di.inject(computedInjectManyInjectionToken);
     const columnRegistrations = computedInjectMany(customCatalogCategoryColumnInjectionToken);
 
     return computed(() => {

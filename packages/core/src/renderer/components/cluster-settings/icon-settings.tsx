@@ -9,7 +9,7 @@ import {
   clusterIconSettingsMenuInjectionToken,
 } from "@freelensapp/cluster-settings";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
-import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
+import { computedInjectManyInjectionToken } from "@ogre-tools/injectable-extension-for-mobx";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
@@ -108,7 +108,7 @@ export const ClusterIconSetting = withInjectables<Dependencies, ClusterIconSetti
   NonInjectedClusterIconSetting,
   {
     getProps: (di, props) => {
-      const computedInjectMany = di.inject(computedInjectManyInjectable);
+      const computedInjectMany = di.inject(computedInjectManyInjectionToken);
 
       return {
         ...props,

@@ -63,9 +63,7 @@ const globalOverrideModules = import.meta.glob<{ default: GlobalOverride<unknown
 
 export function getDiForUnitTesting() {
   const environment = "main";
-  const di = createContainer(environment, {
-    detectCycles: false,
-  });
+  const di = createContainer(environment);
 
   registerMobX(di);
   setDiForExtensionApi(di, environment);
@@ -81,8 +79,6 @@ export function getDiForUnitTesting() {
       notificationsFeature,
     );
   });
-
-  di.preventSideEffects();
 
   runInAction(() => {
     const injectables = Object.values(injectableModules).flatMap(Object.values).filter(isInjectable);

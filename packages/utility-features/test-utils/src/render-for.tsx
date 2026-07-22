@@ -10,11 +10,11 @@ export type DiRender = (ui: React.ReactElement) => RenderResult;
 type DiRenderFor = (di: DiContainer) => DiRender;
 
 export const renderFor: DiRenderFor = (di) => (ui) => {
-  const result = testingLibraryRender(<DiContextProvider value={{ di }}>{ui}</DiContextProvider>);
+  const result = testingLibraryRender(<DiContextProvider value={di}>{ui}</DiContextProvider>);
 
   return {
     ...result,
 
-    rerender: (ui: React.ReactNode) => result.rerender(<DiContextProvider value={{ di }}>{ui}</DiContextProvider>),
+    rerender: (ui: React.ReactNode) => result.rerender(<DiContextProvider value={di}>{ui}</DiContextProvider>),
   };
 };

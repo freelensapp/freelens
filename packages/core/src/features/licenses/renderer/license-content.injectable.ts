@@ -6,7 +6,7 @@
 
 import { requestFromChannelInjectionToken } from "@freelensapp/messaging";
 import { getInjectable } from "@ogre-tools/injectable";
-import { asyncComputed } from "@ogre-tools/injectable-react";
+import { asyncComputed } from "../../../common/utils/async-computed";
 import { licenseContentChannel } from "../common/license-content-channel";
 
 const licenseContentInjectable = getInjectable({

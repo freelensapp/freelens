@@ -5,7 +5,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
+import { computedInjectManyInjectionToken } from "@ogre-tools/injectable-extension-for-mobx";
 import { sortBy } from "es-toolkit";
 import { computed } from "mobx";
 import { trayMenuItemInjectionToken } from "./tray-menu-item-injection-token";
@@ -14,7 +14,7 @@ const trayMenuItemsInjectable = getInjectable({
   id: "tray-menu-items",
 
   instantiate: (di) => {
-    const computedInjectMany = di.inject(computedInjectManyInjectable);
+    const computedInjectMany = di.inject(computedInjectManyInjectionToken);
 
     const reactiveMenuItems = computedInjectMany(trayMenuItemInjectionToken);
 

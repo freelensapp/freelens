@@ -5,11 +5,12 @@
  */
 
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import { asyncComputed } from "@ogre-tools/injectable-react";
+import { asyncComputed } from "../../../common/utils/async-computed";
 import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
 
 import type { DiContainer, DiContainerForInjection, Injectable } from "@ogre-tools/injectable";
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
+
+import type { IAsyncComputed } from "../../../common/utils/async-computed";
 
 interface RequestContext<ObjectType> {
   di: DiContainerForInjection;

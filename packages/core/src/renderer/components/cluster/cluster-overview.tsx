@@ -7,7 +7,7 @@
 import { clusterOverviewUIBlockInjectionToken } from "@freelensapp/metrics";
 import { Spinner } from "@freelensapp/spinner";
 import { byOrderNumber } from "@freelensapp/utilities";
-import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
+import { computedInjectManyInjectionToken } from "@ogre-tools/injectable-extension-for-mobx";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { disposeOnUnmount, observer } from "mobx-react";
 import React from "react";
@@ -85,6 +85,6 @@ export const ClusterOverview = withInjectables<Dependencies>(NonInjectedClusterO
     podStore: di.inject(podStoreInjectable),
     eventStore: di.inject(eventStoreInjectable),
     nodeStore: di.inject(nodeStoreInjectable),
-    uiBlocks: di.inject(computedInjectManyInjectable)(clusterOverviewUIBlockInjectionToken),
+    uiBlocks: di.inject(computedInjectManyInjectionToken)(clusterOverviewUIBlockInjectionToken),
   }),
 });

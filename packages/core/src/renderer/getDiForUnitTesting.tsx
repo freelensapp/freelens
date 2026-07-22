@@ -15,7 +15,6 @@ import { randomFeature } from "@freelensapp/random";
 import { routingFeature } from "@freelensapp/routing";
 import { createContainer, isInjectable } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
-import { registerInjectableReact } from "@ogre-tools/injectable-react";
 import { chunk, noop } from "es-toolkit";
 import { runInAction } from "mobx";
 import { setDiForExtensionApi } from "../extensions/extension-api-di";
@@ -57,12 +56,9 @@ const globalOverrideModules = import.meta.glob<{ default: GlobalOverride<unknown
 
 export const getDiForUnitTesting = () => {
   const environment = "renderer";
-  const di = createContainer(environment, {
-    detectCycles: false,
-  });
+  const di = createContainer(environment);
 
   registerMobX(di);
-  registerInjectableReact(di);
   setDiForExtensionApi(di, environment);
 
   runInAction(() => {
@@ -79,8 +75,6 @@ export const getDiForUnitTesting = () => {
       notificationsFeature,
     );
   });
-
-  di.preventSideEffects();
 
   runInAction(() => {
     const injectables = Object.values(injectableModules).flatMap(Object.values).filter(isInjectable);

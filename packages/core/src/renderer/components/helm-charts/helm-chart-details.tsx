@@ -25,9 +25,8 @@ import helmChartDetailsVersionSelectionInjectable from "./details/versions/helm-
 import versionsOfSelectedHelmChartInjectable from "./details/versions-of-selected-helm-chart.injectable";
 import { HelmChartIcon } from "./icon";
 
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
-
 import type { HelmChart } from "../../../common/k8s-api/endpoints/helm-charts.api";
+import type { IAsyncComputed } from "../../../common/utils/async-computed";
 import type { HelmChartDetailsVersionSelection } from "./details/versions/helm-chart-details-version-selection.injectable";
 
 export interface HelmChartDetailsProps {
