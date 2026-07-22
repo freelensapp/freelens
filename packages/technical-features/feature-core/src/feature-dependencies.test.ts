@@ -67,7 +67,7 @@ describe("feature-dependencies", () => {
 
       expect(() => {
         di.inject(someInjectableInDependencyFeature);
-      }).toThrow('Tried to inject non-registered injectable "irrelevant" -> "some-injectable".');
+      }).toThrow('Tried to inject non-registered injectable "some-injectable" from "irrelevant".');
     });
   });
 
@@ -176,7 +176,9 @@ describe("feature-dependencies", () => {
 
       expect(() => {
         di.inject(someInjectableInDependencyFeature);
-      }).toThrow('Tried to inject non-registered injectable "irrelevant" -> "some-injectable-in-dependency-feature".');
+      }).toThrow(
+        'Tried to inject non-registered injectable "some-injectable-in-dependency-feature" from "irrelevant".',
+      );
     });
   });
 
@@ -250,7 +252,9 @@ describe("feature-dependencies", () => {
 
       expect(() => {
         di.inject(someInjectableInDependencyFeature);
-      }).toThrow('Tried to inject non-registered injectable "irrelevant" -> "some-injectable-in-dependency-feature".');
+      }).toThrow(
+        'Tried to inject non-registered injectable "some-injectable-in-dependency-feature" from "irrelevant".',
+      );
     });
   });
 });

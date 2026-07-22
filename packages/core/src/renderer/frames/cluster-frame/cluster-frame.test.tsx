@@ -32,8 +32,7 @@ describe("<ClusterFrame />", () => {
 
   beforeEach(() => {
     di = getDiForUnitTesting();
-    render = () =>
-      testingLibraryRender(<DiContextProvider value={{ di }}>{DefaultProps(ClusterFrame)}</DiContextProvider>);
+    render = () => testingLibraryRender(<DiContextProvider value={di}>{DefaultProps(ClusterFrame)}</DiContextProvider>);
 
     di.override(subscribeStoresInjectable, () => vi.fn().mockImplementation(() => vi.fn()));
     di.override(legacyOnChannelListenInjectable, () => vi.fn().mockImplementation(() => vi.fn()));

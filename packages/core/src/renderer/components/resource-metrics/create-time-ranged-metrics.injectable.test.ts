@@ -7,7 +7,7 @@
 const asyncComputedMock = vi.fn((options: unknown) => options);
 const nowMock = vi.fn();
 
-vi.mock("@ogre-tools/injectable-react", async (importOriginal) => {
+vi.mock("../../../common/utils/async-computed", async (importOriginal) => {
   const actual = await importOriginal<object>();
 
   return {

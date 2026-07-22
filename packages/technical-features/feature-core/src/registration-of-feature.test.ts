@@ -109,9 +109,7 @@ describe("register-feature", () => {
       instantiate: (di) => di.inject(someInjectable),
     });
 
-    const di = createContainer("some-container", {
-      detectCycles: false,
-    });
+    const di = createContainer("some-container");
 
     const someFeature = getFeature({
       id: "some-feature-1",
