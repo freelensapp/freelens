@@ -897,154 +897,156 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
                     <div>
                       <div
                         class="list"
-                        style="position: relative; height: 420000px; width: 100%; overflow: auto; will-change: transform; direction: ltr;"
+                        role="list"
+                        style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 420000px;"
                       >
                         <div
-                          style="height: 33px; width: 100%;"
+                          data-react-window-index="0"
+                          style="position: absolute; left: 0px; transform: translateY(0px); height: 33px; width: 100%;"
                         >
                           <div
-                            style="position: absolute; left: 0px; top: 0px; height: 33px; width: 100%;"
+                            class="TableRow nowrap"
+                            id="menu-actions-for-kube-object-menu-for-uuid-1"
                           >
                             <div
-                              class="TableRow nowrap"
-                              id="menu-actions-for-kube-object-menu-for-uuid-1"
+                              class="TableCell checkbox"
+                            >
+                              <label
+                                class="Checkbox flex items-center"
+                              >
+                                <input
+                                  type="checkbox"
+                                />
+                                <i
+                                  class="check-icon flex items-center"
+                                />
+                              </label>
+                            </div>
+                            <div
+                              class="TableCell name"
                             >
                               <div
-                                class="TableCell checkbox"
+                                class="badge flat"
                               >
-                                <label
-                                  class="Checkbox flex items-center"
-                                >
-                                  <input
-                                    type="checkbox"
-                                  />
-                                  <i
-                                    class="check-icon flex items-center"
-                                  />
-                                </label>
+                                test-pod-1
                               </div>
-                              <div
-                                class="TableCell name"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  test-pod-1
-                                </div>
-                                <div>
-                                  test-pod-1
-                                </div>
+                              <div>
+                                test-pod-1
                               </div>
+                            </div>
+                            <div
+                              class="TableCell warning-header"
+                            />
+                            <div
+                              class="TableCell namespace"
+                            >
                               <div
-                                class="TableCell warning-header"
-                              />
-                              <div
-                                class="TableCell namespace"
+                                class="badge NamespaceSelectBadge flat clickable"
                               >
-                                <div
-                                  class="badge NamespaceSelectBadge flat clickable"
-                                >
+                                default
+                              </div>
+                              <div>
+                                Set global namespace filter to:
+                                <b>
                                   default
-                                </div>
-                                <div>
-                                  Set global namespace filter to:
-                                  <b>
-                                    default
-                                  </b>
-                                </div>
+                                </b>
                               </div>
+                            </div>
+                            <div
+                              class="TableCell containers"
+                            >
                               <div
-                                class="TableCell containers"
-                              >
-                                <div
-                                  class="StatusBrick"
-                                />
-                                <div />
-                                <div
-                                  class="StatusBrick"
-                                />
-                                <div />
-                              </div>
-                              <div
-                                class="TableCell cpu"
-                              >
-                                <span>
-                                  N/A
-                                </span>
-                              </div>
-                              <div
-                                class="TableCell memory"
-                              >
-                                <span>
-                                  N/A
-                                </span>
-                              </div>
-                              <div
-                                class="TableCell restarts"
-                              >
-                                0
-                              </div>
-                              <div
-                                class="TableCell owners"
+                                class="StatusBrick"
                               />
+                              <div />
                               <div
-                                class="TableCell age"
+                                class="StatusBrick"
+                              />
+                              <div />
+                            </div>
+                            <div
+                              class="TableCell cpu"
+                            >
+                              <span>
+                                N/A
+                              </span>
+                            </div>
+                            <div
+                              class="TableCell memory"
+                            >
+                              <span>
+                                N/A
+                              </span>
+                            </div>
+                            <div
+                              class="TableCell restarts"
+                            >
+                              0
+                            </div>
+                            <div
+                              class="TableCell owners"
+                            />
+                            <div
+                              class="TableCell age"
+                            >
+                              <div
+                                class="badge flat"
                               >
-                                <div
-                                  class="badge flat"
+                                &lt;unknown&gt;
+                              </div>
+                              <div>
+                                2015-10-21T07:28:00Z
+                              </div>
+                            </div>
+                            <div
+                              class="TableCell waiting status"
+                            >
+                              Waiting
+                            </div>
+                            <div
+                              class="TableCell logs"
+                            >
+                              <i
+                                class="Icon material interactive focusable"
+                                style="cursor: pointer;"
+                                tabindex="0"
+                              >
+                                <span
+                                  class="icon"
+                                  data-icon-name="subject"
                                 >
-                                  &lt;unknown&gt;
-                                </div>
-                                <div>
-                                  2015-10-21T07:28:00Z
-                                </div>
+                                  subject
+                                </span>
+                              </i>
+                              <div>
+                                View Logs
                               </div>
-                              <div
-                                class="TableCell waiting status"
-                              >
-                                Waiting
-                              </div>
-                              <div
-                                class="TableCell logs"
-                              >
+                            </div>
+                            <div
+                              class="TableCell menu"
+                            >
+                              <div>
                                 <i
                                   class="Icon material interactive focusable"
-                                  style="cursor: pointer;"
+                                  data-testid="icon-for-menu-actions-for-kube-object-menu-for-uuid-1"
+                                  id="uuid-1"
                                   tabindex="0"
                                 >
                                   <span
                                     class="icon"
-                                    data-icon-name="subject"
+                                    data-icon-name="more_vert"
                                   >
-                                    subject
+                                    more_vert
                                   </span>
                                 </i>
-                                <div>
-                                  View Logs
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell menu"
-                              >
-                                <div>
-                                  <i
-                                    class="Icon material interactive focusable"
-                                    data-testid="icon-for-menu-actions-for-kube-object-menu-for-uuid-1"
-                                    id="uuid-1"
-                                    tabindex="0"
-                                  >
-                                    <span
-                                      class="icon"
-                                      data-icon-name="more_vert"
-                                    >
-                                      more_vert
-                                    </span>
-                                  </i>
-                                </div>
                               </div>
                             </div>
                           </div>
                         </div>
+                        <div
+                          aria-hidden="true"
+                          style="height: 33px; width: 100%; z-index: -1;"
+                        />
                       </div>
                     </div>
                   </div>

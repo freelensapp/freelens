@@ -23,7 +23,7 @@ import { VirtualList } from "../../virtual-list";
 import { ToBottom } from "./to-bottom";
 
 import type { ForwardedRef } from "react";
-import type { Align, ListOnScrollProps } from "react-window";
+import type { Align } from "react-window";
 
 import type { UserPreferencesState } from "../../../../features/user-preferences/common/state.injectable";
 import type { VirtualListRef } from "../../virtual-list";
@@ -341,17 +341,18 @@ class NonForwardedLogList extends React.Component<
   }
 
   /**
-   * Checks if JumpToBottom button should be visible and sets its observable
-   * @param props Scrolling props from virtual list core
+   * Checks if JumpToBottom button should be visible and sets its observable.
+   * react-window v2 scrolls the list's outermost element natively, so the
+   * scroll position is read from that element instead of a scrollOffset payload.
    */
-  setButtonVisibility = action(({ scrollOffset }: ListOnScrollProps) => {
+  setButtonVisibility = action(() => {
     const el = this.virtualListDivElement;
 
     if (!el) return;
 
     const offset = 100 * this.lineHeight;
 
-    if (el.scrollHeight - scrollOffset < offset) {
+    if (el.scrollHeight - el.scrollTop < offset) {
       this.isJumpButtonVisible = false;
     } else {
       this.isJumpButtonVisible = true;
@@ -360,23 +361,21 @@ class NonForwardedLogList extends React.Component<
 
   /**
    * Checks if last log line considered visible to user, setting its observable
-   * @param props Scrolling props from virtual list core
    */
-  setLastLineVisibility = action(({ scrollOffset }: ListOnScrollProps) => {
+  setLastLineVisibility = action(() => {
     const el = this.virtualListDivElement;
 
     if (!el) return;
-    this.isLastLineVisible = el.clientHeight + scrollOffset === el.scrollHeight;
+    this.isLastLineVisible = el.clientHeight + el.scrollTop === el.scrollHeight;
   });
 
   /**
    * Check if user scrolled to top and new logs should be loaded
-   * @param props Scrolling props from virtual list core
    */
-  checkLoadIntent = (props: ListOnScrollProps) => {
-    const { scrollOffset } = props;
+  checkLoadIntent = () => {
+    const el = this.virtualListDivElement;
 
-    if (scrollOffset === 0) {
+    if (el && el.scrollTop === 0) {
       this.props.model.loadLogs();
     }
   };
@@ -391,16 +390,16 @@ class NonForwardedLogList extends React.Component<
     this.virtualListRef.current?.scrollToItem(index, align);
   };
 
-  onScroll = (props: ListOnScrollProps) => {
+  onScroll = () => {
     this.isLastLineVisible = false;
-    this.onScrollDebounced(props);
+    this.onScrollDebounced();
   };
 
-  onScrollDebounced = debounce((props: ListOnScrollProps) => {
+  onScrollDebounced = debounce(() => {
     if (this.virtualListDivElement) {
-      this.setButtonVisibility(props);
-      this.setLastLineVisibility(props);
-      this.checkLoadIntent(props);
+      this.setButtonVisibility();
+      this.setLastLineVisibility();
+      this.checkLoadIntent();
     }
   }, 700); // Increasing performance and giving some time for virtual list to settle down
 
