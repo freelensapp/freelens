@@ -127,13 +127,18 @@ describe("cluster/namespaces - edit namespace from new tab", () => {
         it.skip("does not show edit resource tab yet", () => {});
 
         describe("when clicking to edit namespace", () => {
-          beforeEach(() => {
+          beforeEach(async () => {
             // TODO: Make implementation match the description (tests above)
             const namespaceStub = new Namespace(someNamespaceDataStub);
 
             const createEditResourceTab = windowDi.inject(createEditResourceTabInjectable);
 
-            createEditResourceTab(namespaceStub);
+            // React 19 flushes passive effects only at act() boundaries, so wrap
+            // the tab creation to let the effect that calls apiKubeGet run before
+            // the nested cases resolve/reject that mock.
+            await act(async () => {
+              createEditResourceTab(namespaceStub);
+            });
           });
 
           it("renders", () => {
@@ -689,7 +694,7 @@ metadata:
             });
 
             describe("given clicking the context menu for second namespace, when clicking to edit namespace", () => {
-              beforeEach(() => {
+              beforeEach(async () => {
                 apiKubeGetMock.mockClear();
 
                 // TODO: Make implementation match the description
@@ -697,7 +702,12 @@ metadata:
 
                 const createEditResourceTab = windowDi.inject(createEditResourceTabInjectable);
 
-                createEditResourceTab(namespaceStub);
+                // React 19 flushes passive effects only at act() boundaries, so wrap
+                // the tab creation to let the effect that calls apiKubeGet run before
+                // the nested cases resolve/reject that mock.
+                await act(async () => {
+                  createEditResourceTab(namespaceStub);
+                });
               });
 
               it("renders", () => {

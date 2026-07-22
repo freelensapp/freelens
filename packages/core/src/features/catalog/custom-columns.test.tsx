@@ -79,7 +79,9 @@ describe("custom category columns for catalog", () => {
       beforeEach(async () => {
         const testCategory = renderResult.getByTestId("foo.bar.bat/Test-tab");
 
-        fireEvent.click(testCategory);
+        await act(async () => {
+          fireEvent.click(testCategory);
+        });
       });
 
       it("renders", () => {
@@ -143,7 +145,9 @@ describe("custom category columns for catalog", () => {
         beforeEach(async () => {
           const testCategory = renderResult.getByTestId("foo.bar.bat/Test-tab");
 
-          fireEvent.click(testCategory);
+          await act(async () => {
+            fireEvent.click(testCategory);
+          });
         });
 
         it("renders", () => {
@@ -217,7 +221,9 @@ describe("custom category columns for catalog", () => {
       beforeEach(async () => {
         const testCategory = renderResult.getByTestId("foo.bar.bat/Test-tab");
 
-        fireEvent.click(testCategory);
+        await act(async () => {
+          fireEvent.click(testCategory);
+        });
       });
 
       it("renders", () => {
@@ -275,7 +281,9 @@ describe("custom category columns for catalog", () => {
       beforeEach(async () => {
         const testCategory = renderResult.getByTestId("foo.bar.bat/Test-tab");
 
-        fireEvent.click(testCategory);
+        await act(async () => {
+          fireEvent.click(testCategory);
+        });
       });
 
       it("renders", () => {

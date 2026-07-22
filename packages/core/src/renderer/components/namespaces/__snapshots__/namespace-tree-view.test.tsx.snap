@@ -13,10 +13,10 @@ exports[`<NamespaceTreeView /> > collapses item by clicking minus button 1`] = `
         Tree View
       </div>
       <ul
-        aria-activedescendant=":r7:-level-deep-child-b"
+        aria-activedescendant="_r_7_-level-deep-child-b"
         aria-multiselectable="false"
         class="MuiTreeView-root css-161j9ok-MuiTreeView-root"
-        id=":r7:"
+        id="_r_7_"
         role="tree"
         tabindex="0"
       >
@@ -24,7 +24,7 @@ exports[`<NamespaceTreeView /> > collapses item by clicking minus button 1`] = `
           aria-expanded="true"
           class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
           data-testid="namespace-levels-deep"
-          id=":r7:-levels-deep"
+          id="_r_7_-levels-deep"
           role="treeitem"
           tabindex="-1"
         >
@@ -68,7 +68,7 @@ exports[`<NamespaceTreeView /> > collapses item by clicking minus button 1`] = `
                 <li
                   class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
                   data-testid="namespace-level-deep-child-a"
-                  id=":r7:-level-deep-child-a"
+                  id="_r_7_-level-deep-child-a"
                   role="treeitem"
                   tabindex="-1"
                 >
@@ -107,7 +107,7 @@ exports[`<NamespaceTreeView /> > collapses item by clicking minus button 1`] = `
                   aria-expanded="false"
                   class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
                   data-testid="namespace-level-deep-child-b"
-                  id=":r7:-level-deep-child-b"
+                  id="_r_7_-level-deep-child-b"
                   role="treeitem"
                   tabindex="-1"
                 >
@@ -151,7 +151,7 @@ exports[`<NamespaceTreeView /> > collapses item by clicking minus button 1`] = `
                         <li
                           class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
                           data-testid="namespace-level-deep-subchild-a"
-                          id=":r7:-level-deep-subchild-a"
+                          id="_r_7_-level-deep-subchild-a"
                           role="treeitem"
                           tabindex="-1"
                         >
@@ -213,10 +213,10 @@ exports[`<NamespaceTreeView /> > expands item by clicking plus button 1`] = `
         Tree View
       </div>
       <ul
-        aria-activedescendant=":r8:-level-deep-child-b"
+        aria-activedescendant="_r_8_-level-deep-child-b"
         aria-multiselectable="false"
         class="MuiTreeView-root css-161j9ok-MuiTreeView-root"
-        id=":r8:"
+        id="_r_8_"
         role="tree"
         tabindex="0"
       >
@@ -224,7 +224,7 @@ exports[`<NamespaceTreeView /> > expands item by clicking plus button 1`] = `
           aria-expanded="true"
           class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
           data-testid="namespace-levels-deep"
-          id=":r8:-levels-deep"
+          id="_r_8_-levels-deep"
           role="treeitem"
           tabindex="-1"
         >
@@ -268,7 +268,7 @@ exports[`<NamespaceTreeView /> > expands item by clicking plus button 1`] = `
                 <li
                   class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
                   data-testid="namespace-level-deep-child-a"
-                  id=":r8:-level-deep-child-a"
+                  id="_r_8_-level-deep-child-a"
                   role="treeitem"
                   tabindex="-1"
                 >
@@ -307,7 +307,7 @@ exports[`<NamespaceTreeView /> > expands item by clicking plus button 1`] = `
                   aria-expanded="true"
                   class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
                   data-testid="namespace-level-deep-child-b"
-                  id=":r8:-level-deep-child-b"
+                  id="_r_8_-level-deep-child-b"
                   role="treeitem"
                   tabindex="-1"
                 >
@@ -351,7 +351,7 @@ exports[`<NamespaceTreeView /> > expands item by clicking plus button 1`] = `
                         <li
                           class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
                           data-testid="namespace-level-deep-subchild-a"
-                          id=":r8:-level-deep-subchild-a"
+                          id="_r_8_-level-deep-subchild-a"
                           role="treeitem"
                           tabindex="-1"
                         >
@@ -415,7 +415,7 @@ exports[`<NamespaceTreeView /> > renders 2 levels deep 1`] = `
       <ul
         aria-multiselectable="false"
         class="MuiTreeView-root css-161j9ok-MuiTreeView-root"
-        id=":r5:"
+        id="_r_5_"
         role="tree"
         tabindex="0"
       >
@@ -423,7 +423,7 @@ exports[`<NamespaceTreeView /> > renders 2 levels deep 1`] = `
           aria-expanded="true"
           class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
           data-testid="namespace-levels-deep"
-          id=":r5:-levels-deep"
+          id="_r_5_-levels-deep"
           role="treeitem"
           tabindex="-1"
         >
@@ -467,7 +467,7 @@ exports[`<NamespaceTreeView /> > renders 2 levels deep 1`] = `
                 <li
                   class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
                   data-testid="namespace-level-deep-child-a"
-                  id=":r5:-level-deep-child-a"
+                  id="_r_5_-level-deep-child-a"
                   role="treeitem"
                   tabindex="-1"
                 >
@@ -506,7 +506,7 @@ exports[`<NamespaceTreeView /> > renders 2 levels deep 1`] = `
                   aria-expanded="true"
                   class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
                   data-testid="namespace-level-deep-child-b"
-                  id=":r5:-level-deep-child-b"
+                  id="_r_5_-level-deep-child-b"
                   role="treeitem"
                   tabindex="-1"
                 >
@@ -550,7 +550,7 @@ exports[`<NamespaceTreeView /> > renders 2 levels deep 1`] = `
                         <li
                           class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
                           data-testid="namespace-level-deep-subchild-a"
-                          id=":r5:-level-deep-subchild-a"
+                          id="_r_5_-level-deep-subchild-a"
                           role="treeitem"
                           tabindex="-1"
                         >
@@ -614,7 +614,7 @@ exports[`<NamespaceTreeView /> > renders namespace with 2 children namespaces 1`
       <ul
         aria-multiselectable="false"
         class="MuiTreeView-root css-161j9ok-MuiTreeView-root"
-        id=":r1:"
+        id="_r_1_"
         role="tree"
         tabindex="0"
       >
@@ -622,7 +622,7 @@ exports[`<NamespaceTreeView /> > renders namespace with 2 children namespaces 1`
           aria-expanded="true"
           class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
           data-testid="namespace-acme-org"
-          id=":r1:-acme-org"
+          id="_r_1_-acme-org"
           role="treeitem"
           tabindex="-1"
         >
@@ -666,7 +666,7 @@ exports[`<NamespaceTreeView /> > renders namespace with 2 children namespaces 1`
                 <li
                   class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
                   data-testid="namespace-team-a"
-                  id=":r1:-team-a"
+                  id="_r_1_-team-a"
                   role="treeitem"
                   tabindex="-1"
                 >
@@ -704,7 +704,7 @@ exports[`<NamespaceTreeView /> > renders namespace with 2 children namespaces 1`
                 <li
                   class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
                   data-testid="namespace-team-b"
-                  id=":r1:-team-b"
+                  id="_r_1_-team-b"
                   role="treeitem"
                   tabindex="-1"
                 >
@@ -764,7 +764,7 @@ exports[`<NamespaceTreeView /> > renders namespace with children namespaces and 
       <ul
         aria-multiselectable="false"
         class="MuiTreeView-root css-161j9ok-MuiTreeView-root"
-        id=":r2:"
+        id="_r_2_"
         role="tree"
         tabindex="0"
       >
@@ -772,7 +772,7 @@ exports[`<NamespaceTreeView /> > renders namespace with children namespaces and 
           aria-expanded="true"
           class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
           data-testid="namespace-org-a"
-          id=":r2:-org-a"
+          id="_r_2_-org-a"
           role="treeitem"
           tabindex="-1"
         >
@@ -816,7 +816,7 @@ exports[`<NamespaceTreeView /> > renders namespace with children namespaces and 
                 <li
                   class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
                   data-testid="namespace-team-c"
-                  id=":r2:-team-c"
+                  id="_r_2_-team-c"
                   role="treeitem"
                   tabindex="-1"
                 >
@@ -854,7 +854,7 @@ exports[`<NamespaceTreeView /> > renders namespace with children namespaces and 
                 <li
                   class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
                   data-testid="namespace-service-1"
-                  id=":r2:-service-1"
+                  id="_r_2_-service-1"
                   role="treeitem"
                   tabindex="-1"
                 >
@@ -921,14 +921,14 @@ exports[`<NamespaceTreeView /> > renders one namespace without children 1`] = `
       <ul
         aria-multiselectable="false"
         class="MuiTreeView-root css-161j9ok-MuiTreeView-root"
-        id=":r0:"
+        id="_r_0_"
         role="tree"
         tabindex="0"
       >
         <li
           class="MuiTreeItem-root css-16alkdk-MuiTreeItem-root"
           data-testid="namespace-single-root"
-          id=":r0:-single-root"
+          id="_r_0_-single-root"
           role="treeitem"
           tabindex="-1"
         >
