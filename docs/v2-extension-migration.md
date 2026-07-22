@@ -125,6 +125,32 @@ namespace path, re-check it against the current
 between `Common`, `Main`, and `Renderer`. The concrete rename table is filled
 in from the freelens-example-extension port and will be appended here.
 
+## Routing: `react-router` re-exports removed
+
+Freelens v2 dropped `react-router` 5, `react-router-dom` 5, and `history` v4
+from the host (Phase 2 routing modernization, #2261 — `react-router` 5 is
+unmaintained and blocked the React 19 upgrade). Navigation now runs on the
+in-house pieces in `@freelensapp/routing`. **This is an intended, extension-
+facing breaking change:** the `Common.ReactRouter` / `Renderer.ReactRouterDom`
+bundle re-exports no longer exist, so `import { Link } from "react-router-dom"`
+via the Freelens bundle will fail to resolve at runtime.
+
+If your extension used them, migrate one of two ways:
+
+- **Preferred — use the internal navigation API.** Register pages with
+  `Renderer.Registrations` (`globalPages` / `clusterPages`) and navigate with
+  the injectable `navigateToRoute` / route helpers instead of react-router
+  `Link` / `Redirect` / `Route`. Route schemas keep the same
+  `react-router` v5 dialect (`/:param?` optionals, inline `/:param(regex)`
+  patterns), matched by the in-house `matchPath`, so existing path strings are
+  unchanged.
+- **Or bundle your own `react-router`.** If you must keep react-router JSX, add
+  `react-router` / `react-router-dom` to your extension's own dependencies and
+  bundle them; do not rely on the host providing them.
+
+See [`docs/v2-routing-modernization.md`](./v2-routing-modernization.md) (§2.5
+and §5) for the rationale and the full list of what was removed.
+
 ## Chart.js v4 (`Renderer.Component.BarChart` / `PieChart`)
 
 Freelens bundles Chart.js **v4** (previously v2.9). The `BarChart` and
@@ -350,6 +376,9 @@ is still lighter than wiring up a Tailwind build.
 - [ ] Access only the process-appropriate namespace (`Main` in main,
       `Renderer` in the renderer, `Common` in both).
 - [ ] Re-check any moved API symbols against the published type surface.
+- [ ] Replace any `react-router` / `react-router-dom` usage imported via the
+      Freelens bundle — the `ReactRouter*` re-exports were removed (see
+      [Routing: `react-router` re-exports removed](#routing-react-router-re-exports-removed)).
 - [ ] Load your extension in a v2 build and verify its UI renders through the
       runtime global.
 
