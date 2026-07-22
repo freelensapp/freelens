@@ -26,9 +26,16 @@ overrides:
   http-proxy: npm:http-proxy-node16@^1.0.6
   http-proxy-middleware: ^3.0.7
   mobx-react: ^9.1.1
-  # React 19 bump: several deps still peer on react-dom ^18, which forks a
-  # second react-dom copy (18.3.1 built against react 19) in the tree. This
-  # override collapses everything onto the single react-dom 19 we ship.
+  # React 19 bump: @ogre-tools/injectable-react@17.11.1 declares a non-optional
+  # `react-dom: "^17 || ^18"` peer (no ^19), which forks a second react-dom copy
+  # (18.3.1 built against react 19) into the tree. Other deps with wide/optional
+  # react-dom peers (mobx-react, react-window, mui via react-transition-group,
+  # @testing-library/react) then dedupe onto that 18 copy. This override collapses
+  # everything onto the single react-dom 19 we ship. Note: this is NOT caused by
+  # react-window (its peer range already includes ^19); migrating react-window
+  # does not remove the need for this. The override can be dropped once
+  # @ogre-tools/injectable-react is bumped to >=19 (from v19 it drops the
+  # react-dom peer and its react peer becomes ^18 || ^19).
   react-dom: ^19.2.8
   tmp@^0.2.0: ^0.2.7
 
