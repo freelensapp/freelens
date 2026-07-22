@@ -26,7 +26,7 @@
     "@freelensapp/feature-core": "workspace:^",
     "@freelensapp/kube-api": "workspace:^",
     "@freelensapp/logger": "workspace:^",
-    "@ogre-tools/injectable": "^17.11.1"
+    "@ogre-tools/injectable": "^23.2.0"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^"
