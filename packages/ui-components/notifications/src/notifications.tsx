@@ -75,7 +75,12 @@ class NonInjectedNotifications extends React.Component<Dependencies> {
     const { notifications, remove, addAutoHideTimer, removeAutoHideTimer } = this.props.store;
 
     return (
-      <div className="Notifications" ref={(e) => (this.elem = e)}>
+      <div
+        className="Notifications"
+        ref={(e) => {
+          this.elem = e;
+        }}
+      >
         {notifications.map((notification) => {
           const { id, status, onClose } = notification;
           const msgText = this.getMessage(notification);

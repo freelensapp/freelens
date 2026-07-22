@@ -71,7 +71,9 @@ class NonInjectedTerminalWindow extends React.Component<TerminalWindowProps & De
     return (
       <div
         className={cssNames("TerminalWindow", this.props.activeTheme.get().type)}
-        ref={(elem) => (this.elem = elem)}
+        ref={(elem) => {
+          this.elem = elem;
+        }}
       />
     );
   }

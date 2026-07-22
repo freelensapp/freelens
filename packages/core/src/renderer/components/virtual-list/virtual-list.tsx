@@ -131,7 +131,7 @@ export const VirtualList = forwardRef<VirtualListRef, VirtualListProps<string>>(
   <VirtualListInner {...props} forwardedRef={ref} />
 )) as <T extends { getId(): string } | string>(
   props: VirtualListProps<T> & { ref?: ForwardedRef<VirtualListRef> },
-) => JSX.Element;
+) => React.JSX.Element;
 
 interface RowData<T extends { getId(): string } | string> {
   items: T[];
