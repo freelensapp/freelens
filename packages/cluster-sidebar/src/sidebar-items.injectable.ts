@@ -10,7 +10,13 @@ const getSidebarItemsHierarchy = (
 ): SidebarItemDeclaration[] =>
   registrations
     .filter(({ instance }) => instance.parentId === parentId)
-    .map(({ instance: { isActive, isVisible, ...registration }, meta: { id } }) => {
+    .map(({ instance: { isActive, isVisible, ...registration }, meta }) => {
+      // @ogre-tools 23 namespaces the id of an injectable registered at runtime
+      // through a namespaced `di` (e.g. extension-scoped sidebar items) as
+      // "<namespace>:<declaredId>". Children link to their parent by its declared
+      // (bare) parentId and the id is surfaced as a `data-testid`, so use the bare
+      // id here. Container-level ids have no namespace and are used verbatim.
+      const id = meta.id.includes(":") ? meta.id.slice(meta.id.lastIndexOf(":") + 1) : meta.id;
       const children = getSidebarItemsHierarchy(registrations, id);
 
       return {

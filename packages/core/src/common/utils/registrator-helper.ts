@@ -8,7 +8,15 @@ import { iter } from "@freelensapp/utilities";
 
 import type { DiContainerForInjection, Injectable } from "@ogre-tools/injectable";
 
-// Register new injectables and deregister removed injectables by id
+// Register new injectables and deregister removed injectables by id.
+//
+// Note on the `di` argument: @ogre-tools 23 prefixes ids registered through the
+// namespaced `di` passed into an injectable's instantiate with the registering
+// injectable's id. For app-lifetime registrations whose ids must stay bare
+// (e.g. sidebar items keyed by id in the hierarchy and `data-testid`s), pass the
+// root container via `dependencyInjectionContainerInjectable`. Extension-scoped
+// registrations instead pass their extension's child `di` on purpose, so the
+// items are cleaned up when that child container is disposed on disable.
 
 export const injectableDifferencingRegistratorWith =
   (di: DiContainerForInjection) =>

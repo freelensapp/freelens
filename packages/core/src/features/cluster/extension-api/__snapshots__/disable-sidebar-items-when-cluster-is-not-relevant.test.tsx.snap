@@ -403,11 +403,11 @@ exports[`disable sidebar items when cluster is not relevant > given extension sh
               <div
                 class="SidebarItem"
                 data-is-active-test="false"
-                data-testid="extension:extension-test-extension:sidebar-item-test-extension-sidebar-item-some"
+                data-testid="sidebar-item-test-extension-sidebar-item-some"
               >
                 <a
                   class="navItem"
-                  data-testid="link-for-extension:extension-test-extension:sidebar-item-test-extension-sidebar-item-some"
+                  data-testid="link-for-sidebar-item-test-extension-sidebar-item-some"
                   href="/workloads"
                 >
                   <div>

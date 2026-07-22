@@ -14,6 +14,7 @@ import { createContainer, isInjectable } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { chunk } from "es-toolkit";
 import { runInAction } from "mobx";
+import dependencyInjectionContainerInjectable from "../common/dependency-injection/dependency-injection-container.injectable";
 import broadcastMessageInjectable from "../common/ipc/broadcast-message.injectable";
 import { setDiForExtensionApi } from "../extensions/extension-api-di";
 import setupSyncingOfWeblinksInjectable from "../features/weblinks/main/setup-syncing-of-weblinks.injectable";
@@ -87,6 +88,8 @@ export function getDiForUnitTesting() {
       di.register(...block);
     }
   });
+
+  di.override(dependencyInjectionContainerInjectable, () => di);
 
   for (const globalOverride of Object.values(globalOverrideModules).map((module) => module.default)) {
     di.override(globalOverride.injectable, globalOverride.overridingInstantiate);

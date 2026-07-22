@@ -17,6 +17,7 @@ import { createContainer, isInjectable } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { chunk, noop } from "es-toolkit";
 import { runInAction } from "mobx";
+import dependencyInjectionContainerInjectable from "../common/dependency-injection/dependency-injection-container.injectable";
 import { setDiForExtensionApi } from "../extensions/extension-api-di";
 import { getOverrideFsWithFakes } from "../test-utils/override-fs-with-fakes";
 import hostedClusterIdInjectable from "./cluster-frame-context/hosted-cluster-id.injectable";
@@ -83,6 +84,8 @@ export const getDiForUnitTesting = () => {
       di.register(...block);
     }
   });
+
+  di.override(dependencyInjectionContainerInjectable, () => di);
 
   for (const globalOverride of Object.values(globalOverrideModules).map((module) => module.default)) {
     di.override(globalOverride.injectable, globalOverride.overridingInstantiate);
