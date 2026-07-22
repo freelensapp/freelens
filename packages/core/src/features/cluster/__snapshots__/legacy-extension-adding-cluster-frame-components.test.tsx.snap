@@ -48,7 +48,7 @@ exports[`legacy extension adding cluster frame components > given custom compone
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-favorites"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -217,7 +217,7 @@ exports[`legacy extension adding cluster frame components > given custom compone
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-network"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon material focusable"
@@ -286,7 +286,7 @@ exports[`legacy extension adding cluster frame components > given custom compone
               <a
                 class="navItem"
                 data-testid="link-for-sidebar-item-helm"
-                href="/"
+                href="/workloads"
               >
                 <i
                   class="Icon svg focusable"

@@ -49,7 +49,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -217,7 +217,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -313,7 +313,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -879,7 +879,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -1047,7 +1047,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -1143,7 +1143,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -1649,14 +1649,9 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
             style="flex-basis: 300px;"
           >
             <div
-              class="EditResource flex flex-col"
-            >
-              <div
-                class="notice"
-              >
-                Resource not found
-              </div>
-            </div>
+              class="Spinner singleColor center"
+              data-testid="edit-resource-tab-spinner"
+            />
           </div>
         </div>
       </div>
@@ -2648,7 +2643,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -2816,7 +2811,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -2912,7 +2907,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -3470,9 +3465,113 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
             style="flex-basis: 300px;"
           >
             <div
-              class="Spinner singleColor center"
-              data-testid="edit-resource-tab-spinner"
-            />
+              class="EditResource flex flex-col"
+            >
+              <div
+                class="InfoPanel flex gap-2 items-center"
+              >
+                <div
+                  class="controls"
+                >
+                  <div
+                    class="resource-info flex gap-2 items-center"
+                  >
+                    <span>
+                      Kind:
+                    </span>
+                    <div
+                      class="badge"
+                    >
+                      Namespace
+                    </div>
+                    <span>
+                      Name:
+                    </span>
+                    <div
+                      class="badge"
+                    >
+                      some-name
+                    </div>
+                    <span>
+                      Namespace:
+                    </span>
+                    <div
+                      class="badge"
+                    >
+                      default
+                    </div>
+                    <label
+                      class="Checkbox flex items-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="check-icon flex items-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Sort
+                      </span>
+                    </label>
+                    <label
+                      class="Checkbox flex items-center"
+                    >
+                      <input
+                        type="checkbox"
+                      />
+                      <i
+                        class="check-icon flex items-center"
+                      />
+                      <span
+                        class="label"
+                      >
+                        Managed Fields
+                      </span>
+                    </label>
+                  </div>
+                </div>
+                <div
+                  class="flex gap-2 items-center"
+                />
+                <button
+                  class="Button plain"
+                  data-testid="cancel-edit-resource-from-tab-for-some-first-tab-id"
+                  type="button"
+                >
+                  Cancel
+                </button>
+                <button
+                  class="Button active outlined"
+                  data-testid="save-edit-resource-from-tab-for-some-first-tab-id"
+                  type="button"
+                >
+                  Save
+                </button>
+                <button
+                  class="Button primary active"
+                  data-testid="save-and-close-edit-resource-from-tab-for-some-first-tab-id"
+                  type="button"
+                >
+                  Save & Close
+                </button>
+              </div>
+              <textarea
+                data-testid="monaco-editor-for-some-first-tab-id"
+              >
+                apiVersion: some-api-version
+kind: Namespace
+metadata:
+  uid: some-uid
+  name: some-name
+  resourceVersion: some-resource-version
+  somePropertyToBeRemoved: some-value
+  somePropertyToBeChanged: some-old-value
+  selfLink: /api/some-api-version/namespaces/some-uid
+
+              </textarea>
+            </div>
           </div>
         </div>
       </div>
@@ -3530,7 +3629,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -3698,7 +3797,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -3794,7 +3893,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -4377,7 +4476,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                     <div
                       class="badge"
                     >
-                      some-other-name
+                      some-name
                     </div>
                     <span>
                       Namespace:
@@ -4424,36 +4523,38 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 />
                 <button
                   class="Button plain"
-                  data-testid="cancel-edit-resource-from-tab-for-some-second-tab-id"
+                  data-testid="cancel-edit-resource-from-tab-for-some-first-tab-id"
                   type="button"
                 >
                   Cancel
                 </button>
                 <button
                   class="Button active outlined"
-                  data-testid="save-edit-resource-from-tab-for-some-second-tab-id"
+                  data-testid="save-edit-resource-from-tab-for-some-first-tab-id"
                   type="button"
                 >
                   Save
                 </button>
                 <button
                   class="Button primary active"
-                  data-testid="save-and-close-edit-resource-from-tab-for-some-second-tab-id"
+                  data-testid="save-and-close-edit-resource-from-tab-for-some-first-tab-id"
                   type="button"
                 >
                   Save & Close
                 </button>
               </div>
               <textarea
-                data-testid="monaco-editor-for-some-second-tab-id"
+                data-testid="monaco-editor-for-some-first-tab-id"
               >
                 apiVersion: some-api-version
 kind: Namespace
 metadata:
-  uid: some-other-uid
-  name: some-other-name
+  uid: some-uid
+  name: some-name
   resourceVersion: some-resource-version
-  selfLink: /api/some-api-version/namespaces/some-other-uid
+  somePropertyToBeRemoved: some-value
+  somePropertyToBeChanged: some-old-value
+  selfLink: /api/some-api-version/namespaces/some-uid
 
               </textarea>
             </div>
@@ -4514,7 +4615,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -4682,7 +4783,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -4778,7 +4879,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -5361,7 +5462,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                     <div
                       class="badge"
                     >
-                      some-name
+                      some-other-name
                     </div>
                     <span>
                       Namespace:
@@ -5408,38 +5509,36 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 />
                 <button
                   class="Button plain"
-                  data-testid="cancel-edit-resource-from-tab-for-some-first-tab-id"
+                  data-testid="cancel-edit-resource-from-tab-for-some-second-tab-id"
                   type="button"
                 >
                   Cancel
                 </button>
                 <button
                   class="Button active outlined"
-                  data-testid="save-edit-resource-from-tab-for-some-first-tab-id"
+                  data-testid="save-edit-resource-from-tab-for-some-second-tab-id"
                   type="button"
                 >
                   Save
                 </button>
                 <button
                   class="Button primary active"
-                  data-testid="save-and-close-edit-resource-from-tab-for-some-first-tab-id"
+                  data-testid="save-and-close-edit-resource-from-tab-for-some-second-tab-id"
                   type="button"
                 >
                   Save & Close
                 </button>
               </div>
               <textarea
-                data-testid="monaco-editor-for-some-first-tab-id"
+                data-testid="monaco-editor-for-some-second-tab-id"
               >
                 apiVersion: some-api-version
 kind: Namespace
 metadata:
-  uid: some-uid
-  name: some-name
+  uid: some-other-uid
+  name: some-other-name
   resourceVersion: some-resource-version
-  somePropertyToBeRemoved: some-value
-  somePropertyToBeChanged: some-old-value
-  selfLink: /api/some-api-version/namespaces/some-uid
+  selfLink: /api/some-api-version/namespaces/some-other-uid
 
               </textarea>
             </div>
@@ -9259,7 +9358,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -9427,7 +9526,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -9523,7 +9622,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -10029,113 +10128,9 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
             style="flex-basis: 300px;"
           >
             <div
-              class="EditResource flex flex-col"
-            >
-              <div
-                class="InfoPanel flex gap-2 items-center"
-              >
-                <div
-                  class="controls"
-                >
-                  <div
-                    class="resource-info flex gap-2 items-center"
-                  >
-                    <span>
-                      Kind:
-                    </span>
-                    <div
-                      class="badge"
-                    >
-                      Namespace
-                    </div>
-                    <span>
-                      Name:
-                    </span>
-                    <div
-                      class="badge"
-                    >
-                      some-name
-                    </div>
-                    <span>
-                      Namespace:
-                    </span>
-                    <div
-                      class="badge"
-                    >
-                      default
-                    </div>
-                    <label
-                      class="Checkbox flex items-center"
-                    >
-                      <input
-                        type="checkbox"
-                      />
-                      <i
-                        class="check-icon flex items-center"
-                      />
-                      <span
-                        class="label"
-                      >
-                        Sort
-                      </span>
-                    </label>
-                    <label
-                      class="Checkbox flex items-center"
-                    >
-                      <input
-                        type="checkbox"
-                      />
-                      <i
-                        class="check-icon flex items-center"
-                      />
-                      <span
-                        class="label"
-                      >
-                        Managed Fields
-                      </span>
-                    </label>
-                  </div>
-                </div>
-                <div
-                  class="flex gap-2 items-center"
-                />
-                <button
-                  class="Button plain"
-                  data-testid="cancel-edit-resource-from-tab-for-some-first-tab-id"
-                  type="button"
-                >
-                  Cancel
-                </button>
-                <button
-                  class="Button active outlined"
-                  data-testid="save-edit-resource-from-tab-for-some-first-tab-id"
-                  type="button"
-                >
-                  Save
-                </button>
-                <button
-                  class="Button primary active"
-                  data-testid="save-and-close-edit-resource-from-tab-for-some-first-tab-id"
-                  type="button"
-                >
-                  Save & Close
-                </button>
-              </div>
-              <textarea
-                data-testid="monaco-editor-for-some-first-tab-id"
-              >
-                apiVersion: some-api-version
-kind: Namespace
-metadata:
-  uid: some-uid
-  name: some-name
-  resourceVersion: some-resource-version
-  somePropertyToBeRemoved: some-value
-  somePropertyToBeChanged: some-old-value
-  selfLink: /api/some-api-version/namespaces/some-uid
-
-              </textarea>
-            </div>
+              class="Spinner singleColor center"
+              data-testid="edit-resource-tab-spinner"
+            />
           </div>
         </div>
       </div>
