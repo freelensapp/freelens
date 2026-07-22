@@ -106,14 +106,19 @@ class NonInjectedDock extends React.Component<DockProps & Dependencies> {
 
   renderTab(tab: DockTab) {
     switch (tab.kind) {
+      // These dock views resolve their props asynchronously (async
+      // withInjectables). Key them by tab id so switching tabs remounts the
+      // view instead of feeding new props to a mounted instance — otherwise the
+      // view would keep the previously-selected tab's resolved state instead of
+      // showing its loading placeholder while re-resolving.
       case TabKind.CREATE_RESOURCE:
-        return <CreateResource tabId={tab.id} />;
+        return <CreateResource key={tab.id} tabId={tab.id} />;
       case TabKind.EDIT_RESOURCE:
-        return <EditResource tabId={tab.id} />;
+        return <EditResource key={tab.id} tabId={tab.id} />;
       case TabKind.INSTALL_CHART:
-        return <InstallChart tabId={tab.id} />;
+        return <InstallChart key={tab.id} tabId={tab.id} />;
       case TabKind.UPGRADE_CHART:
-        return <UpgradeChart tab={tab} />;
+        return <UpgradeChart key={tab.id} tab={tab} />;
       case TabKind.POD_LOGS:
         return <LogsDockTab tab={tab} />;
       case TabKind.TERMINAL:

@@ -529,13 +529,18 @@ describe("installing helm chart from new tab", () => {
                 });
 
                 describe("when selecting the dock tab for installing first chart", () => {
-                  beforeEach(() => {
+                  beforeEach(async () => {
                     requestHelmChartValuesMock.mockClear();
                     requestHelmChartVersionsMock.mockClear();
 
                     const tab = rendered.getByTestId("dock-tab-for-some-first-tab-id");
 
-                    fireEvent.click(tab);
+                    // React 19 flushes passive effects only at act() boundaries;
+                    // switching tabs re-runs the async withInjectables getProps for
+                    // the newly-shown tab, so let that resolve inside act().
+                    await act(async () => {
+                      fireEvent.click(tab);
+                    });
                   });
 
                   it("renders", () => {
