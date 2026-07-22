@@ -3,10 +3,10 @@ packages:
   - packages/**
 
 catalog:
-  react: ^18.3.1
-  react-dom: ^18.3.1
-  '@types/react': ^18.3.12
-  '@types/react-dom': ^18.3.1
+  react: ^19.2.8
+  react-dom: ^19.2.8
+  '@types/react': ^19.2.17
+  '@types/react-dom': ^19.2.3
 
 allowBuilds:
   '@parcel/watcher': true
@@ -26,6 +26,10 @@ overrides:
   http-proxy: npm:http-proxy-node16@^1.0.6
   http-proxy-middleware: ^3.0.7
   mobx-react: ^9.1.1
+  # React 19 bump: several deps still peer on react-dom ^18, which forks a
+  # second react-dom copy (18.3.1 built against react 19) in the tree. This
+  # override collapses everything onto the single react-dom 19 we ship.
+  react-dom: ^19.2.8
   tmp@^0.2.0: ^0.2.7
 
 peerDependencyRules:
@@ -37,3 +41,7 @@ patchedDependencies:
   '@xterm/xterm@6.0.0': patches/@xterm__xterm@6.0.0.patch
 
 shellEmulator: true
+
+minimumReleaseAgeExclude:
+  - react-dom@19.2.8
+  - react@19.2.8

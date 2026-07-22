@@ -39,7 +39,7 @@
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
     "@ogre-tools/fp": "^17.11.1",
-    "@testing-library/react": "^15.0.7",
+    "@testing-library/react": "^16.3.2",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "jsdom": "^29.1.1",
