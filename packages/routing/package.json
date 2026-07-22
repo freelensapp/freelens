@@ -28,8 +28,7 @@
     "history": "^5.3.0",
     "mobx": "^6.15.0",
     "mobx-react": "^9.1.1",
-    "react": "catalog:",
-    "react-dom": "catalog:"
+    "react": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
@@ -39,6 +38,7 @@
     "@testing-library/user-event": "^14.6.1",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
+    "react-dom": "catalog:",
     "vitest": "^4.1.10"
   },
   "publishConfig": {

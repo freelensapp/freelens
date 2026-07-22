@@ -39,8 +39,7 @@
     "es-toolkit": "^1.49.0",
     "mobx": "^6.15.0",
     "mobx-react": "^9.1.1",
-    "react": "catalog:",
-    "react-dom": "catalog:"
+    "react": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",

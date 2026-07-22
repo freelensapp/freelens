@@ -130,7 +130,6 @@
     "@freelensapp/test-utils": "workspace:^",
     "@freelensapp/tooltip": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
-    "@ogre-tools/injectable-react": "^23.2.0",
     "@tailwindcss/postcss": "^4.2.4",
     "@types/fs-extra": "^11.0.4",
     "@types/node": "~24.12.4",
