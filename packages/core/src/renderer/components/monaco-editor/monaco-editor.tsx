@@ -339,7 +339,9 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
         data-test-id="monaco-editor"
         className={cssNames(styles.MonacoEditor, className)}
         style={css}
-        ref={(elem) => (this.containerElem = elem)}
+        ref={(elem) => {
+          this.containerElem = elem;
+        }}
       />
     );
   }

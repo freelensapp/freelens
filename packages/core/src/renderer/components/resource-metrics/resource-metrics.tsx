@@ -28,7 +28,7 @@ export interface ResourceMetricsProps<Keys extends string> {
   className?: string;
   metricsKey?: string;
   metrics: IAsyncComputed<Partial<Record<Keys, MetricData>> | null | undefined> | Partial<Record<Keys, MetricData>>;
-  children: React.ReactChild | React.ReactChild[];
+  children: React.ReactNode | React.ReactNode[];
 }
 
 function isAsyncComputedMetrics<Keys extends string>(

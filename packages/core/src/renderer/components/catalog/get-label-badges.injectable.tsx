@@ -16,7 +16,7 @@ import type { CatalogEntity } from "../../api/catalog-entity";
 export type GetLabelBadges = (
   entity: CatalogEntity,
   onClick?: (evt: React.MouseEvent<any, MouseEvent>) => void,
-) => JSX.Element[];
+) => React.JSX.Element[];
 
 const getLabelBadgesInjectable = getInjectable({
   id: "get-label-badges",
