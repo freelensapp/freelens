@@ -33,7 +33,7 @@
   "dependencies": {
     "arg": "^5.0.2",
     "jsdom": "^29.1.1",
-    "sharp": "^0.34.5"
+    "sharp": "^0.35.0"
   },
   "devDependencies": {
     "@freelensapp/icon": "workspace:^",
