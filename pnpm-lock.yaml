@@ -895,9 +895,6 @@ importers:
       '@ogre-tools/injectable-react':
         specifier: ^23.2.0
         version: 23.2.0(@ogre-tools/fp@23.2.0)(@ogre-tools/injectable@23.2.0(@ogre-tools/fp@23.2.0))(mobx-react@9.2.2(mobx@6.15.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(mobx@6.15.0)(react@19.2.8)
-      '@types/history':
-        specifier: ^5.0.0
-        version: 5.0.0
       '@types/node':
         specifier: ~24.12.4
         version: 24.12.4
@@ -2136,6 +2133,9 @@ importers:
 
   packages/utility-features/test-utils:
     dependencies:
+      '@async-fn/vitest':
+        specifier: ^1.8.0
+        version: 1.8.0(patch_hash=86478f697e61e0e2ca0274a6b255c31c05d0dd83078743e9e755910710d597ef)(vitest@4.1.10)
       '@ogre-tools/injectable':
         specifier: ^23.2.0
         version: 23.2.0(@ogre-tools/fp@23.2.0)
@@ -4023,10 +4023,6 @@ packages:
 
   '@types/hapi__subtext@7.0.3':
     resolution: {integrity: sha512-EMDHBVljQRZLQVZkC3uAGTBmEgbq2Ga1F53AHouEnxnb6p2Vaz+iBfY/2uYxxm42OHjWZlm/GDgq+QY34E3Gcg==}
-
-  '@types/history@5.0.0':
-    resolution: {integrity: sha512-hy8b7Y1J8OGe6LbAjj3xniQrj3v6lsivCcrmf4TzSgPzLkhIeKgc5IZnT7ReIqmEuodjfO8EYAuoFvIrHi/+jQ==}
-    deprecated: This is a stub types definition. history provides its own type definitions, so you do not need this installed.
 
   '@types/http-cache-semantics@4.0.1':
     resolution: {integrity: sha512-SZs7ekbP8CN0txVG2xVRH6EgKmEm31BOxA07vkFaETzZz1xh+cbt8BcI0slpymvwhx5dlFnQG2rTlPVQn+iRPQ==}
@@ -8745,10 +8741,6 @@ snapshots:
   '@types/hapi__subtext@7.0.3':
     dependencies:
       '@types/node': 24.12.4
-
-  '@types/history@5.0.0':
-    dependencies:
-      history: 5.3.0
 
   '@types/http-cache-semantics@4.0.1': {}
 
