@@ -47,8 +47,8 @@ importers:
         specifier: ^29.1.1
         version: 29.1.1(@noble/hashes@2.2.0)
       pnpm:
-        specifier: 11.15.0
-        version: 11.15.0
+        specifier: 11.16.0
+        version: 11.16.0
       turbo:
         specifier: 2.10.2
         version: 2.10.2
@@ -170,8 +170,8 @@ importers:
         specifier: ^7.3.0
         version: 7.3.0
       pnpm:
-        specifier: ^11.15.0
-        version: 11.15.0
+        specifier: ^11.16.0
+        version: 11.16.0
       proper-lockfile:
         specifier: ^4.1.2
         version: 4.1.2
@@ -645,8 +645,8 @@ importers:
         specifier: 1.2.0-beta.14
         version: 1.2.0-beta.14
       pnpm:
-        specifier: ^11.15.0
-        version: 11.15.0
+        specifier: ^11.16.0
+        version: 11.16.0
       proper-lockfile:
         specifier: ^4.1.2
         version: 4.1.2
@@ -5899,8 +5899,8 @@ packages:
     resolution: {integrity: sha512-uysumyrvkUX0rX/dEVqt8gC3sTBzd4zoWfLeS29nb53imdaXVvLINYXTI2GNqzaMuvacNx4uJQ8+b3zXR0pkgQ==}
     engines: {node: '>=10.4.0'}
 
-  pnpm@11.15.0:
-    resolution: {integrity: sha512-Jm+JV6MNK+bpRo5eZrze3TWnlBdfcbBnuoUE1obM4dDA9CmzPDI8PFaa1IkeZnV0pJ/3HRuJoizGbxPGWBjFeA==}
+  pnpm@11.16.0:
+    resolution: {integrity: sha512-t2fpqY/IeuwPQtrvzQ6ElBws20XXPE4eaIYPsr39vgMqtZIQVHnl4Fwjf3QMil/9u7UjhXl93CKWdFobu4g+jQ==}
     engines: {node: '>=22.13'}
     hasBin: true
 
@@ -10584,7 +10584,7 @@ snapshots:
       base64-js: 1.5.1
       xmlbuilder: 15.1.1
 
-  pnpm@11.15.0: {}
+  pnpm@11.16.0: {}
 
   postcss-load-config@3.1.4(postcss@8.5.19)(ts-node@10.9.2(@types/node@24.12.4)(typescript@7.0.2)):
     dependencies:
