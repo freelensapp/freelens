@@ -12,7 +12,6 @@ import { cssNames } from "@freelensapp/utilities";
 import { isEqual } from "es-toolkit";
 import { observer } from "mobx-react";
 import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } from "react";
-import AutoSizer from "react-virtualized-auto-sizer";
 import { List } from "react-window";
 
 import type { ForwardedRef, UIEventHandler } from "react";
@@ -51,6 +50,14 @@ function setRef<T>(ref: React.Ref<T> | undefined, value: T | null) {
     (ref as React.MutableRefObject<T | null>).current = value;
   }
 }
+
+// In unit tests jsdom has no layout and ResizeObserver is stubbed as a no-op, so
+// react-window v2 would measure the list container as 0 and render no rows. Seed
+// a large initial height under test so lists render their rows (this restores
+// what the react-virtualized-auto-sizer mock used to provide). In the running
+// app ResizeObserver reports the real size, so this initial value only affects
+// the very first frame — keep it 0 there to avoid rendering off-screen rows.
+const initialListHeight = process.env.NODE_ENV === "test" ? 420_000 : 0;
 
 function VirtualListInner<T extends { getId(): string } | string>({
   items,
@@ -115,31 +122,25 @@ function VirtualListInner<T extends { getId(): string } | string>({
     setOverscanCount(readyOffset);
   });
 
-  // react-window v2 fills the height defined by its `style` and disables its own
-  // ResizeObserver when a fixed pixel height is provided. AutoSizer measures the
-  // parent so the list gets an explicit height, matching the previous behaviour
-  // and keeping a single, deterministic sizing path across environments.
-  const renderList = (height: number) => (
-    <List<RowData<T>>
-      className="list"
-      rowComponent={Row as never}
-      rowCount={items.length}
-      rowHeight={rowHeight}
-      rowProps={{ items, getRow }}
-      overscanCount={overscanCount}
-      listRef={setListApi}
-      onScroll={onScroll}
-      style={{ width, height }}
-    />
-  );
-
+  // react-window v2's List fills the height defined by its `style` and tracks
+  // its own size via ResizeObserver. Give it a fixed pixel height when the
+  // consumer provides one; otherwise fill the parent (which has a definite flex
+  // height) with `height: 100%`. This replaces react-virtualized-auto-sizer,
+  // which measured the flex parent as 0 under v2 and left every list empty.
   return (
     <div className={cssNames("VirtualList", className)}>
-      {typeof fixedHeight === "number" ? (
-        renderList(fixedHeight)
-      ) : (
-        <AutoSizer disableWidth>{({ height = 0 }) => renderList(height)}</AutoSizer>
-      )}
+      <List<RowData<T>>
+        className="list"
+        rowComponent={Row as never}
+        rowCount={items.length}
+        rowHeight={rowHeight}
+        rowProps={{ items, getRow }}
+        overscanCount={overscanCount}
+        defaultHeight={initialListHeight}
+        listRef={setListApi}
+        onScroll={onScroll}
+        style={{ width, height: typeof fixedHeight === "number" ? fixedHeight : "100%" }}
+      />
     </div>
   );
 }
