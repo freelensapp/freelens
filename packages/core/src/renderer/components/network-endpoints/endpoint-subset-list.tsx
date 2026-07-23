@@ -168,7 +168,9 @@ class NonInjectedEndpointSubsetList extends React.Component<EndpointSubsetListPr
             <TableCell className="protocol">Protocol</TableCell>
           </TableHead>
           {ports.map((port) => (
-            <TableRow key={port.port} nowrap>
+            // The same port number may be exposed under several protocols, so the number
+            // alone is not a unique key.
+            <TableRow key={`${port.port}-${port.protocol}`} nowrap>
               <TableCell className="name">{port.port}</TableCell>
               <TableCell className="name">{port.name}</TableCell>
               <TableCell className="node">{port.protocol}</TableCell>
