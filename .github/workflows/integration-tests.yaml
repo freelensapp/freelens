@@ -299,8 +299,12 @@ jobs:
       # See the comment on "Restore Electron cache" above: save unconditionally
       # so whatever the step(s) above downloaded is cached even when packaging
       # ultimately failed.
+      # Skip the save on an exact cache hit (the primary key already exists, so
+      # actions/cache/save would only warn "Unable to reserve cache ..."); still
+      # save on a miss or restore-key partial hit, and - thanks to always() -
+      # even when a build step above failed.
       - name: Save Electron cache
-        if: always()
+        if: always() && steps.electron-cache-restore.outputs.cache-hit != 'true'
         uses: actions/cache/save@v6
         with:
           path: ${{ env.electron_cache_dir }}

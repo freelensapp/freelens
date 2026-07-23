@@ -502,15 +502,19 @@ jobs:
       # counterpart to the split restore steps above): whatever the build steps
       # downloaded is cached even when a later packaging/signing step fails, so
       # a re-run does not re-download the binaries (freelensapp/freelens#2303).
+      # Skip each save on an exact cache hit (the primary key already exists, so
+      # actions/cache/save would only warn "Unable to reserve cache ..."); still
+      # save on a miss or restore-key partial hit, and - thanks to always() -
+      # even when a build step above failed.
       - name: Save Electron cache
-        if: always()
+        if: always() && steps.electron-cache-restore.outputs.cache-hit != 'true'
         uses: actions/cache/save@v6
         with:
           path: ${{ env.electron_cache_dir }}
           key: ${{ steps.electron-cache-restore.outputs.cache-primary-key }}
 
       - name: Save Electron Builder cache
-        if: always()
+        if: always() && steps.electron-builder-cache-restore.outputs.cache-hit != 'true'
         uses: actions/cache/save@v6
         with:
           path: ${{ env.ELECTRON_BUILDER_CACHE }}
