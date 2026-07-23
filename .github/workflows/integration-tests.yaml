@@ -54,7 +54,6 @@ jobs:
     env:
       DO_NOT_TRACK: "1"
       ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
-      ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
       TURBOREPO_CACHE: ${{ github.workspace }}/.turbo
 
     steps:
@@ -127,6 +126,21 @@ jobs:
         shell: bash
         run: echo "electron_builder_version=$(yq -r .importers.freelens.devDependencies.electron-builder.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a $GITHUB_ENV
 
+      # electron-builder's Electron zip downloader doesn't accept a cache
+      # directory override (no ELECTRON_CACHE / electron_config_cache is read
+      # on this code path - see freelensapp/freelens#2305) and always writes
+      # into the OS-default Electron cache dir, so that's what has to be
+      # cached, not a workspace-local redirect.
+      - name: Get Electron cache directory
+        shell: bash
+        run: |
+          case "${{ matrix.os }}" in
+            linux) dir="$HOME/.cache/electron" ;;
+            macos) dir="$HOME/Library/Caches/electron" ;;
+            windows) dir="$LOCALAPPDATA/electron/Cache" ;;
+          esac
+          echo "electron_cache_dir=$dir" | tee -a $GITHUB_ENV
+
       # Restored here and saved explicitly (with if: always()) right after the
       # "Build Electron app" step below, instead of the combined actions/cache
       # action: that action's save only runs in a post-job step, which is
@@ -139,7 +153,7 @@ jobs:
         id: electron-cache-restore
         uses: actions/cache/restore@v6
         with:
-          path: ${{ env.ELECTRON_CACHE }}
+          path: ${{ env.electron_cache_dir }}
           key: ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-${{ env.electron_version }}
           restore-keys: |
             ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-
@@ -301,7 +315,7 @@ jobs:
         if: always()
         uses: actions/cache/save@v6
         with:
-          path: ${{ env.ELECTRON_CACHE }}
+          path: ${{ env.electron_cache_dir }}
           key: ${{ steps.electron-cache-restore.outputs.cache-primary-key }}
 
       - name: Save Electron Builder cache
