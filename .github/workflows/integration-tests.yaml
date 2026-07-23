@@ -53,7 +53,6 @@ jobs:
 
     env:
       DO_NOT_TRACK: "1"
-      ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
       TURBOREPO_CACHE: ${{ github.workspace }}/.turbo
 
     steps:
@@ -122,10 +121,6 @@ jobs:
         shell: bash
         run: echo "electron_version=$(yq -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a $GITHUB_ENV
 
-      - name: Get Electron Builder version
-        shell: bash
-        run: echo "electron_builder_version=$(yq -r .importers.freelens.devDependencies.electron-builder.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a $GITHUB_ENV
-
       # electron-builder's Electron zip downloader doesn't accept a cache
       # directory override (no ELECTRON_CACHE / electron_config_cache is read
       # on this code path - see freelensapp/freelens#2305) and always writes
@@ -145,10 +140,12 @@ jobs:
       # "Build Electron app" step below, instead of the combined actions/cache
       # action: that action's save only runs in a post-job step, which is
       # skipped once a later step in the job fails. Without this split, a
-      # packaging failure that happens after Electron/electron-builder finish
-      # downloading (see freelensapp/freelens#2303) leaves these caches empty
-      # forever - every re-run re-downloads the binaries and can hit the same
-      # flaky upstream again.
+      # packaging failure that happens after Electron finishes downloading
+      # (see freelensapp/freelens#2303) leaves the cache empty forever - every
+      # re-run re-downloads the binary and can hit the same flaky upstream
+      # again. Only the Electron binary is cached here: with a `dir` target
+      # electron-builder downloads none of its own toolsets (NSIS,
+      # winCodeSign, ...), so an electron-builder cache would always be empty.
       - name: Restore Electron cache
         id: electron-cache-restore
         uses: actions/cache/restore@v6
@@ -157,15 +154,6 @@ jobs:
           key: ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-${{ env.electron_version }}
           restore-keys: |
             ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-
-
-      - name: Restore Electron Builder cache
-        id: electron-builder-cache-restore
-        uses: actions/cache/restore@v6
-        with:
-          path: ${{ env.ELECTRON_BUILDER_CACHE }}
-          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-builder-${{ env.electron_builder_version }}
-          restore-keys: |
-            ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-builder-
 
       - name: Use Turborepo cache
         uses: actions/cache@v6
@@ -317,13 +305,6 @@ jobs:
         with:
           path: ${{ env.electron_cache_dir }}
           key: ${{ steps.electron-cache-restore.outputs.cache-primary-key }}
-
-      - name: Save Electron Builder cache
-        if: always()
-        uses: actions/cache/save@v6
-        with:
-          path: ${{ env.ELECTRON_BUILDER_CACHE }}
-          key: ${{ steps.electron-builder-cache-restore.outputs.cache-primary-key }}
 
       - name: Verify app.asar
         shell: bash
