@@ -75,7 +75,7 @@ runtime.
 
 ## React version (host-provided, must match majors)
 
-Freelens v2 ships **React 18.3**. React is **host-provided**: the running app
+Freelens v2 ships **React 19**. React is **host-provided**: the running app
 injects a single React instance and re-exports it to extensions through the
 extension API (`Renderer.React` / `Renderer.ReactDOM`). Extensions must render
 through that shared instance.
@@ -86,12 +86,36 @@ through that shared instance.
   "invalid hook call" at runtime. This fails only at runtime, not at build
   time, so it is easy to miss.
 - Declare `react` / `react-dom` (and `@types/react*`) as **peer dependencies**
-  matching the host major — `^18` for this release — and keep them out of your
+  matching the host major — `^19` for this release — and keep them out of your
   bundle (mark them external). The `@freelensapp/extensions` types already pin
-  the React 18 major, so authoring against them keeps type-checking honest.
-- When Freelens later bumps to React 19 (a future phase), extensions relying on
-  host-provided React move with it automatically; extensions that bundled their
-  own React would need a matching bump to avoid the mismatch above.
+  the React 19 major, so authoring against them keeps type-checking honest.
+- **This is a breaking change from the earlier React 18 preview.** Extensions
+  built against React 18 types must move to React 19, because host-provided
+  React and any React the extension bundles must share the same major (see the
+  invalid-hook-call trap above). Extensions relying on host-provided React move
+  with the host automatically once their peer range is `^19`; extensions that
+  bundled their own React need a matching bump. React 19 removed long-deprecated
+  APIs (for example `ReactDOM.render` / `findDOMNode` and legacy string refs),
+  so audit for those while upgrading.
+
+## `@ogre-tools/*` 23 (dependency-injection major)
+
+Freelens v2 bumps the `@ogre-tools/*` dependency-injection packages
+(`injectable`, `injectable-react`, …) from **17 to 23**. This is
+extension-facing because the `@ogre-tools/*` types leak through the
+`@freelensapp/*` packages and the extension API (injection tokens, `getInjectable`,
+the React injection helpers). Re-check any code that constructs or consumes
+injectables against the `@ogre-tools/*` 23 type surface after upgrading.
+
+- **Namespaced runtime-registered ids.** `@ogre-tools/*` 23 namespaces the id of
+  an injectable registered at runtime through a namespaced `di` (for example an
+  extension-scoped registration) as `"<namespace>:<declaredId>"`. The host
+  already strips this namespace where it surfaces ids for its own registries
+  (see `packages/cluster-sidebar/src/sidebar-items.injectable.ts`), so
+  extensions that only register injectables against the documented tokens need
+  no change. If your extension does its **own** `injectManyWithMeta` and keys off
+  `meta.id`, be aware the id may now carry a `"<namespace>:"` prefix — strip it
+  (take the segment after the last `:`) if you compare against a bare declared id.
 
 ## `tsconfig.json` for an extension
 
