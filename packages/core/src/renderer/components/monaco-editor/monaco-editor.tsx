@@ -347,12 +347,20 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
   }
 }
 
-const ForwardedRefMonacoEditor = React.forwardRef<MonacoEditorRef, MonacoEditorProps & Dependencies>((props, ref) => (
+const ForwardedRefMonacoEditor = ({
+  ref,
+  ...props
+}: MonacoEditorProps & Dependencies & { ref?: React.ForwardedRef<MonacoEditorRef> }) => (
   <NonInjectedMonacoEditor innerRef={ref} {...props} />
-));
+);
 
 export const MonacoEditor = withInjectables<Dependencies, MonacoEditorProps, MonacoEditorRef>(
-  ForwardedRefMonacoEditor,
+  // `withInjectables`'s ref-forwarding overload is typed for a
+  // `ForwardRefExoticComponent`; `ForwardedRefMonacoEditor` now takes `ref` as a
+  // regular prop (React 19), which the wrapper still forwards at runtime.
+  ForwardedRefMonacoEditor as unknown as React.ForwardRefExoticComponent<
+    MonacoEditorProps & Dependencies & React.RefAttributes<MonacoEditorRef>
+  >,
   {
     getProps: (di, props) => ({
       ...props,

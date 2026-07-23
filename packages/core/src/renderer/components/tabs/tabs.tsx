@@ -44,7 +44,7 @@ export class Tabs<D> extends React.PureComponent<TabsProps<D>> {
     });
 
     return (
-      <TabsContext.Provider value={{ autoFocus, value, onChange }}>
+      <TabsContext value={{ autoFocus, value, onChange }}>
         <div
           {...elemProps}
           className={className}
@@ -52,7 +52,7 @@ export class Tabs<D> extends React.PureComponent<TabsProps<D>> {
             this.elem = elem;
           }}
         />
-      </TabsContext.Provider>
+      </TabsContext>
     );
   }
 }

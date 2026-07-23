@@ -69,7 +69,7 @@ export const ResourceMetrics = observer(
             ))}
           </RadioGroup>
         </div>
-        <ResourceMetricsContext.Provider
+        <ResourceMetricsContext
           value={{
             object,
             tab,
@@ -78,7 +78,7 @@ export const ResourceMetrics = observer(
           }}
         >
           <div className="graph">{children}</div>
-        </ResourceMetricsContext.Provider>
+        </ResourceMetricsContext>
         <div className="loader">
           <Spinner />
         </div>

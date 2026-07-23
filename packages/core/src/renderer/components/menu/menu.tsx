@@ -443,7 +443,7 @@ class NonInjectedMenu extends React.Component<MenuProps & Dependencies, State> {
       menu = <Animate enter={this.isOpen}>{menu}</Animate>;
     }
 
-    menu = <MenuContext.Provider value={this}>{menu}</MenuContext.Provider>;
+    menu = <MenuContext value={this}>{menu}</MenuContext>;
 
     if (!usePortal) {
       return menu;
