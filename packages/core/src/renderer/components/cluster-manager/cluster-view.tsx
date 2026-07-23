@@ -8,7 +8,7 @@ import "./cluster-view.scss";
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { reaction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import navigateToCatalogInjectable from "../../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
 import requestClusterActivationInjectable from "../../../features/cluster/activation/renderer/request-activation.injectable";
@@ -40,6 +40,8 @@ interface Dependencies {
 
 @observer
 class NonInjectedClusterView extends React.Component<Dependencies> {
+  private readonly disposers: (() => void)[] = [];
+
   constructor(props: Dependencies) {
     super(props);
   }
@@ -75,6 +77,7 @@ class NonInjectedClusterView extends React.Component<Dependencies> {
   componentWillUnmount() {
     this.props.clusterFrames.clearVisibleCluster();
     this.props.entityRegistry.activeEntity = undefined;
+    this.disposers.forEach((dispose) => dispose());
   }
 
   bindEvents() {
@@ -83,7 +86,7 @@ class NonInjectedClusterView extends React.Component<Dependencies> {
     // clusterId observable directly instead of this.props.
     const { clusterId, clusterFrames, entityRegistry, navigateToCatalog, requestClusterActivation } = this.props;
 
-    disposeOnUnmount(this, [
+    this.disposers.push(
       reaction(
         () => clusterId.get(),
         async (id) => {
@@ -105,7 +108,7 @@ class NonInjectedClusterView extends React.Component<Dependencies> {
           fireImmediately: true,
         },
       ),
-    ]);
+    );
   }
 
   renderStatus(): StrictReactNode {

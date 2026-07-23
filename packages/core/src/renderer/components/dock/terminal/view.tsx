@@ -9,7 +9,7 @@ import "./terminal-window.scss";
 import assert from "node:assert";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import activeThemeInjectable from "../../../themes/active.injectable";
 import dockStoreInjectable from "../dock/store.injectable";
@@ -34,6 +34,7 @@ interface Dependencies {
 
 @observer
 class NonInjectedTerminalWindow extends React.Component<TerminalWindowProps & Dependencies> {
+  private readonly disposers: (() => void)[] = [];
   public elem: HTMLElement | null = null;
   public terminal!: Terminal;
 
@@ -45,12 +46,12 @@ class NonInjectedTerminalWindow extends React.Component<TerminalWindowProps & De
     this.terminal = terminal;
     this.terminal.attachTo(this.elem!);
 
-    disposeOnUnmount(this, [
+    this.disposers.push(
       // refresh terminal available space (cols/rows) when <Dock/> resized
       this.props.dockStore.onResize(() => this.terminal.onResize(), {
         fireImmediately: true,
       }),
-    ]);
+    );
   }
 
   componentDidUpdate(): void {
@@ -65,6 +66,7 @@ class NonInjectedTerminalWindow extends React.Component<TerminalWindowProps & De
 
   componentWillUnmount(): void {
     this.terminal.detach();
+    this.disposers.forEach((dispose) => dispose());
   }
 
   render() {

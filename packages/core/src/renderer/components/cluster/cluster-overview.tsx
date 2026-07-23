@@ -9,7 +9,7 @@ import { Spinner } from "@freelensapp/spinner";
 import { byOrderNumber } from "@freelensapp/utilities";
 import { computedInjectManyInjectionToken } from "@ogre-tools/injectable-extension-for-mobx";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import { ClusterMetricsResourceType } from "../../../common/cluster-types";
 import enabledMetricsInjectable from "../../api/catalog/entity/metrics-enabled.injectable";
@@ -41,10 +41,14 @@ interface Dependencies {
 
 @observer
 class NonInjectedClusterOverview extends React.Component<Dependencies> {
+  private readonly disposers: (() => void)[] = [];
+
   componentDidMount() {
-    disposeOnUnmount(this, [
-      this.props.subscribeStores([this.props.podStore, this.props.eventStore, this.props.nodeStore]),
-    ]);
+    this.disposers.push(this.props.subscribeStores([this.props.podStore, this.props.eventStore, this.props.nodeStore]));
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   renderWithMetrics() {

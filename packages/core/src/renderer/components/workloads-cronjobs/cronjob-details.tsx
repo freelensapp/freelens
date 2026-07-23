@@ -12,7 +12,7 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { formatDuration } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { kebabCase } from "es-toolkit";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import { BadgeBoolean } from "../badge";
@@ -43,8 +43,14 @@ interface Dependencies {
 
 @observer
 class NonInjectedCronJobDetails extends React.Component<CronJobDetailsProps & Dependencies> {
+  private readonly disposers: (() => void)[] = [];
+
   componentDidMount() {
-    disposeOnUnmount(this, [this.props.subscribeStores([this.props.jobStore])]);
+    this.disposers.push(this.props.subscribeStores([this.props.jobStore]));
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   render() {

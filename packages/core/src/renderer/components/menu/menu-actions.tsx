@@ -12,7 +12,7 @@ import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
 import { makeObservable, observable, reaction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React, { isValidElement } from "react";
 import openConfirmDialogInjectable from "../confirm-dialog/open.injectable";
 import { Menu, MenuItem } from "./menu";
@@ -65,6 +65,8 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
     removeConfirmationMessage: "Remove item?",
   };
 
+  private readonly disposers: (() => void)[] = [];
+
   @observable isOpen = !!this.props.toolbar;
   @observable openedViaCursor = false;
   @observable cursorPosition: { x: number; y: number } | null = null;
@@ -82,7 +84,7 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
       close: this.close,
     });
 
-    disposeOnUnmount(this, [
+    this.disposers.push(
       reaction(
         () => this.isOpen,
         (isOpen) => {
@@ -94,7 +96,7 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
           fireImmediately: true,
         },
       ),
-    ]);
+    );
   }
 
   componentWillUnmount(): void {
@@ -102,6 +104,7 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
       open: () => {},
       close: () => {},
     });
+    this.disposers.forEach((dispose) => dispose());
   }
 
   open = (options?: MenuOpenOptions) => {

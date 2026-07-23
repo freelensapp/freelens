@@ -13,7 +13,7 @@ import { cssNames, hasTypedProperty, isDefined, isObject, isString } from "@free
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { sortBy } from "es-toolkit/compat";
 import { observable, reaction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import clusterFrameContextForNamespacedResourcesInjectable from "../../cluster-frame-context/for-namespaced-resources.injectable";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
@@ -99,6 +99,7 @@ class NonInjectedKubeObjectListLayout<
     subscribeStores: true,
   };
 
+  private readonly disposers: (() => void)[] = [];
   private readonly loadErrors = observable.array<string>();
   private readonly menuControls = new Map<string, MenuControls>();
 
@@ -134,7 +135,11 @@ class NonInjectedKubeObjectListLayout<
       );
     }
 
-    disposeOnUnmount(this, reactions);
+    this.disposers.push(...reactions);
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   renderLoadErrors() {

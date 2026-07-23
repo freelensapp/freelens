@@ -9,7 +9,7 @@ import "./cluster-manager.scss";
 import { Redirect } from "@freelensapp/routing";
 import { buildURL, cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import welcomeRouteInjectable from "../../../common/front-end-routing/routes/welcome/welcome-route.injectable";
 import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
@@ -36,8 +36,14 @@ interface Dependencies {
 
 @observer
 class NonInjectedClusterManager extends React.Component<Dependencies> {
+  private readonly disposers: (() => void)[] = [];
+
   componentDidMount() {
-    disposeOnUnmount(this, [this.props.watchForGeneralEntityNavigation()]);
+    this.disposers.push(this.props.watchForGeneralEntityNavigation());
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   renderMainComponent() {

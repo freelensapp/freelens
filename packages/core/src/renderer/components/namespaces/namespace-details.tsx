@@ -12,7 +12,7 @@ import { Link } from "@freelensapp/routing";
 import { Spinner } from "@freelensapp/spinner";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import limitRangeStoreInjectable from "../config-limit-ranges/store.injectable";
@@ -40,12 +40,18 @@ interface Dependencies {
 
 @observer
 class NonInjectedNamespaceDetails extends React.Component<NamespaceDetailsProps & Dependencies> {
+  private readonly disposers: (() => void)[] = [];
+
   constructor(props: NamespaceDetailsProps & Dependencies) {
     super(props);
   }
 
   componentDidMount() {
-    disposeOnUnmount(this, [this.props.subscribeStores([this.props.resourceQuotaStore, this.props.limitRangeStore])]);
+    this.disposers.push(this.props.subscribeStores([this.props.resourceQuotaStore, this.props.limitRangeStore]));
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   // Plain getters (not @computed): they read this.props, which mobx-react 9

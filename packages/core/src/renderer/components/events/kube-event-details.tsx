@@ -13,7 +13,7 @@ import { type KubeEvent, KubeObject } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import moment from "moment-timezone";
 import React from "react";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
@@ -48,8 +48,14 @@ export function sortEvents(events: KubeEvent[]): KubeEvent[] | undefined {
 
 @observer
 class NonInjectedKubeEventDetails extends React.Component<KubeEventDetailsProps & Dependencies> {
+  private readonly disposers: (() => void)[] = [];
+
   componentDidMount() {
-    disposeOnUnmount(this, [this.props.subscribeStores([this.props.eventStore])]);
+    this.disposers.push(this.props.subscribeStores([this.props.eventStore]));
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   render() {
