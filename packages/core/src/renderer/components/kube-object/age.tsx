@@ -24,7 +24,7 @@ export interface KubeObjectAgeProps {
 
 export const KubeObjectAge = ({ object, compact = true, withTooltip = true }: KubeObjectAgeProps) =>
   withTooltip ? (
-    <WithTooltip tooltip={object.metadata.creationTimestamp ? new Date(object.metadata.creationTimestamp) : undefined}>
+    <WithTooltip tooltip={new Date(object.metadata.creationTimestamp ?? Date.now())}>
       <ReactiveDuration timestamp={object.metadata.creationTimestamp} compact={compact} />
     </WithTooltip>
   ) : (
