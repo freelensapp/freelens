@@ -127,16 +127,26 @@ jobs:
         shell: bash
         run: echo "electron_builder_version=$(yq -r .importers.freelens.devDependencies.electron-builder.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a $GITHUB_ENV
 
-      - name: Use Electron cache
-        uses: actions/cache@v6
+      # Restored here and saved explicitly (with if: always()) right after the
+      # "Build Electron app" step below, instead of the combined actions/cache
+      # action: that action's save only runs in a post-job step, which is
+      # skipped once a later step in the job fails. Without this split, a
+      # packaging failure that happens after Electron/electron-builder finish
+      # downloading (see freelensapp/freelens#2303) leaves these caches empty
+      # forever - every re-run re-downloads the binaries and can hit the same
+      # flaky upstream again.
+      - name: Restore Electron cache
+        id: electron-cache-restore
+        uses: actions/cache/restore@v6
         with:
           path: ${{ env.ELECTRON_CACHE }}
           key: ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-${{ env.electron_version }}
           restore-keys: |
             ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-
 
-      - name: Use Electron Builder cache
-        uses: actions/cache@v6
+      - name: Restore Electron Builder cache
+        id: electron-builder-cache-restore
+        uses: actions/cache/restore@v6
         with:
           path: ${{ env.ELECTRON_BUILDER_CACHE }}
           key: ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-builder-${{ env.electron_builder_version }}
@@ -268,11 +278,38 @@ jobs:
           mv freelens/node_modules_prod freelens/node_modules
 
       - name: Build Electron app
+        id: build-electron-app
         shell: bash
         working-directory: freelens
         run: node "$ELECTRON_BUILDER_PATH" --publish never --${{ matrix.os }} dir --${{ matrix.arch }}
         env:
           npm_config_user_agent: pnpm
+        continue-on-error: true
+
+      - name: Build Electron app (retry)
+        shell: bash
+        working-directory: freelens
+        if: steps.build-electron-app.outcome == 'failure'
+        run: node "$ELECTRON_BUILDER_PATH" --publish never --${{ matrix.os }} dir --${{ matrix.arch }}
+        env:
+          npm_config_user_agent: pnpm
+
+      # See the comment on "Restore Electron cache" above: save unconditionally
+      # so whatever the step(s) above downloaded is cached even when packaging
+      # ultimately failed.
+      - name: Save Electron cache
+        if: always()
+        uses: actions/cache/save@v6
+        with:
+          path: ${{ env.ELECTRON_CACHE }}
+          key: ${{ steps.electron-cache-restore.outputs.cache-primary-key }}
+
+      - name: Save Electron Builder cache
+        if: always()
+        uses: actions/cache/save@v6
+        with:
+          path: ${{ env.ELECTRON_BUILDER_CACHE }}
+          key: ${{ steps.electron-builder-cache-restore.outputs.cache-primary-key }}
 
       - name: Verify app.asar
         shell: bash
