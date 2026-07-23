@@ -18,7 +18,8 @@
     "verbatimModuleSyntax": false,
     "traceResolution": false,
     "resolveJsonModule": true,
-    "useDefineForClassFields": true
+    "useDefineForClassFields": true,
+    "types": ["node", "vitest/globals"]
   },
   "ts-node": {
     "transpileOnly": true,
