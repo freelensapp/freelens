@@ -72,8 +72,10 @@ class NonInjectedNodeDetails extends React.Component<NodeDetailsProps & Dependen
       <div className="NodeDetails">
         {addresses && (
           <DrawerItem name="Addresses">
+            {/* A node may expose several addresses of the same type (e.g. an IPv4 and an
+                IPv6 InternalIP), so the type alone is not a unique key. */}
             {addresses.map(({ type, address }) => (
-              <p key={type}>{`${type}: ${address}`}</p>
+              <p key={`${type}-${address}`}>{`${type}: ${address}`}</p>
             ))}
           </DrawerItem>
         )}
