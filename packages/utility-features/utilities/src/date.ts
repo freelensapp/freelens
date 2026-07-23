@@ -86,9 +86,12 @@ export function formatInTimeZone(date: Date | string | number, timeZone: string)
       .map((part) => [part.type, part.value]),
   );
 
-  // `longOffset` yields e.g. "GMT+01:00" (or "GMT" for UTC); normalize to an
-  // ISO-8601 offset ("+01:00" / "Z").
-  const offset = (parts.timeZoneName ?? "").replace("GMT", "").replace("UTC", "") || "Z";
+  // `longOffset` yields e.g. "GMT+01:00", "GMT" or "GMT+00:00" (the exact
+  // spelling for a zero offset depends on the ICU version). Normalize to an
+  // ISO-8601 offset, collapsing any zero offset to "Z" (matching moment's UTC
+  // output and the preferred GUI presentation).
+  const rawOffset = (parts.timeZoneName ?? "").replace("GMT", "").replace("UTC", "");
+  const offset = rawOffset === "" || /^[+-]00:?00$/.test(rawOffset) ? "Z" : rawOffset;
 
   return `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}:${parts.second}${offset}`;
 }

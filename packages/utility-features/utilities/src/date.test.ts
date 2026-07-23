@@ -25,14 +25,18 @@ describe("formatInTimeZone", () => {
   const instant = new Date("2024-03-09T13:30:00Z");
 
   it("formats as ISO 8601 with the zone offset", () => {
-    expect(formatInTimeZone(instant, "UTC")).toBe("2024-03-09T13:30:00+00:00");
     expect(formatInTimeZone(instant, "Europe/Warsaw")).toBe("2024-03-09T14:30:00+01:00");
     expect(formatInTimeZone(instant, "Asia/Kolkata")).toBe("2024-03-09T19:00:00+05:30");
   });
 
+  it("uses `Z` for a zero (UTC) offset", () => {
+    expect(formatInTimeZone(instant, "UTC")).toBe("2024-03-09T13:30:00Z");
+    expect(formatInTimeZone(instant, "Etc/UTC")).toBe("2024-03-09T13:30:00Z");
+  });
+
   it("accepts string and number inputs", () => {
-    expect(formatInTimeZone("2024-03-09T13:30:00Z", "UTC")).toBe("2024-03-09T13:30:00+00:00");
-    expect(formatInTimeZone(instant.getTime(), "UTC")).toBe("2024-03-09T13:30:00+00:00");
+    expect(formatInTimeZone("2024-03-09T13:30:00Z", "UTC")).toBe("2024-03-09T13:30:00Z");
+    expect(formatInTimeZone(instant.getTime(), "UTC")).toBe("2024-03-09T13:30:00Z");
   });
 });
 
