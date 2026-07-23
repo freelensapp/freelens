@@ -146,7 +146,7 @@
     "vitest": "^4.1.10"
   },
   "engines": {
-    "node": "^24.0.0"
+    "node": ">=24.0.0"
   },
   "copyright": "© 2024-2026 Freelens Authors",
   "productName": "Freelens"

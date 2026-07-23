@@ -11,6 +11,7 @@ export const COLUMN_PRIORITY = {
   NODE: 30,
   QOS: 20,
   AGE: 10,
+  RUNNING_TIME: 8,
   STATUS: 5,
   LOGS: 0,
 };
