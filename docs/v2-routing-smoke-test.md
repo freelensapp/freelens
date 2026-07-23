@@ -18,7 +18,8 @@ entirely on the in-house pieces in `@freelensapp/routing`
 (`Link`/`NavLink`, `Route`/`Switch`/`Redirect`, `matchPath`, the observable
 history wrapper, and the vendored `path-to-regexp` v1 engine). These flows are
 not fully covered by unit tests, so this scenario drives the **running app**
-to confirm no behavioral regression before Phase 3 (React 19) proceeds.
+to confirm no behavioral regression. It was the gate before Phase 3 (React 19),
+which has since shipped — the workspace now runs on **React 19**.
 
 The scenario is written to be executed by an AI agent through
 [Playwright MCP](https://github.com/microsoft/playwright-mcp) attached to the
