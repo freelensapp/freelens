@@ -7,10 +7,7 @@
 // Plugin for drawing stripe bars on top of any timeseries barchart
 // Based on cover DIV element with repeating-linear-gradient style
 
-import moment from "moment";
-
 import type { Chart, ChartType, Plugin } from "chart.js";
-import type { Moment } from "moment";
 
 const defaultOptions = {
   stripeColor: "#ffffff08",
@@ -30,7 +27,7 @@ declare module "chart.js" {
 
 export class ZebraStripesPlugin implements Plugin<ChartType, ZebraStripesOptions> {
   readonly id = "zebraStripes";
-  updated: Moment | null = null;
+  updated: number | null = null;
   options: ZebraStripesOptions;
 
   constructor(options?: Partial<ZebraStripesOptions>) {
@@ -41,10 +38,10 @@ export class ZebraStripesPlugin implements Plugin<ChartType, ZebraStripesOptions
     return chart.options.plugins?.zebraStripes;
   }
 
-  getLastUpdate(chart: Chart) {
+  getLastUpdate(chart: Chart): number {
     const data = chart.data.datasets?.[0]?.data?.[0] as { x?: number | string };
 
-    return moment.unix(parseInt(data.x as string));
+    return parseInt(data.x as string);
   }
 
   getStripesElem(chart: Chart) {
@@ -114,7 +111,10 @@ export class ZebraStripesPlugin implements Plugin<ChartType, ZebraStripesOptions
     const { interval } = this.options;
     const { left, right } = chart.chartArea;
     const step = (right - left) / interval;
-    const diff = moment(this.updated).diff(this.getLastUpdate(chart), "minutes");
+    // `updated` and `getLastUpdate` both hold the dataset's first x value
+    // (unix seconds, as moment.unix interpreted it); the difference in whole
+    // minutes matches the previous `moment(...).diff(..., "minutes")`.
+    const diff = Math.trunc(((this.updated ?? 0) - this.getLastUpdate(chart)) / 60);
     const minutes = Math.abs(diff);
 
     this.removeStripesElem(chart);

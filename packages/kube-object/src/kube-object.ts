@@ -4,10 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { formatDuration, isObject, isString } from "@freelensapp/utilities";
+import { formatDuration, formatRelativeTime, isObject, isString } from "@freelensapp/utilities";
 import autoBind from "auto-bind";
 import { omit } from "es-toolkit/compat";
-import moment from "moment";
 import { KubeCreationError } from "./api-types";
 import {
   filterOutResourceApplierAnnotations,
@@ -179,7 +178,7 @@ export class KubeObject<
    */
   getAge(humanize = true, compact = true, fromNow = false): string | number {
     if (fromNow) {
-      return moment(this.metadata.creationTimestamp).fromNow(); // "string", getTimeDiffFromNow() cannot be used
+      return formatRelativeTime(this.metadata.creationTimestamp ?? Date.now()); // "string", getTimeDiffFromNow() cannot be used
     }
     const diff = this.getTimeDiffFromNow();
 

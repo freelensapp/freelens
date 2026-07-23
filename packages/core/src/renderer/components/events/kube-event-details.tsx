@@ -14,7 +14,6 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import moment from "moment-timezone";
 import React from "react";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import { DrawerItem, DrawerTitle } from "../drawer";
@@ -38,8 +37,9 @@ interface Dependencies {
 }
 
 function timeToUnix(dateStr?: string): number {
-  const m = moment(dateStr);
-  return m.isValid() ? m.unix() : 0;
+  if (!dateStr) return 0;
+  const time = Date.parse(dateStr);
+  return Number.isNaN(time) ? 0 : Math.floor(time / 1000);
 }
 
 export function sortEvents(events: KubeEvent[]): KubeEvent[] | undefined {

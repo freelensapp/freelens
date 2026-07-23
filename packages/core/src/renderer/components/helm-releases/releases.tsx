@@ -9,7 +9,6 @@ import "./releases.scss";
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { kebabCase } from "es-toolkit";
-import moment from "moment-timezone";
 import { Component } from "react";
 import navigateToHelmReleasesInjectable from "../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
 import { ItemListLayout } from "../item-object-list";
@@ -180,7 +179,7 @@ class NonInjectedHelmReleases extends Component<Dependencies> {
             <WithTooltip>{release.getVersion()}</WithTooltip>,
             <WithTooltip>{release.appVersion}</WithTooltip>,
             { title: release.getStatus(), className: kebabCase(release.getStatus()) },
-            <WithTooltip tooltip={release.updated ? moment(release.updated.replace(/\s\w*$/, "")).toDate() : undefined}>
+            <WithTooltip tooltip={release.updated ? new Date(release.updated.replace(/\s\w*$/, "")) : undefined}>
               {release.getUpdated()}
             </WithTooltip>,
           ]}

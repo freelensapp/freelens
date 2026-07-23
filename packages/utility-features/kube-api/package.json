@@ -31,8 +31,7 @@
     "@ogre-tools/injectable": "^23.2.0",
     "byline": "^5.0.0",
     "es-toolkit": "^1.49.0",
-    "mobx": "^6.15.0",
-    "moment": "^2.30.1"
+    "mobx": "^6.15.0"
   },
   "devDependencies": {
     "@async-fn/vitest": "^1.8.0",

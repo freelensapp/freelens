@@ -154,12 +154,6 @@ importers:
       mobx:
         specifier: ^6.15.0
         version: 6.15.0
-      moment:
-        specifier: ^2.30.1
-        version: 2.30.1
-      moment-timezone:
-        specifier: ^0.6.2
-        version: 0.6.2
       node-fetch:
         specifier: ^3.3.2
         version: 3.3.2
@@ -560,9 +554,6 @@ importers:
       chart.js:
         specifier: ^4.5.1
         version: 4.5.1
-      chartjs-adapter-moment:
-        specifier: ^1.0.1
-        version: 1.0.1(chart.js@4.5.1)(moment@2.30.1)
       chokidar:
         specifier: ^5.0.0
         version: 5.0.0
@@ -629,12 +620,6 @@ importers:
       mobx-utils:
         specifier: ^6.1.1
         version: 6.1.1(mobx@6.15.0)
-      moment:
-        specifier: ^2.30.1
-        version: 2.30.1
-      moment-timezone:
-        specifier: ^0.6.2
-        version: 0.6.2
       monaco-editor:
         specifier: ^0.55.1
         version: 0.55.1
@@ -1018,9 +1003,6 @@ importers:
       es-toolkit:
         specifier: ^1.49.0
         version: 1.49.0
-      moment:
-        specifier: ^2.30.1
-        version: 2.30.1
       typed-regex:
         specifier: ^0.0.8
         version: 0.0.8
@@ -1994,9 +1976,6 @@ importers:
       mobx:
         specifier: ^6.15.0
         version: 6.15.0
-      moment:
-        specifier: ^2.30.1
-        version: 2.30.1
     devDependencies:
       '@async-fn/vitest':
         specifier: ^1.8.0
@@ -2167,9 +2146,6 @@ importers:
       mobx:
         specifier: ^6.15.0
         version: 6.15.0
-      moment:
-        specifier: ^2.30.1
-        version: 2.30.1
       p-limit:
         specifier: ^7.3.0
         version: 7.3.0
@@ -4502,12 +4478,6 @@ packages:
     resolution: {integrity: sha512-GIjfiT9dbmHRiYi6Nl2yFCq7kkwdkp1W/lp2J99rX0yo9tgJGn3lKQATztIjb5tVtevcBtIdICNWqlq5+E8/Pw==}
     engines: {pnpm: '>=8'}
 
-  chartjs-adapter-moment@1.0.1:
-    resolution: {integrity: sha512-Uz+nTX/GxocuqXpGylxK19YG4R3OSVf8326D+HwSTsNw1LgzyIGRo+Qujwro1wy6X+soNSnfj5t2vZ+r6EaDmA==}
-    peerDependencies:
-      chart.js: '>=3.0.0'
-      moment: ^2.10.2
-
   chokidar@5.0.0:
     resolution: {integrity: sha512-TQMmc3w+5AxjpL8iIiwebF73dRDF4fBIieAqGn9RGCWaEVwQ6Fb2cGe31Yns0RRIzii5goJ1Y7xbMwo1TxMplw==}
     engines: {node: '>= 20.19.0'}
@@ -5689,12 +5659,6 @@ packages:
   mock-http@1.1.1:
     resolution: {integrity: sha512-97fZUUUd+/cUhLv1nNoMpB2vjNS1rNqfuXqxcWXZNiDjEQbwbiZfxnkvg1YpUDJS6LP99Ic5OVVszu+bQDQcDg==}
     engines: {node: '>=6.0.0'}
-
-  moment-timezone@0.6.2:
-    resolution: {integrity: sha512-lDsQv8FoGdBUdf0+TjGsq2orxKuXdwFlQ6Zw6TX3xIcTwTfEpCLyKqvEauvCHJ8iu3KBV8+uPhlv70YsNGdUBQ==}
-
-  moment@2.30.1:
-    resolution: {integrity: sha512-uEmtNhbDOrWPFS+hdjFCBfy9f2YoyzRpwcl+DqpC6taX21FzsTLQVbMV/W7PzNSX6x/bhC1zA3c2UQ5NzH6how==}
 
   monaco-editor@0.55.1:
     resolution: {integrity: sha512-jz4x+TJNFHwHtwuV9vA9rMujcZRb0CEilTEwG2rRSpe/A7Jdkuj8xPKttCgOh+v/lkHy7HsZ64oj+q3xoAFl9A==}
@@ -9148,11 +9112,6 @@ snapshots:
     dependencies:
       '@kurkle/color': 0.3.4
 
-  chartjs-adapter-moment@1.0.1(chart.js@4.5.1)(moment@2.30.1):
-    dependencies:
-      chart.js: 4.5.1
-      moment: 2.30.1
-
   chokidar@5.0.0:
     dependencies:
       readdirp: 5.0.0
@@ -10379,12 +10338,6 @@ snapshots:
   mock-http@1.1.1:
     dependencies:
       mergee: 1.0.1
-
-  moment-timezone@0.6.2:
-    dependencies:
-      moment: 2.30.1
-
-  moment@2.30.1: {}
 
   monaco-editor@0.55.1:
     dependencies:
