@@ -38,7 +38,7 @@
       "matchDatasources": [
         "npm"
       ],
-      "minimumReleaseAge": "3 days"
+      "minimumReleaseAge": "25 hours"
     },
     // peerDependencies are widen
     {
