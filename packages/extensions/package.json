@@ -38,7 +38,6 @@
     "@types/node": "~24.12.4",
     "@types/react": "catalog:",
     "@types/react-table": "^7.7.20",
-    "@types/react-window": "^1.8.8",
     "@xterm/xterm": "^6.0.0",
     "chart.js": "^4.5.1",
     "conf": "^15.1.0",
@@ -50,7 +49,7 @@
     "react": "catalog:",
     "react-select": "^5.10.2",
     "react-table": "^7.8.0",
-    "react-window": "^1.8.11",
+    "react-window": "^2.3.0",
     "rfc6902": "^5.2.0",
     "type-fest": "^5.6.0",
     "typed-emitter": "^2.1.0"
