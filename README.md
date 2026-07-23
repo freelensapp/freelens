@@ -200,16 +200,16 @@ Scoop uses MSI package to install the application.
 
 ## Development
 
-Visit [Development](https://github.com/freelensapp/freelens/wiki/Development)
-wiki page to see how to build the application from source.
+Visit the [Development](DEVELOPMENT.md) document to see how to build the
+application from source.
 Check out the [Freelens Docs](https://freelensapp.github.io/docs/) to contribute to development or create your own extension.
 
 ## Extensions
 
 Anyone can develop extensions for Freelens and many extensions previously used
 with Open Lens have already been converted.
-Visit [Extensions](https://github.com/freelensapp/freelens/wiki/Extensions) wiki
-page to see them and write in the [appropriate
+Visit the [Extensions](https://github.com/freelensapp/freelens/discussions/2291)
+discussion to see them and write in the [appropriate
 discussion](https://github.com/freelensapp/freelens/discussions/117) if you
 also want to propose yours.
 
@@ -247,8 +247,8 @@ Anyone is welcome to collaborate to advance the Freelens project. Read
 Anyone can support the Freelens project by making donations to cover
 maintenance costs and invest in its development.
 
-For more information, see our dedicated page in our Wiki: [Expenses and
-Donations](https://github.com/freelensapp/freelens/wiki/Expenses-and-Donations)
+For more information, see our dedicated discussion: [Expenses and
+Donations](https://github.com/freelensapp/freelens/discussions/2292)
 
 ## Fund an issue or earn money by developing
 
@@ -258,7 +258,7 @@ At the same time, anyone who wishes can apply by doing PR to earn the bounty.
 
 Features are, in any case, decided democratically according to the community's wishes and overseen by the Freelens core team.
 
-For more information, see our dedicated page in our Wiki: [Fund an issue or earn money by developing](https://github.com/freelensapp/freelens/wiki/Fund-an-issue-or-earn-money-by-developing)
+For more information, see our dedicated discussion: [Fund an issue or earn money by developing](https://github.com/freelensapp/freelens/discussions/2293)
 
 ## The Freelens Teams
 
@@ -289,8 +289,8 @@ Release Engineering Team Member
 
 The project is growing very quickly and everyone is welcome!
 
-If you also want to be part of it, visit the wiki page: [We want
-you!](https://github.com/freelensapp/freelens/wiki/We-want-you!).
+If you also want to be part of it, visit the [We want
+you!](https://github.com/freelensapp/freelens/discussions/2297) discussion.
 
 Or contact us at <freelens@freelens.app> for any questions or suggestions!
 
