@@ -498,6 +498,6 @@ const InjectedNonForwardedLogList = withInjectables<
   }),
 });
 
-export const LogList = React.forwardRef<LogListRef, LogListProps>((props, ref) => (
-  <InjectedNonForwardedLogList {...props} innerRef={ref} />
-));
+export const LogList = ({ ref, ...props }: LogListProps & { ref?: ForwardedRef<LogListRef> }) => (
+  <InjectedNonForwardedLogList {...props} innerRef={ref ?? null} />
+);

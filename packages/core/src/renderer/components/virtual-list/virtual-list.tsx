@@ -144,9 +144,14 @@ function VirtualListInner<T extends { getId(): string } | string>({
   );
 }
 
-export const VirtualList = React.forwardRef<VirtualListRef, VirtualListProps<string>>((props, ref) => (
-  <VirtualListInner {...props} forwardedRef={ref} />
-)) as <T extends { getId(): string } | string>(
+const VirtualListWithRef = <T extends { getId(): string } | string>({
+  ref,
+  ...props
+}: VirtualListProps<T> & { ref?: ForwardedRef<VirtualListRef> }) => (
+  <VirtualListInner<T> {...props} forwardedRef={ref} />
+);
+
+export const VirtualList = VirtualListWithRef as <T extends { getId(): string } | string>(
   props: VirtualListProps<T> & { ref?: ForwardedRef<VirtualListRef> },
 ) => React.JSX.Element;
 

@@ -37,6 +37,6 @@ class FakeMonacoEditor extends React.Component<MonacoEditorProps> {
   }
 }
 
-export const MonacoEditor = React.forwardRef<MonacoEditorRef, MonacoEditorProps>((props, ref) => (
+export const MonacoEditor = ({ ref, ...props }: MonacoEditorProps & { ref?: React.ForwardedRef<MonacoEditorRef> }) => (
   <FakeMonacoEditor innerRef={ref} {...props} />
-));
+);

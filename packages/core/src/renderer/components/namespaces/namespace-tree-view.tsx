@@ -45,11 +45,10 @@ function NonInjectableNamespaceTreeView({ tree, namespaces, getDetailsUrl }: Dep
 
   const classes = { group: styles.group, label: styles.label };
 
-  const ExpandOnIconClickComponent = React.forwardRef(function ExpandOnIconClickComponent(
-    props: TreeItemContentProps,
-    ref,
-  ) {
-    const { classes, className, label, nodeId, icon: iconProp, expansionIcon, displayIcon } = props;
+  const ExpandOnIconClickComponent = function ExpandOnIconClickComponent(props: TreeItemContentProps) {
+    // React 19 passes `ref` as a regular prop; `TreeItemContentProps` already
+    // declares it (typed `Ref<unknown>`), so read it from props.
+    const { classes, className, label, nodeId, icon: iconProp, expansionIcon, displayIcon, ref } = props;
 
     const { disabled, expanded, selected, focused, handleExpansion, handleSelection, preventSelection } =
       useTreeItem(nodeId);
@@ -87,7 +86,7 @@ function NonInjectableNamespaceTreeView({ tree, namespaces, getDetailsUrl }: Dep
         </Typography>
       </div>
     );
-  });
+  };
 
   const handleToggle = (event: React.SyntheticEvent, nodeIds: string[]) => {
     setExpanded(nodeIds);
