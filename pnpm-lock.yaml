@@ -566,9 +566,6 @@ importers:
       chokidar:
         specifier: ^5.0.0
         version: 5.0.0
-      clsx:
-        specifier: ^2.1.1
-        version: 2.1.1
       color:
         specifier: ^5.0.3
         version: 5.0.3
