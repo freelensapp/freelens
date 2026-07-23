@@ -11,7 +11,7 @@ import { Tooltip, TooltipPosition } from "@freelensapp/tooltip";
 import { bytesToUnits, cpuUnitsToNumber, interval, unitsToBytes } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { makeObservable, observable } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import requestAllNodeMetricsInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-metrics-for-all-nodes.injectable";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
@@ -153,6 +153,8 @@ function formatCores(cores: number): string {
 
 @observer
 class NonInjectedNodesRoute extends React.Component<Dependencies> {
+  private readonly disposers: (() => void)[] = [];
+
   @observable metrics: NodeMetricData | null = null;
 
   // mobx-react 9 forbids reading this.props inside a derivation. The row/cell
@@ -179,13 +181,14 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
   componentDidMount() {
     this.metricsWatcher.start(true);
 
-    disposeOnUnmount(this, [this.props.subscribeStores([this.props.podStore])]);
+    this.disposers.push(this.props.subscribeStores([this.props.podStore]));
 
     this.props.loadPodsFromAllNamespaces();
   }
 
   componentWillUnmount() {
     this.metricsWatcher.stop();
+    this.disposers.forEach((dispose) => dispose());
   }
 
   componentDidUpdate() {

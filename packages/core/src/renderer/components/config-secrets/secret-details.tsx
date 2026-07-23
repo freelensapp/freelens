@@ -14,7 +14,7 @@ import { showCheckedErrorNotificationInjectable, showSuccessNotificationInjectab
 import { base64, toggle } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { autorun, makeObservable, observable } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import { DrawerItem, DrawerTitle } from "../drawer";
 import { Input } from "../input";
@@ -37,6 +37,7 @@ interface Dependencies {
 
 @observer
 class NonInjectedSecretDetails extends React.Component<SecretDetailsProps & Dependencies> {
+  private readonly disposers: (() => void)[] = [];
   @observable isSaving = false;
   @observable data: Partial<Record<string, string>> = {};
   @observable revealSecret = observable.set<string>();
@@ -51,14 +52,18 @@ class NonInjectedSecretDetails extends React.Component<SecretDetailsProps & Depe
     // this.props inside a derivation (the autorun below).
     const { object: secret } = this.props;
 
-    disposeOnUnmount(this, [
+    this.disposers.push(
       autorun(() => {
         if (secret) {
           this.data = secret.data;
           this.revealSecret.clear();
         }
       }),
-    ]);
+    );
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   saveSecret = () => {

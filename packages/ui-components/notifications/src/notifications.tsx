@@ -12,7 +12,7 @@ import { JsonApiErrorParsed } from "@freelensapp/json-api";
 import { cssNames, prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { reaction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import { notificationsStoreInjectable } from "./notifications-store.injectable";
 
@@ -33,6 +33,7 @@ interface Dependencies {
 
 @observer
 class NonInjectedNotifications extends React.Component<Dependencies> {
+  private readonly disposers: (() => void)[] = [];
   public elem: HTMLDivElement | null = null;
 
   componentDidMount() {
@@ -40,7 +41,7 @@ class NonInjectedNotifications extends React.Component<Dependencies> {
     // inside a derivation (the reaction's data function below).
     const { store } = this.props;
 
-    disposeOnUnmount(this, [
+    this.disposers.push(
       reaction(
         () => store.notifications.length,
         () => {
@@ -48,7 +49,11 @@ class NonInjectedNotifications extends React.Component<Dependencies> {
         },
         { delay: 250 },
       ),
-    ]);
+    );
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   scrollToLastNotification() {

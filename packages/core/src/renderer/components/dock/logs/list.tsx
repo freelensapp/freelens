@@ -14,7 +14,7 @@ import autoBindReact from "auto-bind/react";
 import DOMPurify from "dompurify";
 import { debounce } from "es-toolkit/compat";
 import { action, makeObservable, observable, reaction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import moment from "moment-timezone";
 import React from "react";
 import userPreferencesStateInjectable from "../../../../features/user-preferences/common/state.injectable";
@@ -49,6 +49,7 @@ interface Dependencies {
 class NonForwardedLogList extends React.Component<
   Dependencies & LogListProps & { innerRef: ForwardedRef<LogListRef> }
 > {
+  private readonly disposers: (() => void)[] = [];
   @observable isJumpButtonVisible = false;
   @observable isLastLineVisible = true;
   @observable.ref private containerWidth = 0;
@@ -142,7 +143,7 @@ class NonForwardedLogList extends React.Component<
     // this.props inside a derivation (the reaction data functions below).
     const { model } = this.props;
 
-    disposeOnUnmount(this, [
+    this.disposers.push(
       reaction(
         () => model.logs.get(),
         (logs, prevLogs) => {
@@ -167,7 +168,7 @@ class NonForwardedLogList extends React.Component<
           this.virtualListRef.current?.resetAfterIndex(0);
         },
       ),
-    ]);
+    );
     this.bindInnerRef({
       scrollToItem: this.scrollToItem,
     });
@@ -218,6 +219,7 @@ class NonForwardedLogList extends React.Component<
     this.resizeObserver = null;
     window.removeEventListener("resize", this.updateContainerMetrics);
     this.bindInnerRef(null);
+    this.disposers.forEach((dispose) => dispose());
   }
 
   private onRowRendered = (rowIndex: number) => (element: HTMLDivElement | null) => {

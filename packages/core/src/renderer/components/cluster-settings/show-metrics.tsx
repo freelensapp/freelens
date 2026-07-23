@@ -6,7 +6,7 @@
 
 import { Icon } from "@freelensapp/icon";
 import { makeObservable, observable, reaction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import { Badge } from "../badge/badge";
 import { Notice } from "../extensions/notice";
@@ -19,6 +19,8 @@ export interface ShowMetricsSettingProps {
 
 @observer
 export class ShowMetricsSetting extends React.Component<ShowMetricsSettingProps> {
+  private readonly disposers: (() => void)[] = [];
+
   @observable hiddenMetrics = observable.set<string>();
 
   constructor(props: ShowMetricsSettingProps) {
@@ -34,14 +36,18 @@ export class ShowMetricsSetting extends React.Component<ShowMetricsSettingProps>
 
     this.hiddenMetrics = observable.set<string>(cluster.preferences.hiddenMetrics ?? []);
 
-    disposeOnUnmount(this, [
+    this.disposers.push(
       reaction(
         () => cluster.preferences.hiddenMetrics,
         () => {
           this.hiddenMetrics = observable.set<string>(cluster.preferences.hiddenMetrics ?? []);
         },
       ),
-    ]);
+    );
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   removeMetric(metric: string) {

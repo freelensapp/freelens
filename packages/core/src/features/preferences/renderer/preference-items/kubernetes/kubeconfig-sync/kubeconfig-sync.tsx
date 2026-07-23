@@ -9,7 +9,7 @@ import { Spinner } from "@freelensapp/spinner";
 import { iter, tuple } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { computed, makeObservable, observable, reaction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import isWindowsInjectable from "../../../../../../common/vars/is-windows.injectable";
 import { Notice } from "../../../../../../renderer/components/extensions/notice";
@@ -40,6 +40,7 @@ interface Dependencies {
 
 @observer
 class NonInjectedKubeconfigSync extends React.Component<Dependencies> {
+  private readonly disposers: (() => void)[] = [];
   readonly syncs = observable.map<string, SyncKind>();
   @observable loaded = false;
 
@@ -56,14 +57,18 @@ class NonInjectedKubeconfigSync extends React.Component<Dependencies> {
     this.syncs.replace(mapEntries);
     this.loaded = true;
 
-    disposeOnUnmount(this, [
+    this.disposers.push(
       reaction(
         () => Array.from(this.syncs.entries(), ([filePath, kind]) => tuple.from(filePath, kind)),
         (syncs) => {
           this.props.state.syncKubeconfigEntries.replace(syncs);
         },
       ),
-    ]);
+    );
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   @computed get syncsList(): Entry[] | undefined {
