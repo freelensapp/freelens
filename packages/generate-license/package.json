@@ -35,8 +35,8 @@
     "spdx-license-list": "^6.11.0"
   },
   "devDependencies": {
-    "@types/node": "~24.12.4",
-    "typescript": "^7.0.2"
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
   },
   "publishConfig": {
     "access": "public",

@@ -28,13 +28,13 @@
     "@freelensapp/utilities": "workspace:^",
     "@ogre-tools/injectable": "^23.2.0",
     "@ogre-tools/injectable-extension-for-mobx": "^23.2.0",
-    "mobx": "^6.15.0"
+    "mobx": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
     "es-toolkit": "^1.49.0",
-    "jsdom": "^29.1.1",
-    "vitest": "^4.1.10"
+    "jsdom": "catalog:",
+    "vitest": "catalog:"
   },
   "publishConfig": {
     "access": "public",

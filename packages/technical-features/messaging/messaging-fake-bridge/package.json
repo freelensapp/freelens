@@ -35,11 +35,11 @@
     "@freelensapp/typescript": "workspace:^",
     "@ogre-tools/injectable": "^23.2.0",
     "@ogre-tools/injectable-extension-for-mobx": "^23.2.0",
-    "@testing-library/react": "^16.3.2",
-    "jsdom": "^29.1.1",
-    "mobx": "^6.15.0",
-    "typescript": "^7.0.2",
-    "vitest": "^4.1.10"
+    "@testing-library/react": "catalog:",
+    "jsdom": "catalog:",
+    "mobx": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "publishConfig": {
     "access": "public",

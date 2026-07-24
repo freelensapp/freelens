@@ -32,7 +32,7 @@
     "@freelensapp/typescript": "workspace:^",
     "@kubernetes/client-node": "^1.4.0",
     "@ogre-tools/fp": "^23.2.0",
-    "typescript": "^7.0.2"
+    "typescript": "catalog:"
   },
   "publishConfig": {
     "access": "public",

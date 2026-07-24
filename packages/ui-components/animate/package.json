@@ -34,8 +34,8 @@
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
     "@types/react": "catalog:",
-    "typescript": "^7.0.2",
-    "vitest": "^4.1.10"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "publishConfig": {
     "access": "public",

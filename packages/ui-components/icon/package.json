@@ -35,8 +35,8 @@
     "@freelensapp/utilities": "workspace:^",
     "@ogre-tools/injectable": "^23.2.0",
     "@ogre-tools/injectable-react": "^23.2.0",
-    "mobx": "^6.15.0",
-    "mobx-react": "^9.1.1",
+    "mobx": "catalog:",
+    "mobx-react": "catalog:",
     "react": "catalog:"
   },
   "devDependencies": {
@@ -44,11 +44,11 @@
     "@freelensapp/test-utils": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@ogre-tools/injectable-extension-for-mobx": "^23.2.0",
-    "@testing-library/jest-dom": "^7.0.0",
+    "@testing-library/jest-dom": "catalog:",
     "@types/react": "catalog:",
     "history": "^5.3.0",
-    "typescript": "^7.0.2",
-    "vitest": "^4.1.10"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "publishConfig": {
     "access": "public",

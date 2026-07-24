@@ -30,10 +30,10 @@
   "devDependencies": {
     "@freelensapp/logger": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
-    "@types/node": "~24.12.4",
+    "@types/node": "catalog:",
     "node-fetch": "^3.3.2",
     "rfc6902": "^5.2.0",
-    "type-fest": "^5.6.0"
+    "type-fest": "catalog:"
   },
   "publishConfig": {
     "access": "public",

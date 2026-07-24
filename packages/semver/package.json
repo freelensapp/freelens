@@ -28,8 +28,8 @@
   },
   "devDependencies": {
     "@types/command-line-args": "^5.2.3",
-    "@types/node": "~24.12.4",
+    "@types/node": "catalog:",
     "@types/semver": "^7.7.1",
-    "typescript": "^7.0.2"
+    "typescript": "catalog:"
   }
 }

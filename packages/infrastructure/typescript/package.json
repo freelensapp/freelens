@@ -19,7 +19,7 @@
   },
   "scripts": {},
   "dependencies": {
-    "typescript": "^7.0.2",
+    "typescript": "catalog:",
     "typescript-plugin-css-modules": "^5.2.0"
   },
   "publishConfig": {

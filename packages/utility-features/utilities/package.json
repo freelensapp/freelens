@@ -26,7 +26,7 @@
   "dependencies": {
     "@astronautlabs/jsonpath": "^1.1.2",
     "es-toolkit": "^1.49.0",
-    "mobx": "^6.15.0",
+    "mobx": "catalog:",
     "p-limit": "^7.3.0",
     "react": "catalog:",
     "semver": "^7.8.5",
@@ -35,12 +35,12 @@
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
-    "@types/node": "~24.12.4",
+    "@types/node": "catalog:",
     "@types/react": "catalog:",
     "@types/semver": "^7.7.1",
-    "jsdom": "^29.1.1",
-    "type-fest": "^5.6.0",
-    "vitest": "^4.1.10"
+    "jsdom": "catalog:",
+    "type-fest": "catalog:",
+    "vitest": "catalog:"
   },
   "publishConfig": {
     "access": "public",

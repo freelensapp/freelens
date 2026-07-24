@@ -32,14 +32,14 @@
   },
   "dependencies": {
     "arg": "^5.0.2",
-    "jsdom": "^29.1.1",
+    "jsdom": "catalog:",
     "sharp": "^0.35.0"
   },
   "devDependencies": {
     "@freelensapp/icon": "workspace:^",
     "@types/jsdom": "^28.0.3",
-    "@types/node": "~24.12.4",
-    "typescript": "^7.0.2"
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
   },
   "publishConfig": {
     "access": "public",

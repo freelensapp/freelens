@@ -41,9 +41,9 @@
   "devDependencies": {
     "@types/cli-progress": "^3.11.6",
     "@types/gunzip-maybe": "^1.4.3",
-    "@types/node": "~24.12.4",
+    "@types/node": "catalog:",
     "@types/tar-stream": "^3.1.4",
-    "typescript": "^7.0.2"
+    "typescript": "catalog:"
   },
   "publishConfig": {
     "access": "public",

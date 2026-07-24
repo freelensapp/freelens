@@ -36,13 +36,13 @@
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
     "@ogre-tools/injectable-extension-for-mobx": "^23.2.0",
-    "@testing-library/react": "^16.3.2",
-    "@testing-library/user-event": "^14.6.1",
-    "@types/node": "~24.12.4",
+    "@testing-library/react": "catalog:",
+    "@testing-library/user-event": "catalog:",
+    "@types/node": "catalog:",
     "@types/react": "catalog:",
-    "jsdom": "^29.1.1",
-    "mobx": "^6.15.0",
-    "vitest": "^4.1.10"
+    "jsdom": "catalog:",
+    "mobx": "catalog:",
+    "vitest": "catalog:"
   },
   "publishConfig": {
     "access": "public",

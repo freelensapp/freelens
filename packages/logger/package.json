@@ -30,8 +30,8 @@
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
-    "jsdom": "^29.1.1",
-    "vitest": "^4.1.10",
+    "jsdom": "catalog:",
+    "vitest": "catalog:",
     "winston-transport": "^4.9.0"
   },
   "publishConfig": {

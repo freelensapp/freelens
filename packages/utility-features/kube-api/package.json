@@ -31,7 +31,7 @@
     "@ogre-tools/injectable": "^23.2.0",
     "byline": "^5.0.0",
     "es-toolkit": "^1.49.0",
-    "mobx": "^6.15.0"
+    "mobx": "catalog:"
   },
   "devDependencies": {
     "@async-fn/vitest": "^1.8.0",
@@ -41,9 +41,9 @@
     "@types/byline": "^4.2.36",
     "node-fetch": "^3.3.2",
     "rfc6902": "^5.2.0",
-    "type-fest": "^5.6.0",
-    "typescript": "^7.0.2",
-    "vitest": "^4.1.10"
+    "type-fest": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "publishConfig": {
     "access": "public",
