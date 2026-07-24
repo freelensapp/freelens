@@ -5,7 +5,7 @@
  */
 
 import "./chart.scss";
-import "chartjs-adapter-moment";
+import "./chartjs-adapter-native";
 
 import { cssNames } from "@freelensapp/utilities";
 import { Chart as ChartJS, registerables, Tooltip } from "chart.js";

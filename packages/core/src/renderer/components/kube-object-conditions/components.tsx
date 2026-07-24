@@ -1,7 +1,6 @@
-import { cssNames } from "@freelensapp/utilities";
+import { cssNames, isIso8601DateString } from "@freelensapp/utilities";
 import { upperFirst } from "es-toolkit";
 import * as yaml from "js-yaml";
-import moment from "moment-timezone";
 import { defaultYamlDumpOptions } from "../../../common/kube-helpers";
 import { DurationAbsoluteTimestamp } from "../events";
 
@@ -16,8 +15,7 @@ export function getTooltip(condition: Condition, id: string) {
           if (value === undefined) return null;
           if (value === null) return null;
           if (typeof value === "string") {
-            const m = moment(value, moment.ISO_8601, true);
-            if (m.isValid()) {
+            if (isIso8601DateString(value)) {
               value = <DurationAbsoluteTimestamp timestamp={value} />;
             }
           } else {

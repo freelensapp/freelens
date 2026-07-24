@@ -10,6 +10,7 @@ export * from "./src/convertCpu";
 export * from "./src/convertMemory";
 export * from "./src/cssNames";
 export * from "./src/cssVar";
+export * from "./src/date";
 export * from "./src/debouncePromise";
 export * from "./src/delay";
 export * from "./src/display-mode";

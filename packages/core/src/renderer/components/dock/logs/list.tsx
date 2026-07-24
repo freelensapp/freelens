@@ -7,7 +7,7 @@
 import "./list.scss";
 
 import { Spinner } from "@freelensapp/spinner";
-import { array, cssNames } from "@freelensapp/utilities";
+import { array, cssNames, formatInTimeZone } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { AnsiUp } from "ansi_up";
 import autoBindReact from "auto-bind/react";
@@ -15,7 +15,6 @@ import DOMPurify from "dompurify";
 import { debounce } from "es-toolkit/compat";
 import { action, makeObservable, observable, reaction } from "mobx";
 import { observer } from "mobx-react";
-import moment from "moment-timezone";
 import React from "react";
 import userPreferencesStateInjectable from "../../../../features/user-preferences/common/state.injectable";
 import { SearchStore } from "../../../search-store/search-store";
@@ -305,7 +304,7 @@ class NonForwardedLogList extends React.Component<
 
     return model.timestampSplitLogs
       .get()
-      .map(([logTimestamp, log]) => `${logTimestamp && moment.tz(logTimestamp, state.localeTimezone).format()}${log}`);
+      .map(([logTimestamp, log]) => `${logTimestamp && formatInTimeZone(logTimestamp, state.localeTimezone)}${log}`);
   }
 
   get showWordWrap(): boolean {

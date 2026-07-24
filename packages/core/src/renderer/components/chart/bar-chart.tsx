@@ -10,7 +10,6 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import Color from "color";
 import { merge } from "es-toolkit/compat";
 import { observer } from "mobx-react";
-import moment from "moment";
 import activeThemeInjectable from "../../themes/active.injectable";
 import { NoMetrics } from "../resource-metrics/no-metrics";
 import { Chart, ChartKind } from "./chart";
@@ -61,27 +60,63 @@ const parseBarChartTimestamp = (timestamp: string | number): number => {
   return Date.parse(timestamp);
 };
 
+// Fixed English month abbreviations and zero-padded parts so the output is
+// deterministic (independent of the host locale), matching moment's default
+// "en" formatting that this chart relied on. All values use local time.
+const MONTHS_SHORT = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+const pad2 = (value: number): string => String(value).padStart(2, "0");
+
+interface BarChartDateParts {
+  year: number;
+  month: string;
+  day: string;
+  hours: string;
+  minutes: string;
+  monthShort: string;
+}
+
+const getBarChartDateParts = (timestamp: number): BarChartDateParts => {
+  const date = new Date(timestamp);
+
+  return {
+    year: date.getFullYear(),
+    month: pad2(date.getMonth() + 1),
+    day: pad2(date.getDate()),
+    hours: pad2(date.getHours()),
+    minutes: pad2(date.getMinutes()),
+    monthShort: MONTHS_SHORT[date.getMonth()],
+  };
+};
+
+// Equivalent to moment(timestamp).format("MMM DD, HH:mm").
+const formatTooltipTimestamp = (timestamp: number): string => {
+  const { monthShort, day, hours, minutes } = getBarChartDateParts(timestamp);
+
+  return `${monthShort} ${day}, ${hours}:${minutes}`;
+};
+
 const getTimeBucketAndLabel = (timestamp: string | number, timeRangeSeconds: number) => {
-  const date = moment(parseBarChartTimestamp(timestamp));
+  const { year, month, day, hours, minutes, monthShort } = getBarChartDateParts(parseBarChartTimestamp(timestamp));
   const timeUnit = getBarChartTimeUnit(timeRangeSeconds);
 
   if (timeUnit === "minute") {
     return {
-      bucket: date.startOf("minute").format("YYYY-MM-DD HH:mm"),
-      label: date.format("HH:mm"),
+      bucket: `${year}-${month}-${day} ${hours}:${minutes}`,
+      label: `${hours}:${minutes}`,
     };
   }
 
   if (timeUnit === "hour") {
     return {
-      bucket: date.startOf("hour").format("YYYY-MM-DD HH"),
-      label: date.format("DD, HH:mm"),
+      bucket: `${year}-${month}-${day} ${hours}`,
+      label: `${day}, ${hours}:${minutes}`,
     };
   }
 
   return {
-    bucket: date.startOf("day").format("YYYY-MM-DD"),
-    label: date.format("MMM DD"),
+    bucket: `${year}-${month}-${day}`,
+    label: `${monthShort} ${day}`,
   };
 };
 
@@ -266,7 +301,7 @@ const NonInjectedBarChart = observer(
                 return "";
               }
 
-              return moment(timestamp).format("MMM DD, HH:mm");
+              return formatTooltipTimestamp(timestamp);
             },
             labelColor: ({ datasetIndex }: TooltipItem<"bar" | "line">) =>
               typeof datasetIndex === "number"
