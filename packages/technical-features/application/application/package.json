@@ -26,15 +26,15 @@
   "dependencies": {
     "@freelensapp/feature-core": "workspace:^",
     "@freelensapp/run-many": "workspace:^",
-    "@ogre-tools/fp": "^23.2.0",
-    "@ogre-tools/injectable": "^23.2.0"
+    "@ogre-tools/fp": "catalog:",
+    "@ogre-tools/injectable": "catalog:"
   },
   "devDependencies": {
-    "@async-fn/vitest": "^1.8.0",
+    "@async-fn/vitest": "catalog:",
     "@freelensapp/test-utils": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
-    "typescript": "^7.0.2",
-    "vitest": "^4.1.10"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "publishConfig": {
     "access": "public",

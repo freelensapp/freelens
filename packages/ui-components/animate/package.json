@@ -27,15 +27,15 @@
   "dependencies": {
     "@freelensapp/feature-core": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
-    "@ogre-tools/injectable": "^23.2.0",
-    "@ogre-tools/injectable-react": "^23.2.0",
+    "@ogre-tools/injectable": "catalog:",
+    "@ogre-tools/injectable-react": "catalog:",
     "react": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
     "@types/react": "catalog:",
-    "typescript": "^7.0.2",
-    "vitest": "^4.1.10"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "publishConfig": {
     "access": "public",
