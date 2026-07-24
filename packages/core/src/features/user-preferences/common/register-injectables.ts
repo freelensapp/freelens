@@ -10,6 +10,7 @@ import {
   getClusterPageMenuOrderInjectable,
   resetClusterPageMenuOrderInjectable,
 } from "./cluster-page-menu-order.injectable";
+import customThemeColorsInjectable from "./custom-theme-colors.injectable";
 import httpsProxyConfigurationInjectable from "./https-proxy.injectable";
 import isTableColumnHiddenInjectable from "./is-table-column-hidden.injectable";
 import kubeconfigSyncsInjectable from "./kubeconfig-syncs.injectable";
@@ -44,6 +45,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(kubeconfigSyncsInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(customThemeColorsInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

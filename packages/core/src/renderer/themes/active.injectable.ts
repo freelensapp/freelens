@@ -7,6 +7,7 @@
 import assert from "node:assert";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
+import customThemeColorsInjectable from "../../features/user-preferences/common/custom-theme-colors.injectable";
 import lensColorThemePreferenceInjectable from "../../features/user-preferences/common/lens-color-theme.injectable";
 import { lensThemeDeclarationInjectionToken } from "./declaration";
 import defaultLensThemeInjectable from "./default-theme.injectable";
@@ -28,9 +29,11 @@ const activeThemeInjectable: Injectable<IComputedValue<ReadonlyDeep<LensTheme>>>
     const lensColorThemePreference = di.inject(lensColorThemePreferenceInjectable);
     const systemThemeConfiguration = di.inject(systemThemeConfigurationInjectable);
     const defaultLensTheme = di.inject(defaultLensThemeInjectable);
+    const customThemeColors = di.inject(customThemeColorsInjectable);
 
     return computed(() => {
       const pref = lensColorThemePreference.get();
+      let baseTheme: ReadonlyDeep<LensTheme>;
 
       if (pref.useSystemTheme) {
         const systemThemeType = systemThemeConfiguration.get();
@@ -38,10 +41,25 @@ const activeThemeInjectable: Injectable<IComputedValue<ReadonlyDeep<LensTheme>>>
 
         assert(matchingTheme, `Missing theme declaration for system theme "${systemThemeType}"`);
 
-        return matchingTheme;
+        baseTheme = matchingTheme;
+      } else {
+        baseTheme = lensThemes.get(pref.lensThemeId) ?? defaultLensTheme;
       }
 
-      return lensThemes.get(pref.lensThemeId) ?? defaultLensTheme;
+      const customColors = customThemeColors.get();
+      const customKeys = Object.keys(customColors);
+
+      if (customKeys.length === 0) {
+        return baseTheme;
+      }
+
+      return {
+        ...baseTheme,
+        colors: {
+          ...baseTheme.colors,
+          ...customColors,
+        },
+      } as ReadonlyDeep<LensTheme>;
     });
   },
 });
