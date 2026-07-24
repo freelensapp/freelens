@@ -73,7 +73,7 @@
     "@types/node": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "jsdom": "catalog:",
-    "pnpm": "11.16.0",
+    "pnpm": "catalog:",
     "turbo": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"

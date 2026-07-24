@@ -133,7 +133,7 @@
     "monaco-editor": "catalog:",
     "node-fetch": "catalog:",
     "node-pty": "catalog:",
-    "pnpm": "^11.16.0",
+    "pnpm": "catalog:",
     "proper-lockfile": "catalog:",
     "randomcolor": "catalog:",
     "react": "catalog:",

@@ -285,6 +285,9 @@ catalogs:
     playwright:
       specifier: ^1.61.1
       version: 1.61.1
+    pnpm:
+      specifier: 11.16.0
+      version: 11.16.0
     proper-lockfile:
       specifier: ^4.1.2
       version: 4.1.2
@@ -427,7 +430,7 @@ importers:
         specifier: 'catalog:'
         version: 29.1.1(@noble/hashes@2.2.0)
       pnpm:
-        specifier: 11.16.0
+        specifier: 'catalog:'
         version: 11.16.0
       turbo:
         specifier: 'catalog:'
@@ -544,7 +547,7 @@ importers:
         specifier: 'catalog:'
         version: 7.3.0
       pnpm:
-        specifier: ^11.16.0
+        specifier: 'catalog:'
         version: 11.16.0
       proper-lockfile:
         specifier: 'catalog:'
@@ -1010,7 +1013,7 @@ importers:
         specifier: 'catalog:'
         version: 1.2.0-beta.14
       pnpm:
-        specifier: ^11.16.0
+        specifier: 'catalog:'
         version: 11.16.0
       proper-lockfile:
         specifier: 'catalog:'

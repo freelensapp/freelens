@@ -92,7 +92,7 @@
     "node-fetch": "catalog:",
     "node-pty": "catalog:",
     "p-limit": "catalog:",
-    "pnpm": "^11.16.0",
+    "pnpm": "catalog:",
     "proper-lockfile": "catalog:",
     "react": "catalog:",
     "selfsigned": "catalog:",
