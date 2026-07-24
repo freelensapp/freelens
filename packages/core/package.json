@@ -126,7 +126,7 @@
     "joi": "^18.2.3",
     "js-yaml": "^5.2.1",
     "marked": "^18.0.6",
-    "mobx": "^6.15.0",
+    "mobx": "^6.16.1",
     "mobx-react": "^9.1.1",
     "mobx-react-lite": "^4.1.1",
     "mobx-utils": "^6.1.1",

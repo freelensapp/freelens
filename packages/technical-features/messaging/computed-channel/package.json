@@ -26,7 +26,7 @@
   "dependencies": {
     "@freelensapp/messaging": "workspace:^",
     "@ogre-tools/injectable": "^23.2.0",
-    "mobx": "^6.15.0"
+    "mobx": "^6.16.1"
   },
   "devDependencies": {
     "@freelensapp/application": "workspace:^",

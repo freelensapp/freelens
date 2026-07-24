@@ -35,7 +35,7 @@
     "@freelensapp/utilities": "workspace:^",
     "@ogre-tools/injectable": "^23.2.0",
     "@ogre-tools/injectable-react": "^23.2.0",
-    "mobx": "^6.15.0",
+    "mobx": "^6.16.1",
     "mobx-react": "^9.1.1",
     "react": "catalog:"
   },

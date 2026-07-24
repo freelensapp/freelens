@@ -30,7 +30,7 @@
     "@freelensapp/utilities": "workspace:^",
     "auto-bind": "^5.0.1",
     "es-toolkit": "^1.49.0",
-    "mobx": "^6.15.0",
+    "mobx": "^6.16.1",
     "mobx-react": "^9.1.1",
     "react": "catalog:",
     "react-dom": "catalog:"
