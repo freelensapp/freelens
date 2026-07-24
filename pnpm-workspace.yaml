@@ -2,150 +2,185 @@ packages:
   - freelens
   - packages/**
 
+# Versions here are pinned exactly. Every workspace package resolves its
+# dependencies through this catalog, so the pinned version is what the app is
+# built and tested against. Renovate (rangeStrategy: bump) raises a PR for
+# every update anyway, so ranges bought us no flexibility.
 catalog:
   # React family (singletons)
-  react: ^19.2.8
-  react-dom: ^19.2.8
-  '@types/react': ^19.2.17
-  '@types/react-dom': ^19.2.3
+  react: 19.2.8
+  react-dom: 19.2.8
+  '@types/react': 19.2.17
+  '@types/react-dom': 19.2.3
   # MobX family (singletons)
-  mobx: ^6.15.0
-  mobx-react: ^9.1.1
-  mobx-react-lite: ^4.1.1
+  mobx: 6.15.0
+  mobx-react: 9.1.1
+  mobx-react-lite: 4.1.1
   # TypeScript
-  typescript: ^7.0.2
+  typescript: 7.0.2
   # Dependency injection (Ogre Tools)
-  '@ogre-tools/injectable': ^23.2.0
-  '@ogre-tools/injectable-extension-for-mobx': ^23.2.0
-  '@ogre-tools/injectable-react': ^23.2.0
-  '@ogre-tools/fp': ^23.2.0
-  '@ogre-tools/test-utils': ^23.2.0
+  '@ogre-tools/injectable': 23.2.0
+  '@ogre-tools/injectable-extension-for-mobx': 23.2.0
+  '@ogre-tools/injectable-react': 23.2.0
+  '@ogre-tools/fp': 23.2.0
+  '@ogre-tools/test-utils': 23.2.0
   # Testing stack
-  '@async-fn/vitest': ^1.8.0
-  '@vitest/coverage-v8': ^4.1.10
-  vitest: ^4.1.10
-  '@testing-library/dom': ^10.4.1
-  '@testing-library/jest-dom': ^7.0.0
-  '@testing-library/react': ^16.3.2
-  '@testing-library/user-event': ^14.6.1
-  jsdom: ^29.1.1
-  memfs: ^4.64.0
-  memorystream: ^0.3.1
-  mock-http: ^1.1.1
-  react-select-event: ^5.5.1
-  vitest-canvas-mock: ^1.1.4
-  vitest-mock-extended: ^5.1.0
+  '@async-fn/vitest': 1.8.0
+  '@vitest/coverage-v8': 4.1.10
+  vitest: 4.1.10
+  '@testing-library/dom': 10.4.1
+  '@testing-library/jest-dom': 7.0.0
+  '@testing-library/react': 16.3.2
+  '@testing-library/user-event': 14.6.1
+  jsdom: 29.1.1
+  memfs: 4.64.0
+  memorystream: 0.3.1
+  mock-http: 1.1.1
+  react-select-event: 5.5.1
+  vitest-canvas-mock: 1.1.4
+  vitest-mock-extended: 5.1.0
   # Build tooling
   '@vitejs/plugin-react': 6.0.4
   electron-builder: 26.15.7
   electron-builder-squirrel-windows: 26.15.7
   electron-vite: 6.0.0-beta.1
-  playwright: ^1.61.1
+  playwright: 1.61.1
   pnpm: 11.16.0
-  rollup: ^4.62.2
-  rollup-plugin-dts: ^6.4.1
+  rollup: 4.62.2
+  rollup-plugin-dts: 6.4.1
   sass-embedded: 1.100.0
-  tailwindcss: ^4.2.4
+  tailwindcss: 4.2.4
   turbo: 2.10.2
   vite: 8.1.5
   # Electron
-  electron: ^42.7.1
-  '@electron/notarize': ^3.1.1
-  electron-devtools-installer: ^4.0.0
+  electron: 42.7.1
+  '@electron/notarize': 3.1.1
+  electron-devtools-installer: 4.0.0
   # Types and utilities
-  '@types/node': ~24.12.4
-  '@types/byline': ^4.2.36
-  '@types/cli-progress': ^3.11.6
-  '@types/command-line-args': ^5.2.3
-  '@types/fs-extra': ^11.0.4
-  '@types/glob-to-regexp': ^0.4.4
-  '@types/gunzip-maybe': ^1.4.3
-  '@types/hapi__call': ^9.0.3
-  '@types/hapi__subtext': ^7.0.3
-  '@types/jsdom': ^28.0.3
-  '@types/memorystream': ^0.3.4
-  '@types/proper-lockfile': ^4.1.4
-  '@types/randomcolor': ^0.5.9
-  '@types/react-table': ^7.7.20
-  '@types/semver': ^7.7.1
-  '@types/stoppable': ^1.1.3
-  '@types/tar-stream': ^3.1.4
-  '@types/tcp-port-used': ^1.0.4
-  '@types/triple-beam': ^1.3.5
-  '@types/ws': ^8.18.1
-  type-fest: ^5.6.0
+  '@types/node': 24.12.4
+  '@types/byline': 4.2.36
+  '@types/cli-progress': 3.11.6
+  '@types/command-line-args': 5.2.3
+  '@types/fs-extra': 11.0.4
+  '@types/glob-to-regexp': 0.4.4
+  '@types/gunzip-maybe': 1.4.3
+  '@types/hapi__call': 9.0.3
+  '@types/hapi__subtext': 7.0.3
+  '@types/jsdom': 28.0.3
+  '@types/memorystream': 0.3.4
+  '@types/proper-lockfile': 4.1.4
+  '@types/randomcolor': 0.5.9
+  '@types/react-table': 7.7.20
+  '@types/semver': 7.7.1
+  '@types/stoppable': 1.1.3
+  '@types/tar-stream': 3.1.4
+  '@types/tcp-port-used': 1.0.4
+  '@types/triple-beam': 1.3.5
+  '@types/ws': 8.18.1
+  type-fest: 5.6.0
   # Shared libraries
-  '@astronautlabs/jsonpath': ^1.1.2
-  '@dnd-kit/core': ^6.3.1
-  '@dnd-kit/sortable': ^10.0.0
-  '@dnd-kit/utilities': ^3.2.2
-  '@hapi/call': ^9.0.1
-  '@hapi/subtext': ^8.1.3
-  '@kubernetes/client-node': ^1.4.0
-  '@mui/material': ^9.2.0
-  '@quantco/pnpm-licenses': ^2.4.2
-  '@tailwindcss/postcss': ^4.2.4
-  '@xterm/addon-fit': ^0.11.0
-  '@xterm/addon-web-links': ^0.12.0
-  '@xterm/xterm': ^6.0.0
-  ansi_up: ^6.0.6
-  arg: ^5.0.2
-  auto-bind: ^5.0.1
-  byline: ^5.0.0
-  chalk: ^5.6.2
-  chart.js: ^4.5.1
-  chokidar: ^5.0.0
-  cli-progress: ^3.12.0
-  color: ^5.0.3
-  command-line-args: ^6.0.2
-  conf: ^15.1.0
-  cronstrue: ^3.24.0
-  dompurify: ^3.4.12
-  electron-window-state: ^5.0.3
-  es-toolkit: ^1.49.0
-  fast-xml-parser: ^5.10.1
-  fs-extra: ^11.3.6
-  glob-to-regexp: ^0.4.1
-  gunzip-maybe: ^1.4.2
-  handlebars: ^4.7.9
-  history: ^5.3.0
-  hpagent: ^1.2.0
-  http-proxy-node16: ^1.0.6
-  immer: ^11.1.8
-  joi: ^18.2.3
-  js-yaml: ^5.2.1
-  logform: ^2.7.0
-  marked: ^18.0.6
-  mobx-utils: ^6.1.1
-  monaco-editor: ^0.56.0
-  node-fetch: ^3.3.2
+  '@astronautlabs/jsonpath': 1.1.2
+  '@dnd-kit/core': 6.3.1
+  '@dnd-kit/sortable': 10.0.0
+  '@dnd-kit/utilities': 3.2.2
+  '@hapi/call': 9.0.1
+  '@hapi/subtext': 8.1.3
+  '@kubernetes/client-node': 1.4.0
+  '@mui/material': 9.2.0
+  '@quantco/pnpm-licenses': 2.4.2
+  '@tailwindcss/postcss': 4.2.4
+  '@xterm/addon-fit': 0.11.0
+  '@xterm/addon-web-links': 0.12.0
+  '@xterm/xterm': 6.0.0
+  ansi_up: 6.0.6
+  arg: 5.0.2
+  auto-bind: 5.0.1
+  byline: 5.0.0
+  chalk: 5.6.2
+  chart.js: 4.5.1
+  chokidar: 5.0.0
+  cli-progress: 3.12.0
+  color: 5.0.3
+  command-line-args: 6.0.2
+  conf: 15.1.0
+  cronstrue: 3.24.0
+  dompurify: 3.4.12
+  electron-window-state: 5.0.3
+  es-toolkit: 1.49.0
+  fast-xml-parser: 5.10.1
+  fs-extra: 11.3.6
+  glob-to-regexp: 0.4.1
+  gunzip-maybe: 1.4.2
+  handlebars: 4.7.9
+  history: 5.3.0
+  hpagent: 1.2.0
+  http-proxy-node16: 1.0.6
+  immer: 11.1.8
+  joi: 18.2.3
+  js-yaml: 5.2.1
+  logform: 2.7.0
+  marked: 18.0.6
+  mobx-utils: 6.1.1
+  monaco-editor: 0.56.0
+  node-fetch: 3.3.2
   node-pty: 1.2.0-beta.14
-  p-limit: ^7.3.0
-  proper-lockfile: ^4.1.2
-  randomcolor: ^0.6.2
-  react-select: ^5.10.2
-  react-table: ^7.8.0
-  react-window: ^2.3.0
-  rfc6902: ^5.2.0
-  selfsigned: ^5.5.0
-  semver: ^7.8.5
-  sharp: ^0.35.0
-  spdx-license-list: ^6.11.0
-  stoppable: ^1.1.0
-  tar: ^7.5.21
-  tar-stream: ^3.2.0
-  tcp-port-used: ^1.0.3
+  p-limit: 7.3.0
+  proper-lockfile: 4.1.2
+  randomcolor: 0.6.2
+  react-select: 5.10.2
+  react-table: 7.8.0
+  react-window: 2.3.0
+  rfc6902: 5.2.0
+  selfsigned: 5.5.0
+  semver: 7.8.5
+  sharp: 0.35.3
+  spdx-license-list: 6.11.0
+  stoppable: 1.1.0
+  tar: 7.5.21
+  tar-stream: 3.2.0
+  tcp-port-used: 1.0.3
   tempy: 3.2.0
-  triple-beam: ^1.4.1
-  typed-emitter: ^2.1.0
-  typed-regex: ^0.0.8
-  typescript-plugin-css-modules: ^5.2.0
-  uuid: ^14.0.1
-  winston: ^3.19.0
-  winston-transport: ^4.9.0
-  winston-transport-browserconsole: ^1.0.5
-  ws: ^8.21.0
-  zod: ^4.4.3
+  triple-beam: 1.4.1
+  typed-emitter: 2.1.0
+  typed-regex: 0.0.8
+  typescript-plugin-css-modules: 5.2.0
+  uuid: 14.0.1
+  winston: 3.19.0
+  winston-transport: 4.9.0
+  winston-transport-browserconsole: 1.0.5
+  ws: 8.21.0
+  zod: 4.4.3
+
+catalogs:
+  # Runtime dependencies of the published @freelensapp/extensions package.
+  # pnpm inlines the catalog specifier verbatim into the published
+  # package.json, so these must stay ranges: an exact pin would force every
+  # extension author onto one patch release and can end up with duplicated
+  # react/mobx instances, which breaks the singletons the extension API
+  # relies on. Versions here intentionally duplicate the default catalog and
+  # must be kept in sync with it.
+  extensions:
+    '@mui/material': ^9.2.0
+    '@ogre-tools/injectable': ^23.2.0
+    '@ogre-tools/injectable-react': ^23.2.0
+    '@types/node': ~24.12.4
+    '@types/react': ^19.2.17
+    '@types/react-table': ^7.7.20
+    '@xterm/xterm': ^6.0.0
+    chart.js: ^4.5.1
+    conf: ^15.1.0
+    history: ^5.3.0
+    immer: ^11.1.8
+    mobx: ^6.15.0
+    monaco-editor: ^0.56.0
+    node-fetch: ^3.3.2
+    react: ^19.2.8
+    react-select: ^5.10.2
+    react-table: ^7.8.0
+    react-window: ^2.3.0
+    rfc6902: ^5.2.0
+    type-fest: ^5.6.0
+    typed-emitter: ^2.1.0
 
 allowBuilds:
   '@parcel/watcher': true
