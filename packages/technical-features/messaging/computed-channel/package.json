@@ -36,7 +36,7 @@
     "@freelensapp/typescript": "workspace:^",
     "@ogre-tools/injectable-extension-for-mobx": "^23.2.0",
     "es-toolkit": "^1.49.0",
-    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/jest-dom": "^7.0.0",
     "@testing-library/react": "^16.3.2",
     "@types/react": "catalog:",
     "jsdom": "^29.1.1",
