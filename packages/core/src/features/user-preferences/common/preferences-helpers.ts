@@ -25,6 +25,23 @@ export interface LogViewerPreferences {
   showWordWrap: boolean;
 }
 
+export type CustomThemeColors = Record<string, string>;
+
+const customThemeColorNamePattern = /^[a-zA-Z][\w-]*$/;
+const hexColorPattern = /^#[\da-f]{6}$/i;
+
+export const normalizeCustomThemeColors = (colors: Partial<Record<string, string>> = {}): CustomThemeColors => {
+  const normalized: CustomThemeColors = {};
+
+  for (const [colorName, color] of Object.entries(colors)) {
+    if (typeof color === "string" && customThemeColorNamePattern.test(colorName) && hexColorPattern.test(color)) {
+      normalized[colorName] = color;
+    }
+  }
+
+  return normalized;
+};
+
 export const defaultLogViewerPreferences: LogViewerPreferences = {
   showTimestamps: false,
   showWordWrap: true,
