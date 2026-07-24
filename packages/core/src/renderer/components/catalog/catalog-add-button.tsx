@@ -128,13 +128,17 @@ class NonInjectedCatalogAddButton extends React.Component<CatalogAddButtonProps 
             <SpeedDialAction
               key={index}
               icon={<Icon material={menuItem.icon} />}
-              tooltipTitle={menuItem.title}
               onClick={(evt) => {
                 evt.stopPropagation();
                 menuItem.onClick();
               }}
-              TooltipClasses={{
-                popper: "catalogSpeedDialPopper",
+              slotProps={{
+                tooltip: {
+                  title: menuItem.title,
+                  classes: {
+                    popper: "catalogSpeedDialPopper",
+                  },
+                },
               }}
             />
           );
