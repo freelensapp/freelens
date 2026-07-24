@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/electron-userland/electron-builder/refs/heads/master/packages/app-builder-lib/scheme.json
 
-electronVersion: 42.7.0 # datasource=npm depName=electron
+electronVersion: 42.7.1 # datasource=npm depName=electron
 
 ## node-pty is our only native module and it is a N-API (node-addon-api)
 ## addon, so its bundled prebuilt binaries are ABI-stable and load as-is on
