@@ -132,7 +132,7 @@
     "@types/fs-extra": "^11.0.4",
     "@types/node": "~24.12.4",
     "@vitejs/plugin-react": "5.2.0",
-    "electron": "^42.7.0",
+    "electron": "^42.7.1",
     "electron-builder": "26.15.7",
     "electron-builder-squirrel-windows": "26.15.7",
     "electron-vite": "6.0.0-beta.1",
