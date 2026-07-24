@@ -888,7 +888,7 @@ importers:
         version: 15.1.0
       electron:
         specifier: '>=42.0.0'
-        version: 42.7.0(supports-color@8.1.1)
+        version: 42.7.1(supports-color@8.1.1)
       history:
         specifier: ^5.3.0
         version: 5.3.0
@@ -4797,11 +4797,6 @@ packages:
   electron-winstaller@5.4.0:
     resolution: {integrity: sha512-bO3y10YikuUwUuDUQRM4KfwNkKhnpVO7IPdbsrejwN9/AABJzzTQ4GeHwyzNSrVO+tEH3/Np255a3sVZpZDjvg==}
     engines: {node: '>=8.0.0'}
-
-  electron@42.7.0:
-    resolution: {integrity: sha512-Uu5p03M5o7aqulT8QxFYYg3eJVDfuNEUuasBU1qFl05ghVRRH7UHL7na8S3GhxVScZQ2D7j9DCMsc+qT5FuxtQ==}
-    engines: {node: '>= 22.12.0'}
-    hasBin: true
 
   electron@42.7.1:
     resolution: {integrity: sha512-fmjFv4Ebbs/FNZg6a/IAu25lBb8vo/HBVa2vtE2GvYlgAC7/fu8dx1b2pL2wV1yWlfMI2q3Npe4eVYSFGirnwA==}
@@ -9483,14 +9478,6 @@ snapshots:
       temp: 0.9.4
     optionalDependencies:
       '@electron/windows-sign': 1.2.1(supports-color@8.1.1)
-    transitivePeerDependencies:
-      - supports-color
-
-  electron@42.7.0(supports-color@8.1.1):
-    dependencies:
-      '@electron-internal/extract-zip': 1.0.3
-      '@electron/get': 5.0.0(supports-color@8.1.1)
-      '@types/node': 24.12.4
     transitivePeerDependencies:
       - supports-color
 
