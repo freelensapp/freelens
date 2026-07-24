@@ -32,7 +32,7 @@
     "@async-fn/vitest": "catalog:",
     "@freelensapp/test-utils": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
-    "electron": "^42.7.1",
+    "electron": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   },

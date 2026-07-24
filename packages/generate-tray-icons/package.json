@@ -33,11 +33,11 @@
   "dependencies": {
     "arg": "catalog:",
     "jsdom": "catalog:",
-    "sharp": "^0.35.0"
+    "sharp": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/icon": "workspace:^",
-    "@types/jsdom": "^28.0.3",
+    "@types/jsdom": "catalog:",
     "@types/node": "catalog:",
     "typescript": "catalog:"
   },

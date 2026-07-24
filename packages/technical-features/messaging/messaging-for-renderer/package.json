@@ -33,7 +33,7 @@
     "@async-fn/vitest": "catalog:",
     "@freelensapp/typescript": "workspace:^",
     "@ogre-tools/injectable-extension-for-mobx": "catalog:",
-    "electron": "^42.7.1",
+    "electron": "catalog:",
     "mobx": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"

@@ -32,8 +32,8 @@
   "devDependencies": {
     "@async-fn/vitest": "catalog:",
     "@freelensapp/typescript": "workspace:^",
-    "@ogre-tools/test-utils": "^23.2.0",
-    "electron": "^42.7.1",
+    "@ogre-tools/test-utils": "catalog:",
+    "electron": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   },

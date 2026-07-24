@@ -56,8 +56,8 @@
   },
   "devDependencies": {
     "@freelensapp/core": "workspace:^",
-    "rollup": "^4.62.2",
-    "rollup-plugin-dts": "^6.4.1",
+    "rollup": "catalog:",
+    "rollup-plugin-dts": "catalog:",
     "typescript": "catalog:",
     "typescript-plugin-css-modules": "catalog:"
   },

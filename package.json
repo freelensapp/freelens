@@ -71,10 +71,10 @@
   },
   "devDependencies": {
     "@types/node": "catalog:",
-    "@vitest/coverage-v8": "^4.1.10",
+    "@vitest/coverage-v8": "catalog:",
     "jsdom": "catalog:",
     "pnpm": "11.16.0",
-    "turbo": "2.10.2",
+    "turbo": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   },

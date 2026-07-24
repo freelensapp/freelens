@@ -109,7 +109,7 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@electron/notarize": "^3.1.1",
+    "@electron/notarize": "catalog:",
     "@freelensapp/animate": "workspace:^",
     "@freelensapp/button": "workspace:^",
     "@freelensapp/cluster-sidebar": "workspace:^",
@@ -131,16 +131,16 @@
     "@tailwindcss/postcss": "catalog:",
     "@types/fs-extra": "catalog:",
     "@types/node": "catalog:",
-    "@vitejs/plugin-react": "5.2.0",
-    "electron": "^42.7.1",
-    "electron-builder": "26.15.7",
-    "electron-builder-squirrel-windows": "26.15.7",
-    "electron-vite": "6.0.0-beta.1",
-    "playwright": "^1.61.1",
-    "sass-embedded": "1.100.0",
+    "@vitejs/plugin-react": "catalog:",
+    "electron": "catalog:",
+    "electron-builder": "catalog:",
+    "electron-builder-squirrel-windows": "catalog:",
+    "electron-vite": "catalog:",
+    "playwright": "catalog:",
+    "sass-embedded": "catalog:",
     "typescript": "catalog:",
     "typescript-plugin-css-modules": "catalog:",
-    "vite": "8.1.5",
+    "vite": "catalog:",
     "vitest": "catalog:"
   },
   "engines": {

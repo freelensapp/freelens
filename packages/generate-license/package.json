@@ -31,8 +31,8 @@
     "start": "node ./dist/index.js"
   },
   "dependencies": {
-    "@quantco/pnpm-licenses": "^2.4.2",
-    "spdx-license-list": "^6.11.0"
+    "@quantco/pnpm-licenses": "catalog:",
+    "spdx-license-list": "catalog:"
   },
   "devDependencies": {
     "@types/node": "catalog:",

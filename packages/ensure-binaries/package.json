@@ -32,17 +32,17 @@
   },
   "dependencies": {
     "arg": "catalog:",
-    "cli-progress": "^3.12.0",
-    "gunzip-maybe": "^1.4.2",
+    "cli-progress": "catalog:",
+    "gunzip-maybe": "catalog:",
     "node-fetch": "catalog:",
-    "tar-stream": "^3.2.0",
+    "tar-stream": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@types/cli-progress": "^3.11.6",
-    "@types/gunzip-maybe": "^1.4.3",
+    "@types/cli-progress": "catalog:",
+    "@types/gunzip-maybe": "catalog:",
     "@types/node": "catalog:",
-    "@types/tar-stream": "^3.1.4",
+    "@types/tar-stream": "catalog:",
     "typescript": "catalog:"
   },
   "publishConfig": {

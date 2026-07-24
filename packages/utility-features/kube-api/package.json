@@ -38,7 +38,7 @@
     "@freelensapp/logger": "workspace:^",
     "@freelensapp/test-utils": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
-    "@types/byline": "^4.2.36",
+    "@types/byline": "catalog:",
     "node-fetch": "catalog:",
     "rfc6902": "catalog:",
     "type-fest": "catalog:",
