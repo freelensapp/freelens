@@ -19,7 +19,7 @@ allowBuilds:
 engineStrict: true
 
 overrides:
-  brace-expansion@^2.0.1: ^5.0.7
+  brace-expansion@^2.0.1: ^5.0.8
   form-data: ^4.0.6
   http-proxy: npm:http-proxy-node16@^1.0.6
   mobx-react: ^9.1.1
