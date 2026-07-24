@@ -361,11 +361,13 @@ export default defineConfig({
   renderer: {
     root: resolve(root, "src/renderer"),
     plugins: [
-      // The dev-only react-refresh Babel pass parses raw TSX and rejects the
-      // legacy @observer/@injectable decorators used across the codebase
-      // without this parser plugin; esbuild still performs the actual
-      // decorator transform per tsconfig experimentalDecorators.
-      react({ babel: { parserOpts: { plugins: ["decorators-legacy"] } } }),
+      // @vitejs/plugin-react v6 dropped Babel: on Vite 8 the dev-only
+      // react-refresh pass is performed by Oxc, whose parser accepts the
+      // legacy @observer/@injectable decorators used across the codebase out
+      // of the box, so the former babel.parserOpts decorators-legacy plugin is
+      // no longer needed. esbuild still performs the actual decorator
+      // transform per tsconfig experimentalDecorators.
+      react(),
       runtimeRequireExternalsPlugin(),
       rendererBuildBasePlugin("/build/"),
     ],

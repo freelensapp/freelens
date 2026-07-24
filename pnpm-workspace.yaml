@@ -36,7 +36,7 @@ catalog:
   vitest-canvas-mock: ^1.1.4
   vitest-mock-extended: ^5.1.0
   # Build tooling
-  '@vitejs/plugin-react': 5.2.0
+  '@vitejs/plugin-react': 6.0.4
   electron-builder: 26.15.7
   electron-builder-squirrel-windows: 26.15.7
   electron-vite: 6.0.0-beta.1
