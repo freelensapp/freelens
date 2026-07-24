@@ -66,7 +66,7 @@ jobs:
         id: parse
         shell: bash
         run: |
-          DEFAULT_MODEL="claude-opus-4-8"
+          DEFAULT_MODEL="claude-opus-5"
           DEFAULT_RUNS_ON="ubuntu-24.04-arm"
           TEXT="${COMMENT_BODY}${REVIEW_BODY}${ISSUE_BODY}"
 
@@ -79,8 +79,10 @@ jobs:
 
           case "$MODEL_ALIAS" in
             fable|fable-5|claude-fable-5)               MODEL_ID="claude-fable-5" ;;
-            opus|opus-4|opus-4.8|claude-opus-4-8)       MODEL_ID="claude-opus-4-8" ;;
-            sonnet|sonnet-4|sonnet-4.6|claude-sonnet-4-6) MODEL_ID="claude-sonnet-4-6" ;;
+            opus|opus-5|claude-opus-5)                  MODEL_ID="claude-opus-5" ;;
+            opus-4|opus-4.8|claude-opus-4-8)            MODEL_ID="claude-opus-4-8" ;;
+            sonnet|sonnet-5|claude-sonnet-5)            MODEL_ID="claude-sonnet-5" ;;
+            sonnet-4|sonnet-4.6|claude-sonnet-4-6)      MODEL_ID="claude-sonnet-4-6" ;;
             haiku|haiku-4|haiku-4.5)                    MODEL_ID="claude-haiku-4-5-20251001" ;;
             "")                                          MODEL_ID="$DEFAULT_MODEL" ;;
             *)                                           MODEL_ID="$MODEL_ALIAS" ;;
@@ -252,8 +254,8 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           claude_args: |-
-            --model claude-opus-4-8
-            --fallback-model claude-sonnet-4-6
+            --model claude-opus-5
+            --fallback-model claude-opus-4-8
             --max-turns 30
             --allowedTools "Read" "Grep" "Bash(gh:*)" "Bash(jq:*)" "Bash(cat:*)" "Bash(head:*)" "Bash(tail:*)" "Bash(sed:*)" "Bash(awk:*)"
           prompt: |-
