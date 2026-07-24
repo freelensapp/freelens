@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@freelensapp/messaging": "workspace:^",
-    "@ogre-tools/injectable": "^23.2.0",
+    "@ogre-tools/injectable": "catalog:",
     "mobx": "catalog:"
   },
   "devDependencies": {
@@ -34,8 +34,8 @@
     "@freelensapp/messaging-fake-bridge": "workspace:^",
     "@freelensapp/test-utils": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
-    "@ogre-tools/injectable-extension-for-mobx": "^23.2.0",
-    "es-toolkit": "^1.49.0",
+    "@ogre-tools/injectable-extension-for-mobx": "catalog:",
+    "es-toolkit": "catalog:",
     "@testing-library/jest-dom": "catalog:",
     "@testing-library/react": "catalog:",
     "@types/react": "catalog:",

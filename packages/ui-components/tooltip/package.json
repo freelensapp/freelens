@@ -28,8 +28,8 @@
   },
   "dependencies": {
     "@freelensapp/utilities": "workspace:^",
-    "auto-bind": "^5.0.1",
-    "es-toolkit": "^1.49.0",
+    "auto-bind": "catalog:",
+    "es-toolkit": "catalog:",
     "mobx": "catalog:",
     "mobx-react": "catalog:",
     "react": "catalog:",

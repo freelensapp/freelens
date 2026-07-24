@@ -24,12 +24,12 @@
   },
   "dependencies": {
     "command-line-args": "^6.0.2",
-    "semver": "^7.8.5"
+    "semver": "catalog:"
   },
   "devDependencies": {
     "@types/command-line-args": "^5.2.3",
     "@types/node": "catalog:",
-    "@types/semver": "^7.7.1",
+    "@types/semver": "catalog:",
     "typescript": "catalog:"
   }
 }

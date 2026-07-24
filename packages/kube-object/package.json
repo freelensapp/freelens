@@ -25,9 +25,9 @@
   },
   "dependencies": {
     "@freelensapp/utilities": "workspace:^",
-    "auto-bind": "^5.0.1",
-    "es-toolkit": "^1.49.0",
-    "typed-regex": "^0.0.8"
+    "auto-bind": "catalog:",
+    "es-toolkit": "catalog:",
+    "typed-regex": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",

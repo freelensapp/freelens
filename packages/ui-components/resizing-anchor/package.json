@@ -26,7 +26,7 @@
   "scripts": {},
   "dependencies": {
     "@freelensapp/utilities": "workspace:^",
-    "es-toolkit": "^1.49.0",
+    "es-toolkit": "catalog:",
     "mobx": "catalog:",
     "mobx-react": "catalog:",
     "react": "catalog:"

@@ -32,34 +32,34 @@
     "prepack": "pnpm build:dist"
   },
   "dependencies": {
-    "@mui/material": "^9.2.0",
-    "@ogre-tools/injectable": "^23.2.0",
-    "@ogre-tools/injectable-react": "^23.2.0",
+    "@mui/material": "catalog:",
+    "@ogre-tools/injectable": "catalog:",
+    "@ogre-tools/injectable-react": "catalog:",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
-    "@types/react-table": "^7.7.20",
-    "@xterm/xterm": "^6.0.0",
+    "@types/react-table": "catalog:",
+    "@xterm/xterm": "catalog:",
     "chart.js": "catalog:",
-    "conf": "^15.1.0",
-    "history": "^5.3.0",
+    "conf": "catalog:",
+    "history": "catalog:",
     "immer": "catalog:",
     "mobx": "catalog:",
     "monaco-editor": "catalog:",
-    "node-fetch": "^3.3.2",
+    "node-fetch": "catalog:",
     "react": "catalog:",
-    "react-select": "^5.10.2",
-    "react-table": "^7.8.0",
-    "react-window": "^2.3.0",
-    "rfc6902": "^5.2.0",
+    "react-select": "catalog:",
+    "react-table": "catalog:",
+    "react-window": "catalog:",
+    "rfc6902": "catalog:",
     "type-fest": "catalog:",
-    "typed-emitter": "^2.1.0"
+    "typed-emitter": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/core": "workspace:^",
     "rollup": "^4.62.2",
     "rollup-plugin-dts": "^6.4.1",
     "typescript": "catalog:",
-    "typescript-plugin-css-modules": "^5.2.0"
+    "typescript-plugin-css-modules": "catalog:"
   },
   "peerDependencies": {
     "electron": ">=42.0.0"

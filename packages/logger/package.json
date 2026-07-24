@@ -24,15 +24,15 @@
   },
   "dependencies": {
     "@freelensapp/feature-core": "workspace:^",
-    "@ogre-tools/injectable": "^23.2.0",
-    "es-toolkit": "^1.49.0",
-    "winston": "^3.19.0"
+    "@ogre-tools/injectable": "catalog:",
+    "es-toolkit": "catalog:",
+    "winston": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
     "jsdom": "catalog:",
     "vitest": "catalog:",
-    "winston-transport": "^4.9.0"
+    "winston-transport": "catalog:"
   },
   "publishConfig": {
     "access": "public",

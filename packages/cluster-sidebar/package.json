@@ -26,13 +26,13 @@
   "dependencies": {
     "@freelensapp/feature-core": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
-    "@ogre-tools/injectable": "^23.2.0",
-    "@ogre-tools/injectable-extension-for-mobx": "^23.2.0",
+    "@ogre-tools/injectable": "catalog:",
+    "@ogre-tools/injectable-extension-for-mobx": "catalog:",
     "mobx": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
-    "es-toolkit": "^1.49.0",
+    "es-toolkit": "catalog:",
     "jsdom": "catalog:",
     "vitest": "catalog:"
   },

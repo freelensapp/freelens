@@ -24,20 +24,20 @@
     "test:unit": "vitest run -c ../../../vitest.config.ts --project @freelensapp/utilities"
   },
   "dependencies": {
-    "@astronautlabs/jsonpath": "^1.1.2",
-    "es-toolkit": "^1.49.0",
+    "@astronautlabs/jsonpath": "catalog:",
+    "es-toolkit": "catalog:",
     "mobx": "catalog:",
-    "p-limit": "^7.3.0",
+    "p-limit": "catalog:",
     "react": "catalog:",
-    "semver": "^7.8.5",
-    "tar": "^7.5.19",
-    "typed-regex": "^0.0.8"
+    "semver": "catalog:",
+    "tar": "catalog:",
+    "typed-regex": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
-    "@types/semver": "^7.7.1",
+    "@types/semver": "catalog:",
     "jsdom": "catalog:",
     "type-fest": "catalog:",
     "vitest": "catalog:"

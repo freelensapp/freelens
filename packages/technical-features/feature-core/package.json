@@ -24,7 +24,7 @@
     "test:unit": "vitest run -c ../../../vitest.config.ts --project @freelensapp/feature-core"
   },
   "dependencies": {
-    "@ogre-tools/injectable": "^23.2.0"
+    "@ogre-tools/injectable": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",

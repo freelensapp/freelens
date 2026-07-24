@@ -26,12 +26,12 @@
     "@freelensapp/application": "workspace:^",
     "@freelensapp/feature-core": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
-    "@ogre-tools/injectable": "^23.2.0"
+    "@ogre-tools/injectable": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
-    "@kubernetes/client-node": "^1.4.0",
-    "@ogre-tools/fp": "^23.2.0",
+    "@kubernetes/client-node": "catalog:",
+    "@ogre-tools/fp": "catalog:",
     "typescript": "catalog:"
   },
   "publishConfig": {

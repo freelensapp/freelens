@@ -31,12 +31,12 @@
     "start": "node ./dist/index.js"
   },
   "dependencies": {
-    "arg": "^5.0.2",
+    "arg": "catalog:",
     "cli-progress": "^3.12.0",
     "gunzip-maybe": "^1.4.2",
-    "node-fetch": "^3.3.2",
+    "node-fetch": "catalog:",
     "tar-stream": "^3.2.0",
-    "zod": "^4.4.3"
+    "zod": "catalog:"
   },
   "devDependencies": {
     "@types/cli-progress": "^3.11.6",

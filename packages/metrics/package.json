@@ -23,7 +23,7 @@
     "clean:dist": "pnpm dlx rimraf@6.1.3 dist"
   },
   "dependencies": {
-    "@ogre-tools/injectable": "^23.2.0"
+    "@ogre-tools/injectable": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/kube-object": "workspace:^",

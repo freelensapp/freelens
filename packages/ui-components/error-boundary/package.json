@@ -27,8 +27,8 @@
   "dependencies": {
     "@freelensapp/button": "workspace:^",
     "@freelensapp/routing": "workspace:^",
-    "@ogre-tools/injectable": "^23.2.0",
-    "@ogre-tools/injectable-react": "^23.2.0",
+    "@ogre-tools/injectable": "catalog:",
+    "@ogre-tools/injectable-react": "catalog:",
     "mobx": "catalog:",
     "mobx-react": "catalog:",
     "react": "catalog:"

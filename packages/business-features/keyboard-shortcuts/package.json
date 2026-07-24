@@ -26,8 +26,8 @@
   "dependencies": {
     "@freelensapp/feature-core": "workspace:^",
     "@freelensapp/react-application": "workspace:^",
-    "@ogre-tools/injectable": "^23.2.0",
-    "@ogre-tools/injectable-react": "^23.2.0",
+    "@ogre-tools/injectable": "catalog:",
+    "@ogre-tools/injectable-react": "catalog:",
     "react": "catalog:"
   },
   "devDependencies": {
@@ -35,7 +35,7 @@
     "@freelensapp/react-testing-library-discovery": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
-    "@ogre-tools/injectable-extension-for-mobx": "^23.2.0",
+    "@ogre-tools/injectable-extension-for-mobx": "catalog:",
     "@testing-library/react": "catalog:",
     "@testing-library/user-event": "catalog:",
     "@types/node": "catalog:",

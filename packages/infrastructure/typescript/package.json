@@ -20,7 +20,7 @@
   "scripts": {},
   "dependencies": {
     "typescript": "catalog:",
-    "typescript-plugin-css-modules": "^5.2.0"
+    "typescript-plugin-css-modules": "catalog:"
   },
   "publishConfig": {
     "access": "public",
