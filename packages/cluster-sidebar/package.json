@@ -28,7 +28,7 @@
     "@freelensapp/utilities": "workspace:^",
     "@ogre-tools/injectable": "^23.2.0",
     "@ogre-tools/injectable-extension-for-mobx": "^23.2.0",
-    "mobx": "^6.15.0"
+    "mobx": "^6.16.1"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",

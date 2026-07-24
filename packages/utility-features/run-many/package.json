@@ -35,7 +35,7 @@
     "@ogre-tools/injectable": "^23.2.0",
     "@types/node": "~24.12.4",
     "jsdom": "^29.1.1",
-    "mobx": "^6.15.0",
+    "mobx": "^6.16.1",
     "type-fest": "^5.6.0",
     "typed-emitter": "^2.1.0",
     "vitest": "^4.1.10"

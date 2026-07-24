@@ -41,7 +41,7 @@
     "@types/node": "~24.12.4",
     "@types/react": "catalog:",
     "jsdom": "^29.1.1",
-    "mobx": "^6.15.0",
+    "mobx": "^6.16.1",
     "vitest": "^4.1.10"
   },
   "publishConfig": {
