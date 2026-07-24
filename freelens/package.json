@@ -131,7 +131,7 @@
     "@tailwindcss/postcss": "^4.2.4",
     "@types/fs-extra": "^11.0.4",
     "@types/node": "~24.12.4",
-    "@vitejs/plugin-react": "5.2.0",
+    "@vitejs/plugin-react": "6.0.4",
     "electron": "^42.7.1",
     "electron-builder": "26.15.7",
     "electron-builder-squirrel-windows": "26.15.7",
