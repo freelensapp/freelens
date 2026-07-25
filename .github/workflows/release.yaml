@@ -664,6 +664,16 @@ jobs:
             echo "$(ls -l "$f")" "|" "$(file -b "$f")"
           done
 
+      # Every artifact this leg publishes has a .sha256 next to it by now, in
+      # sha256sum format and named exactly as the release names it - which is
+      # the subject list attest-artifacts needs. It travels as a run artifact
+      # because the release is still a draft here.
+      - name: Upload checksums
+        uses: actions/upload-artifact@v7
+        with:
+          name: "${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-checksums"
+          path: freelens/dist/Freelens-*.sha256
+
       - name: Upload files
         shell: bash
         run: |
@@ -741,6 +751,77 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # Same as in build-app: the checksum of what this job publishes goes to
+      # attest-artifacts as a run artifact, so the list it attests covers every
+      # release asset and not just the ones the matrix produced.
+      - name: Upload checksums
+        uses: actions/upload-artifact@v7
+        with:
+          name: "${{ github.event.repository.name }}-prod-packages-checksums"
+          path: Freelens-*-prod-packages.json.sha256
+
+  attest-artifacts:
+    name: attest build provenance
+
+    # Signs a statement that these exact bytes were built by this workflow, from
+    # this commit, so `gh attestation verify <file> --repo <owner>/<repo>` can
+    # confirm a downloaded installer came from here rather than from someone
+    # who merely renamed a file. publish-github-release waits on it, so the
+    # release is never public without its attestation.
+    #
+    # The subjects come from the .sha256 files the jobs above already produce -
+    # collected as run artifacts, the same way the runtime package lists are -
+    # rather than from the draft release: reading a draft needs a token with
+    # more reach, and the digests are identical either way.
+    needs:
+      - make-draft-release
+      - build-app
+      - publish-runtime-package-list
+
+    runs-on: ubuntu-24.04-arm
+
+    permissions:
+      actions: read
+      attestations: write
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Download checksums
+        uses: actions/download-artifact@v8
+        with:
+          pattern: "*-checksums"
+          path: checksums
+          merge-multiple: true
+
+      - name: Collect attestation subjects
+        run: |
+          set -eo pipefail
+          shopt -s nullglob
+          # Each .sha256 is one sha256sum line naming the asset exactly as the
+          # release names it, which is what `gh attestation verify` matches on.
+          # sort -u only orders them; a duplicate would mean two jobs published
+          # the same asset name.
+          #
+          # The Windows lines read "<digest> *<name>" rather than "<digest>
+          # <name>" because sha256sum there defaults to binary mode. Left as
+          # is on purpose: the action strips a leading '*' or ' ' from the name
+          # itself, and rewriting the digest lines here would only add a way to
+          # get them wrong.
+          cat checksums/*.sha256 | sort -u > attestation-checksums.txt
+          cat attestation-checksums.txt
+          count=$(wc -l < attestation-checksums.txt)
+          if [[ "$count" -eq 0 ]]; then
+            echo "No checksums collected - refusing to attest nothing" >&2
+            exit 1
+          fi
+          echo "subjects: $count"
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@v4
+        with:
+          subject-checksums: attestation-checksums.txt
+
   publish-github-release:
     name: publish GitHub release
 
@@ -754,6 +835,7 @@ jobs:
       - make-draft-release
       - build-app
       - publish-runtime-package-list
+      - attest-artifacts
 
     runs-on: ubuntu-24.04-arm
 
