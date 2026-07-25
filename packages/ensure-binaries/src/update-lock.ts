@@ -37,14 +37,12 @@ const options = arg({
   "--only": [String],
 });
 
-function joinWithInitCwd(relativePath: string): string {
-  const { INIT_CWD } = process.env;
-
-  return INIT_CWD ? path.join(INIT_CWD, relativePath) : relativePath;
-}
-
-const pathToPackage = joinWithInitCwd(options["--package"] ?? "package.json");
-const pathToLock = joinWithInitCwd(
+// Relative paths resolve against the working directory, which pnpm sets to the
+// package running the script. INIT_CWD would not do: it holds the directory
+// pnpm was invoked from, so `pnpm -r update-binaries-lock` at the repository
+// root would look for the root package.json instead of freelens/package.json.
+const pathToPackage = path.resolve(options["--package"] ?? "package.json");
+const pathToLock = path.resolve(
   options["--lock"] ?? path.join(path.dirname(options["--package"] ?? "."), "binaries.lock.json"),
 );
 
