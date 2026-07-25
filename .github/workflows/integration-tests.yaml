@@ -514,12 +514,18 @@ jobs:
           for sbom in sboms/*-sbom.spdx.json; do
             name=$(basename "$sbom" .spdx.json)
             # Reduce the SBOM to runtime packages before scanning.
+            # sub("\x5c"; "/"): the Windows SBOM records sourceInfo paths with
+            # backslashes, which the /freelens/... test below would never match -
+            # every shipped non-npm package (Electron DLLs, node-pty, the bundled
+            # Go CLIs) would silently drop out of the scan. \x5c rather than a
+            # literal backslash because yq unescapes the string first, leaving
+            # the regex engine a trailing backslash.
             yq -pj -oj '
               (load("prod-set.json")) as $set |
               .packages |= map(
                 ( ((.externalRefs // []) | map(select(.referenceType == "purl")))[0].referenceLocator // "" ) as $purl |
                 (.name + "@" + (.versionInfo // "")) as $key |
-                ((.sourceInfo // "") | (capture("(?<p>/[^,]*)").p // "")) as $path |
+                (((.sourceInfo // "") | sub("\\x5c"; "/")) | (capture("(?<p>/[^,]*)").p // "")) as $path |
                 select(
                   (($purl | test("^pkg:npm/")) and ($set[$key] != null))
                   or
@@ -551,7 +557,7 @@ jobs:
                   | select(has("sourceInfo"))
                   | {
                       "key": (.name + "@" + (.versionInfo // "")),
-                      "value": ((.sourceInfo | capture("(?<p>/[^,]*)").p) // "" | sub("^/"; ""))
+                      "value": (((.sourceInfo | sub("\\x5c"; "/")) | capture("(?<p>/[^,]*)").p) // "" | sub("^/"; ""))
                     }
                   | select(.value != "")
                 ] | from_entries
