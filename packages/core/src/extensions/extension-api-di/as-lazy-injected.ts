@@ -14,7 +14,7 @@ import type { Inject } from "@ogre-tools/injectable";
  * container only when a property is first accessed, after the container of
  * the process has been registered with `setDiForExtensionApi`.
  */
-export const asLazyInjectedForExtensionApi = ((injectable, instantiationParameter) =>
+export const asLazyInjectedForExtensionApi = ((injectable: any, instantiationParameter: any) =>
   new Proxy(
     {},
 

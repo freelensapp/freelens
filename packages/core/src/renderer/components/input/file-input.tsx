@@ -66,6 +66,16 @@ export class FileInput extends React.Component<FileInputProps> {
   render() {
     const { onSelectFiles, readAsText, ...props } = this.props;
 
-    return <input type="file" style={this.style} onChange={this.onChange} ref={(e) => (this.input = e)} {...props} />;
+    return (
+      <input
+        type="file"
+        style={this.style}
+        onChange={this.onChange}
+        ref={(e) => {
+          this.input = e;
+        }}
+        {...props}
+      />
+    );
   }
 }

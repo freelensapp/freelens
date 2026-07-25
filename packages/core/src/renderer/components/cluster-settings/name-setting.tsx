@@ -5,7 +5,7 @@
  */
 
 import { autorun, makeObservable, observable } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import { Input } from "../input";
 import { isRequired } from "../input/input_validators";
@@ -21,6 +21,8 @@ export interface ClusterNameSettingProps {
 
 @observer
 export class ClusterNameSetting extends React.Component<ClusterNameSettingProps> {
+  private readonly disposers: (() => void)[] = [];
+
   @observable name = "";
 
   constructor(props: ClusterNameSettingProps) {
@@ -33,12 +35,15 @@ export class ClusterNameSetting extends React.Component<ClusterNameSettingProps>
     // inside a derivation (the autorun below).
     const { cluster, entity } = this.props;
 
-    disposeOnUnmount(
-      this,
+    this.disposers.push(
       autorun(() => {
         this.name = cluster.preferences.clusterName || entity.getName();
       }),
     );
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   save = () => {

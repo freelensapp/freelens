@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { formatInTimeZone } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import moment from "moment-timezone";
 import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 
 import type { UserPreferencesState } from "../../../features/user-preferences/common/state.injectable";
@@ -20,7 +20,7 @@ interface Dependencies {
 }
 
 const NonInjectedLocaleDate = observer(({ date, state }: LocaleDateProps & Dependencies) => (
-  <>{`${moment.tz(date, state.localeTimezone).format()}`}</>
+  <>{formatInTimeZone(date, state.localeTimezone)}</>
 ));
 
 export const LocaleDate = withInjectables<Dependencies, LocaleDateProps>(NonInjectedLocaleDate, {

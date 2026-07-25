@@ -23,11 +23,11 @@
     "clean:dist": "pnpm dlx rimraf@6.1.3 dist"
   },
   "dependencies": {
-    "@testing-library/dom": "^10.4.1"
+    "@testing-library/dom": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
-    "@testing-library/react": "^15.0.7"
+    "@testing-library/react": "catalog:"
   },
   "publishConfig": {
     "access": "public",

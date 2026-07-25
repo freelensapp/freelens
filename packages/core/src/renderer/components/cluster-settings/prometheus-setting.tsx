@@ -7,7 +7,7 @@
 import { Spinner } from "@freelensapp/spinner";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { autorun, computed, makeObservable, observable } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import { initialFilesystemMountpoints } from "../../../common/cluster-types";
 import requestMetricsProvidersInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-providers.injectable";
@@ -74,6 +74,8 @@ const requestMethodOptions: SelectOption<PrometheusRequestMethod>[] = [
 
 @observer
 class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometheusSettingProps & Dependencies> {
+  private readonly disposers: (() => void)[] = [];
+
   @observable mountpoints = "";
   @observable path = ""; // <namespace>/<service>:<port>
   @observable customPrefix = ""; // e.g. "/prometheus"
@@ -123,8 +125,7 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
     // this.props inside a derivation (the autorun below).
     const { cluster } = this.props;
 
-    disposeOnUnmount(
-      this,
+    this.disposers.push(
       autorun(() => {
         const { prometheus, prometheusProvider, filesystemMountpoints, prometheusRequestMethod } = cluster.preferences;
 
@@ -166,6 +167,10 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
       this.loading = false;
       this.loadedOptions.replace(values.map((provider) => [provider.id, provider]));
     });
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   private sanitizePrefix(prefix: string): string {

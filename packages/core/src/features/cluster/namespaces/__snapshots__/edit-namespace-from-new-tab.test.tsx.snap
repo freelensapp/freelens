@@ -49,7 +49,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -217,7 +217,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -313,7 +313,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -879,7 +879,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -1047,7 +1047,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -1143,7 +1143,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -1714,7 +1714,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -1882,7 +1882,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -1978,7 +1978,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -2648,7 +2648,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -2816,7 +2816,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -2912,7 +2912,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -3530,7 +3530,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -3698,7 +3698,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -3794,7 +3794,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -4514,7 +4514,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -4682,7 +4682,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -4778,7 +4778,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -5500,7 +5500,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -5668,7 +5668,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -5764,7 +5764,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -6448,7 +6448,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -6616,7 +6616,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -6712,7 +6712,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -7391,7 +7391,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -7559,7 +7559,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -7655,7 +7655,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -8325,7 +8325,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -8493,7 +8493,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -8589,7 +8589,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -9259,7 +9259,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -9427,7 +9427,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -9523,7 +9523,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -10193,7 +10193,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -10361,7 +10361,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -10457,7 +10457,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -10932,7 +10932,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -11100,7 +11100,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -11196,7 +11196,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -11875,7 +11875,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -12043,7 +12043,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -12139,7 +12139,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -12809,7 +12809,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -12977,7 +12977,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -13073,7 +13073,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"
@@ -13743,7 +13743,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -13911,7 +13911,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon material focusable"
@@ -14007,7 +14007,7 @@ exports[`cluster/namespaces - edit namespace from new tab > when navigating to n
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/namespaces"
                 >
                   <i
                     class="Icon svg focusable"

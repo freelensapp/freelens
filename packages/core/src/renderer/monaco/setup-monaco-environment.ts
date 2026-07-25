@@ -10,8 +10,8 @@
 // through the MonacoEnvironment global. Only "json" has a dedicated worker;
 // "yaml" is a basic language and is serviced by the editor worker.
 
-import EditorWorker from "monaco-editor/esm/vs/editor/editor.worker?worker";
-import JsonWorker from "monaco-editor/esm/vs/language/json/json.worker?worker";
+import EditorWorker from "monaco-editor/editor/editor.worker?worker";
+import JsonWorker from "monaco-editor/languages/features/json/json.worker?worker";
 
 self.MonacoEnvironment = {
   getWorker: (_workerId, label) => (label === "json" ? new JsonWorker() : new EditorWorker()),

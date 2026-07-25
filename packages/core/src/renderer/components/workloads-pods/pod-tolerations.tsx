@@ -6,7 +6,6 @@
 
 import "./pod-tolerations.scss";
 
-import { uniqueId } from "es-toolkit/compat";
 import { Table, TableCell, TableHead, TableRow } from "../table";
 
 import type { Toleration } from "@freelensapp/kube-object";
@@ -23,11 +22,13 @@ enum sortBy {
   Value = "value",
 }
 
-const getTableRow = (toleration: Toleration) => {
+const getTableRow = (toleration: Toleration, index: number) => {
   const { key, operator, effect, tolerationSeconds, value } = toleration;
 
   return (
-    <TableRow key={uniqueId("toleration-")} sortItem={toleration} nowrap>
+    // Tolerations have no unique identifier, so key by position — a generated id would
+    // change on every render and force React to remount every row.
+    <TableRow key={`toleration-${index}`} sortItem={toleration} nowrap>
       <TableCell className="key">{key}</TableCell>
       <TableCell className="operator">{operator}</TableCell>
       <TableCell className="value">{value}</TableCell>

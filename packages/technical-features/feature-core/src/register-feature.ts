@@ -22,8 +22,6 @@ const createFeatureContext = (feature: Feature, di: DiContainer) => {
 
       numberOfRegistrations: 0,
     }),
-
-    scope: true,
   });
 
   di.register(featureContextInjectable);

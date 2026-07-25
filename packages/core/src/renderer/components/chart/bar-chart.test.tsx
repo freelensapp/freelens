@@ -5,13 +5,32 @@
  */
 
 import { computed } from "mobx";
-import moment from "moment";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import activeThemeInjectable from "../../themes/active.injectable";
 import { renderFor } from "../test-utils/renderFor";
 import { BarChart } from "./bar-chart";
 
 const chartMock = vi.fn();
+
+// Local-time formatters mirroring bar-chart.tsx so expectations stay
+// deterministic regardless of the host locale (previously via moment).
+const MONTHS_SHORT = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const pad2 = (value: number): string => String(value).padStart(2, "0");
+
+const formatHoursMinutes = (timestamp: number): string => {
+  const date = new Date(timestamp);
+  return `${pad2(date.getHours())}:${pad2(date.getMinutes())}`;
+};
+
+const formatMonthDay = (timestamp: number): string => {
+  const date = new Date(timestamp);
+  return `${MONTHS_SHORT[date.getMonth()]} ${pad2(date.getDate())}`;
+};
+
+const formatMonthDayTime = (timestamp: number): string => {
+  const date = new Date(timestamp);
+  return `${MONTHS_SHORT[date.getMonth()]} ${pad2(date.getDate())}, ${pad2(date.getHours())}:${pad2(date.getMinutes())}`;
+};
 
 vi.mock("./chart", () => ({
   ChartKind: {
@@ -70,7 +89,7 @@ describe("BarChart", () => {
     expect(parser(1_710_000_000_000)).toBe(1_710_000_000_000);
     expect(parser("1710000000000")).toBeNaN();
     expect(parser("2024-01-01T00:00:00Z")).toBe(1_704_067_200_000);
-    expect(tickCallback("17:00", 0, chartJsTicks)).toBe(moment(1_710_000_000_000).format("HH:mm"));
+    expect(tickCallback("17:00", 0, chartJsTicks)).toBe(formatHoursMinutes(1_710_000_000_000));
   });
 
   it("uses day-sized x-axis ticks for large custom ranges", () => {
@@ -120,9 +139,9 @@ describe("BarChart", () => {
     ];
 
     expect(options.scales.x.time.unit).toBe("day");
-    expect(tickCallback("1704067200000", 0, chartJsTicks)).toBe(moment(1_704_067_200_000).format("MMM DD"));
-    expect(tickCallback("1704499200000", 1, chartJsTicks)).toBe(moment(1_704_499_200_000).format("MMM DD"));
-    expect(tickCallback("1704931200000", 2, chartJsTicks)).toBe(moment(1_704_931_200_000).format("MMM DD"));
+    expect(tickCallback("1704067200000", 0, chartJsTicks)).toBe(formatMonthDay(1_704_067_200_000));
+    expect(tickCallback("1704499200000", 1, chartJsTicks)).toBe(formatMonthDay(1_704_499_200_000));
+    expect(tickCallback("1704931200000", 2, chartJsTicks)).toBe(formatMonthDay(1_704_931_200_000));
   });
 
   it("formats tooltip titles as readable dates and skips future timestamps", () => {
@@ -160,10 +179,8 @@ describe("BarChart", () => {
     const options = chartMock.mock.calls[0][0].options;
     const tooltipTitle = options.plugins.tooltip.callbacks.title;
 
-    expect(tooltipTitle([{ parsed: { x: "1710000000000" } }])).toBe(moment(1_710_000_000_000).format("MMM DD, HH:mm"));
-    expect(tooltipTitle([{ parsed: { x: 1_710_000_000_000 } }])).toBe(
-      moment(1_710_000_000_000).format("MMM DD, HH:mm"),
-    );
+    expect(tooltipTitle([{ parsed: { x: "1710000000000" } }])).toBe(formatMonthDayTime(1_710_000_000_000));
+    expect(tooltipTitle([{ parsed: { x: 1_710_000_000_000 } }])).toBe(formatMonthDayTime(1_710_000_000_000));
     expect(tooltipTitle([{ parsed: { x: "9999999999999" } }])).toBe("");
     expect(tooltipTitle([])).toBe("");
   });

@@ -4,10 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/vitest";
 import { JsonApiErrorParsed } from "@freelensapp/json-api";
 import { Namespace } from "@freelensapp/kube-object";
 import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
+import { asyncFn } from "@freelensapp/test-utils";
 import { act, fireEvent } from "@testing-library/react";
 import directoryForLensLocalStorageInjectable from "../../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
 import navigateToNamespacesInjectable from "../../../common/front-end-routing/routes/cluster/namespaces/navigate-to-namespaces.injectable";
@@ -22,8 +22,8 @@ import apiKubePatchInjectable from "../../../renderer/k8s/api-kube-patch.injecta
 
 import type { BaseKubeJsonApiObjectMetadata, KubeJsonApiData, KubeObjectScope } from "@freelensapp/kube-object";
 import type { ShowNotification } from "@freelensapp/notifications";
+import type { AsyncFnMock } from "@freelensapp/test-utils";
 
-import type { AsyncFnMock } from "@async-fn/vitest";
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
 import type { MockedFunction } from "vitest";
@@ -127,13 +127,18 @@ describe("cluster/namespaces - edit namespace from new tab", () => {
         it.skip("does not show edit resource tab yet", () => {});
 
         describe("when clicking to edit namespace", () => {
-          beforeEach(() => {
+          beforeEach(async () => {
             // TODO: Make implementation match the description (tests above)
             const namespaceStub = new Namespace(someNamespaceDataStub);
 
             const createEditResourceTab = windowDi.inject(createEditResourceTabInjectable);
 
-            createEditResourceTab(namespaceStub);
+            // React 19 flushes passive effects only at act() boundaries, so wrap
+            // the tab creation to let the effect that calls apiKubeGet run before
+            // the nested cases resolve/reject that mock.
+            await act(async () => {
+              createEditResourceTab(namespaceStub);
+            });
           });
 
           it("renders", () => {
@@ -689,7 +694,7 @@ metadata:
             });
 
             describe("given clicking the context menu for second namespace, when clicking to edit namespace", () => {
-              beforeEach(() => {
+              beforeEach(async () => {
                 apiKubeGetMock.mockClear();
 
                 // TODO: Make implementation match the description
@@ -697,7 +702,12 @@ metadata:
 
                 const createEditResourceTab = windowDi.inject(createEditResourceTabInjectable);
 
-                createEditResourceTab(namespaceStub);
+                // React 19 flushes passive effects only at act() boundaries, so wrap
+                // the tab creation to let the effect that calls apiKubeGet run before
+                // the nested cases resolve/reject that mock.
+                await act(async () => {
+                  createEditResourceTab(namespaceStub);
+                });
               });
 
               it("renders", () => {
@@ -785,12 +795,17 @@ metadata:
                 });
 
                 describe("when clicking dock tab for the first namespace", () => {
-                  beforeEach(() => {
+                  beforeEach(async () => {
                     apiKubeGetMock.mockClear();
 
                     const tab = rendered.getByTestId("dock-tab-for-some-first-tab-id");
 
-                    fireEvent.click(tab);
+                    // React 19 flushes passive effects only at act() boundaries;
+                    // switching tabs re-runs the async withInjectables getProps for
+                    // the newly-shown tab, so let that resolve inside act().
+                    await act(async () => {
+                      fireEvent.click(tab);
+                    });
                   });
 
                   it("renders", () => {

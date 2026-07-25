@@ -10,7 +10,6 @@ import { loggerFeature, loggerInjectionToken } from "@freelensapp/logger";
 import { renderFor } from "@freelensapp/test-utils";
 import { createContainer } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
-import { registerInjectableReact } from "@ogre-tools/injectable-react";
 import { runInAction } from "mobx";
 import { Icon } from "./icon";
 
@@ -25,12 +24,9 @@ describe("<Icon> href technical tests", () => {
 
   beforeEach(() => {
     const environment = "renderer";
-    const di = createContainer(environment, {
-      detectCycles: false,
-    });
+    const di = createContainer(environment);
 
     registerMobX(di);
-    registerInjectableReact(di);
 
     runInAction(() => {
       registerFeature(di, loggerFeature);

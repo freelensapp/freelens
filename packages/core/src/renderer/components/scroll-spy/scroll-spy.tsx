@@ -17,14 +17,14 @@ export interface NavigationTree {
 }
 
 export interface ScrollSpyProps extends React.DOMAttributes<HTMLElement> {
-  render: (data: NavigationTree[]) => JSX.Element;
+  render: (data: NavigationTree[]) => React.JSX.Element;
   htmlFor?: string; // Id of the element to put observers on
   rootMargin?: string; // https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API#creating_an_intersection_observer
 }
 
 export const ScrollSpy = observer(({ render, htmlFor, rootMargin = "0px 0px -100% 0px" }: ScrollSpyProps) => {
   const parent = useRef<HTMLDivElement>(null);
-  const sections = useRef<NodeListOf<HTMLElement>>();
+  const sections = useRef<NodeListOf<HTMLElement> | undefined>(undefined);
   const [tree, setTree] = useState<NavigationTree[]>([]);
   const [activeElementId, setActiveElementId] = useState("");
 

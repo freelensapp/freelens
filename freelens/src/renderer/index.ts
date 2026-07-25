@@ -28,20 +28,20 @@ import { reactApplicationFeature } from "@freelensapp/react-application";
 import { routingFeature } from "@freelensapp/routing";
 import { createContainer } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
-import { registerInjectableReact } from "@ogre-tools/injectable-react";
 import { runInAction } from "mobx";
 import { registerInjectables as registerCommonInjectables } from "../common/register-injectables";
 import { registerInjectables as registerRendererInjectables } from "./register-injectables";
 
 const environment = "renderer";
 
-const di = createContainer(environment, {
-  detectCycles: false,
-});
+const di = createContainer(environment);
+
+// @ogre-tools 23 prevents side-effect injectables by default; the production
+// container must opt back in to allow them.
+di.permitSideEffects();
 
 runInAction(() => {
   registerMobX(di);
-  registerInjectableReact(di);
   registerLensCore(di, environment);
 
   registerFeature(di, loggerFeature);

@@ -7,6 +7,8 @@ import electronAppInjectable from "./electron-app.injectable";
 describe("electron-app", () => {
   it("is electron app", () => {
     const di = createContainer("irrelevant");
+    // ogre 23 prevents side-effect injectables by default; this test injects real ones.
+    di.permitSideEffects();
 
     registerFeature(di, applicationFeatureForElectronMain);
 

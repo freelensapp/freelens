@@ -7,7 +7,7 @@
 import { Button } from "@freelensapp/button";
 import { Icon } from "@freelensapp/icon";
 import { makeObservable, observable, reaction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import { ClusterMetricsResourceType } from "../../../common/cluster-types";
 import { SubTitle } from "../layout/sub-title";
@@ -21,6 +21,8 @@ export interface ClusterMetricsSettingProps {
 
 @observer
 export class ClusterMetricsSetting extends React.Component<ClusterMetricsSettingProps> {
+  private readonly disposers: (() => void)[] = [];
+
   @observable hiddenMetrics = observable.set<string>();
 
   constructor(props: ClusterMetricsSettingProps) {
@@ -36,14 +38,18 @@ export class ClusterMetricsSetting extends React.Component<ClusterMetricsSetting
 
     this.hiddenMetrics = observable.set<string>(cluster.preferences.hiddenMetrics ?? []);
 
-    disposeOnUnmount(this, [
+    this.disposers.push(
       reaction(
         () => cluster.preferences.hiddenMetrics,
         () => {
           this.hiddenMetrics = observable.set<string>(cluster.preferences.hiddenMetrics ?? []);
         },
       ),
-    ]);
+    );
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   save = () => {

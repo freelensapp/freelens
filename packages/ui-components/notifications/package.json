@@ -32,22 +32,21 @@
     "@freelensapp/logger": "workspace:^",
     "@freelensapp/react-application": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
-    "@ogre-tools/fp": "^17.11.1",
-    "@ogre-tools/injectable": "^17.11.1",
-    "@ogre-tools/injectable-react": "^17.11.1",
-    "auto-bind": "^5.0.1",
-    "es-toolkit": "^1.49.0",
-    "mobx": "^6.15.0",
-    "mobx-react": "^9.1.1",
-    "react": "catalog:",
-    "react-dom": "catalog:"
+    "@ogre-tools/fp": "catalog:",
+    "@ogre-tools/injectable": "catalog:",
+    "@ogre-tools/injectable-react": "catalog:",
+    "auto-bind": "catalog:",
+    "es-toolkit": "catalog:",
+    "mobx": "catalog:",
+    "mobx-react": "catalog:",
+    "react": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
     "@types/react": "catalog:",
-    "type-fest": "^5.6.0",
-    "typescript": "^7.0.2",
-    "vitest": "^4.1.10"
+    "type-fest": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "publishConfig": {
     "access": "public",

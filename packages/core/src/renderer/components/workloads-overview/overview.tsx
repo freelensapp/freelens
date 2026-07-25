@@ -10,7 +10,7 @@ import { Icon } from "@freelensapp/icon";
 import { TooltipPosition } from "@freelensapp/tooltip";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { makeObservable, observable, reaction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import clusterFrameContextForNamespacedResourcesInjectable from "../../cluster-frame-context/for-namespaced-resources.injectable";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
@@ -55,6 +55,7 @@ interface Dependencies {
 
 @observer
 class NonInjectedWorkloadsOverview extends React.Component<Dependencies> {
+  private readonly disposers: (() => void)[] = [];
   @observable loadErrors: string[] = [];
 
   constructor(props: Dependencies) {
@@ -67,7 +68,7 @@ class NonInjectedWorkloadsOverview extends React.Component<Dependencies> {
     // inside a derivation (the reaction's data function below).
     const { clusterFrameContext } = this.props;
 
-    disposeOnUnmount(this, [
+    this.disposers.push(
       this.props.subscribeStores(
         [
           this.props.cronJobStore,
@@ -90,7 +91,11 @@ class NonInjectedWorkloadsOverview extends React.Component<Dependencies> {
           this.loadErrors.length = 0;
         },
       ),
-    ]);
+    );
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   renderLoadErrors() {

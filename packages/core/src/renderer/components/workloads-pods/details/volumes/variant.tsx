@@ -40,6 +40,8 @@ import { VsphereVolume } from "./variants/vsphere-volume";
 
 import type { Pod, PodSpecVolume, PodVolumeKind } from "@freelensapp/kube-object";
 
+import type { JSX } from "react";
+
 const deprecatedVolumeTypes = new Set<PodVolumeKind>(["flocker", "gitRepo", "quobyte", "storageos"]);
 
 interface VolumeVariantProps {

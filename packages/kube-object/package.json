@@ -25,16 +25,15 @@
   },
   "dependencies": {
     "@freelensapp/utilities": "workspace:^",
-    "auto-bind": "^5.0.1",
-    "es-toolkit": "^1.49.0",
-    "moment": "^2.30.1",
-    "typed-regex": "^0.0.8"
+    "auto-bind": "catalog:",
+    "es-toolkit": "catalog:",
+    "typed-regex": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
-    "jsdom": "^29.1.1",
-    "type-fest": "^5.6.0",
-    "vitest": "^4.1.10"
+    "jsdom": "catalog:",
+    "type-fest": "catalog:",
+    "vitest": "catalog:"
   },
   "publishConfig": {
     "access": "public",

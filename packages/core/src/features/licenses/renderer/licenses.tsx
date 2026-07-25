@@ -12,7 +12,7 @@ import { SettingLayout } from "../../../renderer/components/layout/setting-layou
 import closeLicensesInjectable from "./close-licenses.injectable";
 import licenseContentInjectable from "./license-content.injectable";
 
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
+import type { IAsyncComputed } from "../../../common/utils/async-computed";
 
 interface Dependencies {
   closeLicenses: () => void;

@@ -24,12 +24,12 @@
     "test:unit": "vitest run -c ../../../vitest.config.ts --project @freelensapp/feature-core"
   },
   "dependencies": {
-    "@ogre-tools/injectable": "^17.11.1"
+    "@ogre-tools/injectable": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
-    "jsdom": "^29.1.1",
-    "vitest": "^4.1.10"
+    "jsdom": "catalog:",
+    "vitest": "catalog:"
   },
   "publishConfig": {
     "access": "public",

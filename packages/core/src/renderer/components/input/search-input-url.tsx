@@ -9,7 +9,7 @@ import { storesAndApisCanBeCreatedInjectionToken } from "@freelensapp/kube-api-s
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { debounce } from "es-toolkit/compat";
 import { comparer, makeObservable, observable, reaction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import namespaceStoreInjectable from "../namespaces/store.injectable";
 import persistentSearchStoreInjectable from "./persistent-search-store.injectable";
@@ -31,6 +31,8 @@ interface Dependencies {
 
 @observer
 class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & Dependencies> {
+  private readonly disposers: (() => void)[] = [];
+
   @observable inputVal = ""; // fix: use empty string on init to avoid react warnings
   @observable private lastNamespaceKey = "";
   @observable private lastPlaceholder = "";
@@ -113,7 +115,7 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
     }
 
     // Sync inputVal with either persistent store or URL param
-    disposeOnUnmount(this, [
+    this.disposers.push(
       reaction(
         () => ({
           isEnabled: persistentSearchStore.isEnabled,
@@ -159,10 +161,10 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
         },
         { equals: comparer.structural },
       ),
-    ]);
+    );
 
     // When persistence is enabled and there's a persistent value, sync it to URL
-    disposeOnUnmount(this, [
+    this.disposers.push(
       reaction(
         () => ({
           isEnabled: persistentSearchStore.isEnabled,
@@ -178,7 +180,11 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
         },
         { fireImmediately: true, equals: comparer.structural },
       ),
-    ]);
+    );
+  }
+
+  componentWillUnmount(): void {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   setValue = (value: string) => {

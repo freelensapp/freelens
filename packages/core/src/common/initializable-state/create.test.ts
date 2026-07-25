@@ -30,7 +30,7 @@ describe("InitializableTokens technical tests", () => {
 
   it("throws given attempting to inject the state token", () => {
     expect(() => di.inject(initializableToken.stateToken)).toThrowErrorMatchingInlineSnapshot(
-      `[Error: Tried to inject non-registered injectable "irrelevant" -> "some-root-id-state-token".]`,
+      `[Error: Tried to inject non-registered injectable "some-root-id-state-token" from "irrelevant".]`,
     );
   });
 

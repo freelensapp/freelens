@@ -9,8 +9,6 @@ const whenAppIsReadyInjectable = getInjectable({
 
     return () => electronApp.whenReady();
   },
-
-  decorable: false,
 });
 
 export default whenAppIsReadyInjectable;

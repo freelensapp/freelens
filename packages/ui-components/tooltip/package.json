@@ -28,23 +28,23 @@
   },
   "dependencies": {
     "@freelensapp/utilities": "workspace:^",
-    "auto-bind": "^5.0.1",
-    "es-toolkit": "^1.49.0",
-    "mobx": "^6.15.0",
-    "mobx-react": "^9.1.1",
+    "auto-bind": "catalog:",
+    "es-toolkit": "catalog:",
+    "mobx": "catalog:",
+    "mobx-react": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
-    "@testing-library/jest-dom": "^6.9.1",
-    "@testing-library/react": "^15.0.7",
-    "@testing-library/user-event": "^14.6.1",
+    "@testing-library/jest-dom": "catalog:",
+    "@testing-library/react": "catalog:",
+    "@testing-library/user-event": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "jsdom": "^29.1.1",
-    "typescript": "^7.0.2",
-    "vitest": "^4.1.10"
+    "jsdom": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "publishConfig": {
     "access": "public",

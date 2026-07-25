@@ -5,9 +5,9 @@
  */
 
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import { asyncComputed } from "@ogre-tools/injectable-react";
 import { now } from "mobx-utils";
 import requestClusterMetricsByNodeNamesInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
+import { asyncComputed } from "../../../common/utils/async-computed";
 import selectedMetricsTimeRangeInjectable from "./overview/selected-metrics-time-range.injectable";
 import selectedNodeRoleForMetricsInjectable from "./overview/selected-node-role-for-metrics.injectable";
 

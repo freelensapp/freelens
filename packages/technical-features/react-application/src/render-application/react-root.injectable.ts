@@ -1,4 +1,5 @@
 import { getInjectable, getInjectionToken } from "@ogre-tools/injectable";
+import { createElement, StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
 import type React from "react";
@@ -32,7 +33,10 @@ const reactRootInjectable = getInjectable({
     };
 
     return {
-      render: (container, application) => getRoot(container).render(application),
+      // Spike: wrap the application in React.StrictMode to surface impure
+      // renders and missing effect cleanup (double render / mount-unmount-mount)
+      // in development. Dev-only behaviour; no effect in a production build.
+      render: (container, application) => getRoot(container).render(createElement(StrictMode, null, application)),
       unmount: (container) => {
         const root = roots.get(container);
 

@@ -23,13 +23,13 @@
     "clean:dist": "pnpm dlx rimraf@6.1.3 dist"
   },
   "dependencies": {
-    "command-line-args": "^6.0.2",
-    "semver": "^7.8.5"
+    "command-line-args": "catalog:",
+    "semver": "catalog:"
   },
   "devDependencies": {
-    "@types/command-line-args": "^5.2.3",
-    "@types/node": "~24.12.4",
-    "@types/semver": "^7.7.1",
-    "typescript": "^7.0.2"
+    "@types/command-line-args": "catalog:",
+    "@types/node": "catalog:",
+    "@types/semver": "catalog:",
+    "typescript": "catalog:"
   }
 }

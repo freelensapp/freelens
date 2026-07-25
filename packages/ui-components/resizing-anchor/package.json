@@ -26,16 +26,16 @@
   "scripts": {},
   "dependencies": {
     "@freelensapp/utilities": "workspace:^",
-    "es-toolkit": "^1.49.0",
-    "mobx": "^6.15.0",
-    "mobx-react": "^9.1.1",
+    "es-toolkit": "catalog:",
+    "mobx": "catalog:",
+    "mobx-react": "catalog:",
     "react": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
     "@types/react": "catalog:",
-    "typescript": "^7.0.2",
-    "vitest": "^4.1.10"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "publishConfig": {
     "access": "public",

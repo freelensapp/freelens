@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { disposer, getOrInsert, noop, WrappedAbortController } from "@freelensapp/utilities";
+import { disposer, getOrInsert, isAbortError, noop, WrappedAbortController } from "@freelensapp/utilities";
 import { once } from "es-toolkit";
 import { comparer, reaction } from "mobx";
 
@@ -122,7 +122,7 @@ export class KubeWatchApi {
         await store.loadAll({ namespaces, reqInit: { signal: childController.signal }, onLoadFailure });
         unsubscribe.push(store.subscribe({ onLoadFailure, abortController: childController }));
       } catch (error) {
-        if (!(error instanceof DOMException)) {
+        if (!isAbortError(error)) {
           this.log(new Error("Loading stores has failed", { cause: error }), {
             meta: { store, namespaces },
           });

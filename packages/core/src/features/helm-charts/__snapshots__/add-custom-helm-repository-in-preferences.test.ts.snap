@@ -619,40 +619,12 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                       Synced Items
                        
                     </div>
-                    <div>
+                    <div
+                      class="loading-spinner"
+                    >
                       <div
-                        class="item flex gap-2 items-center justify-between mt-3"
-                      >
-                        <i
-                          class="Icon material focusable"
-                        >
-                          <span
-                            class="icon"
-                            data-icon-name="folder"
-                          >
-                            folder
-                          </span>
-                        </i>
-                        <div
-                          class="flex-grow break-all"
-                        >
-                          /some-home-dir/.kube
-                        </div>
-                        <i
-                          class="Icon material interactive focusable"
-                          tabindex="0"
-                        >
-                          <span
-                            class="icon"
-                            data-icon-name="delete"
-                          >
-                            delete
-                          </span>
-                        </i>
-                        <div>
-                          Remove
-                        </div>
-                      </div>
+                        class="Spinner singleColor"
+                      />
                     </div>
                   </section>
                 </div>
@@ -7649,7 +7621,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
               data-testid="add-custom-helm-repository-dialog"
             >
               <div
-                class="Input focused dirty"
+                class="Input focused"
               >
                 <label
                   class="input-area flex items-center gap-2"
@@ -7669,7 +7641,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                 />
               </div>
               <div
-                class="Input dirty"
+                class="Input"
               >
                 <label
                   class="input-area flex items-center gap-2"
@@ -7737,7 +7709,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                   class="flex gap-3 items-center"
                 >
                   <div
-                    class="Input grow shrink-0 basis-0 dirty"
+                    class="Input grow shrink-0 basis-0 invalid validating validatingLine"
                   >
                     <label
                       class="input-area flex items-center gap-2"
@@ -7774,7 +7746,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                   class="flex gap-3 items-center"
                 >
                   <div
-                    class="Input grow shrink-0 basis-0 invalid dirty validating validatingLine"
+                    class="Input grow shrink-0 basis-0 invalid validating validatingLine"
                   >
                     <label
                       class="input-area flex items-center gap-2"
@@ -7811,7 +7783,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                   class="flex gap-3 items-center"
                 >
                   <div
-                    class="Input grow shrink-0 basis-0 invalid dirty validating validatingLine"
+                    class="Input grow shrink-0 basis-0 invalid validating validatingLine"
                   >
                     <label
                       class="input-area flex items-center gap-2"
@@ -7851,7 +7823,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                    
                 </div>
                 <div
-                  class="Input dirty"
+                  class="Input"
                 >
                   <label
                     class="input-area flex items-center gap-2"
@@ -7870,7 +7842,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                   />
                 </div>
                 <div
-                  class="Input dirty"
+                  class="Input"
                 >
                   <label
                     class="input-area flex items-center gap-2"
@@ -8817,7 +8789,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
               data-testid="add-custom-helm-repository-dialog"
             >
               <div
-                class="Input focused dirty"
+                class="Input focused"
               >
                 <label
                   class="input-area flex items-center gap-2"
@@ -8837,7 +8809,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
                 />
               </div>
               <div
-                class="Input dirty"
+                class="Input"
               >
                 <label
                   class="input-area flex items-center gap-2"
@@ -8889,9 +8861,8 @@ exports[`add custom helm repository in preferences > when navigating to preferen
               Cancel
             </button>
             <button
-              class="Button waiting primary"
+              class="Button primary"
               data-testid="custom-helm-repository-submit-button"
-              data-waiting="true"
               type="submit"
             >
               Add
@@ -9777,7 +9748,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
     </div>
   </div>
   <div
-    class="Animate opacity-scale Dialog flex items-center justify-center AddHelmRepoDialog modal enter"
+    class="Animate opacity-scale Dialog flex items-center justify-center AddHelmRepoDialog modal enter leave"
     style="--enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div
@@ -10650,7 +10621,7 @@ exports[`add custom helm repository in preferences > when navigating to preferen
     </div>
   </div>
   <div
-    class="Animate opacity-scale Dialog flex items-center justify-center AddHelmRepoDialog modal enter"
+    class="Animate opacity-scale Dialog flex items-center justify-center AddHelmRepoDialog modal enter leave"
     style="--enter-duration: 100ms; --leave-duration: 100ms;"
   >
     <div

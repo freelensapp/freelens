@@ -7,7 +7,7 @@
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { parsePath } from "history";
 import { observer } from "mobx-react";
-import React, { forwardRef } from "react";
+import React from "react";
 import { matchPath } from "./match-path";
 import { observableHistoryInjectionToken } from "./observable-history.injectable";
 
@@ -62,33 +62,40 @@ interface LinkDependencies {
   history: ObservableHistory;
 }
 
-const NonInjectedLink = forwardRef<HTMLAnchorElement, LinkProps & LinkDependencies>(
-  ({ history, to, replace, onClick, target, ...rest }, ref) => {
-    const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
-      onClick?.(event);
+const NonInjectedLink = ({
+  history,
+  to,
+  replace,
+  onClick,
+  target,
+  ref,
+  ...rest
+}: LinkProps & LinkDependencies & { ref?: React.Ref<HTMLAnchorElement> }) => {
+  const handleClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    onClick?.(event);
 
-      if (!event.defaultPrevented && event.button === 0 && (!target || target === "_self") && !isModifiedEvent(event)) {
-        event.preventDefault();
+    if (!event.defaultPrevented && event.button === 0 && (!target || target === "_self") && !isModifiedEvent(event)) {
+      event.preventDefault();
 
-        if (replace) {
-          history.replace(to);
-        } else {
-          history.push(to);
-        }
+      if (replace) {
+        history.replace(to);
+      } else {
+        history.push(to);
       }
-    };
+    }
+  };
 
-    const href = history.createHref(resolveHrefTarget(to, history.location.pathname));
+  const href = history.createHref(resolveHrefTarget(to, history.location.pathname));
 
-    return <a {...rest} ref={ref} href={href} target={target} onClick={handleClick} />;
-  },
-);
+  return <a {...rest} ref={ref} href={href} target={target} onClick={handleClick} />;
+};
 
 NonInjectedLink.displayName = "NonInjectedLink";
 
-// `withInjectables` forwards refs at runtime (see the `injectable-react`
-// `forwardRef` wrapper) but does not surface `ref` in its public props type;
-// annotate the export so call sites (e.g. `<Icon>`'s `NavLink`) can pass one.
+// `NonInjectedLink` takes `ref` as a regular prop (React 19). `withInjectables`
+// forwards it at runtime but types its result as `FunctionComponent<Props>`,
+// which omits `ref`; annotate the export so call sites (e.g. `<Icon>`'s
+// `NavLink`) can pass one.
 export const Link = withInjectables<LinkDependencies, LinkProps>(NonInjectedLink, {
   getProps: (di, props) => ({
     ...props,
@@ -118,45 +125,43 @@ interface NavLinkDependencies {
   history: ObservableHistory;
 }
 
-const NonInjectedNavLink = observer(
-  forwardRef<HTMLAnchorElement, NavLinkProps & NavLinkDependencies>((props, ref) => {
-    const {
-      history,
-      to,
-      exact = false,
-      strict = false,
-      sensitive = false,
-      isActive: getIsActive,
-      activeClassName = "active",
-      activeStyle,
-      className,
-      style,
-      "aria-current": ariaCurrent = "page",
-      ...rest
-    } = props;
+// `observer` returns the wrapped component's type verbatim, which has no
+// `displayName` expando; a named function expression names it for React DevTools
+// instead. `ref` is a regular prop under React 19, forwarded on to `<Link>`.
+const NonInjectedNavLink = observer(function NonInjectedNavLink({
+  history,
+  to,
+  exact = false,
+  strict = false,
+  sensitive = false,
+  isActive: getIsActive,
+  activeClassName = "active",
+  activeStyle,
+  className,
+  style,
+  "aria-current": ariaCurrent = "page",
+  ref,
+  ...rest
+}: NavLinkProps & NavLinkDependencies & { ref?: React.Ref<HTMLAnchorElement> }) {
+  const location = history.location;
+  const path = typeof to === "string" ? to : to.pathname;
+  // Match `react-router-dom` v5: escape the path so `matchPath` treats it as a
+  // literal pattern rather than interpreting the target as a route schema.
+  const escapedPath = path?.replace(/([.+*?=^!:${}()[\]|/\\])/g, "\\$1");
+  const match = escapedPath ? matchPath(location.pathname, { path: escapedPath, exact, strict, sensitive }) : null;
+  const isActive = Boolean(getIsActive ? getIsActive(match, location) : match);
 
-    const location = history.location;
-    const path = typeof to === "string" ? to : to.pathname;
-    // Match `react-router-dom` v5: escape the path so `matchPath` treats it as a
-    // literal pattern rather than interpreting the target as a route schema.
-    const escapedPath = path?.replace(/([.+*?=^!:${}()[\]|/\\])/g, "\\$1");
-    const match = escapedPath ? matchPath(location.pathname, { path: escapedPath, exact, strict, sensitive }) : null;
-    const isActive = Boolean(getIsActive ? getIsActive(match, location) : match);
-
-    return (
-      <Link
-        {...rest}
-        ref={ref}
-        to={to}
-        className={isActive ? [className, activeClassName].filter(Boolean).join(" ") : className}
-        style={isActive && activeStyle ? { ...style, ...activeStyle } : style}
-        aria-current={isActive ? ariaCurrent : undefined}
-      />
-    );
-  }),
-);
-
-NonInjectedNavLink.displayName = "NonInjectedNavLink";
+  return (
+    <Link
+      {...rest}
+      ref={ref}
+      to={to}
+      className={isActive ? [className, activeClassName].filter(Boolean).join(" ") : className}
+      style={isActive && activeStyle ? { ...style, ...activeStyle } : style}
+      aria-current={isActive ? ariaCurrent : undefined}
+    />
+  );
+});
 
 export const NavLink = withInjectables<NavLinkDependencies, NavLinkProps>(NonInjectedNavLink, {
   getProps: (di, props) => ({

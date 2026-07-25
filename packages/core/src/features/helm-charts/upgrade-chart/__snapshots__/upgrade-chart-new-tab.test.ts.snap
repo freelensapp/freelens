@@ -49,7 +49,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon material focusable"
@@ -217,7 +217,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon material focusable"
@@ -921,7 +921,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon material focusable"
@@ -1089,7 +1089,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon material focusable"
@@ -1682,147 +1682,147 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                   <div
                     class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
-                    <div>
+                    <div
+                      class="list"
+                      role="list"
+                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                    >
                       <div
-                        class="list"
-                        style="position: relative; height: 420000px; width: 100%; overflow: auto; will-change: transform; direction: ltr;"
+                        data-react-window-index="0"
+                        style="position: absolute; left: 0px; transform: translateY(0px); height: 33px; width: 100%;"
                       >
                         <div
-                          style="height: 33px; width: 100%;"
+                          class="TableRow nowrap"
+                          data-testid="helm-release-row-for-my-second-namespace/some-name"
                         >
                           <div
-                            style="position: absolute; left: 0px; top: 0px; height: 33px; width: 100%;"
+                            class="TableCell checkbox"
+                          >
+                            <label
+                              class="Checkbox flex items-center"
+                            >
+                              <input
+                                type="checkbox"
+                              />
+                              <i
+                                class="check-icon flex items-center"
+                              />
+                            </label>
+                          </div>
+                          <div
+                            class="TableCell name"
                           >
                             <div
-                              class="TableRow nowrap"
-                              data-testid="helm-release-row-for-my-second-namespace/some-name"
+                              class="badge flat"
                             >
-                              <div
-                                class="TableCell checkbox"
+                              some-name
+                            </div>
+                            <div>
+                              some-name
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell namespace"
+                          >
+                            <div
+                              class="badge NamespaceSelectBadge flat clickable"
+                            >
+                              my-second-namespace
+                            </div>
+                            <div>
+                              Set global namespace filter to:
+                              <b>
+                                my-second-namespace
+                              </b>
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell chart"
+                          >
+                            <div
+                              class="badge flat"
+                            >
+                              some-chart
+                            </div>
+                            <div>
+                              some-chart
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell revision"
+                          >
+                            <div
+                              class="badge flat"
+                            >
+                              NaN
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell version"
+                          >
+                            <div
+                              class="badge flat"
+                            >
+                              1.0.0
+                            </div>
+                            <div>
+                              1.0.0
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell app-version"
+                          >
+                            <div
+                              class="badge flat"
+                            >
+                              some-app-version
+                            </div>
+                            <div>
+                              some-app-version
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell some-status status"
+                          >
+                            Some-status
+                          </div>
+                          <div
+                            class="TableCell updated"
+                          >
+                            <div
+                              class="badge flat"
+                            >
+                              0s
+                            </div>
+                            <div>
+                              2025-01-01T00:00:00Z
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell menu"
+                          >
+                            <div>
+                              <i
+                                class="Icon material interactive focusable"
+                                data-testid="menu-actions-icon-for-release-menu-for-my-second-namespace/some-name"
+                                id="menu-actions-for-release-menu-for-my-second-namespace/some-name"
+                                tabindex="0"
                               >
-                                <label
-                                  class="Checkbox flex items-center"
+                                <span
+                                  class="icon"
+                                  data-icon-name="more_vert"
                                 >
-                                  <input
-                                    type="checkbox"
-                                  />
-                                  <i
-                                    class="check-icon flex items-center"
-                                  />
-                                </label>
-                              </div>
-                              <div
-                                class="TableCell name"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  some-name
-                                </div>
-                                <div>
-                                  some-name
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell namespace"
-                              >
-                                <div
-                                  class="badge NamespaceSelectBadge flat clickable"
-                                >
-                                  my-second-namespace
-                                </div>
-                                <div>
-                                  Set global namespace filter to:
-                                  <b>
-                                    my-second-namespace
-                                  </b>
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell chart"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  some-chart
-                                </div>
-                                <div>
-                                  some-chart
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell revision"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  NaN
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell version"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  1.0.0
-                                </div>
-                                <div>
-                                  1.0.0
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell app-version"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  some-app-version
-                                </div>
-                                <div>
-                                  some-app-version
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell some-status status"
-                              >
-                                Some-status
-                              </div>
-                              <div
-                                class="TableCell updated"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  0s
-                                </div>
-                                <div>
-                                  2025-01-01T00:00:00Z
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell menu"
-                              >
-                                <div>
-                                  <i
-                                    class="Icon material interactive focusable"
-                                    data-testid="menu-actions-icon-for-release-menu-for-my-second-namespace/some-name"
-                                    id="menu-actions-for-release-menu-for-my-second-namespace/some-name"
-                                    tabindex="0"
-                                  >
-                                    <span
-                                      class="icon"
-                                      data-icon-name="more_vert"
-                                    >
-                                      more_vert
-                                    </span>
-                                  </i>
-                                </div>
-                              </div>
+                                  more_vert
+                                </span>
+                              </i>
                             </div>
                           </div>
                         </div>
                       </div>
+                      <div
+                        aria-hidden="true"
+                        style="height: 33px; width: 100%; z-index: -1;"
+                      />
                     </div>
                   </div>
                 </div>
@@ -1935,7 +1935,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon material focusable"
@@ -2103,7 +2103,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon material focusable"
@@ -2696,147 +2696,147 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                   <div
                     class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
-                    <div>
+                    <div
+                      class="list"
+                      role="list"
+                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                    >
                       <div
-                        class="list"
-                        style="position: relative; height: 420000px; width: 100%; overflow: auto; will-change: transform; direction: ltr;"
+                        data-react-window-index="0"
+                        style="position: absolute; left: 0px; transform: translateY(0px); height: 33px; width: 100%;"
                       >
                         <div
-                          style="height: 33px; width: 100%;"
+                          class="TableRow nowrap"
+                          data-testid="helm-release-row-for-my-second-namespace/some-name"
                         >
                           <div
-                            style="position: absolute; left: 0px; top: 0px; height: 33px; width: 100%;"
+                            class="TableCell checkbox"
+                          >
+                            <label
+                              class="Checkbox flex items-center"
+                            >
+                              <input
+                                type="checkbox"
+                              />
+                              <i
+                                class="check-icon flex items-center"
+                              />
+                            </label>
+                          </div>
+                          <div
+                            class="TableCell name"
                           >
                             <div
-                              class="TableRow nowrap"
-                              data-testid="helm-release-row-for-my-second-namespace/some-name"
+                              class="badge flat"
                             >
-                              <div
-                                class="TableCell checkbox"
+                              some-name
+                            </div>
+                            <div>
+                              some-name
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell namespace"
+                          >
+                            <div
+                              class="badge NamespaceSelectBadge flat clickable"
+                            >
+                              my-second-namespace
+                            </div>
+                            <div>
+                              Set global namespace filter to:
+                              <b>
+                                my-second-namespace
+                              </b>
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell chart"
+                          >
+                            <div
+                              class="badge flat"
+                            >
+                              some-chart
+                            </div>
+                            <div>
+                              some-chart
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell revision"
+                          >
+                            <div
+                              class="badge flat"
+                            >
+                              NaN
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell version"
+                          >
+                            <div
+                              class="badge flat"
+                            >
+                              1.0.0
+                            </div>
+                            <div>
+                              1.0.0
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell app-version"
+                          >
+                            <div
+                              class="badge flat"
+                            >
+                              some-app-version
+                            </div>
+                            <div>
+                              some-app-version
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell some-status status"
+                          >
+                            Some-status
+                          </div>
+                          <div
+                            class="TableCell updated"
+                          >
+                            <div
+                              class="badge flat"
+                            >
+                              0s
+                            </div>
+                            <div>
+                              2025-01-01T00:00:00Z
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell menu"
+                          >
+                            <div>
+                              <i
+                                class="Icon material interactive active focusable"
+                                data-testid="menu-actions-icon-for-release-menu-for-my-second-namespace/some-name"
+                                id="menu-actions-for-release-menu-for-my-second-namespace/some-name"
+                                tabindex="0"
                               >
-                                <label
-                                  class="Checkbox flex items-center"
+                                <span
+                                  class="icon"
+                                  data-icon-name="more_vert"
                                 >
-                                  <input
-                                    type="checkbox"
-                                  />
-                                  <i
-                                    class="check-icon flex items-center"
-                                  />
-                                </label>
-                              </div>
-                              <div
-                                class="TableCell name"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  some-name
-                                </div>
-                                <div>
-                                  some-name
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell namespace"
-                              >
-                                <div
-                                  class="badge NamespaceSelectBadge flat clickable"
-                                >
-                                  my-second-namespace
-                                </div>
-                                <div>
-                                  Set global namespace filter to:
-                                  <b>
-                                    my-second-namespace
-                                  </b>
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell chart"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  some-chart
-                                </div>
-                                <div>
-                                  some-chart
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell revision"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  NaN
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell version"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  1.0.0
-                                </div>
-                                <div>
-                                  1.0.0
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell app-version"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  some-app-version
-                                </div>
-                                <div>
-                                  some-app-version
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell some-status status"
-                              >
-                                Some-status
-                              </div>
-                              <div
-                                class="TableCell updated"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  0s
-                                </div>
-                                <div>
-                                  2025-01-01T00:00:00Z
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell menu"
-                              >
-                                <div>
-                                  <i
-                                    class="Icon material interactive active focusable"
-                                    data-testid="menu-actions-icon-for-release-menu-for-my-second-namespace/some-name"
-                                    id="menu-actions-for-release-menu-for-my-second-namespace/some-name"
-                                    tabindex="0"
-                                  >
-                                    <span
-                                      class="icon"
-                                      data-icon-name="more_vert"
-                                    >
-                                      more_vert
-                                    </span>
-                                  </i>
-                                </div>
-                              </div>
+                                  more_vert
+                                </span>
+                              </i>
                             </div>
                           </div>
                         </div>
                       </div>
+                      <div
+                        aria-hidden="true"
+                        style="height: 33px; width: 100%; z-index: -1;"
+                      />
                     </div>
                   </div>
                 </div>
@@ -3003,7 +3003,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon material focusable"
@@ -3171,7 +3171,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon material focusable"
@@ -3764,147 +3764,147 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                   <div
                     class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
-                    <div>
+                    <div
+                      class="list"
+                      role="list"
+                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                    >
                       <div
-                        class="list"
-                        style="position: relative; height: 420000px; width: 100%; overflow: auto; will-change: transform; direction: ltr;"
+                        data-react-window-index="0"
+                        style="position: absolute; left: 0px; transform: translateY(0px); height: 33px; width: 100%;"
                       >
                         <div
-                          style="height: 33px; width: 100%;"
+                          class="TableRow nowrap"
+                          data-testid="helm-release-row-for-my-second-namespace/some-name"
                         >
                           <div
-                            style="position: absolute; left: 0px; top: 0px; height: 33px; width: 100%;"
+                            class="TableCell checkbox"
+                          >
+                            <label
+                              class="Checkbox flex items-center"
+                            >
+                              <input
+                                type="checkbox"
+                              />
+                              <i
+                                class="check-icon flex items-center"
+                              />
+                            </label>
+                          </div>
+                          <div
+                            class="TableCell name"
                           >
                             <div
-                              class="TableRow nowrap"
-                              data-testid="helm-release-row-for-my-second-namespace/some-name"
+                              class="badge flat"
                             >
-                              <div
-                                class="TableCell checkbox"
+                              some-name
+                            </div>
+                            <div>
+                              some-name
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell namespace"
+                          >
+                            <div
+                              class="badge NamespaceSelectBadge flat clickable"
+                            >
+                              my-second-namespace
+                            </div>
+                            <div>
+                              Set global namespace filter to:
+                              <b>
+                                my-second-namespace
+                              </b>
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell chart"
+                          >
+                            <div
+                              class="badge flat"
+                            >
+                              some-chart
+                            </div>
+                            <div>
+                              some-chart
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell revision"
+                          >
+                            <div
+                              class="badge flat"
+                            >
+                              NaN
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell version"
+                          >
+                            <div
+                              class="badge flat"
+                            >
+                              1.0.0
+                            </div>
+                            <div>
+                              1.0.0
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell app-version"
+                          >
+                            <div
+                              class="badge flat"
+                            >
+                              some-app-version
+                            </div>
+                            <div>
+                              some-app-version
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell some-status status"
+                          >
+                            Some-status
+                          </div>
+                          <div
+                            class="TableCell updated"
+                          >
+                            <div
+                              class="badge flat"
+                            >
+                              0s
+                            </div>
+                            <div>
+                              2025-01-01T00:00:00Z
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell menu"
+                          >
+                            <div>
+                              <i
+                                class="Icon material interactive focusable"
+                                data-testid="menu-actions-icon-for-release-menu-for-my-second-namespace/some-name"
+                                id="menu-actions-for-release-menu-for-my-second-namespace/some-name"
+                                tabindex="0"
                               >
-                                <label
-                                  class="Checkbox flex items-center"
+                                <span
+                                  class="icon"
+                                  data-icon-name="more_vert"
                                 >
-                                  <input
-                                    type="checkbox"
-                                  />
-                                  <i
-                                    class="check-icon flex items-center"
-                                  />
-                                </label>
-                              </div>
-                              <div
-                                class="TableCell name"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  some-name
-                                </div>
-                                <div>
-                                  some-name
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell namespace"
-                              >
-                                <div
-                                  class="badge NamespaceSelectBadge flat clickable"
-                                >
-                                  my-second-namespace
-                                </div>
-                                <div>
-                                  Set global namespace filter to:
-                                  <b>
-                                    my-second-namespace
-                                  </b>
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell chart"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  some-chart
-                                </div>
-                                <div>
-                                  some-chart
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell revision"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  NaN
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell version"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  1.0.0
-                                </div>
-                                <div>
-                                  1.0.0
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell app-version"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  some-app-version
-                                </div>
-                                <div>
-                                  some-app-version
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell some-status status"
-                              >
-                                Some-status
-                              </div>
-                              <div
-                                class="TableCell updated"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  0s
-                                </div>
-                                <div>
-                                  2025-01-01T00:00:00Z
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell menu"
-                              >
-                                <div>
-                                  <i
-                                    class="Icon material interactive focusable"
-                                    data-testid="menu-actions-icon-for-release-menu-for-my-second-namespace/some-name"
-                                    id="menu-actions-for-release-menu-for-my-second-namespace/some-name"
-                                    tabindex="0"
-                                  >
-                                    <span
-                                      class="icon"
-                                      data-icon-name="more_vert"
-                                    >
-                                      more_vert
-                                    </span>
-                                  </i>
-                                </div>
-                              </div>
+                                  more_vert
+                                </span>
+                              </i>
                             </div>
                           </div>
                         </div>
                       </div>
+                      <div
+                        aria-hidden="true"
+                        style="height: 33px; width: 100%; z-index: -1;"
+                      />
                     </div>
                   </div>
                 </div>
@@ -4107,7 +4107,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon material focusable"
@@ -4275,7 +4275,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon material focusable"
@@ -4868,147 +4868,147 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                   <div
                     class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
-                    <div>
+                    <div
+                      class="list"
+                      role="list"
+                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                    >
                       <div
-                        class="list"
-                        style="position: relative; height: 420000px; width: 100%; overflow: auto; will-change: transform; direction: ltr;"
+                        data-react-window-index="0"
+                        style="position: absolute; left: 0px; transform: translateY(0px); height: 33px; width: 100%;"
                       >
                         <div
-                          style="height: 33px; width: 100%;"
+                          class="TableRow nowrap"
+                          data-testid="helm-release-row-for-my-second-namespace/some-name"
                         >
                           <div
-                            style="position: absolute; left: 0px; top: 0px; height: 33px; width: 100%;"
+                            class="TableCell checkbox"
+                          >
+                            <label
+                              class="Checkbox flex items-center"
+                            >
+                              <input
+                                type="checkbox"
+                              />
+                              <i
+                                class="check-icon flex items-center"
+                              />
+                            </label>
+                          </div>
+                          <div
+                            class="TableCell name"
                           >
                             <div
-                              class="TableRow nowrap"
-                              data-testid="helm-release-row-for-my-second-namespace/some-name"
+                              class="badge flat"
                             >
-                              <div
-                                class="TableCell checkbox"
+                              some-name
+                            </div>
+                            <div>
+                              some-name
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell namespace"
+                          >
+                            <div
+                              class="badge NamespaceSelectBadge flat clickable"
+                            >
+                              my-second-namespace
+                            </div>
+                            <div>
+                              Set global namespace filter to:
+                              <b>
+                                my-second-namespace
+                              </b>
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell chart"
+                          >
+                            <div
+                              class="badge flat"
+                            >
+                              some-chart
+                            </div>
+                            <div>
+                              some-chart
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell revision"
+                          >
+                            <div
+                              class="badge flat"
+                            >
+                              NaN
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell version"
+                          >
+                            <div
+                              class="badge flat"
+                            >
+                              1.0.0
+                            </div>
+                            <div>
+                              1.0.0
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell app-version"
+                          >
+                            <div
+                              class="badge flat"
+                            >
+                              some-app-version
+                            </div>
+                            <div>
+                              some-app-version
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell some-status status"
+                          >
+                            Some-status
+                          </div>
+                          <div
+                            class="TableCell updated"
+                          >
+                            <div
+                              class="badge flat"
+                            >
+                              0s
+                            </div>
+                            <div>
+                              2025-01-01T00:00:00Z
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell menu"
+                          >
+                            <div>
+                              <i
+                                class="Icon material interactive focusable"
+                                data-testid="menu-actions-icon-for-release-menu-for-my-second-namespace/some-name"
+                                id="menu-actions-for-release-menu-for-my-second-namespace/some-name"
+                                tabindex="0"
                               >
-                                <label
-                                  class="Checkbox flex items-center"
+                                <span
+                                  class="icon"
+                                  data-icon-name="more_vert"
                                 >
-                                  <input
-                                    type="checkbox"
-                                  />
-                                  <i
-                                    class="check-icon flex items-center"
-                                  />
-                                </label>
-                              </div>
-                              <div
-                                class="TableCell name"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  some-name
-                                </div>
-                                <div>
-                                  some-name
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell namespace"
-                              >
-                                <div
-                                  class="badge NamespaceSelectBadge flat clickable"
-                                >
-                                  my-second-namespace
-                                </div>
-                                <div>
-                                  Set global namespace filter to:
-                                  <b>
-                                    my-second-namespace
-                                  </b>
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell chart"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  some-chart
-                                </div>
-                                <div>
-                                  some-chart
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell revision"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  NaN
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell version"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  1.0.0
-                                </div>
-                                <div>
-                                  1.0.0
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell app-version"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  some-app-version
-                                </div>
-                                <div>
-                                  some-app-version
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell some-status status"
-                              >
-                                Some-status
-                              </div>
-                              <div
-                                class="TableCell updated"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  0s
-                                </div>
-                                <div>
-                                  2025-01-01T00:00:00Z
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell menu"
-                              >
-                                <div>
-                                  <i
-                                    class="Icon material interactive focusable"
-                                    data-testid="menu-actions-icon-for-release-menu-for-my-second-namespace/some-name"
-                                    id="menu-actions-for-release-menu-for-my-second-namespace/some-name"
-                                    tabindex="0"
-                                  >
-                                    <span
-                                      class="icon"
-                                      data-icon-name="more_vert"
-                                    >
-                                      more_vert
-                                    </span>
-                                  </i>
-                                </div>
-                              </div>
+                                  more_vert
+                                </span>
+                              </i>
                             </div>
                           </div>
                         </div>
                       </div>
+                      <div
+                        aria-hidden="true"
+                        style="height: 33px; width: 100%; z-index: -1;"
+                      />
                     </div>
                   </div>
                 </div>
@@ -5368,7 +5368,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon material focusable"
@@ -5536,7 +5536,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon material focusable"
@@ -6129,147 +6129,147 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                   <div
                     class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
-                    <div>
+                    <div
+                      class="list"
+                      role="list"
+                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                    >
                       <div
-                        class="list"
-                        style="position: relative; height: 420000px; width: 100%; overflow: auto; will-change: transform; direction: ltr;"
+                        data-react-window-index="0"
+                        style="position: absolute; left: 0px; transform: translateY(0px); height: 33px; width: 100%;"
                       >
                         <div
-                          style="height: 33px; width: 100%;"
+                          class="TableRow nowrap"
+                          data-testid="helm-release-row-for-my-second-namespace/some-name"
                         >
                           <div
-                            style="position: absolute; left: 0px; top: 0px; height: 33px; width: 100%;"
+                            class="TableCell checkbox"
+                          >
+                            <label
+                              class="Checkbox flex items-center"
+                            >
+                              <input
+                                type="checkbox"
+                              />
+                              <i
+                                class="check-icon flex items-center"
+                              />
+                            </label>
+                          </div>
+                          <div
+                            class="TableCell name"
                           >
                             <div
-                              class="TableRow nowrap"
-                              data-testid="helm-release-row-for-my-second-namespace/some-name"
+                              class="badge flat"
                             >
-                              <div
-                                class="TableCell checkbox"
+                              some-name
+                            </div>
+                            <div>
+                              some-name
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell namespace"
+                          >
+                            <div
+                              class="badge NamespaceSelectBadge flat clickable"
+                            >
+                              my-second-namespace
+                            </div>
+                            <div>
+                              Set global namespace filter to:
+                              <b>
+                                my-second-namespace
+                              </b>
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell chart"
+                          >
+                            <div
+                              class="badge flat"
+                            >
+                              some-chart
+                            </div>
+                            <div>
+                              some-chart
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell revision"
+                          >
+                            <div
+                              class="badge flat"
+                            >
+                              NaN
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell version"
+                          >
+                            <div
+                              class="badge flat"
+                            >
+                              1.0.0
+                            </div>
+                            <div>
+                              1.0.0
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell app-version"
+                          >
+                            <div
+                              class="badge flat"
+                            >
+                              some-app-version
+                            </div>
+                            <div>
+                              some-app-version
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell some-status status"
+                          >
+                            Some-status
+                          </div>
+                          <div
+                            class="TableCell updated"
+                          >
+                            <div
+                              class="badge flat"
+                            >
+                              0s
+                            </div>
+                            <div>
+                              2025-01-01T00:00:00Z
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell menu"
+                          >
+                            <div>
+                              <i
+                                class="Icon material interactive focusable"
+                                data-testid="menu-actions-icon-for-release-menu-for-my-second-namespace/some-name"
+                                id="menu-actions-for-release-menu-for-my-second-namespace/some-name"
+                                tabindex="0"
                               >
-                                <label
-                                  class="Checkbox flex items-center"
+                                <span
+                                  class="icon"
+                                  data-icon-name="more_vert"
                                 >
-                                  <input
-                                    type="checkbox"
-                                  />
-                                  <i
-                                    class="check-icon flex items-center"
-                                  />
-                                </label>
-                              </div>
-                              <div
-                                class="TableCell name"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  some-name
-                                </div>
-                                <div>
-                                  some-name
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell namespace"
-                              >
-                                <div
-                                  class="badge NamespaceSelectBadge flat clickable"
-                                >
-                                  my-second-namespace
-                                </div>
-                                <div>
-                                  Set global namespace filter to:
-                                  <b>
-                                    my-second-namespace
-                                  </b>
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell chart"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  some-chart
-                                </div>
-                                <div>
-                                  some-chart
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell revision"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  NaN
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell version"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  1.0.0
-                                </div>
-                                <div>
-                                  1.0.0
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell app-version"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  some-app-version
-                                </div>
-                                <div>
-                                  some-app-version
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell some-status status"
-                              >
-                                Some-status
-                              </div>
-                              <div
-                                class="TableCell updated"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  0s
-                                </div>
-                                <div>
-                                  2025-01-01T00:00:00Z
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell menu"
-                              >
-                                <div>
-                                  <i
-                                    class="Icon material interactive focusable"
-                                    data-testid="menu-actions-icon-for-release-menu-for-my-second-namespace/some-name"
-                                    id="menu-actions-for-release-menu-for-my-second-namespace/some-name"
-                                    tabindex="0"
-                                  >
-                                    <span
-                                      class="icon"
-                                      data-icon-name="more_vert"
-                                    >
-                                      more_vert
-                                    </span>
-                                  </i>
-                                </div>
-                              </div>
+                                  more_vert
+                                </span>
+                              </i>
                             </div>
                           </div>
                         </div>
                       </div>
+                      <div
+                        aria-hidden="true"
+                        style="height: 33px; width: 100%; z-index: -1;"
+                      />
                     </div>
                   </div>
                 </div>
@@ -6631,7 +6631,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon material focusable"
@@ -6799,7 +6799,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/helm/releases"
                 >
                   <i
                     class="Icon material focusable"
@@ -7392,147 +7392,147 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                   <div
                     class="VirtualList HelmReleases grow shrink-0 basis-0 dark"
                   >
-                    <div>
+                    <div
+                      class="list"
+                      role="list"
+                      style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 100%;"
+                    >
                       <div
-                        class="list"
-                        style="position: relative; height: 420000px; width: 100%; overflow: auto; will-change: transform; direction: ltr;"
+                        data-react-window-index="0"
+                        style="position: absolute; left: 0px; transform: translateY(0px); height: 33px; width: 100%;"
                       >
                         <div
-                          style="height: 33px; width: 100%;"
+                          class="TableRow nowrap"
+                          data-testid="helm-release-row-for-my-second-namespace/some-name"
                         >
                           <div
-                            style="position: absolute; left: 0px; top: 0px; height: 33px; width: 100%;"
+                            class="TableCell checkbox"
+                          >
+                            <label
+                              class="Checkbox flex items-center"
+                            >
+                              <input
+                                type="checkbox"
+                              />
+                              <i
+                                class="check-icon flex items-center"
+                              />
+                            </label>
+                          </div>
+                          <div
+                            class="TableCell name"
                           >
                             <div
-                              class="TableRow nowrap"
-                              data-testid="helm-release-row-for-my-second-namespace/some-name"
+                              class="badge flat"
                             >
-                              <div
-                                class="TableCell checkbox"
+                              some-name
+                            </div>
+                            <div>
+                              some-name
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell namespace"
+                          >
+                            <div
+                              class="badge NamespaceSelectBadge flat clickable"
+                            >
+                              my-second-namespace
+                            </div>
+                            <div>
+                              Set global namespace filter to:
+                              <b>
+                                my-second-namespace
+                              </b>
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell chart"
+                          >
+                            <div
+                              class="badge flat"
+                            >
+                              some-chart
+                            </div>
+                            <div>
+                              some-chart
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell revision"
+                          >
+                            <div
+                              class="badge flat"
+                            >
+                              NaN
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell version"
+                          >
+                            <div
+                              class="badge flat"
+                            >
+                              1.0.0
+                            </div>
+                            <div>
+                              1.0.0
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell app-version"
+                          >
+                            <div
+                              class="badge flat"
+                            >
+                              some-app-version
+                            </div>
+                            <div>
+                              some-app-version
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell some-status status"
+                          >
+                            Some-status
+                          </div>
+                          <div
+                            class="TableCell updated"
+                          >
+                            <div
+                              class="badge flat"
+                            >
+                              0s
+                            </div>
+                            <div>
+                              2025-01-01T00:00:00Z
+                            </div>
+                          </div>
+                          <div
+                            class="TableCell menu"
+                          >
+                            <div>
+                              <i
+                                class="Icon material interactive focusable"
+                                data-testid="menu-actions-icon-for-release-menu-for-my-second-namespace/some-name"
+                                id="menu-actions-for-release-menu-for-my-second-namespace/some-name"
+                                tabindex="0"
                               >
-                                <label
-                                  class="Checkbox flex items-center"
+                                <span
+                                  class="icon"
+                                  data-icon-name="more_vert"
                                 >
-                                  <input
-                                    type="checkbox"
-                                  />
-                                  <i
-                                    class="check-icon flex items-center"
-                                  />
-                                </label>
-                              </div>
-                              <div
-                                class="TableCell name"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  some-name
-                                </div>
-                                <div>
-                                  some-name
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell namespace"
-                              >
-                                <div
-                                  class="badge NamespaceSelectBadge flat clickable"
-                                >
-                                  my-second-namespace
-                                </div>
-                                <div>
-                                  Set global namespace filter to:
-                                  <b>
-                                    my-second-namespace
-                                  </b>
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell chart"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  some-chart
-                                </div>
-                                <div>
-                                  some-chart
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell revision"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  NaN
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell version"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  1.0.0
-                                </div>
-                                <div>
-                                  1.0.0
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell app-version"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  some-app-version
-                                </div>
-                                <div>
-                                  some-app-version
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell some-status status"
-                              >
-                                Some-status
-                              </div>
-                              <div
-                                class="TableCell updated"
-                              >
-                                <div
-                                  class="badge flat"
-                                >
-                                  0s
-                                </div>
-                                <div>
-                                  2025-01-01T00:00:00Z
-                                </div>
-                              </div>
-                              <div
-                                class="TableCell menu"
-                              >
-                                <div>
-                                  <i
-                                    class="Icon material interactive focusable"
-                                    data-testid="menu-actions-icon-for-release-menu-for-my-second-namespace/some-name"
-                                    id="menu-actions-for-release-menu-for-my-second-namespace/some-name"
-                                    tabindex="0"
-                                  >
-                                    <span
-                                      class="icon"
-                                      data-icon-name="more_vert"
-                                    >
-                                      more_vert
-                                    </span>
-                                  </i>
-                                </div>
-                              </div>
+                                  more_vert
+                                </span>
+                              </i>
                             </div>
                           </div>
                         </div>
                       </div>
+                      <div
+                        aria-hidden="true"
+                        style="height: 33px; width: 100%; z-index: -1;"
+                      />
                     </div>
                   </div>
                 </div>

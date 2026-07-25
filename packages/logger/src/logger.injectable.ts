@@ -45,7 +45,6 @@ export const loggerInjectable = getInjectable({
     silly: getLogFunctionFor("silly", undefined)(di),
   }),
 
-  decorable: false,
   injectionToken: loggerInjectionToken,
 });
 

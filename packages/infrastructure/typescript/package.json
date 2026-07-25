@@ -19,8 +19,8 @@
   },
   "scripts": {},
   "dependencies": {
-    "typescript": "^7.0.2",
-    "typescript-plugin-css-modules": "^5.2.0"
+    "typescript": "catalog:",
+    "typescript-plugin-css-modules": "catalog:"
   },
   "publishConfig": {
     "access": "public",

@@ -11,7 +11,7 @@ import styles from "./tree-view.module.scss";
 
 import type { StrictReactNode } from "@freelensapp/utilities";
 
-import type { MouseEventHandler } from "react";
+import type { JSX, MouseEventHandler } from "react";
 
 export interface TreeViewClasses {
   root?: string;

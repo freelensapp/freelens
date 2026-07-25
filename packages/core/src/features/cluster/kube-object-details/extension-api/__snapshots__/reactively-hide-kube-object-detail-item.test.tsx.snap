@@ -161,7 +161,7 @@ exports[`reactively hide kube object detail item > renders 1`] = `
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon material focusable"
@@ -330,7 +330,7 @@ exports[`reactively hide kube object detail item > renders 1`] = `
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon material focusable"
@@ -399,7 +399,7 @@ exports[`reactively hide kube object detail item > renders 1`] = `
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon svg focusable"
@@ -958,7 +958,7 @@ exports[`reactively hide kube object detail item > when the item is shown > rend
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon material focusable"
@@ -1127,7 +1127,7 @@ exports[`reactively hide kube object detail item > when the item is shown > rend
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon material focusable"
@@ -1196,7 +1196,7 @@ exports[`reactively hide kube object detail item > when the item is shown > rend
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon svg focusable"

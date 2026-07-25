@@ -5,8 +5,8 @@
  */
 
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import { asyncComputed } from "@ogre-tools/injectable-react";
 import { when } from "mobx";
+import { asyncComputed } from "../../../../common/utils/async-computed";
 import helmChartsInjectable from "./helm-charts.injectable";
 import requestVersionsOfHelmChartInjectable from "./request-versions-of-chart-for-release.injectable";
 

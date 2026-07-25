@@ -11,7 +11,7 @@ import { Link } from "@freelensapp/routing";
 import { Spinner } from "@freelensapp/spinner";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { autorun, observable, runInAction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import secretStoreInjectable from "../../config-secrets/store.injectable";
 import { DrawerItem, DrawerTitle } from "../../drawer";
@@ -33,6 +33,7 @@ interface Dependencies {
 
 @observer
 class NonInjectedServiceAccountsDetails extends React.Component<ServiceAccountsDetailsProps & Dependencies> {
+  private readonly disposers: (() => void)[] = [];
   readonly secrets = observable.array<Secret | string>();
   readonly imagePullSecrets = observable.array<Secret | string>();
 
@@ -48,7 +49,7 @@ class NonInjectedServiceAccountsDetails extends React.Component<ServiceAccountsD
     // invokes before the first await).
     const { object: serviceAccount, secretStore } = this.props;
 
-    disposeOnUnmount(this, [
+    this.disposers.push(
       autorun(async () => {
         runInAction(() => {
           this.secrets.clear();
@@ -72,7 +73,11 @@ class NonInjectedServiceAccountsDetails extends React.Component<ServiceAccountsD
           this.imagePullSecrets.replace(imagePullSecrets);
         });
       }),
-    ]);
+    );
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   renderSecrets() {

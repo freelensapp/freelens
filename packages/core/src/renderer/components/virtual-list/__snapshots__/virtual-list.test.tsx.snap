@@ -8,90 +8,104 @@ exports[`VirtualList > renders 1`] = `
     >
       <div
         class="list"
-        style="position: relative; height: 45px; width: 100%; overflow: auto; will-change: transform; direction: ltr;"
+        role="list"
+        style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 45px;"
       >
         <div
-          style="height: 4545px; width: 100%;"
+          data-react-window-index="0"
+          data-testid="some-id-0"
+          style="position: absolute; left: 0px; transform: translateY(0px); height: 15px; width: 100%;"
         >
-          <div
-            data-testid="some-id-0"
-            style="position: absolute; left: 0px; top: 0px; height: 15px; width: 100%;"
-          >
-            some-id-0
-          </div>
-          <div
-            data-testid="some-id-1"
-            style="position: absolute; left: 0px; top: 15px; height: 15px; width: 100%;"
-          >
-            some-id-1
-          </div>
-          <div
-            data-testid="some-id-2"
-            style="position: absolute; left: 0px; top: 30px; height: 15px; width: 100%;"
-          >
-            some-id-2
-          </div>
-          <div
-            data-testid="some-id-3"
-            style="position: absolute; left: 0px; top: 45px; height: 15px; width: 100%;"
-          >
-            some-id-3
-          </div>
-          <div
-            data-testid="some-id-4"
-            style="position: absolute; left: 0px; top: 60px; height: 15px; width: 100%;"
-          >
-            some-id-4
-          </div>
-          <div
-            data-testid="some-id-5"
-            style="position: absolute; left: 0px; top: 75px; height: 15px; width: 100%;"
-          >
-            some-id-5
-          </div>
-          <div
-            data-testid="some-id-6"
-            style="position: absolute; left: 0px; top: 90px; height: 15px; width: 100%;"
-          >
-            some-id-6
-          </div>
-          <div
-            data-testid="some-id-7"
-            style="position: absolute; left: 0px; top: 105px; height: 15px; width: 100%;"
-          >
-            some-id-7
-          </div>
-          <div
-            data-testid="some-id-8"
-            style="position: absolute; left: 0px; top: 120px; height: 15px; width: 100%;"
-          >
-            some-id-8
-          </div>
-          <div
-            data-testid="some-id-9"
-            style="position: absolute; left: 0px; top: 135px; height: 15px; width: 100%;"
-          >
-            some-id-9
-          </div>
-          <div
-            data-testid="some-id-10"
-            style="position: absolute; left: 0px; top: 150px; height: 15px; width: 100%;"
-          >
-            some-id-10
-          </div>
-          <div
-            data-testid="some-id-11"
-            style="position: absolute; left: 0px; top: 165px; height: 15px; width: 100%;"
-          >
-            some-id-11
-          </div>
-          <div
-            data-testid="some-id-12"
-            style="position: absolute; left: 0px; top: 180px; height: 15px; width: 100%;"
-          >
-            some-id-12
-          </div>
+          some-id-0
         </div>
+        <div
+          data-react-window-index="1"
+          data-testid="some-id-1"
+          style="position: absolute; left: 0px; transform: translateY(15px); height: 15px; width: 100%;"
+        >
+          some-id-1
+        </div>
+        <div
+          data-react-window-index="2"
+          data-testid="some-id-2"
+          style="position: absolute; left: 0px; transform: translateY(30px); height: 15px; width: 100%;"
+        >
+          some-id-2
+        </div>
+        <div
+          data-react-window-index="3"
+          data-testid="some-id-3"
+          style="position: absolute; left: 0px; transform: translateY(45px); height: 15px; width: 100%;"
+        >
+          some-id-3
+        </div>
+        <div
+          data-react-window-index="4"
+          data-testid="some-id-4"
+          style="position: absolute; left: 0px; transform: translateY(60px); height: 15px; width: 100%;"
+        >
+          some-id-4
+        </div>
+        <div
+          data-react-window-index="5"
+          data-testid="some-id-5"
+          style="position: absolute; left: 0px; transform: translateY(75px); height: 15px; width: 100%;"
+        >
+          some-id-5
+        </div>
+        <div
+          data-react-window-index="6"
+          data-testid="some-id-6"
+          style="position: absolute; left: 0px; transform: translateY(90px); height: 15px; width: 100%;"
+        >
+          some-id-6
+        </div>
+        <div
+          data-react-window-index="7"
+          data-testid="some-id-7"
+          style="position: absolute; left: 0px; transform: translateY(105px); height: 15px; width: 100%;"
+        >
+          some-id-7
+        </div>
+        <div
+          data-react-window-index="8"
+          data-testid="some-id-8"
+          style="position: absolute; left: 0px; transform: translateY(120px); height: 15px; width: 100%;"
+        >
+          some-id-8
+        </div>
+        <div
+          data-react-window-index="9"
+          data-testid="some-id-9"
+          style="position: absolute; left: 0px; transform: translateY(135px); height: 15px; width: 100%;"
+        >
+          some-id-9
+        </div>
+        <div
+          data-react-window-index="10"
+          data-testid="some-id-10"
+          style="position: absolute; left: 0px; transform: translateY(150px); height: 15px; width: 100%;"
+        >
+          some-id-10
+        </div>
+        <div
+          data-react-window-index="11"
+          data-testid="some-id-11"
+          style="position: absolute; left: 0px; transform: translateY(165px); height: 15px; width: 100%;"
+        >
+          some-id-11
+        </div>
+        <div
+          data-react-window-index="12"
+          data-testid="some-id-12"
+          style="position: absolute; left: 0px; transform: translateY(180px); height: 15px; width: 100%;"
+        >
+          some-id-12
+        </div>
+        <div
+          aria-hidden="true"
+          style="height: 1500px; width: 100%; z-index: -1;"
+        />
       </div>
     </div>
   </div>
@@ -106,150 +120,174 @@ exports[`VirtualList > when non-visable item is selected > renders 1`] = `
     >
       <div
         class="list"
-        style="position: relative; height: 45px; width: 100%; overflow: auto; will-change: transform; direction: ltr;"
+        role="list"
+        style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 45px;"
       >
         <div
-          style="height: 3530px; width: 100%;"
+          data-react-window-index="19"
+          data-testid="some-id-19"
+          style="position: absolute; left: 0px; transform: translateY(285px); height: 15px; width: 100%;"
         >
-          <div
-            data-testid="some-id-19"
-            style="position: absolute; left: 0px; top: 285px; height: 15px; width: 100%;"
-          >
-            some-id-19
-          </div>
-          <div
-            data-testid="some-id-20"
-            style="position: absolute; left: 0px; top: 300px; height: 15px; width: 100%;"
-          >
-            some-id-20
-          </div>
-          <div
-            data-testid="some-id-21"
-            style="position: absolute; left: 0px; top: 315px; height: 15px; width: 100%;"
-          >
-            some-id-21
-          </div>
-          <div
-            data-testid="some-id-22"
-            style="position: absolute; left: 0px; top: 330px; height: 15px; width: 100%;"
-          >
-            some-id-22
-          </div>
-          <div
-            data-testid="some-id-23"
-            style="position: absolute; left: 0px; top: 345px; height: 15px; width: 100%;"
-          >
-            some-id-23
-          </div>
-          <div
-            data-testid="some-id-24"
-            style="position: absolute; left: 0px; top: 360px; height: 15px; width: 100%;"
-          >
-            some-id-24
-          </div>
-          <div
-            data-testid="some-id-25"
-            style="position: absolute; left: 0px; top: 375px; height: 15px; width: 100%;"
-          >
-            some-id-25
-          </div>
-          <div
-            data-testid="some-id-26"
-            style="position: absolute; left: 0px; top: 390px; height: 15px; width: 100%;"
-          >
-            some-id-26
-          </div>
-          <div
-            data-testid="some-id-27"
-            style="position: absolute; left: 0px; top: 405px; height: 15px; width: 100%;"
-          >
-            some-id-27
-          </div>
-          <div
-            data-testid="some-id-28"
-            style="position: absolute; left: 0px; top: 420px; height: 15px; width: 100%;"
-          >
-            some-id-28
-          </div>
-          <div
-            data-testid="some-id-29"
-            style="position: absolute; left: 0px; top: 435px; height: 15px; width: 100%;"
-          >
-            some-id-29
-          </div>
-          <div
-            data-testid="some-id-30"
-            style="position: absolute; left: 0px; top: 450px; height: 15px; width: 100%;"
-          >
-            some-id-30
-          </div>
-          <div
-            data-testid="some-id-31"
-            style="position: absolute; left: 0px; top: 465px; height: 15px; width: 100%;"
-          >
-            some-id-31
-          </div>
-          <div
-            data-testid="some-id-32"
-            style="position: absolute; left: 0px; top: 480px; height: 15px; width: 100%;"
-          >
-            some-id-32
-          </div>
-          <div
-            data-testid="some-id-33"
-            style="position: absolute; left: 0px; top: 495px; height: 15px; width: 100%;"
-          >
-            some-id-33
-          </div>
-          <div
-            data-testid="some-id-34"
-            style="position: absolute; left: 0px; top: 510px; height: 15px; width: 100%;"
-          >
-            some-id-34
-          </div>
-          <div
-            data-testid="some-id-35"
-            style="position: absolute; left: 0px; top: 525px; height: 15px; width: 100%;"
-          >
-            some-id-35
-          </div>
-          <div
-            data-testid="some-id-36"
-            style="position: absolute; left: 0px; top: 540px; height: 15px; width: 100%;"
-          >
-            some-id-36
-          </div>
-          <div
-            data-testid="some-id-37"
-            style="position: absolute; left: 0px; top: 555px; height: 15px; width: 100%;"
-          >
-            some-id-37
-          </div>
-          <div
-            data-testid="some-id-38"
-            style="position: absolute; left: 0px; top: 570px; height: 15px; width: 100%;"
-          >
-            some-id-38
-          </div>
-          <div
-            data-testid="some-id-39"
-            style="position: absolute; left: 0px; top: 585px; height: 15px; width: 100%;"
-          >
-            some-id-39
-          </div>
-          <div
-            data-testid="some-id-40"
-            style="position: absolute; left: 0px; top: 600px; height: 15px; width: 100%;"
-          >
-            some-id-40
-          </div>
-          <div
-            data-testid="some-id-41"
-            style="position: absolute; left: 0px; top: 615px; height: 15px; width: 100%;"
-          >
-            some-id-41
-          </div>
+          some-id-19
         </div>
+        <div
+          data-react-window-index="20"
+          data-testid="some-id-20"
+          style="position: absolute; left: 0px; transform: translateY(300px); height: 15px; width: 100%;"
+        >
+          some-id-20
+        </div>
+        <div
+          data-react-window-index="21"
+          data-testid="some-id-21"
+          style="position: absolute; left: 0px; transform: translateY(315px); height: 15px; width: 100%;"
+        >
+          some-id-21
+        </div>
+        <div
+          data-react-window-index="22"
+          data-testid="some-id-22"
+          style="position: absolute; left: 0px; transform: translateY(330px); height: 15px; width: 100%;"
+        >
+          some-id-22
+        </div>
+        <div
+          data-react-window-index="23"
+          data-testid="some-id-23"
+          style="position: absolute; left: 0px; transform: translateY(345px); height: 15px; width: 100%;"
+        >
+          some-id-23
+        </div>
+        <div
+          data-react-window-index="24"
+          data-testid="some-id-24"
+          style="position: absolute; left: 0px; transform: translateY(360px); height: 15px; width: 100%;"
+        >
+          some-id-24
+        </div>
+        <div
+          data-react-window-index="25"
+          data-testid="some-id-25"
+          style="position: absolute; left: 0px; transform: translateY(375px); height: 15px; width: 100%;"
+        >
+          some-id-25
+        </div>
+        <div
+          data-react-window-index="26"
+          data-testid="some-id-26"
+          style="position: absolute; left: 0px; transform: translateY(390px); height: 15px; width: 100%;"
+        >
+          some-id-26
+        </div>
+        <div
+          data-react-window-index="27"
+          data-testid="some-id-27"
+          style="position: absolute; left: 0px; transform: translateY(405px); height: 15px; width: 100%;"
+        >
+          some-id-27
+        </div>
+        <div
+          data-react-window-index="28"
+          data-testid="some-id-28"
+          style="position: absolute; left: 0px; transform: translateY(420px); height: 15px; width: 100%;"
+        >
+          some-id-28
+        </div>
+        <div
+          data-react-window-index="29"
+          data-testid="some-id-29"
+          style="position: absolute; left: 0px; transform: translateY(435px); height: 15px; width: 100%;"
+        >
+          some-id-29
+        </div>
+        <div
+          data-react-window-index="30"
+          data-testid="some-id-30"
+          style="position: absolute; left: 0px; transform: translateY(450px); height: 15px; width: 100%;"
+        >
+          some-id-30
+        </div>
+        <div
+          data-react-window-index="31"
+          data-testid="some-id-31"
+          style="position: absolute; left: 0px; transform: translateY(465px); height: 15px; width: 100%;"
+        >
+          some-id-31
+        </div>
+        <div
+          data-react-window-index="32"
+          data-testid="some-id-32"
+          style="position: absolute; left: 0px; transform: translateY(480px); height: 15px; width: 100%;"
+        >
+          some-id-32
+        </div>
+        <div
+          data-react-window-index="33"
+          data-testid="some-id-33"
+          style="position: absolute; left: 0px; transform: translateY(495px); height: 15px; width: 100%;"
+        >
+          some-id-33
+        </div>
+        <div
+          data-react-window-index="34"
+          data-testid="some-id-34"
+          style="position: absolute; left: 0px; transform: translateY(510px); height: 15px; width: 100%;"
+        >
+          some-id-34
+        </div>
+        <div
+          data-react-window-index="35"
+          data-testid="some-id-35"
+          style="position: absolute; left: 0px; transform: translateY(525px); height: 15px; width: 100%;"
+        >
+          some-id-35
+        </div>
+        <div
+          data-react-window-index="36"
+          data-testid="some-id-36"
+          style="position: absolute; left: 0px; transform: translateY(540px); height: 15px; width: 100%;"
+        >
+          some-id-36
+        </div>
+        <div
+          data-react-window-index="37"
+          data-testid="some-id-37"
+          style="position: absolute; left: 0px; transform: translateY(555px); height: 15px; width: 100%;"
+        >
+          some-id-37
+        </div>
+        <div
+          data-react-window-index="38"
+          data-testid="some-id-38"
+          style="position: absolute; left: 0px; transform: translateY(570px); height: 15px; width: 100%;"
+        >
+          some-id-38
+        </div>
+        <div
+          data-react-window-index="39"
+          data-testid="some-id-39"
+          style="position: absolute; left: 0px; transform: translateY(585px); height: 15px; width: 100%;"
+        >
+          some-id-39
+        </div>
+        <div
+          data-react-window-index="40"
+          data-testid="some-id-40"
+          style="position: absolute; left: 0px; transform: translateY(600px); height: 15px; width: 100%;"
+        >
+          some-id-40
+        </div>
+        <div
+          data-react-window-index="41"
+          data-testid="some-id-41"
+          style="position: absolute; left: 0px; transform: translateY(615px); height: 15px; width: 100%;"
+        >
+          some-id-41
+        </div>
+        <div
+          aria-hidden="true"
+          style="height: 1500px; width: 100%; z-index: -1;"
+        />
       </div>
     </div>
   </div>
@@ -264,90 +302,104 @@ exports[`VirtualList > when visible item is selected > renders 1`] = `
     >
       <div
         class="list"
-        style="position: relative; height: 45px; width: 100%; overflow: auto; will-change: transform; direction: ltr;"
+        role="list"
+        style="position: relative; max-height: 100%; flex-grow: 1; overflow-y: auto; width: 100%; height: 45px;"
       >
         <div
-          style="height: 4545px; width: 100%;"
+          data-react-window-index="0"
+          data-testid="some-id-0"
+          style="position: absolute; left: 0px; transform: translateY(0px); height: 15px; width: 100%;"
         >
-          <div
-            data-testid="some-id-0"
-            style="position: absolute; left: 0px; top: 0px; height: 15px; width: 100%;"
-          >
-            some-id-0
-          </div>
-          <div
-            data-testid="some-id-1"
-            style="position: absolute; left: 0px; top: 15px; height: 15px; width: 100%;"
-          >
-            some-id-1
-          </div>
-          <div
-            data-testid="some-id-2"
-            style="position: absolute; left: 0px; top: 30px; height: 15px; width: 100%;"
-          >
-            some-id-2
-          </div>
-          <div
-            data-testid="some-id-3"
-            style="position: absolute; left: 0px; top: 45px; height: 15px; width: 100%;"
-          >
-            some-id-3
-          </div>
-          <div
-            data-testid="some-id-4"
-            style="position: absolute; left: 0px; top: 60px; height: 15px; width: 100%;"
-          >
-            some-id-4
-          </div>
-          <div
-            data-testid="some-id-5"
-            style="position: absolute; left: 0px; top: 75px; height: 15px; width: 100%;"
-          >
-            some-id-5
-          </div>
-          <div
-            data-testid="some-id-6"
-            style="position: absolute; left: 0px; top: 90px; height: 15px; width: 100%;"
-          >
-            some-id-6
-          </div>
-          <div
-            data-testid="some-id-7"
-            style="position: absolute; left: 0px; top: 105px; height: 15px; width: 100%;"
-          >
-            some-id-7
-          </div>
-          <div
-            data-testid="some-id-8"
-            style="position: absolute; left: 0px; top: 120px; height: 15px; width: 100%;"
-          >
-            some-id-8
-          </div>
-          <div
-            data-testid="some-id-9"
-            style="position: absolute; left: 0px; top: 135px; height: 15px; width: 100%;"
-          >
-            some-id-9
-          </div>
-          <div
-            data-testid="some-id-10"
-            style="position: absolute; left: 0px; top: 150px; height: 15px; width: 100%;"
-          >
-            some-id-10
-          </div>
-          <div
-            data-testid="some-id-11"
-            style="position: absolute; left: 0px; top: 165px; height: 15px; width: 100%;"
-          >
-            some-id-11
-          </div>
-          <div
-            data-testid="some-id-12"
-            style="position: absolute; left: 0px; top: 180px; height: 15px; width: 100%;"
-          >
-            some-id-12
-          </div>
+          some-id-0
         </div>
+        <div
+          data-react-window-index="1"
+          data-testid="some-id-1"
+          style="position: absolute; left: 0px; transform: translateY(15px); height: 15px; width: 100%;"
+        >
+          some-id-1
+        </div>
+        <div
+          data-react-window-index="2"
+          data-testid="some-id-2"
+          style="position: absolute; left: 0px; transform: translateY(30px); height: 15px; width: 100%;"
+        >
+          some-id-2
+        </div>
+        <div
+          data-react-window-index="3"
+          data-testid="some-id-3"
+          style="position: absolute; left: 0px; transform: translateY(45px); height: 15px; width: 100%;"
+        >
+          some-id-3
+        </div>
+        <div
+          data-react-window-index="4"
+          data-testid="some-id-4"
+          style="position: absolute; left: 0px; transform: translateY(60px); height: 15px; width: 100%;"
+        >
+          some-id-4
+        </div>
+        <div
+          data-react-window-index="5"
+          data-testid="some-id-5"
+          style="position: absolute; left: 0px; transform: translateY(75px); height: 15px; width: 100%;"
+        >
+          some-id-5
+        </div>
+        <div
+          data-react-window-index="6"
+          data-testid="some-id-6"
+          style="position: absolute; left: 0px; transform: translateY(90px); height: 15px; width: 100%;"
+        >
+          some-id-6
+        </div>
+        <div
+          data-react-window-index="7"
+          data-testid="some-id-7"
+          style="position: absolute; left: 0px; transform: translateY(105px); height: 15px; width: 100%;"
+        >
+          some-id-7
+        </div>
+        <div
+          data-react-window-index="8"
+          data-testid="some-id-8"
+          style="position: absolute; left: 0px; transform: translateY(120px); height: 15px; width: 100%;"
+        >
+          some-id-8
+        </div>
+        <div
+          data-react-window-index="9"
+          data-testid="some-id-9"
+          style="position: absolute; left: 0px; transform: translateY(135px); height: 15px; width: 100%;"
+        >
+          some-id-9
+        </div>
+        <div
+          data-react-window-index="10"
+          data-testid="some-id-10"
+          style="position: absolute; left: 0px; transform: translateY(150px); height: 15px; width: 100%;"
+        >
+          some-id-10
+        </div>
+        <div
+          data-react-window-index="11"
+          data-testid="some-id-11"
+          style="position: absolute; left: 0px; transform: translateY(165px); height: 15px; width: 100%;"
+        >
+          some-id-11
+        </div>
+        <div
+          data-react-window-index="12"
+          data-testid="some-id-12"
+          style="position: absolute; left: 0px; transform: translateY(180px); height: 15px; width: 100%;"
+        >
+          some-id-12
+        </div>
+        <div
+          aria-hidden="true"
+          style="height: 1500px; width: 100%; z-index: -1;"
+        />
       </div>
     </div>
   </div>

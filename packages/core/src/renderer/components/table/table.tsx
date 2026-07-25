@@ -116,7 +116,7 @@ export interface TableProps<Item> extends React.DOMAttributes<HTMLDivElement> {
   rowLineHeight?: number;
   customRowHeights?: (item: Item, lineHeight: number, paddings: number) => number;
   getTableRow?: (uid: string) => React.ReactElement<TableRowProps<Item>> | undefined | null;
-  renderRow?: (item: Item) => React.ReactElement<TableRowProps<Item>> | undefined | null;
+  renderRow?: (item: Item, index: number) => React.ReactElement<TableRowProps<Item>> | undefined | null;
 }
 
 interface Dependencies {

@@ -11,7 +11,7 @@ import { observableHistoryInjectionToken } from "@freelensapp/routing";
 import { cssNames, noop, stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { reaction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import { createPortal } from "react-dom";
 
@@ -48,6 +48,7 @@ class NonInjectedDialog extends React.PureComponent<
   DialogProps & Dependencies & typeof NonInjectedDialog.defaultProps,
   DialogState
 > {
+  private readonly disposers: (() => void)[] = [];
   private readonly contentElem = React.createRef<HTMLDivElement>();
   private readonly ref = React.createRef<HTMLDivElement>();
 
@@ -83,12 +84,12 @@ class NonInjectedDialog extends React.PureComponent<
     // inside a derivation (the reaction's data function below).
     const { navigation } = this.props;
 
-    disposeOnUnmount(this, [
+    this.disposers.push(
       reaction(
         () => navigation.toString(),
         () => this.close(),
       ),
-    ]);
+    );
   }
 
   componentDidUpdate(prevProps: DialogProps) {
@@ -101,6 +102,7 @@ class NonInjectedDialog extends React.PureComponent<
 
   componentWillUnmount() {
     if (this.isOpen) this.onClose();
+    this.disposers.forEach((dispose) => dispose());
   }
 
   toggle(isOpen: boolean) {

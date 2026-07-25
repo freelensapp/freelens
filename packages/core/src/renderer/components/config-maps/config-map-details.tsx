@@ -12,7 +12,7 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { autorun, makeObservable, observable } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import { DrawerTitle } from "../drawer";
 import { MonacoEditor } from "../monaco-editor";
@@ -35,6 +35,7 @@ interface Dependencies {
 
 @observer
 class NonInjectedConfigMapDetails extends React.Component<ConfigMapDetailsProps & Dependencies> {
+  private readonly disposers: (() => void)[] = [];
   @observable isSaving = false;
   @observable data = observable.map<string, string | undefined>();
 
@@ -48,13 +49,17 @@ class NonInjectedConfigMapDetails extends React.Component<ConfigMapDetailsProps 
     // this.props inside a derivation (the autorun below).
     const { object: configMap } = this.props;
 
-    disposeOnUnmount(this, [
+    this.disposers.push(
       autorun(() => {
         if (configMap) {
           this.data.replace(configMap.data); // refresh
         }
       }),
-    ]);
+    );
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   save = () => {

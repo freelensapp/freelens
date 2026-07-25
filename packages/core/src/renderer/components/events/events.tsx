@@ -13,7 +13,6 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { orderBy } from "es-toolkit/compat";
 import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
-import moment from "moment-timezone";
 import React from "react";
 import navigateToEventsInjectable from "../../../common/front-end-routing/routes/cluster/events/navigate-to-events.injectable";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
@@ -218,7 +217,7 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
             <WithTooltip>{event.getSource()}</WithTooltip>,
             event.getCount(),
             <KubeObjectAge key="age" object={event} />,
-            <WithTooltip tooltip={event.lastTimestamp ? moment(event.lastTimestamp).toDate() : undefined}>
+            <WithTooltip tooltip={event.lastTimestamp ? new Date(event.lastTimestamp) : undefined}>
               <ReactiveDuration key="last-seen" timestamp={event.lastTimestamp} />
             </WithTooltip>,
           ];

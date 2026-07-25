@@ -5,6 +5,7 @@
  */
 
 import asyncFn from "@async-fn/vitest";
+import { getInjectable2, instantiationDecoratorToken } from "@ogre-tools/injectable";
 import { runInAction } from "mobx";
 import staticFilesDirectoryInjectable from "../../common/vars/static-files-directory.injectable";
 import focusApplicationInjectable from "../../main/electron-app/features/focus-application.injectable";
@@ -13,6 +14,7 @@ import splashWindowInjectable from "../../main/start-main-application/lens-windo
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 import type { AsyncFnMock } from "@async-fn/vitest";
+import type { DiContainerForInjection } from "@ogre-tools/injectable";
 import type { Mock } from "vitest";
 
 import type { CreateElectronWindow } from "../../main/start-main-application/lens-window/application-window/create-electron-window.injectable";
@@ -70,7 +72,21 @@ describe("opening application window using tray", () => {
         );
 
         runInAction(() => {
-          (mainDi as any).decorateFunction(createElectronWindowInjectable, createElectronWindowMock);
+          // @ogre-tools 23 removed `di.decorateFunction`; decorate the
+          // instantiation of the target injectable with an instantiation
+          // decorator registered against `instantiationDecoratorToken.for(...)`.
+          mainDi.register(
+            getInjectable2({
+              id: "decorate-create-electron-window-for-testing",
+              instantiate:
+                () =>
+                () =>
+                (instantiate: (di: DiContainerForInjection, param: void) => CreateElectronWindow) =>
+                (di: DiContainerForInjection) =>
+                  createElectronWindowMock(instantiate(di, undefined)),
+              injectionToken: instantiationDecoratorToken.for(createElectronWindowInjectable),
+            }),
+          );
         });
 
         expectWindowsToBeOpen = expectWindowsToBeOpenFor(builder);

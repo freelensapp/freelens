@@ -12,9 +12,8 @@ import { NodeCharts } from "./node-charts";
 
 import type { Node } from "@freelensapp/kube-object";
 
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
-
 import type { ClusterMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
+import type { IAsyncComputed } from "../../../common/utils/async-computed";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 interface Dependencies {

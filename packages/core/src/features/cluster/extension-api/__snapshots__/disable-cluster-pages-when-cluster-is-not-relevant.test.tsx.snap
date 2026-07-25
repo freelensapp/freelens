@@ -49,7 +49,7 @@ exports[`disable-cluster-pages-when-cluster-is-not-relevant > given extension sh
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/extension/test-extension"
                 >
                   <i
                     class="Icon material focusable"
@@ -217,7 +217,7 @@ exports[`disable-cluster-pages-when-cluster-is-not-relevant > given extension sh
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/extension/test-extension"
                 >
                   <i
                     class="Icon material focusable"
@@ -286,7 +286,7 @@ exports[`disable-cluster-pages-when-cluster-is-not-relevant > given extension sh
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/extension/test-extension"
                 >
                   <i
                     class="Icon svg focusable"
@@ -605,7 +605,7 @@ exports[`disable-cluster-pages-when-cluster-is-not-relevant > given extension sh
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon material focusable"
@@ -774,7 +774,7 @@ exports[`disable-cluster-pages-when-cluster-is-not-relevant > given extension sh
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon material focusable"
@@ -843,7 +843,7 @@ exports[`disable-cluster-pages-when-cluster-is-not-relevant > given extension sh
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon svg focusable"
@@ -1285,7 +1285,7 @@ exports[`disable-cluster-pages-when-cluster-is-not-relevant > given not yet know
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-favorites"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon material focusable"
@@ -1454,7 +1454,7 @@ exports[`disable-cluster-pages-when-cluster-is-not-relevant > given not yet know
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-network"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon material focusable"
@@ -1523,7 +1523,7 @@ exports[`disable-cluster-pages-when-cluster-is-not-relevant > given not yet know
                 <a
                   class="navItem"
                   data-testid="link-for-sidebar-item-helm"
-                  href="/"
+                  href="/workloads"
                 >
                   <i
                     class="Icon svg focusable"

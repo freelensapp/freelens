@@ -23,19 +23,20 @@
     "clean:dist": "pnpm dlx rimraf@6.1.3 dist"
   },
   "dependencies": {
-    "@ogre-tools/injectable": "^17.11.1",
-    "@ogre-tools/injectable-react": "^17.11.1",
-    "@testing-library/react": "^15.0.7",
-    "es-toolkit": "^1.49.0",
-    "mobx": "^6.15.0",
+    "@async-fn/vitest": "catalog:",
+    "@ogre-tools/injectable": "catalog:",
+    "@ogre-tools/injectable-react": "catalog:",
+    "@testing-library/react": "catalog:",
+    "es-toolkit": "catalog:",
+    "mobx": "catalog:",
     "react": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
-    "@types/node": "~24.12.4",
+    "@types/node": "catalog:",
     "@types/react": "catalog:",
     "react-dom": "catalog:",
-    "vitest": "^4.1.10"
+    "vitest": "catalog:"
   },
   "publishConfig": {
     "access": "public",

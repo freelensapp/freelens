@@ -8,7 +8,6 @@ import "./cronjobs.scss";
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import moment from "moment-timezone";
 import { BadgeBoolean } from "../badge";
 import eventStoreInjectable from "../events/store.injectable";
 import { KubeObjectAge } from "../kube-object/age";
@@ -56,7 +55,7 @@ const NonInjectedCronJobs = observer((props: Dependencies) => {
           [columnId.resumed]: (cronJob) => String(!cronJob.spec.suspend),
           [columnId.active]: (cronJob) => cronJobStore.getActiveJobsNum(cronJob),
           [columnId.lastSchedule]: (cronJob) =>
-            cronJob.status?.lastScheduleTime ? moment().diff(cronJob.status.lastScheduleTime) : 0,
+            cronJob.status?.lastScheduleTime ? Date.now() - new Date(cronJob.status.lastScheduleTime).getTime() : 0,
           [columnId.age]: (cronJob) => -cronJob.getCreationTimestamp(),
         }}
         searchFilters={[(cronJob) => cronJob.getSearchFields(), (cronJob) => cronJob.getSchedule()]}
@@ -86,7 +85,7 @@ const NonInjectedCronJobs = observer((props: Dependencies) => {
           <BadgeBoolean value={!cronJob.spec.suspend} />,
           cronJobStore.getActiveJobsNum(cronJob),
           <WithTooltip
-            tooltip={cronJob.status?.lastScheduleTime ? moment(cronJob.status?.lastScheduleTime).toDate() : undefined}
+            tooltip={cronJob.status?.lastScheduleTime ? new Date(cronJob.status?.lastScheduleTime) : undefined}
           >
             {cronJob.getLastScheduleTime()}
           </WithTooltip>,

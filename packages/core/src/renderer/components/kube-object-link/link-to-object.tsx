@@ -6,7 +6,6 @@
 
 import { stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import React from "react";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
 import getMaybeDetailsUrlInjectable, {
   type GetMaybeDetailsUrl,
@@ -15,6 +14,7 @@ import { MaybeLink } from "../maybe-link";
 import { WithTooltip } from "../with-tooltip";
 
 import type { KubeObject, LocalObjectReference, ObjectReference } from "@freelensapp/kube-object";
+import type { StrictReactNode } from "@freelensapp/utilities";
 
 import type { ApiManager } from "../../../common/k8s-api/api-manager";
 
@@ -26,8 +26,8 @@ interface Dependencies {
 interface LinkToObjectProps {
   objectRef?: LocalObjectReference | ObjectReference;
   object?: KubeObject;
-  tooltip?: string | React.ReactNode;
-  content?: string | React.ReactNode;
+  tooltip?: string | StrictReactNode;
+  content?: string | StrictReactNode;
 }
 
 function getRefUrl(apiManager: ApiManager, ref: LocalObjectReference | ObjectReference, parentObject?: KubeObject) {

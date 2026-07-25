@@ -5,8 +5,8 @@
  */
 
 .VirtualList {
-  > div > .list {
-    /* Render scrollbar in content area, preventing to occupy extra space */
+  .list {
+    /* Render scrollbar in content area, preventing it from occupying extra space */
     overflow-y: overlay !important;
   }
 }

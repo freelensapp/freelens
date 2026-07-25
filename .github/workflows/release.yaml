@@ -84,7 +84,6 @@ jobs:
     env:
       DO_NOT_TRACK: "1"
       ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
-      ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
 
     steps:
       - name: Checkout
@@ -160,16 +159,39 @@ jobs:
         shell: bash
         run: echo "electron_builder_version=$(yq -r .importers.freelens.devDependencies.electron-builder.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a $GITHUB_ENV
 
-      - name: Use Electron cache
-        uses: actions/cache@v6
+      # electron-builder's Electron zip downloader doesn't accept a cache
+      # directory override and always writes into the OS-default Electron cache
+      # dir (see freelensapp/freelens#2305). Point both the "Install Electron
+      # binary" step and this cache at that real directory so the two share one
+      # @electron/get cache and electron-builder reuses the pre-downloaded
+      # binary instead of fetching it again.
+      - name: Get Electron cache directory
+        shell: bash
+        run: |
+          case "${{ matrix.os }}" in
+            linux) dir="$HOME/.cache/electron" ;;
+            macos) dir="$HOME/Library/Caches/electron" ;;
+            windows) dir="$LOCALAPPDATA/electron/Cache" ;;
+          esac
+          echo "electron_cache_dir=$dir" | tee -a $GITHUB_ENV
+
+      # Split restore/save (save runs under if: always() after the build steps
+      # below) so a packaging failure that happens after the binaries finish
+      # downloading still saves the cache. The combined actions/cache action
+      # only saves in a post-job step that a failed job skips
+      # (freelensapp/freelens#2303).
+      - name: Restore Electron cache
+        id: electron-cache-restore
+        uses: actions/cache/restore@v6
         with:
-          path: ${{ env.ELECTRON_CACHE }}
+          path: ${{ env.electron_cache_dir }}
           key: ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-${{ env.electron_version }}
           restore-keys: |
             ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-
 
-      - name: Use Electron Builder cache
-        uses: actions/cache@v6
+      - name: Restore Electron Builder cache
+        id: electron-builder-cache-restore
+        uses: actions/cache/restore@v6
         with:
           path: ${{ env.ELECTRON_BUILDER_CACHE }}
           key: ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-builder-${{ env.electron_builder_version }}
@@ -191,7 +213,7 @@ jobs:
         shell: bash
         working-directory: freelens
         env:
-          electron_config_cache: ${{ env.ELECTRON_CACHE }}
+          electron_config_cache: ${{ env.electron_cache_dir }}
         run: node "$(node -p "require.resolve('electron/install.js')")"
 
       - name: Build packages
@@ -226,7 +248,32 @@ jobs:
         run: pnpm --color=always build:resources
 
       - name: Build Electron app (macOS)
+        id: build-macos
         if: runner.os == 'macOS'
+        run: |
+          for var in APPLEID APPLEIDPASS APPLETEAMID CSC_LINK CSC_KEY_PASSWORD CSC_INSTALLER_LINK CSC_INSTALLER_KEY_PASSWORD; do
+            test -n "${!var}" || unset $var
+          done
+          pnpm --color=always build:app \
+            dmg pkg \
+            --${{ matrix.arch }}
+        env:
+          APPLEID: ${{ secrets.APPLEID }}
+          APPLEIDPASS: ${{ secrets.APPLEIDPASS }}
+          APPLETEAMID: ${{ secrets.APPLETEAMID }}
+          CSC_LINK: ${{ secrets.CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+          CSC_INSTALLER_LINK: ${{ secrets.CSC_INSTALLER_LINK }}
+          CSC_INSTALLER_KEY_PASSWORD: ${{ secrets.CSC_INSTALLER_KEY_PASSWORD }}
+          DEBUG: electron-builder,electron-builder:*
+        continue-on-error: true
+
+      # Retry once to absorb a transient Electron/toolset download failure
+      # during packaging (see freelensapp/freelens#2303). Rebuilding and
+      # re-signing from scratch is idempotent; notarization happens in the
+      # separate steps below.
+      - name: Build Electron app (macOS) (retry)
+        if: runner.os == 'macOS' && steps.build-macos.outcome == 'failure'
         run: |
           for var in APPLEID APPLEIDPASS APPLETEAMID CSC_LINK CSC_KEY_PASSWORD CSC_INSTALLER_LINK CSC_INSTALLER_KEY_PASSWORD; do
             test -n "${!var}" || unset $var
@@ -308,7 +355,20 @@ jobs:
           APPLETEAMID: ${{ secrets.APPLETEAMID }}
 
       - name: Build Electron app (Linux)
+        id: build-linux
         if: runner.os == 'Linux'
+        run: |
+          pnpm --color=always build:app \
+            AppImage deb rpm \
+            --${{ matrix.arch }}
+        env:
+          DEBUG: electron-builder,electron-builder:*
+        continue-on-error: true
+
+      # Retry once to absorb a transient Electron/toolset download failure
+      # during packaging (see freelensapp/freelens#2303).
+      - name: Build Electron app (Linux) (retry)
+        if: runner.os == 'Linux' && steps.build-linux.outcome == 'failure'
         run: |
           pnpm --color=always build:app \
             AppImage deb rpm \
@@ -317,7 +377,21 @@ jobs:
           DEBUG: electron-builder,electron-builder:*
 
       - name: Build Electron app directory (Windows)
+        id: build-windows-dir
         if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          pnpm --color=always build:app \
+            dir \
+            --${{ matrix.arch }}
+        env:
+          DEBUG: electron-builder,electron-builder:*
+        continue-on-error: true
+
+      # Retry once to absorb a transient Electron/toolset download failure
+      # during packaging (see freelensapp/freelens#2303).
+      - name: Build Electron app directory (Windows) (retry)
+        if: runner.os == 'Windows' && steps.build-windows-dir.outcome == 'failure'
         shell: bash
         run: |
           pnpm --color=always build:app \
@@ -389,6 +463,7 @@ jobs:
           files: ${{ steps.sign-list.outputs.files }}
 
       - name: Build Electron app installers (Windows)
+        id: build-windows-installers
         if: runner.os == 'Windows'
         shell: bash
         run: |
@@ -402,6 +477,48 @@ jobs:
             --${{ matrix.arch }}
         env:
           DEBUG: electron-builder,electron-builder:*
+        continue-on-error: true
+
+      # Retry once to absorb a transient toolset download failure (NSIS,
+      # winCodeSign, ...) during installer packaging (see
+      # freelensapp/freelens#2303). Runs against the already-signed unpacked
+      # dir, so it only re-runs the installer assembly.
+      - name: Build Electron app installers (Windows) (retry)
+        if: runner.os == 'Windows' && steps.build-windows-installers.outcome == 'failure'
+        shell: bash
+        run: |
+          case "${{ matrix.arch }}" in
+            arm64) unpacked="win-arm64-unpacked" ;;
+            *) unpacked="win-unpacked" ;;
+          esac
+          pnpm --color=always build:app \
+            msi nsis portable \
+            --prepackaged "$GITHUB_WORKSPACE/freelens/dist/$unpacked" \
+            --${{ matrix.arch }}
+        env:
+          DEBUG: electron-builder,electron-builder:*
+
+      # Save the Electron and electron-builder caches unconditionally (the
+      # counterpart to the split restore steps above): whatever the build steps
+      # downloaded is cached even when a later packaging/signing step fails, so
+      # a re-run does not re-download the binaries (freelensapp/freelens#2303).
+      # Skip each save on an exact cache hit (the primary key already exists, so
+      # actions/cache/save would only warn "Unable to reserve cache ..."); still
+      # save on a miss or restore-key partial hit, and - thanks to always() -
+      # even when a build step above failed.
+      - name: Save Electron cache
+        if: always() && steps.electron-cache-restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: ${{ env.electron_cache_dir }}
+          key: ${{ steps.electron-cache-restore.outputs.cache-primary-key }}
+
+      - name: Save Electron Builder cache
+        if: always() && steps.electron-builder-cache-restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: ${{ env.ELECTRON_BUILDER_CACHE }}
+          key: ${{ steps.electron-builder-cache-restore.outputs.cache-primary-key }}
 
       - name: Azure Trusted Signing (Windows)
         if: runner.os == 'Windows'

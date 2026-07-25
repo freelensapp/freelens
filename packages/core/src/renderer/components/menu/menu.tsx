@@ -415,7 +415,7 @@ class NonInjectedMenu extends React.Component<MenuProps & Dependencies, State> {
     }
     const menuItems = React.Children.toArray(children).map((item, index) => {
       if (typeof item === "object" && (item as ReactElement).type === MenuItem) {
-        return React.cloneElement(item as ReactElement, {
+        return React.cloneElement(item as ReactElement<any>, {
           ref: (item: MenuItem) => this.bindItemRef(item, index),
         });
       }
@@ -443,7 +443,7 @@ class NonInjectedMenu extends React.Component<MenuProps & Dependencies, State> {
       menu = <Animate enter={this.isOpen}>{menu}</Animate>;
     }
 
-    menu = <MenuContext.Provider value={this}>{menu}</MenuContext.Provider>;
+    menu = <MenuContext value={this}>{menu}</MenuContext>;
 
     if (!usePortal) {
       return menu;

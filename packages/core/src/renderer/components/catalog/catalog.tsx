@@ -13,7 +13,7 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { action, makeObservable, observable, reaction, runInAction, when } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import emitAppEventInjectable from "../../../common/app-event-bus/emit-event.injectable";
 import catalogCategoryRegistryInjectable from "../../../common/catalog/category-registry.injectable";
@@ -84,6 +84,7 @@ interface Dependencies {
 
 @observer
 class NonInjectedCatalog extends React.Component<Dependencies> {
+  private readonly disposers: (() => void)[] = [];
   private readonly menuItems = observable.array<CatalogEntityContextMenu>();
   @observable activeTab: string | undefined = undefined;
 
@@ -127,7 +128,7 @@ class NonInjectedCatalog extends React.Component<Dependencies> {
       return catalogPreviousActiveTabStorage.get() || browseCatalogTab;
     };
 
-    disposeOnUnmount(this, [
+    this.disposers.push(
       catalogEntityStore.watch(),
       reaction(
         () => routeActiveTab(),
@@ -181,12 +182,16 @@ class NonInjectedCatalog extends React.Component<Dependencies> {
           }
         },
       ),
-    ]);
+    );
 
     this.props.emitEvent({
       name: "catalog",
       action: "open",
     });
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   addToHotbar(entity: CatalogEntity): void {

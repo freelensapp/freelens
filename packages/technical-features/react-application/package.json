@@ -26,11 +26,11 @@
   "dependencies": {
     "@freelensapp/application": "workspace:^",
     "@freelensapp/feature-core": "workspace:^",
-    "@ogre-tools/injectable": "^17.11.1",
-    "@ogre-tools/injectable-extension-for-mobx": "^17.11.1",
-    "@ogre-tools/injectable-react": "^17.11.1",
-    "mobx": "^6.15.0",
-    "mobx-react": "^9.1.1",
+    "@ogre-tools/injectable": "catalog:",
+    "@ogre-tools/injectable-extension-for-mobx": "catalog:",
+    "@ogre-tools/injectable-react": "catalog:",
+    "mobx": "catalog:",
+    "mobx-react": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:"
   },
@@ -38,13 +38,13 @@
     "@freelensapp/react-testing-library-discovery": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
-    "@ogre-tools/fp": "^17.11.1",
-    "@testing-library/react": "^15.0.7",
+    "@ogre-tools/fp": "catalog:",
+    "@testing-library/react": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
-    "jsdom": "^29.1.1",
-    "typescript": "^7.0.2",
-    "vitest": "^4.1.10"
+    "jsdom": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "publishConfig": {
     "access": "public",

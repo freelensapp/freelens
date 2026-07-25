@@ -11,7 +11,7 @@ import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
 import { reaction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import dockStoreInjectable from "../dock/store.injectable";
 import { DockTab } from "../dock-tab";
@@ -30,6 +30,8 @@ interface Dependencies {
 
 @observer
 class NonInjectedTerminalTab<Props extends TerminalTabProps & Dependencies> extends React.Component<Props> {
+  private readonly disposers: (() => void)[] = [];
+
   constructor(props: Props) {
     super(props);
     autoBindReact(this);
@@ -41,7 +43,11 @@ class NonInjectedTerminalTab<Props extends TerminalTabProps & Dependencies> exte
     // this.props, so track the underlying observable through captured props instead.
     const { value, terminalStore } = this.props;
 
-    disposeOnUnmount(this, [reaction(() => (value?.id ? terminalStore.isDisconnected(value.id) : false), this.close)]);
+    this.disposers.push(reaction(() => (value?.id ? terminalStore.isDisconnected(value.id) : false), this.close));
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   private close() {

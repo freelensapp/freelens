@@ -16,15 +16,16 @@ included so the follow-up PRs can act on them directly.
 
 ## 1. Why this phase exists
 
-`react-router` 5 + `mobx-observable-history` are the one subsystem that cannot
-follow the rest of the workspace to React 19:
+`react-router` 5 + `mobx-observable-history` were the one subsystem that could
+not follow the rest of the workspace to React 19:
 
 - `react-router` 5.3.4 is unmaintained.
 - `mobx-observable-history` 2.0.3 is abandoned upstream and was written against
   the `history` v4 API.
 
-Phase 2 removes that blocker. It is independent of the React version and can
-proceed on React 18; it is the real gate for Phase 3 (React 19).
+Phase 2 removed that blocker. It was independent of the React version and
+proceeded on React 18; it was the real gate for Phase 3 (React 19), which has
+since shipped — the workspace now runs on **React 19**.
 
 ## 2. Verified current state
 
@@ -173,7 +174,9 @@ Each is its own PR to keep history bisectable:
    deep links, and extension-registered routes; confirm the extension-facing
    routing API still works.
 
-## 6. Out of scope (deferred to Phase 3)
+## 6. Out of scope (was deferred to Phase 3, now shipped)
+
+These were deferred to Phase 3, which has since landed:
 
 - Bumping to React 19, `@testing-library/react` 16, `react-window` v2.
 - Enabling `StrictMode`.

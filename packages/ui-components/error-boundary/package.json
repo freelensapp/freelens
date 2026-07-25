@@ -27,19 +27,18 @@
   "dependencies": {
     "@freelensapp/button": "workspace:^",
     "@freelensapp/routing": "workspace:^",
-    "@ogre-tools/injectable": "^17.11.1",
-    "@ogre-tools/injectable-react": "^17.11.1",
-    "mobx": "^6.15.0",
-    "mobx-react": "^9.1.1",
-    "react": "catalog:",
-    "react-dom": "catalog:"
+    "@ogre-tools/injectable": "catalog:",
+    "@ogre-tools/injectable-react": "catalog:",
+    "mobx": "catalog:",
+    "mobx-react": "catalog:",
+    "react": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
     "@types/react": "catalog:",
-    "typescript": "^7.0.2",
-    "vitest": "^4.1.10"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "publishConfig": {
     "access": "public",
