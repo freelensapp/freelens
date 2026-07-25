@@ -26,7 +26,9 @@ jobs:
 
     runs-on: ${{ matrix.runs-on }}
     environment: automated
-    timeout-minutes: 10
+    # Regenerating binaries.lock.json downloads all eighteen artifacts, which
+    # is a few hundred megabytes on top of what this job used to do.
+    timeout-minutes: 25
 
     if: >-
       github.event_name != 'issue_comment' || (startsWith(github.event.issue.title, 'Automated update of kubectl versions') && contains(github.event.comment.body, '/rerun'))
@@ -41,13 +43,14 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GH_TOKEN }}
 
-      # yq comes from mise so that its version has a single source (mise.toml)
-      # and the download is verified against mise.lock.
+      # yq and cosign come from mise so that their versions have a single
+      # source (mise.toml) and the downloads are verified against mise.lock.
+      # cosign is needed to regenerate binaries.lock.json below.
       - name: Set up mise
         uses: jdx/mise-action@v4
         with:
           version: 2026.7.13 # datasource=github-releases depName=jdx/mise
-          install_args: yq
+          install_args: yq cosign
 
       - name: Setup pnpm
         run: corepack enable
@@ -76,6 +79,15 @@ jobs:
           version=$(cat .github/version.log)
           yq -pj -oj -i '.config.bundledKubectlVersion="'"$version"'"' freelens/package.json
           echo "Bundled kubectl version $version" > .github/pr_body.log
+
+      # The build verifies every download against binaries.lock.json, so the
+      # bump above is incomplete without the matching digests. Regenerating
+      # here keeps the version and its pins in one commit, and re-checks every
+      # publisher signature on the way.
+      - name: Update the binaries lock
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: pnpm --color=always update-binaries-lock
 
       - name: Check for changes
         run: |
