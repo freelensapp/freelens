@@ -27,12 +27,15 @@ import {
   type SupportedArch,
   toolNames,
 } from "./artifacts.js";
+import { setTimeoutFor } from "./download.js";
+import { assertLockMatchesVersions, readLock, resolvePinnedChecksum } from "./lock.js";
 
 import type { SingleBar } from "cli-progress";
 
 const options = arg({
   "--package": String,
   "--base-dir": String,
+  "--lock": String,
 });
 
 type Options = typeof options;
@@ -60,71 +63,11 @@ function joinWithInitCwd(relativePath: string): string {
 
 const pathToPackage = joinWithInitCwd(assertOption("--package"));
 const pathToBaseDir = joinWithInitCwd(assertOption("--base-dir"));
-
-function setTimeoutFor(controller: AbortController, timeout: number): void {
-  const handle = setTimeout(() => controller.abort(), timeout);
-
-  controller.signal.addEventListener("abort", () => clearTimeout(handle));
-}
+const pathToLock = joinWithInitCwd(
+  options["--lock"] ?? path.join(path.dirname(assertOption("--package")), "binaries.lock.json"),
+);
 
 const pipeline = promisify(_pipeline);
-
-/**
- * How many times to ask for a remote checksum before giving up. Verification is
- * mandatory, so a transient network error must not be able to fail the whole
- * build on the first try.
- */
-const CHECKSUM_FETCH_ATTEMPTS = 3;
-
-const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
-
-/**
- * Fetches and parses the remote SHA-256 checksum published for a download.
- *
- * The checksum file is expected to contain a hex-encoded SHA-256 digest,
- * optionally followed by the file name (the common `sha256sum` output format).
- * Only the first whitespace-delimited token is used.
- *
- * Verification is mandatory: when the checksum cannot be fetched or does not
- * look like a SHA-256 digest, this throws instead of letting the caller fall
- * back to an unverified download.
- */
-async function fetchChecksum(url: string): Promise<string> {
-  let lastError: unknown;
-
-  for (let attempt = 1; attempt <= CHECKSUM_FETCH_ATTEMPTS; attempt += 1) {
-    if (attempt > 1) {
-      await delay(attempt * 1000);
-    }
-
-    const controller = new AbortController();
-
-    setTimeoutFor(controller, 60 * 1000);
-
-    try {
-      const response = await fetch(url, { signal: controller.signal });
-
-      if (!response.ok) {
-        throw new Error(`${response.status} ${response.statusText}`);
-      }
-
-      const body = await response.text();
-      const checksum = body.trim().split(/\s+/)[0]?.toLowerCase();
-
-      if (!checksum || !/^[0-9a-f]{64}$/.test(checksum)) {
-        throw new Error(`not a SHA-256 digest: ${JSON.stringify(body.slice(0, 128))}`);
-      }
-
-      return checksum;
-    } catch (error) {
-      lastError = error;
-    }
-  }
-
-  throw new Error(
-    `unable to fetch the mandatory SHA-256 checksum from ${url} after ${CHECKSUM_FETCH_ATTEMPTS} attempts: ${lastError}`,
-  );
-}
 
 class BinaryDownloader {
   protected readonly bar: SingleBar;
@@ -137,6 +80,7 @@ class BinaryDownloader {
 
   constructor(
     public readonly artifact: Artifact,
+    protected readonly expectedChecksum: string,
     baseDir: string,
     multiBar: MultiBar,
   ) {
@@ -150,10 +94,9 @@ class BinaryDownloader {
   }
 
   /**
-   * Returns `true` when the binary is already present and matches the given
-   * remote checksum, based on the checksum recorded in the sidecar file during
-   * the previous successful download. This avoids re-downloading unchanged
-   * binaries.
+   * Returns `true` when the binary is already present and matches the pinned
+   * checksum, based on what the sidecar recorded during the previous successful
+   * download. This avoids re-downloading unchanged binaries.
    */
   private async isUpToDate(expectedChecksum: string): Promise<boolean> {
     try {
@@ -173,11 +116,11 @@ class BinaryDownloader {
 
     const bar = this.bar;
 
-    // The remote checksum covers the downloaded artifact bytes (the binary for
-    // kubectl / freelens-k8s-proxy, the archive for helm). Fetching it is
-    // mandatory: it both lets us skip unchanged binaries and is the only thing
-    // that makes a freshly downloaded one trustworthy.
-    const expectedChecksum = await fetchChecksum(this.artifact.checksumUrl);
+    // The pinned checksum covers the downloaded artifact bytes (the binary for
+    // kubectl / freelens-k8s-proxy, the archive for helm). It comes from the
+    // committed lock rather than from the vendor, so a build never has to trust
+    // a checksum served by the same origin as the artifact it describes.
+    const expectedChecksum = this.expectedChecksum;
 
     if (await this.isUpToDate(expectedChecksum)) {
       bar.setTotal(1);
@@ -311,10 +254,15 @@ class HelmDownloader extends BinaryDownloader {
   }
 }
 
-function createDownloader(artifact: Artifact, baseDir: string, multiBar: MultiBar): BinaryDownloader {
+function createDownloader(
+  artifact: Artifact,
+  expectedChecksum: string,
+  baseDir: string,
+  multiBar: MultiBar,
+): BinaryDownloader {
   return artifact.tool === "helm"
-    ? new HelmDownloader(artifact, baseDir, multiBar)
-    : new BinaryDownloader(artifact, baseDir, multiBar);
+    ? new HelmDownloader(artifact, expectedChecksum, baseDir, multiBar)
+    : new BinaryDownloader(artifact, expectedChecksum, baseDir, multiBar);
 }
 
 const versions = await readToolVersions(pathToPackage);
@@ -329,22 +277,35 @@ const multiBar = new MultiBar({
   format: "[{bar}] {percentage}% | {url}",
 });
 
-function downloadersFor(targetArch: SupportedArch): BinaryDownloader[] {
-  return toolNames.map((tool) =>
-    createDownloader(
-      describeArtifact({ tool, version: versions[tool], platform, arch: targetArch }),
-      pathToBaseDir,
-      multiBar,
-    ),
-  );
+/**
+ * Resolves every download up front, before any network access, so that a stale
+ * lock fails immediately with an actionable message rather than part-way
+ * through a set of downloads.
+ */
+async function prepareDownloaders(): Promise<BinaryDownloader[]> {
+  const lock = await readLock(pathToLock);
+
+  assertLockMatchesVersions(lock, versions, pathToLock);
+
+  const downloadersFor = (targetArch: SupportedArch) =>
+    toolNames.map((tool) => {
+      const artifact = describeArtifact({ tool, version: versions[tool], platform, arch: targetArch });
+
+      return createDownloader(artifact, resolvePinnedChecksum(lock, artifact), pathToBaseDir, multiBar);
+    });
+
+  if (process.env.DOWNLOAD_ALL_ARCHITECTURES === "true") {
+    return [...downloadersFor("x64"), ...downloadersFor("arm64")];
+  }
+
+  return arch === "x64" || arch === "arm64" ? downloadersFor(arch) : [];
 }
 
-const downloaders: BinaryDownloader[] =
-  process.env.DOWNLOAD_ALL_ARCHITECTURES === "true"
-    ? [...downloadersFor("x64"), ...downloadersFor("arm64")]
-    : arch === "x64" || arch === "arm64"
-      ? downloadersFor(arch)
-      : [];
+const downloaders = await prepareDownloaders().catch((error: unknown) => {
+  multiBar.stop();
+  console.error(error instanceof Error ? error.message : String(error));
+  process.exit(1);
+});
 
 const settledResults = await Promise.allSettled(
   downloaders.map((downloader) =>
