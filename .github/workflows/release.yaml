@@ -605,13 +605,15 @@ jobs:
           set -eo pipefail
           # Assemble a production-only dependency tree (no devDependencies) from
           # the already-populated pnpm store, then map each runtime package
-          # <name>@<version> to its path in the pnpm store. security-scan uses the
-          # keys as the runtime closure (to drop build-time findings) and the
-          # paths as the code-scanning location for npm findings (grype otherwise
-          # reports them against pnpm-lock.yaml). --legacy is required because the
-          # workspace does not set inject-workspace-packages. The lowercase
-          # repo-name prefix keeps this file out of the Freelens*.* release-upload
-          # glob; it travels to security-scan as a run artifact.
+          # <name>@<version> to its path in the pnpm store. publish-runtime-package-list
+          # merges the per-platform lists into the one published with the release:
+          # the SBOM above covers the whole build workspace, so release-scan.yaml
+          # needs the keys as the runtime closure (to drop build-time findings)
+          # and the paths as the reported location for npm findings (grype
+          # otherwise reports them against pnpm-lock.yaml). --legacy is required
+          # because the workspace does not set inject-workspace-packages. The
+          # lowercase repo-name prefix keeps this file out of the Freelens*.*
+          # release-upload glob; it travels as a run artifact instead.
           deploy_dir="$RUNNER_TEMP/freelens-prod"
           rm -rf "$deploy_dir"
           pnpm --filter freelens deploy --prod --legacy --ignore-scripts "$deploy_dir"
@@ -688,13 +690,21 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  security-scan:
-    name: security scan
+  publish-runtime-package-list:
+    name: publish runtime package list
 
-    # Runs after build-app has produced the per-arch SBOMs and runtime package
-    # lists (both pulled here as run artifacts from the same run, which avoids
-    # needing push access to read the still-draft release). publish-github-release
-    # depends on this job, so the draft is scanned before it is published.
+    # The runtime package list says which npm packages of the build actually
+    # reach a user's machine. release-scan.yaml needs it to reduce the published
+    # SBOMs - which cover the whole build workspace, devDependencies included -
+    # to what ships.
+    #
+    # One asset, not one per platform: every build resolves the same npm closure
+    # from the same lockfile (on v1.10.3 all six SBOMs carry a byte-identical set
+    # of npm packages), so per-platform copies would be six identical files on
+    # the release page. It is still merged from all six rather than taken from
+    # one of them, so a dependency that some day resolves only on one platform
+    # stays in the set instead of silently dropping out of the scan everywhere
+    # else.
     needs:
       - make-draft-release
       - build-app
@@ -703,25 +713,9 @@ jobs:
 
     permissions:
       actions: read
-      contents: read
-      security-events: write
-
-    env:
-      # Renovate keeps this version up to date via the inline datasource hint
-      # below (see .renovaterc.json5 customManagers).
-      GRYPE_VERSION: v0.116.0 # datasource=github-releases depName=anchore/grype
+      contents: write
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v7
-
-      - name: Download SBOMs
-        uses: actions/download-artifact@v8
-        with:
-          pattern: "*-sbom.spdx.json"
-          path: sboms
-          merge-multiple: true
-
       - name: Download runtime package lists
         uses: actions/download-artifact@v8
         with:
@@ -729,130 +723,43 @@ jobs:
           path: prod
           merge-multiple: true
 
-      - name: Install Grype
-        id: grype
-        uses: anchore/scan-action/download-grype@v7
-        with:
-          grype-version: ${{ env.GRYPE_VERSION }}
-          cache-db: true
-
-      - name: Scan SBOMs with Grype
+      - name: Merge the runtime package lists
+        shell: bash
         run: |
           set -eo pipefail
-          grype="${{ steps.grype.outputs.cmd }}"
-          mkdir -p sarifs
           shopt -s nullglob
-          # Merge the per-arch runtime package maps (from build-app) into one
-          # <name>@<version> -> pnpm-store-path object. Only runtime findings are
-          # reported: npm packages in this map, plus non-npm packages (Go modules,
-          # native binaries) shipped under freelens/dist or freelens/binaries.
-          # This drops build-time dev tools (esbuild, typescript, ...) and the Go
-          # binaries bundled with them, which never reach users.
-          yq ea -pj -oj '. as $i ireduce ({}; . * $i)' prod/*-prod-packages.json > prod-set.json
-          if [[ "$(yq -pj -oj 'length' prod-set.json)" -eq 0 ]]; then
-            echo "Runtime package set is empty - refusing to scan (every npm finding would be dropped)" >&2
+          out="Freelens-${GITHUB_REF_NAME#v}-prod-packages.json"
+          # Union of the per-platform <name>@<version> -> pnpm-store-path maps,
+          # the same reduce release-scan.yaml applies to what it downloads.
+          yq ea -pj -oj '. as $i ireduce ({}; . * $i)' prod/*-prod-packages.json > "$out"
+          count=$(yq -pj -oj 'length' "$out")
+          if [[ "$count" -eq 0 ]]; then
+            echo "Merged runtime package list is empty - refusing to publish it" >&2
             exit 1
           fi
-          found=0
-          for sbom in sboms/*-sbom.spdx.json; do
-            name=$(basename "$sbom" .spdx.json)
-            # Reduce the SBOM to runtime packages before scanning.
-            yq -pj -oj '
-              (load("prod-set.json")) as $set |
-              .packages |= map(
-                ( ((.externalRefs // []) | map(select(.referenceType == "purl")))[0].referenceLocator // "" ) as $purl |
-                (.name + "@" + (.versionInfo // "")) as $key |
-                ((.sourceInfo // "") | (capture("(?<p>/[^,]*)").p // "")) as $path |
-                select(
-                  (($purl | test("^pkg:npm/")) and ($set[$key] != null))
-                  or
-                  (($purl | test("^pkg:npm/") | not) and ($path | test("^/freelens/(dist|binaries)/")))
-                )
-              )
-            ' "$sbom" > "runtime-${name}.spdx.json"
-            all=$(yq -pj -oj '.packages | length' "$sbom")
-            run=$(yq -pj -oj '.packages | length' "runtime-${name}.spdx.json")
-            echo "::group::grype ${sbom} (${all} -> ${run} runtime packages)"
-            "$grype" "sbom:runtime-${name}.spdx.json" -o sarif > "sarifs/${name}.sarif"
-            echo "::endgroup::"
-            found=$((found + 1))
-          done
-          if [[ "$found" -eq 0 ]]; then
-            echo "No SBOM files found to scan under sboms/" >&2
-            exit 1
-          fi
-          # grype leaves the SARIF artifact location empty for SBOM scans, which
-          # code scanning rejects with "expected artifact location". For non-npm
-          # packages (Go modules, native binaries) the SPDX sourceInfo carries a
-          # real path, so build a <name>@<version> -> path map. Build it from the
-          # filtered SBOMs so a package present in several binaries (e.g. the Go
-          # stdlib in kubectl and in the dev-only tsc binary) maps to a shipped
-          # location, not a dropped build-time one.
-          yq ea -pj -oj -I0 '[.]' runtime-*.spdx.json |
-            yq -pj -oj '
-                [ .[].packages[]
-                  | select(has("sourceInfo"))
-                  | {
-                      "key": (.name + "@" + (.versionInfo // "")),
-                      "value": ((.sourceInfo | capture("(?<p>/[^,]*)").p) // "" | sub("^/"; ""))
-                    }
-                  | select(.value != "")
-                ] | from_entries
-              ' > sbom-paths.json
-          # Code scanning accepts only one SARIF run per category, and the
-          # per-architecture SBOMs differ (bundled kubectl/helm/proxy CLIs and
-          # their Go modules, native npm build variants), so scan them all and
-          # merge the runs into one: slurp the SARIFs into an array, union the
-          # rules by id and concatenate + de-duplicate the results (grype gives
-          # SBOM findings an empty location, so identical cross-arch findings
-          # collapse cleanly). Then set each result's artifact location from the
-          # finding's <name>@<version>: the pnpm-store path for npm packages, the
-          # sourceInfo path for non-npm ones, and a synthetic
-          # "sbom/<package>@<version>" as a last resort. Done after the dedup so
-          # empty locations collapse first.
-          yq ea -pj -oj -I0 '[.]' sarifs/*.sarif |
-            yq -pj -oj '
-                (load("prod-set.json")) as $prod |
-                (load("sbom-paths.json")) as $paths |
-                . as $x |
-                {
-                  "$schema": $x[0]["$schema"],
-                  "version": $x[0].version,
-                  "runs": [
-                    {
-                      "tool": {
-                        "driver": (
-                          $x[0].runs[0].tool.driver |
-                          .rules = ([$x[].runs[0].tool.driver.rules[]] | unique_by(.id))
-                        )
-                      },
-                      "results": (
-                        [$x[].runs[0].results[]] |
-                        unique |
-                        map(
-                          ((.message.text | capture("package: (?<n>.+?), version (?<v>.*?) was found at:")) // {"n": "unknown", "v": "unknown"}) as $p |
-                          ($p.n + "@" + $p.v) as $key |
-                          .locations[0].physicalLocation.artifactLocation.uri = ($prod[$key] // $paths[$key] // ("sbom/" + $key))
-                        )
-                      )
-                    }
-                  ]
-                }
-              ' > grype.sarif
+          sha256sum "$out" | tee "$out.sha256"
+          echo "runtime packages: $count"
 
-      - name: Upload Grype SARIF to code scanning
-        uses: github/codeql-action/upload-sarif@v4
-        with:
-          sarif_file: grype.sarif
-          category: grype
+      - name: Upload files
+        shell: bash
+        run: |
+          gh release upload ${GITHUB_REF_NAME#sign/} Freelens-*-prod-packages.json*
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   publish-github-release:
     name: publish GitHub release
 
+    # The vulnerability scan is deliberately not a step on the way here: it runs
+    # as the separate Release Scan workflow, triggered by this workflow
+    # completing, and reads the SBOMs and runtime package list from the
+    # published release. Keeping it out of this run means an advisory feed that
+    # is down or rate-limited cannot fail an otherwise correct release, and the
+    # report can be refreshed nightly against the same release afterwards.
     needs:
       - make-draft-release
       - build-app
-      - security-scan
+      - publish-runtime-package-list
 
     runs-on: ubuntu-24.04-arm
 

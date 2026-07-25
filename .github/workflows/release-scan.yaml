@@ -1,0 +1,263 @@
+name: Release Scan
+
+# Scans what the last release actually shipped, from the SBOMs and runtime
+# package lists published with it. Its counterpart is the security scan in the
+# Integration tests workflow, which scans what the main branch currently builds
+# - same report, different subject.
+#
+# This never builds anything and never looks at the working tree: the release
+# assets are the manifest of what users actually downloaded, so they are the
+# only input.
+
+on:
+  schedule:
+    - cron: 38 21 * * *
+  workflow_dispatch: {}
+  # Refreshes the report as soon as a release is published. workflow_run rather
+  # than the release event, because the assets are uploaded to a draft that
+  # Release publishes at the end - waiting for the whole run is what guarantees
+  # the SBOMs are there and the release is no longer a draft.
+  #
+  # Not a job inside Release, and not workflow_call from it: a scan that fails
+  # because an advisory feed is down or rate-limited would then mark an
+  # otherwise correct release as failed. A separate run keeps the release
+  # conclusion about the release.
+  workflow_run:
+    workflows:
+      - Release
+    types:
+      - completed
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    name: scan the last release
+
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+
+    runs-on: ubuntu-24.04-arm
+
+    permissions:
+      contents: read
+      discussions: write
+
+    env:
+      # Renovate keeps this version up to date via the inline datasource hint
+      # below (see .renovaterc.json5 customManagers).
+      GRYPE_VERSION: v0.116.0 # datasource=github-releases depName=anchore/grype
+      DISCUSSION_NUMBER: 2339
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Install Grype
+        id: grype
+        uses: anchore/scan-action/download-grype@v7
+        with:
+          grype-version: ${{ env.GRYPE_VERSION }}
+          cache-db: true
+
+      # No checkout: everything below reads release assets, and yq is already on
+      # the runner image.
+      - name: Download the assets of the last release
+        id: release
+        run: |
+          set -eo pipefail
+          tag=$(gh release view -R "$GITHUB_REPOSITORY" --json tagName --jq .tagName)
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "url=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/releases/tag/$tag" >> "$GITHUB_OUTPUT"
+          mkdir -p sboms prod
+          # `|| true`: gh exits non-zero when a pattern matches nothing, which is
+          # the "release predates this" case handled below, not an error.
+          gh release download "$tag" -R "$GITHUB_REPOSITORY" --pattern '*-sbom.spdx.json' --dir sboms || true
+          gh release download "$tag" -R "$GITHUB_REPOSITORY" --pattern '*-prod-packages.json' --dir prod || true
+          sboms=$(find sboms -name '*-sbom.spdx.json' | wc -l)
+          lists=$(find prod -name '*-prod-packages.json' | wc -l)
+          echo "sboms=$sboms" >> "$GITHUB_OUTPUT"
+          echo "lists=$lists" >> "$GITHUB_OUTPUT"
+          echo "$tag publishes $sboms SBOM(s) and $lists runtime package list(s)"
+          # A release publishes one merged list, but the loops below take
+          # whatever is there - an older release that published one per platform
+          # scans just as well.
+
+      # Releases made before these assets were published have nothing to scan.
+      # Say so in the discussion instead of failing every night - the next
+      # release fixes it on its own.
+      - name: Report a release without the assets to scan
+        if: steps.release.outputs.sboms == '0' || steps.release.outputs.lists == '0'
+        run: |
+          set -eo pipefail
+          if [[ "${{ steps.release.outputs.sboms }}" -eq 0 ]]; then
+            missing="ships no SBOM"
+          else
+            missing="ships SBOMs but no runtime package list, which this report needs to reduce them to what actually runs on a user's machine"
+          fi
+          {
+            echo "The last release, [\`${{ steps.release.outputs.tag }}\`](${{ steps.release.outputs.url }}), $missing: it predates publishing them."
+            echo
+            echo "This report starts with the first release that publishes both. Updated $(date -u +'%Y-%m-%d %H:%M UTC') by [this run]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)."
+          } > body.md
+
+      # Every published SBOM is scanned, not just one: the per-platform SBOMs
+      # differ (bundled kubectl/helm/proxy CLIs and their Go modules, native npm
+      # build variants), so a single-platform scan has a permanent blind spot.
+      #
+      # The filtering is the same as in the main-branch scan
+      # (integration-tests.yaml), so the two reports are comparable.
+      - name: Scan the SBOMs with Grype
+        if: steps.release.outputs.sboms != '0' && steps.release.outputs.lists != '0'
+        run: |
+          set -eo pipefail
+          grype="${{ steps.grype.outputs.cmd }}"
+          mkdir -p jsons
+          shopt -s nullglob
+          # Read the <name>@<version> -> pnpm-store-path map published with the
+          # release (reduced, so several of them merge). Only runtime
+          # findings are reported: npm packages in this map, plus non-npm
+          # packages (Go modules, native binaries) shipped under freelens/dist or
+          # freelens/binaries. This drops build-time dev tools (esbuild,
+          # typescript, ...) and the Go binaries bundled with them, which never
+          # reach users.
+          yq ea -pj -oj '. as $i ireduce ({}; . * $i)' prod/*-prod-packages.json > prod-set.json
+          if [[ "$(yq -pj -oj 'length' prod-set.json)" -eq 0 ]]; then
+            echo "Runtime package set is empty - refusing to scan (every npm finding would be dropped)" >&2
+            exit 1
+          fi
+          for sbom in sboms/*-sbom.spdx.json; do
+            name=$(basename "$sbom" .spdx.json)
+            # Reduce the SBOM to runtime packages before scanning.
+            # sub("\x5c"; "/"): the Windows SBOM records sourceInfo paths with
+            # backslashes, which the /freelens/... test below would never match -
+            # every shipped non-npm package (Electron DLLs, node-pty, the bundled
+            # Go CLIs) would silently drop out of the scan. \x5c rather than a
+            # literal backslash because yq unescapes the string first, leaving
+            # the regex engine a trailing backslash.
+            yq -pj -oj '
+              (load("prod-set.json")) as $set |
+              .packages |= map(
+                ( ((.externalRefs // []) | map(select(.referenceType == "purl")))[0].referenceLocator // "" ) as $purl |
+                (.name + "@" + (.versionInfo // "")) as $key |
+                (((.sourceInfo // "") | sub("\\x5c"; "/")) | (capture("(?<p>/[^,]*)").p // "")) as $path |
+                select(
+                  (($purl | test("^pkg:npm/")) and ($set[$key] != null))
+                  or
+                  (($purl | test("^pkg:npm/") | not) and ($path | test("^/freelens/(dist|binaries)/")))
+                )
+              )
+            ' "$sbom" > "runtime-${name}.spdx.json"
+            all=$(yq -pj -oj '.packages | length' "$sbom")
+            run=$(yq -pj -oj '.packages | length' "runtime-${name}.spdx.json")
+            echo "::group::grype ${sbom} (${all} -> ${run} runtime packages)"
+            "$grype" "sbom:runtime-${name}.spdx.json" -o json="jsons/${name}.json"
+            echo "::endgroup::"
+          done
+          # grype leaves the artifact location empty for SBOM scans. For non-npm
+          # packages (Go modules, native binaries) the SPDX sourceInfo carries a
+          # real path, so build a <name>@<version> -> path map. Build it from the
+          # filtered SBOMs so a package present in several binaries (e.g. the Go
+          # stdlib in kubectl and in the dev-only tsc binary) maps to a shipped
+          # location, not a dropped build-time one.
+          yq ea -pj -oj -I0 '[.]' runtime-*.spdx.json |
+            yq -pj -oj '
+                [ .[].packages[]
+                  | select(has("sourceInfo"))
+                  | {
+                      "key": (.name + "@" + (.versionInfo // "")),
+                      "value": (((.sourceInfo | sub("\\x5c"; "/")) | capture("(?<p>/[^,]*)").p) // "" | sub("^/"; ""))
+                    }
+                  | select(.value != "")
+                ] | from_entries
+              ' > sbom-paths.json
+          # Merge the per-platform reports into one: dedupe matches by
+          # vulnerability + package + version (a finding shared by every platform
+          # is one row, not six) and resolve each match's location from its
+          # <name>@<version> - the pnpm-store path for npm packages, the
+          # sourceInfo path for non-npm ones, and a synthetic
+          # "sbom/<package>@<version>" as a last resort.
+          yq ea -pj -oj -I0 '[.]' jsons/*.json |
+            yq -pj -oj '
+                (load("prod-set.json")) as $prod |
+                (load("sbom-paths.json")) as $paths |
+                . as $x |
+                {
+                  "matches": (
+                    [$x[].matches[]]
+                    | unique_by(.vulnerability.id + "@" + .artifact.name + "@" + .artifact.version)
+                    | map(
+                        (.artifact.name + "@" + .artifact.version) as $key
+                        | .artifact.locations = [{"path": ($prod[$key] // $paths[$key] // ("sbom/" + $key))}]
+                      )
+                  )
+                }
+              ' > grype.json
+
+      - name: Build the vulnerability table
+        if: steps.release.outputs.sboms != '0' && steps.release.outputs.lists != '0'
+        run: |
+          set -eo pipefail
+          # Same shape as the main-branch report in integration-tests.yaml.
+          # severity/risk/type/installed version/fixed-in version come straight
+          # from grype's JSON fields (mirroring its own default table columns);
+          # the advisory link uses vulnerability.dataSource; the location is the
+          # path the scan step already resolved. negrisk is a sort-only helper:
+          # yq has no unary minus, so descending-by-risk needs the value
+          # pre-negated.
+          yq -pj -oj '
+            ({"Critical":0,"High":1,"Medium":2,"Low":3,"Negligible":4,"Unknown":5}) as $rank
+            | (.matches // [])
+            | map(
+                {
+                  "severity": .vulnerability.severity,
+                  "risk": (.vulnerability.risk // 0),
+                  "package": .artifact.name,
+                  "type": .artifact.type,
+                  "installed": .artifact.version,
+                  "fixed": ((.vulnerability.fix.versions // []) | join(", ")),
+                  "advisory": ("[" + .vulnerability.id + "](" + (.vulnerability.dataSource // "") + ")"),
+                  "location": (.artifact.locations[0].path // ""),
+                  "rank": ($rank[.vulnerability.severity] // 9),
+                  "negrisk": (0 - (.vulnerability.risk // 0))
+                }
+              )
+            | sort_by(.rank, .negrisk, .package)
+            | map(del(.rank) | del(.negrisk))
+          ' grype.json > rows.json
+          count=$(yq -pj -oj 'length' rows.json)
+          {
+            echo "Grype runtime vulnerability scan of the artifacts published with [\`${{ steps.release.outputs.tag }}\`](${{ steps.release.outputs.url }}), scanned from the ${{ steps.release.outputs.sboms }} SBOMs shipped with the release. Updated $(date -u +'%Y-%m-%d %H:%M UTC') by [this run]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)."
+            echo
+            if [[ "$count" -eq 0 ]]; then
+              echo "No runtime vulnerabilities found."
+            else
+              echo "| Severity | Risk | Package | Type | Installed | Fixed In | Advisory | Location |"
+              echo "| --- | --- | --- | --- | --- | --- | --- | --- |"
+              # LC_ALL=C: printf "%.1f" must use a period regardless of the
+              # runner's locale, or it silently truncates "6.6" to "6" (parsed
+              # up to the first non-digit) and re-renders it as "6,0".
+              yq -pj -ot rows.json | tail -n +2 |
+                LC_ALL=C awk -F'\t' '{printf "| %s | %.1f | %s | %s | %s | %s | %s | %s |\n", $1, $2, $3, $4, $5, $6, $7, $8}'
+            fi
+          } > body.md
+          echo "runtime vulnerabilities: $count"
+
+      - name: Update discussion
+        run: |-
+          set -eo pipefail
+          discussion_id=$(gh api graphql -f query='
+            query($owner:String!,$repo:String!,$num:Int!){
+              repository(owner:$owner,name:$repo){
+                discussion(number:$num){ id }
+              }
+            }' -f owner="${{ github.repository_owner }}" -f repo="${{ github.event.repository.name }}" -F num="$DISCUSSION_NUMBER" \
+            --jq '.data.repository.discussion.id')
+          if [[ -z "$discussion_id" || "$discussion_id" == "null" ]]; then
+            echo "Discussion #$DISCUSSION_NUMBER not found" >&2
+            exit 1
+          fi
+          gh api graphql -f query='
+            mutation($id:ID!,$body:String!){
+              updateDiscussion(input:{discussionId:$id, body:$body}){
+                discussion{ id }
+              }
+            }' -f id="$discussion_id" -F body=@body.md
