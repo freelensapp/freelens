@@ -70,40 +70,60 @@ const pipeline = promisify(_pipeline);
 const CHECKSUM_SUFFIX = ".sha256";
 
 /**
- * Fetches and parses a remote `.sha256` checksum for the given download URL.
+ * How many times to ask for a remote checksum before giving up. Verification is
+ * mandatory, so a transient network error must not be able to fail the whole
+ * build on the first try.
+ */
+const CHECKSUM_FETCH_ATTEMPTS = 3;
+
+const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
+
+/**
+ * Fetches and parses the remote SHA-256 checksum published for a download.
  *
  * The checksum file is expected to contain a hex-encoded SHA-256 digest,
  * optionally followed by the file name (the common `sha256sum` output format).
  * Only the first whitespace-delimited token is used.
  *
- * Returns `undefined` when the checksum is not available (e.g. HTTP 404), in
- * which case the caller downloads the binary without verification.
+ * Verification is mandatory: when the checksum cannot be fetched or does not
+ * look like a SHA-256 digest, this throws instead of letting the caller fall
+ * back to an unverified download.
  */
-async function fetchChecksum(url: string): Promise<string | undefined> {
-  const controller = new AbortController();
+async function fetchChecksum(url: string): Promise<string> {
+  let lastError: unknown;
 
-  setTimeoutFor(controller, 60 * 1000);
+  for (let attempt = 1; attempt <= CHECKSUM_FETCH_ATTEMPTS; attempt += 1) {
+    if (attempt > 1) {
+      await delay(attempt * 1000);
+    }
 
-  let response: Awaited<ReturnType<typeof fetch>>;
+    const controller = new AbortController();
 
-  try {
-    response = await fetch(`${url}${CHECKSUM_SUFFIX}`, { signal: controller.signal });
-  } catch {
-    return undefined;
+    setTimeoutFor(controller, 60 * 1000);
+
+    try {
+      const response = await fetch(url, { signal: controller.signal });
+
+      if (!response.ok) {
+        throw new Error(`${response.status} ${response.statusText}`);
+      }
+
+      const body = await response.text();
+      const checksum = body.trim().split(/\s+/)[0]?.toLowerCase();
+
+      if (!checksum || !/^[0-9a-f]{64}$/.test(checksum)) {
+        throw new Error(`not a SHA-256 digest: ${JSON.stringify(body.slice(0, 128))}`);
+      }
+
+      return checksum;
+    } catch (error) {
+      lastError = error;
+    }
   }
 
-  if (!response.ok) {
-    return undefined;
-  }
-
-  const body = await response.text();
-  const checksum = body.trim().split(/\s+/)[0]?.toLowerCase();
-
-  if (!checksum || !/^[0-9a-f]{64}$/.test(checksum)) {
-    return undefined;
-  }
-
-  return checksum;
+  throw new Error(
+    `unable to fetch the mandatory SHA-256 checksum from ${url} after ${CHECKSUM_FETCH_ATTEMPTS} attempts: ${lastError}`,
+  );
 }
 
 function getBinaryExtension({ forPlatform }: { forPlatform: string }): string {
@@ -146,6 +166,14 @@ abstract class BinaryDownloader {
   }
 
   /**
+   * URL of the published checksum for {@link url}. Defaults to the download URL
+   * with `.sha256` appended, which is how kubectl and helm publish theirs.
+   */
+  protected get checksumUrl(): string {
+    return `${this.url}${CHECKSUM_SUFFIX}`;
+  }
+
+  /**
    * Returns `true` when the binary is already present and matches the given
    * remote checksum, based on the checksum recorded in the sidecar file during
    * the previous successful download. This avoids re-downloading unchanged
@@ -169,12 +197,13 @@ abstract class BinaryDownloader {
 
     const bar = this.bar;
 
-    // The remote `.sha256` covers the downloaded artifact bytes (the binary for
-    // kubectl / freelens-k8s-proxy, the archive for helm). When it is available
-    // we can both skip unchanged binaries and verify freshly downloaded ones.
-    const expectedChecksum = await fetchChecksum(this.url);
+    // The remote checksum covers the downloaded artifact bytes (the binary for
+    // kubectl / freelens-k8s-proxy, the archive for helm). Fetching it is
+    // mandatory: it both lets us skip unchanged binaries and is the only thing
+    // that makes a freshly downloaded one trustworthy.
+    const expectedChecksum = await fetchChecksum(this.checksumUrl);
 
-    if (expectedChecksum && (await this.isUpToDate(expectedChecksum))) {
+    if (await this.isUpToDate(expectedChecksum)) {
       bar.setTotal(1);
       bar.increment(1); // already downloaded, mark as finished
       return;
@@ -256,12 +285,10 @@ abstract class BinaryDownloader {
         ),
       );
 
-      if (expectedChecksum) {
-        const actualChecksum = hash.digest("hex");
+      const actualChecksum = hash.digest("hex");
 
-        if (actualChecksum !== expectedChecksum) {
-          throw new Error(`checksum mismatch for ${this.url}: expected ${expectedChecksum}, got ${actualChecksum}`);
-        }
+      if (actualChecksum !== expectedChecksum) {
+        throw new Error(`checksum mismatch for ${this.url}: expected ${expectedChecksum}, got ${actualChecksum}`);
       }
 
       await fileHandle.chmod(0o755);
@@ -271,19 +298,13 @@ abstract class BinaryDownloader {
       // Record the verified checksum next to the binary so subsequent runs can
       // skip the download. Not referenced by electron-builder, so it stays out
       // of the packaged application.
-      if (expectedChecksum) {
-        await writeFile(this.checksumSidecar, `${expectedChecksum}\n`, { mode: 0o644 });
-      }
+      await writeFile(this.checksumSidecar, `${expectedChecksum}\n`, { mode: 0o644 });
     } catch (error) {
       await fileHandle?.close();
-
-      if ((error as any)?.code === "EEXIST") {
-        bar.increment(total); // mark as finished
-        controller.abort(); // stop trying to download
-      } else {
-        await unlink(this.target).catch(() => {});
-        throw error;
-      }
+      // Never leave a binary behind that failed verification, was truncated, or
+      // was written by a concurrent run we did not verify ourselves.
+      await unlink(this.target).catch(() => {});
+      throw error;
     }
   }
 }
@@ -298,6 +319,15 @@ class FreeLensK8sProxyDownloader extends BinaryDownloader {
 
     super({ ...args, binaryName, url }, bar);
     this.url = url;
+  }
+
+  /**
+   * The release publishes the checksum of the Windows binary as
+   * `freelens-k8s-proxy-windows-<arch>.sha256`, without the `.exe` the binary
+   * itself carries, so the suffix has to be stripped before appending.
+   */
+  protected override get checksumUrl(): string {
+    return `${this.url.replace(/\.exe$/, "")}${CHECKSUM_SUFFIX}`;
   }
 }
 
@@ -471,10 +501,13 @@ const settledResults = await Promise.allSettled(
 );
 
 multiBar.stop();
-const errorResult = settledResults.find((res) => res.status === "rejected") as PromiseRejectedResult | undefined;
+const errorResults = settledResults.filter((res) => res.status === "rejected");
 
-if (errorResult) {
-  console.error("234", String(errorResult.reason));
+if (errorResults.length > 0) {
+  for (const { reason } of errorResults) {
+    console.error(String(reason));
+  }
+
   process.exit(1);
 }
 
