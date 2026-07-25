@@ -12,7 +12,7 @@ import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
-import React, { Component } from "react";
+import { Component } from "react";
 import { Dialog } from "../../dialog";
 import { Input } from "../../input";
 import { maxLength, systemName } from "../../input/input_validators";

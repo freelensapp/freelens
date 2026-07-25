@@ -31,3 +31,24 @@ export function chainSignal(target: AbortController, signal: AbortSignal) {
     signal.addEventListener("abort", (event) => target.abort(event));
   }
 }
+
+/**
+ * Returns `true` if `error` represents an aborted operation rather than a real
+ * failure. Aborting a `fetch` rejects with a `DOMException` named `AbortError`,
+ * but the kube watch/list paths surface more than one abort shape, so this also
+ * matches any error-like object whose `name` is `AbortError` or whose `type` is
+ * `"aborted"`.
+ */
+export function isAbortError(error: unknown): boolean {
+  if (error instanceof DOMException) {
+    return error.name === "AbortError" || error.code === DOMException.ABORT_ERR;
+  }
+
+  if (typeof error === "object" && error !== null) {
+    const { name, type } = error as { name?: unknown; type?: unknown };
+
+    return name === "AbortError" || type === "aborted";
+  }
+
+  return false;
+}

@@ -6,7 +6,6 @@
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import { isKubernetesCluster, KubernetesCluster } from "../../../common/catalog-entities";
 import { broadcastMessage } from "../../../common/ipc";
 import { catalogEntityRunListener } from "../../../common/ipc/catalog";

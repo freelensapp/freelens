@@ -12,7 +12,6 @@ import { type DiContainer, getInjectable } from "@ogre-tools/injectable";
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { runInAction } from "mobx";
-import React from "react";
 import { KubernetesCluster } from "../../../../common/catalog-entities";
 import { Cluster } from "../../../../common/cluster/cluster";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";

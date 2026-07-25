@@ -7,11 +7,11 @@
 import "./icon.scss";
 
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { NavLink } from "@freelensapp/routing";
 import { withTooltip } from "@freelensapp/tooltip";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React, { createRef } from "react";
-import { NavLink } from "react-router-dom";
 import Configuration from "../assets/configuration.svg?raw";
 import Crane from "../assets/crane.svg?raw";
 import Group from "../assets/group.svg?raw";
@@ -37,7 +37,7 @@ import Workloads from "../assets/workloads.svg?raw";
 import type { Logger } from "@freelensapp/logger";
 import type { StrictReactNode } from "@freelensapp/utilities";
 
-import type { LocationDescriptor } from "history";
+import type { To } from "history";
 
 const hrefValidation = /https?:\/\//;
 
@@ -107,9 +107,9 @@ export interface BaseIconProps {
   svg?: NamedSvg | string;
 
   /**
-   * render icon as NavLink from react-router-dom
+   * render icon as an in-app navigation link (see `@freelensapp/routing`)
    */
-  link?: LocationDescriptor;
+  link?: To;
 
   /**
    * render icon as hyperlink

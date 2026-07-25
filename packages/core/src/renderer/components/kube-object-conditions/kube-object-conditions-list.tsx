@@ -7,7 +7,6 @@
 import { KubeObject } from "@freelensapp/kube-object";
 import { Tooltip } from "@freelensapp/tooltip";
 import { observer } from "mobx-react";
-import React from "react";
 import { getClassName, getTooltip } from "./components";
 import { sortConditions } from "./utils";
 

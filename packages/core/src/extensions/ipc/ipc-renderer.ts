@@ -24,7 +24,8 @@ export abstract class IpcRenderer extends IpcRegistrar {
   /**
    * Listen for broadcasts within your extension.
    * If the lifetime of the listener should be tied to the mounted lifetime of
-   * a component then putting the returned value in a `disposeOnUnmount` call will suffice.
+   * a component then storing the returned disposer and calling it from the
+   * component's `componentWillUnmount` will suffice.
    * @param channel The channel to listen for broadcasts on
    * @param listener The function that will be called with the arguments of the broadcast
    * @returns An optional disposer, Lens will cleanup even if this is not called

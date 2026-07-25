@@ -16,13 +16,14 @@ import type { Run, Runnable, RunnableWithId } from "./types";
 
 export type RunMany = <Param>(injectionToken: InjectionToken<Runnable<Param>, void>) => Asyncify<Run<Param>>;
 
-interface BarrierEvent {
+type BarrierEvent = {
   finish: (id: string) => void;
-}
+};
 
 class DynamicBarrier {
   private readonly finishedIds = new Map<string, Promise<void>>();
-  private readonly events: TypedEventEmitter<BarrierEvent> = new EventEmitter();
+  private readonly events: TypedEventEmitter<BarrierEvent> =
+    new EventEmitter() as unknown as TypedEventEmitter<BarrierEvent>;
 
   private initFinishingPromise(id: string): Promise<void> {
     return getOrInsert(

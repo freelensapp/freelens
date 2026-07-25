@@ -11,9 +11,9 @@ import type { KubeApi } from "@freelensapp/kube-api";
 
 import type TypedEventEmitter from "typed-emitter";
 
-export interface LegacyAutoRegistration {
+export type LegacyAutoRegistration = {
   kubeApi: (api: KubeApi<any, any>) => void;
-}
+};
 
 /**
  * This is used to remove dependency cycles from auto registering of instances
@@ -23,7 +23,8 @@ export interface LegacyAutoRegistration {
  */
 const autoRegistrationEmitterInjectable = getInjectable({
   id: "auto-registration-emitter",
-  instantiate: (): TypedEventEmitter<LegacyAutoRegistration> => new EventEmitter(),
+  instantiate: (): TypedEventEmitter<LegacyAutoRegistration> =>
+    new EventEmitter() as unknown as TypedEventEmitter<LegacyAutoRegistration>,
 });
 
 export default autoRegistrationEmitterInjectable;

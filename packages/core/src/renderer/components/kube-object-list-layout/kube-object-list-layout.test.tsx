@@ -8,7 +8,6 @@ import type { DiContainer } from "@ogre-tools/injectable";
 import "@testing-library/jest-dom/vitest";
 
 import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
-import React from "react";
 import appPathsStateInjectable from "../../../common/app-paths/app-paths-state.injectable";
 import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";

@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import moment from "moment";
 import { KubeObject } from "../kube-object";
 
 import type { KubeObjectStatus, LabelSelector, NamespaceScopedMetadata } from "../api-types";
@@ -130,11 +129,13 @@ export class Job extends KubeObject<NamespaceScopedMetadata, JobStatus, JobSpec>
       return 0;
     }
 
+    const startTime = new Date(this.status.startTime).getTime();
+
     if (!this.status?.completionTime) {
-      return moment().diff(this.status.startTime);
+      return Date.now() - startTime;
     }
 
-    return moment(this.status.completionTime).diff(this.status.startTime);
+    return new Date(this.status.completionTime).getTime() - startTime;
   }
 
   getConditions() {

@@ -6,7 +6,7 @@
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { isMetricsEmpty, normalizeMetrics } from "../../../common/k8s-api/endpoints/metrics.api";
 import activeThemeInjectable from "../../themes/active.injectable";
 import { BarChart, memoryOptions } from "../chart";

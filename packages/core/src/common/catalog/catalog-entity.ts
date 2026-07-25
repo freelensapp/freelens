@@ -96,7 +96,7 @@ export interface CatalogCategorySpec {
  */
 export type AddMenuFilter = (menu: CatalogEntityAddMenu) => any;
 
-export interface CatalogCategoryEvents {
+export type CatalogCategoryEvents = {
   /**
    * This event will be emitted when the category is loaded in the catalog
    * view.
@@ -114,7 +114,7 @@ export interface CatalogCategoryEvents {
    * by this category is opened.
    */
   contextMenuOpen: (entity: CatalogEntity, context: CatalogEntityContextMenuContext) => void;
-}
+};
 
 export interface CatalogCategoryMetadata {
   /**

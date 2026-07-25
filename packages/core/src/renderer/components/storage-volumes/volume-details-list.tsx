@@ -10,6 +10,7 @@ import { Spinner } from "@freelensapp/spinner";
 import { cssNames, prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { kebabCase } from "es-toolkit";
+import { makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { DrawerTitle } from "../drawer/drawer-title";
@@ -42,14 +43,30 @@ interface Dependencies {
 
 @observer
 class NonInjectedVolumeDetailsList extends React.Component<VolumeDetailsListProps & Dependencies> {
+  // mobx-react 9 forbids reading this.props inside a derivation. getTableRow is
+  // invoked from the Table row renderer (a derivation other than this component's
+  // own render), so it reads props from this observable snapshot, refreshed on
+  // every update, instead of this.props.
+  @observable.ref private observableProps: Readonly<VolumeDetailsListProps & Dependencies>;
+
   private sortingCallbacks = {
     [sortBy.name]: (volume: PersistentVolume) => volume.getName(),
     [sortBy.capacity]: (volume: PersistentVolume) => volume.getCapacity(),
     [sortBy.status]: (volume: PersistentVolume) => volume.getStatus(),
   };
 
+  constructor(props: VolumeDetailsListProps & Dependencies) {
+    super(props);
+    this.observableProps = props;
+    makeObservable(this);
+  }
+
+  componentDidUpdate() {
+    this.observableProps = this.props;
+  }
+
   getTableRow = (uid: string) => {
-    const { persistentVolumes, showDetails } = this.props;
+    const { persistentVolumes, showDetails } = this.observableProps;
     const volume = persistentVolumes.find((volume) => volume.getId() === uid);
 
     if (!volume) {

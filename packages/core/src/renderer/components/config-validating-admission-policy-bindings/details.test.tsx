@@ -5,7 +5,6 @@
  */
 
 import { ValidatingAdmissionPolicyBinding } from "@freelensapp/kube-object";
-import React from "react";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import { renderFor } from "../test-utils/renderFor";
 import { ValidatingAdmissionPolicyBindingDetails } from "./validating-admission-policy-bindings-details";

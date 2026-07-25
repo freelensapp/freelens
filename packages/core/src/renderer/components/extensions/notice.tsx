@@ -5,7 +5,6 @@
  */
 
 import { cssNames } from "@freelensapp/utilities";
-import React from "react";
 import styles from "./notice.module.scss";
 
 import type { DOMAttributes } from "react";

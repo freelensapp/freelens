@@ -10,7 +10,6 @@ import { disposer } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { shell } from "electron";
 import { remove as removeDir } from "fs-extra";
-import React from "react";
 import { ExtensionInstallationState } from "../../../../extensions/extension-installation-state-store/extension-installation-state-store";
 import extensionInstallationStateStoreInjectable from "../../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
 import extensionLoaderInjectable from "../../../../extensions/extension-loader/extension-loader.injectable";

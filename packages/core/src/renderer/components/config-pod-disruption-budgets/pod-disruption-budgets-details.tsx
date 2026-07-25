@@ -7,7 +7,6 @@
 import "./pod-disruption-budgets-details.scss";
 
 import { observer } from "mobx-react";
-import React from "react";
 import { Badge } from "../badge";
 import { DrawerItem } from "../drawer";
 import { KubeObjectConditionsDrawer } from "../kube-object-conditions";

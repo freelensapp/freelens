@@ -8,10 +8,10 @@ import "./endpoint-slice-details.scss";
 
 import { EndpointSlice } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { Link } from "@freelensapp/routing";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import { Link } from "react-router-dom";
 import { ApiManager } from "../../../common/k8s-api/api-manager";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
 import { Badge } from "../badge";
@@ -127,7 +127,9 @@ class NonInjectedEndpointSliceDetails extends React.Component<EndpointSliceDetai
                   <TableCell className="protocol">Protocol</TableCell>
                 </TableHead>
                 {endpointSlice.ports?.map((port) => (
-                  <TableRow key={port.port} nowrap>
+                  // The same port number may be exposed under several protocols, so the
+                  // number alone is not a unique key.
+                  <TableRow key={`${port.port}-${port.protocol}`} nowrap>
                     <TableCell className="name">{port.port}</TableCell>
                     <TableCell className="name">{port.name}</TableCell>
                     <TableCell className="node">{port.protocol}</TableCell>

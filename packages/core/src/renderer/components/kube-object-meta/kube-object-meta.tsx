@@ -6,11 +6,10 @@
 
 import { KubeObject } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { Link } from "@freelensapp/routing";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import * as yaml from "js-yaml";
 import { observer } from "mobx-react";
-import React from "react";
-import { Link } from "react-router-dom";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
 import { defaultYamlDumpOptions } from "../../../common/kube-helpers";
 import { DrawerItem, DrawerItemLabels, DrawerParamToggler } from "../drawer";
@@ -55,6 +54,7 @@ function ManagedFieldEntryLabel({ entry }: { entry: ManagedFieldsEntry }) {
       {entry.manager}
       {": "}
       {entry.operation}
+      {entry.subresource && ` (${entry.subresource})`}
     </WithTooltip>
   );
 }
@@ -141,9 +141,13 @@ const NonInjectedKubeObjectMeta = observer((props: Dependencies & KubeObjectMeta
       {managedFields && managedFields.length > 0 && (
         <DrawerItem name="Managed Fields" hidden={isHidden("managedFields")}>
           {managedFields.filter(isManagedFieldsEntry).map((entry) => (
+            // The apiserver identifies a managed-fields entry by manager, operation,
+            // apiVersion and subresource, so that tuple is the entry's key. Manager and
+            // operation alone are not unique — a manager typically owns both a plain
+            // Update and an Update of the status subresource.
             <DrawerParamToggler
               label={<ManagedFieldEntryLabel entry={entry} />}
-              key={`${entry.manager}-${entry.operation}`}
+              key={`${entry.manager}-${entry.operation}-${entry.apiVersion ?? ""}-${entry.subresource ?? ""}`}
             >
               <MonacoEditor
                 readOnly

@@ -5,7 +5,6 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import React from "react";
 import { extensionDisplayName } from "../../../extensions/lens-extension";
 import confirmInjectable from "../confirm-dialog/confirm.injectable";
 import uninstallExtensionInjectable from "./uninstall-extension.injectable";

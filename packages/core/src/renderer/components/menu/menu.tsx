@@ -384,7 +384,18 @@ class NonInjectedMenu extends React.Component<MenuProps & Dependencies, State> {
   }
 
   protected bindRef(elem: HTMLUListElement) {
+    const justMounted = !this.elem && !!elem;
+
     this.elem = elem;
+
+    // Under React 18 the portal menu <ul> is mounted through <Animate> a render
+    // cycle after open()/componentDidUpdate already scheduled refreshPosition, so
+    // those ran while this.elem was still null and bailed out — leaving the menu at
+    // its off-screen default position. Re-run positioning once the element actually
+    // mounts so it is anchored to its opener/cursor/target.
+    if (justMounted && this.isOpen && this.props.usePortal) {
+      this.refreshPosition();
+    }
   }
 
   protected bindItemRef(item: MenuItem, index: number) {
@@ -404,7 +415,7 @@ class NonInjectedMenu extends React.Component<MenuProps & Dependencies, State> {
     }
     const menuItems = React.Children.toArray(children).map((item, index) => {
       if (typeof item === "object" && (item as ReactElement).type === MenuItem) {
-        return React.cloneElement(item as ReactElement, {
+        return React.cloneElement(item as ReactElement<any>, {
           ref: (item: MenuItem) => this.bindItemRef(item, index),
         });
       }
@@ -432,7 +443,7 @@ class NonInjectedMenu extends React.Component<MenuProps & Dependencies, State> {
       menu = <Animate enter={this.isOpen}>{menu}</Animate>;
     }
 
-    menu = <MenuContext.Provider value={this}>{menu}</MenuContext.Provider>;
+    menu = <MenuContext value={this}>{menu}</MenuContext>;
 
     if (!usePortal) {
       return menu;

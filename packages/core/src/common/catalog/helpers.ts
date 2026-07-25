@@ -4,10 +4,17 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { hasOwnProperty, hasTypedProperty, isObject, isString, iter } from "@freelensapp/utilities";
-import GraphemeSplitter from "grapheme-splitter";
+import { hasOwnProperty, hasTypedProperty, isObject, isString } from "@freelensapp/utilities";
 
 import type { CatalogEntity } from "./catalog-entity";
+
+const graphemeSegmenter = new Intl.Segmenter(undefined, { granularity: "grapheme" });
+
+function* iterateGraphemes(src: string): IterableIterator<string> {
+  for (const { segment } of graphemeSegmenter.segment(src)) {
+    yield segment;
+  }
+}
 
 function getNameParts(name: string): string[] {
   const byWhitespace = name.split(/\s+/);
@@ -26,9 +33,7 @@ function getNameParts(name: string): string[] {
 }
 
 export function limitGraphemeLengthOf(src: string, count: number): string {
-  const splitter = new GraphemeSplitter();
-
-  return iter.chain(splitter.iterateGraphemes(src)).take(count).join("");
+  return [...iterateGraphemes(src)].slice(0, count).join("");
 }
 
 export function computeDefaultShortName(name: string) {
@@ -37,12 +42,11 @@ export function computeDefaultShortName(name: string) {
   }
 
   const [rawFirst, rawSecond, rawThird] = getNameParts(name);
-  const splitter = new GraphemeSplitter();
-  const first = splitter.iterateGraphemes(rawFirst);
-  const second = rawSecond ? splitter.iterateGraphemes(rawSecond) : first;
-  const third = rawThird ? splitter.iterateGraphemes(rawThird) : iter.newEmpty<string>();
+  const first = [...iterateGraphemes(rawFirst)];
+  const second = rawSecond ? [...iterateGraphemes(rawSecond)] : first.slice(1);
+  const third = rawThird ? [...iterateGraphemes(rawThird)] : [];
 
-  return iter.chain(iter.take(first, 1)).concat(iter.take(second, 1)).concat(iter.take(third, 1)).join("");
+  return [first[0], second[0], third[0]].filter(Boolean).join("");
 }
 
 export function getShortName(entity: CatalogEntity): string {

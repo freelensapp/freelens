@@ -5,7 +5,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
+import { computedInjectManyInjectionToken } from "@ogre-tools/injectable-extension-for-mobx";
 import { computed } from "mobx";
 import applicationMenuItemInjectionToken from "./menu-items/application-menu-item-injection-token";
 
@@ -19,7 +19,7 @@ const applicationMenuItemsInjectable = getInjectable({
   id: "application-menu-items",
 
   instantiate: (di) => {
-    const computedInjectMany = di.inject(computedInjectManyInjectable);
+    const computedInjectMany = di.inject(computedInjectManyInjectionToken);
 
     return computed(() => computedInjectMany(applicationMenuItemInjectionToken).get());
   },

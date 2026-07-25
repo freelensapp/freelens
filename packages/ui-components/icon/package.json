@@ -27,33 +27,28 @@
   "files": [
     "assets"
   ],
-  "scripts": {
-    "clean:node_modules": "pnpm dlx rimraf@6.1.3 node_modules"
-  },
+  "scripts": {},
   "dependencies": {
     "@freelensapp/logger": "workspace:^",
+    "@freelensapp/routing": "workspace:^",
     "@freelensapp/tooltip": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
-    "@ogre-tools/injectable": "^17.11.1",
-    "@ogre-tools/injectable-react": "^17.11.1",
-    "mobx": "^6.15.0",
-    "mobx-react": "^7.6.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-router-dom": "^5.3.4"
+    "@ogre-tools/injectable": "catalog:",
+    "@ogre-tools/injectable-react": "catalog:",
+    "mobx": "catalog:",
+    "mobx-react": "catalog:",
+    "react": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/feature-core": "workspace:^",
     "@freelensapp/test-utils": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
-    "@ogre-tools/injectable-extension-for-mobx": "^17.11.1",
-    "@testing-library/jest-dom": "^6.9.1",
-    "@types/history": "^4.7.11",
-    "@types/react": "^17.0.93",
-    "@types/react-router-dom": "^5.3.3",
-    "history": "^4.10.1",
-    "typescript": "^6.0.3",
-    "vitest": "^4.1.10"
+    "@ogre-tools/injectable-extension-for-mobx": "catalog:",
+    "@testing-library/jest-dom": "catalog:",
+    "@types/react": "catalog:",
+    "history": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "publishConfig": {
     "access": "public",

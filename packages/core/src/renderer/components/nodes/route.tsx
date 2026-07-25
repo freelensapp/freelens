@@ -10,8 +10,8 @@ import { formatNodeTaint } from "@freelensapp/kube-object";
 import { Tooltip, TooltipPosition } from "@freelensapp/tooltip";
 import { bytesToUnits, cpuUnitsToNumber, interval, unitsToBytes } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { computed, makeObservable, observable } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { makeObservable, observable } from "mobx";
+import { observer } from "mobx-react";
 import React from "react";
 import requestAllNodeMetricsInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-metrics-for-all-nodes.injectable";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
@@ -153,7 +153,17 @@ function formatCores(cores: number): string {
 
 @observer
 class NonInjectedNodesRoute extends React.Component<Dependencies> {
+  private readonly disposers: (() => void)[] = [];
+
   @observable metrics: NodeMetricData | null = null;
+
+  // mobx-react 9 forbids reading this.props inside a derivation. The row/cell
+  // renderers and sorting callbacks (renderTableContents, renderCpuUsage,
+  // renderMemoryUsage, renderPodsUsage, podsByNode, ...) run inside the
+  // Table/KubeObjectListLayout render — a derivation other than this
+  // component's own render — so they read props from this observable snapshot,
+  // refreshed on every update, instead of this.props.
+  @observable.ref private observableProps: Readonly<Dependencies>;
 
   private metricsWatcher = interval(30, () => {
     void (async () => {
@@ -164,29 +174,39 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
 
   constructor(props: Dependencies) {
     super(props);
+    this.observableProps = props;
     makeObservable(this);
   }
 
   componentDidMount() {
     this.metricsWatcher.start(true);
 
-    disposeOnUnmount(this, [this.props.subscribeStores([this.props.podStore])]);
+    this.disposers.push(this.props.subscribeStores([this.props.podStore]));
 
     this.props.loadPodsFromAllNamespaces();
   }
 
   componentWillUnmount() {
     this.metricsWatcher.stop();
+    this.disposers.forEach((dispose) => dispose());
   }
 
-  @computed get podsByNode(): Map<string, Pod[]> {
+  componentDidUpdate() {
+    this.observableProps = this.props;
+  }
+
+  // Plain getter (not @computed): reached from the row/cell renderers and
+  // sorting callbacks, which run in a foreign derivation, so it reads props
+  // from the observable snapshot instead of this.props (mobx-react 9).
+  get podsByNode(): Map<string, Pod[]> {
+    const { podStore } = this.observableProps;
     const podsByNode = new Map<string, Pod[]>();
 
-    if (!this.props.podStore.isLoaded) {
+    if (!podStore.isLoaded) {
       return podsByNode;
     }
 
-    for (const pod of this.props.podStore.items) {
+    for (const pod of podStore.items) {
       const nodeName = pod.spec.nodeName;
       const phase = pod.getStatusPhase();
 
@@ -286,11 +306,12 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
   }
 
   renderCpuUsage(node: Node) {
+    const { nodeStore, podStore } = this.observableProps;
     const [promUsage, promCapacity] = this.getLastMetricValues(node, ["cpuUsage", "cpuCapacity"]);
-    const { cpu: kubeUsage } = this.props.nodeStore.getNodeKubeMetrics(node);
+    const { cpu: kubeUsage } = nodeStore.getNodeKubeMetrics(node);
     const { cpu: requests } = this.getNodeResourceRequests(node);
     const allocatable = cpuUnitsToNumber(node.status?.allocatable?.cpu ?? "") ?? 0;
-    const podsLoaded = this.props.podStore.isLoaded;
+    const podsLoaded = podStore.isLoaded;
 
     // prefer prometheus metrics for the bar, fall back to metrics-server usage vs node allocatable
     const usage = (promCapacity ? promUsage : kubeUsage) ?? NaN;
@@ -329,10 +350,11 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
       "workloadMemoryUsage",
       "memoryAllocatableCapacity",
     ]);
-    const { memory: kubeUsage } = this.props.nodeStore.getNodeKubeMetrics(node);
+    const { nodeStore, podStore } = this.observableProps;
+    const { memory: kubeUsage } = nodeStore.getNodeKubeMetrics(node);
     const { memory: requests } = this.getNodeResourceRequests(node);
     const allocatable = unitsToBytes(node.status?.allocatable?.memory ?? "") || 0;
-    const podsLoaded = this.props.podStore.isLoaded;
+    const podsLoaded = podStore.isLoaded;
 
     // prefer prometheus metrics for the bar, fall back to metrics-server usage vs node allocatable
     const usage = (promCapacity ? promUsage : kubeUsage) ?? NaN;
@@ -369,7 +391,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
   }
 
   renderPodsUsage(node: Node) {
-    if (!this.props.podStore.isLoaded) {
+    if (!this.observableProps.podStore.isLoaded) {
       return <span className="usageText">N/A</span>;
     }
 

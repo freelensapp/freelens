@@ -9,7 +9,6 @@ import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { act, RenderResult } from "@testing-library/react";
 import { computed, IComputedValue, IObservableValue, observable, reaction, runInAction } from "mobx";
 import { observer } from "mobx-react";
-import React from "react";
 import { computedChannelFeature } from "../feature";
 import { computedChannelInjectionToken, computedChannelObserverInjectionToken } from "./computed-channel.injectable";
 import {

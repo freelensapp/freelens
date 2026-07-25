@@ -6,7 +6,6 @@
 
 import "@testing-library/jest-dom/vitest";
 import { screen } from "@testing-library/react";
-import React from "react";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
 import { renderFor } from "../test-utils/renderFor";

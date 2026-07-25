@@ -7,7 +7,6 @@
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { getInjectable } from "@ogre-tools/injectable";
-import React from "react";
 import writeFileInjectable from "../../../../common/fs/write-file.injectable";
 import tempDirectoryPathInjectable from "../../../../common/os/temp-directory-path.injectable";
 import joinPathsInjectable from "../../../../common/path/join-paths.injectable";

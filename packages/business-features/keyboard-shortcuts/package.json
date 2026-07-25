@@ -20,30 +20,29 @@
   "main": "./index.ts",
   "types": "./index.ts",
   "scripts": {
-    "clean": "pnpm dlx rimraf@6.1.3 dist",
-    "clean:node_modules": "pnpm dlx rimraf@6.1.3 node_modules",
+    "clean:dist": "pnpm dlx rimraf@6.1.3 dist",
     "test:unit": "vitest run -c ../../../vitest.config.ts --project @freelensapp/keyboard-shortcuts"
   },
   "dependencies": {
     "@freelensapp/feature-core": "workspace:^",
     "@freelensapp/react-application": "workspace:^",
-    "@ogre-tools/injectable": "^17.11.1",
-    "@ogre-tools/injectable-react": "^17.11.1",
-    "react": "^17.0.2"
+    "@ogre-tools/injectable": "catalog:",
+    "@ogre-tools/injectable-react": "catalog:",
+    "react": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/application": "workspace:^",
     "@freelensapp/react-testing-library-discovery": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
-    "@ogre-tools/injectable-extension-for-mobx": "^17.11.1",
-    "@testing-library/react": "^12.1.5",
-    "@testing-library/user-event": "^14.6.1",
-    "@types/node": "~24.12.4",
-    "@types/react": "^17.0.93",
-    "jsdom": "^29.1.1",
-    "mobx": "^6.15.0",
-    "vitest": "^4.1.10"
+    "@ogre-tools/injectable-extension-for-mobx": "catalog:",
+    "@testing-library/react": "catalog:",
+    "@testing-library/user-event": "catalog:",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "jsdom": "catalog:",
+    "mobx": "catalog:",
+    "vitest": "catalog:"
   },
   "publishConfig": {
     "access": "public",

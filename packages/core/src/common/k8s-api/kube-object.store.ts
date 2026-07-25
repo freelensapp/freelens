@@ -7,7 +7,7 @@
 import assert from "node:assert";
 import { parseKubeApi } from "@freelensapp/kube-api";
 import { KubeStatus } from "@freelensapp/kube-object";
-import { includes, object, rejectPromiseBy, waitUntilDefined } from "@freelensapp/utilities";
+import { includes, isAbortError, object, rejectPromiseBy, waitUntilDefined } from "@freelensapp/utilities";
 import autoBind from "auto-bind";
 import { action, computed, makeObservable, observable, reaction } from "mobx";
 import { ItemStore } from "../item.store";
@@ -276,6 +276,16 @@ export class KubeObjectStore<
 
       return items;
     } catch (error) {
+      // A load aborted via its `reqInit.signal` (e.g. the view unmounted before
+      // the list arrived, which happens on essentially every view under
+      // `React.StrictMode`) is not a real failure. Nothing is waiting on the
+      // result, so bail out without logging, resetting, or flipping
+      // `failedLoading` — otherwise a late abort from an unmounted view could
+      // wipe items freshly loaded by a remounted one.
+      if (isAbortError(error) || reqInit?.signal?.aborted) {
+        return undefined;
+      }
+
       console.warn("[KubeObjectStore] loadAll failed", this.api.apiBase, error);
       this.resetOnError(error);
       this.failedLoading = true;

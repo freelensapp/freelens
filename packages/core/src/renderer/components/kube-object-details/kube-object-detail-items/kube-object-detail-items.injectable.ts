@@ -6,7 +6,7 @@
 
 import { byValue } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
+import { computedInjectManyInjectionToken } from "@ogre-tools/injectable-extension-for-mobx";
 import { computed } from "mobx";
 import { kubeObjectDetailItemInjectionToken } from "./kube-object-detail-item-injection-token";
 
@@ -14,7 +14,7 @@ const kubeObjectDetailItemsInjectable = getInjectable({
   id: "kube-object-detail-items",
 
   instantiate: (di) => {
-    const computedInjectMany = di.inject(computedInjectManyInjectable);
+    const computedInjectMany = di.inject(computedInjectManyInjectionToken);
     const items = computedInjectMany(kubeObjectDetailItemInjectionToken);
 
     return computed(() =>

@@ -1,4 +1,3 @@
-import React from "react";
 import { Badge } from "./badge";
 import styles from "./badge-boolean.module.scss";
 

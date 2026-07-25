@@ -7,7 +7,6 @@
 import "./no-items.scss";
 
 import { cssNames } from "@freelensapp/utilities";
-import React from "react";
 
 import type { IClassName, StrictReactNode } from "@freelensapp/utilities";
 

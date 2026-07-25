@@ -108,7 +108,9 @@ describe("download logs options in logs dock tab", () => {
 
       const dockStore = windowDi.inject(dockStoreInjectable);
 
-      dockStore.closeTab("terminal");
+      act(() => {
+        dockStore.closeTab("terminal");
+      });
     });
 
     // TODO: TestingLibraryElementError: Unable to find an element by: [data-testid="download-all-logs"]

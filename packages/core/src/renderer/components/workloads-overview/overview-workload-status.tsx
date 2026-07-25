@@ -10,7 +10,6 @@ import { object } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { capitalize } from "es-toolkit";
 import { observer } from "mobx-react";
-import React from "react";
 import activeThemeInjectable from "../../themes/active.injectable";
 import { PieChart } from "../chart";
 

@@ -7,15 +7,14 @@
 import "./list.scss";
 
 import { Spinner } from "@freelensapp/spinner";
-import { array, cssNames } from "@freelensapp/utilities";
+import { array, cssNames, formatInTimeZone } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import AnsiUp from "ansi_up";
+import { AnsiUp } from "ansi_up";
 import autoBindReact from "auto-bind/react";
 import DOMPurify from "dompurify";
 import { debounce } from "es-toolkit/compat";
-import { action, computed, makeObservable, observable, reaction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
-import moment from "moment-timezone";
+import { action, makeObservable, observable, reaction } from "mobx";
+import { observer } from "mobx-react";
 import React from "react";
 import userPreferencesStateInjectable from "../../../../features/user-preferences/common/state.injectable";
 import { SearchStore } from "../../../search-store/search-store";
@@ -23,7 +22,7 @@ import { VirtualList } from "../../virtual-list";
 import { ToBottom } from "./to-bottom";
 
 import type { ForwardedRef } from "react";
-import type { Align, ListOnScrollProps } from "react-window";
+import type { Align } from "react-window";
 
 import type { UserPreferencesState } from "../../../../features/user-preferences/common/state.injectable";
 import type { VirtualListRef } from "../../virtual-list";
@@ -49,10 +48,20 @@ interface Dependencies {
 class NonForwardedLogList extends React.Component<
   Dependencies & LogListProps & { innerRef: ForwardedRef<LogListRef> }
 > {
+  private readonly disposers: (() => void)[] = [];
   @observable isJumpButtonVisible = false;
   @observable isLastLineVisible = true;
   @observable.ref private containerWidth = 0;
   @observable private overlapVersion = 0;
+
+  // mobx-react 9 forbids reading this.props inside a derivation. getLogRow is
+  // invoked from the VirtualList row renderer (a derivation other than this
+  // component's own render), so it — and the logs/showWordWrap getters it calls —
+  // read props from this observable snapshot, refreshed on every update, instead
+  // of this.props.
+  @observable.ref private observableProps: Readonly<
+    Dependencies & LogListProps & { innerRef: ForwardedRef<LogListRef> }
+  >;
 
   private virtualListDivElement: HTMLDivElement | null = null;
   private resizeObserver: ResizeObserver | null = null;
@@ -121,6 +130,7 @@ class NonForwardedLogList extends React.Component<
 
   constructor(props: any) {
     super(props);
+    this.observableProps = props;
     makeObservable(this);
     autoBindReact(this);
   }
@@ -128,9 +138,13 @@ class NonForwardedLogList extends React.Component<
   componentDidMount() {
     this.updateContainerMetrics();
     window.addEventListener("resize", this.updateContainerMetrics);
-    disposeOnUnmount(this, [
+    // Capture the model before wiring reactions: mobx-react 9 forbids reading
+    // this.props inside a derivation (the reaction data functions below).
+    const { model } = this.props;
+
+    this.disposers.push(
       reaction(
-        () => this.props.model.logs.get(),
+        () => model.logs.get(),
         (logs, prevLogs) => {
           const didLogsResetOrPrepend =
             !prevLogs.length || !logs.length || logs[0] !== prevLogs[0] || logs.length < prevLogs.length;
@@ -146,14 +160,14 @@ class NonForwardedLogList extends React.Component<
         },
       ),
       reaction(
-        () => this.props.model.logTabData.get()?.showTimestamps,
+        () => model.logTabData.get()?.showTimestamps,
         () => {
           this.measuredRowHeights.clear();
           this.overlapVersion++;
           this.virtualListRef.current?.resetAfterIndex(0);
         },
       ),
-    ]);
+    );
     this.bindInnerRef({
       scrollToItem: this.scrollToItem,
     });
@@ -186,6 +200,7 @@ class NonForwardedLogList extends React.Component<
   }
 
   componentDidUpdate() {
+    this.observableProps = this.props;
     this.bindInnerRef({
       scrollToItem: this.scrollToItem,
     });
@@ -203,6 +218,7 @@ class NonForwardedLogList extends React.Component<
     this.resizeObserver = null;
     window.removeEventListener("resize", this.updateContainerMetrics);
     this.bindInnerRef(null);
+    this.disposers.forEach((dispose) => dispose());
   }
 
   private onRowRendered = (rowIndex: number) => (element: HTMLDivElement | null) => {
@@ -273,25 +289,26 @@ class NonForwardedLogList extends React.Component<
 
   /**
    * Returns logs with or without timestamps regarding to showTimestamps prop
+   *
+   * Plain getter (not @computed): reads props, which mobx-react 9 forbids inside
+   * a derivation. Reads from the observable snapshot so it is safe both from
+   * render and from the VirtualList row renderer (getLogRow).
    */
-  @computed
   get logs(): string[] {
-    const { showTimestamps } = this.props.model.logTabData.get() ?? {};
+    const { model, state } = this.observableProps;
+    const { showTimestamps } = model.logTabData.get() ?? {};
 
     if (!showTimestamps) {
-      return this.props.model.logsWithoutTimestamps.get();
+      return model.logsWithoutTimestamps.get();
     }
 
-    return this.props.model.timestampSplitLogs
+    return model.timestampSplitLogs
       .get()
-      .map(
-        ([logTimestamp, log]) =>
-          `${logTimestamp && moment.tz(logTimestamp, this.props.state.localeTimezone).format()}${log}`,
-      );
+      .map(([logTimestamp, log]) => `${logTimestamp && formatInTimeZone(logTimestamp, state.localeTimezone)}${log}`);
   }
 
   get showWordWrap(): boolean {
-    return this.props.model.logTabData.get()?.showWordWrap ?? false;
+    return this.observableProps.model.logTabData.get()?.showWordWrap ?? false;
   }
 
   getRowHeights(): number[] {
@@ -325,17 +342,18 @@ class NonForwardedLogList extends React.Component<
   }
 
   /**
-   * Checks if JumpToBottom button should be visible and sets its observable
-   * @param props Scrolling props from virtual list core
+   * Checks if JumpToBottom button should be visible and sets its observable.
+   * react-window v2 scrolls the list's outermost element natively, so the
+   * scroll position is read from that element instead of a scrollOffset payload.
    */
-  setButtonVisibility = action(({ scrollOffset }: ListOnScrollProps) => {
+  setButtonVisibility = action(() => {
     const el = this.virtualListDivElement;
 
     if (!el) return;
 
     const offset = 100 * this.lineHeight;
 
-    if (el.scrollHeight - scrollOffset < offset) {
+    if (el.scrollHeight - el.scrollTop < offset) {
       this.isJumpButtonVisible = false;
     } else {
       this.isJumpButtonVisible = true;
@@ -344,23 +362,21 @@ class NonForwardedLogList extends React.Component<
 
   /**
    * Checks if last log line considered visible to user, setting its observable
-   * @param props Scrolling props from virtual list core
    */
-  setLastLineVisibility = action(({ scrollOffset }: ListOnScrollProps) => {
+  setLastLineVisibility = action(() => {
     const el = this.virtualListDivElement;
 
     if (!el) return;
-    this.isLastLineVisible = el.clientHeight + scrollOffset === el.scrollHeight;
+    this.isLastLineVisible = el.clientHeight + el.scrollTop === el.scrollHeight;
   });
 
   /**
    * Check if user scrolled to top and new logs should be loaded
-   * @param props Scrolling props from virtual list core
    */
-  checkLoadIntent = (props: ListOnScrollProps) => {
-    const { scrollOffset } = props;
+  checkLoadIntent = () => {
+    const el = this.virtualListDivElement;
 
-    if (scrollOffset === 0) {
+    if (el && el.scrollTop === 0) {
       this.props.model.loadLogs();
     }
   };
@@ -375,16 +391,16 @@ class NonForwardedLogList extends React.Component<
     this.virtualListRef.current?.scrollToItem(index, align);
   };
 
-  onScroll = (props: ListOnScrollProps) => {
+  onScroll = () => {
     this.isLastLineVisible = false;
-    this.onScrollDebounced(props);
+    this.onScrollDebounced();
   };
 
-  onScrollDebounced = debounce((props: ListOnScrollProps) => {
+  onScrollDebounced = debounce(() => {
     if (this.virtualListDivElement) {
-      this.setButtonVisibility(props);
-      this.setLastLineVisibility(props);
-      this.checkLoadIntent(props);
+      this.setButtonVisibility();
+      this.setLastLineVisibility();
+      this.checkLoadIntent();
     }
   }, 700); // Increasing performance and giving some time for virtual list to settle down
 
@@ -394,7 +410,7 @@ class NonForwardedLogList extends React.Component<
    * @returns A react element with a row itself
    */
   getLogRow = (rowIndex: number) => {
-    const { searchQuery, isActiveOverlay } = this.props.model.searchStore;
+    const { searchQuery, isActiveOverlay } = this.observableProps.model.searchStore;
     const item = this.logs[rowIndex];
     const contents: React.ReactElement[] = [];
     const ansiToHtml = (ansi: string) => DOMPurify.sanitize(colorConverter.ansi_to_html(ansi));
@@ -483,6 +499,6 @@ const InjectedNonForwardedLogList = withInjectables<
   }),
 });
 
-export const LogList = React.forwardRef<LogListRef, LogListProps>((props, ref) => (
-  <InjectedNonForwardedLogList {...props} innerRef={ref} />
-));
+export const LogList = ({ ref, ...props }: LogListProps & { ref?: ForwardedRef<LogListRef> }) => (
+  <InjectedNonForwardedLogList {...props} innerRef={ref ?? null} />
+);

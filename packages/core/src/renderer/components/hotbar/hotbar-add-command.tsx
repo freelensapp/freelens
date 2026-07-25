@@ -6,7 +6,6 @@
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import addHotbarInjectable from "../../../features/hotbar/storage/common/add.injectable";
 import commandOverlayInjectable from "../command-palette/command-overlay.injectable";
 import { Input } from "../input";

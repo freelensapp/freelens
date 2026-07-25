@@ -6,12 +6,12 @@
 
 import { EventEmitter } from "node:events";
 import { isErrnoException } from "@freelensapp/utilities";
-import AwaitLock from "await-lock";
 import { ipcRenderer } from "electron";
 import { makeObservable, observable, reaction, when } from "mobx";
 import { broadcastMessage, ipcMainHandle, ipcRendererOn } from "../../common/ipc";
 import { extensionDiscoveryStateChannel } from "../../common/ipc/extension-handling";
 import { toJS } from "../../common/utils";
+import AwaitLock from "../../common/utils/await-lock";
 import { requestInitialExtensionDiscovery } from "../../renderer/ipc";
 import type { Stats } from "node:fs";
 
@@ -84,10 +84,10 @@ interface ExtensionDiscoveryChannelMessage {
  */
 const isDirectoryLike = (lstat: Stats) => lstat.isDirectory() || lstat.isSymbolicLink();
 
-interface ExtensionDiscoveryEvents {
+type ExtensionDiscoveryEvents = {
   add: (ext: InstalledExtension) => void;
   remove: (extId: LensExtensionId) => void;
-}
+};
 
 /**
  * Discovers installed bundled and local extensions from the filesystem.
@@ -112,7 +112,8 @@ export class ExtensionDiscovery {
     return when(() => this.isLoaded);
   }
 
-  public readonly events: TypedEventEmitter<ExtensionDiscoveryEvents> = new EventEmitter();
+  public readonly events: TypedEventEmitter<ExtensionDiscoveryEvents> =
+    new EventEmitter() as unknown as TypedEventEmitter<ExtensionDiscoveryEvents>;
 
   constructor(protected readonly dependencies: Dependencies) {
     makeObservable(this);

@@ -6,14 +6,14 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import frameRoutingIdInjectable from "./frame-routing-id.injectable";
+import frameTokenInjectable from "./frame-token.injectable";
 import { registerInjectables as registerWebFrameInjectables } from "./web-frame/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
   try {
-    di.register(frameRoutingIdInjectable);
+    di.register(frameTokenInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

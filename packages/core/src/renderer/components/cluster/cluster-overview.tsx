@@ -7,9 +7,9 @@
 import { clusterOverviewUIBlockInjectionToken } from "@freelensapp/metrics";
 import { Spinner } from "@freelensapp/spinner";
 import { byOrderNumber } from "@freelensapp/utilities";
-import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
+import { computedInjectManyInjectionToken } from "@ogre-tools/injectable-extension-for-mobx";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import { ClusterMetricsResourceType } from "../../../common/cluster-types";
 import enabledMetricsInjectable from "../../api/catalog/entity/metrics-enabled.injectable";
@@ -41,10 +41,14 @@ interface Dependencies {
 
 @observer
 class NonInjectedClusterOverview extends React.Component<Dependencies> {
+  private readonly disposers: (() => void)[] = [];
+
   componentDidMount() {
-    disposeOnUnmount(this, [
-      this.props.subscribeStores([this.props.podStore, this.props.eventStore, this.props.nodeStore]),
-    ]);
+    this.disposers.push(this.props.subscribeStores([this.props.podStore, this.props.eventStore, this.props.nodeStore]));
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   renderWithMetrics() {
@@ -85,6 +89,6 @@ export const ClusterOverview = withInjectables<Dependencies>(NonInjectedClusterO
     podStore: di.inject(podStoreInjectable),
     eventStore: di.inject(eventStoreInjectable),
     nodeStore: di.inject(nodeStoreInjectable),
-    uiBlocks: di.inject(computedInjectManyInjectable)(clusterOverviewUIBlockInjectionToken),
+    uiBlocks: di.inject(computedInjectManyInjectionToken)(clusterOverviewUIBlockInjectionToken),
   }),
 });

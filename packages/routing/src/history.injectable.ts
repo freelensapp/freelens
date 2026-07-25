@@ -9,7 +9,7 @@ import { createBrowserHistory } from "history";
 
 import type { History } from "history";
 
-export const historyInjectionToken = getInjectionToken<History<unknown>>({
+export const historyInjectionToken = getInjectionToken<History>({
   id: "history-injection-token",
 });
 

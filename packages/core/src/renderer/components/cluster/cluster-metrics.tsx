@@ -8,7 +8,7 @@ import { Spinner } from "@freelensapp/spinner";
 import { bytesToUnits, cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { getMetricLastPoints, normalizeMetrics } from "../../../common/k8s-api/endpoints/metrics.api";
 import { BarChart } from "../chart";
 import { ZebraStripesPlugin } from "../chart/zebra-stripes.plugin";
@@ -21,10 +21,10 @@ import selectedMetricsTypeInjectable from "./overview/selected-metrics-type.inje
 import selectedNodeRoleForMetricsInjectable from "./overview/selected-node-role-for-metrics.injectable";
 import { createMetricsTimeRangeKey } from "./overview/time-range-key";
 
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
-import type { ChartOptions, TooltipItem } from "chart.js";
+import type { ChartOptions, ChartType, TooltipItem } from "chart.js";
 
 import type { ClusterMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
+import type { IAsyncComputed } from "../../../common/utils/async-computed";
 import type { SelectedMetricsTimeRange } from "./overview/selected-metrics-time-range.injectable";
 import type { SelectedMetricsType } from "./overview/selected-metrics-type.injectable";
 import type { SelectedNodeRoleForMetrics } from "./overview/selected-node-role-for-metrics.injectable";
@@ -85,7 +85,7 @@ const NonInjectedClusterMetrics = observer((props: Dependencies) => {
     plugins: {
       tooltip: {
         callbacks: {
-          label: (context: TooltipItem<"bar" | "line">) => {
+          label: (context: TooltipItem<ChartType>) => {
             if (!context.dataIndex) {
               return "<unknown>";
             }
@@ -110,7 +110,7 @@ const NonInjectedClusterMetrics = observer((props: Dependencies) => {
     plugins: {
       tooltip: {
         callbacks: {
-          label: (context: TooltipItem<"bar" | "line">) => {
+          label: (context: TooltipItem<ChartType>) => {
             if (!context.dataIndex) {
               return "<unknown>";
             }

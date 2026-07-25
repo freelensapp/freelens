@@ -20,23 +20,23 @@
   "main": "./index.ts",
   "types": "./index.ts",
   "scripts": {
-    "clean": "pnpm dlx rimraf@6.1.3 dist",
-    "clean:node_modules": "pnpm dlx rimraf@6.1.3 node_modules"
+    "clean:dist": "pnpm dlx rimraf@6.1.3 dist"
   },
   "dependencies": {
-    "@ogre-tools/injectable": "^17.11.1",
-    "@ogre-tools/injectable-react": "^17.11.1",
-    "@testing-library/react": "^12.1.5",
-    "es-toolkit": "^1.49.0",
-    "mobx": "^6.15.0",
-    "react": "^17.0.2"
+    "@async-fn/vitest": "catalog:",
+    "@ogre-tools/injectable": "catalog:",
+    "@ogre-tools/injectable-react": "catalog:",
+    "@testing-library/react": "catalog:",
+    "es-toolkit": "catalog:",
+    "mobx": "catalog:",
+    "react": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
-    "@types/node": "~24.12.4",
-    "@types/react": "^17.0.93",
-    "react-dom": "^17.0.2",
-    "vitest": "^4.1.10"
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "react-dom": "catalog:",
+    "vitest": "catalog:"
   },
   "publishConfig": {
     "access": "public",

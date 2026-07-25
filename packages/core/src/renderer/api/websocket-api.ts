@@ -10,7 +10,6 @@ import { makeObservable, observable } from "mobx";
 import type { Defaulted } from "@freelensapp/utilities";
 
 import type TypedEventEmitter from "typed-emitter";
-import type { Arguments } from "typed-emitter";
 
 import type { DefaultWebsocketApiParams } from "./default-websocket-api-params.injectable";
 
@@ -61,18 +60,18 @@ export enum WebSocketApiState {
   CLOSED = "closed",
 }
 
-export interface WebSocketEvents {
+export type WebSocketEvents = {
   open: () => void;
   data: (message: string) => void;
   close: () => void;
-}
+};
 
 export interface WebSocketApiDependencies {
   readonly defaultParams: DefaultWebsocketApiParams;
 }
 
 export class WebSocketApi<Events extends WebSocketEvents> extends (EventEmitter as {
-  new <T>(): TypedEventEmitter<T>;
+  new <T extends WebSocketEvents>(): TypedEventEmitter<T>;
 })<Events> {
   protected socket: WebSocket | null = null;
   protected pendingCommands: string[] = [];
@@ -166,14 +165,14 @@ export class WebSocketApi<Events extends WebSocketEvents> extends (EventEmitter 
   }
 
   protected _onOpen(evt: Event) {
-    this.emit("open", ...([] as Arguments<Events["open"]>));
+    this.emit("open", ...([] as Parameters<Events["open"]>));
     if (this.params.flushOnOpen) this.flush();
     this.readyState = WebSocketApiState.OPEN;
     this.writeLog("%cOPEN", "color:green;font-weight:bold;", evt);
   }
 
   protected _onMessage({ data }: MessageEvent): void {
-    this.emit("data", ...([data] as Arguments<Events["data"]>));
+    this.emit("data", ...([data] as Parameters<Events["data"]>));
     this.writeLog("%cMESSAGE", "color:black;font-weight:bold;", data);
   }
 
@@ -197,7 +196,7 @@ export class WebSocketApi<Events extends WebSocketEvents> extends (EventEmitter 
       }
     } else {
       this.readyState = WebSocketApiState.CLOSED;
-      this.emit("close", ...([] as Arguments<Events["close"]>));
+      this.emit("close", ...([] as Parameters<Events["close"]>));
     }
     this.writeLog("%cCLOSE", `color:${error ? "red" : "black"};font-weight:bold;`, evt);
   }

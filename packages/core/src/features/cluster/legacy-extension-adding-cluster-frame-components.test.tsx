@@ -6,7 +6,6 @@
 
 import { act } from "@testing-library/react";
 import { computed, observable, runInAction } from "mobx";
-import React from "react";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 import type { RenderResult } from "@testing-library/react";
@@ -70,8 +69,8 @@ describe("legacy extension adding cluster frame components", () => {
     });
 
     it("when injectable component becomes visible, shows it", () => {
-      runInAction(() => {
-        act(() => someObservable.set(true));
+      act(() => {
+        runInAction(() => someObservable.set(true));
       });
 
       const dialog = rendered.getByTestId("dialog-with-observable-visibility");

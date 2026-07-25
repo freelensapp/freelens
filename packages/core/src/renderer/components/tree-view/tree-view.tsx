@@ -6,12 +6,12 @@
 
 import { Icon } from "@freelensapp/icon";
 import { cssNames } from "@freelensapp/utilities";
-import React, { useState } from "react";
+import { useState } from "react";
 import styles from "./tree-view.module.scss";
 
 import type { StrictReactNode } from "@freelensapp/utilities";
 
-import type { MouseEventHandler } from "react";
+import type { JSX, MouseEventHandler } from "react";
 
 export interface TreeViewClasses {
   root?: string;

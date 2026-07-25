@@ -7,7 +7,6 @@
 import { replicaSetApiInjectable } from "@freelensapp/kube-api-specifics";
 import { stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import React from "react";
 import getMaybeDetailsUrlInjectable, {
   type GetMaybeDetailsUrl,
 } from "../kube-detail-params/get-maybe-details-url.injectable";

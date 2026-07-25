@@ -249,7 +249,9 @@ export class WizardStep<D> extends React.Component<WizardStepProps<D>, WizardSte
         onSubmit={prevDefault(this.submit)}
         noValidate={noValidate}
         onKeyDown={(evt) => this.keyDown(evt)}
-        ref={(e) => (this.form = e)}
+        ref={(e) => {
+          this.form = e;
+        }}
       >
         {beforeContent}
         <div className={cssNames("step-content", { scrollable }, contentClass)}>

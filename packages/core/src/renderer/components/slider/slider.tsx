@@ -11,7 +11,7 @@ import "./slider.scss";
 import assert from "node:assert";
 import { cssNames } from "@freelensapp/utilities";
 import MaterialSlider from "@mui/material/Slider";
-import React, { Component } from "react";
+import { Component } from "react";
 
 import type { SliderProps as MaterialSliderProps, SliderClassKey } from "@mui/material/Slider";
 

@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { matchPath } from "@freelensapp/routing";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
-import { matchPath } from "react-router";
 import currentPathInjectable from "./current-path.injectable";
 import routesInjectable from "./routes.injectable";
 

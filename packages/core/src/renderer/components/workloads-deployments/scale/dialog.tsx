@@ -13,7 +13,7 @@ import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { computed, makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
-import React, { Component } from "react";
+import { Component } from "react";
 import { Dialog } from "../../dialog";
 import { Slider } from "../../slider";
 import { Wizard, WizardStep } from "../../wizard";

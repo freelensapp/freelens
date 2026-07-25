@@ -14,12 +14,12 @@ import {
   VerticalPodAutoscaler,
 } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { Link } from "@freelensapp/routing";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { startCase } from "es-toolkit";
 import { observer } from "mobx-react";
 import React from "react";
-import { Link } from "react-router-dom";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
 import { Badge } from "../badge";
 import { DrawerItem, DrawerTitle } from "../drawer";

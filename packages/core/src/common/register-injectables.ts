@@ -13,6 +13,7 @@ import { registerInjectables as registerCatalogEntitiesInjectables } from "./cat
 import { registerInjectables as registerCertificateInjectables } from "./certificate/register-injectables";
 import { registerInjectables as registerClusterInjectables } from "./cluster/register-injectables";
 import clusterFramesInjectable from "./cluster-frames.injectable";
+import { registerInjectables as registerDependencyInjectionInjectables } from "./dependency-injection/register-injectables";
 import { registerInjectables as registerDirectoryForLensLocalStorageInjectables } from "./directory-for-lens-local-storage/register-injectables";
 import { registerInjectables as registerFetchInjectables } from "./fetch/register-injectables";
 import { registerInjectables as registerFrontEndRoutingInjectables } from "./front-end-routing/register-injectables";
@@ -68,6 +69,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     registerClusterInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerDependencyInjectionInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }

@@ -6,8 +6,8 @@
 
 import { getRandomIdInjectionToken } from "@freelensapp/random";
 import { getInjectable } from "@ogre-tools/injectable";
+import { act } from "@testing-library/react";
 import { computed, runInAction } from "mobx";
-import React from "react";
 import { getApplicationBuilder } from "../../../../../renderer/components/test-utils/get-application-builder";
 import { workloadOverviewDetailInjectionToken } from "../../../../../renderer/components/workloads-overview/workload-overview-details/workload-overview-detail-injection-token";
 
@@ -64,6 +64,8 @@ describe("order of workload overview details", () => {
     };
 
     builder.extensions.enable(testExtension);
+
+    await act(async () => {});
   });
 
   it("shows items in correct order", () => {

@@ -7,9 +7,9 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import webFrameInjectable from "./web-frame/web-frame.injectable";
 
-const frameRoutingIdInjectable = getInjectable({
-  id: "frame-routing-id",
-  instantiate: (di) => di.inject(webFrameInjectable).routingId,
+const frameTokenInjectable = getInjectable({
+  id: "frame-token",
+  instantiate: (di) => di.inject(webFrameInjectable).frameToken,
 });
 
-export default frameRoutingIdInjectable;
+export default frameTokenInjectable;

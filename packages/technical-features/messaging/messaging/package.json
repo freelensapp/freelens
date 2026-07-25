@@ -20,25 +20,24 @@
   "main": "./index.ts",
   "types": "./index.ts",
   "scripts": {
-    "clean": "pnpm dlx rimraf@6.1.3 dist",
-    "clean:node_modules": "pnpm dlx rimraf@6.1.3 node_modules",
+    "clean:dist": "pnpm dlx rimraf@6.1.3 dist",
     "test:unit": "vitest run -c ../../../../vitest.config.ts --project @freelensapp/messaging"
   },
   "dependencies": {
     "@freelensapp/application": "workspace:^",
     "@freelensapp/feature-core": "workspace:^",
     "@freelensapp/startable-stoppable": "workspace:^",
-    "@ogre-tools/injectable": "^17.11.1",
-    "@ogre-tools/injectable-extension-for-mobx": "^17.11.1",
-    "mobx": "^6.15.0"
+    "@ogre-tools/injectable": "catalog:",
+    "@ogre-tools/injectable-extension-for-mobx": "catalog:",
+    "mobx": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
-    "es-toolkit": "^1.49.0",
-    "jsdom": "^29.1.1",
-    "typescript": "^6.0.3",
-    "vitest": "^4.1.10"
+    "es-toolkit": "catalog:",
+    "jsdom": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "publishConfig": {
     "access": "public",

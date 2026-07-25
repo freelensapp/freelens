@@ -5,7 +5,6 @@
  */
 
 import { formatDuration } from "@freelensapp/utilities";
-import moment from "moment";
 import { KubeObject } from "../kube-object";
 
 import type { KubeJsonApiData, KubeObjectMetadata, KubeObjectScope, ObjectReference } from "../api-types";
@@ -143,7 +142,7 @@ export class KubeEvent extends KubeObject<KubeObjectMetadata<KubeObjectScope.Nam
    * @deprecated This function is not reactive to changing of time. If rendering use `<ReactiveDuration />` instead
    */
   getFirstSeenTime() {
-    const diff = moment().diff(this.firstTimestamp);
+    const diff = this.firstTimestamp ? Date.now() - new Date(this.firstTimestamp).getTime() : 0;
 
     return formatDuration(diff, true);
   }
@@ -152,7 +151,7 @@ export class KubeEvent extends KubeObject<KubeObjectMetadata<KubeObjectScope.Nam
    * @deprecated This function is not reactive to changing of time. If rendering use `<ReactiveDuration />` instead
    */
   getLastSeenTime() {
-    const diff = moment().diff(this.lastTimestamp);
+    const diff = this.lastTimestamp ? Date.now() - new Date(this.lastTimestamp).getTime() : 0;
 
     return formatDuration(diff, true);
   }

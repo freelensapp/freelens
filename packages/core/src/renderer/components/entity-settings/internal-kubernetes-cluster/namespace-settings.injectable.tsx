@@ -6,7 +6,6 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import React from "react";
 import getClusterByIdInjectable from "../../../../features/cluster/storage/common/get-by-id.injectable";
 import { ClusterAccessibleNamespaces } from "../../cluster-settings/accessible-namespaces";
 import { entitySettingInjectionToken } from "../token";

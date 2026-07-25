@@ -9,7 +9,6 @@ import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { isObject } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { reduce } from "es-toolkit/compat";
-import React from "react";
 import { SemVer } from "semver";
 import getBasenameOfPathInjectable from "../../../common/path/get-basename.injectable";
 import extensionInstallationStateStoreInjectable from "../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";

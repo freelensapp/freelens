@@ -9,7 +9,7 @@ import Config from "conf";
 
 import type { Options as ConfOptions } from "conf";
 
-export type GetConfigurationFileModel = <T extends object>(content: ConfOptions<T>) => Config<T>;
+export type GetConfigurationFileModel = <T extends Record<string, unknown>>(content: ConfOptions<T>) => Config<T>;
 
 const getConfigurationFileModelInjectable = getInjectable({
   id: "get-configuration-file-model",

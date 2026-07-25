@@ -12,7 +12,6 @@ import { Spinner } from "@freelensapp/spinner";
 import { prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import { Badge } from "../../badge";
 import { Checkbox } from "../../checkbox";
 import { LogsDialog } from "../../dialog/logs-dialog";
@@ -34,6 +33,13 @@ interface Dependencies {
 }
 
 const NonInjectedInstallChart = observer(({ model: model, tabId }: InstallChartProps & Dependencies) => {
+  // The tab was closed and its store data removed; every field below reads the
+  // chart from the store, which would throw. Render nothing while the view
+  // unmounts (see InstallChartModel.isMissingChart).
+  if (model.isMissingChart) {
+    return null;
+  }
+
   const installed = model.installed.get();
 
   if (installed) {

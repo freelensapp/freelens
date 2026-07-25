@@ -5,8 +5,8 @@
  */
 
 import { getInjectable, getInjectionToken } from "@ogre-tools/injectable";
-import { createObservableHistory, ObservableHistory } from "mobx-observable-history";
 import { historyInjectable } from "./history.injectable";
+import { createObservableHistory, ObservableHistory } from "./observable-history";
 import { searchParamsOptions } from "./search-params";
 
 export const observableHistoryInjectionToken = getInjectionToken<ObservableHistory<unknown>>({
@@ -18,7 +18,7 @@ export const observableHistoryInjectable = getInjectable({
 
   instantiate: (di) => {
     const history = di.inject(historyInjectable);
-    const navigation = createObservableHistory(history, {
+    const navigation = createObservableHistory<unknown>(history, {
       searchParams: searchParamsOptions,
     });
 

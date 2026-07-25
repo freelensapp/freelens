@@ -11,7 +11,6 @@ import { noop } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import fse from "fs-extra";
 import { when } from "mobx";
-import React from "react";
 import extractTarInjectable from "../../../../common/fs/extract-tar.injectable";
 import extensionInstallationStateStoreInjectable from "../../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
 import extensionLoaderInjectable from "../../../../extensions/extension-loader/extension-loader.injectable";

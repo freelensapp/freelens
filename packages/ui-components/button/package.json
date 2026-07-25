@@ -23,19 +23,17 @@
   },
   "main": "./src/index.ts",
   "types": "./src/index.ts",
-  "scripts": {
-    "clean:node_modules": "pnpm dlx rimraf@6.1.3 node_modules"
-  },
+  "scripts": {},
   "dependencies": {
     "@freelensapp/tooltip": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
-    "react": "^17.0.2"
+    "react": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
-    "@types/react": "^17.0.93",
-    "typescript": "^6.0.3",
-    "vitest": "^4.1.10"
+    "@types/react": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "publishConfig": {
     "access": "public",

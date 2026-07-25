@@ -4,15 +4,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { observableHistoryInjectionToken } from "@freelensapp/routing";
+import { matchPath, observableHistoryInjectionToken } from "@freelensapp/routing";
 import { getInjectable } from "@ogre-tools/injectable";
-import { matchPath } from "react-router";
 
-import type { match, RouteProps } from "react-router";
+import type { Match, MatchPathOptions } from "@freelensapp/routing";
 
 export type MatchRoute = <Params extends { [K in keyof Params]?: string }>(
-  route: string | string[] | RouteProps,
-) => match<Params> | null;
+  route: string | string[] | MatchPathOptions,
+) => Match<Params> | null;
 
 const matchRouteInjectable = getInjectable({
   id: "match-route",

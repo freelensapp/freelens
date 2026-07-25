@@ -160,57 +160,58 @@ describe("Pods", () => {
     }
   }
 
-  describe.each(
-    podTests,
-  )("for [%d running, %d dead] & initial [%d running, %d dead]", (running, dead, initRunning, initDead) => {
-    const pod = getDummyPod({ running, dead, initRunning, initDead });
+  describe.each(podTests)(
+    "for [%d running, %d dead] & initial [%d running, %d dead]",
+    (running, dead, initRunning, initDead) => {
+      const pod = getDummyPod({ running, dead, initRunning, initDead });
 
-    function getNamedContainer(name: string) {
-      return {
-        image: "dummy",
-        imagePullPolicy: "Always",
-        name,
-      };
-    }
-
-    it("getRunningContainers should return only running and init running", () => {
-      const res = [
-        ...Array.from(new Array(running), (val, index) => getNamedContainer(`container_running_${index}`)),
-        ...Array.from(new Array(initRunning), (val, index) => getNamedContainer(`container_init-running_${index}`)),
-      ];
-
-      expect(pod.getRunningContainers()).toStrictEqual(res);
-    });
-
-    it("getAllContainers should return all containers", () => {
-      const res = [
-        ...Array.from(new Array(running), (val, index) => getNamedContainer(`container_running_${index}`)),
-        ...Array.from(new Array(dead), (val, index) => getNamedContainer(`container_dead_${index}`)),
-        ...Array.from(new Array(initRunning), (val, index) => getNamedContainer(`container_init-running_${index}`)),
-        ...Array.from(new Array(initDead), (val, index) => getNamedContainer(`container_init-dead_${index}`)),
-      ];
-
-      expect(pod.getAllContainers()).toStrictEqual(res);
-    });
-
-    it("getRestartsCount should return total restart counts", () => {
-      function sum(len: number): number {
-        let res = 0;
-
-        for (let i = 0; i < len; i += 1) {
-          res += i;
-        }
-
-        return res;
+      function getNamedContainer(name: string) {
+        return {
+          image: "dummy",
+          imagePullPolicy: "Always",
+          name,
+        };
       }
 
-      expect(pod.getRestartsCount()).toStrictEqual(sum(running) + sum(dead));
-    });
+      it("getRunningContainers should return only running and init running", () => {
+        const res = [
+          ...Array.from(new Array(running), (val, index) => getNamedContainer(`container_running_${index}`)),
+          ...Array.from(new Array(initRunning), (val, index) => getNamedContainer(`container_init-running_${index}`)),
+        ];
 
-    it("hasIssues should return true if a regular container terminated unsuccessfully", () => {
-      expect(pod.hasIssues()).toStrictEqual(dead > 0);
-    });
-  });
+        expect(pod.getRunningContainers()).toStrictEqual(res);
+      });
+
+      it("getAllContainers should return all containers", () => {
+        const res = [
+          ...Array.from(new Array(running), (val, index) => getNamedContainer(`container_running_${index}`)),
+          ...Array.from(new Array(dead), (val, index) => getNamedContainer(`container_dead_${index}`)),
+          ...Array.from(new Array(initRunning), (val, index) => getNamedContainer(`container_init-running_${index}`)),
+          ...Array.from(new Array(initDead), (val, index) => getNamedContainer(`container_init-dead_${index}`)),
+        ];
+
+        expect(pod.getAllContainers()).toStrictEqual(res);
+      });
+
+      it("getRestartsCount should return total restart counts", () => {
+        function sum(len: number): number {
+          let res = 0;
+
+          for (let i = 0; i < len; i += 1) {
+            res += i;
+          }
+
+          return res;
+        }
+
+        expect(pod.getRestartsCount()).toStrictEqual(sum(running) + sum(dead));
+      });
+
+      it("hasIssues should return true if a regular container terminated unsuccessfully", () => {
+        expect(pod.hasIssues()).toStrictEqual(dead > 0);
+      });
+    },
+  );
 
   describe("getSelectedNodeOs", () => {
     it("should return stable", () => {

@@ -8,7 +8,6 @@ import assert from "node:assert";
 import { waitUntilDefined } from "@freelensapp/utilities";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { action, computed, observable, runInAction } from "mobx";
-import React from "react";
 import navigateToHelmReleasesInjectable from "../../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
 import requestHelmChartValuesInjectable from "../../../../common/k8s-api/endpoints/helm-charts.api/request-values.injectable";
 import requestHelmChartVersionsInjectable from "../../../../common/k8s-api/endpoints/helm-charts.api/request-versions.injectable";
@@ -196,6 +195,15 @@ export class InstallChartModel {
     assert(chart);
 
     return chart;
+  }
+
+  // True once the dock tab is closed and its data removed from the store. The
+  // observer view can re-render once before unmounting; every field below reads
+  // `chart`, which asserts on the store entry, so the view must short-circuit on
+  // this to avoid throwing and tripping the dock's ErrorBoundary during teardown.
+  @computed
+  get isMissingChart() {
+    return !this.dependencies.store.getData(this.dependencies.tabId);
   }
 
   load = async () => {

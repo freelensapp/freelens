@@ -29,6 +29,7 @@ jobs:
 
     env:
       DO_NOT_TRACK: "1"
+      ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
       TURBOREPO_CACHE: ${{ github.workspace }}/.turbo
 
     steps:
@@ -36,7 +37,7 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Setup node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           package-manager-cache: false
@@ -46,7 +47,7 @@ jobs:
 
       - name: Get pnpm cache directory
         shell: bash
-        run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
+        run: echo "pnpm_cache_dir=$(pnpm store path)" | tee -a ${GITHUB_ENV}
 
       - name: Use pnpm cache
         uses: actions/cache@v6
@@ -60,9 +61,19 @@ jobs:
         uses: actions/cache@v6
         with:
           path: ${{ env.TURBOREPO_CACHE }}
-          key: ubuntu-24.04-arm-arm64-turborepo-${{ hashFiles('package.json', 'freelens/package.json', 'packages/**/package.json', 'pnpm-lock.yaml','turbo.json') }}
+          key: ubuntu-24.04-arm-arm64-turborepo-${{ hashFiles('package.json', 'freelens/package.json', 'packages/**/package.json', 'pnpm-lock.yaml','turbo.json','tsconfig*.json','packages/infrastructure/typescript/config/*.json') }}
           restore-keys: |
             ubuntu-24.04-arm-arm64-turborepo-
+
+      - name: Get Electron version
+        shell: bash
+        run: echo "electron_version=$(yq -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a ${GITHUB_ENV}
+
+      - name: Use Electron cache
+        uses: actions/cache@v6
+        with:
+          path: ${{ env.ELECTRON_CACHE }}
+          key: ubuntu-24.04-arm-arm64-electron-${{ env.electron_version }}
 
       - name: Install pnpm dependencies
         id: install-pnpm
@@ -72,6 +83,20 @@ jobs:
       - name: Install pnpm dependencies (retry)
         if: steps.install-pnpm.outcome == 'failure'
         run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
+
+      # Electron 42 downloads its runtime binary lazily on the first require(),
+      # not during install. Without this step the parallel Vitest workers each
+      # trigger the download and extraction at test time and clobber each other,
+      # failing with "Electron failed to install correctly". Download and
+      # extract it once, serially, here. electron/install.js reads its download
+      # cache directory from electron_config_cache, so point it at the
+      # GitHub-cached ELECTRON_CACHE restored above.
+      - name: Install Electron binary
+        working-directory: freelens
+        env:
+          electron_config_cache: ${{ env.ELECTRON_CACHE }}
+        run: |
+          node "$(node -p "require.resolve('electron/install.js')")"
 
       - name: Build packages
         run: pnpm --color=always --stream build
@@ -86,8 +111,12 @@ jobs:
       - name: Run unit tests (shard ${{ matrix.shard }}/${{ strategy.job-total }})
         run: pnpm --color=always test:unit --shard=${{ matrix.shard }}/${{ strategy.job-total }} --reporter=verbose --reporter=github-actions --includeTaskLocation
 
+      # Must run the root `clean:dist` script directly (not `--parallel`,
+      # which skips the workspace root) so its dlx cache warmup stays ahead
+      # of the parallel per-package rimraf calls - otherwise they race on
+      # the same dlx cache slot and fail with ENOENT (#2231, #2235).
       - name: Clean after tests
-        run: pnpm --color=always --parallel clean
+        run: pnpm --color=always run clean:dist
 
       - name: Check untracked files
         shell: bash

@@ -9,7 +9,6 @@ import "./view.scss";
 import { formatJSONValue, safeJSONPathValue } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { startCase } from "es-toolkit";
-import { computed, makeObservable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
@@ -45,14 +44,16 @@ interface Dependencies {
 class NonInjectedCustomResources extends React.Component<Dependencies> {
   constructor(props: Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
-  @computed get crd() {
+  // Plain getters (not @computed): they read this.props, which mobx-react 9
+  // forbids inside a derivation. Read from render, reactivity is preserved by
+  // the observer render reaction.
+  get crd() {
     return this.props.customResourceDefinitionStore.getByGroup(this.props.group.get(), this.props.name.get());
   }
 
-  @computed get store() {
+  get store() {
     return this.props.apiManager.getStore(this.crd?.getResourceApiBase());
   }
 

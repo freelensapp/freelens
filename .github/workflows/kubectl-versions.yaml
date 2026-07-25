@@ -45,7 +45,7 @@ jobs:
         run: corepack enable
 
       - name: Setup node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           cache: pnpm
@@ -73,9 +73,9 @@ jobs:
       - name: Check for changes
         run: |
           if git diff --exit-code; then
-            echo "changes=false" >> $GITHUB_ENV
+            echo "changes=false" | tee -a $GITHUB_ENV
           else
-            echo "changes=true" >> $GITHUB_ENV
+            echo "changes=true" | tee -a $GITHUB_ENV
           fi
 
       - name: Commit and push to branch

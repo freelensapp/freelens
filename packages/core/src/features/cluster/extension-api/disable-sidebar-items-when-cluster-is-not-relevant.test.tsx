@@ -5,7 +5,6 @@
  */
 
 import asyncFn from "@async-fn/vitest";
-import React from "react";
 import { act } from "react-dom/test-utils";
 import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 

@@ -11,20 +11,14 @@ import { isObject } from "./type-narrowing";
 
 /** */
 
-export type StrictReactFragment = {
-  key?: string | number | null;
-  ref?: null;
-  props?: {
-    children?: StrictReactNode;
-  };
-};
+export type StrictReactFragment = Iterable<StrictReactNode>;
 
 export type StrictReactNode =
   | React.ReactElement
-  | React.ReactText
+  | string
+  | number
   | StrictReactFragment
   | React.ReactPortal
-  | Iterable<StrictReactNode>
   | boolean
   | null
   | undefined;

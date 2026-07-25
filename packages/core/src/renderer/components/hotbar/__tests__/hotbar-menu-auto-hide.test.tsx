@@ -7,7 +7,6 @@
 import "@testing-library/jest-dom/vitest";
 
 import { fireEvent, waitFor } from "@testing-library/react";
-import React from "react";
 import directoryForUserDataInjectable from "../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import userPreferencesStateInjectable from "../../../../features/user-preferences/common/state.injectable";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";

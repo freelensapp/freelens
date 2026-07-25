@@ -8,12 +8,11 @@ import "./licenses.scss";
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import { SettingLayout } from "../../../renderer/components/layout/setting-layout";
 import closeLicensesInjectable from "./close-licenses.injectable";
 import licenseContentInjectable from "./license-content.injectable";
 
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
+import type { IAsyncComputed } from "../../../common/utils/async-computed";
 
 interface Dependencies {
   closeLicenses: () => void;

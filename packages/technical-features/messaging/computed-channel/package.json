@@ -20,14 +20,13 @@
   "main": "./index.ts",
   "types": "./index.ts",
   "scripts": {
-    "clean": "pnpm dlx rimraf@6.1.3 dist",
-    "clean:node_modules": "pnpm dlx rimraf@6.1.3 node_modules",
+    "clean:dist": "pnpm dlx rimraf@6.1.3 dist",
     "test:unit": "vitest run -c ../../../../vitest.config.ts --project @freelensapp/computed-channel"
   },
   "dependencies": {
     "@freelensapp/messaging": "workspace:^",
-    "@ogre-tools/injectable": "^17.11.1",
-    "mobx": "^6.15.0"
+    "@ogre-tools/injectable": "catalog:",
+    "mobx": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/application": "workspace:^",
@@ -35,16 +34,16 @@
     "@freelensapp/messaging-fake-bridge": "workspace:^",
     "@freelensapp/test-utils": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
-    "@ogre-tools/injectable-extension-for-mobx": "^17.11.1",
-    "es-toolkit": "^1.49.0",
-    "@testing-library/jest-dom": "^6.9.1",
-    "@testing-library/react": "^12.1.5",
-    "@types/react": "^17.0.93",
-    "jsdom": "^29.1.1",
-    "mobx-react": "^7.6.0",
-    "react": "^17.0.2",
-    "typescript": "^6.0.3",
-    "vitest": "^4.1.10"
+    "@ogre-tools/injectable-extension-for-mobx": "catalog:",
+    "es-toolkit": "catalog:",
+    "@testing-library/jest-dom": "catalog:",
+    "@testing-library/react": "catalog:",
+    "@types/react": "catalog:",
+    "jsdom": "catalog:",
+    "mobx-react": "catalog:",
+    "react": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "publishConfig": {
     "access": "public",

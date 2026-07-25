@@ -9,7 +9,7 @@ import { Tooltip } from "@freelensapp/tooltip";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React, { useState } from "react";
+import { useState } from "react";
 import normalizeCatalogEntityContextMenuInjectable from "../../catalog/normalize-menu-item.injectable";
 import { Avatar } from "../avatar";
 import { Menu, MenuItem } from "../menu";

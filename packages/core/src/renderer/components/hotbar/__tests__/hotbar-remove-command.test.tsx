@@ -7,7 +7,6 @@
 import "@testing-library/jest-dom/vitest";
 
 import { fireEvent } from "@testing-library/react";
-import React from "react";
 import directoryForUserDataInjectable from "../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import createHotbarInjectable from "../../../../features/hotbar/storage/common/create-hotbar.injectable";
 import hotbarsInjectable from "../../../../features/hotbar/storage/common/hotbars.injectable";

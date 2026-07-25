@@ -5,7 +5,6 @@
  */
 
 import { observer } from "mobx-react";
-import React from "react";
 
 import type { KubeObject } from "@freelensapp/kube-object";
 import type { KubeObjectDetailMetrics } from "@freelensapp/metrics";

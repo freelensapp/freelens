@@ -5,7 +5,6 @@
  */
 
 import { bytesToUnits, unitsToBytes } from "@freelensapp/utilities";
-import React from "react";
 import { DrawerItem } from "../drawer";
 import { WithTooltip } from "../with-tooltip";
 

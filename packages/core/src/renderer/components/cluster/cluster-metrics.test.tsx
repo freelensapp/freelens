@@ -7,7 +7,6 @@
 import "@testing-library/jest-dom/vitest";
 import { act, screen } from "@testing-library/react";
 import { computed, observable } from "mobx";
-import React from "react";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import { renderFor } from "../test-utils/renderFor";
 import { ClusterMetrics } from "./cluster-metrics";

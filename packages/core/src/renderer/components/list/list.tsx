@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { SearchInput } from "../input";
 import { ReactTable } from "../table/react-table";
 import styles from "./list.module.scss";

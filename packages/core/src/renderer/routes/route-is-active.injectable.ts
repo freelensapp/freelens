@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { matchPath } from "@freelensapp/routing";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { computed } from "mobx";
-import { matchPath } from "react-router-dom";
 import currentPathInjectable from "./current-path.injectable";
 
 import type { Route } from "../../common/front-end-routing/front-end-route-injection-token";

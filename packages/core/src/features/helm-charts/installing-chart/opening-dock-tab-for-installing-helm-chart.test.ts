@@ -4,10 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/vitest";
-import { flushPromises } from "@freelensapp/test-utils";
-import { fireEvent } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { asyncFn, flushPromises } from "@freelensapp/test-utils";
+import { act, fireEvent } from "@testing-library/react";
 import directoryForLensLocalStorageInjectable from "../../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
 import { HelmChart } from "../../../common/k8s-api/endpoints/helm-charts.api";
 import requestHelmChartsInjectable from "../../../common/k8s-api/endpoints/helm-charts.api/request-charts.injectable";
@@ -20,7 +18,8 @@ import dockStoreInjectable from "../../../renderer/components/dock/dock/store.in
 import getRandomInstallChartTabIdInjectable from "../../../renderer/components/dock/install-chart/get-random-install-chart-tab-id.injectable";
 import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 
-import type { AsyncFnMock } from "@async-fn/vitest";
+import type { AsyncFnMock } from "@freelensapp/test-utils";
+
 import type { RenderResult } from "@testing-library/react";
 import type { Mock } from "vitest";
 
@@ -37,7 +36,7 @@ describe("opening dock tab for installing helm chart", () => {
   let requestHelmChartValuesMock: Mock;
 
   beforeEach(() => {
-    builder = getApplicationBuilder(userEvent.setup({ delay: null }));
+    builder = getApplicationBuilder();
 
     requestHelmChartsMock = asyncFn();
     requestHelmChartVersionsMock = asyncFn();
@@ -73,7 +72,9 @@ describe("opening dock tab for installing helm chart", () => {
       const dockStore = windowDi.inject(dockStoreInjectable);
 
       // TODO: Make TerminalWindow unit testable to allow realistic behaviour
-      dockStore.closeTab("terminal");
+      act(() => {
+        dockStore.closeTab("terminal");
+      });
     });
 
     it("renders", () => {

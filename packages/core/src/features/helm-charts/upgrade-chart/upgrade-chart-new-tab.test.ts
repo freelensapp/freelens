@@ -4,7 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/vitest";
+import { asyncFn } from "@freelensapp/test-utils";
+import { act, fireEvent } from "@testing-library/react";
 import { anyObject } from "vitest-mock-extended";
 import navigateToHelmReleasesInjectable from "../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
 import { HelmChart } from "../../../common/k8s-api/endpoints/helm-charts.api";
@@ -16,7 +17,8 @@ import dockStoreInjectable from "../../../renderer/components/dock/dock/store.in
 import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 import { advanceFakeTime, testUsingFakeTime } from "../../../test-utils/use-fake-time";
 
-import type { AsyncFnMock } from "@async-fn/vitest";
+import type { AsyncFnMock } from "@freelensapp/test-utils";
+
 import type { RenderResult } from "@testing-library/react";
 
 import type { NavigateToHelmReleases } from "../../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
@@ -67,7 +69,9 @@ describe("New Upgrade Helm Chart Dock Tab", () => {
     const dockStore = builder.applicationWindow.only.di.inject(dockStoreInjectable);
 
     // TODO: Make TerminalWindow unit testable to allow realistic behaviour
-    dockStore.closeTab("terminal");
+    act(() => {
+      dockStore.closeTab("terminal");
+    });
   });
 
   describe("given a namespace is selected", () => {
@@ -77,7 +81,9 @@ describe("New Upgrade Helm Chart Dock Tab", () => {
 
     describe("when navigating to the helm releases view", () => {
       beforeEach(() => {
-        navigateToHelmReleases();
+        act(() => {
+          navigateToHelmReleases();
+        });
       });
 
       it("renders", () => {
@@ -116,7 +122,7 @@ describe("New Upgrade Helm Chart Dock Tab", () => {
               "menu-actions-icon-for-release-menu-for-my-second-namespace/some-name",
             );
 
-            helmReleaseMenu.click();
+            fireEvent.click(helmReleaseMenu);
           });
 
           it("renders", () => {
@@ -129,7 +135,7 @@ describe("New Upgrade Helm Chart Dock Tab", () => {
                 "upgrade-chart-menu-item-for-my-second-namespace/some-name",
               );
 
-              upgradeHelmChartMenuItem.click();
+              fireEvent.click(upgradeHelmChartMenuItem);
               advanceFakeTime(100);
             });
 
@@ -255,7 +261,7 @@ describe("New Upgrade Helm Chart Dock Tab", () => {
                     beforeEach(() => {
                       const closeDockTab = renderResult.getByTestId("dock-tab-close-for-some-irrelevant-random-id");
 
-                      closeDockTab.click();
+                      fireEvent.click(closeDockTab);
                     });
 
                     it("renders", () => {

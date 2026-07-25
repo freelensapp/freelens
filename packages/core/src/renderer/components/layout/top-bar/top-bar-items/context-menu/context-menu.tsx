@@ -20,7 +20,6 @@
  */
 
 import { withInjectables } from "@ogre-tools/injectable-react";
-import React from "react";
 import styles from "../../top-bar.module.scss";
 import openAppContextMenuInjectable from "./open-app-context-menu/open-app-context-menu.injectable";
 

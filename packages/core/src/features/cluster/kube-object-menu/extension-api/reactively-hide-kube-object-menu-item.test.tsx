@@ -6,8 +6,8 @@
 
 import { KubeObject } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
+import { act } from "@testing-library/react";
 import { computed, observable, runInAction } from "mobx";
-import React from "react";
 import { frontEndRouteInjectionToken } from "../../../../common/front-end-routing/front-end-route-injection-token";
 import { navigateToRouteInjectionToken } from "../../../../common/front-end-routing/navigate-to-route-injection-token";
 import { KubeObjectMenu } from "../../../../renderer/components/kube-object-menu";
@@ -63,7 +63,9 @@ describe("reactively hide kube object menu item", () => {
     const navigateToRoute = windowDi.inject(navigateToRouteInjectionToken);
     const testRoute = windowDi.inject(testRouteInjectable);
 
-    navigateToRoute(testRoute);
+    act(() => {
+      navigateToRoute(testRoute);
+    });
 
     builder.extensions.enable(testExtension);
   });
@@ -75,8 +77,10 @@ describe("reactively hide kube object menu item", () => {
   });
 
   it("given item should be shown, shows the kube object menu item", () => {
-    runInAction(() => {
-      someObservable.set(true);
+    act(() => {
+      runInAction(() => {
+        someObservable.set(true);
+      });
     });
 
     const actual = rendered.queryByTestId("some-kube-object-menu-item");

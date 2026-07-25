@@ -54,7 +54,7 @@ const kubeAuthProxyServerInjectable = getInjectable({
 
     const newApiTarget = async (timeout: number): Promise<ServerOptions> => {
       const { hostname } = await clusterApiUrl();
-      const certificate = di.inject(kubeAuthProxyCertificateInjectable, hostname);
+      const certificate = await di.inject(kubeAuthProxyCertificateInjectable, hostname);
       const { port, apiPrefix: path } = await ensureServerHelper();
 
       return {

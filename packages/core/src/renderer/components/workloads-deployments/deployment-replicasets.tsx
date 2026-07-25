@@ -9,6 +9,7 @@ import "./deployment-replicasets.scss";
 import { Spinner } from "@freelensapp/spinner";
 import { prevDefault, stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import { untracked } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { DrawerTitle } from "../drawer";
@@ -49,7 +50,13 @@ interface Dependencies {
 @observer
 class NonInjectedDeploymentReplicaSets extends React.Component<DeploymentReplicaSetsProps & Dependencies> {
   getPodsLength(replicaSet: ReplicaSet) {
-    return this.props.replicaSetStore.getChildPods(replicaSet).length;
+    // Invoked from Table's sort callback / row render, i.e. Table's render
+    // reaction, so read this.props untracked to avoid mobx-react 9's
+    // foreign-derivation guard. The getChildPods observable read stays
+    // tracked so the pod count updates live.
+    const { replicaSetStore } = untracked(() => this.props);
+
+    return replicaSetStore.getChildPods(replicaSet).length;
   }
 
   render() {

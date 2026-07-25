@@ -18,6 +18,7 @@ import forceAppExitInjectable from "../../electron-app/features/force-app-exit.i
 import showErrorPopupInjectable from "../../electron-app/features/show-error-popup.injectable";
 import lensProxyInjectable from "../../lens-proxy/lens-proxy.injectable";
 import lensProxyPortInjectable from "../../lens-proxy/lens-proxy-port.injectable";
+import setupLensProxyCertificateInjectable from "./setup-lens-proxy-certificate.injectable";
 
 const setupLensProxyInjectable = getInjectable({
   id: "setup-lens-proxy",
@@ -116,7 +117,7 @@ const setupLensProxyInjectable = getInjectable({
         }
       }
     },
-    runAfter: buildVersionInitializationInjectable,
+    runAfter: [buildVersionInitializationInjectable, setupLensProxyCertificateInjectable],
   }),
 
   causesSideEffects: true,

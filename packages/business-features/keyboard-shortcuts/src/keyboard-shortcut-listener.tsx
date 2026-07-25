@@ -1,5 +1,5 @@
 import { withInjectables } from "@ogre-tools/injectable-react";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import invokeShortcutInjectable, { InvokeShortcut } from "./invoke-shortcut.injectable";
 
 import type { StrictReactNode } from "@freelensapp/utilities";

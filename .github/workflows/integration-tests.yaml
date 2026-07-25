@@ -53,9 +53,6 @@ jobs:
 
     env:
       DO_NOT_TRACK: "1"
-      ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
-      ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
-      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.cache/playwright
       TURBOREPO_CACHE: ${{ github.workspace }}/.turbo
 
     steps:
@@ -100,7 +97,7 @@ jobs:
           yq --version
 
       - name: Setup node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           package-manager-cache: false
@@ -110,7 +107,7 @@ jobs:
 
       - name: Get pnpm cache directory
         shell: bash
-        run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
+        run: echo "pnpm_cache_dir=$(pnpm store path)" | tee -a ${GITHUB_ENV}
 
       - name: Use pnpm cache
         uses: actions/cache@v6
@@ -122,48 +119,62 @@ jobs:
 
       - name: Get Electron version
         shell: bash
-        run: echo "electron_version=$(yq -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
+        run: echo "electron_version=$(yq -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a $GITHUB_ENV
 
-      - name: Get Electron Builder version
+      # electron-builder's Electron zip downloader doesn't accept a cache
+      # directory override (no ELECTRON_CACHE / electron_config_cache is read
+      # on this code path - see freelensapp/freelens#2305) and always writes
+      # into the OS-default Electron cache dir, so that's what has to be
+      # cached, not a workspace-local redirect.
+      - name: Get Electron cache directory
         shell: bash
-        run: echo "electron_builder_version=$(yq -r .importers.freelens.devDependencies.electron-builder.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
+        run: |
+          case "${{ matrix.os }}" in
+            linux) dir="$HOME/.cache/electron" ;;
+            macos) dir="$HOME/Library/Caches/electron" ;;
+            windows) dir="$LOCALAPPDATA/electron/Cache" ;;
+          esac
+          echo "electron_cache_dir=$dir" | tee -a $GITHUB_ENV
 
-      - name: Get Playwright version
-        shell: bash
-        run: echo "playwright_version=$(yq -r .importers.freelens.devDependencies.playwright.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
-
-      - name: Use Electron cache
-        uses: actions/cache@v6
+      # Restored here and saved explicitly (with if: always()) right after the
+      # "Build Electron app" step below, instead of the combined actions/cache
+      # action: that action's save only runs in a post-job step, which is
+      # skipped once a later step in the job fails. Without this split, a
+      # packaging failure that happens after Electron finishes downloading
+      # (see freelensapp/freelens#2303) leaves the cache empty forever - every
+      # re-run re-downloads the binary and can hit the same flaky upstream
+      # again. Only the Electron binary is cached here: with a `dir` target
+      # electron-builder downloads none of its own toolsets (NSIS,
+      # winCodeSign, ...), so an electron-builder cache would always be empty.
+      - name: Restore Electron cache
+        id: electron-cache-restore
+        uses: actions/cache/restore@v6
         with:
-          path: ${{ env.ELECTRON_CACHE }}
+          path: ${{ env.electron_cache_dir }}
           key: ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-${{ env.electron_version }}
           restore-keys: |
             ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-
-
-      - name: Use Electron Builder cache
-        uses: actions/cache@v6
-        with:
-          path: ${{ env.ELECTRON_BUILDER_CACHE }}
-          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-builder-${{ env.electron_builder_version }}
-          restore-keys: |
-            ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-builder-
-
-      - name: Use Playwright cache
-        id: playwright-cache
-        uses: actions/cache@v6
-        with:
-          path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
-          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-playwright-${{ env.playwright_version }}
-          restore-keys: |
-            ${{ matrix.runs-on }}-${{ matrix.arch }}-playwright-
 
       - name: Use Turborepo cache
         uses: actions/cache@v6
         with:
           path: ${{ env.TURBOREPO_CACHE }}
-          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-turborepo-${{ hashFiles('package.json', 'freelens/package.json', 'packages/**/package.json', 'pnpm-lock.yaml','turbo.json') }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-turborepo-${{ hashFiles('package.json', 'freelens/package.json', 'packages/**/package.json', 'pnpm-lock.yaml','turbo.json','tsconfig*.json','packages/infrastructure/typescript/config/*.json') }}
           restore-keys: |
             ${{ matrix.runs-on }}-${{ matrix.arch }}-turborepo-
+
+      # Cache the .deb archives and package lists that `playwright install-deps`
+      # downloads through apt, so re-runs reuse them instead of re-downloading.
+      # apt is pointed at this project-local directory via a global config file
+      # written in the install step below.
+      - name: Use APT cache (Linux)
+        if: runner.os == 'Linux'
+        uses: actions/cache@v6
+        with:
+          path: .apt
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-apt-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-apt-
 
       - name: Start KinD cluster (Linux)
         if: runner.os == 'Linux'
@@ -191,19 +202,38 @@ jobs:
 
       - name: Disable pre post scripts for pnpm
         shell: bash
-        run: pnpm config set enablePrePostScripts false
+        run: pnpm config set enablePrePostScripts false --location project
 
       - name: Put $HOME in env (Windows)
         if: runner.os == 'windows'
         run: echo "HOME=$HOME" | Out-File -FilePath $env:GITHUB_ENV -Append
 
-      - name: Install Playwright with dependencies
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: pnpx playwright install --with-deps
-
-      - name: Install Playwright's dependencies
-        if: steps.playwright-cache.outputs.cache-hit == 'true'
-        run: pnpx playwright install-deps
+      # The integration tests drive the packaged Electron app via Playwright's
+      # `_electron` API, which uses Electron's own bundled Chromium, so
+      # Playwright's browsers are never downloaded. `install-deps` is still
+      # needed on Linux: it apt-installs the shared libraries that Chromium (and
+      # thus the Electron app) needs to launch under xvfb. Scope it to `chromium`
+      # so only Chromium's libraries are installed, skipping the heavier
+      # Firefox/WebKit dependency set that the Electron app never uses.
+      - name: Install Playwright's OS dependencies (Linux)
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          set -eo pipefail
+          # `playwright install-deps` runs its own `apt-get update`/`install`, so
+          # the archive/list redirect has to be a global apt config file it picks
+          # up rather than per-invocation `-o` flags. Point apt at the cached
+          # project-local dirs (see the APT cache step above); dpkg's status stays
+          # at the system default, so packages still install into the runner.
+          mkdir -p .apt/cache/archives/partial .apt/state/lists/partial
+          sudo tee /etc/apt/apt.conf.d/00freelens-cache >/dev/null <<EOF
+          Dir::Cache::archives "$PWD/.apt/cache/archives";
+          Dir::State::lists "$PWD/.apt/state/lists";
+          EOF
+          pnpx playwright install-deps chromium
+          # apt ran as root, so hand the cache dir back to the runner user for the
+          # cache-save post step to read.
+          sudo chown -R "$(id -u):$(id -g)" .apt
 
       - name: Build packages
         if: runner.os != 'Windows'
@@ -240,7 +270,7 @@ jobs:
         shell: bash
         run: |
           EB_PATH=$(cd freelens && node -e "console.log(require.resolve('electron-builder/cli'))")
-          echo "ELECTRON_BUILDER_PATH=$EB_PATH" >> $GITHUB_ENV
+          echo "ELECTRON_BUILDER_PATH=$EB_PATH" | tee -a $GITHUB_ENV
 
       - name: Deploy production node_modules
         shell: bash
@@ -250,18 +280,113 @@ jobs:
           mv freelens/node_modules_prod freelens/node_modules
 
       - name: Build Electron app
+        id: build-electron-app
         shell: bash
         working-directory: freelens
         run: node "$ELECTRON_BUILDER_PATH" --publish never --${{ matrix.os }} dir --${{ matrix.arch }}
         env:
-          DEBUG: electron-builder,electron-builder:*
           npm_config_user_agent: pnpm
+        continue-on-error: true
+
+      - name: Build Electron app (retry)
+        shell: bash
+        working-directory: freelens
+        if: steps.build-electron-app.outcome == 'failure'
+        run: node "$ELECTRON_BUILDER_PATH" --publish never --${{ matrix.os }} dir --${{ matrix.arch }}
+        env:
+          npm_config_user_agent: pnpm
+
+      # See the comment on "Restore Electron cache" above: save unconditionally
+      # so whatever the step(s) above downloaded is cached even when packaging
+      # ultimately failed.
+      # Skip the save on an exact cache hit (the primary key already exists, so
+      # actions/cache/save would only warn "Unable to reserve cache ..."); still
+      # save on a miss or restore-key partial hit, and - thanks to always() -
+      # even when a build step above failed.
+      - name: Save Electron cache
+        if: always() && steps.electron-cache-restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: ${{ env.electron_cache_dir }}
+          key: ${{ steps.electron-cache-restore.outputs.cache-primary-key }}
+
+      - name: Verify app.asar
+        shell: bash
+        run: |
+          set -eo pipefail
+          found=0
+          while IFS= read -r asar; do
+            tmpdir=$(mktemp -d)
+            echo "::group::asar extract ${asar}"
+            pnpm dlx @electron/asar extract "${asar}" "${tmpdir}"
+            echo "::endgroup::"
+            rm -rf "${tmpdir}"
+            found=$((found + 1))
+          done < <(find freelens/dist -type f -name app.asar)
+          if [[ "${found}" -eq 0 ]]; then
+            echo "No app.asar found under freelens/dist" >&2
+            exit 1
+          fi
 
       - name: Restore dev node_modules
         shell: bash
         run: |
           mv freelens/node_modules freelens/node_modules_prod
           mv freelens/node_modules_dev freelens/node_modules
+
+      # Produce the SBOM and runtime package list only for the real branch build
+      # (push/dispatch on main), never for PRs. The combine-and-scan job below
+      # consumes both as run artifacts.
+      - name: Create SBOM
+        if: github.ref_name == 'main' && github.event_name != 'pull_request'
+        uses: anchore/sbom-action@v0
+        with:
+          format: spdx-json
+          output-file: "freelens/dist/${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-sbom.spdx.json"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          artifact-name: "${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-sbom.spdx.json"
+          upload-release-assets: false
+
+      - name: Create runtime package list
+        if: github.ref_name == 'main' && github.event_name != 'pull_request'
+        shell: bash
+        run: |
+          set -eo pipefail
+          # Assemble a production-only dependency tree (no devDependencies) from
+          # the already-populated pnpm store, then map each runtime package
+          # <name>@<version> to its path in the pnpm store. security-scan uses the
+          # keys as the runtime closure (to drop build-time findings) and the
+          # paths as the code-scanning location for npm findings (grype otherwise
+          # reports them against pnpm-lock.yaml). --legacy is required because the
+          # workspace does not set inject-workspace-packages.
+          deploy_dir="$RUNNER_TEMP/freelens-prod"
+          rm -rf "$deploy_dir"
+          pnpm --filter freelens deploy --prod --legacy --ignore-scripts "$deploy_dir"
+          os="${{ matrix.os }}"
+          arch="${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}"
+          out="freelens/dist/${{ github.event.repository.name }}-${os}-${arch}-prod-packages.json"
+          (
+            cd "$deploy_dir"
+            printf 'key\tvalue\n'
+            for d in node_modules/.pnpm/*/; do
+              d="${d#node_modules/.pnpm/}"
+              d="${d%/}"
+              [ "$d" = "node_modules" ] && continue
+              # dir name is <name>@<version>[_<peer>]; drop the peer suffix and
+              # decode the scoped-package separator (@scope+name -> @scope/name).
+              key="${d%%_*}"
+              key="${key/+//}"
+              printf '%s\t%s\n' "$key" "node_modules/.pnpm/$d/node_modules/${key%@*}"
+            done
+          ) | yq -pt -oj '.[] as $i ireduce ({}; . * {$i.key: $i.value})' > "$out"
+          echo "runtime packages: $(yq -pj -oj 'length' "$out")"
+
+      - name: Upload runtime package list
+        if: github.ref_name == 'main' && github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v7
+        with:
+          name: "${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-prod-packages.json"
+          path: "freelens/dist/${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-prod-packages.json"
 
       - name: Run integration tests (Linux)
         id: integration-tests-linux
@@ -317,3 +442,289 @@ jobs:
         env:
           DEBUG: pw:browser
           EXTENSION_PATH: skip
+
+  security-scan:
+    name: security scan
+
+    # Combines the per-arch SBOMs and runtime package lists produced by the
+    # test-integration matrix (both pulled as run artifacts) and scans only the
+    # runtime dependency closure. Runs for the real branch build (push/dispatch
+    # on main) only, never for PRs.
+    if: github.ref_name == 'main' && github.event_name != 'pull_request'
+
+    needs:
+      - test-integration
+
+    runs-on: ubuntu-24.04-arm
+
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    env:
+      # Renovate keeps this version up to date via the inline datasource hint
+      # below (see .renovaterc.json5 customManagers).
+      GRYPE_VERSION: v0.116.0 # datasource=github-releases depName=anchore/grype
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Download SBOMs
+        uses: actions/download-artifact@v8
+        with:
+          pattern: "*-sbom.spdx.json"
+          path: sboms
+          merge-multiple: true
+
+      - name: Download runtime package lists
+        uses: actions/download-artifact@v8
+        with:
+          pattern: "*-prod-packages.json"
+          path: prod
+          merge-multiple: true
+
+      - name: Install Grype
+        id: grype
+        uses: anchore/scan-action/download-grype@v7
+        with:
+          grype-version: ${{ env.GRYPE_VERSION }}
+          cache-db: true
+
+      - name: Scan SBOMs with Grype
+        run: |
+          set -eo pipefail
+          grype="${{ steps.grype.outputs.cmd }}"
+          mkdir -p sarifs jsons
+          shopt -s nullglob
+          # Merge the per-arch runtime package maps (from test-integration) into
+          # one <name>@<version> -> pnpm-store-path object. Only runtime findings
+          # are reported: npm packages in this map, plus non-npm packages (Go
+          # modules, native binaries) shipped under freelens/dist or
+          # freelens/binaries. This drops build-time dev tools (esbuild,
+          # typescript, ...) and the Go binaries bundled with them, which never
+          # reach users.
+          yq ea -pj -oj '. as $i ireduce ({}; . * $i)' prod/*-prod-packages.json > prod-set.json
+          if [[ "$(yq -pj -oj 'length' prod-set.json)" -eq 0 ]]; then
+            echo "Runtime package set is empty - refusing to scan (every npm finding would be dropped)" >&2
+            exit 1
+          fi
+          found=0
+          for sbom in sboms/*-sbom.spdx.json; do
+            name=$(basename "$sbom" .spdx.json)
+            # Reduce the SBOM to runtime packages before scanning.
+            yq -pj -oj '
+              (load("prod-set.json")) as $set |
+              .packages |= map(
+                ( ((.externalRefs // []) | map(select(.referenceType == "purl")))[0].referenceLocator // "" ) as $purl |
+                (.name + "@" + (.versionInfo // "")) as $key |
+                ((.sourceInfo // "") | (capture("(?<p>/[^,]*)").p // "")) as $path |
+                select(
+                  (($purl | test("^pkg:npm/")) and ($set[$key] != null))
+                  or
+                  (($purl | test("^pkg:npm/") | not) and ($path | test("^/freelens/(dist|binaries)/")))
+                )
+              )
+            ' "$sbom" > "runtime-${name}.spdx.json"
+            all=$(yq -pj -oj '.packages | length' "$sbom")
+            run=$(yq -pj -oj '.packages | length' "runtime-${name}.spdx.json")
+            echo "::group::grype ${sbom} (${all} -> ${run} runtime packages)"
+            "$grype" "sbom:runtime-${name}.spdx.json" -o sarif="sarifs/${name}.sarif" -o json="jsons/${name}.json"
+            echo "::endgroup::"
+            found=$((found + 1))
+          done
+          if [[ "$found" -eq 0 ]]; then
+            echo "No SBOM files found to scan under sboms/" >&2
+            exit 1
+          fi
+          # grype leaves the SARIF artifact location empty for SBOM scans, which
+          # code scanning rejects with "expected artifact location". For non-npm
+          # packages (Go modules, native binaries) the SPDX sourceInfo carries a
+          # real path, so build a <name>@<version> -> path map. Build it from the
+          # filtered SBOMs so a package present in several binaries (e.g. the Go
+          # stdlib in kubectl and in the dev-only tsc binary) maps to a shipped
+          # location, not a dropped build-time one.
+          yq ea -pj -oj -I0 '[.]' runtime-*.spdx.json |
+            yq -pj -oj '
+                [ .[].packages[]
+                  | select(has("sourceInfo"))
+                  | {
+                      "key": (.name + "@" + (.versionInfo // "")),
+                      "value": ((.sourceInfo | capture("(?<p>/[^,]*)").p) // "" | sub("^/"; ""))
+                    }
+                  | select(.value != "")
+                ] | from_entries
+              ' > sbom-paths.json
+          # Code scanning accepts only one SARIF run per category, and the
+          # per-architecture SBOMs differ (bundled kubectl/helm/proxy CLIs and
+          # their Go modules, native npm build variants), so scan them all and
+          # merge the runs into one: slurp the SARIFs into an array, union the
+          # rules by id and concatenate + de-duplicate the results (grype gives
+          # SBOM findings an empty location, so identical cross-arch findings
+          # collapse cleanly). Then set each result's artifact location from the
+          # finding's <name>@<version>: the pnpm-store path for npm packages, the
+          # sourceInfo path for non-npm ones, and a synthetic
+          # "sbom/<package>@<version>" as a last resort. Done after the dedup so
+          # empty locations collapse first.
+          yq ea -pj -oj -I0 '[.]' sarifs/*.sarif |
+            yq -pj -oj '
+                (load("prod-set.json")) as $prod |
+                (load("sbom-paths.json")) as $paths |
+                . as $x |
+                {
+                  "$schema": $x[0]["$schema"],
+                  "version": $x[0].version,
+                  "runs": [
+                    {
+                      "tool": {
+                        "driver": (
+                          $x[0].runs[0].tool.driver |
+                          .rules = ([$x[].runs[0].tool.driver.rules[]] | unique_by(.id))
+                        )
+                      },
+                      "results": (
+                        [$x[].runs[0].results[]] |
+                        unique |
+                        map(
+                          ((.message.text | capture("package: (?<n>.+?), version (?<v>.*?) was found at:")) // {"n": "unknown", "v": "unknown"}) as $p |
+                          ($p.n + "@" + $p.v) as $key |
+                          .locations[0].physicalLocation.artifactLocation.uri = ($prod[$key] // $paths[$key] // ("sbom/" + $key))
+                        )
+                      )
+                    }
+                  ]
+                }
+              ' > grype.sarif
+          # Same merge for the JSON report grype produced alongside the SARIF:
+          # dedupe matches by vulnerability + package + version and patch each
+          # match's artifact location the same way (grype also leaves this empty
+          # for SBOM scans). post-scan-report reads this instead of the SARIF
+          # because the JSON carries fields SARIF does not: component type,
+          # installed/fixed-in versions and the risk score.
+          yq ea -pj -oj -I0 '[.]' jsons/*.json |
+            yq -pj -oj '
+                (load("prod-set.json")) as $prod |
+                (load("sbom-paths.json")) as $paths |
+                . as $x |
+                {
+                  "matches": (
+                    [$x[].matches[]]
+                    | unique_by(.vulnerability.id + "@" + .artifact.name + "@" + .artifact.version)
+                    | map(
+                        (.artifact.name + "@" + .artifact.version) as $key
+                        | .artifact.locations = [{"path": ($prod[$key] // $paths[$key] // ("sbom/" + $key))}]
+                      )
+                  )
+                }
+              ' > grype.json
+
+      - name: Upload Grype SARIF to code scanning
+        uses: github/codeql-action/upload-sarif@v4
+        with:
+          sarif_file: grype.sarif
+          category: grype
+
+      - name: Upload merged vulnerability report
+        uses: actions/upload-artifact@v7
+        with:
+          name: "${{ github.event.repository.name }}-grype.json"
+          path: grype.json
+
+  post-scan-report:
+    name: post scan report to discussion
+
+    # Turns the merged Grype JSON report from security-scan into a markdown
+    # table and replaces the tracking discussion's body with it, so the
+    # discussion always reflects the latest main-branch scan. Runs for the
+    # real branch build (push/dispatch on main) only, never for PRs.
+    if: github.ref_name == 'main' && github.event_name != 'pull_request'
+
+    needs:
+      - security-scan
+
+    runs-on: ubuntu-24.04-arm
+
+    permissions:
+      actions: read
+      discussions: write
+
+    env:
+      DISCUSSION_NUMBER: 2243
+
+    steps:
+      - name: Download merged vulnerability report
+        uses: actions/download-artifact@v8
+        with:
+          name: "${{ github.event.repository.name }}-grype.json"
+
+      - name: Build vulnerability table
+        run: |
+          set -eo pipefail
+          # Flatten each match into a table row. severity/risk/type/installed
+          # version/fixed-in version come straight from grype's JSON fields
+          # (mirroring its own default table columns); the advisory link uses
+          # vulnerability.dataSource; the location is the path security-scan
+          # already resolved (pnpm-store path for npm, shipped binary path
+          # otherwise). negrisk is a sort-only helper: yq has no unary minus, so
+          # descending-by-risk needs the value pre-negated.
+          yq -pj -oj '
+            ({"Critical":0,"High":1,"Medium":2,"Low":3,"Negligible":4,"Unknown":5}) as $rank
+            | (.matches // [])
+            | map(
+                {
+                  "severity": .vulnerability.severity,
+                  "risk": (.vulnerability.risk // 0),
+                  "package": .artifact.name,
+                  "type": .artifact.type,
+                  "installed": .artifact.version,
+                  "fixed": ((.vulnerability.fix.versions // []) | join(", ")),
+                  "advisory": ("[" + .vulnerability.id + "](" + (.vulnerability.dataSource // "") + ")"),
+                  "location": (.artifact.locations[0].path // ""),
+                  "rank": ($rank[.vulnerability.severity] // 9),
+                  "negrisk": (0 - (.vulnerability.risk // 0))
+                }
+              )
+            | sort_by(.rank, .negrisk, .package)
+            | map(del(.rank) | del(.negrisk))
+          ' grype.json > rows.json
+          count=$(yq -pj -oj 'length' rows.json)
+          {
+            echo "Grype runtime vulnerability scan for [\`${GITHUB_SHA:0:12}\`]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/commit/$GITHUB_SHA), updated $(date -u +'%Y-%m-%d %H:%M UTC') by [this run]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)."
+            echo
+            if [[ "$count" -eq 0 ]]; then
+              echo "No runtime vulnerabilities found."
+            else
+              echo "| Severity | Risk | Package | Type | Installed | Fixed In | Advisory | Location |"
+              echo "| --- | --- | --- | --- | --- | --- | --- | --- |"
+              # LC_ALL=C: printf "%.1f" must use a period regardless of the
+              # runner's locale, or it silently truncates "6.6" to "6" (parsed
+              # up to the first non-digit) and re-renders it as "6,0".
+              yq -pj -ot rows.json | tail -n +2 |
+                LC_ALL=C awk -F'\t' '{printf "| %s | %.1f | %s | %s | %s | %s | %s | %s |\n", $1, $2, $3, $4, $5, $6, $7, $8}'
+            fi
+          } > body.md
+          echo "runtime vulnerabilities: $count"
+
+      - name: Update discussion
+        run: |
+          set -eo pipefail
+          discussion_id=$(gh api graphql -f query='
+            query($owner:String!,$repo:String!,$num:Int!){
+              repository(owner:$owner,name:$repo){
+                discussion(number:$num){ id }
+              }
+            }' -f owner="${{ github.repository_owner }}" -f repo="${{ github.event.repository.name }}" -F num="$DISCUSSION_NUMBER" \
+            --jq '.data.repository.discussion.id')
+          if [[ -z "$discussion_id" || "$discussion_id" == "null" ]]; then
+            echo "Discussion #$DISCUSSION_NUMBER not found" >&2
+            exit 1
+          fi
+          gh api graphql -f query='
+            mutation($id:ID!,$body:String!){
+              updateDiscussion(input:{discussionId:$id, body:$body}){
+                discussion{ id }
+              }
+            }' -f id="$discussion_id" -F body=@body.md
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

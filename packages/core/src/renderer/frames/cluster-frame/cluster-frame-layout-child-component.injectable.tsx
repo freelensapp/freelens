@@ -5,12 +5,12 @@
  */
 
 import { clusterFrameChildComponentInjectionToken } from "@freelensapp/react-application";
+import { Redirect } from "@freelensapp/routing";
 import { getInjectable } from "@ogre-tools/injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { computed } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import { Redirect } from "react-router";
 import { Dock } from "../../components/dock";
 import { MainLayout } from "../../components/layout/main-layout";
 import { Sidebar } from "../../components/layout/sidebar";

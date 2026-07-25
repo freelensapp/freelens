@@ -6,12 +6,18 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import reactRootInjectable from "./render-application/react-root.injectable";
 import renderInjectable from "./render-application/render.injectable";
 import { renderApplicationWhenApplicationIsReadyInjectable } from "./render-application/render-application-when-application-is-ready.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
+  try {
+    di.register(reactRootInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
   try {
     di.register(renderApplicationWhenApplicationIsReadyInjectable);
   } catch (e) {

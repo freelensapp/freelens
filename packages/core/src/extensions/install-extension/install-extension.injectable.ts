@@ -6,10 +6,10 @@
 
 import { prefixedLoggerInjectable } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import AwaitLock from "await-lock";
 import pathExistsInjectable from "../../common/fs/path-exists.injectable";
 import statInjectable from "../../common/fs/stat.injectable";
 import writeJsonSyncInjectable from "../../common/fs/write-json-sync.injectable";
+import AwaitLock from "../../common/utils/await-lock";
 import forkPnpmInjectable from "./fork-pnpm.injectable";
 
 export type InstallExtension = (params: { name: string; packageJsonPath: string }) => Promise<void>;

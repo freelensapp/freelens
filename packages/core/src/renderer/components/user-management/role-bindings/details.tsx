@@ -8,8 +8,7 @@ import "./details.scss";
 
 import { ObservableHashSet, prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { reaction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import { AddRemoveButtons } from "../../add-remove-buttons";
 import openConfirmDialogInjectable from "../../confirm-dialog/open.injectable";
@@ -40,15 +39,13 @@ interface Dependencies {
 class NonInjectedRoleBindingDetails extends React.Component<RoleBindingDetailsProps & Dependencies> {
   private readonly selectedSubjects = new ObservableHashSet([], hashSubject);
 
-  async componentDidMount() {
-    disposeOnUnmount(this, [
-      reaction(
-        () => this.props.object,
-        () => {
-          this.selectedSubjects.clear();
-        },
-      ),
-    ]);
+  componentDidUpdate(prevProps: RoleBindingDetailsProps & Dependencies) {
+    // Clear the selection when the shown object changes. Previously a reaction on
+    // this.props.object did this; mobx-react 9 no longer makes this.props
+    // observable, so react to the prop change in the lifecycle instead.
+    if (prevProps.object !== this.props.object) {
+      this.selectedSubjects.clear();
+    }
   }
 
   removeSelectedSubjects = () => {

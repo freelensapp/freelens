@@ -9,7 +9,7 @@ import { Spinner } from "@freelensapp/spinner";
 import { bytesToUnits, cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { getMetricLastPoints } from "../../../common/k8s-api/endpoints/metrics.api";
 import activeThemeInjectable from "../../themes/active.injectable";
 import { PieChart } from "../chart";
@@ -22,10 +22,10 @@ import { createMetricsTimeRangeKey } from "./overview/time-range-key";
 
 import type { Node } from "@freelensapp/kube-object";
 
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import type { IComputedValue } from "mobx";
 
 import type { ClusterMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
+import type { IAsyncComputed } from "../../../common/utils/async-computed";
 import type { LensTheme } from "../../themes/lens-theme";
 import type { PieChartData } from "../chart";
 import type { SelectedMetricsTimeRange } from "./overview/selected-metrics-time-range.injectable";

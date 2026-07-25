@@ -856,7 +856,7 @@ describe("kubeconfig-sync.source tests", () => {
 const getFakeWatchInstance = (): Watcher<true> => {
   return Object.assign(new EventEmitter(), {
     close: vi.fn().mockImplementation(async () => {}),
-  });
+  }) as unknown as Watcher<true>;
 };
 
 const getFakeReadStream = (path: string): ReadStream => {
