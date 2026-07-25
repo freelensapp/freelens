@@ -81,9 +81,9 @@ jobs:
 
       - name: Fail if disallowed licenses found
         run: |-
-          if [ $(yq 'keys|length' disallowed_licenses.yaml) -gt 0 ]; then
+          if [ $(yq -py -oy 'keys|length' disallowed_licenses.yaml) -gt 0 ]; then
             echo "Disallowed licenses found:"
-            yq -C disallowed_licenses.yaml
+            yq -py -oy -C disallowed_licenses.yaml
             exit 1
           else
             echo "No disallowed licenses found."

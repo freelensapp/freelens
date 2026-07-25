@@ -23,8 +23,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
+      # yq comes from mise so that its version has a single source (mise.toml)
+      # and the download is verified against mise.lock.
+      - name: Set up mise
+        uses: jdx/mise-action@v4
+        with:
+          version: 2026.7.13 # datasource=github-releases depName=jdx/mise
+          install_args: yq
+
       - name: Check if package version matches
-        run: test "${GITHUB_REF_NAME}" = "v$(jq -r .version freelens/package.json)"
+        run: test "${GITHUB_REF_NAME}" = "v$(yq -pj -oy -r .version freelens/package.json)"
 
       - name: Create draft release
         run: |
@@ -134,11 +142,11 @@ jobs:
 
       - name: Get Electron version
         shell: bash
-        run: echo "electron_version=$(yq -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a $GITHUB_ENV
+        run: echo "electron_version=$(yq -py -oy -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a $GITHUB_ENV
 
       - name: Get Electron Builder version
         shell: bash
-        run: echo "electron_builder_version=$(yq -r .importers.freelens.devDependencies.electron-builder.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a $GITHUB_ENV
+        run: echo "electron_builder_version=$(yq -py -oy -r .importers.freelens.devDependencies.electron-builder.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a $GITHUB_ENV
 
       # electron-builder's Electron zip downloader doesn't accept a cache
       # directory override and always writes into the OS-default Electron cache

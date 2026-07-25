@@ -35,10 +35,18 @@ jobs:
           fetch-depth: 0
           ref: main
 
+      # yq comes from mise so that its version has a single source (mise.toml)
+      # and the download is verified against mise.lock.
+      - name: Set up mise
+        uses: jdx/mise-action@v4
+        with:
+          version: 2026.7.13 # datasource=github-releases depName=jdx/mise
+          install_args: yq
+
       - name: Get version from package.json
         id: package-json
         run: |
-          echo "version=$(jq -r .version freelens/package.json)" >> $GITHUB_OUTPUT
+          echo "version=$(yq -pj -oy -r .version freelens/package.json)" >> $GITHUB_OUTPUT
 
       - name: Check if version is release
         id: check-version

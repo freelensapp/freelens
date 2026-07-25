@@ -72,7 +72,7 @@ jobs:
 
       - name: Bundle the latest kubectl version
         run: |
-          cat packages/kubectl-versions/build/versions.json | yq -pj '.[-1][-1]' > .github/version.log
+          cat packages/kubectl-versions/build/versions.json | yq -pj -oy '.[-1][-1]' > .github/version.log
           version=$(cat .github/version.log)
           yq -pj -oj -i '.config.bundledKubectlVersion="'"$version"'"' freelens/package.json
           yq -pj -oj -i '.config.bundledKubectlVersion="'"$version"'"' packages/core/package.json

@@ -109,7 +109,7 @@ jobs:
 
       - name: Get Electron version
         shell: bash
-        run: echo "electron_version=$(yq -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a $GITHUB_ENV
+        run: echo "electron_version=$(yq -py -oy -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a $GITHUB_ENV
 
       # electron-builder's Electron zip downloader doesn't accept a cache
       # directory override (no ELECTRON_CACHE / electron_config_cache is read
