@@ -52,13 +52,6 @@
     "test:unit": "TZ=UTC vitest run -c ../../vitest.config.ts --project @freelensapp/core",
     "test:watch": "TZ=UTC vitest -c ../../vitest.config.ts --project @freelensapp/core"
   },
-  "config": {
-    "bundledHelmVersion": "4.2.3",
-    "bundledKubectlVersion": "1.36.3",
-    "contentSecurityPolicy": "script-src 'unsafe-eval' 'self'; frame-src https://*.renderer.freelens.app:*/; img-src * data:",
-    "k8sProxyVersion": "1.8.3",
-    "welcomeRoute": "/welcome"
-  },
   "dependencies": {
     "@dnd-kit/core": "catalog:",
     "@dnd-kit/sortable": "catalog:",
