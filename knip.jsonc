@@ -19,7 +19,10 @@
 
   "workspaces": {
     ".": {
-      "ignoreBinaries": [".*Freelens.exe", "jq", "open", "powershell", "xdg-open"],
+      // Binaries the workflows and scripts call that no dependency provides:
+      // jq comes with the runner image, yq from mise (see mise.toml), the rest
+      // from the operating system.
+      "ignoreBinaries": [".*Freelens.exe", "jq", "open", "powershell", "xdg-open", "yq"],
       "ignoreDependencies": [
         // used to run pnpm in monorepo workspaces from the root
         "pnpm"
