@@ -1,5 +1,10 @@
 name: Binaries Lock Check
 
+# Only on pull requests, never on push: verifying the lock means downloading
+# every bundled binary, so it runs once per change rather than again on merge.
+# These paths are a coarse filter - freelens/package.json changes on every
+# dependency bump - and the first step narrows it down to changes that can
+# actually affect the lock.
 on:
   pull_request:
     branches:
@@ -30,7 +35,47 @@ jobs:
         with:
           fetch-depth: 0
 
+      # Verifying costs a few hundred megabytes of downloads, so establish up
+      # front whether anything that feeds the lock actually moved. This runs
+      # before any tool is installed, so a skipped run is nearly free.
+      - name: Decide whether the binaries need verifying
+        id: decide
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |-
+          set -eo pipefail
+
+          if [ "${{ github.event_name }}" != 'pull_request' ]; then
+            echo "needed=true" | tee -a "$GITHUB_OUTPUT"
+            echo "Manual run, verifying."
+            exit 0
+          fi
+
+          # A bundled version bump shows up as a changed line in the config
+          # block. Every other edit to freelens/package.json - a dependency
+          # bump, a script - leaves the lock valid and must not cost a download.
+          if git diff "$BASE_SHA...HEAD" -- freelens/package.json |
+            grep -qE '^[-+][[:space:]]*"(k8sProxyVersion|bundledKubectlVersion|bundledHelmVersion)"'; then
+            echo "needed=true" | tee -a "$GITHUB_OUTPUT"
+            echo "A bundled version changed, verifying."
+            exit 0
+          fi
+
+          # The lock itself, or the code that writes it.
+          if [ -n "$(git diff --name-only "$BASE_SHA...HEAD" -- \
+            freelens/binaries.lock.json \
+            packages/ensure-binaries \
+            .github/workflows/binaries-lock-check.yaml)" ]; then
+            echo "needed=true" | tee -a "$GITHUB_OUTPUT"
+            echo "The lock or its generator changed, verifying."
+            exit 0
+          fi
+
+          echo "needed=false" | tee -a "$GITHUB_OUTPUT"
+          echo "No bundled version, lock or generator change, nothing to verify."
+
       - name: Setup node
+        if: steps.decide.outputs.needed == 'true'
         uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
@@ -41,15 +86,18 @@ jobs:
       # cosign is what checks kubectl's keyless signature; the other two tools
       # are verified in pure JavaScript.
       - name: Set up mise
+        if: steps.decide.outputs.needed == 'true'
         uses: jdx/mise-action@v4
         with:
           version: 2026.7.13 # datasource=github-releases depName=jdx/mise
           install_args: yq cosign
 
       - name: Setup pnpm
+        if: steps.decide.outputs.needed == 'true'
         run: corepack enable
 
       - name: Install pnpm dependencies
+        if: steps.decide.outputs.needed == 'true'
         run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
 
       # Regenerating downloads all eighteen artifacts, checks each against its
@@ -58,6 +106,7 @@ jobs:
       # and this diff stays empty. A non-empty diff means either the lock was
       # not regenerated after a version bump, or a published artifact changed.
       - name: Regenerate the lock
+        if: steps.decide.outputs.needed == 'true'
         env:
           # Build provenance is read from the GitHub API, which allows only 60
           # unauthenticated calls per hour per IP - shared runners exhaust that.
@@ -65,6 +114,7 @@ jobs:
         run: pnpm --color=always update-binaries-lock
 
       - name: Check the lock is up to date
+        if: steps.decide.outputs.needed == 'true'
         run: |-
           if git diff --exit-code --stat freelens/binaries.lock.json; then
             echo "freelens/binaries.lock.json is up to date."
@@ -82,6 +132,7 @@ jobs:
       # bump or a newly added platform is not flagged, but a digest that moved
       # while its version stood still is.
       - name: Check for replaced artifacts
+        if: steps.decide.outputs.needed == 'true'
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |-
