@@ -5,9 +5,9 @@ name: Release Scan
 # Integration tests workflow, which scans what the main branch currently builds
 # - same report, different subject.
 #
-# This never builds anything and never looks at the working tree: the release
-# assets are the manifest of what users actually downloaded, so they are the
-# only input.
+# This never builds anything: the release assets are the manifest of what users
+# actually downloaded, so they are the only input. The working tree is checked
+# out for mise.toml and mise.lock and nothing else.
 
 on:
   schedule:
@@ -51,6 +51,19 @@ jobs:
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
+      # Only needed for mise.toml and mise.lock: every step below works on
+      # release assets, not on the working tree.
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # yq comes from mise so that its version has a single source (mise.toml)
+      # and the download is verified against mise.lock.
+      - name: Set up mise
+        uses: jdx/mise-action@v4
+        with:
+          version: 2026.7.13 # datasource=github-releases depName=jdx/mise
+          install_args: yq
+
       - name: Install Grype
         id: grype
         uses: anchore/scan-action/download-grype@v7
@@ -58,8 +71,6 @@ jobs:
           grype-version: ${{ env.GRYPE_VERSION }}
           cache-db: true
 
-      # No checkout: everything below reads release assets, and yq is already on
-      # the runner image.
       - name: Download the assets of the last release
         id: release
         run: |
