@@ -6,6 +6,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { mkdtemp, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import path from "node:path";
 import arg from "arg";
 import {
@@ -16,8 +18,9 @@ import {
   type ToolName,
   toolNames,
 } from "./artifacts.js";
-import { digestRemote, fetchChecksum } from "./download.js";
+import { downloadToFile, fetchChecksum } from "./download.js";
 import { type BinariesLock, readLock, writeLock } from "./lock.js";
+import { verifyArtifact } from "./verify.js";
 
 /**
  * Regenerates the committed lock file pinning every bundled binary.
@@ -75,18 +78,28 @@ async function mapWithConcurrency<T, R>(items: T[], limit: number, task: (item: 
 }
 
 async function pinArtifact(artifact: Artifact): Promise<{ artifact: Artifact; sha256: string }> {
-  const published = await fetchChecksum(artifact.checksumUrl);
-  const actual = await digestRemote(artifact.url);
+  const workDir = await mkdtemp(path.join(tmpdir(), "freelens-binaries-lock-"));
 
-  if (actual !== published) {
-    throw new Error(
-      `${artifact.url} does not match its published checksum: ${artifact.checksumUrl} says ${published}, the download hashes to ${actual}`,
-    );
+  try {
+    const artifactPath = path.join(workDir, path.basename(artifact.url));
+    const published = await fetchChecksum(artifact.checksumUrl);
+    const actual = await downloadToFile(artifact.url, artifactPath);
+
+    if (actual !== published) {
+      throw new Error(
+        `${artifact.url} does not match its published checksum: ${artifact.checksumUrl} says ${published}, the download hashes to ${actual}`,
+      );
+    }
+
+    // Only pin a digest whose provenance we could establish.
+    const verifiedBy = await verifyArtifact(artifact, actual, artifactPath, workDir);
+
+    console.log(`  ${artifact.tool} ${artifactKey(artifact)} ${actual}\n    verified: ${verifiedBy}`);
+
+    return { artifact, sha256: actual };
+  } finally {
+    await rm(workDir, { force: true, recursive: true });
   }
-
-  console.log(`  ${artifact.tool} ${artifactKey(artifact)} ${actual}`);
-
-  return { artifact, sha256: actual };
 }
 
 const versions = await readToolVersions(pathToPackage);

@@ -5,7 +5,8 @@
  */
 
 import { createHash } from "node:crypto";
-import { pipeline as _pipeline, Writable } from "node:stream";
+import { createWriteStream } from "node:fs";
+import { pipeline as _pipeline, Transform } from "node:stream";
 import { promisify } from "node:util";
 import fetch from "node-fetch";
 
@@ -73,11 +74,28 @@ export async function fetchChecksum(url: string): Promise<string> {
   );
 }
 
+/** Fetches a small file, such as a signature or certificate, into memory. */
+export async function fetchBytes(url: string, timeout = 60 * 1000): Promise<Buffer> {
+  const controller = new AbortController();
+
+  setTimeoutFor(controller, timeout);
+
+  const response = await fetch(url, { signal: controller.signal });
+
+  if (!response.ok) {
+    throw new Error(`${url}: ${response.status} ${response.statusText}`);
+  }
+
+  return Buffer.from(await response.arrayBuffer());
+}
+
 /**
- * Streams a URL through a SHA-256 hash without keeping it in memory or on disk.
- * Used by the lock generator, which cares about the digest and nothing else.
+ * Streams a URL to disk and returns its SHA-256.
+ *
+ * The lock generator needs the bytes on disk rather than just a digest, because
+ * the PGP and cosign checks both verify a file.
  */
-export async function digestRemote(url: string): Promise<string> {
+export async function downloadToFile(url: string, destination: string): Promise<string> {
   const controller = new AbortController();
 
   setTimeoutFor(controller, 15 * 60 * 1000);
@@ -93,15 +111,18 @@ export async function digestRemote(url: string): Promise<string> {
   }
 
   const hash = createHash("sha256");
+  const file = createWriteStream(destination);
 
   await pipeline(
     response.body,
-    new Writable({
-      write(chunk, _encoding, callback) {
+    new Transform({
+      transform(chunk, _encoding, callback) {
         hash.update(chunk);
+        this.push(chunk);
         callback();
       },
     }),
+    file,
   );
 
   return hash.digest("hex");
