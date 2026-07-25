@@ -30,7 +30,36 @@
     // it must be the oldest possible version to get binary compatibility with older OSes
     "ubuntu"
   ],
+  // mise.lock pins a checksum and a URL per tool per platform, but a local
+  // `mise install` re-locks only the platform it runs on and silently leaves
+  // the other seven stale. Lock file maintenance runs plain `mise lock`, which
+  // refreshes every tool on every platform already in the file. Defaults are
+  // disabled and weekly, hence the explicit settings; the packageRules below
+  // keep it to mise.lock, since pnpm-lock.yaml is maintained by its own
+  // workflows and does not want a periodic refresh PR.
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": [
+      "at any time"
+    ],
+    "automerge": true
+  },
   "packageRules": [
+    {
+      "matchUpdateTypes": [
+        "lockFileMaintenance"
+      ],
+      "enabled": false
+    },
+    {
+      "matchManagers": [
+        "mise"
+      ],
+      "matchUpdateTypes": [
+        "lockFileMaintenance"
+      ],
+      "enabled": true
+    },
     // delay npm updates until they satisfy pnpm's minimumReleaseAge policy
     // (default 1 day since pnpm v11); only npm packages land in pnpm-lock.yaml,
     // so scope this to the npm datasource and leave other datasources untouched

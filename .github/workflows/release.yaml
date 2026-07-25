@@ -23,8 +23,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
+      # yq comes from mise so that its version has a single source (mise.toml)
+      # and the download is verified against mise.lock.
+      - name: Set up mise
+        uses: jdx/mise-action@v4
+        with:
+          version: 2026.7.13 # datasource=github-releases depName=jdx/mise
+          install_args: yq
+
       - name: Check if package version matches
-        run: test "${GITHUB_REF_NAME}" = "v$(jq -r .version freelens/package.json)"
+        run: test "${GITHUB_REF_NAME}" = "v$(yq -pj -oy -r .version freelens/package.json)"
 
       - name: Create draft release
         run: |
@@ -97,34 +105,15 @@ jobs:
         if: runner.os == 'macOS'
         run: echo "/usr/local/opt/coreutils/libexec/gnubin" >> $GITHUB_PATH
 
-      - name: Install dependencies (Windows)
-        if: runner.os == 'Windows'
-        shell: bash
-        env:
-          # Renovate keeps this version up to date via the inline datasource
-          # hint below (see .renovaterc.json5 customManagers).
-          YQ_VERSION: v4.53.3 # datasource=github-releases depName=mikefarah/yq
-        run: |
-          set -eo pipefail
-          # winget/choco is not available on every Windows runner image (in
-          # particular the windows-11-arm image used for the arm64 build), so
-          # download the yq binary directly from the upstream GitHub release.
-          # Pick the asset that matches the runner architecture. Expose the
-          # install directory to later steps via GITHUB_PATH (Windows form,
-          # which Git Bash re-converts to POSIX on startup) and prepend the
-          # POSIX form to PATH here so the verification below can find yq.
-          case "${{ matrix.arch }}" in
-            arm64) yq_arch=arm64 ;;
-            *) yq_arch=amd64 ;;
-          esac
-          yq_version="$YQ_VERSION"
-          bin_dir="$HOME/bin"
-          mkdir -p "$bin_dir"
-          curl -fsSL -o "$bin_dir/yq.exe" \
-            "https://github.com/mikefarah/yq/releases/download/${yq_version}/yq_windows_${yq_arch}.exe"
-          cygpath --windows "$bin_dir" >> "$GITHUB_PATH"
-          PATH="$bin_dir:$PATH"
-          yq --version
+      # yq comes from mise so that its version has a single source (mise.toml)
+      # and the download is verified against mise.lock. It also settles the
+      # Windows runners, where winget/choco is not on every image (in particular
+      # the windows-11-arm one) and yq used to be downloaded by hand.
+      - name: Set up mise
+        uses: jdx/mise-action@v4
+        with:
+          version: 2026.7.13 # datasource=github-releases depName=jdx/mise
+          install_args: yq
 
       - name: Setup node
         uses: actions/setup-node@v7
@@ -153,11 +142,11 @@ jobs:
 
       - name: Get Electron version
         shell: bash
-        run: echo "electron_version=$(yq -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a $GITHUB_ENV
+        run: echo "electron_version=$(yq -py -oy -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a $GITHUB_ENV
 
       - name: Get Electron Builder version
         shell: bash
-        run: echo "electron_builder_version=$(yq -r .importers.freelens.devDependencies.electron-builder.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a $GITHUB_ENV
+        run: echo "electron_builder_version=$(yq -py -oy -r .importers.freelens.devDependencies.electron-builder.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a $GITHUB_ENV
 
       # electron-builder's Electron zip downloader doesn't accept a cache
       # directory override and always writes into the OS-default Electron cache
@@ -605,13 +594,15 @@ jobs:
           set -eo pipefail
           # Assemble a production-only dependency tree (no devDependencies) from
           # the already-populated pnpm store, then map each runtime package
-          # <name>@<version> to its path in the pnpm store. security-scan uses the
-          # keys as the runtime closure (to drop build-time findings) and the
-          # paths as the code-scanning location for npm findings (grype otherwise
-          # reports them against pnpm-lock.yaml). --legacy is required because the
-          # workspace does not set inject-workspace-packages. The lowercase
-          # repo-name prefix keeps this file out of the Freelens*.* release-upload
-          # glob; it travels to security-scan as a run artifact.
+          # <name>@<version> to its path in the pnpm store. publish-runtime-package-list
+          # merges the per-platform lists into the one published with the release:
+          # the SBOM above covers the whole build workspace, so release-scan.yaml
+          # needs the keys as the runtime closure (to drop build-time findings)
+          # and the paths as the reported location for npm findings (grype
+          # otherwise reports them against pnpm-lock.yaml). --legacy is required
+          # because the workspace does not set inject-workspace-packages. The
+          # lowercase repo-name prefix keeps this file out of the Freelens*.*
+          # release-upload glob; it travels as a run artifact instead.
           deploy_dir="$RUNNER_TEMP/freelens-prod"
           rm -rf "$deploy_dir"
           pnpm --filter freelens deploy --prod --legacy --ignore-scripts "$deploy_dir"
@@ -681,6 +672,16 @@ jobs:
             echo "$(ls -l "$f")" "|" "$(file -b "$f")"
           done
 
+      # Every artifact this leg publishes has a .sha256 next to it by now, in
+      # sha256sum format and named exactly as the release names it - which is
+      # the subject list attest-artifacts needs. It travels as a run artifact
+      # because the release is still a draft here.
+      - name: Upload checksums
+        uses: actions/upload-artifact@v7
+        with:
+          name: "${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-checksums"
+          path: freelens/dist/Freelens-*.sha256
+
       - name: Upload files
         shell: bash
         run: |
@@ -688,13 +689,21 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  security-scan:
-    name: security scan
+  publish-runtime-package-list:
+    name: publish runtime package list
 
-    # Runs after build-app has produced the per-arch SBOMs and runtime package
-    # lists (both pulled here as run artifacts from the same run, which avoids
-    # needing push access to read the still-draft release). publish-github-release
-    # depends on this job, so the draft is scanned before it is published.
+    # The runtime package list says which npm packages of the build actually
+    # reach a user's machine. release-scan.yaml needs it to reduce the published
+    # SBOMs - which cover the whole build workspace, devDependencies included -
+    # to what ships.
+    #
+    # One asset, not one per platform: every build resolves the same npm closure
+    # from the same lockfile (on v1.10.3 all six SBOMs carry a byte-identical set
+    # of npm packages), so per-platform copies would be six identical files on
+    # the release page. It is still merged from all six rather than taken from
+    # one of them, so a dependency that some day resolves only on one platform
+    # stays in the set instead of silently dropping out of the scan everywhere
+    # else.
     needs:
       - make-draft-release
       - build-app
@@ -703,24 +712,21 @@ jobs:
 
     permissions:
       actions: read
-      contents: read
-      security-events: write
-
-    env:
-      # Renovate keeps this version up to date via the inline datasource hint
-      # below (see .renovaterc.json5 customManagers).
-      GRYPE_VERSION: v0.116.0 # datasource=github-releases depName=anchore/grype
+      contents: write
 
     steps:
+      # Only needed for mise.toml and mise.lock: this job merges the lists with
+      # yq and nothing else here reads the working tree.
       - name: Checkout
         uses: actions/checkout@v7
 
-      - name: Download SBOMs
-        uses: actions/download-artifact@v8
+      # yq comes from mise so that its version has a single source (mise.toml)
+      # and the download is verified against mise.lock.
+      - name: Set up mise
+        uses: jdx/mise-action@v4
         with:
-          pattern: "*-sbom.spdx.json"
-          path: sboms
-          merge-multiple: true
+          version: 2026.7.13 # datasource=github-releases depName=jdx/mise
+          install_args: yq
 
       - name: Download runtime package lists
         uses: actions/download-artifact@v8
@@ -729,130 +735,115 @@ jobs:
           path: prod
           merge-multiple: true
 
-      - name: Install Grype
-        id: grype
-        uses: anchore/scan-action/download-grype@v7
-        with:
-          grype-version: ${{ env.GRYPE_VERSION }}
-          cache-db: true
-
-      - name: Scan SBOMs with Grype
+      - name: Merge the runtime package lists
+        shell: bash
         run: |
           set -eo pipefail
-          grype="${{ steps.grype.outputs.cmd }}"
-          mkdir -p sarifs
           shopt -s nullglob
-          # Merge the per-arch runtime package maps (from build-app) into one
-          # <name>@<version> -> pnpm-store-path object. Only runtime findings are
-          # reported: npm packages in this map, plus non-npm packages (Go modules,
-          # native binaries) shipped under freelens/dist or freelens/binaries.
-          # This drops build-time dev tools (esbuild, typescript, ...) and the Go
-          # binaries bundled with them, which never reach users.
-          yq ea -pj -oj '. as $i ireduce ({}; . * $i)' prod/*-prod-packages.json > prod-set.json
-          if [[ "$(yq -pj -oj 'length' prod-set.json)" -eq 0 ]]; then
-            echo "Runtime package set is empty - refusing to scan (every npm finding would be dropped)" >&2
+          out="Freelens-${GITHUB_REF_NAME#v}-prod-packages.json"
+          # Union of the per-platform <name>@<version> -> pnpm-store-path maps,
+          # the same reduce release-scan.yaml applies to what it downloads.
+          yq ea -pj -oj '. as $i ireduce ({}; . * $i)' prod/*-prod-packages.json > "$out"
+          count=$(yq -pj -oj 'length' "$out")
+          if [[ "$count" -eq 0 ]]; then
+            echo "Merged runtime package list is empty - refusing to publish it" >&2
             exit 1
           fi
-          found=0
-          for sbom in sboms/*-sbom.spdx.json; do
-            name=$(basename "$sbom" .spdx.json)
-            # Reduce the SBOM to runtime packages before scanning.
-            yq -pj -oj '
-              (load("prod-set.json")) as $set |
-              .packages |= map(
-                ( ((.externalRefs // []) | map(select(.referenceType == "purl")))[0].referenceLocator // "" ) as $purl |
-                (.name + "@" + (.versionInfo // "")) as $key |
-                ((.sourceInfo // "") | (capture("(?<p>/[^,]*)").p // "")) as $path |
-                select(
-                  (($purl | test("^pkg:npm/")) and ($set[$key] != null))
-                  or
-                  (($purl | test("^pkg:npm/") | not) and ($path | test("^/freelens/(dist|binaries)/")))
-                )
-              )
-            ' "$sbom" > "runtime-${name}.spdx.json"
-            all=$(yq -pj -oj '.packages | length' "$sbom")
-            run=$(yq -pj -oj '.packages | length' "runtime-${name}.spdx.json")
-            echo "::group::grype ${sbom} (${all} -> ${run} runtime packages)"
-            "$grype" "sbom:runtime-${name}.spdx.json" -o sarif > "sarifs/${name}.sarif"
-            echo "::endgroup::"
-            found=$((found + 1))
-          done
-          if [[ "$found" -eq 0 ]]; then
-            echo "No SBOM files found to scan under sboms/" >&2
-            exit 1
-          fi
-          # grype leaves the SARIF artifact location empty for SBOM scans, which
-          # code scanning rejects with "expected artifact location". For non-npm
-          # packages (Go modules, native binaries) the SPDX sourceInfo carries a
-          # real path, so build a <name>@<version> -> path map. Build it from the
-          # filtered SBOMs so a package present in several binaries (e.g. the Go
-          # stdlib in kubectl and in the dev-only tsc binary) maps to a shipped
-          # location, not a dropped build-time one.
-          yq ea -pj -oj -I0 '[.]' runtime-*.spdx.json |
-            yq -pj -oj '
-                [ .[].packages[]
-                  | select(has("sourceInfo"))
-                  | {
-                      "key": (.name + "@" + (.versionInfo // "")),
-                      "value": ((.sourceInfo | capture("(?<p>/[^,]*)").p) // "" | sub("^/"; ""))
-                    }
-                  | select(.value != "")
-                ] | from_entries
-              ' > sbom-paths.json
-          # Code scanning accepts only one SARIF run per category, and the
-          # per-architecture SBOMs differ (bundled kubectl/helm/proxy CLIs and
-          # their Go modules, native npm build variants), so scan them all and
-          # merge the runs into one: slurp the SARIFs into an array, union the
-          # rules by id and concatenate + de-duplicate the results (grype gives
-          # SBOM findings an empty location, so identical cross-arch findings
-          # collapse cleanly). Then set each result's artifact location from the
-          # finding's <name>@<version>: the pnpm-store path for npm packages, the
-          # sourceInfo path for non-npm ones, and a synthetic
-          # "sbom/<package>@<version>" as a last resort. Done after the dedup so
-          # empty locations collapse first.
-          yq ea -pj -oj -I0 '[.]' sarifs/*.sarif |
-            yq -pj -oj '
-                (load("prod-set.json")) as $prod |
-                (load("sbom-paths.json")) as $paths |
-                . as $x |
-                {
-                  "$schema": $x[0]["$schema"],
-                  "version": $x[0].version,
-                  "runs": [
-                    {
-                      "tool": {
-                        "driver": (
-                          $x[0].runs[0].tool.driver |
-                          .rules = ([$x[].runs[0].tool.driver.rules[]] | unique_by(.id))
-                        )
-                      },
-                      "results": (
-                        [$x[].runs[0].results[]] |
-                        unique |
-                        map(
-                          ((.message.text | capture("package: (?<n>.+?), version (?<v>.*?) was found at:")) // {"n": "unknown", "v": "unknown"}) as $p |
-                          ($p.n + "@" + $p.v) as $key |
-                          .locations[0].physicalLocation.artifactLocation.uri = ($prod[$key] // $paths[$key] // ("sbom/" + $key))
-                        )
-                      )
-                    }
-                  ]
-                }
-              ' > grype.sarif
+          sha256sum "$out" | tee "$out.sha256"
+          echo "runtime packages: $count"
 
-      - name: Upload Grype SARIF to code scanning
-        uses: github/codeql-action/upload-sarif@v4
+      - name: Upload files
+        shell: bash
+        run: |
+          gh release upload ${GITHUB_REF_NAME#sign/} Freelens-*-prod-packages.json*
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Same as in build-app: the checksum of what this job publishes goes to
+      # attest-artifacts as a run artifact, so the list it attests covers every
+      # release asset and not just the ones the matrix produced.
+      - name: Upload checksums
+        uses: actions/upload-artifact@v7
         with:
-          sarif_file: grype.sarif
-          category: grype
+          name: "${{ github.event.repository.name }}-prod-packages-checksums"
+          path: Freelens-*-prod-packages.json.sha256
+
+  attest-artifacts:
+    name: attest build provenance
+
+    # Signs a statement that these exact bytes were built by this workflow, from
+    # this commit, so `gh attestation verify <file> --repo <owner>/<repo>` can
+    # confirm a downloaded installer came from here rather than from someone
+    # who merely renamed a file. publish-github-release waits on it, so the
+    # release is never public without its attestation.
+    #
+    # The subjects come from the .sha256 files the jobs above already produce -
+    # collected as run artifacts, the same way the runtime package lists are -
+    # rather than from the draft release: reading a draft needs a token with
+    # more reach, and the digests are identical either way.
+    needs:
+      - make-draft-release
+      - build-app
+      - publish-runtime-package-list
+
+    runs-on: ubuntu-24.04-arm
+
+    permissions:
+      actions: read
+      attestations: write
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Download checksums
+        uses: actions/download-artifact@v8
+        with:
+          pattern: "*-checksums"
+          path: checksums
+          merge-multiple: true
+
+      - name: Collect attestation subjects
+        run: |
+          set -eo pipefail
+          shopt -s nullglob
+          # Each .sha256 is one sha256sum line naming the asset exactly as the
+          # release names it, which is what `gh attestation verify` matches on.
+          # sort -u only orders them; a duplicate would mean two jobs published
+          # the same asset name.
+          #
+          # The Windows lines read "<digest> *<name>" rather than "<digest>
+          # <name>" because sha256sum there defaults to binary mode. Left as
+          # is on purpose: the action strips a leading '*' or ' ' from the name
+          # itself, and rewriting the digest lines here would only add a way to
+          # get them wrong.
+          cat checksums/*.sha256 | sort -u > attestation-checksums.txt
+          cat attestation-checksums.txt
+          count=$(wc -l < attestation-checksums.txt)
+          if [[ "$count" -eq 0 ]]; then
+            echo "No checksums collected - refusing to attest nothing" >&2
+            exit 1
+          fi
+          echo "subjects: $count"
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@v4
+        with:
+          subject-checksums: attestation-checksums.txt
 
   publish-github-release:
     name: publish GitHub release
 
+    # The vulnerability scan is deliberately not a step on the way here: it runs
+    # as the separate Release Scan workflow, triggered by this workflow
+    # completing, and reads the SBOMs and runtime package list from the
+    # published release. Keeping it out of this run means an advisory feed that
+    # is down or rate-limited cannot fail an otherwise correct release, and the
+    # report can be refreshed nightly against the same release afterwards.
     needs:
       - make-draft-release
       - build-app
-      - security-scan
+      - publish-runtime-package-list
+      - attest-artifacts
 
     runs-on: ubuntu-24.04-arm
 
