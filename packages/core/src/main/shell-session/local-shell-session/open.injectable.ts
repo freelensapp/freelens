@@ -24,6 +24,7 @@ import { buildVersionInitializable } from "../../../features/vars/build-version/
 import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
 import createKubectlInjectable from "../../kubectl/create-kubectl.injectable";
 import shellSessionProcessesInjectable from "../processes.injectable";
+import { kubectlStatusOptionsFor, terminalStatusReporterFor } from "../send-terminal-status";
 import modifyTerminalShellEnvInjectable from "../shell-env-modifier/modify-terminal-shell-env.injectable";
 import shellSessionEnvsInjectable from "../shell-envs.injectable";
 import spawnPtyInjectable from "../spawn-pty.injectable";
@@ -73,8 +74,18 @@ const openLocalShellSessionInjectable = getInjectable({
     return async (args) => {
       const kubectl = createKubectl(args.cluster.version.get());
       const kubeconfigManager = di.inject(kubeconfigManagerInjectable, args.cluster);
+      // The websocket is already upgraded and writable here, long before the
+      // PTY exists, which is exactly the stretch that used to be silent.
+      const status = terminalStatusReporterFor(args.websocket);
+
+      status.info("Starting cluster proxy ...");
       const proxyKubeconfigPath = await kubeconfigManager.ensurePath();
-      const directoryContainingKubectl = await kubectl.binDir();
+
+      const kubectlStatus = kubectlStatusOptionsFor(kubectl.kubectlVersion, status);
+
+      status.info(`Checking kubectl v${kubectl.kubectlVersion} ...`);
+
+      const directoryContainingKubectl = await kubectl.binDir(kubectlStatus).finally(() => kubectlStatus.done());
 
       const session = new LocalShellSession(
         {

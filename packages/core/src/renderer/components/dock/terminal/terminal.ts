@@ -14,12 +14,14 @@ import { once } from "es-toolkit";
 import { debounce } from "es-toolkit/compat";
 import { reaction } from "mobx";
 import { TerminalChannels } from "../../../../common/terminal/channels";
+import { eraseTerminalLine } from "../../../api/terminal-api";
 import { handleMacNaturalTextEditingKey } from "./terminal-key-mapping";
 
 import type { Logger } from "@freelensapp/logger";
 
 import type { IComputedValue } from "mobx";
 
+import type { TerminalStatusLevel } from "../../../../common/terminal/channels";
 import type { OpenLinkInBrowser } from "../../../../common/utils/open-link-in-browser.injectable";
 import type { TerminalFont } from "../../../../features/terminal/renderer/fonts/token";
 import type { TerminalConfig } from "../../../../features/user-preferences/common/preferences-helpers";
@@ -47,6 +49,12 @@ export class Terminal {
   private readonly fitAddon = new FitAddon();
   private readonly webLinksAddon = new WebLinksAddon((event, link) => this.dependencies.openLinkInBrowser(link));
   private scrollPos = 0;
+  /**
+   * Whether an `error`-level status line was written. Such a line keeps its
+   * place above the prompt, which means the buffer must not be cleared once
+   * the session becomes ready.
+   */
+  private hasStickyStatus = false;
   private readonly disposer = disposer();
   public readonly tabId: TabId;
   protected readonly api: TerminalApi;
@@ -107,13 +115,23 @@ export class Terminal {
 
     // bind events
     const onDataHandler = this.xterm.onData(this.onData);
-    const clearOnce = once(this.onClear);
+    const clearOnce = once(() => {
+      /**
+       * The transient status line is unterminated, so it must be erased before
+       * the prompt is written over it. Passing `onClear` as xterm's write
+       * callback is what orders the erase before the clear despite the
+       * asynchronous write queue. Reported errors are sticky: they suppress
+       * the buffer clear so that they stay visible above the prompt.
+       */
+      this.xterm.write(eraseTerminalLine, this.hasStickyStatus ? undefined : this.onClear);
+    });
 
     this.viewport.addEventListener("scroll", this.onScroll);
     this.elem.addEventListener("contextmenu", this.onContextMenu);
     this.api.once("ready", clearOnce);
     this.api.once("connected", clearOnce);
     this.api.on("data", this.onApiData);
+    this.api.on("status", this.onApiStatus);
     window.addEventListener("resize", this.onResize);
 
     this.disposer.push(
@@ -151,6 +169,14 @@ export class Terminal {
   };
 
   onApiData = (data: string) => {
+    this.xterm.write(data);
+  };
+
+  onApiStatus = (data: string, level: TerminalStatusLevel) => {
+    if (level === "error") {
+      this.hasStickyStatus = true;
+    }
+
     this.xterm.write(data);
   };
 

@@ -8,6 +8,7 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import { WebSocketServer } from "ws";
 import openShellSessionInjectable from "../../shell-session/create-shell-session.injectable";
+import { messageOfError, terminalStatusReporterFor } from "../../shell-session/send-terminal-status";
 import getClusterForRequestInjectable from "../get-cluster-for-request.injectable";
 import shellRequestAuthenticatorInjectable from "./shell-request-authenticator/shell-request-authenticator.injectable";
 
@@ -36,9 +37,14 @@ const shellApiRequestInjectable = getInjectable({
         const ws = new WebSocketServer({ noServer: true });
 
         ws.handleUpgrade(req, socket, head, (websocket) => {
-          openShellSession({ websocket, cluster, tabId, nodeName }).catch((error) =>
-            logger.error(`[SHELL-SESSION]: failed to open a ${nodeName ? "node" : "local"} shell`, error),
-          );
+          openShellSession({ websocket, cluster, tabId, nodeName }).catch((error) => {
+            logger.error(`[SHELL-SESSION]: failed to open a ${nodeName ? "node" : "local"} shell`, error);
+
+            // Otherwise the tab is left showing a status line for a session
+            // that will never start, next to a "Restart session" button with
+            // no stated reason.
+            terminalStatusReporterFor(websocket).error(`Failed to open the shell session: ${messageOfError(error)}`);
+          });
         });
       }
     };

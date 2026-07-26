@@ -4,7 +4,14 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import EventEmitter from "node:events";
+import { computed } from "mobx";
+import { Terminal } from "./terminal";
 import { getMacNaturalTextEditingMapping, handleMacNaturalTextEditingKey } from "./terminal-key-mapping";
+
+import type { Logger } from "@freelensapp/logger";
+
+import type { TerminalApi } from "../../../api/terminal-api";
 
 const keyDown = (init: KeyboardEventInit) => new KeyboardEvent("keydown", init);
 const keyUp = (init: KeyboardEventInit) => new KeyboardEvent("keyup", init);
@@ -97,5 +104,98 @@ describe("handleMacNaturalTextEditingKey", () => {
     expect(handleMacNaturalTextEditingKey(event, sendData)).toBe(true);
     expect(preventDefault).not.toHaveBeenCalled();
     expect(sendData).not.toHaveBeenCalled();
+  });
+});
+
+describe("Terminal status lines", () => {
+  const erase = "\u001b[2K\r";
+  const infoLine = `${erase}\u001b[90mStarting shell ...\u001b[0m`;
+  const errorLine = `${erase}\u001b[31mFailed to download kubectl\u001b[0m\r\n`;
+
+  let api: EventEmitter;
+  let terminal: Terminal;
+  let written: string[];
+  let cleared: number;
+
+  const createTerminal = () => {
+    // xterm queries the device pixel ratio through matchMedia, which jsdom
+    // does not implement.
+    window.matchMedia ??= (() => ({
+      matches: false,
+      addListener: () => {},
+      removeListener: () => {},
+      addEventListener: () => {},
+      removeEventListener: () => {},
+    })) as unknown as typeof window.matchMedia;
+
+    api = Object.assign(new EventEmitter(), {
+      isReady: false,
+      sendTerminalSize: vi.fn(),
+      sendMessage: vi.fn(),
+    });
+
+    const spawningPool = document.createElement("div");
+
+    document.body.appendChild(spawningPool);
+
+    return new Terminal(
+      {
+        spawningPool,
+        terminalConfig: computed(() => ({ fontSize: 12, fontFamily: "monospace" })),
+        terminalCopyOnSelect: computed(() => false),
+        terminalFonts: [],
+        isMac: false,
+        xtermColorTheme: computed(() => ({})),
+        logger: { debug: () => {}, info: () => {}, warn: () => {}, error: () => {} } as unknown as Logger,
+        openLinkInBrowser: vi.fn(),
+      },
+      { tabId: "some-tab-id", api: api as unknown as TerminalApi },
+    );
+  };
+
+  beforeEach(() => {
+    written = [];
+    cleared = 0;
+
+    terminal = createTerminal();
+
+    // The private xterm instance is what every status line is written to.
+    const xterm = (terminal as unknown as { xterm: { write: unknown; clear: unknown } }).xterm;
+
+    xterm.write = (data: string, callback?: () => void) => {
+      written.push(data);
+      callback?.();
+    };
+    xterm.clear = () => {
+      cleared += 1;
+    };
+  });
+
+  afterEach(() => {
+    terminal.destroy();
+  });
+
+  it("erases the transient line and clears the buffer once the session is ready", () => {
+    api.emit("status", infoLine, "info");
+    api.emit("ready");
+
+    expect(written).toEqual([infoLine, erase]);
+    expect(cleared).toBe(1);
+  });
+
+  it("keeps a reported error above the prompt by not clearing the buffer", () => {
+    api.emit("status", errorLine, "error");
+    api.emit("status", infoLine, "info");
+    api.emit("ready");
+
+    expect(written).toEqual([errorLine, infoLine, erase]);
+    expect(cleared).toBe(0);
+  });
+
+  it("clears the buffer only once, however the session becomes ready", () => {
+    api.emit("ready");
+    api.emit("connected");
+
+    expect(cleared).toBe(1);
   });
 });
