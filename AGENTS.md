@@ -49,6 +49,60 @@ When a tool insists on writing inside the repo, keep it out of git:
 Never `git add -A` / `git add .` blindly: review `git status` first and stage
 only the files your change actually touches, never these artifacts.
 
+## Copyright Headers
+
+Source files carry one of two header variants. Which one a file gets depends
+on whether it continues code from the original OpenLens fork, not on what its
+neighbours in the same directory look like.
+
+**New files** — anything created from scratch, including rewrites,
+translations, and reimplementations of removed or legacy logic — get the
+single-line variant:
+
+```ts
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+```
+
+This holds even when the new file's logic is inspired by, or replaces, old
+OpenLens code: inspiration is not continuation. `freelens/electron.vite.config.ts`,
+written as a translation of the removed webpack config, is a new file.
+
+**Files that continue code from the fork** keep the two-line variant:
+
+```ts
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+```
+
+A file continues fork code when its path was present in the fork-import commit
+`0a5798c9` ("First commit - Open Lens fork from master branch"):
+
+```sh
+git ls-tree -r --name-only 0a5798c9 | grep -x <path>
+```
+
+or when `git log --follow -- <path>` traces it back to a path that was — that
+is, git itself detects the file as a rename, move, or copy of fork-era code:
+
+```sh
+git log --follow --format= --name-only -- <path> | sort -u
+```
+
+Never add the `OpenLens Authors` line to a file that does not already have it
+just because neighbouring files do. Do not touch legal or license text
+(`LICENSE`, `README.md`, `freelens/license-header.txt`,
+`freelens/static/build/license.txt`) or the upstream copyright notices of
+vendored third-party code, which are unrelated to either header variant.
+
+See [#2352](https://github.com/freelensapp/freelens/issues/2352) for the
+cleanup that established this rule.
+
 ## Build System
 
 ### Commands
