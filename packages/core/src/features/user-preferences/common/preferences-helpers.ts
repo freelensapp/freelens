@@ -73,7 +73,6 @@ export interface DownloadMirror {
 }
 
 export const defaultPackageMirror = "default";
-export const chinaPackageMirror = "china";
 export const customPackageMirror = "custom";
 
 const defaultDownloadMirrorData: DownloadMirror = {
@@ -82,21 +81,19 @@ const defaultDownloadMirrorData: DownloadMirror = {
   platforms: new Set(["darwin", "win32", "linux"]),
 };
 
-const chinaPackageMirrorData: DownloadMirror = {
-  url: "https://mirror.azure.cn/kubernetes/kubectl",
-  label: "China (Azure)",
-  platforms: new Set(["win32", "linux"]),
-};
-
 const customPackageMirrorData: DownloadMirror = {
   url: "",
   label: "Custom",
   platforms: new Set(["darwin", "win32", "linux"]),
 };
 
+// The China (Azure) mirror was removed: `mirror.azure.cn/kubernetes/kubectl`
+// stopped syncing around August 2024, its newest version is v1.31.0 and its
+// patch coverage is incomplete. No migration is needed for a user who had it
+// selected, because the `downloadMirror` descriptor coerces an unknown stored
+// value back to the default.
 export const packageMirrors = new Map<string, DownloadMirror>([
   [defaultPackageMirror, defaultDownloadMirrorData],
-  [chinaPackageMirror, chinaPackageMirrorData],
   [customPackageMirror, customPackageMirrorData],
 ]);
 
