@@ -155,6 +155,40 @@ tool while iterating.
 `.github/workflows/binaries-lock-check.yaml` enforces both that the lock is
 current and that no digest changed while its version stood still.
 
+### Downloaded kubectl Versions
+
+The bundled kubectl is not the only one the application runs: a cluster whose
+minor version differs gets a version-matched kubectl downloaded at runtime. The
+map of which patch to fetch per minor lives in
+`packages/kubectl-versions/build/versions.json`, and the digest of every
+artifact that map can produce is pinned in
+`packages/kubectl-versions/build/checksums.json`, keyed by version and then by
+`${platform}/${arch}`.
+
+`Kubectl.downloadKubectl()` hashes what it downloaded and refuses anything that
+does not match its pin, and `ensureKubectl()` refuses to download at all when
+there is no pin, falling back to the bundled binary. **A version added to the
+map without a pin therefore never gets downloaded**, so the two files are
+regenerated together:
+
+```sh
+pnpm --filter @freelensapp/kubectl-versions compute-versions
+pnpm update-kubectl-checksums
+```
+
+The generator reads `dl.k8s.io` only, never a mirror — pinning bytes from a
+mirror would let a compromised mirror bless its own digest. It skips versions
+already present, which makes a run incremental and an existing pin immutable,
+and it verifies each download against both the published `.sha256` and the
+keyless cosign signature before recording it. `cosign` comes from mise
+(`mise install`).
+
+Both files start at 1.22, the oldest line Kubernetes publishes a signature for,
+and coverage is not uniform below that floor's neighbours: v1.22.17 has no
+`windows/arm64` build, so the generator logs an unpublished variant and carries
+on rather than failing. `.github/workflows/kubectl-checksums-check.yaml`
+verifies added pins and asserts that no existing digest changed.
+
 ## Common Development Tasks
 
 ### Adding a New Feature
