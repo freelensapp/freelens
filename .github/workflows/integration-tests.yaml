@@ -97,7 +97,9 @@ jobs:
 
       - name: Get pnpm cache directory
         shell: bash
-        run: echo "pnpm_cache_dir=$(pnpm store path)" | tee -a ${GITHUB_ENV}
+        run: |
+          pnpm_cache_dir="$(pnpm store path)"
+          echo "pnpm_cache_dir=${pnpm_cache_dir}" | tee -a "${GITHUB_ENV}"
 
       - name: Use pnpm cache
         uses: actions/cache@v6
