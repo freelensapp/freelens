@@ -36,14 +36,8 @@ and user-friendly interface.
 
 ## Requirements
 
-Kubernetes 1.22 or later.
-
-For a cluster in that range Freelens downloads a version-matched `kubectl`,
-verifying it against a digest pinned in the application. Below 1.22 there is
-nothing to verify against, because Kubernetes publishes no signature for those
-releases, so no download is attempted and the bundled `kubectl` is used
-instead. That may not work correctly against a much older cluster; the
-`kubectl` path can be set in Preferences.
+Kubernetes 1.22 or later. Older clusters fall back to the bundled `kubectl`,
+which may not work correctly; a different one can be set in Preferences.
 
 ## Downloads
 
