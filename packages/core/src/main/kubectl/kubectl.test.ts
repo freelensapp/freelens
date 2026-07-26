@@ -14,7 +14,10 @@ import type { Logger } from "@freelensapp/logger";
 
 import type { KubectlDependencies } from "./kubectl";
 
-const pinnedVersion = "1.36.3";
+// Fictitious on purpose: getKubectlChecksum below is a mock matching only this
+// constant, not the real pin table, so nothing here tracks the actual bundled
+// or latest kubectl version.
+const pinnedVersion = "9.9.9";
 const content = Buffer.from("a kubectl binary");
 const contentDigest = createHash("sha256").update(content).digest("hex");
 
@@ -39,10 +42,10 @@ describe("kubectl", () => {
         downloadMirror: "default",
       },
       bundledKubectlVersion: pinnedVersion,
-      kubectlVersionMap: new Map([["1.36", pinnedVersion]]),
+      kubectlVersionMap: new Map([["9.9", pinnedVersion]]),
       getKubectlChecksum: ({ version, platform, arch }) =>
         version === pinnedVersion && platform === "linux" && arch === "amd64"
-          ? { url: "https://dl.k8s.io/release/v1.36.3/bin/linux/amd64/kubectl", sha256: contentDigest }
+          ? { url: `https://dl.k8s.io/release/v${pinnedVersion}/bin/linux/amd64/kubectl`, sha256: contentDigest }
           : undefined,
       logger: {
         debug: () => {},
