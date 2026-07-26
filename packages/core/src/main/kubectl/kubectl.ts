@@ -26,10 +26,28 @@ import type { GetBasenameOfPath } from "../../common/path/get-basename.injectabl
 import type { GetDirnameOfPath } from "../../common/path/get-dirname.injectable";
 import type { JoinPaths } from "../../common/path/join-paths.injectable";
 import type { NormalizedPlatform } from "../../common/vars/normalized-platform.injectable";
-import type { DownloadBinary } from "../fetch/download-binary.injectable";
+import type { DownloadBinary, DownloadProgress } from "../fetch/download-binary.injectable";
 import type { GetKubectlChecksum } from "./kubectl-checksums.injectable";
 
 const initScriptVersionString = "# freelens-initscript v3";
+
+/**
+ * How long the download may go without receiving a single byte before it is
+ * given up on. A fixed overall deadline would kill a legitimate ~50 MB
+ * download over a slow link, while an unresponsive host would otherwise hang
+ * forever behind a progress indicator that never moves.
+ */
+const downloadStallTimeout = 30_000;
+
+/**
+ * Reporting hooks for a caller that shows what is happening, e.g. a terminal
+ * that is waiting for kubectl before it can spawn a shell. Every problem is
+ * reported with its consequence, because the caller continues either way.
+ */
+export interface KubectlProgressOptions {
+  onDownloadProgress?: (progress: DownloadProgress) => void;
+  onProblem?: (message: string) => void;
+}
 
 /**
  * Error codes that indicate the binary could not be executed because of a
@@ -193,17 +211,26 @@ export class Kubectl {
     }
   };
 
-  public async binDir() {
+  public async binDir(opts?: KubectlProgressOptions) {
     try {
-      await this.ensureKubectl();
+      await this.ensureKubectl(opts);
       await this.writeInitScripts();
 
       return this.dirname;
     } catch (err) {
       this.dependencies.logger.error("Failed to get binary directory", err);
+      opts?.onProblem?.(
+        `Failed to prepare the kubectl v${this.kubectlVersion} directory (${this.reasonOf(err)}) - ` +
+          `using the bundled v${this.dependencies.bundledKubectlVersion}`,
+      );
 
       return "";
     }
+  }
+
+  /** The human-readable half of an error, without the `Error: ` prefix. */
+  protected reasonOf(error: unknown): string {
+    return error instanceof Error ? error.message : String(error);
   }
 
   public async checkBinary(path: string, checkVersion = true) {
@@ -300,13 +327,17 @@ export class Kubectl {
     }
   }
 
-  public async ensureKubectl(): Promise<boolean> {
+  public async ensureKubectl(opts?: KubectlProgressOptions): Promise<boolean> {
     if (this.dependencies.state.downloadKubectlBinaries === false) {
       return true;
     }
 
     if (Kubectl.invalidBundle) {
       this.dependencies.logger.error(`Detected invalid bundle binary, returning ...`);
+      opts?.onProblem?.(
+        `The bundled kubectl v${this.dependencies.bundledKubectlVersion} is not usable, so kubectl ` +
+          `v${this.kubectlVersion} was not prepared - using whichever kubectl is on PATH`,
+      );
 
       return false;
     }
@@ -328,6 +359,11 @@ export class Kubectl {
           `so it will not be downloaded. The bundled kubectl ${this.dependencies.bundledKubectlVersion} is used ` +
           `instead; set the "Path to kubectl binary" preference (kubectlBinariesPath) to use a different one.`,
       );
+      opts?.onProblem?.(
+        `No verified checksum is pinned for kubectl v${this.kubectlVersion} on ` +
+          `${this.dependencies.normalizedDownloadPlatform}/${this.dependencies.normalizedDownloadArch}, so it was ` +
+          `not downloaded - using the bundled v${this.dependencies.bundledKubectlVersion}`,
+      );
 
       return false;
     }
@@ -341,21 +377,40 @@ export class Kubectl {
 
       if (!isValid && !bundled) {
         try {
-          await this.downloadKubectl();
+          await this.downloadKubectl(opts);
         } catch (error) {
           this.dependencies.logger.error(`[KUBECTL]: failed to download kubectl`, error);
           this.dependencies.logger.debug(`[KUBECTL]: Releasing lock for ${this.kubectlVersion}`);
           await release();
+          opts?.onProblem?.(
+            `Failed to download kubectl v${this.kubectlVersion} (${this.reasonOf(error)}) - ` +
+              `using the bundled v${this.dependencies.bundledKubectlVersion}`,
+          );
 
           return false;
         }
 
         isValid = await this.checkBinary(this.path, false);
+
+        if (!isValid) {
+          this.dependencies.logger.debug(`[KUBECTL]: Releasing lock for ${this.kubectlVersion}`);
+          await release();
+          opts?.onProblem?.(
+            `The downloaded kubectl v${this.kubectlVersion} did not run properly - ` +
+              `using the bundled v${this.dependencies.bundledKubectlVersion}`,
+          );
+
+          return false;
+        }
       }
 
       if (!isValid) {
         this.dependencies.logger.debug(`[KUBECTL]: Releasing lock for ${this.kubectlVersion}`);
         await release();
+        opts?.onProblem?.(
+          `The local kubectl v${this.kubectlVersion} did not run properly - ` +
+            `using the bundled v${this.dependencies.bundledKubectlVersion}`,
+        );
 
         return false;
       }
@@ -366,12 +421,16 @@ export class Kubectl {
       return true;
     } catch (error) {
       this.dependencies.logger.error(`[KUBECTL]: Failed to get a lock for ${this.kubectlVersion}`, error);
+      opts?.onProblem?.(
+        `Failed to get a lock for kubectl v${this.kubectlVersion} (${this.reasonOf(error)}) - ` +
+          `using the bundled v${this.dependencies.bundledKubectlVersion}`,
+      );
 
       return false;
     }
   }
 
-  public async downloadKubectl() {
+  public async downloadKubectl(opts?: KubectlProgressOptions) {
     const checksum = this.getPinnedChecksum();
 
     if (!checksum) {
@@ -385,7 +444,10 @@ export class Kubectl {
 
     this.dependencies.logger.info(`Downloading kubectl ${this.kubectlVersion} from ${this.url} to ${this.path}`);
 
-    const response = await this.dependencies.downloadBinary(this.url);
+    const response = await this.dependencies.downloadBinary(this.url, {
+      onProgress: opts?.onDownloadProgress,
+      stallTimeout: downloadStallTimeout,
+    });
 
     if (!response.callWasSuccessful) {
       throw new Error(`Failed to download kubectl binary: ${response.error}`);
