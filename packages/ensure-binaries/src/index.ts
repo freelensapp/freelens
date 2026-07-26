@@ -18,13 +18,24 @@ import { MultiBar } from "cli-progress";
 import gunzip from "gunzip-maybe";
 import fetch from "node-fetch";
 import { extract } from "tar-stream";
-import z from "zod";
+import {
+  type Artifact,
+  CHECKSUM_SUFFIX,
+  describeArtifact,
+  normalizePlatform,
+  readToolVersions,
+  type SupportedArch,
+  toolNames,
+} from "./artifacts.js";
+import { setTimeoutFor } from "./download.js";
+import { assertLockMatchesVersions, readLock, resolvePinnedChecksum } from "./lock.js";
 
 import type { SingleBar } from "cli-progress";
 
 const options = arg({
   "--package": String,
   "--base-dir": String,
+  "--lock": String,
 });
 
 type Options = typeof options;
@@ -52,113 +63,30 @@ function joinWithInitCwd(relativePath: string): string {
 
 const pathToPackage = joinWithInitCwd(assertOption("--package"));
 const pathToBaseDir = joinWithInitCwd(assertOption("--base-dir"));
-
-function setTimeoutFor(controller: AbortController, timeout: number): void {
-  const handle = setTimeout(() => controller.abort(), timeout);
-
-  controller.signal.addEventListener("abort", () => clearTimeout(handle));
-}
+const pathToLock = joinWithInitCwd(
+  options["--lock"] ?? path.join(path.dirname(assertOption("--package")), "binaries.lock.json"),
+);
 
 const pipeline = promisify(_pipeline);
 
-/**
- * Suffix for the sidecar file that records the verified checksum of a downloaded
- * binary. It lives next to the binary but is never referenced by
- * electron-builder (which lists each packaged binary explicitly), so it does not
- * end up in the resulting application package.
- */
-const CHECKSUM_SUFFIX = ".sha256";
-
-/**
- * How many times to ask for a remote checksum before giving up. Verification is
- * mandatory, so a transient network error must not be able to fail the whole
- * build on the first try.
- */
-const CHECKSUM_FETCH_ATTEMPTS = 3;
-
-const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
-
-/**
- * Fetches and parses the remote SHA-256 checksum published for a download.
- *
- * The checksum file is expected to contain a hex-encoded SHA-256 digest,
- * optionally followed by the file name (the common `sha256sum` output format).
- * Only the first whitespace-delimited token is used.
- *
- * Verification is mandatory: when the checksum cannot be fetched or does not
- * look like a SHA-256 digest, this throws instead of letting the caller fall
- * back to an unverified download.
- */
-async function fetchChecksum(url: string): Promise<string> {
-  let lastError: unknown;
-
-  for (let attempt = 1; attempt <= CHECKSUM_FETCH_ATTEMPTS; attempt += 1) {
-    if (attempt > 1) {
-      await delay(attempt * 1000);
-    }
-
-    const controller = new AbortController();
-
-    setTimeoutFor(controller, 60 * 1000);
-
-    try {
-      const response = await fetch(url, { signal: controller.signal });
-
-      if (!response.ok) {
-        throw new Error(`${response.status} ${response.statusText}`);
-      }
-
-      const body = await response.text();
-      const checksum = body.trim().split(/\s+/)[0]?.toLowerCase();
-
-      if (!checksum || !/^[0-9a-f]{64}$/.test(checksum)) {
-        throw new Error(`not a SHA-256 digest: ${JSON.stringify(body.slice(0, 128))}`);
-      }
-
-      return checksum;
-    } catch (error) {
-      lastError = error;
-    }
-  }
-
-  throw new Error(
-    `unable to fetch the mandatory SHA-256 checksum from ${url} after ${CHECKSUM_FETCH_ATTEMPTS} attempts: ${lastError}`,
-  );
-}
-
-function getBinaryExtension({ forPlatform }: { forPlatform: string }): string {
-  if (forPlatform === "windows") {
-    return ".exe";
-  }
-
-  return "";
-}
-
-interface BinaryDownloaderArgs {
-  readonly version: string;
-  readonly platform: SupportedPlatform;
-  readonly downloadArch: string;
-  readonly fileArch: string;
-  readonly binaryName: string;
-  readonly baseDir: string;
-  readonly url: string;
-}
-
-abstract class BinaryDownloader {
-  protected abstract readonly url: string;
+class BinaryDownloader {
   protected readonly bar: SingleBar;
   protected readonly target: string;
+  protected readonly url: string;
 
   protected getTransformStreams(file: Writable): (NodeJS.ReadWriteStream | NodeJS.WritableStream)[] {
     return [file];
   }
 
   constructor(
-    public readonly args: BinaryDownloaderArgs,
+    public readonly artifact: Artifact,
+    protected readonly expectedChecksum: string,
+    baseDir: string,
     multiBar: MultiBar,
   ) {
-    this.bar = multiBar.create(1, 0, args);
-    this.target = path.join(args.baseDir, args.platform, args.fileArch, args.binaryName);
+    this.bar = multiBar.create(1, 0, artifact);
+    this.target = path.join(baseDir, artifact.platform, artifact.arch, artifact.binaryName);
+    this.url = artifact.url;
   }
 
   private get checksumSidecar(): string {
@@ -166,18 +94,9 @@ abstract class BinaryDownloader {
   }
 
   /**
-   * URL of the published checksum for {@link url}. Defaults to the download URL
-   * with `.sha256` appended, which is how kubectl and helm publish theirs.
-   */
-  protected get checksumUrl(): string {
-    return `${this.url}${CHECKSUM_SUFFIX}`;
-  }
-
-  /**
-   * Returns `true` when the binary is already present and matches the given
-   * remote checksum, based on the checksum recorded in the sidecar file during
-   * the previous successful download. This avoids re-downloading unchanged
-   * binaries.
+   * Returns `true` when the binary is already present and matches the pinned
+   * checksum, based on what the sidecar recorded during the previous successful
+   * download. This avoids re-downloading unchanged binaries.
    */
   private async isUpToDate(expectedChecksum: string): Promise<boolean> {
     try {
@@ -197,11 +116,11 @@ abstract class BinaryDownloader {
 
     const bar = this.bar;
 
-    // The remote checksum covers the downloaded artifact bytes (the binary for
-    // kubectl / freelens-k8s-proxy, the archive for helm). Fetching it is
-    // mandatory: it both lets us skip unchanged binaries and is the only thing
-    // that makes a freshly downloaded one trustworthy.
-    const expectedChecksum = await fetchChecksum(this.checksumUrl);
+    // The pinned checksum covers the downloaded artifact bytes (the binary for
+    // kubectl / freelens-k8s-proxy, the archive for helm). It comes from the
+    // committed lock rather than from the vendor, so a build never has to trust
+    // a checksum served by the same origin as the artifact it describes.
+    const expectedChecksum = this.expectedChecksum;
 
     if (await this.isUpToDate(expectedChecksum)) {
       bar.setTotal(1);
@@ -309,58 +228,18 @@ abstract class BinaryDownloader {
   }
 }
 
-class FreeLensK8sProxyDownloader extends BinaryDownloader {
-  protected readonly url: string;
-
-  constructor(args: Omit<BinaryDownloaderArgs, "binaryName" | "url">, bar: MultiBar) {
-    const binaryExtension = getBinaryExtension({ forPlatform: args.platform });
-    const binaryName = "freelens-k8s-proxy" + binaryExtension;
-    const url = `https://github.com/freelensapp/freelens-k8s-proxy/releases/download/v${args.version}/freelens-k8s-proxy-${args.platform}-${args.downloadArch}${binaryExtension}`;
-
-    super({ ...args, binaryName, url }, bar);
-    this.url = url;
-  }
-
-  /**
-   * The release publishes the checksum of the Windows binary as
-   * `freelens-k8s-proxy-windows-<arch>.sha256`, without the `.exe` the binary
-   * itself carries, so the suffix has to be stripped before appending.
-   */
-  protected override get checksumUrl(): string {
-    return `${this.url.replace(/\.exe$/, "")}${CHECKSUM_SUFFIX}`;
-  }
-}
-
-class KubectlDownloader extends BinaryDownloader {
-  protected readonly url: string;
-
-  constructor(args: Omit<BinaryDownloaderArgs, "binaryName" | "url">, bar: MultiBar) {
-    const binaryName = "kubectl" + getBinaryExtension({ forPlatform: args.platform });
-    const url = `https://dl.k8s.io/release/v${args.version}/bin/${args.platform}/${args.downloadArch}/${binaryName}`;
-
-    super({ ...args, binaryName, url }, bar);
-    this.url = url;
-  }
-}
-
+/**
+ * Helm ships its binary inside a tarball, so the downloaded bytes have to be
+ * gunzipped and the one entry we want picked out of the archive.
+ */
 class HelmDownloader extends BinaryDownloader {
-  protected readonly url: string;
-
-  constructor(args: Omit<BinaryDownloaderArgs, "binaryName" | "url">, bar: MultiBar) {
-    const binaryName = "helm" + getBinaryExtension({ forPlatform: args.platform });
-    const url = `https://get.helm.sh/helm-v${args.version}-${args.platform}-${args.downloadArch}.tar.gz`;
-
-    super({ ...args, binaryName, url }, bar);
-    this.url = url;
-  }
-
-  protected getTransformStreams(file: WriteStream) {
+  protected override getTransformStreams(file: WriteStream) {
     const extracting = extract({
       allowUnknownFormat: false,
     });
 
     extracting.on("entry", (headers, stream, next) => {
-      if (headers.name.endsWith(this.args.binaryName)) {
+      if (headers.name.endsWith(this.artifact.binaryName)) {
         stream
           .pipe(file)
           .once("finish", () => next())
@@ -375,31 +254,20 @@ class HelmDownloader extends BinaryDownloader {
   }
 }
 
-type SupportedPlatform = "darwin" | "linux" | "windows";
+function createDownloader(
+  artifact: Artifact,
+  expectedChecksum: string,
+  baseDir: string,
+  multiBar: MultiBar,
+): BinaryDownloader {
+  return artifact.tool === "helm"
+    ? new HelmDownloader(artifact, expectedChecksum, baseDir, multiBar)
+    : new BinaryDownloader(artifact, expectedChecksum, baseDir, multiBar);
+}
 
-const PackageInfo = z.object({
-  config: z.object({
-    k8sProxyVersion: z.string().min(1),
-    bundledKubectlVersion: z.string().min(1),
-    bundledHelmVersion: z.string().min(1),
-  }),
-});
+const versions = await readToolVersions(pathToPackage);
+const platform = normalizePlatform(process.platform);
 
-const packageInfoRaw = await readFile(pathToPackage, "utf-8");
-const packageInfo = PackageInfo.parse(JSON.parse(packageInfoRaw));
-
-const normalizedPlatform = (() => {
-  switch (process.platform) {
-    case "darwin":
-      return "darwin";
-    case "linux":
-      return "linux";
-    case "win32":
-      return "windows";
-    default:
-      throw new Error(`platform=${process.platform} is unsupported`);
-  }
-})();
 const multiBar = new MultiBar({
   align: "left",
   clearOnComplete: false,
@@ -409,93 +277,42 @@ const multiBar = new MultiBar({
   format: "[{bar}] {percentage}% | {url}",
 });
 
-const downloaders: BinaryDownloader[] = [];
+/**
+ * Resolves every download up front, before any network access, so that a stale
+ * lock fails immediately with an actionable message rather than part-way
+ * through a set of downloads.
+ */
+async function prepareDownloaders(): Promise<BinaryDownloader[]> {
+  const lock = await readLock(pathToLock);
 
-const downloadX64Binaries = () => {
-  downloaders.push(
-    new FreeLensK8sProxyDownloader(
-      {
-        version: packageInfo.config.k8sProxyVersion,
-        platform: normalizedPlatform,
-        downloadArch: "amd64",
-        fileArch: "x64",
-        baseDir: pathToBaseDir,
-      },
-      multiBar,
-    ),
-    new KubectlDownloader(
-      {
-        version: packageInfo.config.bundledKubectlVersion,
-        platform: normalizedPlatform,
-        downloadArch: "amd64",
-        fileArch: "x64",
-        baseDir: pathToBaseDir,
-      },
-      multiBar,
-    ),
-    new HelmDownloader(
-      {
-        version: packageInfo.config.bundledHelmVersion,
-        platform: normalizedPlatform,
-        downloadArch: "amd64",
-        fileArch: "x64",
-        baseDir: pathToBaseDir,
-      },
-      multiBar,
-    ),
-  );
-};
+  assertLockMatchesVersions(lock, versions, pathToLock);
 
-function downloadArm64Binaries() {
-  downloaders.push(
-    new FreeLensK8sProxyDownloader(
-      {
-        version: packageInfo.config.k8sProxyVersion,
-        platform: normalizedPlatform,
-        downloadArch: "arm64",
-        fileArch: "arm64",
-        baseDir: pathToBaseDir,
-      },
-      multiBar,
-    ),
-    new KubectlDownloader(
-      {
-        version: packageInfo.config.bundledKubectlVersion,
-        platform: normalizedPlatform,
-        downloadArch: "arm64",
-        fileArch: "arm64",
-        baseDir: pathToBaseDir,
-      },
-      multiBar,
-    ),
-    new HelmDownloader(
-      {
-        version: packageInfo.config.bundledHelmVersion,
-        platform: normalizedPlatform,
-        downloadArch: "arm64",
-        fileArch: "arm64",
-        baseDir: pathToBaseDir,
-      },
-      multiBar,
-    ),
-  );
+  const downloadersFor = (targetArch: SupportedArch) =>
+    toolNames.map((tool) => {
+      const artifact = describeArtifact({ tool, version: versions[tool], platform, arch: targetArch });
+
+      return createDownloader(artifact, resolvePinnedChecksum(lock, artifact), pathToBaseDir, multiBar);
+    });
+
+  if (process.env.DOWNLOAD_ALL_ARCHITECTURES === "true") {
+    return [...downloadersFor("x64"), ...downloadersFor("arm64")];
+  }
+
+  return arch === "x64" || arch === "arm64" ? downloadersFor(arch) : [];
 }
 
-if (process.env.DOWNLOAD_ALL_ARCHITECTURES === "true") {
-  downloadX64Binaries();
-  downloadArm64Binaries();
-} else if (arch === "x64") {
-  downloadX64Binaries();
-} else if (arch === "arm64") {
-  downloadArm64Binaries();
-}
+const downloaders = await prepareDownloaders().catch((error: unknown) => {
+  multiBar.stop();
+  console.error(error instanceof Error ? error.message : String(error));
+  process.exit(1);
+});
 
 const settledResults = await Promise.allSettled(
   downloaders.map((downloader) =>
     downloader.ensureBinary().catch((error) => {
-      throw new Error(
-        `Failed to download ${downloader.args.binaryName} for ${downloader.args.platform}/${downloader.args.downloadArch}: ${error}`,
-      );
+      const { binaryName, platform, arch } = downloader.artifact;
+
+      throw new Error(`Failed to download ${binaryName} for ${platform}/${arch}: ${error}`);
     }),
   ),
 );

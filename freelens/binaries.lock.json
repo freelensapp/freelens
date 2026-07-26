@@ -1,0 +1,89 @@
+{
+  "freelens-k8s-proxy": {
+    "version": "1.8.3",
+    "artifacts": {
+      "darwin/x64": {
+        "url": "https://github.com/freelensapp/freelens-k8s-proxy/releases/download/v1.8.3/freelens-k8s-proxy-darwin-amd64",
+        "sha256": "12ace7f5f57e0adf5e94099d3b2ebd5fe4ad25cbb3823f4d1476520b677a602a"
+      },
+      "darwin/arm64": {
+        "url": "https://github.com/freelensapp/freelens-k8s-proxy/releases/download/v1.8.3/freelens-k8s-proxy-darwin-arm64",
+        "sha256": "816842c52c899102495518d4a04826598da392f2a9709b3fcdece7e436483d41"
+      },
+      "linux/x64": {
+        "url": "https://github.com/freelensapp/freelens-k8s-proxy/releases/download/v1.8.3/freelens-k8s-proxy-linux-amd64",
+        "sha256": "8e176cbdc744abfa96f2a7a0a63b781d2cc4e7a3562d90261171fe84c6ae5799"
+      },
+      "linux/arm64": {
+        "url": "https://github.com/freelensapp/freelens-k8s-proxy/releases/download/v1.8.3/freelens-k8s-proxy-linux-arm64",
+        "sha256": "cc7da1633dd5174dfeb6cc2c2bf7b142221c2d94ad96860c7e6ea8b4d591ec3f"
+      },
+      "windows/x64": {
+        "url": "https://github.com/freelensapp/freelens-k8s-proxy/releases/download/v1.8.3/freelens-k8s-proxy-windows-amd64.exe",
+        "sha256": "5b8720068bb741c612fb4566c6ba5275cbf73c36b02534a3a60efb89171be5f8"
+      },
+      "windows/arm64": {
+        "url": "https://github.com/freelensapp/freelens-k8s-proxy/releases/download/v1.8.3/freelens-k8s-proxy-windows-arm64.exe",
+        "sha256": "ea791c8218410c6c0763b13ea5009e0c8c031088034dfa413c0f117da8393d0b"
+      }
+    }
+  },
+  "kubectl": {
+    "version": "1.36.3",
+    "artifacts": {
+      "darwin/x64": {
+        "url": "https://dl.k8s.io/release/v1.36.3/bin/darwin/amd64/kubectl",
+        "sha256": "158b3b46cf74e8b6bd9b1d7cd30f665e3efb2bc1ec3c843ec925bcfdd2930de0"
+      },
+      "darwin/arm64": {
+        "url": "https://dl.k8s.io/release/v1.36.3/bin/darwin/arm64/kubectl",
+        "sha256": "fc8582acde13869a606730a79379d6515f30c68afcced0b5ac8789d5d002b7d6"
+      },
+      "linux/x64": {
+        "url": "https://dl.k8s.io/release/v1.36.3/bin/linux/amd64/kubectl",
+        "sha256": "ebbd080e7c2e275093b55915722043257eb24004363e20acb3c4d71919f88336"
+      },
+      "linux/arm64": {
+        "url": "https://dl.k8s.io/release/v1.36.3/bin/linux/arm64/kubectl",
+        "sha256": "3d86f24401c41ae5a46ac50eef8865fe891d3647d324a0836f6c63757a126e62"
+      },
+      "windows/x64": {
+        "url": "https://dl.k8s.io/release/v1.36.3/bin/windows/amd64/kubectl.exe",
+        "sha256": "ba76657b79d0ebcc3c029c171fc83c96351ba5ce0e71d185f1e5b8b873360a5f"
+      },
+      "windows/arm64": {
+        "url": "https://dl.k8s.io/release/v1.36.3/bin/windows/arm64/kubectl.exe",
+        "sha256": "883d4b060cff6d95df9c80a5c13e4fc8da473af0d03f3b2fa407ee8d0810a9d6"
+      }
+    }
+  },
+  "helm": {
+    "version": "4.2.3",
+    "artifacts": {
+      "darwin/x64": {
+        "url": "https://get.helm.sh/helm-v4.2.3-darwin-amd64.tar.gz",
+        "sha256": "ff3ac86755a45f3422473bc1200776aac0fe04c5766abe6ca66699f7b564b23b"
+      },
+      "darwin/arm64": {
+        "url": "https://get.helm.sh/helm-v4.2.3-darwin-arm64.tar.gz",
+        "sha256": "048ecf5ad3160f83d918f9fe945238d2132b079640f7b106175331c25f242c64"
+      },
+      "linux/x64": {
+        "url": "https://get.helm.sh/helm-v4.2.3-linux-amd64.tar.gz",
+        "sha256": "e9b88b4ee95b18c706839c28d3a0220e5bc470e9cd9262410c90793c45ff8b7c"
+      },
+      "linux/arm64": {
+        "url": "https://get.helm.sh/helm-v4.2.3-linux-arm64.tar.gz",
+        "sha256": "21abd9354d39b2cd79a8d76be6912cd137a983cbf997193503fb8a6a6e2f2785"
+      },
+      "windows/x64": {
+        "url": "https://get.helm.sh/helm-v4.2.3-windows-amd64.tar.gz",
+        "sha256": "02c6137bb5f050479193afad5a28804e9edc3beeab7e7b53a6e1499c9ba387ef"
+      },
+      "windows/arm64": {
+        "url": "https://get.helm.sh/helm-v4.2.3-windows-arm64.tar.gz",
+        "sha256": "c7a6b0fc66521ba0ff4f8d7930f38c658fbf1a5aa2569042305b12eac41ed0c3"
+      }
+    }
+  }
+}

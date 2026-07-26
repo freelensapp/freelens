@@ -132,6 +132,29 @@ Run `pnpm build:di` when:
 
 The build process automatically runs this, but you can run it manually to verify changes.
 
+### Bundled Binary Versions
+
+The versions of the bundled `freelens-k8s-proxy`, `kubectl` and `helm` live in
+the `config` block of `freelens/package.json`, and their exact digests are
+pinned in `freelens/binaries.lock.json`. The build reads the expected checksum
+from that lock rather than from the vendor, so **a version bump without
+regenerating the lock fails the build**:
+
+```sh
+pnpm update-binaries-lock
+```
+
+The generator downloads all eighteen artifacts (three tools, three platforms,
+two architectures), checks each against its publisher's signature — GitHub build
+provenance for freelens-k8s-proxy, PGP for helm, keyless cosign for kubectl —
+and only then writes the lock. `cosign` comes from mise (`mise install`), and
+`GITHUB_TOKEN` should be set unless you want to share 60 unauthenticated API
+calls per hour with the rest of your IP. Use `--only <tool>` to refresh a single
+tool while iterating.
+
+`.github/workflows/binaries-lock-check.yaml` enforces both that the lock is
+current and that no digest changed while its version stood still.
+
 ## Common Development Tasks
 
 ### Adding a New Feature
