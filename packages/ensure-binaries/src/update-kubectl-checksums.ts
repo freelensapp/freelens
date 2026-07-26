@@ -40,6 +40,18 @@ const options = arg({
   "--concurrency": Number,
 });
 
+/**
+ * Oldest minor this generator will pin, independent of how much of the range
+ * `versions.json` currently lists. 1.22 is the oldest line Kubernetes
+ * publishes a cosign signature for -- 1.21.14 ships a checksum and nothing
+ * else -- so anything older cannot be pinned to more than the vendor's word.
+ * `compute-versions.mts` applies the same floor when it can, but the two are
+ * not required to agree: cutting the version map is a separate, deliberate
+ * change bundled with runtime enforcement, not a side effect of adding pins
+ * that nothing reads yet.
+ */
+const MIN_SUPPORTED_MINOR = 22;
+
 // Relative paths resolve against the working directory, which pnpm sets to the
 // package running the script.
 const pathToVersions = path.resolve(options["--versions"] ?? path.join("build", "versions.json"));
@@ -66,7 +78,9 @@ function describe({ version, platform, arch }: Variant): string {
   return `kubectl v${version} ${artifactKey({ platform, arch })}`;
 }
 
-const versions = KubectlVersions.parse(JSON.parse(await readFile(pathToVersions, "utf-8"))).map(([, patch]) => patch);
+const versions = KubectlVersions.parse(JSON.parse(await readFile(pathToVersions, "utf-8")))
+  .filter(([majorMinor]) => Number(majorMinor.split(".")[1]) >= MIN_SUPPORTED_MINOR)
+  .map(([, patch]) => patch);
 const checksums: KubectlChecksums = await readKubectlChecksums(pathToChecksums);
 
 const wanted = versions.flatMap((version) =>
@@ -78,7 +92,7 @@ const wanted = versions.flatMap((version) =>
 );
 
 console.log(
-  `${versions.length} kubectl version(s) in ${pathToVersions}, ${wanted.length} variant(s) not yet pinned in ${pathToChecksums}.`,
+  `${versions.length} kubectl version(s) at or above 1.${MIN_SUPPORTED_MINOR} in ${pathToVersions}, ${wanted.length} variant(s) not yet pinned in ${pathToChecksums}.`,
 );
 
 const outcomes = await mapWithConcurrency<Variant, Outcome>(wanted, concurrency, async (variant) => {

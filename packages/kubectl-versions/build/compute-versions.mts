@@ -13,19 +13,6 @@ const __dirname = path.dirname(__filename);
 
 const expectedResponseForm = TypedRegEx("v(?<version>\\d+\\.\\d+\\.\\d+)");
 
-/**
- * Oldest minor the map may name.
- *
- * Every version listed here is one the application may download at runtime, and
- * every download is checked against a digest pinned in `checksums.json`. That
- * pin is only worth having because a cosign signature was verified when it was
- * written, and 1.22 is the oldest line Kubernetes publishes one for - 1.21.14
- * ships a checksum and nothing else. Reaching lower would mean pinning on the
- * vendor's word alone, so the map stops where the evidence does, and stops here
- * rather than in the pin table so the two cannot drift apart.
- */
-const oldestSupportedMinor = 22;
-
 async function requestGreatestKubectlPatchVersion(majorMinor: string): Promise<string | undefined> {
   const response = await fetch(`https://dl.k8s.io/release/stable-${majorMinor}.txt`);
 
@@ -60,9 +47,9 @@ async function requestAllVersions(): Promise<[string, string][]> {
   }
 
   const greatestSemVer = new SemVer(greatestVersion);
-  const majorMinorRequests = new Array<string>(Math.max(greatestSemVer.minor - oldestSupportedMinor + 1, 0))
+  const majorMinorRequests = new Array<string>(greatestSemVer.minor + 1)
     .fill("")
-    .map((value, index) => `1.${oldestSupportedMinor + index}`)
+    .map((value, index) => `1.${index}`)
     .map(async (majorMinor) => [majorMinor, await requestGreatestKubectlPatchVersion(majorMinor)] as const);
 
   return (await Promise.all(majorMinorRequests)).filter((entry): entry is [string, string] => !!entry[1]);
