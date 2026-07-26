@@ -30,6 +30,8 @@ import type { MockedFunction } from "vitest";
 import type WebSocket from "ws";
 
 import type { TerminalMessage } from "../../../common/terminal/channels";
+import type { KubeconfigManager } from "../../kubeconfig-manager/kubeconfig-manager";
+import type { CreateKubectl } from "../../kubectl/create-kubectl.injectable";
 import type { SpawnPty } from "../spawn-pty.injectable";
 import type { OpenStandaloneShellSession } from "./open.injectable";
 
@@ -105,8 +107,8 @@ describe("technical unit tests for standalone shell sessions", () => {
     ensurePath = vi.fn(async () => {
       throw new Error("tried to start the cluster proxy for a session without a cluster");
     });
-    di.override(createKubectlInjectable, () => createKubectl);
-    di.override(kubeconfigManagerInjectable, () => ({ ensurePath }));
+    di.override(createKubectlInjectable, () => createKubectl as unknown as CreateKubectl);
+    di.override(kubeconfigManagerInjectable, () => ({ ensurePath }) as Partial<KubeconfigManager> as KubeconfigManager);
 
     spawnPtyMock = vi.fn(
       () =>
