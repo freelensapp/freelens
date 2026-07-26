@@ -320,6 +320,35 @@ exports[`Command Pallet: keyboard shortcut tests > when on linux > renders 1`] =
                       </span>
                     </i>
                   </li>
+                  <li
+                    class="flex grid-12"
+                  >
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="terminal"
+                      >
+                        terminal
+                      </span>
+                    </i>
+                    <a
+                      class="col-10"
+                    >
+                      Open a Terminal
+                    </a>
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="navigate_next"
+                      >
+                        navigate_next
+                      </span>
+                    </i>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -816,6 +845,35 @@ exports[`Command Pallet: keyboard shortcut tests > when on linux > when pressing
                       </span>
                     </i>
                   </li>
+                  <li
+                    class="flex grid-12"
+                  >
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="terminal"
+                      >
+                        terminal
+                      </span>
+                    </i>
+                    <a
+                      class="col-10"
+                    >
+                      Open a Terminal
+                    </a>
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="navigate_next"
+                      >
+                        navigate_next
+                      </span>
+                    </i>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -1300,6 +1358,35 @@ exports[`Command Pallet: keyboard shortcut tests > when on linux > when pressing
                       class="col-10"
                     >
                       Browse Clusters in Catalog
+                    </a>
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="navigate_next"
+                      >
+                        navigate_next
+                      </span>
+                    </i>
+                  </li>
+                  <li
+                    class="flex grid-12"
+                  >
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="terminal"
+                      >
+                        terminal
+                      </span>
+                    </i>
+                    <a
+                      class="col-10"
+                    >
+                      Open a Terminal
                     </a>
                     <i
                       class="Icon col-1 material focusable"
@@ -1820,6 +1907,35 @@ exports[`Command Pallet: keyboard shortcut tests > when on linux > when pressing
                       </span>
                     </i>
                   </li>
+                  <li
+                    class="flex grid-12"
+                  >
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="terminal"
+                      >
+                        terminal
+                      </span>
+                    </i>
+                    <a
+                      class="col-10"
+                    >
+                      Open a Terminal
+                    </a>
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="navigate_next"
+                      >
+                        navigate_next
+                      </span>
+                    </i>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -2213,6 +2329,35 @@ exports[`Command Pallet: keyboard shortcut tests > when on macOS > renders 1`] =
                       class="col-10"
                     >
                       Browse Clusters in Catalog
+                    </a>
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="navigate_next"
+                      >
+                        navigate_next
+                      </span>
+                    </i>
+                  </li>
+                  <li
+                    class="flex grid-12"
+                  >
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="terminal"
+                      >
+                        terminal
+                      </span>
+                    </i>
+                    <a
+                      class="col-10"
+                    >
+                      Open a Terminal
                     </a>
                     <i
                       class="Icon col-1 material focusable"
@@ -2630,6 +2775,35 @@ exports[`Command Pallet: keyboard shortcut tests > when on macOS > when pressing
                       </span>
                     </i>
                   </li>
+                  <li
+                    class="flex grid-12"
+                  >
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="terminal"
+                      >
+                        terminal
+                      </span>
+                    </i>
+                    <a
+                      class="col-10"
+                    >
+                      Open a Terminal
+                    </a>
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="navigate_next"
+                      >
+                        navigate_next
+                      </span>
+                    </i>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -3023,6 +3197,35 @@ exports[`Command Pallet: keyboard shortcut tests > when on macOS > when pressing
                       class="col-10"
                     >
                       Browse Clusters in Catalog
+                    </a>
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="navigate_next"
+                      >
+                        navigate_next
+                      </span>
+                    </i>
+                  </li>
+                  <li
+                    class="flex grid-12"
+                  >
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="terminal"
+                      >
+                        terminal
+                      </span>
+                    </i>
+                    <a
+                      class="col-10"
+                    >
+                      Open a Terminal
                     </a>
                     <i
                       class="Icon col-1 material focusable"
@@ -3440,6 +3643,35 @@ exports[`Command Pallet: keyboard shortcut tests > when on macOS > when pressing
                       class="col-10"
                     >
                       Browse Clusters in Catalog
+                    </a>
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="navigate_next"
+                      >
+                        navigate_next
+                      </span>
+                    </i>
+                  </li>
+                  <li
+                    class="flex grid-12"
+                  >
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="terminal"
+                      >
+                        terminal
+                      </span>
+                    </i>
+                    <a
+                      class="col-10"
+                    >
+                      Open a Terminal
                     </a>
                     <i
                       class="Icon col-1 material focusable"

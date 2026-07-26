@@ -8,6 +8,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import React from "react";
 import navigateToCatalogInjectable from "../../../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
 import navigateToEntitySettingsInjectable from "../../../../common/front-end-routing/routes/entity-settings/navigate-to-entity-settings.injectable";
+import navigateToTerminalInjectable from "../../../../common/front-end-routing/routes/terminal/navigate-to-terminal.injectable";
 // TODO: Importing from features is not OK. Make commands to comply with Open Closed Principle to allow moving implementation under a feature
 import navigateToPreferencesInjectable from "../../../../features/preferences/common/navigate-to-preferences.injectable";
 import { ClustersSearchCommand } from "../../clusters";
@@ -34,6 +35,7 @@ interface Dependencies {
   navigateToPreferences: () => void;
   navigateToCatalog: () => void;
   navigateToEntitySettings: (entityId: string) => void;
+  navigateToTerminal: () => void;
 }
 
 function getInternalCommands(dependencies: Dependencies): CommandRegistration[] {
@@ -64,6 +66,12 @@ function getInternalCommands(dependencies: Dependencies): CommandRegistration[] 
       title: "Cluster: Open terminal",
       action: () => dependencies.createTerminalTab(),
       isActive: isKubernetesClusterActive,
+    },
+    {
+      // no isActive gate: this shell belongs to no cluster
+      id: "app.openTerminal",
+      title: "Terminal: Open",
+      action: () => dependencies.navigateToTerminal(),
     },
     {
       id: "hotbar.switchHotbar",
@@ -99,6 +107,7 @@ const internalCommandsInjectable = getInjectable({
       navigateToPreferences: di.inject(navigateToPreferencesInjectable),
       navigateToCatalog: di.inject(navigateToCatalogInjectable),
       navigateToEntitySettings: di.inject(navigateToEntitySettingsInjectable),
+      navigateToTerminal: di.inject(navigateToTerminalInjectable),
     }),
 });
 
