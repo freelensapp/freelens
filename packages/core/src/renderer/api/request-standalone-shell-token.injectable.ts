@@ -16,8 +16,6 @@ const requestStandaloneShellTokenInjectable = getInjectable({
   id: "request-standalone-shell-token",
 
   instantiate: (): RequestShellToken => (tabId) => ipcRenderer.invoke("app:standalone-shell-api", tabId),
-
-  causesSideEffects: true,
 });
 
 export default requestStandaloneShellTokenInjectable;

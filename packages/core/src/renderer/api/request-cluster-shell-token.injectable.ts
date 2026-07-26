@@ -26,8 +26,6 @@ const requestClusterShellTokenInjectable = getInjectable({
       return ipcRenderer.invoke("cluster:shell-api", hostedClusterId, tabId);
     };
   },
-
-  causesSideEffects: true,
 });
 
 export default requestClusterShellTokenInjectable;
