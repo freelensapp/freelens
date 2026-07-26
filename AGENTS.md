@@ -49,6 +49,60 @@ When a tool insists on writing inside the repo, keep it out of git:
 Never `git add -A` / `git add .` blindly: review `git status` first and stage
 only the files your change actually touches, never these artifacts.
 
+## Copyright Headers
+
+Source files carry one of two header variants. Which one a file gets depends
+on whether it continues code from the original OpenLens fork, not on what its
+neighbours in the same directory look like.
+
+**New files** — anything created from scratch, including rewrites,
+translations, and reimplementations of removed or legacy logic — get the
+single-line variant:
+
+```ts
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+```
+
+This holds even when the new file's logic is inspired by, or replaces, old
+OpenLens code: inspiration is not continuation. `freelens/electron.vite.config.ts`,
+written as a translation of the removed webpack config, is a new file.
+
+**Files that continue code from the fork** keep the two-line variant:
+
+```ts
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+```
+
+A file continues fork code when its path was present in the fork-import commit
+`0a5798c9` ("First commit - Open Lens fork from master branch"):
+
+```sh
+git ls-tree -r --name-only 0a5798c9 | grep -x <path>
+```
+
+or when `git log --follow -- <path>` traces it back to a path that was — that
+is, git itself detects the file as a rename, move, or copy of fork-era code:
+
+```sh
+git log --follow --format= --name-only -- <path> | sort -u
+```
+
+Never add the `OpenLens Authors` line to a file that does not already have it
+just because neighbouring files do. Do not touch legal or license text
+(`LICENSE`, `README.md`, `freelens/license-header.txt`,
+`freelens/static/build/license.txt`) or the upstream copyright notices of
+vendored third-party code, which are unrelated to either header variant.
+
+See [#2352](https://github.com/freelensapp/freelens/issues/2352) for the
+cleanup that established this rule.
+
 ## Build System
 
 ### Commands
@@ -131,6 +185,63 @@ Run `pnpm build:di` when:
 - Modifying generation script
 
 The build process automatically runs this, but you can run it manually to verify changes.
+
+### Bundled Binary Versions
+
+The versions of the bundled `freelens-k8s-proxy`, `kubectl` and `helm` live in
+the `config` block of `freelens/package.json`, and their exact digests are
+pinned in `freelens/binaries.lock.json`. The build reads the expected checksum
+from that lock rather than from the vendor, so **a version bump without
+regenerating the lock fails the build**:
+
+```sh
+pnpm update-binaries-lock
+```
+
+The generator downloads all eighteen artifacts (three tools, three platforms,
+two architectures), checks each against its publisher's signature — GitHub build
+provenance for freelens-k8s-proxy, PGP for helm, keyless cosign for kubectl —
+and only then writes the lock. `cosign` comes from mise (`mise install`), and
+`GITHUB_TOKEN` should be set unless you want to share 60 unauthenticated API
+calls per hour with the rest of your IP. Use `--only <tool>` to refresh a single
+tool while iterating.
+
+`.github/workflows/binaries-lock-check.yaml` enforces both that the lock is
+current and that no digest changed while its version stood still.
+
+### Downloaded kubectl Versions
+
+The bundled kubectl is not the only one the application runs: a cluster whose
+minor version differs gets a version-matched kubectl downloaded at runtime. The
+map of which patch to fetch per minor lives in
+`packages/kubectl-versions/build/versions.json`, and the digest of every
+artifact that map can produce is pinned in
+`packages/kubectl-versions/build/checksums.json`, keyed by version and then by
+`${platform}/${arch}`.
+
+`Kubectl.downloadKubectl()` hashes what it downloaded and refuses anything that
+does not match its pin, and `ensureKubectl()` refuses to download at all when
+there is no pin, falling back to the bundled binary. **A version added to the
+map without a pin therefore never gets downloaded**, so the two files are
+regenerated together:
+
+```sh
+pnpm --filter @freelensapp/kubectl-versions compute-versions
+pnpm update-kubectl-checksums
+```
+
+The generator reads `dl.k8s.io` only, never a mirror — pinning bytes from a
+mirror would let a compromised mirror bless its own digest. It skips versions
+already present, which makes a run incremental and an existing pin immutable,
+and it verifies each download against both the published `.sha256` and the
+keyless cosign signature before recording it. `cosign` comes from mise
+(`mise install`).
+
+Both files start at 1.22, the oldest line Kubernetes publishes a signature for,
+and coverage is not uniform below that floor's neighbours: v1.22.17 has no
+`windows/arm64` build, so the generator logs an unpublished variant and carries
+on rather than failing. `.github/workflows/kubectl-checksums-check.yaml`
+verifies added pins and asserts that no existing digest changed.
 
 ## Common Development Tasks
 

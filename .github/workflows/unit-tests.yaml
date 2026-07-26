@@ -36,6 +36,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
+      # yq comes from mise so that its version has a single source (mise.toml)
+      # and the download is verified against mise.lock.
+      - name: Set up mise
+        uses: jdx/mise-action@v4
+        with:
+          version: 2026.7.13 # datasource=github-releases depName=jdx/mise
+          install_args: yq
+
       - name: Setup node
         uses: actions/setup-node@v7
         with:
@@ -47,7 +55,9 @@ jobs:
 
       - name: Get pnpm cache directory
         shell: bash
-        run: echo "pnpm_cache_dir=$(pnpm store path)" | tee -a ${GITHUB_ENV}
+        run: |
+          pnpm_cache_dir="$(pnpm store path)"
+          echo "pnpm_cache_dir=${pnpm_cache_dir}" | tee -a "${GITHUB_ENV}"
 
       - name: Use pnpm cache
         uses: actions/cache@v6
@@ -67,7 +77,7 @@ jobs:
 
       - name: Get Electron version
         shell: bash
-        run: echo "electron_version=$(yq -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a ${GITHUB_ENV}
+        run: echo "electron_version=$(yq -py -oy -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a ${GITHUB_ENV}
 
       - name: Use Electron cache
         uses: actions/cache@v6

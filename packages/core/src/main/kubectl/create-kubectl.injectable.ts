@@ -20,6 +20,7 @@ import downloadBinaryInjectable from "../fetch/download-binary.injectable";
 import kubectlBinaryNameInjectable from "./binary-name.injectable";
 import bundledKubectlBinaryPathInjectable from "./bundled-binary-path.injectable";
 import { Kubectl } from "./kubectl";
+import kubectlChecksumsInjectable from "./kubectl-checksums.injectable";
 import kubectlDownloadingNormalizedArchInjectable from "./normalized-arch.injectable";
 import kubectlVersionMapInjectable from "./version-map.injectable";
 
@@ -41,6 +42,7 @@ const createKubectlInjectable = getInjectable({
       baseBundledBinariesDirectory: di.inject(baseBundledBinariesDirectoryInjectable),
       bundledKubectlVersion: di.inject(bundledKubectlVersionInjectable),
       kubectlVersionMap: di.inject(kubectlVersionMapInjectable),
+      getKubectlChecksum: di.inject(kubectlChecksumsInjectable),
       logger: di.inject(loggerInjectionToken),
       downloadBinary: di.inject(downloadBinaryInjectable),
       getDirnameOfPath: di.inject(getDirnameOfPathInjectable),

@@ -34,6 +34,11 @@ and user-friendly interface.
 
 ![Screenshot](freelens/build/screenshots/main.png)
 
+## Requirements
+
+Kubernetes 1.22 or later. Older clusters fall back to the bundled `kubectl`,
+which may not work correctly; a different one can be set in Preferences.
+
 ## Downloads
 
 See the [releases](https://github.com/freelensapp/freelens/releases) page and

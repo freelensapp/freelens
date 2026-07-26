@@ -1,0 +1,183 @@
+name: kubectl Checksums Check
+
+# Only on pull requests, never on push: verifying a pin means downloading the
+# kubectl it describes, so it runs once per change rather than again on merge.
+# These paths are a coarse filter and the first step narrows it down to changes
+# that can actually affect the pins.
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/kubectl-checksums-check.yaml
+      - packages/ensure-binaries/**
+      - packages/kubectl-versions/build/checksums.json
+      - packages/kubectl-versions/build/versions.json
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Check checksums.json
+
+    runs-on: ubuntu-24.04-arm
+    # A pull request verifies only what it added, which is six artifacts per
+    # minor that moved. A manual run re-verifies all of them, which is a few
+    # gigabytes, hence the headroom.
+    timeout-minutes: 60
+
+    env:
+      CHECKSUMS: packages/kubectl-versions/build/checksums.json
+      DO_NOT_TRACK: "1"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      # Verifying costs a kubectl download per added pin, so establish up front
+      # whether anything that feeds the table actually moved. This runs before
+      # any tool is installed, so a skipped run is nearly free.
+      - name: Decide whether the checksums need verifying
+        id: decide
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |-
+          set -eo pipefail
+
+          if [ "${{ github.event_name }}" != 'pull_request' ]; then
+            echo "needed=true" | tee -a "$GITHUB_OUTPUT"
+            echo "Manual run, verifying."
+            exit 0
+          fi
+
+          if [ -n "$(git diff --name-only "$BASE_SHA...HEAD" -- \
+            "$CHECKSUMS" \
+            packages/kubectl-versions/build/versions.json \
+            packages/ensure-binaries \
+            .github/workflows/kubectl-checksums-check.yaml)" ]; then
+            echo "needed=true" | tee -a "$GITHUB_OUTPUT"
+            echo "The pins, the version map or the generator changed, verifying."
+            exit 0
+          fi
+
+          echo "needed=false" | tee -a "$GITHUB_OUTPUT"
+          echo "Nothing that feeds the pins changed, nothing to verify."
+
+      - name: Setup node
+        if: steps.decide.outputs.needed == 'true'
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      # yq and cosign come from mise so that their versions have a single
+      # source (mise.toml) and the downloads are verified against mise.lock.
+      # cosign is what checks the signature Kubernetes publishes next to
+      # kubectl; yq flattens the pin table for the comparison below.
+      - name: Set up mise
+        if: steps.decide.outputs.needed == 'true'
+        uses: jdx/mise-action@v4
+        with:
+          version: 2026.7.13 # datasource=github-releases depName=jdx/mise
+          install_args: yq cosign
+
+      - name: Setup pnpm
+        if: steps.decide.outputs.needed == 'true'
+        run: corepack enable
+
+      - name: Install pnpm dependencies
+        if: steps.decide.outputs.needed == 'true'
+        run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
+
+      # A pin is meant to be immutable: the generator only ever adds, so a
+      # digest or URL that moved under a version that already had one did not
+      # come from the generator. Costs no network, so it runs first.
+      - name: Check for replaced pins
+        if: steps.decide.outputs.needed == 'true'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |-
+          set -eo pipefail
+
+          if [ -z "$BASE_SHA" ]; then
+            echo "Not a pull request, nothing to compare."
+            exit 0
+          fi
+
+          flatten() {
+            yq -pj -ot '
+              [
+                to_entries[] as $version
+                | $version.value | to_entries[]
+                | {
+                    "version": $version.key,
+                    "variant": .key,
+                    "sha256": .value.sha256,
+                    "url": .value.url
+                  }
+              ]
+            ' "$1" | tail -n +2 | sort
+          }
+
+          if ! git show "$BASE_SHA:$CHECKSUMS" > base.checksums.json 2> /dev/null; then
+            echo "No pin table on the base commit, nothing to compare."
+            exit 0
+          fi
+
+          flatten base.checksums.json > base.tsv
+          flatten "$CHECKSUMS" > head.tsv
+
+          awk -F'\t' '
+            NR == FNR { sha[$1 FS $2] = $3; url[$1 FS $2] = $4; next }
+            ($1 FS $2) in sha && (sha[$1 FS $2] != $3 || url[$1 FS $2] != $4) {
+              printf "  kubectl v%s %s\n    was: %s %s\n    now: %s %s\n", \
+                $1, $2, sha[$1 FS $2], url[$1 FS $2], $3, $4
+              found = 1
+            }
+            END { exit found ? 1 : 0 }
+          ' base.tsv head.tsv && {
+            echo "No pin changed for a version that already had one."
+            exit 0
+          }
+
+          echo "::error::A pinned kubectl digest or URL changed. Pins are append-only; delete the entry deliberately if that is really the intent." >&2
+          exit 1
+
+      # Restoring the base table and regenerating leaves the generator to
+      # download and cosign-verify exactly the pins this pull request adds - a
+      # full regeneration would transfer several gigabytes. Because the
+      # generator sorts its output and never rewrites an entry, an honest
+      # addition reproduces the committed file byte for byte, and anything else
+      # - a hand-written digest, a dropped entry, a pin for a version the map
+      # does not name - shows up as a diff.
+      - name: Verify the added pins
+        if: steps.decide.outputs.needed == 'true'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |-
+          set -eo pipefail
+
+          # A manual run starts from nothing, which re-verifies every pin.
+          if [ -n "$BASE_SHA" ]; then
+            git show "$BASE_SHA:$CHECKSUMS" > "$CHECKSUMS" 2> /dev/null || echo '{}' > "$CHECKSUMS"
+          else
+            echo '{}' > "$CHECKSUMS"
+          fi
+
+          pnpm --color=always update-kubectl-checksums
+
+      - name: Check the pins are up to date
+        if: steps.decide.outputs.needed == 'true'
+        run: |-
+          if git diff --exit-code --stat "$CHECKSUMS"; then
+            echo "$CHECKSUMS is up to date and every added pin verified."
+            exit 0
+          fi
+
+          echo "::error::$CHECKSUMS does not match what upstream publishes. Run \`pnpm update-kubectl-checksums\` and commit the result." >&2
+          git --no-pager diff "$CHECKSUMS"
+          exit 1
