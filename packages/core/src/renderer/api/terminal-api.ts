@@ -5,7 +5,6 @@
  */
 
 import url from "node:url";
-import { ipcRenderer } from "electron";
 import { isEqual, once } from "es-toolkit";
 import { makeObservable, observable } from "mobx";
 import { TerminalChannels, type TerminalMessage, type TerminalStatusLevel } from "../../common/terminal/channels";
@@ -50,9 +49,16 @@ export interface TerminalEvents extends WebSocketEvents {
   status: (data: string, level: TerminalStatusLevel) => void;
 }
 
+/**
+ * Mints the single use token that authorizes one shell. What it is scoped to -
+ * a cluster or nothing at all - is the injected implementation's business, so
+ * that a terminal can also live outside of a cluster frame.
+ */
+export type RequestShellToken = (tabId: string) => Promise<Uint8Array>;
+
 export interface TerminalApiDependencies extends WebSocketApiDependencies {
-  readonly hostedClusterId: string;
   readonly logger: Logger;
+  requestShellToken: RequestShellToken;
 }
 
 export class TerminalApi extends WebSocketApi<TerminalEvents> {
@@ -84,11 +90,7 @@ export class TerminalApi extends WebSocketApi<TerminalEvents> {
       this.emitTerminalStatus("Connecting ...", "info");
     }
 
-    const authTokenArray = await ipcRenderer.invoke(
-      "cluster:shell-api",
-      this.dependencies.hostedClusterId,
-      this.query.id,
-    );
+    const authTokenArray = await this.dependencies.requestShellToken(this.query.id);
 
     if (!(authTokenArray instanceof Uint8Array)) {
       throw new TypeError("ShellApi token is not a Uint8Array");
