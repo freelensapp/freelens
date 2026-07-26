@@ -36,7 +36,10 @@ export interface TerminalStatusReporter {
  * multi-line, and a raw newline would break the single-line contract.
  */
 const singleLine = (message: string) => {
-  const collapsed = message.replace(/\s+/g, " ").trim();
+  // Only what would break onto another line or jump the cursor is collapsed;
+  // runs of spaces are left alone because the download indicator aligns itself
+  // with them.
+  const collapsed = message.replace(/[\r\n\t\v\f]+/g, " ").trim();
 
   return collapsed.length > maxMessageLength ? `${collapsed.slice(0, maxMessageLength - 3)}...` : collapsed;
 };

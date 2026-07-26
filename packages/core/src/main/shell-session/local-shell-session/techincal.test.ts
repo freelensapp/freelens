@@ -12,6 +12,7 @@ import pathExistsSyncInjectable from "../../../common/fs/path-exists-sync.inject
 import readJsonSyncInjectable from "../../../common/fs/read-json-sync.injectable";
 import statInjectable from "../../../common/fs/stat.injectable";
 import writeJsonSyncInjectable from "../../../common/fs/write-json-sync.injectable";
+import { TerminalChannels } from "../../../common/terminal/channels";
 import platformInjectable from "../../../common/vars/platform.injectable";
 import { buildVersionStateInjectable } from "../../../features/vars/build-version/main/init.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
@@ -25,8 +26,9 @@ import type { DiContainer } from "@ogre-tools/injectable";
 import type { MockedFunction } from "vitest";
 import type WebSocket from "ws";
 
+import type { TerminalMessage } from "../../../common/terminal/channels";
 import type { KubeconfigManager } from "../../kubeconfig-manager/kubeconfig-manager";
-import type { Kubectl } from "../../kubectl/kubectl";
+import type { Kubectl, KubectlProgressOptions } from "../../kubectl/kubectl";
 import type { OpenShellSession } from "../create-shell-session.injectable";
 import type { SpawnPty } from "../spawn-pty.injectable";
 
@@ -60,18 +62,31 @@ describe("technical unit tests for local shell sessions", () => {
   describe("when on windows", () => {
     let openLocalShellSession: OpenShellSession;
     let spawnPtyMock: MockedFunction<SpawnPty>;
+    let kubectlProblem: string | undefined;
+    let ensurePathError: string | undefined;
 
     beforeEach(() => {
       di.override(platformInjectable, () => "win32");
 
       spawnPtyMock = vi.fn();
+      kubectlProblem = undefined;
+      ensurePathError = undefined;
       di.override(spawnPtyInjectable, () => spawnPtyMock);
 
       di.override(
         createKubectlInjectable,
         () => () =>
           ({
-            binDir: async () => "/some-kubectl-binary-dir",
+            kubectlVersion: "1.33.4",
+            binDir: async (opts?: KubectlProgressOptions) => {
+              if (kubectlProblem) {
+                opts?.onProblem?.(kubectlProblem);
+
+                return "";
+              }
+
+              return "/some-kubectl-binary-dir";
+            },
             getBundledPath: () => "/some-bundled-kubectl-path",
           }) as Partial<Kubectl> as Kubectl,
       );
@@ -80,11 +95,107 @@ describe("technical unit tests for local shell sessions", () => {
         kubeconfigManagerInjectable,
         () =>
           ({
-            ensurePath: async () => "/some-proxy-kubeconfig-file",
+            ensurePath: async () => {
+              if (ensurePathError) {
+                throw new Error(ensurePathError);
+              }
+
+              return "/some-proxy-kubeconfig-file";
+            },
           }) as Partial<KubeconfigManager> as KubeconfigManager,
       );
 
       openLocalShellSession = di.inject(openLocalShellSessionInjectable);
+    });
+
+    describe("when reporting the startup progress", () => {
+      let sent: TerminalMessage[];
+      let framesWhenSpawned: number;
+
+      const websocketFor = (sent: TerminalMessage[]) => {
+        const websocket = {
+          on: vi.fn(() => websocket),
+          once: vi.fn(() => websocket),
+          send: vi.fn((raw: string) => void sent.push(JSON.parse(raw))),
+          readyState: 1,
+          OPEN: 1,
+        } as Partial<WebSocket> as WebSocket;
+
+        return websocket;
+      };
+
+      const cluster = () =>
+        new Cluster({
+          contextName: "some-context-name",
+          id: "some-cluster-id",
+          kubeConfigPath: "/some-kube-config-path",
+        });
+
+      const statusMessages = () =>
+        sent
+          .filter((message) => message.type === TerminalChannels.STATUS)
+          .map((message) => (message as { data: { message: string; level: string } }).data);
+
+      beforeEach(() => {
+        sent = [];
+        framesWhenSpawned = -1;
+
+        spawnPtyMock.mockImplementation(() => {
+          framesWhenSpawned = sent.length;
+
+          return {
+            cols: 80,
+            rows: 40,
+            pid: 12343,
+            handleFlowControl: false,
+            kill: vi.fn(),
+            onData: vi.fn(),
+            onExit: vi.fn(),
+            pause: vi.fn(),
+            process: "my-pty",
+            resize: vi.fn(),
+            resume: vi.fn(),
+            write: vi.fn(),
+            on: vi.fn(),
+            clear: vi.fn(),
+          };
+        });
+      });
+
+      it("names every phase, all of them before the shell process is spawned", async () => {
+        await openLocalShellSession({ cluster: cluster(), tabId: "my-tab-id", websocket: websocketFor(sent) });
+
+        expect(statusMessages()).toEqual([
+          { message: "Starting cluster proxy ...", level: "info" },
+          { message: "Checking kubectl v1.33.4 ...", level: "info" },
+          { message: "Resolving shell environment ...", level: "info" },
+          { message: "Starting shell ...", level: "info" },
+        ]);
+        expect(framesWhenSpawned).toBe(4);
+      });
+
+      it("reports a kubectl problem as a sticky error, and still opens the shell", async () => {
+        kubectlProblem = "Failed to download kubectl v1.33.4 (Not Found) - using the bundled v1.34.1";
+
+        await openLocalShellSession({ cluster: cluster(), tabId: "my-tab-id", websocket: websocketFor(sent) });
+
+        expect(statusMessages()).toContainEqual({
+          message: "Failed to download kubectl v1.33.4 (Not Found) - using the bundled v1.34.1",
+          level: "error",
+        });
+        expect(spawnPtyMock).toHaveBeenCalled();
+      });
+
+      it("lets a failure to start the cluster proxy reject, so the session failure can be reported", async () => {
+        ensurePathError = "the proxy did not become ready";
+
+        await expect(
+          openLocalShellSession({ cluster: cluster(), tabId: "my-tab-id", websocket: websocketFor(sent) }),
+        ).rejects.toThrow("the proxy did not become ready");
+
+        expect(statusMessages()).toEqual([{ message: "Starting cluster proxy ...", level: "info" }]);
+        expect(spawnPtyMock).not.toHaveBeenCalled();
+      });
     });
 
     describe("when opening a local shell session", () => {
