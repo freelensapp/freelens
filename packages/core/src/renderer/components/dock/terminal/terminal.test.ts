@@ -22,18 +22,59 @@ describe("getMacNaturalTextEditingMapping", () => {
     });
   });
 
+  it("maps Option+Delete to forward kill-word", () => {
+    expect(getMacNaturalTextEditingMapping(keyDown({ altKey: true, code: "Delete" }))).toEqual({
+      data: "\x1bd",
+    });
+  });
+
+  it("maps Command+ArrowLeft to beginning-of-line", () => {
+    expect(getMacNaturalTextEditingMapping(keyDown({ metaKey: true, code: "ArrowLeft" }))).toEqual({
+      data: "\x01",
+    });
+  });
+
+  it("maps Command+ArrowRight to end-of-line", () => {
+    expect(getMacNaturalTextEditingMapping(keyDown({ metaKey: true, code: "ArrowRight" }))).toEqual({
+      data: "\x05",
+    });
+  });
+
   it("maps Command+Backspace to line kill", () => {
     expect(getMacNaturalTextEditingMapping(keyDown({ metaKey: true, code: "Backspace" }))).toEqual({
       data: "\x15",
     });
   });
 
+  it("maps Command+Delete to forward kill-line", () => {
+    expect(getMacNaturalTextEditingMapping(keyDown({ metaKey: true, code: "Delete" }))).toEqual({
+      data: "\x0b",
+    });
+  });
+
+  it("does not map Option+Backspace, which xterm already prefixes with ESC for backward-kill-word", () => {
+    expect(getMacNaturalTextEditingMapping(keyDown({ altKey: true, code: "Backspace" }))).toBeUndefined();
+  });
+
   it("does not map unrelated key events", () => {
     expect(getMacNaturalTextEditingMapping(keyUp({ altKey: true, code: "ArrowLeft" }))).toBeUndefined();
     expect(getMacNaturalTextEditingMapping(keyDown({ altKey: true, code: "ArrowUp" }))).toBeUndefined();
+    expect(getMacNaturalTextEditingMapping(keyDown({ metaKey: true, code: "ArrowUp" }))).toBeUndefined();
+    expect(getMacNaturalTextEditingMapping(keyDown({ code: "ArrowLeft" }))).toBeUndefined();
+    expect(getMacNaturalTextEditingMapping(keyDown({ metaKey: true, code: "KeyK" }))).toBeUndefined();
+  });
+
+  it("requires an exact modifier match", () => {
     expect(
       getMacNaturalTextEditingMapping(keyDown({ altKey: true, code: "ArrowLeft", shiftKey: true })),
     ).toBeUndefined();
+    expect(
+      getMacNaturalTextEditingMapping(keyDown({ metaKey: true, code: "ArrowLeft", shiftKey: true })),
+    ).toBeUndefined();
+    expect(
+      getMacNaturalTextEditingMapping(keyDown({ metaKey: true, code: "ArrowRight", ctrlKey: true })),
+    ).toBeUndefined();
+    expect(getMacNaturalTextEditingMapping(keyDown({ altKey: true, code: "Delete", metaKey: true }))).toBeUndefined();
   });
 });
 
