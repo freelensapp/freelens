@@ -8,7 +8,7 @@ import url from "node:url";
 import { ipcRenderer } from "electron";
 import { isEqual, once } from "es-toolkit";
 import { makeObservable, observable } from "mobx";
-import { TerminalChannels, type TerminalMessage } from "../../common/terminal/channels";
+import { TerminalChannels, type TerminalMessage, type TerminalStatusLevel } from "../../common/terminal/channels";
 import { WebSocketApi } from "./websocket-api";
 
 import type { Logger } from "@freelensapp/logger";
@@ -27,6 +27,12 @@ enum TerminalColor {
   NO_COLOR = "\u001b[0m",
 }
 
+/**
+ * Erases the line the cursor is on and parks the cursor at its start, so that
+ * whatever is written next replaces it entirely.
+ */
+export const eraseTerminalLine = "\u001b[2K\r";
+
 export interface TerminalApiQuery extends Record<string, string | undefined> {
   id: string;
   node?: string;
@@ -36,6 +42,12 @@ export interface TerminalApiQuery extends Record<string, string | undefined> {
 export interface TerminalEvents extends WebSocketEvents {
   ready: () => void;
   connected: () => void;
+  /**
+   * A startup status line. Deliberately separate from `data`: `onReady` is
+   * prepended to `data`, so routing status through it would mark the session
+   * as ready long before the PTY exists.
+   */
+  status: (data: string, level: TerminalStatusLevel) => void;
 }
 
 export interface TerminalApiDependencies extends WebSocketApiDependencies {
@@ -69,7 +81,7 @@ export class TerminalApi extends WebSocketApi<TerminalEvents> {
        * Only emit this message if we are not "reconnecting", so as to keep the
        * output display clean when the computer wakes from sleep
        */
-      this.emitStatus("Connecting ...");
+      this.emitTerminalStatus("Connecting ...", "info");
     }
 
     const authTokenArray = await ipcRenderer.invoke(
@@ -151,6 +163,14 @@ export class TerminalApi extends WebSocketApi<TerminalEvents> {
           window.localStorage.setItem(`${this.query.id}:last-data`, message.data);
           super._onMessage({ data: message.data, ...evt });
           break;
+        case TerminalChannels.STATUS:
+          /**
+           * Never routed through "data": `onReady` is prepended to that event,
+           * so a status frame would mark the session as ready before the shell
+           * process even exists.
+           */
+          this.emitTerminalStatus(message.data.message, message.data.level);
+          break;
         case TerminalChannels.CONNECTED:
           this.emit("connected");
           break;
@@ -173,6 +193,22 @@ export class TerminalApi extends WebSocketApi<TerminalEvents> {
   protected _onClose(evt: CloseEvent) {
     super._onClose(evt);
     this.isReady = false;
+  }
+
+  /**
+   * Writes a single-line startup status.
+   *
+   * Every line is prefixed with `\x1b[2K\r`, which erases the line the cursor
+   * is on and parks it at the start, so no memory of the previous frame is
+   * needed here. An `info` line is left unterminated on purpose, so that the
+   * next frame overwrites it; an `error` line consumes its line with a final
+   * `\r\n` and therefore cannot be overwritten by what follows.
+   */
+  protected emitTerminalStatus(message: string, level: TerminalStatusLevel) {
+    const color = level === "error" ? TerminalColor.RED : TerminalColor.GRAY;
+    const line = `${eraseTerminalLine}${color}${message}${TerminalColor.NO_COLOR}`;
+
+    this.emit("status", level === "error" ? `${line}\r\n` : line, level);
   }
 
   protected emitStatus(data: string, options: { color?: TerminalColor; showTime?: boolean } = {}) {
