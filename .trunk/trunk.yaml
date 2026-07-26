@@ -96,6 +96,18 @@ lint:
         - git-diff-check
       paths:
         - "**/__snapshots__/**"
+    # biome.jsonc excludes "**/build/**" (re-including only *.{js,cjs,mjs}, for
+    # freelens/build/prebuild.cjs and notarize.cjs), but Trunk's own biome
+    # linter definition above still hands it every build/*.json path it finds.
+    # biome 2.5.4 treats a target excluded by its own config as a hard error
+    # ("No files were processed in the specified paths", exit 1) rather than a
+    # no-op, so any commit touching a generated build/*.json file -- for
+    # example packages/kubectl-versions/build/checksums.json -- was permanently
+    # blocked by trunk-fmt-pre-commit regardless of content.
+    - linters:
+        - biome
+      paths:
+        - "**/build/*.json"
 actions:
   enabled:
     - trunk-announce
