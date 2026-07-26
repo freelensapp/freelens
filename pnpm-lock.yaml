@@ -1493,6 +1493,9 @@ importers:
 
   packages/kubectl-versions:
     devDependencies:
+      '@freelensapp/ensure-binaries':
+        specifier: workspace:^
+        version: link:../ensure-binaries
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../infrastructure/typescript

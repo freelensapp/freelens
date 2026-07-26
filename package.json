@@ -42,6 +42,7 @@
     "clean:turbo": "pnpm dlx rimraf@6.1.3 .turbo",
     "compute-versions": "pnpm -r compute-versions",
     "update-binaries-lock": "pnpm -r update-binaries-lock",
+    "update-kubectl-checksums": "pnpm -r update-kubectl-checksums",
     "dev": "turbo run dev --parallel --",
     "fmt": "pnpm trunk fmt",
     "knip": "pnpm dlx knip@6.24.0 --dependencies --no-gitignore --no-config-hints",
