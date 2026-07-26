@@ -367,6 +367,48 @@ taste — each has a defined role. Before adding or changing any stylesheet or
     analysis, and thinking through problems. When writing or editing code,
     use standard editing tools instead.
 
+## Local Agent: Triggering the GitHub Agent
+
+These rules apply to an agent running on a developer machine (a local Claude
+Code session), not to the workflow agent. The local agent shares the repository
+with the CI agent defined in `.github/workflows/claude.yaml`, and every comment
+it writes on GitHub is a potential trigger for it.
+
+### How the trigger works
+
+`claude.yaml` starts a run when the body of a **newly created** comment (issue
+comment or PR review comment), a **newly opened** issue (body or title), or a
+**submitted** PR review contains the string `@claude`, and the author is an
+OWNER, MEMBER or COLLABORATOR. The check is a plain
+`contains(github.event.comment.body, '@claude')` substring test, so the string
+fires the workflow wherever it appears — including inside a code span, a fenced
+block, a quoted line, or a URL. Markdown formatting is not an escape.
+
+The trigger text may also carry `[model:<alias>]` and `[runs-on:<alias>]`
+markers, which select the model and runner for that run (see the `parse` job for
+the accepted aliases). They are only read from the triggering text.
+
+### Rules for the local agent
+
+1. **Write the handle only to start a run.** Ask the user before triggering: a
+   run is a 120-minute CI job on the repository, so it is the user's call, not
+   an implementation detail.
+2. **Escape the handle when merely referring to it.** In issue bodies, PR
+   descriptions, review notes, commit messages and documentation, write
+   `@<!-- -->claude` (displays as the handle, but the raw body does not contain
+   the literal string, so `contains()` does not match) or describe it in prose
+   as "the Claude handle". This is what keeps a plan or a bug report that
+   documents the trigger from firing it.
+3. **Editing never triggers.** The workflow subscribes only to `created`,
+   `opened` and `submitted` events — not `edited`. So updating a comment, an
+   issue body or a PR description is always safe, even when the text already
+   contains a real trigger, and conversely editing a comment to add the handle
+   does **not** start a run: a new comment is required.
+4. **One trigger per task.** Do not repeat the handle in follow-up comments
+   while a run is in flight; each occurrence starts another concurrent job.
+5. **Push first.** The workflow checks out the remote ref (the PR head, or the
+   default branch for issues), so anything not pushed is invisible to it.
+
 ## GitHub Actions (Claude Code Action) Rules
 
 When operating via the `claude.yaml` workflow (i.e., invoked from a PR comment,
