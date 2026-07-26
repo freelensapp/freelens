@@ -47,7 +47,7 @@ lint:
           name: lint
           parse_regex: ^::(?P<severity>.*) title=(?P<code>[^,]+),file=(?P<path>[^,]+),line=(?P<line>[^,]+),endLine=[^,]+,col=(?P<col>[^,]+),endColumn=[^:]+::(?P<message>.*)
           read_output_from: stdout
-          run: biome check --config-path=${workspace}/biome.jsonc --reporter=github ${target}
+          run: biome check --config-path=${workspace}/biome.jsonc --reporter=github --no-errors-on-unmatched ${target}
           run_from: ${root_or_parent_with(biome.jsonc)}
         - output: regex
           success_codes:
@@ -58,7 +58,7 @@ lint:
           name: fmt
           parse_regex: ^::(?P<severity>.*) title=(?P<code>[^,]+),file=(?P<path>[^,]+),line=(?P<line>[^,]+),endLine=[^,]+,col=(?P<col>[^,]+),endColumn=[^:]+::(?P<message>.*)
           read_output_from: stdout
-          run: biome format --config-path=${workspace}/biome.jsonc --reporter=github --write ${target}
+          run: biome format --config-path=${workspace}/biome.jsonc --reporter=github --write --no-errors-on-unmatched ${target}
           run_from: ${root_or_parent_with(biome.jsonc)}
       run_timeout: 1m
 
@@ -103,7 +103,10 @@ lint:
     # ("No files were processed in the specified paths", exit 1) rather than a
     # no-op, so any commit touching a generated build/*.json file -- for
     # example packages/kubectl-versions/build/checksums.json -- was permanently
-    # blocked by trunk-fmt-pre-commit regardless of content.
+    # blocked by trunk-fmt-pre-commit regardless of content. The commands above
+    # also carry --no-errors-on-unmatched, since biome can still be invoked on
+    # these paths outside Trunk (the `pnpm biome` alias AGENTS.md documents, an
+    # editor integration); this entry is what saves Trunk the subprocess call.
     - linters:
         - biome
       paths:
