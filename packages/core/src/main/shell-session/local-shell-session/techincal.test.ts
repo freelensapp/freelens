@@ -29,8 +29,8 @@ import type WebSocket from "ws";
 import type { TerminalMessage } from "../../../common/terminal/channels";
 import type { KubeconfigManager } from "../../kubeconfig-manager/kubeconfig-manager";
 import type { Kubectl, KubectlProgressOptions } from "../../kubectl/kubectl";
-import type { OpenShellSession } from "../create-shell-session.injectable";
 import type { SpawnPty } from "../spawn-pty.injectable";
+import type { OpenLocalShellSession } from "./open.injectable";
 
 describe("technical unit tests for local shell sessions", () => {
   let di: DiContainer;
@@ -60,7 +60,7 @@ describe("technical unit tests for local shell sessions", () => {
   });
 
   describe("when on windows", () => {
-    let openLocalShellSession: OpenShellSession;
+    let openLocalShellSession: OpenLocalShellSession;
     let spawnPtyMock: MockedFunction<SpawnPty>;
     let kubectlProblem: string | undefined;
     let ensurePathError: string | undefined;
