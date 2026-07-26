@@ -74,6 +74,48 @@ export async function fetchChecksum(url: string): Promise<string> {
   );
 }
 
+/**
+ * Whether a URL resolves to anything, telling "never published" apart from
+ * "cannot tell right now".
+ *
+ * Not every platform and architecture exists for every release - kubectl
+ * v1.22.17 has no windows/arm64 - and a variant a vendor never built is data
+ * rather than a failure. Only a 404 is allowed to mean that. A timeout or a
+ * 503 throws, because treating either as absence would silently drop a pin
+ * that should exist.
+ */
+export async function resourceExists(url: string): Promise<boolean> {
+  let lastError: unknown;
+
+  for (let attempt = 1; attempt <= CHECKSUM_FETCH_ATTEMPTS; attempt += 1) {
+    if (attempt > 1) {
+      await delay(attempt * 1000);
+    }
+
+    const controller = new AbortController();
+
+    setTimeoutFor(controller, 60 * 1000);
+
+    try {
+      const response = await fetch(url, { method: "HEAD", signal: controller.signal });
+
+      if (response.status === 404) {
+        return false;
+      }
+
+      if (!response.ok) {
+        throw new Error(`${response.status} ${response.statusText}`);
+      }
+
+      return true;
+    } catch (error) {
+      lastError = error;
+    }
+  }
+
+  throw new Error(`unable to tell whether ${url} exists after ${CHECKSUM_FETCH_ATTEMPTS} attempts: ${lastError}`);
+}
+
 /** Fetches a small file, such as a signature or certificate, into memory. */
 export async function fetchBytes(url: string, timeout = 60 * 1000): Promise<Buffer> {
   const controller = new AbortController();

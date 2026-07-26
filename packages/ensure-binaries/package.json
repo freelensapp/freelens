@@ -20,7 +20,8 @@
   "main": "dist/index.js",
   "bin": {
     "ensure-binaries": "bin/ensure-binaries.js",
-    "update-binaries-lock": "bin/update-binaries-lock.js"
+    "update-binaries-lock": "bin/update-binaries-lock.js",
+    "update-kubectl-checksums": "bin/update-kubectl-checksums.js"
   },
   "files": [
     "dist"

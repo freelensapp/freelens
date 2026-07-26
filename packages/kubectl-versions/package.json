@@ -21,9 +21,12 @@
   "types": "./index.ts",
   "scripts": {
     "precompute-versions": "tsc --pretty --project build",
-    "compute-versions": "node ./build/compute-versions.mjs"
+    "compute-versions": "node ./build/compute-versions.mjs",
+    "preupdate-kubectl-checksums": "pnpm --filter @freelensapp/ensure-binaries build",
+    "update-kubectl-checksums": "update-kubectl-checksums --versions build/versions.json --checksums build/checksums.json"
   },
   "devDependencies": {
+    "@freelensapp/ensure-binaries": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
     "@types/semver": "catalog:",
     "fast-xml-parser": "catalog:",

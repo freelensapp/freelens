@@ -6,29 +6,18 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { mkdtemp, rm } from "node:fs/promises";
-import { tmpdir } from "node:os";
 import path from "node:path";
 import arg from "arg";
-import {
-  type Artifact,
-  artifactKey,
-  describeAllArtifacts,
-  readToolVersions,
-  type ToolName,
-  toolNames,
-} from "./artifacts.js";
-import { downloadToFile, fetchChecksum } from "./download.js";
+import { artifactKey, describeAllArtifacts, readToolVersions, type ToolName, toolNames } from "./artifacts.js";
 import { type BinariesLock, readLock, writeLock } from "./lock.js";
-import { verifyArtifact } from "./verify.js";
+import { mapWithConcurrency, pinArtifact } from "./pin.js";
 
 /**
  * Regenerates the committed lock file pinning every bundled binary.
  *
- * For each of the eighteen artifacts it fetches the vendor checksum, downloads
- * the artifact and hashes it, and only writes the lock when everything matched.
- * Downloading rather than trusting the published checksum is the point: it
- * proves the digest we pin describes bytes that were actually served.
+ * Each of the eighteen artifacts goes through the shared pinning flow in
+ * `pin.ts` - vendor checksum, download, hash, publisher signature - and the
+ * lock is only written when every one of them matched.
  */
 
 const options = arg({
@@ -57,49 +46,6 @@ if (only) {
   }
 }
 
-/** Runs tasks with a bounded number in flight, preserving input order. */
-async function mapWithConcurrency<T, R>(items: T[], limit: number, task: (item: T) => Promise<R>): Promise<R[]> {
-  const results = new Array<R>(items.length);
-  let next = 0;
-
-  async function worker(): Promise<void> {
-    while (next < items.length) {
-      const index = next++;
-
-      results[index] = await task(items[index] as T);
-    }
-  }
-
-  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
-
-  return results;
-}
-
-async function pinArtifact(artifact: Artifact): Promise<{ artifact: Artifact; sha256: string }> {
-  const workDir = await mkdtemp(path.join(tmpdir(), "freelens-binaries-lock-"));
-
-  try {
-    const artifactPath = path.join(workDir, path.basename(artifact.url));
-    const published = await fetchChecksum(artifact.checksumUrl);
-    const actual = await downloadToFile(artifact.url, artifactPath);
-
-    if (actual !== published) {
-      throw new Error(
-        `${artifact.url} does not match its published checksum: ${artifact.checksumUrl} says ${published}, the download hashes to ${actual}`,
-      );
-    }
-
-    // Only pin a digest whose provenance we could establish.
-    const verifiedBy = await verifyArtifact(artifact, actual, artifactPath, workDir);
-
-    console.log(`  ${artifact.tool} ${artifactKey(artifact)} ${actual}\n    verified: ${verifiedBy}`);
-
-    return { artifact, sha256: actual };
-  } finally {
-    await rm(workDir, { force: true, recursive: true });
-  }
-}
-
 const versions = await readToolVersions(pathToPackage);
 const wanted = describeAllArtifacts(versions).filter((artifact) => !only || only.includes(artifact.tool));
 
@@ -111,11 +57,12 @@ for (const tool of toolNames) {
 }
 
 const settled = await Promise.allSettled([
-  mapWithConcurrency(wanted, 4, (artifact) =>
-    pinArtifact(artifact).catch((error) => {
+  mapWithConcurrency(wanted, 4, async (artifact) => ({
+    artifact,
+    sha256: await pinArtifact(artifact).catch((error) => {
       throw new Error(`Failed to pin ${artifact.tool} for ${artifactKey(artifact)}: ${error}`);
     }),
-  ),
+  })),
 ]);
 
 const [result] = settled;

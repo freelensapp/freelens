@@ -26,9 +26,10 @@ jobs:
 
     runs-on: ${{ matrix.runs-on }}
     environment: automated
-    # Regenerating binaries.lock.json downloads all eighteen artifacts, which
-    # is a few hundred megabytes on top of what this job used to do.
-    timeout-minutes: 25
+    # Regenerating binaries.lock.json downloads all eighteen artifacts, and
+    # pinning the kubectl checksums adds six more per minor that moved - a
+    # typical patch release day touches three, so around a gigabyte on top.
+    timeout-minutes: 45
 
     if: >-
       github.event_name != 'issue_comment' || (startsWith(github.event.issue.title, 'Automated update of kubectl versions') && contains(github.event.comment.body, '/rerun'))
@@ -45,7 +46,8 @@ jobs:
 
       # yq and cosign come from mise so that their versions have a single
       # source (mise.toml) and the downloads are verified against mise.lock.
-      # cosign is needed to regenerate binaries.lock.json below.
+      # cosign is needed to regenerate binaries.lock.json and to pin the
+      # kubectl checksums below.
       - name: Set up mise
         uses: jdx/mise-action@v4
         with:
@@ -72,6 +74,13 @@ jobs:
 
       - name: kubectl versions
         run: pnpm --color=always compute-versions
+
+      # Every version the map names is one the application may download at
+      # runtime, so each needs a digest that was verified against upstream's
+      # signature. The generator only adds what is missing, which is six
+      # artifacts per minor that moved, and never rewrites an existing pin.
+      - name: Update the kubectl checksums
+        run: pnpm --color=always update-kubectl-checksums
 
       - name: Bundle the latest kubectl version
         run: |
