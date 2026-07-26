@@ -10,7 +10,6 @@ import { once } from "es-toolkit";
 import { get } from "es-toolkit/compat";
 import { v4 as uuid } from "uuid";
 import { initialNodeShellImage, initialNodeShellWindowsImage } from "../../../common/cluster-types";
-import { TerminalChannels } from "../../../common/terminal/channels";
 import { ShellOpenError, ShellSession } from "../shell-session";
 
 import type { Pod } from "@freelensapp/kube-object";
@@ -60,15 +59,19 @@ export class NodeShellSession extends ShellSession {
     this.websocket.once("close", cleanup);
 
     try {
+      this.status.info("Creating node shell pod ...");
       await this.createNodeShellPod(coreApi);
+
+      this.status.info("Waiting for the node shell pod ...");
       await this.waitForRunningPod(proxyKubeconfig);
     } catch (error) {
       cleanup();
 
-      this.send({
-        type: TerminalChannels.STDOUT,
-        data: `Error occurred: ${get(error, "response.body.message", error ? String(error) : "unknown error")}`,
-      });
+      // Not STDOUT: that marks the session as ready and clears the buffer, so
+      // the message used to erase itself.
+      this.status.error(
+        `Error occurred: ${get(error, "response.body.message", error ? String(error) : "unknown error")}`,
+      );
 
       throw new ShellOpenError("failed to create node pod", error instanceof Error ? { cause: error } : undefined);
     }

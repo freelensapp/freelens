@@ -9,6 +9,7 @@ import path from "node:path";
 import { getOrInsertWith } from "@freelensapp/utilities";
 import { TerminalChannels, type TerminalMessage } from "../../common/terminal/channels";
 import { clearKubeconfigEnvVars } from "../utils/clear-kube-env-vars";
+import { type TerminalStatusReporter, terminalStatusReporterFor } from "./send-terminal-status";
 
 import type { Logger } from "@freelensapp/logger";
 
@@ -142,6 +143,7 @@ export abstract class ShellSession {
   protected readonly kubectl: Kubectl;
   protected readonly websocket: WebSocket;
   protected readonly cluster: Cluster;
+  protected readonly status: TerminalStatusReporter;
 
   protected abstract get cwd(): string | undefined;
 
@@ -178,6 +180,7 @@ export abstract class ShellSession {
     this.kubectl = kubectl;
     this.websocket = websocket;
     this.cluster = cluster;
+    this.status = terminalStatusReporterFor(websocket);
     this.terminalId = `${cluster.id}:${terminalId}`;
   }
 
@@ -221,6 +224,9 @@ export abstract class ShellSession {
 
   protected async openShellProcess(shell: string, args: string[], env: Record<string, string | undefined>) {
     const cwd = await this.getCwd(env);
+
+    this.status.info("Starting shell ...");
+
     const { shellProcess, resume } = this.ensureShellProcess(shell, args, env, cwd);
 
     if (resume) {
@@ -333,10 +339,11 @@ export abstract class ShellSession {
     let env = this.dependencies.shellSessionEnvs.get(clusterId);
 
     if (!env) {
-      env = await this.getShellEnv();
+      env = await this.getShellEnv({ reportStatus: true });
       this.dependencies.shellSessionEnvs.set(clusterId, env);
     } else {
-      // refresh env in the background
+      // refresh env in the background, silently: the shell is already running
+      // and its prompt must not be written over
       this.getShellEnv().then((shellEnv: any) => {
         this.dependencies.shellSessionEnvs.set(clusterId, shellEnv);
       });
@@ -345,12 +352,28 @@ export abstract class ShellSession {
     return env;
   }
 
-  protected async getShellEnv() {
+  /**
+   * @param reportStatus whether the terminal is still waiting for this, and so
+   * should be told about it. Defaults to `false` because the background
+   * refresh of a warm cache must stay silent.
+   */
+  protected async getShellEnv({ reportStatus = false } = {}) {
     const shell = this.dependencies.userShellSetting.get() || this.dependencies.defaultShell;
+
+    if (reportStatus) {
+      this.status.info("Resolving shell environment ...");
+    }
+
     const result = await this.dependencies.computeShellEnvironment(shell);
     const rawEnv = (() => {
       if (result.callWasSuccessful) {
         return result.response ?? process.env;
+      }
+
+      if (reportStatus) {
+        // The fallback to `process.env` is silent otherwise, and the abort
+        // message in particular is already written for a user to read.
+        this.status.error(result.error);
       }
 
       return process.env;
