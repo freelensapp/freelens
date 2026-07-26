@@ -14,6 +14,7 @@ import { once } from "es-toolkit";
 import { debounce } from "es-toolkit/compat";
 import { reaction } from "mobx";
 import { TerminalChannels } from "../../../../common/terminal/channels";
+import { handleMacNaturalTextEditingKey } from "./terminal-key-mapping";
 
 import type { Logger } from "@freelensapp/logger";
 
@@ -218,6 +219,12 @@ export class Terminal {
 
   keyHandler = (evt: KeyboardEvent): boolean => {
     const { code, ctrlKey, metaKey } = evt;
+
+    if (this.dependencies.isMac) {
+      if (!handleMacNaturalTextEditingKey(evt, this.onData)) {
+        return false;
+      }
+    }
 
     // Handle custom hotkey bindings
     if (ctrlKey) {

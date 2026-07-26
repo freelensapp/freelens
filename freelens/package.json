@@ -33,6 +33,8 @@
     "build:resources:license": "generate-license --prod --header license-header.txt --output static/build/license.txt",
     "build:resources:tray": "generate-tray-icons --output static/build/tray --input @freelensapp/icon/icons/logo-lens.svg --notice-icon @freelensapp/icon/icons/notice.svg --spinner-icon @freelensapp/icon/icons/arrow-spinner.svg --none-color fbfbfb",
     "clean:dist": "pnpm dlx rimraf@6.1.3 binaries dist static/build",
+    "preupdate-binaries-lock": "pnpm --filter @freelensapp/ensure-binaries build",
+    "update-binaries-lock": "update-binaries-lock --package package.json",
     "dev": "ELECTRON_RUN_AS_NODE= NODE_ENV=development electron-vite dev --watch --inspect --remoteDebuggingPort 9223",
     "start": "pnpm dlx run-script-os@1.1.6 --",
     "start:darwin": "pnpm start:darwin:${npm_config_arch:-$(uname -m)}",
@@ -54,7 +56,7 @@
     "bundledHelmVersion": "4.2.3",
     "bundledKubectlVersion": "1.36.3",
     "contentSecurityPolicy": "script-src 'unsafe-eval' 'self'; frame-src https://*.renderer.freelens.app:*/; img-src * data:",
-    "k8sProxyVersion": "1.8.2",
+    "k8sProxyVersion": "1.8.3",
     "welcomeRoute": "/welcome"
   },
   "dependencies": {

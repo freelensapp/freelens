@@ -1,0 +1,88 @@
+name: Mise Lock Check
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .nvmrc
+      - mise.lock
+      - mise.toml
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Check mise.lock
+
+    runs-on: ubuntu-24.04-arm
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      # mise-action adds --locked on its own when a lockfile is present, so
+      # this downloads every tool and verifies it against the recorded
+      # checksums. It covers the runner platform only; the diff check below
+      # covers the rest. It also puts the pinned yq on PATH for that check.
+      - name: Install tools from mise.lock
+        uses: jdx/mise-action@v4
+        with:
+          version: 2026.7.13 # datasource=github-releases depName=jdx/mise
+
+      # Lock file maintenance PRs are automerged and nobody reads their diff,
+      # so the one thing a human could have spotted there is checked here: a
+      # checksum that changed while its tool version did not, which means the
+      # artifact behind an already pinned URL was replaced. The comparison is
+      # keyed on tool + version + platform, so adding a platform, or relocking
+      # after a version bump, is not flagged.
+      - name: Check for replaced artifacts
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |-
+          set -eo pipefail
+
+          # toml is spelled out because it has no single-letter alias; -ot is
+          # tsv, whose header row is what tail drops.
+          flatten() {
+            yq -ptoml -ot '
+              [
+                (.tools // {}) | to_entries[] as $tool
+                | $tool.value[] as $entry
+                | $entry | to_entries[]
+                | select(.key | test("^platforms\\."))
+                | {
+                    "tool": $tool.key,
+                    "version": $entry.version,
+                    "platform": (.key | sub("^platforms\\."; "")),
+                    "checksum": .value.checksum
+                  }
+              ]
+            ' "$1" | tail -n +2 | sort
+          }
+
+          if ! git show "$BASE_SHA:mise.lock" > base.lock 2> /dev/null; then
+            echo "No mise.lock on the base commit, nothing to compare."
+            exit 0
+          fi
+
+          flatten base.lock > base.tsv
+          flatten mise.lock > head.tsv
+
+          awk -F'\t' '
+            NR == FNR { base[$1 FS $2 FS $3] = $4; next }
+            ($1 FS $2 FS $3) in base && base[$1 FS $2 FS $3] != $4 {
+              printf "  %s %s (%s)\n    was: %s\n    now: %s\n", $1, $2, $3, base[$1 FS $2 FS $3], $4
+              found = 1
+            }
+            END { exit found ? 1 : 0 }
+          ' base.tsv head.tsv && {
+            echo "No checksum changed for an unchanged tool version."
+            exit 0
+          }
+
+          echo "Checksum changed without a version change - the artifact behind a pinned URL was replaced." >&2
+          exit 1

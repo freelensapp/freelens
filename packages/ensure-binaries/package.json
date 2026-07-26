@@ -19,7 +19,9 @@
   },
   "main": "dist/index.js",
   "bin": {
-    "ensure-binaries": "bin/ensure-binaries.js"
+    "ensure-binaries": "bin/ensure-binaries.js",
+    "update-binaries-lock": "bin/update-binaries-lock.js",
+    "update-kubectl-checksums": "bin/update-kubectl-checksums.js"
   },
   "files": [
     "dist"
@@ -35,7 +37,10 @@
     "cli-progress": "catalog:",
     "gunzip-maybe": "catalog:",
     "node-fetch": "catalog:",
+    "openpgp": "catalog:",
+    "sigstore": "catalog:",
     "tar-stream": "catalog:",
+    "yauzl-promise": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {
@@ -43,6 +48,7 @@
     "@types/gunzip-maybe": "catalog:",
     "@types/node": "catalog:",
     "@types/tar-stream": "catalog:",
+    "@types/yauzl-promise": "catalog:",
     "typescript": "catalog:"
   },
   "publishConfig": {

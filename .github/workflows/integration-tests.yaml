@@ -7,6 +7,15 @@ on:
   pull_request:
     branches:
       - "*"
+  # The nightly run is a security scan, not a test run: it rebuilds the app so
+  # the SBOM describes what main currently produces, then scans it, and skips
+  # the integration tests themselves (see the `github.event_name != 'schedule'`
+  # guards below). A vulnerability is a property of the dependency set and of
+  # the advisory feed, so it appears without any commit - re-running the tests
+  # to find it would only spend runner time. Its counterpart, Release Scan,
+  # scans what the last release actually shipped.
+  schedule:
+    - cron: 38 20 * * *
   workflow_dispatch: {}
 
 permissions:
@@ -67,34 +76,15 @@ jobs:
         if: runner.os == 'macOS'
         run: echo "/usr/local/opt/coreutils/libexec/gnubin" >> $GITHUB_PATH
 
-      - name: Install dependencies (Windows)
-        if: runner.os == 'Windows'
-        shell: bash
-        env:
-          # Renovate keeps this version up to date via the inline datasource
-          # hint below (see .renovaterc.json5 customManagers).
-          YQ_VERSION: v4.53.3 # datasource=github-releases depName=mikefarah/yq
-        run: |
-          set -eo pipefail
-          # winget/choco is not available on every Windows runner image (in
-          # particular the windows-11-arm image used for the arm64 build), so
-          # download the yq binary directly from the upstream GitHub release.
-          # Pick the asset that matches the runner architecture. Expose the
-          # install directory to later steps via GITHUB_PATH (Windows form,
-          # which Git Bash re-converts to POSIX on startup) and prepend the
-          # POSIX form to PATH here so the verification below can find yq.
-          case "${{ matrix.arch }}" in
-            arm64) yq_arch=arm64 ;;
-            *) yq_arch=amd64 ;;
-          esac
-          yq_version="$YQ_VERSION"
-          bin_dir="$HOME/bin"
-          mkdir -p "$bin_dir"
-          curl -fsSL -o "$bin_dir/yq.exe" \
-            "https://github.com/mikefarah/yq/releases/download/${yq_version}/yq_windows_${yq_arch}.exe"
-          cygpath --windows "$bin_dir" >> "$GITHUB_PATH"
-          PATH="$bin_dir:$PATH"
-          yq --version
+      # yq comes from mise so that its version has a single source (mise.toml)
+      # and the download is verified against mise.lock. It also settles the
+      # Windows runners, where winget/choco is not on every image (in particular
+      # the windows-11-arm one) and yq used to be downloaded by hand.
+      - name: Set up mise
+        uses: jdx/mise-action@v4
+        with:
+          version: 2026.7.13 # datasource=github-releases depName=jdx/mise
+          install_args: yq
 
       - name: Setup node
         uses: actions/setup-node@v7
@@ -107,7 +97,9 @@ jobs:
 
       - name: Get pnpm cache directory
         shell: bash
-        run: echo "pnpm_cache_dir=$(pnpm store path)" | tee -a ${GITHUB_ENV}
+        run: |
+          pnpm_cache_dir="$(pnpm store path)"
+          echo "pnpm_cache_dir=${pnpm_cache_dir}" | tee -a "${GITHUB_ENV}"
 
       - name: Use pnpm cache
         uses: actions/cache@v6
@@ -119,7 +111,7 @@ jobs:
 
       - name: Get Electron version
         shell: bash
-        run: echo "electron_version=$(yq -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a $GITHUB_ENV
+        run: echo "electron_version=$(yq -py -oy -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a $GITHUB_ENV
 
       # electron-builder's Electron zip downloader doesn't accept a cache
       # directory override (no ELECTRON_CACHE / electron_config_cache is read
@@ -168,7 +160,7 @@ jobs:
       # apt is pointed at this project-local directory via a global config file
       # written in the install step below.
       - name: Use APT cache (Linux)
-        if: runner.os == 'Linux'
+        if: runner.os == 'Linux' && github.event_name != 'schedule'
         uses: actions/cache@v6
         with:
           path: .apt
@@ -176,8 +168,10 @@ jobs:
           restore-keys: |
             ${{ matrix.runs-on }}-${{ matrix.arch }}-apt-
 
+      # Only the integration tests talk to a cluster, so the nightly scan run
+      # skips it - as it does every other test-only step below.
       - name: Start KinD cluster (Linux)
-        if: runner.os == 'Linux'
+        if: runner.os == 'Linux' && github.event_name != 'schedule'
         uses: helm/kind-action@v1
         with:
           cluster_name: freelens
@@ -216,7 +210,7 @@ jobs:
       # so only Chromium's libraries are installed, skipping the heavier
       # Firefox/WebKit dependency set that the Electron app never uses.
       - name: Install Playwright's OS dependencies (Linux)
-        if: runner.os == 'Linux'
+        if: runner.os == 'Linux' && github.event_name != 'schedule'
         shell: bash
         run: |
           set -eo pipefail
@@ -335,8 +329,8 @@ jobs:
           mv freelens/node_modules_dev freelens/node_modules
 
       # Produce the SBOM and runtime package list only for the real branch build
-      # (push/dispatch on main), never for PRs. The combine-and-scan job below
-      # consumes both as run artifacts.
+      # (push/dispatch/schedule on main), never for PRs. The combine-and-scan
+      # job below consumes both as run artifacts.
       - name: Create SBOM
         if: github.ref_name == 'main' && github.event_name != 'pull_request'
         uses: anchore/sbom-action@v0
@@ -390,7 +384,7 @@ jobs:
 
       - name: Run integration tests (Linux)
         id: integration-tests-linux
-        if: runner.os == 'Linux'
+        if: runner.os == 'Linux' && github.event_name != 'schedule'
         run: |
           sudo chown root:root freelens/dist/linux*-unpacked/chrome-sandbox
           sudo chmod 4755 freelens/dist/linux*-unpacked/chrome-sandbox
@@ -411,7 +405,7 @@ jobs:
 
       - name: Run integration tests (macOS)
         id: integration-tests-macos
-        if: runner.os == 'macOS'
+        if: runner.os == 'macOS' && github.event_name != 'schedule'
         shell: bash
         run: timeout 600 pnpm --color=always test:integration --reporter=verbose --reporter=github-actions --includeTaskLocation
         env:
@@ -427,7 +421,7 @@ jobs:
 
       - name: Run integration tests (Windows)
         id: integration-tests-windows
-        if: runner.os == 'Windows'
+        if: runner.os == 'Windows' && github.event_name != 'schedule'
         shell: bash
         run: timeout 600 pnpm --color=always test:integration --reporter=verbose --reporter=github-actions --includeTaskLocation
         env:
@@ -448,8 +442,8 @@ jobs:
 
     # Combines the per-arch SBOMs and runtime package lists produced by the
     # test-integration matrix (both pulled as run artifacts) and scans only the
-    # runtime dependency closure. Runs for the real branch build (push/dispatch
-    # on main) only, never for PRs.
+    # runtime dependency closure. Runs for the real branch build
+    # (push/dispatch/schedule on main) only, never for PRs.
     if: github.ref_name == 'main' && github.event_name != 'pull_request'
 
     needs:
@@ -470,6 +464,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+
+      # yq comes from mise so that its version has a single source (mise.toml)
+      # and the download is verified against mise.lock.
+      - name: Set up mise
+        uses: jdx/mise-action@v4
+        with:
+          version: 2026.7.13 # datasource=github-releases depName=jdx/mise
+          install_args: yq
 
       - name: Download SBOMs
         uses: actions/download-artifact@v8
@@ -514,12 +516,18 @@ jobs:
           for sbom in sboms/*-sbom.spdx.json; do
             name=$(basename "$sbom" .spdx.json)
             # Reduce the SBOM to runtime packages before scanning.
+            # sub("\x5c"; "/"): the Windows SBOM records sourceInfo paths with
+            # backslashes, which the /freelens/... test below would never match -
+            # every shipped non-npm package (Electron DLLs, node-pty, the bundled
+            # Go CLIs) would silently drop out of the scan. \x5c rather than a
+            # literal backslash because yq unescapes the string first, leaving
+            # the regex engine a trailing backslash.
             yq -pj -oj '
               (load("prod-set.json")) as $set |
               .packages |= map(
                 ( ((.externalRefs // []) | map(select(.referenceType == "purl")))[0].referenceLocator // "" ) as $purl |
                 (.name + "@" + (.versionInfo // "")) as $key |
-                ((.sourceInfo // "") | (capture("(?<p>/[^,]*)").p // "")) as $path |
+                (((.sourceInfo // "") | sub("\\x5c"; "/")) | (capture("(?<p>/[^,]*)").p // "")) as $path |
                 select(
                   (($purl | test("^pkg:npm/")) and ($set[$key] != null))
                   or
@@ -551,7 +559,7 @@ jobs:
                   | select(has("sourceInfo"))
                   | {
                       "key": (.name + "@" + (.versionInfo // "")),
-                      "value": ((.sourceInfo | capture("(?<p>/[^,]*)").p) // "" | sub("^/"; ""))
+                      "value": (((.sourceInfo | sub("\\x5c"; "/")) | capture("(?<p>/[^,]*)").p) // "" | sub("^/"; ""))
                     }
                   | select(.value != "")
                 ] | from_entries
@@ -637,7 +645,7 @@ jobs:
     # Turns the merged Grype JSON report from security-scan into a markdown
     # table and replaces the tracking discussion's body with it, so the
     # discussion always reflects the latest main-branch scan. Runs for the
-    # real branch build (push/dispatch on main) only, never for PRs.
+    # real branch build (push/dispatch/schedule on main) only, never for PRs.
     if: github.ref_name == 'main' && github.event_name != 'pull_request'
 
     needs:
@@ -653,6 +661,19 @@ jobs:
       DISCUSSION_NUMBER: 2243
 
     steps:
+      # Only needed for mise.toml and mise.lock: this job builds the table with
+      # yq and nothing else here reads the working tree.
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # yq comes from mise so that its version has a single source (mise.toml)
+      # and the download is verified against mise.lock.
+      - name: Set up mise
+        uses: jdx/mise-action@v4
+        with:
+          version: 2026.7.13 # datasource=github-releases depName=jdx/mise
+          install_args: yq
+
       - name: Download merged vulnerability report
         uses: actions/download-artifact@v8
         with:

@@ -1,6 +1,7 @@
 *.d.ts
 *.gz
 *.lock
+!mise.lock
 *.log
 *.map
 *.out
