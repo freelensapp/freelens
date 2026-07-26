@@ -13,6 +13,7 @@ import { registerInjectables as registerHotbarAutoHideInjectables } from "./hotb
 import { registerInjectables as registerMenuBarInjectables } from "./menu-bar/register-injectables";
 import { registerInjectables as registerSidebarMenuInjectables } from "./sidebar-menu/register-injectables";
 import { registerInjectables as registerStartUpInjectables } from "./start-up/register-injectables";
+import { registerInjectables as registerCustomAccentColorInjectables } from "./custom-accent-color/register-injectables";
 import { registerInjectables as registerThemeInjectables } from "./theme/register-injectables";
 import { registerInjectables as registerTimezoneInjectables } from "./timezone/register-injectables";
 
@@ -56,6 +57,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     registerThemeInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerCustomAccentColorInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }
