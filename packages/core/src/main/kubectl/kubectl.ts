@@ -4,7 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { createHash, randomBytes } from "node:crypto";
 import fs from "node:fs";
+import { setTimeout as delay } from "node:timers/promises";
 import { hasTypedProperty, isObject, isString, json } from "@freelensapp/utilities";
 import { noop } from "es-toolkit";
 import { ensureDir, pathExists } from "fs-extra";
@@ -24,9 +26,28 @@ import type { GetBasenameOfPath } from "../../common/path/get-basename.injectabl
 import type { GetDirnameOfPath } from "../../common/path/get-dirname.injectable";
 import type { JoinPaths } from "../../common/path/join-paths.injectable";
 import type { NormalizedPlatform } from "../../common/vars/normalized-platform.injectable";
-import type { DownloadBinary } from "../fetch/download-binary.injectable";
+import type { DownloadBinary, DownloadProgress } from "../fetch/download-binary.injectable";
+import type { GetKubectlChecksum } from "./kubectl-checksums.injectable";
 
 const initScriptVersionString = "# freelens-initscript v3";
+
+/**
+ * How long the download may go without receiving a single byte before it is
+ * given up on. A fixed overall deadline would kill a legitimate ~50 MB
+ * download over a slow link, while an unresponsive host would otherwise hang
+ * forever behind a progress indicator that never moves.
+ */
+const downloadStallTimeout = 30_000;
+
+/**
+ * Reporting hooks for a caller that shows what is happening, e.g. a terminal
+ * that is waiting for kubectl before it can spawn a shell. Every problem is
+ * reported with its consequence, because the caller continues either way.
+ */
+export interface KubectlProgressOptions {
+  onDownloadProgress?: (progress: DownloadProgress) => void;
+  onProblem?: (message: string) => void;
+}
 
 /**
  * Error codes that indicate the binary could not be executed because of a
@@ -41,6 +62,17 @@ const transientExecErrorCodes = new Set(["EBUSY", "ETXTBSY", "EAGAIN", "EPERM", 
 function isTransientExecError(error: ExecFileError | undefined): boolean {
   return typeof error?.code === "string" && transientExecErrorCodes.has(error.code);
 }
+
+/**
+ * Error codes a rename onto the destination may fail with on Windows while the
+ * verified content is perfectly fine: antivirus real-time scanning routinely
+ * holds a freshly created executable open for a moment. Retrying is safe
+ * precisely because the bytes have already been checked against the pin.
+ */
+const transientRenameErrorCodes = new Set(["EPERM", "EBUSY", "EACCES"]);
+
+const renameAttempts = 5;
+const renameRetryDelay = 100;
 
 export interface KubectlDependencies {
   readonly directoryForKubectlBinaries: string;
@@ -58,6 +90,7 @@ export interface KubectlDependencies {
   };
   readonly bundledKubectlVersion: string;
   readonly kubectlVersionMap: Map<string, string>;
+  readonly getKubectlChecksum: GetKubectlChecksum;
   readonly logger: Logger;
   downloadBinary: DownloadBinary;
   joinPaths: JoinPaths;
@@ -118,6 +151,18 @@ export class Kubectl {
     return this.dependencies.bundledKubectlBinaryPath;
   }
 
+  /**
+   * The verified digest this download must match, or `undefined` when there is
+   * none for this version on this platform and architecture.
+   */
+  protected getPinnedChecksum() {
+    return this.dependencies.getKubectlChecksum({
+      version: this.kubectlVersion,
+      platform: this.dependencies.normalizedDownloadPlatform,
+      arch: this.dependencies.normalizedDownloadArch,
+    });
+  }
+
   public getPathFromPreferences() {
     return this.dependencies.state.kubectlBinariesPath || this.getBundledPath();
   }
@@ -148,30 +193,44 @@ export class Kubectl {
 
     try {
       if (!(await this.ensureKubectl())) {
-        this.dependencies.logger.error("Failed to ensure kubectl, fallback to the bundled version");
+        this.dependencies.logger.error(
+          `Failed to ensure kubectl ${this.kubectlVersion}, fallback to the bundled version`,
+        );
 
         return this.getBundledPath();
       }
 
       return this.path;
     } catch (err) {
-      this.dependencies.logger.error("Failed to ensure kubectl, fallback to the bundled version", err);
+      this.dependencies.logger.error(
+        `Failed to ensure kubectl ${this.kubectlVersion}, fallback to the bundled version`,
+        err,
+      );
 
       return this.getBundledPath();
     }
   };
 
-  public async binDir() {
+  public async binDir(opts?: KubectlProgressOptions) {
     try {
-      await this.ensureKubectl();
+      await this.ensureKubectl(opts);
       await this.writeInitScripts();
 
       return this.dirname;
     } catch (err) {
       this.dependencies.logger.error("Failed to get binary directory", err);
+      opts?.onProblem?.(
+        `Failed to prepare the kubectl v${this.kubectlVersion} directory (${this.reasonOf(err)}) - ` +
+          `using the bundled v${this.dependencies.bundledKubectlVersion}`,
+      );
 
       return "";
     }
+  }
+
+  /** The human-readable half of an error, without the `Error: ` prefix. */
+  protected reasonOf(error: unknown): string {
+    return error instanceof Error ? error.message : String(error);
   }
 
   public async checkBinary(path: string, checkVersion = true) {
@@ -268,18 +327,46 @@ export class Kubectl {
     }
   }
 
-  public async ensureKubectl(): Promise<boolean> {
+  public async ensureKubectl(opts?: KubectlProgressOptions): Promise<boolean> {
     if (this.dependencies.state.downloadKubectlBinaries === false) {
       return true;
     }
 
     if (Kubectl.invalidBundle) {
       this.dependencies.logger.error(`Detected invalid bundle binary, returning ...`);
+      opts?.onProblem?.(
+        `The bundled kubectl v${this.dependencies.bundledKubectlVersion} is not usable, so kubectl ` +
+          `v${this.kubectlVersion} was not prepared - using whichever kubectl is on PATH`,
+      );
 
       return false;
     }
 
+    // Created before refusing below, because `binDir` writes the shell
+    // session's init scripts into this directory whether or not a download
+    // happens. Those scripts also put the bundled binaries directory on PATH,
+    // which is what makes the fallback work in a terminal.
     await ensureDir(this.dirname, 0o755);
+
+    // Nothing may be downloaded without a digest to check it against. One
+    // condition covers both reasons there may be none: a version outside the
+    // pinned range, and a platform/architecture upstream never published for
+    // that version.
+    if (!this.getPinnedChecksum()) {
+      this.dependencies.logger.error(
+        `No verified checksum is pinned for kubectl ${this.kubectlVersion} on ` +
+          `${this.dependencies.normalizedDownloadPlatform}/${this.dependencies.normalizedDownloadArch}, ` +
+          `so it will not be downloaded. The bundled kubectl ${this.dependencies.bundledKubectlVersion} is used ` +
+          `instead; set the "Path to kubectl binary" preference (kubectlBinariesPath) to use a different one.`,
+      );
+      opts?.onProblem?.(
+        `No verified checksum is pinned for kubectl v${this.kubectlVersion} on ` +
+          `${this.dependencies.normalizedDownloadPlatform}/${this.dependencies.normalizedDownloadArch}, so it was ` +
+          `not downloaded - using the bundled v${this.dependencies.bundledKubectlVersion}`,
+      );
+
+      return false;
+    }
 
     try {
       const release = await lockFile.lock(this.dirname);
@@ -290,21 +377,40 @@ export class Kubectl {
 
       if (!isValid && !bundled) {
         try {
-          await this.downloadKubectl();
+          await this.downloadKubectl(opts);
         } catch (error) {
           this.dependencies.logger.error(`[KUBECTL]: failed to download kubectl`, error);
           this.dependencies.logger.debug(`[KUBECTL]: Releasing lock for ${this.kubectlVersion}`);
           await release();
+          opts?.onProblem?.(
+            `Failed to download kubectl v${this.kubectlVersion} (${this.reasonOf(error)}) - ` +
+              `using the bundled v${this.dependencies.bundledKubectlVersion}`,
+          );
 
           return false;
         }
 
         isValid = await this.checkBinary(this.path, false);
+
+        if (!isValid) {
+          this.dependencies.logger.debug(`[KUBECTL]: Releasing lock for ${this.kubectlVersion}`);
+          await release();
+          opts?.onProblem?.(
+            `The downloaded kubectl v${this.kubectlVersion} did not run properly - ` +
+              `using the bundled v${this.dependencies.bundledKubectlVersion}`,
+          );
+
+          return false;
+        }
       }
 
       if (!isValid) {
         this.dependencies.logger.debug(`[KUBECTL]: Releasing lock for ${this.kubectlVersion}`);
         await release();
+        opts?.onProblem?.(
+          `The local kubectl v${this.kubectlVersion} did not run properly - ` +
+            `using the bundled v${this.dependencies.bundledKubectlVersion}`,
+        );
 
         return false;
       }
@@ -315,33 +421,101 @@ export class Kubectl {
       return true;
     } catch (error) {
       this.dependencies.logger.error(`[KUBECTL]: Failed to get a lock for ${this.kubectlVersion}`, error);
+      opts?.onProblem?.(
+        `Failed to get a lock for kubectl v${this.kubectlVersion} (${this.reasonOf(error)}) - ` +
+          `using the bundled v${this.dependencies.bundledKubectlVersion}`,
+      );
 
       return false;
     }
   }
 
-  public async downloadKubectl() {
+  public async downloadKubectl(opts?: KubectlProgressOptions) {
+    const checksum = this.getPinnedChecksum();
+
+    if (!checksum) {
+      throw new Error(
+        `No verified checksum is pinned for kubectl ${this.kubectlVersion} on ` +
+          `${this.dependencies.normalizedDownloadPlatform}/${this.dependencies.normalizedDownloadArch}`,
+      );
+    }
+
     await ensureDir(this.dependencies.getDirnameOfPath(this.path), 0o755);
 
     this.dependencies.logger.info(`Downloading kubectl ${this.kubectlVersion} from ${this.url} to ${this.path}`);
 
+    const response = await this.dependencies.downloadBinary(this.url, {
+      onProgress: opts?.onDownloadProgress,
+      stallTimeout: downloadStallTimeout,
+    });
+
+    if (!response.callWasSuccessful) {
+      throw new Error(`Failed to download kubectl binary: ${response.error}`);
+    }
+    if (!response.response || response.response.length == 0) {
+      throw new Error(`Empty content of kubectl binary`);
+    }
+
+    // The bytes must not be launchable before they have been verified, and that
+    // property is expressed differently per platform: on Unix by the permission
+    // bit, on Windows by the absence of an `.exe` suffix (where `chmod` only
+    // maps onto the read-only flag). Appending the suffix satisfies both, so the
+    // temporary name must never end in `.exe` and the `chmod` must never happen
+    // before the digest matches. The same directory keeps the rename atomic.
+    const temporaryPath = `${this.path}.download-${randomBytes(8).toString("hex")}`;
+
     try {
-      const response = await this.dependencies.downloadBinary(this.url);
+      const file = await fs.promises.open(temporaryPath, "wx", 0o600);
 
-      if (!response.callWasSuccessful) {
-        throw new Error(`Failed to download kubectl binary: ${response.error}`);
-      }
-      if (!response.response || response.response.length == 0) {
-        throw new Error(`Empty content of kubectl binary`);
+      try {
+        await file.writeFile(response.response);
+      } finally {
+        await file.close();
       }
 
-      const file = await fs.promises.open(this.path, "w", 0o755);
-      await file.writeFile(response.response);
-      await fs.promises.chmod(this.path, 0o755);
+      // Hashed from the buffer that was just written, never from a checksum
+      // fetched at runtime: asking the untrusted host for the expected digest of
+      // its own response proves nothing. Because the digest is pinned, this is
+      // uniform across every mirror, with no opt-out.
+      const digest = createHash("sha256").update(response.response).digest("hex");
+
+      if (digest !== checksum.sha256) {
+        throw new Error(
+          `Checksum mismatch for kubectl ${this.kubectlVersion} downloaded from ${this.url}: ` +
+            `expected sha256 ${checksum.sha256}, got ${digest}`,
+        );
+      }
+
+      await fs.promises.chmod(temporaryPath, 0o755);
+      await this.renameOntoPath(temporaryPath);
+
       this.dependencies.logger.debug("kubectl binary download finished");
     } catch (error) {
-      await this.dependencies.unlink(this.path).catch(noop);
+      // Only the temporary file is removed. `this.path` was never written to,
+      // so an existing good binary survives a failed download.
+      await this.dependencies.unlink(temporaryPath).catch(noop);
       throw error;
+    }
+  }
+
+  protected async renameOntoPath(temporaryPath: string): Promise<void> {
+    for (let attempt = 1; ; attempt++) {
+      try {
+        await fs.promises.rename(temporaryPath, this.path);
+
+        return;
+      } catch (error) {
+        const code = (error as NodeJS.ErrnoException)?.code;
+
+        if (attempt >= renameAttempts || !code || !transientRenameErrorCodes.has(code)) {
+          throw error;
+        }
+
+        this.dependencies.logger.warn(
+          `Could not put kubectl ${this.kubectlVersion} in place (${code}), retrying (${attempt}/${renameAttempts})`,
+        );
+        await delay(renameRetryDelay * attempt);
+      }
     }
   }
 

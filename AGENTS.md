@@ -49,6 +49,60 @@ When a tool insists on writing inside the repo, keep it out of git:
 Never `git add -A` / `git add .` blindly: review `git status` first and stage
 only the files your change actually touches, never these artifacts.
 
+## Copyright Headers
+
+Source files carry one of two header variants. Which one a file gets depends
+on whether it continues code from the original OpenLens fork, not on what its
+neighbours in the same directory look like.
+
+**New files** — anything created from scratch, including rewrites,
+translations, and reimplementations of removed or legacy logic — get the
+single-line variant:
+
+```ts
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+```
+
+This holds even when the new file's logic is inspired by, or replaces, old
+OpenLens code: inspiration is not continuation. `freelens/electron.vite.config.ts`,
+written as a translation of the removed webpack config, is a new file.
+
+**Files that continue code from the fork** keep the two-line variant:
+
+```ts
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+```
+
+A file continues fork code when its path was present in the fork-import commit
+`0a5798c9` ("First commit - Open Lens fork from master branch"):
+
+```sh
+git ls-tree -r --name-only 0a5798c9 | grep -x <path>
+```
+
+or when `git log --follow -- <path>` traces it back to a path that was — that
+is, git itself detects the file as a rename, move, or copy of fork-era code:
+
+```sh
+git log --follow --format= --name-only -- <path> | sort -u
+```
+
+Never add the `OpenLens Authors` line to a file that does not already have it
+just because neighbouring files do. Do not touch legal or license text
+(`LICENSE`, `README.md`, `freelens/license-header.txt`,
+`freelens/static/build/license.txt`) or the upstream copyright notices of
+vendored third-party code, which are unrelated to either header variant.
+
+See [#2352](https://github.com/freelensapp/freelens/issues/2352) for the
+cleanup that established this rule.
+
 ## Build System
 
 ### Commands
@@ -154,6 +208,40 @@ tool while iterating.
 
 `.github/workflows/binaries-lock-check.yaml` enforces both that the lock is
 current and that no digest changed while its version stood still.
+
+### Downloaded kubectl Versions
+
+The bundled kubectl is not the only one the application runs: a cluster whose
+minor version differs gets a version-matched kubectl downloaded at runtime. The
+map of which patch to fetch per minor lives in
+`packages/kubectl-versions/build/versions.json`, and the digest of every
+artifact that map can produce is pinned in
+`packages/kubectl-versions/build/checksums.json`, keyed by version and then by
+`${platform}/${arch}`.
+
+`Kubectl.downloadKubectl()` hashes what it downloaded and refuses anything that
+does not match its pin, and `ensureKubectl()` refuses to download at all when
+there is no pin, falling back to the bundled binary. **A version added to the
+map without a pin therefore never gets downloaded**, so the two files are
+regenerated together:
+
+```sh
+pnpm --filter @freelensapp/kubectl-versions compute-versions
+pnpm update-kubectl-checksums
+```
+
+The generator reads `dl.k8s.io` only, never a mirror — pinning bytes from a
+mirror would let a compromised mirror bless its own digest. It skips versions
+already present, which makes a run incremental and an existing pin immutable,
+and it verifies each download against both the published `.sha256` and the
+keyless cosign signature before recording it. `cosign` comes from mise
+(`mise install`).
+
+Both files start at 1.22, the oldest line Kubernetes publishes a signature for,
+and coverage is not uniform below that floor's neighbours: v1.22.17 has no
+`windows/arm64` build, so the generator logs an unpublished variant and carries
+on rather than failing. `.github/workflows/kubectl-checksums-check.yaml`
+verifies added pins and asserts that no existing digest changed.
 
 ## Common Development Tasks
 
@@ -278,6 +366,48 @@ taste — each has a defined role. Before adding or changing any stylesheet or
 10. **Do not use Antropic Fable for coding tasks** — Fable may be used only for planning,
     analysis, and thinking through problems. When writing or editing code,
     use standard editing tools instead.
+
+## Local Agent: Triggering the GitHub Agent
+
+These rules apply to an agent running on a developer machine (a local Claude
+Code session), not to the workflow agent. The local agent shares the repository
+with the CI agent defined in `.github/workflows/claude.yaml`, and every comment
+it writes on GitHub is a potential trigger for it.
+
+### How the trigger works
+
+`claude.yaml` starts a run when the body of a **newly created** comment (issue
+comment or PR review comment), a **newly opened** issue (body or title), or a
+**submitted** PR review contains the string `@claude`, and the author is an
+OWNER, MEMBER or COLLABORATOR. The check is a plain
+`contains(github.event.comment.body, '@claude')` substring test, so the string
+fires the workflow wherever it appears — including inside a code span, a fenced
+block, a quoted line, or a URL. Markdown formatting is not an escape.
+
+The trigger text may also carry `[model:<alias>]` and `[runs-on:<alias>]`
+markers, which select the model and runner for that run (see the `parse` job for
+the accepted aliases). They are only read from the triggering text.
+
+### Rules for the local agent
+
+1. **Write the handle only to start a run.** Ask the user before triggering: a
+   run is a 120-minute CI job on the repository, so it is the user's call, not
+   an implementation detail.
+2. **Escape the handle when merely referring to it.** In issue bodies, PR
+   descriptions, review notes, commit messages and documentation, write
+   `@<!-- -->claude` (displays as the handle, but the raw body does not contain
+   the literal string, so `contains()` does not match) or describe it in prose
+   as "the Claude handle". This is what keeps a plan or a bug report that
+   documents the trigger from firing it.
+3. **Editing never triggers.** The workflow subscribes only to `created`,
+   `opened` and `submitted` events — not `edited`. So updating a comment, an
+   issue body or a PR description is always safe, even when the text already
+   contains a real trigger, and conversely editing a comment to add the handle
+   does **not** start a run: a new comment is required.
+4. **One trigger per task.** Do not repeat the handle in follow-up comments
+   while a run is in flight; each occurrence starts another concurrent job.
+5. **Push first.** The workflow checks out the remote ref (the PR head, or the
+   default branch for issues), so anything not pushed is invisible to it.
 
 ## GitHub Actions (Claude Code Action) Rules
 

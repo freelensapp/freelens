@@ -4,26 +4,34 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import assert from "node:assert";
 import { NodeApi } from "@freelensapp/kube-api";
 import { CoreV1Api, Watch } from "@kubernetes/client-node";
 import { once } from "es-toolkit";
 import { get } from "es-toolkit/compat";
 import { v4 as uuid } from "uuid";
 import { initialNodeShellImage, initialNodeShellWindowsImage } from "../../../common/cluster-types";
-import { TerminalChannels } from "../../../common/terminal/channels";
 import { ShellOpenError, ShellSession } from "../shell-session";
 
 import type { Pod } from "@freelensapp/kube-object";
 
 import type { KubeConfig } from "@kubernetes/client-node";
 
+import type { Cluster } from "../../../common/cluster/cluster";
 import type { CreateKubeApi } from "../../../common/k8s-api/create-kube-api.injectable";
 import type { CreateKubeJsonApiForCluster } from "../../../common/k8s-api/create-kube-json-api-for-cluster.injectable";
 import type { LoadProxyKubeconfig } from "../../cluster/load-proxy-kubeconfig.injectable";
+import type { Kubectl } from "../../kubectl/kubectl";
 import type { ShellSessionArgs, ShellSessionDependencies } from "../shell-session";
 
+/**
+ * A node shell is a cluster concept by definition, so unlike the base class it
+ * always has both a cluster and a kubectl.
+ */
 export interface NodeShellSessionArgs extends ShellSessionArgs {
   nodeName: string;
+  cluster: Cluster;
+  kubectl: Kubectl;
 }
 
 export interface NodeShellSessionDependencies extends ShellSessionDependencies {
@@ -60,27 +68,38 @@ export class NodeShellSession extends ShellSession {
     this.websocket.once("close", cleanup);
 
     try {
+      this.status.info("Creating node shell pod ...");
       await this.createNodeShellPod(coreApi);
+
+      this.status.info("Waiting for the node shell pod ...");
       await this.waitForRunningPod(proxyKubeconfig);
     } catch (error) {
       cleanup();
 
-      this.send({
-        type: TerminalChannels.STDOUT,
-        data: `Error occurred: ${get(error, "response.body.message", error ? String(error) : "unknown error")}`,
-      });
+      // Not STDOUT: that marks the session as ready and clears the buffer, so
+      // the message used to erase itself.
+      this.status.error(
+        `Error occurred: ${get(error, "response.body.message", error ? String(error) : "unknown error")}`,
+      );
 
       throw new ShellOpenError("failed to create node pod", error instanceof Error ? { cause: error } : undefined);
     }
 
     const env = await this.getCachedShellEnv();
     const args = ["attach", "-q", "-i", "-t", "-n", "kube-system", this.podName];
+    const { kubectl } = this;
 
-    await this.openShellProcess(await this.kubectl.getPath(), args, env);
+    assert(kubectl, "A node shell session always has a kubectl");
+
+    await this.openShellProcess(await kubectl.getPath(), args, env);
   }
 
   protected async createNodeShellPod(coreApi: CoreV1Api) {
-    const { imagePullSecret, nodeShellImage } = this.cluster.preferences;
+    const { cluster } = this;
+
+    assert(cluster, "A node shell session always has a cluster");
+
+    const { imagePullSecret, nodeShellImage } = cluster.preferences;
 
     const imagePullSecrets = imagePullSecret
       ? [
@@ -91,7 +110,7 @@ export class NodeShellSession extends ShellSession {
       : undefined;
 
     const nodeApi = this.dependencies.createKubeApi(NodeApi, {
-      request: this.dependencies.createKubeJsonApiForCluster(this.cluster.id),
+      request: this.dependencies.createKubeJsonApiForCluster(cluster.id),
     });
     const node = await nodeApi.get({ name: this.nodeName });
 

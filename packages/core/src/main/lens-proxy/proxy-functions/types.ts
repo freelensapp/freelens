@@ -17,3 +17,11 @@ export interface ProxyApiRequestArgs {
   head: Buffer;
   cluster: Cluster;
 }
+
+/**
+ * A shell request is the one upgrade that does not need a cluster: a terminal
+ * can be opened outside of any cluster session.
+ */
+export interface ShellApiRequestArgs extends Omit<ProxyApiRequestArgs, "cluster"> {
+  cluster?: Cluster;
+}
