@@ -8,6 +8,7 @@
 
 import apiBaseHostHeaderInjectable from "./api-base-host-header.injectable";
 import apiBaseServerAddressInjectable from "./api-base-server-address.injectable";
+import clusterApiAddressInjectable from "./cluster-api-address.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
@@ -19,6 +20,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(apiBaseServerAddressInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(clusterApiAddressInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
