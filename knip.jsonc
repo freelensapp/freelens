@@ -131,14 +131,14 @@
         "immer",
         "mobx",
         "monaco-editor",
-        "node-fetch",
         "react",
         "react-select",
         "react-table",
         "react-window",
         "rfc6902",
         "type-fest",
-        "typed-emitter"
+        "typed-emitter",
+        "undici"
       ],
       "typescript": {
         "config": ["tsconfig.json", "tsconfig.dts.json"]
