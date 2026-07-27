@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { Agent } from "node:https";
 import { KubeApi } from "@freelensapp/kube-api";
 import {
   logDebugInjectionToken,
@@ -13,14 +12,15 @@ import {
   logWarningInjectionToken,
 } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
+import { Agent } from "undici";
 import isDevelopmentInjectable from "../vars/is-development.injectable";
 import createKubeJsonApiInjectable from "./create-kube-json-api.injectable";
-import type { AgentOptions } from "node:https";
+import type { ConnectionOptions } from "node:tls";
 
 import type { KubeApiOptions } from "@freelensapp/kube-api";
 import type { KubeJsonApiDataFor, KubeObject, KubeObjectConstructor } from "@freelensapp/kube-object";
 
-import type { RequestInit } from "node-fetch";
+import type { Dispatcher, RequestInit } from "undici";
 
 export interface CreateKubeApiForRemoteClusterConfig {
   cluster: {
@@ -34,12 +34,12 @@ export interface CreateKubeApiForRemoteClusterConfig {
     clientKeyData?: string;
   };
   /**
-   * Custom instance of https.agent to use for the requests
+   * Custom undici dispatcher to use for the requests
    *
-   * @remarks the custom agent replaced default agent, options skipTLSVerify,
-   * clientCertificateData, clientKeyData and caData are ignored.
+   * @remarks the custom dispatcher replaces the default one, so the options
+   * skipTLSVerify, clientCertificateData, clientKeyData and caData are ignored.
    */
-  agent?: Agent;
+  dispatcher?: Dispatcher;
 }
 
 export type KubeApiConstructor<Object extends KubeObject, Api extends KubeApi<Object>> = new (
@@ -75,30 +75,30 @@ const createKubeApiForRemoteClusterInjectable = getInjectable({
       apiClass?: KubeApiConstructor<KubeObject, KubeApi<KubeObject>>,
     ) => {
       const reqInit: RequestInit = {};
-      const agentOptions: AgentOptions = {};
+      const connectOptions: ConnectionOptions = {};
 
       if (config.cluster.skipTLSVerify === true) {
-        agentOptions.rejectUnauthorized = false;
+        connectOptions.rejectUnauthorized = false;
       }
 
       if (config.user.clientCertificateData) {
-        agentOptions.cert = config.user.clientCertificateData;
+        connectOptions.cert = config.user.clientCertificateData;
       }
 
       if (config.user.clientKeyData) {
-        agentOptions.key = config.user.clientKeyData;
+        connectOptions.key = config.user.clientKeyData;
       }
 
       if (config.cluster.caData) {
-        agentOptions.ca = config.cluster.caData;
+        connectOptions.ca = config.cluster.caData;
       }
 
-      if (Object.keys(agentOptions).length > 0) {
-        reqInit.agent = new Agent(agentOptions);
+      if (Object.keys(connectOptions).length > 0) {
+        reqInit.dispatcher = new Agent({ connect: connectOptions });
       }
 
-      if (config.agent) {
-        reqInit.agent = config.agent;
+      if (config.dispatcher) {
+        reqInit.dispatcher = config.dispatcher;
       }
 
       const token = config.user.token;

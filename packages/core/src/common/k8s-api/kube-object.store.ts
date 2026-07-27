@@ -24,9 +24,9 @@ import type { KubeJsonApiDataFor, KubeObject } from "@freelensapp/kube-object";
 import type { Logger } from "@freelensapp/logger";
 import type { Disposer } from "@freelensapp/utilities";
 
-import type { RequestInit } from "node-fetch";
 import type { Patch } from "rfc6902";
 import type { PartialDeep } from "type-fest";
+import type { RequestInit } from "undici";
 
 import type { ClusterContext } from "../../renderer/cluster-frame-context/cluster-frame-context";
 

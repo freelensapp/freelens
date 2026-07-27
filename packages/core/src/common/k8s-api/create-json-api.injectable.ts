@@ -4,20 +4,18 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { Agent } from "node:https";
 import { JsonApi } from "@freelensapp/json-api";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import lensProxyCertificateInjectable from "../certificate/lens-proxy-certificate.injectable";
-import nodeFetchInjectable from "../fetch/node-fetch.injectable";
+import { getLensProxyAgent } from "../fetch/lens-proxy-agent";
+import nodeFetchInjectable, { type FetchRequestInit } from "../fetch/node-fetch.injectable";
 
 import type { JsonApiConfig, JsonApiData, JsonApiDependencies, JsonApiParams } from "@freelensapp/json-api";
 
-import type { RequestInit } from "node-fetch";
-
 export type CreateJsonApi = <Data = JsonApiData, Params extends JsonApiParams<Data> = JsonApiParams<Data>>(
   config: JsonApiConfig,
-  reqInit?: RequestInit,
+  reqInit?: FetchRequestInit,
 ) => JsonApi<Data, Params>;
 
 const createJsonApiInjectable = getInjectable({
@@ -31,20 +29,12 @@ const createJsonApiInjectable = getInjectable({
 
     return (config, reqInit) => {
       if (!config.getRequestOptions) {
-        config.getRequestOptions = async () => {
-          const agent = new Agent({
-            ca: lensProxyCert.get().cert,
-          });
-
-          // MSD Agent and Node Agent are not compatible
-          return {
-            agent,
-          } as any;
-        };
+        config.getRequestOptions = async () => ({
+          dispatcher: getLensProxyAgent(lensProxyCert.get().cert),
+        });
       }
 
-      // MSD RequestInit and Node RequestInit are not compatible
-      return new JsonApi(deps, config, reqInit as any);
+      return new JsonApi(deps, config, reqInit);
     };
   },
 });

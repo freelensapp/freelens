@@ -7,7 +7,7 @@
 import { TextDecoder as TextDecoderNode, TextEncoder } from "node:util";
 import { enableMapSet, setAutoFreeze } from "immer";
 import { configure } from "mobx";
-import freelensFetch from "node-fetch";
+import { fetch as undiciFetch } from "undici";
 
 import type * as K8slensTooltip from "@freelensapp/tooltip";
 
@@ -25,7 +25,7 @@ process.on("unhandledRejection", (err: any) => {
   console.error(err ?? "Test failed without explicit error");
 });
 
-global.fetch = freelensFetch as unknown as typeof fetch;
+global.fetch = undiciFetch as unknown as typeof fetch;
 
 global.TextEncoder = TextEncoder as unknown as typeof global.TextEncoder;
 global.TextDecoder = TextDecoderNode as unknown as typeof TextDecoder;

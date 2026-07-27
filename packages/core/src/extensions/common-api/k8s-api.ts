@@ -48,7 +48,7 @@ import type {
   KubeApiOptions,
 } from "@freelensapp/kube-api";
 
-import type { NodeFetchRequestInit } from "../../common/fetch/node-fetch.injectable";
+import type { FetchRequestInit } from "../../common/fetch/node-fetch.injectable";
 import type { KubeApiDataFrom, KubeObjectStoreOptions } from "../../common/k8s-api/kube-object.store";
 
 export const apiManager = asLazyInjectedForExtensionApi(apiManagerInjectable);
@@ -140,7 +140,7 @@ export type {
 export type { CreateKubeApiForLocalClusterConfig as ILocalKubeApiConfig } from "../../common/k8s-api/create-kube-api-for-cluster.injectable";
 export type { CreateKubeApiForRemoteClusterConfig as IRemoteKubeApiConfig } from "../../common/k8s-api/create-kube-api-for-remote-cluster.injectable";
 
-function KubeJsonApiCstr(config: JsonApiConfig, reqInit?: NodeFetchRequestInit) {
+function KubeJsonApiCstr(config: JsonApiConfig, reqInit?: FetchRequestInit) {
   const di = getDiForExtensionApi();
   const createKubeJsonApi = di.inject(createKubeJsonApiInjectable);
 
@@ -152,7 +152,7 @@ export type KubeJsonApi = InternalKubeJsonApi;
 export const KubeJsonApi = Object.assign(
   KubeJsonApiCstr as unknown as new (
     config: JsonApiConfig,
-    reqInit?: RequestInit,
+    reqInit?: FetchRequestInit,
   ) => InternalKubeJsonApi,
   {
     forCluster: asLazyInjectedForExtensionApi(createKubeJsonApiForClusterInjectable),

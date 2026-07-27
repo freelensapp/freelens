@@ -10,7 +10,7 @@ import proxyFetchInjectable from "./proxy-fetch.injectable";
 
 import type { AsyncResult } from "@freelensapp/utilities";
 
-import type { NodeFetchRequestInit, NodeFetchResponse } from "../../common/fetch/node-fetch.injectable";
+import type { FetchRequestInit, FetchResponse } from "../../common/fetch/node-fetch.injectable";
 
 /**
  * The payload of {@link downloadBinaryChannel}, so it must stay serializable.
@@ -43,8 +43,8 @@ const downloadBinaryInjectable = getInjectable({
     const fetch = di.inject(proxyFetchInjectable);
 
     return async (url, opts) => {
-      let result: NodeFetchResponse;
-      const fetchOpts = {} as NodeFetchRequestInit;
+      let result: FetchResponse;
+      const fetchOpts = {} as FetchRequestInit;
       const stall = opts?.stallTimeout ? withStallTimeout(opts.stallTimeout) : undefined;
       const signals = [opts?.timeout ? withTimeout(opts.timeout).signal : undefined, stall?.controller.signal].filter(
         (signal) => signal !== undefined,

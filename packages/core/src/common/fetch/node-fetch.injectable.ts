@@ -4,19 +4,25 @@
  */
 
 import { getInjectable, type Injectable } from "@ogre-tools/injectable";
-import nodeFetch, { type RequestInfo, type RequestInit, type Response } from "node-fetch";
+import { fetch as undiciFetch } from "undici";
+import { withHostHeaderPreserved } from "./host-header-dispatcher";
 
-export type NodeFetchRequestInfo = RequestInfo;
-export type NodeFetchRequestInit = RequestInit;
-export type NodeFetchResponse = Response;
+import type { RequestInfo, RequestInit, Response } from "undici";
 
-export type NodeFetch = (url: URL | NodeFetchRequestInfo, init?: NodeFetchRequestInit) => Promise<NodeFetchResponse>;
+export type FetchRequestInfo = RequestInfo;
+export type FetchRequestInit = RequestInit;
+export type FetchResponse = Response;
 
+export type NodeFetch = (url: URL | FetchRequestInfo, init?: FetchRequestInit) => Promise<FetchResponse>;
+
+/**
+ * undici's `fetch` rather than the renderer's Chromium `fetch`: requests to
+ * lens-proxy carry a `Host` header, which Chromium refuses to send. See
+ * {@link withHostHeaderPreserved}.
+ */
 const nodeFetchInjectable: Injectable<NodeFetch, unknown, void> = getInjectable({
   id: "node-fetch",
-  instantiate: (di) => (url, init) => {
-    return nodeFetch(url, init);
-  },
+  instantiate: () => (url, init) => undiciFetch(url, withHostHeaderPreserved(init)),
 });
 
 export default nodeFetchInjectable;

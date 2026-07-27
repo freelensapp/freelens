@@ -4,26 +4,25 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { PassThrough } from "node:stream";
 import asyncFn from "@async-fn/vitest";
 import { Deployment, Pod } from "@freelensapp/kube-object";
 import { flushPromises } from "@freelensapp/test-utils";
 import { DeploymentApi, NamespaceApi, PodApi } from "./endpoints";
 import { KubeJsonApi } from "./kube-json-api";
-import { createMockResponseFromStream, createMockResponseFromString } from "./mock-responses";
+import { createMockResponseFromStream, createMockResponseFromString, MockResponseStream } from "./mock-responses";
 
+import type { JsonApiFetch } from "@freelensapp/json-api";
 import type { KubeJsonApiData, KubeJsonApiDataFor } from "@freelensapp/kube-object";
 import type { Logger } from "@freelensapp/logger";
 
 import type { AsyncFnMock } from "@async-fn/vitest";
-import type Fetch from "node-fetch";
 import type { MockedFunction } from "vitest";
 
 import type { KubeApiWatchCallback } from "./kube-api";
 import type { IKubeWatchEvent } from "./kube-watch-event";
 
 describe("KubeApi", () => {
-  let fetchMock: AsyncFnMock<typeof Fetch>;
+  let fetchMock: AsyncFnMock<JsonApiFetch>;
   let logger: Logger;
   let kubeJsonApi: KubeJsonApi;
 
@@ -463,7 +462,7 @@ describe("KubeApi", () => {
 
   describe("watching pods", () => {
     let api: PodApi;
-    let stream: PassThrough;
+    let stream: MockResponseStream;
 
     beforeEach(() => {
       api = new PodApi({
@@ -473,7 +472,7 @@ describe("KubeApi", () => {
         logWarn: logger.error,
         maybeKubeApi: kubeJsonApi,
       });
-      stream = new PassThrough();
+      stream = new MockResponseStream();
     });
 
     afterEach(() => {
@@ -535,9 +534,8 @@ describe("KubeApi", () => {
         });
 
         describe("when some data comes back on the stream", () => {
-          beforeEach(() => {
-            stream.emit(
-              "data",
+          beforeEach(async () => {
+            stream.push(
               `${JSON.stringify({
                 type: "ADDED",
                 object: {
@@ -552,6 +550,10 @@ describe("KubeApi", () => {
                 },
               } as IKubeWatchEvent<KubeJsonApiDataFor<Pod>>)}\n`,
             );
+
+            // The body is a `ReadableStream`, so the watch reads it a chunk at
+            // a time off the microtask queue rather than on a sync `data` event.
+            await flushPromises();
           });
 
           it("calls the callback with the data", () => {
@@ -639,9 +641,8 @@ describe("KubeApi", () => {
         });
 
         describe("when some data comes back on the stream", () => {
-          beforeEach(() => {
-            stream.emit(
-              "data",
+          beforeEach(async () => {
+            stream.push(
               `${JSON.stringify({
                 type: "ADDED",
                 object: {
@@ -656,6 +657,10 @@ describe("KubeApi", () => {
                 },
               } as IKubeWatchEvent<KubeJsonApiDataFor<Pod>>)}\n`,
             );
+
+            // The body is a `ReadableStream`, so the watch reads it a chunk at
+            // a time off the microtask queue rather than on a sync `data` event.
+            await flushPromises();
           });
 
           it("calls the callback with the data", () => {
@@ -742,9 +747,8 @@ describe("KubeApi", () => {
         });
 
         describe("when some data comes back on the stream", () => {
-          beforeEach(() => {
-            stream.emit(
-              "data",
+          beforeEach(async () => {
+            stream.push(
               `${JSON.stringify({
                 type: "ADDED",
                 object: {
@@ -759,6 +763,10 @@ describe("KubeApi", () => {
                 },
               } as IKubeWatchEvent<KubeJsonApiDataFor<Pod>>)}\n`,
             );
+
+            // The body is a `ReadableStream`, so the watch reads it a chunk at
+            // a time off the microtask queue rather than on a sync `data` event.
+            await flushPromises();
           });
 
           it("calls the callback with the data", () => {

@@ -69,9 +69,6 @@ catalogs:
     '@testing-library/user-event':
       specifier: 14.6.1
       version: 14.6.1
-    '@types/byline':
-      specifier: 4.2.36
-      version: 4.2.36
     '@types/cli-progress':
       specifier: 3.11.6
       version: 3.11.6
@@ -162,9 +159,6 @@ catalogs:
     auto-bind:
       specifier: 5.0.1
       version: 5.0.1
-    byline:
-      specifier: 5.0.0
-      version: 5.0.0
     chalk:
       specifier: 5.6.2
       version: 5.6.2
@@ -231,9 +225,6 @@ catalogs:
     history:
       specifier: 5.3.0
       version: 5.3.0
-    hpagent:
-      specifier: 1.2.0
-      version: 1.2.0
     http-proxy-node16:
       specifier: 1.0.6
       version: 1.0.6
@@ -384,6 +375,9 @@ catalogs:
     typescript-plugin-css-modules:
       specifier: 5.2.0
       version: 5.2.0
+    undici:
+      specifier: 8.9.0
+      version: 8.9.0
     uuid:
       specifier: 14.0.1
       version: 14.0.1
@@ -457,9 +451,6 @@ catalogs:
     monaco-editor:
       specifier: ^0.56.0
       version: 0.56.0
-    node-fetch:
-      specifier: ^3.3.2
-      version: 3.3.2
     react:
       specifier: ^19.2.8
       version: 19.2.8
@@ -481,6 +472,9 @@ catalogs:
     typed-emitter:
       specifier: ^2.1.0
       version: 2.1.0
+    undici:
+      specifier: ^8.9.0
+      version: 8.9.0
 
 overrides:
   form-data: ^4.0.6
@@ -571,9 +565,6 @@ importers:
       auto-bind:
         specifier: 'catalog:'
         version: 5.0.1
-      byline:
-        specifier: 'catalog:'
-        version: 5.0.0
       chalk:
         specifier: 'catalog:'
         version: 5.6.2
@@ -595,9 +586,6 @@ importers:
       handlebars:
         specifier: 'catalog:'
         version: 4.7.9
-      hpagent:
-        specifier: 'catalog:'
-        version: 1.2.0
       http-proxy-node16:
         specifier: 'catalog:'
         version: 1.0.6(debug@4.4.3(supports-color@8.1.1))
@@ -613,9 +601,6 @@ importers:
       mobx:
         specifier: 'catalog:'
         version: 6.15.0
-      node-fetch:
-        specifier: 'catalog:'
-        version: 3.3.2
       node-pty:
         specifier: 'catalog:'
         version: 1.2.0-beta.14
@@ -655,6 +640,9 @@ importers:
       typed-regex:
         specifier: 'catalog:'
         version: 0.0.8
+      undici:
+        specifier: 'catalog:'
+        version: 8.9.0
       uuid:
         specifier: 'catalog:'
         version: 14.0.1
@@ -1049,9 +1037,6 @@ importers:
       history:
         specifier: 'catalog:'
         version: 5.3.0
-      hpagent:
-        specifier: 'catalog:'
-        version: 1.2.0
       http-proxy-node16:
         specifier: 'catalog:'
         version: 1.0.6(debug@4.4.3(supports-color@8.1.1))
@@ -1082,9 +1067,6 @@ importers:
       monaco-editor:
         specifier: 'catalog:'
         version: 0.56.0
-      node-fetch:
-        specifier: 'catalog:'
-        version: 3.3.2
       node-pty:
         specifier: 'catalog:'
         version: 1.2.0-beta.14
@@ -1139,6 +1121,9 @@ importers:
       typed-regex:
         specifier: 'catalog:'
         version: 0.0.8
+      undici:
+        specifier: 'catalog:'
+        version: 8.9.0
       uuid:
         specifier: 'catalog:'
         version: 14.0.1
@@ -1372,9 +1357,6 @@ importers:
       monaco-editor:
         specifier: catalog:extensions
         version: 0.56.0
-      node-fetch:
-        specifier: catalog:extensions
-        version: 3.3.2
       react:
         specifier: catalog:extensions
         version: 19.2.8
@@ -1396,6 +1378,9 @@ importers:
       typed-emitter:
         specifier: catalog:extensions
         version: 2.1.0
+      undici:
+        specifier: catalog:extensions
+        version: 8.9.0
     devDependencies:
       '@freelensapp/core':
         specifier: workspace:^
@@ -2414,15 +2399,15 @@ importers:
       '@types/node':
         specifier: 'catalog:'
         version: 24.12.4
-      node-fetch:
-        specifier: 'catalog:'
-        version: 3.3.2
       rfc6902:
         specifier: 'catalog:'
         version: 5.2.0
       type-fest:
         specifier: 'catalog:'
         version: 5.6.0
+      undici:
+        specifier: 'catalog:'
+        version: 8.9.0
 
   packages/utility-features/kube-api:
     dependencies:
@@ -2441,9 +2426,6 @@ importers:
       '@ogre-tools/injectable':
         specifier: 'catalog:'
         version: 23.2.0(@ogre-tools/fp@23.2.0)
-      byline:
-        specifier: 'catalog:'
-        version: 5.0.0
       es-toolkit:
         specifier: 'catalog:'
         version: 1.49.0
@@ -2463,12 +2445,6 @@ importers:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
-      '@types/byline':
-        specifier: 'catalog:'
-        version: 4.2.36
-      node-fetch:
-        specifier: 'catalog:'
-        version: 3.3.2
       rfc6902:
         specifier: 'catalog:'
         version: 5.2.0
@@ -2478,6 +2454,9 @@ importers:
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
+      undici:
+        specifier: 'catalog:'
+        version: 8.9.0
       vitest:
         specifier: 'catalog:'
         version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
@@ -4510,9 +4489,6 @@ packages:
   '@types/aria-query@5.0.1':
     resolution: {integrity: sha512-XTIieEY+gvJ39ChLcB4If5zHtPxt3Syj5rgZR+e1ctpmK8NjPf0zFqsz4JpLJT0xla9GFDKjy8Cpu331nrmE1Q==}
 
-  '@types/byline@4.2.36':
-    resolution: {integrity: sha512-dO55KDSaOSE+3T8TwP66mzn0u/PM/aSedVMr1tby7WBNjfLIuS6IbYXi1mlau49sVSVB+gXKJscWE0JO3tlXDw==}
-
   '@types/cacheable-request@6.0.3':
     resolution: {integrity: sha512-IQ3EbTzGxIigb1I3qPZc1rWJnH0BmSKv5QYTalEwweFvyBDLSAe24zP0le/hyi7ecGfZVlIVAg4BZqb8WBwKqw==}
 
@@ -5050,10 +5026,6 @@ packages:
   builder-util@26.15.3:
     resolution: {integrity: sha512-q2hn7Mbo2nFNkVekPiHFx6Nfo3hURmES3tfBn+k5Pqxl2RkmP3QGqZUhH/q9Pch/4G05NRhPjDlVj1O8q4Txvw==}
     engines: {node: '>=14.0.0'}
-
-  byline@5.0.0:
-    resolution: {integrity: sha512-s6webAy+R4SR8XVuJWt2V2rGvhnrhxN+9S15GNuTK3wKPOXFF6RNc+8ug2XhH+2s4f+uudG4kUVYmYOQWL2g0Q==}
-    engines: {node: '>=0.10.0'}
 
   bytestreamjs@2.0.1:
     resolution: {integrity: sha512-U1Z/ob71V/bXfVABvNr/Kumf5VyeQRBEm6Txb0PQ6S7V5GpBM3w4Cbqz/xPDicR5tN0uvDifng8C+5qECeGwyQ==}
@@ -7411,6 +7383,10 @@ packages:
     resolution: {integrity: sha512-xXnp4kTyor2Zq+J1FfPI6Eq3ew5h6Vl0F/8d9XU5zZQf1tX9s2Su1/3PiMmUANFULpmksxkClamIZcaUqryHsQ==}
     engines: {node: '>=20.18.1'}
 
+  undici@8.9.0:
+    resolution: {integrity: sha512-aWZpUj7XoGonMClx4gdDRfgBjqeA+F473aDmROQQbM9n6PRfK/u1q/a0X4wMTgcHfT8H6fpbt98PFuDUwFg2YA==}
+    engines: {node: '>=22.19.0'}
+
   unique-string@3.0.0:
     resolution: {integrity: sha512-VGXBUVwxKMBUznyffQweQABPRRW1vHZAbadFZud4pLFAqRGvv/96vafgjWFqzourzr8YonlQiPgH0YCJfawoGQ==}
     engines: {node: '>=12'}
@@ -7564,8 +7540,8 @@ packages:
     resolution: {integrity: sha512-o8qghlI8NZHU1lLPrpi2+Uq7abh4GGPpYANlalzWxyWteJOCsr/P+oPBA49TOLu5FTZO4d3F9MnWJfiMo4BkmA==}
     engines: {node: '>=18'}
 
-  web-streams-polyfill@3.2.1:
-    resolution: {integrity: sha512-e0MO3wdXWKrLbL0DgGnUV7WHVuw9OUvL4hjgnPkIeEvESk74gAITi5G606JtZPp39cd8HA9VQzCIvA49LpPN5Q==}
+  web-streams-polyfill@3.3.3:
+    resolution: {integrity: sha512-d2JWLCivmZYTSIoge9MsgFCZrt571BikcWGYkjC1khllbTeDlGqZ2D8vD8E/lJa8WGWbb7Plm8/XJYV7IJHZZw==}
     engines: {node: '>= 8'}
 
   webcrypto-core@1.9.2:
@@ -9395,10 +9371,6 @@ snapshots:
 
   '@types/aria-query@5.0.1': {}
 
-  '@types/byline@4.2.36':
-    dependencies:
-      '@types/node': 24.12.4
-
   '@types/cacheable-request@6.0.3':
     dependencies:
       '@types/http-cache-semantics': 4.0.1
@@ -9922,8 +9894,6 @@ snapshots:
       tiny-async-pool: 1.3.0
     transitivePeerDependencies:
       - supports-color
-
-  byline@5.0.0: {}
 
   bytestreamjs@2.0.1: {}
 
@@ -10499,7 +10469,7 @@ snapshots:
   fetch-blob@3.2.0:
     dependencies:
       node-domexception: 1.0.0
-      web-streams-polyfill: 3.2.1
+      web-streams-polyfill: 3.3.3
 
   filelist@1.0.4:
     dependencies:
@@ -12419,6 +12389,8 @@ snapshots:
 
   undici@7.25.0: {}
 
+  undici@8.9.0: {}
+
   unique-string@3.0.0:
     dependencies:
       crypto-random-string: 4.0.0
@@ -12531,7 +12503,7 @@ snapshots:
     dependencies:
       xml-name-validator: 5.0.0
 
-  web-streams-polyfill@3.2.1: {}
+  web-streams-polyfill@3.3.3: {}
 
   webcrypto-core@1.9.2:
     dependencies:

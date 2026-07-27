@@ -4,78 +4,112 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { PassThrough } from "node:stream";
-import { Headers as NodeFetchHeaders, Response } from "node-fetch";
+import { Headers } from "undici";
 import { type Mocked, vi } from "vitest";
 
-export const createMockResponseFromString = (url: string, data: string, statusCode = 200) => {
-  const res: Mocked<Response> = {
-    buffer: vi.fn(async () => {
-      throw new Error("buffer() is not supported");
-    }),
-    clone: vi.fn(() => res),
-    arrayBuffer: vi.fn(async () => {
-      throw new Error("arrayBuffer() is not supported");
-    }),
-    blob: vi.fn(async () => {
-      throw new Error("blob() is not supported");
-    }),
-    body: new PassThrough(),
+import type { Response } from "undici";
+
+/**
+ * A `ReadableStream` a test can push to, standing in for the WHATWG body undici
+ * hands back. `destroy` mirrors what aborting a request does to the body: the
+ * stream errors rather than ending cleanly.
+ */
+export class MockResponseStream {
+  readonly stream: ReadableStream<Uint8Array>;
+
+  #controller!: ReadableStreamDefaultController<Uint8Array>;
+  #encoder = new TextEncoder();
+  #destroyed = false;
+
+  constructor() {
+    this.stream = new ReadableStream<Uint8Array>({
+      start: (controller) => {
+        this.#controller = controller;
+      },
+    });
+  }
+
+  get destroyed() {
+    return this.#destroyed;
+  }
+
+  push(chunk: string) {
+    this.#controller.enqueue(this.#encoder.encode(chunk));
+  }
+
+  end() {
+    if (this.#destroyed) {
+      return;
+    }
+
+    this.#destroyed = true;
+    this.#controller.close();
+  }
+
+  destroy() {
+    if (this.#destroyed) {
+      return;
+    }
+
+    this.#destroyed = true;
+    this.#controller.error(new Error("stream destroyed"));
+  }
+}
+
+const unsupported = (name: string) =>
+  vi.fn(async (): Promise<never> => {
+    throw new Error(`${name}() is not supported`);
+  });
+
+const createMockResponse = (
+  url: string,
+  statusCode: number,
+  body: ReadableStream<Uint8Array> | null,
+  text: () => Promise<string>,
+): Mocked<Response> => {
+  const res = {
+    arrayBuffer: unsupported("arrayBuffer"),
+    blob: unsupported("blob"),
+    body,
     bodyUsed: false,
-    headers: new NodeFetchHeaders(),
+    bytes: unsupported("bytes"),
+    clone: vi.fn(() => res),
+    formData: unsupported("formData"),
+    headers: new Headers(),
     json: vi.fn(async () => JSON.parse(await res.text())),
     ok: 200 <= statusCode && statusCode < 300,
     redirected: 300 <= statusCode && statusCode < 400,
-    size: data.length,
     status: statusCode,
     statusText: "some-text",
-    text: vi.fn(async () => data),
+    text: vi.fn(text),
+    textStream: vi.fn(() => {
+      throw new Error("textStream() is not supported");
+    }),
     type: "basic",
     url,
-    formData: vi.fn(async () => {
-      throw new Error("formData() is not supported");
-    }),
-  };
+  } as unknown as Mocked<Response>;
 
   return res;
 };
 
-export const createMockResponseFromStream = (url: string, stream: NodeJS.ReadableStream, statusCode = 200) => {
-  const res: Mocked<Response> = {
-    buffer: vi.fn(async () => {
-      throw new Error("buffer() is not supported");
-    }),
-    clone: vi.fn(() => res),
-    arrayBuffer: vi.fn(async () => {
-      throw new Error("arrayBuffer() is not supported");
-    }),
-    blob: vi.fn(async () => {
-      throw new Error("blob() is not supported");
-    }),
-    body: stream,
-    bodyUsed: false,
-    headers: new NodeFetchHeaders(),
-    json: vi.fn(async () => JSON.parse(await res.text())),
-    ok: 200 <= statusCode && statusCode < 300,
-    redirected: 300 <= statusCode && statusCode < 400,
-    size: 10,
-    status: statusCode,
-    statusText: "some-text",
-    text: vi.fn(() => {
-      const chunks: Buffer[] = [];
+export const createMockResponseFromString = (url: string, data: string, statusCode = 200) =>
+  createMockResponse(url, statusCode, null, async () => data);
 
-      return new Promise((resolve, reject) => {
-        stream.on("data", (chunk) => chunks.push(Buffer.from(chunk)));
-        stream.on("error", (err) => reject(err));
-        stream.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")));
-      });
-    }),
-    type: "basic",
-    url,
-    formData: vi.fn(async () => {
-      throw new Error("formData() is not supported");
-    }),
-  };
+export const createMockResponseFromStream = (url: string, stream: MockResponseStream, statusCode = 200) =>
+  createMockResponse(url, statusCode, stream.stream, async () => {
+    const decoder = new TextDecoder();
+    const reader = stream.stream.getReader();
+    let text = "";
 
-  return res;
-};
+    for (;;) {
+      const { done, value } = await reader.read();
+
+      if (done) {
+        break;
+      }
+
+      text += decoder.decode(value, { stream: true });
+    }
+
+    return text + decoder.decode();
+  });

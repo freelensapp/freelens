@@ -4,11 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { Agent } from "node:https";
 import { beforeApplicationIsLoadingInjectionToken } from "@freelensapp/application";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import lensProxyCertificateInjectable from "../../../common/certificate/lens-proxy-certificate.injectable";
+import { getLensProxyAgent } from "../../../common/fetch/lens-proxy-agent";
 import nodeFetchInjectable from "../../../common/fetch/node-fetch.injectable";
 import isProductionInjectable from "../../../common/vars/is-production.injectable";
 import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
@@ -49,9 +49,7 @@ const setupLensProxyInjectable = getInjectable({
       try {
         logger.info("🔎 Testing Freelens Proxy connection ...");
         const versionResponse = await fetch(`https://127.0.0.1:${lensProxyPort.get()}/version`, {
-          agent: new Agent({
-            ca: lensProxyCertificate.get()?.cert,
-          }),
+          dispatcher: getLensProxyAgent(lensProxyCertificate.get()?.cert),
         });
 
         const { version: versionFromProxy } = (await versionResponse.json()) as { version: string };
@@ -91,9 +89,7 @@ const setupLensProxyInjectable = getInjectable({
           // Test the actual route that the window will load
           const response = await fetch(`https://127.0.0.1:${lensProxyPort.get()}${testPath}`, {
             method: "HEAD",
-            agent: new Agent({
-              ca: lensProxyCertificate.get()?.cert,
-            }),
+            dispatcher: getLensProxyAgent(lensProxyCertificate.get()?.cert),
             signal: AbortSignal.timeout(2000),
           });
 

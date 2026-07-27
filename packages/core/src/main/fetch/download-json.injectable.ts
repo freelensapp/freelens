@@ -9,7 +9,7 @@ import proxyFetchInjectable from "./proxy-fetch.injectable";
 
 import type { AsyncResult } from "@freelensapp/utilities";
 
-import type { NodeFetchRequestInit, NodeFetchResponse } from "../../common/fetch/node-fetch.injectable";
+import type { FetchRequestInit, FetchResponse } from "../../common/fetch/node-fetch.injectable";
 
 export interface DownloadJsonOptions {
   timeout?: number;
@@ -37,8 +37,8 @@ const downloadJsonInjectable: Injectable<DownloadJson, unknown, void> = getInjec
     const proxyFetch = di.inject(proxyFetchInjectable);
 
     return async (url, opts) => {
-      let result: NodeFetchResponse;
-      const fetchOpts = {} as NodeFetchRequestInit;
+      let result: FetchResponse;
+      const fetchOpts = {} as FetchRequestInit;
 
       if (opts?.timeout) {
         const controller = withTimeout(opts.timeout);
@@ -46,7 +46,6 @@ const downloadJsonInjectable: Injectable<DownloadJson, unknown, void> = getInjec
       }
 
       try {
-        // MDN fetch and Node fetch have incompatible types
         result = await proxyFetch(url, fetchOpts);
       } catch (error) {
         return {

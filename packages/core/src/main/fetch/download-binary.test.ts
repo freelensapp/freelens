@@ -10,7 +10,7 @@ import proxyFetchInjectable from "./proxy-fetch.injectable";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 
-import type { NodeFetchResponse } from "../../common/fetch/node-fetch.injectable";
+import type { FetchResponse } from "../../common/fetch/node-fetch.injectable";
 import type { DownloadBinary, DownloadProgress } from "./download-binary.injectable";
 
 const url = "https://dl.k8s.io/release/v9.9.9/bin/linux/amd64/kubectl";
@@ -42,7 +42,7 @@ describe("download-binary", () => {
           get: (name: string) => (name === "content-length" ? (contentLength ?? null) : null),
         },
         arrayBuffer: async () => content.buffer.slice(content.byteOffset, content.byteOffset + content.byteLength),
-      } as Partial<NodeFetchResponse> as NodeFetchResponse;
+      } as Partial<FetchResponse> as FetchResponse;
     });
 
     // A fresh container per response: an injectable cannot be overridden once
