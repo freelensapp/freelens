@@ -70,6 +70,7 @@ describe("technical unit tests for local shell sessions", () => {
     let spawnPtyMock: MockedFunction<SpawnPty>;
     let kubectlProblem: string | undefined;
     let ensurePathError: string | undefined;
+    let kubectlDownloads: boolean;
 
     beforeEach(() => {
       di.override(platformInjectable, () => "win32");
@@ -77,6 +78,7 @@ describe("technical unit tests for local shell sessions", () => {
       spawnPtyMock = vi.fn();
       kubectlProblem = undefined;
       ensurePathError = undefined;
+      kubectlDownloads = false;
       di.override(spawnPtyInjectable, () => spawnPtyMock);
 
       di.override(
@@ -89,6 +91,11 @@ describe("technical unit tests for local shell sessions", () => {
                 opts?.onProblem?.(kubectlProblem);
 
                 return "";
+              }
+
+              if (kubectlDownloads) {
+                opts?.onDownloadProgress?.({ transferred: 61_970_432, total: 61_970_432 });
+                opts?.onPhase?.("Verifying kubectl v1.33.4 ...");
               }
 
               return "/some-kubectl-binary-dir";
@@ -178,6 +185,22 @@ describe("technical unit tests for local shell sessions", () => {
           { message: "Starting shell ...", level: "info" },
         ]);
         expect(framesWhenSpawned).toBe(4);
+      });
+
+      it("names the verification between the download and the shell, so 100% is not the last thing seen", async () => {
+        kubectlDownloads = true;
+
+        await openLocalShellSession({ cluster: cluster(), tabId: "my-tab-id", websocket: websocketFor(sent) });
+
+        expect(statusMessages()).toEqual([
+          { message: "Starting cluster proxy ...", level: "info" },
+          { message: "Checking kubectl v1.33.4 ...", level: "info" },
+          { message: "Downloading kubectl v1.33.4  100%  59.1MiB / 59.1MiB", level: "info" },
+          { message: "Verifying kubectl v1.33.4 ...", level: "info" },
+          { message: "Resolving shell environment ...", level: "info" },
+          { message: "Starting shell ...", level: "info" },
+        ]);
+        expect(framesWhenSpawned).toBe(6);
       });
 
       it("reports a kubectl problem as a sticky error, and still opens the shell", async () => {

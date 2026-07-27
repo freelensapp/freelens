@@ -144,6 +144,26 @@ describe("kubectlStatusOptionsFor", () => {
     }
   });
 
+  it("leaves a phase as the last frame, with no trailing progress landing on top of it", () => {
+    vi.useFakeTimers();
+
+    try {
+      const options = kubectlStatusOptionsFor("1.33.4", terminalStatusReporterFor(websocket));
+
+      options.onDownloadProgress?.({ transferred: 100, total: 61_970_432 });
+      options.onDownloadProgress?.({ transferred: 61_970_432, total: 61_970_432 });
+      options.onPhase?.("Verifying kubectl v1.33.4 ...");
+      vi.advanceTimersByTime(1000);
+
+      expect(messages()).toEqual([
+        "Downloading kubectl v1.33.4    0%  100.0B / 59.1MiB",
+        "Verifying kubectl v1.33.4 ...",
+      ]);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it("forwards a problem as an error frame", () => {
     const { onProblem } = kubectlStatusOptionsFor("1.33.4", terminalStatusReporterFor(websocket));
 
