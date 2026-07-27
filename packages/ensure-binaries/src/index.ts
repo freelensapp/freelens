@@ -11,13 +11,13 @@ import { constants, type WriteStream } from "node:fs";
 import { access, type FileHandle, mkdir, open, readFile, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { arch } from "node:process";
-import { pipeline as _pipeline, Transform, Writable } from "node:stream";
+import { pipeline as _pipeline, Readable, Transform, Writable } from "node:stream";
 import { promisify } from "node:util";
 import arg from "arg";
 import { MultiBar } from "cli-progress";
 import gunzip from "gunzip-maybe";
-import fetch from "node-fetch";
 import { extract } from "tar-stream";
+import { fetch } from "undici";
 import {
   type Artifact,
   CHECKSUM_SUFFIX,
@@ -183,7 +183,7 @@ class BinaryDownloader {
       }
 
       await pipeline(
-        stream.body,
+        Readable.fromWeb(stream.body),
         new Transform({
           transform(chunk, encoding, callback) {
             bar.increment(chunk.length);

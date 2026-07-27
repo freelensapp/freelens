@@ -36,10 +36,10 @@
     "arg": "catalog:",
     "cli-progress": "catalog:",
     "gunzip-maybe": "catalog:",
-    "node-fetch": "catalog:",
     "openpgp": "catalog:",
     "sigstore": "catalog:",
     "tar-stream": "catalog:",
+    "undici": "catalog:",
     "yauzl-promise": "catalog:",
     "zod": "catalog:"
   },

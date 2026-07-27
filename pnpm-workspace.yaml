@@ -120,7 +120,6 @@ catalog:
   marked: 18.0.6
   mobx-utils: 6.1.1
   monaco-editor: 0.56.0
-  node-fetch: 3.3.2
   node-pty: 1.2.0-beta.14
   openpgp: 6.3.1
   p-limit: 7.3.0
