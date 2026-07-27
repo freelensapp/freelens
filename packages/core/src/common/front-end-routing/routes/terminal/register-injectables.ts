@@ -6,25 +6,19 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import catalogCatalogEntityInjectable from "./catalog-catalog-entity.injectable";
-import terminalCatalogEntityInjectable from "./terminal-catalog-entity.injectable";
-import welcomeCatalogEntityInjectable from "./welcome-catalog-entity.injectable";
+import navigateToTerminalInjectable from "./navigate-to-terminal.injectable";
+import terminalRouteInjectable from "./terminal-route.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
   try {
-    di.register(catalogCatalogEntityInjectable);
+    di.register(navigateToTerminalInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
   try {
-    di.register(terminalCatalogEntityInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(welcomeCatalogEntityInjectable);
+    di.register(terminalRouteInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

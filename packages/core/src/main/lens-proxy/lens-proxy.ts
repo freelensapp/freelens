@@ -22,15 +22,16 @@ import type { SelfSignedCert } from "../../common/certificate/certificate";
 import type { Cluster } from "../../common/cluster/cluster";
 import type { KubeAuthProxyServer } from "../cluster/kube-auth-proxy-server.injectable";
 import type { Router } from "../router/router";
-import type { ProxyApiRequestArgs } from "./proxy-functions";
+import type { ProxyApiRequestArgs, ShellApiRequestArgs } from "./proxy-functions";
 
 export type GetClusterForRequest = (req: http.IncomingMessage) => Cluster | undefined;
 export type ServerIncomingMessage = SetRequired<http.IncomingMessage, "url" | "method">;
 export type LensProxyApiRequest = (args: ProxyApiRequestArgs) => void | Promise<void>;
+export type LensProxyShellApiRequest = (args: ShellApiRequestArgs) => void | Promise<void>;
 
 interface Dependencies {
   getClusterForRequest: GetClusterForRequest;
-  shellApiRequest: LensProxyApiRequest;
+  shellApiRequest: LensProxyShellApiRequest;
   kubeApiUpgradeRequest: LensProxyApiRequest;
   emitAppEvent: EmitAppEvent;
   getKubeAuthProxyServer: (cluster: Cluster) => KubeAuthProxyServer;
@@ -89,19 +90,30 @@ export class LensProxy {
     );
 
     this.proxyServer.on("upgrade", (req: ServerIncomingMessage, socket: net.Socket, head: Buffer) => {
+      /**
+       * Decided before the cluster is looked up: an internal upgrade is a
+       * shell request, and a shell can be opened outside of any cluster
+       * session. Everything else is a kube-api upgrade and still requires one.
+       */
+      const isInternal = req.url.startsWith(`${apiPrefix}?`);
       const cluster = this.dependencies.getClusterForRequest(req);
 
-      if (!cluster) {
-        this.dependencies.logger.error(`[LENS-PROXY]: Could not find cluster for upgrade request from url=${req.url}`);
-        socket.destroy();
-      } else {
-        const isInternal = req.url.startsWith(`${apiPrefix}?`);
-        const reqHandler = isInternal ? this.dependencies.shellApiRequest : this.dependencies.kubeApiUpgradeRequest;
+      (async () => {
+        if (isInternal) {
+          return this.dependencies.shellApiRequest({ req, socket, head, cluster });
+        }
 
-        (async () => reqHandler({ req, socket, head, cluster }))().catch((error) =>
-          this.dependencies.logger.error("[LENS-PROXY]: failed to handle proxy upgrade", error),
-        );
-      }
+        if (!cluster) {
+          this.dependencies.logger.error(
+            `[LENS-PROXY]: Could not find cluster for upgrade request from url=${req.url}`,
+          );
+          socket.destroy();
+
+          return;
+        }
+
+        return this.dependencies.kubeApiUpgradeRequest({ req, socket, head, cluster });
+      })().catch((error) => this.dependencies.logger.error("[LENS-PROXY]: failed to handle proxy upgrade", error));
     });
   }
 

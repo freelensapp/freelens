@@ -37,8 +37,8 @@ describe("TerminalApi status frames", () => {
     api = new TestTerminalApi(
       {
         defaultParams: di.inject(defaultWebsocketApiParamsInjectable),
-        hostedClusterId: "some-cluster-id",
         logger: di.inject(loggerInjectionToken),
+        requestShellToken: async () => new Uint8Array(),
       },
       { id: "some-tab-id" },
     );

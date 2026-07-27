@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import assert from "node:assert";
 import { NodeApi } from "@freelensapp/kube-api";
 import { CoreV1Api, Watch } from "@kubernetes/client-node";
 import { once } from "es-toolkit";
@@ -16,13 +17,21 @@ import type { Pod } from "@freelensapp/kube-object";
 
 import type { KubeConfig } from "@kubernetes/client-node";
 
+import type { Cluster } from "../../../common/cluster/cluster";
 import type { CreateKubeApi } from "../../../common/k8s-api/create-kube-api.injectable";
 import type { CreateKubeJsonApiForCluster } from "../../../common/k8s-api/create-kube-json-api-for-cluster.injectable";
 import type { LoadProxyKubeconfig } from "../../cluster/load-proxy-kubeconfig.injectable";
+import type { Kubectl } from "../../kubectl/kubectl";
 import type { ShellSessionArgs, ShellSessionDependencies } from "../shell-session";
 
+/**
+ * A node shell is a cluster concept by definition, so unlike the base class it
+ * always has both a cluster and a kubectl.
+ */
 export interface NodeShellSessionArgs extends ShellSessionArgs {
   nodeName: string;
+  cluster: Cluster;
+  kubectl: Kubectl;
 }
 
 export interface NodeShellSessionDependencies extends ShellSessionDependencies {
@@ -78,12 +87,19 @@ export class NodeShellSession extends ShellSession {
 
     const env = await this.getCachedShellEnv();
     const args = ["attach", "-q", "-i", "-t", "-n", "kube-system", this.podName];
+    const { kubectl } = this;
 
-    await this.openShellProcess(await this.kubectl.getPath(), args, env);
+    assert(kubectl, "A node shell session always has a kubectl");
+
+    await this.openShellProcess(await kubectl.getPath(), args, env);
   }
 
   protected async createNodeShellPod(coreApi: CoreV1Api) {
-    const { imagePullSecret, nodeShellImage } = this.cluster.preferences;
+    const { cluster } = this;
+
+    assert(cluster, "A node shell session always has a cluster");
+
+    const { imagePullSecret, nodeShellImage } = cluster.preferences;
 
     const imagePullSecrets = imagePullSecret
       ? [
@@ -94,7 +110,7 @@ export class NodeShellSession extends ShellSession {
       : undefined;
 
     const nodeApi = this.dependencies.createKubeApi(NodeApi, {
-      request: this.dependencies.createKubeJsonApiForCluster(this.cluster.id),
+      request: this.dependencies.createKubeJsonApiForCluster(cluster.id),
     });
     const node = await nodeApi.get({ name: this.nodeName });
 

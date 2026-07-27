@@ -229,6 +229,35 @@ exports[`<StatusBar /> > when StatusBar's status is set to %p > renders 1`] = `
                       </span>
                     </i>
                   </li>
+                  <li
+                    class="flex grid-12"
+                  >
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="terminal"
+                      >
+                        terminal
+                      </span>
+                    </i>
+                    <a
+                      class="col-10"
+                    >
+                      Open a Terminal
+                    </a>
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="navigate_next"
+                      >
+                        navigate_next
+                      </span>
+                    </i>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -634,6 +663,35 @@ exports[`<StatusBar /> > when StatusBar's status is set to %p > renders 2`] = `
                       </span>
                     </i>
                   </li>
+                  <li
+                    class="flex grid-12"
+                  >
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="terminal"
+                      >
+                        terminal
+                      </span>
+                    </i>
+                    <a
+                      class="col-10"
+                    >
+                      Open a Terminal
+                    </a>
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="navigate_next"
+                      >
+                        navigate_next
+                      </span>
+                    </i>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -1027,6 +1085,35 @@ exports[`<StatusBar /> > when an extension is enabled specifying the side the el
                       class="col-10"
                     >
                       Browse Clusters in Catalog
+                    </a>
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="navigate_next"
+                      >
+                        navigate_next
+                      </span>
+                    </i>
+                  </li>
+                  <li
+                    class="flex grid-12"
+                  >
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="terminal"
+                      >
+                        terminal
+                      </span>
+                    </i>
+                    <a
+                      class="col-10"
+                    >
+                      Open a Terminal
                     </a>
                     <i
                       class="Icon col-1 material focusable"
@@ -1486,6 +1573,35 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
                       </span>
                     </i>
                   </li>
+                  <li
+                    class="flex grid-12"
+                  >
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="terminal"
+                      >
+                        terminal
+                      </span>
+                    </i>
+                    <a
+                      class="col-10"
+                    >
+                      Open a Terminal
+                    </a>
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="navigate_next"
+                      >
+                        navigate_next
+                      </span>
+                    </i>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -1879,6 +1995,35 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
                       class="col-10"
                     >
                       Browse Clusters in Catalog
+                    </a>
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="navigate_next"
+                      >
+                        navigate_next
+                      </span>
+                    </i>
+                  </li>
+                  <li
+                    class="flex grid-12"
+                  >
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="terminal"
+                      >
+                        terminal
+                      </span>
+                    </i>
+                    <a
+                      class="col-10"
+                    >
+                      Open a Terminal
                     </a>
                     <i
                       class="Icon col-1 material focusable"
@@ -2296,6 +2441,35 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
                       </span>
                     </i>
                   </li>
+                  <li
+                    class="flex grid-12"
+                  >
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="terminal"
+                      >
+                        terminal
+                      </span>
+                    </i>
+                    <a
+                      class="col-10"
+                    >
+                      Open a Terminal
+                    </a>
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="navigate_next"
+                      >
+                        navigate_next
+                      </span>
+                    </i>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -2689,6 +2863,35 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
                       class="col-10"
                     >
                       Browse Clusters in Catalog
+                    </a>
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="navigate_next"
+                      >
+                        navigate_next
+                      </span>
+                    </i>
+                  </li>
+                  <li
+                    class="flex grid-12"
+                  >
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="terminal"
+                      >
+                        terminal
+                      </span>
+                    </i>
+                    <a
+                      class="col-10"
+                    >
+                      Open a Terminal
                     </a>
                     <i
                       class="Icon col-1 material focusable"
@@ -3106,6 +3309,35 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
                       </span>
                     </i>
                   </li>
+                  <li
+                    class="flex grid-12"
+                  >
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="terminal"
+                      >
+                        terminal
+                      </span>
+                    </i>
+                    <a
+                      class="col-10"
+                    >
+                      Open a Terminal
+                    </a>
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="navigate_next"
+                      >
+                        navigate_next
+                      </span>
+                    </i>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -3499,6 +3731,35 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
                       class="col-10"
                     >
                       Browse Clusters in Catalog
+                    </a>
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="navigate_next"
+                      >
+                        navigate_next
+                      </span>
+                    </i>
+                  </li>
+                  <li
+                    class="flex grid-12"
+                  >
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="terminal"
+                      >
+                        terminal
+                      </span>
+                    </i>
+                    <a
+                      class="col-10"
+                    >
+                      Open a Terminal
                     </a>
                     <i
                       class="Icon col-1 material focusable"
@@ -3916,6 +4177,35 @@ exports[`<StatusBar /> > when an extension is enabled with an invalid data type,
                       </span>
                     </i>
                   </li>
+                  <li
+                    class="flex grid-12"
+                  >
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="terminal"
+                      >
+                        terminal
+                      </span>
+                    </i>
+                    <a
+                      class="col-10"
+                    >
+                      Open a Terminal
+                    </a>
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="navigate_next"
+                      >
+                        navigate_next
+                      </span>
+                    </i>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -4309,6 +4599,35 @@ exports[`<StatusBar /> > when an extension is enabled with no status items > ren
                       class="col-10"
                     >
                       Browse Clusters in Catalog
+                    </a>
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="navigate_next"
+                      >
+                        navigate_next
+                      </span>
+                    </i>
+                  </li>
+                  <li
+                    class="flex grid-12"
+                  >
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="terminal"
+                      >
+                        terminal
+                      </span>
+                    </i>
+                    <a
+                      class="col-10"
+                    >
+                      Open a Terminal
                     </a>
                     <i
                       class="Icon col-1 material focusable"
