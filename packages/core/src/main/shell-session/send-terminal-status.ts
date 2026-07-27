@@ -111,6 +111,13 @@ export const kubectlStatusOptionsFor = (version: string, status: TerminalStatusR
   return {
     onDownloadProgress,
     onProblem: (message) => status.error(message),
+    onPhase: (message) => {
+      // A trailing frame of the throttle would otherwise land on top of this
+      // line up to `progressInterval` later; `done()` runs too late, only once
+      // `binDir` has already returned.
+      onDownloadProgress.cancel();
+      status.info(message);
+    },
     done: () => onDownloadProgress.cancel(),
   };
 };
