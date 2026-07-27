@@ -4,47 +4,44 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { Agent } from "node:https";
 import { JsonApi } from "@freelensapp/json-api";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import lensProxyCertificateInjectable from "../certificate/lens-proxy-certificate.injectable";
-import nodeFetchInjectable from "../fetch/node-fetch.injectable";
+import fetchInjectable from "../fetch/fetch.injectable";
+import { lensProxyDispatcherInjectionToken } from "../fetch/lens-proxy-dispatcher-injection-token";
 
-import type { JsonApiConfig, JsonApiData, JsonApiDependencies, JsonApiParams } from "@freelensapp/json-api";
-
-import type { RequestInit } from "node-fetch";
+import type {
+  FetchRequestInit,
+  JsonApiConfig,
+  JsonApiData,
+  JsonApiDependencies,
+  JsonApiParams,
+} from "@freelensapp/json-api";
 
 export type CreateJsonApi = <Data = JsonApiData, Params extends JsonApiParams<Data> = JsonApiParams<Data>>(
   config: JsonApiConfig,
-  reqInit?: RequestInit,
+  reqInit?: FetchRequestInit,
 ) => JsonApi<Data, Params>;
 
 const createJsonApiInjectable = getInjectable({
   id: "create-json-api",
   instantiate: (di): CreateJsonApi => {
     const deps: JsonApiDependencies = {
-      fetch: di.inject(nodeFetchInjectable),
+      fetch: di.inject(fetchInjectable),
       logger: di.inject(loggerInjectionToken),
     };
-    const lensProxyCert = di.inject(lensProxyCertificateInjectable);
+    const lensProxyDispatcher = di.inject(lensProxyDispatcherInjectionToken);
 
     return (config, reqInit) => {
       if (!config.getRequestOptions) {
         config.getRequestOptions = async () => {
-          const agent = new Agent({
-            ca: lensProxyCert.get().cert,
-          });
+          const dispatcher = lensProxyDispatcher();
 
-          // MSD Agent and Node Agent are not compatible
-          return {
-            agent,
-          } as any;
+          return dispatcher ? { dispatcher } : {};
         };
       }
 
-      // MSD RequestInit and Node RequestInit are not compatible
-      return new JsonApi(deps, config, reqInit as any);
+      return new JsonApi(deps, config, reqInit);
     };
   },
 });

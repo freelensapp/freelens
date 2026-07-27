@@ -26,11 +26,13 @@ const apiBaseInjectable = getInjectable({
         apiBase: apiPrefix,
         debug: isDevelopment || isDebugging,
       },
-      {
-        headers: {
-          Host: hostHeaderValue,
-        },
-      },
+      hostHeaderValue
+        ? {
+            headers: {
+              Host: hostHeaderValue,
+            },
+          }
+        : {},
     );
   },
 });

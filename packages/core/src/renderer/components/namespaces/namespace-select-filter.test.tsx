@@ -11,7 +11,7 @@ import { fireEvent } from "@testing-library/react";
 import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../../common/cluster/cluster";
-import nodeFetchInjectable from "../../../common/fetch/node-fetch.injectable";
+import fetchInjectable from "../../../common/fetch/fetch.injectable";
 import { createMockResponseFromString } from "../../../test-utils/mock-responses";
 import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
@@ -21,13 +21,13 @@ import { renderFor } from "../test-utils/renderFor";
 import { NamespaceSelectFilter } from "./namespace-select-filter";
 import namespaceStoreInjectable from "./store.injectable";
 
+import type { Fetch } from "@freelensapp/json-api";
 import type { Disposer } from "@freelensapp/utilities";
 
 import type { AsyncFnMock } from "@async-fn/vitest";
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
 
-import type { NodeFetch } from "../../../common/fetch/node-fetch.injectable";
 import type { NamespaceStore } from "./store";
 
 function createNamespace(name: string): Namespace {
@@ -46,7 +46,7 @@ function createNamespace(name: string): Namespace {
 describe("<NamespaceSelectFilter />", () => {
   let di: DiContainer;
   let namespaceStore: NamespaceStore;
-  let fetchMock: AsyncFnMock<NodeFetch>;
+  let fetchMock: AsyncFnMock<Fetch>;
   let result: RenderResult;
   let cleanup: Disposer;
 
@@ -59,7 +59,7 @@ describe("<NamespaceSelectFilter />", () => {
     di.override(storesAndApisCanBeCreatedInjectable, () => true);
 
     fetchMock = asyncFn();
-    di.override(nodeFetchInjectable, () => fetchMock);
+    di.override(fetchInjectable, () => fetchMock);
 
     di.override(
       hostedClusterInjectable,
@@ -89,9 +89,9 @@ describe("<NamespaceSelectFilter />", () => {
   describe("once the subscribe resolves", () => {
     beforeEach(async () => {
       await fetchMock.resolveSpecific(
-        ["https://127.0.0.1:12345/api-kube/api/v1/namespaces"],
+        ["https://localhost:12345/api-kube/api/v1/namespaces"],
         createMockResponseFromString(
-          "https://127.0.0.1:12345/api-kube/api/v1/namespaces",
+          "https://localhost:12345/api-kube/api/v1/namespaces",
           JSON.stringify({
             apiVersion: "v1",
             kind: "NamespaceList",

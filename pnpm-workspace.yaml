@@ -58,7 +58,6 @@ catalog:
   electron-devtools-installer: 4.0.0
   # Types and utilities
   '@types/node': 24.12.4
-  '@types/byline': 4.2.36
   '@types/cli-progress': 3.11.6
   '@types/command-line-args': 5.2.3
   '@types/fs-extra': 11.0.4
@@ -96,7 +95,6 @@ catalog:
   ansi_up: 6.0.6
   arg: 5.0.2
   auto-bind: 5.0.1
-  byline: 5.0.0
   chalk: 5.6.2
   chart.js: 4.5.1
   chokidar: 5.0.0
@@ -114,7 +112,6 @@ catalog:
   gunzip-maybe: 1.4.2
   handlebars: 4.7.9
   history: 5.3.0
-  hpagent: 1.2.0
   http-proxy-node16: 1.0.6
   immer: 11.1.8
   joi: 18.2.3
@@ -123,7 +120,6 @@ catalog:
   marked: 18.0.6
   mobx-utils: 6.1.1
   monaco-editor: 0.56.0
-  node-fetch: 3.3.2
   node-pty: 1.2.0-beta.14
   openpgp: 6.3.1
   p-limit: 7.3.0
@@ -147,6 +143,7 @@ catalog:
   typed-emitter: 2.1.0
   typed-regex: 0.0.8
   typescript-plugin-css-modules: 5.2.0
+  undici: 8.9.0
   uuid: 14.0.1
   winston: 3.19.0
   winston-transport: 4.9.0
@@ -177,7 +174,6 @@ catalogs:
     immer: ^11.1.8
     mobx: ^6.15.0
     monaco-editor: ^0.56.0
-    node-fetch: ^3.3.2
     react: ^19.2.8
     react-select: ^5.10.2
     react-table: ^7.8.0
@@ -185,6 +181,7 @@ catalogs:
     rfc6902: ^5.2.0
     type-fest: ^5.6.0
     typed-emitter: ^2.1.0
+    undici: ^8.9.0
 
 allowBuilds:
   '@parcel/watcher': true

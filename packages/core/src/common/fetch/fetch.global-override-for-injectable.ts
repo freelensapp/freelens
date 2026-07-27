@@ -5,6 +5,6 @@
  */
 
 import { getGlobalOverrideForFunction } from "@freelensapp/test-utils";
-import nodeFetchInjectable from "./node-fetch.injectable";
+import fetchInjectable from "./fetch.injectable";
 
-export default getGlobalOverrideForFunction(nodeFetchInjectable);
+export default getGlobalOverrideForFunction(fetchInjectable);

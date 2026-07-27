@@ -45,14 +45,14 @@
     "immer": "catalog:extensions",
     "mobx": "catalog:extensions",
     "monaco-editor": "catalog:extensions",
-    "node-fetch": "catalog:extensions",
     "react": "catalog:extensions",
     "react-select": "catalog:extensions",
     "react-table": "catalog:extensions",
     "react-window": "catalog:extensions",
     "rfc6902": "catalog:extensions",
     "type-fest": "catalog:extensions",
-    "typed-emitter": "catalog:extensions"
+    "typed-emitter": "catalog:extensions",
+    "undici": "catalog:extensions"
   },
   "devDependencies": {
     "@freelensapp/core": "workspace:^",

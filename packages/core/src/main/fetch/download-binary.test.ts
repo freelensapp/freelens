@@ -3,22 +3,68 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { Readable } from "node:stream";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import downloadBinaryInjectable from "./download-binary.injectable";
 import proxyFetchInjectable from "./proxy-fetch.injectable";
 
+import type { FetchResponse } from "@freelensapp/json-api";
+
 import type { DiContainer } from "@ogre-tools/injectable";
 
-import type { NodeFetchResponse } from "../../common/fetch/node-fetch.injectable";
 import type { DownloadBinary, DownloadProgress } from "./download-binary.injectable";
 
 const url = "https://dl.k8s.io/release/v9.9.9/bin/linux/amd64/kubectl";
 const chunks = [Buffer.from("the first part of "), Buffer.from("a binary")];
 const content = Buffer.concat(chunks);
 
+/**
+ * A `ReadableStream` the test pushes to, standing in for the WHATWG body a
+ * `fetch` response carries. `destroy` mirrors what an aborted request does to
+ * it: the stream errors instead of ending cleanly.
+ */
+class FakeBody {
+  readonly stream: ReadableStream<Uint8Array>;
+  destroyed = false;
+
+  #controller!: ReadableStreamDefaultController<Uint8Array>;
+
+  constructor() {
+    this.stream = new ReadableStream<Uint8Array>({
+      start: (controller) => {
+        this.#controller = controller;
+      },
+    });
+  }
+
+  push(chunk: Buffer | null) {
+    if (chunk === null) {
+      return this.end();
+    }
+
+    this.#controller.enqueue(new Uint8Array(chunk));
+  }
+
+  end() {
+    if (this.destroyed) {
+      return;
+    }
+
+    this.destroyed = true;
+    this.#controller.close();
+  }
+
+  destroy(error: Error) {
+    if (this.destroyed) {
+      return;
+    }
+
+    this.destroyed = true;
+    this.#controller.error(error);
+  }
+}
+
 interface FakeResponseOptions {
-  body?: Readable;
+  body?: FakeBody;
   contentLength?: string;
   status?: number;
   statusText?: string;
@@ -30,19 +76,19 @@ describe("download-binary", () => {
 
   const respondWith = ({ body, contentLength, status = 200, statusText = "OK" }: FakeResponseOptions) => {
     const fetch = vi.fn(async (_url: unknown, init?: { signal?: AbortSignal }) => {
-      // node-fetch destroys the body when the signal aborts; without this the
+      // the client destroys the body when the signal aborts; without this the
       // stall timeout could not be observed by a consumer of the stream.
       init?.signal?.addEventListener("abort", () => body?.destroy(new Error(String(init.signal?.reason))));
 
       return {
         status,
         statusText,
-        body: body ?? null,
+        body: body?.stream ?? null,
         headers: {
           get: (name: string) => (name === "content-length" ? (contentLength ?? null) : null),
         },
         arrayBuffer: async () => content.buffer.slice(content.byteOffset, content.byteOffset + content.byteLength),
-      } as Partial<NodeFetchResponse> as NodeFetchResponse;
+      } as Partial<FetchResponse> as FetchResponse;
     });
 
     // A fresh container per response: an injectable cannot be overridden once
@@ -55,17 +101,17 @@ describe("download-binary", () => {
   };
 
   const streamOf = (parts: Buffer[], { end = true } = {}) => {
-    const stream = new Readable({ read() {} });
+    const body = new FakeBody();
 
     for (const part of parts) {
-      stream.push(part);
+      body.push(part);
     }
 
     if (end) {
-      stream.push(null);
+      body.end();
     }
 
-    return stream;
+    return body;
   };
 
   it("returns the same bytes whether or not the body is streamed", async () => {

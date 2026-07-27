@@ -29,7 +29,6 @@
     "@freelensapp/utilities": "workspace:^",
     "@ogre-tools/fp": "catalog:",
     "@ogre-tools/injectable": "catalog:",
-    "byline": "catalog:",
     "es-toolkit": "catalog:",
     "mobx": "catalog:"
   },
@@ -38,8 +37,6 @@
     "@freelensapp/logger": "workspace:^",
     "@freelensapp/test-utils": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
-    "@types/byline": "catalog:",
-    "node-fetch": "catalog:",
     "rfc6902": "catalog:",
     "type-fest": "catalog:",
     "typescript": "catalog:",

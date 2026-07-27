@@ -8,9 +8,8 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { withStallTimeout, withTimeout } from "../../common/fetch/timeout-controller";
 import proxyFetchInjectable from "./proxy-fetch.injectable";
 
+import type { FetchRequestInit, FetchResponse } from "@freelensapp/json-api";
 import type { AsyncResult } from "@freelensapp/utilities";
-
-import type { NodeFetchRequestInit, NodeFetchResponse } from "../../common/fetch/node-fetch.injectable";
 
 /**
  * The payload of {@link downloadBinaryChannel}, so it must stay serializable.
@@ -43,8 +42,8 @@ const downloadBinaryInjectable = getInjectable({
     const fetch = di.inject(proxyFetchInjectable);
 
     return async (url, opts) => {
-      let result: NodeFetchResponse;
-      const fetchOpts = {} as NodeFetchRequestInit;
+      let result: FetchResponse;
+      const fetchOpts = {} as FetchRequestInit;
       const stall = opts?.stallTimeout ? withStallTimeout(opts.stallTimeout) : undefined;
       const signals = [opts?.timeout ? withTimeout(opts.timeout).signal : undefined, stall?.controller.signal].filter(
         (signal) => signal !== undefined,
@@ -99,8 +98,16 @@ const downloadBinaryInjectable = getInjectable({
         onProgress?.({ transferred, total });
 
         try {
-          for await (const chunk of result.body) {
-            const buffer = Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk);
+          const reader = result.body.getReader();
+
+          for (;;) {
+            const { done, value } = await reader.read();
+
+            if (done) {
+              break;
+            }
+
+            const buffer = Buffer.from(value);
 
             chunks.push(buffer);
             transferred += buffer.length;
