@@ -215,5 +215,48 @@ describe("kubectl", () => {
         expect(problems).toEqual([]);
       });
     });
+
+    /**
+     * The first execution of a freshly downloaded binary blocks for seconds
+     * while the OS validates it, so the phase is what stands between a
+     * progress line frozen at 100% and something that reads as work.
+     */
+    describe("reporting the verification phase", () => {
+      let events: string[];
+
+      const onPhase = (message: string) => events.push(`phase: ${message}`);
+
+      beforeEach(() => {
+        events = [];
+        dependencies.execFile = async () => {
+          events.push("execFile");
+
+          return {
+            callWasSuccessful: true,
+            response: JSON.stringify({ clientVersion: { gitVersion: `v${pinnedVersion}` } }),
+          };
+        };
+      });
+
+      it("reports the verification once, before the downloaded binary is executed", async () => {
+        expect(await new Kubectl(dependencies, pinnedVersion).ensureKubectl({ onPhase })).toBe(true);
+
+        expect(events).toEqual([`phase: Verifying kubectl v${pinnedVersion} ...`, "execFile"]);
+      });
+
+      it("says nothing when nothing was downloaded", async () => {
+        // A binary already in place, of a version the bundle does not provide:
+        // the only check is the one the caller's "Checking kubectl ..." line
+        // already covers.
+        await fs.mkdir(path.join(directory, pinnedVersion), { recursive: true });
+        await fs.writeFile(binaryPath(), content);
+
+        const kubectl = new Kubectl({ ...dependencies, bundledKubectlVersion: "9.9.8" }, pinnedVersion);
+
+        expect(await kubectl.ensureKubectl({ onPhase })).toBe(true);
+
+        expect(events).toEqual(["execFile"]);
+      });
+    });
   });
 });
