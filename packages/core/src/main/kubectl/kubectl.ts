@@ -47,6 +47,8 @@ const downloadStallTimeout = 30_000;
 export interface KubectlProgressOptions {
   onDownloadProgress?: (progress: DownloadProgress) => void;
   onProblem?: (message: string) => void;
+  /** A startup phase that is about to begin and may take a while. */
+  onPhase?: (message: string) => void;
 }
 
 /**
@@ -390,6 +392,12 @@ export class Kubectl {
           return false;
         }
 
+        // The longest silent stretch of the whole startup: the first `exec` of
+        // a freshly written 50+ MB binary blocks in the kernel while the OS
+        // validates it (macOS code signing, Windows real-time scanning), which
+        // is seconds to tens of seconds. Nothing here can make it shorter, so
+        // the least it can do is say what is being waited on.
+        opts?.onPhase?.(`Verifying kubectl v${this.kubectlVersion} ...`);
         isValid = await this.checkBinary(this.path, false);
 
         if (!isValid) {
