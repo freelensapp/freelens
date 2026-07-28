@@ -16,18 +16,17 @@ import { createMockResponseFromString } from "../../../test-utils/mock-responses
 import directoryForKubeConfigsInjectable from "../../app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
 import directoryForUserDataInjectable from "../../app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../cluster/cluster";
-import nodeFetchInjectable from "../../fetch/node-fetch.injectable";
+import fetchInjectable from "../../fetch/fetch.injectable";
 import createKubeJsonApiInjectable from "../create-kube-json-api.injectable";
 
+import type { Fetch } from "@freelensapp/json-api";
 import type { KubeStatusData } from "@freelensapp/kube-object";
 
 import type { AsyncFnMock } from "@async-fn/vitest";
 import type { DiContainer } from "@ogre-tools/injectable";
 
-import type { NodeFetch } from "../../fetch/node-fetch.injectable";
-
 describe("KubeApi", () => {
-  let fetchMock: AsyncFnMock<NodeFetch>;
+  let fetchMock: AsyncFnMock<Fetch>;
   let di: DiContainer;
 
   beforeEach(() => {
@@ -38,7 +37,7 @@ describe("KubeApi", () => {
     di.override(storesAndApisCanBeCreatedInjectable, () => true);
 
     fetchMock = asyncFn();
-    di.override(nodeFetchInjectable, () => fetchMock);
+    di.override(fetchInjectable, () => fetchMock);
 
     const createKubeJsonApi = di.inject(createKubeJsonApiInjectable);
 

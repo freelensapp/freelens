@@ -16,11 +16,11 @@ import {
   KubeStatus,
 } from "@freelensapp/kube-object";
 import { isDefined, noop, WrappedAbortController } from "@freelensapp/utilities";
-import byline from "byline";
 import { matches, merge } from "es-toolkit/compat";
 import { makeObservable, observable } from "mobx";
 import { createKubeApiURL, parseKubeApi } from "./kube-api-parse";
 
+import type { FetchRequestInit as RequestInit, FetchResponse as Response } from "@freelensapp/json-api";
 import type {
   KubeJsonApiData,
   KubeJsonApiDataFor,
@@ -34,7 +34,6 @@ import type {
 import type { LogFunction } from "@freelensapp/logger";
 import type { Disposer } from "@freelensapp/utilities";
 
-import type { RequestInit, Response } from "node-fetch";
 import type { Patch } from "rfc6902";
 import type { PartialDeep } from "type-fest";
 
@@ -876,10 +875,10 @@ export class KubeApi<
           );
         }
 
-        if (!response.body || !response.body.readable) {
-          if (!response.body) {
-            this.dependencies.logWarn(`watch (${watchId}) did not return a body`);
-          }
+        const body = response.body;
+
+        if (!body) {
+          this.dependencies.logWarn(`watch (${watchId}) did not return a body`);
           requestRetried = true;
 
           clearTimeout(timedRetry);
@@ -891,27 +890,25 @@ export class KubeApi<
           return;
         }
 
-        for (const eventName of ["end", "close", "error"]) {
-          response.body.on(eventName, () => {
-            // We only retry if we haven't retried, haven't aborted and haven't received k8s error
-            // kubernetes errors (=errorReceived set) should be handled in a callback
-            if (requestRetried || abortController.signal.aborted || errorReceived) {
-              return;
-            }
+        const retryWhenStreamEnds = (reason: string) => {
+          // We only retry if we haven't retried, haven't aborted and haven't received k8s error
+          // kubernetes errors (=errorReceived set) should be handled in a callback
+          if (requestRetried || abortController.signal.aborted || errorReceived) {
+            return;
+          }
 
-            this.dependencies.logDebug(`watch (${watchId}) ${eventName} ${watchUrl}`);
+          this.dependencies.logDebug(`watch (${watchId}) ${reason} ${watchUrl}`);
 
-            requestRetried = true;
+          requestRetried = true;
 
-            clearTimeout(timedRetry);
-            timedRetry = setTimeout(() => {
-              // we did not get any kubernetes errors so let's retry
-              this.watch({ ...opts, namespace, callback, watchId, retry: true });
-            }, 1000);
-          });
-        }
+          clearTimeout(timedRetry);
+          timedRetry = setTimeout(() => {
+            // we did not get any kubernetes errors so let's retry
+            this.watch({ ...opts, namespace, callback, watchId, retry: true });
+          }, 1000);
+        };
 
-        byline(response.body).on("data", (line: string) => {
+        const emitLine = (line: string) => {
           try {
             const event = JSON.parse(line) as IKubeWatchEvent<Data>;
 
@@ -926,7 +923,56 @@ export class KubeApi<
           } catch (ignore) {
             // ignore parse errors
           }
-        });
+        };
+
+        // The body is a WHATWG `ReadableStream` from both Chromium's fetch and
+        // undici's, so the newline framing a kube watch response uses has to be
+        // reassembled here (this is what `byline` did for the Node stream that
+        // node-fetch returned): one chunk can carry several events, and one
+        // event can straddle two chunks.
+        void (async () => {
+          const reader = body.getReader();
+          const decoder = new TextDecoder();
+          let buffered = "";
+
+          const consume = (text: string) => {
+            const lines = (buffered + text).split(/\r\n|[\r\n]/);
+
+            buffered = lines.pop() ?? "";
+
+            for (const line of lines) {
+              if (line) {
+                emitLine(line);
+              }
+            }
+          };
+
+          try {
+            for (;;) {
+              const { done, value } = await reader.read();
+
+              if (done) {
+                break;
+              }
+
+              consume(decoder.decode(value, { stream: true }));
+            }
+
+            consume(decoder.decode());
+
+            if (buffered) {
+              emitLine(buffered);
+            }
+
+            retryWhenStreamEnds("end");
+          } catch (error) {
+            if (!abortController.signal.aborted) {
+              this.dependencies.logWarn(`watch (${watchId}) stream error ${watchUrl}`, error);
+            }
+
+            retryWhenStreamEnds("error");
+          }
+        })();
       })
       .catch((error: unknown) => {
         if (!abortController.signal.aborted) {

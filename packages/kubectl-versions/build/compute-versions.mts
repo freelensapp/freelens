@@ -2,7 +2,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { XMLParser } from "fast-xml-parser";
 import { writeFile } from "fs/promises";
-import fetch from "node-fetch";
+import { fetch } from "undici";
 import semver from "semver";
 import { TypedRegEx } from "typed-regex";
 

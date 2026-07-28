@@ -8,9 +8,8 @@ import { KubeObject } from "@freelensapp/kube-object";
 import { noop } from "@freelensapp/utilities";
 import { KubeObjectStore } from "../kube-object.store";
 
+import type { FetchRequestInit as RequestInit } from "@freelensapp/json-api";
 import type { KubeApi } from "@freelensapp/kube-api";
-
-import type { RequestInit } from "node-fetch";
 
 import type { KubeObjectStoreLoadingParams } from "../kube-object.store";
 

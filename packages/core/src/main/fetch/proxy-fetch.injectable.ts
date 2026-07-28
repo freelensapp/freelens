@@ -4,31 +4,32 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import nodeFetch, { type RequestInfo, type RequestInit, type Response } from "node-fetch";
-
-export type NodeFetchRequestInfo = RequestInfo;
-export type NodeFetchRequestInit = RequestInit;
-export type NodeFetchResponse = Response;
-
-export type NodeFetch = (url: URL | NodeFetchRequestInfo, init?: NodeFetchRequestInit) => Promise<NodeFetchResponse>;
-
 import { getInjectable, type Injectable } from "@ogre-tools/injectable";
+import { fetch as undiciFetch } from "undici";
+import { withHostHeaderPreserved } from "./host-header-dispatcher";
 import httpsAgentInjectable from "./https-agent.injectable";
 
-export type ProxyFetch = NodeFetch;
+import type { Fetch } from "@freelensapp/json-api";
 
-const proxyFetchInjectable: Injectable<NodeFetch, unknown, void> = getInjectable({
+import type { RequestInit as UndiciRequestInit, Response as UndiciResponse } from "undici";
+
+export type ProxyFetch = Fetch;
+
+const proxyFetchInjectable: Injectable<ProxyFetch, unknown, void> = getInjectable({
   id: "proxy-fetch",
   instantiate: (di): ProxyFetch => {
     const httpsAgent = di.inject(httpsAgentInjectable);
 
     return async (url, init = {}) => {
-      const agent = httpsAgent();
+      const response = await undiciFetch(
+        url as string | URL,
+        withHostHeaderPreserved({
+          dispatcher: httpsAgent(),
+          ...init,
+        }) as UndiciRequestInit,
+      );
 
-      return await nodeFetch(url, {
-        agent,
-        ...init,
-      });
+      return response as UndiciResponse as unknown as Response;
     };
   },
 });

@@ -12,7 +12,9 @@ import downloadJsonInjectable from "./download-json.injectable";
 import nodeFetchChannelListenerInjectable2 from "./download-json-channel-listener-copy.injectable";
 import httpsAgentInjectable from "./https-agent.injectable";
 import lensFetchInjectable from "./lens-fetch.injectable";
+import lensProxyDispatcherInjectable from "./lens-proxy-dispatcher.injectable";
 import proxyFetchInjectable from "./proxy-fetch.injectable";
+import undiciFetchInjectable from "./undici-fetch.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
@@ -38,6 +40,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
+    di.register(lensProxyDispatcherInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
     di.register(nodeFetchChannelListenerInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
@@ -49,6 +56,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(proxyFetchInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(undiciFetchInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

@@ -30,10 +30,10 @@
     "@freelensapp/typescript": "workspace:^",
     "@types/semver": "catalog:",
     "fast-xml-parser": "catalog:",
-    "node-fetch": "catalog:",
     "semver": "catalog:",
     "typed-regex": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "undici": "catalog:"
   },
   "publishConfig": {
     "access": "public",
