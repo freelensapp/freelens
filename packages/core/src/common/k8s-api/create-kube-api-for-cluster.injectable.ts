@@ -17,9 +17,12 @@ import isDevelopmentInjectable from "../vars/is-development.injectable";
 import apiBaseInjectable from "./api-base.injectable";
 import createKubeJsonApiInjectable from "./create-kube-json-api.injectable";
 
+import type { KubeApiOptions } from "@freelensapp/kube-api";
 import type { KubeJsonApiDataFor, KubeObject, KubeObjectConstructor } from "@freelensapp/kube-object";
 
-import type { KubeApiConstructor } from "./create-kube-api-for-remote-cluster.injectable";
+export type KubeApiConstructor<Object extends KubeObject, Api extends KubeApi<Object>> = new (
+  apiOpts: KubeApiOptions<Object>,
+) => Api;
 
 export interface CreateKubeApiForLocalClusterConfig {
   metadata: {

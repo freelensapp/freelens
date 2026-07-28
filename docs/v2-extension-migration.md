@@ -149,6 +149,30 @@ namespace path, re-check it against the current
 between `Common`, `Main`, and `Renderer`. The concrete rename table is filled
 in from the freelens-example-extension port and will be appended here.
 
+## `K8sApi.forRemoteCluster` removed
+
+`Main.K8sApi.forRemoteCluster` / `Renderer.K8sApi.forRemoteCluster` and the
+`IRemoteKubeApiConfig` type are gone in v2 (#2374). The function built a
+`KubeApi` pointing straight at an arbitrary API server URL, bypassing both the
+catalog and the proxy, and configured TLS itself from `caData`,
+`skipTLSVerify`, `clientCertificateData` / `clientKeyData` or a custom
+`https.Agent`.
+
+It was inherited from Lens, undocumented since it was introduced, and has no
+known consumers — no in-tree callers, and no hits across the Freelens
+extensions that could be surveyed. Once the host stops owning the TLS setup,
+it also cannot be implemented honestly in the renderer: the renderer's `fetch`
+is Chromium's and has no hook for a custom TLS configuration, so those options
+would be silently ignored rather than applied.
+
+`forCluster` is unaffected — it addresses a **catalog** cluster through the
+proxy, which keeps handling authentication.
+
+If your extension needs to reach a cluster that is not in the catalog, talk to
+its API server with your own HTTP client (bundled with the extension) and your
+own TLS configuration. The `KubeApi` machinery does not buy you anything there
+once it no longer owns that setup.
+
 ## Routing: `react-router` re-exports removed
 
 Freelens v2 dropped `react-router` 5, `react-router-dom` 5, and `history` v4
@@ -400,6 +424,9 @@ is still lighter than wiring up a Tailwind build.
 - [ ] Access only the process-appropriate namespace (`Main` in main,
       `Renderer` in the renderer, `Common` in both).
 - [ ] Re-check any moved API symbols against the published type surface.
+- [ ] Replace any `K8sApi.forRemoteCluster` usage with your own HTTP client —
+      it was removed (see
+      [`K8sApi.forRemoteCluster` removed](#k8sapiforremotecluster-removed)).
 - [ ] Replace any `react-router` / `react-router-dom` usage imported via the
       Freelens bundle — the `ReactRouter*` re-exports were removed (see
       [Routing: `react-router` re-exports removed](#routing-react-router-re-exports-removed)).
