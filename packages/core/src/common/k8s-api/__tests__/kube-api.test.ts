@@ -5,12 +5,8 @@
  */
 
 import asyncFn from "@async-fn/vitest";
-import { KubeApi, PodApi } from "@freelensapp/kube-api";
+import { PodApi } from "@freelensapp/kube-api";
 import { podApiInjectable } from "@freelensapp/kube-api-specifics";
-import { Pod } from "@freelensapp/kube-object";
-import { flushPromises } from "@freelensapp/test-utils";
-// NOTE: this is fine because we are testing something that only exported
-import { PodsApi } from "../../../extensions/common-api/k8s-api";
 import setupAutoRegistrationInjectable from "../../../renderer/before-frame-starts/runnables/setup-auto-registration.injectable";
 import hostedClusterInjectable from "../../../renderer/cluster-frame-context/hosted-cluster.injectable";
 import { getDiForUnitTesting } from "../../../renderer/getDiForUnitTesting";
@@ -21,7 +17,6 @@ import directoryForKubeConfigsInjectable from "../../app-paths/directory-for-kub
 import directoryForUserDataInjectable from "../../app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../cluster/cluster";
 import nodeFetchInjectable from "../../fetch/node-fetch.injectable";
-import createKubeApiForRemoteClusterInjectable from "../create-kube-api-for-remote-cluster.injectable";
 import createKubeJsonApiInjectable from "../create-kube-json-api.injectable";
 
 import type { KubeStatusData } from "@freelensapp/kube-object";
@@ -30,120 +25,6 @@ import type { AsyncFnMock } from "@async-fn/vitest";
 import type { DiContainer } from "@ogre-tools/injectable";
 
 import type { NodeFetch } from "../../fetch/node-fetch.injectable";
-import type { CreateKubeApiForRemoteCluster } from "../create-kube-api-for-remote-cluster.injectable";
-
-describe("createKubeApiForRemoteCluster", () => {
-  let createKubeApiForRemoteCluster: CreateKubeApiForRemoteCluster;
-  let fetchMock: AsyncFnMock<NodeFetch>;
-
-  beforeEach(() => {
-    const di = getDiForUnitTesting();
-
-    di.override(directoryForUserDataInjectable, () => "/some-user-store-path");
-    di.override(directoryForKubeConfigsInjectable, () => "/some-kube-configs");
-    di.override(storesAndApisCanBeCreatedInjectable, () => true);
-
-    di.override(
-      hostedClusterInjectable,
-      () =>
-        new Cluster({
-          contextName: "some-context-name",
-          id: "some-cluster-id",
-          kubeConfigPath: "/some-path-to-a-kubeconfig",
-        }),
-    );
-
-    fetchMock = asyncFn();
-    di.override(nodeFetchInjectable, () => fetchMock);
-
-    createKubeApiForRemoteCluster = di.inject(createKubeApiForRemoteClusterInjectable);
-  });
-
-  it("builds api client for KubeObject", () => {
-    const api = createKubeApiForRemoteCluster(
-      {
-        cluster: {
-          server: "https://127.0.0.1:6443",
-        },
-        user: {
-          token: "daa",
-        },
-      },
-      Pod,
-    );
-
-    expect(api).toBeInstanceOf(KubeApi);
-  });
-
-  describe("when building for remote cluster with specific constructor", () => {
-    let api: PodApi;
-
-    beforeEach(() => {
-      api = createKubeApiForRemoteCluster(
-        {
-          cluster: {
-            server: "https://127.0.0.1:6443",
-          },
-          user: {
-            token: "daa",
-          },
-        },
-        Pod,
-        PodsApi,
-      );
-    });
-
-    it("uses the constructor", () => {
-      expect(api).toBeInstanceOf(PodApi);
-    });
-
-    describe("when calling list without namespace", () => {
-      let listRequest: Promise<Pod[] | null>;
-
-      beforeEach(async () => {
-        listRequest = api.list();
-
-        // This is required because of how JS promises work
-        await flushPromises();
-      });
-
-      it("should request pods from default namespace", () => {
-        expect(fetchMock.mock.lastCall).toMatchObject([
-          "https://127.0.0.1:6443/api/v1/pods",
-          {
-            headers: {
-              "content-type": "application/json",
-            },
-            method: "get",
-          },
-        ]);
-      });
-
-      describe("when request resolves with data", () => {
-        beforeEach(async () => {
-          await fetchMock.resolveSpecific(
-            ["https://127.0.0.1:6443/api/v1/pods"],
-            createMockResponseFromString(
-              "https://127.0.0.1:6443/api/v1/pods",
-              JSON.stringify({
-                kind: "PodList",
-                apiVersion: "v1",
-                metadata: {
-                  resourceVersion: "452899",
-                },
-                items: [],
-              }),
-            ),
-          );
-        });
-
-        it("resolves the list call", async () => {
-          expect(await listRequest).toEqual([]);
-        });
-      });
-    });
-  });
-});
 
 describe("KubeApi", () => {
   let fetchMock: AsyncFnMock<NodeFetch>;

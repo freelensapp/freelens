@@ -28,7 +28,6 @@ import {
 import createResourceStackInjectable from "../../common/k8s/create-resource-stack.injectable";
 import apiManagerInjectable from "../../common/k8s-api/api-manager/manager.injectable";
 import createKubeApiForClusterInjectable from "../../common/k8s-api/create-kube-api-for-cluster.injectable";
-import createKubeApiForRemoteClusterInjectable from "../../common/k8s-api/create-kube-api-for-remote-cluster.injectable";
 import createKubeJsonApiInjectable from "../../common/k8s-api/create-kube-json-api.injectable";
 import createKubeJsonApiForClusterInjectable from "../../common/k8s-api/create-kube-json-api-for-cluster.injectable";
 import { KubeObjectStore as InternalKubeObjectStore } from "../../common/k8s-api/kube-object.store";
@@ -53,7 +52,6 @@ import type { KubeApiDataFrom, KubeObjectStoreOptions } from "../../common/k8s-a
 
 export const apiManager = asLazyInjectedForExtensionApi(apiManagerInjectable);
 export const forCluster = asLazyInjectedFunctionForExtensionApi(createKubeApiForClusterInjectable);
-export const forRemoteCluster = asLazyInjectedFunctionForExtensionApi(createKubeApiForRemoteClusterInjectable);
 export const createResourceStack = asLazyInjectedFunctionForExtensionApi(createResourceStackInjectable);
 export const getPodsByOwnerId = asLazyInjectedFunctionForExtensionApi(getPodsByOwnerIdInjectable);
 
@@ -138,7 +136,6 @@ export type {
 } from "@freelensapp/kube-object";
 
 export type { CreateKubeApiForLocalClusterConfig as ILocalKubeApiConfig } from "../../common/k8s-api/create-kube-api-for-cluster.injectable";
-export type { CreateKubeApiForRemoteClusterConfig as IRemoteKubeApiConfig } from "../../common/k8s-api/create-kube-api-for-remote-cluster.injectable";
 
 function KubeJsonApiCstr(config: JsonApiConfig, reqInit?: NodeFetchRequestInit) {
   const di = getDiForExtensionApi();
