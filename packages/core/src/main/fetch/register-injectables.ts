@@ -14,7 +14,6 @@ import httpsAgentInjectable from "./https-agent.injectable";
 import lensFetchInjectable from "./lens-fetch.injectable";
 import lensProxyDispatcherInjectable from "./lens-proxy-dispatcher.injectable";
 import proxyFetchInjectable from "./proxy-fetch.injectable";
-import tlsDispatcherInjectable from "./tls-dispatcher.injectable";
 import undiciFetchInjectable from "./undici-fetch.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
@@ -57,11 +56,6 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(proxyFetchInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(tlsDispatcherInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

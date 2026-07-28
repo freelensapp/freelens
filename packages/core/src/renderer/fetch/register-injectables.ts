@@ -10,7 +10,6 @@ import browserFetchInjectable from "./browser-fetch.injectable";
 import downloadBinaryViaChannelInjectable from "./download-binary-via-channel.injectable";
 import downloadJsonViaChannelInjectable from "./download-json-via-channel-copy.injectable";
 import lensProxyDispatcherInjectable from "./lens-proxy-dispatcher.injectable";
-import tlsDispatcherInjectable from "./tls-dispatcher.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
@@ -32,11 +31,6 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(lensProxyDispatcherInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(tlsDispatcherInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
