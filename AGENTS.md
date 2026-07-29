@@ -623,10 +623,16 @@ than guessing.
 
 ### Development Environment
 
-The GitHub Actions runner has a full Node.js + pnpm environment available.
-Dependencies are already installed (`pnpm install` has been run). The build
-step is skipped to save CI resources, but you can run build commands when
-needed for advanced tasks (e.g. type-checking, running tests).
+The GitHub Actions runner has a full Node.js + pnpm environment available, and
+the workflow attempts to install the dependencies (`pnpm install`) and the
+`trunk` CLI before starting Claude. The build step is skipped to save CI
+resources, but you can run build commands when needed for advanced tasks
+(e.g. type-checking, running tests).
+
+Every one of those setup steps is `continue-on-error`, so any of them may have
+failed and left its tool or `node_modules` missing. Verify that what you need
+is actually there before relying on it, and never report a check as passing
+when it did not run — say that it was unavailable instead.
 
 For fork PRs, the `origin` remote points to the contributor's fork. An
 `upstream` remote is configured pointing to `freelensapp/freelens`. Push
@@ -640,6 +646,8 @@ The following CLI tools are explicitly allowed in the workflow:
 - `git` (all subcommands) — for viewing changes, creating branches,
   committing, and pushing
 - `gh` (all subcommands) — for managing pull requests
+- `trunk` — for linting and formatting every non-TypeScript file type
+- `bash` — for syntax-checking shell scripts (`bash -n <script>`)
 - `npx`, `node` — for running Node.js tools and scripts inline
 - `yq`, `jq` — for YAML and JSON processing
 - `grep`, `rg` (ripgrep), `find`, `xargs` — for searching and iterating
@@ -655,8 +663,11 @@ developers:
 
 - Run `pnpm biome check --write` to auto-format TypeScript/JavaScript and
   HTML files (or `pnpm biome check` to check without writing).
-- Run `pnpm trunk check` to validate all other file types (or `trunk check`
-  if the trunk CLI is installed globally).
+- Run `trunk check` to validate all other file types. The workflow puts the
+  CLI on `PATH`, so call it directly; `pnpm trunk check` works too but
+  re-downloads the launcher and its linters. It only inspects changed files by
+  default — use `trunk check --all` after a broad change.
+- Syntax-check a shell script you edited with `bash -n <script>`.
 - Run `pnpm build:di` if you added, moved, or renamed injectable files.
 - If unit tests fail on snapshot mismatches after your changes (or you are
   explicitly asked to update them), run `pnpm test:unit:updatesnapshot` to
