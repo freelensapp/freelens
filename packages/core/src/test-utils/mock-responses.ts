@@ -4,73 +4,64 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { PassThrough } from "node:stream";
+import type { FetchResponse as Response } from "@freelensapp/json-api";
 
-import type { Headers as NodeFetchHeaders, Response } from "node-fetch";
 import type { Mocked } from "vitest";
 
-export const createMockResponseFromString = (url: string, data: string, statusCode = 200) => {
-  const res: Mocked<Response> = {
-    buffer: vi.fn(async () => {
-      throw new Error("buffer() is not supported");
-    }),
-    clone: vi.fn(() => res),
-    arrayBuffer: vi.fn(async () => {
-      throw new Error("arrayBuffer() is not supported");
-    }),
-    blob: vi.fn(async () => {
-      throw new Error("blob() is not supported");
-    }),
-    body: new PassThrough(),
+const unsupported = (name: string) =>
+  vi.fn(async (): Promise<never> => {
+    throw new Error(`${name}() is not supported`);
+  });
+
+const createMockResponse = (
+  url: string,
+  statusCode: number,
+  body: ReadableStream<Uint8Array> | null,
+  text: () => Promise<string>,
+): Mocked<Response> => {
+  const res = {
+    arrayBuffer: unsupported("arrayBuffer"),
+    blob: unsupported("blob"),
+    body,
     bodyUsed: false,
-    headers: new Headers() as unknown as NodeFetchHeaders,
+    bytes: unsupported("bytes"),
+    clone: vi.fn(() => res),
+    formData: unsupported("formData"),
+    headers: new Headers(),
     json: vi.fn(async () => JSON.parse(await res.text())),
     ok: 200 <= statusCode && statusCode < 300,
     redirected: 300 <= statusCode && statusCode < 400,
-    size: data.length,
     status: statusCode,
     statusText: "some-text",
-    text: vi.fn(async () => data),
+    text: vi.fn(text),
+    textStream: vi.fn(() => {
+      throw new Error("textStream() is not supported");
+    }),
     type: "basic",
     url,
-  } as any;
+  } as unknown as Mocked<Response>;
 
   return res;
 };
 
-export const createMockResponseFromStream = (url: string, stream: NodeJS.ReadableStream, statusCode = 200) => {
-  const res: Mocked<Response> = {
-    buffer: vi.fn(async () => {
-      throw new Error("buffer() is not supported");
-    }),
-    clone: vi.fn(() => res),
-    arrayBuffer: vi.fn(async () => {
-      throw new Error("arrayBuffer() is not supported");
-    }),
-    blob: vi.fn(async () => {
-      throw new Error("blob() is not supported");
-    }),
-    body: stream,
-    bodyUsed: false,
-    headers: new Headers() as unknown as NodeFetchHeaders,
-    json: vi.fn(async () => JSON.parse(await res.text())),
-    ok: 200 <= statusCode && statusCode < 300,
-    redirected: 300 <= statusCode && statusCode < 400,
-    size: 10,
-    status: statusCode,
-    statusText: "some-text",
-    text: vi.fn(() => {
-      const chunks: Buffer[] = [];
+export const createMockResponseFromString = (url: string, data: string, statusCode = 200) =>
+  createMockResponse(url, statusCode, null, async () => data);
 
-      return new Promise((resolve, reject) => {
-        stream.on("data", (chunk) => chunks.push(Buffer.from(chunk)));
-        stream.on("error", (err) => reject(err));
-        stream.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")));
-      });
-    }),
-    type: "basic",
-    url,
-  } as any;
+export const createMockResponseFromStream = (url: string, stream: ReadableStream<Uint8Array>, statusCode = 200) =>
+  createMockResponse(url, statusCode, stream, async () => {
+    const decoder = new TextDecoder();
+    const reader = stream.getReader();
+    let text = "";
 
-  return res;
-};
+    for (;;) {
+      const { done, value } = await reader.read();
+
+      if (done) {
+        break;
+      }
+
+      text += decoder.decode(value, { stream: true });
+    }
+
+    return text + decoder.decode();
+  });

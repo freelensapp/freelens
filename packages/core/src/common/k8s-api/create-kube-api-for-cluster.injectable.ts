@@ -14,7 +14,7 @@ import {
 import { getInjectable } from "@ogre-tools/injectable";
 import { apiKubePrefix } from "../vars";
 import isDevelopmentInjectable from "../vars/is-development.injectable";
-import apiBaseInjectable from "./api-base.injectable";
+import { clusterApiAddressInjectionToken } from "./cluster-api-address-injection-token";
 import createKubeJsonApiInjectable from "./create-kube-json-api.injectable";
 
 import type { KubeApiOptions } from "@freelensapp/kube-api";
@@ -46,7 +46,7 @@ export interface CreateKubeApiForCluster {
 const createKubeApiForClusterInjectable = getInjectable({
   id: "create-kube-api-for-cluster",
   instantiate: (di): CreateKubeApiForCluster => {
-    const apiBase = di.inject(apiBaseInjectable);
+    const clusterApiAddress = di.inject(clusterApiAddressInjectionToken);
     const isDevelopment = di.inject(isDevelopmentInjectable);
     const createKubeJsonApi = di.inject(createKubeJsonApiInjectable);
     const logDebug = di.inject(logDebugInjectionToken);
@@ -59,17 +59,14 @@ const createKubeApiForClusterInjectable = getInjectable({
       kubeClass: KubeObjectConstructor<KubeObject, KubeJsonApiDataFor<KubeObject>>,
       apiClass?: KubeApiConstructor<KubeObject, KubeApi<KubeObject>>,
     ) => {
+      const { serverAddress, hostHeader } = clusterApiAddress(cluster.metadata.uid);
       const request = createKubeJsonApi(
         {
-          serverAddress: apiBase.config.serverAddress,
+          serverAddress,
           apiBase: apiKubePrefix,
           debug: isDevelopment,
         },
-        {
-          headers: {
-            Host: `${cluster.metadata.uid}.renderer.freelens.app:${new URL(apiBase.config.serverAddress).port}`,
-          },
-        },
+        hostHeader ? { headers: { Host: hostHeader } } : {},
       );
 
       if (apiClass) {

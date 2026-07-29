@@ -8,6 +8,7 @@
 
 import consoleLoggerTransportInjectable from "./console-transport.injectable";
 import fileLoggerTransportInjectable from "./file-transport.injectable";
+import ignoreBrokenPipeErrorsInjectable from "./ignore-broken-pipe-errors.injectable";
 import logLevelInjectable from "./level.injectable";
 import logOnQuitOfBackendInjectable from "./log-on-quit.injectable";
 import logVersionOnStartInjectable from "./log-on-start.injectable";
@@ -22,6 +23,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(fileLoggerTransportInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(ignoreBrokenPipeErrorsInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

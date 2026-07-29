@@ -4,40 +4,41 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { Agent } from "node:https";
 import { KubeJsonApi } from "@freelensapp/kube-api";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import packageJson from "../../../package.json";
-import lensProxyCertificateInjectable from "../certificate/lens-proxy-certificate.injectable";
-import nodeFetchInjectable, { type NodeFetchRequestInit } from "../fetch/node-fetch.injectable";
+import fetchInjectable from "../fetch/fetch.injectable";
+import { lensProxyDispatcherInjectionToken } from "../fetch/lens-proxy-dispatcher-injection-token";
 
-import type { JsonApiConfig, JsonApiDependencies } from "@freelensapp/json-api";
+import type { FetchRequestInit, JsonApiConfig, JsonApiDependencies } from "@freelensapp/json-api";
 
-export type CreateKubeJsonApi = (config: JsonApiConfig, reqInit?: NodeFetchRequestInit) => KubeJsonApi;
+export type CreateKubeJsonApi = (config: JsonApiConfig, reqInit?: FetchRequestInit) => KubeJsonApi;
 
 const createKubeJsonApiInjectable = getInjectable({
   id: "create-kube-json-api",
   instantiate: (di): CreateKubeJsonApi => {
     const dependencies: JsonApiDependencies = {
-      fetch: di.inject(nodeFetchInjectable),
+      fetch: di.inject(fetchInjectable),
       logger: di.inject(loggerInjectionToken),
     };
-    const lensProxyCert = di.inject(lensProxyCertificateInjectable);
+    const lensProxyDispatcher = di.inject(lensProxyDispatcherInjectionToken);
 
     return (config, reqInit) => {
       if (!config.getRequestOptions) {
         config.getRequestOptions = async () => {
-          const agent = new Agent({
-            ca: lensProxyCert.get().cert,
-          });
+          const dispatcher = lensProxyDispatcher();
 
-          return {
-            agent,
-            headers: {
-              "User-Agent": `Freelens/${packageJson.version}`,
-            },
-          };
+          // `User-Agent` is a forbidden header name in the renderer, where
+          // Chromium sets its own; only main gets to send this one.
+          return dispatcher
+            ? {
+                dispatcher,
+                headers: {
+                  "User-Agent": `Freelens/${packageJson.version}`,
+                },
+              }
+            : {};
         };
       }
 

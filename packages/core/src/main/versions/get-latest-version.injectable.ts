@@ -4,7 +4,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import downloadJsonInjectable from "../../main/fetch/download-json.injectable";
+import downloadJsonInjectable from "../fetch/download-json.injectable";
 
 interface NpmRegistryPackageMetadata {
   version: string;

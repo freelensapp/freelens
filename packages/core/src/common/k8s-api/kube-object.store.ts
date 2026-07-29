@@ -12,6 +12,7 @@ import autoBind from "auto-bind";
 import { action, computed, makeObservable, observable, reaction } from "mobx";
 import { ItemStore } from "../item.store";
 
+import type { FetchRequestInit as RequestInit } from "@freelensapp/json-api";
 import type {
   DeleteOptions,
   IKubeWatchEvent,
@@ -24,7 +25,6 @@ import type { KubeJsonApiDataFor, KubeObject } from "@freelensapp/kube-object";
 import type { Logger } from "@freelensapp/logger";
 import type { Disposer } from "@freelensapp/utilities";
 
-import type { RequestInit } from "node-fetch";
 import type { Patch } from "rfc6902";
 import type { PartialDeep } from "type-fest";
 

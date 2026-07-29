@@ -4,36 +4,29 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { Agent } from "node:https";
 import { getInjectable } from "@ogre-tools/injectable";
-import lensProxyCertificateInjectable from "../../common/certificate/lens-proxy-certificate.injectable";
-import nodeFetchInjectable, {
-  type NodeFetchRequestInit,
-  type NodeFetchResponse,
-} from "../../common/fetch/node-fetch.injectable";
+import fetchInjectable from "../../common/fetch/fetch.injectable";
+import { lensProxyDispatcherInjectionToken } from "../../common/fetch/lens-proxy-dispatcher-injection-token";
 import lensProxyPortInjectable from "../../main/lens-proxy/lens-proxy-port.injectable";
 
-export type LensRequestInit = Omit<NodeFetchRequestInit, "agent">;
+import type { FetchRequestInit, FetchResponse } from "@freelensapp/json-api";
 
-export type LensFetch = (pathnameAndQuery: string, init?: LensRequestInit) => Promise<NodeFetchResponse>;
+export type LensRequestInit = Omit<FetchRequestInit, "dispatcher">;
+
+export type LensFetch = (pathnameAndQuery: string, init?: LensRequestInit) => Promise<FetchResponse>;
 
 const lensFetchInjectable = getInjectable({
   id: "lens-fetch",
   instantiate: (di): LensFetch => {
-    const nodeFetch = di.inject(nodeFetchInjectable);
+    const fetch = di.inject(fetchInjectable);
     const lensProxyPort = di.inject(lensProxyPortInjectable);
-    const lensProxyCertificate = di.inject(lensProxyCertificateInjectable);
+    const lensProxyDispatcher = di.inject(lensProxyDispatcherInjectionToken);
 
-    return async (pathnameAndQuery, init = {}) => {
-      const agent = new Agent({
-        ca: lensProxyCertificate.get().cert,
-      });
-
-      return nodeFetch(`https://127.0.0.1:${lensProxyPort.get()}${pathnameAndQuery}`, {
+    return async (pathnameAndQuery, init = {}) =>
+      fetch(`https://127.0.0.1:${lensProxyPort.get()}${pathnameAndQuery}`, {
         ...init,
-        agent,
+        dispatcher: lensProxyDispatcher(),
       });
-    };
   },
   causesSideEffects: true,
 });
