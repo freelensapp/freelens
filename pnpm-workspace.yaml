@@ -144,7 +144,6 @@ catalog:
   uuid: 14.0.1
   winston: 3.19.0
   winston-transport: 4.9.0
-  winston-transport-browserconsole: 1.0.5
   ws: 8.21.0
   yauzl-promise: 4.0.0
   zod: 4.4.3

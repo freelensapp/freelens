@@ -387,9 +387,6 @@ catalogs:
     winston-transport:
       specifier: 4.9.0
       version: 4.9.0
-    winston-transport-browserconsole:
-      specifier: 1.0.5
-      version: 1.0.5
     ws:
       specifier: 8.21.0
       version: 8.21.0
@@ -1109,9 +1106,6 @@ importers:
       winston-transport:
         specifier: 'catalog:'
         version: 4.9.0
-      winston-transport-browserconsole:
-        specifier: 'catalog:'
-        version: 1.0.5
       ws:
         specifier: 'catalog:'
         version: 8.21.0
@@ -7512,9 +7506,6 @@ packages:
     engines: {node: '>=8'}
     hasBin: true
 
-  winston-transport-browserconsole@1.0.5:
-    resolution: {integrity: sha512-BFZDvknATAmsqaRY3WatB2S0eEb0ziwqBYIv+H0Fnu9oe7GnPUVQzEJC1frmLdNsfEkfnyR1PCNDBAFtZE3SuQ==}
-
   winston-transport@4.9.0:
     resolution: {integrity: sha512-8drMJ4rkgaPo1Me4zD/3WLfI/zPdA9o2IipKODunnGDcuqbHwjsbB79ylv04LCGGzU0xQ6vTznOMpQGaLhhm6A==}
     engines: {node: '>= 12.0.0'}
@@ -12445,11 +12436,6 @@ snapshots:
     dependencies:
       siginfo: 2.0.0
       stackback: 0.0.2
-
-  winston-transport-browserconsole@1.0.5:
-    dependencies:
-      winston: 3.19.0
-      winston-transport: 4.9.0
 
   winston-transport@4.9.0:
     dependencies:
