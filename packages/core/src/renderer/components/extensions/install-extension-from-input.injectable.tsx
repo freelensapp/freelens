@@ -67,7 +67,7 @@ const installExtensionFromInputInjectable = getInjectable({
 
           return await attemptInstall({ fileName, data });
         } catch (error) {
-          const extNameCaptures = InputValidators.isExtensionNameInstallRegex.captures(input);
+          const extNameCaptures = InputValidators.extensionNameInstallCaptures(input);
 
           if (extNameCaptures) {
             const { name, version } = extNameCaptures;

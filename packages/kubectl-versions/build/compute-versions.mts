@@ -4,14 +4,13 @@ import { XMLParser } from "fast-xml-parser";
 import { writeFile } from "fs/promises";
 import { fetch } from "undici";
 import semver from "semver";
-import { TypedRegEx } from "typed-regex";
 
 const { SemVer } = semver;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const expectedResponseForm = TypedRegEx("v(?<version>\\d+\\.\\d+\\.\\d+)");
+const expectedResponseForm = /v(?<version>\d+\.\d+\.\d+)/;
 
 /**
  * Oldest minor the map may name, matching `MIN_SUPPORTED_MINOR` in
@@ -43,7 +42,7 @@ async function requestGreatestKubectlPatchVersion(majorMinor: string): Promise<s
   }
 
   const body = await response.text();
-  const match = expectedResponseForm.captures(body);
+  const match = expectedResponseForm.exec(body)?.groups as { version: string } | undefined;
 
   if (!match) {
     throw new Error(`failed to get stable version for ${majorMinor}: unexpected response shape. body="${body}"`);
