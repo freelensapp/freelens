@@ -280,8 +280,8 @@ catalogs:
       specifier: 1.61.1
       version: 1.61.1
     pnpm:
-      specifier: 11.17.0
-      version: 11.17.0
+      specifier: 11.18.0
+      version: 11.18.0
     proper-lockfile:
       specifier: 4.1.2
       version: 4.1.2
@@ -498,7 +498,7 @@ importers:
         version: 29.1.1(@noble/hashes@2.2.0)
       pnpm:
         specifier: 'catalog:'
-        version: 11.17.0
+        version: 11.18.0
       turbo:
         specifier: 'catalog:'
         version: 2.10.2
@@ -606,7 +606,7 @@ importers:
         version: 7.3.0
       pnpm:
         specifier: 'catalog:'
-        version: 11.17.0
+        version: 11.18.0
       proper-lockfile:
         specifier: 'catalog:'
         version: 4.1.2
@@ -1069,7 +1069,7 @@ importers:
         version: 1.2.0-beta.14
       pnpm:
         specifier: 'catalog:'
-        version: 11.17.0
+        version: 11.18.0
       proper-lockfile:
         specifier: 'catalog:'
         version: 4.1.2
@@ -6505,8 +6505,8 @@ packages:
     resolution: {integrity: sha512-uysumyrvkUX0rX/dEVqt8gC3sTBzd4zoWfLeS29nb53imdaXVvLINYXTI2GNqzaMuvacNx4uJQ8+b3zXR0pkgQ==}
     engines: {node: '>=10.4.0'}
 
-  pnpm@11.17.0:
-    resolution: {integrity: sha512-zKPOozKtJUu4QUX5ZtGfSHlhUhA0b8kseaBH8joNezzKPDeS8AdrofGDHSd++88KkRmzGppg7Kf7PWIx8zHvcg==}
+  pnpm@11.18.0:
+    resolution: {integrity: sha512-M9g8d9qC9J+6g2klxvG4QRgewxMrZwY5vQEvcHX1x89jTF+HAUfBmq50ePrAHfCdiJLogEVIlu3SPumzN1dWPA==}
     engines: {node: '>=22.13'}
     hasBin: true
 
@@ -11410,7 +11410,7 @@ snapshots:
       base64-js: 1.5.1
       xmlbuilder: 15.1.1
 
-  pnpm@11.17.0: {}
+  pnpm@11.18.0: {}
 
   postcss-load-config@3.1.4(postcss@8.5.19)(ts-node@10.9.2(@types/node@24.12.4)(typescript@7.0.2)):
     dependencies:
