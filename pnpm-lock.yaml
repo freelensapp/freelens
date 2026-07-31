@@ -208,8 +208,8 @@ catalogs:
       specifier: 5.10.1
       version: 5.10.1
     fs-extra:
-      specifier: 11.3.6
-      version: 11.3.6
+      specifier: 11.4.0
+      version: 11.4.0
     gunzip-maybe:
       specifier: 1.4.2
       version: 1.4.2
@@ -570,7 +570,7 @@ importers:
         version: 5.0.3
       fs-extra:
         specifier: 'catalog:'
-        version: 11.3.6
+        version: 11.4.0
       handlebars:
         specifier: 'catalog:'
         version: 4.7.9
@@ -1015,7 +1015,7 @@ importers:
         version: 1.49.0
       fs-extra:
         specifier: 'catalog:'
-        version: 11.3.6
+        version: 11.4.0
       handlebars:
         specifier: 'catalog:'
         version: 4.7.9
@@ -5548,6 +5548,10 @@ packages:
     resolution: {integrity: sha512-w8ZNZr2mKIc7qeNaQ9AVPT1+iFaI+Avd4xudVOvdDJ8VytREi1Ft5Ih7hd9jjehod8vAM5GMsfQ/TpPf4EyoEA==}
     engines: {node: '>=14.14'}
 
+  fs-extra@11.4.0:
+    resolution: {integrity: sha512-EQsFzMUJkCKGr1ePqlYADkIUmHW1s3ZXr5Yqy6wbGrfUCphpl2maM/kyOIRA2HpP3AaFQTZXD4ldjek+nccddA==}
+    engines: {node: '>=14.14'}
+
   fs-extra@7.0.1:
     resolution: {integrity: sha512-YJDaCJZEnBmcbw13fvdAM9AwNOJwOzrE4pqMqBq5nFiEqXUqHwlK4B+3pUw6JNvfSPtX05xFHtYy/1ni01eGCw==}
     engines: {node: '>=6 <7 || >=8'}
@@ -7954,7 +7958,7 @@ snapshots:
     dependencies:
       cross-dirname: 0.1.0
       debug: 4.4.3(supports-color@8.1.1)
-      fs-extra: 11.3.6
+      fs-extra: 11.4.0
       minimist: 1.2.8
       postject: 1.0.0-alpha.6
     transitivePeerDependencies:
@@ -10444,6 +10448,12 @@ snapshots:
       universalify: 2.0.0
 
   fs-extra@11.3.6:
+    dependencies:
+      graceful-fs: 4.2.11
+      jsonfile: 6.1.0
+      universalify: 2.0.0
+
+  fs-extra@11.4.0:
     dependencies:
       graceful-fs: 4.2.11
       jsonfile: 6.1.0

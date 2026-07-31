@@ -106,7 +106,7 @@ catalog:
   electron-window-state: 5.0.3
   es-toolkit: 1.49.0
   fast-xml-parser: 5.10.1
-  fs-extra: 11.3.6
+  fs-extra: 11.4.0
   gunzip-maybe: 1.4.2
   handlebars: 4.7.9
   history: 5.3.0
