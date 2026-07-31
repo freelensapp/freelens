@@ -40,6 +40,7 @@ export * from "./src/sort-function";
 export * from "./src/tar";
 export * from "./src/tuple";
 export * from "./src/type-narrowing";
+export * from "./src/typed-event-emitter";
 export * from "./src/types";
 export * from "./src/union-env-path";
 export * from "./src/wait";

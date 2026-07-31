@@ -138,7 +138,6 @@ catalog:
   tcp-port-used: 1.0.3
   tempy: 3.2.0
   triple-beam: 1.4.1
-  typed-emitter: 2.1.0
   typed-regex: 0.0.8
   typescript-plugin-css-modules: 5.2.0
   undici: 8.9.0
@@ -178,7 +177,6 @@ catalogs:
     react-window: ^2.3.0
     rfc6902: ^5.2.0
     type-fest: ^5.6.0
-    typed-emitter: ^2.1.0
     undici: ^8.9.0
 
 allowBuilds:

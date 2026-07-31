@@ -137,7 +137,6 @@
         "react-window",
         "rfc6902",
         "type-fest",
-        "typed-emitter",
         "undici"
       ],
       "typescript": {
