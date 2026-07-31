@@ -3,14 +3,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { createMemoryHistory } from "history";
 import { autorun, runInAction } from "mobx";
 import { createObservableHistory } from "./observable-history";
 import { searchParamsOptions } from "./search-params";
-
-import type { MemoryHistory } from "history";
+import { createMemoryHistory } from "./vendor/history";
 
 import type { ObservableHistory } from "./observable-history";
+import type { MemoryHistory } from "./vendor/history";
 
 function createTestObservableHistory(initialEntries: string[] = ["/"]): {
   history: MemoryHistory;

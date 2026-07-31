@@ -210,9 +210,6 @@ catalogs:
     handlebars:
       specifier: 4.7.9
       version: 4.7.9
-    history:
-      specifier: 5.3.0
-      version: 5.3.0
     http-proxy-node16:
       specifier: 1.0.6
       version: 1.0.6
@@ -406,9 +403,6 @@ catalogs:
     conf:
       specifier: ^15.1.0
       version: 15.1.0
-    history:
-      specifier: ^5.3.0
-      version: 5.3.0
     immer:
       specifier: ^11.1.8
       version: 11.1.8
@@ -986,9 +980,6 @@ importers:
       handlebars:
         specifier: 'catalog:'
         version: 4.7.9
-      history:
-        specifier: 'catalog:'
-        version: 5.3.0
       http-proxy-node16:
         specifier: 'catalog:'
         version: 1.0.6(debug@4.4.3(supports-color@8.1.1))
@@ -1270,9 +1261,6 @@ importers:
       electron:
         specifier: '>=42.0.0'
         version: 42.7.1(supports-color@8.1.1)
-      history:
-        specifier: catalog:extensions
-        version: 5.3.0
       immer:
         specifier: catalog:extensions
         version: 11.1.8
@@ -1514,9 +1502,6 @@ importers:
       '@ogre-tools/injectable-react':
         specifier: 'catalog:'
         version: 23.2.0(@ogre-tools/fp@23.2.0)(@ogre-tools/injectable@23.2.0(@ogre-tools/fp@23.2.0))(mobx-react@9.2.2(mobx@6.15.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(mobx@6.15.0)(react@19.2.8)
-      history:
-        specifier: 'catalog:'
-        version: 5.3.0
       mobx:
         specifier: 'catalog:'
         version: 6.15.0
@@ -2103,9 +2088,6 @@ importers:
       '@types/react':
         specifier: 'catalog:'
         version: 19.2.17
-      history:
-        specifier: 'catalog:'
-        version: 5.3.0
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
@@ -5582,9 +5564,6 @@ packages:
   hasown@2.0.4:
     resolution: {integrity: sha512-T2UbfbBEF32wiepXIsMlTW9+dDYC6wMh/t/vYA4tuOMKqWz/n3vr1NFSxQiyP+zk2mXsoMA/i/7qV6LKut1t1A==}
     engines: {node: '>= 0.4'}
-
-  history@5.3.0:
-    resolution: {integrity: sha512-ZqaKwjjrAYUYfLG+htGaIIZ4nioX2L70ZUMIFysS3xvBsSG4x/n1V6TXV3N8ZYNuFGlDirFg32T7B6WOUPDYcQ==}
 
   hoist-non-react-statics@3.3.2:
     resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
@@ -10493,10 +10472,6 @@ snapshots:
   hasown@2.0.4:
     dependencies:
       function-bind: 1.1.2
-
-  history@5.3.0:
-    dependencies:
-      '@babel/runtime': 7.29.7
 
   hoist-non-react-statics@3.3.2:
     dependencies:

@@ -8,12 +8,12 @@ import { createContainer } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { DiContextProvider } from "@ogre-tools/injectable-react";
 import { render, waitFor } from "@testing-library/react";
-import { createMemoryHistory } from "history";
 import React from "react";
 import { routingFeature } from "./feature";
 import { historyInjectable } from "./history.injectable";
 import { observableHistoryInjectionToken } from "./observable-history.injectable";
 import { Redirect, Route, Switch } from "./route";
+import { createMemoryHistory } from "./vendor/history";
 
 import type { RenderResult } from "@testing-library/react";
 
