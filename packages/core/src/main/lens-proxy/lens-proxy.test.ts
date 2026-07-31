@@ -14,6 +14,7 @@ import lensProxyInjectable from "./lens-proxy.injectable";
 import lensProxyPortInjectable from "./lens-proxy-port.injectable";
 import kubeApiUpgradeRequestInjectable from "./proxy-functions/kube-api-upgrade-request.injectable";
 import shellApiRequestInjectable from "./proxy-functions/shell-api-request.injectable";
+import type http from "node:http";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { Mock } from "vitest";
@@ -43,6 +44,7 @@ describe("closing the lens proxy", () => {
   let port: number;
   let requestReachedTheRouter: Promise<void>;
   const sockets: net.Socket[] = [];
+  const answeredPath = "/some-answered-path";
 
   const connect = async () => {
     const socket = net.connect(port, "127.0.0.1");
@@ -51,6 +53,26 @@ describe("closing the lens proxy", () => {
     await once(socket, "connect");
 
     return socket;
+  };
+
+  const request = (socket: net.Socket, path: string) => {
+    socket.write(`GET ${path} HTTP/1.1\r\nHost: 127.0.0.1\r\n\r\n`);
+  };
+
+  /**
+   * Reads until the end of the response head, which for the answered route is
+   * the whole response.
+   */
+  const readResponse = async (socket: net.Socket) => {
+    let response = "";
+
+    while (!response.includes("\r\n\r\n")) {
+      const [chunk] = (await once(socket, "data")) as [Buffer];
+
+      response += chunk.toString();
+    }
+
+    return response;
   };
 
   beforeEach(async () => {
@@ -64,9 +86,10 @@ describe("closing the lens proxy", () => {
     di.override(shellApiRequestInjectable, () => vi.fn());
     di.override(kubeApiUpgradeRequestInjectable, () => vi.fn());
 
-    // A route that never answers, standing in for the watch and follow
+    // Every route but one never answers, standing in for the watch and follow
     // requests the proxy really carries: a connection that is not idle and
-    // will not become idle on its own
+    // will not become idle on its own. The one that does answer leaves behind
+    // a genuinely idle keep-alive connection.
     let requestReceived: () => void;
 
     requestReachedTheRouter = new Promise<void>((resolve) => {
@@ -76,7 +99,13 @@ describe("closing the lens proxy", () => {
       routerInjectable,
       () =>
         ({
-          route: () => {
+          route: (_cluster: Cluster | undefined, req: ServerIncomingMessage, res: http.ServerResponse) => {
+            if (req.url === answeredPath) {
+              res.end();
+
+              return Promise.resolve();
+            }
+
             requestReceived();
 
             return new Promise<void>(() => {});
@@ -103,7 +132,18 @@ describe("closing the lens proxy", () => {
   });
 
   it("resolves without waiting out the grace period when a connection is idle", async () => {
-    await connect();
+    const socket = await connect();
+
+    /**
+     * The request has to be driven to completion for this to test anything:
+     * Node only tracks a connection from the moment a message begins on it, so
+     * a socket that has merely been accepted is invisible to
+     * `closeIdleConnections` and would be reaped by the forced destroy
+     * instead. What is idle is the keep-alive connection left behind by an
+     * answered request.
+     */
+    request(socket, answeredPath);
+    await readResponse(socket);
 
     const startedAt = performance.now();
 
@@ -116,7 +156,7 @@ describe("closing the lens proxy", () => {
     const socket = await connect();
     const socketClosed = once(socket, "close");
 
-    socket.write("GET /some-path HTTP/1.1\r\nHost: 127.0.0.1\r\n\r\n");
+    request(socket, "/some-path");
     await requestReachedTheRouter;
 
     const startedAt = performance.now();
