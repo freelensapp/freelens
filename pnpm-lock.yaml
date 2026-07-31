@@ -400,9 +400,6 @@ catalogs:
       specifier: 4.4.3
       version: 4.4.3
   extensions:
-    '@mui/material':
-      specifier: ^9.2.0
-      version: 9.2.0
     '@ogre-tools/injectable':
       specifier: ^23.2.0
       version: 23.2.0
@@ -1288,9 +1285,6 @@ importers:
 
   packages/extensions:
     dependencies:
-      '@mui/material':
-        specifier: catalog:extensions
-        version: 9.2.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1))(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1))(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@ogre-tools/injectable':
         specifier: catalog:extensions
         version: 23.2.0(@ogre-tools/fp@23.2.0)
