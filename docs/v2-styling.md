@@ -124,10 +124,9 @@ every `@layer`, regardless of specificity**. Two consequences to keep in mind:
 
 ## `@apply` in stylesheets
 
-Seven SCSS files use `@apply` (`table/react-table.scss`,
-`layout/sidebar.module.scss`, `catalog/catalog.module.scss`, …), which couples
-the stylesheet to the Tailwind build for rules that are usually shorter as
-plain CSS (`@apply flex items-center` → `display: flex; align-items: center;`).
+A handful of SCSS files use `@apply` (`layout/sidebar.module.scss`,
+`catalog/catalog.module.scss`, …), which couples the stylesheet to the Tailwind
+build for rules that are usually shorter as plain CSS (`@apply flex items-center` → `display: flex; align-items: center;`).
 Avoid `@apply` in new stylesheets; prefer plain CSS so the SCSS does not depend
 on the Tailwind pipeline. Existing usages can be inlined opportunistically.
 

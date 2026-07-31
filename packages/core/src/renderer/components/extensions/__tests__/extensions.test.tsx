@@ -95,7 +95,7 @@ describe("Extensions", () => {
     );
 
     const table = await screen.findByTestId("extensions-table");
-    const menuTrigger = table.querySelector(".table div[role='rowgroup'] .actions .Icon");
+    const menuTrigger = table.querySelector("tbody tr td:last-child .Icon");
 
     assert(menuTrigger);
     fireEvent.click(menuTrigger);

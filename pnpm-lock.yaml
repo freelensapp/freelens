@@ -105,9 +105,6 @@ catalogs:
     '@types/react-dom':
       specifier: 19.2.3
       version: 19.2.3
-    '@types/react-table':
-      specifier: 7.7.20
-      version: 7.7.20
     '@types/semver':
       specifier: 7.7.1
       version: 7.7.1
@@ -282,9 +279,6 @@ catalogs:
     react-select-event:
       specifier: 5.5.1
       version: 5.5.1
-    react-table:
-      specifier: 7.8.0
-      version: 7.8.0
     react-window:
       specifier: 2.3.0
       version: 2.3.0
@@ -391,9 +385,6 @@ catalogs:
     '@types/react':
       specifier: ^19.2.17
       version: 19.2.17
-    '@types/react-table':
-      specifier: ^7.7.20
-      version: 7.7.20
     '@xterm/xterm':
       specifier: ^6.0.0
       version: 6.0.0
@@ -418,9 +409,6 @@ catalogs:
     react-select:
       specifier: ^5.10.2
       version: 5.10.2
-    react-table:
-      specifier: ^7.8.0
-      version: 7.8.0
     react-window:
       specifier: ^2.3.0
       version: 2.3.0
@@ -1028,9 +1016,6 @@ importers:
       react-select:
         specifier: 'catalog:'
         version: 5.10.2(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(supports-color@8.1.1)
-      react-table:
-        specifier: 'catalog:'
-        version: 7.8.0(react@19.2.8)
       react-window:
         specifier: 'catalog:'
         version: 2.3.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -1125,9 +1110,6 @@ importers:
       '@types/react-dom':
         specifier: 'catalog:'
         version: 19.2.3(@types/react@19.2.17)
-      '@types/react-table':
-        specifier: 'catalog:'
-        version: 7.7.20
       '@types/semver':
         specifier: 'catalog:'
         version: 7.7.1
@@ -1246,9 +1228,6 @@ importers:
       '@types/react':
         specifier: catalog:extensions
         version: 19.2.17
-      '@types/react-table':
-        specifier: catalog:extensions
-        version: 7.7.20
       '@xterm/xterm':
         specifier: catalog:extensions
         version: 6.0.0(patch_hash=fb7ebbc29ef246137af8ea109596e698df4691ccaa0b87ed5969259bcb27e435)
@@ -1276,9 +1255,6 @@ importers:
       react-select:
         specifier: catalog:extensions
         version: 5.10.2(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(supports-color@8.1.1)
-      react-table:
-        specifier: catalog:extensions
-        version: 7.8.0(react@19.2.8)
       react-window:
         specifier: catalog:extensions
         version: 2.3.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -4461,9 +4437,6 @@ packages:
     peerDependencies:
       '@types/react': ^19.2.0
 
-  '@types/react-table@7.7.20':
-    resolution: {integrity: sha512-ahMp4pmjVlnExxNwxyaDrFgmKxSbPwU23sGQw2gJK4EhCvnvmib2s/O/+y1dfV57dXOwpr2plfyBol+vEHbi2w==}
-
   '@types/react-transition-group@4.4.12':
     resolution: {integrity: sha512-8TV6R3h2j7a91c+1DXdJi3Syo69zzIZbz7Lg5tORM5LEJG7X/E6a1V3drRyBRZq7/utz7A+c4OgYLiLcYGHG6w==}
     peerDependencies:
@@ -6527,11 +6500,6 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-
-  react-table@7.8.0:
-    resolution: {integrity: sha512-hNaz4ygkZO4bESeFfnfOft73iBUj8K5oKi1EcSHPAibEydfsX2MyU6Z8KCr3mv3C9Kqqh71U+DhZkFvibbnPbA==}
-    peerDependencies:
-      react: ^16.8.3 || ^17.0.0-0 || ^18.0.0
 
   react-transition-group@4.4.5:
     resolution: {integrity: sha512-pZcd1MCJoiKiBR2NRxeCRg13uCXbydPnmB4EOeRrY7480qNWO8IIgQG6zlDkm6uRMsURXPuKq0GWtiM59a5Q6g==}
@@ -9305,10 +9273,6 @@ snapshots:
     dependencies:
       '@types/react': 19.2.17
 
-  '@types/react-table@7.7.20':
-    dependencies:
-      '@types/react': 19.2.17
-
   '@types/react-transition-group@4.4.12(@types/react@19.2.17)':
     dependencies:
       '@types/react': 19.2.17
@@ -11399,10 +11363,6 @@ snapshots:
     transitivePeerDependencies:
       - '@types/react'
       - supports-color
-
-  react-table@7.8.0(react@19.2.8):
-    dependencies:
-      react: 19.2.8
 
   react-transition-group@4.4.5(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
     dependencies:

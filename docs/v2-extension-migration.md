@@ -199,6 +199,37 @@ If your extension used them, migrate one of two ways:
 See [`docs/v2-routing-modernization.md`](./v2-routing-modernization.md) (§2.5
 and §5) for the rationale and the full list of what was removed.
 
+## `Renderer.Component.List` removed
+
+`Renderer.Component.List`, along with its `ListProps` and `SearchFilter` types,
+is gone in v2 (#2360). It was a thin search box plus a `react-table` 7 table,
+and its props extended `react-table`'s own `UseTableOptions`, so the package
+was part of the published type surface: the column objects an extension passed
+in (`Header`, `accessor`, `sortType`, `disableSortBy`, `width`) were
+`react-table` column objects.
+
+`react-table` 7.8.0 was last released in 2022-05, the repository moved on to
+TanStack, and its peer range stops at React 18 — Freelens v2 runs React 19. It
+had exactly one consumer in the host (the installed-extensions screen), which
+now uses an internal table, so keeping the dependency alive only to keep this
+one re-export would have frozen an unmaintained package into the v2 extension
+API.
+
+If your extension used `List`:
+
+- **Render your own table.** For four columns and client-side sorting this is
+  a `<table>`, a `useState` for the sort column, and an `Array.prototype.sort`
+  — the host's replacement is about a hundred lines including the stylesheet.
+- **Or bundle your own table library.** Add `react-table`,
+  `@tanstack/react-table`, or whatever you prefer to your extension's own
+  dependencies; the host no longer provides one.
+
+`Renderer.Component.Table` (with `TableHead`, `TableRow`, `TableCell`) is
+unaffected and stays. It is the virtualized table the resource views use, it
+persists its sort order in the URL, and it expects items with a `getId()` /
+`getName()` shape — a different tool than `List` was, but the right one if your
+rows are Kubernetes objects.
+
 ## Chart.js v4 (`Renderer.Component.BarChart` / `PieChart`)
 
 Freelens bundles Chart.js **v4** (previously v2.9). The `BarChart` and
@@ -430,6 +461,9 @@ is still lighter than wiring up a Tailwind build.
 - [ ] Replace any `react-router` / `react-router-dom` usage imported via the
       Freelens bundle — the `ReactRouter*` re-exports were removed (see
       [Routing: `react-router` re-exports removed](#routing-react-router-re-exports-removed)).
+- [ ] Replace any `Renderer.Component.List` usage with your own table — it was
+      removed along with the `react-table` dependency behind it (see
+      [`Renderer.Component.List` removed](#renderercomponentlist-removed)).
 - [ ] Load your extension in a v2 build and verify its UI renders through the
       runtime global.
 
