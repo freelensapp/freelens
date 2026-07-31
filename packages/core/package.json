@@ -144,7 +144,6 @@
     "uuid": "catalog:",
     "winston": "catalog:",
     "winston-transport": "catalog:",
-    "winston-transport-browserconsole": "catalog:",
     "ws": "catalog:",
     "zod": "catalog:"
   },
