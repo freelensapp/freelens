@@ -82,7 +82,6 @@
     "conf": "catalog:",
     "electron-window-state": "catalog:",
     "fs-extra": "catalog:",
-    "glob-to-regexp": "catalog:",
     "handlebars": "catalog:",
     "http-proxy-node16": "catalog:",
     "immer": "catalog:",
