@@ -82,7 +82,7 @@ class NonInjectedReplicationControllerDetails<
               disabled={this.sliderReplicasDisabled}
               value={this.sliderReplicasValue}
               onChange={(evt, value) => (this.sliderReplicasValue = value)}
-              onChangeCommitted={(event, value) => this.onScaleSliderChangeCommitted(event, value as number)}
+              onChangeCommitted={(event, value) => this.onScaleSliderChangeCommitted(event, value)}
             />
           </div>
         </DrawerItem>

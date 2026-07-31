@@ -32,7 +32,6 @@
     "prepack": "pnpm build:dist"
   },
   "dependencies": {
-    "@mui/material": "catalog:extensions",
     "@ogre-tools/injectable": "catalog:extensions",
     "@ogre-tools/injectable-react": "catalog:extensions",
     "@types/node": "catalog:extensions",

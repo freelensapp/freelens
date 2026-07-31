@@ -118,7 +118,6 @@
         // extension projects resolve these packages for types through
         // @freelensapp/extensions, so they must stay declared even though no
         // runtime code in this package imports them
-        "@mui/material",
         "@ogre-tools/injectable",
         "@ogre-tools/injectable-react",
         "@types/react",
