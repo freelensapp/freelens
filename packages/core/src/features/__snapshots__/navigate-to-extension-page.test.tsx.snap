@@ -287,7 +287,7 @@ exports[`navigate to extension page > renders 1`] = `
               <div
                 class="Avatar rounded disabled avatar"
                 id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
               >
                 WP
               </div>
@@ -312,7 +312,7 @@ exports[`navigate to extension page > renders 1`] = `
               <div
                 class="Avatar rounded disabled avatar"
                 id="hotbarIcon-hotbar-icon-catalog-entity"
-                style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
               >
                 Ca
               </div>
@@ -535,7 +535,7 @@ exports[`navigate to extension page > when extension navigates to child route > 
               <div
                 class="Avatar rounded disabled avatar"
                 id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
               >
                 WP
               </div>
@@ -560,7 +560,7 @@ exports[`navigate to extension page > when extension navigates to child route > 
               <div
                 class="Avatar rounded disabled avatar"
                 id="hotbarIcon-hotbar-icon-catalog-entity"
-                style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
               >
                 Ca
               </div>
@@ -799,7 +799,7 @@ exports[`navigate to extension page > when extension navigates to route with par
               <div
                 class="Avatar rounded disabled avatar"
                 id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
               >
                 WP
               </div>
@@ -824,7 +824,7 @@ exports[`navigate to extension page > when extension navigates to route with par
               <div
                 class="Avatar rounded disabled avatar"
                 id="hotbarIcon-hotbar-icon-catalog-entity"
-                style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
               >
                 Ca
               </div>
@@ -1063,7 +1063,7 @@ exports[`navigate to extension page > when extension navigates to route without 
               <div
                 class="Avatar rounded disabled avatar"
                 id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
               >
                 WP
               </div>
@@ -1088,7 +1088,7 @@ exports[`navigate to extension page > when extension navigates to route without 
               <div
                 class="Avatar rounded disabled avatar"
                 id="hotbarIcon-hotbar-icon-catalog-entity"
-                style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
               >
                 Ca
               </div>
@@ -1327,7 +1327,7 @@ exports[`navigate to extension page > when extension navigates to route without 
               <div
                 class="Avatar rounded disabled avatar"
                 id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
               >
                 WP
               </div>
@@ -1352,7 +1352,7 @@ exports[`navigate to extension page > when extension navigates to route without 
               <div
                 class="Avatar rounded disabled avatar"
                 id="hotbarIcon-hotbar-icon-catalog-entity"
-                style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
               >
                 Ca
               </div>

@@ -99,9 +99,6 @@ catalogs:
     '@types/proper-lockfile':
       specifier: 4.1.4
       version: 4.1.4
-    '@types/randomcolor':
-      specifier: 0.5.9
-      version: 0.5.9
     '@types/react':
       specifier: 19.2.17
       version: 19.2.17
@@ -276,9 +273,6 @@ catalogs:
     proper-lockfile:
       specifier: 4.1.2
       version: 4.1.2
-    randomcolor:
-      specifier: 0.6.2
-      version: 0.6.2
     react:
       specifier: 19.2.8
       version: 19.2.8
@@ -1034,9 +1028,6 @@ importers:
       proper-lockfile:
         specifier: 'catalog:'
         version: 4.1.2
-      randomcolor:
-        specifier: 'catalog:'
-        version: 0.6.2
       react:
         specifier: 'catalog:'
         version: 19.2.8
@@ -1137,9 +1128,6 @@ importers:
       '@types/proper-lockfile':
         specifier: 'catalog:'
         version: 4.1.4
-      '@types/randomcolor':
-        specifier: 'catalog:'
-        version: 0.5.9
       '@types/react':
         specifier: 'catalog:'
         version: 19.2.17
@@ -4486,9 +4474,6 @@ packages:
   '@types/proper-lockfile@4.1.4':
     resolution: {integrity: sha512-uo2ABllncSqg9F1D4nugVl9v93RmjxF6LJzQLMLDdPaXCUIDPeOJ21Gbqi43xNKzBi/WQ0Q0dICqufzQbMjipQ==}
 
-  '@types/randomcolor@0.5.9':
-    resolution: {integrity: sha512-k58cfpkK15AKn1m+oRd9nh5BnuiowhbyvBBdAzcddtARMr3xRzP0VlFaAKovSG6N6Knx08EicjPlOMzDejerrQ==}
-
   '@types/react-dom@19.2.3':
     resolution: {integrity: sha512-jp2L/eY6fn+KgVVQAOqYItbF0VY/YApe5Mz2F0aykSO8gx31bYCZyvSeYxCHKvzHG5eZjc+zyaS5BrBWya2+kQ==}
     peerDependencies:
@@ -6540,9 +6525,6 @@ packages:
   quick-lru@5.1.1:
     resolution: {integrity: sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==}
     engines: {node: '>=10'}
-
-  randomcolor@0.6.2:
-    resolution: {integrity: sha512-Mn6TbyYpFgwFuQ8KJKqf3bqqY9O1y37/0jgSK/61PUxV4QfIMv0+K2ioq8DfOjkBslcjwSzRfIDEXfzA9aCx7A==}
 
   react-dom@19.2.8:
     resolution: {integrity: sha512-rVprimfGBG3DR+Tq0IQG2DT5PxKth1WIGDmj5yPmlzr4YBe7uyE+Du4oVqTDXZSHGGGXRtTJEGSSePyQCMBglQ==}
@@ -9340,8 +9322,6 @@ snapshots:
     dependencies:
       '@types/retry': 0.12.2
 
-  '@types/randomcolor@0.5.9': {}
-
   '@types/react-dom@19.2.3(@types/react@19.2.17)':
     dependencies:
       '@types/react': 19.2.17
@@ -11412,8 +11392,6 @@ snapshots:
   pvutils@1.1.5: {}
 
   quick-lru@5.1.1: {}
-
-  randomcolor@0.6.2: {}
 
   react-dom@19.2.8(react@19.2.8):
     dependencies:
