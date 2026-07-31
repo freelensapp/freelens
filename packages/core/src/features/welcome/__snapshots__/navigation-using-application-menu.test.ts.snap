@@ -287,7 +287,7 @@ exports[`welcome - navigation using application menu > renders 1`] = `
               <div
                 class="Avatar rounded disabled avatar"
                 id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
               >
                 WP
               </div>
@@ -312,7 +312,7 @@ exports[`welcome - navigation using application menu > renders 1`] = `
               <div
                 class="Avatar rounded disabled avatar"
                 id="hotbarIcon-hotbar-icon-catalog-entity"
-                style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
               >
                 Ca
               </div>
@@ -1082,7 +1082,7 @@ exports[`welcome - navigation using application menu > when navigated somewhere 
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                  style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
                 >
                   WP
                 </div>
@@ -1107,7 +1107,7 @@ exports[`welcome - navigation using application menu > when navigated somewhere 
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                  style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
                 >
                   Ca
                 </div>
@@ -1515,7 +1515,7 @@ exports[`welcome - navigation using application menu > when navigated somewhere 
               <div
                 class="Avatar rounded disabled avatar"
                 id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
               >
                 WP
               </div>
@@ -1540,7 +1540,7 @@ exports[`welcome - navigation using application menu > when navigated somewhere 
               <div
                 class="Avatar rounded disabled avatar"
                 id="hotbarIcon-hotbar-icon-catalog-entity"
-                style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
               >
                 Ca
               </div>

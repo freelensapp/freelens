@@ -19,7 +19,7 @@ exports[`Icon settings > given no external registrations for cluster settings me
             >
               <div
                 class="Avatar rounded"
-                style="width: 53px; height: 53px; background: rgb(9, 124, 92);"
+                style="width: 53px; height: 53px; background: rgb(110, 28, 69);"
               >
                 skc
               </div>
@@ -71,7 +71,7 @@ exports[`Icon settings > given no registrations for cluster settings component i
             >
               <div
                 class="Avatar rounded"
-                style="width: 53px; height: 53px; background: rgb(9, 124, 92);"
+                style="width: 53px; height: 53px; background: rgb(110, 28, 69);"
               >
                 skc
               </div>

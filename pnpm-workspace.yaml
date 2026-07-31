@@ -67,7 +67,6 @@ catalog:
   '@types/jsdom': 28.0.3
   '@types/memorystream': 0.3.4
   '@types/proper-lockfile': 4.1.4
-  '@types/randomcolor': 0.5.9
   '@types/react-table': 7.7.20
   '@types/semver': 7.7.1
   '@types/tar-stream': 3.1.4
@@ -121,7 +120,6 @@ catalog:
   openpgp: 6.3.1
   p-limit: 7.3.0
   proper-lockfile: 4.1.2
-  randomcolor: 0.6.2
   react-select: 5.10.2
   react-table: 7.8.0
   react-window: 2.3.0

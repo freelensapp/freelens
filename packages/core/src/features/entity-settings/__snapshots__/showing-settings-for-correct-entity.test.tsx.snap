@@ -288,7 +288,7 @@ exports[`Showing correct entity settings > renders 1`] = `
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                  style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
                 >
                   WP
                 </div>
@@ -313,7 +313,7 @@ exports[`Showing correct entity settings > renders 1`] = `
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                  style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
                 >
                   Ca
                 </div>
@@ -525,7 +525,7 @@ exports[`Showing correct entity settings > when navigating to local cluster enti
               >
                 <div
                   class="Avatar rounded settingsAvatar"
-                  style="width: 40px; height: 40px; background: rgb(83, 137, 8);"
+                  style="width: 40px; height: 40px; background: rgb(28, 110, 70);"
                 >
                   slk
                 </div>
@@ -694,7 +694,7 @@ exports[`Showing correct entity settings > when navigating to local cluster enti
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                  style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
                 >
                   WP
                 </div>
@@ -719,7 +719,7 @@ exports[`Showing correct entity settings > when navigating to local cluster enti
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                  style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
                 >
                   Ca
                 </div>
@@ -931,7 +931,7 @@ exports[`Showing correct entity settings > when navigating to non-local cluster 
               >
                 <div
                   class="Avatar rounded settingsAvatar"
-                  style="width: 40px; height: 40px; background: rgb(9, 124, 92);"
+                  style="width: 40px; height: 40px; background: rgb(110, 28, 69);"
                 >
                   skc
                 </div>
@@ -1121,7 +1121,7 @@ exports[`Showing correct entity settings > when navigating to non-local cluster 
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                  style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
                 >
                   WP
                 </div>
@@ -1146,7 +1146,7 @@ exports[`Showing correct entity settings > when navigating to non-local cluster 
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                  style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
                 >
                   Ca
                 </div>
@@ -1358,7 +1358,7 @@ exports[`Showing correct entity settings > when navigating to weblink entity set
               >
                 <div
                   class="Avatar rounded settingsAvatar"
-                  style="width: 40px; height: 40px; background: rgb(53, 8, 142);"
+                  style="width: 40px; height: 40px; background: rgb(67, 110, 28);"
                 >
                   sw
                 </div>
@@ -1449,7 +1449,7 @@ exports[`Showing correct entity settings > when navigating to weblink entity set
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                  style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
                 >
                   WP
                 </div>
@@ -1474,7 +1474,7 @@ exports[`Showing correct entity settings > when navigating to weblink entity set
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                  style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
                 >
                   Ca
                 </div>
