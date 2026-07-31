@@ -16,8 +16,7 @@ import { requestInitialExtensionDiscovery } from "../../renderer/ipc";
 import type { Stats } from "node:fs";
 
 import type { Logger } from "@freelensapp/logger";
-
-import type TypedEventEmitter from "typed-emitter";
+import type { TypedEventEmitter } from "@freelensapp/utilities";
 
 import type { AccessPath } from "../../common/fs/access-path.injectable";
 import type { Copy } from "../../common/fs/copy.injectable";

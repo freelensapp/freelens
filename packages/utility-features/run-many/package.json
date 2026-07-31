@@ -37,7 +37,6 @@
     "jsdom": "catalog:",
     "mobx": "catalog:",
     "type-fest": "catalog:",
-    "typed-emitter": "catalog:",
     "vitest": "catalog:"
   },
   "publishConfig": {
