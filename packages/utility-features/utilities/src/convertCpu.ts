@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { TypedRegEx } from "typed-regex";
+import { namedCaptures } from "./named-captures";
 
 // Helper to convert CPU K8S units to numbers
 
@@ -21,10 +21,11 @@ const unitConverters = new Map([
   ["E", 1000 ** 6],
 ]);
 
-const cpuUnitsRegex = TypedRegEx("^(?<digits>[+-]?[0-9.]+(e[-+]?[0-9]+)?)(?<unit>[EinumkKMGTP]*)$");
+const cpuUnitsRegex = /^(?<digits>[+-]?[0-9.]+(e[-+]?[0-9]+)?)(?<unit>[EinumkKMGTP]*)$/;
 
 export function cpuUnitsToNumber(value: string) {
-  const match = cpuUnitsRegex.captures(value);
+  // `unit` matches the empty string, so it always participates in a match
+  const match = namedCaptures<{ digits?: string; unit: string }>(cpuUnitsRegex, value);
 
   if (!match) {
     return undefined;

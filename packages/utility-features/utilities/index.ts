@@ -26,6 +26,7 @@ export * from "./src/jsonPath";
 export * from "./src/lowerAndPluralize";
 export * from "./src/metricUnitsToNumber";
 export * from "./src/name-parts";
+export * from "./src/named-captures";
 export * from "./src/noop";
 export * from "./src/object";
 export * from "./src/observable-crate";

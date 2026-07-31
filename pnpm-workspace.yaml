@@ -136,7 +136,6 @@ catalog:
   tcp-port-used: 1.0.3
   tempy: 3.2.0
   triple-beam: 1.4.1
-  typed-regex: 0.0.8
   typescript-plugin-css-modules: 5.2.0
   undici: 8.9.0
   uuid: 14.0.1

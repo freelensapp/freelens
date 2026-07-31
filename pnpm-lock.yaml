@@ -348,9 +348,6 @@ catalogs:
     type-fest:
       specifier: 5.6.0
       version: 5.6.0
-    typed-regex:
-      specifier: 0.0.8
-      version: 0.0.8
     typescript:
       specifier: 7.0.2
       version: 7.0.2
@@ -604,9 +601,6 @@ importers:
       triple-beam:
         specifier: 'catalog:'
         version: 1.4.1
-      typed-regex:
-        specifier: 'catalog:'
-        version: 0.0.8
       undici:
         specifier: 'catalog:'
         version: 8.9.0
@@ -1079,9 +1073,6 @@ importers:
       triple-beam:
         specifier: 'catalog:'
         version: 1.4.1
-      typed-regex:
-        specifier: 'catalog:'
-        version: 0.0.8
       undici:
         specifier: 'catalog:'
         version: 8.9.0
@@ -1402,9 +1393,6 @@ importers:
       es-toolkit:
         specifier: 'catalog:'
         version: 1.49.0
-      typed-regex:
-        specifier: 'catalog:'
-        version: 0.0.8
     devDependencies:
       '@freelensapp/typescript':
         specifier: workspace:^
@@ -1436,9 +1424,6 @@ importers:
       semver:
         specifier: 'catalog:'
         version: 7.8.5
-      typed-regex:
-        specifier: 'catalog:'
-        version: 0.0.8
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
@@ -2548,9 +2533,6 @@ importers:
       tar:
         specifier: 'catalog:'
         version: 7.5.21
-      typed-regex:
-        specifier: 'catalog:'
-        version: 0.0.8
     devDependencies:
       '@freelensapp/typescript':
         specifier: workspace:^
@@ -7242,9 +7224,6 @@ packages:
   type-fest@5.6.0:
     resolution: {integrity: sha512-8ZiHFm91orbSAe2PSAiSVBVko18pbhbiB3U9GglSzF/zCGkR+rxpHx6sEMCUm4kxY4LjDIUGgCfUMtwfZfjfUA==}
     engines: {node: '>=20'}
-
-  typed-regex@0.0.8:
-    resolution: {integrity: sha512-1XkGm1T/rUngbFROIOw9wPnMAKeMsRoc+c9O6GwOHz6aH/FrJFtcyd2sHASbT0OXeGLot5N1shPNpwHGTv9RdQ==}
 
   typescript-plugin-css-modules@5.2.0:
     resolution: {integrity: sha512-c5pAU5d+m3GciDr/WhkFldz1NIEGBafuP/3xhFt9BEXS2gmn/LvjkoZ11vEBIuP8LkXfPNhOt1BUhM5efFuwOw==}
@@ -12184,8 +12163,6 @@ snapshots:
   type-fest@5.6.0:
     dependencies:
       tagged-tag: 1.0.0
-
-  typed-regex@0.0.8: {}
 
   typescript-plugin-css-modules@5.2.0(supports-color@8.1.1)(ts-node@10.9.2(@types/node@24.12.4)(typescript@7.0.2))(typescript@7.0.2):
     dependencies:
