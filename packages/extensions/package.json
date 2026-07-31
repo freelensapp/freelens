@@ -40,7 +40,6 @@
     "@xterm/xterm": "catalog:extensions",
     "chart.js": "catalog:extensions",
     "conf": "catalog:extensions",
-    "history": "catalog:extensions",
     "immer": "catalog:extensions",
     "mobx": "catalog:extensions",
     "monaco-editor": "catalog:extensions",

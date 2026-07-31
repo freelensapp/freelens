@@ -25,7 +25,6 @@
     "@ogre-tools/fp": "catalog:",
     "@ogre-tools/injectable": "catalog:",
     "@ogre-tools/injectable-react": "catalog:",
-    "history": "catalog:",
     "mobx": "catalog:",
     "mobx-react": "catalog:",
     "react": "catalog:"

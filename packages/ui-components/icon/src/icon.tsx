@@ -35,9 +35,8 @@ import Wheel from "../assets/wheel.svg?raw";
 import Workloads from "../assets/workloads.svg?raw";
 
 import type { Logger } from "@freelensapp/logger";
+import type { To } from "@freelensapp/routing";
 import type { StrictReactNode } from "@freelensapp/utilities";
-
-import type { To } from "history";
 
 const hrefValidation = /https?:\/\//;
 

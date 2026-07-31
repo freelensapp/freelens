@@ -126,7 +126,6 @@
         "@xterm/xterm",
         "chart.js",
         "conf",
-        "history",
         "immer",
         "mobx",
         "monaco-editor",

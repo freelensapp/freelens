@@ -14,9 +14,29 @@ export { observableHistoryInjectionToken } from "./src/observable-history.inject
 export { ObservableSearchParams } from "./src/observable-search-params";
 export { Redirect, Route, Switch } from "./src/route";
 export { searchParamsOptions } from "./src/search-params";
+export { Action, createBrowserHistory, createMemoryHistory, createPath, parsePath } from "./src/vendor/history";
 
 export type { LinkProps, NavLinkProps } from "./src/link";
 export type { Match, MatchPathOptions } from "./src/match-path";
 export type { HistoryAdapter, ObservableHistoryOptions } from "./src/observable-history";
 export type { ObservableSearchParamsOptions, SearchParamsInit } from "./src/observable-search-params";
 export type { RedirectProps, RouteComponentProps, RouteProps, SwitchProps } from "./src/route";
+export type {
+  BrowserHistory,
+  BrowserHistoryOptions,
+  Hash,
+  History,
+  InitialEntry,
+  Key,
+  Listener,
+  Location,
+  MemoryHistory,
+  MemoryHistoryOptions,
+  PartialLocation,
+  PartialPath,
+  Path,
+  Pathname,
+  Search,
+  To,
+  Update,
+} from "./src/vendor/history";
