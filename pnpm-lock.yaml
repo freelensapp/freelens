@@ -114,9 +114,6 @@ catalogs:
     '@types/semver':
       specifier: 7.7.1
       version: 7.7.1
-    '@types/stoppable':
-      specifier: 1.1.3
-      version: 1.1.3
     '@types/tar-stream':
       specifier: 3.1.4
       version: 3.1.4
@@ -327,9 +324,6 @@ catalogs:
     spdx-license-list:
       specifier: 6.11.0
       version: 6.11.0
-    stoppable:
-      specifier: 1.1.0
-      version: 1.1.0
     tailwindcss:
       specifier: 4.2.4
       version: 4.2.4
@@ -598,9 +592,6 @@ importers:
       semver:
         specifier: 'catalog:'
         version: 7.8.5
-      stoppable:
-        specifier: 'catalog:'
-        version: 1.1.0
       tar:
         specifier: 'catalog:'
         version: 7.5.21
@@ -1076,9 +1067,6 @@ importers:
       semver:
         specifier: 'catalog:'
         version: 7.8.5
-      stoppable:
-        specifier: 'catalog:'
-        version: 1.1.0
       tar:
         specifier: 'catalog:'
         version: 7.5.21
@@ -1173,9 +1161,6 @@ importers:
       '@types/semver':
         specifier: 'catalog:'
         version: 7.7.1
-      '@types/stoppable':
-        specifier: 'catalog:'
-        version: 1.1.3
       '@types/tcp-port-used':
         specifier: 'catalog:'
         version: 1.0.4
@@ -4547,9 +4532,6 @@ packages:
   '@types/semver@7.7.1':
     resolution: {integrity: sha512-FmgJfu+MOcQ370SD0ev7EI8TlCAfKYU+B4m5T3yXc1CiRN94g/SZPtsCkk506aUDtlMnFZvasDwHHUcZUEaYuA==}
 
-  '@types/stoppable@1.1.3':
-    resolution: {integrity: sha512-7wGKIBJGE4ZxFjk9NkjAxZMLlIXroETqP1FJCdoSvKmEznwmBxQFmTB1dsCkAvVcNemuSZM5qkkd9HE/NL2JTw==}
-
   '@types/stream-buffers@3.0.7':
     resolution: {integrity: sha512-azOCy05sXVXrO+qklf0c/B07H/oHaIuDDAiHPVwlk3A9Ek+ksHyTeMajLZl3r76FxpPpxem//4Te61G1iW3Giw==}
 
@@ -7003,10 +6985,6 @@ packages:
   std-env@4.2.0:
     resolution: {integrity: sha512-oCUKSupKTHX53EyjDtuZQ64pjLJ6yYCtpmEw0goYxtjG9KpbRe8KAsl2tBUGU9DyMcJ0RwJ8GqJAFzMXcXW1Rw==}
 
-  stoppable@1.1.0:
-    resolution: {integrity: sha512-KXDYZ9dszj6bzvnEMRYvxgeTHU74QBFL54XKtP3nyMuJ81CFYtABZ3bAzL2EdFUaEwJOBOgENyFj3R7oTzDyyw==}
-    engines: {node: '>=4', npm: '>=6'}
-
   stream-buffers@3.0.3:
     resolution: {integrity: sha512-pqMqwQCso0PBJt2PQmDO0cFj0lyqmiwOMiMSkVtRokl7e+ZTRYgDHKnuZNbqjiJXgsg4nuqtD/zxuo9KqTp0Yw==}
     engines: {node: '>= 0.10.0'}
@@ -9408,10 +9386,6 @@ snapshots:
   '@types/retry@0.12.2': {}
 
   '@types/semver@7.7.1': {}
-
-  '@types/stoppable@1.1.3':
-    dependencies:
-      '@types/node': 24.12.4
 
   '@types/stream-buffers@3.0.7':
     dependencies:
@@ -11925,8 +11899,6 @@ snapshots:
       escodegen: 1.14.3
 
   std-env@4.2.0: {}
-
-  stoppable@1.1.0: {}
 
   stream-buffers@3.0.3: {}
 

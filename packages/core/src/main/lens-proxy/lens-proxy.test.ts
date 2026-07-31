@@ -3,11 +3,15 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { once } from "node:events";
+import net from "node:net";
 import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
+import routerInjectable from "../router/router.injectable";
 import getClusterForRequestInjectable from "./get-cluster-for-request.injectable";
 import lensProxyInjectable from "./lens-proxy.injectable";
+import lensProxyPortInjectable from "./lens-proxy-port.injectable";
 import kubeApiUpgradeRequestInjectable from "./proxy-functions/kube-api-upgrade-request.injectable";
 import shellApiRequestInjectable from "./proxy-functions/shell-api-request.injectable";
 
@@ -15,6 +19,7 @@ import type { DiContainer } from "@ogre-tools/injectable";
 import type { Mock } from "vitest";
 
 import type { Cluster } from "../../common/cluster/cluster";
+import type { Router } from "../router/router";
 import type { ServerIncomingMessage } from "./lens-proxy";
 
 /**
@@ -30,6 +35,105 @@ vi.mock("node:https", async (importOriginal) => {
     http.createServer(handler);
 
   return { ...actual, createServer, default: { ...actual, createServer } };
+});
+
+describe("closing the lens proxy", () => {
+  let di: DiContainer;
+  let proxy: { listen: () => Promise<void>; close: () => Promise<void> | undefined };
+  let port: number;
+  let requestReachedTheRouter: Promise<void>;
+  const sockets: net.Socket[] = [];
+
+  const connect = async () => {
+    const socket = net.connect(port, "127.0.0.1");
+
+    sockets.push(socket);
+    await once(socket, "connect");
+
+    return socket;
+  };
+
+  beforeEach(async () => {
+    di = getDiForUnitTesting();
+
+    di.override(directoryForUserDataInjectable, () => "/some-directory-for-user-data");
+    di.override(directoryForTempInjectable, () => "/some-directory-for-tmp");
+    di.override(getClusterForRequestInjectable, () => () => undefined);
+    // Not exercised here, and instantiating them for real pulls in the whole
+    // shell session graph
+    di.override(shellApiRequestInjectable, () => vi.fn());
+    di.override(kubeApiUpgradeRequestInjectable, () => vi.fn());
+
+    // A route that never answers, standing in for the watch and follow
+    // requests the proxy really carries: a connection that is not idle and
+    // will not become idle on its own
+    let requestReceived: () => void;
+
+    requestReachedTheRouter = new Promise<void>((resolve) => {
+      requestReceived = resolve;
+    });
+    di.override(
+      routerInjectable,
+      () =>
+        ({
+          route: () => {
+            requestReceived();
+
+            return new Promise<void>(() => {});
+          },
+        }) as unknown as Router,
+    );
+
+    proxy = di.inject(lensProxyInjectable);
+
+    await proxy.listen();
+    port = di.inject(lensProxyPortInjectable).get();
+  });
+
+  afterEach(() => {
+    for (const socket of sockets) {
+      socket.destroy();
+    }
+
+    sockets.length = 0;
+  });
+
+  it("resolves when nothing is connected", async () => {
+    await expect(proxy.close()).resolves.toBeUndefined();
+  });
+
+  it("resolves without waiting out the grace period when a connection is idle", async () => {
+    await connect();
+
+    const startedAt = performance.now();
+
+    await proxy.close();
+
+    expect(performance.now() - startedAt).toBeLessThan(400);
+  });
+
+  it("destroys a connection that is still serving a request, once the grace period is up", async () => {
+    const socket = await connect();
+    const socketClosed = once(socket, "close");
+
+    socket.write("GET /some-path HTTP/1.1\r\nHost: 127.0.0.1\r\n\r\n");
+    await requestReachedTheRouter;
+
+    const startedAt = performance.now();
+
+    await proxy.close();
+
+    // The request never answers, so the only way this resolved is the grace
+    // period elapsing and the connection being destroyed
+    expect(performance.now() - startedAt).toBeGreaterThanOrEqual(400);
+    await socketClosed;
+  });
+
+  it("does nothing on a second call", async () => {
+    await proxy.close();
+
+    expect(proxy.close()).toBeUndefined();
+  });
 });
 
 describe("lens proxy upgrade requests", () => {
