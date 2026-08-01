@@ -22,7 +22,7 @@ const proxyFetchInjectable: Injectable<ProxyFetch, unknown, void> = getInjectabl
 
     return async (url, init = {}) => {
       const response = await undiciFetch(
-        url as string | URL,
+        url,
         withHostHeaderPreserved({
           dispatcher: httpsAgent(),
           ...init,

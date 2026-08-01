@@ -18,6 +18,8 @@ import type {
   JsonApiParams,
 } from "@freelensapp/json-api";
 
+import type { MainFetchRequestInit } from "../../main/fetch/main-fetch-request-init";
+
 export type CreateJsonApi = <Data = JsonApiData, Params extends JsonApiParams<Data> = JsonApiParams<Data>>(
   config: JsonApiConfig,
   reqInit?: FetchRequestInit,
@@ -34,7 +36,7 @@ const createJsonApiInjectable = getInjectable({
 
     return (config, reqInit) => {
       if (!config.getRequestOptions) {
-        config.getRequestOptions = async () => {
+        config.getRequestOptions = async (): Promise<MainFetchRequestInit> => {
           const dispatcher = lensProxyDispatcher();
 
           return dispatcher ? { dispatcher } : {};

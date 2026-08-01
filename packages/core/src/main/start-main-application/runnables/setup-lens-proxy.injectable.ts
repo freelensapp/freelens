@@ -19,6 +19,8 @@ import lensProxyInjectable from "../../lens-proxy/lens-proxy.injectable";
 import lensProxyPortInjectable from "../../lens-proxy/lens-proxy-port.injectable";
 import setupLensProxyCertificateInjectable from "./setup-lens-proxy-certificate.injectable";
 
+import type { MainFetch } from "../../fetch/main-fetch-request-init";
+
 const setupLensProxyInjectable = getInjectable({
   id: "setup-lens-proxy",
 
@@ -32,7 +34,7 @@ const setupLensProxyInjectable = getInjectable({
       const showErrorPopup = di.inject(showErrorPopupInjectable);
       const buildVersion = di.inject(buildVersionInitializable.stateToken);
       const lensProxyDispatcher = di.inject(lensProxyDispatcherInjectionToken);
-      const fetch = di.inject(fetchInjectable);
+      const fetch: MainFetch = di.inject(fetchInjectable);
       const isProduction = di.inject(isProductionInjectable);
 
       try {
