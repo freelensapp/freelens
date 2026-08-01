@@ -418,9 +418,6 @@ catalogs:
     type-fest:
       specifier: ^5.6.0
       version: 5.6.0
-    undici:
-      specifier: ^8.9.0
-      version: 8.9.0
 
 overrides:
   form-data: ^4.0.6
@@ -1264,9 +1261,6 @@ importers:
       type-fest:
         specifier: catalog:extensions
         version: 5.6.0
-      undici:
-        specifier: catalog:extensions
-        version: 8.9.0
     devDependencies:
       '@freelensapp/core':
         specifier: workspace:^
@@ -2279,9 +2273,6 @@ importers:
       type-fest:
         specifier: 'catalog:'
         version: 5.6.0
-      undici:
-        specifier: 'catalog:'
-        version: 8.9.0
 
   packages/utility-features/kube-api:
     dependencies:
