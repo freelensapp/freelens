@@ -11,14 +11,20 @@ import lensProxyPortInjectable from "../../main/lens-proxy/lens-proxy-port.injec
 
 import type { FetchRequestInit, FetchResponse } from "@freelensapp/json-api";
 
-export type LensRequestInit = Omit<FetchRequestInit, "dispatcher">;
+import type { MainFetch } from "./main-fetch-request-init";
+
+/**
+ * The dispatcher is lens-fetch's to choose, so the caller's init is the plain
+ * public one and carries no slot for it.
+ */
+export type LensRequestInit = FetchRequestInit;
 
 export type LensFetch = (pathnameAndQuery: string, init?: LensRequestInit) => Promise<FetchResponse>;
 
 const lensFetchInjectable = getInjectable({
   id: "lens-fetch",
   instantiate: (di): LensFetch => {
-    const fetch = di.inject(fetchInjectable);
+    const fetch: MainFetch = di.inject(fetchInjectable);
     const lensProxyPort = di.inject(lensProxyPortInjectable);
     const lensProxyDispatcher = di.inject(lensProxyDispatcherInjectionToken);
 

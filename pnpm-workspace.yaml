@@ -164,7 +164,6 @@ catalogs:
     react-window: ^2.3.0
     rfc6902: ^5.2.0
     type-fest: ^5.6.0
-    undici: ^8.9.0
 
 allowBuilds:
   '@parcel/watcher': true

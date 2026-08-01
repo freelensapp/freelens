@@ -149,6 +149,91 @@ namespace path, re-check it against the current
 between `Common`, `Main`, and `Renderer`. The concrete rename table is filled
 in from the freelens-example-extension port and will be appended here.
 
+## HTTP: `Main.Util.fetch` and `Renderer.Util.fetch`
+
+In v2 the host provides the HTTP client, one symbol per process:
+
+| Symbol | Process | What answers the call |
+| --- | --- | --- |
+| `Main.Util.fetch` | main | the same client the app uses for its own binary and JSON downloads and its metrics requests |
+| `Renderer.Util.fetch` | renderer | Chromium's `fetch`, reached through the host |
+
+Both take the same arguments as the standard `fetch`, and both are additions to
+`Common.Util` — `Main.Util` and `Renderer.Util` carry everything `Common.Util`
+does, plus `fetch`.
+
+**In main, prefer `Main.Util.fetch` over `globalThis.fetch`.** The global exists
+there, but it knows nothing about the user's `httpsProxy` preference, their
+`caCertificates` / `allowUntrustedCAs` settings, or the Freelens proxy. The
+host-provided client honours all three, so an extension that uses it works in
+the corporate-proxy and custom-CA setups where the global would simply fail —
+without the extension having to implement any of it.
+
+In the renderer, `Renderer.Util.fetch` is today Chromium's `fetch` and needs
+none of that: requests to the cluster go to the frame's own origin, whose
+certificate the window's session already trusts. It is nonetheless a symbol of
+its own rather than a documented alias for the global. The renderer session
+takes the *system* proxy while only main honours the `httpsProxy` preference;
+if that asymmetry is ever fixed, extensions on the symbol get the fix and
+extensions on the global do not.
+
+There are deliberately **two** symbols and not one `Common.Util.fetch`. The
+implementations differ, and one name would suggest an equivalence that does not
+hold.
+
+### The request and response types are structural
+
+`FetchRequestInit` and `FetchResponse` — the types that reach you through
+`K8sApi.KubeJsonApi` and `KubeApi.list()`'s `reqInit`, as well as through
+`Util.fetch` — describe HTTP structurally rather than by naming a runtime's
+classes:
+
+```ts
+interface FetchResponse {
+  readonly ok: boolean;
+  readonly status: number;
+  readonly statusText: string;
+  readonly headers: { get(name: string): string | null };
+  readonly body: ReadableStream<Uint8Array> | null;
+  text(): Promise<string>;
+  json(): Promise<unknown>;
+  arrayBuffer(): Promise<ArrayBuffer>;
+}
+```
+
+This is what the two processes actually have in common. The renderer really
+returns Chromium's `Response` and main really returns undici's — structurally
+compatible classes, but distinct ones — so a contract that named either would
+be describing one process and quietly misdescribing the other. It also means
+`res instanceof Response` is not a reliable check in main; test `res.ok` or
+`res.status` instead.
+
+Two consequences for your code:
+
+- **`await fetch(...)` is a `FetchResponse`, not a `Response`.** Passing it
+  where a `FetchResponse` is expected is fine, and reading the members above is
+  fine. Assigning it to a variable annotated `Response` is not, because
+  `FetchResponse` is the wider type. `blob()`, `formData()`, `clone()`, `url`,
+  `redirected` and `type` are not part of the contract; if you need one, reach
+  for your own client for that call.
+- **The fetch types add no `lib.dom` requirement.** They name only
+  `AbortSignal`, `ReadableStream`, `URL` and `Uint8Array`, all of which
+  `@types/node` declares as well. (The published surface as a whole still needs
+  the DOM lib — its React component types do — see
+  [`tsconfig.json` for an extension](#tsconfigjson-for-an-extension).)
+
+Request bodies are `string | Uint8Array | ArrayBuffer | ReadableStream<Uint8Array>`.
+`Blob`, `FormData` and `URLSearchParams` are not accepted; encode to a string
+(`params.toString()`, `JSON.stringify(...)`) or a `Uint8Array` first.
+
+### `dispatcher` is gone from `reqInit`
+
+`FetchRequestInit` used to carry an undici `dispatcher`. It required an
+extension to depend on `undici` in order to fill a slot it had no way to make
+use of, so the slot is gone and `undici` is no longer among the type
+dependencies `@freelensapp/extensions` declares. The capability it gestured at —
+HTTP that respects the user's proxy and CA settings — is `Main.Util.fetch`.
+
 ## `K8sApi.forRemoteCluster` removed
 
 `Main.K8sApi.forRemoteCluster` / `Renderer.K8sApi.forRemoteCluster` and the
@@ -169,9 +254,17 @@ would be silently ignored rather than applied.
 proxy, which keeps handling authentication.
 
 If your extension needs to reach a cluster that is not in the catalog, talk to
-its API server with your own HTTP client (bundled with the extension) and your
-own TLS configuration. The `KubeApi` machinery does not buy you anything there
-once it no longer owns that setup.
+its API server directly — the `KubeApi` machinery does not buy you anything
+there once it no longer owns the TLS setup.
+
+From the main process, use [`Main.Util.fetch`](#http-mainutilfetch-and-rendererutilfetch)
+rather than bundling an HTTP client: it already honours the user's `httpsProxy`
+preference and their `caCertificates` / `allowUntrustedCAs` settings, which is
+most of what a remote API server needs and all of what a corporate network
+needs. Bundle your own client only for the part it genuinely cannot express —
+per-request client certificates, or a CA that is trusted for this one call and
+nothing else — and prefer doing that work in main, where a TLS configuration
+can be applied at all.
 
 ## Routing: `react-router` re-exports removed
 
@@ -455,9 +548,19 @@ is still lighter than wiring up a Tailwind build.
 - [ ] Access only the process-appropriate namespace (`Main` in main,
       `Renderer` in the renderer, `Common` in both).
 - [ ] Re-check any moved API symbols against the published type surface.
-- [ ] Replace any `K8sApi.forRemoteCluster` usage with your own HTTP client —
-      it was removed (see
+- [ ] Replace any `K8sApi.forRemoteCluster` usage with a direct call to the API
+      server — it was removed (see
       [`K8sApi.forRemoteCluster` removed](#k8sapiforremotecluster-removed)).
+- [ ] Replace any bundled HTTP client, and any `globalThis.fetch` in main, with
+      `Main.Util.fetch` / `Renderer.Util.fetch` — the host's client is the one
+      that honours the user's proxy and CA settings (see
+      [HTTP: `Main.Util.fetch` and `Renderer.Util.fetch`](#http-mainutilfetch-and-rendererutilfetch)).
+- [ ] Drop any `undici` dependency added for the `dispatcher` field of
+      `reqInit` — the field is gone and `undici` is no longer a declared type
+      dependency of `@freelensapp/extensions`.
+- [ ] Re-check anything annotated `Response` or `RequestInit` from the DOM: the
+      shared fetch types are structural now, so `const r: Response = await
+      fetch(...)` no longer compiles.
 - [ ] Replace any `react-router` / `react-router-dom` usage imported via the
       Freelens bundle — the `ReactRouter*` re-exports were removed (see
       [Routing: `react-router` re-exports removed](#routing-react-router-re-exports-removed)).

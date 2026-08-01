@@ -8,7 +8,15 @@ import { fetchImplementationInjectionToken } from "./fetch-injection-token";
 
 import type { Fetch } from "@freelensapp/json-api";
 
-export type { Fetch, FetchRequestInfo, FetchRequestInit, FetchResponse } from "@freelensapp/json-api";
+export type {
+  Fetch,
+  FetchBodyInit,
+  FetchHeadersInit,
+  FetchRequestHeaders,
+  FetchRequestInit,
+  FetchResponse,
+  FetchResponseHeaders,
+} from "@freelensapp/json-api";
 
 /**
  * The one `fetch` the application uses, in either process.

@@ -27,7 +27,7 @@ const undiciFetchInjectable: Injectable<Fetch, unknown, void> = getInjectable({
     // undici's `Response` is spec-compliant but nominally distinct from the
     // DOM one the shared type uses; only this boundary knows they are the
     // same shape.
-    const response = await undiciFetch(url as string | URL, withHostHeaderPreserved(init) as UndiciRequestInit);
+    const response = await undiciFetch(url, withHostHeaderPreserved(init) as UndiciRequestInit);
 
     return response as UndiciResponse as unknown as Response;
   },

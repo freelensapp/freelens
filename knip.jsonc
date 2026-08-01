@@ -132,8 +132,7 @@
         "react-select",
         "react-window",
         "rfc6902",
-        "type-fest",
-        "undici"
+        "type-fest"
       ],
       "typescript": {
         "config": ["tsconfig.json", "tsconfig.dts.json"]
