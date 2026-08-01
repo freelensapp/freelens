@@ -67,7 +67,6 @@ catalog:
   '@types/jsdom': 28.0.3
   '@types/memorystream': 0.3.4
   '@types/proper-lockfile': 4.1.4
-  '@types/react-table': 7.7.20
   '@types/semver': 7.7.1
   '@types/tar-stream': 3.1.4
   '@types/tcp-port-used': 1.0.4
@@ -120,7 +119,6 @@ catalog:
   p-limit: 7.3.0
   proper-lockfile: 4.1.2
   react-select: 5.10.2
-  react-table: 7.8.0
   react-window: 2.3.0
   rfc6902: 5.2.0
   selfsigned: 5.5.0
@@ -155,7 +153,6 @@ catalogs:
     '@ogre-tools/injectable-react': ^23.2.0
     '@types/node': ~24.12.4
     '@types/react': ^19.2.17
-    '@types/react-table': ^7.7.20
     '@xterm/xterm': ^6.0.0
     chart.js: ^4.5.1
     conf: ^15.1.0
@@ -164,7 +161,6 @@ catalogs:
     monaco-editor: ^0.56.0
     react: ^19.2.8
     react-select: ^5.10.2
-    react-table: ^7.8.0
     react-window: ^2.3.0
     rfc6902: ^5.2.0
     type-fest: ^5.6.0
