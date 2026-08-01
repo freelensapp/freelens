@@ -9,11 +9,14 @@ import { fetchImplementationInjectionToken } from "../../common/fetch/fetch-inje
 import type { Fetch } from "@freelensapp/json-api";
 
 /**
- * Chromium's `fetch`, which is the only client the renderer can use.
+ * Chromium's `fetch`, which is the client the renderer uses.
  *
- * A Node client cannot work here: undici needs Node's global `setTimeout` (for
- * `.unref()`) and `performance.markResourceTiming`, and a module required in
- * the renderer shares the page's globals, which are Chromium's.
+ * Not because a Node client is impossible here — the renderer is
+ * node-integrated, and Freelens 1.x ran every `KubeJsonApi` call in this very
+ * process through a CJS build of `node-fetch`. It is undici specifically that
+ * cannot: it needs Node's global `setTimeout` (for `.unref()`) and
+ * `performance.markResourceTiming`, and a module required in the renderer
+ * shares the page's globals, which are Chromium's.
  *
  * It is also all the renderer needs. Requests go to the frame's own origin
  * (`https://<clusterId>.renderer.freelens.app:<port>`), which Chromium's
