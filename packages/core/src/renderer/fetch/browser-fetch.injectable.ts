@@ -21,13 +21,24 @@ import type { Fetch } from "@freelensapp/json-api";
  * session already trusts, so lens-proxy gets the `Host` header it routes on
  * without anyone setting it.
  *
- * Wrapped rather than handed over directly: the shared contract is structural
- * and slightly wider than Chromium's `RequestInit` on the request body — it
- * admits any `Uint8Array`, while `BodyInit` names only the views backed by a
- * non-shared `ArrayBuffer`. Narrowing the contract to match would reject
- * `Buffer`, which is the shape main-process callers actually hold, so the
- * conversion is made here, at the one boundary that knows which client it is
- * talking to.
+ * Wrapped rather than handed over directly, because the shared contract is
+ * structural and Chromium's `RequestInit` is nominal. They diverge in two
+ * places, and the assertion below — an assertion, not a conversion; nothing is
+ * copied — covers both:
+ *
+ * - **the body.** `FetchBodyInit` admits any `Uint8Array`, while `BodyInit`
+ *   names only views backed by a non-shared `ArrayBuffer`. Narrowing the
+ *   contract to match would reject `Buffer`, which is what main-process callers
+ *   actually hold.
+ * - **the headers.** `FetchHeadersInit` admits a `Headers`-*like* instance —
+ *   `get` and `forEach`, which is all this codebase reads — where `HeadersInit`
+ *   names Chromium's `Headers` class itself. The reverse holds, so a real
+ *   `Headers` can always be passed; it is only the structural member of the
+ *   union that Chromium's types do not recognize.
+ *
+ * Both are cases of the contract being wider than one implementation, which is
+ * what a supertype of two runtimes is for. This is the boundary that knows
+ * which runtime it is talking to, so this is where it is narrowed.
  */
 const browserFetchInjectable: Injectable<Fetch, unknown, void> = getInjectable({
   id: "browser-fetch",
