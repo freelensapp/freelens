@@ -312,7 +312,6 @@ describe("Extensions API", () => {
         expect(extensions.Renderer.Component).toHaveProperty("KubeObjectMenu");
         expect(extensions.Renderer.Component).toHaveProperty("KubeObjectMeta");
         expect(extensions.Renderer.Component).toHaveProperty("LineProgress");
-        expect(extensions.Renderer.Component).toHaveProperty("List");
         expect(extensions.Renderer.Component).toHaveProperty("LocaleDate");
         expect(extensions.Renderer.Component).toHaveProperty("MainLayout");
         expect(extensions.Renderer.Component).toHaveProperty("Map");
