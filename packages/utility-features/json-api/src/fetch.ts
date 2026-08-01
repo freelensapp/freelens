@@ -36,21 +36,33 @@ export interface FetchResponseHeaders {
   get(name: string): string | null;
 }
 
-/** The part of `Headers` an instance passed as request headers is read through. */
+/**
+ * The part of `Headers` an instance passed as request headers is read through.
+ *
+ * The callback takes two parameters where both `Headers` implementations pass a
+ * third (the collection itself): a function of fewer parameters is assignable
+ * where one of more is expected, so declaring it is unnecessary — and naming
+ * its type would mean either `any` or a self-reference this contract does not
+ * otherwise need.
+ */
 export interface FetchRequestHeaders extends FetchResponseHeaders {
-  forEach(callback: (value: string, name: string, parent: any) => void): void;
+  forEach(callback: (value: string, name: string) => void): void;
 }
 
 /**
  * Request headers in any of the three shapes `fetch` accepts: a list of
  * name/value pairs, a `Headers`-like instance, or a plain record.
  */
-export type FetchHeadersInit = string[][] | FetchRequestHeaders | Record<string, string>;
+export type FetchHeadersInit = [string, string][] | FetchRequestHeaders | Record<string, string>;
 
 /**
  * Request bodies Freelens sends. Deliberately narrower than the DOM's
- * `BodyInit`: `Blob`, `FormData` and `URLSearchParams` name types only
- * `lib.dom` declares, and nothing here sends them.
+ * `BodyInit`, which also admits `Blob`, `FormData` and `URLSearchParams`.
+ *
+ * Not because those name DOM-only types — `@types/node` declares all three as
+ * globals, the same way it declares `Response` — but because nothing here sends
+ * them, and every member of this contract is a promise both implementations
+ * have to keep. Encode to a string or a `Uint8Array` instead.
  */
 export type FetchBodyInit = string | Uint8Array | ArrayBuffer | ReadableStream<Uint8Array>;
 
