@@ -109,7 +109,7 @@ catalog:
   http-proxy-node16: 1.0.6
   immer: 11.1.8
   joi: 18.2.3
-  js-yaml: 5.2.2
+  js-yaml: 5.2.3
   logform: 2.7.0
   marked: 18.0.6
   mobx-utils: 6.1.1
