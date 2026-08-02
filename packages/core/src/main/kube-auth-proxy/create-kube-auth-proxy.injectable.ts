@@ -8,7 +8,6 @@ import assert from "node:assert";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { observable, when } from "mobx";
-import { TypedRegEx } from "typed-regex";
 import getDirnameOfPathInjectable from "../../common/path/get-dirname.injectable";
 import randomBytesInjectable from "../../common/utils/random-bytes.injectable";
 import clusterApiUrlInjectable from "../../features/cluster/connections/main/api-url.injectable";
@@ -31,10 +30,7 @@ export interface KubeAuthProxy {
 
 export type CreateKubeAuthProxy = (env: NodeJS.ProcessEnv) => KubeAuthProxy;
 
-const startingServeMatcher = "starting to serve on (?<address>.+)";
-const startingServeRegex = Object.assign(TypedRegEx(startingServeMatcher, "i"), {
-  rawMatcher: startingServeMatcher,
-});
+const startingServeRegex = /starting to serve on (?<address>.+)/i;
 
 const createKubeAuthProxyInjectable = getInjectable({
   id: "create-kube-auth-proxy",

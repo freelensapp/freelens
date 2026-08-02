@@ -13,6 +13,8 @@ import { lensProxyDispatcherInjectionToken } from "../fetch/lens-proxy-dispatche
 
 import type { FetchRequestInit, JsonApiConfig, JsonApiDependencies } from "@freelensapp/json-api";
 
+import type { MainFetchRequestInit } from "../../main/fetch/main-fetch-request-init";
+
 export type CreateKubeJsonApi = (config: JsonApiConfig, reqInit?: FetchRequestInit) => KubeJsonApi;
 
 const createKubeJsonApiInjectable = getInjectable({
@@ -26,7 +28,7 @@ const createKubeJsonApiInjectable = getInjectable({
 
     return (config, reqInit) => {
       if (!config.getRequestOptions) {
-        config.getRequestOptions = async () => {
+        config.getRequestOptions = async (): Promise<MainFetchRequestInit> => {
           const dispatcher = lensProxyDispatcher();
 
           // `User-Agent` is a forbidden header name in the renderer, where

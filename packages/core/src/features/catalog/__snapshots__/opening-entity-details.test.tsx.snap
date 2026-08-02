@@ -288,7 +288,7 @@ exports[`opening catalog entity details panel > renders 1`] = `
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                  style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
                 >
                   WP
                 </div>
@@ -313,7 +313,7 @@ exports[`opening catalog entity details panel > renders 1`] = `
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                  style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
                 >
                   Ca
                 </div>
@@ -984,7 +984,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                             >
                               <div
                                 class="Avatar rounded catalogAvatar"
-                                style="width: 24px; height: 24px; background: rgb(140, 4, 8);"
+                                style="width: 24px; height: 24px; background: rgb(88, 28, 110);"
                               >
                                 skc
                               </div>
@@ -1074,7 +1074,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                             >
                               <div
                                 class="Avatar rounded catalogAvatar"
-                                style="width: 24px; height: 24px; background: rgb(77, 163, 16);"
+                                style="width: 24px; height: 24px; background: rgb(110, 62, 28);"
                               >
                                 sw
                               </div>
@@ -1164,7 +1164,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                             >
                               <div
                                 class="Avatar rounded catalogAvatar"
-                                style="width: 24px; height: 24px; background: rgb(83, 137, 8);"
+                                style="width: 24px; height: 24px; background: rgb(28, 110, 70);"
                               >
                                 slk
                               </div>
@@ -1285,7 +1285,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                  style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
                 >
                   WP
                 </div>
@@ -1310,7 +1310,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                  style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
                 >
                   Ca
                 </div>
@@ -1981,7 +1981,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                             >
                               <div
                                 class="Avatar rounded catalogAvatar"
-                                style="width: 24px; height: 24px; background: rgb(140, 4, 8);"
+                                style="width: 24px; height: 24px; background: rgb(88, 28, 110);"
                               >
                                 skc
                               </div>
@@ -2071,7 +2071,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                             >
                               <div
                                 class="Avatar rounded catalogAvatar"
-                                style="width: 24px; height: 24px; background: rgb(77, 163, 16);"
+                                style="width: 24px; height: 24px; background: rgb(110, 62, 28);"
                               >
                                 sw
                               </div>
@@ -2161,7 +2161,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                             >
                               <div
                                 class="Avatar rounded catalogAvatar"
-                                style="width: 24px; height: 24px; background: rgb(83, 137, 8);"
+                                style="width: 24px; height: 24px; background: rgb(28, 110, 70);"
                               >
                                 slk
                               </div>
@@ -2282,7 +2282,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                  style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
                 >
                   WP
                 </div>
@@ -2307,7 +2307,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                  style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
                 >
                   Ca
                 </div>
@@ -3010,7 +3010,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                             >
                               <div
                                 class="Avatar rounded catalogAvatar"
-                                style="width: 24px; height: 24px; background: rgb(140, 4, 8);"
+                                style="width: 24px; height: 24px; background: rgb(88, 28, 110);"
                               >
                                 skc
                               </div>
@@ -3100,7 +3100,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                             >
                               <div
                                 class="Avatar rounded catalogAvatar"
-                                style="width: 24px; height: 24px; background: rgb(77, 163, 16);"
+                                style="width: 24px; height: 24px; background: rgb(110, 62, 28);"
                               >
                                 sw
                               </div>
@@ -3190,7 +3190,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                             >
                               <div
                                 class="Avatar rounded catalogAvatar"
-                                style="width: 24px; height: 24px; background: rgb(83, 137, 8);"
+                                style="width: 24px; height: 24px; background: rgb(28, 110, 70);"
                               >
                                 slk
                               </div>
@@ -3311,7 +3311,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                  style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
                 >
                   WP
                 </div>
@@ -3336,7 +3336,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                  style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
                 >
                   Ca
                 </div>
@@ -3607,7 +3607,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
             <div
               class="Avatar rounded avatar"
               data-testid="detail-panel-hot-bar-icon"
-              style="width: 128px; height: 128px; background: rgb(140, 4, 8);"
+              style="width: 128px; height: 128px; background: rgb(88, 28, 110);"
             >
               skc
             </div>
@@ -4291,7 +4291,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                             >
                               <div
                                 class="Avatar rounded catalogAvatar"
-                                style="width: 24px; height: 24px; background: rgb(140, 4, 8);"
+                                style="width: 24px; height: 24px; background: rgb(88, 28, 110);"
                               >
                                 skc
                               </div>
@@ -4381,7 +4381,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                             >
                               <div
                                 class="Avatar rounded catalogAvatar"
-                                style="width: 24px; height: 24px; background: rgb(77, 163, 16);"
+                                style="width: 24px; height: 24px; background: rgb(110, 62, 28);"
                               >
                                 sw
                               </div>
@@ -4471,7 +4471,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                             >
                               <div
                                 class="Avatar rounded catalogAvatar"
-                                style="width: 24px; height: 24px; background: rgb(83, 137, 8);"
+                                style="width: 24px; height: 24px; background: rgb(28, 110, 70);"
                               >
                                 slk
                               </div>
@@ -4592,7 +4592,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                  style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
                 >
                   WP
                 </div>
@@ -4617,7 +4617,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                  style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
                 >
                   Ca
                 </div>
@@ -4856,7 +4856,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
             <div
               class="Avatar rounded avatar"
               data-testid="detail-panel-hot-bar-icon"
-              style="width: 128px; height: 128px; background: rgb(140, 4, 8);"
+              style="width: 128px; height: 128px; background: rgb(88, 28, 110);"
             >
               skc
             </div>
@@ -5540,7 +5540,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                             >
                               <div
                                 class="Avatar rounded catalogAvatar"
-                                style="width: 24px; height: 24px; background: rgb(140, 4, 8);"
+                                style="width: 24px; height: 24px; background: rgb(88, 28, 110);"
                               >
                                 skc
                               </div>
@@ -5630,7 +5630,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                             >
                               <div
                                 class="Avatar rounded catalogAvatar"
-                                style="width: 24px; height: 24px; background: rgb(77, 163, 16);"
+                                style="width: 24px; height: 24px; background: rgb(110, 62, 28);"
                               >
                                 sw
                               </div>
@@ -5720,7 +5720,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                             >
                               <div
                                 class="Avatar rounded catalogAvatar"
-                                style="width: 24px; height: 24px; background: rgb(83, 137, 8);"
+                                style="width: 24px; height: 24px; background: rgb(28, 110, 70);"
                               >
                                 slk
                               </div>
@@ -5841,7 +5841,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                  style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
                 >
                   WP
                 </div>
@@ -5866,7 +5866,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                  style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
                 >
                   Ca
                 </div>
@@ -6557,7 +6557,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                             >
                               <div
                                 class="Avatar rounded catalogAvatar"
-                                style="width: 24px; height: 24px; background: rgb(140, 4, 8);"
+                                style="width: 24px; height: 24px; background: rgb(88, 28, 110);"
                               >
                                 skc
                               </div>
@@ -6647,7 +6647,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                             >
                               <div
                                 class="Avatar rounded catalogAvatar"
-                                style="width: 24px; height: 24px; background: rgb(77, 163, 16);"
+                                style="width: 24px; height: 24px; background: rgb(110, 62, 28);"
                               >
                                 sw
                               </div>
@@ -6737,7 +6737,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                             >
                               <div
                                 class="Avatar rounded catalogAvatar"
-                                style="width: 24px; height: 24px; background: rgb(83, 137, 8);"
+                                style="width: 24px; height: 24px; background: rgb(28, 110, 70);"
                               >
                                 slk
                               </div>
@@ -6858,7 +6858,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                  style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
                 >
                   WP
                 </div>
@@ -6883,7 +6883,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                  style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
                 >
                   Ca
                 </div>
@@ -7079,7 +7079,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
             <div
               class="Avatar rounded avatar"
               data-testid="detail-panel-hot-bar-icon"
-              style="width: 128px; height: 128px; background: rgb(77, 163, 16);"
+              style="width: 128px; height: 128px; background: rgb(110, 62, 28);"
             >
               sw
             </div>
@@ -7745,7 +7745,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                             >
                               <div
                                 class="Avatar rounded catalogAvatar"
-                                style="width: 24px; height: 24px; background: rgb(140, 4, 8);"
+                                style="width: 24px; height: 24px; background: rgb(88, 28, 110);"
                               >
                                 skc
                               </div>
@@ -7835,7 +7835,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                             >
                               <div
                                 class="Avatar rounded catalogAvatar"
-                                style="width: 24px; height: 24px; background: rgb(77, 163, 16);"
+                                style="width: 24px; height: 24px; background: rgb(110, 62, 28);"
                               >
                                 sw
                               </div>
@@ -7925,7 +7925,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                             >
                               <div
                                 class="Avatar rounded catalogAvatar"
-                                style="width: 24px; height: 24px; background: rgb(83, 137, 8);"
+                                style="width: 24px; height: 24px; background: rgb(28, 110, 70);"
                               >
                                 slk
                               </div>
@@ -8046,7 +8046,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                  style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
                 >
                   WP
                 </div>
@@ -8071,7 +8071,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                  style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
                 >
                   Ca
                 </div>
@@ -8267,7 +8267,7 @@ exports[`opening catalog entity details panel > when navigated to the catalog > 
             <div
               class="Avatar rounded avatar"
               data-testid="detail-panel-hot-bar-icon"
-              style="width: 128px; height: 128px; background: rgb(77, 163, 16);"
+              style="width: 128px; height: 128px; background: rgb(110, 62, 28);"
             >
               sw
             </div>
@@ -8671,7 +8671,7 @@ exports[`opening catalog entity details panel > when not navigated to the catalo
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                  style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
                 >
                   WP
                 </div>
@@ -8696,7 +8696,7 @@ exports[`opening catalog entity details panel > when not navigated to the catalo
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                  style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
                 >
                   Ca
                 </div>
@@ -8872,7 +8872,7 @@ exports[`opening catalog entity details panel > when not navigated to the catalo
             <div
               class="Avatar rounded avatar"
               data-testid="detail-panel-hot-bar-icon"
-              style="width: 128px; height: 128px; background: rgb(77, 163, 16);"
+              style="width: 128px; height: 128px; background: rgb(110, 62, 28);"
             >
               sw
             </div>

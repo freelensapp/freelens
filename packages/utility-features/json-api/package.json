@@ -32,8 +32,7 @@
     "@freelensapp/typescript": "workspace:^",
     "@types/node": "catalog:",
     "rfc6902": "catalog:",
-    "type-fest": "catalog:",
-    "undici": "catalog:"
+    "type-fest": "catalog:"
   },
   "publishConfig": {
     "access": "public",

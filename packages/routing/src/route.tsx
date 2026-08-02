@@ -4,16 +4,15 @@
  */
 
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { createPath } from "history";
 import { observer } from "mobx-react";
 import React from "react";
 import { matchPath } from "./match-path";
 import { observableHistoryInjectionToken } from "./observable-history.injectable";
-
-import type { Location, To } from "history";
+import { createPath } from "./vendor/history";
 
 import type { Match } from "./match-path";
 import type { ObservableHistory } from "./observable-history";
+import type { Location, To } from "./vendor/history";
 
 /**
  * In-house replacements for `react-router` v5's `<Route>` / `<Switch>` /

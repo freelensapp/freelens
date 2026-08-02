@@ -5,9 +5,9 @@
  */
 
 import { cssNames } from "@freelensapp/utilities";
-import randomColor from "randomcolor";
 import { computeDefaultShortName } from "../../../common/catalog/helpers";
 import styles from "./avatar.module.scss";
+import { seededColor } from "./seeded-color";
 
 import type { StrictReactNode } from "@freelensapp/utilities";
 
@@ -57,7 +57,9 @@ export const Avatar = ({
     style={{
       width: `${size}px`,
       height: `${size}px`,
-      background: background || (src ? "transparent" : randomColor({ seed: colorHash, luminosity: "dark" })),
+      // Falling back to the title keeps the colour stable for an avatar given
+      // no explicit hash, which is also where the initials come from
+      background: background || (src ? "transparent" : seededColor(colorHash ?? title)),
     }}
     id={id}
     onClick={onClick}

@@ -32,27 +32,21 @@
     "prepack": "pnpm build:dist"
   },
   "dependencies": {
-    "@mui/material": "catalog:extensions",
     "@ogre-tools/injectable": "catalog:extensions",
     "@ogre-tools/injectable-react": "catalog:extensions",
     "@types/node": "catalog:extensions",
     "@types/react": "catalog:extensions",
-    "@types/react-table": "catalog:extensions",
     "@xterm/xterm": "catalog:extensions",
     "chart.js": "catalog:extensions",
     "conf": "catalog:extensions",
-    "history": "catalog:extensions",
     "immer": "catalog:extensions",
     "mobx": "catalog:extensions",
     "monaco-editor": "catalog:extensions",
     "react": "catalog:extensions",
     "react-select": "catalog:extensions",
-    "react-table": "catalog:extensions",
     "react-window": "catalog:extensions",
     "rfc6902": "catalog:extensions",
-    "type-fest": "catalog:extensions",
-    "typed-emitter": "catalog:extensions",
-    "undici": "catalog:extensions"
+    "type-fest": "catalog:extensions"
   },
   "devDependencies": {
     "@freelensapp/core": "workspace:^",

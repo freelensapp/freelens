@@ -18,9 +18,8 @@ import { createPortal } from "react-dom";
 import drawerStorageInjectable, { defaultDrawerWidth } from "./drawer-storage/drawer-storage.injectable";
 
 import type { AnimateName } from "@freelensapp/animate";
+import type { History } from "@freelensapp/routing";
 import type { StrictReactNode } from "@freelensapp/utilities";
-
-import type { History } from "history";
 
 import type { StorageLayer } from "../../utils/storage-helper";
 

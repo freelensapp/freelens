@@ -7,10 +7,9 @@
 import EventEmitter from "node:events";
 import { convertToWithIdWith, verifyRunnablesAreDAG } from "./helpers";
 
-import type { Disposer } from "@freelensapp/utilities";
+import type { Disposer, TypedEventEmitter } from "@freelensapp/utilities";
 
 import type { DiContainerForInjection, InjectionToken } from "@ogre-tools/injectable";
-import type TypedEventEmitter from "typed-emitter";
 
 import type { RunnableSync, RunnableSyncWithId, RunSync } from "./types";
 

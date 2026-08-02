@@ -30,8 +30,7 @@
     "p-limit": "catalog:",
     "react": "catalog:",
     "semver": "catalog:",
-    "tar": "catalog:",
-    "typed-regex": "catalog:"
+    "tar": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",

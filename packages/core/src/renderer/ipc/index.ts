@@ -16,7 +16,7 @@ import { toJS } from "../../common/utils";
 import { getDiForExtensionApi } from "../../extensions/extension-api-di";
 import ipcRendererInjectable from "../utils/channel/ipc-renderer.injectable";
 
-import type { Location } from "history";
+import type { Location } from "@freelensapp/routing";
 
 import type { ClusterId, ClusterState } from "../../common/cluster-types";
 import type { InstalledExtension, LensExtensionId } from "../../extensions/installed-extension";

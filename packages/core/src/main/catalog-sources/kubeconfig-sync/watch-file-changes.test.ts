@@ -3,7 +3,42 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { isWslPath } from "./watch-file-changes.injectable";
+import { isWslPath, matchIgnoredKubeconfigFileName } from "./watch-file-changes.injectable";
+
+describe("matchIgnoredKubeconfigFileName", () => {
+  it.each([
+    "._config", // macOS specific
+    ".#config", // emacs lock file
+    ".DS_Store", // macOS specific
+    "config.bak", // backup file
+    "config.lock", // kubectl lock file
+    ".config.swn", // vim swap file
+    ".config.swo", // vim swap file
+    ".config.swp", // vim swap file
+    "config#", // emacs auto save
+    "config~", // backup file
+    "~config", // backup file
+    "cache", // discovery cache
+    "desktop.ini", // windows specific
+    "kubectx", // kubectx cache
+    "kubens", // kubens cache
+    "Thumbs.db", // windows specific
+  ])("ignores %s", (fileName) => {
+    expect(matchIgnoredKubeconfigFileName(fileName)).toBeDefined();
+  });
+
+  it.each([
+    "config",
+    "kubeconfig",
+    "config.yaml",
+    "config.swq", // not one of the vim swap suffixes
+    "backup.bakery", // ".bak" only matches as a suffix
+    "cached", // "cache" only matches in full
+    "my.DS_Store", // literal names only match in full
+  ])("syncs %s", (fileName) => {
+    expect(matchIgnoredKubeconfigFileName(fileName)).toBeUndefined();
+  });
+});
 
 describe("isWslPath", () => {
   it.each([

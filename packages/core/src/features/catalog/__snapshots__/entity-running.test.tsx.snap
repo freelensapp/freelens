@@ -581,7 +581,7 @@ exports[`entity running technical tests > when navigated to catalog > renders 1`
                             >
                               <div
                                 class="Avatar rounded catalogAvatar"
-                                style="width: 24px; height: 24px; background: rgb(6, 137, 137);"
+                                style="width: 24px; height: 24px; background: rgb(32, 110, 28);"
                               >
                                 ace
                               </div>
@@ -707,7 +707,7 @@ exports[`entity running technical tests > when navigated to catalog > renders 1`
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                  style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
                 >
                   WP
                 </div>
@@ -732,7 +732,7 @@ exports[`entity running technical tests > when navigated to catalog > renders 1`
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                  style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
                 >
                   Ca
                 </div>
@@ -1434,7 +1434,7 @@ exports[`entity running technical tests > when navigated to catalog > when detai
                             >
                               <div
                                 class="Avatar rounded catalogAvatar"
-                                style="width: 24px; height: 24px; background: rgb(6, 137, 137);"
+                                style="width: 24px; height: 24px; background: rgb(32, 110, 28);"
                               >
                                 ace
                               </div>
@@ -1560,7 +1560,7 @@ exports[`entity running technical tests > when navigated to catalog > when detai
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                  style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                  style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
                 >
                   WP
                 </div>
@@ -1585,7 +1585,7 @@ exports[`entity running technical tests > when navigated to catalog > when detai
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                  style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
                 >
                   Ca
                 </div>
@@ -1761,7 +1761,7 @@ exports[`entity running technical tests > when navigated to catalog > when detai
             <div
               class="Avatar rounded avatar"
               data-testid="detail-panel-hot-bar-icon"
-              style="width: 128px; height: 128px; background: rgb(6, 137, 137);"
+              style="width: 128px; height: 128px; background: rgb(32, 110, 28);"
             >
               ace
             </div>

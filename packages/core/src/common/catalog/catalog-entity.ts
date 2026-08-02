@@ -9,9 +9,7 @@ import { iter } from "@freelensapp/utilities";
 import { once } from "es-toolkit";
 import { makeObservable, observable } from "mobx";
 
-import type { Disposer, StrictReactNode } from "@freelensapp/utilities";
-
-import type TypedEmitter from "typed-emitter";
+import type { Disposer, StrictReactNode, TypedEventEmitter } from "@freelensapp/utilities";
 
 import type {
   CategoryColumnRegistration,
@@ -140,7 +138,7 @@ export function categoryVersion<
   };
 }
 
-export abstract class CatalogCategory extends (EventEmitter as new () => TypedEmitter<CatalogCategoryEvents>) {
+export abstract class CatalogCategory extends (EventEmitter as new () => TypedEventEmitter<CatalogCategoryEvents>) {
   /**
    * The version of category that you are wanting to declare.
    *

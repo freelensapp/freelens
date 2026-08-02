@@ -8,9 +8,10 @@ import EventEmitter from "node:events";
 import { getOrInsert } from "@freelensapp/utilities";
 import { convertToWithIdWith, verifyRunnablesAreDAG } from "./helpers";
 
+import type { TypedEventEmitter } from "@freelensapp/utilities";
+
 import type { DiContainerForInjection, InjectionToken } from "@ogre-tools/injectable";
 import type { Asyncify } from "type-fest";
-import type TypedEventEmitter from "typed-emitter";
 
 import type { Run, Runnable, RunnableWithId } from "./types";
 

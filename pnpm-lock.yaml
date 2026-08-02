@@ -78,9 +78,6 @@ catalogs:
     '@types/fs-extra':
       specifier: 11.0.4
       version: 11.0.4
-    '@types/glob-to-regexp':
-      specifier: 0.4.4
-      version: 0.4.4
     '@types/gunzip-maybe':
       specifier: 1.4.3
       version: 1.4.3
@@ -102,24 +99,15 @@ catalogs:
     '@types/proper-lockfile':
       specifier: 4.1.4
       version: 4.1.4
-    '@types/randomcolor':
-      specifier: 0.5.9
-      version: 0.5.9
     '@types/react':
       specifier: 19.2.17
       version: 19.2.17
     '@types/react-dom':
       specifier: 19.2.3
       version: 19.2.3
-    '@types/react-table':
-      specifier: 7.7.20
-      version: 7.7.20
     '@types/semver':
       specifier: 7.7.1
       version: 7.7.1
-    '@types/stoppable':
-      specifier: 1.1.3
-      version: 1.1.3
     '@types/tar-stream':
       specifier: 3.1.4
       version: 3.1.4
@@ -213,18 +201,12 @@ catalogs:
     fs-extra:
       specifier: 11.3.6
       version: 11.3.6
-    glob-to-regexp:
-      specifier: 0.4.1
-      version: 0.4.1
     gunzip-maybe:
       specifier: 1.4.2
       version: 1.4.2
     handlebars:
       specifier: 4.7.9
       version: 4.7.9
-    history:
-      specifier: 5.3.0
-      version: 5.3.0
     http-proxy-node16:
       specifier: 1.0.6
       version: 1.0.6
@@ -285,9 +267,6 @@ catalogs:
     proper-lockfile:
       specifier: 4.1.2
       version: 4.1.2
-    randomcolor:
-      specifier: 0.6.2
-      version: 0.6.2
     react:
       specifier: 19.2.8
       version: 19.2.8
@@ -300,9 +279,6 @@ catalogs:
     react-select-event:
       specifier: 5.5.1
       version: 5.5.1
-    react-table:
-      specifier: 7.8.0
-      version: 7.8.0
     react-window:
       specifier: 2.3.0
       version: 2.3.0
@@ -333,9 +309,6 @@ catalogs:
     spdx-license-list:
       specifier: 6.11.0
       version: 6.11.0
-    stoppable:
-      specifier: 1.1.0
-      version: 1.1.0
     tailwindcss:
       specifier: 4.2.4
       version: 4.2.4
@@ -360,12 +333,6 @@ catalogs:
     type-fest:
       specifier: 5.6.0
       version: 5.6.0
-    typed-emitter:
-      specifier: 2.1.0
-      version: 2.1.0
-    typed-regex:
-      specifier: 0.0.8
-      version: 0.0.8
     typescript:
       specifier: 7.0.2
       version: 7.0.2
@@ -396,9 +363,6 @@ catalogs:
     winston-transport:
       specifier: 4.9.0
       version: 4.9.0
-    winston-transport-browserconsole:
-      specifier: 1.0.5
-      version: 1.0.5
     ws:
       specifier: 8.21.0
       version: 8.21.0
@@ -409,9 +373,6 @@ catalogs:
       specifier: 4.4.3
       version: 4.4.3
   extensions:
-    '@mui/material':
-      specifier: ^9.2.0
-      version: 9.2.0
     '@ogre-tools/injectable':
       specifier: ^23.2.0
       version: 23.2.0
@@ -424,9 +385,6 @@ catalogs:
     '@types/react':
       specifier: ^19.2.17
       version: 19.2.17
-    '@types/react-table':
-      specifier: ^7.7.20
-      version: 7.7.20
     '@xterm/xterm':
       specifier: ^6.0.0
       version: 6.0.0
@@ -436,9 +394,6 @@ catalogs:
     conf:
       specifier: ^15.1.0
       version: 15.1.0
-    history:
-      specifier: ^5.3.0
-      version: 5.3.0
     immer:
       specifier: ^11.1.8
       version: 11.1.8
@@ -454,9 +409,6 @@ catalogs:
     react-select:
       specifier: ^5.10.2
       version: 5.10.2
-    react-table:
-      specifier: ^7.8.0
-      version: 7.8.0
     react-window:
       specifier: ^2.3.0
       version: 2.3.0
@@ -466,12 +418,6 @@ catalogs:
     type-fest:
       specifier: ^5.6.0
       version: 5.6.0
-    typed-emitter:
-      specifier: ^2.1.0
-      version: 2.1.0
-    undici:
-      specifier: ^8.9.0
-      version: 8.9.0
 
 overrides:
   form-data: ^4.0.6
@@ -577,9 +523,6 @@ importers:
       fs-extra:
         specifier: 'catalog:'
         version: 11.3.6
-      glob-to-regexp:
-        specifier: 'catalog:'
-        version: 0.4.1
       handlebars:
         specifier: 'catalog:'
         version: 4.7.9
@@ -619,9 +562,6 @@ importers:
       semver:
         specifier: 'catalog:'
         version: 7.8.5
-      stoppable:
-        specifier: 'catalog:'
-        version: 1.1.0
       tar:
         specifier: 'catalog:'
         version: 7.5.21
@@ -634,9 +574,6 @@ importers:
       triple-beam:
         specifier: 'catalog:'
         version: 1.4.1
-      typed-regex:
-        specifier: 'catalog:'
-        version: 0.0.8
       undici:
         specifier: 'catalog:'
         version: 8.9.0
@@ -1025,15 +962,9 @@ importers:
       fs-extra:
         specifier: 'catalog:'
         version: 11.3.6
-      glob-to-regexp:
-        specifier: 'catalog:'
-        version: 0.4.1
       handlebars:
         specifier: 'catalog:'
         version: 4.7.9
-      history:
-        specifier: 'catalog:'
-        version: 5.3.0
       http-proxy-node16:
         specifier: 'catalog:'
         version: 1.0.6(debug@4.4.3(supports-color@8.1.1))
@@ -1073,9 +1004,6 @@ importers:
       proper-lockfile:
         specifier: 'catalog:'
         version: 4.1.2
-      randomcolor:
-        specifier: 'catalog:'
-        version: 0.6.2
       react:
         specifier: 'catalog:'
         version: 19.2.8
@@ -1085,9 +1013,6 @@ importers:
       react-select:
         specifier: 'catalog:'
         version: 5.10.2(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(supports-color@8.1.1)
-      react-table:
-        specifier: 'catalog:'
-        version: 7.8.0(react@19.2.8)
       react-window:
         specifier: 'catalog:'
         version: 2.3.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -1100,9 +1025,6 @@ importers:
       semver:
         specifier: 'catalog:'
         version: 7.8.5
-      stoppable:
-        specifier: 'catalog:'
-        version: 1.1.0
       tar:
         specifier: 'catalog:'
         version: 7.5.21
@@ -1115,9 +1037,6 @@ importers:
       triple-beam:
         specifier: 'catalog:'
         version: 1.4.1
-      typed-regex:
-        specifier: 'catalog:'
-        version: 0.0.8
       undici:
         specifier: 'catalog:'
         version: 8.9.0
@@ -1130,9 +1049,6 @@ importers:
       winston-transport:
         specifier: 'catalog:'
         version: 4.9.0
-      winston-transport-browserconsole:
-        specifier: 'catalog:'
-        version: 1.0.5
       ws:
         specifier: 'catalog:'
         version: 8.21.0
@@ -1170,9 +1086,6 @@ importers:
       '@types/fs-extra':
         specifier: 'catalog:'
         version: 11.0.4
-      '@types/glob-to-regexp':
-        specifier: 'catalog:'
-        version: 0.4.4
       '@types/hapi__call':
         specifier: 'catalog:'
         version: 9.0.3
@@ -1188,24 +1101,15 @@ importers:
       '@types/proper-lockfile':
         specifier: 'catalog:'
         version: 4.1.4
-      '@types/randomcolor':
-        specifier: 'catalog:'
-        version: 0.5.9
       '@types/react':
         specifier: 'catalog:'
         version: 19.2.17
       '@types/react-dom':
         specifier: 'catalog:'
         version: 19.2.3(@types/react@19.2.17)
-      '@types/react-table':
-        specifier: 'catalog:'
-        version: 7.7.20
       '@types/semver':
         specifier: 'catalog:'
         version: 7.7.1
-      '@types/stoppable':
-        specifier: 'catalog:'
-        version: 1.1.3
       '@types/tcp-port-used':
         specifier: 'catalog:'
         version: 1.0.4
@@ -1242,9 +1146,6 @@ importers:
       type-fest:
         specifier: 'catalog:'
         version: 5.6.0
-      typed-emitter:
-        specifier: 'catalog:'
-        version: 2.1.0
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
@@ -1312,9 +1213,6 @@ importers:
 
   packages/extensions:
     dependencies:
-      '@mui/material':
-        specifier: catalog:extensions
-        version: 9.2.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1))(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1))(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       '@ogre-tools/injectable':
         specifier: catalog:extensions
         version: 23.2.0(@ogre-tools/fp@23.2.0)
@@ -1327,9 +1225,6 @@ importers:
       '@types/react':
         specifier: catalog:extensions
         version: 19.2.17
-      '@types/react-table':
-        specifier: catalog:extensions
-        version: 7.7.20
       '@xterm/xterm':
         specifier: catalog:extensions
         version: 6.0.0(patch_hash=fb7ebbc29ef246137af8ea109596e698df4691ccaa0b87ed5969259bcb27e435)
@@ -1342,9 +1237,6 @@ importers:
       electron:
         specifier: '>=42.0.0'
         version: 42.7.1(supports-color@8.1.1)
-      history:
-        specifier: catalog:extensions
-        version: 5.3.0
       immer:
         specifier: catalog:extensions
         version: 11.1.8
@@ -1360,9 +1252,6 @@ importers:
       react-select:
         specifier: catalog:extensions
         version: 5.10.2(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(supports-color@8.1.1)
-      react-table:
-        specifier: catalog:extensions
-        version: 7.8.0(react@19.2.8)
       react-window:
         specifier: catalog:extensions
         version: 2.3.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
@@ -1372,12 +1261,6 @@ importers:
       type-fest:
         specifier: catalog:extensions
         version: 5.6.0
-      typed-emitter:
-        specifier: catalog:extensions
-        version: 2.1.0
-      undici:
-        specifier: catalog:extensions
-        version: 8.9.0
     devDependencies:
       '@freelensapp/core':
         specifier: workspace:^
@@ -1456,9 +1339,6 @@ importers:
       es-toolkit:
         specifier: 'catalog:'
         version: 1.49.0
-      typed-regex:
-        specifier: 'catalog:'
-        version: 0.0.8
     devDependencies:
       '@freelensapp/typescript':
         specifier: workspace:^
@@ -1490,9 +1370,6 @@ importers:
       semver:
         specifier: 'catalog:'
         version: 7.8.5
-      typed-regex:
-        specifier: 'catalog:'
-        version: 0.0.8
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
@@ -1595,9 +1472,6 @@ importers:
       '@ogre-tools/injectable-react':
         specifier: 'catalog:'
         version: 23.2.0(@ogre-tools/fp@23.2.0)(@ogre-tools/injectable@23.2.0(@ogre-tools/fp@23.2.0))(mobx-react@9.2.2(mobx@6.15.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(mobx@6.15.0)(react@19.2.8)
-      history:
-        specifier: 'catalog:'
-        version: 5.3.0
       mobx:
         specifier: 'catalog:'
         version: 6.15.0
@@ -2184,9 +2058,6 @@ importers:
       '@types/react':
         specifier: 'catalog:'
         version: 19.2.17
-      history:
-        specifier: 'catalog:'
-        version: 5.3.0
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
@@ -2402,9 +2273,6 @@ importers:
       type-fest:
         specifier: 'catalog:'
         version: 5.6.0
-      undici:
-        specifier: 'catalog:'
-        version: 8.9.0
 
   packages/utility-features/kube-api:
     dependencies:
@@ -2523,9 +2391,6 @@ importers:
       type-fest:
         specifier: 'catalog:'
         version: 5.6.0
-      typed-emitter:
-        specifier: 'catalog:'
-        version: 2.1.0
       vitest:
         specifier: 'catalog:'
         version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
@@ -2605,9 +2470,6 @@ importers:
       tar:
         specifier: 'catalog:'
         version: 7.5.21
-      typed-regex:
-        specifier: 'catalog:'
-        version: 0.0.8
     devDependencies:
       '@freelensapp/typescript':
         specifier: workspace:^
@@ -4510,9 +4372,6 @@ packages:
   '@types/fs-extra@9.0.13':
     resolution: {integrity: sha512-nEnwB++1u5lVDM2UI4c1+5R+FYaKfaAzS4OococimjVm3nQw3TuzH5UNsocrcTBbhnerblyHj4A49qXbIiZdpA==}
 
-  '@types/glob-to-regexp@0.4.4':
-    resolution: {integrity: sha512-nDKoaKJYbnn1MZxUY0cA1bPmmgZbg0cTq7Rh13d0KWYNOiKbqoR+2d89SnRPszGh7ROzSwZ/GOjZ4jPbmmZ6Eg==}
-
   '@types/gunzip-maybe@1.4.3':
     resolution: {integrity: sha512-X5KKtC4cSRsRWr6AfNYU5TvlUrLAv0flmtdjJDV7/P6MKZSiIqwiO0GuOKBYAREsxa38vSsDSwPYpNgNWkXK5A==}
 
@@ -4564,16 +4423,10 @@ packages:
   '@types/proper-lockfile@4.1.4':
     resolution: {integrity: sha512-uo2ABllncSqg9F1D4nugVl9v93RmjxF6LJzQLMLDdPaXCUIDPeOJ21Gbqi43xNKzBi/WQ0Q0dICqufzQbMjipQ==}
 
-  '@types/randomcolor@0.5.9':
-    resolution: {integrity: sha512-k58cfpkK15AKn1m+oRd9nh5BnuiowhbyvBBdAzcddtARMr3xRzP0VlFaAKovSG6N6Knx08EicjPlOMzDejerrQ==}
-
   '@types/react-dom@19.2.3':
     resolution: {integrity: sha512-jp2L/eY6fn+KgVVQAOqYItbF0VY/YApe5Mz2F0aykSO8gx31bYCZyvSeYxCHKvzHG5eZjc+zyaS5BrBWya2+kQ==}
     peerDependencies:
       '@types/react': ^19.2.0
-
-  '@types/react-table@7.7.20':
-    resolution: {integrity: sha512-ahMp4pmjVlnExxNwxyaDrFgmKxSbPwU23sGQw2gJK4EhCvnvmib2s/O/+y1dfV57dXOwpr2plfyBol+vEHbi2w==}
 
   '@types/react-transition-group@4.4.12':
     resolution: {integrity: sha512-8TV6R3h2j7a91c+1DXdJi3Syo69zzIZbz7Lg5tORM5LEJG7X/E6a1V3drRyBRZq7/utz7A+c4OgYLiLcYGHG6w==}
@@ -4591,9 +4444,6 @@ packages:
 
   '@types/semver@7.7.1':
     resolution: {integrity: sha512-FmgJfu+MOcQ370SD0ev7EI8TlCAfKYU+B4m5T3yXc1CiRN94g/SZPtsCkk506aUDtlMnFZvasDwHHUcZUEaYuA==}
-
-  '@types/stoppable@1.1.3':
-    resolution: {integrity: sha512-7wGKIBJGE4ZxFjk9NkjAxZMLlIXroETqP1FJCdoSvKmEznwmBxQFmTB1dsCkAvVcNemuSZM5qkkd9HE/NL2JTw==}
 
   '@types/stream-buffers@3.0.7':
     resolution: {integrity: sha512-azOCy05sXVXrO+qklf0c/B07H/oHaIuDDAiHPVwlk3A9Ek+ksHyTeMajLZl3r76FxpPpxem//4Te61G1iW3Giw==}
@@ -5624,9 +5474,6 @@ packages:
     peerDependencies:
       tslib: '2'
 
-  glob-to-regexp@0.4.1:
-    resolution: {integrity: sha512-lkX1HJXwyMcprw/5YUZc2s7DrpAiHB21/V+E1rHUrVNokkvB6bqMzT0VfV6/86ZNabt1k14YOIaT7nDvOX3Iiw==}
-
   glob@13.0.6:
     resolution: {integrity: sha512-Wjlyrolmm8uDpm/ogGyXZXb1Z+Ca2B8NbJwqBVg0axK9GbBeoS7yGV6vjXnYdGm6X53iehEuxxbyiKp8QmN4Vw==}
     engines: {node: 18 || 20 || >=22}
@@ -5681,9 +5528,6 @@ packages:
   hasown@2.0.4:
     resolution: {integrity: sha512-T2UbfbBEF32wiepXIsMlTW9+dDYC6wMh/t/vYA4tuOMKqWz/n3vr1NFSxQiyP+zk2mXsoMA/i/7qV6LKut1t1A==}
     engines: {node: '>= 0.4'}
-
-  history@5.3.0:
-    resolution: {integrity: sha512-ZqaKwjjrAYUYfLG+htGaIIZ4nioX2L70ZUMIFysS3xvBsSG4x/n1V6TXV3N8ZYNuFGlDirFg32T7B6WOUPDYcQ==}
 
   hoist-non-react-statics@3.3.2:
     resolution: {integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==}
@@ -6625,9 +6469,6 @@ packages:
     resolution: {integrity: sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==}
     engines: {node: '>=10'}
 
-  randomcolor@0.6.2:
-    resolution: {integrity: sha512-Mn6TbyYpFgwFuQ8KJKqf3bqqY9O1y37/0jgSK/61PUxV4QfIMv0+K2ioq8DfOjkBslcjwSzRfIDEXfzA9aCx7A==}
-
   react-dom@19.2.8:
     resolution: {integrity: sha512-rVprimfGBG3DR+Tq0IQG2DT5PxKth1WIGDmj5yPmlzr4YBe7uyE+Du4oVqTDXZSHGGGXRtTJEGSSePyQCMBglQ==}
     peerDependencies:
@@ -6650,11 +6491,6 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
-
-  react-table@7.8.0:
-    resolution: {integrity: sha512-hNaz4ygkZO4bESeFfnfOft73iBUj8K5oKi1EcSHPAibEydfsX2MyU6Z8KCr3mv3C9Kqqh71U+DhZkFvibbnPbA==}
-    peerDependencies:
-      react: ^16.8.3 || ^17.0.0-0 || ^18.0.0
 
   react-transition-group@4.4.5:
     resolution: {integrity: sha512-pZcd1MCJoiKiBR2NRxeCRg13uCXbydPnmB4EOeRrY7480qNWO8IIgQG6zlDkm6uRMsURXPuKq0GWtiM59a5Q6g==}
@@ -7051,10 +6887,6 @@ packages:
   std-env@4.2.0:
     resolution: {integrity: sha512-oCUKSupKTHX53EyjDtuZQ64pjLJ6yYCtpmEw0goYxtjG9KpbRe8KAsl2tBUGU9DyMcJ0RwJ8GqJAFzMXcXW1Rw==}
 
-  stoppable@1.1.0:
-    resolution: {integrity: sha512-KXDYZ9dszj6bzvnEMRYvxgeTHU74QBFL54XKtP3nyMuJ81CFYtABZ3bAzL2EdFUaEwJOBOgENyFj3R7oTzDyyw==}
-    engines: {node: '>=4', npm: '>=6'}
-
   stream-buffers@3.0.3:
     resolution: {integrity: sha512-pqMqwQCso0PBJt2PQmDO0cFj0lyqmiwOMiMSkVtRokl7e+ZTRYgDHKnuZNbqjiJXgsg4nuqtD/zxuo9KqTp0Yw==}
     engines: {node: '>= 0.10.0'}
@@ -7313,12 +7145,6 @@ packages:
     resolution: {integrity: sha512-8ZiHFm91orbSAe2PSAiSVBVko18pbhbiB3U9GglSzF/zCGkR+rxpHx6sEMCUm4kxY4LjDIUGgCfUMtwfZfjfUA==}
     engines: {node: '>=20'}
 
-  typed-emitter@2.1.0:
-    resolution: {integrity: sha512-g/KzbYKbH5C2vPkaXGu8DJlHrGKHLsM25Zg9WuC9pMGfuvT+X25tZQWo5fK1BjBm8+UrVE9LDCvaY0CQk+fXDA==}
-
-  typed-regex@0.0.8:
-    resolution: {integrity: sha512-1XkGm1T/rUngbFROIOw9wPnMAKeMsRoc+c9O6GwOHz6aH/FrJFtcyd2sHASbT0OXeGLot5N1shPNpwHGTv9RdQ==}
-
   typescript-plugin-css-modules@5.2.0:
     resolution: {integrity: sha512-c5pAU5d+m3GciDr/WhkFldz1NIEGBafuP/3xhFt9BEXS2gmn/LvjkoZ11vEBIuP8LkXfPNhOt1BUhM5efFuwOw==}
     peerDependencies:
@@ -7556,9 +7382,6 @@ packages:
     resolution: {integrity: sha512-hUrmaWBdVDcxvYqnyh09zunKzROWjbZTiNy8dBEjkS7ehEDQibXJ7XvlmtbwuTclUiIyN+CyXQD4Vmko8fNm8w==}
     engines: {node: '>=8'}
     hasBin: true
-
-  winston-transport-browserconsole@1.0.5:
-    resolution: {integrity: sha512-BFZDvknATAmsqaRY3WatB2S0eEb0ziwqBYIv+H0Fnu9oe7GnPUVQzEJC1frmLdNsfEkfnyR1PCNDBAFtZE3SuQ==}
 
   winston-transport@4.9.0:
     resolution: {integrity: sha512-8drMJ4rkgaPo1Me4zD/3WLfI/zPdA9o2IipKODunnGDcuqbHwjsbB79ylv04LCGGzU0xQ6vTznOMpQGaLhhm6A==}
@@ -9375,8 +9198,6 @@ snapshots:
     dependencies:
       '@types/node': 24.12.4
 
-  '@types/glob-to-regexp@0.4.4': {}
-
   '@types/gunzip-maybe@1.4.3':
     dependencies:
       '@types/node': 24.12.4
@@ -9439,13 +9260,7 @@ snapshots:
     dependencies:
       '@types/retry': 0.12.2
 
-  '@types/randomcolor@0.5.9': {}
-
   '@types/react-dom@19.2.3(@types/react@19.2.17)':
-    dependencies:
-      '@types/react': 19.2.17
-
-  '@types/react-table@7.7.20':
     dependencies:
       '@types/react': 19.2.17
 
@@ -9464,10 +9279,6 @@ snapshots:
   '@types/retry@0.12.2': {}
 
   '@types/semver@7.7.1': {}
-
-  '@types/stoppable@1.1.3':
-    dependencies:
-      '@types/node': 24.12.4
 
   '@types/stream-buffers@3.0.7':
     dependencies:
@@ -10535,8 +10346,6 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  glob-to-regexp@0.4.1: {}
-
   glob@13.0.6:
     dependencies:
       minimatch: 10.2.5
@@ -10618,10 +10427,6 @@ snapshots:
   hasown@2.0.4:
     dependencies:
       function-bind: 1.1.2
-
-  history@5.3.0:
-    dependencies:
-      '@babel/runtime': 7.29.7
 
   hoist-non-react-statics@3.3.2:
     dependencies:
@@ -11518,8 +11323,6 @@ snapshots:
 
   quick-lru@5.1.1: {}
 
-  randomcolor@0.6.2: {}
-
   react-dom@19.2.8(react@19.2.8):
     dependencies:
       react: 19.2.8
@@ -11551,10 +11354,6 @@ snapshots:
     transitivePeerDependencies:
       - '@types/react'
       - supports-color
-
-  react-table@7.8.0(react@19.2.8):
-    dependencies:
-      react: 19.2.8
 
   react-transition-group@4.4.5(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
     dependencies:
@@ -11984,8 +11783,6 @@ snapshots:
 
   std-env@4.2.0: {}
 
-  stoppable@1.1.0: {}
-
   stream-buffers@3.0.3: {}
 
   stream-shift@1.0.1: {}
@@ -12271,12 +12068,6 @@ snapshots:
     dependencies:
       tagged-tag: 1.0.0
 
-  typed-emitter@2.1.0:
-    optionalDependencies:
-      rxjs: 7.8.2
-
-  typed-regex@0.0.8: {}
-
   typescript-plugin-css-modules@5.2.0(supports-color@8.1.1)(ts-node@10.9.2(@types/node@24.12.4)(typescript@7.0.2))(typescript@7.0.2):
     dependencies:
       '@types/postcss-modules-local-by-default': 4.0.2
@@ -12498,11 +12289,6 @@ snapshots:
     dependencies:
       siginfo: 2.0.0
       stackback: 0.0.2
-
-  winston-transport-browserconsole@1.0.5:
-    dependencies:
-      winston: 3.19.0
-      winston-transport: 4.9.0
 
   winston-transport@4.9.0:
     dependencies:

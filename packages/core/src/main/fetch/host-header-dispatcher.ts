@@ -5,9 +5,11 @@
 
 import { getGlobalDispatcher } from "undici";
 
-import type { FetchRequestInit } from "@freelensapp/json-api";
+import type { FetchHeadersInit, FetchRequestHeaders } from "@freelensapp/json-api";
 
 import type { Dispatcher } from "undici";
+
+import type { MainFetchRequestInit } from "./main-fetch-request-init";
 
 /**
  * lens-proxy routes to a cluster on the `Host` header while the socket is
@@ -29,13 +31,14 @@ const isHostHeader = (name: string) => name.toLowerCase() === "host";
 
 interface HostAndHeaders {
   host?: string;
-  headers?: HeadersInit;
+  headers?: FetchHeadersInit;
 }
 
-const isHeadersInstance = (headers: HeadersInit): headers is Headers =>
-  typeof (headers as Headers).get === "function" && typeof (headers as Headers).forEach === "function";
+const isHeadersInstance = (headers: FetchHeadersInit): headers is FetchRequestHeaders =>
+  typeof (headers as FetchRequestHeaders).get === "function" &&
+  typeof (headers as FetchRequestHeaders).forEach === "function";
 
-const takeHostHeader = (headers: HeadersInit | undefined): HostAndHeaders => {
+const takeHostHeader = (headers: FetchHeadersInit | undefined): HostAndHeaders => {
   if (!headers) {
     return {};
   }
@@ -75,7 +78,7 @@ const takeHostHeader = (headers: HeadersInit | undefined): HostAndHeaders => {
 
   return {
     host: Array.isArray(host) ? host[0] : host,
-    headers: rest as HeadersInit,
+    headers: rest as FetchHeadersInit,
   };
 };
 
@@ -127,7 +130,7 @@ const composeWithHost = (dispatcher: Dispatcher, host: string): Dispatcher => {
  * Returns `init` untouched when it carries no `Host` header, which is every
  * request that does not go through lens-proxy.
  */
-export const withHostHeaderPreserved = <T extends FetchRequestInit>(init: T | undefined): T | undefined => {
+export const withHostHeaderPreserved = <T extends MainFetchRequestInit>(init: T | undefined): T | undefined => {
   if (!init) {
     return init;
   }

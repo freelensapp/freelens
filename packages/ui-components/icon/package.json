@@ -46,7 +46,6 @@
     "@ogre-tools/injectable-extension-for-mobx": "catalog:",
     "@testing-library/jest-dom": "catalog:",
     "@types/react": "catalog:",
-    "history": "catalog:",
     "typescript": "catalog:",
     "vitest": "catalog:"
   },

@@ -9,12 +9,12 @@ import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { DiContextProvider } from "@ogre-tools/injectable-react";
 import { render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { createMemoryHistory } from "history";
 import React, { createRef } from "react";
 import { routingFeature } from "./feature";
 import { historyInjectable } from "./history.injectable";
 import { Link, NavLink } from "./link";
 import { observableHistoryInjectionToken } from "./observable-history.injectable";
+import { createMemoryHistory } from "./vendor/history";
 
 import type { RenderResult } from "@testing-library/react";
 

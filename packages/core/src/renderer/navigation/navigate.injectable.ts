@@ -4,12 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { observableHistoryInjectionToken } from "@freelensapp/routing";
+import { createPath, observableHistoryInjectionToken } from "@freelensapp/routing";
 import { getInjectable } from "@ogre-tools/injectable";
-import { createPath } from "history";
 import { action } from "mobx";
 
-import type { To } from "history";
+import type { To } from "@freelensapp/routing";
 
 export type Navigate = (location: To) => void;
 

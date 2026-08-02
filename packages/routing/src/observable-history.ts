@@ -3,13 +3,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { createPath, parsePath } from "history";
 import { action, intercept, makeObservable, observable, reaction } from "mobx";
 import { ObservableSearchParams } from "./observable-search-params";
-
-import type { Action, Location, To } from "history";
+import { createPath, parsePath } from "./vendor/history";
 
 import type { ObservableSearchParamsOptions } from "./observable-search-params";
+import type { Action, Location, To } from "./vendor/history";
 
 /**
  * The native `history` v5 runtime surface the observable wrapper is built on.
