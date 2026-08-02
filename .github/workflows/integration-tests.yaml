@@ -459,7 +459,7 @@ jobs:
     env:
       # Renovate keeps this version up to date via the inline datasource hint
       # below (see .renovaterc.json5 customManagers).
-      GRYPE_VERSION: v0.116.0 # datasource=github-releases depName=anchore/grype
+      GRYPE_VERSION: 0.116.1 # datasource=github-releases depName=anchore/grype
 
     steps:
       - name: Checkout
