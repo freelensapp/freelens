@@ -458,7 +458,10 @@ jobs:
 
     env:
       # Renovate keeps this version up to date via the inline datasource hint
-      # below (see .renovaterc.json5 customManagers).
+      # below (see .renovaterc.json5 customManagers). Stored without the leading
+      # "v" because that manager's extractVersionTemplate strips it on every
+      # bump; grype's installer needs the exact tag, so the "v" is re-added
+      # where this is consumed rather than kept here (it would not survive).
       GRYPE_VERSION: 0.116.1 # datasource=github-releases depName=anchore/grype
 
     steps:
@@ -491,7 +494,10 @@ jobs:
         id: grype
         uses: anchore/scan-action/download-grype@v7
         with:
-          grype-version: ${{ env.GRYPE_VERSION }}
+          # The "v" is added here, not in GRYPE_VERSION: grype's install.sh
+          # resolves the value as a literal git tag (releases are tagged
+          # "v0.116.1"), and a bare version 404s.
+          grype-version: v${{ env.GRYPE_VERSION }}
           cache-db: true
 
       - name: Scan SBOMs with Grype
