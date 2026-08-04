@@ -24,6 +24,9 @@ module.exports = {
         textPrimary: "var(--textColorPrimary)",
         textTertiary: "var(--textColorTertiary)",
         textDimmed: "var(--textColorDimmed)",
+
+        accentColor: "var(--accentColor)",
+        backgroundColor: "var(--backgroundColor)",
       },
     },
   },
