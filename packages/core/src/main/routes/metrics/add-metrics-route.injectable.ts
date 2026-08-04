@@ -111,6 +111,10 @@ const addMetricsRouteInjectable = getRouteInjectable({
       method: "post",
       path: `${apiPrefix}/metrics`,
     })(async ({ cluster, payload, query }) => {
+      if (cluster.preferences.skipMetricsRouteCheck) {
+        return { response: {} };
+      }
+
       const queryParams: Partial<Record<string, string>> = Object.fromEntries(query.entries());
       const prometheusMetadata: ClusterPrometheusMetadata = {};
       const prometheusHandler = di.inject(prometheusHandlerInjectable, cluster);
