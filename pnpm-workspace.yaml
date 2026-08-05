@@ -111,7 +111,7 @@ catalog:
   joi: 18.2.3
   js-yaml: 5.2.2
   logform: 2.7.0
-  marked: 18.0.6
+  marked: 18.0.9
   mobx-utils: 6.1.1
   monaco-editor: 0.56.0
   node-pty: 1.2.0-beta.14
