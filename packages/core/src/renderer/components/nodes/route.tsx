@@ -63,6 +63,7 @@ interface UsageArgs {
   usage?: number;
   capacity?: number;
   requests?: number;
+  workloadUsage?: number;
   usageText?: string;
   tooltipLines?: string[];
 }
@@ -274,7 +275,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
     });
   }
 
-  private renderUsage({ node, title, usage, capacity, requests, usageText, tooltipLines = [] }: UsageArgs) {
+  private renderUsage({ node, title, usage, capacity, requests, workloadUsage, usageText, tooltipLines = [] }: UsageArgs) {
     const hasUsage = usage !== undefined && Number.isFinite(usage);
     const hasRequests = requests !== undefined && requests > 0;
     // requests come from pod specs, so the bar is still useful without any usage metrics
@@ -293,6 +294,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
             max={capacity}
             value={hasUsage ? usage : 0}
             secondaryValue={hasRequests ? requests : undefined}
+            tertiaryValue={workloadUsage !== undefined && Number.isFinite(workloadUsage) && workloadUsage > 0 ? workloadUsage : undefined}
           />
         )}
         {usageText && <span className="usageText">{usageText}</span>}
@@ -347,9 +349,10 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
 
   renderMemoryUsage(node: Node) {
     const [promUsage, promCapacity] = this.getLastMetricValues(node, [
-      "workloadMemoryUsage",
+      "memoryUsage",
       "memoryAllocatableCapacity",
     ]);
+    const [workloadMemUsage] = this.getLastMetricValues(node, ["workloadMemoryUsage"]);
     const { nodeStore, podStore } = this.observableProps;
     const { memory: kubeUsage } = nodeStore.getNodeKubeMetrics(node);
     const { memory: requests } = this.getNodeResourceRequests(node);
@@ -357,6 +360,9 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
     const podsLoaded = podStore.isLoaded;
 
     // prefer prometheus metrics for the bar, fall back to metrics-server usage vs node allocatable
+    // Using memoryUsage (node actual memory usage) instead of workloadMemoryUsage
+    // (container working set) as the primary metric avoids inflation from Page Cache
+    // and keeps consistency with Metrics Server fallback (kubectl top nodes).
     const usage = (promCapacity ? promUsage : kubeUsage) ?? NaN;
     const capacity = promCapacity || allocatable;
     const textUsage = Number.isFinite(kubeUsage) ? kubeUsage : usage;
@@ -367,6 +373,9 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
       tooltipLines.push(`Memory: ${((usage * 100) / capacity).toFixed(2)}%, ${bytesToUnits(usage, { precision: 3 })}`);
     }
     tooltipLines.push(`Usage: ${bytesToUnits(textUsage, { precision: 3 })}`);
+    if (workloadMemUsage && Number.isFinite(workloadMemUsage)) {
+      tooltipLines.push(`Workload (working set): ${bytesToUnits(workloadMemUsage, { precision: 3 })}`);
+    }
     if (podsLoaded) {
       tooltipLines.push(
         `Requests: ${bytesToUnits(requests, { precision: 3 })}${
@@ -383,6 +392,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
       usage,
       capacity,
       requests: podsLoaded ? requests : undefined,
+      workloadUsage: workloadMemUsage || undefined,
       usageText: podsLoaded
         ? `${bytesToUnitsAligned(textUsage)} / ${bytesToUnitsAligned(requests)}`
         : bytesToUnitsAligned(textUsage),
