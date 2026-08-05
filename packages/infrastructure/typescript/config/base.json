@@ -20,6 +20,7 @@
     "traceResolution": false,
     "resolveJsonModule": true,
     "useDefineForClassFields": true,
+    "types": ["node", "vitest/globals"],
     "plugins": [
       {
         "name": "typescript-plugin-css-modules"
