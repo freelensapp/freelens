@@ -21,7 +21,7 @@ export const getLensLikeQueryFor =
       case "cluster":
         switch (queryName) {
           case "memoryUsage":
-            return `sum(node_memory_MemTotal_bytes - (node_memory_MemFree_bytes + node_memory_Buffers_bytes + node_memory_Cached_bytes)) by (kubernetes_name)`.replace(
+            return `sum(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) by (kubernetes_name)`.replace(
               /_bytes/g,
               `_bytes{kubernetes_node=~"${opts.nodes}"}`,
             );
@@ -60,7 +60,7 @@ export const getLensLikeQueryFor =
       case "nodes":
         switch (queryName) {
           case "memoryUsage":
-            return `sum (node_memory_MemTotal_bytes - (node_memory_MemFree_bytes + node_memory_Buffers_bytes + node_memory_Cached_bytes)) by (kubernetes_node)`;
+            return `sum(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) by (kubernetes_node)`;
           case "workloadMemoryUsage":
             return `sum(container_memory_working_set_bytes{container!="POD",container!=""}) by (instance)`;
           case "memoryCapacity":

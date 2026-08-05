@@ -21,7 +21,7 @@ export const getHelmLikeQueryFor =
       case "cluster":
         switch (queryName) {
           case "memoryUsage":
-            return `sum(node_memory_MemTotal_bytes - (node_memory_MemFree_bytes + node_memory_Buffers_bytes + node_memory_Cached_bytes)) by (component)`.replace(
+            return `sum(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) by (component)`.replace(
               /_bytes/g,
               `_bytes{node=~"${opts.nodes}"}`,
             );
@@ -60,7 +60,7 @@ export const getHelmLikeQueryFor =
       case "nodes":
         switch (queryName) {
           case "memoryUsage":
-            return `sum(node_memory_MemTotal_bytes - (node_memory_MemFree_bytes + node_memory_Buffers_bytes + node_memory_Cached_bytes)) by (node)`;
+            return `sum(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) by (node)`;
           case "workloadMemoryUsage":
             return `sum(container_memory_working_set_bytes{container!="POD",container!=""}) by (instance)`;
           case "memoryCapacity":
