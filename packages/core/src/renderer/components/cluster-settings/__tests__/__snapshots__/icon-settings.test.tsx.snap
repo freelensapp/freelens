@@ -47,6 +47,85 @@ exports[`Icon settings > given no external registrations for cluster settings me
           </span>
         </i>
       </div>
+      <div
+        style="margin-top: 16px;"
+      >
+        <div
+          style="margin-bottom: 8px; font-weight: 500; font-size: calc(var(--font-size) * 0.9); opacity: 0.8;"
+        >
+          Background Color
+        </div>
+        <div
+          style="display: flex; flex-direction: row; align-items: center; gap: 8px; flex-wrap: wrap;"
+        >
+          <button
+            style="width: 26px; height: 26px; border-radius: 50%; background-color: transparent; border: 2px solid var(--primary); box-shadow: 0 0 4px var(--primary); cursor: pointer; padding: 0px; display: flex; align-items: center; justify-content: center; transform: scale(1.1); transition: transform 0.1s ease, border-color 0.1s ease;"
+            title="Auto-generated color"
+            type="button"
+          >
+            <span
+              style="font-size: 9px; font-weight: bold; opacity: 0.8;"
+            >
+              Auto
+            </span>
+          </button>
+          <button
+            style="width: 26px; height: 26px; border-radius: 50%; background-color: rgb(224, 108, 117); border: 2px solid transparent; box-shadow: 0 0 2px rgba(0,0,0,0.15); cursor: pointer; padding: 0px; transform: scale(1); transition: transform 0.1s ease, border-color 0.1s ease;"
+            title="#e06c75"
+            type="button"
+          />
+          <button
+            style="width: 26px; height: 26px; border-radius: 50%; background-color: rgb(255, 127, 80); border: 2px solid transparent; box-shadow: 0 0 2px rgba(0,0,0,0.15); cursor: pointer; padding: 0px; transform: scale(1); transition: transform 0.1s ease, border-color 0.1s ease;"
+            title="#ff7f50"
+            type="button"
+          />
+          <button
+            style="width: 26px; height: 26px; border-radius: 50%; background-color: rgb(229, 192, 123); border: 2px solid transparent; box-shadow: 0 0 2px rgba(0,0,0,0.15); cursor: pointer; padding: 0px; transform: scale(1); transition: transform 0.1s ease, border-color 0.1s ease;"
+            title="#e5c07b"
+            type="button"
+          />
+          <button
+            style="width: 26px; height: 26px; border-radius: 50%; background-color: rgb(152, 195, 121); border: 2px solid transparent; box-shadow: 0 0 2px rgba(0,0,0,0.15); cursor: pointer; padding: 0px; transform: scale(1); transition: transform 0.1s ease, border-color 0.1s ease;"
+            title="#98c379"
+            type="button"
+          />
+          <button
+            style="width: 26px; height: 26px; border-radius: 50%; background-color: rgb(86, 182, 194); border: 2px solid transparent; box-shadow: 0 0 2px rgba(0,0,0,0.15); cursor: pointer; padding: 0px; transform: scale(1); transition: transform 0.1s ease, border-color 0.1s ease;"
+            title="#56b6c2"
+            type="button"
+          />
+          <button
+            style="width: 26px; height: 26px; border-radius: 50%; background-color: rgb(97, 175, 239); border: 2px solid transparent; box-shadow: 0 0 2px rgba(0,0,0,0.15); cursor: pointer; padding: 0px; transform: scale(1); transition: transform 0.1s ease, border-color 0.1s ease;"
+            title="#61afef"
+            type="button"
+          />
+          <button
+            style="width: 26px; height: 26px; border-radius: 50%; background-color: rgb(198, 120, 221); border: 2px solid transparent; box-shadow: 0 0 2px rgba(0,0,0,0.15); cursor: pointer; padding: 0px; transform: scale(1); transition: transform 0.1s ease, border-color 0.1s ease;"
+            title="#c678dd"
+            type="button"
+          />
+          <button
+            style="width: 26px; height: 26px; border-radius: 50%; background-color: rgb(171, 178, 191); border: 2px solid transparent; box-shadow: 0 0 2px rgba(0,0,0,0.15); cursor: pointer; padding: 0px; transform: scale(1); transition: transform 0.1s ease, border-color 0.1s ease;"
+            title="#abb2bf"
+            type="button"
+          />
+          <div
+            style="position: relative; width: 26px; height: 26px; border-radius: 50%; cursor: pointer; border: 2px solid var(--borderFaint); box-shadow: 0 0 2px rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; overflow: hidden; background: linear-gradient(45deg, red, orange, yellow, green, blue, purple); transform: scale(1); transition: transform 0.1s ease, border-color 0.1s ease;"
+            title="Custom Color"
+          >
+            <input
+              style="position: absolute; top: -5px; left: -5px; width: 36px; height: 36px; opacity: 0; cursor: pointer;"
+              type="color"
+              value="#61afef"
+            />
+            <span
+              style="font-size: 14px; font-weight: bold; color: rgb(255, 255, 255); text-shadow: 0 0 2px rgba(0,0,0,0.5);"
+            >
+              +
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </body>
@@ -98,6 +177,85 @@ exports[`Icon settings > given no registrations for cluster settings component i
             more_horiz
           </span>
         </i>
+      </div>
+      <div
+        style="margin-top: 16px;"
+      >
+        <div
+          style="margin-bottom: 8px; font-weight: 500; font-size: calc(var(--font-size) * 0.9); opacity: 0.8;"
+        >
+          Background Color
+        </div>
+        <div
+          style="display: flex; flex-direction: row; align-items: center; gap: 8px; flex-wrap: wrap;"
+        >
+          <button
+            style="width: 26px; height: 26px; border-radius: 50%; background-color: transparent; border: 2px solid var(--primary); box-shadow: 0 0 4px var(--primary); cursor: pointer; padding: 0px; display: flex; align-items: center; justify-content: center; transform: scale(1.1); transition: transform 0.1s ease, border-color 0.1s ease;"
+            title="Auto-generated color"
+            type="button"
+          >
+            <span
+              style="font-size: 9px; font-weight: bold; opacity: 0.8;"
+            >
+              Auto
+            </span>
+          </button>
+          <button
+            style="width: 26px; height: 26px; border-radius: 50%; background-color: rgb(224, 108, 117); border: 2px solid transparent; box-shadow: 0 0 2px rgba(0,0,0,0.15); cursor: pointer; padding: 0px; transform: scale(1); transition: transform 0.1s ease, border-color 0.1s ease;"
+            title="#e06c75"
+            type="button"
+          />
+          <button
+            style="width: 26px; height: 26px; border-radius: 50%; background-color: rgb(255, 127, 80); border: 2px solid transparent; box-shadow: 0 0 2px rgba(0,0,0,0.15); cursor: pointer; padding: 0px; transform: scale(1); transition: transform 0.1s ease, border-color 0.1s ease;"
+            title="#ff7f50"
+            type="button"
+          />
+          <button
+            style="width: 26px; height: 26px; border-radius: 50%; background-color: rgb(229, 192, 123); border: 2px solid transparent; box-shadow: 0 0 2px rgba(0,0,0,0.15); cursor: pointer; padding: 0px; transform: scale(1); transition: transform 0.1s ease, border-color 0.1s ease;"
+            title="#e5c07b"
+            type="button"
+          />
+          <button
+            style="width: 26px; height: 26px; border-radius: 50%; background-color: rgb(152, 195, 121); border: 2px solid transparent; box-shadow: 0 0 2px rgba(0,0,0,0.15); cursor: pointer; padding: 0px; transform: scale(1); transition: transform 0.1s ease, border-color 0.1s ease;"
+            title="#98c379"
+            type="button"
+          />
+          <button
+            style="width: 26px; height: 26px; border-radius: 50%; background-color: rgb(86, 182, 194); border: 2px solid transparent; box-shadow: 0 0 2px rgba(0,0,0,0.15); cursor: pointer; padding: 0px; transform: scale(1); transition: transform 0.1s ease, border-color 0.1s ease;"
+            title="#56b6c2"
+            type="button"
+          />
+          <button
+            style="width: 26px; height: 26px; border-radius: 50%; background-color: rgb(97, 175, 239); border: 2px solid transparent; box-shadow: 0 0 2px rgba(0,0,0,0.15); cursor: pointer; padding: 0px; transform: scale(1); transition: transform 0.1s ease, border-color 0.1s ease;"
+            title="#61afef"
+            type="button"
+          />
+          <button
+            style="width: 26px; height: 26px; border-radius: 50%; background-color: rgb(198, 120, 221); border: 2px solid transparent; box-shadow: 0 0 2px rgba(0,0,0,0.15); cursor: pointer; padding: 0px; transform: scale(1); transition: transform 0.1s ease, border-color 0.1s ease;"
+            title="#c678dd"
+            type="button"
+          />
+          <button
+            style="width: 26px; height: 26px; border-radius: 50%; background-color: rgb(171, 178, 191); border: 2px solid transparent; box-shadow: 0 0 2px rgba(0,0,0,0.15); cursor: pointer; padding: 0px; transform: scale(1); transition: transform 0.1s ease, border-color 0.1s ease;"
+            title="#abb2bf"
+            type="button"
+          />
+          <div
+            style="position: relative; width: 26px; height: 26px; border-radius: 50%; cursor: pointer; border: 2px solid var(--borderFaint); box-shadow: 0 0 2px rgba(0,0,0,0.15); display: flex; align-items: center; justify-content: center; overflow: hidden; background: linear-gradient(45deg, red, orange, yellow, green, blue, purple); transform: scale(1); transition: transform 0.1s ease, border-color 0.1s ease;"
+            title="Custom Color"
+          >
+            <input
+              style="position: absolute; top: -5px; left: -5px; width: 36px; height: 36px; opacity: 0; cursor: pointer;"
+              type="color"
+              value="#61afef"
+            />
+            <span
+              style="font-size: 14px; font-weight: bold; color: rgb(255, 255, 255); text-shadow: 0 0 2px rgba(0,0,0,0.5);"
+            >
+              +
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
