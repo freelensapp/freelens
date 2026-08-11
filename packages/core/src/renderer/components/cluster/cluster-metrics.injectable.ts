@@ -9,7 +9,6 @@ import { now } from "mobx-utils";
 import requestClusterMetricsByNodeNamesInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
 import { asyncComputed } from "../../../common/utils/async-computed";
 import selectedMetricsTimeRangeInjectable from "./overview/selected-metrics-time-range.injectable";
-import selectedNodeRoleForMetricsInjectable from "./overview/selected-node-role-for-metrics.injectable";
 
 import type { ClusterMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
 
@@ -19,17 +18,19 @@ const clusterOverviewMetricsInjectable = getInjectable({
   id: "cluster-overview-metrics",
   instantiate: (di) => {
     const requestClusterMetricsByNodeNames = di.inject(requestClusterMetricsByNodeNamesInjectable);
-    const selectedNodeRoleForMetrics = di.inject(selectedNodeRoleForMetricsInjectable);
     const selectedMetricsTimeRange = di.inject(selectedMetricsTimeRangeInjectable);
 
     return asyncComputed<Partial<ClusterMetricData> | undefined>({
       getValueFromObservedPromise: async () => {
         now(everyMinute);
 
-        const nodeNames = selectedNodeRoleForMetrics.nodes.get().map((node) => node.getName());
         const { start, end, range } = selectedMetricsTimeRange.timestamps.get();
 
-        return requestClusterMetricsByNodeNames(nodeNames, {
+        // Pass an empty node list to indicate "all nodes, no filter".
+        // This avoids filtering cluster-wide metrics by currently-alive nodes,
+        // which would miss historical data from nodes that have been replaced
+        // on autoscaled clusters (see #2409).
+        return requestClusterMetricsByNodeNames([], {
           start,
           end,
           range,
