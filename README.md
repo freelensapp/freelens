@@ -244,7 +244,7 @@ Anyone is welcome to request to be added to the official list by opening a dedic
 Anyone is welcome to collaborate to advance the Freelens project. Read
 [CONTRIBUTING.md](CONTRIBUTING.md) to see how you can help.
 
-![Star History Chart](https://api.star-history.com/svg?repos=freelensapp/freelens&type=Date)
+![Star History Chart](https://star-history.dera.page/svg?repos=freelensapp/freelens&type=Date)
 
 ## Expenses and Donations
 
