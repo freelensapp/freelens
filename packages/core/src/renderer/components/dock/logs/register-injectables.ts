@@ -13,6 +13,7 @@ import createLogsTabInjectable from "./create-logs-tab.injectable";
 import createPodLogsTabInjectable from "./create-pod-logs-tab.injectable";
 import createWorkloadLogsTabInjectable from "./create-workload-logs-tab.injectable";
 import downloadAllLogsInjectable from "./download-all-logs.injectable";
+import downloadAllLogsForPodsInjectable from "./download-all-logs-for-pods.injectable";
 import downloadLogsInjectable from "./download-logs.injectable";
 import getLogTabDataInjectable from "./get-log-tab-data.injectable";
 import getLogsInjectable from "./get-logs.injectable";
@@ -58,6 +59,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(createWorkloadLogsTabInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(downloadAllLogsForPodsInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
