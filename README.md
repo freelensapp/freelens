@@ -272,13 +272,13 @@ Each member of the core team is focused on specific roles. You can contact us
 at any time according to them.
 
 - [Roberto Bandini](https://www.linkedin.com/in/bandiniroberto/) - [@robertobandini](https://github.com/robertobandini) - Founder<br/>
-General organization management, relationships, product management, community, marketing, freelens-ai extension
+General organization management, relationships, product management, community, marketing, extensions ecosystem (review, catalog, strategy and development)
 - [Piotr Roszatycki](https://www.linkedin.com/in/piotr.roszatycki) - [@dex4er](https://github.com/dex4er) - Maintainer<br/>
-Development direction, architecture and release management, flux-cd extension, freelens-ai extension
+Development direction, architecture and release management, extensions development
 - [Mario Offertucci](https://www.linkedin.com/in/mario-offertucci-703113b6/) - [@mariomamo](https://github.com/mariomamo) - Maintainer<br/>
-UI, Docs, freelens-ai extension development management
+UI, docs, extensions development
 - [Leopoldo Capuano](https://www.linkedin.com/in/leo-capuano/) - [@leo-capvano](https://github.com/leo-capvano) - Maintainer<br/>
-GenAI solutions & freelens-ai extension development management
+GenAI solutions, extensions development
 
 ### Release Engineering Team
 
