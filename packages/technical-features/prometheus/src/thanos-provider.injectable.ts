@@ -13,27 +13,26 @@ import {
 
 import type { PrometheusProvider } from "./provider";
 
-// Thanos federates node-exporter / kube-state-metrics series that carry a
-// direct `node` label but no `pod`/`namespace`, so the Helm-style queries
-// (which select node-exporter metrics directly and group `by (node)`) match
-// this schema — unlike the operator style, whose `kube_pod_info` join on
-// `pod`/`namespace` would return nothing here and yield 0% everywhere.
+// Thanos aggregates node-exporter / kube-state-metrics series. Across clusters
+// the node-exporter relabeling is not consistent: some clusters add a `node`
+// label to those series, others expose only `instance`. In both cases, though,
+// node-exporter's `instance` IS the node name (not `<ip>:9100`). The Helm/
+// operator styles filter and group node-exporter metrics by `node`, so on any
+// cluster that omits that label every node metric (CPU, memory, disk) comes
+// back empty. We therefore key all node-exporter queries on `instance`, which
+// works whether or not `node` is present.
 //
-// Two queries need overriding because the Helm/operator styles derive them
-// from kubelet-scraped metrics (cAdvisor / `kubelet_*`). On typical Thanos
-// setups those series are labelled only with `instance` (`<node-ip>:10250`)
-// and carry no `node` label, so neither the Helm `instance=~"<node-name>"`
-// filter nor a `by (node)` grouping can identify a node:
+// Kube-state-metrics series (capacity/allocatable, `kube_pod_info`) always
+// carry a real `node` label, so those keep using `node`.
 //
-//   - `workloadMemoryUsage` (from `container_memory_working_set_bytes`) feeds
-//     the node list/detail memory bar. We derive node memory usage from
-//     node-exporter (`MemTotal - MemAvailable`), keyed by `node`.
-//   - `podUsage` (from `kubelet_running_pod_count`/`kubelet_running_pods`)
-//     feeds the node detail Pods chart. We count pods per node from
-//     kube-state-metrics' `kube_pod_info`, which carries a `node` label.
+// Two queries also need their source swapped, because the Helm/operator styles
+// derive them from kubelet-scraped metrics (cAdvisor / `kubelet_*`) whose
+// `instance` is `<node-ip>:10250` and which carry no usable node identifier:
 //
-// Both replacements key on `node`, lining up with how Freelens filters node
-// metrics by node name.
+//   - `workloadMemoryUsage` feeds the node list/detail memory bar. We derive
+//     node memory usage from node-exporter (`MemTotal - MemAvailable`).
+//   - `podUsage` feeds the node detail Pods chart. We count pods per node from
+//     kube-state-metrics' `kube_pod_info`.
 export const getThanosLikeQueryFor = ({
   rateAccuracy,
 }: {
@@ -42,20 +41,40 @@ export const getThanosLikeQueryFor = ({
   const getHelmQuery = getHelmLikeQueryFor({ rateAccuracy });
 
   return (opts, queryName) => {
-    switch (queryName) {
-      case "workloadMemoryUsage":
-        switch (opts.category) {
-          case "cluster":
-            return `sum(node_memory_MemTotal_bytes{node=~"${opts.nodes}"} - node_memory_MemAvailable_bytes{node=~"${opts.nodes}"}) by (node)`;
-          case "nodes":
-            return `sum(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) by (node)`;
+    // node memory used, keyed by `instance` (== node name for node-exporter)
+    const nodeMemoryUsed =
+      opts.category === "cluster"
+        ? `sum(node_memory_MemTotal_bytes{instance=~"${opts.nodes}"} - node_memory_MemAvailable_bytes{instance=~"${opts.nodes}"}) by (instance)`
+        : `sum(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) by (instance)`;
+
+    switch (opts.category) {
+      case "cluster":
+        switch (queryName) {
+          case "memoryUsage":
+          case "workloadMemoryUsage":
+            return nodeMemoryUsed;
+          case "cpuUsage":
+            return `sum(rate(node_cpu_seconds_total{instance=~"${opts.nodes}", mode=~"user|system"}[${rateAccuracy}])) by (instance)`;
+          case "fsSize":
+            return `sum(node_filesystem_size_bytes{instance=~"${opts.nodes}", mountpoint=~"${opts.mountpoints}"}) by (instance)`;
+          case "fsUsage":
+            return `sum(node_filesystem_size_bytes{instance=~"${opts.nodes}", mountpoint=~"${opts.mountpoints}"} - node_filesystem_avail_bytes{instance=~"${opts.nodes}", mountpoint=~"${opts.mountpoints}"}) by (instance)`;
+          case "podUsage":
+            return `count(kube_pod_info{node=~"${opts.nodes}"}) by (node)`;
         }
         break;
-      case "podUsage":
-        switch (opts.category) {
-          case "cluster":
-            return `count(kube_pod_info{node=~"${opts.nodes}"}) by (node)`;
-          case "nodes":
+      case "nodes":
+        switch (queryName) {
+          case "memoryUsage":
+          case "workloadMemoryUsage":
+            return nodeMemoryUsed;
+          case "cpuUsage":
+            return `sum(rate(node_cpu_seconds_total{mode=~"user|system"}[${rateAccuracy}])) by (instance)`;
+          case "fsSize":
+            return `sum(node_filesystem_size_bytes{mountpoint=~"${opts.mountpoints}"}) by (instance)`;
+          case "fsUsage":
+            return `sum(node_filesystem_size_bytes{mountpoint=~"${opts.mountpoints}"} - node_filesystem_avail_bytes{mountpoint=~"${opts.mountpoints}"}) by (instance)`;
+          case "podUsage":
             return `count(kube_pod_info) by (node)`;
         }
         break;
