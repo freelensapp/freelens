@@ -8,6 +8,7 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { object } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import resetThemeInjectable from "../../features/user-preferences/common/reset-theme.injectable";
+import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
 
 import type { LensTheme } from "./lens-theme";
 
@@ -21,7 +22,9 @@ const applyLensThemeInjectable = getInjectable({
 
     return (theme) => {
       try {
-        const colors = object.entries(theme.colors);
+        const state = di.inject(userPreferencesStateInjectable);
+        const mergedColors = { ...theme.colors, ...state.customColors };
+        const colors = object.entries(mergedColors);
 
         for (const [name, value] of colors) {
           document.documentElement.style.setProperty(`--${name}`, value);

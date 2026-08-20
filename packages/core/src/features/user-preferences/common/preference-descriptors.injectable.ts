@@ -53,6 +53,10 @@ const userPreferenceDescriptorsInjectable = getInjectable({
         fromStore: (val) => val || defaultColorThemePreference,
         toStore: (val) => (!val || val === defaultColorThemePreference ? undefined : val),
       }),
+      customColors: getPreferenceDescriptor<Record<string, string>>({
+        fromStore: (val) => val || {},
+        toStore: (val) => (Object.keys(val || {}).length === 0 ? undefined : val),
+      }),
       terminalTheme: getPreferenceDescriptor<string>({
         fromStore: (val) => val || "",
         toStore: (val) => val || undefined,
