@@ -244,7 +244,13 @@ Anyone is welcome to request to be added to the official list by opening a dedic
 Anyone is welcome to collaborate to advance the Freelens project. Read
 [CONTRIBUTING.md](CONTRIBUTING.md) to see how you can help.
 
+<!-- TODO: restore the Star History chart once GitHub makes stargazer data available again.
+The chart is hidden because on 2026-06-30 GitHub restricted the stargazers API to repository
+admins and collaborators, which makes the embedded image render a placeholder instead:
+https://github.blog/changelog/2026-06-30-upcoming-access-restrictions-to-public-api-endpoints-and-ui-views/
+
 ![Star History Chart](https://api.star-history.com/svg?repos=freelensapp/freelens&type=Date)
+-->
 
 ## Expenses and Donations
 
