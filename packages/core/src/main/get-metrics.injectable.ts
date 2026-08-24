@@ -62,7 +62,6 @@ async function fetchDirectMetrics(
     method: requestMethod,
     headers,
     body: requestMethod === "POST" ? params.toString() : undefined,
-    redirect: "follow",
   });
 
   if (!response.ok) {
