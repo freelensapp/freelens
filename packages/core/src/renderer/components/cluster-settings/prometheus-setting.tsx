@@ -88,6 +88,7 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
   @observable bearerToken = ""; // bearer token for Prometheus authentication
   @observable anonymousTenant = false; // Mimir: send X-Scope-OrgID: anonymous
   @observable customHeaders = observable.array<{ key: string; value: string }>();
+  @observable connectionMode: "direct" | "service" = "service"; // Mimir: K8s service (default) or direct URL
   @observable requestMethod: PrometheusRequestMethod = "POST";
   @observable selectedOption: ProviderValue = autoDetectPrometheus;
   @observable loading = true;
@@ -130,6 +131,10 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
     return this.selectedOption === "mimir";
   }
 
+  @computed get isDirectMode(): boolean {
+    return this.connectionMode === "direct";
+  }
+
   componentDidMount() {
     // Capture the cluster before the autorun: mobx-react 9 forbids reading
     // this.props inside a derivation (the autorun below).
@@ -160,6 +165,7 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
             .map(([key, value]) => ({ key, value }));
 
           this.customHeaders.replace(nonOrgIdHeaders);
+          this.connectionMode = prometheus.directUrl ? "direct" : "service";
         } else {
           this.path = "";
           this.customPrefix = "";
@@ -168,6 +174,7 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
           this.bearerToken = "";
           this.anonymousTenant = false;
           this.customHeaders.clear();
+          this.connectionMode = "service";
         }
 
         this.requestMethod = prometheusRequestMethod === "GET" ? "GET" : "POST";
@@ -294,45 +301,142 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
         </section>
         {this.canEditPrometheusPath && (
           <>
-            <>
-              <hr />
-              <section>
-                <SubTitle title="Prometheus service address" />
-                <Input
-                  theme="round-black"
-                  value={this.path}
-                  onChange={(value) => (this.path = value)}
-                  onBlur={this.onSaveAll}
-                  placeholder="<namespace>/<service>:<port>"
-                />
-                <small className="hint">
-                  {this.isOpenShift
-                    ? `An address to the Prometheus service (<namespace>/<service>:<port>). For OpenShift this is typically openshift-monitoring/prometheus-k8s:9091. Can be left empty when using a Prometheus ingress/route.`
-                    : this.isMimir
-                      ? `An address to the Mimir query-frontend service (<namespace>/<service>:<port>). ${this.props.productName} tries to auto-detect address if left empty. Can be left empty when using an external Mimir endpoint URL.`
+            {this.isMimir && (
+              <>
+                <hr />
+                <section>
+                  <SubTitle title="Connection mode" />
+                  <Select
+                    id="mimir-connection-mode"
+                    value={this.connectionMode}
+                    onChange={(option) => {
+                      this.connectionMode = option?.value ?? "direct";
+
+                      if (this.connectionMode === "direct") {
+                        this.path = "";
+                      } else {
+                        this.directUrl = "";
+                      }
+
+                      this.onSaveAll();
+                    }}
+                    options={[
+                      { value: "service" as const, label: "In-cluster K8s service", isSelected: !this.isDirectMode },
+                      { value: "direct" as const, label: "External URL", isSelected: this.isDirectMode },
+                    ]}
+                    themeName="lens"
+                  />
+                  <small className="hint">
+                    Choose how to reach Mimir. Use &quot;External URL&quot; for a remote endpoint accessible over the
+                    network, or &quot;In-cluster K8s service&quot; if Mimir runs inside the cluster.
+                  </small>
+                </section>
+              </>
+            )}
+            {this.isMimir && this.isDirectMode ? (
+              <>
+                <hr />
+                <section>
+                  <SubTitle title="Mimir endpoint URL" />
+                  <Input
+                    theme="round-black"
+                    value={this.directUrl}
+                    onChange={(value) => (this.directUrl = value)}
+                    onBlur={this.onSaveAll}
+                    placeholder="https://mimir.example.com"
+                  />
+                  <small className="hint">
+                    The URL of your Mimir query endpoint. Queries are sent directly to this URL, bypassing the
+                    Kubernetes API service proxy.
+                  </small>
+                </section>
+                <hr />
+                <section>
+                  <SubTitle title="Use HTTPS" />
+                  <Checkbox
+                    label="Upgrade http:// to https:// automatically"
+                    value={this.useHttps}
+                    onChange={(checked) => {
+                      this.useHttps = checked;
+                      this.onSaveAll();
+                    }}
+                  />
+                  <small className="hint">
+                    When enabled, automatically upgrades http:// endpoint URLs to https://. Recommended for external
+                    Mimir endpoints.
+                  </small>
+                </section>
+              </>
+            ) : !this.isMimir ? (
+              <>
+                <hr />
+                <section>
+                  <SubTitle title="Prometheus service address" />
+                  <Input
+                    theme="round-black"
+                    value={this.path}
+                    onChange={(value) => (this.path = value)}
+                    onBlur={this.onSaveAll}
+                    placeholder="<namespace>/<service>:<port>"
+                  />
+                  <small className="hint">
+                    {this.isOpenShift
+                      ? `An address to the Prometheus service (<namespace>/<service>:<port>). For OpenShift this is typically openshift-monitoring/prometheus-k8s:9091. Can be left empty when using a Prometheus ingress/route.`
                       : `An address to an existing Prometheus installation (<namespace>/<service>:<port>). ${this.props.productName} tries to auto-detect address if left empty.`}
-                </small>
-              </section>
-              <hr />
-              <section>
-                <SubTitle title="Prometheus HTTPS requests" />
-                <Checkbox
-                  label={`Use HTTPS for Prometheus requests`}
-                  value={this.useHttps}
-                  onChange={(checked) => {
-                    this.useHttps = checked;
-                    this.onSaveAll();
-                  }}
-                />
-                <small className="hint">
-                  {this.isOpenShift
-                    ? "Enable HTTPS for the Kubernetes API service proxy path. Not needed when using a Prometheus ingress/route (the route URL scheme is used instead)."
-                    : this.isMimir
-                      ? "When enabled, automatically upgrades http:// endpoint URLs to https://. Recommended for external Mimir endpoints."
+                  </small>
+                </section>
+                <hr />
+                <section>
+                  <SubTitle title="Prometheus HTTPS requests" />
+                  <Checkbox
+                    label="Use HTTPS for Prometheus requests"
+                    value={this.useHttps}
+                    onChange={(checked) => {
+                      this.useHttps = checked;
+                      this.onSaveAll();
+                    }}
+                  />
+                  <small className="hint">
+                    {this.isOpenShift
+                      ? "Enable HTTPS for the Kubernetes API service proxy path. Not needed when using a Prometheus ingress/route (the route URL scheme is used instead)."
                       : "Externally hosted Prometheus might listen using HTTPS. Usually this is not needed."}
-                </small>
-              </section>
-            </>
+                  </small>
+                </section>
+              </>
+            ) : (
+              <>
+                <hr />
+                <section>
+                  <SubTitle title="Mimir service address" />
+                  <Input
+                    theme="round-black"
+                    value={this.path}
+                    onChange={(value) => (this.path = value)}
+                    onBlur={this.onSaveAll}
+                    placeholder="<namespace>/<service>:<port>"
+                  />
+                  <small className="hint">
+                    An address to the Mimir query-frontend service inside the cluster
+                    (&lt;namespace&gt;/&lt;service&gt;:&lt;port&gt;).
+                  </small>
+                </section>
+                <hr />
+                <section>
+                  <SubTitle title="HTTPS requests" />
+                  <Checkbox
+                    label="Use HTTPS for Prometheus requests"
+                    value={this.useHttps}
+                    onChange={(checked) => {
+                      this.useHttps = checked;
+                      this.onSaveAll();
+                    }}
+                  />
+                  <small className="hint">
+                    Enable HTTPS for the Kubernetes API service proxy path. Usually this is not needed.
+                  </small>
+                </section>
+              </>
+            )}
             <hr />
             <section>
               <SubTitle title="Custom path prefix" />
@@ -388,21 +492,6 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
             )}
             {this.isMimir && (
               <>
-                <hr />
-                <section>
-                  <SubTitle title="Mimir external endpoint" />
-                  <Input
-                    theme="round-black"
-                    value={this.directUrl}
-                    onChange={(value) => (this.directUrl = value)}
-                    onBlur={this.onSaveAll}
-                    placeholder="https://mimir.example.com"
-                  />
-                  <small className="hint">
-                    Optional external URL to the Mimir query endpoint. When set, queries are sent directly to this URL,
-                    bypassing the Kubernetes API service proxy. Leave empty to use the in-cluster service address above.
-                  </small>
-                </section>
                 <hr />
                 <section>
                   <SubTitle title="Tenant" />
