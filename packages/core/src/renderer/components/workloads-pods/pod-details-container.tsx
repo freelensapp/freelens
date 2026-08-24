@@ -116,7 +116,7 @@ class NonInjectedPodDetailsContainer extends React.Component<PodDetailsContainer
           <StatusBrick className={containerStatusClassName(container, status)} />
           {name}
         </div>
-        {isMetricVisible && containersType === "containers" && (
+        {isMetricVisible && (containersType === "containers" || containersType === "initContainers") && (
           <>
             {containerMetrics.map((ContainerMetrics) => (
               <ContainerMetrics.Component key={ContainerMetrics.id} container={container} pod={pod} />
