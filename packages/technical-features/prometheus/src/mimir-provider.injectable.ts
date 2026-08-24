@@ -5,37 +5,24 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { getHelmLikeQueryFor } from "./helm-provider.injectable";
-import { prometheusProviderInjectionToken } from "./provider";
-
-import type { PrometheusProvider, PrometheusService } from "./provider";
-
-/**
- * Mimir is a Prometheus-compatible remote metrics backend. It does not run as
- * an in-cluster Kubernetes service — queries go to an external URL configured
- * via `directUrl` in cluster preferences. The `getPrometheusService` method
- * returns a synthetic placeholder so that the handler can resolve a provider
- * without requiring a real in-cluster service.
- */
-export const mimirPrometheusProvider: PrometheusProvider = {
-  kind: "mimir",
-  name: "Mimir (External Endpoint)",
-  isConfigurable: true,
-
-  getQuery: getHelmLikeQueryFor({ rateAccuracy: "5m" }),
-
-  async getPrometheusService(): Promise<PrometheusService> {
-    return {
-      kind: "mimir",
-      namespace: "",
-      service: "",
-      port: 0,
-    };
-  },
-};
+import { createPrometheusProvider, findFirstNamespacedService, prometheusProviderInjectionToken } from "./provider";
 
 const mimirPrometheusProviderInjectable = getInjectable({
   id: "mimir-prometheus-provider",
-  instantiate: () => mimirPrometheusProvider,
+  instantiate: () =>
+    createPrometheusProvider({
+      kind: "mimir",
+      name: "Mimir",
+      isConfigurable: true,
+      getQuery: getHelmLikeQueryFor({ rateAccuracy: "5m" }),
+      getService: (client) =>
+        findFirstNamespacedService(
+          client,
+          "app.kubernetes.io/name=mimir,app.kubernetes.io/component=query-frontend",
+          "app.kubernetes.io/name=mimir",
+          "app=mimir,component=query-frontend",
+        ),
+    }),
   injectionToken: prometheusProviderInjectionToken,
 });
 
