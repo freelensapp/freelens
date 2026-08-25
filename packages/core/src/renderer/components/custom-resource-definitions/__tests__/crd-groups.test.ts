@@ -262,13 +262,18 @@ Main:
   });
 
   describe("findGroupPath", () => {
-    it("should return the default path if config is null", () => {
-      const result = findGroupPath("test.group", null);
-      expect(result).toEqual({ path: ["test.group"] });
+    it("should return null if config is null", () => {
+      expect(findGroupPath("test.group", null)).toBeNull();
     });
 
-    it("should return the default path if config has no nodes", () => {
-      expect(findGroupPath("test.group", { nodes: [] })).toEqual({ path: ["test.group"] });
+    it("should return null if config has no nodes", () => {
+      expect(findGroupPath("test.group", { nodes: [] })).toBeNull();
+    });
+
+    it("should return null when no pattern matches", () => {
+      const config = parseGroupConfig("Kubernetes:\n  - k8s.io");
+
+      expect(findGroupPath("unmatched.pattern.com", config)).toBeNull();
     });
 
     it("should prefer deeper path when two patterns have equal specificity", () => {
@@ -280,7 +285,7 @@ Top:
 `;
       const config = parseGroupConfig(yamlConfig);
       const result = findGroupPath("resources.k8s.io", config);
-      expect(result.path.length).toBeGreaterThanOrEqual(2);
+      expect(result?.path.length).toBeGreaterThanOrEqual(2);
     });
 
     it("should match to top level group with direct pattern", () => {
@@ -375,16 +380,6 @@ Others:
       expect(findGroupPath("any.other.group", config)).toEqual({ path: ["Others"] });
       expect(findGroupPath("specific.pattern.com", config)).toEqual({ path: ["Main"] });
     });
-
-    it("should return default for unmatched CRDs", () => {
-      const yamlConfig = `
-Kubernetes:
-  - k8s.io
-`;
-      const config = parseGroupConfig(yamlConfig);
-
-      expect(findGroupPath("unmatched.pattern.com", config)).toEqual({ path: ["unmatched.pattern.com"] });
-    });
   });
 
   describe("organizeCrdsIntoTree", () => {
@@ -393,13 +388,12 @@ Kubernetes:
       expect(root.children.size).toBe(0);
     });
 
-    it("should place each CRD in its own group when config is empty", () => {
+    it("should leave every CRD ungrouped when config is empty", () => {
       const crds = [createMockCrd("deployments", "apps.k8s.io"), createMockCrd("pods", "core.k8s.io")];
-      const { root } = organizeCrdsIntoTree(crds, "");
+      const { root, ungrouped } = organizeCrdsIntoTree(crds, "");
 
-      expect(root.children.size).toBe(2);
-      expect(root.children.has("deployments.apps.k8s.io")).toBe(true);
-      expect(root.children.has("pods.core.k8s.io")).toBe(true);
+      expect(root.children.size).toBe(0);
+      expect(ungrouped).toEqual(crds);
     });
 
     it("should organize CRDs into a tree structure", () => {
@@ -457,23 +451,23 @@ GitOps:
       expect(imagePolicies?.crds[0].getPluralName()).toBe("imagepolicies");
     });
 
-    it("should place unmatched CRDs in their own groups", () => {
+    it("should report unmatched CRDs as ungrouped", () => {
       const yamlConfig = `
 Kubernetes:
   - k8s.io
 `;
-      const crds = [createMockCrd("deployments", "apps.k8s.io"), createMockCrd("myresources", "custom.example.com")];
+      const unmatched = createMockCrd("myresources", "custom.example.com");
+      const crds = [createMockCrd("deployments", "apps.k8s.io"), unmatched];
 
-      const { root } = organizeCrdsIntoTree(crds, yamlConfig);
+      const { root, ungrouped } = organizeCrdsIntoTree(crds, yamlConfig);
 
       // Kubernetes group should have the k8s.io CRD
       const kubernetes = root.children.get("Kubernetes");
       expect(kubernetes?.crds).toHaveLength(1);
 
-      // Unmatched CRD should be in its own group
-      const customGroup = root.children.get("myresources.custom.example.com");
-      expect(customGroup).toBeDefined();
-      expect(customGroup?.crds).toHaveLength(1);
+      // The unmatched CRD gets no group of its own, it stays ungrouped
+      expect(root.children.size).toBe(1);
+      expect(ungrouped).toEqual([unmatched]);
     });
   });
 
@@ -518,7 +512,10 @@ Others:
         createMockCrd("myresources", "unknown.example.com"),
       ];
 
-      const { root } = organizeCrdsIntoTree(crds, yamlConfig);
+      const { root, ungrouped } = organizeCrdsIntoTree(crds, yamlConfig);
+
+      // The catch-all pattern leaves nothing ungrouped
+      expect(ungrouped).toHaveLength(0);
 
       // Check GitOps structure
       const gitOps = root.children.get("GitOps");
