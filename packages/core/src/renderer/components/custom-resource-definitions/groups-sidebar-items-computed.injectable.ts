@@ -5,20 +5,19 @@
  */
 
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
-import { computedAnd, noop } from "@freelensapp/utilities";
-import * as yaml from "js-yaml";
-import { DEFAULT_CONFIG_YAML } from "../../../features/preferences/renderer/preference-items/crd/crd-group/default-config";
+import { computedAnd, iter, noop } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { matches } from "es-toolkit/compat";
+import * as yaml from "js-yaml";
 import { computed } from "mobx";
 import customResourcesRouteInjectable from "../../../common/front-end-routing/routes/cluster/custom-resources/custom-resources-route.injectable";
 import navigateToCustomResourcesInjectable from "../../../common/front-end-routing/routes/cluster/custom-resources/navigate-to-custom-resources.injectable";
 import { shouldShowResourceInjectionToken } from "../../../features/cluster/showing-kube-resources/common/allowed-resources-injection-token";
+import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
 import routePathParametersInjectable from "../../routes/route-path-parameters.injectable";
 import customResourcesSidebarItemInjectable from "../custom-resources/sidebar-item.injectable";
 import customResourceDefinitionsInjectable from "./definitions.injectable";
-import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 
 import type { SidebarItemRegistration } from "@freelensapp/cluster-sidebar";
 import type { CustomResourceDefinition } from "@freelensapp/kube-object";
@@ -139,12 +138,11 @@ function collectPatternCandidates(nodes: ConfigNode[], currentPath: string[] = [
   return candidates;
 }
 
-function findGroupPath(crdName: string, config: ParsedConfig | null): GroupPath {
-  const defaultPath: GroupPath = { path: [crdName] };
-  if (!config || !config.nodes.length) return defaultPath;
+function findGroupPath(crdName: string, config: ParsedConfig | null): GroupPath | null {
+  if (!config || !config.nodes.length) return null;
   const candidates = collectPatternCandidates(config.nodes);
   const matches = candidates.filter((c) => matchesPattern(crdName, c.pattern));
-  if (matches.length === 0) return defaultPath;
+  if (matches.length === 0) return null;
   matches.sort((a, b) => {
     if (b.specificity !== a.specificity) return b.specificity - a.specificity;
     return b.path.length - a.path.length;
@@ -187,13 +185,19 @@ function getNodeOrder(config: ParsedConfig | null, path: string[]): number {
 function organizeCrdsIntoTree(
   crds: Iterable<CustomResourceDefinition>,
   configYaml: string,
-): { root: CrdTreeNode; config: ParsedConfig | null } {
+): { root: CrdTreeNode; config: ParsedConfig | null; ungrouped: CustomResourceDefinition[] } {
   const config = parseGroupConfig(configYaml);
   const root = createCrdTreeNode("root", 0);
+  const ungrouped: CustomResourceDefinition[] = [];
   for (const crd of crds) {
     try {
       const fullName = `${crd.getPluralName()}.${crd.getGroup()}`;
-      const { path } = findGroupPath(fullName, config);
+      const groupPath = findGroupPath(fullName, config);
+      if (!groupPath) {
+        ungrouped.push(crd);
+        continue;
+      }
+      const { path } = groupPath;
       let currentNode = root;
       for (let i = 0; i < path.length; i++) {
         const segment = path[i];
@@ -208,36 +212,37 @@ function organizeCrdsIntoTree(
       console.error("Error processing CRD:", error);
     }
   }
-  return { root, config };
+  return { root, config, ungrouped };
 }
 
 // ===============================
 // GENERATION DES ITEMS SIDEBAR
 // ===============================
 
+interface SidebarItemDependencies {
+  navigateToCustomResources: any;
+  customResourcesRoute: any;
+  pathParameters: any;
+}
+
 function createCrdSidebarItem({
+  id,
   parentId,
   definition,
-  pathSegments,
   itemIndex,
   navigateToCustomResources,
   customResourcesRoute,
   pathParameters,
-}: {
+}: SidebarItemDependencies & {
+  id: string;
   parentId: string;
   definition: CustomResourceDefinition;
-  pathSegments: string[];
   itemIndex: number;
-  navigateToCustomResources: any;
-  customResourcesRoute: any;
-  pathParameters: any;
 }): any {
   const parameters = {
     group: definition.getGroup(),
     name: definition.getPluralName(),
   };
-  const pathId = pathSegments.join("-");
-  const id = `sidebar-item-custom-resource-group-${pathId}/${definition.getPluralName()}`;
   return getInjectable({
     id,
     instantiate: (di): SidebarItemRegistration => ({
@@ -262,11 +267,7 @@ function generateSidebarItemsRecursive(
   node: CrdTreeNode,
   parentId: string,
   pathSegments: string[],
-  options: {
-    navigateToCustomResources: any;
-    customResourcesRoute: any;
-    pathParameters: any;
-  },
+  options: SidebarItemDependencies,
 ): any[] {
   const result: any[] = [];
   const sortedChildren = Array.from(node.children.values()).sort((a, b) => {
@@ -277,7 +278,7 @@ function generateSidebarItemsRecursive(
     const childPath = [...pathSegments, child.name];
     const childPathId = childPath.join("-");
     const groupItem = getInjectable({
-      id: `sidebar-item-custom-resource-group-${childPathId}`,
+      id: `${sideBarItemCustomResourcePrefix}-${childPathId}`,
       instantiate: (): SidebarItemRegistration => ({
         parentId,
         onClick: noop,
@@ -289,11 +290,12 @@ function generateSidebarItemsRecursive(
     result.push(groupItem);
     const sortedCrds = [...child.crds].sort((a, b) => a.getResourceKind().localeCompare(b.getResourceKind()));
     for (let i = 0; i < sortedCrds.length; i++) {
+      const definition = sortedCrds[i];
       result.push(
         createCrdSidebarItem({
+          id: `${sideBarItemCustomResourcePrefix}-${childPathId}/${definition.getPluralName()}`,
           parentId: groupItem.id,
-          definition: sortedCrds[i],
-          pathSegments: childPath,
+          definition,
           itemIndex: i,
           ...options,
         }),
@@ -305,6 +307,47 @@ function generateSidebarItemsRecursive(
     }
   }
   return result;
+}
+
+// ===============================
+// SIDEBAR ITEMS PER API GROUP
+// ===============================
+
+// CRDs that no configured pattern matches keep the flat, one-item-per-API-group
+// layout, with the same item ids, titles and ordering as when no grouping
+// configuration exists at all.
+function generateApiGroupSidebarItems(
+  definitions: CustomResourceDefinition[],
+  options: SidebarItemDependencies,
+): any[] {
+  const customResourceDefinitionGroups = iter
+    .chain(definitions.values())
+    .map((crd) => [crd.getGroup(), crd] as const)
+    .toMap();
+
+  return Array.from(customResourceDefinitionGroups.entries(), ([group, groupDefinitions], index) => {
+    const customResourceGroupSidebarItem = getInjectable({
+      id: `${sideBarItemCustomResourcePrefix}-${group}`,
+      instantiate: (): SidebarItemRegistration => ({
+        parentId: customResourcesSidebarItemInjectable.id,
+        onClick: noop,
+        title: group.replaceAll(".", "\u200b."), // Replace dots with zero-width spaces to allow line breaks
+        orderNumber: index + 1,
+      }),
+      injectionToken: sidebarItemInjectionToken,
+    });
+    const customResourceSidebarItems = groupDefinitions.map((definition, itemIndex) =>
+      createCrdSidebarItem({
+        id: `${sideBarItemCustomResourcePrefix}-${group}/${definition.getPluralName()}`,
+        parentId: customResourceGroupSidebarItem.id,
+        definition,
+        itemIndex,
+        ...options,
+      }),
+    );
+
+    return [customResourceGroupSidebarItem, ...customResourceSidebarItems];
+  }).flat();
 }
 
 const titleCaseSplitRegex = /(?<=[a-z])(?=[A-Z])|(?<=[A-Z])(?=[A-Z][a-z])/;
@@ -323,14 +366,15 @@ const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectab
     return computed(() => {
       try {
         const crdList = customResourceDefinitions.get();
-        const crdGroupConfig = state.crdGroup && state.crdGroup.trim() !== "" ? state.crdGroup : DEFAULT_CONFIG_YAML;
-        const { root } = organizeCrdsIntoTree(crdList, crdGroupConfig);
-        const items = generateSidebarItemsRecursive(root, customResourcesSidebarItemInjectable.id, [], {
-          navigateToCustomResources,
-          customResourcesRoute,
-          pathParameters,
-        });
-        return items;
+        const options = { navigateToCustomResources, customResourcesRoute, pathParameters };
+        // Without a grouping configuration nothing matches, every CRD ends up in
+        // `ungrouped` and the sidebar is exactly the one built before this feature.
+        const { root, ungrouped } = organizeCrdsIntoTree(crdList, state.crdGroup ?? "");
+
+        return [
+          ...generateSidebarItemsRecursive(root, customResourcesSidebarItemInjectable.id, [], options),
+          ...generateApiGroupSidebarItems(ungrouped, options),
+        ];
       } catch (error) {
         console.error("Error generating sidebar items:", error);
         return [];
@@ -340,14 +384,14 @@ const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectab
 });
 
 export {
-  parseGroupConfig,
-  findGroupPath,
-  organizeCrdsIntoTree,
   collectPatternCandidates,
-  matchesPattern,
+  findGroupPath,
   getPatternSpecificity,
+  matchesPattern,
+  organizeCrdsIntoTree,
+  parseGroupConfig,
 };
 
-export type { ConfigNode, GroupPath, ParsedConfig, PatternCandidate, CrdTreeNode };
+export type { ConfigNode, CrdTreeNode, GroupPath, ParsedConfig, PatternCandidate };
 
 export default customResourceDefinitionGroupsSidebarItemsComputedInjectable;
