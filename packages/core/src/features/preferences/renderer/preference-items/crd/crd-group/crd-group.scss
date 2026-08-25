@@ -1,6 +1,5 @@
 /**
  * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
@@ -16,9 +15,9 @@
 
     h4 {
       margin: 0 0 8px 0;
-      color: #ffffff; // Blanc pur pour les titres principaux
+      color: #ffffff; // Pure white for the main headings
       font-weight: bold;
-      font-size: 16px; // Légèrement plus grand pour l'importance
+      font-size: 16px; // Slightly larger to stand out
     }
 
     p {
@@ -26,7 +25,7 @@
       color: var(--textColorSecondary, #ccc);
 
       strong {
-        color: #ffffff; // Blanc pur pour les mots-clés importants
+        color: #ffffff; // Pure white for the important keywords
         font-weight: 600;
       }
 
@@ -43,8 +42,8 @@
       display: block;
       margin-bottom: 8px;
       font-weight: bold;
-      color: #ffffff; // Blanc pur pour les labels principaux
-      font-size: 15px; // Légèrement plus grand
+      color: #ffffff; // Pure white for the main labels
+      font-size: 15px; // Slightly larger
     }
 
     // Monaco Editor container styling
@@ -93,7 +92,7 @@
       border-radius: 6px;
       border: 1px solid var(--borderColor, #404040);
       font-size: 14px;
-      color: #ffffff; // Blanc pur pour "Merge information:"
+      color: #ffffff; // Pure white for "Merge information:"
 
       .info-details {
         margin-top: 8px;
@@ -117,7 +116,7 @@
         display: block;
         margin-bottom: 8px;
         font-weight: bold;
-        color: #ffffff; // Blanc pur pour les labels des colonnes
+        color: #ffffff; // Pure white for the column labels
         font-size: 14px;
       }
     }
@@ -144,7 +143,7 @@
 
     h4 {
       margin: 0 0 12px 0;
-      color: #ffffff; // Blanc pur pour "YAML Format Guide:"
+      color: #ffffff; // Pure white for "YAML Format Guide:"
       font-size: 16px;
       font-weight: bold;
     }
@@ -156,7 +155,7 @@
 
     .help-example {
       strong {
-        color: #ffffff; // Blanc pur pour "Example:"
+        color: #ffffff; // Pure white for "Example:"
         margin-bottom: 8px;
         display: block;
         font-weight: bold;
@@ -178,7 +177,7 @@
     }
   }
 
-  // Classes utilitaires pour la hiérarchie visuelle
+  // Utility classes for the visual hierarchy
   .title-primary {
     color: #ffffff !important;
     font-weight: bold;

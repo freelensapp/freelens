@@ -25,7 +25,7 @@ import type { CustomResourceDefinition } from "@freelensapp/kube-object";
 export const sideBarItemCustomResourcePrefix = "sidebar-item-custom-resource-group";
 
 // ===============================
-// INTERFACES POUR GROUPES CRD
+// CRD GROUP INTERFACES
 // ===============================
 
 interface ConfigNode {
@@ -151,7 +151,7 @@ function findGroupPath(crdName: string, config: ParsedConfig | null): GroupPath 
 }
 
 // ===============================
-// ORGANISATION DES CRD EN ARBRE
+// ORGANISING CRDS INTO A TREE
 // ===============================
 
 interface CrdTreeNode {
@@ -216,7 +216,7 @@ function organizeCrdsIntoTree(
 }
 
 // ===============================
-// GENERATION DES ITEMS SIDEBAR
+// SIDEBAR ITEM GENERATION
 // ===============================
 
 interface SidebarItemDependencies {
