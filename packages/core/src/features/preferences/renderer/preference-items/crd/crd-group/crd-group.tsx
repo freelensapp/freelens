@@ -47,13 +47,10 @@ interface Dependencies {
 }
 
 const NonInjectedCrdGroup = observer(({ state }: Dependencies) => {
-  const [crdGroup, setCrdGroup] = React.useState(state.crdGroup || "");
-
-  React.useEffect(() => {
-    if (!crdGroup.trim()) {
-      setCrdGroup(DEFAULT_CONFIG_YAML);
-    }
-  }, []);
+  // The template only pre-fills the editor, it is not a stored preference:
+  // opening this tab must leave `state.crdGroup` exactly as it was.
+  const [crdGroup, setCrdGroup] = React.useState(state.crdGroup?.trim() ? state.crdGroup : DEFAULT_CONFIG_YAML);
+  const [hasUserEdited, setHasUserEdited] = React.useState(false);
 
   const [validationError, setValidationError] = React.useState<string | null>(null);
 
@@ -118,10 +115,14 @@ const NonInjectedCrdGroup = observer(({ state }: Dependencies) => {
   };
 
   React.useEffect(() => {
+    if (!hasUserEdited || crdGroup === state.crdGroup) {
+      return;
+    }
+
     if (isValidConfiguration(crdGroup)) {
       state.crdGroup = crdGroup;
     }
-  }, [crdGroup, state]);
+  }, [crdGroup, hasUserEdited, state]);
 
   const readOnlyEditorOptions = {
     minimap: { enabled: false },
@@ -239,6 +240,7 @@ Others:
             language="yaml"
             value={crdGroup}
             onChange={(value) => {
+              setHasUserEdited(true);
               setCrdGroup(value);
               validateConfiguration(value);
             }}

@@ -274,6 +274,28 @@ describe("CrdGroup Component", () => {
       const textarea = screen.getByTestId("monaco-editor-for-crd-group-config") as HTMLTextAreaElement;
       expect(textarea.value).toBe(customConfig);
     });
+
+    it("does not store the pre-filled template when the tab is only visited", () => {
+      mockUserPreferencesState.crdGroup = "";
+
+      render(<CrdGroup />);
+
+      expect(mockUserPreferencesState.crdGroup).toBe("");
+    });
+
+    it("stores the configuration once the user edits it", () => {
+      mockUserPreferencesState.crdGroup = "";
+
+      render(<CrdGroup />);
+
+      const editedConfig = "EditedGroup:\n  - edited.pattern";
+
+      fireEvent.change(screen.getByTestId("monaco-editor-for-crd-group-config"), {
+        target: { value: editedConfig },
+      });
+
+      expect(mockUserPreferencesState.crdGroup).toBe(editedConfig);
+    });
   });
 
   describe("Auto-save via useEffect", () => {
