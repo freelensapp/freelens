@@ -11,6 +11,8 @@ import { injectableDifferencingRegistratorWith } from "../../../common/utils/reg
 import { beforeClusterFrameStartsSecondInjectionToken } from "../../before-frame-starts/tokens";
 import customResourceDefinitionGroupsSidebarItemsComputedInjectable from "./groups-sidebar-items-computed.injectable";
 
+import type { Injectable } from "@ogre-tools/injectable";
+
 const customResourceDefinitionGroupsSidebarItemsRegistratorInjectable = getInjectable({
   id: "custom-resource-definition-groups-sidebar-items-registrator",
   instantiate: (di) => ({
@@ -18,11 +20,43 @@ const customResourceDefinitionGroupsSidebarItemsRegistratorInjectable = getInjec
       const sidebarItems = di.inject(customResourceDefinitionGroupsSidebarItemsComputedInjectable);
       // Register against the root container so the sidebar item ids stay bare
       // (not namespaced under this registrator by @ogre-tools 23).
-      const injectableDifferencingRegistrator = injectableDifferencingRegistratorWith(
+      const differencingRegistrator = injectableDifferencingRegistratorWith(
         di.inject(dependencyInjectionContainerInjectable),
       );
 
-      reaction(() => sidebarItems.get(), injectableDifferencingRegistrator, { fireImmediately: true });
+      // This registrator manages its own previous state
+      let previousSidebarItems: Injectable<any, any, any>[] = [];
+
+      reaction(
+        // Data function - wrapped in try/catch to prevent error propagation
+        () => {
+          try {
+            const items = sidebarItems.get();
+            console.log("[CRD Registrator] Got items:", items.length);
+            return items;
+          } catch (error) {
+            console.error("Error getting sidebar items:", error);
+            return []; // Return empty array in case of error
+          }
+        },
+        // Effect - also protected against errors
+        (currentItems) => {
+          try {
+            console.log(
+              "[CRD Registrator] Registering items:",
+              currentItems.length,
+              "Previous:",
+              previousSidebarItems.length,
+            );
+            differencingRegistrator(currentItems, previousSidebarItems);
+            previousSidebarItems = currentItems;
+            console.log("[CRD Registrator] Registration complete");
+          } catch (error) {
+            console.error("Error registering sidebar items:", error);
+          }
+        },
+        { fireImmediately: true },
+      );
     },
   }),
   injectionToken: beforeClusterFrameStartsSecondInjectionToken,
