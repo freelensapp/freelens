@@ -8,6 +8,7 @@ import { CustomResourceDefinition } from "@freelensapp/kube-object";
 import {
   collectPatternCandidates,
   findGroupPath,
+  generateSidebarItemsRecursive,
   getPatternSpecificity,
   matchesPattern,
   organizeCrdsIntoTree,
@@ -468,6 +469,45 @@ Kubernetes:
       // The unmatched CRD gets no group of its own, it stays ungrouped
       expect(root.children.size).toBe(1);
       expect(ungrouped).toEqual([unmatched]);
+    });
+  });
+
+  describe("generateSidebarItemsRecursive", () => {
+    const options = {
+      navigateToCustomResources: () => {},
+      customResourcesRoute: {},
+      pathParameters: { get: () => ({}) },
+    };
+
+    it("should give CRDs sharing a plural name distinct ids within the same group", () => {
+      const crds = [createMockCrd("backups", "velero.io"), createMockCrd("backups", "k8up.io")];
+      const { root } = organizeCrdsIntoTree(crds, 'Backups:\n  - ""');
+
+      const ids = generateSidebarItemsRecursive(root, "parent-item", [], options).map((item) => item.id);
+
+      expect(ids).toHaveLength(3);
+      expect(new Set(ids).size).toBe(3);
+      expect(ids).toContain("sidebar-item-custom-resource-group-Backups");
+      expect(ids).toContain("sidebar-item-custom-resource-group-Backups/velero.io/backups");
+      expect(ids).toContain("sidebar-item-custom-resource-group-Backups/k8up.io/backups");
+    });
+
+    it("should include the whole group path in the ids of nested groups", () => {
+      const yamlConfig = `
+GitOps:
+  - FluxCD:
+      - source.toolkit.fluxcd.io
+`;
+      const crds = [createMockCrd("gitrepositories", "source.toolkit.fluxcd.io")];
+      const { root } = organizeCrdsIntoTree(crds, yamlConfig);
+
+      const ids = generateSidebarItemsRecursive(root, "parent-item", [], options).map((item) => item.id);
+
+      expect(ids).toEqual([
+        "sidebar-item-custom-resource-group-GitOps",
+        "sidebar-item-custom-resource-group-GitOps-FluxCD",
+        "sidebar-item-custom-resource-group-GitOps-FluxCD/source.toolkit.fluxcd.io/gitrepositories",
+      ]);
     });
   });
 

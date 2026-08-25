@@ -293,7 +293,10 @@ function generateSidebarItemsRecursive(
       const definition = sortedCrds[i];
       result.push(
         createCrdSidebarItem({
-          id: `${sideBarItemCustomResourcePrefix}-${childPathId}/${definition.getPluralName()}`,
+          // The API group is part of the id because a config group can hold two
+          // CRDs with the same plural name (backups.velero.io and
+          // backups.k8up.io), and equal ids make the registrator drop one.
+          id: `${sideBarItemCustomResourcePrefix}-${childPathId}/${definition.getGroup()}/${definition.getPluralName()}`,
           parentId: groupItem.id,
           definition,
           itemIndex: i,
@@ -386,6 +389,7 @@ const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectab
 export {
   collectPatternCandidates,
   findGroupPath,
+  generateSidebarItemsRecursive,
   getPatternSpecificity,
   matchesPattern,
   organizeCrdsIntoTree,
