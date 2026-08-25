@@ -122,7 +122,9 @@ describe("cluster - custom resources in sidebar", () => {
       it("does not show SomeResources sidebar", async () => {
         await waitFor(
           () =>
-            expect(result.queryByTestId("sidebar-item-custom-resource-group-some.group.com")).not.toBeInTheDocument(),
+            expect(
+              result.queryByTestId("sidebar-item-custom-resource-group-some-resources.some.group.com"),
+            ).not.toBeInTheDocument(),
           { timeout: 300 },
         );
       });
@@ -160,7 +162,10 @@ describe("cluster - custom resources in sidebar", () => {
 
         it("shows some.group.com group sidebar item", async () => {
           await waitFor(
-            () => expect(result.getByTestId("sidebar-item-custom-resource-group-some.group.com")).toBeInTheDocument(),
+            () =>
+              expect(
+                result.getByTestId("sidebar-item-custom-resource-group-some-resources.some.group.com"),
+              ).toBeInTheDocument(),
             { timeout: 300 },
           );
         });
@@ -175,7 +180,10 @@ describe("cluster - custom resources in sidebar", () => {
         describe("when custom resources group sidebar item is expanded", () => {
           beforeEach(async () => {
             await waitFor(
-              () => result.getByTestId("expand-icon-for-sidebar-item-custom-resource-group-some.group.com").click(),
+              () =>
+                result
+                  .getByTestId("expand-icon-for-sidebar-item-custom-resource-group-some-resources.some.group.com")
+                  .click(),
               { timeout: 300 },
             );
           });
@@ -186,7 +194,10 @@ describe("cluster - custom resources in sidebar", () => {
 
           it("shows some.group.com group sidebar item", async () => {
             await waitFor(
-              () => expect(result.getByTestId("sidebar-item-custom-resource-group-some.group.com")).toBeInTheDocument(),
+              () =>
+                expect(
+                  result.getByTestId("sidebar-item-custom-resource-group-some-resources.some.group.com"),
+                ).toBeInTheDocument(),
               { timeout: 300 },
             );
           });
@@ -195,7 +206,8 @@ describe("cluster - custom resources in sidebar", () => {
             await waitFor(
               () =>
                 expect(
-                  result.getByTestId("link-for-sidebar-item-custom-resource-group-some.group.com").firstChild,
+                  result.getByTestId("link-for-sidebar-item-custom-resource-group-some-resources.some.group.com")
+                    .firstChild,
                 ).toHaveTextContent("some\u200b.group\u200b.com", {
                   normalizeWhitespace: false,
                 }),
@@ -207,7 +219,7 @@ describe("cluster - custom resources in sidebar", () => {
             await waitFor(
               () =>
                 expect(
-                  result.getByTestId("sidebar-item-custom-resource-group-some.group.com/some-resources"),
+                  result.getByTestId("sidebar-item-custom-resource-group-some-resources.some.group.com/some-resources"),
                 ).toBeInTheDocument(),
               { timeout: 300 },
             );
@@ -217,7 +229,7 @@ describe("cluster - custom resources in sidebar", () => {
             await waitFor(
               () =>
                 expect(
-                  result.getByTestId("sidebar-item-custom-resource-group-some.group.com/some-resources"),
+                  result.getByTestId("sidebar-item-custom-resource-group-some-resources.some.group.com/some-resources"),
                 ).toHaveTextContent("Some Resource"),
               { timeout: 300 },
             );
@@ -254,7 +266,9 @@ describe("cluster - custom resources in sidebar", () => {
       it("does not show SomeResources sidebar", async () => {
         await waitFor(
           () =>
-            expect(result.queryByTestId("sidebar-item-custom-resource-group-some.group.com")).not.toBeInTheDocument(),
+            expect(
+              result.queryByTestId("sidebar-item-custom-resource-group-some-resources.some.group.com"),
+            ).not.toBeInTheDocument(),
           { timeout: 300 },
         );
       });
@@ -291,7 +305,9 @@ describe("cluster - custom resources in sidebar", () => {
         it("does not show SomeResources sidebar", async () => {
           await waitFor(
             () =>
-              expect(result.queryByTestId("sidebar-item-custom-resource-group-some.group.com")).not.toBeInTheDocument(),
+              expect(
+                result.queryByTestId("sidebar-item-custom-resource-group-some-resources.some.group.com"),
+              ).not.toBeInTheDocument(),
             { timeout: 300 },
           );
         });
