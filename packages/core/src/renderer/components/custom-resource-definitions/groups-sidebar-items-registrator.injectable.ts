@@ -31,9 +31,7 @@ const customResourceDefinitionGroupsSidebarItemsRegistratorInjectable = getInjec
         // Data function - wrapped in try/catch to prevent error propagation
         () => {
           try {
-            const items = sidebarItems.get();
-            console.log("[CRD Registrator] Got items:", items.length);
-            return items;
+            return sidebarItems.get();
           } catch (error) {
             console.error("Error getting sidebar items:", error);
             return []; // Return empty array in case of error
@@ -42,15 +40,8 @@ const customResourceDefinitionGroupsSidebarItemsRegistratorInjectable = getInjec
         // Effect - also protected against errors
         (currentItems) => {
           try {
-            console.log(
-              "[CRD Registrator] Registering items:",
-              currentItems.length,
-              "Previous:",
-              previousSidebarItems.length,
-            );
             differencingRegistrator(currentItems, previousSidebarItems);
             previousSidebarItems = currentItems;
-            console.log("[CRD Registrator] Registration complete");
           } catch (error) {
             console.error("Error registering sidebar items:", error);
           }
