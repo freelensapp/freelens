@@ -180,11 +180,18 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
           onSort: (params) => Object.assign(this.sorting, params),
         }}
         sortingCallbacks={this.sortingCallbacks}
-        searchFilters={[
-          (event) => event.getSearchFields(),
-          (event) => event.message,
-          (event) => event.getSource(),
-          (event) => event.involvedObject.name,
+        searchFields={[
+          // An Event's own name is generated noise, so it is searchable through
+          // "All fields" but not worth a facet. This getter also carries the
+          // namespace, uid and labels.
+          { id: "metadata", title: "Metadata", hidden: true, getValue: (event) => event.getSearchFields() },
+          { id: "namespace", title: "Namespace", getValue: (event) => event.getNs() },
+          { id: "type", title: "Type", getValue: (event) => event.type },
+          { id: "reason", title: "Reason", getValue: (event) => event.reason },
+          { id: "message", title: "Message", getValue: (event) => event.message },
+          { id: "source", title: "Source", getValue: (event) => event.getSource() },
+          { id: "object", title: "Object", getValue: (event) => event.involvedObject.name },
+          { id: "objectKind", title: "Object kind", getValue: (event) => event.involvedObject.kind },
         ]}
         renderTableHeader={[
           { title: "Type", className: "type", sortBy: columnId.type, id: columnId.type },
