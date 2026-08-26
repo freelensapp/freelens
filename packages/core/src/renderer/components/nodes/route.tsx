@@ -462,16 +462,18 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
             [columnId.schedulable]: (node) => (node.isUnschedulable() ? "False" : "True"),
             [columnId.conditions]: (node) => node.getNodeConditionText(),
           }}
-          searchFilters={[
-            (node) => node.getSearchFields(),
-            (node) => node.getRoleLabels(),
-            (node) => node.getKubeletVersion(),
-            (node) => node.getNodeConditionText(),
-            (node) => node.getInternalIP(),
-            (node) => node.getExternalIP(),
-            (node) => getInstanceType(node),
-            (node) => getNodeGroup(node),
-            (node) => getCapacityType(node),
+          searchFields={[
+            { id: "name", title: "Name", getValue: (node) => node.getName() },
+            { id: "labels", title: "Labels", getValue: (node) => node.getLabels() },
+            { id: "roles", title: "Roles", getValue: (node) => node.getRoleLabels() },
+            { id: "conditions", title: "Conditions", getValue: (node) => node.getNodeConditionText() },
+            { id: "kubelet", title: "Kubelet version", getValue: (node) => node.getKubeletVersion() },
+            { id: "internalIp", title: "Internal IP", getValue: (node) => node.getInternalIP() },
+            { id: "externalIp", title: "External IP", getValue: (node) => node.getExternalIP() },
+            { id: "instanceType", title: "Instance type", getValue: (node) => getInstanceType(node) },
+            { id: "nodeGroup", title: "Node group", getValue: (node) => getNodeGroup(node) },
+            { id: "capacityType", title: "Capacity type", getValue: (node) => getCapacityType(node) },
+            { id: "uid", title: "UID", hidden: true, getValue: (node) => node.getId() },
           ]}
           renderHeaderTitle="Nodes"
           renderTableHeader={[

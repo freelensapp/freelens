@@ -80,7 +80,12 @@ const NonInjectedNamespacesRoute = ({
         [columnId.age]: (namespace) => -namespace.getCreationTimestamp(),
         [columnId.status]: (namespace) => namespace.getStatus(),
       }}
-      searchFilters={[(namespace) => namespace.getSearchFields(), (namespace) => namespace.getStatus()]}
+      searchFields={[
+        { id: "name", title: "Name", getValue: (namespace) => namespace.getName() },
+        { id: "labels", title: "Labels", getValue: (namespace) => namespace.getLabels() },
+        { id: "status", title: "Status", getValue: (namespace) => namespace.getStatus() },
+        { id: "uid", title: "UID", hidden: true, getValue: (namespace) => namespace.getId() },
+      ]}
       renderHeaderTitle="Namespaces"
       renderTableHeader={[
         { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },

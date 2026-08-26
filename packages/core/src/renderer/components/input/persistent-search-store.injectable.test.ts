@@ -37,16 +37,31 @@ describe("persistent search store", () => {
     expect(userPreferencesState.persistentSearch).toBe(false);
   });
 
-  it("keeps search text session-only and out of user preferences", () => {
+  it("keeps the search session-only and out of user preferences", () => {
     const sharedSearchKey = "global:linked";
+    const stored = { search: "pods", op: "", facets: "" };
 
     persistentSearchStore.setEnabled(true);
     const userPreferencesBeforeSettingValue = { ...userPreferencesState };
-    persistentSearchStore.setValue(sharedSearchKey, "pods");
+    persistentSearchStore.setValue(sharedSearchKey, stored);
 
-    expect(persistentSearchStore.getValue(sharedSearchKey)).toBe("pods");
+    expect(persistentSearchStore.getValue(sharedSearchKey)).toEqual(stored);
     expect(userPreferencesState.persistentSearch).toBe(true);
     expect(userPreferencesState[sharedSearchKey]).toBeUndefined();
     expect({ ...userPreferencesState }).toEqual(userPreferencesBeforeSettingValue);
+  });
+
+  it("reports an empty search for a key it has never seen", () => {
+    expect(persistentSearchStore.getValue("nothing:here")).toEqual({ search: "", op: "", facets: "" });
+  });
+
+  // Carrying only the text was what turned a faceted search into a bare query
+  // on navigating away and back.
+  it("keeps the operator and the facets alongside the text", () => {
+    const stored = { search: "nginx", op: "notContains", facets: '[{"field":"status","values":["Failed"]}]' };
+
+    persistentSearchStore.setValue("global:linked", stored);
+
+    expect(persistentSearchStore.getValue("global:linked")).toEqual(stored);
   });
 });
