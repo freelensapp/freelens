@@ -116,7 +116,6 @@ class NonInjectedRoleBindingDialog extends React.Component<RoleBindingDialogProp
     return this.props.serviceAccountStore.items.map((serviceAccount) => ({
       value: serviceAccount,
       label: `${serviceAccount.getName()} (${serviceAccount.getNs()})`,
-      isSelected: this.selectedAccounts.has(serviceAccount),
     }));
   }
 
@@ -161,12 +160,12 @@ class NonInjectedRoleBindingDialog extends React.Component<RoleBindingDialogProp
     const { roleBindingStore, showDetails, showCheckedErrorNotification } = this.props;
     const { selectedRoleRef, bindingNamespace, selectedBindings, roleBinding, bindingName } = this;
 
-    if (!selectedRoleRef || !roleBinding || !bindingNamespace || !bindingName) {
+    if (!selectedRoleRef || !bindingNamespace || !bindingName) {
       return;
     }
 
     try {
-      const newRoleBinding = this.isEditing
+      const newRoleBinding = roleBinding
         ? await roleBindingStore.updateSubjects(roleBinding, selectedBindings)
         : await roleBindingStore.create(
             {
@@ -252,6 +251,7 @@ class NonInjectedRoleBindingDialog extends React.Component<RoleBindingDialogProp
           themeName="lens"
           placeholder="Select service accounts ..."
           options={this.serviceAccountOptions}
+          value={Array.from(this.selectedAccounts)}
           formatOptionLabel={(option) => (
             <>
               <Icon small material="account_box" /> {option.label}
