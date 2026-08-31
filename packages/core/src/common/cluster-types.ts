@@ -106,7 +106,6 @@ export interface ClusterPreferences extends ClusterPrometheusPreferences {
   imagePullSecret?: string;
   defaultNamespace?: string;
   skipNamespaceAuthorizationCheck?: boolean;
-  skipMetricsRouteCheck?: boolean;
 }
 
 /**
