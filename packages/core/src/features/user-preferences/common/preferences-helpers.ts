@@ -57,6 +57,25 @@ export const defaultEditorConfig: EditorConfiguration = {
   },
 };
 
+/**
+ * A named search a user can re-apply from the search box.
+ *
+ * The search state is kept as the raw URL params rather than a parsed model:
+ * applying one is then just writing those params back, and this preference does
+ * not have to track the facet types living in the renderer.
+ */
+export interface SavedSearch {
+  name: string;
+  /** Route it was saved from. Searches are offered on that view only. */
+  view: string;
+  /** The `search` param: free text over every searchable field. */
+  search: string;
+  /** The `searchOp` param, empty for the default operator. */
+  op: string;
+  /** The `facets` param, already serialized. */
+  facets: string;
+}
+
 export type StoreType<P> = P extends PreferenceDescription<unknown, infer Store> ? Store : never;
 
 export interface PreferenceDescription<T, R = T> {

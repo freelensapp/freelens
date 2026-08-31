@@ -1,0 +1,239 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+// Colours come from the same theme variables the Select menu and the filter
+// area already use, so both themes stay consistent:
+//   panel        --contentColor  + --halfGray border   (Select__menu)
+//   highlight    --colorInfo     + --textColorAccent   (Select option focused)
+//   chip         --filterAreaBackground                (PageFiltersList)
+
+.wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.searchInput {
+  // The chips live inside the field, so it has to be free to grow with them
+  // instead of holding the fixed width a plain search box gets.
+  flex: 1 1 auto;
+  max-width: none;
+}
+
+.facets {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  // Many chips must not push the text cursor out of the field; they scroll.
+  max-width: 60%;
+  overflow-x: auto;
+  // The field is short, so a horizontal scrollbar inside it would eat the text.
+  scrollbar-width: none;
+  // Keeps the caret off the last chip. The label's own gap alone reads as the
+  // text being part of the chip.
+  padding-right: 6px;
+  margin-right: 2px;
+  border-right: 1px solid var(--borderFaintColor);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.facet {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  flex-shrink: 0;
+  padding: 1px 2px 1px 6px;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--borderFaintColor);
+  background-color: var(--filterAreaBackground);
+  color: var(--textColorPrimary);
+  font-size: smaller;
+  line-height: 1.5;
+  white-space: nowrap;
+  // The chip sits in a <label>, whose default text cursor would suggest the
+  // chip itself is editable.
+  cursor: default;
+}
+
+// A facet whose field this view does not have. Kept visible and removable, but
+// struck through: it is not filtering, and a chip that looks applied when it is
+// not would misrepresent what the list is showing.
+.facetUnavailable {
+  opacity: 0.55;
+
+  // Only the text is struck through. Running the line through the remove icon
+  // as well just looks like a rendering fault, and the icon still works.
+  > span {
+    text-decoration: line-through;
+  }
+}
+
+.facetTitle {
+  color: var(--textColorSecondary);
+}
+
+.facetOperator {
+  font-family: monospace;
+  font-weight: 600;
+  color: var(--textColorAccent);
+}
+
+.facetRegex {
+  font-family: monospace;
+  color: var(--textColorSecondary);
+}
+
+.suggestions {
+  position: absolute;
+  // Sits directly under the input, and above the table rows below it.
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 10;
+  min-width: 300px;
+  max-height: 320px;
+  overflow-y: auto;
+  padding: 4px 0;
+  border-radius: var(--border-radius);
+  background-color: var(--contentColor);
+  color: var(--textColorPrimary);
+  box-shadow:
+    0 0 0 1px var(--halfGray),
+    0 4px 12px rgb(0 0 0 / 25%);
+}
+
+.operators {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--borderFaintColor);
+}
+
+.operator {
+  min-width: 30px;
+  padding: 2px 6px;
+  border: 1px solid var(--inputControlBorder);
+  border-radius: var(--border-radius);
+  background: none;
+  color: var(--textColorPrimary);
+  font-family: monospace;
+  font-size: smaller;
+  cursor: pointer;
+
+  &:hover {
+    border-color: var(--inputControlHoverBorder);
+  }
+}
+
+.operatorActive {
+  border-color: var(--colorInfo);
+  background-color: var(--colorInfo);
+  color: var(--textColorAccent);
+}
+
+.saveButton {
+  flex-shrink: 0;
+  padding: 2px 10px;
+  border: 1px solid var(--inputControlBorder);
+  border-radius: var(--border-radius);
+  background: none;
+  color: var(--textColorPrimary);
+  font-size: smaller;
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    border-color: var(--inputControlHoverBorder);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.saveRow {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  padding: 6px 12px;
+  border-top: 1px solid var(--borderFaintColor);
+}
+
+.saveName {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 2px 6px;
+  border: 1px solid var(--inputControlBorder);
+  border-radius: var(--border-radius);
+  background: var(--inputControlBackground);
+  color: var(--textColorPrimary);
+  font-size: smaller;
+
+  &:disabled {
+    opacity: 0.6;
+  }
+}
+
+.suggestion {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:hover,
+  &.highlighted {
+    background-color: var(--colorInfo);
+    color: var(--textColorAccent);
+  }
+}
+
+.savedSearch {
+  // The name and the bin read as one row, so they line up on their middles
+  // rather than on the baseline the field suggestions use.
+  align-items: center;
+  gap: 12px;
+}
+
+.savedSearchDelete {
+  // Pinned to the right edge whatever the name's length.
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.suggestionField {
+  font-weight: 600;
+}
+
+.suggestionOperator {
+  font-family: monospace;
+}
+
+.suggestionValue {
+  color: var(--textColorSecondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+}
+
+// Inherit on hover, or the dimmed colours stay unreadable on the highlight.
+.suggestion:hover,
+.suggestion.highlighted {
+  .suggestionValue {
+    color: inherit;
+  }
+}
+
+.hint {
+  padding: 4px 12px;
+  color: var(--textColorTertiary);
+  font-size: smaller;
+  white-space: nowrap;
+}

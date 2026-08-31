@@ -553,10 +553,10 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
                   </div>
                 </div>
                 <div
-                  style="display: flex; align-items: center; gap: 8px;"
+                  class="wrapper"
                 >
                   <div
-                    class="Input SearchInput focused"
+                    class="Input SearchInput searchInput focused"
                   >
                     <label
                       class="input-area flex items-center gap-2"
@@ -582,6 +582,20 @@ exports[`workloads / pods > when navigating to workloads / pods view > given a n
                     <div
                       class="input-info flex gap-2"
                     />
+                  </div>
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="bookmark_border"
+                    >
+                      bookmark_border
+                    </span>
+                  </i>
+                  <div>
+                    Saved searches
                   </div>
                   <i
                     class="Icon material interactive focusable small"
@@ -1743,10 +1757,10 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
                   </div>
                 </div>
                 <div
-                  style="display: flex; align-items: center; gap: 8px;"
+                  class="wrapper"
                 >
                   <div
-                    class="Input SearchInput focused"
+                    class="Input SearchInput searchInput focused"
                   >
                     <label
                       class="input-area flex items-center gap-2"
@@ -1772,6 +1786,20 @@ exports[`workloads / pods > when navigating to workloads / pods view > given no 
                     <div
                       class="input-info flex gap-2"
                     />
+                  </div>
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="bookmark_border"
+                    >
+                      bookmark_border
+                    </span>
+                  </i>
+                  <div>
+                    Saved searches
                   </div>
                   <i
                     class="Icon material interactive focusable small"
@@ -2785,10 +2813,10 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
                   </div>
                 </div>
                 <div
-                  style="display: flex; align-items: center; gap: 8px;"
+                  class="wrapper"
                 >
                   <div
-                    class="Input SearchInput focused"
+                    class="Input SearchInput searchInput focused"
                   >
                     <label
                       class="input-area flex items-center gap-2"
@@ -2814,6 +2842,20 @@ exports[`workloads / pods > when navigating to workloads / pods view > given pod
                     <div
                       class="input-info flex gap-2"
                     />
+                  </div>
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="bookmark_border"
+                    >
+                      bookmark_border
+                    </span>
+                  </i>
+                  <div>
+                    Saved searches
                   </div>
                   <i
                     class="Icon material interactive focusable small"

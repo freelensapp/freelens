@@ -50,11 +50,14 @@ const NonInjectedPods = observer((props: Dependencies) => {
         tableId="workloads_pods"
         isConfigurable
         defaultHiddenTableColumns={["ip", "node", "qos"]}
-        searchFilters={[
-          (pod) => pod.getSearchFields(),
-          (pod) => pod.getStatusMessage(),
-          (pod) => pod.status?.podIP,
-          (pod) => pod.getNodeName(),
+        searchFields={[
+          { id: "name", title: "Name", getValue: (pod) => pod.getName() },
+          { id: "namespace", title: "Namespace", getValue: (pod) => pod.getNs() },
+          { id: "labels", title: "Labels", getValue: (pod) => pod.getLabels() },
+          { id: "status", title: "Status", getValue: (pod) => pod.getStatusMessage() },
+          { id: "ip", title: "IP", getValue: (pod) => pod.status?.podIP },
+          { id: "node", title: "Node", getValue: (pod) => pod.getNodeName() },
+          { id: "uid", title: "UID", hidden: true, getValue: (pod) => pod.getId() },
         ]}
         renderHeaderTitle="Pods"
         renderTableHeader={[]}
