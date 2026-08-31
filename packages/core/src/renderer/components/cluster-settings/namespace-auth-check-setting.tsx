@@ -5,7 +5,6 @@
  */
 
 import { observer } from "mobx-react";
-import React from "react";
 import { Checkbox } from "../checkbox";
 import { SubTitle } from "../layout/sub-title";
 
