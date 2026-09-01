@@ -256,8 +256,8 @@ catalogs:
       specifier: 6.3.1
       version: 6.3.1
     p-limit:
-      specifier: 7.3.0
-      version: 7.3.0
+      specifier: 7.3.2
+      version: 7.3.2
     playwright:
       specifier: 1.61.1
       version: 1.61.1
@@ -547,7 +547,7 @@ importers:
         version: 1.2.0-beta.14
       p-limit:
         specifier: 'catalog:'
-        version: 7.3.0
+        version: 7.3.2
       pnpm:
         specifier: 'catalog:'
         version: 11.18.0
@@ -2461,7 +2461,7 @@ importers:
         version: 6.15.0
       p-limit:
         specifier: 'catalog:'
-        version: 7.3.0
+        version: 7.3.2
       react:
         specifier: 'catalog:'
         version: 19.2.8
@@ -6240,8 +6240,8 @@ packages:
     resolution: {integrity: sha512-TYOanM3wGwNGsZN2cVTYPArw454xnXj5qmWF1bEoAc4+cU/ol7GVh7odevjp1FNHduHc3KZMcFduxU5Xc6uJRQ==}
     engines: {node: '>=10'}
 
-  p-limit@7.3.0:
-    resolution: {integrity: sha512-7cIXg/Z0M5WZRblrsOla88S4wAK+zOQQWeBYfV3qJuJXMr+LnbYjaadrFaS0JILfEDPVqHyKnZ1Z/1d6J9VVUw==}
+  p-limit@7.3.2:
+    resolution: {integrity: sha512-Ll0w3fU24vYpXoZmjjZIee6bJQDgG0oAyo1PdmFYI8UDwJJddaHAypxIH9avUu+t+lSsAwKVsb1jDCMIIChliw==}
     engines: {node: '>=20'}
 
   p-map@7.0.6:
@@ -11086,7 +11086,7 @@ snapshots:
     dependencies:
       yocto-queue: 0.1.0
 
-  p-limit@7.3.0:
+  p-limit@7.3.2:
     dependencies:
       yocto-queue: 1.2.2
 
