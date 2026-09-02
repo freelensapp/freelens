@@ -50,7 +50,7 @@ catalog:
   rollup-plugin-dts: 6.4.1
   sass-embedded: 1.100.0
   tailwindcss: 4.2.4
-  turbo: 2.10.2
+  turbo: 2.10.12
   vite: 8.1.5
   # Electron
   electron: 42.7.1
