@@ -13,7 +13,7 @@ catalog:
   '@types/react': 19.2.17
   '@types/react-dom': 19.2.3
   # MobX family (singletons)
-  mobx: 6.15.0
+  mobx: 6.16.1
   mobx-react: 9.1.1
   mobx-react-lite: 4.1.1
   # TypeScript
@@ -157,7 +157,7 @@ catalogs:
     chart.js: ^4.5.1
     conf: ^15.1.0
     immer: ^11.1.8
-    mobx: ^6.15.0
+    mobx: ^6.16.1
     monaco-editor: ^0.56.0
     react: ^19.2.8
     react-select: ^5.10.2
