@@ -83,6 +83,8 @@ export const createClusterPrometheusHandler = (...args: [Dependencies, Cluster])
     setupPrometheus(cluster.preferences);
 
     if (prometheus && prometheusProvider) {
+      // When a user has configured both provider type and service preferences,
+      // use them directly without re-running service discovery.
       return {
         kind: prometheusProvider,
         namespace: prometheus.namespace,
