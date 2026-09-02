@@ -46,7 +46,7 @@ catalog:
   electron-vite: 6.0.0-beta.1
   playwright: 1.61.1
   pnpm: 11.18.0
-  rollup: 4.62.2
+  rollup: 4.63.1
   rollup-plugin-dts: 6.4.1
   sass-embedded: 1.100.0
   tailwindcss: 4.2.4
