@@ -99,7 +99,7 @@ catalog:
   command-line-args: 6.0.2
   conf: 15.1.0
   cronstrue: 3.24.0
-  dompurify: 3.4.12
+  dompurify: 3.4.13
   electron-window-state: 5.0.3
   es-toolkit: 1.49.0
   fast-xml-parser: 5.10.1
