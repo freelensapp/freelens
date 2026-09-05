@@ -37,6 +37,14 @@ export interface LogTabData {
   selectedPodId: string;
 
   /**
+   * When set, the uids of additional pods whose logs are combined with
+   * `selectedPodId`'s and shown interleaved chronologically, tagged with a
+   * color-coded pod name prefix per line. Used for viewing the combined logs
+   * of a workload (e.g. all pods of a Deployment) instead of a single pod.
+   */
+  mergedPodIds?: string[];
+
+  /**
    * The namespace of the pods/workload
    */
   namespace: string;

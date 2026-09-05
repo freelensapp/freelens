@@ -17,7 +17,7 @@ import { renderFor } from "../../../test-utils/renderFor";
 import callForLogsInjectable from "../call-for-logs.injectable";
 import { LogTabViewModel } from "../logs-view-model";
 import { LogResourceSelector } from "../resource-selector";
-import { deploymentPod1, deploymentPod2, dockerPod } from "./pod.mock";
+import { deploymentPod1, deploymentPod2, deploymentPod3, dockerPod } from "./pod.mock";
 import {
   createMockLogTabViewModel,
   getDefaultOnePodLogTabData,
@@ -90,6 +90,33 @@ const getFewPodsTabData = (
 
       return [];
     },
+    ...deps,
+  });
+};
+
+const getCombinedLogsTabData = (
+  tabId: TabId,
+  userPreferencesState: UserPreferencesState,
+  deps: Partial<LogTabViewModelDependencies> = {},
+): LogTabViewModel => {
+  const selectedPod = deploymentPod1;
+  const otherPods = [deploymentPod2, deploymentPod3];
+
+  return createMockLogTabViewModel(tabId, userPreferencesState, {
+    getLogTabData: () => ({
+      ...getDefaultOnePodLogTabData({
+        selectedPodId: selectedPod.getId(),
+        selectedContainer: selectedPod.getContainers()[0].name,
+        namespace: selectedPod.getNs(),
+      }),
+      mergedPodIds: otherPods.map((pod) => pod.getId()),
+      owner: {
+        uid: "uuid",
+        kind: "Deployment",
+        name: "super-deployment",
+      },
+    }),
+    getPodById: (id) => [selectedPod, ...otherPods].find((pod) => pod.getId() === id),
     ...deps,
   });
 };
@@ -200,6 +227,28 @@ describe("<LogResourceSelector />", () => {
       selectEvent.openMenu(selector);
       await user.click(await findByText("deploymentPod2", { selector: ".pod-selector-menu .Select__option" }));
       expect(renameTab).toBeCalledWith("foobar", "Pod deploymentPod2");
+    });
+  });
+
+  describe("with combined logs of several pods", () => {
+    let model: LogTabViewModel;
+
+    beforeEach(() => {
+      model = getCombinedLogsTabData("foobar", userPreferencesState);
+    });
+
+    it("shows a pod count badge instead of the pod switcher dropdown", async () => {
+      const { container, findByTestId } = render(<LogResourceSelector model={model} />);
+
+      expect(await findByTestId("merged-pods-badge")).toHaveTextContent("3 pods");
+      expect(container.querySelector(".pod-selector")).not.toBeInTheDocument();
+    });
+
+    it("still renders the owner and container selector", async () => {
+      const { findByText, container } = render(<LogResourceSelector model={model} />);
+
+      expect(await findByText("super-deployment", { exact: false })).toBeInTheDocument();
+      expect(container.querySelector(".container-selector")).toBeInTheDocument();
     });
   });
 });
