@@ -144,7 +144,7 @@ export class JsonApi<Data = JsonApiData, Params extends JsonApiParams<Data> = Js
     let reqUrl = `${this.config.serverAddress}${this.config.apiBase}${path}`;
     // No keep-alive agent is supplied: undici pools per dispatcher and Chromium
     // pools on its own, so neither client needs one per request.
-    const reqInit = merge({ method: "get" }, this.reqInit, await this.getRequestOptions(), init);
+    const reqInit = merge({ method: "GET" }, this.reqInit, await this.getRequestOptions(), init);
     const { query } = params ?? {};
 
     if (query && Object.keys(query).length > 0) {
@@ -161,7 +161,7 @@ export class JsonApi<Data = JsonApiData, Params extends JsonApiParams<Data> = Js
     params?: ParamsAndQuery<Params, Query>,
     reqInit: RequestInit = {},
   ) {
-    return this.request<OutData, Query>(path, params, { ...reqInit, method: "get" });
+    return this.request<OutData, Query>(path, params, { ...reqInit, method: "GET" });
   }
 
   post<OutData = Data, Query = QueryParams>(
@@ -169,7 +169,7 @@ export class JsonApi<Data = JsonApiData, Params extends JsonApiParams<Data> = Js
     params?: ParamsAndQuery<Params, Query>,
     reqInit: RequestInit = {},
   ) {
-    return this.request<OutData, Query>(path, params, { ...reqInit, method: "post" });
+    return this.request<OutData, Query>(path, params, { ...reqInit, method: "POST" });
   }
 
   put<OutData = Data, Query = QueryParams>(
@@ -177,7 +177,7 @@ export class JsonApi<Data = JsonApiData, Params extends JsonApiParams<Data> = Js
     params?: ParamsAndQuery<Params, Query>,
     reqInit: RequestInit = {},
   ) {
-    return this.request<OutData, Query>(path, params, { ...reqInit, method: "put" });
+    return this.request<OutData, Query>(path, params, { ...reqInit, method: "PUT" });
   }
 
   patch<OutData = Data, Query = QueryParams>(
@@ -185,7 +185,7 @@ export class JsonApi<Data = JsonApiData, Params extends JsonApiParams<Data> = Js
     params?: ParamsAndQuery<Omit<Params, "data">, Query> & { data?: Patch | PartialDeep<Data> },
     reqInit: RequestInit = {},
   ) {
-    return this.request<OutData, Query>(path, params, { ...reqInit, method: "patch" });
+    return this.request<OutData, Query>(path, params, { ...reqInit, method: "PATCH" });
   }
 
   del<OutData = Data, Query = QueryParams>(
@@ -193,7 +193,7 @@ export class JsonApi<Data = JsonApiData, Params extends JsonApiParams<Data> = Js
     params?: ParamsAndQuery<Params, Query>,
     reqInit: RequestInit = {},
   ) {
-    return this.request<OutData, Query>(path, params, { ...reqInit, method: "delete" });
+    return this.request<OutData, Query>(path, params, { ...reqInit, method: "DELETE" });
   }
 
   protected async request<OutData, Query = QueryParams>(

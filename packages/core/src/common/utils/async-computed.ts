@@ -9,7 +9,7 @@
 // only) so the existing call sites keep the exact same semantics.
 
 import { noop } from "es-toolkit";
-import { action, computed, createAtom, observable, runInAction, untracked } from "mobx";
+import { action, computed, createAtom, observable, reaction, runInAction, untracked } from "mobx";
 
 import type { IComputedValue } from "mobx";
 
@@ -67,9 +67,22 @@ export function asyncComputed<T>({
     { name: "computed-promise-for-async-computed" },
   );
 
-  const computedPromiseResult = computed(
-    () => {
-      computedPromise.get().then(
+  // Resolve promises into syncValueBox via a reaction rather than inside a
+  // keepAlive computed.  The previous implementation attached `.then()` inside
+  // a `computed({ keepAlive: true })` that also read `syncValueBox`.  When the
+  // `.then()` handler set `syncValueBox`, it invalidated the same computed,
+  // which re-attached `.then()` to the (already-resolved) cached promise,
+  // scheduling another microtask, creating a tight feedback loop that pegged
+  // the renderer at 100 % CPU.
+  //
+  // A `reaction` breaks the cycle: it watches `computedPromise` for new
+  // promises and attaches `.then()`, but the handler's write to `syncValueBox`
+  // does not re-trigger the reaction (reactions only re-trigger when the *data
+  // function* returns a new value, i.e. a new promise).
+  reaction(
+    () => computedPromise.get(),
+    (promise) => {
+      promise.then(
         action((value) => {
           if (value !== neutralizeObsoletePromise) {
             pendingBox.set(false);
@@ -77,14 +90,16 @@ export function asyncComputed<T>({
           }
         }),
       );
-
-      return syncValueBox.get();
     },
-    { name: "computed-promise-result-for-async-computed", keepAlive: true },
+    { fireImmediately: true },
   );
 
+  const computedValue = computed(() => syncValueBox.get(), {
+    name: "computed-value-for-async-computed",
+  });
+
   return {
-    value: computedPromiseResult as IComputedValue<T>,
+    value: computedValue as IComputedValue<T>,
 
     invalidate: () => {
       runInAction(() => {
@@ -97,10 +112,6 @@ export function asyncComputed<T>({
       });
     },
 
-    pending: computed(() => {
-      computedPromiseResult.get();
-
-      return pendingBox.get();
-    }),
+    pending: computed(() => pendingBox.get()),
   };
 }
