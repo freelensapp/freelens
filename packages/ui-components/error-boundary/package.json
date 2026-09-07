@@ -1,6 +1,6 @@
 {
   "name": "@nibamot/error-boundary",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "private": true,
   "description": "Highly extendable error-boundary in the IMS-Scope.",
   "homepage": "https://github.com/Nibamot/ims-scope",

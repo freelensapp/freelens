@@ -1,6 +1,6 @@
 {
   "name": "@nibamot/messaging",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "private": true,
   "description": "An abstraction for messaging between Lens environments",
   "homepage": "https://github.com/Nibamot/ims-scope",

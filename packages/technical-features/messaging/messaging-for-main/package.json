@@ -1,6 +1,6 @@
 {
   "name": "@nibamot/messaging-for-main",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "private": true,
   "description": "Implementations for 'messaging' in Electron main",
   "homepage": "https://github.com/Nibamot/ims-scope",

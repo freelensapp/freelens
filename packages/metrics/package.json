@@ -1,6 +1,6 @@
 {
   "name": "@nibamot/metrics",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "private": true,
   "description": "Injection tokens for implementing metrics for IMS-Scope",
   "homepage": "https://github.com/Nibamot/ims-scope",

@@ -1,6 +1,6 @@
 {
   "name": "@nibamot/cluster-settings",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "private": true,
   "description": "Injection token exporter for cluster settings configuration",
   "homepage": "https://github.com/Nibamot/ims-scope",

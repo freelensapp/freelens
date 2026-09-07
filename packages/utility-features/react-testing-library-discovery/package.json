@@ -1,6 +1,6 @@
 {
   "name": "@nibamot/react-testing-library-discovery",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "private": true,
   "description": "A way to discover HTML-elements using react-testing-library",
   "homepage": "https://github.com/Nibamot/ims-scope",

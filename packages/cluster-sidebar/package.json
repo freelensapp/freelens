@@ -1,6 +1,6 @@
 {
   "name": "@nibamot/cluster-sidebar",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "private": true,
   "description": "Injection tokens for adding new sidebar items within the Cluster View",
   "homepage": "https://github.com/Nibamot/ims-scope",
