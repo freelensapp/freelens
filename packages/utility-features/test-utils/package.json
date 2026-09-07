@@ -1,6 +1,6 @@
 {
   "name": "@nibamot/test-utils",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "private": true,
   "description": "A collection of utilities for testing",
   "homepage": "https://github.com/Nibamot/ims-scope",

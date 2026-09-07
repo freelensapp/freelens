@@ -1,6 +1,6 @@
 {
   "name": "@nibamot/prometheus",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "private": true,
   "description": "Prometheus support for IMS-Scope",
   "homepage": "https://github.com/Nibamot/ims-scope",

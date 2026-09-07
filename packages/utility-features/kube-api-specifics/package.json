@@ -1,6 +1,6 @@
 {
   "name": "@nibamot/kube-api-specifics",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "private": true,
   "description": "Kube api",
   "homepage": "https://github.com/Nibamot/ims-scope",
