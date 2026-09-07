@@ -1052,7 +1052,7 @@ jobs:
           echo "$GPG_PASSPHRASE" > $HOME/.gnupg/passphrase
           gpgconf --launch gpg-agent
           echo "$GPG_PRIVATE_KEY" | gpg --import
-          echo "$GPG_KEY_ID:6:" | gpg --import-ownertrust
+          gpg --list-keys --with-colons "$GPG_KEY_ID" | awk -F: '/^fpr:/ { print $10 ":6:"; exit }' | gpg --import-ownertrust
         env:
           GPG_KEY_ID: ${{ vars.GPG_KEY_ID }}
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
