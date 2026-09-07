@@ -50,6 +50,7 @@
   },
   "devDependencies": {
     "@nibamot/core": "workspace:^",
+    "@typescript/typescript6": "catalog:",
     "rollup": "catalog:",
     "rollup-plugin-dts": "catalog:",
     "typescript": "catalog:",

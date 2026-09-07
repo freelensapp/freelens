@@ -10,7 +10,9 @@
 
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import ts from "typescript";
+// TypeScript 7's "typescript" package only exposes version info; the classic
+// compiler API (used here via transpileModule) lives in this compat package.
+import ts from "@typescript/typescript6";
 
 const packageRoot = path.resolve(import.meta.dirname, "..");
 const source = readFileSync(path.join(packageRoot, "src/runtime-shim.ts"), "utf8");
