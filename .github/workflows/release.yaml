@@ -1036,7 +1036,7 @@ jobs:
       - publish-github-release
 
     runs-on: ubuntu-24.04-arm
-    environment: apt-signing
+    environment: automated
 
     steps:
       - name: Checkout
