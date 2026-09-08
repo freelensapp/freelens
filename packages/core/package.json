@@ -94,6 +94,7 @@
     "@ogre-tools/injectable": "catalog:",
     "@ogre-tools/injectable-extension-for-mobx": "catalog:",
     "@ogre-tools/injectable-react": "catalog:",
+    "@peculiar/x509": "catalog:",
     "@xterm/addon-fit": "catalog:",
     "@xterm/addon-web-links": "catalog:",
     "@xterm/xterm": "catalog:",
