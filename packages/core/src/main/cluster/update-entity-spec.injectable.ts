@@ -39,6 +39,14 @@ const updateEntitySpecInjectable = getInjectable({
         entity.spec.icon = undefined;
         cluster.preferences.icon = undefined;
       }
+
+      // Runs after updateEntityMetadata (which spreads `cluster.labels` into
+      // `entity.metadata.labels`), so this assignment is not clobbered by it.
+      if (cluster.preferences.group) {
+        entity.metadata.labels.group = cluster.preferences.group;
+      } else {
+        delete entity.metadata.labels.group;
+      }
     };
   },
 });

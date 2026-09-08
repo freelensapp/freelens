@@ -93,6 +93,11 @@ export interface ClusterConfigData {
 export interface ClusterPreferences extends ClusterPrometheusPreferences {
   terminalCWD?: string;
   clusterName?: string;
+  /**
+   * A free-text tag (e.g. "QA", "Dev") used to visually group this cluster's
+   * icon with others sharing the same tag in the hotbar sidebar.
+   */
+  group?: string;
   iconOrder?: number;
   /**
    * The <img> src for the cluster. If set to `null` that means that it was

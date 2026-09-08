@@ -22,7 +22,7 @@ import {
 import { cssNames } from "@nibamot/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { UserPreferencesState } from "../../../extensions/common-api/app";
 import activeHotbarInjectable from "../../../features/hotbar/storage/common/active.injectable";
@@ -31,6 +31,7 @@ import userPreferencesStateInjectable from "../../../features/user-preferences/c
 import catalogEntityRegistryInjectable from "../../api/catalog/entity/registry.injectable";
 import { HotbarCell } from "./hotbar-cell";
 import { HotbarEntityIcon } from "./hotbar-entity-icon";
+import { computeGroupDividers } from "./hotbar-group-dividers";
 import { HotbarIcon } from "./hotbar-icon";
 import { HotbarSelector } from "./hotbar-selector";
 
@@ -267,33 +268,40 @@ const NonInjectedHotbarMenu = observer((props: Dependencies & HotbarMenuProps) =
       />
     );
 
-  const renderGrid = () =>
-    hotbar?.items.map((item, index) => {
-      const entity = getEntity(item);
+  const renderGrid = () => {
+    const entities = hotbar?.items.map((item) => getEntity(item)) ?? [];
+    const groupDividers = computeGroupDividers(entities.map((entity) => ({ group: entity?.metadata.labels?.group })));
+
+    return hotbar?.items.map((item, index) => {
+      const entity = entities[index];
       // react-beautiful-dnd exposed the dragged draggable id per droppable via
       // `snapshot.draggingOverWith`; reconstruct it from the hovered cell index.
       const draggingOverWith = overId === index ? activeId : null;
+      const groupDivider = groupDividers[index];
 
       return (
-        <HotbarDroppableCell
-          index={index}
-          key={entity ? entity.getId() : `cell${index}`}
-          className={cssNames(
-            {
-              isDraggingOver: overId === index,
-              isDraggingOwner: draggingOverWith != null && draggingOverWith === entity?.getId(),
-            },
-            getMoveAwayDirection(draggingOverWith, index),
-          )}
-        >
-          {item && (
-            <HotbarDraggableIcon item={item} index={index}>
-              {(isDragging) => renderIcon(item, entity, index, isDragging)}
-            </HotbarDraggableIcon>
-          )}
-        </HotbarDroppableCell>
+        <Fragment key={entity ? entity.getId() : `cell${index}`}>
+          {groupDivider && <div className="HotbarGroupDivider">{groupDivider}</div>}
+          <HotbarDroppableCell
+            index={index}
+            className={cssNames(
+              {
+                isDraggingOver: overId === index,
+                isDraggingOwner: draggingOverWith != null && draggingOverWith === entity?.getId(),
+              },
+              getMoveAwayDirection(draggingOverWith, index),
+            )}
+          >
+            {item && (
+              <HotbarDraggableIcon item={item} index={index}>
+                {(isDragging) => renderIcon(item, entity, index, isDragging)}
+              </HotbarDraggableIcon>
+            )}
+          </HotbarDroppableCell>
+        </Fragment>
       );
     });
+  };
 
   // The entity being dragged, rendered inside `<DragOverlay>` so it follows the
   // cursor in a body-level portal and is never clipped by the hotbar's overflow.

@@ -7,6 +7,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import getClusterByIdInjectable from "../../../../features/cluster/storage/common/get-by-id.injectable";
+import { ClusterGroupSetting } from "../../cluster-settings/group-setting";
 import { ClusterIconSetting } from "../../cluster-settings/icon-settings";
 import { ClusterKubeconfig } from "../../cluster-settings/kubeconfig";
 import { ClusterNameSetting } from "../../cluster-settings/name-setting";
@@ -39,6 +40,11 @@ function NonInjectedGeneralKubernetesClusterSettings({
           </div>
           <div>
             <ClusterIconSetting cluster={cluster} entity={entity as KubernetesCluster} />
+          </div>
+        </div>
+        <div className="flex">
+          <div className="flex-grow pr-8">
+            <ClusterGroupSetting cluster={cluster} />
           </div>
         </div>
       </section>

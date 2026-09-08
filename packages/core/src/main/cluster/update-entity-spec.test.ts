@@ -79,6 +79,27 @@ describe("update-entity-spec", () => {
     expect(cluster.preferences.icon).toBeUndefined();
   });
 
+  it("given cluster has a group preference, updates entity metadata labels with group", () => {
+    cluster.preferences.group = "QA";
+    updateEntitySpec(entity, cluster);
+    expect(entity.metadata.labels.group).toEqual("QA");
+  });
+
+  it("given cluster has no group preference, does not set group label", () => {
+    updateEntitySpec(entity, cluster);
+    expect(entity.metadata.labels.group).toBeUndefined();
+  });
+
+  it("given cluster group preference is cleared, removes group label", () => {
+    cluster.preferences.group = "QA";
+    updateEntitySpec(entity, cluster);
+    expect(entity.metadata.labels.group).toEqual("QA");
+
+    cluster.preferences.group = undefined;
+    updateEntitySpec(entity, cluster);
+    expect(entity.metadata.labels.group).toBeUndefined();
+  });
+
   it("given entity has no metrics, adds source as local", () => {
     updateEntitySpec(entity, cluster);
     expect(entity.spec.metrics?.source).toEqual("local");
