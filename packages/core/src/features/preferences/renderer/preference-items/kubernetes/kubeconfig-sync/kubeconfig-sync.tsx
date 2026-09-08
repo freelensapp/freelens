@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { Button } from "@nibamot/button";
 import { loggerInjectionToken } from "@nibamot/logger";
 import { Spinner } from "@nibamot/spinner";
 import { iter, tuple } from "@nibamot/utilities";
@@ -18,12 +19,14 @@ import { PathPicker } from "../../../../../../renderer/components/path-picker/pa
 import userPreferencesStateInjectable from "../../../../../user-preferences/common/state.injectable";
 import { RemovableItem } from "../../../removable-item/removable-item";
 import discoverAllKubeconfigSyncKindsInjectable from "./discover-all-sync-kinds.injectable";
+import discoverSiblingLensInstallsInjectable from "./discover-sibling-lens-installs.injectable";
 import discoverKubeconfigSyncKindInjectable from "./discover-sync-kind.injectable";
 
 import type { Logger } from "@nibamot/logger";
 
 import type { UserPreferencesState } from "../../../../../user-preferences/common/state.injectable";
 import type { DiscoverAllKubeconfigSyncKinds } from "./discover-all-sync-kinds.injectable";
+import type { DiscoverSiblingLensInstalls, SiblingLensInstall } from "./discover-sibling-lens-installs.injectable";
 import type { DiscoverKubeconfigSyncKind, SyncKind } from "./discover-sync-kind.injectable";
 
 interface Entry extends SyncKind {
@@ -36,13 +39,16 @@ interface Dependencies {
   logger: Logger;
   discoverAllKubeconfigSyncKinds: DiscoverAllKubeconfigSyncKinds;
   discoverKubeconfigSyncKind: DiscoverKubeconfigSyncKind;
+  discoverSiblingLensInstalls: DiscoverSiblingLensInstalls;
 }
 
 @observer
 class NonInjectedKubeconfigSync extends React.Component<Dependencies> {
   private readonly disposers: (() => void)[] = [];
   readonly syncs = observable.map<string, SyncKind>();
+  readonly siblingInstalls = observable.array<SiblingLensInstall>();
   @observable loaded = false;
+  @observable importingAppName: string | undefined;
 
   constructor(props: Dependencies) {
     super(props);
@@ -56,6 +62,8 @@ class NonInjectedKubeconfigSync extends React.Component<Dependencies> {
 
     this.syncs.replace(mapEntries);
     this.loaded = true;
+
+    this.siblingInstalls.replace(await this.props.discoverSiblingLensInstalls());
 
     this.disposers.push(
       reaction(
@@ -81,6 +89,17 @@ class NonInjectedKubeconfigSync extends React.Component<Dependencies> {
 
   onPick = async (filePaths: string[]) => {
     this.syncs.merge(await this.props.discoverAllKubeconfigSyncKinds(filePaths));
+  };
+
+  importSiblingInstall = async (install: SiblingLensInstall) => {
+    this.importingAppName = install.appName;
+
+    try {
+      this.syncs.merge(await this.props.discoverAllKubeconfigSyncKinds(install.filePaths));
+      this.siblingInstalls.remove(install);
+    } finally {
+      this.importingAppName = undefined;
+    }
   };
 
   getIconName(entry: Entry) {
@@ -162,11 +181,37 @@ class NonInjectedKubeconfigSync extends React.Component<Dependencies> {
     );
   }
 
+  renderSiblingInstalls() {
+    if (!this.siblingInstalls.length) {
+      return null;
+    }
+
+    return (
+      <div className="mb-5">
+        <SubTitle title="Import from other Lens apps" />
+        {this.siblingInstalls.map((install) => (
+          <div key={install.appName} className="flex gap-2 items-center mt-2">
+            <div className="flex-grow">
+              {install.appName}: {install.filePaths.length} synced item{install.filePaths.length === 1 ? "" : "s"}
+            </div>
+            <Button
+              label="Import"
+              waiting={this.importingAppName === install.appName}
+              disabled={this.importingAppName !== undefined}
+              onClick={() => this.importSiblingInstall(install)}
+            />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
   render() {
     return (
       <section id="kube-sync">
         <h2 data-testid="kubernetes-sync-header">Kubeconfig Syncs</h2>
 
+        {this.renderSiblingInstalls()}
         {this.renderSyncButtons()}
         <SubTitle title="Synced Items" className="pt-5" />
         {this.renderEntries()}
@@ -182,5 +227,6 @@ export const KubeconfigSync = withInjectables<Dependencies>(NonInjectedKubeconfi
     logger: di.inject(loggerInjectionToken),
     discoverAllKubeconfigSyncKinds: di.inject(discoverAllKubeconfigSyncKindsInjectable),
     discoverKubeconfigSyncKind: di.inject(discoverKubeconfigSyncKindInjectable),
+    discoverSiblingLensInstalls: di.inject(discoverSiblingLensInstallsInjectable),
   }),
 });

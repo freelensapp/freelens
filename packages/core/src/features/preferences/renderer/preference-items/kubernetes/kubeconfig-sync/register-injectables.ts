@@ -7,6 +7,7 @@
  */
 
 import discoverAllKubeconfigSyncKindsInjectable from "./discover-all-sync-kinds.injectable";
+import discoverSiblingLensInstallsInjectable from "./discover-sibling-lens-installs.injectable";
 import discoverKubeconfigSyncKindInjectable from "./discover-sync-kind.injectable";
 import kubeconfigSyncPreferenceBlockInjectable from "./kubeconfig-sync-preference-block.injectable";
 
@@ -20,6 +21,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(discoverKubeconfigSyncKindInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(discoverSiblingLensInstallsInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
