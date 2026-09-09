@@ -3,26 +3,51 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-// Compiles the runtime shim (src/runtime-shim.ts) to a single ESM file in
-// dist/. The shim only re-exports `globalThis.FreelensExtensionApi`, so the
-// emitted file has no runtime dependencies. The matching types are the d.ts
-// rollup of src/extension-api.ts (see rollup.dts.config.mjs).
+// Emits the runtime shim (src/runtime-shim.ts) as a single ESM file in dist/.
+// The shim only re-exports `globalThis.FreelensExtensionApi`, so the emitted
+// file has no runtime dependencies. The matching types are the d.ts rollup of
+// src/extension-api.ts (see rollup.dts.config.mjs).
+//
+// This used to run the source through `ts.transpileModule`, but TypeScript 7
+// ships no JavaScript compiler API (see #2363) - and a whole compiler was
+// always more than this step needs. The only TypeScript syntax in the shim is
+// the two `!` non-null assertions on the optional `Main` and `Renderer`
+// members, so stripping them with a text substitution is enough. The shim
+// stays a `.ts` file covered by `pnpm type:check`, and the repository keeps no
+// consumer of the compiler API.
+//
+// `node --check` guards the substitution: should the shim ever grow syntax
+// this script cannot strip, the emitted file fails to parse as ESM and the
+// build stops here instead of publishing a broken bundle.
 
+import { spawnSync } from "node:child_process";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import ts from "typescript";
 
 const packageRoot = path.resolve(import.meta.dirname, "..");
 const source = readFileSync(path.join(packageRoot, "src/runtime-shim.ts"), "utf8");
 
-const { outputText } = ts.transpileModule(source, {
-  compilerOptions: {
-    module: ts.ModuleKind.ESNext,
-    target: ts.ScriptTarget.ES2022,
-  },
-});
+// `export const Main = api.Main!;` -> `export const Main = api.Main;`
+const nonNullAssertion = /!;$/gm;
+const expectedAssertions = 2;
+const foundAssertions = source.match(nonNullAssertion)?.length ?? 0;
+
+if (foundAssertions !== expectedAssertions) {
+  throw new Error(
+    `src/runtime-shim.ts: expected ${expectedAssertions} non-null assertions, found ${foundAssertions}. ` +
+      "Update scripts/build-shim.mjs if the shim changed shape.",
+  );
+}
+
+const outputPath = path.join(packageRoot, "dist/extension-api.js");
 
 mkdirSync(path.join(packageRoot, "dist"), { recursive: true });
-writeFileSync(path.join(packageRoot, "dist/extension-api.js"), outputText);
+writeFileSync(outputPath, source.replace(nonNullAssertion, ";"));
+
+const check = spawnSync(process.execPath, ["--check", outputPath], { stdio: "inherit" });
+
+if (check.status !== 0) {
+  throw new Error("dist/extension-api.js does not parse as an ES module; src/runtime-shim.ts uses unsupported syntax");
+}
 
 console.log("dist/extension-api.js written");
