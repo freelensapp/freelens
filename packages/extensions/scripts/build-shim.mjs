@@ -8,17 +8,9 @@
 // file has no runtime dependencies. The matching types are the d.ts rollup of
 // src/extension-api.ts (see rollup.dts.config.mjs).
 //
-// This used to run the source through `ts.transpileModule`, but TypeScript 7
-// ships no JavaScript compiler API (see #2363) - and a whole compiler was
-// always more than this step needs. The only TypeScript syntax in the shim is
-// the two `!` non-null assertions on the optional `Main` and `Renderer`
-// members, so stripping them with a text substitution is enough. The shim
-// stays a `.ts` file covered by `pnpm type:check`, and the repository keeps no
-// consumer of the compiler API.
-//
-// `node --check` guards the substitution: should the shim ever grow syntax
-// this script cannot strip, the emitted file fails to parse as ESM and the
-// build stops here instead of publishing a broken bundle.
+// The only TypeScript syntax in the shim is the two `!` non-null assertions, so
+// a text substitution replaces them and `node --check` verifies that what was
+// written still parses as an ES module.
 
 import { spawnSync } from "node:child_process";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";

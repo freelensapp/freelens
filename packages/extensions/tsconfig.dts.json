@@ -5,9 +5,6 @@
     "module": "ESNext",
     "declaration": true,
     "emitDeclarationOnly": true,
-    // A declaration error must not leave a half-written dist-types/ behind for
-    // the d.ts rollup to bundle and publish: portability errors (TS2883) went
-    // unnoticed for ten days because the emit still produced a tree (#2363).
     "noEmitOnError": true,
     "declarationMap": false,
     "sourceMap": false,
