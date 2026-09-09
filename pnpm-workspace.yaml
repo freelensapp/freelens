@@ -18,6 +18,13 @@ catalog:
   mobx-react-lite: 4.1.1
   # TypeScript
   typescript: 7.0.2
+  # Vendor bridge exposing the TypeScript 6 compiler API, which TypeScript 7
+  # dropped and 7.1 is expected to replace (microsoft/TypeScript#63703, stable
+  # 2026-11-24). It is the optional peer of rollup-plugin-dts, used only to
+  # bundle the published @freelensapp/extensions declarations; the declarations
+  # themselves are emitted by the `typescript` above. Retire it once the plugin
+  # supports the TypeScript 7.1 API.
+  '@typescript/typescript6': 6.0.2
   # Dependency injection (Ogre Tools)
   '@ogre-tools/injectable': 23.2.0
   '@ogre-tools/injectable-extension-for-mobx': 23.2.0

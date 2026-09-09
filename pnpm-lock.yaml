@@ -123,6 +123,9 @@ catalogs:
     '@types/yauzl-promise':
       specifier: 4.0.1
       version: 4.0.1
+    '@typescript/typescript6':
+      specifier: 6.0.2
+      version: 6.0.2
     '@vitejs/plugin-react':
       specifier: 6.0.4
       version: 6.0.4
@@ -1266,12 +1269,15 @@ importers:
       '@freelensapp/core':
         specifier: workspace:^
         version: link:../core
+      '@typescript/typescript6':
+        specifier: 'catalog:'
+        version: 6.0.2
       rollup:
         specifier: 'catalog:'
         version: 4.62.2
       rollup-plugin-dts:
         specifier: 'catalog:'
-        version: 6.5.1(rollup@4.62.2)(typescript@7.0.2)
+        version: 6.5.1(@typescript/typescript6@6.0.2)(rollup@4.62.2)(typescript@7.0.2)
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
@@ -4595,6 +4601,10 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@typescript/typescript6@6.0.2':
+    resolution: {integrity: sha512-mbCddXd+jm7hfx7w2YU64/Av4/NqqeG3GoRZgxPcgoTxYjhrcfJRw9ULch71SS4G+Q3bOXFhRvPqjguN0Hyp5w==}
+    hasBin: true
+
   '@vitejs/plugin-react@6.0.4':
     resolution: {integrity: sha512-XcCQz0TBpBgljhj0gMuuDj49i6Ytqh5q1osT/Gp5uAVJUCTWxyskk/l1jwYYiu2xcNHHipdMz40EGfM1VdamVg==}
     engines: {node: ^20.19.0 || >=22.12.0}
@@ -7141,6 +7151,11 @@ packages:
     peerDependencies:
       typescript: '>=4.0.0'
 
+  typescript@6.0.3:
+    resolution: {integrity: sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
   typescript@7.0.2:
     resolution: {integrity: sha512-8FYau96o3NKOhbjKi/qNvG/W5jhzxkbdm5sj9AbZ/5T5sWqn3hJgLfGx27sRKZWTvyzCP8dLRBTf5tBTSRVUNA==}
     engines: {node: '>=16.20.0'}
@@ -9353,6 +9368,10 @@ snapshots:
   '@typescript/typescript-win32-x64@7.0.2':
     optional: true
 
+  '@typescript/typescript6@6.0.2':
+    dependencies:
+      '@typescript/old': typescript@6.0.3
+
   '@vitejs/plugin-react@6.0.4(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))':
     dependencies:
       '@rolldown/pluginutils': 1.0.1
@@ -11448,7 +11467,7 @@ snapshots:
       '@rolldown/binding-win32-arm64-msvc': 1.1.5
       '@rolldown/binding-win32-x64-msvc': 1.1.5
 
-  rollup-plugin-dts@6.5.1(rollup@4.62.2)(typescript@7.0.2):
+  rollup-plugin-dts@6.5.1(@typescript/typescript6@6.0.2)(rollup@4.62.2)(typescript@7.0.2):
     dependencies:
       '@jridgewell/remapping': 2.3.5
       '@jridgewell/sourcemap-codec': 1.5.5
@@ -11458,6 +11477,7 @@ snapshots:
       typescript: 7.0.2
     optionalDependencies:
       '@babel/code-frame': 8.0.0
+      '@typescript/typescript6': 6.0.2
 
   rollup@4.62.2:
     dependencies:
@@ -12058,6 +12078,8 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
       - ts-node
+
+  typescript@6.0.3: {}
 
   typescript@7.0.2:
     optionalDependencies:
