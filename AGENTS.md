@@ -384,9 +384,16 @@ OWNER, MEMBER or COLLABORATOR. The check is a plain
 fires the workflow wherever it appears — including inside a code span, a fenced
 block, a quoted line, or a URL. Markdown formatting is not an escape.
 
-The trigger text may also carry `[model:<alias>]` and `[runs-on:<alias>]`
-markers, which select the model and runner for that run (see the `parse` job for
-the accepted aliases). They are only read from the triggering text.
+The trigger text may also carry `[model:<alias>]`, `[effort:<level>]` and
+`[runs-on:<alias>]` markers, which select the model, the reasoning effort and
+the runner for that run (see the `parse` job for the accepted aliases). They are
+only read from the triggering text.
+
+The default model is `claude-opus-5[1m]` (Opus 5 with the 1M-token context) and
+it runs at `high` effort. Naming a model explicitly drops that default: the run
+then uses the CLI default effort unless `[effort:...]` also says otherwise.
+Accepted levels are `low`, `medium`, `high`, `xhigh` and `max`; anything else is
+ignored with a note in the job log.
 
 ### Rules for the local agent
 
