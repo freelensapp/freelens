@@ -180,6 +180,30 @@ Main:
       expect(result?.nodes[0].patterns).toContain("");
       expect(result?.nodes[0].patterns).toContain("specific.pattern");
     });
+
+    it("should preserve declaration order for sub-groups nested below depth 2", () => {
+      // Regression test: sub-groups below depth 2 used to all get `order: 0`
+      // (a hardcoded start value instead of the running sibling count), so they
+      // fell back to alphabetical order instead of their declared order.
+      const yamlConfig = `
+FluxCD:
+  - kustomize.toolkit.fluxcd.io
+  - Image Policies:
+    - image.toolkit.fluxcd.io
+  - Source Control:
+    - source.toolkit.fluxcd.io
+  - Notifications:
+    - notification.toolkit.fluxcd.io
+  - Control Plane:
+    - fluxcd.controlplane.io
+`;
+
+      const result = parseGroupConfig(yamlConfig);
+      const children = result?.nodes[0].children ?? [];
+
+      expect(children.map((c) => c.name)).toEqual(["Image Policies", "Source Control", "Notifications", "Control Plane"]);
+      expect(children.map((c) => c.order)).toEqual([0, 1, 2, 3]);
+    });
   });
 
   describe("matchesPattern", () => {

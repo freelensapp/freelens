@@ -65,7 +65,11 @@ function parseItemsRecursively(items: any[], startOrder: number = 0): ConfigNode
         if (Array.isArray(value)) {
           for (const subItem of value) {
             if (typeof subItem === "string") node.patterns.push(subItem);
-            else if (subItem && typeof subItem === "object") node.children.push(...parseItemsRecursively([subItem], 0));
+            // `node.children.length` (not a literal 0) keeps sibling sub-groups in
+            // declaration order at any depth; a hardcoded start let every group
+            // below depth 2 fall back to alphabetical (all siblings tied at 0).
+            else if (subItem && typeof subItem === "object")
+              node.children.push(...parseItemsRecursively([subItem], node.children.length));
           }
         }
         nodes.push(node);
