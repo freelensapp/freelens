@@ -190,19 +190,19 @@ const NonInjectedCrdGroup = observer(({ state }: Dependencies) => {
         <h4>How it works:</h4>
         <p>
           • <strong>Edit area</strong>: Enter your custom YAML configuration (
-          <span className="text-accent">merges with defaults</span>)
+          <span className="text-accent">fully replaces the default configuration below — it is not merged</span>)
         </p>
         <p>
-          • <strong>Default configuration</strong>: View the base settings (
-          <span className="text-accent">optional display</span>)
+          • <strong>Default configuration</strong>: A starting point you can copy from (
+          <span className="text-accent">not applied unless you paste it in</span>)
         </p>
         <p>
-          • <strong>Final result</strong>: View the automatic merge of your settings with defaults (
-          <span className="text-accent">optional display</span>)
+          • <strong>Final result</strong>: Preview of your settings combined with the defaults, for reference only (
+          <span className="text-accent">not what actually gets applied</span>)
         </p>
         <p>
-          • <strong>Tip</strong>: Leave empty to use only default settings, or add custom groups that will be merged
-          automatically
+          • <strong>Tip</strong>: Leave empty to disable grouping entirely (CRDs are shown ungrouped). Copy the
+          default configuration below as a starting point if you want those groups.
         </p>
       </div>
 
