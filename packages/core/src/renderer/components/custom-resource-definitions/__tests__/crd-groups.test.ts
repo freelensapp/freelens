@@ -204,6 +204,31 @@ FluxCD:
       expect(children.map((c) => c.name)).toEqual(["Image Policies", "Source Control", "Notifications", "Control Plane"]);
       expect(children.map((c) => c.order)).toEqual([0, 1, 2, 3]);
     });
+
+    it("should support mapping-style groups (no leading '-') nested below depth 2", () => {
+      // Regression test: only the array style (`- Name:`) supported a 3rd level;
+      // the mapping style (`Name:` directly, no leading "-") silently dropped it.
+      const yamlConfig = `
+Cluster Management:
+  Cluster API:
+    Addons:
+      - addons.cluster.x-k8s.io
+    Runtime:
+      - runtime.cluster.x-k8s.io
+`;
+
+      const config = parseGroupConfig(yamlConfig);
+      const clusterApi = config?.nodes[0].children[0];
+
+      expect(clusterApi?.name).toBe("Cluster API");
+      expect(clusterApi?.children.map((c) => c.name)).toEqual(["Addons", "Runtime"]);
+      expect(clusterApi?.children.map((c) => c.order)).toEqual([0, 1]);
+      expect(clusterApi?.children[0].patterns).toEqual(["addons.cluster.x-k8s.io"]);
+
+      expect(findGroupPath("resources.addons.cluster.x-k8s.io", config)).toEqual({
+        path: ["Cluster Management", "Cluster API", "Addons"],
+      });
+    });
   });
 
   describe("matchesPattern", () => {

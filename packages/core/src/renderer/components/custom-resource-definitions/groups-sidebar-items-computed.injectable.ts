@@ -71,6 +71,15 @@ function parseItemsRecursively(items: any[], startOrder: number = 0): ConfigNode
             else if (subItem && typeof subItem === "object")
               node.children.push(...parseItemsRecursively([subItem], node.children.length));
           }
+        } else if (value && typeof value === "object") {
+          // Mapping-style nesting (`Name:\n  Sub: [...]`, no leading "-"), supported
+          // at any depth by reusing the same recursive parser as the array style.
+          node.children.push(
+            ...parseItemsRecursively(
+              Object.entries(value).map(([subName, subValue]) => ({ [subName]: subValue })),
+              0,
+            ),
+          );
         }
         nodes.push(node);
       }
@@ -96,15 +105,15 @@ function parseGroupConfig(configString: string): ParsedConfig | null {
             node.children.push(...parseItemsRecursively([item], node.children.length));
         }
       } else if (typeof topLevelValue === "object") {
-        for (const [subName, subValue] of Object.entries(topLevelValue)) {
-          const childNode: ConfigNode = { name: subName, patterns: [], children: [], order: node.children.length };
-          if (Array.isArray(subValue)) {
-            for (const item of subValue) {
-              if (typeof item === "string") childNode.patterns.push(item);
-            }
-          }
-          node.children.push(childNode);
-        }
+        // Same grammar as the array style, just written without the leading "-".
+        // Delegating to parseItemsRecursively (instead of a hand-rolled 2-level-only
+        // loop) means mapping-style groups support sub-groups at any depth too.
+        node.children.push(
+          ...parseItemsRecursively(
+            Object.entries(topLevelValue).map(([subName, subValue]) => ({ [subName]: subValue })),
+            0,
+          ),
+        );
       }
       nodes.push(node);
     }
