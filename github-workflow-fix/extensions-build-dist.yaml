@@ -1,0 +1,102 @@
+name: Extensions build:dist
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - "*"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+# `pnpm --filter @freelensapp/extensions build:dist` is what `prepack` runs, so
+# it decides whether @freelensapp/extensions can be published at all. Nothing
+# used to run it: `pnpm type:check` passes with `noEmit`, which says nothing
+# about declaration emit or about the d.ts rollup, and the pipeline stayed
+# broken for ten days after the TypeScript 7 bump because of that (see #2363).
+#
+# It needs no prior `pnpm build`: the declaration step maps every
+# `@freelensapp/*` specifier straight to workspace sources.
+jobs:
+  build-dist:
+    name: build:dist
+
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 15
+
+    env:
+      DO_NOT_TRACK: "1"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Setup pnpm
+        run: corepack enable
+
+      - name: Get pnpm cache directory
+        shell: bash
+        run: |
+          pnpm_cache_dir="$(pnpm store path)"
+          echo "pnpm_cache_dir=${pnpm_cache_dir}" | tee -a "${GITHUB_ENV}"
+
+      - name: Use pnpm cache
+        uses: actions/cache@v6
+        with:
+          path: ${{ env.pnpm_cache_dir }}
+          key: ubuntu-24.04-arm-arm64-node-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ubuntu-24.04-arm-arm64-node-
+
+      - name: Install pnpm dependencies
+        id: install-pnpm
+        run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
+        continue-on-error: true
+
+      - name: Install pnpm dependencies (retry)
+        if: steps.install-pnpm.outcome == 'failure'
+        run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
+
+      - name: Build the publishable package
+        run: pnpm --color=always --filter @freelensapp/extensions build:dist
+
+      - name: Check the published artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd packages/extensions
+          for artifact in dist/extension-api.d.ts dist/extension-api.js; do
+            if [ ! -s "${artifact}" ]; then
+              echo "::error::${artifact} is missing or empty"
+              exit 1
+            fi
+            echo "${artifact}: $(wc -l < "${artifact}") lines, $(wc -c < "${artifact}") bytes"
+          done
+
+      # The external imports of the bundled declaration are the dependencies
+      # extension authors are forced to resolve, so a change to this list is a
+      # change to the published contract (see #2304 and #2360). Printing it
+      # makes that visible in the job log rather than only at publish time.
+      - name: Report the external type imports
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -oE "from '[^']+'" packages/extensions/dist/extension-api.d.ts | sort -u
+
+      - name: Upload the published artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: extensions-dist
+          path: |
+            packages/extensions/dist/extension-api.d.ts
+            packages/extensions/dist/extension-api.js
+          if-no-files-found: error
