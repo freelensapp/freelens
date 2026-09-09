@@ -109,11 +109,18 @@
     "packages/extensions": {
       "entry": ["rollup.dts.config.mjs", "scripts/*.mjs", "src/runtime-shim.ts!"],
       "project": ["*.mjs", "scripts/*.mjs", "src/**/*.ts!"],
+      // build:dist output: the bundled declarations inline the types of the
+      // whole workspace, so scanning them reports every transitive import of
+      // core as an unlisted dependency of this package
+      "ignore": ["dist/**", "dist-types/**"],
       "ignoreDependencies": [
         // the workspace entry re-exports core's API namespaces, but core is a
         // devDependency by design: the published package inlines all core
         // types into the bundled d.ts and consumes the runtime global instead
         "@freelensapp/core",
+        // optional peerDependency, referenced by the bundled d.ts for the
+        // Electron types it inlines
+        "electron",
         // type-level dependencies of the published bundled extension-api.d.ts:
         // extension projects resolve these packages for types through
         // @freelensapp/extensions, so they must stay declared even though no
