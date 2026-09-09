@@ -138,3 +138,11 @@ If your CRDs are not appearing where expected, check:
 2. That you don't have conflicting patterns
 3. That no group or parent group is set to `null`
 4. That your YAML syntax is valid
+
+### Favorites and Expansion State
+
+Sidebar favorites and expansion state are keyed by each item's id, which
+encodes its group path. Adopting grouping for the first time, or changing an
+existing group's name or nesting, changes those ids — so favorites and
+expansion state for the affected CRDs reset. This is a one-time cost when you
+change your configuration, not a bug.
