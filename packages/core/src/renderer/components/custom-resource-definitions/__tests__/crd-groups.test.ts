@@ -558,6 +558,27 @@ GitOps:
         "sidebar-item-custom-resource-group-GitOps-FluxCD/source.toolkit.fluxcd.io/gitrepositories",
       ]);
     });
+
+    it("should not collide ids between a flat group named 'X-Y' and nested groups ['X','Y']", () => {
+      // Regression test: joining path segments with "-" made a flat group
+      // literally named "Cluster-API" indistinguishable from nested groups
+      // ["Cluster", "API"] — both produced the same id, silently dropping one.
+      const yamlConfig = `
+Cluster-API:
+  - flat.example.io
+Cluster:
+  - API:
+    - nested.example.io
+`;
+      const crds = [createMockCrd("flats", "flat.example.io"), createMockCrd("nesteds", "nested.example.io")];
+      const { root } = organizeCrdsIntoTree(crds, yamlConfig);
+
+      const ids = generateSidebarItemsRecursive(root, "parent-item", [], options).map((item) => item.id);
+
+      expect(new Set(ids).size).toBe(ids.length);
+      expect(ids).toContain("sidebar-item-custom-resource-group-Cluster\\-API");
+      expect(ids).toContain("sidebar-item-custom-resource-group-Cluster-API");
+    });
   });
 
   describe("Integration tests for complex configurations", () => {

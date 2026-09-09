@@ -24,6 +24,19 @@ import type { CustomResourceDefinition } from "@freelensapp/kube-object";
 
 export const sideBarItemCustomResourcePrefix = "sidebar-item-custom-resource-group";
 
+// A "-" in a group name would otherwise be indistinguishable from the "-" used
+// to join path segments below (nested groups ["Cluster","API"] and a flat group
+// literally named "Cluster-API" would both produce "Cluster-API"). Escaping "\"
+// first, then "-", guarantees every "-" left in the joined string is a real
+// segment separator, not part of a name.
+function encodeGroupPathSegment(segment: string): string {
+  return segment.replace(/\\/g, "\\\\").replace(/-/g, "\\-");
+}
+
+function buildGroupPathId(path: string[]): string {
+  return path.map(encodeGroupPathSegment).join("-");
+}
+
 // ===============================
 // CRD GROUP INTERFACES
 // ===============================
@@ -289,7 +302,7 @@ function generateSidebarItemsRecursive(
   });
   for (const child of sortedChildren) {
     const childPath = [...pathSegments, child.name];
-    const childPathId = childPath.join("-");
+    const childPathId = buildGroupPathId(childPath);
     const groupItem = getInjectable({
       id: `${sideBarItemCustomResourcePrefix}-${childPathId}`,
       instantiate: (): SidebarItemRegistration => ({
@@ -400,6 +413,7 @@ const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectab
 });
 
 export {
+  buildGroupPathId,
   collectPatternCandidates,
   findGroupPath,
   generateSidebarItemsRecursive,
