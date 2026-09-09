@@ -7,9 +7,9 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { reaction } from "mobx";
 import dependencyInjectionContainerInjectable from "../../../common/dependency-injection/dependency-injection-container.injectable";
-import { injectableDifferencingRegistratorWith } from "../../../common/utils/registrator-helper";
 import { beforeClusterFrameStartsSecondInjectionToken } from "../../before-frame-starts/tokens";
 import customResourceDefinitionGroupsSidebarItemsComputedInjectable from "./groups-sidebar-items-computed.injectable";
+import { differencingRegistratorWithContentCheck } from "./groups-sidebar-items-differencing-registrator";
 
 import type { Injectable } from "@ogre-tools/injectable";
 
@@ -20,7 +20,7 @@ const customResourceDefinitionGroupsSidebarItemsRegistratorInjectable = getInjec
       const sidebarItems = di.inject(customResourceDefinitionGroupsSidebarItemsComputedInjectable);
       // Register against the root container so the sidebar item ids stay bare
       // (not namespaced under this registrator by @ogre-tools 23).
-      const differencingRegistrator = injectableDifferencingRegistratorWith(
+      const differencingRegistrator = differencingRegistratorWithContentCheck(
         di.inject(dependencyInjectionContainerInjectable),
       );
 
