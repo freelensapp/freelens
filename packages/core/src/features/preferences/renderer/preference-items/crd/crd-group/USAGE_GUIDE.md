@@ -4,18 +4,14 @@
 
 The CRD groups feature in Freelens allows you to organize your Custom Resource Definitions (CRDs) into custom groups for easier navigation. This new implementation offers a flexible structure and several advanced features.
 
-## Supported Formats
+## Supported Format
 
-You can configure your groups using one of the following formats:
-
-- **YAML**: Recommended format, more readable and easy to edit
-
-You can switch between these formats using the selector located in the top right corner of the interface.
+Groups are configured in YAML, edited directly in the editor below — there is no format selector.
 
 ## Main Features
 
-1. **Two-level structure**: Organize your CRDs in groups and subgroups
-2. **Hide entries**: Use `null` to hide certain CRDs
+1. **N-level structure**: Organize your CRDs in groups, subgroups, and further nested levels, to any depth
+2. **Hide entries**: Use `null` to skip a group or subgroup in your own configuration
 3. **Catch-all patterns**: Use empty strings `""` to capture all remaining CRDs
 4. **Substring matching**: A pattern matches if the CRD name contains this pattern
 

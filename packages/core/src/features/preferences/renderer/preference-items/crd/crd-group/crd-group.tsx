@@ -53,27 +53,48 @@ const NonInjectedCrdGroup = observer(({ state }: Dependencies) => {
 
   const [validationError, setValidationError] = React.useState<string | null>(null);
 
+  // A sub-level value is valid if it's null, an array (of pattern strings and/or
+  // single-key objects of further sub-levels), or an object of further sub-levels
+  // — recursing so validation matches the parser's support for any nesting depth
+  // (this used to stop after 2 levels, silently letting deeper mistakes through).
+  const validateSubValue = (subVal: any, subKey: string, parentLabel: string): string | null => {
+    if (subVal === null) return null;
+    if (Array.isArray(subVal)) return validateArrayValue(subVal, subKey);
+    if (typeof subVal === "object") {
+      for (const [nestedKey, nestedVal] of Object.entries(subVal)) {
+        const error = validateSubValue(nestedVal, nestedKey, subKey);
+        if (error) return error;
+      }
+      return null;
+    }
+    return `The value for sub-level "${subKey}" in "${parentLabel}" must be an array or null`;
+  };
+
+  const validateArrayValue = (val: any[], label: string): string | null => {
+    for (const item of val) {
+      if (typeof item === "string") continue;
+      if (typeof item === "object" && item !== null) {
+        for (const [subKey, subVal] of Object.entries(item)) {
+          const error = validateSubValue(subVal, subKey, label);
+          if (error) return error;
+        }
+      } else {
+        return `Each element of "${label}" must be a string or an object of sub-levels`;
+      }
+    }
+    return null;
+  };
+
   const validateStructure = (parsed: Record<string, any>): string | null => {
     for (const [key, val] of Object.entries(parsed)) {
       if (val === null) continue;
       if (Array.isArray(val)) {
-        for (const item of val) {
-          if (typeof item === "string") continue;
-          if (typeof item === "object" && item !== null) {
-            for (const [subKey, subVal] of Object.entries(item)) {
-              if (subVal !== null && !Array.isArray(subVal)) {
-                return `The value for sub-level "${subKey}" in "${key}" must be an array or null`;
-              }
-            }
-          } else {
-            return `Each element of "${key}" must be a string or an object of sub-levels`;
-          }
-        }
+        const error = validateArrayValue(val, key);
+        if (error) return error;
       } else if (typeof val === "object") {
         for (const [subKey, subVal] of Object.entries(val)) {
-          if (subVal !== null && !Array.isArray(subVal)) {
-            return `The value for sub-level "${subKey}" in "${key}" must be an array or null`;
-          }
+          const error = validateSubValue(subVal, subKey, key);
+          if (error) return error;
         }
       } else {
         return `The value for "${key}" must be an array, an object of sub-levels, or null`;
