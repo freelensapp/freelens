@@ -325,7 +325,11 @@ function generateSidebarItemsRecursive(
           id: `${sideBarItemCustomResourcePrefix}-${childPathId}/${definition.getGroup()}/${definition.getPluralName()}`,
           parentId: groupItem.id,
           definition,
-          itemIndex: i,
+          // Sub-group orderNumbers (child.order, just above) are always >= 0, so a
+          // negative orderNumber for direct CRD items guarantees they never collide
+          // with a sub-group sharing the same parentId, at any depth, while CRDs
+          // keep their own alphabetical order relative to each other.
+          itemIndex: i - sortedCrds.length,
           ...options,
         }),
       );

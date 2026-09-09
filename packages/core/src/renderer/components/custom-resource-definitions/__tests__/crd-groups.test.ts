@@ -4,6 +4,7 @@
  */
 
 import { CustomResourceDefinition } from "@freelensapp/kube-object";
+import { computed } from "mobx";
 // Import functions and types from the module for testing
 import {
   collectPatternCandidates,
@@ -578,6 +579,44 @@ Cluster:
       expect(new Set(ids).size).toBe(ids.length);
       expect(ids).toContain("sidebar-item-custom-resource-group-Cluster\\-API");
       expect(ids).toContain("sidebar-item-custom-resource-group-Cluster-API");
+    });
+
+    it("should not collide orderNumbers between direct CRDs and sub-groups sharing a parent", () => {
+      // Regression test: direct CRDs and sub-groups under the same group each got
+      // their own 0-based orderNumber, so they could collide/interleave when the
+      // sidebar sorts same-parent siblings. Each sub-group needs a matching CRD of
+      // its own so its tree node (and sidebar item) actually gets created.
+      const yamlConfig = `
+Kubernetes:
+  - k8s.io
+  - API:
+    - api.k8s.io
+  - Storage:
+    - storage.k8s.io
+`;
+      const crds = [
+        createMockCrd("things", "k8s.io"),
+        createMockCrd("others", "k8s.io"),
+        createMockCrd("apithings", "api.k8s.io"),
+        createMockCrd("storagethings", "storage.k8s.io"),
+      ];
+      const { root } = organizeCrdsIntoTree(crds, yamlConfig);
+
+      const fakeDi = { inject: () => computed(() => true) } as any;
+      const items = generateSidebarItemsRecursive(root, "parent-item", [], options);
+      const crdOrderNumbers = items
+        .filter((item) => item.id.includes("/k8s.io/"))
+        .map((item) => item.instantiate(fakeDi).orderNumber);
+      const subGroupOrderNumbers = items
+        .filter((item) => item.id.endsWith("-Kubernetes-API") || item.id.endsWith("-Kubernetes-Storage"))
+        .map((item) => item.instantiate().orderNumber);
+
+      expect(crdOrderNumbers).toHaveLength(2);
+      expect(subGroupOrderNumbers).toHaveLength(2);
+      expect(Math.max(...crdOrderNumbers)).toBeLessThan(Math.min(...subGroupOrderNumbers));
+      expect(new Set([...crdOrderNumbers, ...subGroupOrderNumbers]).size).toBe(
+        crdOrderNumbers.length + subGroupOrderNumbers.length,
+      );
     });
   });
 
