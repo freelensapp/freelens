@@ -502,6 +502,48 @@ GitOps:
       expect(imagePolicies?.crds[0].getPluralName()).toBe("imagepolicies");
     });
 
+    it("should actually hide CRDs matched only by a null-configured top-level group", () => {
+      // Regression test: a null-configured group used to just drop its own
+      // patterns, so a CRD that would only match through it fell back to the
+      // flat/ungrouped list and still rendered — the opposite of "hidden".
+      const yamlConfig = `
+Visible:
+  - visible.io
+Hidden: null
+`;
+      const crds = [createMockCrd("visibles", "visible.io"), createMockCrd("hiddens", "hidden.io")];
+      const { root, ungrouped } = organizeCrdsIntoTree(crds, yamlConfig);
+
+      expect(ungrouped).toHaveLength(0);
+      expect(root.children.get("Visible")?.crds).toHaveLength(1);
+      expect(root.children.get("Hidden")).toBeUndefined();
+    });
+
+    it("should actually hide CRDs matched only by a null-configured sub-group", () => {
+      const yamlConfig = `
+Kubernetes:
+  - k8s.io
+  - API:
+    - api.k8s.io
+  - Storage: null
+`;
+      const crds = [
+        createMockCrd("things", "k8s.io"),
+        createMockCrd("apithings", "api.k8s.io"),
+        // Deliberately doesn't also substring-match "k8s.io", so this checks
+        // real hiding rather than the (separate, expected) fallback to a
+        // broader still-visible parent pattern.
+        createMockCrd("storagethings", "storage.example.com"),
+      ];
+      const { root, ungrouped } = organizeCrdsIntoTree(crds, yamlConfig);
+
+      expect(ungrouped).toHaveLength(0);
+      const kubernetes = root.children.get("Kubernetes");
+      expect(kubernetes?.crds).toHaveLength(1);
+      expect(kubernetes?.children.get("API")?.crds).toHaveLength(1);
+      expect(kubernetes?.children.get("Storage")).toBeUndefined();
+    });
+
     it("should report unmatched CRDs as ungrouped", () => {
       const yamlConfig = `
 Kubernetes:

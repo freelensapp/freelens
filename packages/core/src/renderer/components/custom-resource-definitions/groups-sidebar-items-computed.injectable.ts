@@ -45,60 +45,93 @@ interface ConfigNode {
   name: string;
   patterns: string[];
   children: ConfigNode[];
+  // A null-configured direct sub-entry, kept out of `children` (so visible
+  // structure/order/counts are unaffected) but still carrying an implicit
+  // catch-all pattern, so CRDs that would only match through it are still
+  // routed here and then dropped (see `organizeCrdsIntoTree`) instead of
+  // falling back to the flat/ungrouped list. Optional (and omitted rather than
+  // set to `[]`/`false` on tombstones) so existing object literals/assertions
+  // that predate this field keep compiling and passing.
+  hiddenChildren?: ConfigNode[];
   order: number;
+  hidden?: boolean;
 }
 
 interface GroupPath {
   path: string[];
+  hidden?: boolean;
 }
 
 interface ParsedConfig {
   nodes: ConfigNode[];
+  // Optional/omitted (not `[]`) so existing `ParsedConfig` literals and `toEqual`
+  // assertions that predate hidden-group support keep compiling and passing.
+  hiddenNodes?: ConfigNode[];
 }
 
 interface PatternCandidate {
   pattern: string;
   path: string[];
   specificity: number;
+  hidden?: boolean;
 }
 
 // ===============================
 // PARSING YAML CONFIG
 // ===============================
 
-function parseItemsRecursively(items: any[], startOrder: number = 0): ConfigNode[] {
+function parseItemsRecursively(
+  items: any[],
+  startOrder: number = 0,
+): { nodes: ConfigNode[]; hiddenNodes: ConfigNode[] } {
   const nodes: ConfigNode[] = [];
+  const hiddenNodes: ConfigNode[] = [];
   let currentOrder = startOrder;
   for (const item of items) {
     if (typeof item === "string") continue;
     if (item && typeof item === "object" && !Array.isArray(item)) {
       for (const [name, value] of Object.entries(item)) {
         const node: ConfigNode = { name, patterns: [], children: [], order: currentOrder++ };
-        if (value === null) continue;
+        if (value === null) {
+          // Tombstone: kept out of `nodes` (so visible structure/counts are
+          // unaffected) but still carrying an implicit catch-all pattern, so CRDs
+          // that would only match through it are routed here and dropped (see
+          // `organizeCrdsIntoTree`) instead of falling back to the flat list.
+          node.hidden = true;
+          node.patterns.push("");
+          hiddenNodes.push(node);
+          continue;
+        }
         if (Array.isArray(value)) {
           for (const subItem of value) {
             if (typeof subItem === "string") node.patterns.push(subItem);
             // `node.children.length` (not a literal 0) keeps sibling sub-groups in
             // declaration order at any depth; a hardcoded start let every group
             // below depth 2 fall back to alphabetical (all siblings tied at 0).
-            else if (subItem && typeof subItem === "object")
-              node.children.push(...parseItemsRecursively([subItem], node.children.length));
+            else if (subItem && typeof subItem === "object") {
+              const { nodes: subNodes, hiddenNodes: subHidden } = parseItemsRecursively(
+                [subItem],
+                node.children.length,
+              );
+              node.children.push(...subNodes);
+              if (subHidden.length > 0) node.hiddenChildren = [...(node.hiddenChildren ?? []), ...subHidden];
+            }
           }
         } else if (value && typeof value === "object") {
           // Mapping-style nesting (`Name:\n  Sub: [...]`, no leading "-"), supported
           // at any depth by reusing the same recursive parser as the array style.
-          node.children.push(
-            ...parseItemsRecursively(
-              Object.entries(value).map(([subName, subValue]) => ({ [subName]: subValue })),
-              0,
-            ),
+          const { nodes: subNodes, hiddenNodes: subHidden } = parseItemsRecursively(
+            Object.entries(value).map(([subName, subValue]) => ({ [subName]: subValue })),
+            0,
           );
+          node.children.push(...subNodes);
+          if (subHidden.length > 0) node.hiddenChildren = [...(node.hiddenChildren ?? []), ...subHidden];
         }
         nodes.push(node);
       }
     }
   }
-  return nodes;
+  return { nodes, hiddenNodes };
 }
 
 function parseGroupConfig(configString: string): ParsedConfig | null {
@@ -107,30 +140,40 @@ function parseGroupConfig(configString: string): ParsedConfig | null {
     const config = yaml.load(configString);
     if (!config || typeof config !== "object" || Array.isArray(config)) return null;
     const nodes: ConfigNode[] = [];
+    const hiddenNodes: ConfigNode[] = [];
     let order = 0;
     for (const [topLevelName, topLevelValue] of Object.entries(config as Record<string, any>)) {
-      if (topLevelValue === null) continue;
+      if (topLevelValue === null) {
+        // Same tombstone treatment as nested null values (see parseItemsRecursively),
+        // so a hidden top-level group also actually drops its matching CRDs instead
+        // of leaving them to fall back to the flat/ungrouped list.
+        hiddenNodes.push({ name: topLevelName, patterns: [""], children: [], order: order++, hidden: true });
+        continue;
+      }
       const node: ConfigNode = { name: topLevelName, patterns: [], children: [], order: order++ };
       if (Array.isArray(topLevelValue)) {
         for (const item of topLevelValue) {
           if (typeof item === "string") node.patterns.push(item);
-          else if (item && typeof item === "object")
-            node.children.push(...parseItemsRecursively([item], node.children.length));
+          else if (item && typeof item === "object") {
+            const { nodes: subNodes, hiddenNodes: subHidden } = parseItemsRecursively([item], node.children.length);
+            node.children.push(...subNodes);
+            if (subHidden.length > 0) node.hiddenChildren = [...(node.hiddenChildren ?? []), ...subHidden];
+          }
         }
       } else if (typeof topLevelValue === "object") {
         // Same grammar as the array style, just written without the leading "-".
         // Delegating to parseItemsRecursively (instead of a hand-rolled 2-level-only
         // loop) means mapping-style groups support sub-groups at any depth too.
-        node.children.push(
-          ...parseItemsRecursively(
-            Object.entries(topLevelValue).map(([subName, subValue]) => ({ [subName]: subValue })),
-            0,
-          ),
+        const { nodes: subNodes, hiddenNodes: subHidden } = parseItemsRecursively(
+          Object.entries(topLevelValue).map(([subName, subValue]) => ({ [subName]: subValue })),
+          0,
         );
+        node.children.push(...subNodes);
+        if (subHidden.length > 0) node.hiddenChildren = [...(node.hiddenChildren ?? []), ...subHidden];
       }
       nodes.push(node);
     }
-    return { nodes };
+    return hiddenNodes.length > 0 ? { nodes, hiddenNodes } : { nodes };
   } catch (error) {
     console.warn(`Failed to parse CRD groups configuration: ${error}`);
     return null;
@@ -157,23 +200,38 @@ function collectPatternCandidates(nodes: ConfigNode[], currentPath: string[] = [
   for (const node of nodes) {
     const nodePath = [...currentPath, node.name];
     for (const pattern of node.patterns) {
-      candidates.push({ pattern, path: nodePath, specificity: getPatternSpecificity(pattern) });
+      candidates.push({
+        pattern,
+        path: nodePath,
+        specificity: getPatternSpecificity(pattern),
+        ...(node.hidden ? { hidden: true } : {}),
+      });
     }
-    if (node.children.length > 0) candidates.push(...collectPatternCandidates(node.children, nodePath));
+    // Hidden (tombstone) children are merged back in and sorted by declaration
+    // `order`, so a "first match wins" tie between a hidden and a visible
+    // catch-all pattern is resolved the same way regardless of null-hiding.
+    const children = node.hiddenChildren?.length
+      ? [...node.children, ...node.hiddenChildren].sort((a, b) => a.order - b.order)
+      : node.children;
+    if (children.length > 0) candidates.push(...collectPatternCandidates(children, nodePath));
   }
   return candidates;
 }
 
 function findGroupPath(crdName: string, config: ParsedConfig | null): GroupPath | null {
-  if (!config || !config.nodes.length) return null;
-  const candidates = collectPatternCandidates(config.nodes);
+  if (!config || (!config.nodes.length && !config.hiddenNodes?.length)) return null;
+  const rootNodes = config.hiddenNodes?.length
+    ? [...config.nodes, ...config.hiddenNodes].sort((a, b) => a.order - b.order)
+    : config.nodes;
+  const candidates = collectPatternCandidates(rootNodes);
   const matches = candidates.filter((c) => matchesPattern(crdName, c.pattern));
   if (matches.length === 0) return null;
   matches.sort((a, b) => {
     if (b.specificity !== a.specificity) return b.specificity - a.specificity;
     return b.path.length - a.path.length;
   });
-  return { path: matches[0].path };
+  const winner = matches[0];
+  return winner.hidden ? { path: winner.path, hidden: true } : { path: winner.path };
 }
 
 // ===============================
@@ -223,6 +281,9 @@ function organizeCrdsIntoTree(
         ungrouped.push(crd);
         continue;
       }
+      // A CRD matched only through a null-configured group must actually
+      // disappear, not fall back to the flat/ungrouped list.
+      if (groupPath.hidden) continue;
       const { path } = groupPath;
       let currentNode = root;
       for (let i = 0; i < path.length; i++) {
