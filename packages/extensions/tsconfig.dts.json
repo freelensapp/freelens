@@ -5,6 +5,7 @@
     "module": "ESNext",
     "declaration": true,
     "emitDeclarationOnly": true,
+    "noEmitOnError": true,
     "declarationMap": false,
     "sourceMap": false,
     "noUnusedLocals": false,
