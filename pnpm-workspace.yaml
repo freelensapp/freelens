@@ -29,7 +29,7 @@ catalog:
   # Testing stack
   '@async-fn/vitest': 1.8.0
   '@vitest/coverage-v8': 4.1.10
-  vitest: 4.1.10
+  vitest: 4.1.11
   '@testing-library/dom': 10.4.1
   '@testing-library/jest-dom': 7.0.0
   '@testing-library/react': 16.3.2
