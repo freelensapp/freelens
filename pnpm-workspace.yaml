@@ -110,7 +110,7 @@ catalog:
   handlebars: 4.7.9
   http-proxy-node16: 1.0.6
   immer: 11.1.8
-  joi: 18.2.3
+  joi: 18.2.5
   js-yaml: 5.2.2
   logform: 2.7.0
   marked: 18.0.6

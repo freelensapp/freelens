@@ -217,8 +217,8 @@ catalogs:
       specifier: 11.1.8
       version: 11.1.8
     joi:
-      specifier: 18.2.3
-      version: 18.2.3
+      specifier: 18.2.5
+      version: 18.2.5
     js-yaml:
       specifier: 5.2.2
       version: 5.2.2
@@ -538,7 +538,7 @@ importers:
         version: 11.1.8
       joi:
         specifier: 'catalog:'
-        version: 18.2.3
+        version: 18.2.5
       js-yaml:
         specifier: 'catalog:'
         version: 5.2.2
@@ -977,7 +977,7 @@ importers:
         version: 11.1.8
       joi:
         specifier: 'catalog:'
-        version: 18.2.3
+        version: 18.2.5
       js-yaml:
         specifier: 'catalog:'
         version: 5.2.2
@@ -5748,8 +5748,8 @@ packages:
     resolution: {integrity: sha512-ekilCSN1jwRvIbgeg/57YFh8qQDNbwDb9xT/qu2DAHbFFZUicIl4ygVaAvzveMhMVr3LnpSKTNnwt8PoOfmKhQ==}
     hasBin: true
 
-  joi@18.2.3:
-    resolution: {integrity: sha512-N5A3KTWQpPWT4ExxxPlUx7WmykGXRzhNidWhV41d6Abu9YfI2NyWCJuxdPnslJCPWtbRpSVOWSnSS6GakLM/Rg==}
+  joi@18.2.5:
+    resolution: {integrity: sha512-+gEA7rLfaNWx9JzawWPrPetSZwT16NUqHtECDgjyAJreXcs4TM7tx2Pa+VVJJK0YHM83ybrVdaT6UekHH50FJQ==}
     engines: {node: '>= 20'}
 
   jose@6.2.2:
@@ -10624,7 +10624,7 @@ snapshots:
 
   jiti@2.6.1: {}
 
-  joi@18.2.3:
+  joi@18.2.5:
     dependencies:
       '@hapi/address': 5.1.1
       '@hapi/formula': 3.0.2
