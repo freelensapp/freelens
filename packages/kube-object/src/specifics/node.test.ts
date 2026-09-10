@@ -187,4 +187,66 @@ describe("Node tests", () => {
       expect(node.getRoleLabels()).toBe("foobar, master, master-v2-max");
     });
   });
+
+  describe("getKernelVersion()", () => {
+    it("should return the kernel version from status.nodeInfo", () => {
+      const node = new Node({
+        apiVersion: "foo",
+        kind: "Node",
+        metadata: {
+          name: "bar",
+          resourceVersion: "1",
+          uid: "bat",
+          selfLink: "/api/v1/nodes/bar",
+        },
+        status: {
+          nodeInfo: {
+            architecture: "amd64",
+            bootID: "boot",
+            containerRuntimeVersion: "containerd://1.7.22",
+            kernelVersion: "6.8.0-45-generic",
+            kubeProxyVersion: "v1.31.1",
+            kubeletVersion: "v1.31.1",
+            machineID: "machine",
+            operatingSystem: "linux",
+            osImage: "Ubuntu 24.04.1 LTS",
+            systemUUID: "system",
+          },
+        },
+      });
+
+      expect(node.getKernelVersion()).toBe("6.8.0-45-generic");
+    });
+
+    it("should return <unknown> if nodeInfo is not present", () => {
+      const node = new Node({
+        apiVersion: "foo",
+        kind: "Node",
+        metadata: {
+          name: "bar",
+          resourceVersion: "1",
+          uid: "bat",
+          selfLink: "/api/v1/nodes/bar",
+        },
+        status: {},
+      });
+
+      expect(node.getKernelVersion()).toBe("<unknown>");
+    });
+
+    it("should return <unknown> if status is not present", () => {
+      const node = new Node({
+        apiVersion: "foo",
+        kind: "Node",
+        metadata: {
+          name: "bar",
+          resourceVersion: "1",
+          uid: "bat",
+          selfLink: "/api/v1/nodes/bar",
+        },
+      });
+
+      expect(node.getKernelVersion()).toBe("<unknown>");
+    });
+  });
 });
