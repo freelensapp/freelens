@@ -7,6 +7,7 @@
  */
 
 import { registerInjectables as registerAllowUntrustedCertificatesInjectables } from "./allow-untrusted-certificates/register-injectables";
+import { registerInjectables as registerBypassKubeApiProxyInjectables } from "./bypass-kube-api-proxy/register-injectables";
 import { registerInjectables as registerHttpProxyUrlInjectables } from "./http-proxy-url/register-injectables";
 import proxyPreferencePageInjectable from "./proxy-preference-page.injectable";
 import proxyPreferenceTabInjectable from "./proxy-preference-tab.injectable";
@@ -26,6 +27,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     registerAllowUntrustedCertificatesInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerBypassKubeApiProxyInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }
