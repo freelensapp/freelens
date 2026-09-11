@@ -5,10 +5,12 @@
 
 import { CustomResourceDefinition } from "@freelensapp/kube-object";
 import { computed } from "mobx";
+import customResourcesSidebarItemInjectable from "../../custom-resources/sidebar-item.injectable";
 // Import functions and types from the module for testing
 import {
   collectPatternCandidates,
   findGroupPath,
+  generateApiGroupSidebarItems,
   generateSidebarItemsRecursive,
   getPatternSpecificity,
   matchesPattern,
@@ -682,6 +684,49 @@ Kubernetes:
       expect(new Set([...crdOrderNumbers, ...subGroupOrderNumbers]).size).toBe(
         crdOrderNumbers.length + subGroupOrderNumbers.length,
       );
+    });
+
+    it("should not collide orderNumbers between top-level configured groups and leftover ungrouped API-group headers", () => {
+      // Regression test: top-level configured groups (`child.order`) and
+      // leftover/ungrouped API-group headers (`index + 1`) shared the same
+      // parentId while both numbering from 0/1, so an ungrouped API group could
+      // sort in between two configured groups instead of after all of them.
+      const yamlConfig = `
+A:
+  - a.example.com
+B:
+  - b.example.com
+C:
+  - c.example.com
+`;
+      const crds = [
+        createMockCrd("as", "a.example.com"),
+        createMockCrd("bs", "b.example.com"),
+        createMockCrd("cs", "c.example.com"),
+        createMockCrd("foos", "foo.example.org"),
+        createMockCrd("bars", "bar.example.org"),
+      ];
+      const { root, config, ungrouped } = organizeCrdsIntoTree(crds, yamlConfig);
+      expect(ungrouped).toHaveLength(2);
+
+      const topLevelGroupCount = (config?.nodes.length ?? 0) + (config?.hiddenNodes?.length ?? 0);
+      const groupItems = generateSidebarItemsRecursive(
+        root,
+        customResourcesSidebarItemInjectable.id,
+        [],
+        options,
+      ).filter((item) => !item.id.includes("/"));
+      const apiGroupItems = generateApiGroupSidebarItems(ungrouped, options, topLevelGroupCount).filter(
+        (item) => !item.id.includes("/"),
+      );
+
+      const fakeDi = { inject: () => computed(() => true) } as any;
+      const groupOrderNumbers = groupItems.map((item) => item.instantiate(fakeDi).orderNumber);
+      const apiGroupOrderNumbers = apiGroupItems.map((item) => item.instantiate(fakeDi).orderNumber);
+
+      expect(groupOrderNumbers).toHaveLength(3);
+      expect(apiGroupOrderNumbers).toHaveLength(2);
+      expect(Math.max(...groupOrderNumbers)).toBeLessThan(Math.min(...apiGroupOrderNumbers));
     });
   });
 

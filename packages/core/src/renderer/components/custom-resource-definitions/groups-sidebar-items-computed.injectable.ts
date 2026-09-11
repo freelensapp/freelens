@@ -417,9 +417,18 @@ function generateSidebarItemsRecursive(
 // CRDs that no configured pattern matches keep the flat, one-item-per-API-group
 // layout, with the same item ids, titles and ordering as when no grouping
 // configuration exists at all.
+//
+// These headers share `parentId` with the top-level configured groups produced
+// by `generateSidebarItemsRecursive` (both are direct children of the CRDs
+// sidebar item), so their `orderNumber`s must live in a disjoint range \u2014
+// otherwise a leftover/ungrouped API group could sort in between two
+// configured groups instead of after all of them. `orderNumberOffset` is the
+// total number of top-level config entries (visible and hidden), which is
+// always strictly greater than any configured group's own `order`.
 function generateApiGroupSidebarItems(
   definitions: CustomResourceDefinition[],
   options: SidebarItemDependencies,
+  orderNumberOffset: number,
 ): any[] {
   const customResourceDefinitionGroups = iter
     .chain(definitions.values())
@@ -433,7 +442,7 @@ function generateApiGroupSidebarItems(
         parentId: customResourcesSidebarItemInjectable.id,
         onClick: noop,
         title: group.replaceAll(".", "\u200b."), // Replace dots with zero-width spaces to allow line breaks
-        orderNumber: index + 1,
+        orderNumber: orderNumberOffset + index,
       }),
       injectionToken: sidebarItemInjectionToken,
     });
@@ -470,11 +479,12 @@ const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectab
         const options = { navigateToCustomResources, customResourcesRoute, pathParameters };
         // Without a grouping configuration nothing matches, every CRD ends up in
         // `ungrouped` and the sidebar is exactly the one built before this feature.
-        const { root, ungrouped } = organizeCrdsIntoTree(crdList, state.crdGroup ?? "");
+        const { root, config, ungrouped } = organizeCrdsIntoTree(crdList, state.crdGroup ?? "");
+        const topLevelGroupCount = (config?.nodes.length ?? 0) + (config?.hiddenNodes?.length ?? 0);
 
         return [
           ...generateSidebarItemsRecursive(root, customResourcesSidebarItemInjectable.id, [], options),
-          ...generateApiGroupSidebarItems(ungrouped, options),
+          ...generateApiGroupSidebarItems(ungrouped, options, topLevelGroupCount),
         ];
       } catch (error) {
         console.error("Error generating sidebar items:", error);
@@ -488,6 +498,7 @@ export {
   buildGroupPathId,
   collectPatternCandidates,
   findGroupPath,
+  generateApiGroupSidebarItems,
   generateSidebarItemsRecursive,
   getPatternSpecificity,
   matchesPattern,
