@@ -204,7 +204,12 @@ FluxCD:
       const result = parseGroupConfig(yamlConfig);
       const children = result?.nodes[0].children ?? [];
 
-      expect(children.map((c) => c.name)).toEqual(["Image Policies", "Source Control", "Notifications", "Control Plane"]);
+      expect(children.map((c) => c.name)).toEqual([
+        "Image Policies",
+        "Source Control",
+        "Notifications",
+        "Control Plane",
+      ]);
       expect(children.map((c) => c.order)).toEqual([0, 1, 2, 3]);
     });
 
@@ -759,9 +764,7 @@ B:
         ).filter((item) => !item.id.includes("/"));
 
         expect(groupItems).toHaveLength(2);
-        expect(groupItems.map((item) => item.instantiate(fakeDi).orderNumber)).not.toContain(
-          DEFINITIONS_ORDER_NUMBER,
-        );
+        expect(groupItems.map((item) => item.instantiate(fakeDi).orderNumber)).not.toContain(DEFINITIONS_ORDER_NUMBER);
       }
 
       // Case 2: no grouping config at all, so every CRD ends up in `ungrouped`.
