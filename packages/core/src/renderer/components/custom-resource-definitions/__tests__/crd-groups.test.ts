@@ -544,6 +544,29 @@ Kubernetes:
       expect(kubernetes?.children.get("Storage")).toBeUndefined();
     });
 
+    it("should keep declaration-order precedence between a hidden sibling and a later visible sibling", () => {
+      // Regression test: the sub-group order counter used `node.children.length`
+      // (visible children only) as the next order value, so a hidden (`null`)
+      // sibling and the next visible sibling could end up with the same `order`.
+      // That collision could flip pattern-matching precedence, letting a later,
+      // equally-specific visible pattern win over an earlier-declared hidden one.
+      const yamlConfig = `
+Group:
+  - A:
+    - a.example.com
+  - Hidden: null
+  - C:
+    - foo
+`;
+      // "foo" (C's pattern) and "" (Hidden's catch-all) are both specificity 0
+      // and both match this CRD; Hidden was declared before C, so it must win.
+      const crds = [createMockCrd("foothings", "foo.example.org")];
+      const { root, ungrouped } = organizeCrdsIntoTree(crds, yamlConfig);
+
+      expect(ungrouped).toHaveLength(0);
+      expect(root.children.get("Group")?.children.get("C")).toBeUndefined();
+    });
+
     it("should report unmatched CRDs as ungrouped", () => {
       const yamlConfig = `
 Kubernetes:
