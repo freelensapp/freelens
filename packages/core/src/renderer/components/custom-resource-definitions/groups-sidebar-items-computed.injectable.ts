@@ -105,13 +105,17 @@ function parseItemsRecursively(
         if (Array.isArray(value)) {
           for (const subItem of value) {
             if (typeof subItem === "string") node.patterns.push(subItem);
-            // `node.children.length` (not a literal 0) keeps sibling sub-groups in
-            // declaration order at any depth; a hardcoded start let every group
-            // below depth 2 fall back to alphabetical (all siblings tied at 0).
+            // `node.children.length + hiddenChildren.length` (not a literal 0, and not
+            // `node.children.length` alone) keeps sibling sub-groups in declaration
+            // order at any depth: a hardcoded start let every group below depth 2 fall
+            // back to alphabetical (all siblings tied at 0), and counting visible
+            // children only let a hidden (`null`) sibling and the next visible one end
+            // up with the same order, since a hidden sibling is never pushed into
+            // `node.children` but still occupies a declaration slot.
             else if (subItem && typeof subItem === "object") {
               const { nodes: subNodes, hiddenNodes: subHidden } = parseItemsRecursively(
                 [subItem],
-                node.children.length,
+                node.children.length + (node.hiddenChildren?.length ?? 0),
               );
               node.children.push(...subNodes);
               if (subHidden.length > 0) node.hiddenChildren = [...(node.hiddenChildren ?? []), ...subHidden];
@@ -155,7 +159,10 @@ function parseGroupConfig(configString: string): ParsedConfig | null {
         for (const item of topLevelValue) {
           if (typeof item === "string") node.patterns.push(item);
           else if (item && typeof item === "object") {
-            const { nodes: subNodes, hiddenNodes: subHidden } = parseItemsRecursively([item], node.children.length);
+            const { nodes: subNodes, hiddenNodes: subHidden } = parseItemsRecursively(
+              [item],
+              node.children.length + (node.hiddenChildren?.length ?? 0),
+            );
             node.children.push(...subNodes);
             if (subHidden.length > 0) node.hiddenChildren = [...(node.hiddenChildren ?? []), ...subHidden];
           }
