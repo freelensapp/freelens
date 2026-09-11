@@ -155,6 +155,18 @@ exports[`preferences - navigation to kubernetes preferences > given in preferenc
                     Terminal
                   </div>
                 </div>
+                <div
+                  class="Tab flex gap-2 items-center"
+                  data-preference-tab-link-test="crd"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    CRDs
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -947,6 +959,18 @@ exports[`preferences - navigation to kubernetes preferences > given in preferenc
                     class="label"
                   >
                     Terminal
+                  </div>
+                </div>
+                <div
+                  class="Tab flex gap-2 items-center"
+                  data-preference-tab-link-test="crd"
+                  role="tab"
+                  tabindex="0"
+                >
+                  <div
+                    class="label"
+                  >
+                    CRDs
                   </div>
                 </div>
               </div>

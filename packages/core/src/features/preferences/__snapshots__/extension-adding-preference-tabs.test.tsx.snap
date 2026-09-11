@@ -180,6 +180,18 @@ exports[`preferences: extension adding preference tabs > given in preferences, w
                       Terminal
                     </div>
                   </div>
+                  <div
+                    class="Tab flex gap-2 items-center"
+                    data-preference-tab-link-test="crd"
+                    role="tab"
+                    tabindex="0"
+                  >
+                    <div
+                      class="label"
+                    >
+                      CRDs
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
