@@ -222,8 +222,8 @@ const NonInjectedCrdGroup = observer(({ state }: Dependencies) => {
           <span className="text-accent">not what actually gets applied</span>)
         </p>
         <p>
-          • <strong>Tip</strong>: Leave empty to disable grouping entirely (CRDs are shown ungrouped). Copy the
-          default configuration below as a starting point if you want those groups.
+          • <strong>Tip</strong>: Leave empty to disable grouping entirely (CRDs are shown ungrouped). Copy the default
+          configuration below as a starting point if you want those groups.
         </p>
       </div>
 
