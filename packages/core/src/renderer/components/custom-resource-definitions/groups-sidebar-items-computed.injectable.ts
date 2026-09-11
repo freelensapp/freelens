@@ -362,6 +362,12 @@ function generateSidebarItemsRecursive(
   parentId: string,
   pathSegments: string[],
   options: SidebarItemDependencies,
+  // Only meaningful for the root call: root-level groups share `parentId` with
+  // the statically-registered "Definitions" item, whose `orderNumber` is a
+  // hardcoded 0 (see sidebar-item.injectable.ts in ../custom-resource-definitions).
+  // Nested calls (recursing into `child.children` below) omit this argument, so
+  // it defaults back to 0 and sub-group orders stay relative to their own parent.
+  orderNumberOffset: number = 0,
 ): any[] {
   const result: any[] = [];
   const sortedChildren = Array.from(node.children.values()).sort((a, b) => {
@@ -377,7 +383,7 @@ function generateSidebarItemsRecursive(
         parentId,
         onClick: noop,
         title: child.name.replaceAll(".", "\u200b."),
-        orderNumber: child.order,
+        orderNumber: child.order + orderNumberOffset,
       }),
       injectionToken: sidebarItemInjectionToken,
     });
@@ -481,10 +487,21 @@ const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectab
         // `ungrouped` and the sidebar is exactly the one built before this feature.
         const { root, config, ungrouped } = organizeCrdsIntoTree(crdList, state.crdGroup ?? "");
         const topLevelGroupCount = (config?.nodes.length ?? 0) + (config?.hiddenNodes?.length ?? 0);
+        // Root-level groups and ungrouped API-group headers share `parentId` with
+        // the statically-registered "Definitions" item (orderNumber: 0, see
+        // sidebar-item.injectable.ts), so both ranges are shifted up by 1 here to
+        // guarantee neither ever produces an orderNumber of 0 and ties with it.
+        const rootOrderNumberOffset = 1;
 
         return [
-          ...generateSidebarItemsRecursive(root, customResourcesSidebarItemInjectable.id, [], options),
-          ...generateApiGroupSidebarItems(ungrouped, options, topLevelGroupCount),
+          ...generateSidebarItemsRecursive(
+            root,
+            customResourcesSidebarItemInjectable.id,
+            [],
+            options,
+            rootOrderNumberOffset,
+          ),
+          ...generateApiGroupSidebarItems(ungrouped, options, topLevelGroupCount + rootOrderNumberOffset),
         ];
       } catch (error) {
         console.error("Error generating sidebar items:", error);
