@@ -728,6 +728,59 @@ C:
       expect(apiGroupOrderNumbers).toHaveLength(2);
       expect(Math.max(...groupOrderNumbers)).toBeLessThan(Math.min(...apiGroupOrderNumbers));
     });
+
+    it("should never assign orderNumber 0 to a root-level group or ungrouped API-group header", () => {
+      // Regression test: the statically-registered "Definitions" sidebar item
+      // (../sidebar-item.injectable.ts) shares parentId with every item produced
+      // here and has a hardcoded `orderNumber: 0`. Root-level configured groups
+      // (`child.order`) and, when there is no config at all, ungrouped API-group
+      // headers (`orderNumberOffset + index`) both used to start counting from 0
+      // too, so either could tie with "Definitions" whenever a user is allowed to
+      // see both CRD definitions and CRD instances (a common RBAC combination).
+      const DEFINITIONS_ORDER_NUMBER = 0;
+      const fakeDi = { inject: () => computed(() => true) } as any;
+
+      // Case 1: at least one configured top-level group exists.
+      {
+        const yamlConfig = `
+A:
+  - a.example.com
+B:
+  - b.example.com
+`;
+        const crds = [createMockCrd("as", "a.example.com"), createMockCrd("bs", "b.example.com")];
+        const { root } = organizeCrdsIntoTree(crds, yamlConfig);
+        const groupItems = generateSidebarItemsRecursive(
+          root,
+          customResourcesSidebarItemInjectable.id,
+          [],
+          options,
+          1, // matches the `rootOrderNumberOffset` passed by the real computed injectable
+        ).filter((item) => !item.id.includes("/"));
+
+        expect(groupItems).toHaveLength(2);
+        expect(groupItems.map((item) => item.instantiate(fakeDi).orderNumber)).not.toContain(
+          DEFINITIONS_ORDER_NUMBER,
+        );
+      }
+
+      // Case 2: no grouping config at all, so every CRD ends up in `ungrouped`.
+      {
+        const crds = [createMockCrd("foos", "foo.example.org"), createMockCrd("bars", "bar.example.org")];
+        const { config, ungrouped } = organizeCrdsIntoTree(crds, "");
+        expect(ungrouped).toHaveLength(2);
+
+        const topLevelGroupCount = (config?.nodes.length ?? 0) + (config?.hiddenNodes?.length ?? 0);
+        const apiGroupItems = generateApiGroupSidebarItems(ungrouped, options, topLevelGroupCount + 1).filter(
+          (item) => !item.id.includes("/"),
+        );
+
+        expect(apiGroupItems).toHaveLength(2);
+        expect(apiGroupItems.map((item) => item.instantiate(fakeDi).orderNumber)).not.toContain(
+          DEFINITIONS_ORDER_NUMBER,
+        );
+      }
+    });
   });
 
   describe("Integration tests for complex configurations", () => {
