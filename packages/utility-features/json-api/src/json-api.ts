@@ -116,6 +116,10 @@ export class JsonApiErrorParsed {
     return this.error.code === DOMException.ABORT_ERR;
   }
 
+  get code() {
+    return this.error?.code;
+  }
+
   toString() {
     return this.messages.join("\n");
   }

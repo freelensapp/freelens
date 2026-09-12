@@ -8,6 +8,7 @@ import { action, observable } from "mobx";
 import { TerminalChannels } from "../../../../common/terminal/channels";
 import { WebSocketApiState } from "../../../api/websocket-api";
 
+import type { DebugContainerReference } from "../../../../features/debug-containers/common/debug-container";
 import type { CreateTerminalApi } from "../../../api/create-terminal-api.injectable";
 import type { TerminalApi } from "../../../api/terminal-api";
 import type { DockTab, TabId } from "../dock/store";
@@ -16,6 +17,7 @@ import type { Terminal } from "./terminal";
 
 export interface ITerminalTab extends DockTab {
   node?: string; // activate node shell mode
+  debugContainer?: DebugContainerReference;
 }
 
 interface Dependencies {
@@ -37,6 +39,15 @@ export class TerminalStore {
     const api = this.dependencies.createTerminalApi({
       id: tab.id,
       node: tab.node,
+      ...(tab.debugContainer
+        ? {
+            type: "debug-container",
+            namespace: tab.debugContainer.namespace,
+            pod: tab.debugContainer.name,
+            podUid: tab.debugContainer.uid,
+            container: tab.debugContainer.containerName,
+          }
+        : {}),
     });
     const terminal = this.dependencies.createTerminal(tab.id, api);
 

@@ -5,6 +5,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
+import openDebugContainerShellInjectable from "../../features/debug-containers/main/open-shell.injectable";
 import openLocalShellSessionInjectable from "./local-shell-session/open.injectable";
 import openNodeShellSessionInjectable from "./node-shell-session/open.injectable";
 import openStandaloneShellSessionInjectable from "./standalone-shell-session/open.injectable";
@@ -12,6 +13,7 @@ import openStandaloneShellSessionInjectable from "./standalone-shell-session/ope
 import type WebSocket from "ws";
 
 import type { Cluster } from "../../common/cluster/cluster";
+import type { DebugContainerReference } from "../../features/debug-containers/common/debug-container";
 
 export interface OpenShellSessionArgs {
   websocket: WebSocket;
@@ -21,6 +23,7 @@ export interface OpenShellSessionArgs {
   cluster?: Cluster;
   tabId: string;
   nodeName?: string;
+  debugContainer?: DebugContainerReference;
 }
 
 export type OpenShellSession = (args: OpenShellSessionArgs) => Promise<void>;
@@ -32,11 +35,14 @@ const openShellSessionInjectable = getInjectable({
     const openLocalShellSession = di.inject(openLocalShellSessionInjectable);
     const openNodeShellSession = di.inject(openNodeShellSessionInjectable);
     const openStandaloneShellSession = di.inject(openStandaloneShellSessionInjectable);
+    const openDebugContainerShell = di.inject(openDebugContainerShellInjectable);
 
-    return ({ cluster, nodeName, ...args }) => {
+    return ({ cluster, nodeName, debugContainer, ...args }) => {
       if (!cluster) {
         return openStandaloneShellSession(args);
       }
+
+      if (debugContainer) return openDebugContainerShell({ cluster, debugContainer, ...args });
 
       return nodeName
         ? openNodeShellSession({ cluster, nodeName, ...args })
