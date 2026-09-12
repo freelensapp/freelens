@@ -83,11 +83,12 @@ const toHierarchicalElectronMenuItem = (composite: Composite<ApplicationMenuItem
     }
 
     case "os-action-menu-item": {
-      const { label, keyboardShortcut, actionName } = value;
+      const { label, keyboardShortcut, actionName, visible } = value;
 
       return {
         ...(label ? { label } : {}),
         ...(keyboardShortcut ? { accelerator: keyboardShortcut } : {}),
+        ...(visible === false ? { visible } : {}),
         role: actionName,
       };
     }
