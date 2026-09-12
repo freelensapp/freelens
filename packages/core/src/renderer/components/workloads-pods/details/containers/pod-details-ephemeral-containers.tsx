@@ -5,6 +5,7 @@
  */
 
 import { observer } from "mobx-react";
+import { DebugContainerActions } from "../../../../../features/debug-containers/renderer/actions";
 import { DrawerTitle } from "../../../drawer";
 import { PodDetailsContainer } from "../../pod-details-container";
 
@@ -25,7 +26,9 @@ const PodDetailsEphemeralContainers = observer(({ pod }: PodDetailsContainersPro
     <>
       <DrawerTitle>Ephemeral Containers</DrawerTitle>
       {ephemeralContainers.map((container) => (
-        <PodDetailsContainer key={container.name} pod={pod} container={container} />
+        <PodDetailsContainer key={container.name} pod={pod} container={container}>
+          <DebugContainerActions pod={pod} container={container} />
+        </PodDetailsContainer>
       ))}
     </>
   );

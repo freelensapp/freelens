@@ -13,6 +13,7 @@ import { registerInjectables as registerFeaturesFeaturesClusterExecuteRendererIn
 import { registerInjectables as registerFeaturesFeaturesClusterInjectables } from "./features/cluster/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesClusterStateSyncRendererInjectables } from "./features/cluster/state-sync/renderer/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesClusterStorageRendererInjectables } from "./features/cluster/storage/renderer/register-injectables";
+import { registerInjectables as registerFeaturesFeaturesDebugContainersRendererInjectables } from "./features/debug-containers/renderer/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesExtensionCredentialsInjectables } from "./features/extension-credentials/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesExtensionCredentialsRendererInjectables } from "./features/extension-credentials/renderer/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesExtensionsEnabledRendererInjectables } from "./features/extensions/enabled/renderer/register-injectables";
@@ -62,6 +63,7 @@ export function registerInjectables(di: DiContainerForInjection): void {
   registerFeaturesFeaturesClusterExecuteRendererInjectables(di);
   registerFeaturesFeaturesClusterStateSyncRendererInjectables(di);
   registerFeaturesFeaturesClusterStorageRendererInjectables(di);
+  registerFeaturesFeaturesDebugContainersRendererInjectables(di);
   registerFeaturesFeaturesExtensionCredentialsRendererInjectables(di);
   registerFeaturesFeaturesExtensionCredentialsInjectables(di);
   registerFeaturesFeaturesExtensionsInjectables(di);

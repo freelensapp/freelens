@@ -7,7 +7,7 @@
 import { isKubeStatusData, KubeStatus, Pod } from "@freelensapp/kube-object";
 import { KubeApi } from "../kube-api";
 
-import type { KubeStatusData, PodLogsQuery } from "@freelensapp/kube-object";
+import type { EphemeralContainer, KubeStatusData, PodLogsQuery } from "@freelensapp/kube-object";
 
 import type {
   DeleteResourceDescriptor,
@@ -22,6 +22,31 @@ export class PodApi extends KubeApi<Pod> {
       ...(opts ?? {}),
       objectConstructor: Pod,
     });
+  }
+
+  async addEphemeralContainer(
+    resource: ResourceDescriptor & { uid: string; resourceVersion: string },
+    container: EphemeralContainer,
+  ): Promise<Pod> {
+    await this.checkPreferredVersion();
+    const response = await this.request.patch(
+      `${this.formatUrlForNotListing(resource)}/ephemeralcontainers`,
+      {
+        data: {
+          metadata: { uid: resource.uid, resourceVersion: resource.resourceVersion },
+          // Strategic merge keys containers by name, preserving other debuggers.
+          spec: { ephemeralContainers: [container] },
+        },
+      },
+      { headers: { "content-type": "application/strategic-merge-patch+json" } },
+    );
+    const pod = this.parseResponse(response);
+
+    if (!(pod instanceof Pod)) {
+      throw new Error("The ephemeral containers API did not return a Pod");
+    }
+
+    return pod;
   }
 
   async evict(resource: DeleteResourceDescriptor) {
