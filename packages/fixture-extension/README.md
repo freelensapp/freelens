@@ -56,8 +56,9 @@ onto this package would close a cycle in the turbo task graph
 Four things, chosen because each of them breaks without a compile error:
 
 1. a component with hooks — two React instances throw `invalid hook call`
-2. an observable it creates and the host reacts to — two mobx instances do not
-   throw at all, so identity is asserted as well as behaviour
+2. an observable it creates and the host reacts to — two copies of mobx 6 share
+   their global state and keep interoperating, so the reaction fires either way;
+   identity is therefore asserted as well as behaviour
 3. one declarative registration (`statusBarItems`), which reaches the host only
    if the registrators and the extension lifecycle both work
 4. one `Renderer.Util.fetch` call, which resolves only through the host's DI

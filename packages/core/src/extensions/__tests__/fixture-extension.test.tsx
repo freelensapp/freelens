@@ -12,12 +12,14 @@
 //
 //  1. instance identity of React: a hook in the extension's component only
 //     works if the host's React is the one the bundle got off the global
-//  2. instance identity of mobx: the host's `status-bar-items` computed only
-//     invalidates if the box the extension mutates belongs to the host's mobx.
-//     Nothing throws when it does not, so the reactivity is asserted from inside
-//     an `autorun` — an unobserved computed re-evaluates on every `.get()` and
-//     would pass either way — and the identity is asserted on top of it, because
-//     two copies of mobx 6 still interoperate through their shared global state
+//  2. instance identity of mobx: asserted directly, because nothing else here
+//     can see it. Two copies of mobx 6 keep interoperating through the global
+//     state they share on `globalThis`, so the host goes on reacting to the box
+//     the extension mutates and every behavioural assertion below stays green
+//     while the extension carries a duplicate. The reactivity is asserted all
+//     the same — it is the statement of the contract — and from inside an
+//     `autorun`, because an unobserved computed re-evaluates on every `.get()`
+//     and would pass without tracking anything at all
 //  3. the lifecycle: the declarative registration reaches the host only through
 //     the registrators and `extension.register()`
 //  4. `Renderer.Util.fetch`: the API namespace reaches the host's DI container
@@ -154,7 +156,7 @@ describe("extension contract, against the built fixture extension", () => {
 
       // Observed, not merely read: an unobserved mobx computed recomputes on
       // every `.get()`, which would make the reactivity assertion below pass
-      // even with two unrelated mobx instances.
+      // without anything having been tracked.
       disposeObserver = autorun(() => {
         statusBarItems = computedStatusBarItems.get();
       });
@@ -201,8 +203,10 @@ describe("extension contract, against the built fixture extension", () => {
       beforeEach(async () => {
         recorded = [];
 
-        // The host reacting to an observable the extension owns. Under two mobx
-        // instances this autorun simply never fires again — nothing throws.
+        // The host reacting to an observable the extension owns. This is the
+        // statement of the contract, not a detector of its breach: as above, it
+        // keeps firing even when the extension carries its own mobx, so only
+        // the identity assertion catches that.
         const dispose = autorun(() => recorded.push(fixture.activationRecord.get()));
 
         await extension.activate();
