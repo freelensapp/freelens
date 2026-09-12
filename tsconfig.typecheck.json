@@ -66,15 +66,6 @@
     "**/dist-types/**",
     "**/static/**",
     "**/binaries/**",
-    // The contract fixture must not be compiled with the `paths` above: they
-    // point `@freelensapp/extensions` at the workspace source, which is the one
-    // shape no extension author ever sees, and checking the fixture against it
-    // would defeat the only thing the fixture is for. It carries its own
-    // tsconfig, mapping the specifier to the built `dist/extension-api.d.ts`
-    // instead, and its own `tsc` run inside `pnpm --filter
-    // @freelensapp/fixture-extension build` - which is where it belongs,
-    // because that declaration exists only after a build and this project is
-    // type-checked without one.
     "packages/fixture-extension/**"
   ]
 }

@@ -39,12 +39,32 @@ proves nothing about how extensions are actually loaded.
 | Unit | `packages/core/src/extensions/__tests__/fixture-extension.test.tsx` | instance identity of React and mobx, the registrators, the lifecycle, `Util.fetch` reaching the host's DI |
 | Integration | not yet — see [#2400](https://github.com/freelensapp/freelens/issues/2400) | the same, against a real application instance rather than a harness |
 
-The type level is the reason
-[`tsconfig.json`](./tsconfig.json) maps `@freelensapp/extensions` to the built
-`../extensions/dist/extension-api.d.ts`. Left to pnpm's workspace linking it
-would resolve to `packages/extensions/src/extension-api.ts` — TypeScript source,
-a shape no real author ever sees — and the single bundled declaration that
-consumers actually install would go unchecked.
+### How the type level is wired
+
+[`tsconfig.json`](./tsconfig.json) is deliberately standalone: it does not extend
+the repository tsconfig and declares no workspace path mappings beyond one. An
+extension author has neither. Its compiler-option floors are the ones documented
+for extension consumers in
+[`docs/v2-extension-migration.md`](../../docs/v2-extension-migration.md)
+("tsconfig.json for an extension").
+
+That one mapping is the entire point of the package: it points
+`@freelensapp/extensions` at the built `../extensions/dist/extension-api.d.ts`.
+Left to pnpm's workspace linking the specifier would resolve to
+`packages/extensions/src/extension-api.ts` — TypeScript source, a shape no real
+author ever sees — and the single bundled declaration that consumers actually
+install would go unchecked. A re-export that goes missing from the rollup fails
+`tsc` here. The declaration is produced by
+`pnpm --filter @freelensapp/extensions build`, which this package's `build`
+depends on through turbo.
+
+For the same reason the package is excluded from `tsconfig.typecheck.json` at
+the repository root: its `paths` map `@freelensapp/extensions` back to the
+workspace source, and type-checking the fixture against that would defeat the
+only thing the fixture is for. The declaration also exists only after a build,
+which the type-check workflow deliberately does not run — so this package's
+`tsc` belongs to its own `build`, where `pnpm build` and the unit-test workflow
+both reach it.
 
 The unit level lives in `packages/core` rather than here because its harness
 needs core's `getDiForUnitTesting`, and because a workspace dependency from core
