@@ -68,10 +68,15 @@ class NonInjectedServices extends React.Component<Dependencies> {
             [columnId.age]: (service) => -service.getCreationTimestamp(),
             [columnId.status]: (service) => service.getStatus(),
           }}
-          searchFilters={[
-            (service) => service.getSearchFields(),
-            (service) => service.getSelector().join(" "),
-            (service) => service.getPorts().join(" "),
+          searchFields={[
+            { id: "name", title: "Name", getValue: (service) => service.getName() },
+            { id: "namespace", title: "Namespace", getValue: (service) => service.getNs() },
+            { id: "labels", title: "Labels", getValue: (service) => service.getLabels() },
+            { id: "type", title: "Type", getValue: (service) => service.getType() },
+            { id: "selector", title: "Selector", getValue: (service) => service.getSelector() },
+            { id: "ports", title: "Ports", getValue: (service) => service.getPorts().join(" ") },
+            { id: "clusterIp", title: "Cluster IP", getValue: (service) => service.getClusterIp() },
+            { id: "uid", title: "UID", hidden: true, getValue: (service) => service.getId() },
           ]}
           renderHeaderTitle="Services"
           renderTableHeader={[

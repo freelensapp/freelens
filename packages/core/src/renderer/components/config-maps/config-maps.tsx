@@ -45,7 +45,13 @@ class NonInjectedConfigMaps extends React.Component<Dependencies> {
             [columnId.keys]: (configMap) => configMap.getKeys(),
             [columnId.age]: (configMap) => -configMap.getCreationTimestamp(),
           }}
-          searchFilters={[(configMap) => configMap.getSearchFields(), (configMap) => configMap.getKeys()]}
+          searchFields={[
+            { id: "name", title: "Name", getValue: (configMap) => configMap.getName() },
+            { id: "namespace", title: "Namespace", getValue: (configMap) => configMap.getNs() },
+            { id: "labels", title: "Labels", getValue: (configMap) => configMap.getLabels() },
+            { id: "keys", title: "Keys", getValue: (configMap) => configMap.getKeys() },
+            { id: "uid", title: "UID", hidden: true, getValue: (configMap) => configMap.getId() },
+          ]}
           renderHeaderTitle="Config Maps"
           renderTableHeader={[
             { title: "Name", className: "name", sortBy: columnId.name, id: columnId.name },

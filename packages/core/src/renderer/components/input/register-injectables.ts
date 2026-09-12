@@ -6,7 +6,10 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import facetsUrlPageParamInjectable from "./facets-url-page-param.injectable";
 import persistentSearchStoreInjectable from "./persistent-search-store.injectable";
+import savedSearchesStoreInjectable from "./saved-searches-store.injectable";
+import searchOperatorUrlPageParamInjectable from "./search-operator-url-page-param.injectable";
 import searchUrlPageParamInjectable from "./search-url-page-param.injectable";
 import { registerInjectables as registerValidatorsInjectables } from "./validators/register-injectables";
 
@@ -14,7 +17,22 @@ import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
   try {
+    di.register(facetsUrlPageParamInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
     di.register(persistentSearchStoreInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(savedSearchesStoreInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(searchOperatorUrlPageParamInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
