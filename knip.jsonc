@@ -146,6 +146,36 @@
       }
     },
 
+    // The contract fixture (#2451) is an extension, not a library: its
+    // entrypoint is the `renderer` manifest field, which knip does not read, and
+    // it has no `main`/`exports` for knip to fall back on. Without the entries
+    // below its only dependency looks unused in the --production --strict pass.
+    "packages/fixture-extension": {
+      "entry": [
+        "vite.config.mjs",
+        // type-only by design: the type level of the contract, with no runtime
+        // importer here or anywhere else
+        "src/contract-types.ts!",
+        "src/renderer.tsx!"
+      ],
+      "project": ["*.mjs", "src/**/*.{ts,tsx}!"],
+      // build output: one self-contained bundle in which every import has been
+      // replaced by a read of the host global, so there is nothing to resolve
+      "ignore": ["dist/**"],
+      "ignoreDependencies": [
+        // host-provided singletons. The bundle maps them onto
+        // globalThis.FreelensExtensionApi (see vite.config.mjs), so they are
+        // declared as devDependencies for their types alone, which the
+        // --production --strict pass reports as unlisted
+        "@types/react",
+        "mobx",
+        "react"
+      ],
+      "typescript": {
+        "config": ["tsconfig.json"]
+      }
+    },
+
     "packages/generate-tray-icons": {
       "project": ["bin/*.js!", "src/*.ts!"],
       "ignoreDependencies": [
