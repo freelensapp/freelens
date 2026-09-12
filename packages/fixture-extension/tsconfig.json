@@ -1,0 +1,38 @@
+{
+  // Deliberately standalone: it does NOT extend the repository tsconfig, and it
+  // declares no workspace path mappings beyond the one below. An extension
+  // author has neither. The floors here are the ones documented for extension
+  // consumers in docs/v2-extension-migration.md ("tsconfig.json for an
+  // extension").
+  //
+  // The one mapping is the entire point of this package: pnpm's workspace
+  // linking resolves `@freelensapp/extensions` to `src/extension-api.ts`, the
+  // TypeScript source, which is a shape no real author ever sees. Pointing at
+  // the built `dist/extension-api.d.ts` compiles this fixture against the same
+  // single bundled declaration a published consumer installs, so a re-export
+  // that goes missing from the rollup fails `tsc` here.
+  //
+  // The file is produced by `pnpm --filter @freelensapp/extensions build`, which
+  // the `build` script of this package depends on through turbo.
+  "compilerOptions": {
+    "target": "ES2024",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ES2024", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "strict": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "useDefineForClassFields": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "types": [],
+    "paths": {
+      "@freelensapp/extensions": ["../extensions/dist/extension-api.d.ts"]
+    }
+  },
+  "include": ["src/**/*"]
+}
