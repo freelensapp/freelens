@@ -9,14 +9,24 @@ import getPodsByOwnerIdInjectable from "../../workloads-pods/get-pods-by-owner-i
 import createLogsTabInjectable from "./create-logs-tab.injectable";
 import { findOptimalDefaultContainerOfPod } from "./default-container-helper";
 
-import type { DaemonSet, Deployment, Job, ReplicaSet, StatefulSet } from "@freelensapp/kube-object";
+import type { KubeObject, Pod } from "@freelensapp/kube-object";
 
 import type { GetPodsByOwnerId } from "../../workloads-pods/get-pods-by-owner-id.injectable";
 import type { TabId } from "../dock/store";
 import type { CreateLogsTabData } from "./create-logs-tab.injectable";
 
 export interface WorkloadLogsTabData {
-  workload: StatefulSet | Job | Deployment | DaemonSet | ReplicaSet;
+  workload: KubeObject;
+  /**
+   * The pods to show combined logs for. When omitted, falls back to looking
+   * up pods whose `ownerReferences` point directly at `workload` -- which
+   * only finds anything for workload kinds that own pods directly (e.g.
+   * ReplicaSet, DaemonSet, StatefulSet, Job). A Deployment's pods are owned
+   * by its ReplicaSet(s), not the Deployment itself, so callers opening
+   * combined logs for a Deployment (or any other multi-hop owner) must pass
+   * the already-resolved `pods` explicitly.
+   */
+  pods?: Pod[];
 }
 
 interface Dependencies {
@@ -26,18 +36,19 @@ interface Dependencies {
 
 const createWorkloadLogsTab =
   ({ createLogsTab, getPodsByOwnerId }: Dependencies) =>
-  ({ workload }: WorkloadLogsTabData): TabId | undefined => {
-    const pods = getPodsByOwnerId(workload.getId());
+  ({ workload, pods }: WorkloadLogsTabData): TabId | undefined => {
+    const resolvedPods = pods ?? getPodsByOwnerId(workload.getId());
 
-    if (pods.length === 0) {
+    if (resolvedPods.length === 0) {
       return undefined;
     }
 
-    const selectedPod = pods[0];
+    const [selectedPod, ...restOfPods] = resolvedPods;
 
-    return createLogsTab(`${workload.kind} ${selectedPod.getName()}`, {
+    return createLogsTab(`${workload.kind} ${workload.getName()}`, {
       selectedContainer: findOptimalDefaultContainerOfPod(selectedPod).name,
       selectedPodId: selectedPod.getId(),
+      mergedPodIds: restOfPods.length ? restOfPods.map((pod) => pod.getId()) : undefined,
       namespace: selectedPod.getNs(),
       owner: {
         kind: workload.kind,

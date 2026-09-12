@@ -9,6 +9,7 @@ import { statefulSetApiInjectable } from "@freelensapp/kube-api-specifics";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import openConfirmDialogInjectable from "../confirm-dialog/open.injectable";
+import createWorkloadLogsTabInjectable from "../dock/logs/create-workload-logs-tab.injectable";
 import { MenuItem } from "../menu";
 
 import type { StatefulSetApi } from "@freelensapp/kube-api";
@@ -24,6 +25,7 @@ interface Dependencies {
   statefulSetApi: StatefulSetApi;
   openConfirmDialog: OpenConfirmDialog;
   showCheckedErrorNotification: ShowCheckedErrorNotification;
+  createWorkloadLogsTab: ReturnType<typeof createWorkloadLogsTabInjectable.instantiate>;
 }
 
 const NonInjectedStatefulSetMenu = ({
@@ -32,8 +34,13 @@ const NonInjectedStatefulSetMenu = ({
   toolbar,
   showCheckedErrorNotification,
   openConfirmDialog,
+  createWorkloadLogsTab,
 }: Dependencies & StatefulSetMenuProps) => (
   <>
+    <MenuItem onClick={() => createWorkloadLogsTab({ workload: object })}>
+      <Icon material="subject" tooltip={`${object.kind} Logs`} interactive={toolbar} />
+      <span className="title">Logs</span>
+    </MenuItem>
     <MenuItem
       onClick={() =>
         openConfirmDialog({
@@ -69,5 +76,6 @@ export const StatefulSetMenu = withInjectables<Dependencies, StatefulSetMenuProp
     showCheckedErrorNotification: di.inject(showCheckedErrorNotificationInjectable),
     statefulSetApi: di.inject(statefulSetApiInjectable),
     openConfirmDialog: di.inject(openConfirmDialogInjectable),
+    createWorkloadLogsTab: di.inject(createWorkloadLogsTabInjectable),
   }),
 });

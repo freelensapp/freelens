@@ -49,6 +49,7 @@ export function createMockLogTabViewModel(
     searchStore: new SearchStore(),
     downloadLogs: vi.fn(),
     downloadAllLogs: vi.fn(),
+    downloadAllLogsForPods: vi.fn(),
     userPreferencesState,
     ...deps,
   });
