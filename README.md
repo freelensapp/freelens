@@ -116,6 +116,16 @@ The terminal uses `/bin/sh` by default, but it can be switched to, for
 example, `/bin/bash` for a sandboxed environment or `/app/bin/host-spawn` for
 a host environment.
 
+#### Fedora COPR
+
+A community-maintained package is available in the
+[Freelens COPR repository](https://copr.fedorainfracloud.org/coprs/ok8219/Freelens/).
+
+```sh
+sudo dnf copr enable ok8219/Freelens
+sudo dnf install freelens
+```
+
 #### Snap
 
 The package is available on the [Snap](https://snapcraft.io/freelens) Store
