@@ -9,6 +9,7 @@ import {
   bytesSent,
   createPrometheusProvider,
   findFirstNamespacedService,
+  nodeFilterAdditive,
   prometheusProviderInjectionToken,
 } from "./provider";
 
@@ -21,40 +22,41 @@ export const getOperatorLikeQueryFor =
       case "cluster":
         switch (queryName) {
           case "memoryUsage":
-            return `sum(node_memory_MemTotal_bytes - (node_memory_MemFree_bytes + node_memory_Buffers_bytes + node_memory_Cached_bytes))`.replace(
-              /_bytes/g,
-              `_bytes * on (pod,namespace) group_left(node) max without(pod_ip,host_ip) (kube_pod_info{node=~"${opts.nodes}"})`,
-            );
+            return `sum(node_memory_MemTotal_bytes - (node_memory_MemFree_bytes + node_memory_Buffers_bytes + node_memory_Cached_bytes))`;
           case "workloadMemoryUsage":
-            return `sum(container_memory_working_set_bytes{container!="",image!="", instance=~"${opts.nodes}"}) by (component)`;
+            return `sum(container_memory_working_set_bytes{container!="",image!=""${nodeFilterAdditive(opts, "instance")}}) by (component)`;
           case "memoryRequests":
-            return `sum(kube_pod_container_resource_requests{node=~"${opts.nodes}", resource="memory"})`;
+            return `sum(kube_pod_container_resource_requests{resource="memory"${nodeFilterAdditive(opts, "node")}})`;
           case "memoryLimits":
-            return `sum(kube_pod_container_resource_limits{node=~"${opts.nodes}", resource="memory"})`;
+            return `sum(kube_pod_container_resource_limits{resource="memory"${nodeFilterAdditive(opts, "node")}})`;
           case "memoryCapacity":
-            return `sum(kube_node_status_capacity{node=~"${opts.nodes}", resource="memory"})`;
+            return `sum(kube_node_status_capacity{resource="memory"${nodeFilterAdditive(opts, "node")}})`;
           case "memoryAllocatableCapacity":
-            return `sum(kube_node_status_allocatable{node=~"${opts.nodes}", resource="memory"})`;
+            return `sum(kube_node_status_allocatable{resource="memory"${nodeFilterAdditive(opts, "node")}})`;
           case "cpuUsage":
-            return `sum(rate(node_cpu_seconds_total{mode=~"user|system"}[${rateAccuracy}])* on (pod,namespace) group_left(node) max without(pod_ip,host_ip) (kube_pod_info{node=~"${opts.nodes}"}))`;
+            return `sum(rate(node_cpu_seconds_total{mode=~"user|system"${nodeFilterAdditive(opts, "node")}}[${rateAccuracy}]))`;
           case "cpuRequests":
-            return `sum(kube_pod_container_resource_requests{node=~"${opts.nodes}", resource="cpu"})`;
+            return `sum(kube_pod_container_resource_requests{resource="cpu"${nodeFilterAdditive(opts, "node")}})`;
           case "cpuLimits":
-            return `sum(kube_pod_container_resource_limits{node=~"${opts.nodes}", resource="cpu"})`;
+            return `sum(kube_pod_container_resource_limits{resource="cpu"${nodeFilterAdditive(opts, "node")}})`;
           case "cpuCapacity":
-            return `sum(kube_node_status_capacity{node=~"${opts.nodes}", resource="cpu"})`;
+            return `sum(kube_node_status_capacity{resource="cpu"${nodeFilterAdditive(opts, "node")}})`;
           case "cpuAllocatableCapacity":
-            return `sum(kube_node_status_allocatable{node=~"${opts.nodes}", resource="cpu"})`;
+            return `sum(kube_node_status_allocatable{resource="cpu"${nodeFilterAdditive(opts, "node")}})`;
           case "podUsage":
-            return `sum({__name__=~"kubelet_running_pod_count|kubelet_running_pods", node=~"${opts.nodes}"})`;
+            return `sum({__name__=~"kubelet_running_pod_count|kubelet_running_pods"${nodeFilterAdditive(opts, "node")}})`;
           case "podCapacity":
-            return `sum(kube_node_status_capacity{node=~"${opts.nodes}", resource="pods"})`;
+            return `sum(kube_node_status_capacity{resource="pods"${nodeFilterAdditive(opts, "node")}})`;
           case "podAllocatableCapacity":
-            return `sum(kube_node_status_allocatable{node=~"${opts.nodes}", resource="pods"})`;
-          case "fsSize":
-            return `sum(node_filesystem_size_bytes{mountpoint=~"${opts.mountpoints}"} * on (pod,namespace) group_left(node) max without(pod_ip,host_ip) (kube_pod_info{node=~"${opts.nodes}"}))`;
-          case "fsUsage":
-            return `sum(node_filesystem_size_bytes{mountpoint=~"${opts.mountpoints}"} * on (pod,namespace) group_left(node) max without(pod_ip,host_ip) (kube_pod_info{node=~"${opts.nodes}"}) - node_filesystem_avail_bytes{mountpoint=~"${opts.mountpoints}"} * on (pod,namespace) group_left(node) max without(pod_ip,host_ip) (kube_pod_info{node=~"${opts.nodes}"}))`;
+            return `sum(kube_node_status_allocatable{resource="pods"${nodeFilterAdditive(opts, "node")}})`;
+          case "fsSize": {
+            const nf = nodeFilterAdditive(opts, "node");
+            return `sum(node_filesystem_size_bytes{mountpoint=~"${opts.mountpoints}"${nf}})`;
+          }
+          case "fsUsage": {
+            const nf = nodeFilterAdditive(opts, "node");
+            return `sum(node_filesystem_size_bytes{mountpoint=~"${opts.mountpoints}"${nf}} - node_filesystem_avail_bytes{mountpoint=~"${opts.mountpoints}"${nf}})`;
+          }
         }
         break;
       case "nodes":
