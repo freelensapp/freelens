@@ -1,0 +1,39 @@
+{
+  "name": "@freelensapp/fixture-extension",
+  "version": "2.0.0-0",
+  "private": true,
+  "description": "Freelens - Free IDE for Kubernetes: in-repo test fixture exercising the extension contract",
+  "homepage": "https://freelens.app",
+  "bugs": {
+    "url": "https://github.com/freelensapp/freelens/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/freelensapp/freelens.git"
+  },
+  "license": "MIT",
+  "type": "module",
+  "author": {
+    "name": "Freelens Authors",
+    "email": "freelens@freelens.app"
+  },
+  "renderer": "./dist/renderer.js",
+  "engines": {
+    "freelens": "^2.0.0"
+  },
+  "scripts": {
+    "build": "pnpm type:check && vite build",
+    "clean:dist": "pnpm dlx rimraf@6.1.3 dist",
+    "type:check": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@freelensapp/extensions": "workspace:^"
+  },
+  "devDependencies": {
+    "@types/react": "catalog:extensions",
+    "mobx": "catalog:extensions",
+    "react": "catalog:extensions",
+    "typescript": "catalog:",
+    "vite": "catalog:"
+  }
+}

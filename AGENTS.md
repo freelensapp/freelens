@@ -103,6 +103,20 @@ vendored third-party code, which are unrelated to either header variant.
 See [#2352](https://github.com/freelensapp/freelens/issues/2352) for the
 cleanup that established this rule.
 
+## Comments in JSON
+
+Comments belong in `.jsonc`, never in `.json` — regardless of what the consuming
+parser tolerates. TypeScript accepts `//` inside a `tsconfig.json`, and so do
+several other tools, but anything that reads the file as strict JSON because of
+its extension (`JSON.parse`, `jq`, an editor, a CI script) fails on it. No
+`.json` file in this repository has comments, `tsconfig*.json` included;
+`knip.jsonc` is where a commented configuration lives, and that is the right
+pattern.
+
+When a `.json` file needs an explanation — why an entry is excluded, why a
+version is pinned — put it somewhere it survives: the package README, this
+file, or the pull request that introduced it. Do not smuggle it into the JSON.
+
 ## Build System
 
 ### Commands
