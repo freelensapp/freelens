@@ -98,6 +98,7 @@ function getNodeGroup(node: Node): string {
     labels["karpenter.k8s.aws/ec2nodeclass"] ?? // Karpenter AWS
     labels["cloud.google.com/gke-nodepool"] ?? // GKE
     labels["kubernetes.azure.com/agentpool"] ?? // AKS
+    labels["kops.k8s.io/instancegroup"] ?? // kops
     labels["agentpool"] ?? // AKS (legacy)
     ""
   );
