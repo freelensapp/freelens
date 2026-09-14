@@ -16,6 +16,7 @@ import { registerInjectables as registerFeaturesFeaturesClusterExecuteMainInject
 import { registerInjectables as registerFeaturesFeaturesClusterInjectables } from "./features/cluster/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesClusterStateSyncMainInjectables } from "./features/cluster/state-sync/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesClusterStorageMainInjectables } from "./features/cluster/storage/main/register-injectables";
+import { registerInjectables as registerFeaturesFeaturesDebugContainersMainInjectables } from "./features/debug-containers/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesExtensionsEnabledMainInjectables } from "./features/extensions/enabled/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesExtensionsInjectables } from "./features/extensions/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesExtensionsStoppingMainInjectables } from "./features/extensions/stopping/main/register-injectables";
@@ -58,6 +59,7 @@ export function registerInjectables(di: DiContainerForInjection): void {
   registerFeaturesFeaturesClusterExecuteMainInjectables(di);
   registerFeaturesFeaturesClusterStateSyncMainInjectables(di);
   registerFeaturesFeaturesClusterStorageMainInjectables(di);
+  registerFeaturesFeaturesDebugContainersMainInjectables(di);
   registerFeaturesFeaturesExtensionsInjectables(di);
   registerFeaturesFeaturesExtensionsEnabledMainInjectables(di);
   registerFeaturesFeaturesExtensionsStoppingMainInjectables(di);
