@@ -8,6 +8,7 @@ import { Button } from "@freelensapp/button";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
+import React from "react";
 import openPathPickingDialogInjectable from "../../../features/path-picking-dialog/renderer/pick-paths.injectable";
 
 import type { FileFilter, OpenDialogOptions } from "electron";
@@ -36,14 +37,27 @@ interface Dependencies {
 
 const NonInjectedPathPicker = observer((props: PathPickerProps & Dependencies) => {
   const { className, disabled, openPathPickingDialog, ...pickOpts } = props;
+  const [isDialogOpen, setIsDialogOpen] = React.useState(false);
 
   return (
     <Button
       primary
       label={pickOpts.message}
-      disabled={disabled}
+      disabled={disabled || isDialogOpen}
       className={cssNames("PathPicker", className)}
-      onClick={() => void openPathPickingDialog(pickOpts)}
+      onClick={async () => {
+        if (isDialogOpen) {
+          return;
+        }
+
+        setIsDialogOpen(true);
+
+        try {
+          await openPathPickingDialog(pickOpts);
+        } finally {
+          setIsDialogOpen(false);
+        }
+      }}
     />
   );
 });
