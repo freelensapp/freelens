@@ -13,42 +13,56 @@ import writeJsonSyncInjectable from "../../common/fs/write-json-sync.injectable"
 import normalizedPlatformInjectable from "../../common/vars/normalized-platform.injectable";
 import addClusterInjectable from "../../features/cluster/storage/common/add.injectable";
 import clusterVersionDetectorInjectable from "../cluster-detectors/cluster-version-detector.injectable";
-import broadcastConnectionUpdateInjectable from "./broadcast-connection-update.injectable";
-import clusterConnectionInjectable from "./cluster-connection.injectable";
-import kubeAuthProxyServerInjectable from "./kube-auth-proxy-server.injectable";
-import prometheusHandlerInjectable from "./prometheus-handler/prometheus-handler.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import kubeconfigManagerInjectable from "../kubeconfig-manager/kubeconfig-manager.injectable";
 import kubectlBinaryNameInjectable from "../kubectl/binary-name.injectable";
 import { Kubectl } from "../kubectl/kubectl";
 import kubectlDownloadingNormalizedArchInjectable from "../kubectl/normalized-arch.injectable";
+import broadcastConnectionUpdateInjectable from "./broadcast-connection-update.injectable";
+import clusterConnectionInjectable from "./cluster-connection.injectable";
+import kubeAuthProxyServerInjectable from "./kube-auth-proxy-server.injectable";
+import prometheusHandlerInjectable from "./prometheus-handler/prometheus-handler.injectable";
+
+import type { Mock } from "vitest";
 
 import type { Cluster } from "../../common/cluster/cluster";
+import type { KubeconfigManager } from "../kubeconfig-manager/kubeconfig-manager";
 import type { ClusterConnection } from "./cluster-connection.injectable";
 import type { KubeAuthProxyServer } from "./kube-auth-proxy-server.injectable";
-import type { KubeconfigManager } from "../kubeconfig-manager/kubeconfig-manager";
 
 /**
- * Creates an error object that passes the isRequestError() type guard.
- * isRequestError checks: isObject, instanceof Error, optional statusCode/failed/timedOut.
+ * Creates an error object that passes the isRequestError() type guard, like the
+ * errors thrown by k8sRequest (statusCode + body in `error`) or by the legacy
+ * request helpers (failed / timedOut).
  */
-function createRequestError(opts: { statusCode?: number; failed?: boolean; timedOut?: boolean }): Error {
-  const error = new Error("mock request error");
+function createRequestError(opts: {
+  statusCode?: number;
+  failed?: boolean;
+  timedOut?: boolean;
+  error?: string;
+  message?: string;
+}): Error {
+  const { message = "mock request error", ...rest } = opts;
+  const error = new Error(message);
 
-  Object.assign(error, opts);
+  Object.assign(error, rest);
 
   return error;
 }
 
+const credentialPluginFailure = "getting credentials: exec: executable kubelogin failed with exit code 1";
+const dialFailure = "dial tcp 10.0.0.1:6443: connect: connection refused";
+const requestTimeout = "Operation timed out: timeout 30 seconds";
+
 describe("ClusterConnection auth failure backoff", () => {
   let cluster: Cluster;
   let clusterConnection: ClusterConnection;
-  let detectMock: jest.Mock;
-  let broadcastMock: jest.Mock;
+  let detectMock: Mock;
+  let broadcastMock: Mock;
   let proxyServerMock: KubeAuthProxyServer;
 
-  beforeEach(() => {
-    jest.useFakeTimers();
+  const setup = ({ execPlugin = false } = {}) => {
+    vi.useFakeTimers();
 
     const di = getDiForUnitTesting();
     const writeJsonSync = di.inject(writeJsonSyncInjectable);
@@ -59,27 +73,27 @@ describe("ClusterConnection auth failure backoff", () => {
     di.override(kubectlDownloadingNormalizedArchInjectable, () => "amd64");
     di.override(normalizedPlatformInjectable, () => "darwin");
 
-    broadcastMock = jest.fn();
+    broadcastMock = vi.fn();
     di.override(broadcastConnectionUpdateInjectable, () => broadcastMock);
 
     di.override(createCanIInjectable, () => () => () => Promise.resolve(true));
     di.override(createRequestNamespaceListPermissionsInjectable, () => () => async () => () => true);
     di.override(createListNamespacesInjectable, () => () => () => Promise.resolve(["default"]));
     di.override(prometheusHandlerInjectable, () => ({
-      getPrometheusDetails: jest.fn(),
-      setupPrometheus: jest.fn(),
+      getPrometheusDetails: vi.fn(),
+      setupPrometheus: vi.fn(),
     }));
 
     proxyServerMock = {
-      getApiTarget: jest.fn().mockResolvedValue({}),
-      ensureAuthProxyUrl: jest.fn().mockResolvedValue("https://127.0.0.1:9999/test"),
-      restart: jest.fn().mockResolvedValue(undefined),
-      ensureRunning: jest.fn().mockResolvedValue(undefined),
-      stop: jest.fn(),
+      getApiTarget: vi.fn().mockResolvedValue({}),
+      ensureAuthProxyUrl: vi.fn().mockResolvedValue("https://127.0.0.1:9999/test"),
+      restart: vi.fn().mockResolvedValue(undefined),
+      ensureRunning: vi.fn().mockResolvedValue(undefined),
+      stop: vi.fn(),
     };
     di.override(kubeAuthProxyServerInjectable, () => proxyServerMock);
 
-    detectMock = jest.fn();
+    detectMock = vi.fn();
     di.override(clusterVersionDetectorInjectable, () => ({
       key: ClusterMetadataKey.VERSION,
       detect: detectMock,
@@ -98,12 +112,19 @@ describe("ClusterConnection auth failure backoff", () => {
       clusters: [{ name: "test-cluster", cluster: { server: "https://192.168.1.1:6443" } }],
       "current-context": "test-cluster",
       contexts: [{ context: { cluster: "test-cluster", user: "test-user" }, name: "test-cluster" }],
-      users: [{ name: "test-user" }],
+      users: [
+        {
+          name: "test-user",
+          user: execPlugin
+            ? { exec: { apiVersion: "client.authentication.k8s.io/v1", command: "kubelogin", args: ["get-token"] } }
+            : {},
+        },
+      ],
       kind: "Config",
       preferences: {},
     });
 
-    jest.spyOn(Kubectl.prototype, "ensureKubectl").mockReturnValue(Promise.resolve(true));
+    vi.spyOn(Kubectl.prototype, "ensureKubectl").mockReturnValue(Promise.resolve(true));
 
     const addCluster = di.inject(addClusterInjectable);
 
@@ -114,14 +135,15 @@ describe("ClusterConnection auth failure backoff", () => {
     });
 
     clusterConnection = di.inject(clusterConnectionInjectable, cluster);
-  });
+  };
 
   afterEach(() => {
-    jest.useRealTimers();
+    vi.useRealTimers();
   });
 
   describe("when cluster is activated and connected successfully", () => {
     beforeEach(async () => {
+      setup();
       detectMock.mockResolvedValue({ value: "v1.28.0", accuracy: 100 });
       await clusterConnection.activate();
       detectMock.mockClear();
@@ -130,11 +152,11 @@ describe("ClusterConnection auth failure backoff", () => {
     it("should call detect on each 30s refresh tick", async () => {
       detectMock.mockResolvedValue({ value: "v1.28.0", accuracy: 100 });
 
-      await jest.advanceTimersByTimeAsync(30_000);
+      await vi.advanceTimersByTimeAsync(30_000);
 
       expect(detectMock).toHaveBeenCalledTimes(1);
 
-      await jest.advanceTimersByTimeAsync(30_000);
+      await vi.advanceTimersByTimeAsync(30_000);
 
       expect(detectMock).toHaveBeenCalledTimes(2);
     });
@@ -143,13 +165,13 @@ describe("ClusterConnection auth failure backoff", () => {
       beforeEach(async () => {
         detectMock.mockRejectedValue(createRequestError({ statusCode: 401 }));
 
-        await jest.advanceTimersByTimeAsync(30_000);
+        await vi.advanceTimersByTimeAsync(30_000);
         detectMock.mockClear();
       });
 
       it("should not attempt refresh during the 1-minute backoff period", async () => {
         // At 30s after failure - should be in backoff
-        await jest.advanceTimersByTimeAsync(30_000);
+        await vi.advanceTimersByTimeAsync(30_000);
 
         expect(detectMock).not.toHaveBeenCalled();
       });
@@ -158,7 +180,7 @@ describe("ClusterConnection auth failure backoff", () => {
         detectMock.mockRejectedValue(createRequestError({ statusCode: 401 }));
 
         // Advance past the 1-minute backoff (multiple 30s ticks)
-        await jest.advanceTimersByTimeAsync(60_000);
+        await vi.advanceTimersByTimeAsync(60_000);
 
         // The timer fires at 30s and 60s, but only the 60s tick should be allowed
         expect(detectMock).toHaveBeenCalledTimes(1);
@@ -175,14 +197,90 @@ describe("ClusterConnection auth failure backoff", () => {
       beforeEach(async () => {
         detectMock.mockRejectedValue(createRequestError({ failed: true }));
 
-        await jest.advanceTimersByTimeAsync(30_000);
+        await vi.advanceTimersByTimeAsync(30_000);
         detectMock.mockClear();
       });
 
       it("should apply backoff for credential fetch failures", async () => {
-        await jest.advanceTimersByTimeAsync(30_000);
+        await vi.advanceTimersByTimeAsync(30_000);
 
         expect(detectMock).not.toHaveBeenCalled();
+      });
+    });
+
+    describe("when the proxy reports a credential plugin failure (500 with the client-go body)", () => {
+      beforeEach(async () => {
+        detectMock.mockRejectedValue(createRequestError({ statusCode: 500, error: credentialPluginFailure }));
+        await vi.advanceTimersByTimeAsync(30_000);
+        detectMock.mockClear();
+      });
+
+      it("broadcasts the failure with the reason of the proxy", () => {
+        expect(broadcastMock).toHaveBeenCalledWith(
+          expect.objectContaining({
+            level: "error",
+            message: `Failed to fetch credentials: ${credentialPluginFailure}`,
+          }),
+        );
+      });
+
+      it("does not attempt a refresh during the 1-minute backoff period", async () => {
+        await vi.advanceTimersByTimeAsync(30_000);
+        expect(detectMock).not.toHaveBeenCalled();
+      });
+    });
+
+    describe("when the proxy reports another server error (500 with a dial failure)", () => {
+      beforeEach(async () => {
+        detectMock.mockRejectedValue(createRequestError({ statusCode: 500, error: dialFailure }));
+        await vi.advanceTimersByTimeAsync(30_000);
+        detectMock.mockClear();
+      });
+
+      it("broadcasts the reason of the proxy", () => {
+        expect(broadcastMock).toHaveBeenCalledWith(expect.objectContaining({ level: "error", message: dialFailure }));
+      });
+
+      it("keeps refreshing at the normal interval", async () => {
+        await vi.advanceTimersByTimeAsync(30_000);
+        expect(detectMock).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe("when the request times out (abort reason of k8sRequest)", () => {
+      beforeEach(async () => {
+        detectMock.mockRejectedValue(requestTimeout);
+        await vi.advanceTimersByTimeAsync(30_000);
+        detectMock.mockClear();
+      });
+
+      it("broadcasts a plain timeout", () => {
+        expect(broadcastMock).toHaveBeenCalledWith(
+          expect.objectContaining({ level: "error", message: "Connection timed out" }),
+        );
+      });
+
+      it("keeps refreshing at the normal interval", async () => {
+        await vi.advanceTimersByTimeAsync(30_000);
+        expect(detectMock).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe("when the third consecutive auth failure pauses the automatic refresh", () => {
+      beforeEach(async () => {
+        detectMock.mockRejectedValue(createRequestError({ statusCode: 401 }));
+        await vi.advanceTimersByTimeAsync(30_000);
+        await vi.advanceTimersByTimeAsync(60_000);
+        await vi.advanceTimersByTimeAsync(300_000);
+      });
+
+      it("tells the user that the automatic reconnection is paused", () => {
+        expect(broadcastMock).toHaveBeenLastCalledWith(
+          expect.objectContaining({
+            level: "error",
+            message: "Authentication failed 3 times, automatic reconnection paused: reconnect to try again",
+          }),
+        );
       });
     });
 
@@ -191,20 +289,20 @@ describe("ClusterConnection auth failure backoff", () => {
         detectMock.mockRejectedValue(createRequestError({ statusCode: 403 }));
 
         // Failure 1 at t=30s
-        await jest.advanceTimersByTimeAsync(30_000);
+        await vi.advanceTimersByTimeAsync(30_000);
 
         // Wait for 1-minute backoff to expire, then failure 2
-        await jest.advanceTimersByTimeAsync(60_000);
+        await vi.advanceTimersByTimeAsync(60_000);
 
         // Wait for 5-minute backoff to expire, then failure 3
-        await jest.advanceTimersByTimeAsync(300_000);
+        await vi.advanceTimersByTimeAsync(300_000);
 
         detectMock.mockClear();
       });
 
       it("should stop automatic refresh completely", async () => {
         // Advance well past any backoff period
-        await jest.advanceTimersByTimeAsync(600_000);
+        await vi.advanceTimersByTimeAsync(600_000);
 
         expect(detectMock).not.toHaveBeenCalled();
       });
@@ -215,7 +313,7 @@ describe("ClusterConnection auth failure backoff", () => {
         await clusterConnection.reconnect();
         detectMock.mockClear();
 
-        await jest.advanceTimersByTimeAsync(30_000);
+        await vi.advanceTimersByTimeAsync(30_000);
 
         expect(detectMock).toHaveBeenCalledTimes(1);
       });
@@ -225,11 +323,11 @@ describe("ClusterConnection auth failure backoff", () => {
       beforeEach(async () => {
         // First: auth failure
         detectMock.mockRejectedValue(createRequestError({ statusCode: 401 }));
-        await jest.advanceTimersByTimeAsync(30_000);
+        await vi.advanceTimersByTimeAsync(30_000);
 
         // Wait for backoff, then: auth success
         detectMock.mockResolvedValue({ value: "v1.28.0", accuracy: 100 });
-        await jest.advanceTimersByTimeAsync(60_000);
+        await vi.advanceTimersByTimeAsync(60_000);
 
         detectMock.mockClear();
       });
@@ -237,7 +335,7 @@ describe("ClusterConnection auth failure backoff", () => {
       it("should reset failure counter and resume normal 30s refresh", async () => {
         detectMock.mockResolvedValue({ value: "v1.28.0", accuracy: 100 });
 
-        await jest.advanceTimersByTimeAsync(30_000);
+        await vi.advanceTimersByTimeAsync(30_000);
 
         expect(detectMock).toHaveBeenCalledTimes(1);
       });
@@ -247,13 +345,13 @@ describe("ClusterConnection auth failure backoff", () => {
       it("should not apply auth backoff for timeout errors", async () => {
         detectMock.mockRejectedValue(createRequestError({ failed: true, timedOut: true }));
 
-        await jest.advanceTimersByTimeAsync(30_000);
+        await vi.advanceTimersByTimeAsync(30_000);
         detectMock.mockClear();
 
         // Timeout errors should NOT trigger auth backoff
         detectMock.mockRejectedValue(createRequestError({ failed: true, timedOut: true }));
 
-        await jest.advanceTimersByTimeAsync(30_000);
+        await vi.advanceTimersByTimeAsync(30_000);
 
         // Should still attempt refresh at the normal interval
         expect(detectMock).toHaveBeenCalledTimes(1);
@@ -262,12 +360,12 @@ describe("ClusterConnection auth failure backoff", () => {
       it("should not apply auth backoff for server errors (5xx)", async () => {
         detectMock.mockRejectedValue(createRequestError({ statusCode: 500 }));
 
-        await jest.advanceTimersByTimeAsync(30_000);
+        await vi.advanceTimersByTimeAsync(30_000);
         detectMock.mockClear();
 
         detectMock.mockRejectedValue(createRequestError({ statusCode: 500 }));
 
-        await jest.advanceTimersByTimeAsync(30_000);
+        await vi.advanceTimersByTimeAsync(30_000);
 
         expect(detectMock).toHaveBeenCalledTimes(1);
       });
@@ -302,22 +400,70 @@ describe("ClusterConnection auth failure backoff", () => {
     });
   });
 
+  describe("given a cluster whose user authenticates with an exec credential plugin", () => {
+    beforeEach(async () => {
+      setup({ execPlugin: true });
+      detectMock.mockResolvedValue({ value: "v1.28.0", accuracy: 100 });
+      await clusterConnection.activate();
+      detectMock.mockClear();
+    });
+
+    describe("when the request times out", () => {
+      beforeEach(async () => {
+        detectMock.mockRejectedValue(requestTimeout);
+        await vi.advanceTimersByTimeAsync(30_000);
+        detectMock.mockClear();
+      });
+
+      it("tells the user that the credential plugin may be waiting for a login", () => {
+        expect(broadcastMock).toHaveBeenCalledWith(
+          expect.objectContaining({
+            level: "error",
+            message: "Connection timed out, the credential plugin may be waiting for an interactive login",
+          }),
+        );
+      });
+
+      it("backs off like an authentication failure", async () => {
+        await vi.advanceTimersByTimeAsync(30_000);
+        expect(detectMock).not.toHaveBeenCalled();
+
+        await vi.advanceTimersByTimeAsync(30_000);
+        expect(detectMock).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe("when the proxy reports a server error that is not about credentials", () => {
+      beforeEach(async () => {
+        detectMock.mockRejectedValue(createRequestError({ statusCode: 500, error: dialFailure }));
+        await vi.advanceTimersByTimeAsync(30_000);
+        detectMock.mockClear();
+      });
+
+      it("keeps refreshing at the normal interval", async () => {
+        await vi.advanceTimersByTimeAsync(30_000);
+        expect(detectMock).toHaveBeenCalledTimes(1);
+      });
+    });
+  });
+
   describe("when reconnect is called", () => {
     it("should reset auth failure state", async () => {
+      setup();
       detectMock.mockResolvedValue({ value: "v1.28.0", accuracy: 100 });
       await clusterConnection.activate();
 
       // Simulate 3 auth failures to reach max retries
       detectMock.mockRejectedValue(createRequestError({ statusCode: 401 }));
 
-      await jest.advanceTimersByTimeAsync(30_000); // Failure 1
-      await jest.advanceTimersByTimeAsync(60_000); // Failure 2 (after 1min backoff)
-      await jest.advanceTimersByTimeAsync(300_000); // Failure 3 (after 5min backoff)
+      await vi.advanceTimersByTimeAsync(30_000); // Failure 1
+      await vi.advanceTimersByTimeAsync(60_000); // Failure 2 (after 1min backoff)
+      await vi.advanceTimersByTimeAsync(300_000); // Failure 3 (after 5min backoff)
 
       detectMock.mockClear();
 
       // Verify refresh has stopped
-      await jest.advanceTimersByTimeAsync(30_000);
+      await vi.advanceTimersByTimeAsync(30_000);
       expect(detectMock).not.toHaveBeenCalled();
 
       // Manual reconnect should reset the backoff state
@@ -326,19 +472,20 @@ describe("ClusterConnection auth failure backoff", () => {
 
       // Now refresh should work again
       detectMock.mockResolvedValue({ value: "v1.28.0", accuracy: 100 });
-      await jest.advanceTimersByTimeAsync(30_000);
+      await vi.advanceTimersByTimeAsync(30_000);
       expect(detectMock).toHaveBeenCalledTimes(1);
     });
   });
 
   describe("when disconnect is called", () => {
     it("should reset auth failure state", async () => {
+      setup();
       detectMock.mockResolvedValue({ value: "v1.28.0", accuracy: 100 });
       await clusterConnection.activate();
 
       // Simulate auth failure
       detectMock.mockRejectedValue(createRequestError({ statusCode: 401 }));
-      await jest.advanceTimersByTimeAsync(30_000);
+      await vi.advanceTimersByTimeAsync(30_000);
 
       // Disconnect resets tracking
       clusterConnection.disconnect();
@@ -350,7 +497,7 @@ describe("ClusterConnection auth failure backoff", () => {
 
       // Should refresh normally
       detectMock.mockResolvedValue({ value: "v1.28.0", accuracy: 100 });
-      await jest.advanceTimersByTimeAsync(30_000);
+      await vi.advanceTimersByTimeAsync(30_000);
       expect(detectMock).toHaveBeenCalledTimes(1);
     });
   });
