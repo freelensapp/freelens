@@ -11,19 +11,22 @@ import { Icon } from "@freelensapp/icon";
 import { Secret } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { showCheckedErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
-import { base64, toggle } from "@freelensapp/utilities";
+import { base64, formatRelativeTime, toggle } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { autorun, makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { DrawerItem, DrawerTitle } from "../drawer";
 import { Input } from "../input";
+import { LocaleDate } from "../locale-date";
+import { parseCertificates } from "./certificate-info";
 import secretStoreInjectable from "./store.injectable";
 
 import type { Logger } from "@freelensapp/logger";
 import type { ShowCheckedErrorNotification, ShowNotification } from "@freelensapp/notifications";
 
 import type { KubeObjectDetailsProps } from "../kube-object-details";
+import type { CertificateInfo } from "./certificate-info";
 import type { SecretStore } from "./store";
 
 export interface SecretDetailsProps extends KubeObjectDetailsProps<Secret> {}
@@ -144,6 +147,62 @@ class NonInjectedSecretDetails extends React.Component<SecretDetailsProps & Depe
     );
   }
 
+  renderCertificate(name: string, certificate: CertificateInfo, position: string) {
+    const { commonName, organization, issuer, serialNumber, notBefore, notAfter, dnsNames } = certificate;
+
+    return (
+      <div key={`${name}-${serialNumber}-${position}`} className="certificate">
+        <DrawerTitle size="sub-title">{`${name}${position}`}</DrawerTitle>
+        <DrawerItem name="Common Name" hidden={!commonName}>
+          {commonName}
+        </DrawerItem>
+        <DrawerItem name="Organization" hidden={!organization}>
+          {organization}
+        </DrawerItem>
+        <DrawerItem name="Issuer" hidden={!issuer}>
+          {issuer}
+        </DrawerItem>
+        <DrawerItem name="Subject Alternative Names" hidden={dnsNames.length === 0}>
+          {dnsNames.join(", ")}
+        </DrawerItem>
+        <DrawerItem name="Serial Number">{serialNumber}</DrawerItem>
+        <DrawerItem name="Not Before">
+          <LocaleDate date={notBefore} />
+        </DrawerItem>
+        <DrawerItem name="Expires">
+          {formatRelativeTime(notAfter)} (<LocaleDate date={notAfter} />)
+        </DrawerItem>
+      </div>
+    );
+  }
+
+  renderCertificateInfo() {
+    const certificates = Object.entries(this.data).map(([name, value]) => {
+      try {
+        return [name, parseCertificates(value ? base64.decode(value) : "")] as const;
+      } catch {
+        // The value is not valid base64, so there is nothing to read yet
+        return [name, []] as const;
+      }
+    });
+    const found = certificates.filter(([, parsed]) => parsed.length > 0);
+
+    if (found.length === 0) {
+      return null;
+    }
+
+    return (
+      <>
+        <DrawerTitle>Certificates</DrawerTitle>
+        {found.flatMap(([name, parsed]) =>
+          parsed.map((certificate, index) =>
+            this.renderCertificate(name, certificate, parsed.length > 1 ? ` (${index + 1}/${parsed.length})` : ""),
+          ),
+        )}
+      </>
+    );
+  }
+
   render() {
     const { object: secret, logger } = this.props;
 
@@ -161,6 +220,7 @@ class NonInjectedSecretDetails extends React.Component<SecretDetailsProps & Depe
       <div className="SecretDetails">
         <DrawerItem name="Type">{secret.type}</DrawerItem>
         {this.renderData()}
+        {this.renderCertificateInfo()}
       </div>
     );
   }
