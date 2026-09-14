@@ -5,7 +5,7 @@
  */
 
 import { ClusterRole } from "@freelensapp/kube-object";
-import { waitFor } from "@testing-library/react";
+import { act, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import directoryForKubeConfigsInjectable from "../../../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
 import directoryForUserDataInjectable from "../../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
@@ -139,6 +139,44 @@ describe("RoleBindingDialog tests", () => {
       expect.objectContaining({
         subjects: [{ name: "test-user", kind: "User" }],
         roleRef: { name: "foobar", kind: "ClusterRole" },
+      }),
+    );
+  });
+
+  it("adds the user without creating the binding when pressing Enter in the Users field", async () => {
+    openRoleBindingDialog();
+    const res = render(<RoleBindingDialog />);
+
+    const openSelect = (inputId: string) =>
+      user.click(res.baseElement.querySelector(`#${inputId}`)?.closest(".Select__control") as HTMLElement);
+
+    await openSelect("dialog-namespace-input");
+    await user.click(await res.findByRole("option", { name: /default/ }));
+    await openSelect("role-reference-input");
+    await user.click(await res.findByRole("option", { name: /foobar/ }));
+
+    const nameInput = Array.from(res.baseElement.querySelectorAll("input")).find(
+      (el) => !el.id && !(el as HTMLInputElement).placeholder,
+    ) as HTMLInputElement;
+    await user.type(nameInput, "test-binding");
+
+    // Enter adds the user to the list: it must not submit the wizard step
+    await user.type(res.getByPlaceholderText("Bind to User Accounts (comma-separated) ..."), "test-user{Enter}");
+
+    // the wizard step submit is debounced by 100ms, give it time to (not) fire
+    await act(() => new Promise((resolve) => setTimeout(resolve, 250)));
+
+    expect(createMock).not.toHaveBeenCalled();
+    expect(res.getByText("test-user")).toBeInTheDocument();
+
+    // the binding is created only when Create is clicked, with the user added by Enter
+    await user.click(res.getByText("Create").closest("button") as HTMLButtonElement);
+
+    await waitFor(() => expect(createMock).toHaveBeenCalledTimes(1));
+    expect(createMock).toHaveBeenCalledWith(
+      { name: "test-binding", namespace: "default" },
+      expect.objectContaining({
+        subjects: [{ name: "test-user", kind: "User" }],
       }),
     );
   });
