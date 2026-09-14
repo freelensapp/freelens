@@ -118,6 +118,32 @@ export function bytesSent({ rateAccuracy, ingress, namespace, statuses }: BytesS
   return `sum(rate(nginx_ingress_controller_bytes_sent_sum{ingress="${ingress}",namespace="${namespace}",status=~"${statuses}"}[${rateAccuracy}])) by (ingress, namespace)`;
 }
 
+/**
+ * Only include the node label selector when `opts.nodes` is present.
+ * For metric references that have no other label matchers, use this version
+ * which wraps the selector in `{...}` braces (no leading comma).
+ *
+ * @example
+ *   `node_memory_...${nodeFilter(opts, "kubernetes_node")}` // → node_memory_...{kubernetes_node=~"n1|n2"}
+ *   `node_memory_...${nodeFilter(opts, "kubernetes_node")}` // → node_memory_... (when opts.nodes is empty)
+ */
+export function nodeFilter(opts: Record<string, string>, label: string): string {
+  return opts.nodes ? `{${label}=~"${opts.nodes}"}` : "";
+}
+
+/**
+ * For metric references that already have other label matchers inside `{...}`,
+ * use this version which adds a leading comma.
+ *
+ * @example
+ *   `kube_node_status_capacity{resource="memory"${nodeFilterAdditive(opts, "node")}}`
+ *   // → kube_node_status_capacity{resource="memory",node=~"n1|n2"}
+ *   // → kube_node_status_capacity{resource="memory"} (when opts.nodes is empty)
+ */
+export function nodeFilterAdditive(opts: Record<string, string>, label: string): string {
+  return opts.nodes ? `,${label}=~"${opts.nodes}"` : "";
+}
+
 export const prometheusProviderInjectionToken = getInjectionToken<PrometheusProvider>({
   id: "prometheus-provider",
 });
