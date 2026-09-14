@@ -23,19 +23,21 @@ const openPathPickingDialogInjectable = getInjectable({
         return;
       }
 
+      const { onPick, onCancel, ...dialogOptions } = options;
+
       isDialogOpen = true;
 
-      try {
-        const { onPick, onCancel, ...dialogOptions } = options;
-        const response = await requestFromChannel(openPathPickingDialogChannel, dialogOptions);
-
-        if (response.canceled) {
-          await onCancel?.();
-        } else {
-          await onPick?.(response.paths);
-        }
-      } finally {
+      // Release the guard as soon as the native dialog closes, so that a long
+      // running onPick (e.g. installing an extension) does not block every
+      // other path picking dialog of the application in the meantime.
+      const response = await requestFromChannel(openPathPickingDialogChannel, dialogOptions).finally(() => {
         isDialogOpen = false;
+      });
+
+      if (response.canceled) {
+        await onCancel?.();
+      } else {
+        await onPick?.(response.paths);
       }
     };
   },
