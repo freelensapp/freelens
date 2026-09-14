@@ -15,14 +15,28 @@ import {
 
 import type { PrometheusProvider } from "./provider";
 
+/**
+ * In the Prometheus Operator setup the node-exporter series carry `pod` and
+ * `namespace` labels but no node name, so filtering them by node requires a
+ * join with `kube_pod_info`. The join is only added when `opts.nodes` is
+ * present: without it the query aggregates every node over the time range,
+ * including the nodes replaced in the meantime (see #2409).
+ */
+const nodeExporterJoin = (opts: Record<string, string>): string =>
+  opts.nodes
+    ? ` * on (pod,namespace) group_left(node) max without(pod_ip,host_ip) (kube_pod_info{node=~"${opts.nodes}"})`
+    : "";
+
 export const getOperatorLikeQueryFor =
   ({ rateAccuracy }: { rateAccuracy: string }): PrometheusProvider["getQuery"] =>
   (opts, queryName) => {
     switch (opts.category) {
       case "cluster":
         switch (queryName) {
-          case "memoryUsage":
-            return `sum(node_memory_MemTotal_bytes - (node_memory_MemFree_bytes + node_memory_Buffers_bytes + node_memory_Cached_bytes))`;
+          case "memoryUsage": {
+            const join = nodeExporterJoin(opts);
+            return `sum(node_memory_MemTotal_bytes${join} - (node_memory_MemFree_bytes${join} + node_memory_Buffers_bytes${join} + node_memory_Cached_bytes${join}))`;
+          }
           case "workloadMemoryUsage":
             return `sum(container_memory_working_set_bytes{container!="",image!=""${nodeFilterAdditive(opts, "instance")}}) by (component)`;
           case "memoryRequests":
@@ -34,7 +48,7 @@ export const getOperatorLikeQueryFor =
           case "memoryAllocatableCapacity":
             return `sum(kube_node_status_allocatable{resource="memory"${nodeFilterAdditive(opts, "node")}})`;
           case "cpuUsage":
-            return `sum(rate(node_cpu_seconds_total{mode=~"user|system"${nodeFilterAdditive(opts, "node")}}[${rateAccuracy}]))`;
+            return `sum(rate(node_cpu_seconds_total{mode=~"user|system"}[${rateAccuracy}])${nodeExporterJoin(opts)})`;
           case "cpuRequests":
             return `sum(kube_pod_container_resource_requests{resource="cpu"${nodeFilterAdditive(opts, "node")}})`;
           case "cpuLimits":
@@ -50,12 +64,12 @@ export const getOperatorLikeQueryFor =
           case "podAllocatableCapacity":
             return `sum(kube_node_status_allocatable{resource="pods"${nodeFilterAdditive(opts, "node")}})`;
           case "fsSize": {
-            const nf = nodeFilterAdditive(opts, "node");
-            return `sum(node_filesystem_size_bytes{mountpoint=~"${opts.mountpoints}"${nf}})`;
+            const join = nodeExporterJoin(opts);
+            return `sum(node_filesystem_size_bytes{mountpoint=~"${opts.mountpoints}"}${join})`;
           }
           case "fsUsage": {
-            const nf = nodeFilterAdditive(opts, "node");
-            return `sum(node_filesystem_size_bytes{mountpoint=~"${opts.mountpoints}"${nf}} - node_filesystem_avail_bytes{mountpoint=~"${opts.mountpoints}"${nf}})`;
+            const join = nodeExporterJoin(opts);
+            return `sum(node_filesystem_size_bytes{mountpoint=~"${opts.mountpoints}"}${join} - node_filesystem_avail_bytes{mountpoint=~"${opts.mountpoints}"}${join})`;
           }
         }
         break;
