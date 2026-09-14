@@ -121,8 +121,8 @@ class ClusterConnection {
   private nextRefreshAllowedAt = 0;
 
   /**
-   * Prevents overlapping refresh() calls: while a credential plugin waits for
-   * an interactive login, the 30s timer must not start another attempt.
+   * Prevents overlapping connection status checks: while a credential plugin
+   * waits for an interactive login, no other caller must start another attempt.
    */
   private isRefreshing = false;
 
@@ -364,23 +364,8 @@ class ClusterConnection {
   }
 
   async refresh() {
-    if (this.isRefreshing) {
-      this.dependencies.logger.debug(
-        `[CLUSTER]: skipping refresh, previous refresh still in progress`,
-        this.cluster.getMeta(),
-      );
-
-      return;
-    }
-
-    this.isRefreshing = true;
-
-    try {
-      this.dependencies.logger.info(`[CLUSTER]: refresh`, this.cluster.getMeta());
-      await this.refreshConnectionStatus();
-    } finally {
-      this.isRefreshing = false;
-    }
+    this.dependencies.logger.info(`[CLUSTER]: refresh`, this.cluster.getMeta());
+    await this.refreshConnectionStatus();
   }
 
   async refreshAccessibilityAndMetadata() {
@@ -458,12 +443,29 @@ class ClusterConnection {
   }
 
   async refreshConnectionStatus() {
-    const connectionStatus = await this.getConnectionStatus();
+    // activate(), the refresh timer and the network events all end up here: a
+    // check still waiting for a credential plugin must not be doubled.
+    if (this.isRefreshing) {
+      this.dependencies.logger.debug(
+        `[CLUSTER]: skipping refresh, previous refresh still in progress`,
+        this.cluster.getMeta(),
+      );
 
-    runInAction(() => {
-      this.cluster.online.set(connectionStatus > ClusterStatus.Offline);
-      this.cluster.accessible.set(connectionStatus == ClusterStatus.AccessGranted);
-    });
+      return;
+    }
+
+    this.isRefreshing = true;
+
+    try {
+      const connectionStatus = await this.getConnectionStatus();
+
+      runInAction(() => {
+        this.cluster.online.set(connectionStatus > ClusterStatus.Offline);
+        this.cluster.accessible.set(connectionStatus == ClusterStatus.AccessGranted);
+      });
+    } finally {
+      this.isRefreshing = false;
+    }
   }
 
   protected async getConnectionStatus(): Promise<ClusterStatus> {
