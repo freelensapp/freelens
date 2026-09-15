@@ -6,7 +6,7 @@
 
 import "./item-list-layout.scss";
 
-import { cssNames, noop } from "@freelensapp/utilities";
+import { cssNames, isDefined, noop } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
 import { groupBy } from "es-toolkit";
@@ -17,6 +17,9 @@ import selectedFilterNamespacesInjectable from "../../../common/k8s-api/selected
 import userPreferencesStateInjectable, {
   type UserPreferencesState,
 } from "../../../features/user-preferences/common/state.injectable";
+import facetsUrlPageParamInjectable from "../input/facets-url-page-param.injectable";
+import { allFieldsId, compileFacet, parseFacetOperator, parseFacets } from "../input/search-facets";
+import searchOperatorUrlPageParamInjectable from "../input/search-operator-url-page-param.injectable";
 import { ItemListLayoutContent } from "./content";
 import { ItemListLayoutFilters } from "./filters";
 import { ItemListLayoutHeader } from "./header";
@@ -29,13 +32,14 @@ import type { ItemObject, TableCellProps } from "@freelensapp/list-layout";
 import type { IClassName, SingleOrMany, StrictReactNode } from "@freelensapp/utilities";
 
 import type { IComputedValue } from "mobx";
-import type { Primitive } from "type-fest";
 
 import type { SubscribableStore } from "../../kube-watch-api/kube-watch-api";
+import type { PageParam } from "../../navigation/page-param";
 import type { StorageLayer } from "../../utils/storage-helper";
 import type { AddRemoveButtonsProps } from "../add-remove-buttons";
 import type { ConfirmDialogParams } from "../confirm-dialog";
 import type { SearchInputUrlProps } from "../input";
+import type { CompiledFacet, SearchFacet } from "../input/search-facets";
 import type { TableProps, TableRowProps, TableSortCallbacks } from "../table";
 import type { PageFiltersStore } from "./page-filters/store";
 
@@ -43,6 +47,29 @@ export type ListLayoutSearchFilter<I extends ItemObject> = (
   item: I,
 ) => SingleOrMany<string | number | undefined | null>;
 export type ListLayoutSearchFilters<I extends ItemObject> = Record<string, ListLayoutSearchFilter<I>>;
+
+/**
+ * A searchable field a view exposes by name, so the search box can offer it as
+ * a facet to combine with others.
+ *
+ * Views that declare only the anonymous {@link ItemListLayoutProps.searchFilters}
+ * keep working unchanged - they simply offer nothing but "All fields".
+ */
+export interface NamedSearchFilter<I extends ItemObject> {
+  /** Stable id; it travels in the URL, so renaming it invalidates saved links. */
+  id: string;
+  /** Label shown in the facet dropdown and on the chip. */
+  title: string;
+  getValue: ListLayoutSearchFilter<I>;
+  /**
+   * Searched by "All fields" but not offered as a facet of its own.
+   *
+   * For fields nobody filters on deliberately, like a uid: dropping them would
+   * silently narrow what a plain query finds, and listing them would clutter
+   * the dropdown.
+   */
+  hidden?: boolean;
+}
 export type ListLayoutItemsFilter<I extends ItemObject> = (items: I[]) => I[];
 export type ListLayoutItemsFilters<I extends ItemObject> = Record<string, ListLayoutItemsFilter<I>>;
 
@@ -51,10 +78,6 @@ export interface HeaderPlaceholders {
   searchProps?: SearchInputUrlProps;
   filters?: StrictReactNode;
   info?: StrictReactNode;
-}
-
-function normalizeText(value: Primitive) {
-  return String(value).toLowerCase();
 }
 
 export type ItemListStore<I extends ItemObject, PreLoadStores extends boolean> = {
@@ -100,6 +123,12 @@ export type ItemListLayoutProps<Item extends ItemObject, PreLoadStores extends b
   preloadStores?: boolean;
   hideFilters?: boolean;
   searchFilters?: ListLayoutSearchFilter<Item>[];
+  /**
+   * Named searchable fields, offered individually in the search box so they can
+   * be combined as facets. When given, these also back the "All fields" facet,
+   * making {@link searchFilters} redundant for the view.
+   */
+  searchFields?: NamedSearchFilter<Item>[];
   filterItems?: ListLayoutItemsFilter<Item>[];
 
   // header (title, filtering, searching, etc.)
@@ -159,6 +188,7 @@ const defaultProps: Partial<ItemListLayoutProps<ItemObject, true>> = {
   preloadStores: true,
   dependentStores: [],
   searchFilters: [],
+  searchFields: [],
   customizeHeader: [],
   filterItems: [],
   hasDetailsView: true,
@@ -177,6 +207,8 @@ interface Dependencies {
   itemListLayoutStorage: StorageLayer<ItemListLayoutStorage>;
   pageFiltersStore: PageFiltersStore;
   userPreferencesState: UserPreferencesState;
+  facetsUrlParam: PageParam<string>;
+  searchOperatorUrlParam: PageParam<string>;
 }
 
 @observer
@@ -238,9 +270,13 @@ class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends bool
   // reactions. observableProps keeps the reads reactive across those boundaries.
   get filters() {
     let { activeFilters } = this.observableProps.pageFiltersStore;
-    const { searchFilters = [] } = this.observableProps;
+    const { searchFilters = [], searchFields = [] } = this.observableProps;
 
-    if (searchFilters.length === 0) {
+    // A view with nothing searchable must not carry a search filter left over
+    // from another view. `searchFields` counts too: a fully migrated view
+    // declares only those, and dropping the filter would leave its search box
+    // typing into the void.
+    if (searchFilters.length === 0 && searchFields.length === 0) {
       activeFilters = activeFilters.filter(({ type }) => type !== FilterType.SEARCH);
     }
 
@@ -266,26 +302,131 @@ class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends bool
     return <PageFiltersList filters={filters} />;
   }
 
+  /**
+   * The getters one facet reads: a single named field, or every searchable field
+   * of the view for {@link allFieldsId}.
+   *
+   * Resolved once per filter pass, never per item - `searchFields.map(...)` in
+   * the item loop allocates an array for every row on every keystroke.
+   */
+  private gettersFor(field: string): ListLayoutSearchFilter<I>[] {
+    const { searchFields = [], searchFilters = [] } = this.observableProps;
+
+    if (field === allFieldsId) {
+      // A view that names its fields is expected to name all of them, `hidden`
+      // included; unioning both sources instead would compute every shared
+      // field twice per item, and `getSearchFields()` re-stringifies labels.
+      return searchFields.length > 0 ? searchFields.map(({ getValue }) => getValue) : searchFilters;
+    }
+
+    const named = searchFields.find((candidate) => candidate.id === field);
+
+    return named ? [named.getValue] : [];
+  }
+
+  /**
+   * Whether a facet's field is searchable here.
+   *
+   * A search carried in from another view - the linked search does exactly that
+   * - can name a field this one does not have. Such a facet is skipped rather
+   * than applied: with no texts to read, a positive operator would empty the
+   * list and a negative one would filter nothing, so the same chip would either
+   * look broken or lie about being applied depending on its operator. The chip
+   * is shown struck through instead, and is kept so it applies again on a view
+   * that does have the field.
+   */
+  private isFieldAvailable(field: string): boolean {
+    const { searchFields = [] } = this.observableProps;
+
+    return field === allFieldsId || searchFields.some((candidate) => candidate.id === field);
+  }
+
+  /** Facets that actually filter here. */
+  private get applicableFacets(): SearchFacet[] {
+    return parseFacets(this.observableProps.facetsUrlParam.get()).filter((facet) => this.isFieldAvailable(facet.field));
+  }
+
+  /**
+   * Whether any text of any of these getters satisfies the facet.
+   *
+   * Walks the fields one text at a time and returns on the first hit, so a match
+   * on the name never costs the work of stringifying labels.
+   */
+  private anyTextMatches(item: I, getters: ListLayoutSearchFilter<I>[], compiled: CompiledFacet): boolean {
+    for (const getTexts of getters) {
+      const value = getTexts(item);
+
+      if (Array.isArray(value)) {
+        for (const text of value) {
+          if (compiled.test(text)) {
+            return true;
+          }
+        }
+      } else if (compiled.test(value)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  private matches(item: I, getters: ListLayoutSearchFilter<I>[], compiled: CompiledFacet): boolean {
+    const found = this.anyTextMatches(item, getters, compiled);
+
+    return compiled.negated ? !found : found;
+  }
+
   private filterCallbacks: ListLayoutItemsFilters<I> = {
     [FilterType.SEARCH]: (items) => {
-      const { searchFilters = [] } = this.observableProps;
+      const { searchFilters = [], searchFields = [] } = this.observableProps;
       const search = this.observableProps.pageFiltersStore.getValues(FilterType.SEARCH)[0] || "";
 
-      if (search && searchFilters.length) {
-        const searchTexts = [search].map(normalizeText);
-
-        return items.filter((item) =>
-          searchFilters.some((getTexts) =>
-            [getTexts(item)]
-              .flat()
-              .map(normalizeText)
-              .some((source) => searchTexts.some((search) => source.includes(search))),
-          ),
-        );
+      if (!search || (searchFilters.length === 0 && searchFields.length === 0)) {
+        return items;
       }
 
-      return items;
+      // The plain search box is the "all fields" facet carrying whichever
+      // operator the box has armed, matched by the same code as the committed
+      // chips. Reading the operator here is what makes picking `=~` re-filter
+      // straight away instead of only once a chip is committed.
+      const compiled = compileFacet({
+        field: allFieldsId,
+        values: [search],
+        op: parseFacetOperator(this.observableProps.searchOperatorUrlParam.get()),
+      });
+
+      if (!compiled) {
+        return items;
+      }
+
+      const getters = this.gettersFor(allFieldsId);
+
+      return items.filter((item) => this.matches(item, getters, compiled));
     },
+  };
+
+  /** AND across facets, OR within each. */
+  private filterByFacets = (items: I[]): I[] => {
+    const facets = this.applicableFacets;
+
+    if (facets.length === 0) {
+      return items;
+    }
+
+    // Compiled and resolved per facet, outside the item loop.
+    const matchers = facets
+      .map((facet) => {
+        const compiled = compileFacet(facet);
+
+        return compiled ? { getters: this.gettersFor(facet.field), compiled } : undefined;
+      })
+      .filter(isDefined);
+
+    if (matchers.length === 0) {
+      return items;
+    }
+
+    return items.filter((item) => matchers.every(({ getters, compiled }) => this.matches(item, getters, compiled)));
   };
 
   get items() {
@@ -302,7 +443,9 @@ class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends bool
 
     const items = this.observableProps.getItems();
 
-    return applyFilters(filterItems.concat(this.observableProps.filterItems ?? []), items);
+    // Facets are not driven by `pageFiltersStore`, so their filter is always in
+    // the chain; it returns the list untouched when no chips are set.
+    return applyFilters(filterItems.concat(this.filterByFacets, this.observableProps.filterItems ?? []), items);
   }
 
   render() {
@@ -316,6 +459,13 @@ class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends bool
           toggleFilters={this.toggleFilters}
           store={this.props.store}
           searchFilters={this.props.searchFilters}
+          searchFields={this.props.searchFields}
+          // Only the applicable ones: a skipped facet is not narrowing the list,
+          // so counting it would report the view as filtered when it is not.
+          //
+          // observableProps, not this.props: the header calls this from inside
+          // its own render reaction, where mobx-react 9 forbids reading props.
+          getFacetCount={() => this.applicableFacets.length}
           showHeader={this.props.showHeader}
           headerClassName={this.props.headerClassName}
           renderHeaderTitle={
@@ -372,6 +522,8 @@ export const ItemListLayout = withInjectables<Dependencies, ItemListLayoutProps<
       itemListLayoutStorage: di.inject(itemListLayoutStorageInjectable),
       pageFiltersStore: di.inject(pageFiltersStoreInjectable),
       userPreferencesState: di.inject(userPreferencesStateInjectable),
+      facetsUrlParam: di.inject(facetsUrlPageParamInjectable),
+      searchOperatorUrlParam: di.inject(searchOperatorUrlPageParamInjectable),
     }),
   },
 ) as <I extends ItemObject, PreLoadStores extends boolean = true>(

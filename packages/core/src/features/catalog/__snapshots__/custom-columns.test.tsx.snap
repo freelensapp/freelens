@@ -345,10 +345,10 @@ exports[`custom category columns for catalog > renders 1`] = `
                     0 items
                   </div>
                   <div
-                    style="display: flex; align-items: center; gap: 8px;"
+                    class="wrapper"
                   >
                     <div
-                      class="Input SearchInput focused"
+                      class="Input SearchInput searchInput focused"
                     >
                       <label
                         class="input-area flex items-center gap-2"
@@ -374,6 +374,20 @@ exports[`custom category columns for catalog > renders 1`] = `
                       <div
                         class="input-info flex gap-2"
                       />
+                    </div>
+                    <i
+                      class="Icon material interactive focusable small"
+                      tabindex="0"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="bookmark_border"
+                      >
+                        bookmark_border
+                      </span>
+                    </i>
+                    <div>
+                      Saved searches
                     </div>
                     <i
                       class="Icon material interactive focusable small"
@@ -1098,10 +1112,10 @@ exports[`custom category columns for catalog > when category is added using defa
                     0 items
                   </div>
                   <div
-                    style="display: flex; align-items: center; gap: 8px;"
+                    class="wrapper"
                   >
                     <div
-                      class="Input SearchInput focused"
+                      class="Input SearchInput searchInput focused"
                     >
                       <label
                         class="input-area flex items-center gap-2"
@@ -1127,6 +1141,20 @@ exports[`custom category columns for catalog > when category is added using defa
                       <div
                         class="input-info flex gap-2"
                       />
+                    </div>
+                    <i
+                      class="Icon material interactive focusable small"
+                      tabindex="0"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="bookmark_border"
+                      >
+                        bookmark_border
+                      </span>
+                    </i>
+                    <div>
+                      Saved searches
                     </div>
                     <i
                       class="Icon material interactive focusable small"
@@ -1851,10 +1879,10 @@ exports[`custom category columns for catalog > when category is added using defa
                     0 items
                   </div>
                   <div
-                    style="display: flex; align-items: center; gap: 8px;"
+                    class="wrapper"
                   >
                     <div
-                      class="Input SearchInput focused"
+                      class="Input SearchInput searchInput focused"
                     >
                       <label
                         class="input-area flex items-center gap-2"
@@ -1880,6 +1908,20 @@ exports[`custom category columns for catalog > when category is added using defa
                       <div
                         class="input-info flex gap-2"
                       />
+                    </div>
+                    <i
+                      class="Icon material interactive focusable small"
+                      tabindex="0"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="bookmark_border"
+                      >
+                        bookmark_border
+                      </span>
+                    </i>
+                    <div>
+                      Saved searches
                     </div>
                     <i
                       class="Icon material interactive focusable small"
@@ -2594,10 +2636,10 @@ exports[`custom category columns for catalog > when category is added using defa
                     0 items
                   </div>
                   <div
-                    style="display: flex; align-items: center; gap: 8px;"
+                    class="wrapper"
                   >
                     <div
-                      class="Input SearchInput focused"
+                      class="Input SearchInput searchInput focused"
                     >
                       <label
                         class="input-area flex items-center gap-2"
@@ -2623,6 +2665,20 @@ exports[`custom category columns for catalog > when category is added using defa
                       <div
                         class="input-info flex gap-2"
                       />
+                    </div>
+                    <i
+                      class="Icon material interactive focusable small"
+                      tabindex="0"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="bookmark_border"
+                      >
+                        bookmark_border
+                      </span>
+                    </i>
+                    <div>
+                      Saved searches
                     </div>
                     <i
                       class="Icon material interactive focusable small"
@@ -3323,10 +3379,10 @@ exports[`custom category columns for catalog > when category is added with custo
                     0 items
                   </div>
                   <div
-                    style="display: flex; align-items: center; gap: 8px;"
+                    class="wrapper"
                   >
                     <div
-                      class="Input SearchInput focused"
+                      class="Input SearchInput searchInput focused"
                     >
                       <label
                         class="input-area flex items-center gap-2"
@@ -3352,6 +3408,20 @@ exports[`custom category columns for catalog > when category is added with custo
                       <div
                         class="input-info flex gap-2"
                       />
+                    </div>
+                    <i
+                      class="Icon material interactive focusable small"
+                      tabindex="0"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="bookmark_border"
+                      >
+                        bookmark_border
+                      </span>
+                    </i>
+                    <div>
+                      Saved searches
                     </div>
                     <i
                       class="Icon material interactive focusable small"
@@ -4076,10 +4146,10 @@ exports[`custom category columns for catalog > when category is added with custo
                     0 items
                   </div>
                   <div
-                    style="display: flex; align-items: center; gap: 8px;"
+                    class="wrapper"
                   >
                     <div
-                      class="Input SearchInput focused"
+                      class="Input SearchInput searchInput focused"
                     >
                       <label
                         class="input-area flex items-center gap-2"
@@ -4105,6 +4175,20 @@ exports[`custom category columns for catalog > when category is added with custo
                       <div
                         class="input-info flex gap-2"
                       />
+                    </div>
+                    <i
+                      class="Icon material interactive focusable small"
+                      tabindex="0"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="bookmark_border"
+                      >
+                        bookmark_border
+                      </span>
+                    </i>
+                    <div>
+                      Saved searches
                     </div>
                     <i
                       class="Icon material interactive focusable small"
@@ -4757,10 +4841,10 @@ exports[`custom category columns for catalog > when category is added without de
                     0 items
                   </div>
                   <div
-                    style="display: flex; align-items: center; gap: 8px;"
+                    class="wrapper"
                   >
                     <div
-                      class="Input SearchInput focused"
+                      class="Input SearchInput searchInput focused"
                     >
                       <label
                         class="input-area flex items-center gap-2"
@@ -4786,6 +4870,20 @@ exports[`custom category columns for catalog > when category is added without de
                       <div
                         class="input-info flex gap-2"
                       />
+                    </div>
+                    <i
+                      class="Icon material interactive focusable small"
+                      tabindex="0"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="bookmark_border"
+                      >
+                        bookmark_border
+                      </span>
+                    </i>
+                    <div>
+                      Saved searches
                     </div>
                     <i
                       class="Icon material interactive focusable small"
@@ -5510,10 +5608,10 @@ exports[`custom category columns for catalog > when category is added without de
                     0 items
                   </div>
                   <div
-                    style="display: flex; align-items: center; gap: 8px;"
+                    class="wrapper"
                   >
                     <div
-                      class="Input SearchInput focused"
+                      class="Input SearchInput searchInput focused"
                     >
                       <label
                         class="input-area flex items-center gap-2"
@@ -5539,6 +5637,20 @@ exports[`custom category columns for catalog > when category is added without de
                       <div
                         class="input-info flex gap-2"
                       />
+                    </div>
+                    <i
+                      class="Icon material interactive focusable small"
+                      tabindex="0"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="bookmark_border"
+                      >
+                        bookmark_border
+                      </span>
+                    </i>
+                    <div>
+                      Saved searches
                     </div>
                     <i
                       class="Icon material interactive focusable small"

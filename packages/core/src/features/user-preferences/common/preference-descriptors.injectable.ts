@@ -29,10 +29,18 @@ import type {
   KubeconfigSyncEntry,
   KubeconfigSyncValue,
   LogViewerPreferences,
+  SavedSearch,
   TerminalConfig,
 } from "./preferences-helpers";
 
 export type PreferenceDescriptors = ReturnType<(typeof userPreferenceDescriptorsInjectable)["instantiate"]>;
+
+const isSavedSearch = (value: unknown): value is SavedSearch =>
+  typeof value === "object" &&
+  value !== null &&
+  ["name", "view", "search", "op", "facets"].every(
+    (key) => typeof (value as Record<string, unknown>)[key] === "string",
+  );
 
 const userPreferenceDescriptorsInjectable = getInjectable({
   id: "user-preference-descriptors",
@@ -112,6 +120,12 @@ const userPreferenceDescriptorsInjectable = getInjectable({
       persistentSearch: getPreferenceDescriptor<boolean>({
         fromStore: (val) => val ?? false,
         toStore: (val) => (!val ? undefined : val),
+      }),
+      savedSearches: getPreferenceDescriptor<SavedSearch[]>({
+        // Hand-edited or older files reach this, so anything malformed is
+        // dropped rather than left to blow up when a search is applied.
+        fromStore: (val) => (Array.isArray(val) ? val.filter(isSavedSearch) : []),
+        toStore: (val) => (val.length === 0 ? undefined : val),
       }),
       logViewerPreferences: getPreferenceDescriptor<Partial<LogViewerPreferences>, LogViewerPreferences>({
         fromStore: (val) => ({
