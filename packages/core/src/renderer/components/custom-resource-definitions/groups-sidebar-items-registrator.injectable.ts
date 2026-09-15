@@ -7,9 +7,11 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { reaction } from "mobx";
 import dependencyInjectionContainerInjectable from "../../../common/dependency-injection/dependency-injection-container.injectable";
-import { injectableDifferencingRegistratorWith } from "../../../common/utils/registrator-helper";
 import { beforeClusterFrameStartsSecondInjectionToken } from "../../before-frame-starts/tokens";
 import customResourceDefinitionGroupsSidebarItemsComputedInjectable from "./groups-sidebar-items-computed.injectable";
+import { differencingRegistratorWithContentCheck } from "./groups-sidebar-items-differencing-registrator";
+
+import type { Injectable } from "@ogre-tools/injectable";
 
 const customResourceDefinitionGroupsSidebarItemsRegistratorInjectable = getInjectable({
   id: "custom-resource-definition-groups-sidebar-items-registrator",
@@ -18,11 +20,34 @@ const customResourceDefinitionGroupsSidebarItemsRegistratorInjectable = getInjec
       const sidebarItems = di.inject(customResourceDefinitionGroupsSidebarItemsComputedInjectable);
       // Register against the root container so the sidebar item ids stay bare
       // (not namespaced under this registrator by @ogre-tools 23).
-      const injectableDifferencingRegistrator = injectableDifferencingRegistratorWith(
+      const differencingRegistrator = differencingRegistratorWithContentCheck(
         di.inject(dependencyInjectionContainerInjectable),
       );
 
-      reaction(() => sidebarItems.get(), injectableDifferencingRegistrator, { fireImmediately: true });
+      // This registrator manages its own previous state
+      let previousSidebarItems: Injectable<any, any, any>[] = [];
+
+      reaction(
+        // Data function - wrapped in try/catch to prevent error propagation
+        () => {
+          try {
+            return sidebarItems.get();
+          } catch (error) {
+            console.error("Error getting sidebar items:", error);
+            return []; // Return empty array in case of error
+          }
+        },
+        // Effect - also protected against errors
+        (currentItems) => {
+          try {
+            differencingRegistrator(currentItems, previousSidebarItems);
+            previousSidebarItems = currentItems;
+          } catch (error) {
+            console.error("Error registering sidebar items:", error);
+          }
+        },
+        { fireImmediately: true },
+      );
     },
   }),
   injectionToken: beforeClusterFrameStartsSecondInjectionToken,
