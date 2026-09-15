@@ -29,31 +29,31 @@
     }
   },
   "kubectl": {
-    "version": "1.36.3",
+    "version": "1.37.0",
     "artifacts": {
       "darwin/x64": {
-        "url": "https://dl.k8s.io/release/v1.36.3/bin/darwin/amd64/kubectl",
-        "sha256": "158b3b46cf74e8b6bd9b1d7cd30f665e3efb2bc1ec3c843ec925bcfdd2930de0"
+        "url": "https://dl.k8s.io/release/v1.37.0/bin/darwin/amd64/kubectl",
+        "sha256": "d5276c0f4fde77fc446070290f345944a7f1fda153df6b960e5fde93b7a9bccd"
       },
       "darwin/arm64": {
-        "url": "https://dl.k8s.io/release/v1.36.3/bin/darwin/arm64/kubectl",
-        "sha256": "fc8582acde13869a606730a79379d6515f30c68afcced0b5ac8789d5d002b7d6"
+        "url": "https://dl.k8s.io/release/v1.37.0/bin/darwin/arm64/kubectl",
+        "sha256": "583beedaebe422e71d3f1a96acef8b1fef86ea2f09a45ad01aa6c9ce287c1380"
       },
       "linux/x64": {
-        "url": "https://dl.k8s.io/release/v1.36.3/bin/linux/amd64/kubectl",
-        "sha256": "ebbd080e7c2e275093b55915722043257eb24004363e20acb3c4d71919f88336"
+        "url": "https://dl.k8s.io/release/v1.37.0/bin/linux/amd64/kubectl",
+        "sha256": "6129359f4e1f3848a5572ccb0b26cf28b8ca08cef38c95a765b2f64a2c961a2f"
       },
       "linux/arm64": {
-        "url": "https://dl.k8s.io/release/v1.36.3/bin/linux/arm64/kubectl",
-        "sha256": "3d86f24401c41ae5a46ac50eef8865fe891d3647d324a0836f6c63757a126e62"
+        "url": "https://dl.k8s.io/release/v1.37.0/bin/linux/arm64/kubectl",
+        "sha256": "922df28df248cc00a9e025f947704f1d1482de64ece54cfe57e61f19eaf1eef3"
       },
       "windows/x64": {
-        "url": "https://dl.k8s.io/release/v1.36.3/bin/windows/amd64/kubectl.exe",
-        "sha256": "ba76657b79d0ebcc3c029c171fc83c96351ba5ce0e71d185f1e5b8b873360a5f"
+        "url": "https://dl.k8s.io/release/v1.37.0/bin/windows/amd64/kubectl.exe",
+        "sha256": "4721b614a67bb4932a0369e61f4a323d8c6ca00943d3a2ff14837c124da06f0e"
       },
       "windows/arm64": {
-        "url": "https://dl.k8s.io/release/v1.36.3/bin/windows/arm64/kubectl.exe",
-        "sha256": "883d4b060cff6d95df9c80a5c13e4fc8da473af0d03f3b2fa407ee8d0810a9d6"
+        "url": "https://dl.k8s.io/release/v1.37.0/bin/windows/arm64/kubectl.exe",
+        "sha256": "c72d866c4eae0f47aac5ca6b864cf2cee103ceb34fc1251663becc0aa7a84bdf"
       }
     }
   },
