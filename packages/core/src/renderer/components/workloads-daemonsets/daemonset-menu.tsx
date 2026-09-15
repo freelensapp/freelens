@@ -9,6 +9,7 @@ import { daemonSetApiInjectable } from "@freelensapp/kube-api-specifics";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import openConfirmDialogInjectable from "../confirm-dialog/open.injectable";
+import createWorkloadLogsTabInjectable from "../dock/logs/create-workload-logs-tab.injectable";
 import { MenuItem } from "../menu";
 
 import type { DaemonSetApi } from "@freelensapp/kube-api";
@@ -24,6 +25,7 @@ interface Dependencies {
   daemonSetApi: DaemonSetApi;
   openConfirmDialog: OpenConfirmDialog;
   showCheckedErrorNotification: ShowCheckedErrorNotification;
+  createWorkloadLogsTab: ReturnType<typeof createWorkloadLogsTabInjectable.instantiate>;
 }
 
 const NonInjectedDaemonSetMenu = ({
@@ -32,8 +34,13 @@ const NonInjectedDaemonSetMenu = ({
   toolbar,
   openConfirmDialog,
   showCheckedErrorNotification,
+  createWorkloadLogsTab,
 }: Dependencies & DaemonSetMenuProps) => (
   <>
+    <MenuItem onClick={() => createWorkloadLogsTab({ workload: object })}>
+      <Icon material="subject" tooltip={`${object.kind} Logs`} interactive={toolbar} />
+      <span className="title">Logs</span>
+    </MenuItem>
     <MenuItem
       onClick={() =>
         openConfirmDialog({
@@ -69,5 +76,6 @@ export const DaemonSetMenu = withInjectables<Dependencies, DaemonSetMenuProps>(N
     daemonSetApi: di.inject(daemonSetApiInjectable),
     openConfirmDialog: di.inject(openConfirmDialogInjectable),
     showCheckedErrorNotification: di.inject(showCheckedErrorNotificationInjectable),
+    createWorkloadLogsTab: di.inject(createWorkloadLogsTabInjectable),
   }),
 });

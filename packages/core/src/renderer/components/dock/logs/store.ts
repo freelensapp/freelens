@@ -6,6 +6,7 @@
 
 import { getOrInsertWith, interval, waitUntilDefined } from "@freelensapp/utilities";
 import { observable } from "mobx";
+import { mergePodLogs } from "./merge-pod-logs";
 
 import type { Pod, PodLogsQuery } from "@freelensapp/kube-object";
 import type { IntervalFn } from "@freelensapp/utilities";
@@ -49,16 +50,16 @@ export class LogStore {
    */
   public async load(
     tabId: TabId,
-    computedPod: IComputedValue<Pod | undefined>,
+    computedPods: IComputedValue<Pod[]>,
     logTabData: IComputedValue<LogTabData | undefined>,
   ): Promise<void> {
     try {
-      const logs = await this.loadLogs(computedPod, logTabData, {
+      const linesByPod = await this.loadLogs(computedPods, logTabData, {
         tailLines: this.getLogLines(tabId) + logLinesToLoad,
       });
 
-      this.getRefresher(tabId, computedPod, logTabData).start();
-      this.podLogs.set(tabId, logs);
+      this.getRefresher(tabId, computedPods, logTabData).start();
+      this.podLogs.set(tabId, mergePodLogs(linesByPod));
     } catch (error) {
       this.handlerError(tabId, error);
     }
@@ -66,13 +67,13 @@ export class LogStore {
 
   private getRefresher(
     tabId: TabId,
-    computedPod: IComputedValue<Pod | undefined>,
+    computedPods: IComputedValue<Pod[]>,
     logTabData: IComputedValue<LogTabData | undefined>,
   ): IntervalFn {
     return getOrInsertWith(this.refreshers, tabId, () =>
       interval(10, () => {
         if (this.podLogs.has(tabId)) {
-          this.loadMore(tabId, computedPod, logTabData);
+          this.loadMore(tabId, computedPods, logTabData);
         }
       }),
     );
@@ -94,7 +95,7 @@ export class LogStore {
    */
   public async loadMore(
     tabId: TabId,
-    computedPod: IComputedValue<Pod | undefined>,
+    computedPods: IComputedValue<Pod[]>,
     logTabData: IComputedValue<LogTabData | undefined>,
   ): Promise<void> {
     const oldLogs = this.podLogs.get(tabId);
@@ -104,56 +105,89 @@ export class LogStore {
     }
 
     try {
-      const logs = await this.loadLogs(computedPod, logTabData, {
+      const linesByPod = await this.loadLogs(computedPods, logTabData, {
         sinceTime: this.getLastSinceTime(tabId),
       });
 
+      // Every pod's new lines are all chronologically after everything already
+      // shown (they were all fetched with the same `sinceTime`, derived from the
+      // most recent line already in `oldLogs`), so merging just this batch and
+      // appending it keeps the whole buffer in order without re-merging history.
+      const newLines = mergePodLogs(linesByPod).filter(Boolean);
+
       // Add newly received logs to bottom
-      this.podLogs.set(tabId, [...oldLogs, ...logs.filter(Boolean)]);
+      this.podLogs.set(tabId, [...oldLogs, ...newLines]);
     } catch (error) {
       this.handlerError(tabId, error);
     }
   }
 
   /**
-   * Main logs loading function adds necessary data to payload and makes
-   * an API request
-   * @param tabId
+   * Main logs loading function adds necessary data to payload and makes an API
+   * request per pod (in parallel), keyed by pod name for tagging/merging.
+   * @param computedPods the pod(s) to fetch logs for; more than one means this
+   * is a combined logs tab
+   * @param logTabData
    * @param params request parameters described in IPodLogsQuery interface
-   * @returns A fetch request promise
+   * @returns A map of pod name to its fetched log lines
    */
   private async loadLogs(
-    computedPod: IComputedValue<Pod | undefined>,
+    computedPods: IComputedValue<Pod[]>,
     logTabData: IComputedValue<LogTabData | undefined>,
     params: Partial<PodLogsQuery>,
-  ): Promise<string[]> {
+  ): Promise<Map<string, string[]>> {
     const {
-      pod,
+      pods,
       tabData: { selectedContainer, showPrevious },
     } = await waitUntilDefined(() => {
-      const pod = computedPod.get();
+      const pods = computedPods.get();
       const tabData = logTabData.get();
 
-      if (pod && tabData) {
-        return { pod, tabData };
+      if (pods.length && tabData) {
+        return { pods, tabData };
       }
 
       return undefined;
     });
-    const namespace = pod.getNs();
-    const name = pod.getName();
 
-    const result = await this.dependencies.callForLogs(
-      { namespace, name },
-      {
-        ...params,
-        timestamps: true, // Always setting timestamp to separate old logs from new ones
-        container: selectedContainer,
-        previous: showPrevious,
-      },
+    const results = await Promise.allSettled(
+      pods.map(async (pod) => {
+        const result = await this.dependencies.callForLogs(
+          { namespace: pod.getNs(), name: pod.getName() },
+          {
+            ...params,
+            timestamps: true, // Always setting timestamp to separate old logs from new ones
+            container: selectedContainer,
+            previous: showPrevious,
+          },
+        );
+
+        return {
+          podName: pod.getName(),
+          lines: result.trimEnd().replace(/\r/g, "\n").split("\n").filter(Boolean),
+        };
+      }),
     );
 
-    return result.trimEnd().replace(/\r/g, "\n").split("\n");
+    const linesByPod = new Map<string, string[]>();
+    const errors: unknown[] = [];
+
+    for (const result of results) {
+      if (result.status === "fulfilled") {
+        linesByPod.set(result.value.podName, result.value.lines);
+      } else {
+        errors.push(result.reason);
+      }
+    }
+
+    // Only surface an error (and blank out the tab) when every pod failed; a
+    // single pod being briefly unreachable (e.g. it just got deleted) shouldn't
+    // wipe out the logs still being received from the rest of a combined tab.
+    if (linesByPod.size === 0 && errors.length > 0) {
+      throw errors[0];
+    }
+
+    return linesByPod;
   }
 
   /**
@@ -241,11 +275,11 @@ export class LogStore {
 
   reload(
     tabId: TabId,
-    computedPod: IComputedValue<Pod | undefined>,
+    computedPods: IComputedValue<Pod[]>,
     logTabData: IComputedValue<LogTabData | undefined>,
   ): Promise<void> {
     this.clearLogs(tabId);
 
-    return this.load(tabId, computedPod, logTabData);
+    return this.load(tabId, computedPods, logTabData);
   }
 }
