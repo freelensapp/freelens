@@ -17,6 +17,7 @@ export const logTabDataValidator = Joi.object<LogTabData>({
     .unknown(true)
     .optional(),
   selectedPodId: Joi.string().required(),
+  mergedPodIds: Joi.array().items(Joi.string()).optional(),
   namespace: Joi.string().required(),
   selectedContainer: Joi.string().optional(),
   showTimestamps: Joi.boolean().required(),

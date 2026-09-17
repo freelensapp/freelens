@@ -17,9 +17,8 @@ export interface LogControlsProps {
 
 export const LogControls = observer(({ model }: LogControlsProps) => {
   const tabData = model.logTabData.get();
-  const pod = model.pod.get();
 
-  if (!tabData || !pod) {
+  if (!tabData) {
     return null;
   }
 

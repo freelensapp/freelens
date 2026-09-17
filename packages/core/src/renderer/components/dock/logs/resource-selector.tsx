@@ -30,6 +30,7 @@ export const LogResourceSelector = observer(({ model }: LogResourceSelectorProps
   }
 
   const { selectedContainer, owner } = tabData;
+  const isMerged = model.isMerged.get();
   const pods = model.pods.get();
   const pod = model.pod.get();
 
@@ -37,10 +38,15 @@ export const LogResourceSelector = observer(({ model }: LogResourceSelectorProps
     return null;
   }
 
-  const podOptions = pods.map((pod) => ({
-    value: pod,
-    label: pod.getName(),
-  }));
+  // Sibling pods (for the switcher dropdown) are only relevant -- and only
+  // looked up -- outside of merged mode, where a combined-logs tab's `pods`
+  // come from `logSourcePods` instead (rendered separately below).
+  const podOptions = isMerged
+    ? []
+    : pods.map((pod) => ({
+        value: pod,
+        label: pod.getName(),
+      }));
   const allContainers = pod.getAllContainers();
   const container = allContainers.find((container) => container.name === selectedContainer) ?? null;
   const onContainerChange = (option: SingleValue<SelectOption<Container>>) => {
@@ -92,15 +98,31 @@ export const LogResourceSelector = observer(({ model }: LogResourceSelectorProps
           <span>Owner</span> <Badge data-testid="namespace-badge" label={`${owner.kind} ${owner.name}`} />
         </>
       )}
-      <span>Pod</span>
-      <Select
-        options={podOptions}
-        value={pod}
-        isClearable={false}
-        onChange={onPodChange}
-        className="pod-selector"
-        menuClass="pod-selector-menu"
-      />
+      {isMerged ? (
+        <>
+          <span>Pods</span>
+          <Badge
+            data-testid="merged-pods-badge"
+            label={`${model.logSourcePods.get().length} pods`}
+            tooltip={model.logSourcePods
+              .get()
+              .map((pod) => pod.getName())
+              .join(", ")}
+          />
+        </>
+      ) : (
+        <>
+          <span>Pod</span>
+          <Select
+            options={podOptions}
+            value={pod}
+            isClearable={false}
+            onChange={onPodChange}
+            className="pod-selector"
+            menuClass="pod-selector-menu"
+          />
+        </>
+      )}
       <span>Container</span>
       <Select<Container, SelectOption<Container>, false>
         id="container-selector-input"
