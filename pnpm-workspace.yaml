@@ -125,7 +125,7 @@ catalog:
   rfc6902: 5.2.0
   selfsigned: 5.5.0
   semver: 7.8.5
-  sharp: 0.35.3
+  sharp: 0.35.4
   sigstore: 5.0.0
   spdx-license-list: 6.11.0
   tar: 7.5.21
