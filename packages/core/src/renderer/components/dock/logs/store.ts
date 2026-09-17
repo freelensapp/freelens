@@ -4,8 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getOrInsertWith, interval, waitUntilDefined } from "@freelensapp/utilities";
-import { observable } from "mobx";
+import assert from "node:assert";
+import { getOrInsertWith, interval } from "@freelensapp/utilities";
+import { observable, when } from "mobx";
 
 import type { Pod, PodLogsQuery } from "@freelensapp/kube-object";
 import type { IntervalFn } from "@freelensapp/utilities";
@@ -27,6 +28,7 @@ interface Dependencies {
 export class LogStore {
   protected podLogs = observable.map<TabId, PodLogLine[]>();
   protected refreshers = new Map<TabId, IntervalFn>();
+  private readonly requests = new Map<TabId, AbortController>();
 
   constructor(private dependencies: Dependencies) {}
 
@@ -52,16 +54,21 @@ export class LogStore {
     computedPod: IComputedValue<Pod | undefined>,
     logTabData: IComputedValue<LogTabData | undefined>,
   ): Promise<void> {
-    try {
-      const logs = await this.loadLogs(computedPod, logTabData, {
-        tailLines: this.getLogLines(tabId) + logLinesToLoad,
-      });
+    // A manual load supersedes any poll or load from the previous tab selection.
+    this.stopLoadingLogs(tabId);
 
-      this.getRefresher(tabId, computedPod, logTabData).start();
-      this.podLogs.set(tabId, logs);
-    } catch (error) {
-      this.handlerError(tabId, error);
-    }
+    await this.loadForTab(
+      tabId,
+      computedPod,
+      logTabData,
+      {
+        tailLines: this.getLogLines(tabId) + logLinesToLoad,
+      },
+      (logs) => {
+        this.getRefresher(tabId, computedPod, logTabData).start();
+        this.podLogs.set(tabId, logs);
+      },
+    );
   }
 
   private getRefresher(
@@ -84,6 +91,9 @@ export class LogStore {
    */
   public stopLoadingLogs(tabId: TabId): void {
     this.refreshers.get(tabId)?.stop();
+    this.refreshers.delete(tabId);
+    this.requests.get(tabId)?.abort();
+    this.requests.delete(tabId);
   }
 
   /**
@@ -103,15 +113,50 @@ export class LogStore {
       return;
     }
 
-    try {
-      const logs = await this.loadLogs(computedPod, logTabData, {
+    await this.loadForTab(
+      tabId,
+      computedPod,
+      logTabData,
+      {
         sinceTime: this.getLastSinceTime(tabId),
-      });
+      },
+      (logs) => {
+        // Add newly received logs to bottom.
+        this.podLogs.set(tabId, [...oldLogs, ...logs.filter(Boolean)]);
+      },
+    );
+  }
 
-      // Add newly received logs to bottom
-      this.podLogs.set(tabId, [...oldLogs, ...logs.filter(Boolean)]);
+  private async loadForTab(
+    tabId: TabId,
+    computedPod: IComputedValue<Pod | undefined>,
+    logTabData: IComputedValue<LogTabData | undefined>,
+    params: Partial<PodLogsQuery>,
+    onLoad: (logs: string[]) => void,
+  ): Promise<void> {
+    // Include the wait for Pod data in the limit, not just the HTTP request.
+    if (this.requests.has(tabId)) {
+      return;
+    }
+
+    const controller = new AbortController();
+    this.requests.set(tabId, controller);
+
+    try {
+      const logs = await this.loadLogs(computedPod, logTabData, params, controller.signal);
+
+      if (!controller.signal.aborted) {
+        onLoad(logs);
+      }
     } catch (error) {
-      this.handlerError(tabId, error);
+      if (!controller.signal.aborted) {
+        this.handlerError(tabId, error);
+      }
+    } finally {
+      // A stopped request must not remove the request started by a newer load.
+      if (this.requests.get(tabId) === controller) {
+        this.requests.delete(tabId);
+      }
     }
   }
 
@@ -126,20 +171,32 @@ export class LogStore {
     computedPod: IComputedValue<Pod | undefined>,
     logTabData: IComputedValue<LogTabData | undefined>,
     params: Partial<PodLogsQuery>,
+    signal: AbortSignal,
   ): Promise<string[]> {
+    let target: { pod: Pod; tabData: LogTabData } | undefined;
+
+    await when(
+      () => {
+        const pod = computedPod.get();
+        const tabData = logTabData.get();
+
+        if (!pod || !tabData) {
+          return false;
+        }
+
+        target = { pod, tabData };
+
+        return true;
+      },
+      { signal },
+    );
+    signal.throwIfAborted();
+    assert(target);
+
     const {
       pod,
       tabData: { selectedContainer, showPrevious },
-    } = await waitUntilDefined(() => {
-      const pod = computedPod.get();
-      const tabData = logTabData.get();
-
-      if (pod && tabData) {
-        return { pod, tabData };
-      }
-
-      return undefined;
-    });
+    } = target;
     const namespace = pod.getNs();
     const name = pod.getName();
 
@@ -151,6 +208,7 @@ export class LogStore {
         container: selectedContainer,
         previous: showPrevious,
       },
+      signal,
     );
 
     return result.trimEnd().replace(/\r/g, "\n").split("\n");
@@ -236,6 +294,7 @@ export class LogStore {
   }
 
   clearLogs(tabId: TabId): void {
+    this.stopLoadingLogs(tabId);
     this.podLogs.delete(tabId);
   }
 
