@@ -24,6 +24,7 @@
     "__mocks__/*.ts"
   ],
   "scripts": {
+    "build": "pnpm build:dist",
     "build:dist": "pnpm build:dist:declarations && pnpm build:dist:bundle && pnpm build:dist:shim",
     "build:dist:declarations": "node scripts/generate-dts-tsconfig.mjs && tsc -p tsconfig.dts.generated.json",
     "build:dist:bundle": "rollup -c rollup.dts.config.mjs",
@@ -50,6 +51,7 @@
   },
   "devDependencies": {
     "@freelensapp/core": "workspace:^",
+    "@typescript/typescript6": "catalog:",
     "rollup": "catalog:",
     "rollup-plugin-dts": "catalog:",
     "typescript": "catalog:",
