@@ -6,6 +6,7 @@
 import { injectableDifferencingRegistratorWith } from "../../../common/utils/registrator-helper";
 
 import type { SidebarItemRegistration } from "@freelensapp/cluster-sidebar";
+
 import type { DiContainerForInjection, Injectable } from "@ogre-tools/injectable";
 
 // `injectableDifferencingRegistratorWith` only diffs by id: if a CRD group's
