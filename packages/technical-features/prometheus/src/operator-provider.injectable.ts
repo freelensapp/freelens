@@ -21,7 +21,7 @@ export const getOperatorLikeQueryFor =
       case "cluster":
         switch (queryName) {
           case "memoryUsage":
-            return `sum(node_memory_MemTotal_bytes - (node_memory_MemFree_bytes + node_memory_Buffers_bytes + node_memory_Cached_bytes))`.replace(
+            return `sum(node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes)`.replace(
               /_bytes/g,
               `_bytes * on (pod,namespace) group_left(node) max without(pod_ip,host_ip) (kube_pod_info{node=~"${opts.nodes}"})`,
             );
@@ -60,7 +60,7 @@ export const getOperatorLikeQueryFor =
       case "nodes":
         switch (queryName) {
           case "memoryUsage":
-            return `sum((node_memory_MemTotal_bytes - (node_memory_MemFree_bytes + node_memory_Buffers_bytes + node_memory_Cached_bytes)) * on (pod, namespace) group_left(node) max without(pod_ip,host_ip) (kube_pod_info)) by (node)`;
+            return `sum((node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) * on (pod, namespace) group_left(node) max without(pod_ip,host_ip) (kube_pod_info)) by (node)`;
           case "workloadMemoryUsage":
             return `sum(container_memory_working_set_bytes{container!="POD", container!=""}) by (node)`;
           case "memoryCapacity":

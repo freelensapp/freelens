@@ -40,5 +40,13 @@
       left: 0;
       opacity: 0.5;
     }
+
+    // optional third line behind the main one, e.g. container working set behind node memory usage
+    &.tertiary {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0.3;
+    }
   }
 }
