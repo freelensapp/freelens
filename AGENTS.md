@@ -366,6 +366,29 @@ taste — each has a defined role. Before adding or changing any stylesheet or
 - **Extensions**: see the styling section of
   [`docs/v2-extension-migration.md`](./docs/v2-extension-migration.md).
 
+## Extension API
+
+The v2 extension specification lives in three documents, and which one to read
+depends on the question:
+
+- [`docs/v2-extension-api.md`](./docs/v2-extension-api.md) — the **normative
+  contracts**. Each states the guarantee, the stable surface, the failure mode
+  and whether it is shipped or still an open issue. Read this before changing
+  anything under `packages/extensions/` or `packages/core/src/extensions/`.
+- [`docs/v2-extension-abi.md`](./docs/v2-extension-abi.md) — what an extension
+  may **ship and execute** besides JavaScript. Specified, but deliberately not
+  implemented in 2.0.0.
+- [`docs/v2-extension-migration.md`](./docs/v2-extension-migration.md) — the
+  author-facing **porting guide** from v1.
+
+Two traps worth carrying without looking them up. The API surface is only what
+the `Common` / `Main` / `Renderer` namespaces re-export — every other
+`@freelensapp/*` package is private and inlined into the published declaration,
+so a symbol that is not re-exported is unreachable by any means. And the host
+must be the single instance of React, mobx, monaco and ogre-tools; a second
+copy of mobx fails **silently**, so changes there need an identity assertion
+rather than a passing test suite.
+
 ## Best Practices
 
 1. **Always regenerate DI files** after adding/moving injectables

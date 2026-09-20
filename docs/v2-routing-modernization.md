@@ -4,6 +4,11 @@ Status: scoping. Tracking issue
 [#2261](https://github.com/freelensapp/freelens/issues/2261); part of the
 React upgrade plan [#2154](https://github.com/freelensapp/freelens/issues/2154).
 
+For what an extension may rely on after this modernization, see the routing
+contract in [`docs/v2-extension-api.md`](./v2-extension-api.md) and the
+migration steps in
+[`docs/v2-extension-migration.md`](./v2-extension-migration.md#routing-react-router-re-exports-removed).
+
 This document is the deliverable of the first Phase 2 task: **scope the
 internal route registry** to decide between the two modernization approaches:
 
