@@ -138,6 +138,14 @@ directory, `packages/core/webpack/` (library bundle), and
   reorganized once, at this point.
 - Validation vehicle: freelens-example-extension is ported first; the
   migration guide for third-party extensions is written from that port.
+- **The normative contracts that follow from this decision are specified in
+  [`docs/v2-extension-api.md`](./v2-extension-api.md)**, with the binary side in
+  [`docs/v2-extension-abi.md`](./v2-extension-abi.md) and the porting guide in
+  [`docs/v2-extension-migration.md`](./v2-extension-migration.md). Those
+  documents are authoritative where this one is a sketch: several details
+  settled differently once the delivery mechanism was designed (#2400),
+  including how host singletons reach an extension and where the DI container
+  lives.
 
 ### D6. TypeScript: start on 5.9, adopt TypeScript 7 as the type-checker
 
