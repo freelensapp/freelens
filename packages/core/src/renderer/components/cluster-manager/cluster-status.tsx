@@ -12,6 +12,7 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { computed, makeObservable, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
+import navigateToCatalogInjectable from "../../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
 import navigateToEntitySettingsInjectable from "../../../common/front-end-routing/routes/entity-settings/navigate-to-entity-settings.injectable";
 import { ipcRendererOn } from "../../../common/ipc";
 import requestClusterActivationInjectable from "../../../features/cluster/activation/renderer/request-activation.injectable";
@@ -22,6 +23,7 @@ import type { IClassName } from "@freelensapp/utilities";
 
 import type { Cluster } from "../../../common/cluster/cluster";
 import type { KubeAuthUpdate } from "../../../common/cluster-types";
+import type { NavigateToCatalog } from "../../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
 import type { NavigateToEntitySettings } from "../../../common/front-end-routing/routes/entity-settings/navigate-to-entity-settings.injectable";
 import type { RequestClusterActivation } from "../../../features/cluster/activation/common/request-token";
 import type { CatalogEntityRegistry } from "../../api/catalog/entity/registry";
@@ -32,13 +34,14 @@ export interface ClusterStatusProps {
 }
 
 interface Dependencies {
+  navigateToCatalog: NavigateToCatalog;
   navigateToEntitySettings: NavigateToEntitySettings;
   entityRegistry: CatalogEntityRegistry;
   requestClusterActivation: RequestClusterActivation;
 }
 
 @observer
-class NonInjectedClusterStatus extends React.Component<ClusterStatusProps & Dependencies> {
+export class NonInjectedClusterStatus extends React.Component<ClusterStatusProps & Dependencies> {
   private readonly disposers: (() => void)[] = [];
 
   @observable authOutput: KubeAuthUpdate[] = [];
@@ -116,6 +119,21 @@ class NonInjectedClusterStatus extends React.Component<ClusterStatusProps & Depe
     this.props.navigateToEntitySettings(this.cluster.id, "proxy");
   };
 
+  renderCatalogNavigation() {
+    if (!this.cluster.disconnected.get()) {
+      return undefined;
+    }
+
+    return (
+      <Button
+        primary={!this.hasErrorsOrWarnings}
+        label="Back to Catalog"
+        className="m-auto"
+        onClick={() => this.props.navigateToCatalog()}
+      />
+    );
+  }
+
   renderAuthenticationOutput() {
     return (
       <pre>
@@ -171,6 +189,7 @@ class NonInjectedClusterStatus extends React.Component<ClusterStatusProps & Depe
           {this.renderStatusIcon()}
           {this.renderAuthenticationOutput()}
           {this.renderReconnectionHelp()}
+          {this.renderCatalogNavigation()}
         </div>
       </div>
     );
@@ -180,6 +199,7 @@ class NonInjectedClusterStatus extends React.Component<ClusterStatusProps & Depe
 export const ClusterStatus = withInjectables<Dependencies, ClusterStatusProps>(NonInjectedClusterStatus, {
   getProps: (di, props) => ({
     ...props,
+    navigateToCatalog: di.inject(navigateToCatalogInjectable),
     navigateToEntitySettings: di.inject(navigateToEntitySettingsInjectable),
     entityRegistry: di.inject(catalogEntityRegistryInjectable),
     requestClusterActivation: di.inject(requestClusterActivationInjectable),
