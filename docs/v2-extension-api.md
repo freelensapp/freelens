@@ -172,9 +172,9 @@ served with a wrong MIME type does not execute at all — the host maps types by
 file extension and serves anything unknown as `application/octet-stream`, which
 correctly refuses.
 
-**Status:** designed, implementation in #2400. Today the loader is synchronous
-`require()`, so **top-level await does not work yet** — it becomes available
-with the URL-served loader, which #2399 is in turn blocked on.
+**Status:** shipped. The renderer imports the served URL and the main process
+imports a `file:` URL, both asynchronously, so **top-level await works in either
+entry point**. Reloading a rebuilt development extension is still #2400.
 
 ---
 
@@ -407,9 +407,9 @@ reach extensions** — its JIT scans only core's own sources, so an unprefixed
 utility class produces no CSS and silently does nothing. An extension may run
 its own Tailwind build; see the migration guide.
 
-**Status:** shipped as a `<style>` element; it becomes a `<link>` at the served
-URL with #2400. `flexbox.scss` is removed from the host, so its utility classes
-are inert.
+**Status:** shipped as a `<link>` at the URL main serves the stylesheet from,
+which is the same route the renderer entry point takes. `flexbox.scss` is removed
+from the host, so its utility classes are inert.
 
 ---
 
