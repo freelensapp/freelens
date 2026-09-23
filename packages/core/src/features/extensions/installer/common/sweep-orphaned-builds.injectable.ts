@@ -12,16 +12,21 @@ import joinPathsInjectable from "../../../../common/path/join-paths.injectable";
 import extensionsRootInjectable from "./extensions-root.injectable";
 import { parseVersionDirectoryName } from "./version-directory";
 
-export type SweepOrphanedExtensionBuilds = (livePaths: Iterable<string>) => Promise<void>;
+export type SweepOrphanedExtensionBuilds = (pathsToKeep: Iterable<string>) => Promise<void>;
 
 /**
  * Collect the build directories left behind by a deferred deletion.
  *
  * Upgrading extracts the new build, switches to it and only then deletes the
  * old one, so a crash inside that window leaves a directory nothing points at.
- * A version directory which is neither live nor loaded can go unconditionally,
- * which bounds the residue to "until the next restart" instead of letting it
- * accumulate.
+ *
+ * Every version directory which is not named in `pathsToKeep` is removed, so
+ * the caller decides and this only carries the decision out. Discovery hands
+ * over the live builds plus the ones it could not rule out, and never decides
+ * by omission: a build it could not place is kept whole until a later scan can
+ * place it. The residue is therefore not bounded by the next restart -- an
+ * extension whose manifests stay unreadable keeps its builds indefinitely --
+ * which is the price of not deleting a working extension on a guess.
  *
  * Failing to remove one is not an error: Windows locks files belonging to a
  * running process, and the next startup will try again.
@@ -49,8 +54,8 @@ const sweepOrphanedExtensionBuildsInjectable = getInjectable({
       }
     };
 
-    return async (livePaths) => {
-      const keep = new Set(livePaths);
+    return async (pathsToKeep) => {
+      const keep = new Set(pathsToKeep);
 
       for (const extensionDirectoryName of await readDirectories(extensionsRoot)) {
         const extensionDirectory = joinPaths(extensionsRoot, extensionDirectoryName);
