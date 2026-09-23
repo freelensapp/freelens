@@ -5,6 +5,7 @@
  */
 
 import { Button } from "@freelensapp/button";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import { showErrorNotificationInjectable, showInfoNotificationInjectable } from "@freelensapp/notifications";
 import { disposer } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
@@ -12,10 +13,12 @@ import { shell } from "electron";
 import { ExtensionInstallationState } from "../../../../extensions/extension-installation-state-store/extension-installation-state-store";
 import extensionInstallationStateStoreInjectable from "../../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
 import extensionLoaderInjectable from "../../../../extensions/extension-loader/extension-loader.injectable";
+import { verifyInstallChecksum } from "../../../../features/extensions/installer/common/checksums";
 import createTempFilesAndValidateInjectable from "./create-temp-files-and-validate.injectable";
 import getExtensionDestFolderInjectable from "./get-extension-dest-folder.injectable";
 import unpackExtensionInjectable from "./unpack-extension.injectable";
 
+import type { Logger } from "@freelensapp/logger";
 import type { ShowNotification } from "@freelensapp/notifications";
 import type { Disposer } from "@freelensapp/utilities";
 
@@ -50,9 +53,43 @@ interface Dependencies {
   installStateStore: ExtensionInstallationStateStore;
   showErrorNotification: ShowNotification;
   showInfoNotification: ShowNotification;
+  logger: Logger;
 }
 
 export type AttemptInstall = (request: InstallRequest, cleanup?: Disposer) => Promise<void>;
+
+/**
+ * Why this download may not be installed, or `undefined` when nothing is wrong
+ * with it. An absent checksum is not a failure: it warns later, once there is a
+ * name to warn about.
+ *
+ * A checksum string we cannot evaluate fails too. It is a different failure --
+ * an unverifiable download rather than a corrupt one -- but it is not a reason
+ * to go ahead unchecked.
+ */
+function checksumFailure({ data, checksum, fileName }: InstallRequest, logger: Logger): string | undefined {
+  if (!checksum) {
+    return undefined;
+  }
+
+  try {
+    const mismatch = verifyInstallChecksum(data, checksum);
+
+    if (!mismatch) {
+      return undefined;
+    }
+
+    logger.warn(
+      `[EXTENSION-INSTALLATION]: ${fileName} does not match its ${mismatch.algorithm} checksum: expected ${mismatch.expected}, got ${mismatch.actual}`,
+    );
+
+    return `the download does not match the ${mismatch.algorithm} checksum published for it`;
+  } catch (error) {
+    logger.warn(`[EXTENSION-INSTALLATION]: cannot check ${fileName} against its checksum: ${error}`);
+
+    return `the checksum published for the download cannot be checked (${error})`;
+  }
+}
 
 const attemptInstall =
   ({
@@ -63,9 +100,34 @@ const attemptInstall =
     installStateStore,
     showErrorNotification,
     showInfoNotification,
+    logger,
   }: Dependencies): AttemptInstall =>
   async (request, cleanup) => {
     const dispose = disposer(installStateStore.startPreInstall(), cleanup);
+
+    // Before the bytes are written anywhere and before anything reads inside
+    // the archive. A tarball which is not what its source vouched for must not
+    // reach node-tar, and must not be the thing whose name, version and
+    // description the confirmation below puts in front of the user.
+    const failure = checksumFailure(request, logger);
+
+    if (failure) {
+      dispose();
+
+      return void showErrorNotification(
+        <div className="flex flex-col gap-2">
+          <p>
+            {"Installing "}
+            <em>{request.fileName}</em>
+            {" has failed, skipping."}
+          </p>
+          <p>
+            {"Reason: "}
+            <em>{failure}</em>
+          </p>
+        </div>,
+      );
+    }
 
     const validatedRequest = await createTempFilesAndValidate(request);
 
@@ -163,6 +225,7 @@ const attemptInstallInjectable = getInjectable({
       installStateStore: di.inject(extensionInstallationStateStoreInjectable),
       showErrorNotification: di.inject(showErrorNotificationInjectable),
       showInfoNotification: di.inject(showInfoNotificationInjectable),
+      logger: di.inject(loggerInjectionToken),
     }),
 });
 
