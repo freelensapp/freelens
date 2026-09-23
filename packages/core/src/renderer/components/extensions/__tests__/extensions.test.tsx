@@ -140,7 +140,7 @@ describe("Extensions", () => {
     });
 
     fireEvent.change(
-      await screen.findByPlaceholderText("File path or URL", {
+      await screen.findByPlaceholderText("URL, or path to a package or directory", {
         exact: false,
       }),
       {
