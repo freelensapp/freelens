@@ -9,6 +9,13 @@
   @apply mt-1;
 }
 
+/* How the installed build got here: shown only when it is not a verified
+   managed copy, since that is the ordinary case and needs no label. */
+.extensionProvenance {
+  @apply mt-1 text-xs;
+  color: var(--textColorDimmed);
+}
+
 .enabled {
   color: var(--colorOk);
 }
