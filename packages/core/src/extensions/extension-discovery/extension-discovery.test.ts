@@ -4,42 +4,57 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { delay } from "@freelensapp/utilities";
-import { observable, runInAction, when } from "mobx";
+import { runInAction } from "mobx";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
+import ensureDirInjectable from "../../common/fs/ensure-dir.injectable";
 import pathExistsInjectable from "../../common/fs/path-exists.injectable";
 import pathExistsSyncInjectable from "../../common/fs/path-exists-sync.injectable";
+import readDirectoryInjectable from "../../common/fs/read-directory.injectable";
 import readJsonFileInjectable from "../../common/fs/read-json-file.injectable";
 import readJsonSyncInjectable from "../../common/fs/read-json-sync.injectable";
 import removePathInjectable from "../../common/fs/remove.injectable";
 import watchInjectable from "../../common/fs/watch/watch.injectable";
 import writeJsonSyncInjectable from "../../common/fs/write-json-sync.injectable";
-import homeDirectoryPathInjectable from "../../common/os/home-directory-path.injectable";
-import joinPathsInjectable from "../../common/path/join-paths.injectable";
 import extensionApiVersionInjectable from "../../common/vars/extension-api-version.injectable";
+import installedExtensionsStateInjectable from "../../features/extensions/installer/common/installed-extensions-state.injectable";
 import { getDiForUnitTesting } from "../../main/getDiForUnitTesting";
-import extensionDiscoveryInjectable from "../extension-discovery/extension-discovery.injectable";
-import installExtensionInjectable from "../install-extension/install-extension.injectable";
+import extensionDiscoveryInjectable from "./extension-discovery.injectable";
+import type { Dirent } from "node:fs";
 
-import type { FSWatcher } from "chokidar";
 import type { Mock } from "vitest";
 
-import type { JoinPaths } from "../../common/path/join-paths.injectable";
-import type { ExtensionDiscovery } from "../extension-discovery/extension-discovery";
+import type { InstalledExtensionEntry } from "../../features/extensions/installer/common/installed-extensions";
+import type { ExtensionDiscovery } from "./extension-discovery";
+
+const extensionsRoot = "/some-directory-for-user-data/extensions";
+
+const directoryEntry = (name: string) =>
+  ({
+    name,
+    isDirectory: () => true,
+    isSymbolicLink: () => false,
+  }) as Dirent;
+
+const manifestOf = (name: string, version: string) => ({
+  name,
+  version,
+  engines: {
+    freelens: "0.1.0",
+  },
+});
 
 describe("ExtensionDiscovery", () => {
   let extensionDiscovery: ExtensionDiscovery;
+  let installedExtensions: Map<string, InstalledExtensionEntry>;
+  let readDirectoryMock: Mock;
   let readJsonFileMock: Mock;
   let pathExistsMock: Mock;
-  let watchMock: Mock;
-  let joinPaths: JoinPaths;
-  let homeDirectoryPath: string;
+  let removePathMock: Mock;
 
   beforeEach(() => {
     const di = getDiForUnitTesting();
 
     di.override(directoryForUserDataInjectable, () => "/some-directory-for-user-data");
-    di.override(installExtensionInjectable, () => () => Promise.resolve());
     di.override(extensionApiVersionInjectable, () => "0.1.0");
     di.override(pathExistsSyncInjectable, () => () => {
       throw new Error("tried call pathExistsSync without override");
@@ -51,106 +66,179 @@ describe("ExtensionDiscovery", () => {
       throw new Error("tried call writeJsonSync without override");
     });
 
-    joinPaths = di.inject(joinPathsInjectable);
-    homeDirectoryPath = di.inject(homeDirectoryPathInjectable);
+    readDirectoryMock = vi.fn(() => Promise.resolve([]));
+    di.override(readDirectoryInjectable, () => readDirectoryMock);
 
     readJsonFileMock = vi.fn();
     di.override(readJsonFileInjectable, () => readJsonFileMock);
 
-    pathExistsMock = vi.fn(() => Promise.resolve(true));
+    // Nothing is a directory-with-a-manifest unless a test says so, so the
+    // managed builds below a name are what discovery looks at.
+    pathExistsMock = vi.fn(() => Promise.resolve(false));
     di.override(pathExistsInjectable, () => pathExistsMock);
 
-    watchMock = vi.fn();
-    di.override(watchInjectable, () => watchMock);
+    removePathMock = vi.fn(() => Promise.resolve());
+    di.override(removePathInjectable, () => removePathMock);
 
-    di.override(removePathInjectable, () => async () => {}); // allow deleting files for now
+    di.override(ensureDirInjectable, () => async () => {});
+    di.override(watchInjectable, () => () => {
+      throw new Error("tried to watch without override");
+    });
 
+    installedExtensions = di.inject(installedExtensionsStateInjectable);
     extensionDiscovery = di.inject(extensionDiscoveryInjectable);
   });
 
-  it("emits add for added extension", async () => {
-    const letTestFinish = observable.box(false);
-    let addHandler!: (filePath: string) => void;
+  it("discovers a managed build below the extensions root", async () => {
+    readDirectoryMock.mockImplementation(async (directory: string) => {
+      if (directory === extensionsRoot) {
+        return [directoryEntry("my-extension")];
+      }
 
-    readJsonFileMock.mockImplementation((p) => {
-      expect(p).toBe(joinPaths(homeDirectoryPath, ".freelens/extensions/my-extension/package.json"));
+      if (directory === `${extensionsRoot}/my-extension`) {
+        return [directoryEntry("1.0.0-0f1e2d3c")];
+      }
 
-      return {
-        name: "my-extension",
-        version: "1.0.0",
-        engines: {
-          freelens: "0.1.0",
-        },
-      };
+      return [];
+    });
+    readJsonFileMock.mockImplementation(async (path: string) => {
+      expect(path).toBe(`${extensionsRoot}/my-extension/1.0.0-0f1e2d3c/package.json`);
+
+      return manifestOf("my-extension", "1.0.0");
     });
 
-    const mockWatchInstance = {
-      on: vi.fn((event: string, handler: typeof addHandler) => {
-        if (event === "add") {
-          addHandler = handler;
-        }
+    const extensions = await extensionDiscovery.load();
 
-        return mockWatchInstance;
-      }),
-    } as unknown as FSWatcher;
-
-    watchMock.mockImplementationOnce(() => mockWatchInstance);
-
-    // Need to force isLoaded to be true so that the file watching is started
-    extensionDiscovery.isLoaded = true;
-
-    await extensionDiscovery.watchExtensions();
-
-    extensionDiscovery.events.on("add", (extension) => {
-      expect(extension).toEqual({
-        absolutePath: expect.any(String),
-        id: "/some-directory-for-user-data/node_modules/my-extension/package.json",
+    expect([...extensions.values()]).toEqual([
+      {
+        id: "my-extension",
+        absolutePath: `${extensionsRoot}/my-extension/1.0.0-0f1e2d3c`,
+        manifestPath: `${extensionsRoot}/my-extension/1.0.0-0f1e2d3c/package.json`,
+        manifest: manifestOf("my-extension", "1.0.0"),
         isEnabled: false,
         isCompatible: true,
-        manifest: {
-          name: "my-extension",
-          version: "1.0.0",
-          engines: {
-            freelens: "0.1.0",
-          },
-        },
-        manifestPath: "/some-directory-for-user-data/node_modules/my-extension/package.json",
-      });
-      runInAction(() => letTestFinish.set(true));
-    });
-
-    addHandler(joinPaths(extensionDiscovery.localFolderPath, "/my-extension/package.json"));
-    await when(() => letTestFinish.get());
+        isManaged: true,
+        // Nothing recorded the install, so nothing claims it was verified.
+        isVerified: false,
+      },
+    ]);
   });
 
-  it("doesn't emit add for added file under extension", async () => {
-    let addHandler!: (filePath: string) => void;
+  it("records a build it found on disk without a record, so the sweep does not collect it", async () => {
+    readDirectoryMock.mockImplementation(async (directory: string) =>
+      directory === extensionsRoot
+        ? [directoryEntry("my-extension")]
+        : directory === `${extensionsRoot}/my-extension`
+          ? [directoryEntry("1.0.0-0f1e2d3c")]
+          : [],
+    );
+    readJsonFileMock.mockImplementation(async () => manifestOf("my-extension", "1.0.0"));
 
-    const mockWatchInstance = {
-      on: vi.fn((event: string, handler: typeof addHandler) => {
-        if (event === "add") {
-          addHandler = handler;
-        }
+    await extensionDiscovery.load();
 
-        return mockWatchInstance;
-      }),
-    } as unknown as FSWatcher;
+    expect(installedExtensions.get("my-extension")).toEqual({
+      name: "my-extension",
+      path: `${extensionsRoot}/my-extension/1.0.0-0f1e2d3c`,
+      version: "1.0.0",
+      digest: "0f1e2d3c",
+      verified: false,
+    });
+    expect(removePathMock).not.toHaveBeenCalled();
+  });
 
-    watchMock.mockImplementationOnce(() => mockWatchInstance);
+  it("sweeps a build which is on disk but is not the live one", async () => {
+    runInAction(() => {
+      installedExtensions.set("my-extension", {
+        name: "my-extension",
+        path: `${extensionsRoot}/my-extension/2.0.0-abcdef01`,
+        version: "2.0.0",
+        digest: "abcdef01",
+        verified: true,
+      });
+    });
 
-    // Need to force isLoaded to be true so that the file watching is started
-    extensionDiscovery.isLoaded = true;
+    readDirectoryMock.mockImplementation(async (directory: string) =>
+      directory === extensionsRoot
+        ? [directoryEntry("my-extension")]
+        : directory === `${extensionsRoot}/my-extension`
+          ? [directoryEntry("1.0.0-0f1e2d3c"), directoryEntry("2.0.0-abcdef01")]
+          : [],
+    );
+    readJsonFileMock.mockImplementation(async () => manifestOf("my-extension", "2.0.0"));
 
-    await extensionDiscovery.watchExtensions();
+    const extensions = await extensionDiscovery.load();
 
-    const onAdd = vi.fn();
+    expect(extensions.get("my-extension")).toMatchObject({
+      absolutePath: `${extensionsRoot}/my-extension/2.0.0-abcdef01`,
+      isVerified: true,
+    });
+    expect(removePathMock).toHaveBeenCalledWith(`${extensionsRoot}/my-extension/1.0.0-0f1e2d3c`);
+    expect(removePathMock).not.toHaveBeenCalledWith(`${extensionsRoot}/my-extension/2.0.0-abcdef01`);
+  });
 
-    extensionDiscovery.events.on("add", onAdd);
+  it("discovers a development extension from the external path recorded for it", async () => {
+    runInAction(() => {
+      installedExtensions.set("dev-extension", {
+        name: "dev-extension",
+        path: "/home/someone/src/dev-extension",
+        source: { kind: "directory", path: "/home/someone/src/dev-extension" },
+        verified: false,
+      });
+    });
 
-    addHandler(joinPaths(extensionDiscovery.localFolderPath, "/my-extension/node_modules/dep/package.json"));
+    readJsonFileMock.mockImplementation(async (path: string) => {
+      expect(path).toBe("/home/someone/src/dev-extension/package.json");
 
-    await delay(10);
+      return manifestOf("dev-extension", "0.1.0");
+    });
 
-    expect(onAdd).not.toHaveBeenCalled();
+    const extensions = await extensionDiscovery.load();
+
+    expect(extensions.get("dev-extension")).toMatchObject({
+      absolutePath: "/home/someone/src/dev-extension",
+      // No `<version>-<digest>` segment: unmanaged, and unverified by
+      // construction.
+      isManaged: false,
+      isVerified: false,
+    });
+  });
+
+  it("deletes the whole managed directory when uninstalling a managed extension", async () => {
+    readDirectoryMock.mockImplementation(async (directory: string) =>
+      directory === extensionsRoot
+        ? [directoryEntry("my-extension")]
+        : directory === `${extensionsRoot}/my-extension`
+          ? [directoryEntry("1.0.0-0f1e2d3c")]
+          : [],
+    );
+    readJsonFileMock.mockImplementation(async () => manifestOf("my-extension", "1.0.0"));
+
+    await extensionDiscovery.load();
+    removePathMock.mockClear();
+
+    await extensionDiscovery.uninstallExtension("my-extension");
+
+    expect(installedExtensions.has("my-extension")).toBe(false);
+    expect(removePathMock).toHaveBeenCalledWith(`${extensionsRoot}/my-extension`);
+  });
+
+  it("forgets a development extension without deleting the directory it was registered from", async () => {
+    runInAction(() => {
+      installedExtensions.set("dev-extension", {
+        name: "dev-extension",
+        path: "/home/someone/src/dev-extension",
+        source: { kind: "directory", path: "/home/someone/src/dev-extension" },
+        verified: false,
+      });
+    });
+    readJsonFileMock.mockImplementation(async () => manifestOf("dev-extension", "0.1.0"));
+
+    await extensionDiscovery.load();
+    removePathMock.mockClear();
+
+    await extensionDiscovery.uninstallExtension("dev-extension");
+
+    expect(installedExtensions.has("dev-extension")).toBe(false);
+    expect(removePathMock).not.toHaveBeenCalled();
   });
 });

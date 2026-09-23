@@ -14,9 +14,16 @@ import { when } from "mobx";
 import extractTarInjectable from "../../../../common/fs/extract-tar.injectable";
 import extensionInstallationStateStoreInjectable from "../../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
 import extensionLoaderInjectable from "../../../../extensions/extension-loader/extension-loader.injectable";
-import { extensionDisplayName } from "../../../../extensions/lens-extension";
+import { extensionDisplayName, sanitizeExtensionName } from "../../../../extensions/lens-extension";
+import activateInstalledBuildInjectable from "../../../../features/extensions/installer/common/activate-installed-build.injectable";
+import {
+  computeTarballDigest,
+  shortenDigest,
+  verifyInstallChecksum,
+} from "../../../../features/extensions/installer/common/checksums";
+import extensionsRootInjectable from "../../../../features/extensions/installer/common/extensions-root.injectable";
+import { versionDirectoryName } from "../../../../features/extensions/installer/common/version-directory";
 import { getMessageFromError } from "../get-message-from-error/get-message-from-error";
-import getExtensionDestFolderInjectable from "./get-extension-dest-folder.injectable";
 
 import type { Disposer } from "@freelensapp/utilities";
 
@@ -24,11 +31,22 @@ import type { InstallRequestValidated } from "./create-temp-files-and-validate.i
 
 export type UnpackExtension = (request: InstallRequestValidated, disposeDownloading?: Disposer) => Promise<void>;
 
+/**
+ * Turn a validated tarball into a managed install.
+ *
+ * Everything in the tarball is extracted, not only the code: a partial
+ * extraction would give one extension's files two access paths, and an
+ * extension then has a real directory to read its own resources from. The
+ * tarball itself is not kept -- once extracted it has done its job, the same way
+ * a `.deb` is redundant once installed -- so the digest is computed here, while
+ * the bytes are still in hand.
+ */
 const unpackExtensionInjectable = getInjectable({
   id: "unpack-extension",
   instantiate: (di): UnpackExtension => {
     const extensionLoader = di.inject(extensionLoaderInjectable);
-    const getExtensionDestFolder = di.inject(getExtensionDestFolderInjectable);
+    const extensionsRoot = di.inject(extensionsRootInjectable);
+    const activateInstalledBuild = di.inject(activateInstalledBuildInjectable);
     const extensionInstallationStateStore = di.inject(extensionInstallationStateStoreInjectable);
     const extractTar = di.inject(extractTarInjectable);
     const logger = di.inject(loggerInjectionToken);
@@ -51,6 +69,9 @@ const unpackExtensionInjectable = getInjectable({
         id,
         fileName,
         tempFile,
+        data,
+        source,
+        checksum,
         manifest: { name, version },
       } = request;
 
@@ -58,18 +79,39 @@ const unpackExtensionInjectable = getInjectable({
       disposeDownloading?.();
 
       const displayName = extensionDisplayName(name, version);
-      const extensionFolder = getExtensionDestFolder(name);
+      // The identity of this build: over the archive bytes, not over the
+      // extracted tree, whose hash depends on extraction order and filesystem.
+      const digest = computeTarballDigest(data);
+      const buildFolder = path.join(extensionsRoot, sanitizeExtensionName(name), versionDirectoryName(version, digest));
       const unpackingTempFolder = path.join(path.dirname(tempFile), `${path.basename(tempFile)}-unpacked`);
 
-      logger.info(`Unpacking extension ${displayName}`, { fileName, tempFile });
+      logger.info(`Unpacking extension ${displayName}`, { fileName, tempFile, buildFolder });
 
       try {
+        if (checksum) {
+          const mismatch = verifyInstallChecksum(data, checksum);
+
+          if (mismatch) {
+            throw new Error(
+              `checksum mismatch: expected ${mismatch.algorithm} ${mismatch.expected}, got ${mismatch.actual}`,
+            );
+          }
+        } else {
+          showInfoNotification(
+            <p>
+              {"Nothing vouches for the integrity of "}
+              <b>{displayName}</b>
+              {": no checksum was available for this download. Installing it anyway."}
+            </p>,
+          );
+        }
+
         // extract to temp folder first
         await fse.remove(unpackingTempFolder).catch(noop);
         await fse.ensureDir(unpackingTempFolder);
         await extractTar(tempFile, { cwd: unpackingTempFolder });
 
-        // move contents to extensions folder
+        // move contents to the build folder
         const unpackedFiles = await fse.readdir(unpackingTempFolder);
         let unpackedRootFolder = unpackingTempFolder;
 
@@ -79,8 +121,20 @@ const unpackExtensionInjectable = getInjectable({
           unpackedRootFolder = path.join(unpackingTempFolder, unpackedFiles[0]);
         }
 
-        await fse.ensureDir(extensionFolder);
-        await fse.move(unpackedRootFolder, extensionFolder, { overwrite: true });
+        // Reinstalling the identical tarball lands on the same path, so the
+        // previous content of it goes rather than being merged with.
+        await fse.remove(buildFolder).catch(noop);
+        await fse.ensureDir(path.dirname(buildFolder));
+        await fse.move(unpackedRootFolder, buildFolder, { overwrite: true });
+
+        await activateInstalledBuild({
+          name,
+          path: buildFolder,
+          version,
+          digest: shortenDigest(digest),
+          source,
+          verified: Boolean(checksum),
+        });
 
         // wait for the loader has actually install it
         await when(() => extensionLoader.userExtensions.get().has(id), { timeout: 10000 })

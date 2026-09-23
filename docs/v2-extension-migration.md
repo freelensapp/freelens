@@ -679,10 +679,11 @@ Two consequences to know:
   Deinitialisation still happens properly through `onDeactivate`, but a long
   editing session is a reason to restart the app, not a leak to report.
 
-This is part of [#2400](https://github.com/freelensapp/freelens/issues/2400) and
-is not implemented yet; until it lands, reloading on rebuild does not happen
-either — the watcher reacts to `package.json` appearing and to unlinks, not to
-your bundler rewriting the entry.
+Installing a directory works; **reloading on rebuild does not yet**
+([#2400](https://github.com/freelensapp/freelens/issues/2400)). The watcher
+reacts to a manifest appearing or disappearing, not to your bundler rewriting
+the entry, and a module already loaded into a realm stays loaded — so after a
+rebuild, restart the application to pick the new code up.
 
 ## Checklist
 

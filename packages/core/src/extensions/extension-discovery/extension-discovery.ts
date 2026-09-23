@@ -11,77 +11,64 @@ import { makeObservable, observable, reaction, when } from "mobx";
 import { broadcastMessage, ipcMainHandle, ipcRendererOn } from "../../common/ipc";
 import { extensionDiscoveryStateChannel } from "../../common/ipc/extension-handling";
 import { toJS } from "../../common/utils";
-import AwaitLock from "../../common/utils/await-lock";
+import { managedDirectoryOf } from "../../features/extensions/installer/common/managed-directory";
+import { manifestFilename } from "../../features/extensions/installer/common/manifest";
+import { parseVersionDirectoryName } from "../../features/extensions/installer/common/version-directory";
 import { requestInitialExtensionDiscovery } from "../../renderer/ipc";
-import type { Stats } from "node:fs";
 
 import type { Logger } from "@freelensapp/logger";
 import type { TypedEventEmitter } from "@freelensapp/utilities";
 
-import type { AccessPath } from "../../common/fs/access-path.injectable";
-import type { Copy } from "../../common/fs/copy.injectable";
+import type { ObservableMap } from "mobx";
+
 import type { EnsureDirectory } from "../../common/fs/ensure-dir.injectable";
-import type { LStat } from "../../common/fs/lstat.injectable";
 import type { PathExists } from "../../common/fs/path-exists.injectable";
 import type { ReadDirectory } from "../../common/fs/read-directory.injectable";
 import type { ReadJson } from "../../common/fs/read-json-file.injectable";
 import type { RemovePath } from "../../common/fs/remove.injectable";
-import type { Stat } from "../../common/fs/stat.injectable";
 import type { Watch, Watcher } from "../../common/fs/watch/watch.injectable";
 import type { GetBasenameOfPath } from "../../common/path/get-basename.injectable";
-import type { GetDirnameOfPath } from "../../common/path/get-dirname.injectable";
-import type { GetRelativePath } from "../../common/path/get-relative-path.injectable";
 import type { JoinPaths } from "../../common/path/join-paths.injectable";
 import type { IsExtensionEnabled } from "../../features/extensions/enabled/common/is-enabled.injectable";
-import type { ExtensionInstallationStateStore } from "../extension-installation-state-store/extension-installation-state-store";
+import type { ForgetInstalledExtension } from "../../features/extensions/installer/common/forget-installed-extension.injectable";
+import type { InstalledExtensionEntry } from "../../features/extensions/installer/common/installed-extensions";
+import type { RecordInstalledExtension } from "../../features/extensions/installer/common/record-installed-extension.injectable";
+import type { SweepOrphanedExtensionBuilds } from "../../features/extensions/installer/common/sweep-orphaned-builds.injectable";
 import type { ExtensionLoader } from "../extension-loader";
-import type { ForkPnpm } from "../install-extension/fork-pnpm.injectable";
-import type { InstallExtension } from "../install-extension/install-extension.injectable";
 import type { InstalledExtension, LensExtensionId, LensExtensionManifest } from "../installed-extension";
 
 interface Dependencies {
   readonly extensionLoader: ExtensionLoader;
-  readonly extensionInstallationStateStore: ExtensionInstallationStateStore;
-  readonly extensionPackageRootDirectory: string;
-  readonly resourcesDirectory: string;
+  readonly extensionsRoot: string;
+  readonly installedExtensions: ObservableMap<string, InstalledExtensionEntry>;
   readonly logger: Logger;
-  readonly isProduction: boolean;
-  readonly fileSystemSeparator: string;
-  readonly homeDirectoryPath: string;
-  readonly directoryForUserData: string;
   isExtensionEnabled: IsExtensionEnabled;
   isCompatibleExtension: (manifest: LensExtensionManifest) => boolean;
-  installExtension: InstallExtension;
+  recordInstalledExtension: RecordInstalledExtension;
+  forgetInstalledExtension: ForgetInstalledExtension;
+  sweepOrphanedExtensionBuilds: SweepOrphanedExtensionBuilds;
   readJsonFile: ReadJson;
   pathExists: PathExists;
   removePath: RemovePath;
-  lstat: LStat;
-  stat: Stat;
   watch: Watch;
   readDirectory: ReadDirectory;
   ensureDirectory: EnsureDirectory;
-  accessPath: AccessPath;
-  copy: Copy;
   joinPaths: JoinPaths;
   getBasenameOfPath: GetBasenameOfPath;
-  getDirnameOfPath: GetDirnameOfPath;
-  getRelativePath: GetRelativePath;
-  forkPnpm: ForkPnpm;
 }
 
 const logModule = "[EXTENSION-DISCOVERY]";
 
-export const manifestFilename = "package.json";
+/**
+ * How long to wait after a filesystem event below the extensions root before
+ * rescanning. An extraction produces one event per file; the rescan only has to
+ * happen after the last of them.
+ */
+const rescanDebounce = 300;
 
 interface ExtensionDiscoveryChannelMessage {
   isLoaded: boolean;
 }
-
-/**
- * Returns true if the lstat is for a directory-like file (e.g. isDirectory or symbolic link)
- * @param lstat the stats to compare
- */
-const isDirectoryLike = (lstat: Stats) => lstat.isDirectory() || lstat.isSymbolicLink();
 
 type ExtensionDiscoveryEvents = {
   add: (ext: InstalledExtension) => void;
@@ -89,20 +76,26 @@ type ExtensionDiscoveryEvents = {
 };
 
 /**
- * Discovers installed bundled and local extensions from the filesystem.
- * Also watches for added and removed local extensions by watching the directory.
- * Uses ExtensionInstaller to install dependencies for all of the extensions.
- * This is also done when a new extension is copied to the local extensions directory.
- * .init() must be called to start the directory watching.
+ * Resolves the extensions the user has installed against the filesystem.
+ *
+ * Every install is recorded in the installed-extension registry, so discovery
+ * is the managed root plus the external paths that registry names, rather than
+ * a scan of a single folder:
+ *
+ * - a managed install lives at `<extensionsRoot>/<sanitized-name>/<version>-<digest8>/`,
+ *   and several builds of one extension can be on disk at once because deleting
+ *   the superseded one is deferred. The registry says which is live.
+ * - a development install is a directory registered in place, anywhere on the
+ *   filesystem. The absence of a `<version>-<digest8>` segment is what marks it.
+ *
  * The class emits events for added and removed extensions:
- * - "add": When extension is added. The event is of type InstalledExtension
- * - "remove": When extension is removed. The event is of type LensExtensionId
+ * - "add": When an extension is added. The event is of type InstalledExtension
+ * - "remove": When an extension is removed. The event is of type LensExtensionId
  */
 export class ExtensionDiscovery {
-  protected bundledFolderPath!: string;
-
   private loadStarted = false;
-  private extensions: Map<string, InstalledExtension> = new Map();
+  private extensions: Map<LensExtensionId, InstalledExtension> = new Map();
+  private rescanTimer: ReturnType<typeof setTimeout> | undefined;
 
   // True if extensions have been loaded from the disk after app startup
   @observable isLoaded = false;
@@ -118,16 +111,11 @@ export class ExtensionDiscovery {
     makeObservable(this);
   }
 
-  get localFolderPath(): string {
-    return this.dependencies.joinPaths(this.dependencies.homeDirectoryPath, ".freelens", "extensions");
-  }
-
-  get packageJsonPath(): string {
-    return this.dependencies.joinPaths(this.dependencies.extensionPackageRootDirectory, manifestFilename);
-  }
-
-  get nodeModulesPath(): string {
-    return this.dependencies.joinPaths(this.dependencies.extensionPackageRootDirectory, "node_modules");
+  /**
+   * The root of every managed install, e.g. "<userData>/extensions".
+   */
+  get extensionsRoot(): string {
+    return this.dependencies.extensionsRoot;
   }
 
   /**
@@ -161,24 +149,41 @@ export class ExtensionDiscovery {
         this.broadcast();
       },
     );
+
+    // An install or an uninstall is a change to the registry, wherever it was
+    // made from: the renderer drives the UI but only main resolves extensions.
+    reaction(
+      () => this.registryFingerprint(),
+      () => this.scheduleRescan(),
+    );
+  }
+
+  /**
+   * A value which changes exactly when the set of live installs does, so the
+   * rescan is not triggered by unrelated bookkeeping.
+   */
+  private registryFingerprint(): string {
+    return Array.from(this.dependencies.installedExtensions.entries(), ([name, entry]) => `${name}\u0000${entry.path}`)
+      .sort()
+      .join("\u0001");
   }
 
   private _watch: Watcher<false> | undefined;
 
   /**
-   * Watches for added/removed local extensions.
-   * Dependencies are installed automatically after an extension folder is copied.
+   * Watches the extensions root, so that a build extracted or deleted outside
+   * the application is noticed.
    */
   async watchExtensions(): Promise<void> {
-    this.dependencies.logger.info(`${logModule} watching extension add/remove in ${this.localFolderPath}`);
+    this.dependencies.logger.info(`${logModule} watching extension add/remove in ${this.extensionsRoot}`);
 
     // Wait until .load() has been called and has been resolved
     await this.whenLoaded;
 
     this._watch = this.dependencies
-      .watch(this.localFolderPath, {
-        // For adding and removing symlinks to work, the depth has to be 1.
-        depth: 1,
+      .watch(this.extensionsRoot, {
+        // <root>/<name>/<version>-<digest>/package.json
+        depth: 3,
         ignoreInitial: true,
         // Try to wait until the file has been completely copied.
         // The OS might emit an event for added file even it's not completely written to the file-system.
@@ -188,109 +193,100 @@ export class ExtensionDiscovery {
           stabilityThreshold: 300,
         },
       })
-      // Extension add is detected by watching "<extensionDir>/package.json" add
-      .on("add", this.handleWatchFileAdd)
-      // Extension remove is detected by watching "<extensionDir>" unlink
-      .on("unlinkDir", this.handleWatchUnlinkEvent)
-      // Extension remove is detected by watching "<extensionSymLink>" unlink
-      .on("unlink", this.handleWatchUnlinkEvent);
+      .on("add", this.handleWatchFileEvent)
+      .on("unlink", this.handleWatchFileEvent)
+      .on("unlinkDir", this.handleWatchDirectoryEvent);
   }
 
   async stopWatchingExtensions() {
     this.dependencies.logger.info(`${logModule} stopping the watch for extensions`);
 
+    if (this.rescanTimer) {
+      clearTimeout(this.rescanTimer);
+      this.rescanTimer = undefined;
+    }
+
     await this._watch?.close();
   }
 
-  handleWatchFileAdd = async (manifestPath: string): Promise<void> => {
-    // e.g. "foo/package.json"
-    const relativePath = this.dependencies.getRelativePath(this.localFolderPath, manifestPath);
+  /**
+   * Only a manifest appearing or disappearing can change what is installed, so
+   * the other files an extraction writes are ignored.
+   */
+  handleWatchFileEvent = (filePath: string): void => {
+    if (this.dependencies.getBasenameOfPath(filePath) === manifestFilename) {
+      this.scheduleRescan();
+    }
+  };
 
-    // Converts "foo/package.json" to ["foo", "package.json"], where length of 2 implies
-    // that the added file is in a folder under local folder path.
-    // This safeguards against a file watch being triggered under a sub-directory which is not an extension.
-    const isUnderLocalFolderPath = relativePath.split(this.dependencies.fileSystemSeparator).length === 2;
+  /**
+   * A directory going away takes its manifest with it, and chokidar does not
+   * report the files below it individually.
+   */
+  handleWatchDirectoryEvent = (): void => {
+    this.scheduleRescan();
+  };
 
-    if (this.dependencies.getBasenameOfPath(manifestPath) === manifestFilename && isUnderLocalFolderPath) {
-      try {
-        this.dependencies.extensionInstallationStateStore.setInstallingFromMain(manifestPath);
-        const absPath = this.dependencies.getDirnameOfPath(manifestPath);
+  private scheduleRescan(): void {
+    if (!this.isLoaded) {
+      return;
+    }
 
-        // this.loadExtensionFromPath updates this.packagesJson
-        const extension = await this.loadExtensionFromFolder(absPath);
+    if (this.rescanTimer) {
+      clearTimeout(this.rescanTimer);
+    }
 
-        if (extension) {
-          // Install dependencies for the new extension
-          await this.dependencies.installExtension({
-            name: extension.absolutePath,
-            packageJsonPath: this.packageJsonPath,
-          });
+    this.rescanTimer = setTimeout(() => {
+      this.rescanTimer = undefined;
+      void this.rescan();
+    }, rescanDebounce);
+  }
 
-          this.extensions.set(extension.id, extension);
-          this.dependencies.logger.info(`${logModule} Added extension ${extension.manifest.name}`);
-          this.events.emit("add", extension);
+  /**
+   * Resolve the installs again and emit the difference.
+   *
+   * A build becoming live under the same name is a remove followed by an add:
+   * the loader holds an instance per extension, constructed from one particular
+   * directory.
+   */
+  private async rescan(): Promise<void> {
+    try {
+      const discovered = await this.discoverExtensions();
+
+      for (const [id, extension] of this.extensions) {
+        const replacement = discovered.get(id);
+
+        if (replacement && replacement.absolutePath === extension.absolutePath) {
+          continue;
         }
-      } catch (error) {
-        this.dependencies.logger.error(`${logModule}: failed to add extension: ${error}`, { error });
-      } finally {
-        this.dependencies.extensionInstallationStateStore.clearInstallingFromMain(manifestPath);
-      }
-    }
-  };
 
-  /**
-   * Handle any unlink event, filtering out non-package.json links so the delete code
-   * only happens once per extension.
-   * @param filePath The absolute path to either a folder or file in the extensions folder
-   */
-  handleWatchUnlinkEvent = async (filePath: string): Promise<void> => {
-    // Check that the removed path is directly under this.localFolderPath
-    // Note that the watcher can create unlink events for subdirectories of the extension
-    const extensionFolderName = this.dependencies.getBasenameOfPath(filePath);
-    const expectedPath = this.dependencies.getRelativePath(this.localFolderPath, filePath);
-
-    if (expectedPath !== extensionFolderName) {
-      return;
-    }
-
-    for (const extension of this.extensions.values()) {
-      if (extension.absolutePath !== filePath) {
-        continue;
+        this.extensions.delete(id);
+        this.dependencies.logger.info(`${logModule} removed extension ${extension.manifest.name}`);
+        this.events.emit("remove", id);
       }
 
-      const extensionName = extension.manifest.name;
+      for (const [id, extension] of discovered) {
+        if (this.extensions.has(id)) {
+          continue;
+        }
 
-      // If the extension is deleted manually while the application is running, also remove the symlink
-      await this.removeSymlinkByPackageName(extensionName);
+        this.extensions.set(id, extension);
+        this.dependencies.logger.info(`${logModule} added extension ${extension.manifest.name}`);
+        this.events.emit("add", extension);
+      }
 
-      // The path to the manifest file is the lens extension id
-      // Note: that we need to use the symlinked path
-      const lensExtensionId = extension.manifestPath;
-
-      this.extensions.delete(extension.id);
-      this.dependencies.logger.info(`${logModule} removed extension ${extensionName}`);
-      this.events.emit("remove", lensExtensionId);
-
-      return;
+      await this.dependencies.sweepOrphanedExtensionBuilds(this.livePaths());
+    } catch (error) {
+      this.dependencies.logger.error(`${logModule}: failed to rescan extensions: ${error}`, { error });
     }
-
-    this.dependencies.logger.warn(`${logModule} extension ${extensionFolderName} not found, can't remove`);
-  };
-
-  /**
-   * Remove the symlink under node_modules if exists.
-   * If we don't remove the symlink, the uninstall would leave a non-working symlink,
-   * which wouldn't be fixed if the extension was reinstalled, causing the extension not to work.
-   * @param name e.g. "@mirantis/lens-extension-cc"
-   */
-  removeSymlinkByPackageName(name: string): Promise<void> {
-    return this.dependencies.removePath(this.getInstalledPath(name));
   }
 
   /**
    * Uninstalls extension.
-   * The application will detect the folder unlink and remove the extension from the UI automatically.
-   * @param extensionId The ID of the extension to uninstall.
+   *
+   * A managed install is removed from disk with every build of it; a development
+   * install is only forgotten. Symmetry invites the opposite, but the directory
+   * of a development install belongs to its author.
    */
   async uninstallExtension(extensionId: LensExtensionId): Promise<void> {
     const extension =
@@ -306,31 +302,18 @@ export class ExtensionDiscovery {
 
     this.dependencies.logger.info(`${logModule} Uninstalling ${manifest.name}`);
 
-    const installLock = new AwaitLock();
-    await installLock.acquireAsync();
+    this.dependencies.forgetInstalledExtension(extension.id);
 
-    try {
-      const s = await this.dependencies.stat(this.packageJsonPath);
-      if (s.size == 0) {
-        try {
-          await this.dependencies.removePath(this.packageJsonPath);
-        } catch (error) {
-          this.dependencies.logger.error(`${logModule}: package.json has zero size and cannot be removed: ${error}`);
-        }
-      } else if (s.size > 0) {
-        await this.dependencies.forkPnpm("install", "--prefer-offline", "--prod", "--force");
-        await this.dependencies.forkPnpm("uninstall", "--force", manifest.name);
-      }
-    } catch (error) {
-      this.dependencies.logger.error(`${logModule}: pnpm failed: ${error}`);
+    const managedDirectory = managedDirectoryOf(this.extensionsRoot, absolutePath);
+
+    if (managedDirectory) {
+      // fs.remove does nothing if the path doesn't exist anymore
+      await this.dependencies.removePath(managedDirectory);
+    } else {
+      this.dependencies.logger.info(
+        `${logModule} ${manifest.name} was registered in place, forgetting ${absolutePath} rather than deleting it`,
+      );
     }
-
-    await this.removeSymlinkByPackageName(manifest.name);
-
-    // fs.remove does nothing if the path doesn't exist anymore
-    await this.dependencies.removePath(absolutePath);
-
-    installLock.release();
   }
 
   async load(): Promise<Map<LensExtensionId, InstalledExtension>> {
@@ -341,66 +324,182 @@ export class ExtensionDiscovery {
 
     this.loadStarted = true;
 
-    this.dependencies.logger.info(
-      `${logModule} loading extensions from ${this.dependencies.extensionPackageRootDirectory}`,
-    );
+    this.dependencies.logger.info(`${logModule} loading extensions from ${this.extensionsRoot}`);
 
-    await this.dependencies.removePath(
-      this.dependencies.joinPaths(this.dependencies.extensionPackageRootDirectory, "package-lock.json"),
-    );
-    await this.dependencies.ensureDirectory(this.nodeModulesPath);
-    await this.dependencies.ensureDirectory(this.localFolderPath);
+    await this.dependencies.ensureDirectory(this.extensionsRoot);
 
-    const extensions = await this.ensureExtensions();
+    this.extensions = await this.discoverExtensions();
+
+    // Nothing is loaded yet, so every build which is not live is an orphan left
+    // by a deferred deletion that never completed.
+    await this.dependencies.sweepOrphanedExtensionBuilds(this.livePaths());
 
     this.isLoaded = true;
+
+    return this.extensions;
+  }
+
+  private livePaths(): string[] {
+    return Array.from(this.extensions.values(), ({ absolutePath }) => absolutePath);
+  }
+
+  protected async discoverExtensions(): Promise<Map<LensExtensionId, InstalledExtension>> {
+    const discovered = new Map<LensExtensionId, InstalledExtension>();
+    const entriesByPath = new Map(
+      Array.from(this.dependencies.installedExtensions.values(), (entry) => [entry.path, entry]),
+    );
+
+    // The recorded external paths: development installs, which live wherever
+    // their author keeps them.
+    for (const entry of this.dependencies.installedExtensions.values()) {
+      if (managedDirectoryOf(this.extensionsRoot, entry.path)) {
+        continue;
+      }
+
+      const extension = await this.loadExtensionFromDirectory(entry.path, entry);
+
+      if (extension) {
+        discovered.set(extension.id, extension);
+      } else {
+        this.dependencies.logger.warn(
+          `${logModule}: ${entry.name} is recorded at ${entry.path} but cannot be loaded from there`,
+        );
+      }
+    }
+
+    for (const extension of await this.scanManagedRoot(entriesByPath)) {
+      discovered.set(extension.id, extension);
+    }
+
+    this.dependencies.logger.debug(`${logModule}: ${discovered.size} extensions discovered`, {
+      extensionsRoot: this.extensionsRoot,
+    });
+
+    return discovered;
+  }
+
+  private async scanManagedRoot(entriesByPath: Map<string, InstalledExtensionEntry>): Promise<InstalledExtension[]> {
+    const extensions: InstalledExtension[] = [];
+
+    for (const directoryName of await this.readDirectories(this.extensionsRoot)) {
+      const extensionDirectory = this.dependencies.joinPaths(this.extensionsRoot, directoryName);
+      const builds = await this.findBuilds(extensionDirectory);
+      const recorded = builds.find((build) => entriesByPath.has(build));
+
+      // Without a record there is nothing to pick between builds, and guessing
+      // would be worse than leaving them to the sweep. A single build is not a
+      // guess, so it is adopted: an install whose record was lost still works.
+      const livePath = recorded ?? (builds.length === 1 ? builds[0] : undefined);
+
+      if (!livePath) {
+        if (builds.length > 0) {
+          this.dependencies.logger.warn(
+            `${logModule}: ${extensionDirectory} holds ${builds.length} builds and none of them is recorded as live`,
+          );
+        }
+
+        continue;
+      }
+
+      const extension = await this.loadExtensionFromDirectory(livePath, entriesByPath.get(livePath));
+
+      if (!extension) {
+        continue;
+      }
+
+      extensions.push(extension);
+
+      if (!recorded) {
+        this.adopt(extension);
+      }
+    }
 
     return extensions;
   }
 
   /**
-   * Returns the symlinked path to the extension folder,
-   * e.g. "/Users/<username>/Library/Application Support/Lens/node_modules/@publisher/extension"
+   * Record a build found on disk which the registry does not know about, so
+   * that the next scan does not have to infer it again and the sweep does not
+   * collect it.
    */
-  protected getInstalledPath(name: string): string {
-    return this.dependencies.joinPaths(this.nodeModulesPath, name);
+  private adopt(extension: InstalledExtension): void {
+    if (this.dependencies.installedExtensions.get(extension.id)?.path === extension.absolutePath) {
+      return;
+    }
+
+    this.dependencies.logger.info(
+      `${logModule}: adopting unrecorded extension ${extension.manifest.name} at ${extension.absolutePath}`,
+    );
+
+    const parsed = parseVersionDirectoryName(this.dependencies.getBasenameOfPath(extension.absolutePath));
+
+    this.dependencies.recordInstalledExtension({
+      name: extension.id,
+      path: extension.absolutePath,
+      version: parsed?.version,
+      digest: parsed?.digest,
+      verified: false,
+    });
   }
 
   /**
-   * Returns the symlinked path to the package.json,
-   * e.g. "/Users/<username>/Library/Application Support/Lens/node_modules/@publisher/extension/package.json"
+   * The directories below `<extensionsRoot>/<name>` which could be the live
+   * build: either the managed builds, or the directory itself when an unpacked
+   * extension was put directly into the root.
    */
-  protected getInstalledManifestPath(name: string): string {
-    return this.dependencies.joinPaths(this.getInstalledPath(name), manifestFilename);
+  private async findBuilds(extensionDirectory: string): Promise<string[]> {
+    if (await this.dependencies.pathExists(this.dependencies.joinPaths(extensionDirectory, manifestFilename))) {
+      return [extensionDirectory];
+    }
+
+    return (await this.readDirectories(extensionDirectory))
+      .filter((name) => parseVersionDirectoryName(name))
+      .map((name) => this.dependencies.joinPaths(extensionDirectory, name));
+  }
+
+  private async readDirectories(directory: string): Promise<string[]> {
+    try {
+      const entries = await this.dependencies.readDirectory(directory, { withFileTypes: true });
+
+      // A symbolic link is followed: this model has no symlinks of its own, but
+      // a user is free to point one at a checkout.
+      return entries.filter((entry) => entry.isDirectory() || entry.isSymbolicLink()).map((entry) => entry.name);
+    } catch (error) {
+      if (!isErrnoException(error) || error.code !== "ENOENT") {
+        this.dependencies.logger.warn(`${logModule}: cannot read ${directory}: ${error}`);
+      }
+
+      return [];
+    }
   }
 
   /**
-   * Returns InstalledExtension from path to package.json file.
-   * Also updates this.packagesJson.
+   * Returns the InstalledExtension for a directory holding a manifest, or null
+   * when there is nothing loadable there.
    */
-  protected async loadExtensionFromFolder(folderPath: string): Promise<InstalledExtension | null> {
-    const manifestPath = this.dependencies.joinPaths(folderPath, manifestFilename);
+  protected async loadExtensionFromDirectory(
+    directory: string,
+    entry?: InstalledExtensionEntry,
+  ): Promise<InstalledExtension | null> {
+    const manifestPath = this.dependencies.joinPaths(directory, manifestFilename);
 
     try {
       const manifest = (await this.dependencies.readJsonFile(manifestPath)) as unknown as LensExtensionManifest;
-      const id = this.getInstalledManifestPath(manifest.name);
-      const isEnabled = this.dependencies.isExtensionEnabled(id);
-      const extensionDir = this.dependencies.getDirnameOfPath(manifestPath);
-      const npmPackage = this.dependencies.joinPaths(extensionDir, `${manifest.name}-${manifest.version}.tgz`);
-      const absolutePath =
-        this.dependencies.isProduction && (await this.dependencies.pathExists(npmPackage)) ? npmPackage : extensionDir;
-      const isCompatible = this.dependencies.isCompatibleExtension(manifest);
+      const id = manifest.name;
+      const isManaged = Boolean(parseVersionDirectoryName(this.dependencies.getBasenameOfPath(directory)));
 
       return {
         id,
-        absolutePath,
-        manifestPath: id,
+        absolutePath: directory,
+        manifestPath,
         manifest,
-        isEnabled,
-        isCompatible,
+        isEnabled: this.dependencies.isExtensionEnabled(id),
+        isCompatible: this.dependencies.isCompatibleExtension(manifest),
+        isManaged,
+        isVerified: isManaged && entry?.verified === true,
       };
     } catch (error) {
-      if (isErrnoException(error) && error.code === "ENOTDIR") {
+      if (isErrnoException(error) && (error.code === "ENOTDIR" || error.code === "ENOENT")) {
         // ignore this error, probably from .DS_Store file
         this.dependencies.logger.debug(
           `${logModule}: failed to load extension manifest through a not-dir-like at ${manifestPath}`,
@@ -411,46 +510,6 @@ export class ExtensionDiscovery {
 
       return null;
     }
-  }
-
-  async ensureExtensions(): Promise<Map<LensExtensionId, InstalledExtension>> {
-    const userExtensions = await this.loadFromFolder(this.localFolderPath);
-
-    return (this.extensions = new Map(userExtensions.map((extension) => [extension.id, extension])));
-  }
-
-  async loadFromFolder(folderPath: string): Promise<InstalledExtension[]> {
-    const extensions: InstalledExtension[] = [];
-    const paths = await this.dependencies.readDirectory(folderPath);
-
-    for (const fileName of paths) {
-      const absPath = this.dependencies.joinPaths(folderPath, fileName);
-
-      try {
-        const lstat = await this.dependencies.lstat(absPath);
-
-        // skip non-directories
-        if (!isDirectoryLike(lstat)) {
-          continue;
-        }
-      } catch (error) {
-        if (isErrnoException(error) && error.code === "ENOENT") {
-          continue;
-        }
-
-        throw error;
-      }
-
-      const extension = await this.loadExtensionFromFolder(absPath);
-
-      if (extension) {
-        extensions.push(extension);
-      }
-    }
-
-    this.dependencies.logger.debug(`${logModule}: ${extensions.length} extensions loaded`, { folderPath, extensions });
-
-    return extensions;
   }
 
   toJSON(): ExtensionDiscoveryChannelMessage {

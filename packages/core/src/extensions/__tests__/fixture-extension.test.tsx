@@ -74,6 +74,8 @@ const installedFixture: InstalledExtension = {
   id: EXTENSION_NAME,
   absolutePath: "/irrelevant",
   manifestPath: "/irrelevant/package.json",
+  isManaged: true,
+  isVerified: true,
   manifest: {
     name: EXTENSION_NAME,
     version: "2.0.0-0",

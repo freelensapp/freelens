@@ -4,33 +4,32 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import path from "node:path";
 import { getInjectable } from "@ogre-tools/injectable";
-import attemptInstallInjectable from "./attempt-install/attempt-install.injectable";
-import readFileNotifyInjectable from "./read-file-notify/read-file-notify.injectable";
+import statInjectable from "../../../common/fs/stat.injectable";
+import installFromDirectoryInjectable from "./attempt-install/install-from-directory.injectable";
+import installFromFileInjectable from "./attempt-install/install-from-file.injectable";
 
-export type AttemptInstalls = (filePaths: string[]) => Promise<void>;
+export type AttemptInstalls = (paths: string[]) => Promise<void>;
 
+/**
+ * Install everything that was dropped on the window or picked in the file
+ * dialog. A dropped directory is a development install, the same as one typed
+ * into the install field.
+ */
 const attemptInstallsInjectable = getInjectable({
   id: "attempt-installs",
 
   instantiate: (di): AttemptInstalls => {
-    const attemptInstall = di.inject(attemptInstallInjectable);
-    const readFileNotify = di.inject(readFileNotifyInjectable);
+    const installFromFile = di.inject(installFromFileInjectable);
+    const installFromDirectory = di.inject(installFromDirectoryInjectable);
+    const stat = di.inject(statInjectable);
 
-    return async (filePaths) => {
+    return async (paths) => {
       await Promise.allSettled(
-        filePaths.map(async (filePath) => {
-          const data = await readFileNotify(filePath);
+        paths.map(async (filePath) => {
+          const stats = await stat(filePath).catch(() => undefined);
 
-          if (!data) {
-            return;
-          }
-
-          return attemptInstall({
-            fileName: path.basename(filePath),
-            data,
-          });
+          return stats?.isDirectory() ? installFromDirectory(filePath) : installFromFile(filePath);
         }),
       );
     };

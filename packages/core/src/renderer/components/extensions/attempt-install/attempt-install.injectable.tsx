@@ -9,11 +9,9 @@ import { showErrorNotificationInjectable, showInfoNotificationInjectable } from 
 import { disposer } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { shell } from "electron";
-import { remove as removeDir } from "fs-extra";
 import { ExtensionInstallationState } from "../../../../extensions/extension-installation-state-store/extension-installation-state-store";
 import extensionInstallationStateStoreInjectable from "../../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
 import extensionLoaderInjectable from "../../../../extensions/extension-loader/extension-loader.injectable";
-import uninstallExtensionInjectable from "../uninstall-extension.injectable";
 import createTempFilesAndValidateInjectable from "./create-temp-files-and-validate.injectable";
 import getExtensionDestFolderInjectable from "./get-extension-dest-folder.injectable";
 import unpackExtensionInjectable from "./unpack-extension.injectable";
@@ -23,7 +21,8 @@ import type { Disposer } from "@freelensapp/utilities";
 
 import type { ExtensionInstallationStateStore } from "../../../../extensions/extension-installation-state-store/extension-installation-state-store";
 import type { ExtensionLoader } from "../../../../extensions/extension-loader";
-import type { LensExtensionId } from "../../../../extensions/installed-extension";
+import type { InstallChecksum } from "../../../../features/extensions/installer/common/checksums";
+import type { InstalledExtensionSource } from "../../../../features/extensions/installer/common/installed-extensions";
 import type { CreateTempFilesAndValidate } from "./create-temp-files-and-validate.injectable";
 import type { GetExtensionDestFolder } from "./get-extension-dest-folder.injectable";
 import type { UnpackExtension } from "./unpack-extension.injectable";
@@ -31,11 +30,20 @@ import type { UnpackExtension } from "./unpack-extension.injectable";
 export interface InstallRequest {
   fileName: string;
   data: Buffer;
+  /**
+   * What the user asked for, recorded with the install because it cannot be
+   * recovered from the extracted tree afterwards.
+   */
+  source?: InstalledExtensionSource;
+  /**
+   * What the source vouched for. Absent means the download was unverifiable,
+   * which warns rather than refuses.
+   */
+  checksum?: InstallChecksum;
 }
 
 interface Dependencies {
   extensionLoader: ExtensionLoader;
-  uninstallExtension: (id: LensExtensionId) => Promise<boolean>;
   unpackExtension: UnpackExtension;
   createTempFilesAndValidate: CreateTempFilesAndValidate;
   getExtensionDestFolder: GetExtensionDestFolder;
@@ -49,7 +57,6 @@ export type AttemptInstall = (request: InstallRequest, cleanup?: Disposer) => Pr
 const attemptInstall =
   ({
     extensionLoader,
-    uninstallExtension,
     unpackExtension,
     createTempFilesAndValidate,
     getExtensionDestFolder,
@@ -88,10 +95,28 @@ const attemptInstall =
     const extensionFolder = getExtensionDestFolder(name);
     const installedExtension = extensionLoader.getExtensionById(validatedRequest.id);
 
+    // Only one version of an extension is active at a time, and a version which
+    // is already running cannot be swapped underneath itself: its module graph
+    // stays in the realm it was loaded into for the life of the process.
+    if (installedExtension?.isEnabled) {
+      dispose();
+
+      return void showErrorNotification(
+        <div className="flex flex-col gap-2">
+          <b>Extension is active:</b>
+          <p>
+            <em>{`${name}@${installedExtension.manifest.version}`}</em>
+            {" is installed and active."}
+          </p>
+          <p>{"Disable or uninstall it first, then install this version."}</p>
+        </div>,
+      );
+    }
+
     if (installedExtension) {
       const { version: oldVersion } = installedExtension.manifest;
 
-      // confirm to uninstall old version before installing new version
+      // confirm replacing the installed version, which is not active
       const removeNotification = showInfoNotification(
         <div className="InstallingExtensionNotification flex gap-2 items-center">
           <div className="flex flex-col gap-2">
@@ -105,7 +130,7 @@ const attemptInstall =
             </p>
             <div className="remove-folder-warning" onClick={() => shell.openPath(extensionFolder)}>
               <b>Warning:</b>
-              {` ${name}@${oldVersion} will be removed before installation.`}
+              {` ${name}@${oldVersion} will be replaced by this installation.`}
             </div>
           </div>
           <Button
@@ -114,11 +139,7 @@ const attemptInstall =
             onClick={async () => {
               removeNotification();
 
-              if (await uninstallExtension(validatedRequest.id)) {
-                await unpackExtension(validatedRequest, dispose);
-              } else {
-                dispose();
-              }
+              await unpackExtension(validatedRequest, dispose);
             }}
           />
         </div>,
@@ -127,10 +148,6 @@ const attemptInstall =
         },
       );
     } else {
-      // clean up old data if still around
-      await removeDir(extensionFolder);
-
-      // install extension if not yet exists
       await unpackExtension(validatedRequest, dispose);
     }
   };
@@ -140,7 +157,6 @@ const attemptInstallInjectable = getInjectable({
   instantiate: (di) =>
     attemptInstall({
       extensionLoader: di.inject(extensionLoaderInjectable),
-      uninstallExtension: di.inject(uninstallExtensionInjectable),
       unpackExtension: di.inject(unpackExtensionInjectable),
       createTempFilesAndValidate: di.inject(createTempFilesAndValidateInjectable),
       getExtensionDestFolder: di.inject(getExtensionDestFolderInjectable),

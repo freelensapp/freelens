@@ -533,7 +533,7 @@ exports[`extensions - navigation using application menu > when navigating to ext
                 <div
                   class="SubTitle"
                 >
-                  Name or file path or URL to an extension package (tar, tgz)
+                  Name, URL, or path to an extension package (tar, tgz) or to an unpacked extension directory
                    
                 </div>
                 <div
@@ -556,7 +556,7 @@ exports[`extensions - navigation using application menu > when navigating to ext
                   <b>
                     Pro-Tip
                   </b>
-                  : you can drag and drop a tarball file to this area
+                  : you can drag and drop a tarball file, or an unpacked extension directory, to this area
                 </small>
               </section>
               <div
