@@ -21,12 +21,12 @@ import { extensionFileUrl, toFileSegments } from "../../features/extensions/load
 import { requestExtensionLoaderInitialState } from "../../renderer/ipc";
 import { sanitizeExtensionName } from "../lens-extension";
 
+import type { Fetch } from "@freelensapp/json-api";
 import type { Logger } from "@freelensapp/logger";
 import type { GetRandomId } from "@freelensapp/random";
 
 import type { ObservableMap } from "mobx";
 
-import type { PathExists } from "../../common/fs/path-exists.injectable";
 import type { GetBasenameOfPath } from "../../common/path/get-basename.injectable";
 import type { JoinPaths } from "../../common/path/join-paths.injectable";
 import type { UpdateExtensionsState } from "../../features/extensions/enabled/common/update-state.injectable";
@@ -50,7 +50,7 @@ interface Dependencies {
   getRandomId: GetRandomId;
   joinPaths: JoinPaths;
   getBasenameOfPath: GetBasenameOfPath;
-  pathExists: PathExists;
+  fetch: Fetch;
 }
 
 interface ExtensionBeingActivated {
@@ -493,10 +493,20 @@ export class ExtensionLoader {
       try {
         // A `<link>` at a URL which is not there logs a failed request and
         // nothing else, but the extensions which do not ship CSS are the
-        // majority, so the existence check stays.
-        if (
-          !(await this.dependencies.pathExists(this.dependencies.joinPaths(extension.absolutePath, ...fileSegments)))
-        ) {
+        // majority, so the existence check stays. It asks the scheme rather
+        // than the filesystem, because a renderer which reads an absolute path
+        // off disk here is a renderer that still needs filesystem privileges
+        // (#2399) -- the very thing serving extensions over a URL is for. Main
+        // answers a file it does not have with 404, out of the same registry it
+        // consulted for the entry point, and the status is the whole answer:
+        // nothing here reads the body. A plain GET rather than a HEAD because
+        // the handler reads the file whatever the method is, so a HEAD would
+        // save only this hop's copy of a stylesheet the `<link>` is about to
+        // ask for anyway -- and GET is the request the scheme is known to
+        // answer, being the one the entry-point import itself makes.
+        const response = await this.dependencies.fetch(url);
+
+        if (!response.ok) {
           continue;
         }
 

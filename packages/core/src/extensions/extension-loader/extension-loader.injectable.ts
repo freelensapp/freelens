@@ -7,7 +7,7 @@
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getRandomIdInjectionToken } from "@freelensapp/random";
 import { getInjectable } from "@ogre-tools/injectable";
-import pathExistsInjectable from "../../common/fs/path-exists.injectable";
+import fetchInjectable from "../../common/fetch/fetch.injectable";
 import getBasenameOfPathInjectable from "../../common/path/get-basename.injectable";
 import joinPathsInjectable from "../../common/path/join-paths.injectable";
 import updateExtensionsStateInjectable from "../../features/extensions/enabled/common/update-state.injectable";
@@ -29,7 +29,7 @@ const extensionLoaderInjectable = getInjectable({
       getRandomId: di.inject(getRandomIdInjectionToken),
       joinPaths: di.inject(joinPathsInjectable),
       getBasenameOfPath: di.inject(getBasenameOfPathInjectable),
-      pathExists: di.inject(pathExistsInjectable),
+      fetch: di.inject(fetchInjectable),
     }),
 });
 
