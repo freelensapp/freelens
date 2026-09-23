@@ -66,7 +66,9 @@ const installFromUrlInjectable = getInjectable({
         return dispose();
       }
 
-      const fileName = getBasenameOfPath(new URL(url).pathname);
+      // Only used to name the temporary file, so a URL which ends in a slash
+      // still has to produce something.
+      const fileName = getBasenameOfPath(new URL(url).pathname) || "extension.tgz";
 
       return attemptInstall(
         {
