@@ -8,6 +8,7 @@ import { EventEmitter } from "node:events";
 import { isErrnoException } from "@freelensapp/utilities";
 import { ipcRenderer } from "electron";
 import { makeObservable, observable, reaction, when } from "mobx";
+import { rcompare, valid } from "semver";
 import { broadcastMessage, ipcMainHandle, ipcRendererOn } from "../../common/ipc";
 import { extensionDiscoveryStateChannel } from "../../common/ipc/extension-handling";
 import { toJS } from "../../common/utils";
@@ -275,7 +276,7 @@ export class ExtensionDiscovery {
         this.events.emit("add", extension);
       }
 
-      await this.dependencies.sweepOrphanedExtensionBuilds(this.livePaths());
+      await this.dependencies.sweepOrphanedExtensionBuilds(this.pathsToKeep());
     } catch (error) {
       this.dependencies.logger.error(`${logModule}: failed to rescan extensions: ${error}`, { error });
     }
@@ -332,16 +333,37 @@ export class ExtensionDiscovery {
 
     // Nothing is loaded yet, so every build which is not live is an orphan left
     // by a deferred deletion that never completed.
-    await this.dependencies.sweepOrphanedExtensionBuilds(this.livePaths());
+    await this.dependencies.sweepOrphanedExtensionBuilds(this.pathsToKeep());
 
     this.isLoaded = true;
 
     return this.extensions;
   }
 
+  /**
+   * The builds the sweep must not collect: the live ones, plus the ones the
+   * last scan could not rule out.
+   *
+   * The sweep deletes every version directory it is not given, so it is only
+   * ever told about builds we are sure of. Deciding by omission would make
+   * deletion the outcome of not knowing, which is how an extension gets
+   * uninstalled without anybody asking for it.
+   */
+  private pathsToKeep(): string[] {
+    return [...this.livePaths(), ...this.retainedBuilds];
+  }
+
   private livePaths(): string[] {
     return Array.from(this.extensions.values(), ({ absolutePath }) => absolutePath);
   }
+
+  /**
+   * Builds which are not live but which the sweep may not touch yet, because
+   * the scan resolved their directory by inference rather than from a record.
+   * Once that inference has been written back they are ordinary orphans and the
+   * next scan gives them up.
+   */
+  private retainedBuilds: ReadonlySet<string> = new Set();
 
   protected async discoverExtensions(): Promise<Map<LensExtensionId, InstalledExtension>> {
     const discovered = new Map<LensExtensionId, InstalledExtension>();
@@ -367,9 +389,13 @@ export class ExtensionDiscovery {
       }
     }
 
-    for (const extension of await this.scanManagedRoot(entriesByPath)) {
+    const { extensions, retained } = await this.scanManagedRoot(entriesByPath);
+
+    for (const extension of extensions) {
       discovered.set(extension.id, extension);
     }
+
+    this.retainedBuilds = retained;
 
     this.dependencies.logger.debug(`${logModule}: ${discovered.size} extensions discovered`, {
       extensionsRoot: this.extensionsRoot,
@@ -378,43 +404,105 @@ export class ExtensionDiscovery {
     return discovered;
   }
 
-  private async scanManagedRoot(entriesByPath: Map<string, InstalledExtensionEntry>): Promise<InstalledExtension[]> {
+  private async scanManagedRoot(
+    entriesByPath: Map<string, InstalledExtensionEntry>,
+  ): Promise<{ extensions: InstalledExtension[]; retained: Set<string> }> {
     const extensions: InstalledExtension[] = [];
+    const retained = new Set<string>();
 
     for (const directoryName of await this.readDirectories(this.extensionsRoot)) {
       const extensionDirectory = this.dependencies.joinPaths(this.extensionsRoot, directoryName);
       const builds = await this.findBuilds(extensionDirectory);
       const recorded = builds.find((build) => entriesByPath.has(build));
 
-      // Without a record there is nothing to pick between builds, and guessing
-      // would be worse than leaving them to the sweep. A single build is not a
-      // guess, so it is adopted: an install whose record was lost still works.
-      const livePath = recorded ?? (builds.length === 1 ? builds[0] : undefined);
+      // A record says which build is live and the rest are orphans of a deferred
+      // deletion. Without one the newest build is adopted instead: an install
+      // whose record was lost still works, and since the sweep removes every
+      // build it is not given, declining to choose here would delete all of
+      // them -- the working one included.
+      const candidates = recorded ? [recorded] : this.orderBuildsByVersionDescending(builds);
+      const adopted = await this.loadFirstLoadable(candidates, entriesByPath);
 
-      if (!livePath) {
+      if (!adopted) {
         if (builds.length > 0) {
           this.dependencies.logger.warn(
-            `${logModule}: ${extensionDirectory} holds ${builds.length} builds and none of them is recorded as live`,
+            `${logModule}: nothing below ${extensionDirectory} could be loaded, keeping its ${builds.length} builds`,
           );
+        }
+
+        // A manifest which cannot be read may be a corrupt build or may be a
+        // transient error, and the two are indistinguishable from here. Neither
+        // is a reason to delete anything.
+        for (const build of builds) {
+          retained.add(build);
         }
 
         continue;
       }
 
-      const extension = await this.loadExtensionFromDirectory(livePath, entriesByPath.get(livePath));
-
-      if (!extension) {
-        continue;
-      }
-
-      extensions.push(extension);
+      extensions.push(adopted.extension);
 
       if (!recorded) {
-        this.adopt(extension);
+        this.adopt(adopted.extension);
+
+        // The builds which were passed over lost to an inference rather than to
+        // a record. They are kept until that inference has been written back
+        // and read again, so that one wrong guess cannot take the disk with it.
+        for (const build of builds) {
+          if (build !== adopted.path) {
+            retained.add(build);
+          }
+        }
       }
     }
 
-    return extensions;
+    return { extensions, retained };
+  }
+
+  private async loadFirstLoadable(
+    builds: string[],
+    entriesByPath: Map<string, InstalledExtensionEntry>,
+  ): Promise<{ extension: InstalledExtension; path: string } | undefined> {
+    for (const build of builds) {
+      const extension = await this.loadExtensionFromDirectory(build, entriesByPath.get(build));
+
+      if (extension) {
+        return { extension, path: build };
+      }
+    }
+
+    return undefined;
+  }
+
+  /**
+   * Newest build first, which is the one a lost record most likely pointed at:
+   * a build is only superseded by a later install.
+   *
+   * A version which is not valid semver sorts after the ones which are, and
+   * equal versions are separated by their digest, so the order is total and does
+   * not depend on how the directory happened to be read.
+   */
+  private orderBuildsByVersionDescending(builds: string[]): string[] {
+    const versionOf = (build: string): string | undefined => {
+      const version = parseVersionDirectoryName(this.dependencies.getBasenameOfPath(build))?.version;
+
+      return version && valid(version) ? version : undefined;
+    };
+
+    return [...builds].sort((left, right) => {
+      const leftVersion = versionOf(left);
+      const rightVersion = versionOf(right);
+
+      if (leftVersion && rightVersion && leftVersion !== rightVersion) {
+        return rcompare(leftVersion, rightVersion);
+      }
+
+      if (Boolean(leftVersion) !== Boolean(rightVersion)) {
+        return leftVersion ? -1 : 1;
+      }
+
+      return right.localeCompare(left);
+    });
   }
 
   /**
