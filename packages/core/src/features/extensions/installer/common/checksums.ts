@@ -92,21 +92,50 @@ export function verifyInstallChecksum(data: Buffer, checksum: InstallChecksum): 
     : verifySha256(data, checksum.value);
 }
 
+const sidecarLinePattern = /^(?<digest>[0-9a-f]{64})(?:[ \t]+\*?(?<name>\S.*?))?$/i;
+
+function fileNameOf(path: string): string {
+  const separator = Math.max(path.lastIndexOf("/"), path.lastIndexOf("\\"));
+
+  return separator < 0 ? path : path.slice(separator + 1);
+}
+
 /**
- * Read the digest out of a `.sha256` sidecar.
+ * Read the digest of `fileName` out of a `.sha256` sidecar.
  *
  * Both the `sha256sum(1)` output format (`<hex>  <filename>`) and a bare digest
- * are accepted, since both are in use. A sidecar we cannot parse is treated as
- * a sidecar we do not have.
+ * are accepted, since both are in use. A line which names a file only counts for
+ * that file: a combined `SHA256SUMS` listing every asset of a release is a
+ * common enough convention that taking the first digest in the file would
+ * verify the tarball against some other artifact and report a mismatch that
+ * is not one.
+ *
+ * A sidecar with nothing in it for this file is treated as a sidecar we do not
+ * have, which warns rather than refuses.
  */
-export function parseChecksumSidecar(contents: string): string | undefined {
-  for (const line of contents.split("\n")) {
-    const [token] = line.trim().split(/\s+/);
+export function parseChecksumSidecar(contents: string, fileName: string): string | undefined {
+  const wanted = fileNameOf(fileName.trim());
+  let bareDigest: string | undefined;
 
-    if (token && /^[0-9a-f]{64}$/i.test(token)) {
-      return token.toLowerCase();
+  for (const line of contents.split("\n")) {
+    const groups = sidecarLinePattern.exec(line.trim())?.groups;
+
+    if (!groups?.digest) {
+      continue;
+    }
+
+    if (!groups.name) {
+      // A digest on its own is about whatever the sidecar sits beside, so it
+      // stands unless a named line turns out to be about this file.
+      bareDigest ??= groups.digest.toLowerCase();
+
+      continue;
+    }
+
+    if (fileNameOf(groups.name) === wanted) {
+      return groups.digest.toLowerCase();
     }
   }
 
-  return undefined;
+  return bareDigest;
 }

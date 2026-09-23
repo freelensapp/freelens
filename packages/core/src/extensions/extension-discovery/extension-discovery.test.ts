@@ -176,6 +176,49 @@ describe("ExtensionDiscovery", () => {
     expect(removePathMock).not.toHaveBeenCalledWith(`${extensionsRoot}/my-extension/2.0.0-abcdef01`);
   });
 
+  it("adopts the newest build and keeps the others when the record was lost", async () => {
+    readDirectoryMock.mockImplementation(async (directory: string) =>
+      directory === extensionsRoot
+        ? [directoryEntry("my-extension")]
+        : directory === `${extensionsRoot}/my-extension`
+          ? [directoryEntry("1.0.0-0f1e2d3c"), directoryEntry("2.0.0-abcdef01")]
+          : [],
+    );
+    readJsonFileMock.mockImplementation(async (path: string) =>
+      manifestOf("my-extension", path.includes("2.0.0") ? "2.0.0" : "1.0.0"),
+    );
+
+    const extensions = await extensionDiscovery.load();
+
+    expect(extensions.get("my-extension")).toMatchObject({
+      absolutePath: `${extensionsRoot}/my-extension/2.0.0-abcdef01`,
+    });
+    expect(installedExtensions.get("my-extension")).toMatchObject({
+      path: `${extensionsRoot}/my-extension/2.0.0-abcdef01`,
+    });
+    // The build which lost is kept until the adoption above has been read back
+    // from the registry: an inference must not be able to delete anything.
+    expect(removePathMock).not.toHaveBeenCalled();
+  });
+
+  it("keeps every build of an extension whose manifests cannot be read", async () => {
+    readDirectoryMock.mockImplementation(async (directory: string) =>
+      directory === extensionsRoot
+        ? [directoryEntry("my-extension")]
+        : directory === `${extensionsRoot}/my-extension`
+          ? [directoryEntry("1.0.0-0f1e2d3c"), directoryEntry("2.0.0-abcdef01")]
+          : [],
+    );
+    readJsonFileMock.mockImplementation(async () => {
+      throw Object.assign(new Error("EACCES"), { code: "EACCES" });
+    });
+
+    const extensions = await extensionDiscovery.load();
+
+    expect(extensions.size).toBe(0);
+    expect(removePathMock).not.toHaveBeenCalled();
+  });
+
   it("discovers a development extension from the external path recorded for it", async () => {
     runInAction(() => {
       installedExtensions.set("dev-extension", {

@@ -38,7 +38,7 @@ const installFromUrlInjectable = getInjectable({
     const showErrorNotification = di.inject(showErrorNotificationInjectable);
     const logger = di.inject(loggerInjectionToken);
 
-    const downloadChecksum = async (url: string): Promise<InstallChecksum | undefined> => {
+    const downloadChecksum = async (url: string, fileName: string): Promise<InstallChecksum | undefined> => {
       const sidecarUrl = new URL(url);
 
       sidecarUrl.pathname += sidecarSuffix;
@@ -51,7 +51,11 @@ const installFromUrlInjectable = getInjectable({
         return undefined;
       }
 
-      const value = parseChecksumSidecar(result.response.toString("utf-8"));
+      const value = parseChecksumSidecar(result.response.toString("utf-8"), fileName);
+
+      if (!value) {
+        logger.info(`[EXTENSION-INSTALL]: the checksum at ${sidecarUrl.href} says nothing about ${fileName}`);
+      }
 
       return value ? { kind: "sha256", value } : undefined;
     };
@@ -75,7 +79,7 @@ const installFromUrlInjectable = getInjectable({
           fileName,
           data: result.response,
           source: { kind: "url", url },
-          checksum: await downloadChecksum(url),
+          checksum: await downloadChecksum(url, fileName),
         },
         dispose,
       );

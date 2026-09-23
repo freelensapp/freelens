@@ -16,11 +16,7 @@ import extensionInstallationStateStoreInjectable from "../../../../extensions/ex
 import extensionLoaderInjectable from "../../../../extensions/extension-loader/extension-loader.injectable";
 import { extensionDisplayName, sanitizeExtensionName } from "../../../../extensions/lens-extension";
 import activateInstalledBuildInjectable from "../../../../features/extensions/installer/common/activate-installed-build.injectable";
-import {
-  computeTarballDigest,
-  shortenDigest,
-  verifyInstallChecksum,
-} from "../../../../features/extensions/installer/common/checksums";
+import { computeTarballDigest, shortenDigest } from "../../../../features/extensions/installer/common/checksums";
 import extensionsRootInjectable from "../../../../features/extensions/installer/common/extensions-root.injectable";
 import { versionDirectoryName } from "../../../../features/extensions/installer/common/version-directory";
 import { getMessageFromError } from "../get-message-from-error/get-message-from-error";
@@ -88,15 +84,10 @@ const unpackExtensionInjectable = getInjectable({
       logger.info(`Unpacking extension ${displayName}`, { fileName, tempFile, buildFolder });
 
       try {
-        if (checksum) {
-          const mismatch = verifyInstallChecksum(data, checksum);
-
-          if (mismatch) {
-            throw new Error(
-              `checksum mismatch: expected ${mismatch.algorithm} ${mismatch.expected}, got ${mismatch.actual}`,
-            );
-          }
-        } else {
+        // The checksum itself was checked in `attemptInstall`, before these
+        // bytes were written out or read into: by here the only thing left to
+        // say about it is that there was not one.
+        if (!checksum) {
           showInfoNotification(
             <p>
               {"Nothing vouches for the integrity of "}
