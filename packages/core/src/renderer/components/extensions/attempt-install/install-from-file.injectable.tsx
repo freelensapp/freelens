@@ -45,7 +45,11 @@ const installFromFileInjectable = getInjectable({
           return undefined;
         }
 
-        const value = parseChecksumSidecar(await readFile(sidecarPath));
+        const value = parseChecksumSidecar(await readFile(sidecarPath), getBasenameOfPath(filePath));
+
+        if (!value) {
+          logger.info(`[EXTENSION-INSTALL]: the checksum at ${sidecarPath} says nothing about ${filePath}`);
+        }
 
         return value ? { kind: "sha256", value } : undefined;
       } catch (error) {

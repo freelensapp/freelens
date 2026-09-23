@@ -51,20 +51,50 @@ describe("verifySha256", () => {
 });
 
 describe("parseChecksumSidecar", () => {
+  const tarball = "my-extension-0.1.0.tgz";
+  const otherSha256 = "1".repeat(64);
+
   it("reads the sha256sum(1) output format", () => {
-    expect(parseChecksumSidecar(`${sha256}  my-extension-0.1.0.tgz\n`)).toBe(sha256);
+    expect(parseChecksumSidecar(`${sha256}  ${tarball}\n`, tarball)).toBe(sha256);
+  });
+
+  it("reads the binary-mode form of it", () => {
+    expect(parseChecksumSidecar(`${sha256} *${tarball}\n`, tarball)).toBe(sha256);
   });
 
   it("reads a bare digest", () => {
-    expect(parseChecksumSidecar(`${sha256}\n`)).toBe(sha256);
+    expect(parseChecksumSidecar(`${sha256}\n`, tarball)).toBe(sha256);
   });
 
   it("normalizes the case", () => {
-    expect(parseChecksumSidecar(sha256.toUpperCase())).toBe(sha256);
+    expect(parseChecksumSidecar(sha256.toUpperCase(), tarball)).toBe(sha256);
+  });
+
+  it("takes the digest of this file out of a combined listing, not the first one in it", () => {
+    const contents = [
+      `${otherSha256}  freelens-1.6.2.dmg`,
+      `${otherSha256}  freelens-1.6.2.exe`,
+      `${sha256}  ${tarball}`,
+      "",
+    ].join("\n");
+
+    expect(parseChecksumSidecar(contents, tarball)).toBe(sha256);
+  });
+
+  it("ignores the directory a listing may have been written from", () => {
+    expect(parseChecksumSidecar(`${sha256}  ./dist/${tarball}\n`, `/home/someone/src/${tarball}`)).toBe(sha256);
+  });
+
+  it("has nothing for a file a listing does not mention", () => {
+    expect(parseChecksumSidecar(`${otherSha256}  some-other-extension-0.1.0.tgz\n`, tarball)).toBeUndefined();
+  });
+
+  it("falls back to a bare digest when no line names this file", () => {
+    expect(parseChecksumSidecar(`${otherSha256}  some-other.tgz\n${sha256}\n`, tarball)).toBe(sha256);
   });
 
   it("treats a sidecar it cannot parse as a sidecar it does not have", () => {
-    expect(parseChecksumSidecar("<html>404 Not Found</html>")).toBeUndefined();
-    expect(parseChecksumSidecar("")).toBeUndefined();
+    expect(parseChecksumSidecar("<html>404 Not Found</html>", tarball)).toBeUndefined();
+    expect(parseChecksumSidecar("", tarball)).toBeUndefined();
   });
 });
