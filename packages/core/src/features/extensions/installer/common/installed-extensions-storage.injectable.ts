@@ -5,7 +5,8 @@
 
 import { isDefined } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import { action, toJS } from "mobx";
+import { action, comparer, toJS } from "mobx";
+import storeMigrationVersionInjectable from "../../../../common/vars/store-migration-version.injectable";
 import createPersistentStorageInjectable from "../../../persistent-storage/common/create.injectable";
 import { installedExtensionEntryModel } from "./installed-extensions";
 import installedExtensionsStateInjectable from "./installed-extensions-state.injectable";
@@ -31,6 +32,12 @@ const installedExtensionsPersistentStorageInjectable = getInjectable({
 
     return createPersistentStorage<InstalledExtensionsStorageModel>({
       configName: "installed-extensions",
+      projectVersion: di.inject(storeMigrationVersionInjectable),
+      // The entries are replaced wholesale on every change, so identity
+      // comparison would write the file on every unrelated observable read.
+      syncOptions: {
+        equals: comparer.structural,
+      },
       fromStore: action(({ extensions: rawExtensions = [] }) => {
         const extensions = rawExtensions
           .map(([name, entry]) => {

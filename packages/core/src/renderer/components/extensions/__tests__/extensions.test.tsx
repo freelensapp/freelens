@@ -72,9 +72,11 @@ describe("Extensions", () => {
           engines: { freelens: "^0.1.0" },
         },
         absolutePath: "/absolute/path",
-        manifestPath: "/symlinked/path/package.json",
+        manifestPath: "/absolute/path/package.json",
         isEnabled: true,
         isCompatible: true,
+        isManaged: true,
+        isVerified: true,
       });
 
       extensionDiscovery.uninstallExtension = vi.fn(() => Promise.resolve());

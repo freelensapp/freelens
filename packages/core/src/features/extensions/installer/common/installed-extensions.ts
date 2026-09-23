@@ -42,7 +42,11 @@ export const installedExtensionEntryModel = z.object({
   version: z.string().optional(),
   /** The first eight hex characters of the tarball's sha256. */
   digest: z.string().optional(),
-  source: installedExtensionSourceModel,
+  /**
+   * Absent for a build adopted from disk without a record, where what the user
+   * originally asked for is not recoverable.
+   */
+  source: installedExtensionSourceModel.optional(),
   /**
    * Whether the tarball was checked against a checksum at install time.
    * Verification happens at install and is not repeated at load, so this is a
@@ -53,11 +57,3 @@ export const installedExtensionEntryModel = z.object({
 
 export type InstalledExtensionSource = z.infer<typeof installedExtensionSourceModel>;
 export type InstalledExtensionEntry = z.infer<typeof installedExtensionEntryModel>;
-
-/**
- * A development install is registered in place, so its path is arbitrary and
- * outside the managed root. Everything that deletes has to ask this first.
- */
-export function isExternalEntry(entry: InstalledExtensionEntry): boolean {
-  return entry.source.kind === "directory";
-}
