@@ -13,7 +13,6 @@ import readJsonFileInjectable from "../../common/fs/read-json-file.injectable";
 import removePathInjectable from "../../common/fs/remove.injectable";
 import watchInjectable from "../../common/fs/watch/watch.injectable";
 import getBasenameOfPathInjectable from "../../common/path/get-basename.injectable";
-import getRelativePathInjectable from "../../common/path/get-relative-path.injectable";
 import joinPathsInjectable from "../../common/path/join-paths.injectable";
 import isExtensionEnabledInjectable from "../../features/extensions/enabled/common/is-enabled.injectable";
 import extensionsRootInjectable from "../../features/extensions/installer/common/extensions-root.injectable";
@@ -46,7 +45,6 @@ const extensionDiscoveryInjectable = getInjectable({
       ensureDirectory: di.inject(ensureDirInjectable),
       readDirectory: di.inject(readDirectoryInjectable),
       getBasenameOfPath: di.inject(getBasenameOfPathInjectable),
-      getRelativePath: di.inject(getRelativePathInjectable),
       joinPaths: di.inject(joinPathsInjectable),
     }),
 });

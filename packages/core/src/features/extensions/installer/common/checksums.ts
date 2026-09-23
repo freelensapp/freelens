@@ -77,6 +77,22 @@ export function verifySha256(data: Buffer, expected: string): ChecksumMismatch |
 }
 
 /**
+ * What the source of a tarball vouched for.
+ *
+ * A registry answers with npm's `dist.integrity`; a URL or a local file can
+ * carry a `.tgz.sha256` sidecar beside it. Both establish transfer integrity
+ * only: a checksum served by the same host as the tarball says nothing about
+ * authenticity, since whoever can rewrite one can rewrite the other.
+ */
+export type InstallChecksum = { kind: "integrity"; value: string } | { kind: "sha256"; value: string };
+
+export function verifyInstallChecksum(data: Buffer, checksum: InstallChecksum): ChecksumMismatch | undefined {
+  return checksum.kind === "integrity"
+    ? verifySubresourceIntegrity(data, checksum.value)
+    : verifySha256(data, checksum.value);
+}
+
+/**
  * Read the digest out of a `.sha256` sidecar.
  *
  * Both the `sha256sum(1)` output format (`<hex>  <filename>`) and a bare digest

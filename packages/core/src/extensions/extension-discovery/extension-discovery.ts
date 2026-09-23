@@ -11,6 +11,8 @@ import { makeObservable, observable, reaction, when } from "mobx";
 import { broadcastMessage, ipcMainHandle, ipcRendererOn } from "../../common/ipc";
 import { extensionDiscoveryStateChannel } from "../../common/ipc/extension-handling";
 import { toJS } from "../../common/utils";
+import { managedDirectoryOf } from "../../features/extensions/installer/common/managed-directory";
+import { manifestFilename } from "../../features/extensions/installer/common/manifest";
 import { parseVersionDirectoryName } from "../../features/extensions/installer/common/version-directory";
 import { requestInitialExtensionDiscovery } from "../../renderer/ipc";
 
@@ -26,7 +28,6 @@ import type { ReadJson } from "../../common/fs/read-json-file.injectable";
 import type { RemovePath } from "../../common/fs/remove.injectable";
 import type { Watch, Watcher } from "../../common/fs/watch/watch.injectable";
 import type { GetBasenameOfPath } from "../../common/path/get-basename.injectable";
-import type { GetRelativePath } from "../../common/path/get-relative-path.injectable";
 import type { JoinPaths } from "../../common/path/join-paths.injectable";
 import type { IsExtensionEnabled } from "../../features/extensions/enabled/common/is-enabled.injectable";
 import type { ForgetInstalledExtension } from "../../features/extensions/installer/common/forget-installed-extension.injectable";
@@ -54,12 +55,9 @@ interface Dependencies {
   ensureDirectory: EnsureDirectory;
   joinPaths: JoinPaths;
   getBasenameOfPath: GetBasenameOfPath;
-  getRelativePath: GetRelativePath;
 }
 
 const logModule = "[EXTENSION-DISCOVERY]";
-
-export const manifestFilename = "package.json";
 
 /**
  * How long to wait after a filesystem event below the extensions root before
@@ -306,7 +304,7 @@ export class ExtensionDiscovery {
 
     this.dependencies.forgetInstalledExtension(extension.id);
 
-    const managedDirectory = this.managedDirectoryOf(absolutePath);
+    const managedDirectory = managedDirectoryOf(this.extensionsRoot, absolutePath);
 
     if (managedDirectory) {
       // fs.remove does nothing if the path doesn't exist anymore
@@ -345,26 +343,6 @@ export class ExtensionDiscovery {
     return Array.from(this.extensions.values(), ({ absolutePath }) => absolutePath);
   }
 
-  /**
-   * The `<extensionsRoot>/<directory>` an install belongs to, or `undefined`
-   * when the path is outside the root and therefore not ours to delete.
-   */
-  private managedDirectoryOf(installPath: string): string | undefined {
-    const relativePath = this.dependencies.getRelativePath(this.extensionsRoot, installPath);
-
-    if (!relativePath || relativePath.startsWith("..") || this.isAbsolutePath(relativePath)) {
-      return undefined;
-    }
-
-    const [directoryName] = relativePath.split(/[\\/]/);
-
-    return directoryName ? this.dependencies.joinPaths(this.extensionsRoot, directoryName) : undefined;
-  }
-
-  private isAbsolutePath(candidate: string): boolean {
-    return candidate.startsWith("/") || /^[a-z]:[\\/]/i.test(candidate);
-  }
-
   protected async discoverExtensions(): Promise<Map<LensExtensionId, InstalledExtension>> {
     const discovered = new Map<LensExtensionId, InstalledExtension>();
     const entriesByPath = new Map(
@@ -374,7 +352,7 @@ export class ExtensionDiscovery {
     // The recorded external paths: development installs, which live wherever
     // their author keeps them.
     for (const entry of this.dependencies.installedExtensions.values()) {
-      if (this.managedDirectoryOf(entry.path)) {
+      if (managedDirectoryOf(this.extensionsRoot, entry.path)) {
         continue;
       }
 
