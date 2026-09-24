@@ -501,9 +501,10 @@ import stylesInline from "./available-version.module.scss?inline"; // raw CSS te
 **The host now injects the extension's stylesheet for you.** When the renderer
 loads an extension, the extension loader looks next to the renderer entry for a
 sibling stylesheet — either `<entry-name>.css` (e.g. `renderer.js` →
-`renderer.css`) or a `style.css` in the same folder — and, if present, appends
-its contents to the document as a `<style>` element. So you can import your
-SCSS the normal way and drop the `?inline` copy and the `<style>` tag:
+`renderer.css`) or a `style.css` in the same folder — and, if present, links it
+into the document with a `<link>` at the URL it serves that file from. So you can
+import your SCSS the normal way and drop the `?inline` copy and the `<style>`
+tag:
 
 ```tsx
 import styles from "./available-version.module.scss"; // class names only
@@ -620,7 +621,7 @@ the host's styling model and needs **no host-side changes**.
    @import "tailwindcss/utilities.css" layer(utilities) prefix(myext);
    ```
 
-   - **No preflight** (`tailwindcss/preflight.css`): the injected `<style>`
+   - **No preflight** (`tailwindcss/preflight.css`): the linked stylesheet
      applies to the whole host document, so preflight would re-reset the entire
      app.
    - **Prefix**: utilities become `myext:flex`, `myext:gap-2`, and the theme

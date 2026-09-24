@@ -5,7 +5,7 @@
  */
 
 import assert from "node:assert";
-import { createRequire } from "node:module";
+import { pathToFileURL } from "node:url";
 import { EventEmitter } from "@freelensapp/event-emitter";
 import { isDefined, iter } from "@freelensapp/utilities";
 import { ipcMain, ipcRenderer } from "electron";
@@ -16,15 +16,18 @@ import {
   extensionLoaderFromMainChannel,
   extensionLoaderFromRendererChannel,
 } from "../../common/ipc/extension-handling";
+import { developmentBuildSegment } from "../../features/extensions/loader/common/build-segment";
+import { extensionFileUrl, toFileSegments } from "../../features/extensions/loader/common/scheme";
 import { requestExtensionLoaderInitialState } from "../../renderer/ipc";
+import { sanitizeExtensionName } from "../lens-extension";
 
+import type { Fetch } from "@freelensapp/json-api";
 import type { Logger } from "@freelensapp/logger";
+import type { GetRandomId } from "@freelensapp/random";
 
 import type { ObservableMap } from "mobx";
 
-import type { PathExists } from "../../common/fs/path-exists.injectable";
-import type { ReadFile } from "../../common/fs/read-file.injectable";
-import type { GetDirnameOfPath } from "../../common/path/get-dirname.injectable";
+import type { GetBasenameOfPath } from "../../common/path/get-basename.injectable";
 import type { JoinPaths } from "../../common/path/join-paths.injectable";
 import type { UpdateExtensionsState } from "../../features/extensions/enabled/common/update-state.injectable";
 import type {
@@ -38,24 +41,16 @@ import type { Extension } from "./extension/extension.injectable";
 
 const logModule = "[EXTENSIONS-LOADER]";
 
-// v2 (plan D2/D6): the bundles are ESM, where the main process has no
-// `require` global; the node-integrated renderer keeps it. Node 24's
-// require(esm) loads both CJS and ESM extension entry points synchronously
-// (verified empirically in #1718), so a sync loader keeps working for both
-// module formats in both processes. Entry points with top-level await would
-// need an async import() path in the main process; not supported for now.
-const extensionRequire = globalThis.require ?? createRequire(import.meta.url);
-
 interface Dependencies {
   readonly extensionInstances: ObservableMap<LensExtensionId, LensExtensionInstance>;
   readonly logger: Logger;
   readonly extensionEntryPointName: "main" | "renderer";
   updateExtensionsState: UpdateExtensionsState;
   getExtension: (instance: LensExtensionInstance) => Extension;
+  getRandomId: GetRandomId;
   joinPaths: JoinPaths;
-  getDirnameOfPath: GetDirnameOfPath;
-  readFile: ReadFile;
-  pathExists: PathExists;
+  getBasenameOfPath: GetBasenameOfPath;
+  fetch: Fetch;
 }
 
 interface ExtensionBeingActivated {
@@ -90,10 +85,23 @@ export class ExtensionLoader {
 
   private readonly onRemoveExtensionId = new EventEmitter<[string]>();
 
-  // Absolute paths of extension stylesheets already injected into the renderer
-  // document, so a reload (the toJSON reaction re-requires user extensions)
-  // does not append the same <style> twice.
-  private readonly injectedStylePaths = new Set<string>();
+  // URLs of extension stylesheets already linked into the renderer document, so
+  // a reload (the toJSON reaction re-loads user extensions) does not append the
+  // same <link> twice. Keying on the URL rather than the file means a new build
+  // -- which carries a new path segment -- is linked again.
+  private readonly injectedStyleUrls = new Set<string>();
+
+  // One URL token per load of a development extension, held for as long as that
+  // load lasts. See `developmentBuildSegment`: minting one per request would
+  // give a relative import inside the extension a different URL from the entry
+  // that imported it, and instantiate the same module twice.
+  private readonly developmentLoadTokens = new Map<LensExtensionId, string>();
+
+  // Extensions whose entry point is being imported right now. `import()` is
+  // asynchronous, so the check against `extensionInstances` no longer runs in
+  // the same tick as the write to it, and a second reaction firing meanwhile
+  // would otherwise load the same extension twice.
+  private readonly extensionsBeingLoaded = new Set<LensExtensionId>();
 
   readonly isLoaded = observable.box(false);
 
@@ -290,46 +298,51 @@ export class ExtensionLoader {
 
   protected async loadUserExtensions(installedExtensions: Map<string, InstalledExtension>) {
     // Steps of the function:
-    // 1. require and call .activate for each Extension
+    // 1. import and call .activate for each Extension
     // 2. Wait until every extension's onActivate has been resolved
     // 3. Call .enable for each extension
     // 4. Return ExtensionLoading[]
 
-    return [...installedExtensions.entries()]
-      .map(([extId, installedExtension]) => {
-        const alreadyInit =
-          this.dependencies.extensionInstances.has(extId) ||
-          this.nonInstancesByName.has(installedExtension.manifest.name);
+    const loading = [...installedExtensions.entries()].map(async ([extId, installedExtension]) => {
+      const alreadyInit =
+        this.dependencies.extensionInstances.has(extId) ||
+        this.nonInstancesByName.has(installedExtension.manifest.name) ||
+        this.extensionsBeingLoaded.has(extId);
 
-        if (installedExtension.isCompatible && installedExtension.isEnabled && !alreadyInit) {
-          try {
-            const LensExtensionClass = this.requireExtension(installedExtension);
+      if (installedExtension.isCompatible && installedExtension.isEnabled && !alreadyInit) {
+        this.extensionsBeingLoaded.add(extId);
 
-            if (!LensExtensionClass) {
-              this.nonInstancesByName.add(installedExtension.manifest.name);
+        try {
+          const LensExtensionClass = await this.requireExtension(installedExtension);
 
-              return null;
-            }
+          if (!LensExtensionClass) {
+            this.nonInstancesByName.add(installedExtension.manifest.name);
 
-            const instance = new LensExtensionClass(installedExtension);
-
-            this.dependencies.extensionInstances.set(extId, instance);
-
-            return {
-              instance,
-              installedExtension,
-              activated: instance.activate(),
-            } as ExtensionBeingActivated;
-          } catch (err) {
-            this.dependencies.logger.error(`${logModule}: error loading extension`, { ext: installedExtension, err });
+            return null;
           }
-        } else if (!installedExtension.isEnabled && alreadyInit) {
-          this.removeInstance(extId);
-        }
 
-        return null;
-      })
-      .filter(isDefined);
+          const instance = new LensExtensionClass(installedExtension);
+
+          this.dependencies.extensionInstances.set(extId, instance);
+
+          return {
+            instance,
+            installedExtension,
+            activated: instance.activate(),
+          } as ExtensionBeingActivated;
+        } catch (err) {
+          this.dependencies.logger.error(`${logModule}: error loading extension`, { ext: installedExtension, err });
+        } finally {
+          this.extensionsBeingLoaded.delete(extId);
+        }
+      } else if (!installedExtension.isEnabled && alreadyInit) {
+        this.removeInstance(extId);
+      }
+
+      return null;
+    });
+
+    return (await Promise.all(loading)).filter(isDefined);
   }
 
   async autoInitExtensions() {
@@ -353,30 +366,48 @@ export class ExtensionLoader {
     return loadedExtensions;
   }
 
-  protected requireExtension(extension: InstalledExtension): LensExtensionConstructor | null {
-    const extRelativePath = extension.manifest[this.dependencies.extensionEntryPointName];
+  /**
+   * Load an extension's entry point for this process.
+   *
+   * The two processes reach the same extension by different routes. Main
+   * imports a real file path, which the installer's full extraction guarantees
+   * exists. The renderer imports a URL on the privileged scheme main serves,
+   * which is what lets a renderer without filesystem privileges keep working
+   * (#2399) and what makes top-level await in a renderer entry point legal.
+   */
+  protected async requireExtension(extension: InstalledExtension): Promise<LensExtensionConstructor | null> {
+    const entryPointPath = extension.manifest[this.dependencies.extensionEntryPointName];
 
-    if (!extRelativePath) {
+    if (!entryPointPath) {
       return null;
     }
 
-    const extAbsolutePath = this.dependencies.joinPaths(
-      this.dependencies.getDirnameOfPath(extension.manifestPath),
-      extRelativePath,
-    );
+    const entryPointUrl =
+      this.dependencies.extensionEntryPointName === "renderer"
+        ? this.servedUrlOf(extension, toFileSegments(entryPointPath))
+        : pathToFileURL(this.dependencies.joinPaths(extension.absolutePath, entryPointPath)).href;
 
     try {
-      const extensionModule = extensionRequire(extAbsolutePath);
+      // The specifier is only known at runtime, so the bundler must leave it
+      // alone rather than trying to resolve it at build time.
+      const extensionModule = await import(/* @vite-ignore */ entryPointUrl);
 
       // Load the extension's renderer stylesheet, if any. Extensions are built
       // in Vite library mode, which extracts CSS to a sibling asset and injects
       // nothing (unlike the host's own application build). Without this, an
       // extension has to import its SCSS twice and inline it through a manual
-      // `<style>` tag (see docs/v2-extension-migration.md). Fire-and-forget:
-      // requiring the entry is synchronous, style injection is a side effect.
-      void this.injectRendererStyles(extAbsolutePath, extension);
+      // `<style>` tag (see docs/v2-extension-migration.md). Fire-and-forget: the
+      // entry point is loaded, style injection is a side effect.
+      void this.injectRendererStyles(extension, toFileSegments(entryPointPath));
 
-      return extensionModule.default;
+      const exported = extensionModule.default;
+
+      // `import()` of a CommonJS entry point resolves `default` to the whole
+      // `module.exports`, so a transpiled `export default class` arrives one
+      // level deeper than it does from an ESM entry point. Only main can reach
+      // this: a renderer entry point is ESM by contract, and CommonJS served
+      // over the scheme would not parse as a module at all.
+      return (exported?.__esModule ? exported.default : exported) ?? null;
     } catch (error) {
       const message = (error instanceof Error ? error.stack : undefined) || error;
 
@@ -390,63 +421,112 @@ export class ExtensionLoader {
   }
 
   /**
-   * Inject an extension's renderer stylesheet into the host document.
+   * The URL main serves one of an extension's files from.
+   *
+   * The segment standing for the build is `<version>-<digest8>` for a managed
+   * install, which changes exactly when the content does. A development install
+   * has no such segment -- its absence is what marks it -- so it gets a token
+   * for the duration of the load instead.
+   */
+  private servedUrlOf(extension: InstalledExtension, fileSegments: string[]): string {
+    return extensionFileUrl({
+      sanitizedName: sanitizeExtensionName(extension.id),
+      buildSegment: extension.isManaged
+        ? this.dependencies.getBasenameOfPath(extension.absolutePath)
+        : developmentBuildSegment(this.developmentLoadTokenOf(extension.id)),
+      fileSegments,
+    });
+  }
+
+  private developmentLoadTokenOf(extensionId: LensExtensionId): string {
+    let token = this.developmentLoadTokens.get(extensionId);
+
+    if (!token) {
+      token = this.dependencies.getRandomId();
+      this.developmentLoadTokens.set(extensionId, token);
+    }
+
+    return token;
+  }
+
+  /**
+   * Link an extension's renderer stylesheet into the host document.
    *
    * Vite library builds emit the extension's CSS as an asset next to the
    * renderer entry (either `<entry>.css` or a `style.css` in the same folder)
-   * but, unlike an application build, do not inject it. The host loads the
-   * entry with `require()` and would otherwise never load that CSS. This reads
-   * the sibling stylesheet and appends it as a `<style>` element, so plain
-   * side-effect and CSS-module imports in an extension "just work" without the
-   * `?inline` + `<style>` workaround.
+   * but, unlike an application build, do not inject it, so nothing would ever
+   * load it. The host keeps that responsibility rather than asking extension
+   * authors for the `?inline` + `<style>` workaround: this appends a `<link>`
+   * at the URL main serves the stylesheet from, which is the same route the
+   * entry point itself takes.
    *
    * A no-op when there is no sibling stylesheet, so existing extensions are
    * unaffected. Renderer-only: guarded on the entry-point name and on the
    * presence of `document`.
    */
-  private async injectRendererStyles(extEntryPath: string, extension: InstalledExtension): Promise<void> {
+  private async injectRendererStyles(extension: InstalledExtension, entryPointSegments: string[]): Promise<void> {
     if (this.dependencies.extensionEntryPointName !== "renderer" || typeof document === "undefined") {
       return;
     }
 
-    const entryDir = this.dependencies.getDirnameOfPath(extEntryPath);
+    const directorySegments = entryPointSegments.slice(0, -1);
+    const entryFileName = entryPointSegments.at(-1);
+
+    if (!entryFileName) {
+      return;
+    }
+
     // Prefer a stylesheet named after the entry (renderer.js -> renderer.css),
     // then Vite's default library CSS asset name (style.css).
-    const candidates = [
-      extEntryPath.replace(/\.[^./\\]+$/, ".css"),
-      this.dependencies.joinPaths(entryDir, "style.css"),
-    ];
+    const candidates = new Set([entryFileName.replace(/\.[^.]+$/, ".css"), "style.css"]);
 
-    for (const cssPath of candidates) {
-      if (cssPath === extEntryPath || this.injectedStylePaths.has(cssPath)) {
+    candidates.delete(entryFileName);
+
+    for (const fileName of candidates) {
+      const fileSegments = [...directorySegments, fileName];
+      const url = this.servedUrlOf(extension, fileSegments);
+
+      if (this.injectedStyleUrls.has(url)) {
         continue;
       }
 
       try {
-        if (!(await this.dependencies.pathExists(cssPath))) {
+        // A `<link>` at a URL which is not there logs a failed request and
+        // nothing else, but the extensions which do not ship CSS are the
+        // majority, so the existence check stays. It asks the scheme rather
+        // than the filesystem, because a renderer which reads an absolute path
+        // off disk here is a renderer that still needs filesystem privileges
+        // (#2399) -- the very thing serving extensions over a URL is for. Main
+        // answers a file it does not have with 404, out of the same registry it
+        // consulted for the entry point, and the status is the whole answer:
+        // nothing here reads the body. A plain GET rather than a HEAD because
+        // the handler reads the file whatever the method is, so a HEAD would
+        // save only this hop's copy of a stylesheet the `<link>` is about to
+        // ask for anyway -- and GET is the request the scheme is known to
+        // answer, being the one the entry-point import itself makes.
+        const response = await this.dependencies.fetch(url);
+
+        if (!response.ok) {
           continue;
         }
-
-        const css = await this.dependencies.readFile(cssPath);
 
         // Guard again: another async candidate may have won the race meanwhile.
-        if (this.injectedStylePaths.has(cssPath)) {
+        if (this.injectedStyleUrls.has(url)) {
           continue;
         }
-        this.injectedStylePaths.add(cssPath);
+        this.injectedStyleUrls.add(url);
 
-        const style = document.createElement("style");
+        const link = document.createElement("link");
 
-        style.dataset.freelensExtension = extension.manifest.name;
-        style.textContent = css;
-        document.head.appendChild(style);
+        link.rel = "stylesheet";
+        link.href = url;
+        link.dataset.freelensExtension = extension.manifest.name;
+        document.head.appendChild(link);
 
-        this.dependencies.logger.debug(
-          `${logModule}: injected stylesheet "${cssPath}" for "${extension.manifest.name}"`,
-        );
+        this.dependencies.logger.debug(`${logModule}: linked stylesheet "${url}" for "${extension.manifest.name}"`);
       } catch (error) {
         this.dependencies.logger.warn(
-          `${logModule}: failed to inject stylesheet "${cssPath}" for "${extension.manifest.name}": ${error}`,
+          `${logModule}: failed to link stylesheet "${url}" for "${extension.manifest.name}": ${error}`,
         );
       }
     }
