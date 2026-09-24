@@ -254,20 +254,26 @@ migration guide named all three; they never existed in v2. React reaches
 extensions through [C3](#c3-host-provided-singletons), registrations through
 [C6](#c6-registration-and-the-extension-instance).
 
-**Failure mode.** A missing re-export is a compile error with no workaround. Two
-known classes of gap are open in #2365: four `@freelensapp/kube-object` types
-(`Condition`, `LabelSelector`, `ObjectReference`, `LocalObjectReference`) used
-by published extensions are absent, and `KubeApiOptions`,
-`DerivedKubeApiOptions` and `KubeObjectStoreOptions` appear in exported
-signatures without being exported — callable, but not nameable.
+**Failure mode.** A missing re-export is a compile error with no workaround. The
+two known classes of gap are closed in #2365: `K8sApi` now star-exports
+`@freelensapp/kube-object`, and the kube-api option and descriptor types that
+appear in exported signatures — `KubeApiOptions`, `DerivedKubeApiOptions`,
+`KubeObjectStoreOptions`, `KubeApiListOptions`, `KubeApiQueryParams`,
+`DeleteOptions`, `PropagationPolicy`, `ResourceDescriptor`, `IKubeWatchEvent` —
+are exported alongside `parseKubeApi` and `createKubeApiURL`, so they are
+nameable and not merely callable. A third turned up while doing it — four
+modules `@freelensapp/kube-object` declares but its own index did not export,
+which no namespace change could reach — and is closed in the same PR at the
+source; see [the decision below](#decided-k8sapi-star-exports-freelensappkube-object).
 
 ### Decided: `K8sApi` star-exports `@freelensapp/kube-object`
 
 The namespace exports **all** of `@freelensapp/kube-object`, not a curated
-selection. Today it re-exports 55 of 419 symbols, and the missing ones are most
-of the shared spec vocabulary — `Affinity`, `Capabilities`, `ContainerPort`,
-`Probe`, `ResourceRequirements`, `SecurityContext`, `Toleration` — which is
-precisely what an extension adding resource views needs. Two published
+selection. Before this it re-exported 55 of the 419 symbols the package then
+exported, and the missing ones were most of the shared spec vocabulary —
+`Affinity`, `Capabilities`, `ContainerPort`, `Probe`, `ResourceRequirements`,
+`SecurityContext`, `Toleration` — which is precisely what an extension adding
+resource views needs. Two published
 extensions already import them from the private package directly, which the
 packaging contract forbids, so without this they simply cannot port.
 
@@ -276,16 +282,17 @@ trip is a release an author waits for.
 
 **This interacts with the freeze in [C14](#c14-versioning-and-compatibility),
 and the interaction is benign — but only because of what these symbols are.**
-By kind: **290 interfaces, 53 type aliases and 12 enums against 50 classes, 15
-functions and 2 constants.** Roughly 84% of the surface is a *transcription of
-upstream Kubernetes API shapes*, whose stability is not ours to promise or to
-break — it is inherited from Kubernetes. Freezing those until the next major
+By kind: **293 interfaces, 59 type aliases and 12 enums against 50 classes, 15
+functions and 2 constants** — the nine added by the index fix below are all
+shapes. Roughly 84% of the surface is a *transcription of upstream Kubernetes
+API shapes*, whose stability is not ours to promise or to break — it is
+inherited from Kubernetes. Freezing those until the next major
 costs approximately nothing.
 
 The risk is therefore concentrated in the ~67 behavioural symbols, and that is
-where the review effort belongs: **skim the classes, functions and constants
-before the star export lands; do not spend the time re-reviewing 355 data
-shapes.**
+where the review effort belongs — a count the index fix does not change:
+**skim the classes, functions and constants before the star export lands; do not
+spend the time re-reviewing 364 data shapes.**
 
 **One name collision exists, and it is real** — two different types share the
 name `KubeObjectStatus`: a Kubernetes resource status shape
@@ -293,12 +300,33 @@ name `KubeObjectStatus`: a Kubernetes resource status shape
 registration type that extensions register status providers against. The second
 keeps the bare name, because v1 extensions already use it.
 
-**The first is renamed on export rather than excluded.** An exclusion is a
-silent hole — the symbol exists in the source, is absent from the API, and
-nothing announces the difference. A rename is visible in the declaration and in
-the API report, and it keeps the surface complete, which
-[C1](#c1-packaging-and-publication) makes a correctness property rather than a
-preference.
+**The first is renamed on export rather than excluded**, to
+**`BaseKubeObjectStatus`** — it is the base that `DeploymentStatus`,
+`JobStatus` and the other resource statuses extend, and it carries
+`BaseKubeObjectCondition`s. An exclusion is a silent hole — the symbol exists in
+the source, is absent from the API, and nothing announces the difference. A
+rename is visible in the declaration and in the API report, and it keeps the
+surface complete, which [C1](#c1-packaging-and-publication) makes a correctness
+property rather than a preference.
+
+**The star export alone did not reach everything, and the reason is worth
+recording.** `SecurityContext`, `PreemptionPolicy`, `JSONSchemaProps` and
+`ExternalDocumentation` are declared in `@freelensapp/kube-object` and appear in
+the signatures of types it exports (`Container.securityContext`,
+`PriorityClass.preemptionPolicy`, the CRD schema), but its own
+`src/types/index.ts` did not export the modules that declare them — and
+`export *` resolves through a package's own index, so a module the index skips
+is invisible to the namespace no matter what the namespace does. The same defect
+as the one this decision addresses, one level further down.
+
+It is **fixed at the source** in #2365: `types/index.ts` now exports all four
+modules, so the namespace reaches them like everything else. The package is
+private, so its export list is not a contract with anything outside this
+repository and no type was altered to do it. `json-schema-props` carries five
+documented `string` aliases (`UUIDRegexString`, `UUID3RegexString`,
+`UUID4RegexString`, `UUID5RegexString`, `CreditCardRegexString`) alongside
+`JSONSchemaProps`; they are the `format` vocabulary for the CRD schema and are
+frozen with it under [C14](#c14-versioning-and-compatibility).
 
 **Status:** the table above is transcribed from the built
 `dist/extension-api.d.ts`. It should be **generated** rather than hand-kept

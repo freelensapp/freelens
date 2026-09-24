@@ -245,8 +245,49 @@ all.** Every other `@freelensapp/*` package is private and is inlined into the
 bundled declaration, so there is nothing left for you to install and a type-only
 import fails at module resolution with no `@types/` fallback. If you hit a
 missing re-export, that is a bug in the API surface worth reporting rather than
-something to work around — some are already tracked in
-[#2365](https://github.com/freelensapp/freelens/issues/2365).
+something to work around.
+
+### `@freelensapp/kube-object` imports move into `K8sApi`
+
+In v1 an extension could add `@freelensapp/kube-object` to its dependencies and
+import the Kubernetes spec types from it. In v2 that package is private, so
+**the whole of it is re-exported from `K8sApi`** — in `Common`, `Main` and
+`Renderer` alike. Drop the dependency and read the types off the namespace:
+
+```diff
+-import type { Condition, LabelSelector, LocalObjectReference } from "@freelensapp/kube-object";
++import { Renderer } from "@freelensapp/extensions";
++
++type Condition = Renderer.K8sApi.Condition;
++type LabelSelector = Renderer.K8sApi.LabelSelector;
++type LocalObjectReference = Renderer.K8sApi.LocalObjectReference;
+```
+
+Everything the package exports is there, not a curated subset: the concrete kube
+objects, the shared spec vocabulary (`Affinity`, `Capabilities`, `ContainerPort`,
+`Probe`, `ResourceRequirements`, `Toleration`, …), the `types/` directory, the
+JSON-API guards. The same applies to the kube APIs: the option and descriptor
+types that appear in their signatures — `KubeApiOptions`,
+`DerivedKubeApiOptions`, `KubeObjectStoreOptions`, `KubeApiListOptions`,
+`KubeApiQueryParams`, `DeleteOptions`, `PropagationPolicy`, `ResourceDescriptor`,
+`IKubeWatchEvent` — are exported too, along with `parseKubeApi` and
+`createKubeApiURL`. You no longer need
+`ConstructorParameters<typeof Renderer.K8sApi.KubeApi>[0]` to name an options
+type.
+
+Two names to watch:
+
+- **`KubeObjectStatus` is unchanged**: it is still the status-registration type
+  you register providers against, `{ level, text, timestamp? }`. The Kubernetes
+  status shape of the same name — `{ conditions?: BaseKubeObjectCondition[] }`,
+  the base that `DeploymentStatus`, `JobStatus` and the rest extend — is exported
+  as **`BaseKubeObjectStatus`**.
+- **`Condition` and `ObjectReference` are now top-level names in `K8sApi`.** If
+  you flatten the namespace anywhere — `const { Condition } = Renderer.K8sApi`,
+  or a barrel that re-exports it alongside your own declarations — a local type
+  of the same name now collides. This is type-only: it surfaces as a compile
+  error in your extension, never as a runtime break, and renaming your own type
+  or qualifying the namespace member fixes it.
 
 The concrete v1→v2 rename table is filled while the in-repo fixture extension
 is built out against this surface
