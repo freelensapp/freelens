@@ -328,11 +328,69 @@ documented `string` aliases (`UUIDRegexString`, `UUID3RegexString`,
 `JSONSchemaProps`; they are the `format` vocabulary for the CRD schema and are
 frozen with it under [C14](#c14-versioning-and-compatibility).
 
-**Status:** the table above is transcribed from the built
-`dist/extension-api.d.ts`. It should be **generated** rather than hand-kept
-(#2366): a git-tracked API report makes the enumeration the checked-in file, so
-a surface change shows up as a PR diff and `ae-forgotten-export` catches the
-unexported-type-in-public-signature defect mechanically.
+### Decided: the C14 skim happened, and nothing is excluded
+
+The review the star export above asks for — *skim the classes, functions and
+constants* — was carried out on #2365. Recorded here because an instruction with
+no recorded outcome reads as though it was skipped.
+
+It was smaller than 67. **58 of the behavioural symbols were already public**:
+they were among the 55 the namespace re-exported by hand, so leaving them
+exported confirms the v1 surface rather than deciding anything. `ServicePort`
+was not a choice at all — it is the return type of `Service.getPorts()`, a
+public method of an exported class, so withdrawing it would recreate the
+"callable but not nameable" defect this whole effort exists to close.
+
+That left **eight real decisions**: `formatNodeTaint`, `formatEndpointSubset`,
+`getBackendServiceNamePort`, `computeRuleDeclarations`,
+`computeRouteDeclarations`, `reverseSecretTypeMap`,
+`filterOutResourceApplierAnnotations`, `KubeCreationError`. **All eight stay**,
+not for want of arguments against some of them, but because making one internal
+is not a namespace-level exclusion — it means removing it from
+`@freelensapp/kube-object`'s own index, which is exactly the mechanism that hid
+`SecurityContext` from the API until #2365. Re-introducing that deliberately to
+save eight display helpers is a bad trade.
+
+**The cost, stated plainly so nobody is surprised at 3.0.0.** Under
+[C14](#c14-versioning-and-compatibility) these eight are frozen until the next
+major: the `"<unknown>"` sentinel `getBackendServiceNamePort` returns for a
+backend with no service, the `key=value:effect` and `IP:port` formats, the shape
+of `ComputedIngressRoute`, and the `SecretType` key strings cannot change in a
+2.x release.
+
+**Status:** the table above is **generated**, not hand-kept. Since #2366 the
+enumeration is a checked-in file — `packages/extensions/etc/extension-api.api.md`,
+written by API Extractor and gated in CI — so a surface change shows up as a PR
+diff instead of as documentation drift. Regenerate it with `pnpm api-report`.
+The report also carries the `ae-forgotten-export` findings: 163 of them at the
+first run, which is the unexported-type-in-public-signature defect caught
+mechanically rather than by inspection. They are recorded rather than fatal;
+see [the triage below](#recorded-163-forgotten-exports).
+
+### Recorded: 163 forgotten exports
+
+`ae-forgotten-export` fires when an exported declaration references a type the
+entry point does not export — usable, but not nameable. It covers strictly more
+than the cases #2365 closed, so the first report carries it as content rather
+than as a build failure; a gate that lands red gets disabled.
+
+| Kind | Count |
+| --- | --- |
+| Alias shadowing — the same name *is* exported, as an alias over the declaration (`K8sApi.KubeApi` is a type alias plus a constructor const over the `KubeApi` class, so the class itself is never a named export) | 5 |
+| DI constructor dependency bags (`KubeObjectStoreDependencies`, `Dependencies_7`…) | 17 |
+| Component props (`LinkToPodProps`, `DropdownProps`, `TableCellProps`…) | 26 |
+| Declarative registration shapes (`CommandRegistration`, `TopBarRegistration`…) | 7 |
+| Internal component state | 4 |
+| Everything else — mostly utility types named by `Util` member signatures (`Disposer`, `AsyncResult`, `Falsy`, `SingleOrMany`, `ItemObject`…) | 104 |
+
+The first group is benign: an author can name those types through the alias. The
+DI dependency bags and the internal states are the opposite — they are host
+implementation detail that leaked into a public signature, and the fix is on the
+host side, not an export. The middle three groups are the ones an author
+actually wants and cannot have.
+
+Making the message fatal is a follow-up, once the list is empty or each
+remaining entry is explicitly waived in the configuration.
 
 ---
 
@@ -520,22 +578,43 @@ It splits in two:
   entries). A bundled `react-select` still gets the host's React, because that
   copy's own `import "react"` is rewritten too.
 
-**Surface.** The built declaration names **17 distinct external specifiers**
-across 20 import statements: `type-fest`, `mobx`, `react`, `conf`, `electron`,
-`child_process`, `node:child_process`, `node:http`, `rfc6902`, `immer`,
-`@ogre-tools/injectable`, `es-toolkit/compat`, `monaco-editor`, `chart.js`,
-`react-select`, `react-window`, `@xterm/xterm`.
+**Surface — what the API *imposes*, as opposed to what it exports.** This is the
+complement of the [C5](#c5-namespace-enumeration) report, not a subset of it: an
+author has to be able to resolve every one of these to compile against the
+published declaration.
 
-Three discrepancies between that list and the declared dependencies, recorded
+The built `dist/extension-api.d.ts` names **21 distinct external specifiers**
+across 25 import statements:
+
+| | |
+| --- | --- |
+| Catalog, host-provided | `react`, `mobx`, `monaco-editor`, `@ogre-tools/injectable`, `@ogre-tools/injectable-react` |
+| Catalog, free to bundle | `type-fest`, `conf`, `immer`, `rfc6902`, `chart.js`, `react-select`, `react-window`, `@xterm/xterm` |
+| Not in the catalog | `electron`, `react/jsx-runtime`, `react-dom`, `mobx-react`, `es-toolkit/compat`, `child_process`, `node:child_process`, `node:http` |
+
+Count it from the built bundle rather than from `dist-types/`, which only
+approximates it — the emitted tree still contains the workspace declarations
+rollup inlines away:
+
+```sh
+pnpm --filter @freelensapp/extensions build:dist
+grep -oE "from '[^']+'" packages/extensions/dist/extension-api.d.ts | sort -u
+```
+
+Note the quoting: rollup emits single quotes, so a pattern written for double
+quotes matches only the examples inside doc comments and reports nothing.
+
+Two discrepancies between that list and the declared dependencies, recorded
 because they are the kind that rot quietly:
 
 - **`es-toolkit/compat` is undeclared** — the published type surface names a
   package the package does not depend on (#2360).
 - **`child_process` appears spelled both ways**, bare and `node:`-prefixed (#2360).
-- **`@ogre-tools/injectable-react` is declared but never named by the
-  declaration.** It stays regardless: it is a host-provided singleton an
-  extension needs at *runtime* for `withInjectables`, which is a different
-  requirement from appearing in the types.
+
+`@ogre-tools/injectable-react` used to be a third: declared but never named by
+the declaration. It is named now — the ambient global declaration #2450 added
+types each host-provided singleton — so the list of specifiers and the list of
+peer dependencies finally agree on it.
 
 **Failure mode.** A host-provided library in `dependencies` of
 `@freelensapp/extensions` **silently plants a real React in the author's tree**
@@ -647,10 +726,8 @@ the remedy differs: incompatible (`isCompatible`), deliberately disabled
 
 ### Stability: everything exported is public
 
-There is **no unstable tier**. Until a mechanism exists to mark one (#2366
-proposes TSDoc `@public` / `@beta` / `@internal` with trimmed rollup variants),
-every symbol the namespaces re-export is public and stable **for the lifetime of
-the major**.
+There is **no unstable tier**. Every symbol the namespaces re-export is public
+and stable **for the lifetime of the major**.
 
 This cuts towards the host, not the author, and it is the reason these documents
 were written before the implementation rather than after it: **whatever 2.0.0
@@ -661,9 +738,20 @@ deciding later cannot.
 Deprecation within a major: mark with `@deprecated`, keep it working for the
 rest of the major, remove it in the next one.
 
-**Status:** the gate is shipped and the policy above is decided. The tiering
-mechanism is #2366 and is not needed for 2.0.0 — its absence is what makes the
-freeze strict.
+**Status:** the gate is shipped and the policy above is decided.
+
+**Decided: release tags are deferred, and the report already states the
+policy.** API Extractor supports TSDoc `@public` / `@beta` / `@internal` with
+trimmed rollup variants, and 2.0.0 adopts none of them. Adding a tier later is
+*additive*; the alternative is not, because a symbol exported without a tier
+cannot be retracted in 2.1. So the absence is the policy and not an omission.
+
+Two things make deferring cheap rather than merely defensible. Tagging a surface
+of this size is its own change, unrelated to the mechanism that reports it. And
+the report needs no tagging to say the right thing: with `ae-missing-release-tag`
+off, API Extractor marks every symbol `@public`, which is exactly the rule above.
+`packages/extensions/etc/extension-api.api.md` therefore reads as a statement of
+this policy, symbol by symbol, with no annotation work done to achieve it.
 
 ---
 
@@ -693,7 +781,7 @@ The contract has three, not two:
 | Item | Tracked in |
 | --- | --- |
 | Close the known re-export gaps | #2365 |
-| Generate the namespace enumeration instead of maintaining it | #2366 |
+| Make `ae-forgotten-export` fatal once its 163 entries are resolved or waived | #2366 |
 | `es-toolkit` undeclared; `child_process` spelled two ways | #2360 |
 | Remove `pnpm` as an application dependency — the last step of the delivery mechanism | #2400 |
 | Renderer sandboxing — the reason several isolation claims are *not* made here | #2399 |
