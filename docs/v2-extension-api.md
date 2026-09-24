@@ -144,8 +144,10 @@ error:
 - **`@freelensapp/extensions`** — mapped in v1, when the package was a fat
   re-export of core. In v2 it is 734 bytes that already read the global, so
   bundling it is correct.
-- **`react-router-dom`** — removed from the host in #2261. An extension still
-  mapping it gets `undefined` at runtime, not a build error.
+- **`react-router` and `react-router-dom`** — removed from the host in #2261.
+  Both were v1 globals: the renderer entry's `ReactRouter` and `ReactRouterDom`
+  exports went with the dependencies in #2270. An extension still mapping either
+  gets `undefined` at runtime, not a build error.
 - **`node-pty`** — main's v1 entry exported `Pty`, but no v2 build has assigned
   that global. What made the v1 exports into globals was webpack's
   `libraryTarget: "global"`; #2118 replaced it with a Rollup `es`-format library

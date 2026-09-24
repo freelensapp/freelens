@@ -25,9 +25,11 @@
 // Two modules are outside the map on purpose rather than by omission.
 // `@freelensapp/extensions` is not published here because its published runtime
 // is the shim that *reads* this global, so an extension bundling it is correct.
-// `react-router-dom` is not published here because the host dropped it in
-// #2261; an extension still mapping it gets `undefined`, which is the honest
-// answer.
+// `react-router` and `react-router-dom` are not published here because the host
+// dropped them in #2261; the renderer entry's `ReactRouter` and `ReactRouterDom`
+// exports went with the dependencies in #2270, so both were v1 globals and both
+// left together. An extension still mapping either gets `undefined`, which is
+// the honest answer.
 //
 // The modules are imported here, inside core, so what is published is the
 // instance core itself runs on rather than a second resolution of the same
