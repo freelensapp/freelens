@@ -165,14 +165,24 @@ silently** — two instances interoperate through shared global state well enoug
 that observables appear to work and reactions simply do not fire where they
 should. A typo in a global name yields `undefined`, not a build error.
 
-**Status:** shipped in #2450. It had been a regression rather than an omission:
-in v1 webpack built the renderer as a *library*, so the entry's exports became
-globals; v2's electron-vite builds it as an *app*
-(`rollupOptions.input: src/renderer/index.html`), so nothing assigned them for
-the whole of the v2 line until the singletons moved onto the API object. The
-orphaned v1 exports in the two process entries went with that change; the
-unreferenced `packages/core/src/renderer/extension-api.ts` is still there for
-the #2134 sweep.
+**Status:** shipped in #2450. It had been a regression rather than an omission.
+What made the v1 entries' exports into globals was webpack's **output format**:
+both entry configs set `libraryTarget: "global"` with no library name, which
+assigns each export onto `global`. #2118 replaced webpack with electron-vite,
+and neither of its outputs does that — the renderer became an app
+(`rollupOptions.input: src/renderer/index.html`), while main is *still* a
+library build (`lib: { entry, formats: ["es"] }`) that simply emits ESM `export`
+statements nothing imports, because Electron runs it as the process entry point.
+So nothing assigned the globals for the whole of the v2 line until the
+singletons moved onto the API object. The orphaned v1 exports in the two process
+entries went with that change; the unreferenced
+`packages/core/src/renderer/extension-api.ts` is still there for the #2134
+sweep.
+
+Library versus app is the wrong axis here, and it is worth stating because the
+mistake is natural: a Rollup library build in `es` format publishes nothing to
+`globalThis` either. The global library target was the mechanism, and it is gone
+from both processes.
 
 The maps live in `packages/core/src/extensions/api-globals/`, one per process,
 each paired with the module id of every name it publishes. Membership cannot

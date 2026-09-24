@@ -147,9 +147,11 @@ than at build time if you keep them:
 If your v1 build used a Vite or Rolldown plugin that rewrote these ids to
 `global.React` and friends, keep the plugin and change the target: the host
 publishes them on `globalThis.FreelensExtensionApi`, not as top-level globals.
-The v1 top-level globals are gone — in v1 webpack built the renderer as a
-library and its exports became globals; v2 builds it as an app, so nothing
-assigns them.
+The v1 top-level globals are gone. What put them there was webpack's
+`libraryTarget: "global"`, which assigned each process entry's exports onto
+`global`; electron-vite emits an app bundle for the renderer and an ESM library
+bundle for main, and neither assigns anything to `globalThis`. Nothing is a
+top-level global in v2, in either process.
 
 ## React version (host-provided, must match majors)
 
