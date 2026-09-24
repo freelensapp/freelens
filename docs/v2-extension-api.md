@@ -138,7 +138,7 @@ keys match the transform of the module ids, and a bundler plugin *derives* each
 name instead of being handed a map. It settles `ReactDom` over `ReactDOM` in
 favour of what published extensions already write.
 
-Two ids leave the map **explicitly**, because dropping them silently is the
+Three ids leave the map **explicitly**, because dropping them silently is the
 error:
 
 - **`@freelensapp/extensions`** — mapped in v1, when the package was a fat
@@ -146,6 +146,16 @@ error:
   bundling it is correct.
 - **`react-router-dom`** — removed from the host in #2261. An extension still
   mapping it gets `undefined` at runtime, not a build error.
+- **`node-pty`** — main's v1 entry exported `Pty`, but no v2 build has assigned
+  that global. What made the v1 exports into globals was webpack's
+  `libraryTarget: "global"`; #2118 replaced it with a Rollup `es`-format library
+  build, whose `export` statements nothing imports because Electron runs main as
+  the process entry point. No published extension externalises it either.
+  Publishing the namespace would hand out live `IPty` handles into processes the
+  host owns the lifetime of, which makes a pty a supervised host API — option 3
+  of [`v2-extension-abi.md`](./v2-extension-abi.md) — rather than a map entry;
+  an extension that needs to run a program uses `node:child_process`. The rule
+  would name it `NodePty` in any case.
 
 **Failure mode.** Bundling your own copy of a listed package. React throws
 `invalid hook call`; ogre-tools fails to find registrations; **mobx fails

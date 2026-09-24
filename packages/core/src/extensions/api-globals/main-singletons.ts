@@ -24,6 +24,40 @@
 // React into the main bundle to serve an extension that has no renderer to bind
 // to. The renderer publishes it.
 //
+// `node-pty` is the one omission here that is a decision rather than a
+// non-decision, so it is written down too. Main's v1 entry exported `Pty`, and
+// webpack's `libraryTarget: "global"` -- a *global* library target, with no
+// library name -- assigned each of the entry's exports straight onto `global`,
+// so `global.Pty` was the whole `node-pty` namespace by way of
+// `main/library.ts`. Main is still built as a library today
+// (`lib: { entry, formats: ["es"] }` in `freelens/electron.vite.config.ts`);
+// what #2118 changed is the output *format*, not library versus app. Rollup in
+// `es` format emits `export { Mobx, Pty }` and assigns nothing to `globalThis`,
+// and nothing imports the emitted entry because Electron runs it as the process
+// entry point -- so the exports go nowhere. No v2 build has ever carried
+// `global.Pty`; the export removed alongside this change was dead source, not a
+// working capability.
+//
+// It stays out, in this order:
+//
+//  - Publishing the namespace would hand extensions live `IPty` handles across
+//    the extension boundary, into processes whose lifetime and cleanup the host
+//    owns (`processes.injectable.ts`, `shell-session.ts`). A pty is therefore a
+//    supervised host API -- option 3 of `docs/v2-extension-abi.md` -- rather
+//    than an entry in an externals map.
+//  - Nothing asks for it: of 69 published Lens/OpenLens/Freelens extension
+//    bundler configs, every one of which externalises some subset of `react`,
+//    `mobx`, `mobx-react`, `react-dom`, `react/jsx-runtime`, `react-router` and
+//    `react-router-dom`, none mentions `node-pty`.
+//  - An extension that needs to run a program spawns it with
+//    `node:child_process`, which `docs/v2-extension-abi.md` settles as the
+//    supported route. Only a program that demands a TTY needs a pty at all.
+//  - Under C14 everything published here is frozen until 3.0.0, so adding to
+//    this map in a 2.x release is cheap and removing from it is not.
+//
+// The naming rule would call it `NodePty`, so publishing it would not restore
+// the v1 spelling either.
+//
 // The modules are imported here, inside core, so what is published is the
 // instance core itself runs on rather than a second resolution of the same
 // specifier from the application package.
