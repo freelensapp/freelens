@@ -551,9 +551,6 @@ importers:
       p-limit:
         specifier: 'catalog:'
         version: 7.3.0
-      pnpm:
-        specifier: 'catalog:'
-        version: 11.18.0
       proper-lockfile:
         specifier: 'catalog:'
         version: 4.1.2
@@ -1002,9 +999,6 @@ importers:
       node-pty:
         specifier: 'catalog:'
         version: 1.2.0-beta.14
-      pnpm:
-        specifier: 'catalog:'
-        version: 11.18.0
       proper-lockfile:
         specifier: 'catalog:'
         version: 4.1.2

@@ -717,6 +717,12 @@ Three consequences to know:
   Restart the application to run it.
   ```
 
+  This costs you the renderer's reload as well: main refuses before it tells
+  the renderer anything, deliberately, so that the two processes stay on the
+  same build — which means a CommonJS `main` leaves a rebuild of *only* the
+  renderer entry point unreloaded too, and the development loop does not work
+  at all until `main` is ESM.
+
   The other case is having *started* as ESM and rebuilt as CommonJS, which
   would throw `ReferenceError: module is not defined in ES module scope` from
   inside your bundle — an error naming neither your extension nor the real
