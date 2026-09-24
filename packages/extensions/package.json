@@ -61,7 +61,22 @@
     "react": "catalog:extensions"
   },
   "peerDependenciesMeta": {
+    "@ogre-tools/injectable": {
+      "optional": true
+    },
+    "@ogre-tools/injectable-react": {
+      "optional": true
+    },
     "electron": {
+      "optional": true
+    },
+    "mobx": {
+      "optional": true
+    },
+    "monaco-editor": {
+      "optional": true
+    },
+    "react": {
       "optional": true
     }
   },

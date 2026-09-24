@@ -493,9 +493,16 @@ for their bundler to find — which is precisely the mistake
 [C3](#c3-host-provided-singletons) exists to prevent. As peers they are still
 there to compile against, and bundling one's own copy becomes a deliberate act.
 
-**Status:** the five host-provided entries moved to `peerDependencies` in #2450.
-The `@types/*` entries stayed in `dependencies`: a second copy of a declaration
-is not a second instance of anything.
+**Status:** the five host-provided entries moved to `peerDependencies` in #2450,
+each **optional** in `peerDependenciesMeta` alongside `electron`. Optional
+because npm 7+ and pnpm install missing peers by default, so a required peer
+would install all five into every author's tree whether imported or not — and
+`monaco-editor` alone is 99 MB, which an extension with only a `main` entry
+point would pay on every install and in every CI cache. What keeps a second copy
+out of the bundle is the author marking the specifier external, not the
+dependency field; the field only decides what gets installed. The `@types/*`
+entries stayed in `dependencies`: a second copy of a declaration is not a second
+instance of anything.
 
 `react-dom` and `mobx-react` are in neither the catalog nor the package's
 dependencies, so an extension using them supplies its own devDependency — which
