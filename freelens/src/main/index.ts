@@ -55,11 +55,6 @@ startApplication().catch((error) => {
   process.exit(1);
 });
 
-export {
-  Mobx,
-  Pty,
-} from "@freelensapp/core/main";
-
 // Phase 4 (D5): expose the extension API through a runtime global so the
 // published `@freelensapp/extensions` shim can re-export it in each process.
 // Main gets `{ Common, Main }`; the renderer gets `{ Common, Renderer }`.
@@ -78,8 +73,3 @@ export {
 assertExtensionApiSingletonNames(mainExtensionApiSingletons, mainExtensionApiSingletonModuleIds);
 
 globalThis.FreelensExtensionApi = { Common, Main, ...mainExtensionApiSingletons };
-
-export const LensExtensions = {
-  Main,
-  Common,
-};
