@@ -67,11 +67,15 @@ therefore a correctness property, not a convenience. See [C5](#c5-namespace-enum
 **Guarantee.** The host assigns one object at startup, in each process:
 
 ```ts
-// main      (freelens/src/main/index.ts:60)
-globalThis.FreelensExtensionApi = { Common, Main };
-// renderer  (freelens/src/renderer/index.ts:78)
-globalThis.FreelensExtensionApi = { Common, Renderer };
+// main      (freelens/src/main/index.ts:75)
+globalThis.FreelensExtensionApi = { Common, Main, ...mainExtensionApiSingletons };
+// renderer  (freelens/src/renderer/index.ts:91)
+globalThis.FreelensExtensionApi = { Common, Renderer, ...rendererExtensionApiSingletons };
 ```
+
+The singletons of [C3](#c3-host-provided-singletons) ride on the same object
+rather than on globals of their own: one object to publish, one place in the
+contract, and it is what the shim already reads.
 
 `@freelensapp/extensions` is a thin shim that re-exports that global, so the
 members resolve identically whether an extension inlines the shim or marks it
@@ -101,16 +105,24 @@ marks them external, and lets its bundler rewrite the bare id to the global.
 
 **Surface.** A closed list of eight module ids:
 
-| Module id | Global |
-| --- | --- |
-| `react` | `React` |
-| `react-dom` | `ReactDom` |
-| `react/jsx-runtime` | `ReactJsxRuntime` |
-| `mobx` | `Mobx` |
-| `mobx-react` | `MobxReact` |
-| `monaco-editor` | `MonacoEditor` |
-| `@ogre-tools/injectable` | `OgreToolsInjectable` |
-| `@ogre-tools/injectable-react` | `OgreToolsInjectableReact` |
+| Module id | Global | Published in |
+| --- | --- | --- |
+| `react` | `React` | renderer |
+| `react-dom` | `ReactDom` | renderer |
+| `react/jsx-runtime` | `ReactJsxRuntime` | renderer |
+| `mobx` | `Mobx` | both |
+| `mobx-react` | `MobxReact` | renderer |
+| `monaco-editor` | `MonacoEditor` | renderer |
+| `@ogre-tools/injectable` | `OgreToolsInjectable` | both |
+| `@ogre-tools/injectable-react` | `OgreToolsInjectableReact` | renderer |
+
+**Each process publishes the set it has**, which is why the third column exists.
+Publishing all eight in main would pull a DOM renderer and a code editor into a
+bundle with no window to render into, for an entry point that cannot use them
+either; `@ogre-tools/injectable-react` is left out of main on the same ground,
+being a React binding. What main has is what an extension's main entry point can
+really share: `mobx`, where an extension's stores and catalog entities live, and
+`@ogre-tools/injectable`.
 
 **Membership is testable, not editorial: a package belongs on this list if two
 instances of it misbehave.** React (hook and reconciler identity), mobx
@@ -141,13 +153,21 @@ silently** — two instances interoperate through shared global state well enoug
 that observables appear to work and reactions simply do not fire where they
 should. A typo in a global name yields `undefined`, not a build error.
 
-**Status:** the eight are **not published yet** — #2450. This is a regression
-rather than an omission: in v1 webpack built the renderer as a *library*, so the
-entry's exports became globals; v2's electron-vite builds it as an *app*
-(`rollupOptions.input: src/renderer/index.html`), so nothing assigns them. The
-orphaned host half still sits in `freelens/src/renderer/index.ts` and the
-unreferenced `packages/core/src/renderer/extension-api.ts`; it must not be swept
-up as dead code (#2134) before the replacement lands.
+**Status:** shipped in #2450. It had been a regression rather than an omission:
+in v1 webpack built the renderer as a *library*, so the entry's exports became
+globals; v2's electron-vite builds it as an *app*
+(`rollupOptions.input: src/renderer/index.html`), so nothing assigned them for
+the whole of the v2 line until the singletons moved onto the API object. The
+orphaned v1 exports in the two process entries went with that change; the
+unreferenced `packages/core/src/renderer/extension-api.ts` is still there for
+the #2134 sweep.
+
+The maps live in `packages/core/src/extensions/api-globals/`, one per process,
+each paired with the module id of every name it publishes. Membership cannot
+drift between the two objects — the id map is typed `Record<keyof …, string>` —
+and a name cannot drift from the rule: `assertExtensionApiSingletonNames` checks
+every key against `globalNameForModuleId` at startup, and a unit test runs the
+same assertion over both maps so a typo fails in CI without launching the app.
 
 ---
 
@@ -339,14 +359,19 @@ hook and is released after their last.*
 **Failure mode.** Registering an injectable outside that window is lost, without
 an error.
 
-**Status:** #2450 Part 3. Today the invariant does **not** hold — `activate()`
-(the author's `onActivate`) runs *before* `extension.register()` creates the
-view, and `enable()` has no author hook, so there is currently no point in the
-lifecycle at which an extension could register anything. The fix is to split
-`register()`: create the view before `activate()`, leave population after it
-(activation can register catalog categories the registrators must see).
-Teardown is already correct — `disable()` runs `onDeactivate` before
+**Status:** the invariant holds as of #2450. It did not before: the view came
+into existence with the first `getExtension` call, in `loadExtensions`, *after*
+`activate()` had run the author's `onActivate` — and `enable()` has no author
+hook — so there was no point in the lifecycle at which an extension could
+register anything. The loader now injects the view right after it constructs the
+instance, and population by the registrators stays after activation, which is
+where it has to be (activation can register catalog categories the registrators
+must see). Teardown always was correct: `disable()` runs `onDeactivate` before
 `deregister()`.
+
+**What is still missing is the author-facing half.** The moment exists; no hook
+hands an author a container to register into at it. That is a separate decision,
+not a consequence of this one.
 
 **Deferred, with the measurement that justifies deferring it.** The repository
 declares **119** injection tokens: **15** are extension-facing, **9** are
@@ -381,8 +406,8 @@ reached through `Renderer.React`, which does not exist; and the instruction to
 published extension declares any peer dependency at all**, and the v1 mechanism
 that populated `global.React` is gone.
 
-**Status:** with #2450. Until it lands, the single-React guarantee holds only by
-pnpm peer-resolution accident in a development tree, and not at all for an
+**Status:** shipped with #2450. Before it, the single-React guarantee held only
+by pnpm peer-resolution accident in a development tree, and not at all for an
 installed extension.
 
 ---
@@ -462,16 +487,21 @@ because they are the kind that rot quietly:
   extension needs at *runtime* for `withInjectables`, which is a different
   requirement from appearing in the types.
 
-**Failure mode.** The singletons are currently in `dependencies` of
-`@freelensapp/extensions`, so installing the API **silently plants a real React
-in the author's tree** for their bundler to find — which is precisely the
-mistake [C3](#c3-host-provided-singletons) exists to prevent. They belong in
-`peerDependencies`, so bundling one's own copy becomes a deliberate act.
+**Failure mode.** A host-provided library in `dependencies` of
+`@freelensapp/extensions` **silently plants a real React in the author's tree**
+for their bundler to find — which is precisely the mistake
+[C3](#c3-host-provided-singletons) exists to prevent. As peers they are still
+there to compile against, and bundling one's own copy becomes a deliberate act.
 
-**Status:** the split is decided; #2450 carries the `dependencies` →
-`peerDependencies` move. Note that `react-dom` and `mobx-react` are in neither the catalog nor the
-package's dependencies, so an extension using them supplies its own
-devDependency today.
+**Status:** the five host-provided entries moved to `peerDependencies` in #2450.
+The `@types/*` entries stayed in `dependencies`: a second copy of a declaration
+is not a second instance of anything.
+
+`react-dom` and `mobx-react` are in neither the catalog nor the package's
+dependencies, so an extension using them supplies its own devDependency — which
+also resolves the two specifiers the ambient global declaration now names.
+Nothing in-repo type-checks the published declaration without `skipLibCheck`,
+the fixture extension included.
 
 ---
 
@@ -605,7 +635,6 @@ The contract has three, not two:
 
 | Item | Tracked in |
 | --- | --- |
-| Publish the eight singletons; move them to `peerDependencies`; fix the DI registration moment | #2450 |
 | Close the known re-export gaps | #2365 |
 | Generate the namespace enumeration instead of maintaining it | #2366 |
 | `es-toolkit` undeclared; `child_process` spelled two ways | #2360 |

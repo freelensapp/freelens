@@ -50,10 +50,13 @@ v2 without a line of code being written.
 
   ```ts
   // main process   (freelens/src/main/index.ts)
-  globalThis.FreelensExtensionApi = { Common, Main };
+  globalThis.FreelensExtensionApi = { Common, Main, ...mainExtensionApiSingletons };
   // renderer       (freelens/src/renderer/index.ts)
-  globalThis.FreelensExtensionApi = { Common, Renderer };
+  globalThis.FreelensExtensionApi = { Common, Renderer, ...rendererExtensionApiSingletons };
   ```
+
+  The host-provided libraries ride on that same object, next to the
+  namespaces — see below.
 
   `@freelensapp/extensions` is a thin shim that re-exports that global. At
   runtime the members resolve to the global whether your bundle inlines the
@@ -120,6 +123,12 @@ and your bundler rewrites the bare id to a property of the host's global:
 The global names follow a mechanical rule — strip the scope, split on `-`, `/`
 and `.`, upper-case each segment — so a bundler plugin can *derive* each name
 instead of being handed a map. Note `ReactDom`, not `ReactDOM`.
+
+**Each process publishes the set it has.** The renderer publishes all eight; the
+main process publishes `Mobx` and `OgreToolsInjectable` and nothing else, because
+a code editor and a DOM renderer have no place in a process with no window. Map
+in your main entry point only what main publishes — the rest is `undefined`
+there, and marking it external gets you no error, only a later surprise.
 
 Everything else may be bundled freely: `chart.js`, `react-select`,
 `react-window`, `@xterm/xterm`, `conf`, `immer`, `rfc6902`, `type-fest`. A
@@ -794,9 +803,7 @@ having done everything above.
 
 | Pending | Effect on you | Tracked in |
 | --- | --- | --- |
-| The host does not publish the eight singletons on its global | an extension that marks them external has nothing to resolve to at runtime | [#2450](https://github.com/freelensapp/freelens/issues/2450) |
-| The singletons are in `dependencies` of `@freelensapp/extensions` | installing the API plants a real React in your tree for your bundler to find | [#2450](https://github.com/freelensapp/freelens/issues/2450) |
-| There is no lifecycle moment at which an extension can register an injectable | `onActivate` runs before the extension's container view exists | [#2450](https://github.com/freelensapp/freelens/issues/2450) |
+| No author-facing hook for registering an injectable | the container view now exists before `onActivate`, but nothing hands it to you | [#2450](https://github.com/freelensapp/freelens/issues/2450) |
 | Known missing re-exports | some types are callable but not nameable | [#2365](https://github.com/freelensapp/freelens/issues/2365) |
 | The fixture extension is not yet built out against the full v2 surface | the namespace rename table above is not filled | [#2451](https://github.com/freelensapp/freelens/issues/2451) |
 
