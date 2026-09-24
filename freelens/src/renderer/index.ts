@@ -12,10 +12,13 @@ import { animateFeature } from "@freelensapp/animate";
 import { applicationFeature, startApplicationInjectionToken } from "@freelensapp/application";
 import { clusterSidebarFeature } from "@freelensapp/cluster-sidebar";
 import {
+  assertExtensionApiSingletonNames,
   commonExtensionApi as Common,
   metricsFeature,
   rendererExtensionApi as Renderer,
   registerLensCore,
+  rendererExtensionApiSingletonModuleIds,
+  rendererExtensionApiSingletons,
 } from "@freelensapp/core/renderer";
 import { registerFeature } from "@freelensapp/feature-core";
 import { keyboardShortcutsFeature } from "@freelensapp/keyboard-shortcuts";
@@ -75,7 +78,19 @@ export { Mobx, MobxReact, React, ReactDOM, ReactJsxRuntime } from "@freelensapp/
 // published `@freelensapp/extensions` shim can re-export it in each process.
 // The renderer gets `{ Common, Renderer }`; main gets `{ Common, Main }`.
 // The global's ambient type lives in `../freelens-extension-api.ts`.
-globalThis.FreelensExtensionApi = { Common, Renderer };
+//
+// #2450: alongside the namespaces, the renderer publishes all eight singletons
+// of the contract -- the modules an extension must share with the host rather
+// than bundle. `packages/core/src/extensions/api-globals/renderer-singletons.ts`
+// says which and why; main publishes only the subset it has.
+//
+// The assertion runs first because the failure it catches is silent: a key that
+// does not match the rule deriving it from its module id publishes nothing an
+// extension can find, and the extension reads `undefined` in a repository
+// nobody here can fix.
+assertExtensionApiSingletonNames(rendererExtensionApiSingletons, rendererExtensionApiSingletonModuleIds);
+
+globalThis.FreelensExtensionApi = { Common, Renderer, ...rendererExtensionApiSingletons };
 
 export const LensExtensions = {
   Renderer,

@@ -1,6 +1,13 @@
 import { applicationFeature, startApplicationInjectionToken } from "@freelensapp/application";
 import { applicationFeatureForElectronMain } from "@freelensapp/application-for-electron-main";
-import { commonExtensionApi as Common, mainExtensionApi as Main, registerLensCore } from "@freelensapp/core/main";
+import {
+  assertExtensionApiSingletonNames,
+  commonExtensionApi as Common,
+  mainExtensionApi as Main,
+  mainExtensionApiSingletonModuleIds,
+  mainExtensionApiSingletons,
+  registerLensCore,
+} from "@freelensapp/core/main";
 import { registerFeature } from "@freelensapp/feature-core";
 import { kubeApiSpecificsFeature } from "@freelensapp/kube-api-specifics";
 import { loggerFeature } from "@freelensapp/logger";
@@ -57,7 +64,20 @@ export {
 // published `@freelensapp/extensions` shim can re-export it in each process.
 // Main gets `{ Common, Main }`; the renderer gets `{ Common, Renderer }`.
 // The global's ambient type lives in `../freelens-extension-api.ts`.
-globalThis.FreelensExtensionApi = { Common, Main };
+//
+// #2450: alongside the namespaces, main publishes the singletons it actually
+// has -- `mobx` and `@ogre-tools/injectable` -- and not the five the renderer
+// carries, which would pull a DOM renderer and a code editor into a bundle with
+// no window. `packages/core/src/extensions/api-globals/main-singletons.ts` is
+// where that split is argued.
+//
+// The assertion runs first because the failure it catches is silent: a key that
+// does not match the rule deriving it from its module id publishes nothing an
+// extension can find, and the extension reads `undefined` in a repository
+// nobody here can fix.
+assertExtensionApiSingletonNames(mainExtensionApiSingletons, mainExtensionApiSingletonModuleIds);
+
+globalThis.FreelensExtensionApi = { Common, Main, ...mainExtensionApiSingletons };
 
 export const LensExtensions = {
   Main,
