@@ -21,9 +21,9 @@ const developmentPrefix = "dev-";
  * request would give each of those a distinct URL and instantiate the same
  * module more than once.
  *
- * Nothing rotates it yet -- reloading a rebuilt development extension is a
- * separate change -- but the URL shape is settled here so that change only has
- * to decide *when* a new token is minted.
+ * A new token is minted exactly when the extension is reloaded, which is what
+ * reaches the new build: the module map is keyed by URL and never evicted, so a
+ * rebuild behind an unchanged URL would go on running the code already loaded.
  */
 export function developmentBuildSegment(token: string): string {
   return `${developmentPrefix}${token}`;

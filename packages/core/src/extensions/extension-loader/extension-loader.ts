@@ -15,6 +15,7 @@ import { broadcastMessage, ipcMainHandle, ipcMainOn, ipcRendererOn } from "../..
 import {
   extensionLoaderFromMainChannel,
   extensionLoaderFromRendererChannel,
+  extensionLoaderReloadDevelopmentChannel,
 } from "../../common/ipc/extension-handling";
 import { developmentBuildSegment } from "../../features/extensions/loader/common/build-segment";
 import { extensionFileUrl, toFileSegments } from "../../features/extensions/loader/common/scheme";
@@ -94,8 +95,16 @@ export class ExtensionLoader {
   // One URL token per load of a development extension, held for as long as that
   // load lasts. See `developmentBuildSegment`: minting one per request would
   // give a relative import inside the extension a different URL from the entry
-  // that imported it, and instantiate the same module twice.
+  // that imported it, and instantiate the same module twice. A reload replaces
+  // the token, which is the whole of how the new build is reached.
   private readonly developmentLoadTokens = new Map<LensExtensionId, string>();
+
+  // The reload of each development extension which is still running, so that a
+  // second rebuild waits for the first reload rather than racing it. Without
+  // this the later token could be minted while the earlier load is still in
+  // flight, and the extension would end up running the older build under the
+  // newer token -- stale code with nothing left to say so.
+  private readonly developmentReloads = new Map<LensExtensionId, Promise<void>>();
 
   // Extensions whose entry point is being imported right now. `import()` is
   // asynchronous, so the check against `extensionInstances` no longer runs in
@@ -250,6 +259,107 @@ export class ExtensionLoader {
     ipcRendererOn(extensionLoaderFromMainChannel, (event, extensions: [LensExtensionId, InstalledExtension][]) => {
       extensionListHandler(extensions);
     });
+    ipcRendererOn(extensionLoaderReloadDevelopmentChannel, (event, extensionId: LensExtensionId, token: string) => {
+      void this.reloadDevelopmentExtension(extensionId, token);
+    });
+  }
+
+  /**
+   * Load a development extension again after its author rebuilt it.
+   *
+   * Main is where a rebuild is noticed, and it mints the token: one reload is
+   * one token in both processes. A reload is a full teardown and not a swap --
+   * `onDeactivate`, the extension's disposers, its registrations, its instance
+   * -- because a running module graph cannot be replaced underneath itself.
+   *
+   * Only then is the new token installed and the entry point imported again,
+   * which reaches the new build because the token is part of the URL the module
+   * map is keyed by. The previous graph stays in that map: a module object
+   * cannot be evicted from a realm, so memory grows with the reload count. That
+   * is documented in the migration guide rather than fixed, since
+   * deinitialisation itself happens properly through the lifecycle hook.
+   */
+  async reloadDevelopmentExtension(extensionId: LensExtensionId, token?: string): Promise<void> {
+    const reloadToken = token ?? this.dependencies.getRandomId();
+
+    if (!token) {
+      // Minted here, so every renderer reloads the same build under the same
+      // token. A renderer which is not listening yet has nothing loaded to
+      // reload, and will load the new build when it asks for the state.
+      void broadcastMessage(extensionLoaderReloadDevelopmentChannel, extensionId, reloadToken);
+    }
+
+    const reload = (this.developmentReloads.get(extensionId) ?? Promise.resolve())
+      .then(() => this.applyDevelopmentReload(extensionId, reloadToken))
+      .catch((error: unknown) => {
+        this.dependencies.logger.error(`${logModule}: failed to reload extension`, { extensionId, error });
+      });
+
+    this.developmentReloads.set(extensionId, reload);
+
+    await reload;
+
+    if (this.developmentReloads.get(extensionId) === reload) {
+      this.developmentReloads.delete(extensionId);
+    }
+  }
+
+  private async applyDevelopmentReload(extensionId: LensExtensionId, token: string): Promise<void> {
+    const extension = this.extensions.get(extensionId);
+
+    if (!extension) {
+      return void this.dependencies.logger.warn(`${logModule}: cannot reload an extension which is not installed`, {
+        extensionId,
+      });
+    }
+
+    if (extension.isManaged) {
+      // A managed build's content cannot change without a new install, which is
+      // a different path and a different URL, so there is nothing to reload.
+      return void this.dependencies.logger.warn(`${logModule}: refusing to reload the managed extension`, {
+        extensionId,
+      });
+    }
+
+    this.dependencies.logger.info(`${logModule}: reloading ${extension.manifest.name} after a rebuild`);
+
+    await this.disposeInstance(extensionId);
+
+    // The previous load may have concluded that this process has no class to
+    // instantiate; the rebuild is free to have changed that.
+    this.nonInstancesByName.delete(extension.manifest.name);
+
+    this.developmentLoadTokens.set(extensionId, token);
+
+    const reloaded = await this.loadUserExtensions(new Map([[extensionId, extension]]));
+
+    await this.loadExtensions(reloaded);
+  }
+
+  /**
+   * Tear an instance down and wait for it.
+   *
+   * `disable()` is what awaits `onDeactivate` and runs the extension's
+   * disposers, and it is the order the teardown has to happen in, so a reload
+   * reuses it rather than writing a second one. `removeInstance` then does the
+   * rest -- deregistering what the extension registered and dropping the
+   * instance -- and calls `disable()` again, which returns immediately the
+   * second time.
+   */
+  private async disposeInstance(extensionId: LensExtensionId): Promise<void> {
+    const instance = this.dependencies.extensionInstances.get(extensionId);
+
+    if (!instance) {
+      return;
+    }
+
+    try {
+      await instance.disable();
+    } catch (error) {
+      this.dependencies.logger.error(`${logModule}: deactivating extension error`, { extensionId, error });
+    }
+
+    this.removeInstance(extensionId);
   }
 
   broadcastExtensions() {
@@ -385,7 +495,7 @@ export class ExtensionLoader {
     const entryPointUrl =
       this.dependencies.extensionEntryPointName === "renderer"
         ? this.servedUrlOf(extension, toFileSegments(entryPointPath))
-        : pathToFileURL(this.dependencies.joinPaths(extension.absolutePath, entryPointPath)).href;
+        : this.fileUrlOf(extension, entryPointPath);
 
     try {
       // The specifier is only known at runtime, so the bundler must leave it
@@ -436,6 +546,29 @@ export class ExtensionLoader {
         : developmentBuildSegment(this.developmentLoadTokenOf(extension.id)),
       fileSegments,
     });
+  }
+
+  /**
+   * The `file:` URL main imports an extension's entry point from.
+   *
+   * Main does not go through the scheme -- the installer's full extraction
+   * guarantees a real path -- but it has the renderer's module-map problem all
+   * the same: Node keys the map by URL, and a bare path is the same key after a
+   * rebuild as before it. A development install therefore carries the same
+   * per-load token as a query, which makes a distinct key out of the same file.
+   *
+   * ESM only: a CommonJS entry point is cached by filename below the ESM loader,
+   * so the query does not reach the cache that holds it. That is recorded in the
+   * migration guide as a reason to ship ESM, not worked around here.
+   */
+  private fileUrlOf(extension: InstalledExtension, entryPointPath: string): string {
+    const url = pathToFileURL(this.dependencies.joinPaths(extension.absolutePath, entryPointPath));
+
+    if (!extension.isManaged) {
+      url.searchParams.set("v", this.developmentLoadTokenOf(extension.id));
+    }
+
+    return url.href;
   }
 
   private developmentLoadTokenOf(extensionId: LensExtensionId): string {
