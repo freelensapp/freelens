@@ -11,7 +11,6 @@ import { registerInjectables as registerExtensionInstallationStateStoreInjectabl
 import { registerInjectables as registerExtensionLoaderInjectables } from "./extension-loader/register-injectables";
 import { registerInjectables as registerExtensionPackagesRootInjectables } from "./extension-packages-root/register-injectables";
 import extensionsInjectable from "./extensions.injectable";
-import { registerInjectables as registerInstallExtensionInjectables } from "./install-extension/register-injectables";
 import mainExtensionsInjectable from "./main-extensions.injectable";
 import rendererExtensionsInjectable from "./renderer-extensions.injectable";
 
@@ -50,11 +49,6 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     registerExtensionPackagesRootInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerInstallExtensionInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }
