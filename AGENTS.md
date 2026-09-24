@@ -562,29 +562,25 @@ place:
 This lets the PR be created successfully while leaving the actual workflow
 change for a human to apply.
 
-### Branch Naming Conventions
+### Branch Naming
 
-When creating a branch from an issue, use a human-readable name that includes
-the issue number and a short slug derived from the issue title:
+**Work on the branch the workflow put you on.** Do not rename it, and do not
+move the work to a better-named branch.
 
-```text
-claude/issue-<number>-<short-slug>
-```
+`claude-code-action` creates the branch itself, as
+`claude/issue-<number>-<date>-<time>`, and the workflow passes it no name to
+use instead. Its comment header — the branch link and the "Create PR" link —
+is written from that name. So an agent that moves to a different branch leaves
+the header pointing at an abandoned one, leaves a stray branch behind, and
+spends part of its run on a rename instead of the task. This guide used to
+require a readable name and forbid the timestamp, which produced exactly that
+every time.
 
-- `<number>` is the GitHub issue number
-- `<short-slug>` is a kebab-case summary of the issue title, kept short
-  (3–6 words maximum, omit articles and filler words)
+If you are creating a branch yourself, with no workflow-provided one, use
+`claude/<short-slug>`.
 
-Examples:
-
-- Issue #1957 "Add PR title convention rule for agent-related changes"
-  → `claude/issue-1957-add-pr-title-rules`
-- Issue #42 "Fix crash when opening preferences dialog"
-  → `claude/issue-42-fix-preferences-crash`
-
-Do **not** use auto-generated timestamp suffixes (e.g.
-`claude/issue-1957-20260612-2108`) — these are not human-readable and make
-branch lists hard to scan.
+The branch name is not worth managing: it lives for a few hours and the pull
+request is what anyone refers to afterwards.
 
 ### PR Title Conventions
 
