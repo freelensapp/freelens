@@ -107,32 +107,30 @@ export const KubeApi = KubeApiCstr as unknown as new <
   opts: KubeApiOptions<Object, Data> & ExternalKubeApiOptions,
 ) => InternalKubeApi<Object, Data>;
 
+// The whole of `@freelensapp/kube-object` is part of the API surface. The
+// package is private in v2 and is inlined into the bundled declaration, so a
+// type it declares is unreachable by any means unless this namespace re-exports
+// it — see C1 and C5 of `docs/v2-extension-api.md`.
+export * from "@freelensapp/kube-object";
+// Deliberate v1-compatibility aliases, on top of the star export above.
 export {
-  createKubeObject,
-  isJsonApiData,
-  isJsonApiDataList,
-  isKubeJsonApiListMetadata,
-  isKubeJsonApiMetadata,
-  isKubeObjectNonSystem,
-  isKubeStatusData,
-  isPartialJsonApiData,
-  isPartialJsonApiMetadata,
-  KubeObject,
-  KubeStatus,
-  stringifyLabels,
+  type Container as IPodContainer,
+  Endpoints as Endpoint,
+  type PodContainerStatus as IPodContainerStatus,
+  type SecretReference as ISecretRef,
 } from "@freelensapp/kube-object";
+// `KubeObjectStatus` is the one name that collides, and the two are genuinely
+// different types. The extension-facing status-registration type below keeps the
+// bare name, because v1 extensions already register status providers against it;
+// being an explicit re-export it shadows the `export *` above, so `Main` and
+// `Renderer` agree on what `KubeObjectStatus` is. The `@freelensapp/kube-object`
+// one — the base Kubernetes status shape `{ conditions?: BaseKubeObjectCondition[] }`
+// that `DeploymentStatus`, `JobStatus` and the other resource statuses extend —
+// is renamed rather than left out: an exclusion would be a hole that nothing
+// announces, while a rename shows up in the declaration and in the API report.
+export { type KubeObjectStatus, KubeObjectStatusLevel } from "../../common/k8s-api/kube-object-status";
 
-export type {
-  BaseKubeJsonApiObjectMetadata,
-  ClusterScopedMetadata,
-  KubeJsonApiData,
-  KubeJsonApiDataFor,
-  KubeJsonApiObjectMetadata,
-  KubeObjectMetadata,
-  KubeStatusData,
-  NamespaceScopedMetadata,
-  OwnerReference,
-} from "@freelensapp/kube-object";
+export type { KubeObjectStatus as BaseKubeObjectStatus } from "@freelensapp/kube-object";
 
 export type { CreateKubeApiForLocalClusterConfig as ILocalKubeApiConfig } from "../../common/k8s-api/create-kube-api-for-cluster.injectable";
 
@@ -225,43 +223,6 @@ export type PersistentVolumeClaimsApi = PersistentVolumeClaimApi;
 export const PersistentVolumeClaimsApi = PersistentVolumeClaimsApiConstructor as unknown as new (
   opts?: DerivedKubeApiOptions,
 ) => PersistentVolumeClaimApi;
-
-export {
-  ClusterRole,
-  ClusterRoleBinding,
-  ConfigMap,
-  type Container as IPodContainer,
-  CronJob,
-  CustomResourceDefinition,
-  DaemonSet,
-  Deployment,
-  EndpointSlice,
-  Endpoints as Endpoint,
-  HorizontalPodAutoscaler,
-  Ingress,
-  Job,
-  KubeEvent,
-  LimitRange,
-  Namespace,
-  NetworkPolicy,
-  Node,
-  PersistentVolume,
-  PersistentVolumeClaim,
-  Pod,
-  type PodContainerStatus as IPodContainerStatus,
-  PodDisruptionBudget,
-  PriorityClass,
-  ReplicaSet,
-  ResourceQuota,
-  Role,
-  RoleBinding,
-  Secret,
-  type SecretReference as ISecretRef,
-  Service,
-  ServiceAccount,
-  StatefulSet,
-  StorageClass,
-} from "@freelensapp/kube-object";
 
 /**
  * The `KubeObject` that can be used in extensions with additional property to
