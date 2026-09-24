@@ -31,7 +31,7 @@
     "build:dist:shim": "node scripts/build-shim.mjs",
     "api-report": "pnpm build:dist:declarations && pnpm api-report:run --local",
     "api-report:check": "pnpm build:dist:declarations && pnpm api-report:run",
-    "api-report:run": "node scripts/generate-api-extractor-tsconfig.mjs && api-extractor run",
+    "api-report:run": "node scripts/generate-api-extractor-tsconfig.mjs && api-extractor run --config api-extractor.jsonc",
     "clean:dist": "pnpm dlx rimraf@6.1.3 dist dist-types temp",
     "prepack": "pnpm build:dist"
   },

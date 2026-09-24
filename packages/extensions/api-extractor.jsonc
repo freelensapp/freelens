@@ -5,6 +5,11 @@
 
   "mainEntryPointFilePath": "<projectFolder>/dist-types/packages/extensions/src/extension-api.d.ts",
 
+  // API Extractor defaults to CRLF. .gitattributes normalizes *.md to LF, so
+  // the checked-in report and the freshly generated one would differ on every
+  // line on a fresh checkout.
+  "newlineKind": "lf",
+
   "compiler": {
     "tsconfigFilePath": "<projectFolder>/tsconfig.api-extractor.generated.json"
   },
