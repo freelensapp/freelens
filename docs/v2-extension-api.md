@@ -174,7 +174,12 @@ correctly refuses.
 
 **Status:** shipped. The renderer imports the served URL and the main process
 imports a `file:` URL, both asynchronously, so **top-level await works in either
-entry point**. Reloading a rebuilt development extension is still #2400.
+entry point**. A development install is reloaded when its entry points are
+rebuilt: the host tears the extension down through `onDeactivate` and imports it
+again under a fresh URL. That last step is why reloading a `main` entry point
+needs ESM — a CommonJS module is cached by filename below the ESM loader, so it
+re-imports as the code already loaded. Loading it in the first place is
+unaffected.
 
 ---
 
@@ -592,7 +597,7 @@ The contract has three, not two:
 | Close the known re-export gaps | #2365 |
 | Generate the namespace enumeration instead of maintaining it | #2366 |
 | `es-toolkit` undeclared; `child_process` spelled two ways | #2360 |
-| URL-served loader, installer, storage layout, development reloading | #2400 |
+| Remove `pnpm` as an application dependency — the last step of the delivery mechanism | #2400 |
 | Renderer sandboxing — the reason several isolation claims are *not* made here | #2399 |
 | Fill the v1→v2 rename table while building out the fixture extension | #2451 |
 

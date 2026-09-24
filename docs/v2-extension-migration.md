@@ -670,7 +670,25 @@ directory registers the extension in place**, so there is no packing step, no
 symlink, no junction and no `install:dev` script — and none of the Windows
 Developer Mode friction that symlinks used to require.
 
-Two consequences to know:
+**Rebuilding reloads the extension.** The host watches the entry points your
+manifest names — `main` and `renderer`, at their real paths — and when your
+bundler rewrites one, it tears the extension down and imports it again in both
+processes. There is nothing to press: run your bundler in watch mode and work.
+
+What a reload is, so that what you have to write is clear:
+
+- It is a **full teardown, not a swap**. Your `onDeactivate` runs, your
+  disposers run, everything you registered is taken back out, and only then is
+  the new build imported and `onActivate` called again. Anything your extension
+  leaves behind — a listener on a host object, a timer, an element appended to
+  the document — has to be released in `onDeactivate` or in the extension's
+  disposers, or it survives the reload and accumulates.
+- One rebuild is **one reload**, however many entry points it writes, and the
+  host waits for a half-written bundle to settle before importing it.
+- Your **stylesheet is re-linked** and the previous one is removed, so your CSS
+  does not stack up across reloads.
+
+Three consequences to know:
 
 - An extension installed this way is **unverified by construction** and is
   marked as such in the UI. The absence of a version-and-digest segment in its
@@ -679,12 +697,15 @@ Two consequences to know:
   evicted from a realm's module map, so memory grows with the reload count.
   Deinitialisation still happens properly through `onDeactivate`, but a long
   editing session is a reason to restart the app, not a leak to report.
+- **Reloading a `main` entry point needs ESM.** The host imports it under a
+  fresh URL each time, which is what makes it a new module — but a CommonJS
+  entry point is cached below that by filename, so it would be re-imported and
+  still be the old code. Ship ESM from `main` if you want the development loop;
+  the renderer is ESM by contract and is unaffected.
 
-Installing a directory works; **reloading on rebuild does not yet**
-([#2400](https://github.com/freelensapp/freelens/issues/2400)). The watcher
-reacts to a manifest appearing or disappearing, not to your bundler rewriting
-the entry, and a module already loaded into a realm stays loaded — so after a
-rebuild, restart the application to pick the new code up.
+Only the files your manifest names are watched, so a rebuild which changes the
+manifest itself — a renamed entry point, a new one — needs the application
+restarted once.
 
 ## Checklist
 
@@ -747,7 +768,6 @@ having done everything above.
 | The host does not publish the eight singletons on its global | an extension that marks them external has nothing to resolve to at runtime | [#2450](https://github.com/freelensapp/freelens/issues/2450) |
 | The singletons are in `dependencies` of `@freelensapp/extensions` | installing the API plants a real React in your tree for your bundler to find | [#2450](https://github.com/freelensapp/freelens/issues/2450) |
 | There is no lifecycle moment at which an extension can register an injectable | `onActivate` runs before the extension's container view exists | [#2450](https://github.com/freelensapp/freelens/issues/2450) |
-| URL-served loading, the new installer, the directory install and reloading | no top-level await; no in-place development loop | [#2400](https://github.com/freelensapp/freelens/issues/2400) |
 | Known missing re-exports | some types are callable but not nameable | [#2365](https://github.com/freelensapp/freelens/issues/2365) |
 | The fixture extension is not yet built out against the full v2 surface | the namespace rename table above is not filled | [#2451](https://github.com/freelensapp/freelens/issues/2451) |
 
