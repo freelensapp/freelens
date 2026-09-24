@@ -89,7 +89,8 @@ export class ExtensionLoader {
   // URLs of extension stylesheets already linked into the renderer document, so
   // a reload (the toJSON reaction re-loads user extensions) does not append the
   // same <link> twice. Keying on the URL rather than the file means a new build
-  // -- which carries a new path segment -- is linked again.
+  // -- which carries a new path segment -- is linked again. A URL is forgotten
+  // when its element is taken out again: see `removeInjectedStyles`.
   private readonly injectedStyleUrls = new Set<string>();
 
   // One URL token per load of a development extension, held for as long as that
@@ -328,6 +329,8 @@ export class ExtensionLoader {
     // The previous load may have concluded that this process has no class to
     // instantiate; the rebuild is free to have changed that.
     this.nonInstancesByName.delete(extension.manifest.name);
+
+    this.removeInjectedStyles(extension.manifest.name);
 
     this.developmentLoadTokens.set(extensionId, token);
 
@@ -662,6 +665,46 @@ export class ExtensionLoader {
           `${logModule}: failed to link stylesheet "${url}" for "${extension.manifest.name}": ${error}`,
         );
       }
+    }
+  }
+
+  /**
+   * Take an extension's stylesheets back out of the document.
+   *
+   * A reload links the new build's stylesheet at a new URL, and without this
+   * the previous one stays in the document applying its rules: the handler
+   * accepts any development token, so the stale URL still resolves, and two
+   * reloads would leave three stylesheets fighting. The `data-` attribute the
+   * link carries is what identifies whose it is -- read by comparing the value
+   * rather than by an attribute selector, so a manifest name needs no CSS
+   * escaping.
+   *
+   * Their URLs are forgotten at the same time. `injectedStyleUrls` exists to
+   * keep one load from linking the same file twice, so an entry left behind
+   * after the element is gone would mean an extension could never link a URL it
+   * had once used again.
+   */
+  private removeInjectedStyles(extensionName: string): void {
+    if (typeof document === "undefined") {
+      return;
+    }
+
+    const links = Array.from(document.head.querySelectorAll<HTMLLinkElement>("link[data-freelens-extension]"));
+
+    for (const link of links) {
+      if (link.dataset.freelensExtension !== extensionName) {
+        continue;
+      }
+
+      const url = link.getAttribute("href");
+
+      if (url) {
+        this.injectedStyleUrls.delete(url);
+      }
+
+      link.remove();
+
+      this.dependencies.logger.debug(`${logModule}: unlinked stylesheet "${url}" of "${extensionName}"`);
     }
   }
 

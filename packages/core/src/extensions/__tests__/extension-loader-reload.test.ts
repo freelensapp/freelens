@@ -25,7 +25,25 @@ import type { InstalledExtension, LensExtensionId, LensExtensionInstance } from 
 interface LoaderUrls {
   servedUrlOf(extension: InstalledExtension, fileSegments: string[]): string;
   fileUrlOf(extension: InstalledExtension, entryPointPath: string): string;
+  /** The URLs the loader believes it has already linked a stylesheet at. */
+  injectedStyleUrls: Set<string>;
 }
+
+const linkStylesheet = (extensionName: string, url: string) => {
+  const link = document.createElement("link");
+
+  link.rel = "stylesheet";
+  link.href = url;
+  link.dataset.freelensExtension = extensionName;
+  document.head.appendChild(link);
+
+  return link;
+};
+
+const linkedStylesheets = () =>
+  Array.from(document.head.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]'), (link) =>
+    link.getAttribute("href"),
+  );
 
 const extensionsRoot = "/some-directory-for-user-data/extensions";
 
@@ -91,13 +109,16 @@ describe("reloading a development extension in the renderer", () => {
   beforeEach(() => {
     mintedTokens = 0;
     deregister = vi.fn();
+    document.head.innerHTML = "";
 
     const di = getRendererDiForUnitTesting();
 
     di.override(directoryForUserDataInjectable, () => "/some-directory-for-user-data");
     di.override(currentlyInClusterFrameInjectable, () => false);
     di.override(getRandomIdInjectionToken, () => () => `token-${++mintedTokens}`);
-    di.override(extensionInjectable, () => ({ register: () => {}, deregister }));
+    // A keyed singleton: the override stands in for every instance's
+    // registration handle, which is what a reload has to take back out.
+    di.override(extensionInjectable as never, (() => ({ register: () => {}, deregister })) as never);
 
     extensionInstances = di.inject(extensionInstancesInjectable);
     extensionLoader = di.inject(extensionLoaderInjectable);
@@ -146,6 +167,31 @@ describe("reloading a development extension in the renderer", () => {
     await extensionLoader.reloadDevelopmentExtension("not-installed", "token-after");
 
     expect(extensionInstances.size).toBe(0);
+  });
+
+  it("takes the previous build's stylesheets out of the document", async () => {
+    const staleUrl = "freelens-extension://extensions/my-extension/dev-token-1/out/renderer.css";
+
+    extensionLoader.addExtension(developmentExtension);
+    linkStylesheet(developmentExtension.manifest.name, staleUrl);
+    urls.injectedStyleUrls.add(staleUrl);
+
+    await extensionLoader.reloadDevelopmentExtension(developmentExtension.id, "token-after");
+
+    // The stale URL still resolves -- the handler accepts any development token
+    // -- so a stylesheet left behind would go on applying its rules.
+    expect(linkedStylesheets()).toEqual([]);
+    // And is forgotten, or the extension could never link that URL again.
+    expect(urls.injectedStyleUrls.has(staleUrl)).toBe(false);
+  });
+
+  it("leaves another extension's stylesheets alone", async () => {
+    extensionLoader.addExtension(developmentExtension);
+    linkStylesheet("another-extension", "freelens-extension://extensions/another-extension/1.0.0-0f1e2d3c/style.css");
+
+    await extensionLoader.reloadDevelopmentExtension(developmentExtension.id, "token-after");
+
+    expect(linkedStylesheets()).toEqual(["freelens-extension://extensions/another-extension/1.0.0-0f1e2d3c/style.css"]);
   });
 
   it("mints its own token when nothing handed it one, which is the main-process path", async () => {
