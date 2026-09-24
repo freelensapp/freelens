@@ -225,6 +225,19 @@ export class ExtensionLoader {
     this.dependencies.logger.info(`${logModule} deleting extension instance ${lensExtensionId}`);
     const instance = this.dependencies.extensionInstances.get(lensExtensionId);
 
+    // Whatever takes an extension out -- a disable, an uninstall, the teardown
+    // half of a reload -- also takes its stylesheets out, or the rules of an
+    // extension which is no longer running go on applying. Before the instance
+    // check, because an extension whose entry point loaded but exported no
+    // class for this process has stylesheets and no instance. The name comes
+    // from the manifest, which is still there at this point and is what the
+    // links are tagged with.
+    const extensionName = this.extensions.get(lensExtensionId)?.manifest.name ?? instance?.name;
+
+    if (extensionName) {
+      this.removeInjectedStyles(extensionName);
+    }
+
     if (!instance) {
       return;
     }
@@ -442,6 +455,9 @@ export class ExtensionLoader {
     // instantiate; the rebuild is free to have changed that.
     this.nonInstancesByName.delete(extension.manifest.name);
 
+    // Usually already done by `removeInstance`, but a reload has to remove them
+    // even when there was no instance to remove: an entry point which loaded
+    // and exported no class for this process still linked its stylesheets.
     this.removeInjectedStyles(extension.manifest.name);
 
     this.developmentLoadTokens.set(extensionId, token);

@@ -194,6 +194,46 @@ describe("reloading a development extension in the renderer", () => {
     expect(linkedStylesheets()).toEqual(["freelens-extension://extensions/another-extension/1.0.0-0f1e2d3c/style.css"]);
   });
 
+  it("takes the stylesheets out when the extension is uninstalled", () => {
+    const url = "freelens-extension://extensions/my-extension/dev-token-1/out/renderer.css";
+
+    extensionLoader.addExtension(developmentExtension);
+    extensionInstances.set(developmentExtension.id, fakeInstanceOf(developmentExtension).instance);
+    linkStylesheet(developmentExtension.manifest.name, url);
+    urls.injectedStyleUrls.add(url);
+
+    extensionLoader.removeExtension(developmentExtension.id);
+
+    // The rules of an extension which is no longer running would go on applying.
+    expect(linkedStylesheets()).toEqual([]);
+    expect(urls.injectedStyleUrls.has(url)).toBe(false);
+  });
+
+  it("takes the stylesheets out when the extension is disabled", () => {
+    const url = "freelens-extension://extensions/my-extension/dev-token-1/out/renderer.css";
+
+    extensionLoader.addExtension(developmentExtension);
+    extensionInstances.set(developmentExtension.id, fakeInstanceOf(developmentExtension).instance);
+    linkStylesheet(developmentExtension.manifest.name, url);
+
+    extensionLoader.removeInstance(developmentExtension.id);
+
+    expect(linkedStylesheets()).toEqual([]);
+  });
+
+  it("takes the stylesheets out of an extension which exported no class for this process", () => {
+    const url = "freelens-extension://extensions/my-extension/dev-token-1/out/renderer.css";
+
+    // The entry point loaded and linked its stylesheet, but had nothing for
+    // this process to instantiate, so there is no instance to remove.
+    extensionLoader.addExtension(developmentExtension);
+    linkStylesheet(developmentExtension.manifest.name, url);
+
+    extensionLoader.removeExtension(developmentExtension.id);
+
+    expect(linkedStylesheets()).toEqual([]);
+  });
+
   it("mints its own token when nothing handed it one, which is the main-process path", async () => {
     extensionLoader.addExtension(developmentExtension);
     urls.servedUrlOf(developmentExtension, ["out", "renderer.js"]);
