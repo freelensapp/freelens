@@ -227,6 +227,28 @@ The build process runs this automatically, but you can run it manually to verify
 pnpm build:di
 ```
 
+### When to regenerate the extension API report
+
+`packages/extensions/etc/extension-api.api.md` is a git-tracked enumeration of
+everything `@freelensapp/extensions` exports, written by API Extractor. CI fails
+when it no longer matches the built surface, which is the point: a change to
+what an extension can see shows up as a diff in review.
+
+If `Check API report` fails, or you changed anything a namespace re-exports:
+
+```sh
+pnpm api-report
+```
+
+Then commit the updated `etc/extension-api.api.md` alongside your change. Never
+edit it by hand. `pnpm api-report:check` is what CI runs — it regenerates into
+`packages/extensions/temp/` and compares instead of writing.
+
+The report also collects the `ae-forgotten-export` warnings: types that appear
+in an exported signature but that no namespace exports, so an author can use
+them but cannot name them. They are recorded rather than fatal; adding one is
+visible in the diff.
+
 ### Troubleshooting
 
 **Changes not appearing:**

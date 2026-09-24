@@ -381,6 +381,21 @@ depends on the question:
 - [`docs/v2-extension-migration.md`](./docs/v2-extension-migration.md) — the
   author-facing **porting guide** from v1.
 
+The surface itself is **generated, not described**:
+`packages/extensions/etc/extension-api.api.md` is an API Extractor report of
+everything the package exports, tracked by git so a change to it is a diff in
+review. Regenerate it with `pnpm api-report` and commit the result whenever you
+change what a namespace re-exports; `pnpm api-report:check` is the CI gate.
+Never edit the report by hand.
+
+It runs alongside the declaration pipeline and does not replace any of it — the
+shipped `dist/extension-api.d.ts` still comes from `rollup.dts.config.mjs`.
+Note that API Extractor carries its own TypeScript 5.9.3, so
+`packages/extensions/tsconfig.api-extractor.json` is **standalone** rather than
+an `extends` of the root config: TypeScript validates every config in an
+`extends` chain as it reads it, and 5.9.3 rejects the root's
+`"lib": ["ES2025"]` outright.
+
 Two traps worth carrying without looking them up. The API surface is only what
 the `Common` / `Main` / `Renderer` namespaces re-export — every other
 `@freelensapp/*` package is private and inlined into the published declaration,

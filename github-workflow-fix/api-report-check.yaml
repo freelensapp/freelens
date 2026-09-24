@@ -1,0 +1,81 @@
+name: Check API report
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - "*"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  api-report:
+    name: check API report
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runs-on: ubuntu-24.04-arm
+            arch: arm64
+
+    runs-on: ${{ matrix.runs-on }}
+    timeout-minutes: 20
+
+    env:
+      DO_NOT_TRACK: "1"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Setup pnpm
+        run: corepack enable
+
+      - name: Get pnpm cache directory
+        shell: bash
+        run: |
+          pnpm_cache_dir="$(pnpm store path)"
+          echo "pnpm_cache_dir=${pnpm_cache_dir}" | tee -a "${GITHUB_ENV}"
+
+      - name: Use pnpm cache
+        uses: actions/cache@v6
+        with:
+          path: ${{ env.pnpm_cache_dir }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-node-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ matrix.runs-on }}-${{ matrix.arch }}-node-
+
+      - name: Install pnpm dependencies
+        id: install-pnpm
+        run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
+        continue-on-error: true
+
+      - name: Install pnpm dependencies (retry)
+        if: steps.install-pnpm.outcome == 'failure'
+        run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
+
+      # Fails when the built surface no longer matches the checked-in report.
+      # API Extractor writes what it found to packages/extensions/temp/ and
+      # exits non-zero; regenerate with `pnpm api-report` and commit the result.
+      - name: Check API report
+        run: pnpm --color=always api-report:check
+
+      - name: Show the API report diff
+        if: failure()
+        shell: bash
+        run: |-
+          diff -u \
+            packages/extensions/etc/extension-api.api.md \
+            packages/extensions/temp/extension-api.api.md \
+            || true
