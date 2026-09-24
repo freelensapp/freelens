@@ -33,9 +33,16 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import * as OgreToolsInjectable from "@ogre-tools/injectable";
+import * as OgreToolsInjectableReact from "@ogre-tools/injectable-react";
 import { fireEvent, render } from "@testing-library/react";
+import * as Mobx from "mobx";
 import { autorun, observable, runInAction } from "mobx";
+import * as MobxReact from "mobx-react";
+import * as MonacoEditor from "monaco-editor";
 import React from "react";
+import * as ReactJsxRuntime from "react/jsx-runtime";
+import ReactDom from "react-dom";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import isFlatpakPackageInjectable from "../../common/vars/is-flatpak-package.injectable";
 import { buildVersionInitializable } from "../../features/vars/build-version/common/token";
@@ -133,11 +140,34 @@ describe("extension contract, against the built fixture extension", () => {
     });
   });
 
+  // The renderer half of the singleton contract (#2450): every module an
+  // extension must share rather than bundle, published under the name the rule
+  // derives from its module id, and being the host's *own* instance of it. The
+  // last part is why these are `toBe` against this file's own imports rather
+  // than a property list: a second resolution of the same specifier — a
+  // `monaco-editor/esm/...` next to a `monaco-editor`, say — has every property
+  // and none of the identity.
+  it.each([
+    ["React", React],
+    ["ReactDom", ReactDom],
+    ["ReactJsxRuntime", ReactJsxRuntime],
+    ["Mobx", Mobx],
+    ["MobxReact", MobxReact],
+    ["MonacoEditor", MonacoEditor],
+    ["OgreToolsInjectable", OgreToolsInjectable],
+    ["OgreToolsInjectableReact", OgreToolsInjectableReact],
+  ])("publishes the host's own instance of %s", (name, hostInstance) => {
+    const published = Reflect.get(globalThis, "FreelensExtensionApi") as Record<string, unknown>;
+
+    expect(published[name]).toBe(hostInstance);
+  });
+
   it("shares the host's singletons by identity, not by shape", () => {
-    // For mobx this is the assertion that matters. Two copies of mobx 6 keep
-    // interoperating through the shared global state they both write to
-    // `globalThis`, so a reaction fires either way and the behavioural checks
-    // below stay green while the extension carries a duplicate.
+    // What the *bundle* resolved, which is the end of the chain the assertions
+    // above only start. For mobx this is the assertion that matters: two copies
+    // of mobx 6 keep interoperating through the shared global state they both
+    // write to `globalThis`, so a reaction fires either way and the behavioural
+    // checks below stay green while the extension carries a duplicate.
     expect(fixture.resolvedMobxObservable).toBe(observable);
     expect(fixture.resolvedReactUseState).toBe(React.useState);
   });

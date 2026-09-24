@@ -566,6 +566,24 @@ export class ExtensionLoader {
 
           this.dependencies.extensionInstances.set(extId, instance);
 
+          // Creates the extension's view of the host's DI container, before
+          // `activate()` runs the author's `onActivate` (#2450). Until this
+          // moment there was no point in the lifecycle at which an extension
+          // could register an injectable at all: the view came into existence
+          // with the first `getExtension` call, which was in `loadExtensions`,
+          // after activation had already returned.
+          //
+          // `register()` -- populating that view from the host's registrators --
+          // stays where it is, in `loadExtensions`, because it has to follow
+          // activation: an `onActivate` can register catalog categories the
+          // registrators need to see.
+          //
+          // The invariant this buys is the one the extension API states: the
+          // container exists before the author's first hook and is released
+          // after their last. The teardown half already held -- `disable()` runs
+          // `onDeactivate` before `removeInstance` deregisters.
+          this.dependencies.getExtension(instance);
+
           return {
             instance,
             installedExtension,

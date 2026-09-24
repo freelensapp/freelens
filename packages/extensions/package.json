@@ -33,17 +33,12 @@
     "prepack": "pnpm build:dist"
   },
   "dependencies": {
-    "@ogre-tools/injectable": "catalog:extensions",
-    "@ogre-tools/injectable-react": "catalog:extensions",
     "@types/node": "catalog:extensions",
     "@types/react": "catalog:extensions",
     "@xterm/xterm": "catalog:extensions",
     "chart.js": "catalog:extensions",
     "conf": "catalog:extensions",
     "immer": "catalog:extensions",
-    "mobx": "catalog:extensions",
-    "monaco-editor": "catalog:extensions",
-    "react": "catalog:extensions",
     "react-select": "catalog:extensions",
     "react-window": "catalog:extensions",
     "rfc6902": "catalog:extensions",
@@ -58,10 +53,30 @@
     "typescript-plugin-css-modules": "catalog:"
   },
   "peerDependencies": {
-    "electron": ">=42.0.0"
+    "@ogre-tools/injectable": "catalog:extensions",
+    "@ogre-tools/injectable-react": "catalog:extensions",
+    "electron": ">=42.0.0",
+    "mobx": "catalog:extensions",
+    "monaco-editor": "catalog:extensions",
+    "react": "catalog:extensions"
   },
   "peerDependenciesMeta": {
+    "@ogre-tools/injectable": {
+      "optional": true
+    },
+    "@ogre-tools/injectable-react": {
+      "optional": true
+    },
     "electron": {
+      "optional": true
+    },
+    "mobx": {
+      "optional": true
+    },
+    "monaco-editor": {
+      "optional": true
+    },
+    "react": {
       "optional": true
     }
   },

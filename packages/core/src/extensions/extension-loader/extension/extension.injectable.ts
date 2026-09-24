@@ -17,6 +17,20 @@ export interface Extension {
   deregister: () => void;
 }
 
+// An extension's own view of the host's DI container: injecting this creates
+// the view, and `deregister()` releases it.
+//
+// Injecting it is separate from `register()` on purpose, and the loader does it
+// before it runs the author's `onActivate` (#2450). That is the lifecycle
+// invariant the extension API promises: *the container exists before the
+// author's first hook and is released after their last.* Only the population of
+// the view -- calling the host's registrators, below -- has to follow
+// activation, because activation can register catalog categories those
+// registrators need to see.
+//
+// The registrators are therefore injected inside `register()` rather than in
+// `instantiate`: creating the view earlier must not make anything else happen
+// earlier with it.
 const extensionInjectable = getInjectable({
   id: "extension",
 
@@ -25,12 +39,13 @@ const extensionInjectable = getInjectable({
       id: `extension-${instance.sanitizedExtensionId}`,
 
       instantiate: (childDi) => {
-        const extensionRegistrators = childDi.injectMany(extensionRegistratorInjectionToken);
         const reactionDisposer = disposer();
         const injectableDifferencingRegistrator = injectableDifferencingRegistratorWith(childDi);
 
         return {
           register: () => {
+            const extensionRegistrators = childDi.injectMany(extensionRegistratorInjectionToken);
+
             for (const extensionRegistrator of extensionRegistrators) {
               const injectables = extensionRegistrator(instance);
 
