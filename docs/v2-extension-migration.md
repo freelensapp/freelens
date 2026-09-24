@@ -699,9 +699,32 @@ Three consequences to know:
   editing session is a reason to restart the app, not a leak to report.
 - **Reloading a `main` entry point needs ESM.** The host imports it under a
   fresh URL each time, which is what makes it a new module — but a CommonJS
-  entry point is cached below that by filename, so it would be re-imported and
-  still be the old code. Ship ESM from `main` if you want the development loop;
-  the renderer is ESM by contract and is unaffected.
+  entry point is cached below that by filename, which no URL reaches, and the
+  format Node resolved for that path is cached with it. So a `main` once loaded
+  as CommonJS is frozen as the module it was for the life of the process, and
+  rewriting the file as ESM does not release it either. Ship ESM from `main` if
+  you want the development loop; the renderer is ESM by contract and is
+  unaffected.
+
+  A rebuild the host cannot reload is **refused, not attempted**: your
+  extension goes on running the build it already has, in both processes, and
+  main logs which of the two cases it is —
+
+  ```text
+  [EXTENSIONS-LOADER]: not reloading "my-extension" after a rebuild: its
+  "dist/main.js" entry point was loaded as CommonJS, which Node caches by
+  filename for the life of the process, so the running build would stay.
+  Restart the application to run it.
+  ```
+
+  The other case is having *started* as ESM and rebuilt as CommonJS, which
+  would throw `ReferenceError: module is not defined in ES module scope` from
+  inside your bundle — an error naming neither your extension nor the real
+  cause. Either way the fix is the same: make `main` ESM (`.mjs`, or `.js` with
+  `"type": "module"` in your `package.json`) and restart once. What the host
+  goes by is the entry point's file extension, and otherwise your manifest's
+  `type` — and, for what is *running*, the format it was actually loaded as,
+  which is why changing `type` alone still needs the restart.
 
 Only the files your manifest names are watched, so a rebuild which changes the
 manifest itself — a renamed entry point, a new one — needs the application
