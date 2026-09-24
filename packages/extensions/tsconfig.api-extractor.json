@@ -16,6 +16,6 @@
     "noEmit": true,
     "types": ["node"]
   },
-  "include": ["dist-types/**/*.d.ts", "types/*.d.ts", "../core/types/*.d.ts"],
+  "include": ["dist-types/**/*.d.ts", "../core/types/*.d.ts"],
   "exclude": ["node_modules"]
 }
