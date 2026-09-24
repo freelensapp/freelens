@@ -80,6 +80,14 @@ export interface LensExtensionManifest {
   renderer?: string; // path to %ext/dist/renderer.js
 
   /**
+   * The module format of the extension's own `.js` files, as npm defines it.
+   * Absent means `"commonjs"`, which is npm's default and not this project's
+   * preference. Only the `main` entry point is affected: a renderer entry point
+   * is ESM by contract, being served over a scheme and imported as a module.
+   */
+  type?: "module" | "commonjs";
+
+  /**
    * Supported Lens version engine by extension could be defined in `manifest.engines.freelens`
    * Only MAJOR.MINOR version is taken in consideration.
    */

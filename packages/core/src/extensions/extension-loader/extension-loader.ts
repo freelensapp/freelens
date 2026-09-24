@@ -36,11 +36,39 @@ import type {
   LensExtensionConstructor,
   LensExtensionId,
   LensExtensionInstance,
+  LensExtensionManifest,
 } from "../installed-extension";
 import type { LensExtension } from "../lens-extension";
 import type { Extension } from "./extension/extension.injectable";
 
 const logModule = "[EXTENSIONS-LOADER]";
+
+/**
+ * How Node will load an entry point: as an ES module, or through `require`.
+ */
+type ModuleFormat = "module" | "commonjs";
+
+/**
+ * The format an entry point will be loaded as.
+ *
+ * The file extension decides it outright when there is one — `.mjs` is ESM and
+ * `.cjs` is CommonJS whatever else says — and a `.js` entry point is decided by
+ * the extension's own manifest, which is the `package.json` nearest to it in
+ * the normal case and is already in hand here. A manifest edited since the
+ * extension was discovered is not accounted for, for the same reason the rest
+ * of the manifest is not: nothing watches it.
+ */
+const moduleFormatOf = (manifest: LensExtensionManifest, entryPointPath: string): ModuleFormat => {
+  if (entryPointPath.endsWith(".mjs")) {
+    return "module";
+  }
+
+  if (entryPointPath.endsWith(".cjs")) {
+    return "commonjs";
+  }
+
+  return manifest.type === "module" ? "module" : "commonjs";
+};
 
 interface Dependencies {
   readonly extensionInstances: ObservableMap<LensExtensionId, LensExtensionInstance>;
@@ -99,6 +127,13 @@ export class ExtensionLoader {
   // that imported it, and instantiate the same module twice. A reload replaces
   // the token, which is the whole of how the new build is reached.
   private readonly developmentLoadTokens = new Map<LensExtensionId, string>();
+
+  // The format each development extension's `main` entry point was actually
+  // loaded as, recorded when this process built the URL it imported. What the
+  // process holds is what matters, not what is on disk now: a rebuild may
+  // already have replaced a CommonJS entry point with an ESM one, and Node
+  // would still answer with the CommonJS module it resolved and cached.
+  private readonly developmentModuleFormats = new Map<LensExtensionId, ModuleFormat>();
 
   // The reload of each development extension which is still running, so that a
   // second rebuild waits for the first reload rather than racing it. Without
@@ -273,6 +308,10 @@ export class ExtensionLoader {
    * `onDeactivate`, the extension's disposers, its registrations, its instance
    * -- because a running module graph cannot be replaced underneath itself.
    *
+   * A rebuild which cannot be reloaded is refused before any of that and before
+   * the broadcast, so that neither process tears anything down: see
+   * `reasonNotToReload`.
+   *
    * Only then is the new token installed and the entry point imported again,
    * which reaches the new build because the token is part of the URL the module
    * map is keyed by. The previous graph stays in that map: a module object
@@ -281,6 +320,15 @@ export class ExtensionLoader {
    * deinitialisation itself happens properly through the lifecycle hook.
    */
   async reloadDevelopmentExtension(extensionId: LensExtensionId, token?: string): Promise<void> {
+    const refusal = this.reasonNotToReload(extensionId);
+
+    if (refusal) {
+      // Before the broadcast, so the processes stay on the same build: a
+      // renderer which reloaded while main could not would leave the author
+      // debugging a main process running code that is no longer on disk.
+      return void this.dependencies.logger.warn(`${logModule}: ${refusal} Restart the application to run it.`);
+    }
+
     const reloadToken = token ?? this.dependencies.getRandomId();
 
     if (!token) {
@@ -303,6 +351,70 @@ export class ExtensionLoader {
     if (this.developmentReloads.get(extensionId) === reload) {
       this.developmentReloads.delete(extensionId);
     }
+  }
+
+  /**
+   * Why this rebuild cannot be reloaded, as a sentence, or `undefined` when it
+   * can be.
+   *
+   * Only the `main` entry point can refuse, and only one of two ways, both of
+   * which come out of Node's caches rather than out of anything the host does:
+   *
+   * - **It was loaded as CommonJS.** `require` keys its cache by filename, and
+   *   the per-load token this class puts on the `file:` URL does not reach it,
+   *   so importing the entry point again returns the module already running.
+   *   The file on disk being ESM now does not help: Node also caches the format
+   *   it resolved for that path, so the path stays CommonJS for the life of the
+   *   process. Nothing can evict either cache, which is why this is refused
+   *   rather than worked around.
+   * - **It was loaded as ESM and the new build is CommonJS.** The token does
+   *   make a new module of it, and evaluating CommonJS as ESM throws
+   *   `ReferenceError: module is not defined in ES module scope` — an error
+   *   which names neither this extension nor the real cause, and sends an
+   *   author looking for `module` in their own source.
+   *
+   * A managed install cannot reach either: an update lands under a different
+   * `<version>-<digest8>` directory, so it is a different filename and no cache
+   * collides.
+   */
+  private reasonNotToReload(extensionId: LensExtensionId): string | undefined {
+    if (this.dependencies.extensionEntryPointName !== "main") {
+      return undefined;
+    }
+
+    const extension = this.extensions.get(extensionId);
+    const entryPointPath = extension?.manifest.main;
+
+    if (!extension || !entryPointPath) {
+      return undefined;
+    }
+
+    const loadedAs = this.developmentModuleFormats.get(extensionId);
+
+    if (!loadedAs) {
+      // Nothing of this extension is loaded in this process, so what follows is
+      // a first load rather than a reload, and a first load of either format is
+      // supported.
+      return undefined;
+    }
+
+    const name = extension.manifest.name;
+
+    if (loadedAs === "commonjs") {
+      return (
+        `not reloading "${name}" after a rebuild: its "${entryPointPath}" entry point was loaded as CommonJS, ` +
+        `which Node caches by filename for the life of the process, so the running build would stay.`
+      );
+    }
+
+    if (moduleFormatOf(extension.manifest, entryPointPath) === "commonjs") {
+      return (
+        `not reloading "${name}" after a rebuild: its "${entryPointPath}" entry point was loaded as ESM and the ` +
+        `new build is CommonJS, which cannot be evaluated as a module.`
+      );
+    }
+
+    return undefined;
   }
 
   private async applyDevelopmentReload(extensionId: LensExtensionId, token: string): Promise<void> {
@@ -561,14 +673,17 @@ export class ExtensionLoader {
    * per-load token as a query, which makes a distinct key out of the same file.
    *
    * ESM only: a CommonJS entry point is cached by filename below the ESM loader,
-   * so the query does not reach the cache that holds it. That is recorded in the
-   * migration guide as a reason to ship ESM, not worked around here.
+   * so the query does not reach the cache that holds it. The format this load
+   * has is therefore remembered here, which is the one place a main-process load
+   * of a development extension passes through, and `reasonNotToReload` refuses
+   * the next reload on it.
    */
   private fileUrlOf(extension: InstalledExtension, entryPointPath: string): string {
     const url = pathToFileURL(this.dependencies.joinPaths(extension.absolutePath, entryPointPath));
 
     if (!extension.isManaged) {
       url.searchParams.set("v", this.developmentLoadTokenOf(extension.id));
+      this.developmentModuleFormats.set(extension.id, moduleFormatOf(extension.manifest, entryPointPath));
     }
 
     return url.href;

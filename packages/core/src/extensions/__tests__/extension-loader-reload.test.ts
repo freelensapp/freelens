@@ -204,6 +204,148 @@ describe("reloading a development extension in the renderer", () => {
   });
 });
 
+/**
+ * What main refuses to reload, and why it has to refuse rather than cope.
+ *
+ * Node caches a CommonJS module by filename and caches the format it resolved
+ * for a path, and neither cache can be evicted or reached by the per-load token
+ * on the `file:` URL. So a rebuild behind a CommonJS load is silently the old
+ * code, and a CommonJS build behind an ESM load throws `module is not defined
+ * in ES module scope` — an error naming neither the extension nor the cause.
+ */
+describe("refusing to reload a main entry point which Node would not reload", () => {
+  let extensionLoader: ExtensionLoader;
+  let urls: LoaderUrls;
+  let extensionInstances: ObservableMap<LensExtensionId, LensExtensionInstance>;
+
+  const developmentExtensionWith = (manifest: Partial<InstalledExtension["manifest"]>): InstalledExtension => ({
+    ...developmentExtension,
+    manifest: { ...developmentExtension.manifest, main: "dist/main.js", ...manifest },
+  });
+
+  /** What main does on a load: build the URL it is about to import. */
+  const loadMain = (extension: InstalledExtension) => urls.fileUrlOf(extension, extension.manifest.main ?? "");
+
+  const installed = (extension: InstalledExtension) => {
+    extensionLoader.addExtension(extension);
+
+    const { instance, disable } = fakeInstanceOf(extension);
+
+    extensionInstances.set(extension.id, instance);
+
+    return { disable };
+  };
+
+  beforeEach(() => {
+    const di = getMainDiForUnitTesting();
+
+    di.override(directoryForUserDataInjectable, () => "/some-directory-for-user-data");
+    di.override(getRandomIdInjectionToken, () => () => "a-token");
+    di.override(extensionInjectable as never, (() => ({ register: () => {}, deregister: () => {} })) as never);
+
+    extensionInstances = di.inject(extensionInstancesInjectable);
+    extensionLoader = di.inject(extensionLoaderInjectable);
+    urls = extensionLoader as unknown as LoaderUrls;
+  });
+
+  it("reloads when the running build and the new one are both ESM", async () => {
+    const extension = developmentExtensionWith({ type: "module" });
+    const { disable } = installed(extension);
+
+    loadMain(extension);
+
+    await extensionLoader.reloadDevelopmentExtension(extension.id, "token-after");
+
+    expect(disable).toHaveBeenCalled();
+    expect(extensionInstances.has(extension.id)).toBe(false);
+  });
+
+  it("refuses when it was loaded as CommonJS and the new build is CommonJS too", async () => {
+    // No `type` in the manifest is npm's default, which is CommonJS.
+    const extension = developmentExtensionWith({});
+    const { disable } = installed(extension);
+
+    loadMain(extension);
+
+    await extensionLoader.reloadDevelopmentExtension(extension.id, "token-after");
+
+    expect(disable).not.toHaveBeenCalled();
+    expect(extensionInstances.has(extension.id)).toBe(true);
+  });
+
+  it("refuses when it was loaded as CommonJS even though the new build is ESM", async () => {
+    const extension = developmentExtensionWith({});
+    const { disable } = installed(extension);
+
+    loadMain(extension);
+
+    // The build on disk is ESM now, and the process still holds the CommonJS
+    // module: what was loaded is what decides, not what the manifest says now.
+    extensionLoader.addExtension(developmentExtensionWith({ type: "module" }));
+
+    await extensionLoader.reloadDevelopmentExtension(extension.id, "token-after");
+
+    expect(disable).not.toHaveBeenCalled();
+    expect(extensionInstances.has(extension.id)).toBe(true);
+  });
+
+  it("refuses when it was loaded as ESM and the new build is CommonJS", async () => {
+    const extension = developmentExtensionWith({ type: "module" });
+    const { disable } = installed(extension);
+
+    loadMain(extension);
+
+    extensionLoader.addExtension(developmentExtensionWith({ type: "commonjs" }));
+
+    await extensionLoader.reloadDevelopmentExtension(extension.id, "token-after");
+
+    expect(disable).not.toHaveBeenCalled();
+    expect(extensionInstances.has(extension.id)).toBe(true);
+  });
+
+  it("reads the format off the entry point's extension, which outranks the manifest", async () => {
+    const extension = developmentExtensionWith({ main: "dist/main.mjs" });
+    const { disable } = installed(extension);
+
+    loadMain(extension);
+
+    await extensionLoader.reloadDevelopmentExtension(extension.id, "token-after");
+
+    // `.mjs` is ESM whatever the manifest's `type` says -- here, nothing.
+    expect(disable).toHaveBeenCalled();
+
+    const cjsExtension = developmentExtensionWith({ main: "dist/main.cjs", type: "module" });
+
+    extensionLoader.addExtension(cjsExtension);
+    loadMain(cjsExtension);
+
+    const { disable: disableCjs } = installed(cjsExtension);
+
+    await extensionLoader.reloadDevelopmentExtension(cjsExtension.id, "token-later");
+
+    expect(disableCjs).not.toHaveBeenCalled();
+  });
+
+  it("does not refuse a first load, which either format supports", async () => {
+    const extension = developmentExtensionWith({});
+    const { disable } = installed(extension);
+
+    // Nothing was imported in this process -- no `loadMain` -- so the reload is
+    // this extension's first load in main, and CommonJS loads fine once.
+    await extensionLoader.reloadDevelopmentExtension(extension.id, "token-after");
+
+    expect(disable).toHaveBeenCalled();
+  });
+
+  it("does not refuse an extension with no main entry point at all", async () => {
+    const { disable } = installed(developmentExtension);
+
+    await extensionLoader.reloadDevelopmentExtension(developmentExtension.id, "token-after");
+
+    expect(disable).toHaveBeenCalled();
+  });
+});
+
 describe("the file: URL main imports an extension from", () => {
   let urls: LoaderUrls;
 
