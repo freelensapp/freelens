@@ -254,12 +254,14 @@ migration guide named all three; they never existed in v2. React reaches
 extensions through [C3](#c3-host-provided-singletons), registrations through
 [C6](#c6-registration-and-the-extension-instance).
 
-**Failure mode.** A missing re-export is a compile error with no workaround. Two
-known classes of gap are open in #2365: four `@freelensapp/kube-object` types
-(`Condition`, `LabelSelector`, `ObjectReference`, `LocalObjectReference`) used
-by published extensions are absent, and `KubeApiOptions`,
-`DerivedKubeApiOptions` and `KubeObjectStoreOptions` appear in exported
-signatures without being exported — callable, but not nameable.
+**Failure mode.** A missing re-export is a compile error with no workaround. The
+two known classes of gap are closed in #2365: `K8sApi` now star-exports
+`@freelensapp/kube-object`, and the kube-api option and descriptor types that
+appear in exported signatures — `KubeApiOptions`, `DerivedKubeApiOptions`,
+`KubeObjectStoreOptions`, `KubeApiListOptions`, `KubeApiQueryParams`,
+`DeleteOptions`, `PropagationPolicy`, `ResourceDescriptor`, `IKubeWatchEvent` —
+are exported alongside `parseKubeApi` and `createKubeApiURL`, so they are
+nameable and not merely callable.
 
 ### Decided: `K8sApi` star-exports `@freelensapp/kube-object`
 
@@ -293,12 +295,23 @@ name `KubeObjectStatus`: a Kubernetes resource status shape
 registration type that extensions register status providers against. The second
 keeps the bare name, because v1 extensions already use it.
 
-**The first is renamed on export rather than excluded.** An exclusion is a
-silent hole — the symbol exists in the source, is absent from the API, and
-nothing announces the difference. A rename is visible in the declaration and in
-the API report, and it keeps the surface complete, which
-[C1](#c1-packaging-and-publication) makes a correctness property rather than a
-preference.
+**The first is renamed on export rather than excluded**, to
+**`BaseKubeObjectStatus`** — it is the base that `DeploymentStatus`,
+`JobStatus` and the other resource statuses extend, and it carries
+`BaseKubeObjectCondition`s. An exclusion is a silent hole — the symbol exists in
+the source, is absent from the API, and nothing announces the difference. A
+rename is visible in the declaration and in the API report, and it keeps the
+surface complete, which [C1](#c1-packaging-and-publication) makes a correctness
+property rather than a preference.
+
+Four symbols stay out of reach even so, and not by this namespace's choice:
+`SecurityContext`, `PreemptionPolicy`, `JSONSchemaProps` and
+`ExternalDocumentation` are declared in `@freelensapp/kube-object` and appear in
+the signatures of types it exports (`Container.securityContext`,
+`PriorityClass.preemptionPolicy`, the CRD schema), but its own `src/types/index.ts`
+does not export them, so `export *` cannot see them either. That is the same
+defect one level further down, and the `ae-forgotten-export` check in #2366
+should catch it.
 
 **Status:** the table above is transcribed from the built
 `dist/extension-api.d.ts`. It should be **generated** rather than hand-kept
