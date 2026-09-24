@@ -107,6 +107,7 @@ export const KubeApi = KubeApiCstr as unknown as new <
   opts: KubeApiOptions<Object, Data> & ExternalKubeApiOptions,
 ) => InternalKubeApi<Object, Data>;
 
+export { createKubeApiURL, parseKubeApi } from "@freelensapp/kube-api";
 // The whole of `@freelensapp/kube-object` is part of the API surface. The
 // package is private in v2 and is inlined into the bundled declaration, so a
 // type it declares is unreachable by any means unless this namespace re-exports
@@ -130,6 +131,21 @@ export {
 // announces, while a rename shows up in the declaration and in the API report.
 export { type KubeObjectStatus, KubeObjectStatusLevel } from "../../common/k8s-api/kube-object-status";
 
+// The option and descriptor types that already appear in the signatures above
+// and below: `KubeApi` takes `KubeApiOptions`, every derived `*Api` takes
+// `DerivedKubeApiOptions`, and the request methods take the rest. They were
+// callable but not nameable, so an author could pass an inline object literal
+// and rely on contextual typing, but could not type a variable holding one.
+export type {
+  DeleteOptions,
+  DerivedKubeApiOptions,
+  IKubeWatchEvent,
+  KubeApiListOptions,
+  KubeApiOptions,
+  KubeApiQueryParams,
+  PropagationPolicy,
+  ResourceDescriptor,
+} from "@freelensapp/kube-api";
 export type { KubeObjectStatus as BaseKubeObjectStatus } from "@freelensapp/kube-object";
 
 export type { CreateKubeApiForLocalClusterConfig as ILocalKubeApiConfig } from "../../common/k8s-api/create-kube-api-for-cluster.injectable";
@@ -181,6 +197,7 @@ export type {
   JsonPatch,
   KubeObjectStoreLoadAllParams,
   KubeObjectStoreLoadingParams,
+  KubeObjectStoreOptions,
   KubeObjectStoreSubscribeParams,
 } from "../../common/k8s-api/kube-object.store";
 
