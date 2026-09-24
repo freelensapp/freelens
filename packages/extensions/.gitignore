@@ -1,2 +1,4 @@
 dist-types/
+temp/
+tsconfig.api-extractor.generated.json
 tsconfig.dts.generated.json

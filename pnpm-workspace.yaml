@@ -42,6 +42,11 @@ catalog:
   vitest-canvas-mock: 1.1.4
   vitest-mock-extended: 5.1.0
   # Build tooling
+  # Carries its own TypeScript (5.9.3) because it drives the JavaScript
+  # compiler API, which TypeScript 7 no longer provides. It only reads the
+  # declarations tsc emitted, so the two compilers never have to agree on more
+  # than .d.ts syntax -- see packages/extensions/tsconfig.api-extractor.json.
+  '@microsoft/api-extractor': 7.59.2
   '@vitejs/plugin-react': 6.0.4
   electron-builder: 26.15.7
   electron-builder-squirrel-windows: 26.15.7

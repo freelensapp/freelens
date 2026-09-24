@@ -111,6 +111,14 @@ lint:
         - biome
       paths:
         - "**/build/*.json"
+    # The API report is written by API Extractor and compared byte-for-byte
+    # against a freshly generated copy (`pnpm api-report:check`). A formatter
+    # that rewrites it makes that check fail with no way to satisfy both, so no
+    # linter may touch it.
+    - linters:
+        - ALL
+      paths:
+        - packages/extensions/etc/*.api.md
 actions:
   enabled:
     - trunk-announce

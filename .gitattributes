@@ -21,6 +21,11 @@
 
 # Documentation
 *.md text eol=lf
+
+# Generated API report: tracked so a surface change shows up as a diff, but
+# collapsed by default in review -- it is regenerated, never hand-edited.
+# Regenerate with `pnpm api-report`.
+packages/extensions/etc/*.api.md linguist-generated=true
 *.txt text eol=lf
 LICENSE text eol=lf
 README text eol=lf
