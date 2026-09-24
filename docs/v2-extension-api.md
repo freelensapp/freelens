@@ -156,7 +156,10 @@ up as dead code (#2134) before the replacement lands.
 **Guarantee.**
 
 - **Main** accepts ESM or CommonJS. The host imports the manifest's `main`
-  entry from a real file path.
+  entry from a real file path. **Only ESM reloads**: a development install
+  whose `main` was loaded as CommonJS, or whose format changed since it was
+  loaded, needs the application restarted to run its new build. Loading it the
+  first time is unaffected, which is what this guarantee is about.
 - **Renderer** entry points are **ESM**, loaded by URL from the privileged
   `freelens-extension` scheme.
 - **Top-level await is allowed.**
@@ -170,11 +173,25 @@ see [C6](#c6-registration-and-the-extension-instance).
 logged; the extension is skipped and nothing else aborts. A renderer bundle
 served with a wrong MIME type does not execute at all — the host maps types by
 file extension and serves anything unknown as `application/octet-stream`, which
-correctly refuses.
+correctly refuses. A rebuild which cannot be reloaded is **refused and logged**,
+naming the extension and the reason; the extension goes on running the build it
+already has, in both processes, rather than one process moving on without the
+other.
 
 **Status:** shipped. The renderer imports the served URL and the main process
 imports a `file:` URL, both asynchronously, so **top-level await works in either
-entry point**. Reloading a rebuilt development extension is still #2400.
+entry point**. A development install is reloaded when its entry points are
+rebuilt: the host tears the extension down through `onDeactivate` and imports it
+again under a fresh URL.
+
+That last step is why only an ESM `main` reloads. Node keys its module map by
+URL, so the fresh URL is what makes a new module of the rebuilt file — but a
+CommonJS module is cached below that by filename, which no URL reaches, and the
+format Node resolved for a path is cached with it. So a path once loaded as
+CommonJS is frozen as the module it was, for the life of the process, however
+the file is rewritten; and a CommonJS build reached through the ESM loader
+throws `ReferenceError: module is not defined in ES module scope`. Neither cache
+can be evicted, so the host refuses those reloads instead of attempting them.
 
 ---
 
@@ -592,7 +609,7 @@ The contract has three, not two:
 | Close the known re-export gaps | #2365 |
 | Generate the namespace enumeration instead of maintaining it | #2366 |
 | `es-toolkit` undeclared; `child_process` spelled two ways | #2360 |
-| URL-served loader, installer, storage layout, development reloading | #2400 |
+| Remove `pnpm` as an application dependency — the last step of the delivery mechanism | #2400 |
 | Renderer sandboxing — the reason several isolation claims are *not* made here | #2399 |
 | Fill the v1→v2 rename table while building out the fixture extension | #2451 |
 
