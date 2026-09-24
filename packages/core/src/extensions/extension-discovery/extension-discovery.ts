@@ -67,6 +67,13 @@ const logModule = "[EXTENSION-DISCOVERY]";
  */
 const rescanDebounce = 300;
 
+/**
+ * How long to wait after a write to one of a development extension's entry
+ * points before reloading it. A bundler writes the main and the renderer entry
+ * separately, and one rebuild has to be one reload.
+ */
+const rebuildDebounce = 300;
+
 interface ExtensionDiscoveryChannelMessage {
   isLoaded: boolean;
 }
@@ -74,6 +81,7 @@ interface ExtensionDiscoveryChannelMessage {
 type ExtensionDiscoveryEvents = {
   add: (ext: InstalledExtension) => void;
   remove: (extId: LensExtensionId) => void;
+  rebuild: (ext: InstalledExtension) => void;
 };
 
 /**
@@ -89,9 +97,11 @@ type ExtensionDiscoveryEvents = {
  * - a development install is a directory registered in place, anywhere on the
  *   filesystem. The absence of a `<version>-<digest8>` segment is what marks it.
  *
- * The class emits events for added and removed extensions:
+ * The class emits events for added, removed and rebuilt extensions:
  * - "add": When an extension is added. The event is of type InstalledExtension
  * - "remove": When an extension is removed. The event is of type LensExtensionId
+ * - "rebuild": When the files of a development install changed under us. The
+ *   event is of type InstalledExtension
  */
 export class ExtensionDiscovery {
   private loadStarted = false;
@@ -197,6 +207,8 @@ export class ExtensionDiscovery {
       .on("add", this.handleWatchFileEvent)
       .on("unlink", this.handleWatchFileEvent)
       .on("unlinkDir", this.handleWatchDirectoryEvent);
+
+    this.syncRebuildWatchers();
   }
 
   async stopWatchingExtensions() {
@@ -207,7 +219,140 @@ export class ExtensionDiscovery {
       this.rescanTimer = undefined;
     }
 
+    for (const extensionId of [...this.rebuildWatchers.keys()]) {
+      this.stopWatchingForRebuilds(extensionId);
+    }
+
     await this._watch?.close();
+  }
+
+  private readonly rebuildWatchers = new Map<LensExtensionId, { watcher: Watcher<false>; entryPoints: string }>();
+  private readonly rebuildTimers = new Map<LensExtensionId, ReturnType<typeof setTimeout>>();
+
+  /**
+   * Watch the entry points of every development install, so that rebuilding one
+   * reloads it.
+   *
+   * The root watcher cannot do this. A development install is registered in
+   * place at an arbitrary path outside the managed root -- those paths have no
+   * common ancestor, so there is nothing to widen -- and a rebuild rewrites the
+   * entry point rather than the manifest, which is the only file the root
+   * watcher reacts to. `rescan()` cannot do it either: it compares paths, and a
+   * rebuild leaves the path unchanged.
+   *
+   * One watcher per extension, established when it is discovered and closed
+   * when it is forgotten. It watches the files the manifest names rather than
+   * the extension's tree, so the intermediate files a bundler writes are not
+   * events at all, and `awaitWriteFinish` keeps a half-written bundle from being
+   * imported -- the same reason the root watcher uses it.
+   */
+  private syncRebuildWatchers(): void {
+    const wanted = new Map<LensExtensionId, string[]>();
+
+    for (const extension of this.extensions.values()) {
+      if (extension.isManaged) {
+        continue;
+      }
+
+      const entryPoints = this.entryPointPathsOf(extension);
+
+      if (entryPoints.length > 0) {
+        wanted.set(extension.id, entryPoints);
+      }
+    }
+
+    for (const [extensionId, watched] of this.rebuildWatchers) {
+      const entryPoints = wanted.get(extensionId);
+
+      if (entryPoints && watched.entryPoints === entryPoints.join("\u0000")) {
+        // Already watching exactly these files.
+        wanted.delete(extensionId);
+        continue;
+      }
+
+      this.stopWatchingForRebuilds(extensionId);
+    }
+
+    for (const [extensionId, entryPoints] of wanted) {
+      this.watchForRebuilds(extensionId, entryPoints);
+    }
+  }
+
+  /**
+   * The absolute paths of the entry points an extension's manifest names. A
+   * manifest may name neither, in which case there is nothing to watch and the
+   * extension has no code to reload.
+   */
+  private entryPointPathsOf({ absolutePath, manifest }: InstalledExtension): string[] {
+    return [manifest.main, manifest.renderer]
+      .filter((entryPoint): entryPoint is string => Boolean(entryPoint))
+      .map((entryPoint) => this.dependencies.joinPaths(absolutePath, entryPoint));
+  }
+
+  private watchForRebuilds(extensionId: LensExtensionId, entryPoints: string[]): void {
+    this.dependencies.logger.info(`${logModule} watching ${entryPoints.join(", ")} for rebuilds of ${extensionId}`);
+
+    const watcher = this.dependencies
+      .watch(entryPoints, {
+        depth: 0,
+        ignoreInitial: true,
+        // A bundler writes an entry point in pieces, and importing half of one
+        // fails in a way that looks like the extension's fault.
+        awaitWriteFinish: {
+          stabilityThreshold: 300,
+        },
+      })
+      // A bundler which replaces the file rather than rewriting it takes the
+      // watched path away and puts it back, so both events mean "rebuilt".
+      .on("add", () => this.scheduleRebuild(extensionId))
+      .on("change", () => this.scheduleRebuild(extensionId));
+
+    this.rebuildWatchers.set(extensionId, { watcher, entryPoints: entryPoints.join("\u0000") });
+  }
+
+  private stopWatchingForRebuilds(extensionId: LensExtensionId): void {
+    const timer = this.rebuildTimers.get(extensionId);
+
+    if (timer) {
+      clearTimeout(timer);
+      this.rebuildTimers.delete(extensionId);
+    }
+
+    const watched = this.rebuildWatchers.get(extensionId);
+
+    if (!watched) {
+      return;
+    }
+
+    this.rebuildWatchers.delete(extensionId);
+
+    void watched.watcher.close().catch((error: unknown) => {
+      this.dependencies.logger.warn(`${logModule}: failed to stop watching ${extensionId} for rebuilds: ${error}`);
+    });
+  }
+
+  private scheduleRebuild(extensionId: LensExtensionId): void {
+    const timer = this.rebuildTimers.get(extensionId);
+
+    if (timer) {
+      clearTimeout(timer);
+    }
+
+    this.rebuildTimers.set(
+      extensionId,
+      setTimeout(() => {
+        this.rebuildTimers.delete(extensionId);
+
+        const extension = this.extensions.get(extensionId);
+
+        if (!extension) {
+          return;
+        }
+
+        this.dependencies.logger.info(`${logModule} ${extension.manifest.name} was rebuilt`);
+        this.events.emit("rebuild", extension);
+      }, rebuildDebounce),
+    );
   }
 
   /**
@@ -275,6 +420,11 @@ export class ExtensionDiscovery {
         this.dependencies.logger.info(`${logModule} added extension ${extension.manifest.name}`);
         this.events.emit("add", extension);
       }
+
+      // An install or an uninstall changes which development extensions there
+      // are to watch, and a reinstall at another path changes what to watch of
+      // one which stayed.
+      this.syncRebuildWatchers();
 
       await this.dependencies.sweepOrphanedExtensionBuilds(this.pathsToKeep());
     } catch (error) {
