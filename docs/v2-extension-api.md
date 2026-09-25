@@ -520,22 +520,41 @@ It splits in two:
   entries). A bundled `react-select` still gets the host's React, because that
   copy's own `import "react"` is rewritten too.
 
-**Surface.** The built declaration names **17 distinct external specifiers**
-across 20 import statements: `type-fest`, `mobx`, `react`, `conf`, `electron`,
-`child_process`, `node:child_process`, `node:http`, `rfc6902`, `immer`,
-`@ogre-tools/injectable`, `es-toolkit/compat`, `monaco-editor`, `chart.js`,
-`react-select`, `react-window`, `@xterm/xterm`.
+**Surface.** The built declaration names **21 distinct external specifiers**
+across 25 import statements: `type-fest`, `mobx`, `mobx-react`, `react`,
+`react/jsx-runtime`, `react-dom`, `conf`, `electron`, `child_process`,
+`node:child_process`, `node:http`, `rfc6902`, `immer`,
+`@ogre-tools/injectable`, `@ogre-tools/injectable-react`, `es-toolkit/compat`,
+`monaco-editor`, `chart.js`, `react-select`, `react-window`, `@xterm/xterm`.
 
-Three discrepancies between that list and the declared dependencies, recorded
+This is the complement of the namespace enumeration in
+[C5](#c5-namespace-enumeration): that records what the API *exports*, this what
+it *imports* and therefore imposes on an author. It is read off the built
+bundle, not the source tree:
+
+```sh
+pnpm --filter @freelensapp/extensions build:dist
+rg -o "from '([^']+)'" -r '$1' packages/extensions/dist/extension-api.d.ts | sort -u
+```
+
+The quoting matters and is the reason an earlier count was low: rollup emits
+**single** quotes, so a pattern written against double quotes matches only the
+examples inside doc comments and reports nothing. The bundle inlines every
+`@freelensapp/*` package ([C1](#c1-packaging-and-publication)), so everything
+the command prints is external by construction.
+
+Two discrepancies between that list and the declared dependencies, recorded
 because they are the kind that rot quietly:
 
 - **`es-toolkit/compat` is undeclared** — the published type surface names a
   package the package does not depend on (#2360).
 - **`child_process` appears spelled both ways**, bare and `node:`-prefixed (#2360).
-- **`@ogre-tools/injectable-react` is declared but never named by the
-  declaration.** It stays regardless: it is a host-provided singleton an
-  extension needs at *runtime* for `withInjectables`, which is a different
-  requirement from appearing in the types.
+
+A third is closed: `@ogre-tools/injectable-react` used to be declared but never
+named by the declaration, and the bundle now imports it like the other
+host-provided singletons. It would have stayed either way, being needed at
+*runtime* for `withInjectables`, which is a different requirement from
+appearing in the types.
 
 **Failure mode.** A host-provided library in `dependencies` of
 `@freelensapp/extensions` **silently plants a real React in the author's tree**
@@ -556,9 +575,9 @@ instance of anything.
 
 `react-dom` and `mobx-react` are in neither the catalog nor the package's
 dependencies, so an extension using them supplies its own devDependency — which
-also resolves the two specifiers the ambient global declaration now names.
-Nothing in-repo type-checks the published declaration without `skipLibCheck`,
-the fixture extension included.
+resolves both the two specifiers the ambient global declaration names and the
+two the bundled declaration imports. Nothing in-repo type-checks the published
+declaration without `skipLibCheck`, the fixture extension included.
 
 ---
 
