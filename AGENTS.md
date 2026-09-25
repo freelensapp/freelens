@@ -366,6 +366,29 @@ taste — each has a defined role. Before adding or changing any stylesheet or
 - **Extensions**: see the styling section of
   [`docs/v2-extension-migration.md`](./docs/v2-extension-migration.md).
 
+## Extension API
+
+The v2 extension specification lives in three documents, and which one to read
+depends on the question:
+
+- [`docs/v2-extension-api.md`](./docs/v2-extension-api.md) — the **normative
+  contracts**. Each states the guarantee, the stable surface, the failure mode
+  and whether it is shipped or still an open issue. Read this before changing
+  anything under `packages/extensions/` or `packages/core/src/extensions/`.
+- [`docs/v2-extension-abi.md`](./docs/v2-extension-abi.md) — what an extension
+  may **ship and execute** besides JavaScript. Specified, but deliberately not
+  implemented in 2.0.0.
+- [`docs/v2-extension-migration.md`](./docs/v2-extension-migration.md) — the
+  author-facing **porting guide** from v1.
+
+Two traps worth carrying without looking them up. The API surface is only what
+the `Common` / `Main` / `Renderer` namespaces re-export — every other
+`@freelensapp/*` package is private and inlined into the published declaration,
+so a symbol that is not re-exported is unreachable by any means. And the host
+must be the single instance of React, mobx, monaco and ogre-tools; a second
+copy of mobx fails **silently**, so changes there need an identity assertion
+rather than a passing test suite.
+
 ## Best Practices
 
 1. **Always regenerate DI files** after adding/moving injectables
@@ -539,29 +562,25 @@ place:
 This lets the PR be created successfully while leaving the actual workflow
 change for a human to apply.
 
-### Branch Naming Conventions
+### Branch Naming
 
-When creating a branch from an issue, use a human-readable name that includes
-the issue number and a short slug derived from the issue title:
+**Work on the branch the workflow put you on.** Do not rename it, and do not
+move the work to a better-named branch.
 
-```text
-claude/issue-<number>-<short-slug>
-```
+`claude-code-action` creates the branch itself, as
+`claude/issue-<number>-<date>-<time>`, and the workflow passes it no name to
+use instead. Its comment header — the branch link and the "Create PR" link —
+is written from that name. So an agent that moves to a different branch leaves
+the header pointing at an abandoned one, leaves a stray branch behind, and
+spends part of its run on a rename instead of the task. This guide used to
+require a readable name and forbid the timestamp, which produced exactly that
+every time.
 
-- `<number>` is the GitHub issue number
-- `<short-slug>` is a kebab-case summary of the issue title, kept short
-  (3–6 words maximum, omit articles and filler words)
+If you are creating a branch yourself, with no workflow-provided one, use
+`claude/<short-slug>`.
 
-Examples:
-
-- Issue #1957 "Add PR title convention rule for agent-related changes"
-  → `claude/issue-1957-add-pr-title-rules`
-- Issue #42 "Fix crash when opening preferences dialog"
-  → `claude/issue-42-fix-preferences-crash`
-
-Do **not** use auto-generated timestamp suffixes (e.g.
-`claude/issue-1957-20260612-2108`) — these are not human-readable and make
-branch lists hard to scan.
+The branch name is not worth managing: it lives for a few hours and the pull
+request is what anyone refers to afterwards.
 
 ### PR Title Conventions
 

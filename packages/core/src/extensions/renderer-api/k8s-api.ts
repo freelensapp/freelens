@@ -183,10 +183,6 @@ export {
   CustomResourceStore as CRDResourceStore,
 } from "../../common/k8s-api/api-manager/resource.store";
 export {
-  type KubeObjectStatus,
-  KubeObjectStatusLevel,
-} from "../../common/k8s-api/kube-object-status";
-export {
   HorizontalPodAutoscalerStore,
   HorizontalPodAutoscalerStore as HPAStore,
 } from "../../renderer/components/config-horizontal-pod-autoscalers/store";

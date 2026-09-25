@@ -368,11 +368,7 @@ exports[`preferences - navigation to application preferences > given in preferen
                     class="mt-4 mb-5 leading-relaxed"
                   >
                     This setting is to change the registry URL for installing extensions by name. 
-                    If you are unable to access the default registry (https://registry.npmjs.org) you can change it in your 
-                    <b>
-                      .npmrc
-                    </b>
-                     file or in the input below.
+                    If you are unable to access the default registry (https://registry.npmjs.org) you can enter another one below.
                   </p>
                   <div
                     class="Input theme round black disabled invalid"
@@ -1174,11 +1170,7 @@ exports[`preferences - navigation to application preferences > given in preferen
                     class="mt-4 mb-5 leading-relaxed"
                   >
                     This setting is to change the registry URL for installing extensions by name. 
-                    If you are unable to access the default registry (https://registry.npmjs.org) you can change it in your 
-                    <b>
-                      .npmrc
-                    </b>
-                     file or in the input below.
+                    If you are unable to access the default registry (https://registry.npmjs.org) you can enter another one below.
                   </p>
                   <div
                     class="Input theme round black disabled invalid"
@@ -2473,11 +2465,7 @@ exports[`preferences - navigation to application preferences > given in some chi
                     class="mt-4 mb-5 leading-relaxed"
                   >
                     This setting is to change the registry URL for installing extensions by name. 
-                    If you are unable to access the default registry (https://registry.npmjs.org) you can change it in your 
-                    <b>
-                      .npmrc
-                    </b>
-                     file or in the input below.
+                    If you are unable to access the default registry (https://registry.npmjs.org) you can enter another one below.
                   </p>
                   <div
                     class="Input theme round black disabled invalid"
@@ -3280,11 +3268,7 @@ exports[`preferences - navigation to application preferences > given in some chi
                       class="mt-4 mb-5 leading-relaxed"
                     >
                       This setting is to change the registry URL for installing extensions by name. 
-                      If you are unable to access the default registry (https://registry.npmjs.org) you can change it in your 
-                      <b>
-                        .npmrc
-                      </b>
-                       file or in the input below.
+                      If you are unable to access the default registry (https://registry.npmjs.org) you can enter another one below.
                     </p>
                     <div
                       class="Input theme round black disabled invalid"

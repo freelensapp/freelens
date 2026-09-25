@@ -29,6 +29,7 @@ import type {
   KubeconfigSyncEntry,
   KubeconfigSyncValue,
   LogViewerPreferences,
+  StoredExtensionRegistry,
   TerminalConfig,
 } from "./preferences-helpers";
 
@@ -187,11 +188,13 @@ const userPreferenceDescriptorsInjectable = getInjectable({
         fromStore: (val) => merge(defaultTerminalConfig, val),
         toStore: (val) => val,
       }),
-      extensionRegistryUrl: getPreferenceDescriptor<ExtensionRegistry>({
+      extensionRegistryUrl: getPreferenceDescriptor<StoredExtensionRegistry, ExtensionRegistry>({
         fromStore: (val) =>
-          val ?? {
-            location: defaultExtensionRegistryUrlLocation,
-          },
+          !val || val.location === "npmrc"
+            ? {
+                location: defaultExtensionRegistryUrlLocation,
+              }
+            : val,
         toStore: (val) => (val.location === defaultExtensionRegistryUrlLocation ? undefined : val),
       }),
       clusterPageMenuOrder: getPreferenceDescriptor<ClusterPageMenuOrder | undefined>({

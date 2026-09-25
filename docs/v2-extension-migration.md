@@ -2,20 +2,45 @@
 
 Freelens v2 breaks compatibility with the v1 extension API on purpose (see
 [`docs/v2-plan.md`](./v2-plan.md), decisions D2/D5). This guide is for authors
-of third-party extensions moving from v1 to v2. It is written against the
-runtime-global extension API introduced in Phase 4 and is expected to be
-finalized once [freelens-example-extension](https://github.com/freelensapp/freelens-example-extension)
-is ported (the validation vehicle named in the plan).
+of third-party extensions moving from v1 to v2.
+
+It is the developer-facing half of the v2 extension specification. The
+normative half — what the host guarantees, and what happens when a guarantee is
+violated — is [`docs/v2-extension-api.md`](./v2-extension-api.md), with the
+binary side in [`docs/v2-extension-abi.md`](./v2-extension-abi.md). Where this
+guide says "the host does X", that document says why and what breaks otherwise.
+
+The rename table below is filled while the in-repo fixture extension is built
+out against the v2 contract ([#2451](https://github.com/freelensapp/freelens/issues/2451)),
+which is what walks the whole v2 surface.
+
+## Step one: bump `engines.freelens`
+
+Before anything else:
+
+```json
+{ "engines": { "freelens": "^2.0.0" } }
+```
+
+**Until you do this, the host refuses your extension at discovery and the rest
+of your work is invisible.** The gate is not advisory: `extensionApiVersion`
+comes from the application version, so an extension declaring
+`engines.freelens: "^1.6.2"` yields the range `>=1.6.0 <2.0.0-0`, which 2.0.0
+does not satisfy. Every extension published for v1 is `isCompatible: false` on
+v2 without a line of code being written.
 
 ## What changed, and why
 
 - **ESM-first.** The application main process, renderer, and the extension API
-  are all ES modules. Extensions load through Node's `require(esm)` (verified
-  in [#1718](https://github.com/freelensapp/freelens/issues/1718) to work in
-  all processes), so an extension may be authored as **ESM or CommonJS** —
-  both are accepted. The one restriction: the extension entrypoint graph must
-  not use top-level `await`, which synchronous loading cannot express. An
-  `import()`-based main-process loader may lift this later.
+  are all ES modules. A **main** entry may be authored as ESM or CommonJS —
+  both are accepted, and both load from a real file path. A **renderer** entry
+  is ESM, and the host loads it by URL from a privileged scheme rather than
+  from disk.
+- **No package manager is involved.** An extension vendors or bundles
+  everything it needs apart from what the host provides, so installing one is
+  downloading a tarball and extracting it. There are no dependencies to
+  resolve, which is why the dependency rules below are rules rather than
+  suggestions — nothing will hoist a missing package into place for you.
 - **One published package.** `@freelensapp/extensions` is the only published
   package. Every other `@freelensapp/*` package is `private` and is consumed by
   the app as TypeScript source. Extensions must not depend on internal
@@ -25,10 +50,13 @@ is ported (the validation vehicle named in the plan).
 
   ```ts
   // main process   (freelens/src/main/index.ts)
-  globalThis.FreelensExtensionApi = { Common, Main };
+  globalThis.FreelensExtensionApi = { Common, Main, ...mainExtensionApiSingletons };
   // renderer       (freelens/src/renderer/index.ts)
-  globalThis.FreelensExtensionApi = { Common, Renderer };
+  globalThis.FreelensExtensionApi = { Common, Renderer, ...rendererExtensionApiSingletons };
   ```
+
+  The host-provided libraries ride on that same object, next to the
+  namespaces — see below.
 
   `@freelensapp/extensions` is a thin shim that re-exports that global. At
   runtime the members resolve to the global whether your bundle inlines the
@@ -59,36 +87,93 @@ runtime.
 
 ## `package.json` for an extension
 
+- Set `engines.freelens` to `^2.0.0` (see [Step one](#step-one-bump-enginesfreelens)).
 - Depend on `@freelensapp/extensions` for **types**. You do not need to bundle
   it; the API is provided by the host through the runtime global.
-- Author your entrypoints as ESM or CommonJS. If you ship ESM, set
-  `"type": "module"` (or use `.mjs`); the loader handles both. Avoid top-level
-  `await` in the entrypoint graph (see above).
+- Author your main entry as ESM or CommonJS. If you ship ESM, set
+  `"type": "module"` (or use `.mjs`). Your renderer entry must be ESM.
 - Do not add any other `@freelensapp/*` package as a dependency — they are
   private in v2 and are not published.
-- The package declares its ~30 type-level dependencies (react, mobx,
-  monaco-editor, type-fest, ...) itself, so its bundled `.d.ts` type-checks in
-  your project with no extra installs — with one exception: **`electron`** is
-  an optional peer dependency (a hard dependency would download the Electron
-  binary into every extension install). Add it as a `devDependency` for its
-  types.
+- Add **`electron`** as a `devDependency` for its types. It is an *optional*
+  peer of `@freelensapp/extensions`; a hard dependency would download the
+  Electron binary into every extension install.
+
+**Top-level await** is allowed by the contract in a renderer entry, but the
+current loader is synchronous, so it does not work yet — it arrives with the
+URL-served loader ([#2400](https://github.com/freelensapp/freelens/issues/2400)).
+Do not rely on it in an extension you ship today.
+
+### The host-provided libraries, and how to mark them external
+
+Eight module ids must resolve to the host's instance rather than to a copy in
+your bundle. You declare them in **`devDependencies`** — for compilation only —
+and your bundler rewrites the bare id to a property of the host's global:
+
+| Module id | Global |
+| --- | --- |
+| `react` | `FreelensExtensionApi.React` |
+| `react-dom` | `FreelensExtensionApi.ReactDom` |
+| `react/jsx-runtime` | `FreelensExtensionApi.ReactJsxRuntime` |
+| `mobx` | `FreelensExtensionApi.Mobx` |
+| `mobx-react` | `FreelensExtensionApi.MobxReact` |
+| `monaco-editor` | `FreelensExtensionApi.MonacoEditor` |
+| `@ogre-tools/injectable` | `FreelensExtensionApi.OgreToolsInjectable` |
+| `@ogre-tools/injectable-react` | `FreelensExtensionApi.OgreToolsInjectableReact` |
+
+The global names follow a mechanical rule — strip the scope, split on `-`, `/`
+and `.`, upper-case each segment — so a bundler plugin can *derive* each name
+instead of being handed a map. Note `ReactDom`, not `ReactDOM`.
+
+**Each process publishes the set it has.** The renderer publishes all eight; the
+main process publishes `Mobx` and `OgreToolsInjectable` and nothing else, because
+a code editor and a DOM renderer have no place in a process with no window. Map
+in your main entry point only what main publishes — the rest is `undefined`
+there, and marking it external gets you no error, only a later surprise.
+
+Everything else may be bundled freely: `chart.js`, `react-select`,
+`react-window`, `@xterm/xterm`, `conf`, `immer`, `rfc6902`, `type-fest`. A
+bundled `react-select` still gets the host's React, because that copy's own
+`import "react"` is rewritten too.
+
+Two ids that **leave** the v1 externals map, and both fail at runtime rather
+than at build time if you keep them:
+
+- **`@freelensapp/extensions`** — mapped in v1, when it was a fat re-export of
+  core. The v2 package is 734 bytes that already read the global, so bundling
+  it is correct.
+- **`react-router-dom`** — removed from the host in #2261. Mapping it now
+  yields `undefined`.
+
+If your v1 build used a Vite or Rolldown plugin that rewrote these ids to
+`global.React` and friends, keep the plugin and change the target: the host
+publishes them on `globalThis.FreelensExtensionApi`, not as top-level globals.
+The v1 top-level globals are gone. What put them there was webpack's
+`libraryTarget: "global"`, which assigned each process entry's exports onto
+`global`; electron-vite emits an app bundle for the renderer and an ESM library
+bundle for main, and neither assigns anything to `globalThis`. Nothing is a
+top-level global in v2, in either process.
 
 ## React version (host-provided, must match majors)
 
 Freelens v2 ships **React 19**. React is **host-provided**: the running app
-injects a single React instance and re-exports it to extensions through the
-extension API (`Renderer.React` / `Renderer.ReactDOM`). Extensions must render
-through that shared instance.
+publishes a single React instance on `globalThis.FreelensExtensionApi`, and
+extensions must render through that shared instance.
+
+There is no `Renderer.React` and no `Renderer.ReactDOM`. Earlier drafts of this
+guide said otherwise; they described API that never existed in v2. React reaches
+you through the externals map in
+[the section above](#the-host-provided-libraries-and-how-to-mark-them-external).
 
 - **Do not bundle your own React.** Two copies of React in the same renderer
   break the [Rules of Hooks](https://react.dev/warnings/invalid-hook-call-warning):
   any hook (including those inside host components you render) throws an
   "invalid hook call" at runtime. This fails only at runtime, not at build
   time, so it is easy to miss.
-- Declare `react` / `react-dom` (and `@types/react*`) as **peer dependencies**
-  matching the host major — `^19` for this release — and keep them out of your
-  bundle (mark them external). The `@freelensapp/extensions` types already pin
-  the React 19 major, so authoring against them keeps type-checking honest.
+- Declare `react`, `react-dom` and `@types/react*` as **`devDependencies`** and
+  mark them external. Not peer dependencies: a peer range would still install a
+  real React into your tree for your bundler to find, which is the mistake this
+  is trying to prevent. The `@freelensapp/extensions` types pin the React 19
+  major, so authoring against them keeps type-checking honest.
 - **This is a breaking change from the earlier React 18 preview.** Extensions
   built against React 18 types must move to React 19, because host-provided
   React and any React the extension bundles must share the same major (see the
@@ -144,10 +229,108 @@ function renderIcon(props: Renderer.Component.IconProps) { /* ... */ }
 
 Because compatibility is already broken, the API namespaces are reorganized
 once, at this point (D5). If your v1 extension reached into a specific
-namespace path, re-check it against the current
-`@freelensapp/extensions` type surface after upgrading; a symbol may have moved
-between `Common`, `Main`, and `Renderer`. The concrete rename table is filled
-in from the freelens-example-extension port and will be appended here.
+namespace path, re-check it against the current type surface; a symbol may have
+moved between `Common`, `Main`, and `Renderer`.
+
+This is what each namespace provides in v2:
+
+| Namespace | Members |
+| --- | --- |
+| `Common` | `App`, `Catalog`, `Clusters`, `EventBus`, `LensExtension`, `Proxy`, `Store`, `Types`, `Util`, `logger`; types `InstalledExtension`, `LensExtensionManifest`, `Logger`, `PackageJson` |
+| `Main` | `Catalog`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Power`, `Util` |
+| `Renderer` | `Catalog`, `Component`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Theme`, `Util` |
+
+**If a symbol is not reachable through one of those, it is not reachable at
+all.** Every other `@freelensapp/*` package is private and is inlined into the
+bundled declaration, so there is nothing left for you to install and a type-only
+import fails at module resolution with no `@types/` fallback. If you hit a
+missing re-export, that is a bug in the API surface worth reporting rather than
+something to work around.
+
+### `@freelensapp/kube-object` imports move into `K8sApi`
+
+In v1 an extension could add `@freelensapp/kube-object` to its dependencies and
+import the Kubernetes spec types from it. In v2 that package is private, so
+**the whole of it is re-exported from `K8sApi`** — in `Common`, `Main` and
+`Renderer` alike. Drop the dependency and read the types off the namespace:
+
+```diff
+-import type { Condition, LabelSelector, LocalObjectReference } from "@freelensapp/kube-object";
++import { Renderer } from "@freelensapp/extensions";
++
++type Condition = Renderer.K8sApi.Condition;
++type LabelSelector = Renderer.K8sApi.LabelSelector;
++type LocalObjectReference = Renderer.K8sApi.LocalObjectReference;
+```
+
+Everything the package exports is there, not a curated subset: the concrete kube
+objects, the shared spec vocabulary (`Affinity`, `Capabilities`, `ContainerPort`,
+`Probe`, `ResourceRequirements`, `Toleration`, …), the `types/` directory, the
+JSON-API guards. The same applies to the kube APIs: the option and descriptor
+types that appear in their signatures — `KubeApiOptions`,
+`DerivedKubeApiOptions`, `KubeObjectStoreOptions`, `KubeApiListOptions`,
+`KubeApiQueryParams`, `DeleteOptions`, `PropagationPolicy`, `ResourceDescriptor`,
+`IKubeWatchEvent` — are exported too, along with `parseKubeApi` and
+`createKubeApiURL`. You no longer need
+`ConstructorParameters<typeof Renderer.K8sApi.KubeApi>[0]` to name an options
+type.
+
+Two names to watch:
+
+- **`KubeObjectStatus` is unchanged**: it is still the status-registration type
+  you register providers against, `{ level, text, timestamp? }`. The Kubernetes
+  status shape of the same name — `{ conditions?: BaseKubeObjectCondition[] }`,
+  the base that `DeploymentStatus`, `JobStatus` and the rest extend — is exported
+  as **`BaseKubeObjectStatus`**.
+- **`Condition` and `ObjectReference` are now top-level names in `K8sApi`.** If
+  you flatten the namespace anywhere — `const { Condition } = Renderer.K8sApi`,
+  or a barrel that re-exports it alongside your own declarations — a local type
+  of the same name now collides. This is type-only: it surfaces as a compile
+  error in your extension, never as a runtime break, and renaming your own type
+  or qualifying the namespace member fixes it.
+
+The concrete v1→v2 rename table is filled while the in-repo fixture extension
+is built out against this surface
+([#2451](https://github.com/freelensapp/freelens/issues/2451)), and will be
+appended here.
+
+It is derived by comparing the **published v1 declaration** against the v2 one
+above, rather than from porting a single extension. A port only covers the
+symbols that one extension happened to use; a surface-to-surface comparison
+covers all of them, and the fixture is what proves the v2 side is actually
+reachable under real build conditions rather than merely present in a `.d.ts`.
+
+## Registering things: declarative fields
+
+Your extension contributes by **setting fields on your `LensExtension`
+subclass**. The host reads them and translates each into its own registrations;
+there is no registration API to call and no `Renderer.Registrations` namespace.
+
+On `LensRendererExtension`: `globalPages`, `clusterPages`, `clusterPageMenus`,
+`clusterFrameComponents`, `appPreferences`, `appPreferenceTabs`,
+`entitySettings`, `statusBarItems`, `kubeObjectDetailItems`,
+`kubeObjectMenuItems`, `kubeWorkloadsOverviewItems`, `commands`, `welcomeMenus`,
+`catalogEntityDetailItems`, `topBarItems`, `additionalCategoryColumns`,
+`customCategoryViews`, `kubeObjectHandlers`.
+
+On `LensMainExtension`: `appMenus`, `trayMenus`. Each accepts a plain array
+**or** an `IComputedValue` of one — pass a computed value if the menu changes
+while the extension is running, and the host will follow it.
+
+On both: `protocolHandlers`, plus the `onActivate()` / `onDeactivate()` hooks.
+
+A field you leave at its default contributes nothing, silently, so a
+registration that never appears is usually a typo in a field name.
+
+Two members are worth knowing before you need them:
+
+- **`this.manifestPath`** is how you locate your own shipped files. In the
+  renderer it is the only route — there is no `__dirname` under URL-based
+  loading.
+- **`await this.getExtensionFileFolder()`** gives you a writable directory of
+  your own. It is keyed by `storeName` through a hash, so it survives reinstalls
+  and version changes — unlike your install directory, which deliberately does
+  not.
 
 ## HTTP: `Main.Util.fetch` and `Renderer.Util.fetch`
 
@@ -279,8 +462,9 @@ via the Freelens bundle will fail to resolve at runtime.
 If your extension used them, migrate one of two ways:
 
 - **Preferred — use the internal navigation API.** Register pages with
-  `Renderer.Registrations` (`globalPages` / `clusterPages`) and navigate with
-  the injectable `navigateToRoute` / route helpers instead of react-router
+  the declarative `globalPages` / `clusterPages` fields on your
+  `LensRendererExtension` subclass — there is no `Renderer.Registrations` — and
+  navigate with the injectable `navigateToRoute` / route helpers instead of react-router
   `Link` / `Redirect` / `Route`. Route schemas keep the same
   `react-router` v5 dialect (`/:param?` optionals, inline `/:param(regex)`
   patterns), matched by the in-house `matchPath`, so existing path strings are
@@ -369,9 +553,10 @@ import stylesInline from "./available-version.module.scss?inline"; // raw CSS te
 **The host now injects the extension's stylesheet for you.** When the renderer
 loads an extension, the extension loader looks next to the renderer entry for a
 sibling stylesheet — either `<entry-name>.css` (e.g. `renderer.js` →
-`renderer.css`) or a `style.css` in the same folder — and, if present, appends
-its contents to the document as a `<style>` element. So you can import your
-SCSS the normal way and drop the `?inline` copy and the `<style>` tag:
+`renderer.css`) or a `style.css` in the same folder — and, if present, links it
+into the document with a `<link>` at the URL it serves that file from. So you can
+import your SCSS the normal way and drop the `?inline` copy and the `<style>`
+tag:
 
 ```tsx
 import styles from "./available-version.module.scss"; // class names only
@@ -488,7 +673,7 @@ the host's styling model and needs **no host-side changes**.
    @import "tailwindcss/utilities.css" layer(utilities) prefix(myext);
    ```
 
-   - **No preflight** (`tailwindcss/preflight.css`): the injected `<style>`
+   - **No preflight** (`tailwindcss/preflight.css`): the linked stylesheet
      applies to the whole host document, so preflight would re-reset the entire
      app.
    - **Prefix**: utilities become `myext:flex`, `myext:gap-2`, and the theme
@@ -530,6 +715,79 @@ styling stays CSS Modules, host public classes stay plain-CSS targets); and for
 just a few flex rules, the [plain-CSS mapping](#migrating-off-flexboxscss) above
 is still lighter than wiring up a Tailwind build.
 
+## The development loop
+
+In v2 you point Freelens at your package directory and work. **Installing a
+directory registers the extension in place**, so there is no packing step, no
+symlink, no junction and no `install:dev` script — and none of the Windows
+Developer Mode friction that symlinks used to require.
+
+**Rebuilding reloads the extension.** The host watches the entry points your
+manifest names — `main` and `renderer`, at their real paths — and when your
+bundler rewrites one, it tears the extension down and imports it again in both
+processes. There is nothing to press: run your bundler in watch mode and work.
+
+What a reload is, so that what you have to write is clear:
+
+- It is a **full teardown, not a swap**. Your `onDeactivate` runs, your
+  disposers run, everything you registered is taken back out, and only then is
+  the new build imported and `onActivate` called again. Anything your extension
+  leaves behind — a listener on a host object, a timer, an element appended to
+  the document — has to be released in `onDeactivate` or in the extension's
+  disposers, or it survives the reload and accumulates.
+- One rebuild is **one reload**, however many entry points it writes, and the
+  host waits for a half-written bundle to settle before importing it.
+- Your **stylesheet is re-linked** and the previous one is removed, so your CSS
+  does not stack up across reloads.
+
+Three consequences to know:
+
+- An extension installed this way is **unverified by construction** and is
+  marked as such in the UI. The absence of a version-and-digest segment in its
+  path is what identifies it; there is no separate flag.
+- **Each reload retains the previous module graph.** A module object cannot be
+  evicted from a realm's module map, so memory grows with the reload count.
+  Deinitialisation still happens properly through `onDeactivate`, but a long
+  editing session is a reason to restart the app, not a leak to report.
+- **Reloading a `main` entry point needs ESM.** The host imports it under a
+  fresh URL each time, which is what makes it a new module — but a CommonJS
+  entry point is cached below that by filename, which no URL reaches, and the
+  format Node resolved for that path is cached with it. So a `main` once loaded
+  as CommonJS is frozen as the module it was for the life of the process, and
+  rewriting the file as ESM does not release it either. Ship ESM from `main` if
+  you want the development loop; the renderer is ESM by contract and is
+  unaffected.
+
+  A rebuild the host cannot reload is **refused, not attempted**: your
+  extension goes on running the build it already has, in both processes, and
+  main logs which of the two cases it is —
+
+  ```text
+  [EXTENSIONS-LOADER]: not reloading "my-extension" after a rebuild: its
+  "dist/main.js" entry point was loaded as CommonJS, which Node caches by
+  filename for the life of the process, so the running build would stay.
+  Restart the application to run it.
+  ```
+
+  This costs you the renderer's reload as well: main refuses before it tells
+  the renderer anything, deliberately, so that the two processes stay on the
+  same build — which means a CommonJS `main` leaves a rebuild of *only* the
+  renderer entry point unreloaded too, and the development loop does not work
+  at all until `main` is ESM.
+
+  The other case is having *started* as ESM and rebuilt as CommonJS, which
+  would throw `ReferenceError: module is not defined in ES module scope` from
+  inside your bundle — an error naming neither your extension nor the real
+  cause. Either way the fix is the same: make `main` ESM (`.mjs`, or `.js` with
+  `"type": "module"` in your `package.json`) and restart once. What the host
+  goes by is the entry point's file extension, and otherwise your manifest's
+  `type` — and, for what is *running*, the format it was actually loaded as,
+  which is why changing `type` alone still needs the restart.
+
+Only the files your manifest names are watched, so a rebuild which changes the
+manifest itself — a renamed entry point, a new one — needs the application
+restarted once.
+
 ## Checklist
 
 - [ ] Replace any direct `@freelensapp/*` internal dependency with
@@ -570,15 +828,33 @@ is still lighter than wiring up a Tailwind build.
 - [ ] Load your extension in a v2 build and verify its UI renders through the
       runtime global.
 
-## Still pending (tracked in Phase 4/7)
+And the two that fail silently rather than loudly, so they need an explicit
+check rather than a smoke test:
 
-These items are finalized as the migration is validated end-to-end and are
-noted here so the guide is honest about what is not yet locked:
+- [ ] **Bump `engines.freelens` to `^2.0.0` first** — without it the host
+      refuses the extension at discovery and nothing else you changed is
+      observable.
+- [ ] Verify you are on the **host's** React and mobx instances, not copies. A
+      second React throws `invalid hook call` when a hook runs; a second mobx
+      throws nothing at all — its reactions simply do not fire. Assert on an
+      observable the host reacts to rather than eyeballing the UI.
 
-- The **example-extension port**, from which the namespace rename table above
-  is derived.
+## Still pending
+
+Noted here so the guide is honest about what an author cannot do yet, even
+having done everything above.
+
+| Pending | Effect on you | Tracked in |
+| --- | --- | --- |
+| No author-facing hook for registering an injectable | the container view now exists before `onActivate`, but nothing hands it to you | [#2450](https://github.com/freelensapp/freelens/issues/2450) |
+| Known missing re-exports | some types are callable but not nameable | [#2365](https://github.com/freelensapp/freelens/issues/2365) |
+| The fixture extension is not yet built out against the full v2 surface | the namespace rename table above is not filled | [#2451](https://github.com/freelensapp/freelens/issues/2451) |
 
 The rolled-up, self-contained `.d.ts` for the published
 `@freelensapp/extensions` (no `@freelensapp/*` imports, declared type
 dependencies, namespaces usable in type positions) is done and verified
 against a strict-mode scratch consumer.
+
+If your extension ships executables alongside its JavaScript, read
+[`docs/v2-extension-abi.md`](./v2-extension-abi.md) — the short version is that
+2.0.0 extracts them and never uses them.
