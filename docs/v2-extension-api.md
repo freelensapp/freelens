@@ -305,7 +305,7 @@ keeps the bare name, because v1 extensions already use it.
 `JobStatus` and the other resource statuses extend, and it carries
 `BaseKubeObjectCondition`s. An exclusion is a silent hole — the symbol exists in
 the source, is absent from the API, and nothing announces the difference. A
-rename is visible in the declaration and in the API report, and it keeps the
+rename is visible in the declaration, and it keeps the
 surface complete, which [C1](#c1-packaging-and-publication) makes a correctness
 property rather than a preference.
 
@@ -329,10 +329,29 @@ documented `string` aliases (`UUIDRegexString`, `UUID3RegexString`,
 frozen with it under [C14](#c14-versioning-and-compatibility).
 
 **Status:** the table above is transcribed from the built
-`dist/extension-api.d.ts`. It should be **generated** rather than hand-kept
-(#2366): a git-tracked API report makes the enumeration the checked-in file, so
-a surface change shows up as a PR diff and `ae-forgotten-export` catches the
-unexported-type-in-public-signature defect mechanically.
+`dist/extension-api.d.ts`, and it is **checked rather than generated**. Three
+things keep it honest, none of them a new tool:
+
+- `packages/core/src/extensions/__tests__/extension-api.test.ts` asserts the
+  three member lists **exactly** — the table is that list — and then asserts
+  only that each sub-namespace exists, is non-empty and still carries a handful
+  of anchor symbols.
+- `packages/core/src/extensions/__tests__/extension-api.types.ts` names those
+  anchors and the types of this section's failure mode **as types**, so a
+  symbol that stops being nameable stops `pnpm type:check` compiling.
+- `packages/fixture-extension/src/contract-types.ts` does the same against the
+  **built** declaration, which is the artifact an author resolves.
+
+**Generating the enumeration was tried and rejected** (#2366, #2476). An API
+Extractor report runs against TypeScript 7 output and produces a diffable file,
+but it records the *transitive closure* of the surface rather than its
+membership: 163 symbols nobody intends as API appeared in it — host-side
+dependency bags and internal states reached through a public signature — so
+refactoring one of those read as a contract change, while the thing this
+section guarantees is which names a namespace has. The report could not tell
+"the API broke" from "the API changed", which is the only distinction worth
+gating on. The `ae-forgotten-export` occurrences it found are real and remain a
+separate matter.
 
 ---
 
@@ -666,10 +685,10 @@ the remedy differs: incompatible (`isCompatible`), deliberately disabled
 
 ### Stability: everything exported is public
 
-There is **no unstable tier**. Until a mechanism exists to mark one (#2366
-proposes TSDoc `@public` / `@beta` / `@internal` with trimmed rollup variants),
-every symbol the namespaces re-export is public and stable **for the lifetime of
-the major**.
+There is **no unstable tier**. Until a mechanism exists to mark one — TSDoc
+`@public` / `@beta` / `@internal` with trimmed rollup variants was the proposal
+in #2366, and it is deferred rather than pending — every symbol the namespaces
+re-export is public and stable **for the lifetime of the major**.
 
 This cuts towards the host, not the author, and it is the reason these documents
 were written before the implementation rather than after it: **whatever 2.0.0
@@ -681,8 +700,16 @@ Deprecation within a major: mark with `@deprecated`, keep it working for the
 rest of the major, remove it in the next one.
 
 **Status:** the gate is shipped and the policy above is decided. The tiering
-mechanism is #2366 and is not needed for 2.0.0 — its absence is what makes the
-freeze strict.
+mechanism is not needed for 2.0.0 — its absence is what makes the freeze
+strict, and adding a tier later is additive where exporting first and deciding
+later is not.
+
+What holds the frozen surface in place meanwhile is not a report but the
+runtime and type-level checks listed under
+[C5](#c5-namespace-enumeration): the namespace member lists are asserted
+exactly, so widening one is an edit made on purpose and read in review, which
+is what a freeze needs. The exhaustive alternative was tried in #2476 and
+rejected for tracking more than the contract.
 
 ---
 
@@ -712,7 +739,7 @@ The contract has three, not two:
 | Item | Tracked in |
 | --- | --- |
 | Close the known re-export gaps | #2365 |
-| Generate the namespace enumeration instead of maintaining it | #2366 |
+| Triage the `ae-forgotten-export` occurrences found while generating the enumeration was being tried | #2366 |
 | `es-toolkit` undeclared; `child_process` spelled two ways | #2360 |
 | Remove `pnpm` as an application dependency — the last step of the delivery mechanism | #2400 |
 | Renderer sandboxing — the reason several isolation claims are *not* made here | #2399 |
