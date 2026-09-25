@@ -77,7 +77,13 @@
     },
 
     "packages/core": {
-      "entry": ["src/{main,renderer}/library.ts!"],
+      "entry": [
+        "src/{main,renderer}/library.ts!",
+        // type-only assertions over the extension-API namespaces: `pnpm
+        // type:check` compiles them and nothing imports them, which is the
+        // point — see the file's header
+        "src/extensions/__tests__/extension-api.types.ts"
+      ],
       "project": ["__mocks__/**/*.{ts,tsx}", "src/**/*.{ts,tsx}!", "types/*.d.ts"],
       "ignoreDependencies": [
         // static YAML templates imported with a relative import.meta.glob in
