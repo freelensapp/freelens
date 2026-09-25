@@ -14,12 +14,17 @@ import normalizedPlatformInjectable from "../../common/vars/normalized-platform.
 import addClusterInjectable from "../../features/cluster/storage/common/add.injectable";
 import broadcastConnectionUpdateInjectable from "../cluster/broadcast-connection-update.injectable";
 import clusterConnectionInjectable from "../cluster/cluster-connection.injectable";
+import kubeAuthProxyServerInjectable from "../cluster/kube-auth-proxy-server.injectable";
 import prometheusHandlerInjectable from "../cluster/prometheus-handler/prometheus-handler.injectable";
+import powerMonitorInjectable from "../electron-app/features/power-monitor.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import kubeconfigManagerInjectable from "../kubeconfig-manager/kubeconfig-manager.injectable";
 import kubectlBinaryNameInjectable from "../kubectl/binary-name.injectable";
 import { Kubectl } from "../kubectl/kubectl";
 import kubectlDownloadingNormalizedArchInjectable from "../kubectl/normalized-arch.injectable";
+import type EventEmitter from "events";
+
+import type { DiContainer } from "@ogre-tools/injectable";
 
 import type { Cluster } from "../../common/cluster/cluster";
 import type { ClusterConnection } from "../cluster/cluster-connection.injectable";
@@ -28,9 +33,12 @@ import type { KubeconfigManager } from "../kubeconfig-manager/kubeconfig-manager
 describe("create clusters", () => {
   let cluster: Cluster;
   let clusterConnection: ClusterConnection;
+  let powerMonitor: EventEmitter;
+  let mockProxyServer: any;
+  let di: DiContainer;
 
   beforeEach(() => {
-    const di = getDiForUnitTesting();
+    di = getDiForUnitTesting();
     const writeJsonSync = di.inject(writeJsonSyncInjectable);
 
     di.override(directoryForUserDataInjectable, () => "some-directory-for-user-data");
@@ -86,6 +94,9 @@ describe("create clusters", () => {
 
     vi.spyOn(Kubectl.prototype, "ensureKubectl").mockReturnValue(Promise.resolve(true));
 
+    mockProxyServer = { start: jest.fn(), stop: jest.fn(), restart: jest.fn() };
+    di.override(kubeAuthProxyServerInjectable, () => mockProxyServer);
+
     const addCluster = di.inject(addClusterInjectable);
 
     cluster = addCluster({
@@ -93,6 +104,7 @@ describe("create clusters", () => {
       contextName: "kind",
       kubeConfigPath: "/kind-config.yml",
     });
+    powerMonitor = di.inject(powerMonitorInjectable) as any;
     clusterConnection = di.inject(clusterConnectionInjectable, cluster);
   });
 
@@ -112,5 +124,23 @@ describe("create clusters", () => {
 
     expect(clusterConnection.reconnect).toBeCalled();
     expect(clusterConnection.refreshConnectionStatus).toBeCalled();
+  });
+
+  it("should stop proxy on system suspend and reconnect on resume", async () => {
+    jest.spyOn(clusterConnection, "reconnect").mockImplementation(async () => {});
+    jest.spyOn(clusterConnection, "refreshConnectionStatus").mockImplementation(async () => {});
+
+    await clusterConnection.activate();
+
+    powerMonitor.emit("suspend");
+    expect(mockProxyServer.stop).toBeCalled();
+    // @ts-ignore
+    expect(clusterConnection.isSystemSuspended).toBe(true);
+
+    powerMonitor.emit("resume");
+    // @ts-ignore
+    expect(clusterConnection.isSystemSuspended).toBe(false);
+    // reconnect called in activate AND in resume, so toBeCalledTimes >= 2
+    expect(clusterConnection.reconnect).toBeCalled();
   });
 });
