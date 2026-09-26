@@ -32,7 +32,8 @@
     "packages/core/src/extensions/register-injectables.ts",
     "packages/core/src/extensions/renderer-extensions.injectable.ts",
     "packages/core/types/freelensapp-styles.d.ts",
-    "packages/core/types/mocks.d.ts"
+    "packages/core/types/mocks.d.ts",
+    "scripts/type-check-environments/expected-failures/**/*"
   ],
   "exclude": [
     "**/node_modules/**",
