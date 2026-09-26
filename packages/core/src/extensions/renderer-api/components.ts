@@ -98,6 +98,7 @@ export {
 } from "../../renderer/components/namespaces/namespace-select-badge";
 export * from "../../renderer/components/namespaces/namespace-select-filter";
 export * from "../../renderer/components/no-items";
+export * from "../../renderer/components/path-picker";
 export * from "../../renderer/components/radio";
 export * from "../../renderer/components/render-delay";
 export * from "../../renderer/components/resource-metrics";
