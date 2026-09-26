@@ -36,6 +36,9 @@ catalogs:
     '@mui/material':
       specifier: 9.2.0
       version: 9.2.0
+    '@noble/hashes':
+      specifier: 2.2.0
+      version: 2.2.0
     '@ogre-tools/fp':
       specifier: 23.2.0
       version: 23.2.0
@@ -2463,6 +2466,9 @@ importers:
       '@astronautlabs/jsonpath':
         specifier: 'catalog:'
         version: 1.1.2
+      '@noble/hashes':
+        specifier: 'catalog:'
+        version: 2.2.0
       es-toolkit:
         specifier: 'catalog:'
         version: 1.49.0
