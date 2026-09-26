@@ -18,7 +18,13 @@ import { bytesToHex, utf8ToBytes } from "@noble/hashes/utils.js";
  * @returns The full 64-character lowercase hex digest
  */
 export function sha256Hex(data: string | Uint8Array): string {
-  return bytesToHex(sha256(typeof data === "string" ? utf8ToBytes(data) : data));
+  // Bytes are rewrapped as a view of this realm's `Uint8Array`, without a copy:
+  // noble rejects a subclass from another realm, such as bytes from another
+  // frame or a Node `Buffer` under jsdom.
+  const bytes =
+    typeof data === "string" ? utf8ToBytes(data) : new Uint8Array(data.buffer, data.byteOffset, data.byteLength);
+
+  return bytesToHex(sha256(bytes));
 }
 
 /**
