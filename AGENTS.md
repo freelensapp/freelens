@@ -426,11 +426,11 @@ The trigger text may also carry `[model:<alias>]`, `[effort:<level>]` and
 the runner for that run (see the `parse` job for the accepted aliases). They are
 only read from the triggering text.
 
-The default model is `claude-opus-5[1m]` (Opus 5 with the 1M-token context) and
-it runs at `high` effort. Naming a model explicitly drops that default: the run
-then uses the CLI default effort unless `[effort:...]` also says otherwise.
-Accepted levels are `low`, `medium`, `high`, `xhigh` and `max`; anything else is
-ignored with a note in the job log.
+The default model is `claude-opus-5-5[1m]` (Opus 5.5 with the 1M-token
+context) and it runs at `high` effort. Naming a model explicitly drops that
+default: the run then uses the CLI default effort unless `[effort:...]` also
+says otherwise. Accepted levels are `low`, `medium`, `high`, `xhigh` and
+`max`; anything else is ignored with a note in the job log.
 
 ### Rules for the local agent
 
