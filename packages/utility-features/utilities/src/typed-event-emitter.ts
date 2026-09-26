@@ -206,7 +206,7 @@ export class TypedEmitter<Events extends EventMap> implements TypedEventEmitter<
     // The flag covers an `emit` that already copied the listeners when the
     // wrapper was removed by a nested `emit` of the same event.
     const wrapper = Object.assign(
-      (...args: Parameters<Events[E]>) => {
+      (...args: never[]) => {
         if (!fired) {
           fired = true;
           this.removeListener(event, wrapper as unknown as Events[E]);
