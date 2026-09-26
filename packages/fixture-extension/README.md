@@ -41,12 +41,27 @@ proves nothing about how extensions are actually loaded.
 
 ### How the type level is wired
 
-[`tsconfig.json`](./tsconfig.json) is deliberately standalone: it does not extend
-the repository tsconfig and declares no workspace path mappings beyond one. An
-extension author has neither. Its compiler-option floors are the ones documented
-for extension consumers in
+The sources follow the layout documented for extensions in
 [`docs/v2-extension-migration.md`](../../docs/v2-extension-migration.md)
-("tsconfig.json for an extension").
+("Source layout: one tsconfig per runtime environment"), and this package is
+where that layout is proven:
+
+| Directory | Runs in | `tsconfig.json` |
+| --- | --- | --- |
+| `src/main/` | the main process: Node and Electron | `lib: ["ES2024"]`, `types: ["node"]`, plus `src/common/` |
+| `src/renderer/` | a browser page | `lib` with `DOM`, `types: []`, plus `src/common/` |
+| `src/common/` | both, bundled into each entry point | `lib: ["ES2024", "WebWorker"]`, `types: []` |
+
+`type:check` compiles all three. Common code is therefore checked three
+times: by the main program, which has no DOM, by the renderer program, which has
+no Node, and by its own config, which is what an editor uses for a file in
+`src/common/`.
+
+The configs are deliberately standalone: they extend only
+[`tsconfig.base.json`](./tsconfig.base.json), not the repository tsconfig, and
+declare no workspace path mappings beyond one. An extension author has neither.
+Their compiler-option floors are the ones documented for extension consumers in
+the same guide ("tsconfig.json for an extension").
 
 That one mapping is the entire point of the package: it points
 `@freelensapp/extensions` at the built `../extensions/dist/extension-api.d.ts`.
@@ -73,7 +88,9 @@ onto this package would close a cycle in the turbo task graph
 
 ## What it contains
 
-Four things, chosen because each of them breaks without a compile error:
+The renderer entry point, [`src/renderer/index.tsx`](./src/renderer/index.tsx),
+built to `dist/renderer.js`, holds four things, chosen because each of them
+breaks without a compile error:
 
 1. a component with hooks — two React instances throw `invalid hook call`
 2. an observable it creates and the host reacts to — two copies of mobx 6 share
@@ -84,5 +101,12 @@ Four things, chosen because each of them breaks without a compile error:
 4. one `Renderer.Util.fetch` call, which resolves only through the host's DI
    container
 
-Plus [`src/contract-types.ts`](./src/contract-types.ts), which carries no runtime
-code and names types out of `Common`, `Main` and `Renderer` in real signatures.
+The main entry point, [`src/main/index.ts`](./src/main/index.ts), built to
+`dist/main.js`, is a skeleton for the main-side contract: a `Main.LensExtension`
+with a `Main.Ipc` handler and a Node builtin. Both entry points import
+[`src/common/host-info.ts`](./src/common/host-info.ts), which uses only globals
+both runtimes have.
+
+Plus [`src/common/contract-types.ts`](./src/common/contract-types.ts), which
+carries no runtime code and names types out of `Common`, `Main` and `Renderer`
+in real signatures.

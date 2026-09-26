@@ -38,8 +38,8 @@
 // this file cannot see a type that stops being nameable — the #2365 class of
 // defect, which cost `SecurityContext` the whole v2 line. That half lives in
 // `./extension-api.types.ts`, compiled by `pnpm type:check`, and in
-// `packages/fixture-extension/src/contract-types.ts`, compiled against the
-// built `dist/extension-api.d.ts`.
+// `packages/fixture-extension/src/common/contract-types.ts`, compiled against
+// the built `dist/extension-api.d.ts`.
 //
 // `Object.keys` of a namespace is its export list; it is sorted here rather
 // than relied on to come out sorted, because the namespace objects are produced

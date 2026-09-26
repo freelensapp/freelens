@@ -1276,6 +1276,9 @@ importers:
         specifier: workspace:^
         version: link:../extensions
     devDependencies:
+      '@types/node':
+        specifier: catalog:extensions
+        version: 24.12.4
       '@types/react':
         specifier: catalog:extensions
         version: 19.2.17

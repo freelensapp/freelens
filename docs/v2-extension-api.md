@@ -364,8 +364,8 @@ things keep it honest, none of them a new tool:
 - `packages/core/src/extensions/__tests__/extension-api.types.ts` names those
   anchors and the types of this section's failure mode **as types**, so a
   symbol that stops being nameable stops `pnpm type:check` compiling.
-- `packages/fixture-extension/src/contract-types.ts` does the same against the
-  **built** declaration, which is the artifact an author resolves.
+- `packages/fixture-extension/src/common/contract-types.ts` does the same
+  against the **built** declaration, which is the artifact an author resolves.
 
 **Generating the enumeration was tried and rejected** (#2366, #2476). An API
 Extractor report runs against TypeScript 7 output and produces a diffable file,

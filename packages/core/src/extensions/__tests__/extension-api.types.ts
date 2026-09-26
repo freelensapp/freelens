@@ -21,9 +21,9 @@
 // entry for that reason.
 //
 // It is the in-repo, source-level check. Its complement is
-// `packages/fixture-extension/src/contract-types.ts`, which makes the same kind
-// of assertion against the *built* `dist/extension-api.d.ts` — the artifact an
-// author actually resolves — and so needs a build to run.
+// `packages/fixture-extension/src/common/contract-types.ts`, which makes the
+// same kind of assertion against the *built* `dist/extension-api.d.ts` — the
+// artifact an author actually resolves — and so needs a build to run.
 //
 // The selection matches the anchors in `./extension-api.test.ts`: the types the
 // two published extensions name in their own signatures, plus the three that

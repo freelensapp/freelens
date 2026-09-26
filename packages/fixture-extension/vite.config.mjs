@@ -69,19 +69,51 @@ const hostProvidedModulesPlugin = {
   },
 };
 
-export default defineConfig({
-  plugins: [hostProvidedModulesPlugin],
-  build: {
-    target: "esnext",
-    // Readable output: this bundle is read by humans reviewing what the
-    // contract compiled down to, and loaded by the unit tests as-is.
-    minify: false,
-    sourcemap: false,
+/**
+ * One entry point per run: the renderer by default, the main entry with
+ * `--mode main`. The renderer is built for a browser page and the main entry
+ * for Node, so they cannot share settings, and each bundle carries its own
+ * copy of `src/common/` rather than a shared chunk the other process would
+ * have to load.
+ */
+const entryPoints = {
+  renderer: {
+    entry: "src/renderer/index.tsx",
+    // First of the two runs in `build`, so it clears the output directory.
     emptyOutDir: true,
-    lib: {
-      entry: "src/renderer.tsx",
-      formats: ["es"],
-      fileName: () => "renderer.js",
-    },
+    external: [],
   },
+  main: {
+    entry: "src/main/index.ts",
+    emptyOutDir: false,
+    // Node resolves its own builtins at runtime. Only main may import them:
+    // `src/renderer/tsconfig.json` has no Node types, so an import of one
+    // there fails the type check before it could reach a bundle.
+    external: [/^node:/],
+  },
+};
+
+export default defineConfig(({ mode }) => {
+  const name = mode === "main" ? "main" : "renderer";
+  const entryPoint = entryPoints[name];
+
+  return {
+    plugins: [hostProvidedModulesPlugin],
+    build: {
+      target: "esnext",
+      // Readable output: this bundle is read by humans reviewing what the
+      // contract compiled down to, and loaded by the unit tests as-is.
+      minify: false,
+      sourcemap: false,
+      emptyOutDir: entryPoint.emptyOutDir,
+      lib: {
+        entry: entryPoint.entry,
+        formats: ["es"],
+        fileName: () => `${name}.js`,
+      },
+      rollupOptions: {
+        external: entryPoint.external,
+      },
+    },
+  };
 });
