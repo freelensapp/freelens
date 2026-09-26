@@ -452,7 +452,7 @@ can be applied at all.
 ## `Renderer.K8sApi` concrete store classes removed
 
 The host's built-in store **classes** are no longer exported from
-`Renderer.K8sApi` (#2478) — `PodStore`, `DeploymentStore`, `CronJobStore`,
+`Renderer.K8sApi` — `PodStore`, `DeploymentStore`, `CronJobStore`,
 `CustomResourceDefinitionStore` and the rest, together with their v1 aliases
 (`PodsStore`, `CRDStore`, `HPAStore`, …).
 
