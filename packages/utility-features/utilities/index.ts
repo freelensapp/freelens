@@ -36,6 +36,7 @@ export * from "./src/prevDefault";
 export * from "./src/readonly";
 export * from "./src/reject-promise";
 export * from "./src/result";
+export * from "./src/sha256";
 export * from "./src/sort-compare";
 export * from "./src/sort-function";
 export * from "./src/tar";
