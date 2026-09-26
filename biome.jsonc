@@ -120,6 +120,156 @@
           }
         }
       }
+    },
+    {
+      // Renderer and common code of the application, classified by the path
+      // rule of tsconfig.renderer.json: a Node builtin import belongs in main
+      // code. Tests and test support are left out, as they are of that program.
+      // See "Runtime Environments in Type-Checking" in AGENTS.md.
+      "includes": [
+        "freelens/src/**/renderer/**",
+        "freelens/src/**/renderer-api/**",
+        "freelens/src/**/common/**",
+        "freelens/src/**/common-api/**",
+        "packages/core/src/**/renderer/**",
+        "packages/core/src/**/renderer-api/**",
+        "packages/core/src/**/common/**",
+        "packages/core/src/**/common-api/**",
+        "!**/main/**",
+        "!**/main-api/**",
+        "!**/*.test.ts",
+        "!**/*.test.tsx",
+        "!**/__mocks__/**",
+        "!**/__test__/**",
+        "!**/__tests__/**",
+        "!**/test-env/**",
+        "!**/test-utils/**",
+        "!**/*.global-override-for-injectable.ts",
+        "!**/getDiForUnitTesting.ts",
+        "!**/getDiForUnitTesting.tsx",
+        "!packages/core/src/features/cluster/enumeration/common/test-utils.ts",
+        "!packages/core/src/features/cluster/execute/common/testing.ts"
+      ],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noNodejsModules": "error"
+          }
+        }
+      }
+    },
+    {
+      // Renderer and common files that import a Node builtin today. They are
+      // a subset of the "renderer" legacy list in
+      // scripts/type-check-environments/legacy.jsonc, and
+      // scripts/type-check-environments.mjs fails when an entry here is not on
+      // that list, so this list shrinks with it and may never grow.
+      "includes": [
+        "packages/core/src/common/app-paths/directory-for-user-data/directory-for-user-data.injectable.ts",
+        "packages/core/src/common/certificate/ca-certificates.injectable.ts",
+        "packages/core/src/common/fs/exec-file.injectable.ts",
+        "packages/core/src/common/initializable-state/create.ts",
+        "packages/core/src/common/k8s-api/kube-object.store.ts",
+        "packages/core/src/common/os/home-directory-path.injectable.ts",
+        "packages/core/src/common/os/kube-directory-path.injectable.ts",
+        "packages/core/src/common/os/temp-directory-path.injectable.ts",
+        "packages/core/src/common/path/get-absolute-path.injectable.ts",
+        "packages/core/src/common/path/get-basename.injectable.ts",
+        "packages/core/src/common/path/get-dirname.injectable.ts",
+        "packages/core/src/common/path/get-relative-path.injectable.ts",
+        "packages/core/src/common/path/join-paths.injectable.ts",
+        "packages/core/src/common/path/parse.injectable.ts",
+        "packages/core/src/common/path/separator.injectable.ts",
+        "packages/core/src/common/utils/generate-new-id-for.ts",
+        "packages/core/src/common/utils/random-bytes.injectable.ts",
+        "packages/core/src/common/utils/wait-for-path.ts",
+        "packages/core/src/common/vars/user-info.injectable.ts",
+        "packages/core/src/features/extensions/installer/common/checksums.ts",
+        "packages/core/src/features/extensions/installer/common/managed-directory.ts",
+        "packages/core/src/features/hotbar/storage/common/remove.injectable.ts",
+        "packages/core/src/features/namespace-filtering/renderer/storage.injectable.ts",
+        "packages/core/src/features/persistent-storage/common/create.injectable.ts",
+        "packages/core/src/features/population-of-logs-to-a-file/renderer/ipc-transport.ts",
+        "packages/core/src/renderer/api/request-cluster-shell-token.injectable.ts",
+        "packages/core/src/renderer/api/terminal-api.ts",
+        "packages/core/src/renderer/bootstrap.tsx",
+        "packages/core/src/renderer/cluster-frame-context/for-namespaced-resources.injectable.ts",
+        "packages/core/src/renderer/components/chart/bar-chart.tsx",
+        "packages/core/src/renderer/components/cluster-manager/cluster-frame-handler.ts",
+        "packages/core/src/renderer/components/cluster/store.injectable.ts",
+        "packages/core/src/renderer/components/config-horizontal-pod-autoscalers/store.injectable.ts",
+        "packages/core/src/renderer/components/config-leases/store.injectable.ts",
+        "packages/core/src/renderer/components/config-limit-ranges/store.injectable.ts",
+        "packages/core/src/renderer/components/config-maps/store.injectable.ts",
+        "packages/core/src/renderer/components/config-mutating-webhook-configurations/mutating-webhook-configuration-store.injectable.ts",
+        "packages/core/src/renderer/components/config-pod-disruption-budgets/store.injectable.ts",
+        "packages/core/src/renderer/components/config-priority-classes/store.injectable.ts",
+        "packages/core/src/renderer/components/config-resource-quotas/store.injectable.ts",
+        "packages/core/src/renderer/components/config-runtime-classes/store.injectable.ts",
+        "packages/core/src/renderer/components/config-secrets/store.injectable.ts",
+        "packages/core/src/renderer/components/config-validating-admission-policies/validating-admission-policy-store.injectable.ts",
+        "packages/core/src/renderer/components/config-validating-admission-policy-bindings/validating-admission-policy-binding-store.injectable.ts",
+        "packages/core/src/renderer/components/config-validating-webhook-configurations/validating-webhook-configuration-store.injectable.ts",
+        "packages/core/src/renderer/components/config-vertical-pod-autoscalers/store.injectable.ts",
+        "packages/core/src/renderer/components/custom-resource-definitions/store.injectable.ts",
+        "packages/core/src/renderer/components/dock/create-resource/user-templates.injectable.ts",
+        "packages/core/src/renderer/components/dock/edit-resource/edit-resource-model/edit-resource-model.injectable.tsx",
+        "packages/core/src/renderer/components/dock/install-chart/install-chart-model.injectable.tsx",
+        "packages/core/src/renderer/components/dock/logs/logs-view-model.ts",
+        "packages/core/src/renderer/components/dock/terminal/terminal-spawning-pool.injectable.ts",
+        "packages/core/src/renderer/components/dock/terminal/terminal.ts",
+        "packages/core/src/renderer/components/dock/terminal/view.tsx",
+        "packages/core/src/renderer/components/events/store.injectable.ts",
+        "packages/core/src/renderer/components/extensions/attempt-install/get-extension-dest-folder.injectable.ts",
+        "packages/core/src/renderer/components/extensions/attempt-install/unpack-extension.injectable.tsx",
+        "packages/core/src/renderer/components/extensions/attempt-install/validate-package.tsx",
+        "packages/core/src/renderer/components/file-picker/file-picker.tsx",
+        "packages/core/src/renderer/components/helm-charts/helm-chart-details.tsx",
+        "packages/core/src/renderer/components/helm-releases/release-details/release-details-model/release-details-model.injectable.tsx",
+        "packages/core/src/renderer/components/helm-releases/releases.injectable.ts",
+        "packages/core/src/renderer/components/namespaces/store.injectable.ts",
+        "packages/core/src/renderer/components/network-endpoint-slices/store.injectable.ts",
+        "packages/core/src/renderer/components/network-endpoints/store.injectable.ts",
+        "packages/core/src/renderer/components/network-ingresses/ingress-class-store.injectable.ts",
+        "packages/core/src/renderer/components/network-ingresses/ingress-store.injectable.ts",
+        "packages/core/src/renderer/components/network-policies/store.injectable.ts",
+        "packages/core/src/renderer/components/network-services/store.injectable.ts",
+        "packages/core/src/renderer/components/node-pod-menu/pod-attach-menu.tsx",
+        "packages/core/src/renderer/components/node-pod-menu/pod-shell-menu.tsx",
+        "packages/core/src/renderer/components/nodes/store.injectable.ts",
+        "packages/core/src/renderer/components/pod-security-policies/store.injectable.ts",
+        "packages/core/src/renderer/components/slider/slider.tsx",
+        "packages/core/src/renderer/components/storage-classes/store.injectable.ts",
+        "packages/core/src/renderer/components/storage-volume-claims/store.injectable.ts",
+        "packages/core/src/renderer/components/storage-volumes/store.injectable.ts",
+        "packages/core/src/renderer/components/table/table.tsx",
+        "packages/core/src/renderer/components/user-management/cluster-role-bindings/store.injectable.ts",
+        "packages/core/src/renderer/components/user-management/cluster-roles/store.injectable.ts",
+        "packages/core/src/renderer/components/user-management/role-bindings/store.injectable.ts",
+        "packages/core/src/renderer/components/user-management/roles/store.injectable.ts",
+        "packages/core/src/renderer/components/user-management/service-accounts/store.injectable.ts",
+        "packages/core/src/renderer/components/workloads-cronjobs/store.injectable.ts",
+        "packages/core/src/renderer/components/workloads-daemonsets/store.injectable.ts",
+        "packages/core/src/renderer/components/workloads-deployments/store.injectable.ts",
+        "packages/core/src/renderer/components/workloads-jobs/store.injectable.ts",
+        "packages/core/src/renderer/components/workloads-pods/store.injectable.ts",
+        "packages/core/src/renderer/components/workloads-replicasets/store.injectable.ts",
+        "packages/core/src/renderer/components/workloads-statefulsets/store.injectable.ts",
+        "packages/core/src/renderer/frames/cluster-frame/init-cluster-frame/init-cluster-frame.injectable.ts",
+        "packages/core/src/renderer/k8s/api-kube.injectable.ts",
+        "packages/core/src/renderer/logger/browser-console-transport.ts",
+        "packages/core/src/renderer/protocol-handler/bind-protocol-add-route-handlers/bind-protocol-add-route-handlers.tsx",
+        "packages/core/src/renderer/themes/active.injectable.ts",
+        "packages/core/src/renderer/utils/storage-helper.ts",
+        "packages/core/src/renderer/utils/sync-box/provide-initial-values-for-sync-boxes.injectable.ts"
+      ],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noNodejsModules": "off"
+          }
+        }
+      }
     }
   ],
   "vcs": {

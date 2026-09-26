@@ -148,11 +148,9 @@
       }
     },
 
-    // The contract fixture (#2451) is an extension, not a library: its
-    // entrypoints are the `main` and `renderer` manifest fields, which point at
-    // build output, and knip does not read `renderer` at all. Without the
-    // entries below its only dependency looks unused in the --production
-    // --strict pass.
+    // The contract fixture is an extension, not a library: its entrypoints are
+    // the `main` and `renderer` manifest fields, which point at build output,
+    // and knip does not read `renderer` at all, so they are listed below.
     "packages/fixture-extension": {
       "entry": [
         "vite.config.mjs",
@@ -167,10 +165,12 @@
       // replaced by a read of the host global, so there is nothing to resolve
       "ignore": ["dist/**"],
       "ignoreDependencies": [
-        // host-provided singletons. The bundle maps them onto
-        // globalThis.FreelensExtensionApi (see vite.config.mjs), so they are
-        // declared as devDependencies for their types alone, which the
-        // --production --strict pass reports as unlisted
+        // host-provided modules. The bundle maps them onto
+        // globalThis.FreelensExtensionApi (see vite.config.mjs), and Freelens
+        // installs no dependencies of an extension, so they are declared as
+        // devDependencies for their types alone, which the --production
+        // --strict pass reports as unlisted
+        "@freelensapp/extensions",
         "@types/react",
         "mobx",
         "react"

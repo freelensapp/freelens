@@ -88,8 +88,11 @@ runtime.
 ## `package.json` for an extension
 
 - Set `engines.freelens` to `^2.0.0` (see [Step one](#step-one-bump-enginesfreelens)).
-- Depend on `@freelensapp/extensions` for **types**. You do not need to bundle
-  it; the API is provided by the host through the runtime global.
+- Declare `@freelensapp/extensions` in **`devDependencies`**. Freelens installs
+  no dependencies of an extension — the installer only extracts your tarball —
+  so whatever your code needs at runtime and the host does not provide must
+  already be in your bundle. The package provides the types and a small shim
+  that reads the host's runtime global, and your bundler inlines that shim.
 - Author your main entry as ESM or CommonJS. If you ship ESM, set
   `"type": "module"` (or use `.mjs`). Your renderer entry must be ESM.
 - Do not add any other `@freelensapp/*` package as a dependency — they are
@@ -97,11 +100,6 @@ runtime.
 - Add **`electron`** as a `devDependency` for its types. It is an *optional*
   peer of `@freelensapp/extensions`; a hard dependency would download the
   Electron binary into every extension install.
-
-**Top-level await** is allowed by the contract in a renderer entry, but the
-current loader is synchronous, so it does not work yet — it arrives with the
-URL-served loader ([#2400](https://github.com/freelensapp/freelens/issues/2400)).
-Do not rely on it in an extension you ship today.
 
 ### The host-provided libraries, and how to mark them external
 
