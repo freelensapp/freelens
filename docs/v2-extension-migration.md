@@ -641,7 +641,7 @@ the renderer:
 
 | v1 | Replacement |
 | --- | --- |
-| `node:crypto` hashing | Web Crypto `crypto.subtle.digest` (asynchronous), or a bundled hash library |
+| `node:crypto` hashing | `Util.sha256Hex` / `Util.createHash` (synchronous SHA-256), or Web Crypto `crypto.subtle.digest` where asynchronous is fine |
 | `crypto.X509Certificate` | main plus `Ipc`; there is no web equivalent |
 | `http` / `https` | `fetch` |
 | `electron` `ipcRenderer` | `Renderer.Ipc` |
@@ -656,7 +656,26 @@ the arguments after it are guaranteed, so a `(_event, ...args) => …` listener
 keeps compiling and one that reads `event.sender` stops. `Main.Ipc` is
 unchanged, since main has Electron.
 
-A hash in the renderer, for example, becomes:
+A SHA-256 in the renderer, for example, becomes a call to `Util.sha256Hex`,
+which every one of `Common.Util`, `Main.Util` and `Renderer.Util` carries. It
+is synchronous, so it works where a value has to exist during render, and it
+returns the same lowercase hex digest as `node:crypto`, a string being hashed
+as UTF-8 in both:
+
+```ts
+import { Renderer } from "@freelensapp/extensions";
+
+// Was: crypto.createHash("sha256").update(text).digest("hex")
+const hex = Renderer.Util.sha256Hex(text);
+```
+
+`Util.createHash(data)` is the first 16 characters of
+`sha256Hex(JSON.stringify(data))`, for a React `key` or a cache key. Because it
+hashes the JSON, the key order of an object changes the result, and it throws a
+`TypeError` for a value `JSON.stringify` does not serialize, such as
+`undefined` or a function.
+
+Where asynchronous is fine, Web Crypto does the same without the host:
 
 ```ts
 const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
