@@ -553,10 +553,10 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  style="display: flex; align-items: center; gap: 8px;"
+                  class="wrapper"
                 >
                   <div
-                    class="Input SearchInput focused"
+                    class="Input SearchInput searchInput focused"
                   >
                     <label
                       class="input-area flex items-center gap-2"
@@ -582,6 +582,20 @@ exports[`showing details for helm release > given application is started > when 
                     <div
                       class="input-info flex gap-2"
                     />
+                  </div>
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="bookmark_border"
+                    >
+                      bookmark_border
+                    </span>
+                  </i>
+                  <div>
+                    Saved searches
                   </div>
                   <i
                     class="Icon material interactive focusable small"
@@ -1506,10 +1520,10 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  style="display: flex; align-items: center; gap: 8px;"
+                  class="wrapper"
                 >
                   <div
-                    class="Input SearchInput focused"
+                    class="Input SearchInput searchInput focused"
                   >
                     <label
                       class="input-area flex items-center gap-2"
@@ -1535,6 +1549,20 @@ exports[`showing details for helm release > given application is started > when 
                     <div
                       class="input-info flex gap-2"
                     />
+                  </div>
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="bookmark_border"
+                    >
+                      bookmark_border
+                    </span>
+                  </i>
+                  <div>
+                    Saved searches
                   </div>
                   <i
                     class="Icon material interactive focusable small"
@@ -2733,10 +2761,10 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  style="display: flex; align-items: center; gap: 8px;"
+                  class="wrapper"
                 >
                   <div
-                    class="Input SearchInput focused"
+                    class="Input SearchInput searchInput focused"
                   >
                     <label
                       class="input-area flex items-center gap-2"
@@ -2762,6 +2790,20 @@ exports[`showing details for helm release > given application is started > when 
                     <div
                       class="input-info flex gap-2"
                     />
+                  </div>
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="bookmark_border"
+                    >
+                      bookmark_border
+                    </span>
+                  </i>
+                  <div>
+                    Saved searches
                   </div>
                   <i
                     class="Icon material interactive focusable small"
@@ -4021,10 +4063,10 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  style="display: flex; align-items: center; gap: 8px;"
+                  class="wrapper"
                 >
                   <div
-                    class="Input SearchInput focused"
+                    class="Input SearchInput searchInput focused"
                   >
                     <label
                       class="input-area flex items-center gap-2"
@@ -4050,6 +4092,20 @@ exports[`showing details for helm release > given application is started > when 
                     <div
                       class="input-info flex gap-2"
                     />
+                  </div>
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="bookmark_border"
+                    >
+                      bookmark_border
+                    </span>
+                  </i>
+                  <div>
+                    Saved searches
                   </div>
                   <i
                     class="Icon material interactive focusable small"
@@ -5309,10 +5365,10 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  style="display: flex; align-items: center; gap: 8px;"
+                  class="wrapper"
                 >
                   <div
-                    class="Input SearchInput focused"
+                    class="Input SearchInput searchInput focused"
                   >
                     <label
                       class="input-area flex items-center gap-2"
@@ -5338,6 +5394,20 @@ exports[`showing details for helm release > given application is started > when 
                     <div
                       class="input-info flex gap-2"
                     />
+                  </div>
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="bookmark_border"
+                    >
+                      bookmark_border
+                    </span>
+                  </i>
+                  <div>
+                    Saved searches
                   </div>
                   <i
                     class="Icon material interactive focusable small"
@@ -6843,10 +6913,10 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  style="display: flex; align-items: center; gap: 8px;"
+                  class="wrapper"
                 >
                   <div
-                    class="Input SearchInput focused"
+                    class="Input SearchInput searchInput focused"
                   >
                     <label
                       class="input-area flex items-center gap-2"
@@ -6872,6 +6942,20 @@ exports[`showing details for helm release > given application is started > when 
                     <div
                       class="input-info flex gap-2"
                     />
+                  </div>
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="bookmark_border"
+                    >
+                      bookmark_border
+                    </span>
+                  </i>
+                  <div>
+                    Saved searches
                   </div>
                   <i
                     class="Icon material interactive focusable small"
@@ -8377,10 +8461,10 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  style="display: flex; align-items: center; gap: 8px;"
+                  class="wrapper"
                 >
                   <div
-                    class="Input SearchInput focused"
+                    class="Input SearchInput searchInput focused"
                   >
                     <label
                       class="input-area flex items-center gap-2"
@@ -8406,6 +8490,20 @@ exports[`showing details for helm release > given application is started > when 
                     <div
                       class="input-info flex gap-2"
                     />
+                  </div>
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="bookmark_border"
+                    >
+                      bookmark_border
+                    </span>
+                  </i>
+                  <div>
+                    Saved searches
                   </div>
                   <i
                     class="Icon material interactive focusable small"
@@ -9911,10 +10009,10 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  style="display: flex; align-items: center; gap: 8px;"
+                  class="wrapper"
                 >
                   <div
-                    class="Input SearchInput focused"
+                    class="Input SearchInput searchInput focused"
                   >
                     <label
                       class="input-area flex items-center gap-2"
@@ -9940,6 +10038,20 @@ exports[`showing details for helm release > given application is started > when 
                     <div
                       class="input-info flex gap-2"
                     />
+                  </div>
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="bookmark_border"
+                    >
+                      bookmark_border
+                    </span>
+                  </i>
+                  <div>
+                    Saved searches
                   </div>
                   <i
                     class="Icon material interactive focusable small"
@@ -11171,10 +11283,10 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  style="display: flex; align-items: center; gap: 8px;"
+                  class="wrapper"
                 >
                   <div
-                    class="Input SearchInput focused"
+                    class="Input SearchInput searchInput focused"
                   >
                     <label
                       class="input-area flex items-center gap-2"
@@ -11200,6 +11312,20 @@ exports[`showing details for helm release > given application is started > when 
                     <div
                       class="input-info flex gap-2"
                     />
+                  </div>
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="bookmark_border"
+                    >
+                      bookmark_border
+                    </span>
+                  </i>
+                  <div>
+                    Saved searches
                   </div>
                   <i
                     class="Icon material interactive focusable small"
@@ -12433,10 +12559,10 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  style="display: flex; align-items: center; gap: 8px;"
+                  class="wrapper"
                 >
                   <div
-                    class="Input SearchInput focused"
+                    class="Input SearchInput searchInput focused"
                   >
                     <label
                       class="input-area flex items-center gap-2"
@@ -12462,6 +12588,20 @@ exports[`showing details for helm release > given application is started > when 
                     <div
                       class="input-info flex gap-2"
                     />
+                  </div>
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="bookmark_border"
+                    >
+                      bookmark_border
+                    </span>
+                  </i>
+                  <div>
+                    Saved searches
                   </div>
                   <i
                     class="Icon material interactive focusable small"
@@ -13967,10 +14107,10 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  style="display: flex; align-items: center; gap: 8px;"
+                  class="wrapper"
                 >
                   <div
-                    class="Input SearchInput"
+                    class="Input SearchInput searchInput"
                   >
                     <label
                       class="input-area flex items-center gap-2"
@@ -13996,6 +14136,20 @@ exports[`showing details for helm release > given application is started > when 
                     <div
                       class="input-info flex gap-2"
                     />
+                  </div>
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="bookmark_border"
+                    >
+                      bookmark_border
+                    </span>
+                  </i>
+                  <div>
+                    Saved searches
                   </div>
                   <i
                     class="Icon material interactive focusable small"
@@ -15255,10 +15409,10 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  style="display: flex; align-items: center; gap: 8px;"
+                  class="wrapper"
                 >
                   <div
-                    class="Input SearchInput focused"
+                    class="Input SearchInput searchInput focused"
                   >
                     <label
                       class="input-area flex items-center gap-2"
@@ -15284,6 +15438,20 @@ exports[`showing details for helm release > given application is started > when 
                     <div
                       class="input-info flex gap-2"
                     />
+                  </div>
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="bookmark_border"
+                    >
+                      bookmark_border
+                    </span>
+                  </i>
+                  <div>
+                    Saved searches
                   </div>
                   <i
                     class="Icon material interactive focusable small"
@@ -16545,10 +16713,10 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  style="display: flex; align-items: center; gap: 8px;"
+                  class="wrapper"
                 >
                   <div
-                    class="Input SearchInput focused"
+                    class="Input SearchInput searchInput focused"
                   >
                     <label
                       class="input-area flex items-center gap-2"
@@ -16574,6 +16742,20 @@ exports[`showing details for helm release > given application is started > when 
                     <div
                       class="input-info flex gap-2"
                     />
+                  </div>
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="bookmark_border"
+                    >
+                      bookmark_border
+                    </span>
+                  </i>
+                  <div>
+                    Saved searches
                   </div>
                   <i
                     class="Icon material interactive focusable small"
@@ -17772,10 +17954,10 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  style="display: flex; align-items: center; gap: 8px;"
+                  class="wrapper"
                 >
                   <div
-                    class="Input SearchInput focused"
+                    class="Input SearchInput searchInput focused"
                   >
                     <label
                       class="input-area flex items-center gap-2"
@@ -17801,6 +17983,20 @@ exports[`showing details for helm release > given application is started > when 
                     <div
                       class="input-info flex gap-2"
                     />
+                  </div>
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="bookmark_border"
+                    >
+                      bookmark_border
+                    </span>
+                  </i>
+                  <div>
+                    Saved searches
                   </div>
                   <i
                     class="Icon material interactive focusable small"
@@ -19060,10 +19256,10 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  style="display: flex; align-items: center; gap: 8px;"
+                  class="wrapper"
                 >
                   <div
-                    class="Input SearchInput focused"
+                    class="Input SearchInput searchInput focused"
                   >
                     <label
                       class="input-area flex items-center gap-2"
@@ -19089,6 +19285,20 @@ exports[`showing details for helm release > given application is started > when 
                     <div
                       class="input-info flex gap-2"
                     />
+                  </div>
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="bookmark_border"
+                    >
+                      bookmark_border
+                    </span>
+                  </i>
+                  <div>
+                    Saved searches
                   </div>
                   <i
                     class="Icon material interactive focusable small"
@@ -20348,10 +20558,10 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  style="display: flex; align-items: center; gap: 8px;"
+                  class="wrapper"
                 >
                   <div
-                    class="Input SearchInput focused"
+                    class="Input SearchInput searchInput focused"
                   >
                     <label
                       class="input-area flex items-center gap-2"
@@ -20377,6 +20587,20 @@ exports[`showing details for helm release > given application is started > when 
                     <div
                       class="input-info flex gap-2"
                     />
+                  </div>
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="bookmark_border"
+                    >
+                      bookmark_border
+                    </span>
+                  </i>
+                  <div>
+                    Saved searches
                   </div>
                   <i
                     class="Icon material interactive focusable small"
@@ -21636,10 +21860,10 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  style="display: flex; align-items: center; gap: 8px;"
+                  class="wrapper"
                 >
                   <div
-                    class="Input SearchInput focused"
+                    class="Input SearchInput searchInput focused"
                   >
                     <label
                       class="input-area flex items-center gap-2"
@@ -21665,6 +21889,20 @@ exports[`showing details for helm release > given application is started > when 
                     <div
                       class="input-info flex gap-2"
                     />
+                  </div>
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="bookmark_border"
+                    >
+                      bookmark_border
+                    </span>
+                  </i>
+                  <div>
+                    Saved searches
                   </div>
                   <i
                     class="Icon material interactive focusable small"
@@ -23170,10 +23408,10 @@ exports[`showing details for helm release > given application is started > when 
                   </div>
                 </div>
                 <div
-                  style="display: flex; align-items: center; gap: 8px;"
+                  class="wrapper"
                 >
                   <div
-                    class="Input SearchInput focused"
+                    class="Input SearchInput searchInput focused"
                   >
                     <label
                       class="input-area flex items-center gap-2"
@@ -23199,6 +23437,20 @@ exports[`showing details for helm release > given application is started > when 
                     <div
                       class="input-info flex gap-2"
                     />
+                  </div>
+                  <i
+                    class="Icon material interactive focusable small"
+                    tabindex="0"
+                  >
+                    <span
+                      class="icon"
+                      data-icon-name="bookmark_border"
+                    >
+                      bookmark_border
+                    </span>
+                  </i>
+                  <div>
+                    Saved searches
                   </div>
                   <i
                     class="Icon material interactive focusable small"
