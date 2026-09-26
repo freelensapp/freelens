@@ -24,6 +24,7 @@ export * from "./src/isReactNode";
 export * from "./src/iter";
 export * from "./src/json";
 export * from "./src/jsonPath";
+export * from "./src/kustomize-hash";
 export * from "./src/lowerAndPluralize";
 export * from "./src/metricUnitsToNumber";
 export * from "./src/name-parts";
