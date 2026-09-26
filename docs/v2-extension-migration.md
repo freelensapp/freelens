@@ -574,6 +574,11 @@ the latter in `Common`, which renderer code reads too.
   replacement. The application menu and the tray belong to the host.
 - **`Common.Types.IpcRendererEvent`** — the event a `Renderer.Ipc` listener
   receives is typed `unknown`; leave that first parameter alone.
+- **`Common.Types.IpcMainEvent`** and **`Common.Types.IpcMainInvokeEvent`** —
+  `Main.Ipc.listen` and `Main.Ipc.handle` still type their handler's event, so
+  an inline handler needs no annotation. Where you name the type yourself,
+  import it from `electron` (`import type { IpcMainEvent } from "electron"`) in
+  your main code.
 
 ## Node and Electron in the renderer
 
@@ -1061,7 +1066,9 @@ restarted once.
       `KubeObjectStore<T>` as the base class for your own store (see
       [`Renderer.K8sApi` concrete store classes removed](#rendererk8sapi-concrete-store-classes-removed)).
 - [ ] Replace any use of `Renderer.Component.VirtualList`, `appMenus`,
-      `trayMenus` or `Common.Types.IpcRendererEvent` — they were removed (see
+      `trayMenus`, `Common.Types.IpcRendererEvent`,
+      `Common.Types.IpcMainEvent` or `Common.Types.IpcMainInvokeEvent` — they
+      were removed (see
       [Unused members removed](#unused-members-removed)).
 - [ ] Move any Node or Electron use out of the renderer — `require()`, a
       builtin import, `Buffer`, `process` — to the replacements in

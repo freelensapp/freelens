@@ -4,9 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-export type IpcMainInvokeEvent = Electron.IpcMainInvokeEvent;
-export type IpcMainEvent = Electron.IpcMainEvent;
-
 export type {
   ProtocolHandlerRegistration,
   RouteHandler as ProtocolRouteHandler,
