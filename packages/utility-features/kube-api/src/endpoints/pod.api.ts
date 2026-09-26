@@ -83,10 +83,10 @@ export class PodApi extends KubeApi<Pod> {
     return this.forceDelete(resource);
   }
 
-  async getLogs(params: ResourceDescriptor, query?: PodLogsQuery): Promise<string> {
+  async getLogs(params: ResourceDescriptor, query?: PodLogsQuery, signal?: AbortSignal): Promise<string> {
     const path = `${this.getUrl(params)}/log`;
 
-    const logs = await this.request.get(path, { query });
+    const logs = await this.request.get(path, { query }, { signal });
 
     if (typeof logs !== "string") {
       return "";
