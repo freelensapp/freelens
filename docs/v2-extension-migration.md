@@ -511,12 +511,10 @@ For a custom resource, pass that resource's base path
 (`/apis/<group>/<version>/<plural>`), or call the static `getStore()` on your
 own `LensExtensionKubeObject` subclass.
 
-If you were subclassing a built-in store to change its behaviour rather than to
-add a resource, that never worked across a host upgrade — extend
-`KubeObjectStore` over your own `KubeApi` instead, and register it with
-`apiManager`. If you find a case none of the three replacements covers, open an
-issue: adding a symbol back to the API is cheap, removing one is not, so this
-can return in a 2.x release.
+If you were subclassing a built-in store, extend `KubeObjectStore` over your own
+`KubeApi` instead, and register it with `apiManager`. If you find a case none of
+the three replacements covers, open an issue: adding a symbol back to the API is
+cheap, removing one is not, so this can return in a 2.x release.
 
 ### `NamespaceSelectBadgeNonInjected` is gone with them
 
