@@ -35,7 +35,7 @@ proves nothing about how extensions are actually loaded.
 
 | Level | Where | What it can catch |
 | --- | --- | --- |
-| Types | `pnpm --filter @freelensapp/fixture-extension type:check`, run by its `build` | a re-export that disappeared from the published surface, including one that exists as a value but is not nameable as a type |
+| Types | `pnpm --filter @freelensapp/fixture-extension type:check`, run by its `build` | a re-export that disappeared from the published surface, including one that exists as a value but is not nameable as a type; a tsconfig that lets one runtime environment's APIs into another's code |
 | Unit | `packages/core/src/extensions/__tests__/fixture-extension.test.tsx` | instance identity of React and mobx, the registrators, the lifecycle, `Util.fetch` reaching the host's DI |
 | Integration | not yet — see [#2400](https://github.com/freelensapp/freelens/issues/2400) | the same, against a real application instance rather than a harness |
 
@@ -56,6 +56,23 @@ where that layout is proven:
 times: by the main program, which has no DOM, by the renderer program, which has
 no Node, and by its own config, which is what an editor uses for a file in
 `src/common/`.
+
+A config that compiles is not yet a config that separates anything, so
+`type:check` also compiles the files in [`environment-tests/`](./environment-tests)
+with the same settings. Each line there that must not compile carries a
+`@ts-expect-error`, which inverts the check: a config that starts accepting the
+line fails with an unused directive.
+
+| Config | Compiles | Settings of |
+| --- | --- | --- |
+| `environment-tests/tsconfig.main.json` | `dom-apis.ts`, `worker-apis.ts` must fail; `shared-apis.ts` must pass | `src/main/` |
+| `environment-tests/tsconfig.renderer.json` | `node-apis.ts` must fail; `shared-apis.ts` must pass | `src/renderer/` |
+| `environment-tests/tsconfig.json` | `node-apis.ts`, `dom-apis.ts` must fail; `shared-apis.ts` must pass | `src/common/` |
+
+`worker-apis.ts` is the reason common code is also compiled with the main
+config. `self` and `postMessage` exist in a worker and not in Node, so the
+`WebWorker` lib of the common config accepts them, and only the main program
+rejects them.
 
 The configs are deliberately standalone: they extend only
 [`tsconfig.base.json`](./tsconfig.base.json), not the repository tsconfig, and
