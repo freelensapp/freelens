@@ -379,16 +379,6 @@ incidental to the implementation, remove it, as was done for `node:assert` in
 `unitsToBytes` and `node:util` in `strictGet`; if it is what the function does,
 add the member to the omit list and a line to the migration guide.
 
-The omit list today, from #2481: `readFileFromTar`, `listTarEntries`,
-`unionPATHs`, `base64`, `isBuffer`, `isErrnoException`, `isExecException`,
-`isExecFileException`, `isChildProcessError` and `isRequestError`.
-`openExternal` and `openBrowser`, which called Electron's `shell` from the
-renderer, were host-defined and are removed outright. No extension among the
-29 surveyed reached any of them. Dropping them is what removed `child_process`,
-`node:child_process` and `node:http` from the imports of
-`dist/extension-api.d.ts`, and the last references to `Buffer` and `NodeJS`
-from its types.
-
 **Failure mode.** A member that needs Node and is not on the list fails at
 runtime in a renderer without Node — a `ReferenceError` for a global such as
 `Buffer`, a failed import for a builtin — and not at compile time, because
