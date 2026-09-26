@@ -641,7 +641,8 @@ the renderer:
 
 | v1 | Replacement |
 | --- | --- |
-| `node:crypto` hashing | Web Crypto `crypto.subtle.digest` (asynchronous), or a bundled hash library |
+| `node:crypto` hashing | `Util.sha256Hex` (synchronous SHA-256), `Util.createReactKey` for a React `key`, or Web Crypto `crypto.subtle.digest` where asynchronous is fine |
+| `node:crypto` `randomUUID()` / `randomBytes(n)` | `globalThis.crypto.randomUUID()` / `globalThis.crypto.getRandomValues(new Uint8Array(n))`, with no import |
 | `crypto.X509Certificate` | main plus `Ipc`; there is no web equivalent |
 | `http` / `https` | `fetch` |
 | `electron` `ipcRenderer` | `Renderer.Ipc` |
@@ -656,12 +657,56 @@ the arguments after it are guaranteed, so a `(_event, ...args) => …` listener
 keeps compiling and one that reads `event.sender` stops. `Main.Ipc` is
 unchanged, since main has Electron.
 
-A hash in the renderer, for example, becomes:
+A SHA-256 in the renderer, for example, becomes a call to `Util.sha256Hex`,
+which every one of `Common.Util`, `Main.Util` and `Renderer.Util` carries. It
+is synchronous, so it works where a value has to exist during render, and it
+returns the same lowercase hex digest as `node:crypto`, a string being hashed
+as UTF-8 in both:
+
+```ts
+import { Renderer } from "@freelensapp/extensions";
+
+// Was: crypto.createHash("sha256").update(text).digest("hex")
+const hex = Renderer.Util.sha256Hex(text);
+```
+
+For a React `key` or a cache key, use `Util.createReactKey(data)` instead. It
+returns 16 lowercase hex characters from a fast, non-cryptographic hash of
+`JSON.stringify(data)`, so the key order of an object changes the result, and
+it throws a `TypeError` for a value `JSON.stringify` does not serialize, such
+as `undefined` or a function. Its algorithm is not part of the contract: the
+key is stable within a session, so do not persist it or compare it with one
+from another version, and use `Util.sha256Hex` where the digest has to be
+reproducible. An extension that had its own `createHash` helper for this can
+keep its call sites with `import { createReactKey as createHash }`.
+`Util.kustomizeHash(resource)` gives the name suffix kustomize appends to a
+generated ConfigMap or Secret.
+
+Where asynchronous is fine, Web Crypto does the same without the host:
 
 ```ts
 const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
 const hex = Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, "0")).join("");
 ```
+
+Random values need no host API at all. The global Web Crypto object exists in
+both processes: main has Node's global `crypto`, and every renderer frame is a
+secure context, so `randomUUID()` and `getRandomValues()` behave the same in
+both:
+
+```ts
+// Was: import { randomBytes, randomUUID } from "node:crypto";
+const id = globalThis.crypto.randomUUID();
+const bytes = globalThis.crypto.getRandomValues(new Uint8Array(16));
+```
+
+Write `globalThis.crypto` rather than a bare `crypto`, and do not import
+`crypto` for it. Once a file has `import crypto from "node:crypto"`, a bare
+`crypto.randomUUID()` in it means the Node module: it works in main by
+accident and breaks the renderer bundle, whereas `globalThis.crypto` always
+means Web Crypto. Neither the types nor the bundler need anything: with both
+`lib.dom` and `@types/node` in one `tsconfig.json`, the global `crypto` has the
+DOM `Crypto` type, and a bundler leaves a global reference as it is.
 
 **In the renderer build, do not mark the Node builtins external.** A v1 bundle
 left them as `require("crypto")` calls and Node resolved them at runtime. A v2
