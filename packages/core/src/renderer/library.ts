@@ -16,6 +16,11 @@ export * as MobxReact from "mobx-react";
 export * as ReactJsxRuntime from "react/jsx-runtime";
 // @experimental
 export { nodeEnvInjectionToken } from "../common/vars/node-env-injection-token";
+export { assertExtensionApiSingletonNames } from "../extensions/api-globals/global-name-for-module-id";
+export {
+  rendererExtensionApiSingletonModuleIds,
+  rendererExtensionApiSingletons,
+} from "../extensions/api-globals/renderer-singletons";
 export * as commonExtensionApi from "../extensions/common-api";
 export * as rendererExtensionApi from "../extensions/renderer-api";
 export { metricsFeature } from "../features/metrics/metrics-feature";

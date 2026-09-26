@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { inspect } from "node:util";
 import { runInAction } from "mobx";
 import { isDefined } from "./type-narrowing";
 
@@ -18,6 +17,33 @@ export interface MapLike<K, V> {
   has(key: K): boolean;
   get(key: K): V | undefined;
   set(key: K, value: V): this;
+}
+
+/**
+ * Render a map key for an error message, close to what `node:util` `inspect`
+ * prints for it, without depending on Node.
+ */
+function formatKey(key: unknown): string {
+  switch (typeof key) {
+    case "string":
+      return `'${key}'`;
+    case "bigint":
+      return `${key}n`;
+    case "function":
+      return `[Function: ${key.name || "(anonymous)"}]`;
+    case "object":
+      if (key === null) {
+        return "null";
+      }
+
+      try {
+        return JSON.stringify(key) ?? String(key);
+      } catch {
+        return String(key);
+      }
+    default:
+      return String(key);
+  }
 }
 
 /**
@@ -118,7 +144,7 @@ export function setAndGet<K, V>(map: MapLike<K, V>, key: K, val: V): V {
  */
 export function strictSet<K, V>(map: MapLike<K, V>, key: K, val: V): typeof map {
   if (map.has(key)) {
-    throw new TypeError(`Map already contains key: ${inspect(key)}`);
+    throw new TypeError(`Map already contains key: ${formatKey(key)}`);
   }
 
   return map.set(key, val);
@@ -131,7 +157,7 @@ export function strictSet<K, V>(map: MapLike<K, V>, key: K, val: V): typeof map 
  */
 export function strictGet<K, V>(map: MapLike<K, V>, key: K): V {
   if (!map.has(key)) {
-    throw new TypeError(`Map does not contains key: ${inspect(key)}`);
+    throw new TypeError(`Map does not contains key: ${formatKey(key)}`);
   }
 
   return map.get(key)!;

@@ -6,13 +6,13 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import extensionPackagesRootInjectable from "./extension-packages-root.injectable";
+import loadInstalledExtensionsStorageInjectable from "./load-storage.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
   try {
-    di.register(extensionPackagesRootInjectable);
+    di.register(loadInstalledExtensionsStorageInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

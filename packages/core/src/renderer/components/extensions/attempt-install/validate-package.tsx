@@ -5,8 +5,8 @@
  */
 
 import path from "node:path";
-import { isObject, isString, listTarEntries, readFileFromTar } from "@freelensapp/utilities";
-import { manifestFilename } from "../../../../extensions/extension-discovery/extension-discovery";
+import { listTarEntries, readFileFromTar } from "@freelensapp/utilities";
+import { manifestFilename, validateExtensionManifest } from "../../../../features/extensions/installer/common/manifest";
 
 import type { LensExtensionManifest } from "../../../../extensions/installed-extension";
 
@@ -34,13 +34,5 @@ export async function validatePackage(filePath: string): Promise<LensExtensionMa
     parseJson: true,
   });
 
-  if (!isObject(manifest) || (!isString(manifest.main) && !isString(manifest.renderer))) {
-    throw new Error(`${manifestFilename} must specify "main" and/or "renderer" field`);
-  }
-
-  if (!isObject(manifest.engines) || !isString(manifest.engines.freelens)) {
-    throw new Error(`${manifestFilename} must specify "freelens" in "engines" field`);
-  }
-
-  return manifest as unknown as LensExtensionManifest;
+  return validateExtensionManifest(manifest);
 }

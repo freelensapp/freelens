@@ -6,25 +6,25 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import extensionPackageRootDirectoryInjectable from "./extension-package-root-directory.injectable";
-import forkPnpmInjectable from "./fork-pnpm.injectable";
-import installExtensionInjectable from "./install-extension.injectable";
+import handleExtensionSchemeInjectable from "./handle-extension-scheme.injectable";
+import registerExtensionSchemeAsPrivilegedInjectable from "./register-scheme-as-privileged.injectable";
+import serveExtensionFileInjectable from "./serve-extension-file.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
   try {
-    di.register(extensionPackageRootDirectoryInjectable);
+    di.register(handleExtensionSchemeInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
   try {
-    di.register(forkPnpmInjectable);
+    di.register(registerExtensionSchemeAsPrivilegedInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
   try {
-    di.register(installExtensionInjectable);
+    di.register(serveExtensionFileInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

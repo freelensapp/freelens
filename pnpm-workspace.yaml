@@ -18,6 +18,8 @@ catalog:
   mobx-react-lite: 4.1.1
   # TypeScript
   typescript: 7.0.2
+  # Compiler API for rollup-plugin-dts, which TypeScript 7 no longer provides
+  '@typescript/typescript6': 6.0.2
   # Dependency injection (Ogre Tools)
   '@ogre-tools/injectable': 23.2.0
   '@ogre-tools/injectable-extension-for-mobx': 23.2.0
@@ -47,7 +49,7 @@ catalog:
   playwright: 1.61.1
   pnpm: 11.18.0
   rollup: 4.62.2
-  rollup-plugin-dts: 6.4.1
+  rollup-plugin-dts: 6.5.1
   sass-embedded: 1.100.0
   tailwindcss: 4.2.4
   turbo: 2.10.2

@@ -8,6 +8,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import getClusterByIdInjectable from "../../../../features/cluster/storage/common/get-by-id.injectable";
 import { ClusterAccessibleNamespaces } from "../../cluster-settings/accessible-namespaces";
+import { NamespaceAuthCheckSetting } from "../../cluster-settings/namespace-auth-check-setting";
 import { entitySettingInjectionToken } from "../token";
 
 import type { GetClusterById } from "../../../../features/cluster/storage/common/get-by-id.injectable";
@@ -29,7 +30,13 @@ function NonInjectedNamespaceKubernetesClusterSettings({
 
   return (
     <section>
-      <ClusterAccessibleNamespaces cluster={cluster} />
+      <section>
+        <ClusterAccessibleNamespaces cluster={cluster} />
+      </section>
+      <hr />
+      <section>
+        <NamespaceAuthCheckSetting cluster={cluster} />
+      </section>
     </section>
   );
 }

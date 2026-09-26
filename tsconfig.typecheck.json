@@ -60,5 +60,12 @@
     "freelens/integration/**/*.ts",
     "freelens/vitest.integration.config.ts"
   ],
-  "exclude": ["**/node_modules/**", "**/dist/**", "**/dist-types/**", "**/static/**", "**/binaries/**"]
+  "exclude": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/dist-types/**",
+    "**/static/**",
+    "**/binaries/**",
+    "packages/fixture-extension/**"
+  ]
 }
