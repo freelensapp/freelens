@@ -699,6 +699,16 @@ deciding later cannot.
 Deprecation within a major: mark with `@deprecated`, keep it working for the
 rest of the major, remove it in the next one.
 
+This is what withdrew the host's concrete store classes from `Renderer.K8sApi`
+before 2.0.0 (#2478). `PodStore`, `CronJobStore`,
+`CustomResourceDefinitionStore` and the rest each carried a host dependency bag
+as their first constructor argument — an extension could name the class but not
+call it — so freezing them would have made refactoring an internal store's
+dependencies a breaking change to the API. The store **singletons** and the
+generic `KubeObjectStore<T>` are the surface; a type position is served by
+`typeof Renderer.K8sApi.cronJobStore`. Fifteen of the seventeen dependency bags
+the #2366 triage found on the surface were those stores.
+
 **Status:** the gate is shipped and the policy above is decided. The tiering
 mechanism is not needed for 2.0.0 — its absence is what makes the freeze
 strict, and adding a tier later is additive where exporting first and deciding
