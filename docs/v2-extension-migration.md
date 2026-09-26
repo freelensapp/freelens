@@ -631,6 +631,12 @@ the renderer:
 | `Buffer` | `Uint8Array`, `TextEncoder` / `TextDecoder` |
 | `AsyncLocalStorage` | no browser equivalent; pass the context explicitly |
 
+`Renderer.Ipc.listen` still calls your listener with an event object before the
+broadcast's arguments, but that first parameter is typed `unknown` now: only
+the arguments after it are guaranteed, so a `(_event, ...args) => …` listener
+keeps compiling and one that reads `event.sender` stops. `Main.Ipc` is
+unchanged, since main has Electron.
+
 A hash in the renderer, for example, becomes:
 
 ```ts
