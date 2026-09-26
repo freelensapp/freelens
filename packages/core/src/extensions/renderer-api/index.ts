@@ -14,7 +14,6 @@ import * as Component from "./components";
 import * as K8s from "./k8s";
 import * as K8sApi from "./k8s-api";
 import * as Navigation from "./navigation";
-import * as Theme from "./theming";
 import { Util } from "./utils";
 
-export { Catalog, Component, Ipc, K8s, K8sApi, LensExtension, Navigation, Theme, Util };
+export { Catalog, Component, Ipc, K8s, K8sApi, LensExtension, Navigation, Util };
