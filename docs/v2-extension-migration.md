@@ -449,6 +449,86 @@ per-request client certificates, or a CA that is trusted for this one call and
 nothing else — and prefer doing that work in main, where a TLS configuration
 can be applied at all.
 
+## `Renderer.K8sApi` concrete store classes removed
+
+The host's built-in store **classes** are no longer exported from
+`Renderer.K8sApi` (#2478) — `PodStore`, `DeploymentStore`, `CronJobStore`,
+`CustomResourceDefinitionStore` and the rest, together with their v1 aliases
+(`PodsStore`, `CRDStore`, `HPAStore`, …).
+
+They were never designed as API. Most of them take a host dependency bag as the
+first constructor argument — `CronJobStore`'s is
+`KubeObjectStoreDependencies & { getJobsByOwner: GetJobsByOwner }` — which an
+extension can neither build nor name, so the classes could not be instantiated
+from outside the host in the first place. Exporting them anyway would freeze
+those bags as public API under
+[C14](./v2-extension-api.md#c14-versioning-and-compatibility), which means
+refactoring an internal store dependency would formally become a breaking change
+to the extension API. v2.0.0 is where that goes away.
+
+**What stays, unchanged:**
+
+- the store **singletons** — `podsStore`, `deploymentStore`, `cronJobStore`,
+  `crdStore`, `eventStore`, `namespaceStore` and the rest of the list. These are
+  the instances the host itself uses, they keep their full inferred type, and
+  they are what the published extensions actually read;
+- the generic base class `Renderer.K8sApi.KubeObjectStore<T>` (and
+  `Main.K8sApi.KubeObjectStore<T>`), whose extension-facing constructor is
+  `(api, opts)` — the host injects the dependencies for you;
+- the static `getStore()` of `LensExtensionKubeObject`, called on your own
+  class (`MyKind.getStore<MyKind>()`), and `apiManager.getStore()`, for
+  reaching a store by its API.
+
+So there are three replacements, depending on what you were doing:
+
+```diff
+-const pods: Renderer.K8sApi.PodStore = Renderer.K8sApi.podsStore;
++const pods = Renderer.K8sApi.podsStore;
+
+-function summarize(store: Renderer.K8sApi.DeploymentStore) { … }
++function summarize(store: typeof Renderer.K8sApi.deploymentStore) { … }
+
+-class MyStore extends Renderer.K8sApi.PodStore { … }
++class MyStore extends Renderer.K8sApi.KubeObjectStore<MyResource, MyApi> { … }
+```
+
+An instance keeps its full inferred type, so `typeof` is a complete replacement
+for the class in a type position — it is the type of the host's store, not a
+widened one.
+
+Two of the removed classes have no exported singleton: `IngressClassStore` and
+`CustomResourceStore` (alias `CRDResourceStore`). No API object for either is
+exported, so reach their stores through `apiManager.getStore()` with the API
+base path:
+
+```ts
+const ingressClasses = Renderer.K8sApi.apiManager.getStore(
+  "/apis/networking.k8s.io/v1/ingressclasses",
+);
+```
+
+For a custom resource, pass that resource's base path
+(`/apis/<group>/<version>/<plural>`), or call the static `getStore()` on your
+own `LensExtensionKubeObject` subclass.
+
+If you were subclassing a built-in store, extend `KubeObjectStore` over your own
+`KubeApi` instead, and register it with `apiManager`. If you find a case none of
+the three replacements covers, open an issue: adding a symbol back to the API is
+cheap, removing one is not, so this can return in a 2.x release.
+
+### `NamespaceSelectBadgeNonInjected` is gone with them
+
+`Renderer.Component` used to re-export the whole
+`namespace-select-badge` module, which put the uninjected component
+`NamespaceSelectBadgeNonInjected` and its `Dependencies` bag on the surface by
+accident. Both are gone; `NamespaceSelectBadge` and `NamespaceSelectBadgeProps`
+are exported explicitly and unchanged. Render the injected component — it
+resolves the namespace filter from the host container itself:
+
+```tsx
+<Renderer.Component.NamespaceSelectBadge namespace={object.getNs()} />
+```
+
 ## Routing: `react-router` re-exports removed
 
 Freelens v2 dropped `react-router` 5, `react-router-dom` 5, and `history` v4
@@ -825,6 +905,11 @@ restarted once.
 - [ ] Replace any `Renderer.Component.List` usage with your own table — it was
       removed along with the `react-table` dependency behind it (see
       [`Renderer.Component.List` removed](#renderercomponentlist-removed)).
+- [ ] Replace any built-in store **class** named from `Renderer.K8sApi`
+      (`PodStore`, `CRDStore`, `HPAStore`, …) with the store singleton, with
+      `typeof` that singleton in type positions, or with
+      `KubeObjectStore<T>` as the base class for your own store (see
+      [`Renderer.K8sApi` concrete store classes removed](#rendererk8sapi-concrete-store-classes-removed)).
 - [ ] Load your extension in a v2 build and verify its UI renders through the
       runtime global.
 
