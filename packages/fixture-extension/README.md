@@ -74,6 +74,11 @@ config. `self` and `postMessage` exist in a worker and not in Node, so the
 `WebWorker` lib of the common config accepts them, and only the main program
 rejects them.
 
+A Node builtin import in `src/renderer/` or `src/common/` is a lint error as
+well: the repository's [`biome.jsonc`](../../biome.jsonc) applies Biome's
+`noNodejsModules` rule to those two trees, as the guide recommends for any
+extension.
+
 The configs are deliberately standalone: they extend only
 [`tsconfig.base.json`](./tsconfig.base.json), not the repository tsconfig, and
 declare no workspace path mappings beyond one. An extension author has neither.
