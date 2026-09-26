@@ -26,27 +26,3 @@ export function sha256Hex(data: string | Uint8Array): string {
 
   return bytesToHex(sha256(bytes));
 }
-
-/**
- * Computes a short, stable hash of a JSON-serializable value, for use as a
- * React `key` or a cache key.
- *
- * The value is hashed through `JSON.stringify`, so two objects with the same
- * entries in a different key order hash differently. It is the first 16 hex
- * characters of the SHA-256 of that JSON, which is not meant to be collision
- * resistant: use {@link sha256Hex} where the digest has to be the full one.
- *
- * @param data A value that `JSON.stringify` can serialize
- * @returns 16 lowercase hex characters
- * @throws {TypeError} if `JSON.stringify` returns `undefined` for `data`, as
- *   for `undefined`, a function or a symbol
- */
-export function createHash(data: unknown): string {
-  const json = JSON.stringify(data) as string | undefined;
-
-  if (json === undefined) {
-    throw new TypeError(`Cannot hash a value that JSON.stringify does not serialize: ${typeof data}`);
-  }
-
-  return sha256Hex(json).slice(0, 16);
-}

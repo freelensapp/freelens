@@ -4,20 +4,12 @@
  */
 
 // The tests run under Node, so each expectation is what `node:crypto` computes
-// for the same input: these functions replace it in renderer code, and have to
-// give the same bytes.
+// for the same input: `sha256Hex` replaces it in renderer code, and has to give
+// the same bytes.
 import crypto from "node:crypto";
-import { createHash, sha256Hex } from "./sha256";
+import { sha256Hex } from "./sha256";
 
 const nodeSha256Hex = (data: string | Uint8Array) => crypto.createHash("sha256").update(data).digest("hex");
-
-// The helper quoted in the issue, as the fluxcd extension has it.
-const nodeCreateHash = (data: unknown) =>
-  crypto
-    .createHash("sha256")
-    .update(JSON.stringify(data) as string)
-    .digest("hex")
-    .substring(0, 16);
 
 describe("sha256Hex", () => {
   it.each([
@@ -44,35 +36,5 @@ describe("sha256Hex", () => {
 
   it("returns 64 lowercase hex characters", () => {
     expect(sha256Hex("hello world")).toMatch(/^[0-9a-f]{64}$/);
-  });
-});
-
-describe("createHash", () => {
-  it.each([
-    ["an object", { apiVersion: "helm.toolkit.fluxcd.io/v2", kind: "HelmRelease", spec: { chart: "podinfo" } }],
-    ["an array", [1, "two", { three: 3 }, null]],
-    ["a string", "podinfo"],
-    ["a non-ASCII string", "Grüße 😀"],
-    ["a number", 42],
-    ["null", null],
-  ])("matches node:crypto for %s", (_, data) => {
-    expect(createHash(data)).toBe(nodeCreateHash(data));
-  });
-
-  it("returns 16 lowercase hex characters", () => {
-    expect(createHash({ a: 1 })).toMatch(/^[0-9a-f]{16}$/);
-  });
-
-  it("depends on the key order of an object", () => {
-    expect(createHash({ a: 1, b: 2 })).not.toBe(createHash({ b: 2, a: 1 }));
-  });
-
-  it.each([
-    ["undefined", undefined],
-    ["a function", () => {}],
-    ["a symbol", Symbol("key")],
-  ])("throws a TypeError for %s, as node:crypto does", (_, data) => {
-    expect(() => nodeCreateHash(data)).toThrow(TypeError);
-    expect(() => createHash(data)).toThrow(TypeError);
   });
 });

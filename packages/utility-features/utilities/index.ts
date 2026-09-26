@@ -8,6 +8,7 @@ export * from "./src/collection-functions";
 export * from "./src/computed-helpers";
 export * from "./src/convertCpu";
 export * from "./src/convertMemory";
+export * from "./src/create-react-key";
 export * from "./src/cssNames";
 export * from "./src/cssVar";
 export * from "./src/date";
