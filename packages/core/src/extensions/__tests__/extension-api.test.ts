@@ -49,7 +49,7 @@ import * as extensions from "../extension-api";
 
 const commonNames = ["App", "Catalog", "Clusters", "EventBus", "Proxy", "Store", "Types", "Util", "logger"];
 const mainNames = ["Catalog", "Ipc", "K8s", "K8sApi", "LensExtension", "Navigation", "Power", "Util"];
-const rendererNames = ["Catalog", "Component", "Ipc", "K8s", "K8sApi", "LensExtension", "Navigation", "Theme", "Util"];
+const rendererNames = ["Catalog", "Component", "Ipc", "K8s", "K8sApi", "LensExtension", "Navigation", "Util"];
 
 const commonAnchors: Record<string, readonly string[]> = {
   App: ["appName", "version"],
@@ -103,7 +103,6 @@ const rendererAnchors: Record<string, readonly string[]> = {
     "namespaceStore",
   ],
   Navigation: ["getDetailsUrl", "getMaybeDetailsUrl", "navigate"],
-  Theme: ["activeTheme"],
   Util: ["bytesToUnits", "cssNames", "fetch", "stopPropagation"],
 };
 
