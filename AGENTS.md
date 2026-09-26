@@ -117,6 +117,26 @@ When a `.json` file needs an explanation — why an entry is excluded, why a
 version is pinned — put it somewhere it survives: the package README, this
 file, or the pull request that introduced it. Do not smuggle it into the JSON.
 
+## Volatile Facts in Documentation
+
+Documentation — `docs/`, the READMEs, this file — describes how things are,
+and has to stay true without anyone maintaining it. Keep out of it whatever
+goes stale on its own:
+
+- issue and pull-request numbers,
+- dates,
+- counts that change without the document changing: how many extensions use
+  something, how many members a namespace has, how many files import a module.
+
+State the rule or the fact rather than the measurement or the history that led
+to it: "no extension is known to use it", not "none of the 29 surveyed
+extensions uses it"; "renderer code gets no guarantee of Node", not "decided in
+the API review". The measurement, the history and the issue references belong
+in the pull request description and the issue, which are dated by nature.
+
+Existing documents still carry such references. Do not copy them as a pattern,
+and drop them from a passage you are rewriting anyway.
+
 ## Build System
 
 ### Commands
