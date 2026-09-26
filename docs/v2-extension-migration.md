@@ -208,8 +208,10 @@ The bundled `extension-api.d.ts` sets two floors for consumer compilers:
 - `"skipLibCheck": true` — the type dependency graph (for example
   `@ogre-tools/injectable`, which references jest types) is not clean under
   `skipLibCheck: false`, and checking it is not your job.
-- `"lib": ["ES2024", "DOM", "DOM.Iterable"]` (or newer) — mobx 6.15 types
-  reference `ReadonlySetLike`, which first appears in the ES2024 lib.
+- `"lib"` with `ES2024` (or newer) — mobx 6.15 types reference
+  `ReadonlySetLike`, which first appears in the ES2024 lib. `DOM` and
+  `DOM.Iterable` belong in the renderer's config only; see
+  [Source layout](#source-layout-one-tsconfig-per-runtime-environment).
 
 `"moduleResolution": "bundler"` (or `node16`/`nodenext`) both resolve the
 package's `exports`.
@@ -223,6 +225,193 @@ const manifest: Common.PackageJson = { name: "my-extension", version: "1.0.0" };
 
 function renderIcon(props: Renderer.Component.IconProps) { /* ... */ }
 ```
+
+## Source layout: one tsconfig per runtime environment
+
+An extension has code for two runtime environments in one project. The main
+entry point runs in Node, under Electron; the renderer entry point runs in a
+browser page, which gets no Node and no Electron
+([C4](./v2-extension-api.md#c4-module-format-and-loading)). One `tsconfig.json`
+with both the DOM lib and `@types/node` cannot tell which APIs are valid where:
+`import fs from "node:fs"`, `Buffer` and `process.env` compile in renderer code,
+`document` and `window` compile in main code, and the mistake shows at runtime
+instead. Give each environment its own directory and its own `tsconfig.json`,
+and the type checker knows which environment it is checking:
+
+```text
+tsconfig.base.json      options shared by the three configs below
+src/
+  main/                 main entry point:     lib ES only, types ["node"]
+    tsconfig.json
+  renderer/             renderer entry point: lib ES + DOM, types []
+    tsconfig.json
+  common/               code both entry points import: lib ES + WebWorker, types []
+    tsconfig.json
+```
+
+The shared options carry the floors of the previous section, among them
+`skipLibCheck`:
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2024",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "noUncheckedSideEffectImports": true,
+    "noEmit": true
+  }
+}
+```
+
+`src/main/tsconfig.json` has Node and no DOM:
+
+```json
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2024"],
+    "types": ["node"]
+  },
+  "include": ["./**/*", "../common/**/*"]
+}
+```
+
+`src/renderer/tsconfig.json` has the DOM and no Node:
+
+```json
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2024", "DOM", "DOM.Iterable"],
+    "types": [],
+    "jsx": "react-jsx"
+  },
+  "include": ["./**/*", "../common/**/*"]
+}
+```
+
+`src/common/tsconfig.json` has neither:
+
+```json
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2024", "WebWorker"],
+    "types": []
+  },
+  "include": ["./**/*"]
+}
+```
+
+Type-check all three, in the script your build runs:
+
+```json
+"type:check": "tsc -p src/main && tsc -p src/renderer && tsc -p src/common"
+```
+
+Some settings here are required, and some are easy to lose:
+
+- **`skipLibCheck: true` is required.** `extension-api.d.ts` is one declaration
+  for every process. It names DOM types that the main config does not have, and
+  `Main.Ipc` names the global `Electron` namespace, which only a config with
+  Electron types has. Checking it under any one environment reports errors in
+  the declaration, not in your code.
+- **Electron types are optional in main.** Without them the `event` parameter of
+  a `Main.Ipc` handler is untyped. For a typed one, add `electron` as a
+  development dependency (for its types; it is never bundled) and write
+  `"types": ["node", "electron"]`.
+- **Write `types` and `noUncheckedSideEffectImports` explicitly.** Both values
+  above are the defaults from TypeScript 6 on. An older compiler loads every
+  `@types` package it finds in `node_modules`, `@types/node` included, whatever
+  installed it, and does not check a side-effect import like `import "node:fs"`
+  at all.
+- **The split does not cover the API namespaces.** The declaration exposes
+  `Main` and `Renderer` to every process, so `Main.Util.fetch` still compiles in
+  renderer code and is `undefined` when it runs
+  ([C2](./v2-extension-api.md#c2-the-runtime-global-api)). Use `Common` in
+  common code.
+
+Each entry point bundles its own copy of `src/common/`. Build the renderer for
+the browser and the main entry for Node, keeping the builtins external in main
+only, as
+[Node and Electron in the renderer](#node-and-electron-in-the-renderer)
+describes.
+
+### What `common` may use
+
+Common code runs in both processes, so it may use only what both have: the
+ECMAScript library plus the web globals Node shares with a browser page —
+`globalThis.crypto`, `TextEncoder` / `TextDecoder`, `URL` /
+`URLSearchParams`, `AbortController`, `structuredClone`, and the timers
+`setTimeout`, `clearTimeout` and `queueMicrotask`. Write `globalThis.` where
+there is any doubt which global a name means, as for
+[`crypto`](#node-and-electron-in-the-renderer). Keep a timer handle opaque: it
+is a number in a browser and an object in Node, so annotating it as either
+breaks the other.
+
+That rule is checked twice, and it takes both:
+
+- **The main and renderer configs include `src/common/`.** Compiled with main's
+  settings, common code fails on the DOM; compiled with the renderer's, it fails
+  on Node. What passes both is exactly what is valid in both, by construction,
+  and this is the check that decides.
+- **`src/common/` has its own config for the editor.** An editor gives a file
+  to one config only: the nearest `tsconfig.json` that includes it. Without one
+  in `src/common/`, that is whatever `tsconfig.json` sits further up the tree,
+  if any, which checks common code as neither environment, or with the settings
+  of both at once. The `WebWorker` lib is the closest single match: a worker has
+  `crypto`, `fetch`, `URL`, `TextEncoder` and the timers, and no DOM and no
+  Node. It is an approximation. `self`, `postMessage`, `location` and
+  `importScripts` exist in a worker and not in Node, so the editor accepts them
+  and the main program rejects them.
+
+A config that compiles does not yet prove that it separates anything. To keep
+it honest, compile a file of lines that must fail with each config, each line
+under a `// @ts-expect-error`: a config that starts accepting one of them fails
+with an unused directive instead. With the renderer config, for example:
+
+```ts
+// @ts-expect-error a Node builtin
+export { readFileSync } from "node:fs";
+
+// @ts-expect-error a Node global
+export const buffer = Buffer.from("text");
+```
+
+Export what each line declares, so that a line cannot go on failing for the
+wrong reason, such as an unused import, once the config lets its API through.
+The in-repo fixture extension checks its own configs this way, in
+[`packages/fixture-extension/environment-tests/`](../packages/fixture-extension/environment-tests).
+
+### Optional: lint builtin imports in the renderer
+
+A lint rule catches builtin imports as well, independently of which config an
+editor picked. With Biome, apply `noNodejsModules` to the trees that must not
+import them:
+
+```json
+{
+  "overrides": [
+    {
+      "includes": ["src/renderer/**", "src/common/**"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noNodejsModules": "error"
+          }
+        }
+      }
+    }
+  ]
+}
+```
+
+It reports `node:fs` and a bare `fs` alike. It sees imports only, not
+globals such as `Buffer` and `process`; the tsconfig split covers those.
 
 ## API namespace reorganization
 
@@ -1120,6 +1309,9 @@ restarted once.
       [Node and Electron in the renderer](#node-and-electron-in-the-renderer),
       or into main behind `Ipc`, and stop marking the builtins external in the
       renderer build.
+- [ ] Give main, renderer and common code a directory and a `tsconfig.json`
+      each, so the type check catches the next Node API in renderer code (see
+      [Source layout](#source-layout-one-tsconfig-per-runtime-environment)).
 - [ ] Load your extension in a v2 build and verify its UI renders through the
       runtime global.
 

@@ -225,6 +225,15 @@ guide lists the replacement for each Node and Electron module v1 extensions
 used in the renderer, under
 [Node and Electron in the renderer](./v2-extension-migration.md#node-and-electron-in-the-renderer).
 
+The declaration cannot enforce this: `extension-api.d.ts` is one file for every
+process. The environment has to come from the extension's own compiler
+configuration, and the migration guide specifies the layout that provides it,
+under
+[Source layout: one tsconfig per runtime environment](./v2-extension-migration.md#source-layout-one-tsconfig-per-runtime-environment):
+`src/main/`, `src/renderer/` and `src/common/`, each with a `tsconfig.json` for
+its environment, so a Node API in renderer code or a DOM API in main code fails
+the type check rather than the running extension.
+
 **Failure mode.** A load failure is recorded in the extension's metadata and
 logged; the extension is skipped and nothing else aborts. A renderer bundle
 served with a wrong MIME type does not execute at all — the host maps types by
