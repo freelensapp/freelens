@@ -237,7 +237,7 @@ This is what each namespace provides in v2:
 | --- | --- |
 | `Common` | `App`, `Catalog`, `Clusters`, `EventBus`, `LensExtension`, `Proxy`, `Store`, `Types`, `Util`, `logger`; types `InstalledExtension`, `LensExtensionManifest`, `Logger`, `PackageJson` |
 | `Main` | `Catalog`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Power`, `Util` |
-| `Renderer` | `Catalog`, `Component`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Util` |
+| `Renderer` | `Catalog`, `Component`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Theme`, `Util` |
 
 **If a symbol is not reachable through one of those, it is not reachable at
 all.** Every other `@freelensapp/*` package is private and is inlined into the
@@ -562,22 +562,13 @@ form that works without Node, ask for it.
 
 ## Unused members removed
 
-These members are gone from v2. No extension is known to use them, and each was
-the only reason a dependency or Electron itself reached the published type
-surface: `@xterm/xterm`, `react-window`, or Electron in the renderer and
-`Common` surfaces.
+These members are gone from v2. No extension is known to use them, and keeping
+them meant publishing `react-window` or Electron's own types as part of the API,
+the latter in `Common`, which renderer code reads too.
 
-- **`Renderer.Theme`** — the whole namespace, `activeTheme` and `LensTheme`.
-  Style with the host theme's CSS custom properties (`var(--…)`) instead; they
-  are set on `:root` and re-theme at runtime without your code reading the
-  active theme (see [Styling and CSS](#styling-and-css)).
 - **`Renderer.Component.VirtualList`** and its types — render a plain list, or
   bundle a virtualizer of your own (`react-window` included) if the list is long
   enough to need one.
-- **`Renderer.Component.PathPicker`** and its types — a file dialog belongs in
-  main: call Electron's `dialog.showOpenDialog` there and hand the chosen paths
-  to the renderer over `Main.Ipc` / `Renderer.Ipc`, as in
-  [Node and Electron in the renderer](#node-and-electron-in-the-renderer).
 - **`appMenus` and `trayMenus`** on `LensMainExtension`, with
   `Common.Types.MenuRegistration` and `Common.Types.TrayMenuRegistration` — no
   replacement. The application menu and the tray belong to the host.
@@ -1069,9 +1060,8 @@ restarted once.
       `typeof` that singleton in type positions, or with
       `KubeObjectStore<T>` as the base class for your own store (see
       [`Renderer.K8sApi` concrete store classes removed](#rendererk8sapi-concrete-store-classes-removed)).
-- [ ] Replace any use of `Renderer.Theme`, `Renderer.Component.VirtualList`,
-      `Renderer.Component.PathPicker`, `appMenus`, `trayMenus` or
-      `Common.Types.IpcRendererEvent` — they were removed (see
+- [ ] Replace any use of `Renderer.Component.VirtualList`, `appMenus`,
+      `trayMenus` or `Common.Types.IpcRendererEvent` — they were removed (see
       [Unused members removed](#unused-members-removed)).
 - [ ] Move any Node or Electron use out of the renderer — `require()`, a
       builtin import, `Buffer`, `process` — to the replacements in
