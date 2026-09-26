@@ -29,10 +29,8 @@
     "type:check:environments": "tsc -p environment-tests/tsconfig.main.json && tsc -p environment-tests/tsconfig.renderer.json && tsc -p environment-tests",
     "type:check:sources": "tsc -p src/main && tsc -p src/renderer && tsc -p src/common"
   },
-  "dependencies": {
-    "@freelensapp/extensions": "workspace:^"
-  },
   "devDependencies": {
+    "@freelensapp/extensions": "workspace:^",
     "@types/node": "catalog:extensions",
     "@types/react": "catalog:extensions",
     "mobx": "catalog:extensions",

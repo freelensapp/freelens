@@ -1271,11 +1271,10 @@ importers:
         version: 5.2.0(supports-color@8.1.1)(ts-node@10.9.2(@types/node@24.12.4)(typescript@7.0.2))(typescript@7.0.2)
 
   packages/fixture-extension:
-    dependencies:
+    devDependencies:
       '@freelensapp/extensions':
         specifier: workspace:^
         version: link:../extensions
-    devDependencies:
       '@types/node':
         specifier: catalog:extensions
         version: 24.12.4
