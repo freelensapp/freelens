@@ -4,10 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import EventEmitter from "node:events";
+import { TypedEmitter } from "@freelensapp/utilities";
 import { makeObservable, observable } from "mobx";
 
-import type { Defaulted, TypedEventEmitter } from "@freelensapp/utilities";
+import type { Defaulted } from "@freelensapp/utilities";
 
 import type { DefaultWebsocketApiParams } from "./default-websocket-api-params.injectable";
 
@@ -68,9 +68,7 @@ export interface WebSocketApiDependencies {
   readonly defaultParams: DefaultWebsocketApiParams;
 }
 
-export class WebSocketApi<Events extends WebSocketEvents> extends (EventEmitter as {
-  new <T extends WebSocketEvents>(): TypedEventEmitter<T>;
-})<Events> {
+export class WebSocketApi<Events extends WebSocketEvents> extends TypedEmitter<Events> {
   protected socket: WebSocket | null = null;
   protected pendingCommands: string[] = [];
   protected reconnectTimer?: number;
