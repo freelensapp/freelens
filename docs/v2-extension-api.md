@@ -205,11 +205,24 @@ same assertion over both maps so a typo fails in CI without launching the app.
 - **Renderer** entry points are **ESM**, loaded by URL from the privileged
   `freelens-extension` scheme.
 - **Top-level await is allowed.**
+- **Renderer code gets no guarantee of Node or Electron**, `require()`
+  included. They are reachable only because the renderer is not
+  context-isolated, and they may disappear in any release, a minor one included:
+  being reachable does not make them part of the surface that
+  [C14](#c14-versioning-and-compatibility) freezes. **Main** keeps both.
 
 **Surface.** `main` and `renderer` in the manifest, each a path relative to the
 package root. Under URL-based loading the renderer has **no `__dirname`**, which
 makes `LensExtension.manifestPath` the only route to an extension's own files —
 see [C6](#c6-registration-and-the-extension-instance).
+
+What a renderer entry point may rely on is what a browser page has — `fetch`,
+Web Crypto, `TextEncoder` / `TextDecoder`, `Uint8Array` — plus the API object of
+[C2](#c2-the-runtime-global-api) and the singletons of
+[C3](#c3-host-provided-singletons). Work that needs Node or Electron belongs in
+the main entry point, reached over `Renderer.Ipc` / `Main.Ipc`. The migration
+guide lists the replacement for each Node and Electron module v1 extensions
+used in the renderer.
 
 **Failure mode.** A load failure is recorded in the extension's metadata and
 logged; the extension is skipped and nothing else aborts. A renderer bundle
@@ -362,7 +375,7 @@ and it is delimited by a rule rather than by a list of what it offers:
   the rest under [C14](#c14-versioning-and-compatibility) — including an export
   added to the package later.
 - **Except a member that needs Node or Electron in the renderer**, because
-  renderer code gets no guarantee of either. Such a member goes on the omit
+  renderer code gets no guarantee of either ([C4](#c4-module-format-and-loading)). Such a member goes on the omit
   list in `packages/core/src/extensions/common-api/utils.ts`, which
   destructures it out of the spread so that its name and types do not reach
   the bundled declarations either.
