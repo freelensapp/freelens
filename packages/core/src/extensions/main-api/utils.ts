@@ -7,8 +7,6 @@ import proxyFetchInjectable from "../../main/fetch/proxy-fetch.injectable";
 import { Util as CommonUtil } from "../common-api/utils";
 import { asLazyInjectedFunctionForExtensionApi } from "../extension-api-di";
 
-export type { OpenLinkInBrowser } from "../common-api/utils";
-
 const Util = {
   ...CommonUtil,
 
