@@ -19,6 +19,10 @@
 //   in type-check-environments/legacy.jsonc. Their errors are tolerated, and
 //   a listed file that no longer has any fails the check until it is removed
 //   from the list, so the lists only ever shrink.
+//
+// It also keeps biome.jsonc in step with the renderer legacy list: the files
+// exempted there from `noNodejsModules` must be on that list, so the
+// exemptions shrink with it.
 
 import { spawn } from "node:child_process";
 import { readFileSync } from "node:fs";
@@ -27,6 +31,7 @@ import { dirname, join, relative } from "node:path";
 
 const root = join(import.meta.dirname, "..");
 const legacyListsFile = join(import.meta.dirname, "type-check-environments", "legacy.jsonc");
+const biomeConfigFile = join(root, "biome.jsonc");
 const tsc = join(dirname(createRequire(import.meta.url).resolve("typescript/package.json")), "bin", "tsc");
 
 const programs = [
@@ -135,6 +140,25 @@ async function checkProgram({ name, config }, legacyFiles) {
   return { problems, summary };
 }
 
+// The Biome override that turns `noNodejsModules` off exempts renderer and
+// common files that import a Node builtin today. Each of them also fails the
+// renderer program, so an exemption that is not on the renderer legacy list is
+// either stale or new, and neither is allowed.
+function checkBiomeExemptions(rendererLegacyFiles) {
+  const legacy = new Set(rendererLegacyFiles);
+  const overrides = parseJsonc(readFileSync(biomeConfigFile, "utf8")).overrides ?? [];
+  const exempted = overrides
+    .filter((override) => override.linter?.rules?.correctness?.noNodejsModules === "off")
+    .flatMap((override) => override.includes ?? []);
+
+  return exempted
+    .filter((file) => !legacy.has(file))
+    .map(
+      (file) =>
+        `${file}: exempted from noNodejsModules in biome.jsonc but not on the "renderer" legacy list; remove the exemption`,
+    );
+}
+
 const legacyLists = parseJsonc(readFileSync(legacyListsFile, "utf8"));
 const results = await Promise.all(programs.map((program) => checkProgram(program, legacyLists[program.name] ?? [])));
 let failed = false;
@@ -150,9 +174,18 @@ for (const [index, { problems, summary }] of results.entries()) {
   }
 }
 
+const biomeProblems = checkBiomeExemptions(legacyLists.renderer ?? []);
+
+if (biomeProblems.length > 0) {
+  failed = true;
+  console.error(`\nbiome.jsonc: ${biomeProblems.length} problem(s)\n`);
+
+  for (const problem of biomeProblems) console.error(problem);
+}
+
 if (failed) {
   console.error(
-    '\nA new error here means the code uses an API its environment does not have: Node in renderer code, DOM in main code, either in common code. See "Runtime Environments in Type-Checking" in AGENTS.md.',
+    '\nA new type error here means the code uses an API its environment does not have: Node in renderer code, DOM in main code, either in common code. See "Runtime Environments in Type-Checking" in AGENTS.md.',
   );
   process.exit(1);
 }

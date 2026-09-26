@@ -246,8 +246,24 @@ because `@types/react` declares empty stand-ins for them; values such as
 
 VS Code uses the root `tsconfig.json`, which has DOM and Node together, for
 every file. The environment programs are a CI check the editor does not
-reflect: a Node import in renderer code shows no error in the editor and fails
-`pnpm type:check`.
+reflect: a Node global in renderer code shows no type error in the editor and
+fails `pnpm type:check`.
+
+Biome covers part of the gap while you type. An override in `biome.jsonc`
+turns on `noNodejsModules` for the `renderer/`, `renderer-api/`, `common/` and
+`common-api/` files of `freelens/src` and `packages/core/src`, classified by
+the same path rule as the renderer program and with the same test files left
+out. It catches **imports** of Node builtins (`node:fs`, `path`, …), so the
+Biome extension flags them in the editor and `biome check` fails on them. It
+does not catch **Node globals** such as `Buffer`, `process`, `__dirname` or
+`NodeJS.*` types, and it does not look at the files that carry no context in
+their path; only `pnpm type:check` catches those.
+
+The files that import a Node builtin today are exempted in a second override,
+which turns the rule off for them. Every one of them is also on the renderer
+legacy list, and `scripts/type-check-environments.mjs` fails when an exempted
+file is not, so the exemptions can only shrink with that list: remove a file
+from both when you move its Node import out.
 
 ## Dependency Injection System
 
