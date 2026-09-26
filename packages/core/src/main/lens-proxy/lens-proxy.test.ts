@@ -29,13 +29,13 @@ import type { ServerIncomingMessage } from "./lens-proxy";
  * the upgrade handler is registered on the server object, which a plain http
  * server models exactly.
  */
-vi.mock("node:https", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("node:https")>();
+vi.mock("node:http2", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("node:http2")>();
   const http = await import("node:http");
-  const createServer = (_options: unknown, handler: Parameters<typeof http.createServer>[1]) =>
+  const createSecureServer = (_options: unknown, handler: Parameters<typeof http.createServer>[1]) =>
     http.createServer(handler);
 
-  return { ...actual, createServer, default: { ...actual, createServer } };
+  return { ...actual, createSecureServer, default: { ...actual, createSecureServer } };
 });
 
 describe("closing the lens proxy", () => {

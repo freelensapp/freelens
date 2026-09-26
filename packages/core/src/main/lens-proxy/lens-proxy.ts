@@ -5,7 +5,7 @@
  */
 
 import assert from "node:assert";
-import https from "node:https";
+import http2 from "node:http2";
 import net from "node:net";
 import { apiKubePrefix, apiPrefix } from "../../common/vars";
 import { getBoolean } from "../utils/parse-query";
@@ -74,22 +74,29 @@ const disallowedPorts = new Set([
 const closeGracePeriodMs = 500;
 
 export class LensProxy {
-  protected readonly proxyServer: https.Server;
+  protected readonly proxyServer: http2.Http2SecureServer;
   protected closed = false;
   protected readonly retryCounters = new Map<string, number>();
+  private readonly sockets = new Set<net.Socket>();
 
   constructor(private readonly dependencies: Dependencies) {
     this.configureProxy(dependencies.proxy);
 
-    this.proxyServer = https.createServer(
+    this.proxyServer = http2.createSecureServer(
       {
         key: dependencies.certificate.private,
         cert: dependencies.certificate.cert,
+        allowHTTP1: true,
       },
       (req, res) => {
-        this.handleRequest(req as ServerIncomingMessage, res);
+        this.handleRequest(req as unknown as ServerIncomingMessage, res as unknown as http.ServerResponse);
       },
     );
+
+    this.proxyServer.on("connection", (socket: net.Socket) => {
+      this.sockets.add(socket);
+      socket.on("close", () => this.sockets.delete(socket));
+    });
 
     this.proxyServer.on("upgrade", (req: ServerIncomingMessage, socket: net.Socket, head: Buffer) => {
       /**
@@ -205,7 +212,9 @@ export class LensProxy {
        * finally call back.
        */
       const destroyRemaining = setTimeout(() => {
-        this.proxyServer.closeAllConnections();
+        for (const socket of this.sockets) {
+          socket.destroy();
+        }
       }, closeGracePeriodMs);
 
       this.proxyServer.close(() => {
@@ -213,12 +222,31 @@ export class LensProxy {
         resolve();
       });
 
-      this.proxyServer.closeIdleConnections();
+      for (const socket of this.sockets) {
+        if (!(socket as net.Socket & { _httpMessage?: unknown })._httpMessage) {
+          socket.destroy();
+        }
+      }
     });
   }
 
+  private static readonly http2ForbiddenHeaders = new Set([
+    "connection",
+    "transfer-encoding",
+    "keep-alive",
+    "upgrade",
+    "proxy-connection",
+    "http2-settings",
+  ]);
+
   protected configureProxy(proxy: httpProxy): httpProxy {
     proxy.on("proxyRes", (proxyRes, req, res) => {
+      if (req.httpVersion === "2.0") {
+        for (const name of LensProxy.http2ForbiddenHeaders) {
+          delete proxyRes.headers[name];
+        }
+      }
+
       const retryCounterId = this.getRequestId(req);
 
       if (this.retryCounters.has(retryCounterId)) {
@@ -275,6 +303,27 @@ export class LensProxy {
   }
 
   protected async handleRequest(req: ServerIncomingMessage, res: http.ServerResponse) {
+    if (req.httpVersion === "2.0") {
+      // HTTP/2 pseudo-headers (`:method`, `:path`, `:authority`, `:scheme`)
+      // are not valid HTTP/1.1 header names and break http-proxy-node16 and
+      // the router. The compatibility-API getters for `req.method` / `req.url`
+      // read from the same headers object, so we snapshot them first, strip
+      // the pseudo-headers, then install plain own-properties.
+      const method = req.method;
+      const url = req.url;
+      const host = (req.headers[":authority"] as string) || (req.headers.host as string);
+
+      for (const key of Object.keys(req.headers)) {
+        if (key.startsWith(":")) {
+          delete req.headers[key];
+        }
+      }
+
+      Object.defineProperty(req, "method", { value: method, writable: true, configurable: true });
+      Object.defineProperty(req, "url", { value: url, writable: true, configurable: true });
+      req.headers.host = host;
+    }
+
     const cluster = this.dependencies.getClusterForRequest(req);
 
     if (cluster && req.url.startsWith(apiKubePrefix)) {
