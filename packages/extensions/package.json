@@ -35,12 +35,10 @@
   "dependencies": {
     "@types/node": "catalog:extensions",
     "@types/react": "catalog:extensions",
-    "@xterm/xterm": "catalog:extensions",
     "chart.js": "catalog:extensions",
     "conf": "catalog:extensions",
     "immer": "catalog:extensions",
     "react-select": "catalog:extensions",
-    "react-window": "catalog:extensions",
     "rfc6902": "catalog:extensions",
     "type-fest": "catalog:extensions"
   },

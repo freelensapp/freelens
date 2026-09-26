@@ -388,9 +388,6 @@ catalogs:
     '@types/react':
       specifier: ^19.2.17
       version: 19.2.17
-    '@xterm/xterm':
-      specifier: ^6.0.0
-      version: 6.0.0
     chart.js:
       specifier: ^4.5.1
       version: 4.5.1
@@ -412,9 +409,6 @@ catalogs:
     react-select:
       specifier: ^5.10.2
       version: 5.10.2
-    react-window:
-      specifier: ^2.3.0
-      version: 2.3.0
     rfc6902:
       specifier: ^5.2.0
       version: 5.2.0
@@ -1223,9 +1217,6 @@ importers:
       '@types/react':
         specifier: catalog:extensions
         version: 19.2.17
-      '@xterm/xterm':
-        specifier: catalog:extensions
-        version: 6.0.0(patch_hash=fb7ebbc29ef246137af8ea109596e698df4691ccaa0b87ed5969259bcb27e435)
       chart.js:
         specifier: catalog:extensions
         version: 4.5.1
@@ -1250,9 +1241,6 @@ importers:
       react-select:
         specifier: catalog:extensions
         version: 5.10.2(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(supports-color@8.1.1)
-      react-window:
-        specifier: catalog:extensions
-        version: 2.3.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       rfc6902:
         specifier: catalog:extensions
         version: 5.2.0

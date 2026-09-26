@@ -4,8 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ITheme } from "@xterm/xterm";
-
 import type { MonacoTheme } from "../components/monaco-editor";
 
 export type ThemeId = string;
@@ -21,7 +19,34 @@ export interface LensTheme {
   isDefault?: boolean;
 }
 
-export type TerminalColorName = keyof ITheme;
+export type TerminalColorName =
+  | "foreground"
+  | "background"
+  | "cursor"
+  | "cursorAccent"
+  | "selectionBackground"
+  | "selectionForeground"
+  | "selectionInactiveBackground"
+  | "scrollbarSliderBackground"
+  | "scrollbarSliderHoverBackground"
+  | "scrollbarSliderActiveBackground"
+  | "overviewRulerBorder"
+  | "black"
+  | "red"
+  | "green"
+  | "yellow"
+  | "blue"
+  | "magenta"
+  | "cyan"
+  | "white"
+  | "brightBlack"
+  | "brightRed"
+  | "brightGreen"
+  | "brightYellow"
+  | "brightBlue"
+  | "brightMagenta"
+  | "brightCyan"
+  | "brightWhite";
 
 export type LensColorName =
   | "blue"

@@ -414,8 +414,8 @@ nothing checks the rule mechanically.
 ## C6. Registration and the extension instance
 
 **Guarantee.** An extension contributes through **declarative fields on its
-`LensExtension` subclass**. Fourteen host-side registrators translate those
-fields into injectables, scoped to the extension and torn down with it.
+`LensExtension` subclass**. Host-side registrators translate those fields into
+injectables, scoped to the extension and torn down with it.
 
 **Surface.**
 
@@ -426,9 +426,9 @@ fields into injectables, scoped to the extension and torn down with it.
 `catalogEntityDetailItems`, `topBarItems`, `additionalCategoryColumns`,
 `customCategoryViews`, `kubeObjectHandlers`.
 
-`LensMainExtension` fields: `appMenus`, `trayMenus` — each accepting a plain
-array **or** an `IComputedValue` of one, in which case the host reacts to changes
-rather than reading once.
+`LensMainExtension` fields: `terminalShellEnvModifier`, a function the host
+calls with the environment of every terminal it opens. There is no field for the
+application menu or the tray: both are the host's own.
 
 `LensExtension` (both processes): `protocolHandlers`; the read-only `id`,
 `manifest`, `manifestPath`, `name`, `version`, `description`, `storeName`,
@@ -503,7 +503,7 @@ declares **119** injection tokens: **15** are extension-facing, **9** are
 consumed inside the namespaces to expose a member (where the member is the
 contract and the token need not be public), and the remaining ~95 are internal.
 The 15 are not being made public, because doing so buys **no new capability** —
-each of the 14 registrators exists to translate a declarative field, so
+each registrator exists to translate a declarative field, so
 extensions already reach every capability the tokens would unlock. Exposing them
 would mean re-exporting 15 tokens *and their generic parameter types* out of
 private packages. The question returns when someone wants a capability nobody
@@ -583,24 +583,21 @@ from the host, so its utility classes are inert.
 ## C11. Third-party bundled libraries
 
 **Guarantee.** `catalogs.extensions` in `pnpm-workspace.yaml` is the list of
-libraries the published API's type surface is pinned against — **15 entries**,
-down from the 21 this effort started with.
+libraries the published API's type surface is pinned against.
 
 It splits in two:
 
 - **Host-provided** ([C3](#c3-host-provided-singletons)): `react`, `mobx`,
   `monaco-editor`, `@ogre-tools/injectable`, `@ogre-tools/injectable-react`.
-- **Free to bundle**: `chart.js`, `react-select`, `react-window`,
-  `@xterm/xterm`, `conf`, `immer`, `rfc6902`, `type-fest` (plus the `@types/*`
-  entries). A bundled `react-select` still gets the host's React, because that
-  copy's own `import "react"` is rewritten too.
+- **Free to bundle**: `chart.js`, `react-select`, `conf`, `immer`, `rfc6902`,
+  `type-fest` (plus the `@types/*` entries). A bundled `react-select` still gets
+  the host's React, because that copy's own `import "react"` is rewritten too.
 
-**Surface.** The built declaration names **21 distinct external specifiers**
-across 25 import statements: `type-fest`, `mobx`, `mobx-react`, `react`,
-`react/jsx-runtime`, `react-dom`, `conf`, `electron`, `child_process`,
-`node:child_process`, `node:http`, `rfc6902`, `immer`,
-`@ogre-tools/injectable`, `@ogre-tools/injectable-react`, `es-toolkit/compat`,
-`monaco-editor`, `chart.js`, `react-select`, `react-window`, `@xterm/xterm`.
+**Surface.** The built declaration imports these external specifiers:
+`type-fest`, `mobx`, `mobx-react`, `react`, `react/jsx-runtime`, `react-dom`,
+`conf`, `rfc6902`, `immer`, `@ogre-tools/injectable`,
+`@ogre-tools/injectable-react`, `es-toolkit/compat`, `monaco-editor`,
+`chart.js`, `react-select`.
 
 This is the complement of the namespace enumeration in
 [C5](#c5-namespace-enumeration): that records what the API *exports*, this what
@@ -618,14 +615,15 @@ examples inside doc comments and reports nothing. The bundle inlines every
 `@freelensapp/*` package ([C1](#c1-packaging-and-publication)), so everything
 the command prints is external by construction.
 
-Two discrepancies between that list and the declared dependencies, recorded
-because they are the kind that rot quietly:
+Nothing is imported from `electron`. What the declaration names of Electron it
+names through the ambient `Electron` namespace, in the `Main.Ipc` signatures and
+the `Common.Types` aliases of the main-process IPC events.
 
-- **`es-toolkit/compat` is undeclared** — the published type surface names a
-  package the package does not depend on (#2360).
-- **`child_process` appears spelled both ways**, bare and `node:`-prefixed (#2360).
+One discrepancy between that list and the declared dependencies, recorded
+because it is the kind that rots quietly: **`es-toolkit/compat` is undeclared** —
+the published type surface names a package the package does not depend on.
 
-A third is closed: `@ogre-tools/injectable-react` used to be declared but never
+Another is closed: `@ogre-tools/injectable-react` used to be declared but never
 named by the declaration, and the bundle now imports it like the other
 host-provided singletons. It would have stayed either way, being needed at
 *runtime* for `withInjectables`, which is a different requirement from

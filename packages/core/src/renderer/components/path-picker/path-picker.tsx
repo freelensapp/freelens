@@ -11,9 +11,23 @@ import { observer } from "mobx-react";
 import React from "react";
 import openPathPickingDialogInjectable from "../../../features/path-picking-dialog/renderer/pick-paths.injectable";
 
-import type { FileFilter, OpenDialogOptions } from "electron";
-
 import type { OpenPathPickingDialog } from "../../../features/path-picking-dialog/renderer/pick-paths.injectable";
+
+export interface PathPickFilter {
+  name: string;
+  extensions: string[];
+}
+
+export type PathPickProperty =
+  | "openFile"
+  | "openDirectory"
+  | "multiSelections"
+  | "showHiddenFiles"
+  | "createDirectory"
+  | "promptToCreate"
+  | "noResolveAliases"
+  | "treatPackageAsDirectory"
+  | "dontAddToRecent";
 
 export interface PathPickOpts {
   message: string;
@@ -21,8 +35,8 @@ export interface PathPickOpts {
   onCancel?: () => void | Promise<void>;
   defaultPath?: string;
   buttonLabel?: string;
-  filters?: FileFilter[];
-  properties?: OpenDialogOptions["properties"];
+  filters?: PathPickFilter[];
+  properties?: PathPickProperty[];
   securityScopedBookmarks?: boolean;
 }
 

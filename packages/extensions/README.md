@@ -37,9 +37,8 @@ renderer publishes all of them, the main process publishes `Mobx` and
 `electron` is an optional peer on the same grounds: the host provides it, and
 only an extension that names it needs it installed.
 
-Everything else this package depends on — `chart.js`, `react-select`,
-`react-window`, `@xterm/xterm`, `conf`, `immer`, `rfc6902`, `type-fest` — is
-free to bundle.
+Everything else this package depends on — `chart.js`, `react-select`, `conf`,
+`immer`, `rfc6902`, `type-fest` — is free to bundle.
 
 ## Documentation
 

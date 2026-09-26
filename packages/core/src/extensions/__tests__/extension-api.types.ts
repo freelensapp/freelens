@@ -47,7 +47,6 @@ export type CommonClusterConnectionStatus = Common.Clusters.ClusterConnectionSta
 // extension names in every menu item it contributes.
 export type CommonKubeObjectMenuItemProps = Common.Types.KubeObjectMenuItemProps;
 export type CommonStatusBarRegistration = Common.Types.StatusBarRegistration;
-export type CommonMenuRegistration = Common.Types.MenuRegistration;
 export type CommonPageRegistration = Common.Types.PageRegistration;
 export type CommonAppPreferenceRegistration = Common.Types.AppPreferenceRegistration;
 
