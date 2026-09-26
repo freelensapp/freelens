@@ -5,7 +5,6 @@
  */
 
 import "./catalog-add-button.scss";
-import { EventEmitter } from "node:events";
 import { Icon } from "@freelensapp/icon";
 import { SpeedDial, SpeedDialAction } from "@mui/material";
 import { withInjectables } from "@ogre-tools/injectable-react";
@@ -69,15 +68,13 @@ class NonInjectedCatalogAddButton extends React.Component<CatalogAddButtonProps 
   }
 
   updateCategoryItems = action((category: CatalogCategory) => {
-    if (category instanceof EventEmitter) {
-      const menuItems: CatalogEntityAddMenu[] = [];
+    const menuItems: CatalogEntityAddMenu[] = [];
 
-      category.emit("catalogAddMenu", {
-        navigate: this.props.navigate,
-        menuItems,
-      });
-      this.menuItems.set(category.getId(), menuItems);
-    }
+    category.emit("catalogAddMenu", {
+      navigate: this.props.navigate,
+      menuItems,
+    });
+    this.menuItems.set(category.getId(), menuItems);
   });
 
   getCategoryFilteredItems = (category: CatalogCategory) => {
