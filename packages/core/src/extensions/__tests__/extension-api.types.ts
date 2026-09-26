@@ -76,6 +76,7 @@ export type RendererExtension = Renderer.LensExtension;
 export type RendererFetch = typeof Renderer.Util.fetch;
 export type RendererNavigate = typeof Renderer.Navigation.navigate;
 export type RendererDetailsUrl = typeof Renderer.Navigation.getDetailsUrl;
+export type RendererActiveTheme = typeof Renderer.Theme.activeTheme;
 
 // The prop types the published extensions write out by hand. A component whose
 // props stop being nameable is unusable in a typed extension even though the
