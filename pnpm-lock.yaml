@@ -428,7 +428,7 @@ overrides:
 
 patchedDependencies:
   '@async-fn/vitest': 86478f697e61e0e2ca0274a6b255c31c05d0dd83078743e9e755910710d597ef
-  '@xterm/xterm@6.0.0': fb7ebbc29ef246137af8ea109596e698df4691ccaa0b87ed5969259bcb27e435
+  '@xterm/xterm@6.0.0': df931daebd9460ca3e9cf3ca3413eae5d331a96518b212c95c4bded3a564a11a
 
 importers:
 
@@ -920,7 +920,7 @@ importers:
         version: 0.12.0
       '@xterm/xterm':
         specifier: 'catalog:'
-        version: 6.0.0(patch_hash=fb7ebbc29ef246137af8ea109596e698df4691ccaa0b87ed5969259bcb27e435)
+        version: 6.0.0(patch_hash=df931daebd9460ca3e9cf3ca3413eae5d331a96518b212c95c4bded3a564a11a)
       ansi_up:
         specifier: 'catalog:'
         version: 6.0.6
@@ -9451,7 +9451,7 @@ snapshots:
 
   '@xterm/addon-web-links@0.12.0': {}
 
-  '@xterm/xterm@6.0.0(patch_hash=fb7ebbc29ef246137af8ea109596e698df4691ccaa0b87ed5969259bcb27e435)': {}
+  '@xterm/xterm@6.0.0(patch_hash=df931daebd9460ca3e9cf3ca3413eae5d331a96518b212c95c4bded3a564a11a)': {}
 
   abbrev@4.0.0: {}
 
