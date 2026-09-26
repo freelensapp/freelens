@@ -561,6 +561,95 @@ form that works without Node, ask for it.
   URL to the system browser instead, which is what these did; any other scheme
   is dropped. In main, call Electron's `shell.openExternal(url)`.
 
+## Node and Electron in the renderer
+
+**Renderer code gets no Node and no Electron in v2**, `require()` included
+([C4](./v2-extension-api.md#c4-module-format-and-loading)). They are still
+reachable, because the renderer is not context-isolated yet, but nothing
+guarantees them and they may disappear in any release. Everything that used to
+lean on them in the renderer has a replacement already:
+
+- the renderer entry point is ESM, loaded by URL, not `require()`d from disk;
+- the host APIs and the shared libraries come from
+  `globalThis.FreelensExtensionApi`, not from `require()`;
+- your dependencies are bundled, and there is no `node_modules` next to a
+  renderer entry point to resolve anything from;
+- HTTP is Chromium's `fetch`, as
+  [`Renderer.Util.fetch`](#http-mainutilfetch-and-rendererutilfetch);
+- running programs belongs to main.
+
+**The general rule: do Node work in your main entry point and talk to it over
+`Main.Ipc` / `Renderer.Ipc`.** Main keeps Node and Electron, and a handler there
+can return anything that survives structured cloning:
+
+```ts
+// main.ts
+import { Main } from "@freelensapp/extensions";
+import { X509Certificate } from "node:crypto";
+
+class CertificateIpc extends Main.Ipc {}
+
+export default class MyExtension extends Main.LensExtension {
+  onActivate() {
+    CertificateIpc.createInstance(this).handle("describe-certificate", (_event, pem: string) => {
+      const certificate = new X509Certificate(pem);
+
+      return { subject: certificate.subject, validTo: certificate.validTo };
+    });
+  }
+}
+```
+
+```ts
+// renderer.tsx
+import { Renderer } from "@freelensapp/extensions";
+
+class CertificateIpc extends Renderer.Ipc {}
+
+export default class MyExtension extends Renderer.LensExtension {
+  onActivate() {
+    CertificateIpc.createInstance(this);
+  }
+}
+
+export function describeCertificate(pem: string): Promise<{ subject: string; validTo: string }> {
+  return CertificateIpc.getInstance().invoke("describe-certificate", pem);
+}
+```
+
+What to use instead of each Node or Electron module v1 extensions called from
+the renderer:
+
+| v1 | Replacement |
+| --- | --- |
+| `node:crypto` hashing | Web Crypto `crypto.subtle.digest` (asynchronous), or a bundled hash library |
+| `crypto.X509Certificate` | main plus `Ipc`; there is no web equivalent |
+| `http` / `https` | `fetch` |
+| `electron` `ipcRenderer` | `Renderer.Ipc` |
+| `os` platform checks | `Common.App.isMac` / `isWindows` / `isLinux` |
+| `process.env` | read it in main and pass it over `Ipc` |
+| `Buffer` | `Uint8Array`, `TextEncoder` / `TextDecoder` |
+| `AsyncLocalStorage` | no browser equivalent; pass the context explicitly |
+
+A hash in the renderer, for example, becomes:
+
+```ts
+const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+const hex = Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, "0")).join("");
+```
+
+**In the renderer build, do not mark the Node builtins external.** A v1 bundle
+left them as `require("crypto")` calls and Node resolved them at runtime. A v2
+renderer bundle is ESM, so an external builtin stays in it as
+`import "crypto"`, and a bare specifier like that does not resolve from a
+`freelens-extension://` URL: the entry point fails to load, and the extension
+with it. Build the renderer entry for the browser and treat every builtin the
+bundler still finds as an import to replace from the table above. The **main**
+build keeps the builtins external, as before.
+
+Reaching for `globalThis.require` instead works for now, and is exactly the
+dependency that isolating the renderer will break.
+
 ## Routing: `react-router` re-exports removed
 
 Freelens v2 dropped `react-router` 5, `react-router-dom` 5, and `history` v4
@@ -942,6 +1031,11 @@ restarted once.
       `typeof` that singleton in type positions, or with
       `KubeObjectStore<T>` as the base class for your own store (see
       [`Renderer.K8sApi` concrete store classes removed](#rendererk8sapi-concrete-store-classes-removed)).
+- [ ] Move any Node or Electron use out of the renderer — `require()`, a
+      builtin import, `Buffer`, `process` — to the replacements in
+      [Node and Electron in the renderer](#node-and-electron-in-the-renderer),
+      or into main behind `Ipc`, and stop marking the builtins external in the
+      renderer build.
 - [ ] Load your extension in a v2 build and verify its UI renders through the
       runtime global.
 

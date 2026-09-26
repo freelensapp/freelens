@@ -222,7 +222,8 @@ Web Crypto, `TextEncoder` / `TextDecoder`, `Uint8Array` — plus the API object 
 [C3](#c3-host-provided-singletons). Work that needs Node or Electron belongs in
 the main entry point, reached over `Renderer.Ipc` / `Main.Ipc`. The migration
 guide lists the replacement for each Node and Electron module v1 extensions
-used in the renderer.
+used in the renderer, under
+[Node and Electron in the renderer](./v2-extension-migration.md#node-and-electron-in-the-renderer).
 
 **Failure mode.** A load failure is recorded in the extension's metadata and
 logged; the extension is skipped and nothing else aborts. A renderer bundle
