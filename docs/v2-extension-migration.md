@@ -654,7 +654,16 @@ bundler still finds as an import to replace from the table above. The **main**
 build keeps the builtins external, as before.
 
 Reaching for `globalThis.require` instead works for now, and is exactly the
-dependency that isolating the renderer will break.
+dependency that isolating the renderer will break. The host logs a deprecation
+warning the first time your renderer code calls it for each module id, naming
+your extension and the module, and still returns the module:
+
+```text
+[EXTENSIONS]: extension "my-extension" called require("crypto") in the
+renderer. Renderer code gets no guarantee of Node or Electron, and require()
+may disappear in any release; see "Node and Electron in the renderer" in the
+extension migration guide.
+```
 
 ## Routing: `react-router` re-exports removed
 

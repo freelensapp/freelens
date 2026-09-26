@@ -234,6 +234,17 @@ naming the extension and the reason; the extension goes on running the build it
 already has, in both processes, rather than one process moving on without the
 other.
 
+Extension code calling `globalThis.require` in the renderer is **warned, not
+blocked**: the host logs a deprecation warning once per extension and module
+id, and returns the module. Nothing stronger would hold while the renderer is
+not context-isolated, since the globals are shared. The warning goes by the
+**immediate caller** — the call is the extension's when the frame that made it
+is at a `freelens-extension://extensions/<name>/` URL, which also names the
+extension. So the host's own calls, and host code an extension calls into, do
+not warn; code an extension bundles is part of its file and does. The wrapper
+is installed in every frame that loads extensions, cluster frames included,
+before the first extension loads.
+
 **Status:** shipped. The renderer imports the served URL and the main process
 imports a `file:` URL, both asynchronously, so **top-level await works in either
 entry point**. A development install is reloaded when its entry points are
