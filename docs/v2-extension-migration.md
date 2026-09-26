@@ -475,7 +475,9 @@ to the extension API. v2.0.0 is where that goes away.
 - the generic base class `Renderer.K8sApi.KubeObjectStore<T>` (and
   `Main.K8sApi.KubeObjectStore<T>`), whose extension-facing constructor is
   `(api, opts)` — the host injects the dependencies for you;
-- `KubeObject.getStore()` and `apiManager`, for reaching a store by its API.
+- the static `getStore()` of `LensExtensionKubeObject`, called on your own
+  class (`MyKind.getStore<MyKind>()`), and `apiManager.getStore()`, for
+  reaching a store by its API.
 
 So there are three replacements, depending on what you were doing:
 
@@ -495,9 +497,19 @@ for the class in a type position — it is the type of the host's store, not a
 widened one.
 
 Two of the removed classes have no exported singleton: `IngressClassStore` and
-`CustomResourceStore` (alias `CRDResourceStore`). Reach those through
-`apiManager.getStore(api)`, or `myObject.getStore()`, which is how the host gets
-them too.
+`CustomResourceStore` (alias `CRDResourceStore`). No API object for either is
+exported, so reach their stores through `apiManager.getStore()` with the API
+base path:
+
+```ts
+const ingressClasses = Renderer.K8sApi.apiManager.getStore(
+  "/apis/networking.k8s.io/v1/ingressclasses",
+);
+```
+
+For a custom resource, pass that resource's base path
+(`/apis/<group>/<version>/<plural>`), or call the static `getStore()` on your
+own `LensExtensionKubeObject` subclass.
 
 If you were subclassing a built-in store to change its behaviour rather than to
 add a resource, that never worked across a host upgrade — extend
