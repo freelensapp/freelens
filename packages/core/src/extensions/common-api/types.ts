@@ -13,7 +13,6 @@ export type {
   RouteHandler as ProtocolRouteHandler,
   RouteParams as ProtocolRouteParams,
 } from "../../common/protocol-handler/registration";
-export type { MenuRegistration } from "../../features/application-menu/main/menu-registration";
 export type {
   AppPreferenceComponents,
   AppPreferenceRegistration,
@@ -22,7 +21,6 @@ export type {
   ShellEnvContext,
   ShellEnvModifier,
 } from "../../main/shell-session/shell-env-modifier/shell-env-modifier-registration";
-export type { TrayMenuRegistration } from "../../main/tray/tray-menu-registration";
 export type {
   CustomCategoryViewComponents,
   CustomCategoryViewProps,
