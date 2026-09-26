@@ -535,8 +535,8 @@ resolves the namespace filter from the host container itself:
 ones that need Node or Electron in the renderer, which v2 does not guarantee
 there ([C5](./v2-extension-api.md#decided-util-is-freelensapputilities-minus-the-node-bound-members)).
 These are gone from `Common.Util`, and with it from `Main.Util` and
-`Renderer.Util` (#2481). None of them was seen in use across the extensions
-surveyed; if you need one back in a form that works without Node, ask for it.
+`Renderer.Util`. No extension is known to use them; if you need one back in a
+form that works without Node, ask for it.
 
 - **`base64`** — use `TextEncoder` / `TextDecoder` with `btoa` / `atob`:
   `btoa(Array.from(new TextEncoder().encode(text), (b) => String.fromCharCode(b)).join(""))`

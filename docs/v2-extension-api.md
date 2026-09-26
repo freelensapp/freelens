@@ -355,15 +355,15 @@ separate matter.
 
 ### Decided: `Util` is `@freelensapp/utilities` minus the Node-bound members
 
-`Common.Util` is one family, judged as a whole rather than member by member
-(#2479), and it is delimited by a rule rather than by a list of what it offers:
+`Common.Util` is one family, judged as a whole rather than member by member,
+and it is delimited by a rule rather than by a list of what it offers:
 
 - **Every export of `@freelensapp/utilities` is extension API**, and frozen with
   the rest under [C14](#c14-versioning-and-compatibility) — including an export
   added to the package later.
 - **Except a member that needs Node or Electron in the renderer**, because
-  renderer code gets no guarantee of either (#2479). Such a member goes on the
-  omit list in `packages/core/src/extensions/common-api/utils.ts`, which
+  renderer code gets no guarantee of either. Such a member goes on the omit
+  list in `packages/core/src/extensions/common-api/utils.ts`, which
   destructures it out of the spread so that its name and types do not reach
   the bundled declarations either.
 
