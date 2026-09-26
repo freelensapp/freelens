@@ -4,825 +4,137 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-// What is left of the extension-API surface check after #2451.
+// The runtime half of the extension-API surface check.
 //
-// This file used to enumerate about a hundred names by hand with
-// `toHaveProperty`. That list checked no types, covered an arbitrary subset of
-// the surface, and went stale the moment somebody changed the API without
-// remembering it existed. The three things it was reaching for now live where
-// they can actually fail:
+// **What it checks.** That `@freelensapp/extensions` exports `Common`, `Main`
+// and `Renderer`; that each of the three carries exactly the members listed
+// below; and that every sub-namespace exists, is non-empty, and still carries a
+// handful of anchor symbols. The three top-level lists are the contract — they
+// are C5's table in `docs/v2-extension-api.md`, and a change to one of them is
+// a change to the API that has to be made on purpose and read in review.
 //
-//  - **types** — `packages/fixture-extension/src/contract-types.ts` names types
-//    out of all three namespaces in real signatures, compiled against the built
-//    `dist/extension-api.d.ts`. A re-export that disappears breaks that build,
-//    and a symbol re-exported as a value but not as a type is not nameable
-//    there at all (#2365), which a property list cannot see.
-//  - **behaviour and instance identity** — `./fixture-extension.test.tsx` loads
-//    the fixture's built bundle and drives it through the host.
-//  - **runtime presence of the whole surface** — below. The fixture only reaches
-//    the handful of symbols it uses, so the rest still needs an assertion.
+// **What it deliberately does not check.** The membership of a sub-namespace,
+// one name at a time. This file used to do that: 809 of its 958 lines were
+// quoted names, most of them incidental arrivals through the star re-exports in
+// `renderer-api/components.ts`. #2366 then tried the thorough version of the
+// same idea — an API Extractor report, committed and diffed in CI (#2476) — and
+// it was withdrawn for the same reason the list is gone: a report tracks the
+// *transitive closure* of the surface, while the contract is namespace
+// membership, so 163 symbols nobody intends as API were in the file and
+// refactoring a host-side dependency bag showed up as a contract diff. Neither
+// version distinguished "the API broke" from "the API changed", which is the
+// only distinction a check like this is for.
 //
-// The lists below were generated once from the built surface and checked in.
-// They are deliberately not snapshots: `pnpm test:unit:updatesnapshot` is a
-// routine command in this repository, and a contract breach that can be
-// absolved by running it is not guarded at all. Changing the exported surface
-// has to be an edit to this file, made on purpose and read in review — which is
-// the whole of what this test is for. To regenerate a list after an intended
-// change, run the suite and copy the received value out of the diff.
+// **The anchors** are therefore chosen, not enumerated: the symbols whose
+// disappearance means something is genuinely broken. Two sources rather than
+// taste — what the two published extensions actually use
+// (`freelens-fluxcd-extension`, `freelens-gateway-api-extension`, the pair
+// #2365 verified against) and the symbols whose *behaviour* is frozen under
+// C14. They are commented where the reason is not obvious. A handful per
+// namespace is the intended size; a list that grows whenever somebody exports
+// something has turned back into the thing that was removed.
 //
-// This is a stopgap for #2366. An extractor-produced, git-tracked API report is
-// the right instrument: it records what we *promise* rather than what we happen
-// to export, and TSDoc `@public` / `@internal` would let the incidental names
-// below — most of them arriving through the star re-exports in
-// `renderer-api/components.ts` — be excluded rather than merely written down.
-// Until that exists, this file is the only thing that makes a change to the
-// surface visible. Do not copy the pattern elsewhere; extend #2366 instead.
+// **Types are not visible here at all.** `Object.keys` sees runtime values, so
+// this file cannot see a type that stops being nameable — the #2365 class of
+// defect, which cost `SecurityContext` the whole v2 line. That half lives in
+// `./extension-api.types.ts`, compiled by `pnpm type:check`, and in
+// `packages/fixture-extension/src/contract-types.ts`, compiled against the
+// built `dist/extension-api.d.ts`.
 //
 // `Object.keys` of a namespace is its export list; it is sorted here rather
 // than relied on to come out sorted, because the namespace objects are produced
-// by the bundler's interop and follow source order. Type-only namespaces
-// (`Common.Types`) contribute nothing at runtime and are empty below, which is
-// itself the point: those are covered at the type level and nowhere else.
+// by the bundler's interop and follow source order.
 
 import * as extensions from "../extension-api";
 
 const commonNames = ["App", "Catalog", "Clusters", "EventBus", "Proxy", "Store", "Types", "Util", "logger"];
+const mainNames = ["Catalog", "Ipc", "K8s", "K8sApi", "LensExtension", "Navigation", "Power", "Util"];
+const rendererNames = ["Catalog", "Component", "Ipc", "K8s", "K8sApi", "LensExtension", "Navigation", "Theme", "Util"];
 
-const commonNamespaceNames = {
-  App: [
-    "Preferences",
-    "appName",
-    "getEnabledExtensions",
-    "isFlatpak",
-    "isLinux",
-    "isMac",
-    "isSnap",
-    "isWindows",
-    "issuesTrackerUrl",
-    "lensBuildEnvironment",
-    "version",
-  ],
-  Catalog: [
-    "CatalogCategory",
-    "CatalogEntity",
-    "GeneralEntity",
-    "KubernetesCluster",
-    "WebLink",
-    "categoryVersion",
-    "kubernetesClusterCategory",
-  ],
-  Clusters: ["ClusterConnectionStatus", "isClusterConnectionStatus"],
+const commonAnchors: Record<string, readonly string[]> = {
+  App: ["appName", "version"],
+  Catalog: ["CatalogEntity", "KubernetesCluster"],
+  Clusters: ["ClusterConnectionStatus"],
   EventBus: ["appEventBus"],
   Proxy: ["resolveSystemProxy"],
   Store: ["ExtensionStore"],
-  Types: [],
-  Util: [
-    "HashSet",
-    "ObservableHashSet",
-    "Ordering",
-    "WrappedAbortController",
-    "array",
-    "backoffCaller",
-    "base64",
-    "bindPredicate",
-    "buildURL",
-    "buildURLPositional",
-    "byOrderNumber",
-    "byValue",
-    "bytesToUnits",
-    "chainSignal",
-    "computedAnd",
-    "computedOr",
-    "convertKubectlJsonPathToNodeJsonPath",
-    "cpuUnitsToNumber",
-    "cssNames",
-    "cssVar",
-    "debouncePromise",
-    "delay",
-    "displayMode",
-    "disposer",
-    "formatDuration",
-    "formatInTimeZone",
-    "formatJSONValue",
-    "formatRelativeTime",
-    "getAppVersion",
-    "getAvailableTimezones",
-    "getConvertedParts",
-    "getOrInsert",
-    "getOrInsertMap",
-    "getOrInsertSet",
-    "getOrInsertSetFor",
-    "getOrInsertWith",
-    "getOrInsertWithAsync",
-    "guessUserTimezone",
-    "hasDefinedTupleValue",
-    "hasDefiniteField",
-    "hasOptionalTypedProperty",
-    "hasOwnProperties",
-    "hasOwnProperty",
-    "hasStringProperty",
-    "hasTypedProperty",
-    "includes",
-    "interval",
-    "isAbortError",
-    "isBoolean",
-    "isBuffer",
-    "isChildProcessError",
-    "isDefined",
-    "isErrnoException",
-    "isExecException",
-    "isExecFileException",
-    "isFunction",
-    "isIso8601DateString",
-    "isMiddleClick",
-    "isNumber",
-    "isObject",
-    "isPromiseLike",
-    "isPromiseSettledFulfilled",
-    "isPromiseSettledRejected",
-    "isReactNode",
-    "isRecord",
-    "isRequestError",
-    "isString",
-    "isTypedArray",
-    "iter",
-    "json",
-    "listTarEntries",
-    "lowerAndPluralize",
-    "makeIterableIterator",
-    "metricUnitsToNumber",
-    "namedCaptures",
-    "noop",
-    "object",
-    "observableCrate",
-    "onKeyboardShortcut",
-    "onceDefined",
-    "openBrowser",
-    "openExternal",
-    "prevDefault",
-    "put",
-    "readFileFromTar",
-    "readonly",
-    "rectifyOrdering",
-    "rejectPromiseBy",
-    "safeJSONPathValue",
-    "setAndGet",
-    "setTimeoutFor",
-    "sortBySemverVersion",
-    "sortCompare",
-    "stopPropagation",
-    "strictGet",
-    "strictSet",
-    "toCamelCase",
-    "toggle",
-    "tuple",
-    "unionPATHs",
-    "unitsToBytes",
-    "urlBuilderFor",
-    "waitUntilDefined",
-    "withConcurrencyLimit",
-  ],
+  // `bytesToUnits` and `unitsToBytes` are destructured out of `Common.Util` by
+  // the fluxcd extension; the other two are the utilities every renderer-side
+  // extension reaches for.
+  Util: ["bytesToUnits", "cssNames", "stopPropagation", "unitsToBytes"],
 };
 
-const mainNames = ["Catalog", "Ipc", "K8s", "K8sApi", "LensExtension", "Navigation", "Power", "Util"];
-
-const mainNamespaceNames = {
-  Catalog: ["catalogCategories", "catalogEntities", "getAllClusters", "getClusterById"],
-  K8s: [
-    "applyOnCluster",
-    "deleteOnCluster",
-    "getResource",
-    "patchOnCluster",
-    "queryAllClusters",
-    "queryCluster",
-    "queryClusters",
-  ],
-  K8sApi: [
-    "ClusterRole",
-    "ClusterRoleBinding",
-    "ConfigMap",
-    "CronJob",
-    "CustomResourceDefinition",
-    "DaemonSet",
-    "Deployment",
-    "DeploymentApi",
-    "Endpoint",
-    "EndpointSlice",
-    "HorizontalPodAutoscaler",
-    "Ingress",
-    "IngressApi",
-    "Job",
-    "KubeApi",
-    "KubeEvent",
-    "KubeJsonApi",
-    "KubeObject",
-    "KubeObjectStore",
-    "KubeStatus",
-    "LensExtensionKubeObject",
-    "LimitRange",
-    "Namespace",
-    "NetworkPolicy",
-    "Node",
-    "NodesApi",
-    "PersistentVolume",
-    "PersistentVolumeClaim",
-    "PersistentVolumeClaimsApi",
-    "Pod",
-    "PodDisruptionBudget",
-    "PodsApi",
-    "PriorityClass",
-    "ReplicaSet",
-    "ResourceQuota",
-    "Role",
-    "RoleBinding",
-    "Secret",
-    "Service",
-    "ServiceAccount",
-    "StatefulSet",
-    "StorageClass",
-    "apiManager",
-    "createKubeObject",
-    "createResourceStack",
-    "forCluster",
-    "getPodsByOwnerId",
-    "isJsonApiData",
-    "isJsonApiDataList",
-    "isKubeJsonApiListMetadata",
-    "isKubeJsonApiMetadata",
-    "isKubeObjectNonSystem",
-    "isKubeStatusData",
-    "isPartialJsonApiData",
-    "isPartialJsonApiMetadata",
-    "stringifyLabels",
-  ],
+const mainAnchors: Record<string, readonly string[]> = {
+  Catalog: ["catalogEntities", "getClusterById"],
+  K8s: ["applyOnCluster", "getResource", "queryCluster"],
+  // The five symbols a custom-resource extension is built out of. Both
+  // published extensions subclass `LensExtensionKubeObject`, pair it with a
+  // `KubeApi` and a `KubeObjectStore`, and register the result with
+  // `apiManager`.
+  K8sApi: ["KubeApi", "KubeObject", "KubeObjectStore", "LensExtensionKubeObject", "apiManager"],
   Navigation: ["navigate"],
   Power: ["onResume", "onShutdown", "onSuspend"],
-  Util: [
-    "HashSet",
-    "ObservableHashSet",
-    "Ordering",
-    "WrappedAbortController",
-    "array",
-    "backoffCaller",
-    "base64",
-    "bindPredicate",
-    "buildURL",
-    "buildURLPositional",
-    "byOrderNumber",
-    "byValue",
-    "bytesToUnits",
-    "chainSignal",
-    "computedAnd",
-    "computedOr",
-    "convertKubectlJsonPathToNodeJsonPath",
-    "cpuUnitsToNumber",
-    "cssNames",
-    "cssVar",
-    "debouncePromise",
-    "delay",
-    "displayMode",
-    "disposer",
-    "fetch",
-    "formatDuration",
-    "formatInTimeZone",
-    "formatJSONValue",
-    "formatRelativeTime",
-    "getAppVersion",
-    "getAvailableTimezones",
-    "getConvertedParts",
-    "getOrInsert",
-    "getOrInsertMap",
-    "getOrInsertSet",
-    "getOrInsertSetFor",
-    "getOrInsertWith",
-    "getOrInsertWithAsync",
-    "guessUserTimezone",
-    "hasDefinedTupleValue",
-    "hasDefiniteField",
-    "hasOptionalTypedProperty",
-    "hasOwnProperties",
-    "hasOwnProperty",
-    "hasStringProperty",
-    "hasTypedProperty",
-    "includes",
-    "interval",
-    "isAbortError",
-    "isBoolean",
-    "isBuffer",
-    "isChildProcessError",
-    "isDefined",
-    "isErrnoException",
-    "isExecException",
-    "isExecFileException",
-    "isFunction",
-    "isIso8601DateString",
-    "isMiddleClick",
-    "isNumber",
-    "isObject",
-    "isPromiseLike",
-    "isPromiseSettledFulfilled",
-    "isPromiseSettledRejected",
-    "isReactNode",
-    "isRecord",
-    "isRequestError",
-    "isString",
-    "isTypedArray",
-    "iter",
-    "json",
-    "listTarEntries",
-    "lowerAndPluralize",
-    "makeIterableIterator",
-    "metricUnitsToNumber",
-    "namedCaptures",
-    "noop",
-    "object",
-    "observableCrate",
-    "onKeyboardShortcut",
-    "onceDefined",
-    "openBrowser",
-    "openExternal",
-    "prevDefault",
-    "put",
-    "readFileFromTar",
-    "readonly",
-    "rectifyOrdering",
-    "rejectPromiseBy",
-    "safeJSONPathValue",
-    "setAndGet",
-    "setTimeoutFor",
-    "sortBySemverVersion",
-    "sortCompare",
-    "stopPropagation",
-    "strictGet",
-    "strictSet",
-    "toCamelCase",
-    "toggle",
-    "tuple",
-    "unionPATHs",
-    "unitsToBytes",
-    "urlBuilderFor",
-    "waitUntilDefined",
-    "withConcurrencyLimit",
-  ],
+  // `fetch` is the whole of C12: an extension that loses it has no HTTP that
+  // honours the user's proxy and CA settings.
+  Util: ["bytesToUnits", "fetch"],
 };
 
-const rendererNames = ["Catalog", "Component", "Ipc", "K8s", "K8sApi", "LensExtension", "Navigation", "Theme", "Util"];
-
-const rendererNamespaceNames = {
-  Catalog: [
-    "CatalogEntityRegistry",
-    "activeCluster",
-    "catalogCategories",
-    "catalogEntities",
-    "getActiveCluster",
-    "getAllClusters",
-    "getClusterById",
-  ],
-  Component: [
-    "AddRemoveButtons",
-    "Avatar",
-    "Badge",
-    "BadgeBoolean",
-    "BarChart",
-    "Button",
-    "Chart",
-    "ChartKind",
-    "Checkbox",
-    "CommandOverlay",
-    "ConfirmDialog",
-    "Countdown",
-    "Dialog",
-    "Drawer",
-    "DrawerItem",
-    "DrawerItemLabels",
-    "DrawerParamToggler",
-    "DrawerTitle",
-    "DropFileInput",
-    "Dropdown",
-    "DurationAbsoluteTimestamp",
-    "EditableList",
-    "EventDetails",
-    "Events",
-    "FileInput",
-    "FilePicker",
-    "FormSwitch",
-    "Gutter",
-    "HorizontalLine",
-    "Icon",
-    "Input",
-    "InputValidators",
-    "ItemListLayout",
-    "KubeObjectAge",
-    "KubeObjectConditionsDrawer",
-    "KubeObjectConditionsList",
-    "KubeObjectDetails",
-    "KubeObjectListLayout",
-    "KubeObjectMenu",
-    "KubeObjectMeta",
-    "LineProgress",
-    "LinkToClusterRole",
-    "LinkToConfigMap",
-    "LinkToJob",
-    "LinkToNamespace",
-    "LinkToNode",
-    "LinkToObject",
-    "LinkToPod",
-    "LinkToPriorityClass",
-    "LinkToReplicaSet",
-    "LinkToRole",
-    "LinkToRuntimeClass",
-    "LinkToSecret",
-    "LinkToServiceAccount",
-    "LinkToStorageClass",
-    "LocaleDate",
-    "MainLayout",
-    "Map",
-    "MarkdownViewer",
-    "MaybeLink",
-    "Menu",
-    "MenuActions",
-    "MenuContext",
-    "MenuItem",
-    "MonacoEditor",
-    "NamespaceSelect",
-    "NamespaceSelectBadge",
-    "NamespaceSelectBadgeNonInjected",
-    "NamespaceSelectFilter",
-    "NoItems",
-    "NotificationStatus",
-    "Notifications",
-    "OverLimitStyle",
-    "OverSizeLimitStyle",
-    "OverTotalSizeLimitStyle",
-    "PageLayout",
-    "PathPicker",
-    "PieChart",
-    "PodCharts",
-    "PodDetailsList",
-    "Radio",
-    "RadioGroup",
-    "ReactiveDuration",
-    "RenderDelay",
-    "ResourceMetrics",
-    "ResourceMetricsContext",
-    "SearchInput",
-    "SearchInputUrl",
-    "Select",
-    "SettingLayout",
-    "Slider",
-    "Spinner",
-    "StatusBrick",
-    "Stepper",
-    "SubMenu",
-    "SubTitle",
-    "Switch",
-    "Switcher",
-    "Tab",
-    "TabLayout",
-    "Table",
-    "TableCell",
-    "TableHead",
-    "TableRow",
-    "Tabs",
-    "TerminalStore",
-    "TimeRangedResourceMetrics",
-    "Tooltip",
-    "TooltipPosition",
-    "TreeGroup",
-    "TreeItem",
-    "TreeView",
-    "VirtualList",
-    "WithTooltip",
-    "Wizard",
-    "WizardLayout",
-    "WizardStep",
-    "asyncInputValidator",
-    "cpuOptions",
-    "createTerminalTab",
-    "getBooleanClass",
-    "getBooleanText",
-    "inputValidator",
-    "isAsyncValidator",
-    "isSvg",
-    "logTabStore",
-    "memoryOptions",
-    "notificationsStore",
-    "onMultiSelectFor",
-    "podMetricTabs",
-    "resizingAnchorProps",
-    "sortConditions",
-    "terminalStore",
-    "unionInputValidatorsAsync",
-    "withTooltip",
-  ],
-  K8s: [
-    "applyOnCluster",
-    "deleteOnCluster",
-    "getResource",
-    "patchOnCluster",
-    "queryAllClusters",
-    "queryCluster",
-    "queryClusters",
-  ],
+const rendererAnchors: Record<string, readonly string[]> = {
+  Catalog: ["activeCluster", "catalogEntities"],
+  // `MonacoEditor` is here for C3 rather than for its own sake: it is the
+  // component that fails if the host stops being the single instance.
+  Component: ["Badge", "DrawerItem", "Icon", "KubeObjectListLayout", "MenuItem", "MonacoEditor"],
+  K8s: ["applyOnCluster", "getResource", "queryCluster"],
   K8sApi: [
-    "CRDResourceStore",
-    "CRDStore",
-    "ClusterRole",
-    "ClusterRoleBinding",
-    "ClusterRoleBindingStore",
-    "ClusterRoleStore",
-    "ConfigMap",
-    "ConfigMapStore",
-    "ConfigMapsStore",
-    "CronJob",
-    "CronJobStore",
     "CustomResourceDefinition",
-    "CustomResourceDefinitionStore",
-    "CustomResourceStore",
-    "DaemonSet",
-    "DaemonSetStore",
-    "Deployment",
-    "DeploymentApi",
-    "DeploymentStore",
-    "Endpoint",
-    "EndpointSlice",
-    "EndpointSliceStore",
-    "EndpointStore",
-    "EndpointsStore",
-    "EventStore",
-    "HPAStore",
-    "HorizontalPodAutoscaler",
-    "HorizontalPodAutoscalerStore",
-    "Ingress",
-    "IngressApi",
-    "IngressClassStore",
-    "IngressStore",
-    "Job",
-    "JobStore",
     "KubeApi",
-    "KubeEvent",
-    "KubeJsonApi",
     "KubeObject",
-    "KubeObjectStatusLevel",
     "KubeObjectStore",
-    "KubeStatus",
     "LensExtensionKubeObject",
-    "LimitRange",
-    "LimitRangeStore",
-    "LimitRangesStore",
-    "Namespace",
-    "NamespaceStore",
-    "NetworkPolicy",
-    "NetworkPolicyStore",
-    "Node",
-    "NodeStore",
-    "NodesApi",
-    "NodesStore",
-    "PersistentVolume",
-    "PersistentVolumeClaim",
-    "PersistentVolumeClaimStore",
-    "PersistentVolumeClaimsApi",
-    "PersistentVolumeStore",
-    "PersistentVolumesStore",
-    "Pod",
-    "PodDisruptionBudget",
-    "PodDisruptionBudgetStore",
-    "PodDisruptionBudgetsStore",
-    "PodStore",
-    "PodsApi",
-    "PodsStore",
-    "PriorityClass",
-    "PriorityClassStore",
-    "PriorityClassStoreStore",
-    "ReplicaSet",
-    "ReplicaSetStore",
-    "ResourceQuota",
-    "ResourceQuotaStore",
-    "ResourceQuotasStore",
-    "Role",
-    "RoleBinding",
-    "RoleBindingStore",
-    "RoleBindingsStore",
-    "RoleStore",
-    "RolesStore",
-    "Secret",
-    "SecretStore",
-    "SecretsStore",
-    "Service",
-    "ServiceAccount",
-    "ServiceAccountStore",
-    "ServiceAccountsStore",
-    "ServiceStore",
-    "StatefulSet",
-    "StatefulSetStore",
-    "StorageClass",
-    "StorageClassStore",
-    "VerticalPodAutoscalerStore",
-    "VolumeClaimStore",
+    // `ServicePort` cannot be withdrawn: it is the return type of
+    // `Service.getPorts()` (#2365).
+    "ServicePort",
     "apiManager",
-    "clusterRoleApi",
-    "clusterRoleBindingApi",
-    "clusterRoleBindingStore",
-    "clusterRoleStore",
-    "configMapApi",
-    "configMapStore",
-    "crdApi",
+    // The injected store singletons both published extensions read.
     "crdStore",
-    "createKubeObject",
-    "createResourceStack",
-    "cronJobApi",
-    "cronJobStore",
-    "daemonSetApi",
-    "daemonSetStore",
-    "deploymentApi",
-    "deploymentStore",
-    "endpointApi",
-    "endpointSliceApi",
-    "endpointSliceStore",
-    "endpointStore",
-    "eventApi",
-    "eventStore",
-    "forCluster",
-    "getPodsByOwnerId",
-    "hpaApi",
-    "hpaStore",
-    "ingressApi",
-    "ingressStore",
-    "isAllowedResource",
-    "isJsonApiData",
-    "isJsonApiDataList",
-    "isKubeJsonApiListMetadata",
-    "isKubeJsonApiMetadata",
-    "isKubeObjectNonSystem",
-    "isKubeStatusData",
-    "isPartialJsonApiData",
-    "isPartialJsonApiMetadata",
-    "jobApi",
-    "jobStore",
-    "limitRangeApi",
-    "limitRangeStore",
+    // One of the eight symbols #2365 considered and kept, so its output format
+    // — `key=value:effect` — is frozen until 3.0.0 along with the symbol.
+    "formatNodeTaint",
     "namespaceStore",
-    "namespacesApi",
-    "networkPolicyApi",
-    "networkPolicyStore",
-    "nodesApi",
-    "nodesMetricsApi",
-    "nodesStore",
-    "pcApi",
-    "pcStore",
-    "pdbApi",
-    "pdbStore",
-    "persistentVolumeApi",
-    "persistentVolumeStore",
-    "podsApi",
-    "podsMetricsApi",
-    "podsStore",
-    "priorityClassApi",
-    "pvcApi",
-    "pvcStore",
-    "replicaSetApi",
-    "replicaSetStore",
-    "requestMetrics",
-    "resourceQuotaApi",
-    "resourceQuotaStore",
-    "roleApi",
-    "roleBindingApi",
-    "roleBindingStore",
-    "roleStore",
-    "secretsApi",
-    "secretsStore",
-    "serviceAccountsApi",
-    "serviceAccountsStore",
-    "serviceApi",
-    "serviceStore",
-    "statefulSetApi",
-    "statefulSetStore",
-    "storageClassApi",
-    "storageClassStore",
-    "stringifyLabels",
-    "vpaApi",
-    "vpaStore",
   ],
-  Navigation: [
-    "createPageParam",
-    "getDetailsUrl",
-    "getMaybeDetailsUrl",
-    "hideDetails",
-    "hideEntityDetails",
-    "isActiveRoute",
-    "navigate",
-    "showDetails",
-    "showEntityDetails",
-  ],
+  Navigation: ["getDetailsUrl", "getMaybeDetailsUrl", "navigate"],
   Theme: ["activeTheme"],
-  Util: [
-    "HashSet",
-    "ObservableHashSet",
-    "Ordering",
-    "WrappedAbortController",
-    "array",
-    "backoffCaller",
-    "base64",
-    "bindPredicate",
-    "buildURL",
-    "buildURLPositional",
-    "byOrderNumber",
-    "byValue",
-    "bytesToUnits",
-    "chainSignal",
-    "computedAnd",
-    "computedOr",
-    "convertKubectlJsonPathToNodeJsonPath",
-    "cpuUnitsToNumber",
-    "cssNames",
-    "cssVar",
-    "debouncePromise",
-    "delay",
-    "displayMode",
-    "disposer",
-    "fetch",
-    "formatDuration",
-    "formatInTimeZone",
-    "formatJSONValue",
-    "formatRelativeTime",
-    "getAppVersion",
-    "getAvailableTimezones",
-    "getConvertedParts",
-    "getOrInsert",
-    "getOrInsertMap",
-    "getOrInsertSet",
-    "getOrInsertSetFor",
-    "getOrInsertWith",
-    "getOrInsertWithAsync",
-    "guessUserTimezone",
-    "hasDefinedTupleValue",
-    "hasDefiniteField",
-    "hasOptionalTypedProperty",
-    "hasOwnProperties",
-    "hasOwnProperty",
-    "hasStringProperty",
-    "hasTypedProperty",
-    "includes",
-    "interval",
-    "isAbortError",
-    "isBoolean",
-    "isBuffer",
-    "isChildProcessError",
-    "isDefined",
-    "isErrnoException",
-    "isExecException",
-    "isExecFileException",
-    "isFunction",
-    "isIso8601DateString",
-    "isMiddleClick",
-    "isNumber",
-    "isObject",
-    "isPromiseLike",
-    "isPromiseSettledFulfilled",
-    "isPromiseSettledRejected",
-    "isReactNode",
-    "isRecord",
-    "isRequestError",
-    "isString",
-    "isTypedArray",
-    "iter",
-    "json",
-    "listTarEntries",
-    "lowerAndPluralize",
-    "makeIterableIterator",
-    "metricUnitsToNumber",
-    "namedCaptures",
-    "noop",
-    "object",
-    "observableCrate",
-    "onKeyboardShortcut",
-    "onceDefined",
-    "openBrowser",
-    "openExternal",
-    "prevDefault",
-    "put",
-    "readFileFromTar",
-    "readonly",
-    "rectifyOrdering",
-    "rejectPromiseBy",
-    "safeJSONPathValue",
-    "setAndGet",
-    "setTimeoutFor",
-    "sortBySemverVersion",
-    "sortCompare",
-    "stopPropagation",
-    "strictGet",
-    "strictSet",
-    "toCamelCase",
-    "toggle",
-    "tuple",
-    "unionPATHs",
-    "unitsToBytes",
-    "urlBuilderFor",
-    "waitUntilDefined",
-    "withConcurrencyLimit",
-  ],
+  Util: ["bytesToUnits", "cssNames", "fetch", "stopPropagation"],
 };
+
+interface SubNamespaceReport {
+  empty: string[];
+  missing: Record<string, string[]>;
+}
+
+// Reports rather than asserts, so a failure names the missing anchors instead
+// of diffing a hundred-entry member list against another one.
+const inspect = (namespace: object, anchors: Record<string, readonly string[]>): SubNamespaceReport => {
+  const report: SubNamespaceReport = { empty: [], missing: {} };
+
+  for (const [name, expected] of Object.entries(anchors)) {
+    const members = new Set(Object.keys((namespace as Record<string, object>)[name] ?? {}));
+
+    if (members.size === 0) {
+      report.empty.push(name);
+    }
+
+    const absent = expected.filter((member) => !members.has(member));
+
+    if (absent.length > 0) {
+      report.missing[name] = absent;
+    }
+  }
+
+  return report;
+};
+
+const intact: SubNamespaceReport = { empty: [], missing: {} };
 
 describe("extensions API surface", () => {
   it("exports Common, Main and Renderer", () => {
@@ -833,47 +145,32 @@ describe("extensions API surface", () => {
     expect(Object.keys(extensions.Common).sort()).toEqual(commonNames);
   });
 
-  it("exports a stable set of names from each Common namespace", () => {
-    expect({
-      App: Object.keys(extensions.Common.App).sort(),
-      Catalog: Object.keys(extensions.Common.Catalog).sort(),
-      Clusters: Object.keys(extensions.Common.Clusters).sort(),
-      EventBus: Object.keys(extensions.Common.EventBus).sort(),
-      Proxy: Object.keys(extensions.Common.Proxy).sort(),
-      Store: Object.keys(extensions.Common.Store).sort(),
-      Types: Object.keys(extensions.Common.Types).sort(),
-      Util: Object.keys(extensions.Common.Util).sort(),
-    }).toEqual(commonNamespaceNames);
-  });
-
   it("exports a stable set of names from Main", () => {
     expect(Object.keys(extensions.Main).sort()).toEqual(mainNames);
-  });
-
-  it("exports a stable set of names from each Main namespace", () => {
-    expect({
-      Catalog: Object.keys(extensions.Main.Catalog).sort(),
-      K8s: Object.keys(extensions.Main.K8s).sort(),
-      K8sApi: Object.keys(extensions.Main.K8sApi).sort(),
-      Navigation: Object.keys(extensions.Main.Navigation).sort(),
-      Power: Object.keys(extensions.Main.Power).sort(),
-      Util: Object.keys(extensions.Main.Util).sort(),
-    }).toEqual(mainNamespaceNames);
   });
 
   it("exports a stable set of names from Renderer", () => {
     expect(Object.keys(extensions.Renderer).sort()).toEqual(rendererNames);
   });
 
-  it("exports a stable set of names from each Renderer namespace", () => {
-    expect({
-      Catalog: Object.keys(extensions.Renderer.Catalog).sort(),
-      Component: Object.keys(extensions.Renderer.Component).sort(),
-      K8s: Object.keys(extensions.Renderer.K8s).sort(),
-      K8sApi: Object.keys(extensions.Renderer.K8sApi).sort(),
-      Navigation: Object.keys(extensions.Renderer.Navigation).sort(),
-      Theme: Object.keys(extensions.Renderer.Theme).sort(),
-      Util: Object.keys(extensions.Renderer.Util).sort(),
-    }).toEqual(rendererNamespaceNames);
+  it("keeps the Common sub-namespaces populated and anchored", () => {
+    expect(inspect(extensions.Common, commonAnchors)).toEqual(intact);
+  });
+
+  it("keeps the Main sub-namespaces populated and anchored", () => {
+    expect(inspect(extensions.Main, mainAnchors)).toEqual(intact);
+  });
+
+  it("keeps the Renderer sub-namespaces populated and anchored", () => {
+    expect(inspect(extensions.Renderer, rendererAnchors)).toEqual(intact);
+  });
+
+  // `Common.Types` is the one namespace with nothing behind it at runtime, and
+  // that is not a defect to be fixed by adding a value to it: its members are
+  // the registration shapes, covered in `./extension-api.types.ts` and nowhere
+  // else. Asserted explicitly so the emptiness reads as intended rather than as
+  // an omission from the check above.
+  it("keeps Common.Types type-only", () => {
+    expect(Object.keys(extensions.Common.Types)).toEqual([]);
   });
 });

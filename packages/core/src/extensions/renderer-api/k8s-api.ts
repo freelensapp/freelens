@@ -178,80 +178,11 @@ export type {
 
 export const requestMetrics = asLazyInjectedFunctionForExtensionApi(requestMetricsInjectable);
 
-export {
-  CustomResourceStore,
-  CustomResourceStore as CRDResourceStore,
-} from "../../common/k8s-api/api-manager/resource.store";
-export {
-  type KubeObjectStatus,
-  KubeObjectStatusLevel,
-} from "../../common/k8s-api/kube-object-status";
-export {
-  HorizontalPodAutoscalerStore,
-  HorizontalPodAutoscalerStore as HPAStore,
-} from "../../renderer/components/config-horizontal-pod-autoscalers/store";
-export {
-  LimitRangeStore,
-  LimitRangeStore as LimitRangesStore,
-} from "../../renderer/components/config-limit-ranges/store";
-export { ConfigMapStore, ConfigMapStore as ConfigMapsStore } from "../../renderer/components/config-maps/store";
-export {
-  PodDisruptionBudgetStore,
-  PodDisruptionBudgetStore as PodDisruptionBudgetsStore,
-} from "../../renderer/components/config-pod-disruption-budgets/store";
-export {
-  PriorityClassStore,
-  PriorityClassStore as PriorityClassStoreStore,
-} from "../../renderer/components/config-priority-classes/store";
-export {
-  ResourceQuotaStore as ResourceQuotasStore,
-  ResourceQuotaStore,
-} from "../../renderer/components/config-resource-quotas/store";
-export { SecretStore, SecretStore as SecretsStore } from "../../renderer/components/config-secrets/store";
-export { VerticalPodAutoscalerStore } from "../../renderer/components/config-vertical-pod-autoscalers/store";
-export {
-  CustomResourceDefinitionStore,
-  CustomResourceDefinitionStore as CRDStore,
-} from "../../renderer/components/custom-resource-definitions/store";
-export { EventStore } from "../../renderer/components/events/store";
-export { NamespaceStore } from "../../renderer/components/namespaces/store";
-export { EndpointSliceStore } from "../../renderer/components/network-endpoint-slices/store";
-export {
-  EndpointsStore,
-  EndpointsStore as EndpointStore,
-} from "../../renderer/components/network-endpoints/store";
-export { IngressClassStore } from "../../renderer/components/network-ingresses/ingress-class-store";
-export { IngressStore } from "../../renderer/components/network-ingresses/ingress-store";
-export { NetworkPolicyStore } from "../../renderer/components/network-policies/store";
-export { ServiceStore } from "../../renderer/components/network-services/store";
-export { NodeStore, NodeStore as NodesStore } from "../../renderer/components/nodes/store";
-export { StorageClassStore } from "../../renderer/components/storage-classes/store";
-export {
-  PersistentVolumeClaimStore,
-  PersistentVolumeClaimStore as VolumeClaimStore,
-} from "../../renderer/components/storage-volume-claims/store";
-export {
-  PersistentVolumeStore,
-  PersistentVolumeStore as PersistentVolumesStore,
-} from "../../renderer/components/storage-volumes/store";
-export { ClusterRoleBindingStore } from "../../renderer/components/user-management/cluster-role-bindings/store";
-export { ClusterRoleStore } from "../../renderer/components/user-management/cluster-roles/store";
-export {
-  RoleBindingStore,
-  RoleBindingStore as RoleBindingsStore,
-} from "../../renderer/components/user-management/role-bindings/store";
-export { RoleStore, RoleStore as RolesStore } from "../../renderer/components/user-management/roles/store";
-export {
-  ServiceAccountStore,
-  ServiceAccountStore as ServiceAccountsStore,
-} from "../../renderer/components/user-management/service-accounts/store";
-export { CronJobStore } from "../../renderer/components/workloads-cronjobs/store";
-export { DaemonSetStore } from "../../renderer/components/workloads-daemonsets/store";
-export { DeploymentStore } from "../../renderer/components/workloads-deployments/store";
-export { JobStore } from "../../renderer/components/workloads-jobs/store";
-export { PodStore, PodStore as PodsStore } from "../../renderer/components/workloads-pods/store";
-export { ReplicaSetStore } from "../../renderer/components/workloads-replicasets/store";
-export { StatefulSetStore } from "../../renderer/components/workloads-statefulsets/store";
+// The host's concrete store classes are deliberately not exported (#2478). Their
+// constructors take a host dependency bag an extension cannot build or name, so
+// exporting them would freeze those bags as API under C14. Use the store
+// singletons above — `typeof Renderer.K8sApi.cronJobStore` names one — and
+// extend the generic `KubeObjectStore` for your own resources.
 
 export type {
   MetricData,

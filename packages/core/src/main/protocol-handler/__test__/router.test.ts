@@ -90,6 +90,8 @@ describe("protocol router tests", () => {
       },
       isEnabled: true,
       isCompatible: true,
+      isManaged: true,
+      isVerified: true,
       absolutePath: "/foo/bar",
     });
 
@@ -175,6 +177,8 @@ describe("protocol router tests", () => {
       },
       isEnabled: true,
       isCompatible: true,
+      isManaged: true,
+      isVerified: true,
       absolutePath: "/foo/bar",
     });
 
@@ -225,6 +229,8 @@ describe("protocol router tests", () => {
         },
         isEnabled: true,
         isCompatible: true,
+        isManaged: true,
+        isVerified: true,
         absolutePath: "/foo/bar",
       });
 
@@ -251,6 +257,8 @@ describe("protocol router tests", () => {
         },
         isEnabled: true,
         isCompatible: true,
+        isManaged: true,
+        isVerified: true,
         absolutePath: "/foo/bar",
       });
 

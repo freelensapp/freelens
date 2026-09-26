@@ -69,9 +69,7 @@
         // devDependency so electron-builder does not pack it into the app
         "electron",
         // explicit dependency to prevent to install different versions of app-build-lib
-        "electron-builder-squirrel-windows",
-        // used as script to run in fork() to install extensions
-        "pnpm"
+        "electron-builder-squirrel-windows"
       ],
       "typescript": {
         "config": ["tsconfig.json"]
@@ -79,7 +77,13 @@
     },
 
     "packages/core": {
-      "entry": ["src/{main,renderer}/library.ts!"],
+      "entry": [
+        "src/{main,renderer}/library.ts!",
+        // type-only assertions over the extension-API namespaces: `pnpm
+        // type:check` compiles them and nothing imports them, which is the
+        // point — see the file's header
+        "src/extensions/__tests__/extension-api.types.ts"
+      ],
       "project": ["__mocks__/**/*.{ts,tsx}", "src/**/*.{ts,tsx}!", "types/*.d.ts"],
       "ignoreDependencies": [
         // static YAML templates imported with a relative import.meta.glob in
@@ -88,8 +92,6 @@
         // provided by the Electron runtime and declared only as a
         // devDependency; production code imports it in both processes
         "electron",
-        // used as script to run in fork() to install extensions
-        "pnpm",
         // tailwind dependencies are not handled by knip correctly
         "@tailwindcss/postcss",
         "tailwindcss"

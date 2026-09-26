@@ -123,7 +123,6 @@
     "monaco-editor": "catalog:",
     "undici": "catalog:",
     "node-pty": "catalog:",
-    "pnpm": "catalog:",
     "proper-lockfile": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
