@@ -353,6 +353,37 @@ section guarantees is which names a namespace has. The report could not tell
 gating on. The `ae-forgotten-export` occurrences it found are real and remain a
 separate matter.
 
+### Decided: `Util` is `@freelensapp/utilities` minus the Node-bound members
+
+`Common.Util` is one family, judged as a whole rather than member by member,
+and it is delimited by a rule rather than by a list of what it offers:
+
+- **Every export of `@freelensapp/utilities` is extension API**, and frozen with
+  the rest under [C14](#c14-versioning-and-compatibility) — including an export
+  added to the package later.
+- **Except a member that needs Node or Electron in the renderer**, because
+  renderer code gets no guarantee of either. Such a member goes on the omit
+  list in `packages/core/src/extensions/common-api/utils.ts`, which
+  destructures it out of the spread so that its name and types do not reach
+  the bundled declarations either.
+
+`Main.Util` and `Renderer.Util` spread `Common.Util`, so an omitted member is
+gone from all three; each adds its own `fetch` ([C12](#c12-http)).
+`Common.Util.getAppVersion` is the one member the host defines itself.
+
+**Whoever adds an export to the package** is therefore adding API, and checks
+one thing: does it need Node or Electron to run in the renderer — a
+`node:`/Electron import, a Node global such as `Buffer` or `process`, or a Node
+type such as `NodeJS.ErrnoException` in its signature? If the dependency is
+incidental to the implementation, remove it, as was done for `node:assert` in
+`unitsToBytes` and `node:util` in `strictGet`; if it is what the function does,
+add the member to the omit list and a line to the migration guide.
+
+**Failure mode.** A member that needs Node and is not on the list fails at
+runtime in a renderer without Node — a `ReferenceError` for a global such as
+`Buffer`, a failed import for a builtin — and not at compile time, because
+nothing checks the rule mechanically.
+
 ---
 
 ## C6. Registration and the extension instance

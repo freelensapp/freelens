@@ -452,7 +452,7 @@ can be applied at all.
 ## `Renderer.K8sApi` concrete store classes removed
 
 The host's built-in store **classes** are no longer exported from
-`Renderer.K8sApi` (#2478) — `PodStore`, `DeploymentStore`, `CronJobStore`,
+`Renderer.K8sApi` — `PodStore`, `DeploymentStore`, `CronJobStore`,
 `CustomResourceDefinitionStore` and the rest, together with their v1 aliases
 (`PodsStore`, `CRDStore`, `HPAStore`, …).
 
@@ -528,6 +528,38 @@ resolves the namespace filter from the host container itself:
 ```tsx
 <Renderer.Component.NamespaceSelectBadge namespace={object.getNs()} />
 ```
+
+## `Util` members that need Node removed
+
+`Common.Util` carries every export of the host's utilities package except the
+ones that need Node or Electron in the renderer, which v2 does not guarantee
+there ([C5](./v2-extension-api.md#decided-util-is-freelensapputilities-minus-the-node-bound-members)).
+These are gone from `Common.Util`, and with it from `Main.Util` and
+`Renderer.Util`. No extension is known to use them; if you need one back in a
+form that works without Node, ask for it.
+
+- **`base64`** — use `TextEncoder` / `TextDecoder` with `btoa` / `atob`:
+  `btoa(Array.from(new TextEncoder().encode(text), (b) => String.fromCharCode(b)).join(""))`
+  to encode, and
+  `new TextDecoder("utf-8", { fatal: true }).decode(Uint8Array.from(atob(data), (c) => c.charCodeAt(0)))`
+  to decode, which throws on input that is not UTF-8 as `base64.decode` did.
+- **`readFileFromTar`**, **`listTarEntries`** — read the archive in your main
+  entry, with `tar` bundled or with Node directly, and hand the result to the
+  renderer over `Main.Ipc` / `Renderer.Ipc`.
+- **`unionPATHs`** — a `PATH` belongs to the processes main spawns; build it in
+  main, splitting and joining on `path.delimiter`.
+- **`isBuffer`** — there is no `Buffer` in the renderer to test for; test for
+  `Uint8Array`, which `Buffer` extends.
+- **`isErrnoException`**, **`isExecException`**, **`isExecFileException`**,
+  **`isChildProcessError`**, **`isRequestError`** — these narrow errors thrown
+  by Node's `fs`, `child_process` and `http`, which only main can call. Do that
+  work in main, test the error there (`error instanceof Error && "code" in error`
+  covers most uses), and send the renderer the outcome over `Ipc`.
+- **`openExternal`**, **`openBrowser`** — in the renderer, call
+  `window.open(url)` or render an `<a href={url} target="_blank">`. The host's
+  window-open handler refuses every new window and hands an `http:` or `https:`
+  URL to the system browser instead, which is what these did; any other scheme
+  is dropped. In main, call Electron's `shell.openExternal(url)`.
 
 ## Routing: `react-router` re-exports removed
 
