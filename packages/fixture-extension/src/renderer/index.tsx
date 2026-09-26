@@ -23,9 +23,7 @@
 import { Common, Renderer } from "@freelensapp/extensions";
 import { computed, observable, runInAction } from "mobx";
 import { useCallback, useMemo, useState } from "react";
-
-/** The URL the fixture probes on activation. Never actually requested: the host DI serves it. */
-export const FIXTURE_PROBE_URL = "https://fixture.invalid/contract-probe";
+import { FIXTURE_PROBE_URL } from "../common/host-info";
 
 /**
  * The host-provided singletons this bundle actually resolved, so the harness can
@@ -110,3 +108,9 @@ export default class FixtureRendererExtension extends Renderer.LensExtension {
     });
   }
 }
+
+/**
+ * Re-exported for the harness, which asserts the probe went to this URL. It
+ * lives in `src/common/` so the renderer bundle carries code shared with main.
+ */
+export { FIXTURE_PROBE_URL };

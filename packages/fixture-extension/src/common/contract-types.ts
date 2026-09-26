@@ -5,15 +5,17 @@
 
 // The type level of the fixture: every name below has to be reachable from the
 // published namespaces of `@freelensapp/extensions`. It carries no runtime code
-// and is not part of the bundle — `tsc -p tsconfig.json` is the assertion, and
-// it runs against the built `dist/extension-api.d.ts`.
+// and is part of neither bundle — the fixture's `type:check` is the assertion,
+// and it runs against the built `dist/extension-api.d.ts`. It sits in
+// `src/common/` because it is valid in both environments, so all three
+// programs compile it.
 //
 // This is what catches the #2365 class. A symbol a namespace re-exports as a
 // value but not as a type is not nameable in a signature, so it cannot be
 // written here at all: the failure is a compile error rather than a runtime
-// surprise in somebody else's repository. It also covers `Main`, which the
-// renderer bundle never touches, and the type-only members of `Common`, which
-// no runtime assertion can reach.
+// surprise in somebody else's repository. It also covers the parts of `Main`
+// the main entry point does not use, and the type-only members of `Common`,
+// which no runtime assertion can reach.
 
 import type { Common, Main, Renderer } from "@freelensapp/extensions";
 

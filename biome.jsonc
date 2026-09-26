@@ -107,6 +107,21 @@
       }
     }
   },
+  "overrides": [
+    {
+      // The browser-side trees of the fixture extension, linted as the
+      // extension migration guide recommends for any extension: a Node builtin
+      // import belongs in the main entry point only.
+      "includes": ["packages/fixture-extension/src/common/**", "packages/fixture-extension/src/renderer/**"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noNodejsModules": "error"
+          }
+        }
+      }
+    }
+  ],
   "vcs": {
     "clientKind": "git",
     "enabled": true,

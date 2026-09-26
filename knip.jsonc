@@ -149,16 +149,18 @@
     },
 
     // The contract fixture (#2451) is an extension, not a library: its
-    // entrypoint is the `renderer` manifest field, which knip does not read, and
-    // it has no `main`/`exports` for knip to fall back on. Without the entries
-    // below its only dependency looks unused in the --production --strict pass.
+    // entrypoints are the `main` and `renderer` manifest fields, which point at
+    // build output, and knip does not read `renderer` at all. Without the
+    // entries below its only dependency looks unused in the --production
+    // --strict pass.
     "packages/fixture-extension": {
       "entry": [
         "vite.config.mjs",
         // type-only by design: the type level of the contract, with no runtime
         // importer here or anywhere else
-        "src/contract-types.ts!",
-        "src/renderer.tsx!"
+        "src/common/contract-types.ts!",
+        "src/main/index.ts!",
+        "src/renderer/index.tsx!"
       ],
       "project": ["*.mjs", "src/**/*.{ts,tsx}!"],
       // build output: one self-contained bundle in which every import has been
@@ -174,7 +176,8 @@
         "react"
       ],
       "typescript": {
-        "config": ["tsconfig.json"]
+        // one program per runtime environment
+        "config": ["src/main/tsconfig.json", "src/renderer/tsconfig.json", "src/common/tsconfig.json"]
       }
     },
 

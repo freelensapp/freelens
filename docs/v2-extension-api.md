@@ -225,6 +225,15 @@ guide lists the replacement for each Node and Electron module v1 extensions
 used in the renderer, under
 [Node and Electron in the renderer](./v2-extension-migration.md#node-and-electron-in-the-renderer).
 
+The declaration cannot enforce this: `extension-api.d.ts` is one file for every
+process. The environment has to come from the extension's own compiler
+configuration, and the migration guide specifies the layout that provides it,
+under
+[Source layout: one tsconfig per runtime environment](./v2-extension-migration.md#source-layout-one-tsconfig-per-runtime-environment):
+`src/main/`, `src/renderer/` and `src/common/`, each with a `tsconfig.json` for
+its environment, so a Node API in renderer code or a DOM API in main code fails
+the type check rather than the running extension.
+
 **Failure mode.** A load failure is recorded in the extension's metadata and
 logged; the extension is skipped and nothing else aborts. A renderer bundle
 served with a wrong MIME type does not execute at all — the host maps types by
@@ -364,8 +373,8 @@ things keep it honest, none of them a new tool:
 - `packages/core/src/extensions/__tests__/extension-api.types.ts` names those
   anchors and the types of this section's failure mode **as types**, so a
   symbol that stops being nameable stops `pnpm type:check` compiling.
-- `packages/fixture-extension/src/contract-types.ts` does the same against the
-  **built** declaration, which is the artifact an author resolves.
+- `packages/fixture-extension/src/common/contract-types.ts` does the same
+  against the **built** declaration, which is the artifact an author resolves.
 
 **Generating the enumeration was tried and rejected** (#2366, #2476). An API
 Extractor report runs against TypeScript 7 output and produces a diffable file,
