@@ -426,7 +426,6 @@ jobs:
         run: timeout 600 pnpm --color=always test:integration --reporter=verbose --reporter=github-actions --includeTaskLocation
         env:
           DEBUG: pw:browser
-          EXTENSION_PATH: skip
         continue-on-error: true
 
       - name: Run integration tests (Windows) (retry)
@@ -435,7 +434,6 @@ jobs:
         run: timeout 600 pnpm --color=always test:integration --reporter=verbose --reporter=github-actions --includeTaskLocation
         env:
           DEBUG: pw:browser
-          EXTENSION_PATH: skip
 
   security-scan:
     name: security scan
