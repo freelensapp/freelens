@@ -41,12 +41,12 @@ this repository. Every other `@freelensapp/*` package is private and must never
 appear in an extension's dependencies.
 
 **Surface.** One package, two files: `dist/extension-api.d.ts` (the rolled-up
-declaration, 13,038 lines) and `dist/extension-api.js` (the runtime shim, 734
-bytes, no dependencies).
+declaration) and `dist/extension-api.js` (the runtime shim, with no
+dependencies).
 
 The rollup is what makes the single-package model work rather than merely
-assert it: `rollup.dts.config.mjs` maps all 39 workspace entries to their
-emitted declarations and its `external` predicate returns false for them, so
+assert it: `rollup.dts.config.mjs` maps every workspace entry to its
+emitted declaration and its `external` predicate returns false for them, so
 every `@freelensapp/*` is inlined. Nothing else needs publishing.
 
 **Failure mode.** A direct dependency on any other `@freelensapp/*` package
