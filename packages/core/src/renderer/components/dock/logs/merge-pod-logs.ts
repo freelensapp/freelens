@@ -16,10 +16,15 @@ export const maxCombinedLogsPods = 20;
  */
 export const maxConcurrentLogRequests = 5;
 
-// ANSI colors used to tag the lines of each pod in a combined logs view. Red is
-// left out because it reads as an error, the bright variants because they are
-// hard to tell from the plain ones and nearly invisible on a light background.
-const podColorPalette = ["36", "33", "35", "32", "34"];
+/**
+ * The colors of the pod names in a combined logs view, as ANSI codes of the
+ * 256 color palette: teal, orange, purple, green, blue and pink. The logs are
+ * white on black in the dark theme and black on white in the light one, and
+ * these read on both, with a contrast between 4 and 5 to 1. The 16 basic
+ * colors do not: blue disappears on black, yellow and cyan on white. Red is
+ * left out because it reads as an error.
+ */
+export const podLogColors = ["38;5;30", "38;5;130", "38;5;129", "38;5;28", "38;5;27", "38;5;162"];
 
 const ansiEscapeSequenceRegex = /\u001B\[[\d;]*m/g;
 
@@ -38,7 +43,7 @@ function hashString(value: string): number {
  * the same color across reloads/refreshes of the same combined logs tab.
  */
 export function getPodLogColor(podName: string): string {
-  return podColorPalette[hashString(podName) % podColorPalette.length];
+  return podLogColors[hashString(podName) % podLogColors.length];
 }
 
 /**
@@ -78,9 +83,9 @@ export function stripAnsiColors(line: string): string {
   return line.replace(ansiEscapeSequenceRegex, "");
 }
 
-function tagLine(line: string, podName: string): string {
+function tagLine(line: string, podName: string, color: string): string {
   const timestamp = getLeadingTimestamp(line);
-  const tag = `\u001B[${getPodLogColor(podName)}m[${podName}]\u001B[0m`;
+  const tag = `\u001B[${color}m[${podName}]\u001B[0m`;
 
   if (!timestamp) {
     return `${tag} ${line}`;
@@ -139,6 +144,12 @@ export interface MergePodLogsOptions {
    * come from more than one pod.
    */
   tagged?: boolean;
+
+  /**
+   * The color of the tag of every pod, by pod name. A pod without one gets a
+   * color from its name, which can be the color of another pod.
+   */
+  colors?: ReadonlyMap<string, string>;
 }
 
 /**
@@ -154,14 +165,16 @@ export interface MergePodLogsOptions {
  */
 export function mergePodLogs(
   linesByPodName: ReadonlyMap<string, readonly string[]>,
-  { tagged = linesByPodName.size > 1 }: MergePodLogsOptions = {},
+  { tagged = linesByPodName.size > 1, colors }: MergePodLogsOptions = {},
 ): string[] {
-  const sources = [...linesByPodName.entries()].map(([podName, lines]) =>
-    toTimedLines(lines).map(({ timestamp, line }) => ({
+  const sources = [...linesByPodName.entries()].map(([podName, lines]) => {
+    const color = colors?.get(podName) ?? getPodLogColor(podName);
+
+    return toTimedLines(lines).map(({ timestamp, line }) => ({
       timestamp,
-      line: tagged ? tagLine(line, podName) : line,
-    })),
-  );
+      line: tagged ? tagLine(line, podName, color) : line,
+    }));
+  });
 
   return mergeTimedLines(sources);
 }

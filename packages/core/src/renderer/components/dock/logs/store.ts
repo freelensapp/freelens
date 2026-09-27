@@ -12,6 +12,7 @@ import {
   maxConcurrentLogRequests,
   mergeIntoLogs,
   mergePodLogs,
+  podLogColors,
 } from "./merge-pod-logs";
 
 import type { Pod, PodLogsQuery } from "@freelensapp/kube-object";
@@ -50,6 +51,7 @@ export class LogStore {
   protected refreshers = new Map<TabId, IntervalFn>();
   private readonly requests = new Map<TabId, AbortController>();
   private readonly cursors = new Map<TabId, Map<string, PodLogsCursor>>();
+  private readonly podColors = new Map<TabId, Map<string, string>>();
 
   constructor(private dependencies: Dependencies) {}
 
@@ -90,7 +92,7 @@ export class LogStore {
 
         this.cursors.set(tabId, cursors);
         this.getRefresher(tabId, computedPods, logTabData).start();
-        this.podLogs.set(tabId, this.mergeNewLines(cursors, logsOfPods, tagged));
+        this.podLogs.set(tabId, this.mergeNewLines(tabId, cursors, logsOfPods, tagged));
       },
     );
   }
@@ -152,7 +154,7 @@ export class LogStore {
         return cursor ? { sinceTime: this.getSinceTime(cursor.timestamp) } : { tailLines: logLinesToLoad };
       },
       (logsOfPods, tagged) => {
-        const newLines = this.mergeNewLines(cursors, logsOfPods, tagged);
+        const newLines = this.mergeNewLines(tabId, cursors, logsOfPods, tagged);
 
         // Add newly received logs to bottom.
         this.podLogs.set(tabId, mergeIntoLogs(this.podLogs.get(tabId) ?? oldLogs, newLines));
@@ -282,8 +284,22 @@ export class LogStore {
    * Keeps, of the lines received from every pod, the ones that follow its
    * cursor, moves the cursor and merges what is left in chronological order.
    */
-  private mergeNewLines(cursors: Map<string, PodLogsCursor>, logsOfPods: PodLogs[], tagged: boolean): string[] {
+  private mergeNewLines(
+    tabId: TabId,
+    cursors: Map<string, PodLogsCursor>,
+    logsOfPods: PodLogs[],
+    tagged: boolean,
+  ): string[] {
     const linesByPodName = new Map<string, string[]>();
+    const colors = getOrInsertWith(this.podColors, tabId, () => new Map<string, string>());
+
+    // Every pod keeps, as long as the tab is not reloaded, the color it got
+    // when the tab first read it: the next one of the palette.
+    for (const { pod } of logsOfPods) {
+      if (!colors.has(pod.getName())) {
+        colors.set(pod.getName(), podLogColors[colors.size % podLogColors.length]);
+      }
+    }
 
     for (const { pod, lines } of logsOfPods) {
       const podId = pod.getId();
@@ -319,7 +335,7 @@ export class LogStore {
       linesByPodName.set(pod.getName(), newLines);
     }
 
-    return mergePodLogs(linesByPodName, { tagged });
+    return mergePodLogs(linesByPodName, { tagged, colors });
   }
 
   /**
@@ -417,6 +433,7 @@ export class LogStore {
     this.stopLoadingLogs(tabId);
     this.podLogs.delete(tabId);
     this.cursors.delete(tabId);
+    this.podColors.delete(tabId);
   }
 
   reload(

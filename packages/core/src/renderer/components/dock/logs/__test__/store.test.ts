@@ -5,7 +5,7 @@
 
 import { Pod } from "@freelensapp/kube-object";
 import { computed, observable } from "mobx";
-import { maxConcurrentLogRequests, stripAnsiColors } from "../merge-pod-logs";
+import { maxConcurrentLogRequests, podLogColors, stripAnsiColors } from "../merge-pod-logs";
 import { LogStore } from "../store";
 import { dockerPod } from "./pod.mock";
 
@@ -302,6 +302,24 @@ describe("LogStore combined logs", () => {
       "2026-01-01T00:00:03.200000000Z [pod-b] b1",
       "2026-01-01T00:00:05.500000000Z [pod-a] a2",
     ]);
+  });
+
+  it("gives every pod its own color, and keeps it when the pods of the workload change", async () => {
+    const getColorOf = (name: string) =>
+      store
+        .getLogs(tabId)
+        .filter((line) => line.includes(`[${name}]`))
+        .map((line) => /\u001B\[([\d;]+)m/.exec(line)?.[1]);
+
+    await store.load(tabId, computedPods, computedTabData);
+    logsOfPods.set("pod-b", "2026-01-01T00:00:03.200000000Z b1\n2026-01-01T00:00:07.000000000Z b2");
+    logsOfPods.set("pod-c", "2026-01-01T00:00:06.000000000Z c1");
+    pods.set([podB, createPod("pod-c")]);
+    await vi.advanceTimersByTimeAsync(10_000);
+
+    expect(getColorOf("pod-a")).toEqual([podLogColors[0], podLogColors[0]]);
+    expect(getColorOf("pod-b")).toEqual([podLogColors[1], podLogColors[1]]);
+    expect(getColorOf("pod-c")).toEqual([podLogColors[2]]);
   });
 
   it("asks every pod for the lines that follow its own last line", async () => {
