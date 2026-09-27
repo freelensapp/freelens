@@ -69,9 +69,7 @@
         // devDependency so electron-builder does not pack it into the app
         "electron",
         // explicit dependency to prevent to install different versions of app-build-lib
-        "electron-builder-squirrel-windows",
-        // used as script to run in fork() to install extensions
-        "pnpm"
+        "electron-builder-squirrel-windows"
       ],
       "typescript": {
         "config": ["tsconfig.json"]
@@ -79,7 +77,13 @@
     },
 
     "packages/core": {
-      "entry": ["src/{main,renderer}/library.ts!"],
+      "entry": [
+        "src/{main,renderer}/library.ts!",
+        // type-only assertions over the extension-API namespaces: `pnpm
+        // type:check` compiles them and nothing imports them, which is the
+        // point — see the file's header
+        "src/extensions/__tests__/extension-api.types.ts"
+      ],
       "project": ["__mocks__/**/*.{ts,tsx}", "src/**/*.{ts,tsx}!", "types/*.d.ts"],
       "ignoreDependencies": [
         // static YAML templates imported with a relative import.meta.glob in
@@ -88,8 +92,6 @@
         // provided by the Electron runtime and declared only as a
         // devDependency; production code imports it in both processes
         "electron",
-        // used as script to run in fork() to install extensions
-        "pnpm",
         // tailwind dependencies are not handled by knip correctly
         "@tailwindcss/postcss",
         "tailwindcss"
@@ -146,33 +148,36 @@
       }
     },
 
-    // The contract fixture (#2451) is an extension, not a library: its
-    // entrypoint is the `renderer` manifest field, which knip does not read, and
-    // it has no `main`/`exports` for knip to fall back on. Without the entries
-    // below its only dependency looks unused in the --production --strict pass.
+    // The contract fixture is an extension, not a library: its entrypoints are
+    // the `main` and `renderer` manifest fields, which point at build output,
+    // and knip does not read `renderer` at all, so they are listed below.
     "packages/fixture-extension": {
       "entry": [
         "vite.config.mjs",
         // type-only by design: the type level of the contract, with no runtime
         // importer here or anywhere else
-        "src/contract-types.ts!",
-        "src/renderer.tsx!"
+        "src/common/contract-types.ts!",
+        "src/main/index.ts!",
+        "src/renderer/index.tsx!"
       ],
       "project": ["*.mjs", "src/**/*.{ts,tsx}!"],
       // build output: one self-contained bundle in which every import has been
       // replaced by a read of the host global, so there is nothing to resolve
       "ignore": ["dist/**"],
       "ignoreDependencies": [
-        // host-provided singletons. The bundle maps them onto
-        // globalThis.FreelensExtensionApi (see vite.config.mjs), so they are
-        // declared as devDependencies for their types alone, which the
-        // --production --strict pass reports as unlisted
+        // host-provided modules. The bundle maps them onto
+        // globalThis.FreelensExtensionApi (see vite.config.mjs), and Freelens
+        // installs no dependencies of an extension, so they are declared as
+        // devDependencies for their types alone, which the --production
+        // --strict pass reports as unlisted
+        "@freelensapp/extensions",
         "@types/react",
         "mobx",
         "react"
       ],
       "typescript": {
-        "config": ["tsconfig.json"]
+        // one program per runtime environment
+        "config": ["src/main/tsconfig.json", "src/renderer/tsconfig.json", "src/common/tsconfig.json"]
       }
     },
 

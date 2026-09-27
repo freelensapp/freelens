@@ -10,11 +10,12 @@ import { getInjectable } from "@ogre-tools/injectable";
 import writeFileInjectable from "../../../../common/fs/write-file.injectable";
 import tempDirectoryPathInjectable from "../../../../common/os/temp-directory-path.injectable";
 import joinPathsInjectable from "../../../../common/path/join-paths.injectable";
-import extensionDiscoveryInjectable from "../../../../extensions/extension-discovery/extension-discovery.injectable";
 import { getMessageFromError } from "../get-message-from-error/get-message-from-error";
 import { validatePackage } from "./validate-package";
 
 import type { LensExtensionId, LensExtensionManifest } from "../../../../extensions/installed-extension";
+import type { InstallChecksum } from "../../../../features/extensions/installer/common/checksums";
+import type { InstalledExtensionSource } from "../../../../features/extensions/installer/common/installed-extensions";
 import type { InstallRequest } from "./attempt-install.injectable";
 
 export interface InstallRequestValidated {
@@ -23,6 +24,8 @@ export interface InstallRequestValidated {
   id: LensExtensionId;
   manifest: LensExtensionManifest;
   tempFile: string; // temp system path to packed extension for unpacking
+  source?: InstalledExtensionSource;
+  checksum?: InstallChecksum;
 }
 
 export type CreateTempFilesAndValidate = (request: InstallRequest) => Promise<InstallRequestValidated | null>;
@@ -30,7 +33,6 @@ export type CreateTempFilesAndValidate = (request: InstallRequest) => Promise<In
 const createTempFilesAndValidateInjectable = getInjectable({
   id: "create-temp-files-and-validate",
   instantiate: (di): CreateTempFilesAndValidate => {
-    const extensionDiscovery = di.inject(extensionDiscoveryInjectable);
     const logger = di.inject(loggerInjectionToken);
     const writeFile = di.inject(writeFileInjectable);
     const joinPaths = di.inject(joinPathsInjectable);
@@ -39,21 +41,24 @@ const createTempFilesAndValidateInjectable = getInjectable({
 
     const getTempExtensionPackagePath = (fileName: string) => joinPaths(tempDirectoryPath, "lens-extensions", fileName);
 
-    return async ({ fileName, data }) => {
+    return async ({ fileName, data, source, checksum }) => {
       // validate packages
       const tempFile = getTempExtensionPackagePath(fileName);
 
       try {
         await writeFile(tempFile, data);
         const manifest = await validatePackage(tempFile);
-        const id = joinPaths(extensionDiscovery.nodeModulesPath, manifest.name, "package.json");
 
         return {
           fileName,
           data,
           manifest,
           tempFile,
-          id,
+          source,
+          checksum,
+          // An extension is identified by its name, independently of which
+          // version of it happens to be installed.
+          id: manifest.name,
         };
       } catch (error) {
         const message = getMessageFromError(error);

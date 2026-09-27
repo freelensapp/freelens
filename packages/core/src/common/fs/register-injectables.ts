@@ -24,6 +24,7 @@ import readFileSyncInjectable from "./read-file-sync.injectable";
 import readJsonFileInjectable from "./read-json-file.injectable";
 import readJsonSyncInjectable from "./read-json-sync.injectable";
 import readYamlFileInjectable from "./read-yaml-file.injectable";
+import realPathInjectable from "./realpath.injectable";
 import removePathInjectable from "./remove.injectable";
 import statInjectable from "./stat.injectable";
 import unlinkInjectable from "./unlink.injectable";
@@ -125,6 +126,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(readYamlFileInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(realPathInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

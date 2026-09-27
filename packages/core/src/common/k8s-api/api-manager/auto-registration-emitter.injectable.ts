@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import EventEmitter from "node:events";
+import { TypedEmitter } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 
 import type { KubeApi } from "@freelensapp/kube-api";
@@ -22,8 +22,7 @@ export type LegacyAutoRegistration = {
  */
 const autoRegistrationEmitterInjectable = getInjectable({
   id: "auto-registration-emitter",
-  instantiate: (): TypedEventEmitter<LegacyAutoRegistration> =>
-    new EventEmitter() as unknown as TypedEventEmitter<LegacyAutoRegistration>,
+  instantiate: (): TypedEventEmitter<LegacyAutoRegistration> => new TypedEmitter<LegacyAutoRegistration>(),
 });
 
 export default autoRegistrationEmitterInjectable;

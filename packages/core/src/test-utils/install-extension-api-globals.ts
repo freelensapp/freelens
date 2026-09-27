@@ -3,9 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import * as Mobx from "mobx";
-import React from "react";
-import * as ReactJsxRuntime from "react/jsx-runtime";
+import { rendererExtensionApiSingletons } from "../extensions/api-globals/renderer-singletons";
 import * as Common from "../extensions/common-api";
 import * as Renderer from "../extensions/renderer-api";
 
@@ -13,18 +11,16 @@ import * as Renderer from "../extensions/renderer-api";
  * What the host publishes on `globalThis.FreelensExtensionApi` for the renderer
  * process, which is what an extension bundle reads back.
  *
- * `Common` and `Renderer` are already assigned by
- * `freelens/src/renderer/index.ts`; the three singletons are what #2450 adds,
- * and the externals of an extension bundle map onto them (see
- * `packages/fixture-extension/vite.config.mjs`).
+ * The singletons are taken from the very module the application entry point
+ * publishes (`api-globals/renderer-singletons.ts`) rather than listed again
+ * here: a list would let this helper certify a set the host does not actually
+ * publish. The externals of an extension bundle map onto these names -- see
+ * `packages/fixture-extension/vite.config.mjs`.
  */
-export interface RendererExtensionApiGlobals {
+export type RendererExtensionApiGlobals = {
   Common: typeof Common;
   Renderer: typeof Renderer;
-  React: typeof React;
-  ReactJsxRuntime: typeof ReactJsxRuntime;
-  Mobx: typeof Mobx;
-}
+} & typeof rendererExtensionApiSingletons;
 
 /**
  * Plays the host's role for unit tests: installs the extension API global from
@@ -42,17 +38,16 @@ export interface RendererExtensionApiGlobals {
  * while it evaluates, and throws if nothing is there.
  *
  * Assigned through `Object.assign` rather than a plain property write because
- * the ambient declaration of the global (`freelens/src/freelens-extension-api.ts`,
- * `packages/extensions/src/extension-api.ts`) still describes the pre-#2450
- * shape, without the singletons.
+ * the global's ambient declaration is not in scope here: it belongs to the
+ * application (`freelens/src/freelens-extension-api.ts`) and to the published
+ * package (`packages/extensions/src/extension-api.ts`), neither of which core
+ * depends on.
  */
 export const installExtensionApiGlobals = (): RendererExtensionApiGlobals => {
   const globals: RendererExtensionApiGlobals = {
     Common,
     Renderer,
-    React,
-    ReactJsxRuntime,
-    Mobx,
+    ...rendererExtensionApiSingletons,
   };
 
   Object.assign(globalThis, { FreelensExtensionApi: globals });
