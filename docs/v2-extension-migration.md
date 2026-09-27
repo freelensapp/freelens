@@ -974,6 +974,24 @@ persists its sort order in the URL, and it expects items with a `getId()` /
 `getName()` shape — a different tool than `List` was, but the right one if your
 rows are Kubernetes objects.
 
+## `logTabStore.createWorkloadTab` opens a combined logs tab
+
+`Renderer.Component.logTabStore.createWorkloadTab({ workload })` keeps its
+signature and changes what it opens (#2418). In v1 the tab showed the logs of
+the first pod of the workload, with the other pods in a dropdown. In v2 it
+shows the logs of all the pods of the workload, merged in chronological order
+and tagged with the name of their pod, and it follows the workload: the pods
+are read again at every refresh, so a rollout or a scale does not leave the
+tab on pods that are gone.
+
+What to check in an extension that calls it:
+
+- The title of the tab is the workload (`Deployment my-app`), no longer its
+  first pod.
+- The tab reads at most 20 pods of the workload, the first ones by name.
+- `logTabStore.createPodTab` is unchanged, and is the one to call for the logs
+  of a single pod.
+
 ## Chart.js v4 (`Renderer.Component.BarChart` / `PieChart`)
 
 Freelens bundles Chart.js **v4** (previously v2.9). The `BarChart` and
