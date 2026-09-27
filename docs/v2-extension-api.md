@@ -638,7 +638,9 @@ resolves through `@types/react-dom`, and a subpath such as `es-toolkit/compat` o
 undeclared import fails quietly: an extension compiles with `skipLibCheck`, so a
 specifier that does not resolve in the author's tree becomes `any` instead of an
 error, and nothing in the monorepo notices, since every such package happens to
-be installed there.
+be installed there. `packages/extensions/rollup.dts.config.mjs` therefore
+enforces it: `build:dist` fails and lists every external specifier of the
+bundle whose package is not declared.
 
 `@ogre-tools/injectable-react` is imported by the declaration like the other
 host-provided singletons. It would be declared either way, being needed at
