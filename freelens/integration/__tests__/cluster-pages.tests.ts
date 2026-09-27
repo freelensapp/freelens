@@ -4,6 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import * as fs from "node:fs";
+import * as os from "node:os";
+import * as path from "node:path";
 import { describeIf } from "@freelensapp/test-utils";
 import { kindReady } from "../helpers/kind";
 /*
@@ -14,19 +17,20 @@ import { kindReady } from "../helpers/kind";
 */
 import * as utils from "../helpers/utils";
 
-import type { Frame, Page } from "playwright";
+import type { ElectronApplication, Frame, Page } from "playwright";
 
 const TEST_KIND_CLUSTER_NAME = process.env.TEST_KIND_CLUSTER_NAME || "kind";
 const TEST_NAMESPACE = process.env.TEST_NAMESPACE || "integration-tests";
 
 describeIf(kindReady(TEST_KIND_CLUSTER_NAME, TEST_NAMESPACE))("KinD based tests", () => {
+  let app: ElectronApplication;
   let window: Page;
   let cleanup: undefined | (() => Promise<void>);
   let frame: Frame;
 
   beforeEach(
     async () => {
-      ({ window, cleanup } = await utils.start());
+      ({ app, window, cleanup } = await utils.start());
       await utils.clickWelcomeButton(window);
 
       frame = await utils.launchKindClusterFromCatalog(TEST_KIND_CLUSTER_NAME, window);
@@ -94,6 +98,43 @@ describeIf(kindReady(TEST_KIND_CLUSTER_NAME, TEST_NAMESPACE))("KinD based tests"
   );
 
   it(
+    "should show the logs of a pod and download all of them",
+    async () => {
+      const downloads = path.join(os.tmpdir(), "freelens-integration-testing-downloads", String(Date.now()));
+
+      await utils.saveDownloadsTo(app, downloads);
+
+      try {
+        // Every kind cluster runs CoreDNS, and it writes its banner when it starts.
+        await navigateToPods(frame);
+        await selectNamespace(frame, "kube-system");
+
+        const pod = frame.locator(".TableRow", { hasText: "coredns" }).first();
+
+        await pod.waitFor(selectorTimeout);
+        await pod.locator(".TableCell.menu").click();
+        await frame.locator(".Menu .MenuItem", { hasText: "Logs" }).first().click();
+
+        await frame.waitForSelector(".Dock.isOpen .LogResourceSelector", selectorTimeout);
+        await frame.locator(".Dock.isOpen .LogRow", { hasText: "CoreDNS-" }).first().waitFor(selectorTimeout);
+
+        // "All logs" asks the API for the whole log and saves it: a request and a file, which
+        // only the application as it is released can prove, not its unit tests.
+        await frame.click('[data-testid="download-logs-dropdown"]');
+        await frame.click('[data-testid="download-all-logs"]');
+
+        const file = path.join(downloads, "coredns.log");
+
+        await expect.poll(() => fs.existsSync(file), { timeout: 30_000 }).toBe(true);
+        await expect.poll(() => fs.readFileSync(file, "utf8"), { timeout: 30_000 }).toContain("CoreDNS-");
+      } finally {
+        fs.rmSync(downloads, { recursive: true, force: true });
+      }
+    },
+    10 * 60 * 1000,
+  );
+
+  it(
     `should create the ${TEST_NAMESPACE} and a pod in the namespace and then remove that pod via the context menu`,
     async () => {
       await navigateToNamespaces(frame);
@@ -108,13 +149,7 @@ describeIf(kindReady(TEST_KIND_CLUSTER_NAME, TEST_NAMESPACE))("KinD based tests"
       await frame.waitForSelector(`div.TableCell >> text=${TEST_NAMESPACE}`);
 
       await navigateToPods(frame);
-
-      const namespacesSelector = await frame.waitForSelector(".NamespaceSelect");
-
-      await namespacesSelector.click();
-      await namespacesSelector.type(TEST_NAMESPACE);
-      await namespacesSelector.press("Enter");
-      await namespacesSelector.click();
+      await selectNamespace(frame, TEST_NAMESPACE);
 
       await frame.click(".Icon.new-dock-tab");
 
@@ -401,4 +436,13 @@ const navigateToPods = async (frame: Frame) => {
 
 const navigateToNamespaces = async (frame: Frame) => {
   await utils.clickSidebarItem(frame, "link-for-sidebar-item-namespaces");
+};
+
+const selectNamespace = async (frame: Frame, namespace: string) => {
+  const namespacesSelector = await frame.waitForSelector(".NamespaceSelect");
+
+  await namespacesSelector.click();
+  await namespacesSelector.type(namespace);
+  await namespacesSelector.press("Enter");
+  await namespacesSelector.click();
 };
