@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "node:assert";
 import { getOrInsertWith, interval } from "@freelensapp/utilities";
 import { observable, when } from "mobx";
 
@@ -191,7 +190,10 @@ export class LogStore {
       { signal },
     );
     signal.throwIfAborted();
-    assert(target);
+
+    if (!target) {
+      throw new Error("The Pod and the tab data are not available after the wait");
+    }
 
     const {
       pod,
