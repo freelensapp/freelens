@@ -213,6 +213,14 @@ export class KubeObjectStore<
         try {
           return (await res) ?? [];
         } catch (error) {
+          // An aborted request (e.g. the view unmounted before the list
+          // arrived) is not a real failure -- let it propagate so the
+          // abort-aware catch in `loadAll` can no-op on it instead of
+          // surfacing a spurious "Failed to load" error and blanking the list.
+          if (isAbortError(error)) {
+            throw error;
+          }
+
           onLoadFailure(new Error(`Failed to load ${this.api.apiBase}`, { cause: error }));
 
           // reset the store because we are loading all, so that nothing is displayed
@@ -240,6 +248,12 @@ export class KubeObjectStore<
           break;
 
         case "rejected":
+          // See the single-namespace branch above: an aborted request must
+          // propagate, not be reported through onLoadFailure.
+          if (isAbortError(result.reason)) {
+            throw result.reason;
+          }
+
           if (onLoadFailure) {
             onLoadFailure(new Error(`Failed to load ${this.api.apiBase}`, { cause: result.reason }));
           } else {

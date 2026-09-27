@@ -44,6 +44,33 @@ class FakeKubeObjectStore extends KubeObjectStore<KubeObject> {
   }
 }
 
+// Unlike FakeKubeObjectStore above, this exercises the real `loadItems()` --
+// the method that owns the `onLoadFailure` branches -- against a fake
+// `api.list()`, instead of bypassing it entirely.
+class RealLoadItemsKubeObjectStore extends KubeObjectStore<KubeObject> {
+  constructor(api: Partial<KubeApi<KubeObject>>, isLoadingAll: (namespaces: string[]) => boolean = () => true) {
+    super(
+      {
+        context: {
+          allNamespaces: [],
+          contextNamespaces: [],
+          hasSelectedAll: false,
+          isGlobalWatchEnabled: () => true,
+          isLoadingAll,
+        },
+        logger: {
+          debug: noop,
+          error: noop,
+          info: noop,
+          silly: noop,
+          warn: noop,
+        },
+      },
+      api as KubeApi<KubeObject>,
+    );
+  }
+}
+
 describe("KubeObjectStore", () => {
   it("should remove an object from the list of items after it is not returned from listing the same namespace again", async () => {
     const loadItems = vi.fn();
@@ -281,5 +308,51 @@ describe("KubeObjectStore", () => {
     expect(warnSpy).toHaveBeenCalled();
 
     warnSpy.mockRestore();
+  });
+
+  it("does not report an aborted cluster-scoped/all-namespaces load through onLoadFailure", async () => {
+    const onLoadFailure = vi.fn();
+    const list = vi.fn().mockRejectedValueOnce(new DOMException("The operation was aborted.", "AbortError"));
+    const store = new RealLoadItemsKubeObjectStore({ isNamespaced: false, list });
+
+    const result = await store.loadAll({ onLoadFailure });
+
+    expect(result).toBeUndefined();
+    expect(onLoadFailure).not.toHaveBeenCalled();
+    expect(store.failedLoading).toBe(false);
+  });
+
+  it("still reports a genuine cluster-scoped/all-namespaces load failure through onLoadFailure", async () => {
+    const onLoadFailure = vi.fn();
+    const list = vi.fn().mockRejectedValueOnce(new Error("boom"));
+    const store = new RealLoadItemsKubeObjectStore({ isNamespaced: false, list });
+
+    await store.loadAll({ onLoadFailure });
+
+    expect(onLoadFailure).toHaveBeenCalledTimes(1);
+    expect(onLoadFailure.mock.calls[0][0].message).toContain("Failed to load");
+  });
+
+  it("does not report an aborted namespaced load through onLoadFailure", async () => {
+    const onLoadFailure = vi.fn();
+    const list = vi.fn().mockRejectedValueOnce(new DOMException("The operation was aborted.", "AbortError"));
+    const store = new RealLoadItemsKubeObjectStore({ isNamespaced: true, list }, () => false);
+
+    const result = await store.loadAll({ namespaces: ["some-namespace"], onLoadFailure });
+
+    expect(result).toBeUndefined();
+    expect(onLoadFailure).not.toHaveBeenCalled();
+    expect(store.failedLoading).toBe(false);
+  });
+
+  it("still reports a genuine namespaced load failure through onLoadFailure", async () => {
+    const onLoadFailure = vi.fn();
+    const list = vi.fn().mockRejectedValueOnce(new Error("boom"));
+    const store = new RealLoadItemsKubeObjectStore({ isNamespaced: true, list }, () => false);
+
+    await store.loadAll({ namespaces: ["some-namespace"], onLoadFailure });
+
+    expect(onLoadFailure).toHaveBeenCalledTimes(1);
+    expect(onLoadFailure.mock.calls[0][0].message).toContain("Failed to load");
   });
 });
