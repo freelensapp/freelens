@@ -5,25 +5,27 @@
  */
 
 import { Button } from "@freelensapp/button";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import { showErrorNotificationInjectable, showInfoNotificationInjectable } from "@freelensapp/notifications";
 import { disposer } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { shell } from "electron";
-import { remove as removeDir } from "fs-extra";
 import { ExtensionInstallationState } from "../../../../extensions/extension-installation-state-store/extension-installation-state-store";
 import extensionInstallationStateStoreInjectable from "../../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
 import extensionLoaderInjectable from "../../../../extensions/extension-loader/extension-loader.injectable";
-import uninstallExtensionInjectable from "../uninstall-extension.injectable";
+import { verifyInstallChecksum } from "../../../../features/extensions/installer/common/checksums";
 import createTempFilesAndValidateInjectable from "./create-temp-files-and-validate.injectable";
 import getExtensionDestFolderInjectable from "./get-extension-dest-folder.injectable";
 import unpackExtensionInjectable from "./unpack-extension.injectable";
 
+import type { Logger } from "@freelensapp/logger";
 import type { ShowNotification } from "@freelensapp/notifications";
 import type { Disposer } from "@freelensapp/utilities";
 
 import type { ExtensionInstallationStateStore } from "../../../../extensions/extension-installation-state-store/extension-installation-state-store";
 import type { ExtensionLoader } from "../../../../extensions/extension-loader";
-import type { LensExtensionId } from "../../../../extensions/installed-extension";
+import type { InstallChecksum } from "../../../../features/extensions/installer/common/checksums";
+import type { InstalledExtensionSource } from "../../../../features/extensions/installer/common/installed-extensions";
 import type { CreateTempFilesAndValidate } from "./create-temp-files-and-validate.injectable";
 import type { GetExtensionDestFolder } from "./get-extension-dest-folder.injectable";
 import type { UnpackExtension } from "./unpack-extension.injectable";
@@ -31,34 +33,101 @@ import type { UnpackExtension } from "./unpack-extension.injectable";
 export interface InstallRequest {
   fileName: string;
   data: Buffer;
+  /**
+   * What the user asked for, recorded with the install because it cannot be
+   * recovered from the extracted tree afterwards.
+   */
+  source?: InstalledExtensionSource;
+  /**
+   * What the source vouched for. Absent means the download was unverifiable,
+   * which warns rather than refuses.
+   */
+  checksum?: InstallChecksum;
 }
 
 interface Dependencies {
   extensionLoader: ExtensionLoader;
-  uninstallExtension: (id: LensExtensionId) => Promise<boolean>;
   unpackExtension: UnpackExtension;
   createTempFilesAndValidate: CreateTempFilesAndValidate;
   getExtensionDestFolder: GetExtensionDestFolder;
   installStateStore: ExtensionInstallationStateStore;
   showErrorNotification: ShowNotification;
   showInfoNotification: ShowNotification;
+  logger: Logger;
 }
 
 export type AttemptInstall = (request: InstallRequest, cleanup?: Disposer) => Promise<void>;
 
+/**
+ * Why this download may not be installed, or `undefined` when nothing is wrong
+ * with it. An absent checksum is not a failure: it warns later, once there is a
+ * name to warn about.
+ *
+ * A checksum string we cannot evaluate fails too. It is a different failure --
+ * an unverifiable download rather than a corrupt one -- but it is not a reason
+ * to go ahead unchecked.
+ */
+function checksumFailure({ data, checksum, fileName }: InstallRequest, logger: Logger): string | undefined {
+  if (!checksum) {
+    return undefined;
+  }
+
+  try {
+    const mismatch = verifyInstallChecksum(data, checksum);
+
+    if (!mismatch) {
+      return undefined;
+    }
+
+    logger.warn(
+      `[EXTENSION-INSTALLATION]: ${fileName} does not match its ${mismatch.algorithm} checksum: expected ${mismatch.expected}, got ${mismatch.actual}`,
+    );
+
+    return `the download does not match the ${mismatch.algorithm} checksum published for it`;
+  } catch (error) {
+    logger.warn(`[EXTENSION-INSTALLATION]: cannot check ${fileName} against its checksum: ${error}`);
+
+    return `the checksum published for the download cannot be checked (${error})`;
+  }
+}
+
 const attemptInstall =
   ({
     extensionLoader,
-    uninstallExtension,
     unpackExtension,
     createTempFilesAndValidate,
     getExtensionDestFolder,
     installStateStore,
     showErrorNotification,
     showInfoNotification,
+    logger,
   }: Dependencies): AttemptInstall =>
   async (request, cleanup) => {
     const dispose = disposer(installStateStore.startPreInstall(), cleanup);
+
+    // Before the bytes are written anywhere and before anything reads inside
+    // the archive. A tarball which is not what its source vouched for must not
+    // reach node-tar, and must not be the thing whose name, version and
+    // description the confirmation below puts in front of the user.
+    const failure = checksumFailure(request, logger);
+
+    if (failure) {
+      dispose();
+
+      return void showErrorNotification(
+        <div className="flex flex-col gap-2">
+          <p>
+            {"Installing "}
+            <em>{request.fileName}</em>
+            {" has failed, skipping."}
+          </p>
+          <p>
+            {"Reason: "}
+            <em>{failure}</em>
+          </p>
+        </div>,
+      );
+    }
 
     const validatedRequest = await createTempFilesAndValidate(request);
 
@@ -88,10 +157,28 @@ const attemptInstall =
     const extensionFolder = getExtensionDestFolder(name);
     const installedExtension = extensionLoader.getExtensionById(validatedRequest.id);
 
+    // Only one version of an extension is active at a time, and a version which
+    // is already running cannot be swapped underneath itself: its module graph
+    // stays in the realm it was loaded into for the life of the process.
+    if (installedExtension?.isEnabled) {
+      dispose();
+
+      return void showErrorNotification(
+        <div className="flex flex-col gap-2">
+          <b>Extension is active:</b>
+          <p>
+            <em>{`${name}@${installedExtension.manifest.version}`}</em>
+            {" is installed and active."}
+          </p>
+          <p>{"Disable or uninstall it first, then install this version."}</p>
+        </div>,
+      );
+    }
+
     if (installedExtension) {
       const { version: oldVersion } = installedExtension.manifest;
 
-      // confirm to uninstall old version before installing new version
+      // confirm replacing the installed version, which is not active
       const removeNotification = showInfoNotification(
         <div className="InstallingExtensionNotification flex gap-2 items-center">
           <div className="flex flex-col gap-2">
@@ -105,7 +192,7 @@ const attemptInstall =
             </p>
             <div className="remove-folder-warning" onClick={() => shell.openPath(extensionFolder)}>
               <b>Warning:</b>
-              {` ${name}@${oldVersion} will be removed before installation.`}
+              {` ${name}@${oldVersion} will be replaced by this installation.`}
             </div>
           </div>
           <Button
@@ -114,11 +201,7 @@ const attemptInstall =
             onClick={async () => {
               removeNotification();
 
-              if (await uninstallExtension(validatedRequest.id)) {
-                await unpackExtension(validatedRequest, dispose);
-              } else {
-                dispose();
-              }
+              await unpackExtension(validatedRequest, dispose);
             }}
           />
         </div>,
@@ -127,10 +210,6 @@ const attemptInstall =
         },
       );
     } else {
-      // clean up old data if still around
-      await removeDir(extensionFolder);
-
-      // install extension if not yet exists
       await unpackExtension(validatedRequest, dispose);
     }
   };
@@ -140,13 +219,13 @@ const attemptInstallInjectable = getInjectable({
   instantiate: (di) =>
     attemptInstall({
       extensionLoader: di.inject(extensionLoaderInjectable),
-      uninstallExtension: di.inject(uninstallExtensionInjectable),
       unpackExtension: di.inject(unpackExtensionInjectable),
       createTempFilesAndValidate: di.inject(createTempFilesAndValidateInjectable),
       getExtensionDestFolder: di.inject(getExtensionDestFolderInjectable),
       installStateStore: di.inject(extensionInstallationStateStoreInjectable),
       showErrorNotification: di.inject(showErrorNotificationInjectable),
       showInfoNotification: di.inject(showInfoNotificationInjectable),
+      logger: di.inject(loggerInjectionToken),
     }),
 });
 

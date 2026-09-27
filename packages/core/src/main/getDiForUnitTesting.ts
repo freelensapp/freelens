@@ -17,6 +17,8 @@ import { runInAction } from "mobx";
 import dependencyInjectionContainerInjectable from "../common/dependency-injection/dependency-injection-container.injectable";
 import broadcastMessageInjectable from "../common/ipc/broadcast-message.injectable";
 import { setDiForExtensionApi } from "../extensions/extension-api-di";
+import handleExtensionSchemeInjectable from "../features/extensions/loader/main/handle-extension-scheme.injectable";
+import registerExtensionSchemeAsPrivilegedInjectable from "../features/extensions/loader/main/register-scheme-as-privileged.injectable";
 import setupSyncingOfWeblinksInjectable from "../features/weblinks/main/setup-syncing-of-weblinks.injectable";
 import { getOverrideFsWithFakes } from "../test-utils/override-fs-with-fakes";
 import spawnInjectable from "./child-process/spawn.injectable";
@@ -120,6 +122,8 @@ const overrideRunnablesHavingSideEffects = (di: DiContainer) => {
   [
     initializeExtensionsInjectable,
     initializeClusterManagerInjectable,
+    handleExtensionSchemeInjectable,
+    registerExtensionSchemeAsPrivilegedInjectable,
     setupIpcMainHandlersInjectable,
     setupLensProxyInjectable,
     setupSessionProxyBypassInjectable,

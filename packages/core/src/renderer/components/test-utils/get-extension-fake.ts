@@ -32,6 +32,8 @@ export const getExtensionFakeForMain = ({ id, name, mainOptions = {} }: FakeExte
         },
       },
       manifestPath: "irrelevant",
+      isManaged: true,
+      isVerified: false,
     }),
     mainOptions,
   );
@@ -51,6 +53,8 @@ export const getExtensionFakeForRenderer = ({ id, name, rendererOptions = {} }: 
         },
       },
       manifestPath: "irrelevant",
+      isManaged: true,
+      isVerified: false,
     }),
     rendererOptions,
   );
