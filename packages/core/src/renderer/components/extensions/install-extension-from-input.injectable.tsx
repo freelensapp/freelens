@@ -7,73 +7,53 @@
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { getInjectable } from "@ogre-tools/injectable";
-import getBasenameOfPathInjectable from "../../../common/path/get-basename.injectable";
-import extensionInstallationStateStoreInjectable from "../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
-import downloadBinaryViaChannelInjectable from "../../../renderer/fetch/download-binary-via-channel.injectable";
+import statInjectable from "../../../common/fs/stat.injectable";
 import { InputValidators } from "../input";
-import attemptInstallInjectable from "./attempt-install/attempt-install.injectable";
+import installFromDirectoryInjectable from "./attempt-install/install-from-directory.injectable";
+import installFromFileInjectable from "./attempt-install/install-from-file.injectable";
+import installFromUrlInjectable from "./attempt-install/install-from-url.injectable";
 import attemptInstallByInfoInjectable from "./attempt-install-by-info.injectable";
 import { getMessageFromError } from "./get-message-from-error/get-message-from-error";
-import readFileNotifyInjectable from "./read-file-notify/read-file-notify.injectable";
-
-import type { ExtendableDisposer } from "@freelensapp/utilities";
 
 export type InstallExtensionFromInput = (input: string) => Promise<void>;
 
+/**
+ * The one install verb, with the source inferred from the argument.
+ *
+ * Four shapes: a package name, resolved against the registry; a URL; a path to a
+ * `.tgz`; and a path to a directory. The first three produce a managed copy, the
+ * fourth registers the extension in place.
+ */
 const installExtensionFromInputInjectable = getInjectable({
   id: "install-extension-from-input",
 
   instantiate: (di): InstallExtensionFromInput => {
-    const attemptInstall = di.inject(attemptInstallInjectable);
+    const installFromUrl = di.inject(installFromUrlInjectable);
+    const installFromFile = di.inject(installFromFileInjectable);
+    const installFromDirectory = di.inject(installFromDirectoryInjectable);
     const attemptInstallByInfo = di.inject(attemptInstallByInfoInjectable);
-    const extensionInstallationStateStore = di.inject(extensionInstallationStateStoreInjectable);
-    const readFileNotify = di.inject(readFileNotifyInjectable);
-    const getBasenameOfPath = di.inject(getBasenameOfPathInjectable);
+    const stat = di.inject(statInjectable);
     const showErrorNotification = di.inject(showErrorNotificationInjectable);
     const logger = di.inject(loggerInjectionToken);
-    const downloadBinary = di.inject(downloadBinaryViaChannelInjectable);
 
     return async (input) => {
-      let disposer: ExtendableDisposer | undefined = undefined;
-
       try {
-        // fixme: improve error messages for non-tar-file URLs
         if (InputValidators.isUrl.validate(input)) {
-          // install via url
-          disposer = extensionInstallationStateStore.startPreInstall();
-          const result = await downloadBinary(input, { timeout: 30_0000 });
-
-          if (!result.callWasSuccessful) {
-            showErrorNotification(`Failed to download extension: ${result.error}`);
-
-            return disposer();
-          }
-
-          const fileName = getBasenameOfPath(input);
-
-          return await attemptInstall({ fileName, data: result.response }, disposer);
+          return await installFromUrl(input);
         }
 
-        try {
-          await InputValidators.isPath.validate(input);
+        const stats = await stat(input).catch(() => undefined);
 
-          // install from system path
-          const fileName = getBasenameOfPath(input);
-          const data = await readFileNotify(input);
+        if (stats) {
+          return await (stats.isDirectory() ? installFromDirectory(input) : installFromFile(input));
+        }
 
-          if (!data) {
-            return;
-          }
+        const extNameCaptures = InputValidators.extensionNameInstallCaptures(input);
 
-          return await attemptInstall({ fileName, data });
-        } catch (error) {
-          const extNameCaptures = InputValidators.extensionNameInstallCaptures(input);
+        if (extNameCaptures) {
+          const { name, version } = extNameCaptures;
 
-          if (extNameCaptures) {
-            const { name, version } = extNameCaptures;
-
-            return await attemptInstallByInfo({ name, version });
-          }
+          return await attemptInstallByInfo({ name, version });
         }
 
         throw new Error(`Unknown format of input: ${input}`);
@@ -87,8 +67,6 @@ const installExtensionFromInputInjectable = getInjectable({
             <b>{message}</b>
           </p>,
         );
-      } finally {
-        disposer?.();
       }
     };
   },

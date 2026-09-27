@@ -1,0 +1,5 @@
+{
+  "extends": "../src/main/tsconfig.json",
+  "include": [],
+  "files": ["dom-apis.ts", "worker-apis.ts", "shared-apis.ts"]
+}

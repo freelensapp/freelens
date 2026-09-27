@@ -6,13 +6,19 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import extensionLoaderInjectable from "../../extensions/extension-loader/extension-loader.injectable";
+import warnOnExtensionRequireInjectable from "../../features/extensions/loader/renderer/warn-on-extension-require.injectable";
 
 const loadExtensionsInjectable = getInjectable({
   id: "load-extensions",
   instantiate: (di) => {
     const extensionLoader = di.inject(extensionLoaderInjectable);
+    const warnOnExtensionRequire = di.inject(warnOnExtensionRequireInjectable);
 
-    return () => extensionLoader.autoInitExtensions();
+    return () => {
+      warnOnExtensionRequire();
+
+      return extensionLoader.autoInitExtensions();
+    };
   },
 });
 

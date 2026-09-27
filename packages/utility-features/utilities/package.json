@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@astronautlabs/jsonpath": "catalog:",
+    "@noble/hashes": "catalog:",
     "es-toolkit": "catalog:",
     "mobx": "catalog:",
     "p-limit": "catalog:",
