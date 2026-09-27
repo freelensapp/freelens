@@ -208,7 +208,9 @@ export class WizardStep<D> extends React.Component<WizardStepProps<D>, WizardSte
       return;
     }
 
-    if (evt.key === "Enter") {
+    // An Enter already consumed by a field of the step (e.g. adding an item to an
+    // EditableList, picking an option of a Select) must not submit the whole step.
+    if (evt.key === "Enter" && !evt.defaultPrevented) {
       this.submit();
     }
   }

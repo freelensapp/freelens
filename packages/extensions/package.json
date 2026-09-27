@@ -24,6 +24,7 @@
     "__mocks__/*.ts"
   ],
   "scripts": {
+    "build": "pnpm build:dist",
     "build:dist": "pnpm build:dist:declarations && pnpm build:dist:bundle && pnpm build:dist:shim",
     "build:dist:declarations": "node scripts/generate-dts-tsconfig.mjs && tsc -p tsconfig.dts.generated.json",
     "build:dist:bundle": "rollup -c rollup.dts.config.mjs",
@@ -32,34 +33,48 @@
     "prepack": "pnpm build:dist"
   },
   "dependencies": {
-    "@ogre-tools/injectable": "catalog:extensions",
-    "@ogre-tools/injectable-react": "catalog:extensions",
     "@types/node": "catalog:extensions",
     "@types/react": "catalog:extensions",
-    "@xterm/xterm": "catalog:extensions",
     "chart.js": "catalog:extensions",
     "conf": "catalog:extensions",
     "immer": "catalog:extensions",
-    "mobx": "catalog:extensions",
-    "monaco-editor": "catalog:extensions",
-    "react": "catalog:extensions",
     "react-select": "catalog:extensions",
-    "react-window": "catalog:extensions",
     "rfc6902": "catalog:extensions",
     "type-fest": "catalog:extensions"
   },
   "devDependencies": {
     "@freelensapp/core": "workspace:^",
+    "@typescript/typescript6": "catalog:",
     "rollup": "catalog:",
     "rollup-plugin-dts": "catalog:",
     "typescript": "catalog:",
     "typescript-plugin-css-modules": "catalog:"
   },
   "peerDependencies": {
-    "electron": ">=42.0.0"
+    "@ogre-tools/injectable": "catalog:extensions",
+    "@ogre-tools/injectable-react": "catalog:extensions",
+    "electron": ">=42.0.0",
+    "mobx": "catalog:extensions",
+    "monaco-editor": "catalog:extensions",
+    "react": "catalog:extensions"
   },
   "peerDependenciesMeta": {
+    "@ogre-tools/injectable": {
+      "optional": true
+    },
+    "@ogre-tools/injectable-react": {
+      "optional": true
+    },
     "electron": {
+      "optional": true
+    },
+    "mobx": {
+      "optional": true
+    },
+    "monaco-editor": {
+      "optional": true
+    },
+    "react": {
       "optional": true
     }
   },

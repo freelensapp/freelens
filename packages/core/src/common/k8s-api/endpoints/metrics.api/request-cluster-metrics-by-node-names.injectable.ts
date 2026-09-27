@@ -58,10 +58,16 @@ const requestClusterMetricsByNodeNamesInjectable = getInjectable({
     const requestMetrics = di.inject(requestMetricsInjectable);
 
     return (nodeNames, params = {}) => {
-      const opts = {
+      const opts: Record<string, string> = {
         category: "cluster",
-        nodes: nodeNames.join("|"),
       };
+
+      // Only filter by node names when a specific list is provided.
+      // When empty, cluster-wide metrics aggregate across all nodes,
+      // preserving historical data from replaced nodes (see #2409).
+      if (nodeNames.length > 0) {
+        opts.nodes = nodeNames.join("|");
+      }
       const { metrics = defaultClusterMetricKeys, ...requestParams } = params;
       const query = metrics.reduce(
         (acc, metricName) => {

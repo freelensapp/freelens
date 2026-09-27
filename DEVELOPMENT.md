@@ -205,6 +205,13 @@ pnpm test:unit              # Run unit tests
 pnpm test:integration       # Run integration tests
 ```
 
+One unit test consumes a build artifact: the extension contract suite loads the
+built bundle of `packages/fixture-extension`. The `test:unit` scripts therefore
+run `pnpm build:fixture-extension` first, which is `turbo run build` filtered to
+that package — three tasks, and a no-op once its cache is warm. Running Vitest
+directly skips that, so build it yourself (`pnpm build:fixture-extension`, or
+any full `pnpm build`) when you do; the suite says so if you forget.
+
 ### When to regenerate DI files
 
 The project uses an explicit dependency injection registration system. Run `pnpm build:di` when:
