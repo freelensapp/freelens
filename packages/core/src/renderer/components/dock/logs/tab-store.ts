@@ -37,12 +37,18 @@ export interface LogTabData {
   selectedPodId: string;
 
   /**
-   * When set, the uids of additional pods whose logs are combined with
-   * `selectedPodId`'s and shown interleaved chronologically, tagged with a
-   * color-coded pod name prefix per line. Used for viewing the combined logs
-   * of a workload (e.g. all pods of a Deployment) instead of a single pod.
+   * True for the tab of a workload: it shows the logs of all the pods of
+   * `owner` interleaved chronologically, every line tagged with a color-coded
+   * pod name, and it follows the workload when its pods come and go.
+   * `selectedPodId` is then only the pod the tab was opened with.
    */
-  mergedPodIds?: string[];
+  combined?: boolean;
+
+  /**
+   * The labels, as `key=value`, that select the pods of `owner` when it does
+   * not own them directly, as a Deployment does through its ReplicaSets.
+   */
+  podSelector?: string[];
 
   /**
    * The namespace of the pods/workload

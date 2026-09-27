@@ -4,91 +4,143 @@
  */
 
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
-import getPodsByOwnerIdInjectable from "../../../workloads-pods/get-pods-by-owner-id.injectable";
 import createWorkloadLogsTabInjectable from "../create-workload-logs-tab.injectable";
 import getLogTabDataInjectable from "../get-log-tab-data.injectable";
 import getRandomIdForPodLogsTabInjectable from "../get-random-id-for-pod-logs-tab.injectable";
-import { deploymentPod1, deploymentPod2, deploymentPod3 } from "./pod.mock";
+import getWorkloadPodsInjectable from "../get-workload-pods.injectable";
+import { deploymentPod1, deploymentPod2 } from "./pod.mock";
 
-import type { KubeObject } from "@freelensapp/kube-object";
+import type { Deployment, StatefulSet } from "@freelensapp/kube-object";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 
-function fakeWorkload(kind: string, name: string, uid: string): KubeObject {
+import type { GetWorkloadPods, WorkloadPodsQuery } from "../get-workload-pods.injectable";
+
+interface FakeWorkload {
+  kind: string;
+  name: string;
+  uid: string;
+  selectors?: string[];
+  templateLabels?: string[];
+}
+
+function fakeWorkload<Workload extends Deployment | StatefulSet>({
+  kind,
+  name,
+  uid,
+  selectors = [],
+  templateLabels = [],
+}: FakeWorkload): Workload {
   return {
     kind,
     getName: () => name,
     getId: () => uid,
-  } as unknown as KubeObject;
+    getNs: () => "default",
+    getSelectors: () => selectors,
+    getTemplateLabels: () => templateLabels,
+  } as unknown as Workload;
 }
 
 describe("create workload logs tab", () => {
   let di: DiContainer;
+  let getWorkloadPods: ReturnType<typeof vi.fn<GetWorkloadPods>>;
 
   beforeEach(() => {
     di = getDiForUnitTesting();
     di.override(getRandomIdForPodLogsTabInjectable, () => () => "test-id");
-    // getPodsByOwnerIdInjectable pulls in podStoreInjectable, which asserts it
-    // is only created in a cluster-frame environment. It is only actually
-    // called by the fallback (no explicit `pods`) path, but injectable()
-    // resolves the whole dependency graph eagerly, so every test needs a
-    // usable stand-in even when it never exercises that path.
-    di.override(getPodsByOwnerIdInjectable, () => () => []);
+    // The real one reads the pod store, which exists in a cluster frame only.
+    getWorkloadPods = vi.fn<GetWorkloadPods>(() => []);
+    di.override(getWorkloadPodsInjectable, () => getWorkloadPods);
   });
 
   it("returns undefined when the workload has no pods", () => {
     const createWorkloadLogsTab = di.inject(createWorkloadLogsTabInjectable);
-    const workload = fakeWorkload("StatefulSet", "empty-set", "uid-1");
+    const workload = fakeWorkload<StatefulSet>({ kind: "StatefulSet", name: "empty-set", uid: "uid-1" });
 
     expect(createWorkloadLogsTab({ workload })).toBeUndefined();
   });
 
-  it("combines every pod passed in explicitly, regardless of how deep the ownership chain is", () => {
+  it("opens a combined tab that finds the pods of a Deployment by the labels of its selector", () => {
+    getWorkloadPods.mockReturnValue([deploymentPod1, deploymentPod2]);
+
     const createWorkloadLogsTab = di.inject(createWorkloadLogsTabInjectable);
     const getLogTabData = di.inject(getLogTabDataInjectable);
-    // Deployment pods are owned by an intermediate ReplicaSet, not the
-    // Deployment itself, so this only works with explicitly-passed pods.
-    const workload = fakeWorkload("Deployment", "super-deployment", "uuid");
-
-    const tabId = createWorkloadLogsTab({
-      workload,
-      pods: [deploymentPod1, deploymentPod2, deploymentPod3],
+    const workload = fakeWorkload<Deployment>({
+      kind: "Deployment",
+      name: "super-deployment",
+      uid: "uuid",
+      selectors: ["app=super"],
+      templateLabels: ["app=super", "tier=web"],
     });
 
+    const tabId = createWorkloadLogsTab({ workload });
+    const query: WorkloadPodsQuery = {
+      owner: { kind: "Deployment", name: "super-deployment", uid: "uuid" },
+      namespace: "default",
+      podSelector: ["app=super"],
+    };
+
     expect(tabId).toBeDefined();
+    expect(getWorkloadPods).toHaveBeenCalledWith(query);
     expect(getLogTabData(tabId!)).toMatchObject({
+      combined: true,
+      podSelector: ["app=super"],
       selectedPodId: deploymentPod1.getId(),
-      mergedPodIds: [deploymentPod2.getId(), deploymentPod3.getId()],
+      namespace: "default",
       owner: { kind: "Deployment", name: "super-deployment", uid: "uuid" },
     });
   });
 
-  it("falls back to direct ownerReferences lookup when no pods are passed explicitly", () => {
-    di.override(getPodsByOwnerIdInjectable, () => (id) => (id === "uuid" ? [deploymentPod1, deploymentPod2] : []));
+  it("uses the template labels of a Deployment whose selector has no labels", () => {
+    getWorkloadPods.mockReturnValue([deploymentPod1]);
 
     const createWorkloadLogsTab = di.inject(createWorkloadLogsTabInjectable);
     const getLogTabData = di.inject(getLogTabDataInjectable);
-    const workload = fakeWorkload("ReplicaSet", "super-replicaset", "uuid");
+    const workload = fakeWorkload<Deployment>({
+      kind: "Deployment",
+      name: "expressions-only",
+      uid: "uuid",
+      templateLabels: ["app=super"],
+    });
+
+    expect(getLogTabData(createWorkloadLogsTab({ workload })!)).toMatchObject({ podSelector: ["app=super"] });
+  });
+
+  it("does not open a tab for a Deployment without any label to find its pods by", () => {
+    getWorkloadPods.mockReturnValue([deploymentPod1]);
+
+    const createWorkloadLogsTab = di.inject(createWorkloadLogsTabInjectable);
+    const workload = fakeWorkload<Deployment>({ kind: "Deployment", name: "no-labels", uid: "uuid" });
+
+    expect(createWorkloadLogsTab({ workload })).toBeUndefined();
+    expect(getWorkloadPods).not.toHaveBeenCalled();
+  });
+
+  it("finds the pods of the other workloads by their owner", () => {
+    getWorkloadPods.mockReturnValue([deploymentPod1, deploymentPod2]);
+
+    const createWorkloadLogsTab = di.inject(createWorkloadLogsTabInjectable);
+    const getLogTabData = di.inject(getLogTabDataInjectable);
+    const workload = fakeWorkload<StatefulSet>({
+      kind: "StatefulSet",
+      name: "super-set",
+      uid: "uuid",
+      selectors: ["app=super"],
+    });
 
     const tabId = createWorkloadLogsTab({ workload });
 
-    expect(tabId).toBeDefined();
-    expect(getLogTabData(tabId!)).toMatchObject({
-      selectedPodId: deploymentPod1.getId(),
-      mergedPodIds: [deploymentPod2.getId()],
-    });
+    expect(getLogTabData(tabId!)).toMatchObject({ combined: true, selectedPodId: deploymentPod1.getId() });
+    expect(getLogTabData(tabId!)?.podSelector).toBeUndefined();
   });
 
-  it("does not set mergedPodIds for a single-pod workload", () => {
+  it("opens a combined tab for a workload with a single pod too, so that it follows the workload", () => {
+    getWorkloadPods.mockReturnValue([deploymentPod1]);
+
     const createWorkloadLogsTab = di.inject(createWorkloadLogsTabInjectable);
     const getLogTabData = di.inject(getLogTabDataInjectable);
-    const workload = fakeWorkload("Deployment", "solo-deployment", "uuid");
+    const workload = fakeWorkload<StatefulSet>({ kind: "StatefulSet", name: "solo-set", uid: "uuid" });
 
-    const tabId = createWorkloadLogsTab({ workload, pods: [deploymentPod1] });
-
-    expect(getLogTabData(tabId!)).toMatchObject({
-      selectedPodId: deploymentPod1.getId(),
-      mergedPodIds: undefined,
-    });
+    expect(getLogTabData(createWorkloadLogsTab({ workload })!)).toMatchObject({ combined: true });
   });
 });

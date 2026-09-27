@@ -5,56 +5,69 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import getPodsByOwnerIdInjectable from "../../workloads-pods/get-pods-by-owner-id.injectable";
 import createLogsTabInjectable from "./create-logs-tab.injectable";
 import { findOptimalDefaultContainerOfPod } from "./default-container-helper";
+import getWorkloadPodsInjectable from "./get-workload-pods.injectable";
 
-import type { KubeObject, Pod } from "@freelensapp/kube-object";
+import type { DaemonSet, Deployment, Job, ReplicaSet, StatefulSet } from "@freelensapp/kube-object";
 
-import type { GetPodsByOwnerId } from "../../workloads-pods/get-pods-by-owner-id.injectable";
 import type { TabId } from "../dock/store";
 import type { CreateLogsTabData } from "./create-logs-tab.injectable";
+import type { GetWorkloadPods } from "./get-workload-pods.injectable";
 
 export interface WorkloadLogsTabData {
-  workload: KubeObject;
-  /**
-   * The pods to show combined logs for. When omitted, falls back to looking
-   * up pods whose `ownerReferences` point directly at `workload` -- which
-   * only finds anything for workload kinds that own pods directly (e.g.
-   * ReplicaSet, DaemonSet, StatefulSet, Job). A Deployment's pods are owned
-   * by its ReplicaSet(s), not the Deployment itself, so callers opening
-   * combined logs for a Deployment (or any other multi-hop owner) must pass
-   * the already-resolved `pods` explicitly.
-   */
-  pods?: Pod[];
+  workload: StatefulSet | Job | Deployment | DaemonSet | ReplicaSet;
 }
 
 interface Dependencies {
   createLogsTab: (title: string, data: CreateLogsTabData) => TabId;
-  getPodsByOwnerId: GetPodsByOwnerId;
+  getWorkloadPods: GetWorkloadPods;
+}
+
+/**
+ * The pods of a Deployment are owned by its ReplicaSets, so they are found by
+ * the labels of its selector. The template labels stand in for a selector
+ * made of expressions only.
+ */
+function getPodSelector(workload: WorkloadLogsTabData["workload"]): string[] | undefined {
+  if (workload.kind !== "Deployment") {
+    return undefined;
+  }
+
+  const selectors = workload.getSelectors();
+
+  return selectors.length ? selectors : workload.getTemplateLabels();
 }
 
 const createWorkloadLogsTab =
-  ({ createLogsTab, getPodsByOwnerId }: Dependencies) =>
-  ({ workload, pods }: WorkloadLogsTabData): TabId | undefined => {
-    const resolvedPods = pods ?? getPodsByOwnerId(workload.getId());
+  ({ createLogsTab, getWorkloadPods }: Dependencies) =>
+  ({ workload }: WorkloadLogsTabData): TabId | undefined => {
+    const owner = {
+      kind: workload.kind,
+      name: workload.getName(),
+      uid: workload.getId(),
+    };
+    const podSelector = getPodSelector(workload);
 
-    if (resolvedPods.length === 0) {
+    // A selector without labels would match every pod of the namespace.
+    if (podSelector && podSelector.length === 0) {
       return undefined;
     }
 
-    const [selectedPod, ...restOfPods] = resolvedPods;
+    const namespace = workload.getNs();
+    const [firstPod] = getWorkloadPods({ owner, namespace, podSelector });
+
+    if (!firstPod) {
+      return undefined;
+    }
 
     return createLogsTab(`${workload.kind} ${workload.getName()}`, {
-      selectedContainer: findOptimalDefaultContainerOfPod(selectedPod).name,
-      selectedPodId: selectedPod.getId(),
-      mergedPodIds: restOfPods.length ? restOfPods.map((pod) => pod.getId()) : undefined,
-      namespace: selectedPod.getNs(),
-      owner: {
-        kind: workload.kind,
-        name: workload.getName(),
-        uid: workload.getId(),
-      },
+      selectedContainer: findOptimalDefaultContainerOfPod(firstPod).name,
+      selectedPodId: firstPod.getId(),
+      namespace,
+      owner,
+      combined: true,
+      podSelector,
     });
   };
 
@@ -64,7 +77,7 @@ const createWorkloadLogsTabInjectable = getInjectable({
   instantiate: (di) =>
     createWorkloadLogsTab({
       createLogsTab: di.inject(createLogsTabInjectable),
-      getPodsByOwnerId: di.inject(getPodsByOwnerIdInjectable),
+      getWorkloadPods: di.inject(getWorkloadPodsInjectable),
     }),
 });
 
