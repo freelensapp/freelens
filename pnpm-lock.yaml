@@ -391,12 +391,18 @@ catalogs:
     '@types/react':
       specifier: ^19.2.17
       version: 19.2.17
+    '@types/react-dom':
+      specifier: ^19.2.3
+      version: 19.2.3
     chart.js:
       specifier: ^4.5.1
       version: 4.5.1
     conf:
       specifier: ^15.1.0
       version: 15.1.0
+    es-toolkit:
+      specifier: ^1.49.0
+      version: 1.49.0
     immer:
       specifier: ^11.1.8
       version: 11.1.8
@@ -1220,6 +1226,9 @@ importers:
       '@types/react':
         specifier: catalog:extensions
         version: 19.2.17
+      '@types/react-dom':
+        specifier: catalog:extensions
+        version: 19.2.3(@types/react@19.2.17)
       chart.js:
         specifier: catalog:extensions
         version: 4.5.1
@@ -1229,12 +1238,18 @@ importers:
       electron:
         specifier: '>=42.0.0'
         version: 42.7.1(supports-color@8.1.1)
+      es-toolkit:
+        specifier: catalog:extensions
+        version: 1.49.0
       immer:
         specifier: catalog:extensions
         version: 11.1.8
       mobx:
         specifier: catalog:extensions
         version: 6.15.0
+      mobx-react:
+        specifier: ^9.1.1
+        version: 9.2.2(mobx@6.15.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       monaco-editor:
         specifier: catalog:extensions
         version: 0.56.0
