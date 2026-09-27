@@ -597,10 +597,13 @@ libraries the published API's type surface is pinned against.
 It splits in two:
 
 - **Host-provided** ([C3](#c3-host-provided-singletons)): `react`, `mobx`,
-  `monaco-editor`, `@ogre-tools/injectable`, `@ogre-tools/injectable-react`.
-- **Free to bundle**: `chart.js`, `react-select`, `conf`, `immer`, `rfc6902`,
-  `type-fest` (plus the `@types/*` entries). A bundled `react-select` still gets
-  the host's React, because that copy's own `import "react"` is rewritten too.
+  `mobx-react`, `monaco-editor`, `@ogre-tools/injectable`,
+  `@ogre-tools/injectable-react`.
+- **Free to bundle**: `chart.js`, `react-select`, `conf`, `es-toolkit`, `immer`,
+  `rfc6902`, `type-fest` (plus the `@types/*` entries). A bundled `react-select`
+  still gets the host's React, because that copy's own `import "react"` is
+  rewritten too. `es-toolkit` is there only for the `DebouncedFunc` type the
+  declaration imports from `es-toolkit/compat`.
 
 **Surface.** The built declaration imports these external specifiers:
 `type-fest`, `mobx`, `mobx-react`, `react`, `react/jsx-runtime`, `react-dom`,
@@ -628,13 +631,17 @@ Nothing is imported from `electron`. What the declaration names of Electron it
 names through the ambient `Electron` namespace, in the `Main.Ipc` signatures and
 the `Common.Types` aliases of the main-process IPC events.
 
-One discrepancy between that list and the declared dependencies, recorded
-because it is the kind that rots quietly: **`es-toolkit/compat` is undeclared** —
-the published type surface names a package the package does not depend on.
+**Every package the declaration imports is declared**, in `dependencies` or
+`peerDependencies`, either itself or through its `@types/` package: `react-dom`
+resolves through `@types/react-dom`, and a subpath such as `es-toolkit/compat` or
+`react/jsx-runtime` through its package. The requirement exists because an
+undeclared import fails quietly: an extension compiles with `skipLibCheck`, so a
+specifier that does not resolve in the author's tree becomes `any` instead of an
+error, and nothing in the monorepo notices, since every such package happens to
+be installed there.
 
-Another is closed: `@ogre-tools/injectable-react` used to be declared but never
-named by the declaration, and the bundle now imports it like the other
-host-provided singletons. It would have stayed either way, being needed at
+`@ogre-tools/injectable-react` is imported by the declaration like the other
+host-provided singletons. It would be declared either way, being needed at
 *runtime* for `withInjectables`, which is a different requirement from
 appearing in the types.
 
@@ -644,22 +651,19 @@ for their bundler to find — which is precisely the mistake
 [C3](#c3-host-provided-singletons) exists to prevent. As peers they are still
 there to compile against, and bundling one's own copy becomes a deliberate act.
 
-**Status:** the five host-provided entries moved to `peerDependencies` in #2450,
-each **optional** in `peerDependenciesMeta` alongside `electron`. Optional
-because npm 7+ and pnpm install missing peers by default, so a required peer
-would install all five into every author's tree whether imported or not — and
+**Status:** the host-provided entries are in `peerDependencies`, each
+**optional** in `peerDependenciesMeta` alongside `electron`. Optional because
+npm 7+ and pnpm install missing peers by default, so a required peer would
+install every one of them into every author's tree whether imported or not — and
 `monaco-editor` alone is 99 MB, which an extension with only a `main` entry
 point would pay on every install and in every CI cache. What keeps a second copy
 out of the bundle is the author marking the specifier external, not the
 dependency field; the field only decides what gets installed. The `@types/*`
-entries stayed in `dependencies`: a second copy of a declaration is not a second
-instance of anything.
-
-`react-dom` and `mobx-react` are in neither the catalog nor the package's
-dependencies, so an extension using them supplies its own devDependency — which
-resolves both the two specifiers the ambient global declaration names and the
-two the bundled declaration imports. Nothing in-repo type-checks the published
-declaration without `skipLibCheck`, the fixture extension included.
+entries are in `dependencies`: a second copy of a declaration is not a second
+instance of anything. `react-dom` itself is not declared; the declaration needs
+only its types, which `@types/react-dom` supplies. Nothing in-repo type-checks
+the published declaration without `skipLibCheck`, the fixture extension
+included.
 
 ---
 
@@ -803,7 +807,6 @@ The contract has three, not two:
 | --- | --- |
 | Close the known re-export gaps | #2365 |
 | Triage the `ae-forgotten-export` occurrences found while generating the enumeration was being tried | #2366 |
-| `es-toolkit` undeclared; `child_process` spelled two ways | #2360 |
 | Remove `pnpm` as an application dependency — the last step of the delivery mechanism | #2400 |
 | Renderer sandboxing — the reason several isolation claims are *not* made here | #2399 |
 | Fill the v1→v2 rename table while building out the fixture extension | #2451 |
