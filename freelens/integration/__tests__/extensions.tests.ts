@@ -12,7 +12,8 @@ import type { ElectronApplication, Page } from "playwright";
 
 // The in-repo contract fixture, installed as an unpacked directory: the
 // installer registers it in place, so what the application loads is exactly
-// what `pnpm build:fixture-extension` wrote to its `dist/`.
+// what `pnpm build` wrote to its `dist/`. The test does not build it itself:
+// in CI, devDependencies such as turbo are gone by the time it runs.
 const fixtureExtensionDirectory = fileURLToPath(new URL("../../../packages/fixture-extension", import.meta.url));
 const fixtureExtensionName = "@freelensapp/fixture-extension";
 
@@ -25,7 +26,7 @@ describe("extensions page tests", () => {
     for (const entryPoint of ["main.js", "renderer.js"]) {
       if (!existsSync(path.join(fixtureExtensionDirectory, "dist", entryPoint))) {
         throw new Error(
-          `${fixtureExtensionName} is not built (no dist/${entryPoint}): run \`pnpm build:fixture-extension\` or \`pnpm test:integration\` from the repository root`,
+          `${fixtureExtensionName} is not built (no dist/${entryPoint}): run \`pnpm build\` or \`pnpm build:fixture-extension\` from the repository root`,
         );
       }
     }

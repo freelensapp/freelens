@@ -60,7 +60,7 @@
     "start:os:darwin": "open --stdout $(tty) --stderr $(tty) freelens:",
     "start:os:linux": "xdg-open freelens:",
     "start:os:win32": "powershell -NoProfile -Command \"Start-Process freelens:\"",
-    "test:integration": "pnpm build:fixture-extension && cd freelens && pnpm test:integration",
+    "test:integration": "cd freelens && pnpm test:integration",
     "test:unit": "pnpm build:fixture-extension && TZ=UTC vitest run -c vitest.config.ts",
     "test:unit:core": "pnpm build:fixture-extension && TZ=UTC vitest run -c vitest.config.ts --project @freelensapp/core",
     "test:unit:core:updatesnapshot": "pnpm build:fixture-extension && TZ=UTC vitest run -c vitest.config.ts --project @freelensapp/core -u",

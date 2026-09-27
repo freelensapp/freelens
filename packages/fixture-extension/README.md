@@ -38,7 +38,7 @@ proves nothing about how extensions are actually loaded.
 | --- | --- | --- |
 | Types | `pnpm --filter @freelensapp/fixture-extension type:check`, run by its `build` | a re-export that disappeared from the published surface, including one that exists as a value but is not nameable as a type; a tsconfig that lets one runtime environment's APIs into another's code |
 | Unit | `packages/core/src/extensions/__tests__/fixture-extension.test.tsx` | instance identity of React and mobx, the registrators, the lifecycle, `Util.fetch` reaching the host's DI |
-| Integration | `freelens/integration/__tests__/extensions.tests.ts`, built first by the root `pnpm test:integration` | the packaged application installing this directory in place, accepting its `engines.freelens`, and rendering its hooked status bar item with the React it publishes |
+| Integration | `freelens/integration/__tests__/extensions.tests.ts`, against the `dist/` of the `pnpm build` that the packaged application needs anyway | the packaged application installing this directory in place, accepting its `engines.freelens`, and rendering its hooked status bar item with the React it publishes |
 
 ### How the type level is wired
 
