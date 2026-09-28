@@ -10,9 +10,9 @@ violated — is [`docs/v2-extension-api.md`](./v2-extension-api.md), with the
 binary side in [`docs/v2-extension-abi.md`](./v2-extension-abi.md). Where this
 guide says "the host does X", that document says why and what breaks otherwise.
 
-The rename table below is filled while the in-repo fixture extension is built
-out against the v2 contract ([#2451](https://github.com/freelensapp/freelens/issues/2451)),
-which is what walks the whole v2 surface.
+Every v1 namespace path that moved or was removed is listed in the
+[v1→v2 rename table](#v1v2-rename-table), with a link to the section that
+explains the replacement.
 
 ## Step one: bump `engines.freelens`
 
@@ -475,16 +475,113 @@ Two names to watch:
   error in your extension, never as a runtime break, and renaming your own type
   or qualifying the namespace member fixes it.
 
-The concrete v1→v2 rename table is filled while the in-repo fixture extension
-is built out against this surface
-([#2451](https://github.com/freelensapp/freelens/issues/2451)), and will be
-appended here.
+### v1→v2 rename table
 
-It is derived by comparing the **published v1 declaration** against the v2 one
-above, rather than from porting a single extension. A port only covers the
-symbols that one extension happened to use; a surface-to-surface comparison
-covers all of them, and the fixture is what proves the v2 side is actually
-reachable under real build conditions rather than merely present in a `.d.ts`.
+The table compares the **published v1 declaration** of `@freelensapp/extensions`
+with the v2 one, path by path: every value and type reachable through `Common`,
+`Main` and `Renderer`, and the members of the classes, interfaces and object
+types among them (written `Path#member`). A v1 path that is not listed is still
+there under the same name. Names that are new in v2 are not listed; the names
+`K8sApi` gained are covered [above](#freelensappkube-object-imports-move-into-k8sapi),
+including `BaseKubeObjectStatus` and the `Condition` and `ObjectReference`
+collisions to watch for.
+
+The comparison covers the whole surface, not only the symbols one ported
+extension happened to use. The in-repo fixture extension names every v2 path
+of the first table in a type position and compiles against the built
+declaration, so each replacement is proven reachable under real build
+conditions rather than merely present in a `.d.ts`.
+
+#### Renamed or moved
+
+| v1 | v2 | Notes |
+| --- | --- | --- |
+| `Renderer.Component.getDetailsUrl` | `Renderer.Navigation.getDetailsUrl` | same function |
+| `Renderer.Component.showDetails` | `Renderer.Navigation.showDetails` | same function |
+| `Renderer.Theme.getActiveTheme()` | `Renderer.Theme.activeTheme.get()` | `activeTheme` is a mobx computed, so reading it inside a reaction tracks theme changes |
+| `new Main.K8sApi.ResourceStack(cluster, name)` | `Main.K8sApi.createResourceStack(cluster, name)` | same `kubectlApplyFolder` / `kubectlDeleteFolder`; name the type as `ReturnType<typeof Main.K8sApi.createResourceStack>` |
+| `new Renderer.K8sApi.ResourceStack(cluster, name)` | `Renderer.K8sApi.createResourceStack(cluster, name)` | as for `Main` |
+| `Renderer.Component.InputValidators.isExtensionNameInstallRegex.isMatch(value)` | `Renderer.Component.InputValidators.isExtensionNameInstallRegex.test(value)` | the regex is a plain `RegExp` now |
+| `Renderer.Component.InputValidators.isExtensionNameInstallRegex.captures(value)` | `Renderer.Component.InputValidators.extensionNameInstallCaptures(value)` | same `{ name, version? } \| undefined` result |
+
+#### Removed
+
+Each entry is marked *value*, *type*, *class* (a value and a type) or *member*.
+
+`Common`:
+
+- `Common.Types.IpcMainEvent`, `IpcMainInvokeEvent`, `IpcRendererEvent`,
+  `MenuRegistration`, `TrayMenuRegistration` (*type*) — see
+  [Unused members removed](#unused-members-removed).
+- `Common.Util.base64`, `isBuffer`, `isChildProcessError`, `isErrnoException`,
+  `isExecException`, `isExecFileException`, `isRequestError`, `listTarEntries`,
+  `openBrowser`, `openExternal`, `readFileFromTar`, `unionPATHs` (*value*) —
+  see [`Util` members that need Node removed](#util-members-that-need-node-removed).
+- `Common.PackageJson.Person`, `BugsLocation`, `Dependency`,
+  `DirectoryLocations`, `ExportCondition`, `Exports`, `JSPMConfiguration`,
+  `NonStandardEntryPoints`, `Scripts`, `TypeScriptConfiguration`,
+  `WorkspaceConfig`, `WorkspacePattern`, `YarnConfiguration` (*type*) —
+  `Common.PackageJson` itself stays, but no longer carries type-fest's
+  namespace of the same name. Import `PackageJson` from `type-fest` in your
+  own `devDependencies` if you need its members.
+- `Common.App.slackUrl` (*value*) — it was always `""`.
+- `Common.InstalledExtension#isBundled`, `Common.LensExtension#isBundled`
+  (*member*) — no replacement.
+
+`Main`:
+
+- `Main.K8sApi.forRemoteCluster` (*value*), `Main.K8sApi.IRemoteKubeApiConfig`
+  (*type*) — see [`K8sApi.forRemoteCluster` removed](#k8sapiforremotecluster-removed).
+- `Main.K8sApi.isAllowedResource` (*value*) — in main it always returned
+  `false`. `Renderer.K8sApi.isAllowedResource`, which does answer, is unchanged
+  and renderer-only.
+- `Main.K8sApi.IKubeApiCluster`, `Main.K8sApi.IgnoredKubeApiOptions` (*type*) —
+  both were deprecated and had no effect; drop them, and drop the ignored
+  `objectConstructor`, `kind`, `isNamespaces` and `apiBase` options from what
+  you pass to the `*Api` constructors.
+- `Main.LensExtension#appMenus`, `Main.LensExtension#trayMenus` (*member*) — see
+  [Unused members removed](#unused-members-removed).
+- `Main.LensExtension#isBundled` (*member*) — no replacement.
+
+`Renderer`:
+
+- `Renderer.Component.List` (*value*), `ListProps`, `SearchFilter` (*type*) —
+  see [`Renderer.Component.List` removed](#renderercomponentlist-removed).
+- `Renderer.Component.VirtualList` (*value*), `VirtualListProps`,
+  `VirtualListRef`, `RowProps` (*type*) — see
+  [Unused members removed](#unused-members-removed).
+- `Renderer.Component.NamespaceSelectBadgeNonInjected` (*value*),
+  `Renderer.Component.Dependencies` (*type*) — see
+  [`NamespaceSelectBadgeNonInjected` is gone with them](#namespaceselectbadgenoninjected-is-gone-with-them).
+- `Renderer.Component.SliderProps`: the members it inherited from MUI's
+  `SliderProps` — `sx`, `slots`, `slotProps`, `marks`, `track`,
+  `valueLabelFormat` and the rest, and the HTML and ARIA attributes (*member*).
+  `SliderProps` now declares only `className`, `min`, `max`, `step`, `value`,
+  `disabled`, `orientation`, `valueLabelDisplay`, `onChange` and
+  `onChangeCommitted`.
+- `Renderer.K8sApi` store classes (*class*): `ClusterRoleBindingStore`,
+  `ClusterRoleStore`, `ConfigMapStore` / `ConfigMapsStore`, `CronJobStore`,
+  `CustomResourceDefinitionStore` / `CRDStore`, `CustomResourceStore` /
+  `CRDResourceStore`, `DaemonSetStore`, `DeploymentStore`, `EndpointSliceStore`,
+  `EndpointsStore` / `EndpointStore`, `EventStore`,
+  `HorizontalPodAutoscalerStore` / `HPAStore`, `IngressClassStore`,
+  `IngressStore`, `JobStore`, `LimitRangeStore` / `LimitRangesStore`,
+  `NamespaceStore`, `NetworkPolicyStore`, `NodeStore` / `NodesStore`,
+  `PersistentVolumeClaimStore` / `VolumeClaimStore`, `PersistentVolumeStore` /
+  `PersistentVolumesStore`, `PodDisruptionBudgetStore` /
+  `PodDisruptionBudgetsStore`, `PodStore` / `PodsStore`, `PriorityClassStore` /
+  `PriorityClassStoreStore`, `ReplicaSetStore`, `ResourceQuotaStore` /
+  `ResourceQuotasStore`, `RoleBindingStore` / `RoleBindingsStore`, `RoleStore` /
+  `RolesStore`, `SecretStore` / `SecretsStore`, `ServiceAccountStore` /
+  `ServiceAccountsStore`, `ServiceStore`, `StatefulSetStore`,
+  `StorageClassStore`, `VerticalPodAutoscalerStore` — see
+  [`Renderer.K8sApi` concrete store classes removed](#rendererk8sapi-concrete-store-classes-removed).
+- `Renderer.K8sApi.forRemoteCluster` (*value*),
+  `Renderer.K8sApi.IRemoteKubeApiConfig` (*type*) — see
+  [`K8sApi.forRemoteCluster` removed](#k8sapiforremotecluster-removed).
+- `Renderer.K8sApi.IKubeApiCluster`, `Renderer.K8sApi.IgnoredKubeApiOptions`
+  (*type*) — as for `Main`.
+- `Renderer.LensExtension#isBundled` (*member*) — no replacement.
 
 ## Registering things: declarative fields
 
@@ -1272,7 +1369,8 @@ restarted once.
       `package.json` declares it.
 - [ ] Access only the process-appropriate namespace (`Main` in main,
       `Renderer` in the renderer, `Common` in both).
-- [ ] Re-check any moved API symbols against the published type surface.
+- [ ] Look up every v1 namespace path you use in the
+      [v1→v2 rename table](#v1v2-rename-table).
 - [ ] Replace any `K8sApi.forRemoteCluster` usage with a direct call to the API
       server — it was removed (see
       [`K8sApi.forRemoteCluster` removed](#k8sapiforremotecluster-removed)).
@@ -1333,7 +1431,6 @@ having done everything above.
 | --- | --- | --- |
 | No author-facing hook for registering an injectable | the container view now exists before `onActivate`, but nothing hands it to you | [#2450](https://github.com/freelensapp/freelens/issues/2450) |
 | Known missing re-exports | some types are callable but not nameable | [#2365](https://github.com/freelensapp/freelens/issues/2365) |
-| The fixture extension is not yet built out against the full v2 surface | the namespace rename table above is not filled | [#2451](https://github.com/freelensapp/freelens/issues/2451) |
 
 The rolled-up, self-contained `.d.ts` for the published
 `@freelensapp/extensions` (no `@freelensapp/*` imports, declared type

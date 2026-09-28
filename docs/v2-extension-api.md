@@ -811,7 +811,6 @@ The contract has three, not two:
 | Triage the `ae-forgotten-export` occurrences found while generating the enumeration was being tried | #2366 |
 | Remove `pnpm` as an application dependency — the last step of the delivery mechanism | #2400 |
 | Renderer sandboxing — the reason several isolation claims are *not* made here | #2399 |
-| Fill the v1→v2 rename table while building out the fixture extension | #2451 |
 
 ## References
 

@@ -160,6 +160,7 @@
         // type-only by design: the type level of the contract, with no runtime
         // importer here or anywhere else
         "src/common/contract-types.ts!",
+        "src/common/v1-renames.ts!",
         "src/main/index.ts!",
         "src/renderer/index.tsx!"
       ],
