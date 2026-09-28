@@ -33,6 +33,14 @@ jobs:
           copr_url = https://copr.fedorainfracloud.org
           EOF
 
+      - name: Configure COPR chroots
+        run: |
+          copr-cli modify ok8219/Freelens \
+            --chroot fedora-43-x86_64 \
+            --chroot fedora-44-x86_64 \
+            --chroot fedora-45-x86_64 \
+            --chroot fedora-rawhide-x86_64
+
       - name: Submit COPR SCM build
         run: |
           copr-cli buildscm ok8219/Freelens \
@@ -45,4 +53,5 @@ jobs:
             --nowait \
             -r fedora-43-x86_64 \
             -r fedora-44-x86_64 \
-            -r fedora-45-x86_64
+            -r fedora-45-x86_64 \
+            -r fedora-rawhide-x86_64

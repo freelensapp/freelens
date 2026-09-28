@@ -130,11 +130,11 @@ sudo dnf install freelens
 
 The [Freelens COPR packaging repository](https://github.com/kappa8219/freelens-copr)
 contains the Fedora-based submission workflow and RPM packaging files. It
-submits source RPM builds for Fedora 43, 44, and 45 whenever its packaging
-files change on `main`.
+submits source RPM builds for Fedora 43, 44, 45, and Rawhide whenever its
+packaging files change on `main`.
 
 To enable either workflow, an administrator must create a COPR API token for
-an account that can submit builds to
+an account that can manage chroots and submit builds to
 [`ok8219/Freelens`](https://copr.fedorainfracloud.org/coprs/ok8219/Freelens/).
 In each repository where the workflow will run, open **Settings** →
 **Secrets and variables** → **Actions**, then add these secrets from the API
