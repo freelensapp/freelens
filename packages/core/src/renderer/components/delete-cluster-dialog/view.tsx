@@ -116,7 +116,7 @@ class NonInjectedDeleteClusterDialog extends React.Component<Dependencies> {
               });
             }
           }}
-          themeName="light"
+          themeName="lens"
           className="ml-[1px] mr-[1px]"
           placeholder="Select new context..."
         />

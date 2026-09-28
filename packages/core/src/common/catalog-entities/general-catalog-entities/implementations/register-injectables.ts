@@ -7,6 +7,7 @@
  */
 
 import catalogCatalogEntityInjectable from "./catalog-catalog-entity.injectable";
+import terminalCatalogEntityInjectable from "./terminal-catalog-entity.injectable";
 import welcomeCatalogEntityInjectable from "./welcome-catalog-entity.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
@@ -14,6 +15,11 @@ import type { DiContainerForInjection } from "@ogre-tools/injectable";
 export function registerInjectables(di: DiContainerForInjection): void {
   try {
     di.register(catalogCatalogEntityInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(terminalCatalogEntityInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

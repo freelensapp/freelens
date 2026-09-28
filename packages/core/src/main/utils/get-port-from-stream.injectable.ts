@@ -5,6 +5,7 @@
  */
 
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { namedCaptures } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import type { Readable } from "node:stream";
 
@@ -13,16 +14,7 @@ export interface GetPortFromStreamArgs {
    * Should be case insensitive
    * Must have a named matching group called `address`
    */
-  lineRegex: {
-    match: (line: string) => {
-      matched: boolean;
-      groups?: {
-        address?: string;
-      };
-      raw?: RegExpExecArray;
-    };
-    rawMatcher: string;
-  };
+  lineRegex: RegExp;
   /**
    * Called when the port is found
    */
@@ -47,13 +39,13 @@ const getPortFromStreamInjectable = getInjectable({
       return new Promise<number>((resolve, reject) => {
         const handler = (data: unknown) => {
           const logItem = String(data);
-          const match = args.lineRegex.match(logItem);
+          const match = namedCaptures<{ address?: string }>(args.lineRegex, logItem);
 
           logLines.push(logItem);
 
-          if (match.matched) {
+          if (match) {
             // use unknown protocol so that there is no default port
-            const addr = new URL(`s://${match.groups?.address?.trim()}`);
+            const addr = new URL(`s://${match.address?.trim()}`);
 
             args.onFind?.();
             stream.off("data", handler);
@@ -63,7 +55,7 @@ const getPortFromStreamInjectable = getInjectable({
         };
         const timeoutID = setTimeout(() => {
           stream.off("data", handler);
-          logger.warn(`[getPortFrom]: failed to retrieve port via ${args.lineRegex.rawMatcher}`, logLines);
+          logger.warn(`[getPortFrom]: failed to retrieve port via ${args.lineRegex.source}`, logLines);
           reject(new Error("failed to retrieve port from stream"));
         }, args.timeout ?? 15000);
 

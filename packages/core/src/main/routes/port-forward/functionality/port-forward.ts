@@ -6,17 +6,13 @@
 
 import { spawn } from "node:child_process";
 import * as tcpPortUsed from "tcp-port-used";
-import { TypedRegEx } from "typed-regex";
 import type { ChildProcessWithoutNullStreams } from "node:child_process";
 
 import type { Logger } from "@freelensapp/logger";
 
 import type { GetPortFromStream } from "../../../utils/get-port-from-stream.injectable";
 
-const internalPortMatcher = "^forwarding from (?<address>.+) ->";
-const internalPortRegex = Object.assign(TypedRegEx(internalPortMatcher, "i"), {
-  rawMatcher: internalPortMatcher,
-});
+const internalPortRegex = /^forwarding from (?<address>.+) ->/i;
 
 export interface PortForwardArgs {
   clusterId: string;

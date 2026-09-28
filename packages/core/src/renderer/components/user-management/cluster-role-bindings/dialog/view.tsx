@@ -64,18 +64,20 @@ class NonInjectedClusterRoleBindingDialog extends React.Component<ClusterRoleBin
     makeObservable(this);
   }
 
-  @computed get clusterRoleOptions() {
+  // Plain getters (not @computed): they read this.props, which mobx-react 9
+  // forbids inside a derivation. Read from render, reactivity is preserved by
+  // the observer render reaction.
+  get clusterRoleOptions() {
     return this.props.clusterRoleStore.items.map((clusterRole) => ({
       value: clusterRole,
       label: clusterRole.getName(),
     }));
   }
 
-  @computed get serviceAccountOptions() {
+  get serviceAccountOptions() {
     return this.props.serviceAccountStore.items.map((serviceAccount) => ({
       value: serviceAccount,
       label: `${serviceAccount.getName()} (${serviceAccount.getNs()})`,
-      isSelected: this.selectedAccounts.has(serviceAccount),
     }));
   }
 
@@ -142,12 +144,12 @@ class NonInjectedClusterRoleBindingDialog extends React.Component<ClusterRoleBin
     const { closeClusterRoleBindingDialog, clusterRoleBindingStore, editBindingNameState, showDetails } = this.props;
     const { selectedRoleRef, selectedBindings, clusterRoleBinding } = this;
 
-    if (!clusterRoleBinding || !selectedRoleRef) {
+    if (!selectedRoleRef) {
       return;
     }
 
     try {
-      const { selfLink } = this.isEditing
+      const { selfLink } = clusterRoleBinding
         ? await clusterRoleBindingStore.updateSubjects(clusterRoleBinding, selectedBindings)
         : await clusterRoleBindingStore.create(
             { name: editBindingNameState.get() },
@@ -176,7 +178,7 @@ class NonInjectedClusterRoleBindingDialog extends React.Component<ClusterRoleBin
         <SubTitle title="Cluster Role Reference" />
         <Select
           id="cluster-role-input"
-          themeName="light"
+          themeName="lens"
           placeholder="Select cluster role ..."
           isDisabled={this.isEditing}
           options={this.clusterRoleOptions}
@@ -237,9 +239,10 @@ class NonInjectedClusterRoleBindingDialog extends React.Component<ClusterRoleBin
         <Select
           id="service-account-input"
           isMulti
-          themeName="light"
+          themeName="lens"
           placeholder="Select service accounts ..."
           options={this.serviceAccountOptions}
+          value={Array.from(this.selectedAccounts)}
           formatOptionLabel={(option) => (
             <>
               <Icon small material="account_box" /> {option.label}

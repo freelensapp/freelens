@@ -14,7 +14,7 @@ import { styled, Tooltip } from "@mui/material";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
 import { observer } from "mobx-react";
-import React, { Component } from "react";
+import { Component } from "react";
 import { Badge } from "../badge";
 import createInstallChartTabInjectable from "../dock/install-chart/create-install-chart-tab.injectable";
 import { Drawer, DrawerItem } from "../drawer";
@@ -25,9 +25,8 @@ import helmChartDetailsVersionSelectionInjectable from "./details/versions/helm-
 import versionsOfSelectedHelmChartInjectable from "./details/versions-of-selected-helm-chart.injectable";
 import { HelmChartIcon } from "./icon";
 
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
-
 import type { HelmChart } from "../../../common/k8s-api/endpoints/helm-charts.api";
+import type { IAsyncComputed } from "../../../common/utils/async-computed";
 import type { HelmChartDetailsVersionSelection } from "./details/versions/helm-chart-details-version-selection.injectable";
 
 export interface HelmChartDetailsProps {

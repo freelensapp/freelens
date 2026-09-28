@@ -48,7 +48,7 @@ const NonInjectedHotbarSelector = observer(
     computeDisplayIndex,
   }: Dependencies) => {
     const [tooltipVisible, setTooltipVisible] = useState(false);
-    const tooltipTimeout = useRef<number>();
+    const tooltipTimeout = useRef<number | undefined>(undefined);
     const hotbar = activeHotbar.get();
 
     function clearTimer() {

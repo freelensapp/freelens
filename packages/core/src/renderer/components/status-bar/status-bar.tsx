@@ -12,7 +12,6 @@
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import statusBarCurrentStatusInjectable from "./current-status.injectable";
 import styles from "./status-bar.module.scss";
 import statusBarItemsInjectable from "./status-bar-items.injectable";

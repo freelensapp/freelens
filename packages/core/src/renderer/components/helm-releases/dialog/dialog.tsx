@@ -95,7 +95,7 @@ class NonInjectedReleaseRollbackDialog extends React.Component<ReleaseRollbackDi
         <b>Revision</b>
         <Select
           id="revision-input"
-          themeName="light"
+          themeName="lens"
           value={revision}
           options={this.revisionOptions.get()}
           onChange={(option) => this.revision.set(option?.value)}

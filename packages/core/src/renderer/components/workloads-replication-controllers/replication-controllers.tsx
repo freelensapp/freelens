@@ -6,7 +6,6 @@
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import { Badge } from "../badge";
 import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";

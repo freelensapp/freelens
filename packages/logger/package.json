@@ -20,20 +20,19 @@
   "main": "./index.ts",
   "types": "./index.ts",
   "scripts": {
-    "clean:node_modules": "pnpm dlx rimraf@6.1.3 node_modules",
     "test:unit": "vitest run -c ../../vitest.config.ts --project @freelensapp/logger"
   },
   "dependencies": {
     "@freelensapp/feature-core": "workspace:^",
-    "@ogre-tools/injectable": "^17.11.1",
-    "es-toolkit": "^1.49.0",
-    "winston": "^3.19.0"
+    "@ogre-tools/injectable": "catalog:",
+    "es-toolkit": "catalog:",
+    "winston": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
-    "jsdom": "^29.1.1",
-    "vitest": "^4.1.10",
-    "winston-transport": "^4.9.0"
+    "jsdom": "catalog:",
+    "vitest": "catalog:",
+    "winston-transport": "catalog:"
   },
   "publishConfig": {
     "access": "public",

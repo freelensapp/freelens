@@ -42,7 +42,7 @@ function transformUnit(name: string, value: string): number | undefined {
   return metricUnitsToNumber(value);
 }
 
-function renderQuotas(quota: ResourceQuota): JSX.Element[] {
+function renderQuotas(quota: ResourceQuota): React.JSX.Element[] {
   const { hard = {}, used = {} } = quota.status ?? {};
 
   return object

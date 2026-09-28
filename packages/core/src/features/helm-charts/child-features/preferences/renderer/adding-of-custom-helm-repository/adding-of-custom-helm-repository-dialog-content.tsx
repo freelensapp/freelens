@@ -11,7 +11,6 @@ import { Icon } from "@freelensapp/icon";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { action } from "mobx";
 import { observer } from "mobx-react";
-import React from "react";
 import { toJS } from "../../../../../../common/utils";
 import { Checkbox } from "../../../../../../renderer/components/checkbox";
 import { Input } from "../../../../../../renderer/components/input";

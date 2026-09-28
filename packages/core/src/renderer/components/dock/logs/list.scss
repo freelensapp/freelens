@@ -12,6 +12,9 @@
   color: var(--logsForeground);
   background: var(--logsBackground);
   flex-grow: 1;
+  /* Let the flex item shrink below its content, so the nested list gets a
+     definite height to fill instead of growing to the height of every row. */
+  min-height: 0;
 
   .VirtualList {
     height: 100%;

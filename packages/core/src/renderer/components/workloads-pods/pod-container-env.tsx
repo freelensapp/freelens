@@ -94,7 +94,7 @@ const NonInjectedContainerEnvironment = observer((props: Dependencies & Containe
           }
         }
       }),
-    [],
+    [env, envFrom, namespace, configMapStore, secretStore],
   );
 
   const renderEnv = () => {
@@ -140,6 +140,8 @@ const NonInjectedContainerEnvironment = observer((props: Dependencies & Containe
         } else if (secretKeyRef?.name) {
           secretValue = (
             <SecretKey
+              // the revealed value belongs to this pod: a new pod gets a fresh, hidden secret
+              key={`${pod.getId()}/${secretKeyRef.name}/${secretKeyRef.key}`}
               reference={{
                 ...secretKeyRef,
                 name: secretKeyRef.name,
@@ -211,6 +213,7 @@ const NonInjectedContainerEnvironment = observer((props: Dependencies & Containe
         </span>
         {` : `}
         <SecretKey
+          key={`${pod.getId()}/${secret.getName()}/${key}`}
           reference={{
             name: secret.getName(),
             key,

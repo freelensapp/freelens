@@ -11,7 +11,7 @@
 
 import { onKeyboardShortcut } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import { broadcastMessage } from "../../../common/ipc";
 import isMacInjectable from "../../../common/vars/is-mac.injectable";
@@ -42,6 +42,8 @@ interface Dependencies {
 
 @observer
 class NonInjectedCommandContainer extends React.Component<Dependencies> {
+  private readonly disposers: (() => void)[] = [];
+
   componentDidMount() {
     const { clusterId, addWindowEventListener, commandOverlay, matchedClusterId, isMac } = this.props;
 
@@ -58,7 +60,7 @@ class NonInjectedCommandContainer extends React.Component<Dependencies> {
         };
     const ipcChannel = clusterId ? `command-palette:${clusterId}:open` : "command-palette:open";
 
-    disposeOnUnmount(this, [
+    this.disposers.push(
       this.props.legacyOnChannelListen(ipcChannel, action),
       addWindowEventListener("keydown", onKeyboardShortcut(isMac ? "Shift+Cmd+P" : "Shift+Ctrl+P", action)),
       addWindowEventListener("keydown", (event) => {
@@ -67,7 +69,11 @@ class NonInjectedCommandContainer extends React.Component<Dependencies> {
           this.props.commandOverlay.close();
         }
       }),
-    ]);
+    );
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   render() {

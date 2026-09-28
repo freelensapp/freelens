@@ -18,9 +18,8 @@ import { createPortal } from "react-dom";
 import drawerStorageInjectable, { defaultDrawerWidth } from "./drawer-storage/drawer-storage.injectable";
 
 import type { AnimateName } from "@freelensapp/animate";
+import type { History } from "@freelensapp/routing";
 import type { StrictReactNode } from "@freelensapp/utilities";
-
-import type { History } from "history";
 
 import type { StorageLayer } from "../../utils/storage-helper";
 
@@ -217,7 +216,9 @@ class NonInjectedDrawer extends React.Component<DrawerProps & Dependencies & typ
         <div
           className={cssNames("Drawer", className, position)}
           style={{ "--size": drawerSize } as React.CSSProperties}
-          ref={(e) => (this.contentElem = e)}
+          ref={(e) => {
+            this.contentElem = e;
+          }}
           data-testid={testId}
         >
           <div className="drawer-wrapper flex flex-col">
@@ -234,7 +235,9 @@ class NonInjectedDrawer extends React.Component<DrawerProps & Dependencies & typ
             <div
               className={cssNames("drawer-content flex flex-col grow shrink-0 basis-0", contentClass)}
               onScroll={this.saveScrollPos}
-              ref={(e) => (this.scrollElem = e)}
+              ref={(e) => {
+                this.scrollElem = e;
+              }}
             >
               {children}
             </div>

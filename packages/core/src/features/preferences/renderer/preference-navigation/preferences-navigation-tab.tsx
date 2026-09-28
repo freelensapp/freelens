@@ -6,7 +6,6 @@
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import { Tab } from "../../../../renderer/components/tabs";
 import preferenceTabIsActiveInjectable from "./navigate-to-preference-tab/preference-tab-is-active.injectable";
 

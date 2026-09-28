@@ -4,11 +4,9 @@ import { reactApplicationChildrenInjectionToken, renderInjectionToken } from "@f
 import { Discover, discoverFor } from "@freelensapp/react-testing-library-discovery";
 import { createContainer, DiContainer, getInjectable } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
-import { registerInjectableReact } from "@ogre-tools/injectable-react";
 import { render } from "@testing-library/react";
 import userEvent, { UserEvent } from "@testing-library/user-event";
 import { computed, runInAction } from "mobx";
-import React from "react";
 import { keyboardShortcutsFeature } from "./feature";
 import { keyboardShortcutInjectionToken } from "./keyboard-shortcut-injection-token";
 import { KeyboardShortcutScope } from "./keyboard-shortcut-scope";
@@ -25,8 +23,9 @@ describe("keyboard-shortcuts", () => {
 
   beforeEach(() => {
     di = createContainer("irrelevant");
+    // ogre 23 prevents side-effect injectables by default; this test injects real ones.
+    di.permitSideEffects();
 
-    registerInjectableReact(di);
     registerMobX(di);
 
     runInAction(() => {

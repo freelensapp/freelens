@@ -1,4 +1,3 @@
-import React from "react";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import createPodLogsTabInjectable from "../../dock/logs/create-pod-logs-tab.injectable";
 import hideDetailsInjectable from "../../kube-detail-params/hide-details.injectable";

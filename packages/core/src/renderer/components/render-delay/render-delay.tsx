@@ -5,7 +5,7 @@
  */
 
 import { withInjectables } from "@ogre-tools/injectable-react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import cancelIdleCallbackInjectable from "./cancel-idle-callback.injectable";
 import idleCallbackTimeoutInjectable from "./idle-callback-timeout.injectable";
 import requestIdleCallbackInjectable from "./request-idle-callback.injectable";

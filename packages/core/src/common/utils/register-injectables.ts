@@ -8,7 +8,6 @@
 
 import binaryNameInjectable from "./binary-name.injectable";
 import bundledBinaryPathInjectable from "./bundled-binary-path.injectable";
-import getLatestVersionInjectable from "./get-latest-version.injectable";
 import openLinkInBrowserInjectable from "./open-link-in-browser.injectable";
 import platformSpecificVersionInjectable from "./platform-specific-version.injectable";
 import randomBytesInjectable from "./random-bytes.injectable";
@@ -26,11 +25,6 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(bundledBinaryPathInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getLatestVersionInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

@@ -5,7 +5,6 @@
  */
 
 import asyncFn from "@async-fn/vitest";
-import React from "react";
 import navigateToWorkloadsOverviewInjectable from "../../../../../common/front-end-routing/routes/cluster/workloads/overview/navigate-to-workloads-overview.injectable";
 import { getApplicationBuilder } from "../../../../../renderer/components/test-utils/get-application-builder";
 

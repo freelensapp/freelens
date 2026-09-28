@@ -1,6 +1,6 @@
 import { getStartableStoppable, type StartableStoppable } from "@freelensapp/startable-stoppable";
 import { getInjectable, getInjectionToken } from "@ogre-tools/injectable";
-import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
+import { computedInjectManyInjectionToken } from "@ogre-tools/injectable-extension-for-mobx";
 import { type IComputedValue, reaction } from "mobx";
 import { enlistMessageChannelListenerInjectionToken } from "../message/enlist-message-channel-listener-injection-token";
 import {
@@ -72,7 +72,7 @@ const listeningOfChannelsInjectable = getInjectable({
 
     const enlistRequestChannelListener = di.inject(enlistRequestChannelListenerInjectionToken);
 
-    const computedInjectMany = di.inject(computedInjectManyInjectable);
+    const computedInjectMany = di.inject(computedInjectManyInjectionToken);
 
     const messageChannelListeners = computedInjectMany(messageChannelListenerInjectionToken);
 

@@ -8,15 +8,21 @@
   // written against the enabled globals never import it directly.
   "ignoreDependencies": ["vitest"],
 
-  // Note: the ignoreDependencies entries for electron (freelens, core) and
-  // @freelensapp/core (extensions) are only needed in --production --strict
-  // mode, where devDependency imports in production files count as unlisted.
-  // The development run reports them as removable configuration hints; hints
-  // are informational and do not fail the check.
+  // Note: several ignoreDependencies entries below (electron for freelens,
+  // core, and the technical-feature packages; @freelensapp/core for extensions;
+  // react for the button package) are only needed in --production --strict
+  // mode, where devDependency imports in production files count as unlisted. In
+  // the plain development run these entries look redundant, so knip would report
+  // them as removable configuration hints. Since a single config must satisfy
+  // both runs, the shared knip script runs with --no-config-hints (see the
+  // "knip" script in package.json) to silence those unavoidable hints.
 
   "workspaces": {
     ".": {
-      "ignoreBinaries": [".*Freelens.exe", "jq", "open", "powershell", "xdg-open"],
+      // Binaries the workflows and scripts call that no dependency provides:
+      // jq comes with the runner image, yq from mise (see mise.toml), the rest
+      // from the operating system.
+      "ignoreBinaries": [".*Freelens.exe", "jq", "open", "powershell", "xdg-open", "yq"],
       "ignoreDependencies": [
         // used to run pnpm in monorepo workspaces from the root
         "pnpm"
@@ -63,9 +69,7 @@
         // devDependency so electron-builder does not pack it into the app
         "electron",
         // explicit dependency to prevent to install different versions of app-build-lib
-        "electron-builder-squirrel-windows",
-        // used as script to run in fork() to install extensions
-        "pnpm"
+        "electron-builder-squirrel-windows"
       ],
       "typescript": {
         "config": ["tsconfig.json"]
@@ -73,7 +77,13 @@
     },
 
     "packages/core": {
-      "entry": ["src/{main,renderer}/library.ts!"],
+      "entry": [
+        "src/{main,renderer}/library.ts!",
+        // type-only assertions over the extension-API namespaces: `pnpm
+        // type:check` compiles them and nothing imports them, which is the
+        // point — see the file's header
+        "src/extensions/__tests__/extension-api.types.ts"
+      ],
       "project": ["__mocks__/**/*.{ts,tsx}", "src/**/*.{ts,tsx}!", "types/*.d.ts"],
       "ignoreDependencies": [
         // static YAML templates imported with a relative import.meta.glob in
@@ -82,8 +92,6 @@
         // provided by the Electron runtime and declared only as a
         // devDependency; production code imports it in both processes
         "electron",
-        // used as script to run in fork() to install extensions
-        "pnpm",
         // tailwind dependencies are not handled by knip correctly
         "@tailwindcss/postcss",
         "tailwindcss"
@@ -94,7 +102,7 @@
     },
 
     "packages/ensure-binaries": {
-      "project": ["bin/*.js!", "src/*.mts!"],
+      "project": ["bin/*.js!", "src/*.ts!"],
       "typescript": {
         "config": ["tsconfig.json"]
       }
@@ -103,53 +111,80 @@
     "packages/extensions": {
       "entry": ["rollup.dts.config.mjs", "scripts/*.mjs", "src/runtime-shim.ts!"],
       "project": ["*.mjs", "scripts/*.mjs", "src/**/*.ts!"],
+      // build:dist output: the bundled declarations inline the types of the
+      // whole workspace, so scanning them reports every transitive import of
+      // core as an unlisted dependency of this package
+      "ignore": ["dist/**", "dist-types/**"],
       "ignoreDependencies": [
         // the workspace entry re-exports core's API namespaces, but core is a
         // devDependency by design: the published package inlines all core
         // types into the bundled d.ts and consumes the runtime global instead
         "@freelensapp/core",
+        // optional peerDependency, referenced by the bundled d.ts for the
+        // Electron types it inlines
+        "electron",
         // type-level dependencies of the published bundled extension-api.d.ts:
         // extension projects resolve these packages for types through
         // @freelensapp/extensions, so they must stay declared even though no
         // runtime code in this package imports them
-        "@mui/material",
         "@ogre-tools/injectable",
         "@ogre-tools/injectable-react",
-        "@types/chart.js",
-        "@types/history",
-        "@types/lodash",
         "@types/react",
-        "@types/react-router",
-        "@types/react-router-dom",
-        "@types/react-table",
+        "@types/react-dom",
         "@types/react-window",
         "@xterm/xterm",
         "chart.js",
         "conf",
-        "history",
+        "es-toolkit",
         "immer",
-        "lodash",
         "mobx",
-        "mobx-observable-history",
+        "mobx-react",
         "monaco-editor",
-        "node-fetch",
         "react",
-        "react-router",
-        "react-router-dom",
         "react-select",
-        "react-table",
         "react-window",
         "rfc6902",
-        "type-fest",
-        "typed-emitter"
+        "type-fest"
       ],
       "typescript": {
         "config": ["tsconfig.json", "tsconfig.dts.json"]
       }
     },
 
+    // The contract fixture is an extension, not a library: its entrypoints are
+    // the `main` and `renderer` manifest fields, which point at build output,
+    // and knip does not read `renderer` at all, so they are listed below.
+    "packages/fixture-extension": {
+      "entry": [
+        "vite.config.mjs",
+        // type-only by design: the type level of the contract, with no runtime
+        // importer here or anywhere else
+        "src/common/contract-types.ts!",
+        "src/main/index.ts!",
+        "src/renderer/index.tsx!"
+      ],
+      "project": ["*.mjs", "src/**/*.{ts,tsx}!"],
+      // build output: one self-contained bundle in which every import has been
+      // replaced by a read of the host global, so there is nothing to resolve
+      "ignore": ["dist/**"],
+      "ignoreDependencies": [
+        // host-provided modules. The bundle maps them onto
+        // globalThis.FreelensExtensionApi (see vite.config.mjs), and Freelens
+        // installs no dependencies of an extension, so they are declared as
+        // devDependencies for their types alone, which the --production
+        // --strict pass reports as unlisted
+        "@freelensapp/extensions",
+        "@types/react",
+        "mobx",
+        "react"
+      ],
+      "typescript": {
+        // one program per runtime environment
+        "config": ["src/main/tsconfig.json", "src/renderer/tsconfig.json", "src/common/tsconfig.json"]
+      }
+    },
+
     "packages/generate-tray-icons": {
-      "entry": ["src/index.ts!"],
       "project": ["bin/*.js!", "src/*.ts!"],
       "ignoreDependencies": [
         // source of the tray icon SVGs passed on the command line
@@ -163,6 +198,30 @@
     "packages/resource-templates": {
       "entry": [],
       "project": []
+    },
+
+    "packages/ui-components/button": {
+      // JSX compiles to react/jsx-runtime under the automatic runtime, which
+      // knip's --production --strict pass does not attribute to `react`. The
+      // only explicit react import here is type-only (ButtonHTMLAttributes),
+      // so react looks unused even though it is a real runtime dependency.
+      "ignoreDependencies": ["react"]
+    },
+
+    // electron is provided by the host app at runtime, so it is declared only
+    // as a devDependency; production code in these packages imports it, which
+    // the --production --strict pass reports as unlisted (same as freelens and
+    // packages/core above)
+    "packages/technical-features/application/application-for-electron-main": {
+      "ignoreDependencies": ["electron"]
+    },
+
+    "packages/technical-features/messaging/messaging-for-main": {
+      "ignoreDependencies": ["electron"]
+    },
+
+    "packages/technical-features/messaging/messaging-for-renderer": {
+      "ignoreDependencies": ["electron"]
     }
   },
 

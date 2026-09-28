@@ -5,7 +5,6 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import React from "react";
 import { KubernetesCluster } from "../../../../../common/catalog-entities";
 import { DrawerItem, DrawerTitle } from "../../../drawer";
 import { catalogEntityDetailItemInjectionToken } from "../token";
@@ -22,9 +21,9 @@ const kubernetesClusterDetailsItemInjectable = getInjectable({
           <DrawerTitle>Kubernetes Information</DrawerTitle>
           <div className="grow shrink-0 basis-0 EntityMetadata">
             <DrawerItem name="Distribution" data-testid={`kubernetes-distro-for-${entity.getId()}`}>
-              {entity.metadata.distro || "unknown"}
+              {String(entity.metadata.distro || "unknown")}
             </DrawerItem>
-            <DrawerItem name="Kubelet Version">{entity.metadata.kubeVersion || "unknown"}</DrawerItem>
+            <DrawerItem name="Kubelet Version">{String(entity.metadata.kubeVersion || "unknown")}</DrawerItem>
           </div>
         </>
       ),

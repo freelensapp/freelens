@@ -356,11 +356,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
                     class="mt-4 mb-5 leading-relaxed"
                   >
                     This setting is to change the registry URL for installing extensions by name. 
-                    If you are unable to access the default registry (https://registry.npmjs.org) you can change it in your 
-                    <b>
-                      .npmrc
-                    </b>
-                     file or in the input below.
+                    If you are unable to access the default registry (https://registry.npmjs.org) you can enter another one below.
                   </p>
                   <div
                     class="Input theme round black disabled invalid"
@@ -632,11 +628,16 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
         class="HotbarItems flex flex-col"
       >
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="0"
         >
           <div
-            style="z-index: 12; position: absolute;"
+            aria-describedby="DndDescribedBy-0"
+            aria-disabled="false"
+            aria-roledescription="draggable"
+            role="button"
+            style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
+            tabindex="0"
           >
             <div
               class="HotbarIcon contextMenuAvailable"
@@ -644,7 +645,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
               <div
                 class="Avatar rounded disabled avatar"
                 id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
               >
                 WP
               </div>
@@ -652,11 +653,16 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
           </div>
         </div>
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="1"
         >
           <div
-            style="z-index: 11; position: absolute;"
+            aria-describedby="DndDescribedBy-0"
+            aria-disabled="false"
+            aria-roledescription="draggable"
+            role="button"
+            style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
+            tabindex="0"
           >
             <div
               class="HotbarIcon contextMenuAvailable"
@@ -664,7 +670,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
               <div
                 class="Avatar rounded disabled avatar"
                 id="hotbarIcon-hotbar-icon-catalog-entity"
-                style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
               >
                 Ca
               </div>
@@ -672,44 +678,61 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
           </div>
         </div>
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="2"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="3"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="4"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="5"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="6"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="7"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="8"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="9"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="10"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="11"
+        />
+        <div
+          id="DndDescribedBy-0"
+          style="display: none;"
+        >
+          
+    To pick up a draggable item, press the space bar.
+    While dragging, use the arrow keys to move the item.
+    Press space again to drop the item in its new position, or press escape to cancel.
+  
+        </div>
+        <div
+          aria-atomic="true"
+          aria-live="assertive"
+          id="DndLiveRegion-0"
+          role="status"
+          style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
         />
       </div>
       <div
@@ -1151,11 +1174,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
                     class="mt-4 mb-5 leading-relaxed"
                   >
                     This setting is to change the registry URL for installing extensions by name. 
-                    If you are unable to access the default registry (https://registry.npmjs.org) you can change it in your 
-                    <b>
-                      .npmrc
-                    </b>
-                     file or in the input below.
+                    If you are unable to access the default registry (https://registry.npmjs.org) you can enter another one below.
                   </p>
                   <div
                     class="Input theme round black disabled invalid"
@@ -1427,11 +1446,16 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
         class="HotbarItems flex flex-col"
       >
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="0"
         >
           <div
-            style="z-index: 12; position: absolute;"
+            aria-describedby="DndDescribedBy-3"
+            aria-disabled="false"
+            aria-roledescription="draggable"
+            role="button"
+            style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
+            tabindex="0"
           >
             <div
               class="HotbarIcon contextMenuAvailable"
@@ -1439,7 +1463,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
               <div
                 class="Avatar rounded disabled avatar"
                 id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
               >
                 WP
               </div>
@@ -1447,11 +1471,16 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
           </div>
         </div>
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="1"
         >
           <div
-            style="z-index: 11; position: absolute;"
+            aria-describedby="DndDescribedBy-3"
+            aria-disabled="false"
+            aria-roledescription="draggable"
+            role="button"
+            style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
+            tabindex="0"
           >
             <div
               class="HotbarIcon contextMenuAvailable"
@@ -1459,7 +1488,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
               <div
                 class="Avatar rounded disabled avatar"
                 id="hotbarIcon-hotbar-icon-catalog-entity"
-                style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
               >
                 Ca
               </div>
@@ -1467,44 +1496,61 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
           </div>
         </div>
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="2"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="3"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="4"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="5"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="6"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="7"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="8"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="9"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="10"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="11"
+        />
+        <div
+          id="DndDescribedBy-3"
+          style="display: none;"
+        >
+          
+    To pick up a draggable item, press the space bar.
+    While dragging, use the arrow keys to move the item.
+    Press space again to drop the item in its new position, or press escape to cancel.
+  
+        </div>
+        <div
+          aria-atomic="true"
+          aria-live="assertive"
+          id="DndLiveRegion-3"
+          role="status"
+          style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
         />
       </div>
       <div
@@ -1958,11 +2004,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
                     class="mt-4 mb-5 leading-relaxed"
                   >
                     This setting is to change the registry URL for installing extensions by name. 
-                    If you are unable to access the default registry (https://registry.npmjs.org) you can change it in your 
-                    <b>
-                      .npmrc
-                    </b>
-                     file or in the input below.
+                    If you are unable to access the default registry (https://registry.npmjs.org) you can enter another one below.
                   </p>
                   <div
                     class="Input theme round black disabled invalid"
@@ -2234,11 +2276,16 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
         class="HotbarItems flex flex-col"
       >
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="0"
         >
           <div
-            style="z-index: 12; position: absolute;"
+            aria-describedby="DndDescribedBy-7"
+            aria-disabled="false"
+            aria-roledescription="draggable"
+            role="button"
+            style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
+            tabindex="0"
           >
             <div
               class="HotbarIcon contextMenuAvailable"
@@ -2246,7 +2293,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
               <div
                 class="Avatar rounded disabled avatar"
                 id="hotbarIcon-hotbar-icon-welcome-page-entity"
-                style="width: 40px; height: 40px; background: rgb(210, 16, 232);"
+                style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
               >
                 WP
               </div>
@@ -2254,11 +2301,16 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
           </div>
         </div>
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="1"
         >
           <div
-            style="z-index: 11; position: absolute;"
+            aria-describedby="DndDescribedBy-7"
+            aria-disabled="false"
+            aria-roledescription="draggable"
+            role="button"
+            style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
+            tabindex="0"
           >
             <div
               class="HotbarIcon contextMenuAvailable"
@@ -2266,7 +2318,7 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
               <div
                 class="Avatar rounded disabled avatar"
                 id="hotbarIcon-hotbar-icon-catalog-entity"
-                style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
               >
                 Ca
               </div>
@@ -2274,44 +2326,61 @@ exports[`preferences - hiding-of-empty-branches, given in preferences page > giv
           </div>
         </div>
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="2"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="3"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="4"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="5"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="6"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="7"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="8"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="9"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="10"
         />
         <div
-          class="HotbarCell isDraggingOwner animateDown"
+          class="HotbarCell animateDown"
           index="11"
+        />
+        <div
+          id="DndDescribedBy-7"
+          style="display: none;"
+        >
+          
+    To pick up a draggable item, press the space bar.
+    While dragging, use the arrow keys to move the item.
+    Press space again to drop the item in its new position, or press escape to cancel.
+  
+        </div>
+        <div
+          aria-atomic="true"
+          aria-live="assertive"
+          id="DndLiveRegion-7"
+          role="status"
+          style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
         />
       </div>
       <div

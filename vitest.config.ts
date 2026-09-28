@@ -41,10 +41,12 @@ const setupCandidates = ["src/vitest.setup.tsx", "src/vitest-after-env.setup.ts"
 const coreDir = join(root, "packages/core");
 const coreMockAliases = {
   electron: join(coreDir, "__mocks__/electron.ts"),
+  // selfsigned's native RSA keygen can crash a threads-pool worker at teardown
+  // (Assertion failed: try_catch.CanContinue()); the mock returns a static
+  // certificate so no real key is generated inside a Vitest worker.
+  selfsigned: join(coreDir, "__mocks__/selfsigned.ts"),
   "monaco-editor": join(coreDir, "__mocks__/monaco-editor.ts"),
   "node-pty": join(coreDir, "__mocks__/node-pty.ts"),
-  "react-beautiful-dnd": join(coreDir, "__mocks__/react-beautiful-dnd.tsx"),
-  "react-virtualized-auto-sizer": join(coreDir, "__mocks__/react-virtualized-auto-sizer.tsx"),
   "@sentry/electron/main": join(coreDir, "__mocks__/@sentry/electron/main.ts"),
   "@sentry/electron/renderer": join(coreDir, "__mocks__/@sentry/electron/renderer.ts"),
 };

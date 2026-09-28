@@ -38,12 +38,13 @@ export class LocalShellSession extends ShellSession {
   }
 
   protected get cwd(): string | undefined {
-    return this.cluster.preferences?.terminalCWD;
+    return this.cluster?.preferences?.terminalCWD;
   }
 
   public async open() {
-    // extensions can modify the env
-    const env = this.dependencies.modifyTerminalShellEnv(this.cluster.id, await this.getCachedShellEnv());
+    const shellEnv = await this.getCachedShellEnv();
+    // extensions can modify the env, but only ever for a cluster
+    const env = this.cluster ? this.dependencies.modifyTerminalShellEnv(this.cluster.id, shellEnv) : shellEnv;
     const shell = env.PTYSHELL;
 
     if (!shell) {
@@ -56,15 +57,35 @@ export class LocalShellSession extends ShellSession {
   }
 
   protected async getShellArgs(shell: string): Promise<string[]> {
-    const pathFromPreferences = this.dependencies.state.kubectlBinariesPath || this.kubectl.getBundledPath();
-    const kubectlPathDir = this.dependencies.state.downloadKubectlBinaries
-      ? this.dependencies.directoryContainingKubectl
-      : this.dependencies.getDirnameOfPath(pathFromPreferences);
-
+    const { directoryContainingKubectl } = this.dependencies;
     const shellName = this.dependencies
       .getBasenameOfPath(shell)
       .replace(/\.exe$/i, "")
       .toLowerCase();
+
+    if (directoryContainingKubectl === undefined) {
+      // A session without a cluster is meant to be the user's own shell: no
+      // init file, no ZDOTDIR and no PATH-forcing argument, so every shell
+      // reads its own rc files the way a normal terminal emulator would. Its
+      // fallback binaries are appended to PATH by `pathSuffixEntries`, and
+      // forcing PATH here would undo exactly that.
+      switch (shellName) {
+        case "powershell":
+          return ["-NoExit"];
+        case "bash":
+        case "fish":
+        case "zsh":
+          return ["--login"];
+        default:
+          return [];
+      }
+    }
+
+    const pathFromPreferences = this.dependencies.state.kubectlBinariesPath || this.kubectl?.getBundledPath();
+    const kubectlPathDir =
+      this.dependencies.state.downloadKubectlBinaries || !pathFromPreferences
+        ? directoryContainingKubectl
+        : this.dependencies.getDirnameOfPath(pathFromPreferences);
 
     // The bundled binaries directory (e.g. resources/<arch>) holds the
     // kubectl shipped with the app. The bash/zsh init scripts already append
@@ -81,10 +102,7 @@ export class LocalShellSession extends ShellSession {
           `& {$Env:PATH="${kubectlPathDir};${this.dependencies.directoryForBinaries};${bundledBinariesDir};$Env:PATH"}`,
         ];
       case "bash":
-        return [
-          "--init-file",
-          this.dependencies.joinPaths(this.dependencies.directoryContainingKubectl, ".bash_set_path"),
-        ];
+        return ["--init-file", this.dependencies.joinPaths(directoryContainingKubectl, ".bash_set_path")];
       case "fish":
         return [
           "--login",

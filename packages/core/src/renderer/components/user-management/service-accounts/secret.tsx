@@ -8,7 +8,6 @@ import "./secret.scss";
 
 import { Icon } from "@freelensapp/icon";
 import { prevDefault } from "@freelensapp/utilities";
-import moment from "moment";
 import React from "react";
 
 import type { Secret } from "@freelensapp/kube-object";
@@ -80,7 +79,9 @@ export class ServiceAccountsSecret extends React.Component<ServiceAccountsSecret
           value:
             typeof secret === "string" || !secret.metadata.creationTimestamp
               ? "<unknown>"
-              : moment(secret.metadata.creationTimestamp).format("LLL"),
+              : new Intl.DateTimeFormat(undefined, { dateStyle: "long", timeStyle: "short" }).format(
+                  new Date(secret.metadata.creationTimestamp),
+                ),
         })}
         {this.renderRow({
           name: "Type: ",

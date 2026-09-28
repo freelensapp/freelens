@@ -103,6 +103,9 @@ export default getGlobalOverride(electronAppInjectable, () => {
     isAccessibilitySupportEnabled(): boolean {
       throw new Error("Method not implemented.");
     }
+    isActive(): boolean {
+      throw new Error("Method not implemented.");
+    }
     isDefaultProtocolClient(protocol: string, path?: string | undefined, args?: string[] | undefined): boolean {
       void protocol;
       void path;

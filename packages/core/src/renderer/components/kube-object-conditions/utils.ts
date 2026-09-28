@@ -1,10 +1,9 @@
-import moment from "moment-timezone";
-
 import type { Condition } from "@freelensapp/kube-object";
 
 function timeToUnix(dateStr?: string): number {
-  const m = moment(dateStr);
-  return m.isValid() ? m.unix() : 0;
+  if (!dateStr) return 0;
+  const time = Date.parse(dateStr);
+  return Number.isNaN(time) ? 0 : Math.floor(time / 1000);
 }
 
 /**

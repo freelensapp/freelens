@@ -1,11 +1,9 @@
 /**
  * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import { ValidatingAdmissionPolicy } from "@freelensapp/kube-object";
-import React from "react";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import { renderFor } from "../test-utils/renderFor";
 import { ValidatingAdmissionPolicyDetails } from "./validating-admission-policies-details";

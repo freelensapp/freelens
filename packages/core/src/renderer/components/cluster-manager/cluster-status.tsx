@@ -10,7 +10,7 @@ import { Spinner } from "@freelensapp/spinner";
 import { cssNames, hasTypedProperty, isObject, isString } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { computed, makeObservable, observable } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import navigateToEntitySettingsInjectable from "../../../common/front-end-routing/routes/entity-settings/navigate-to-entity-settings.injectable";
 import { ipcRendererOn } from "../../../common/ipc";
@@ -39,6 +39,8 @@ interface Dependencies {
 
 @observer
 class NonInjectedClusterStatus extends React.Component<ClusterStatusProps & Dependencies> {
+  private readonly disposers: (() => void)[] = [];
+
   @observable authOutput: KubeAuthUpdate[] = [];
   @observable isReconnecting = false;
 
@@ -51,7 +53,10 @@ class NonInjectedClusterStatus extends React.Component<ClusterStatusProps & Depe
     return this.props.cluster;
   }
 
-  @computed get entity() {
+  // Plain getter (not @computed): reads this.props, which mobx-react 9 forbids
+  // inside a derivation. Read from render, reactivity is preserved by the
+  // observer render reaction.
+  get entity() {
     return this.props.entityRegistry.getById(this.cluster.id);
   }
 
@@ -60,7 +65,7 @@ class NonInjectedClusterStatus extends React.Component<ClusterStatusProps & Depe
   }
 
   componentDidMount() {
-    disposeOnUnmount(this, [
+    this.disposers.push(
       ipcRendererOn(`cluster:${this.cluster.id}:connection-update`, (evt, res: unknown) => {
         if (
           isObject(res) &&
@@ -74,7 +79,11 @@ class NonInjectedClusterStatus extends React.Component<ClusterStatusProps & Depe
           console.warn(`Got invalid connection update for ${this.cluster.id}`, { update: res });
         }
       }),
-    ]);
+    );
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   componentDidUpdate(prevProps: Readonly<ClusterStatusProps>): void {

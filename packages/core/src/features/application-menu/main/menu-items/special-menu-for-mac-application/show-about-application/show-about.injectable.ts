@@ -7,7 +7,6 @@
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import * as semver from "semver";
-import getLatestVersionInjectable from "../../../../../../common/utils/get-latest-version.injectable";
 import openLinkInBrowserInjectable from "../../../../../../common/utils/open-link-in-browser.injectable";
 import appNameInjectable from "../../../../../../common/vars/app-name.injectable";
 import applicationCopyrightInjectable from "../../../../../../common/vars/application-copyright.injectable";
@@ -15,6 +14,7 @@ import extensionApiVersionInjectable from "../../../../../../common/vars/extensi
 import isWindowsInjectable from "../../../../../../common/vars/is-windows.injectable";
 import productNameInjectable from "../../../../../../common/vars/product-name.injectable";
 import showMessagePopupInjectable from "../../../../../../main/electron-app/features/show-message-popup.injectable";
+import getLatestVersionInjectable from "../../../../../../main/versions/get-latest-version.injectable";
 import { buildVersionInitializable } from "../../../../../vars/build-version/common/token";
 
 const showAboutInjectable = getInjectable({

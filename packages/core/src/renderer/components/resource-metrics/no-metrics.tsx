@@ -5,7 +5,6 @@
  */
 
 import { Icon } from "@freelensapp/icon";
-import React from "react";
 
 export function NoMetrics() {
   return (

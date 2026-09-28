@@ -5,7 +5,6 @@
  */
 
 import { Icon } from "@freelensapp/icon";
-import React from "react";
 import { DrawerItem } from "../../../drawer";
 import { AwsElasticBlockStore } from "./variants/aws-elastic-block-store";
 import { AzureDisk } from "./variants/azure-disk";
@@ -40,6 +39,8 @@ import { StorageOs } from "./variants/storage-os";
 import { VsphereVolume } from "./variants/vsphere-volume";
 
 import type { Pod, PodSpecVolume, PodVolumeKind } from "@freelensapp/kube-object";
+
+import type { JSX } from "react";
 
 const deprecatedVolumeTypes = new Set<PodVolumeKind>(["flocker", "gitRepo", "quobyte", "storageos"]);
 

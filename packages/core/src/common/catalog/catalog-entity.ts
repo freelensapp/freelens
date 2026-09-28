@@ -4,14 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import EventEmitter from "node:events";
-import { iter } from "@freelensapp/utilities";
+import { iter, TypedEmitter } from "@freelensapp/utilities";
 import { once } from "es-toolkit";
 import { makeObservable, observable } from "mobx";
 
 import type { Disposer, StrictReactNode } from "@freelensapp/utilities";
-
-import type TypedEmitter from "typed-emitter";
 
 import type {
   CategoryColumnRegistration,
@@ -96,7 +93,7 @@ export interface CatalogCategorySpec {
  */
 export type AddMenuFilter = (menu: CatalogEntityAddMenu) => any;
 
-export interface CatalogCategoryEvents {
+export type CatalogCategoryEvents = {
   /**
    * This event will be emitted when the category is loaded in the catalog
    * view.
@@ -114,7 +111,7 @@ export interface CatalogCategoryEvents {
    * by this category is opened.
    */
   contextMenuOpen: (entity: CatalogEntity, context: CatalogEntityContextMenuContext) => void;
-}
+};
 
 export interface CatalogCategoryMetadata {
   /**
@@ -140,7 +137,7 @@ export function categoryVersion<
   };
 }
 
-export abstract class CatalogCategory extends (EventEmitter as new () => TypedEmitter<CatalogCategoryEvents>) {
+export abstract class CatalogCategory extends TypedEmitter<CatalogCategoryEvents> {
   /**
    * The version of category that you are wanting to declare.
    *

@@ -1,380 +1,176 @@
-import isFlatpakPackageInjectable from "../../common/vars/is-flatpak-package.injectable";
-import { buildVersionInitializable } from "../../features/vars/build-version/common/token";
-import { getDiForUnitTesting } from "../../renderer/getDiForUnitTesting";
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+// The runtime half of the extension-API surface check.
+//
+// **What it checks.** That `@freelensapp/extensions` exports `Common`, `Main`
+// and `Renderer`; that each of the three carries exactly the members listed
+// below; and that every sub-namespace exists, is non-empty, and still carries a
+// handful of anchor symbols. The three top-level lists are the contract — they
+// are C5's table in `docs/v2-extension-api.md`, and a change to one of them is
+// a change to the API that has to be made on purpose and read in review.
+//
+// **What it deliberately does not check.** The membership of a sub-namespace,
+// one name at a time. This file used to do that: 809 of its 958 lines were
+// quoted names, most of them incidental arrivals through the star re-exports in
+// `renderer-api/components.ts`. #2366 then tried the thorough version of the
+// same idea — an API Extractor report, committed and diffed in CI (#2476) — and
+// it was withdrawn for the same reason the list is gone: a report tracks the
+// *transitive closure* of the surface, while the contract is namespace
+// membership, so 163 symbols nobody intends as API were in the file and
+// refactoring a host-side dependency bag showed up as a contract diff. Neither
+// version distinguished "the API broke" from "the API changed", which is the
+// only distinction a check like this is for.
+//
+// **The anchors** are therefore chosen, not enumerated: the symbols whose
+// disappearance means something is genuinely broken. Two sources rather than
+// taste — what the two published extensions actually use
+// (`freelens-fluxcd-extension`, `freelens-gateway-api-extension`, the pair
+// #2365 verified against) and the symbols whose *behaviour* is frozen under
+// C14. They are commented where the reason is not obvious. A handful per
+// namespace is the intended size; a list that grows whenever somebody exports
+// something has turned back into the thing that was removed.
+//
+// **Types are not visible here at all.** `Object.keys` sees runtime values, so
+// this file cannot see a type that stops being nameable — the #2365 class of
+// defect, which cost `SecurityContext` the whole v2 line. That half lives in
+// `./extension-api.types.ts`, compiled by `pnpm type:check`, and in
+// `packages/fixture-extension/src/common/contract-types.ts`, compiled against
+// the built `dist/extension-api.d.ts`.
+//
+// `Object.keys` of a namespace is its export list; it is sorted here rather
+// than relied on to come out sorted, because the namespace objects are produced
+// by the bundler's interop and follow source order.
+
 import * as extensions from "../extension-api";
 
-describe("Extensions API", () => {
-  it("should export Common, Main, and Renderer", () => {
-    expect(extensions).toHaveProperty("Common");
-    expect(extensions).toHaveProperty("Main");
-    expect(extensions).toHaveProperty("Renderer");
+const commonNames = ["App", "Catalog", "Clusters", "EventBus", "Proxy", "Store", "Types", "Util", "logger"];
+const mainNames = ["Catalog", "Ipc", "K8s", "K8sApi", "LensExtension", "Navigation", "Power", "Util"];
+const rendererNames = ["Catalog", "Component", "Ipc", "K8s", "K8sApi", "LensExtension", "Navigation", "Theme", "Util"];
+
+const commonAnchors: Record<string, readonly string[]> = {
+  App: ["appName", "version"],
+  Catalog: ["CatalogEntity", "KubernetesCluster"],
+  Clusters: ["ClusterConnectionStatus"],
+  EventBus: ["appEventBus"],
+  Proxy: ["resolveSystemProxy"],
+  Store: ["ExtensionStore"],
+  // `bytesToUnits` and `unitsToBytes` are destructured out of `Common.Util` by
+  // the fluxcd extension; the other two are the utilities every renderer-side
+  // extension reaches for.
+  Util: ["bytesToUnits", "cssNames", "stopPropagation", "unitsToBytes"],
+};
+
+const mainAnchors: Record<string, readonly string[]> = {
+  Catalog: ["catalogEntities", "getClusterById"],
+  K8s: ["applyOnCluster", "getResource", "queryCluster"],
+  // The five symbols a custom-resource extension is built out of. Both
+  // published extensions subclass `LensExtensionKubeObject`, pair it with a
+  // `KubeApi` and a `KubeObjectStore`, and register the result with
+  // `apiManager`.
+  K8sApi: ["KubeApi", "KubeObject", "KubeObjectStore", "LensExtensionKubeObject", "apiManager"],
+  Navigation: ["navigate"],
+  Power: ["onResume", "onShutdown", "onSuspend"],
+  // `fetch` is the whole of C12: an extension that loses it has no HTTP that
+  // honours the user's proxy and CA settings.
+  Util: ["bytesToUnits", "fetch"],
+};
+
+const rendererAnchors: Record<string, readonly string[]> = {
+  Catalog: ["activeCluster", "catalogEntities"],
+  // `MonacoEditor` is here for C3 rather than for its own sake: it is the
+  // component that fails if the host stops being the single instance.
+  Component: ["Badge", "DrawerItem", "Icon", "KubeObjectListLayout", "MenuItem", "MonacoEditor"],
+  K8s: ["applyOnCluster", "getResource", "queryCluster"],
+  K8sApi: [
+    "CustomResourceDefinition",
+    "KubeApi",
+    "KubeObject",
+    "KubeObjectStore",
+    "LensExtensionKubeObject",
+    // `ServicePort` cannot be withdrawn: it is the return type of
+    // `Service.getPorts()` (#2365).
+    "ServicePort",
+    "apiManager",
+    // The injected store singletons both published extensions read.
+    "crdStore",
+    // One of the eight symbols #2365 considered and kept, so its output format
+    // — `key=value:effect` — is frozen until 3.0.0 along with the symbol.
+    "formatNodeTaint",
+    "namespaceStore",
+  ],
+  Navigation: ["getDetailsUrl", "getMaybeDetailsUrl", "navigate"],
+  Theme: ["activeTheme"],
+  Util: ["bytesToUnits", "cssNames", "fetch", "stopPropagation"],
+};
+
+interface SubNamespaceReport {
+  empty: string[];
+  missing: Record<string, string[]>;
+}
+
+// Reports rather than asserts, so a failure names the missing anchors instead
+// of diffing a hundred-entry member list against another one.
+const inspect = (namespace: object, anchors: Record<string, readonly string[]>): SubNamespaceReport => {
+  const report: SubNamespaceReport = { empty: [], missing: {} };
+
+  for (const [name, expected] of Object.entries(anchors)) {
+    const members = new Set(Object.keys((namespace as Record<string, object>)[name] ?? {}));
+
+    if (members.size === 0) {
+      report.empty.push(name);
+    }
+
+    const absent = expected.filter((member) => !members.has(member));
+
+    if (absent.length > 0) {
+      report.missing[name] = absent;
+    }
+  }
+
+  return report;
+};
+
+const intact: SubNamespaceReport = { empty: [], missing: {} };
+
+describe("extensions API surface", () => {
+  it("exports Common, Main and Renderer", () => {
+    expect(Object.keys(extensions).sort()).toEqual(["Common", "Main", "Renderer"]);
   });
 
-  describe("Common API", () => {
-    it("Common should export App, Catalog, EventBus, Proxy, Store, Types, Util, logger", () => {
-      expect(extensions.Common).toHaveProperty("App");
-      expect(extensions.Common).toHaveProperty("Catalog");
-      expect(extensions.Common).toHaveProperty("EventBus");
-      expect(extensions.Common).toHaveProperty("Proxy");
-      expect(extensions.Common).toHaveProperty("Store");
-      expect(extensions.Common).toHaveProperty("Types");
-      expect(extensions.Common).toHaveProperty("Util");
-      expect(extensions.Common).toHaveProperty("logger");
-    });
-
-    describe("App object", () => {
-      beforeEach(async () => {
-        const di = getDiForUnitTesting();
-        di.override(buildVersionInitializable.stateToken, () => "1.2.3");
-        di.override(isFlatpakPackageInjectable, () => false);
-      });
-
-      it("should have Preferences with getKubectlPath", () => {
-        expect(extensions.Common.App).toHaveProperty("Preferences");
-        expect(extensions.Common.App.Preferences).toHaveProperty("getKubectlPath");
-        expect(typeof extensions.Common.App.Preferences.getKubectlPath).toBe("function");
-      });
-
-      it("should have getEnabledExtensions method", () => {
-        expect(extensions.Common.App).toHaveProperty("getEnabledExtensions");
-        expect(typeof extensions.Common.App.getEnabledExtensions).toBe("function");
-      });
-
-      it("should have version, appName, isFlatpak, isSnap, isWindows, isMac, isLinux, lensBuildEnvironment as getters", () => {
-        expect(() => extensions.Common.App.version).not.toThrow();
-        expect(() => extensions.Common.App.appName).not.toThrow();
-        expect(() => extensions.Common.App.isFlatpak).not.toThrow();
-        expect(() => extensions.Common.App.isSnap).not.toThrow();
-        expect(() => extensions.Common.App.isWindows).not.toThrow();
-        expect(() => extensions.Common.App.isMac).not.toThrow();
-        expect(() => extensions.Common.App.isLinux).not.toThrow();
-      });
-
-      it("should have issuesTrackerUrl property", () => {
-        expect(extensions.Common.App).toHaveProperty("issuesTrackerUrl");
-      });
-    });
-
-    describe("Catalog API", () => {
-      it("should export kubernetesClusterCategory", () => {
-        expect(extensions.Common.Catalog).toHaveProperty("kubernetesClusterCategory");
-      });
-
-      it("should export GeneralEntity, KubernetesCluster, WebLink", () => {
-        expect(extensions.Common.Catalog).toHaveProperty("GeneralEntity");
-        expect(extensions.Common.Catalog).toHaveProperty("KubernetesCluster");
-        expect(extensions.Common.Catalog).toHaveProperty("WebLink");
-      });
-    });
-
-    describe("EventBus API", () => {
-      it("should export appEventBus", () => {
-        expect(extensions.Common.EventBus).toHaveProperty("appEventBus");
-      });
-    });
-
-    describe("Clusters API", () => {
-      it("should export ClusterConnectionStatus enum", () => {
-        expect(extensions.Common.Clusters).toHaveProperty("ClusterConnectionStatus");
-        expect(extensions.Common.Clusters.ClusterConnectionStatus).toHaveProperty("CONNECTED");
-        expect(extensions.Common.Clusters.ClusterConnectionStatus).toHaveProperty("DISCONNECTED");
-        expect(extensions.Common.Clusters.ClusterConnectionStatus).toHaveProperty("CONNECTING");
-        expect(extensions.Common.Clusters.ClusterConnectionStatus).toHaveProperty("DISCONNECTING");
-      });
-
-      it("should export isClusterConnectionStatus type guard", () => {
-        expect(extensions.Common.Clusters).toHaveProperty("isClusterConnectionStatus");
-        expect(typeof extensions.Common.Clusters.isClusterConnectionStatus).toBe("function");
-      });
-    });
-
-    describe("Proxy API", () => {
-      it("should be defined", () => {
-        expect(extensions.Common.Proxy).toBeDefined();
-      });
-    });
-
-    describe("Store API", () => {
-      it("should be defined", () => {
-        expect(extensions.Common.Store.ExtensionStore).toBeDefined();
-      });
-    });
-
-    describe("Types API", () => {
-      it("should be defined", () => {
-        expect(extensions.Common.Types).toBeDefined();
-      });
-    });
-
-    describe("Util API", () => {
-      it("should export openExternal and openBrowser functions", () => {
-        expect(extensions.Common.Util).toHaveProperty("openExternal");
-        expect(typeof extensions.Common.Util.openExternal).toBe("function");
-        expect(extensions.Common.Util).toHaveProperty("openBrowser");
-        expect(typeof extensions.Common.Util.openBrowser).toBe("function");
-      });
-
-      it("should export getAppVersion function", () => {
-        expect(extensions.Common.Util).toHaveProperty("getAppVersion");
-        expect(typeof extensions.Common.Util.getAppVersion).toBe("function");
-      });
-
-      it("should export utility functions from @freelensapp/utilities", () => {
-        expect(extensions.Common.Util).toHaveProperty("debouncePromise");
-        expect(typeof extensions.Common.Util.debouncePromise).toBe("function");
-        expect(extensions.Common.Util).toHaveProperty("delay");
-        expect(typeof extensions.Common.Util.delay).toBe("function");
-        expect(extensions.Common.Util).toHaveProperty("noop");
-        expect(typeof extensions.Common.Util.noop).toBe("function");
-        expect(extensions.Common.Util).toHaveProperty("formatDuration");
-        expect(typeof extensions.Common.Util.formatDuration).toBe("function");
-        expect(extensions.Common.Util).toHaveProperty("cssNames");
-        expect(typeof extensions.Common.Util.cssNames).toBe("function");
-        expect(extensions.Common.Util).toHaveProperty("readonly");
-        expect(typeof extensions.Common.Util.readonly).toBe("function");
-        expect(extensions.Common.Util).toHaveProperty("json");
-        expect(typeof extensions.Common.Util.json.parse).toBe("function");
-      });
-
-      it("should export observableCrate factory", () => {
-        expect(extensions.Common.Util).toHaveProperty("observableCrate");
-        expect(typeof extensions.Common.Util.observableCrate).toBe("function");
-      });
-
-      it("should export iter object with chain method", () => {
-        expect(extensions.Common.Util).toHaveProperty("iter");
-        expect(extensions.Common.Util.iter).toHaveProperty("chain");
-        expect(typeof extensions.Common.Util.iter.chain).toBe("function");
-      });
-
-      it("should export array object with filled method", () => {
-        expect(extensions.Common.Util).toHaveProperty("array");
-        expect(extensions.Common.Util.array).toHaveProperty("filled");
-        expect(typeof extensions.Common.Util.array.filled).toBe("function");
-      });
-
-      it("should export object helpers", () => {
-        expect(extensions.Common.Util).toHaveProperty("object");
-        expect(extensions.Common.Util.object).toHaveProperty("fromEntries");
-        expect(typeof extensions.Common.Util.object.fromEntries).toBe("function");
-        expect(extensions.Common.Util.object).toHaveProperty("keys");
-        expect(typeof extensions.Common.Util.object.keys).toBe("function");
-        expect(extensions.Common.Util.object).toHaveProperty("entries");
-        expect(typeof extensions.Common.Util.object.entries).toBe("function");
-      });
-    });
+  it("exports a stable set of names from Common", () => {
+    expect(Object.keys(extensions.Common).sort()).toEqual(commonNames);
   });
 
-  describe("Main API", () => {
-    it("should export LensExtension and Ipc", () => {
-      expect(extensions.Main).toHaveProperty("LensExtension");
-      expect(extensions.Main).toHaveProperty("Ipc");
-    });
-
-    it("should export Catalog, K8sApi, Navigation, Power namespaces", () => {
-      expect(extensions.Main).toHaveProperty("Catalog");
-      expect(extensions.Main).toHaveProperty("K8sApi");
-      expect(extensions.Main).toHaveProperty("Navigation");
-      expect(extensions.Main).toHaveProperty("Power");
-    });
-
-    describe("Catalog namespace", () => {
-      it("should export catalogCategories and catalogEntities", () => {
-        expect(extensions.Main.Catalog).toHaveProperty("catalogCategories");
-        expect(extensions.Main.Catalog).toHaveProperty("catalogEntities");
-      });
-
-      it("should export getAllClusters function", () => {
-        expect(extensions.Main.Catalog).toHaveProperty("getAllClusters");
-        expect(typeof extensions.Main.Catalog.getAllClusters).toBe("function");
-      });
-
-      it("should export getClusterById function", () => {
-        expect(extensions.Main.Catalog).toHaveProperty("getClusterById");
-        expect(typeof extensions.Main.Catalog.getClusterById).toBe("function");
-      });
-    });
-
-    describe("K8sApi namespace", () => {
-      it("should export API objects", () => {
-        expect(extensions.Main.K8sApi).toHaveProperty("apiManager");
-        expect(extensions.Main.K8sApi).toHaveProperty("forCluster");
-        expect(extensions.Main.K8sApi).toHaveProperty("forRemoteCluster");
-        expect(extensions.Main.K8sApi).toHaveProperty("createResourceStack");
-        expect(extensions.Main.K8sApi).toHaveProperty("getPodsByOwnerId");
-      });
-    });
-
-    describe("Navigation namespace", () => {
-      it("should export navigate function", () => {
-        expect(extensions.Main.Navigation).toHaveProperty("navigate");
-        expect(typeof extensions.Main.Navigation.navigate).toBe("function");
-      });
-    });
-
-    describe("Power namespace", () => {
-      it("should export onSuspend, onResume, onShutdown functions", () => {
-        expect(extensions.Main.Power).toHaveProperty("onSuspend");
-        expect(typeof extensions.Main.Power.onSuspend).toBe("function");
-        expect(extensions.Main.Power).toHaveProperty("onResume");
-        expect(typeof extensions.Main.Power.onResume).toBe("function");
-        expect(extensions.Main.Power).toHaveProperty("onShutdown");
-        expect(typeof extensions.Main.Power.onShutdown).toBe("function");
-      });
-    });
+  it("exports a stable set of names from Main", () => {
+    expect(Object.keys(extensions.Main).sort()).toEqual(mainNames);
   });
 
-  describe("Renderer API", () => {
-    it("should export LensExtension and Ipc", () => {
-      expect(extensions.Renderer).toHaveProperty("LensExtension");
-      expect(extensions.Renderer).toHaveProperty("Ipc");
-    });
+  it("exports a stable set of names from Renderer", () => {
+    expect(Object.keys(extensions.Renderer).sort()).toEqual(rendererNames);
+  });
 
-    it("should export Catalog, Component, K8sApi, Navigation, Theme namespaces", () => {
-      expect(extensions.Renderer).toHaveProperty("Catalog");
-      expect(extensions.Renderer).toHaveProperty("Component");
-      expect(extensions.Renderer).toHaveProperty("K8sApi");
-      expect(extensions.Renderer).toHaveProperty("Navigation");
-      expect(extensions.Renderer).toHaveProperty("Theme");
-    });
+  it("keeps the Common sub-namespaces populated and anchored", () => {
+    expect(inspect(extensions.Common, commonAnchors)).toEqual(intact);
+  });
 
-    describe("Catalog namespace", () => {
-      it("should export catalogCategories and catalogEntities", () => {
-        expect(extensions.Renderer.Catalog).toHaveProperty("catalogCategories");
-        expect(extensions.Renderer.Catalog).toHaveProperty("catalogEntities");
-      });
+  it("keeps the Main sub-namespaces populated and anchored", () => {
+    expect(inspect(extensions.Main, mainAnchors)).toEqual(intact);
+  });
 
-      it("should export activeCluster", () => {
-        expect(extensions.Renderer.Catalog).toHaveProperty("activeCluster");
-      });
+  it("keeps the Renderer sub-namespaces populated and anchored", () => {
+    expect(inspect(extensions.Renderer, rendererAnchors)).toEqual(intact);
+  });
 
-      it("should export getAllClusters function", () => {
-        expect(extensions.Renderer.Catalog).toHaveProperty("getAllClusters");
-        expect(typeof extensions.Renderer.Catalog.getAllClusters).toBe("function");
-      });
-
-      it("should export getClusterById function", () => {
-        expect(extensions.Renderer.Catalog).toHaveProperty("getClusterById");
-        expect(typeof extensions.Renderer.Catalog.getClusterById).toBe("function");
-      });
-
-      it("should export getActiveCluster function", () => {
-        expect(extensions.Renderer.Catalog).toHaveProperty("getActiveCluster");
-        expect(typeof extensions.Renderer.Catalog.getActiveCluster).toBe("function");
-      });
-    });
-
-    describe("Component namespace", () => {
-      it("should export ConfirmDialog and CommandOverlay", () => {
-        expect(extensions.Renderer.Component).toHaveProperty("ConfirmDialog");
-        expect(extensions.Renderer.Component).toHaveProperty("CommandOverlay");
-      });
-
-      it("should export Notifications object", () => {
-        expect(extensions.Renderer.Component).toHaveProperty("Notifications");
-        expect(extensions.Renderer.Component.Notifications).toHaveProperty("ok");
-        expect(extensions.Renderer.Component.Notifications).toHaveProperty("error");
-        expect(extensions.Renderer.Component.Notifications).toHaveProperty("info");
-        expect(extensions.Renderer.Component.Notifications).toHaveProperty("shortInfo");
-        expect(extensions.Renderer.Component.Notifications).toHaveProperty("checkedError");
-      });
-
-      it("should export notificationsStore", () => {
-        expect(extensions.Renderer.Component).toHaveProperty("notificationsStore");
-      });
-
-      it("should export terminalStore and logTabStore", () => {
-        expect(extensions.Renderer.Component).toHaveProperty("terminalStore");
-        expect(extensions.Renderer.Component).toHaveProperty("logTabStore");
-      });
-
-      it("should export UI components from renderer/components", () => {
-        expect(extensions.Renderer.Component).toHaveProperty("Avatar");
-        expect(extensions.Renderer.Component).toHaveProperty("Badge");
-        expect(extensions.Renderer.Component).toHaveProperty("BarChart");
-        expect(extensions.Renderer.Component).toHaveProperty("Chart");
-        expect(extensions.Renderer.Component).toHaveProperty("Checkbox");
-        expect(extensions.Renderer.Component).toHaveProperty("Countdown");
-        expect(extensions.Renderer.Component).toHaveProperty("Dialog");
-        expect(extensions.Renderer.Component).toHaveProperty("Drawer");
-        expect(extensions.Renderer.Component).toHaveProperty("Dropdown");
-        expect(extensions.Renderer.Component).toHaveProperty("DurationAbsoluteTimestamp");
-        expect(extensions.Renderer.Component).toHaveProperty("EditableList");
-        expect(extensions.Renderer.Component).toHaveProperty("EventDetails");
-        expect(extensions.Renderer.Component).toHaveProperty("Events");
-        expect(extensions.Renderer.Component).toHaveProperty("FilePicker");
-        expect(extensions.Renderer.Component).toHaveProperty("Gutter");
-        expect(extensions.Renderer.Component).toHaveProperty("HorizontalLine");
-        expect(extensions.Renderer.Component).toHaveProperty("Input");
-        expect(extensions.Renderer.Component).toHaveProperty("ItemListLayout");
-        expect(extensions.Renderer.Component).toHaveProperty("KubeObjectAge");
-        expect(extensions.Renderer.Component).toHaveProperty("KubeObjectDetails");
-        expect(extensions.Renderer.Component).toHaveProperty("KubeObjectListLayout");
-        expect(extensions.Renderer.Component).toHaveProperty("KubeObjectMenu");
-        expect(extensions.Renderer.Component).toHaveProperty("KubeObjectMeta");
-        expect(extensions.Renderer.Component).toHaveProperty("LineProgress");
-        expect(extensions.Renderer.Component).toHaveProperty("List");
-        expect(extensions.Renderer.Component).toHaveProperty("LocaleDate");
-        expect(extensions.Renderer.Component).toHaveProperty("MainLayout");
-        expect(extensions.Renderer.Component).toHaveProperty("Map");
-        expect(extensions.Renderer.Component).toHaveProperty("MarkdownViewer");
-        expect(extensions.Renderer.Component).toHaveProperty("MaybeLink");
-        expect(extensions.Renderer.Component).toHaveProperty("Menu");
-        expect(extensions.Renderer.Component).toHaveProperty("MonacoEditor");
-        expect(extensions.Renderer.Component).toHaveProperty("NamespaceSelect");
-        expect(extensions.Renderer.Component).toHaveProperty("NoItems");
-        expect(extensions.Renderer.Component).toHaveProperty("PageLayout");
-        expect(extensions.Renderer.Component).toHaveProperty("PathPicker");
-        expect(extensions.Renderer.Component).toHaveProperty("PieChart");
-        expect(extensions.Renderer.Component).toHaveProperty("PodCharts");
-        expect(extensions.Renderer.Component).toHaveProperty("PodDetailsList");
-        expect(extensions.Renderer.Component).toHaveProperty("Radio");
-        expect(extensions.Renderer.Component).toHaveProperty("ReactiveDuration");
-        expect(extensions.Renderer.Component).toHaveProperty("RenderDelay");
-        expect(extensions.Renderer.Component).toHaveProperty("ResourceMetrics");
-        expect(extensions.Renderer.Component).toHaveProperty("Select");
-        expect(extensions.Renderer.Component).toHaveProperty("SettingLayout");
-        expect(extensions.Renderer.Component).toHaveProperty("Slider");
-        expect(extensions.Renderer.Component).toHaveProperty("StatusBrick");
-        expect(extensions.Renderer.Component).toHaveProperty("Stepper");
-        expect(extensions.Renderer.Component).toHaveProperty("SubTitle");
-        expect(extensions.Renderer.Component).toHaveProperty("Switch");
-        expect(extensions.Renderer.Component).toHaveProperty("TabLayout");
-        expect(extensions.Renderer.Component).toHaveProperty("Table");
-        expect(extensions.Renderer.Component).toHaveProperty("Tabs");
-        expect(extensions.Renderer.Component).toHaveProperty("TreeView");
-        expect(extensions.Renderer.Component).toHaveProperty("VirtualList");
-        expect(extensions.Renderer.Component).toHaveProperty("WithTooltip");
-        expect(extensions.Renderer.Component).toHaveProperty("Wizard");
-        expect(extensions.Renderer.Component).toHaveProperty("WizardLayout");
-      });
-    });
-
-    describe("Navigation namespace", () => {
-      it("should export navigation helpers", () => {
-        expect(extensions.Renderer.Navigation).toHaveProperty("navigate");
-        expect(typeof extensions.Renderer.Navigation.navigate).toBe("function");
-        expect(extensions.Renderer.Navigation).toHaveProperty("getDetailsUrl");
-        expect(typeof extensions.Renderer.Navigation.getDetailsUrl).toBe("function");
-        expect(extensions.Renderer.Navigation).toHaveProperty("showDetails");
-        expect(typeof extensions.Renderer.Navigation.showDetails).toBe("function");
-        expect(extensions.Renderer.Navigation).toHaveProperty("hideDetails");
-        expect(typeof extensions.Renderer.Navigation.hideDetails).toBe("function");
-        expect(extensions.Renderer.Navigation).toHaveProperty("createPageParam");
-        expect(typeof extensions.Renderer.Navigation.createPageParam).toBe("function");
-        expect(extensions.Renderer.Navigation).toHaveProperty("isActiveRoute");
-        expect(typeof extensions.Renderer.Navigation.isActiveRoute).toBe("function");
-        expect(extensions.Renderer.Navigation).toHaveProperty("showEntityDetails");
-        expect(typeof extensions.Renderer.Navigation.showEntityDetails).toBe("function");
-        expect(extensions.Renderer.Navigation).toHaveProperty("hideEntityDetails");
-        expect(typeof extensions.Renderer.Navigation.hideEntityDetails).toBe("function");
-      });
-    });
-
-    describe("Theme namespace", () => {
-      it("should export activeTheme", () => {
-        expect(extensions.Renderer.Theme).toHaveProperty("activeTheme");
-      });
-    });
+  // `Common.Types` is the one namespace with nothing behind it at runtime, and
+  // that is not a defect to be fixed by adding a value to it: its members are
+  // the registration shapes, covered in `./extension-api.types.ts` and nowhere
+  // else. Asserted explicitly so the emptiness reads as intended rather than as
+  // an omission from the check above.
+  it("keeps Common.Types type-only", () => {
+    expect(Object.keys(extensions.Common.Types)).toEqual([]);
   });
 });

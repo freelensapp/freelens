@@ -7,7 +7,6 @@
 import { Spinner } from "@freelensapp/spinner";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import { Badge } from "../../badge";
 import { Checkbox } from "../../checkbox";
 import { Notice } from "../../extensions/notice";

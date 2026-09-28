@@ -6,7 +6,6 @@
 
 import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
 import { getInjectable } from "@ogre-tools/injectable";
-import React from "react";
 import { NamespaceSelectBadge } from "../../namespaces/namespace-select-badge";
 import { COLUMN_PRIORITY } from "./column-priority";
 

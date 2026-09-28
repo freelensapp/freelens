@@ -12,9 +12,9 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
 
+import type { ObservableHistory } from "@freelensapp/routing";
 import type { StrictReactNode } from "@freelensapp/utilities";
 
-import type { ObservableHistory } from "mobx-observable-history";
 import type { ErrorInfo } from "react";
 
 const issuesTrackerUrl = "https://github.com/freelensapp/freelens/issues";

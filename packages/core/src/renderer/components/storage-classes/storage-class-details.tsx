@@ -10,7 +10,7 @@ import { StorageClass } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { startCase } from "es-toolkit";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import { Badge } from "../badge";
@@ -37,8 +37,14 @@ interface Dependencies {
 
 @observer
 class NonInjectedStorageClassDetails extends React.Component<StorageClassDetailsProps & Dependencies> {
+  private readonly disposers: (() => void)[] = [];
+
   componentDidMount() {
-    disposeOnUnmount(this, [this.props.subscribeStores([this.props.persistentVolumeStore])]);
+    this.disposers.push(this.props.subscribeStores([this.props.persistentVolumeStore]));
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   render() {

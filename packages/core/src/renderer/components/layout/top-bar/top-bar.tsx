@@ -11,7 +11,7 @@
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import watchHistoryStateInjectable from "../../../remote-helpers/watch-history-state.injectable";
 import { Gutter } from "../../gutter";
 import { Map } from "../../map";

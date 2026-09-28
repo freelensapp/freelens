@@ -49,6 +49,94 @@ When a tool insists on writing inside the repo, keep it out of git:
 Never `git add -A` / `git add .` blindly: review `git status` first and stage
 only the files your change actually touches, never these artifacts.
 
+## Copyright Headers
+
+Source files carry one of two header variants. Which one a file gets depends
+on whether it continues code from the original OpenLens fork, not on what its
+neighbours in the same directory look like.
+
+**New files** — anything created from scratch, including rewrites,
+translations, and reimplementations of removed or legacy logic — get the
+single-line variant:
+
+```ts
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+```
+
+This holds even when the new file's logic is inspired by, or replaces, old
+OpenLens code: inspiration is not continuation. `freelens/electron.vite.config.ts`,
+written as a translation of the removed webpack config, is a new file.
+
+**Files that continue code from the fork** keep the two-line variant:
+
+```ts
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+```
+
+A file continues fork code when its path was present in the fork-import commit
+`0a5798c9` ("First commit - Open Lens fork from master branch"):
+
+```sh
+git ls-tree -r --name-only 0a5798c9 | grep -x <path>
+```
+
+or when `git log --follow -- <path>` traces it back to a path that was — that
+is, git itself detects the file as a rename, move, or copy of fork-era code:
+
+```sh
+git log --follow --format= --name-only -- <path> | sort -u
+```
+
+Never add the `OpenLens Authors` line to a file that does not already have it
+just because neighbouring files do. Do not touch legal or license text
+(`LICENSE`, `README.md`, `freelens/license-header.txt`,
+`freelens/static/build/license.txt`) or the upstream copyright notices of
+vendored third-party code, which are unrelated to either header variant.
+
+See [#2352](https://github.com/freelensapp/freelens/issues/2352) for the
+cleanup that established this rule.
+
+## Comments in JSON
+
+Comments belong in `.jsonc`, never in `.json` — regardless of what the consuming
+parser tolerates. TypeScript accepts `//` inside a `tsconfig.json`, and so do
+several other tools, but anything that reads the file as strict JSON because of
+its extension (`JSON.parse`, `jq`, an editor, a CI script) fails on it. No
+`.json` file in this repository has comments, `tsconfig*.json` included;
+`knip.jsonc` is where a commented configuration lives, and that is the right
+pattern.
+
+When a `.json` file needs an explanation — why an entry is excluded, why a
+version is pinned — put it somewhere it survives: the package README, this
+file, or the pull request that introduced it. Do not smuggle it into the JSON.
+
+## Volatile Facts in Documentation
+
+Documentation — `docs/`, the READMEs, this file — describes how things are,
+and has to stay true without anyone maintaining it. Keep out of it whatever
+goes stale on its own:
+
+- issue and pull-request numbers,
+- dates,
+- counts that change without the document changing: how many extensions use
+  something, how many members a namespace has, how many files import a module.
+
+State the rule or the fact rather than the measurement or the history that led
+to it: "no extension is known to use it", not "none of the 29 surveyed
+extensions uses it"; "renderer code gets no guarantee of Node", not "decided in
+the API review". The measurement, the history and the issue references belong
+in the pull request description and the issue, which are dated by nature.
+
+Existing documents still carry such references. Do not copy them as a pattern,
+and drop them from a passage you are rewriting anyway.
+
 ## Build System
 
 ### Commands
@@ -71,6 +159,111 @@ When facing caching issues:
 rm -rf .turbo packages/core/dist freelens/dist
 pnpm build
 ```
+
+## Runtime Environments in Type-Checking
+
+The application runs code in two environments: **main** (Node, Electron) and
+**renderer** (a browser page). `pnpm type:check` checks the sources of
+`freelens/src` and `packages/core/src` once per environment, so that an API the
+environment does not have fails the check before it fails at runtime:
+
+| Program                   | Environment                     | Checks                                  |
+| ------------------------- | ------------------------------- | --------------------------------------- |
+| `tsconfig.typecheck.json` | DOM, Node and Vitest globals    | every file, tests and unclassified ones |
+| `tsconfig.main.json`      | Node, no DOM                    | main and common files                   |
+| `tsconfig.renderer.json`  | DOM, no Node                    | renderer and common files               |
+
+The two environment programs extend `tsconfig.typecheck.json`, so they share
+its `paths`. `pnpm type:check:environments` runs them alone.
+
+### Which environment a file belongs to
+
+The context segments in a file's path decide:
+
+- `main/` or `main-api/` anywhere in the path: the main program;
+- `renderer/` or `renderer-api/` anywhere in the path: the renderer program;
+- `common/` or `common-api/` with neither of the above: both programs. A main
+  or renderer segment wins over common, so `renderer/common/` is renderer code.
+
+Contexts nest anywhere (`features/*/{main,renderer,common}`), and the
+`include` and `exclude` globs of the two configs express exactly this rule.
+Put new code under a context directory. A file whose path carries no context
+has to be listed in the `include` of the config (or both configs, for common
+code) of the process that loads it; the lists at the end of both `include`
+arrays hold the existing ones. An unlisted one is checked by the combined
+program only, like `extensions/extension-api.ts`, which bundles the types of
+all three extension API namespaces on purpose.
+
+Tests and test support (`*.test.ts(x)`, `__tests__/`, `test-utils/`,
+`*.global-override-for-injectable.ts`, `getDiForUnitTesting`, …) are kept out
+of both programs, because Vitest runs them with DOM and Node alike.
+
+Common code uses only what both environments have: `globalThis.crypto`,
+`TextEncoder`, `URL`, `AbortController`, `structuredClone`, timers. Write
+`globalThis.` when in doubt. The extension-side version of the same rule is in
+the source-layout section of `docs/v2-extension-migration.md`.
+
+### How the check works
+
+`scripts/type-check-environments.mjs` runs both programs and counts only the
+errors in a program's own files, the ones its `include` classifies. A program
+also holds every file its files import, including the other environment's
+files and other packages, and their errors there say nothing about the
+environment rule; the combined program checks those files in full.
+
+Files that failed the check when it was introduced are on the legacy lists in
+`scripts/type-check-environments/legacy.jsonc`: main or common files that need
+DOM, and renderer or common files that need Node, which the node-integrated
+renderer still allows. Their errors are tolerated. **The lists may only
+shrink:** never add a file to make a new error pass. When a listed file stops
+failing, the check fails until it is removed from its list.
+
+`scripts/type-check-environments/expected-failures/` proves that the programs
+still reject what they should: every line there that must fail carries
+`@ts-expect-error`, so a program that lets it through reports an unused
+directive. Its `main/`, `renderer/` and `common/` subdirectories fall into the
+programs by the same rule as the sources.
+
+Two things in the dependencies would otherwise defeat the programs silently;
+the expected-failure files catch both if they come back:
+
+- A declaration file with `/// <reference types="node" />`, and winston,
+  electron and undici all have one, loads `@types/node` into any program that
+  reaches it, whatever `types` says. The renderer program sets `typeRoots` to
+  `scripts/type-check-environments/renderer-type-roots/`, whose empty `node`
+  package absorbs those references.
+- A declaration file with `/// <reference lib="dom" />` adds DOM to any program
+  that reaches it, whatever `lib` says. The main program reaches renderer code
+  through type imports, so the pnpm patch of `@xterm/xterm` removes that line
+  from its typings. A new dependency with the same line needs the same
+  treatment.
+
+DOM _type_ names such as `HTMLElement` still resolve in the main program,
+because `@types/react` declares empty stand-ins for them; values such as
+`document` and `window` do not.
+
+### The editor
+
+VS Code uses the root `tsconfig.json`, which has DOM and Node together, for
+every file. The environment programs are a CI check the editor does not
+reflect: a Node global in renderer code shows no type error in the editor and
+fails `pnpm type:check`.
+
+Biome covers part of the gap while you type. An override in `biome.jsonc`
+turns on `noNodejsModules` for the `renderer/`, `renderer-api/`, `common/` and
+`common-api/` files of `freelens/src` and `packages/core/src`, classified by
+the same path rule as the renderer program and with the same test files left
+out. It catches **imports** of Node builtins (`node:fs`, `path`, …), so the
+Biome extension flags them in the editor and `biome check` fails on them. It
+does not catch **Node globals** such as `Buffer`, `process`, `__dirname` or
+`NodeJS.*` types, and it does not look at the files that carry no context in
+their path; only `pnpm type:check` catches those.
+
+The files that import a Node builtin today are exempted in a second override,
+which turns the rule off for them. Every one of them is also on the renderer
+legacy list, and `scripts/type-check-environments.mjs` fails when an exempted
+file is not, so the exemptions can only shrink with that list: remove a file
+from both when you move its Node import out.
 
 ## Dependency Injection System
 
@@ -132,6 +325,63 @@ Run `pnpm build:di` when:
 
 The build process automatically runs this, but you can run it manually to verify changes.
 
+### Bundled Binary Versions
+
+The versions of the bundled `freelens-k8s-proxy`, `kubectl` and `helm` live in
+the `config` block of `freelens/package.json`, and their exact digests are
+pinned in `freelens/binaries.lock.json`. The build reads the expected checksum
+from that lock rather than from the vendor, so **a version bump without
+regenerating the lock fails the build**:
+
+```sh
+pnpm update-binaries-lock
+```
+
+The generator downloads all eighteen artifacts (three tools, three platforms,
+two architectures), checks each against its publisher's signature — GitHub build
+provenance for freelens-k8s-proxy, PGP for helm, keyless cosign for kubectl —
+and only then writes the lock. `cosign` comes from mise (`mise install`), and
+`GITHUB_TOKEN` should be set unless you want to share 60 unauthenticated API
+calls per hour with the rest of your IP. Use `--only <tool>` to refresh a single
+tool while iterating.
+
+`.github/workflows/binaries-lock-check.yaml` enforces both that the lock is
+current and that no digest changed while its version stood still.
+
+### Downloaded kubectl Versions
+
+The bundled kubectl is not the only one the application runs: a cluster whose
+minor version differs gets a version-matched kubectl downloaded at runtime. The
+map of which patch to fetch per minor lives in
+`packages/kubectl-versions/build/versions.json`, and the digest of every
+artifact that map can produce is pinned in
+`packages/kubectl-versions/build/checksums.json`, keyed by version and then by
+`${platform}/${arch}`.
+
+`Kubectl.downloadKubectl()` hashes what it downloaded and refuses anything that
+does not match its pin, and `ensureKubectl()` refuses to download at all when
+there is no pin, falling back to the bundled binary. **A version added to the
+map without a pin therefore never gets downloaded**, so the two files are
+regenerated together:
+
+```sh
+pnpm --filter @freelensapp/kubectl-versions compute-versions
+pnpm update-kubectl-checksums
+```
+
+The generator reads `dl.k8s.io` only, never a mirror — pinning bytes from a
+mirror would let a compromised mirror bless its own digest. It skips versions
+already present, which makes a run incremental and an existing pin immutable,
+and it verifies each download against both the published `.sha256` and the
+keyless cosign signature before recording it. `cosign` comes from mise
+(`mise install`).
+
+Both files start at 1.22, the oldest line Kubernetes publishes a signature for,
+and coverage is not uniform below that floor's neighbours: v1.22.17 has no
+`windows/arm64` build, so the generator logs an unpublished variant and carries
+on rather than failing. `.github/workflows/kubectl-checksums-check.yaml`
+verifies added pins and asserts that no existing digest changed.
+
 ## Common Development Tasks
 
 ### Adding a New Feature
@@ -187,7 +437,8 @@ layer was removed in #2118.
 
 ### Build Failures
 
-1. Check for TypeScript errors: `pnpm type-check`
+1. Check for TypeScript errors: `pnpm type:check` (see "Runtime Environments in
+   Type-Checking" when the main or renderer program fails)
 2. Check for linting errors: `pnpm lint`
 3. Verify dependencies: `pnpm install`
 4. Check Node.js version matches `.nvmrc`
@@ -241,6 +492,29 @@ taste — each has a defined role. Before adding or changing any stylesheet or
 - **Extensions**: see the styling section of
   [`docs/v2-extension-migration.md`](./docs/v2-extension-migration.md).
 
+## Extension API
+
+The v2 extension specification lives in three documents, and which one to read
+depends on the question:
+
+- [`docs/v2-extension-api.md`](./docs/v2-extension-api.md) — the **normative
+  contracts**. Each states the guarantee, the stable surface, the failure mode
+  and whether it is shipped or still an open issue. Read this before changing
+  anything under `packages/extensions/` or `packages/core/src/extensions/`.
+- [`docs/v2-extension-abi.md`](./docs/v2-extension-abi.md) — what an extension
+  may **ship and execute** besides JavaScript. Specified, but deliberately not
+  implemented in 2.0.0.
+- [`docs/v2-extension-migration.md`](./docs/v2-extension-migration.md) — the
+  author-facing **porting guide** from v1.
+
+Two traps worth carrying without looking them up. The API surface is only what
+the `Common` / `Main` / `Renderer` namespaces re-export — every other
+`@freelensapp/*` package is private and inlined into the published declaration,
+so a symbol that is not re-exported is unreachable by any means. And the host
+must be the single instance of React, mobx, monaco and ogre-tools; a second
+copy of mobx fails **silently**, so changes there need an identity assertion
+rather than a passing test suite.
+
 ## Best Practices
 
 1. **Always regenerate DI files** after adding/moving injectables
@@ -255,6 +529,55 @@ taste — each has a defined role. Before adding or changing any stylesheet or
 10. **Do not use Antropic Fable for coding tasks** — Fable may be used only for planning,
     analysis, and thinking through problems. When writing or editing code,
     use standard editing tools instead.
+
+## Local Agent: Triggering the GitHub Agent
+
+These rules apply to an agent running on a developer machine (a local Claude
+Code session), not to the workflow agent. The local agent shares the repository
+with the CI agent defined in `.github/workflows/claude.yaml`, and every comment
+it writes on GitHub is a potential trigger for it.
+
+### How the trigger works
+
+`claude.yaml` starts a run when the body of a **newly created** comment (issue
+comment or PR review comment), a **newly opened** issue (body or title), or a
+**submitted** PR review contains the string `@claude`, and the author is an
+OWNER, MEMBER or COLLABORATOR. The check is a plain
+`contains(github.event.comment.body, '@claude')` substring test, so the string
+fires the workflow wherever it appears — including inside a code span, a fenced
+block, a quoted line, or a URL. Markdown formatting is not an escape.
+
+The trigger text may also carry `[model:<alias>]`, `[effort:<level>]` and
+`[runs-on:<alias>]` markers, which select the model, the reasoning effort and
+the runner for that run (see the `parse` job for the accepted aliases). They are
+only read from the triggering text.
+
+The default model is `claude-opus-5-5[1m]` (Opus 5.5 with the 1M-token
+context) and it runs at `high` effort. Naming a model explicitly drops that
+default: the run then uses the CLI default effort unless `[effort:...]` also
+says otherwise. Accepted levels are `low`, `medium`, `high`, `xhigh` and
+`max`; anything else is ignored with a note in the job log.
+
+### Rules for the local agent
+
+1. **Write the handle only to start a run.** Ask the user before triggering: a
+   run is a 120-minute CI job on the repository, so it is the user's call, not
+   an implementation detail.
+2. **Escape the handle when merely referring to it.** In issue bodies, PR
+   descriptions, review notes, commit messages and documentation, write
+   `@<!-- -->claude` (displays as the handle, but the raw body does not contain
+   the literal string, so `contains()` does not match) or describe it in prose
+   as "the Claude handle". This is what keeps a plan or a bug report that
+   documents the trigger from firing it.
+3. **Editing never triggers.** The workflow subscribes only to `created`,
+   `opened` and `submitted` events — not `edited`. So updating a comment, an
+   issue body or a PR description is always safe, even when the text already
+   contains a real trigger, and conversely editing a comment to add the handle
+   does **not** start a run: a new comment is required.
+4. **One trigger per task.** Do not repeat the handle in follow-up comments
+   while a run is in flight; each occurrence starts another concurrent job.
+5. **Push first.** The workflow checks out the remote ref (the PR head, or the
+   default branch for issues), so anything not pushed is invisible to it.
 
 ## GitHub Actions (Claude Code Action) Rules
 
@@ -332,7 +655,7 @@ When asked to implement a change on a PR:
 
 ### Pushing After Every Commit
 
-The GitHub Actions job running Claude has a total timeout of 60 minutes.
+The GitHub Actions job running Claude has a total timeout of 120 minutes.
 When the session times out, any commits that exist only in the runner's
 local checkout are lost. To make the work resumable in a follow-up session:
 
@@ -365,29 +688,25 @@ place:
 This lets the PR be created successfully while leaving the actual workflow
 change for a human to apply.
 
-### Branch Naming Conventions
+### Branch Naming
 
-When creating a branch from an issue, use a human-readable name that includes
-the issue number and a short slug derived from the issue title:
+**Work on the branch the workflow put you on.** Do not rename it, and do not
+move the work to a better-named branch.
 
-```text
-claude/issue-<number>-<short-slug>
-```
+`claude-code-action` creates the branch itself, as
+`claude/issue-<number>-<date>-<time>`, and the workflow passes it no name to
+use instead. Its comment header — the branch link and the "Create PR" link —
+is written from that name. So an agent that moves to a different branch leaves
+the header pointing at an abandoned one, leaves a stray branch behind, and
+spends part of its run on a rename instead of the task. This guide used to
+require a readable name and forbid the timestamp, which produced exactly that
+every time.
 
-- `<number>` is the GitHub issue number
-- `<short-slug>` is a kebab-case summary of the issue title, kept short
-  (3–6 words maximum, omit articles and filler words)
+If you are creating a branch yourself, with no workflow-provided one, use
+`claude/<short-slug>`.
 
-Examples:
-
-- Issue #1957 "Add PR title convention rule for agent-related changes"
-  → `claude/issue-1957-add-pr-title-rules`
-- Issue #42 "Fix crash when opening preferences dialog"
-  → `claude/issue-42-fix-preferences-crash`
-
-Do **not** use auto-generated timestamp suffixes (e.g.
-`claude/issue-1957-20260612-2108`) — these are not human-readable and make
-branch lists hard to scan.
+The branch name is not worth managing: it lives for a few hours and the pull
+request is what anyone refers to afterwards.
 
 ### PR Title Conventions
 
@@ -470,10 +789,16 @@ than guessing.
 
 ### Development Environment
 
-The GitHub Actions runner has a full Node.js + pnpm environment available.
-Dependencies are already installed (`pnpm install` has been run). The build
-step is skipped to save CI resources, but you can run build commands when
-needed for advanced tasks (e.g. type-checking, running tests).
+The GitHub Actions runner has a full Node.js + pnpm environment available, and
+the workflow attempts to install the dependencies (`pnpm install`) and the
+`trunk` CLI before starting Claude. The build step is skipped to save CI
+resources, but you can run build commands when needed for advanced tasks
+(e.g. type-checking, running tests).
+
+Every one of those setup steps is `continue-on-error`, so any of them may have
+failed and left its tool or `node_modules` missing. Verify that what you need
+is actually there before relying on it, and never report a check as passing
+when it did not run — say that it was unavailable instead.
 
 For fork PRs, the `origin` remote points to the contributor's fork. An
 `upstream` remote is configured pointing to `freelensapp/freelens`. Push
@@ -487,6 +812,8 @@ The following CLI tools are explicitly allowed in the workflow:
 - `git` (all subcommands) — for viewing changes, creating branches,
   committing, and pushing
 - `gh` (all subcommands) — for managing pull requests
+- `trunk` — for linting and formatting every non-TypeScript file type
+- `bash` — for syntax-checking shell scripts (`bash -n <script>`)
 - `npx`, `node` — for running Node.js tools and scripts inline
 - `yq`, `jq` — for YAML and JSON processing
 - `grep`, `rg` (ripgrep), `find`, `xargs` — for searching and iterating
@@ -502,8 +829,11 @@ developers:
 
 - Run `pnpm biome check --write` to auto-format TypeScript/JavaScript and
   HTML files (or `pnpm biome check` to check without writing).
-- Run `pnpm trunk check` to validate all other file types (or `trunk check`
-  if the trunk CLI is installed globally).
+- Run `trunk check` to validate all other file types. The workflow puts the
+  CLI on `PATH`, so call it directly; `pnpm trunk check` works too but
+  re-downloads the launcher and its linters. It only inspects changed files by
+  default — use `trunk check --all` after a broad change.
+- Syntax-check a shell script you edited with `bash -n <script>`.
 - Run `pnpm build:di` if you added, moved, or renamed injectable files.
 - If unit tests fail on snapshot mismatches after your changes (or you are
   explicitly asked to update them), run `pnpm test:unit:updatesnapshot` to

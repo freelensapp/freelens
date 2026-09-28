@@ -8,7 +8,6 @@ import "./overview-statuses.scss";
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import { formatKubeApiResource } from "../../../common/rbac";
 import { OverviewWorkloadStatus } from "./overview-workload-status";
 import workloadsInjectable from "./workloads/workloads.injectable";

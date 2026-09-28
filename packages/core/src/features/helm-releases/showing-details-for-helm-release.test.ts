@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/vitest";
 import { showCheckedErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
+import { asyncFn } from "@freelensapp/test-utils";
 import { fireEvent } from "@testing-library/react";
 import { anyObject } from "vitest-mock-extended";
 import navigateToHelmReleasesInjectable from "../../common/front-end-routing/routes/cluster/helm/releases/navigate-to-helm-releases.injectable";
@@ -23,7 +23,8 @@ import { toHelmRelease } from "../../renderer/components/helm-releases/to-helm-r
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { testUsingFakeTime } from "../../test-utils/use-fake-time";
 
-import type { AsyncFnMock } from "@async-fn/vitest";
+import type { AsyncFnMock } from "@freelensapp/test-utils";
+
 import type { RenderResult } from "@testing-library/react";
 import type { Mock } from "vitest";
 

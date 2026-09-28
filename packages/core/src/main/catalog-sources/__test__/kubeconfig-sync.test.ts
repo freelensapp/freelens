@@ -382,7 +382,7 @@ describe("kubeconfig-sync.source tests", () => {
       di.override(watchInjectable, () => (path) => {
         const fakeWatchInstance = getFakeWatchInstance();
 
-        watchInstances.set(path, fakeWatchInstance);
+        watchInstances.set(String(path), fakeWatchInstance);
 
         return fakeWatchInstance;
       });
@@ -569,7 +569,7 @@ describe("kubeconfig-sync.source tests", () => {
       watchMock = vi.fn((path: string) => {
         const instance = getFakeWatchInstance();
 
-        watchInstances.set(path, instance);
+        watchInstances.set(String(path), instance);
 
         return instance;
       });
@@ -740,7 +740,7 @@ describe("kubeconfig-sync.source tests", () => {
       watchMock = vi.fn((path: string) => {
         const instance = getFakeWatchInstance();
 
-        watchInstances.set(path, instance);
+        watchInstances.set(String(path), instance);
 
         return instance;
       });
@@ -856,7 +856,7 @@ describe("kubeconfig-sync.source tests", () => {
 const getFakeWatchInstance = (): Watcher<true> => {
   return Object.assign(new EventEmitter(), {
     close: vi.fn().mockImplementation(async () => {}),
-  });
+  }) as unknown as Watcher<true>;
 };
 
 const getFakeReadStream = (path: string): ReadStream => {

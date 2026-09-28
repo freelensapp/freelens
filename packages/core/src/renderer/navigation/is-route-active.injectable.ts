@@ -7,9 +7,9 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import matchRouteInjectable from "./match-route.injectable";
 
-import type { RouteProps } from "react-router";
+import type { MatchPathOptions } from "@freelensapp/routing";
 
-export type IsRouteActive = (route: string | string[] | RouteProps) => boolean;
+export type IsRouteActive = (route: string | string[] | MatchPathOptions) => boolean;
 
 const isActiveRouteInjectable = getInjectable({
   id: "is-active-route",

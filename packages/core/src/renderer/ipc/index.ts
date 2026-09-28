@@ -16,7 +16,7 @@ import { toJS } from "../../common/utils";
 import { getDiForExtensionApi } from "../../extensions/extension-api-di";
 import ipcRendererInjectable from "../utils/channel/ipc-renderer.injectable";
 
-import type { Location } from "history";
+import type { Location } from "@freelensapp/routing";
 
 import type { ClusterId, ClusterState } from "../../common/cluster-types";
 import type { InstalledExtension, LensExtensionId } from "../../extensions/installed-extension";
@@ -41,7 +41,10 @@ export function emitOpenAppMenuAsContextMenu(): void {
   emitToMain(windowOpenAppMenuAsContextMenuChannel);
 }
 
-export function emitWindowLocationChanged(location: Location): void {
+// `Partial<Location>` accepts both the history v5 `Location` and the
+// `mobx-observable-history` (history v4) location object; the payload is only
+// serialized and forwarded, the main process ignores its contents.
+export function emitWindowLocationChanged(location: Partial<Location>): void {
   emitToMain(windowLocationChangedChannel, location);
 }
 

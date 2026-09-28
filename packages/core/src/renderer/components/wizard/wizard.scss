@@ -47,9 +47,7 @@
   }
 
   .Stepper {
-    color: silver;
-    --stepper-color-point: black;
-    --stepper-color-text: currentColor;
+    --stepper-color-point: var(--borderColor);
     margin-top: var(--wizard-spacing);
   }
 

@@ -3,10 +3,8 @@ import { registerFeature } from "@freelensapp/feature-core";
 import { Discover, discoverFor } from "@freelensapp/react-testing-library-discovery";
 import { createContainer, DiContainer, getInjectable } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
-import { registerInjectableReact } from "@ogre-tools/injectable-react";
 import { act, render } from "@testing-library/react";
 import { computed, IObservableValue, observable, runInAction } from "mobx";
-import React from "react";
 import { clusterFrameChildComponentInjectionToken } from "./cluster-frame/cluster-frame-child-component-injection-token";
 import { reactApplicationFeature } from "./feature";
 import { reactApplicationChildrenInjectionToken } from "./react-application/react-application-children-injection-token";
@@ -28,8 +26,6 @@ describe("react-application", () => {
 
   beforeEach(async () => {
     di = createContainer("some-container");
-
-    registerInjectableReact(di);
 
     registerMobX(di);
 

@@ -9,6 +9,13 @@
   @apply mt-1;
 }
 
+/* How the installed build got here: shown only when it is not a verified
+   managed copy, since that is the ordinary case and needs no label. */
+.extensionProvenance {
+  @apply mt-1 text-xs;
+  color: var(--textColorDimmed);
+}
+
 .enabled {
   color: var(--colorOk);
 }
@@ -28,4 +35,13 @@
 
 .frozenRow {
   @apply opacity-30 pointer-events-none;
+}
+
+.notFound {
+  @apply flex items-center justify-center h-24;
+  color: var(--textColorDimmed);
+}
+
+.searchInput > label {
+  box-shadow: none !important;
 }

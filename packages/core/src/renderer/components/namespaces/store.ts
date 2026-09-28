@@ -20,12 +20,6 @@ import type {
 } from "../../../common/k8s-api/kube-object.store";
 import type { StorageLayer } from "../../utils/storage-helper";
 
-export interface NamespaceTree {
-  id: string;
-  namespace: Namespace;
-  children?: NamespaceTree[];
-}
-
 interface Dependencies extends KubeObjectStoreDependencies {
   readonly storage: StorageLayer<string[]>;
   readonly clusterConfiguredAccessibleNamespaces: IComputedValue<string[]>;
@@ -208,16 +202,6 @@ export class NamespaceStore extends KubeObjectStore<Namespace, NamespaceApi> {
   toggleAll(selectAll?: boolean) {
     void selectAll;
     this.selectAll();
-  }
-
-  getNamespaceTree(root: Namespace): NamespaceTree {
-    const children = this.items.filter((namespace) => namespace.isChildOf(root.getName()));
-
-    return {
-      id: root.getId(),
-      namespace: root,
-      children: children.map((child) => this.getNamespaceTree(child)),
-    };
   }
 
   @action

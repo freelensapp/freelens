@@ -1,12 +1,10 @@
 /**
  * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import "@testing-library/jest-dom/vitest";
 import { screen } from "@testing-library/react";
-import React from "react";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
 import { renderFor } from "../test-utils/renderFor";

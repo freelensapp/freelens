@@ -9,6 +9,7 @@ import path from "node:path";
 import { getOrInsertWith } from "@freelensapp/utilities";
 import { TerminalChannels, type TerminalMessage } from "../../common/terminal/channels";
 import { clearKubeconfigEnvVars } from "../utils/clear-kube-env-vars";
+import { type TerminalStatusReporter, terminalStatusReporterFor } from "./send-terminal-status";
 
 import type { Logger } from "@freelensapp/logger";
 
@@ -117,8 +118,23 @@ export interface ShellSessionDependencies {
   readonly userShellSetting: IComputedValue<string | null>;
   readonly appName: string;
   readonly buildVersion: string;
-  readonly proxyKubeconfigPath: string;
-  readonly directoryContainingKubectl: string;
+  /**
+   * The kubeconfig pointing at the cluster's proxy. A session without a
+   * cluster has none, and then the shell keeps whatever `KUBECONFIG` the user
+   * has themselves.
+   */
+  readonly proxyKubeconfigPath?: string;
+  /**
+   * The directory holding the kubectl matched to the cluster's version. A
+   * session without a cluster has none: it runs the user's own tools, and its
+   * fallbacks are appended to `PATH` through {@link pathSuffixEntries}.
+   */
+  readonly directoryContainingKubectl?: string;
+  /**
+   * Directories appended *after* the shell's own `PATH`, so that anything the
+   * user already has installed keeps winning. Empty for a cluster session.
+   */
+  readonly pathSuffixEntries?: string[];
   readonly shellSessionEnvs: ShellSessionEnvs;
   readonly shellSessionProcesses: ShellSessionProcesses;
   computeShellEnvironment: ComputeShellEnvironment;
@@ -128,20 +144,28 @@ export interface ShellSessionDependencies {
 }
 
 export interface ShellSessionArgs {
-  kubectl: Kubectl;
+  kubectl?: Kubectl;
   websocket: WebSocket;
-  cluster: Cluster;
+  cluster?: Cluster;
   tabId: string;
 }
+
+/**
+ * The id a session without a cluster is keyed under, both for the PTY and for
+ * the cached shell environment. A `ClusterId` is a uuid, so this cannot
+ * collide with one.
+ */
+export const standaloneSessionId = "standalone";
 
 export abstract class ShellSession {
   abstract readonly ShellType: string;
 
   protected running = false;
   protected readonly terminalId: string;
-  protected readonly kubectl: Kubectl;
+  protected readonly kubectl?: Kubectl;
   protected readonly websocket: WebSocket;
-  protected readonly cluster: Cluster;
+  protected readonly cluster?: Cluster;
+  protected readonly status: TerminalStatusReporter;
 
   protected abstract get cwd(): string | undefined;
 
@@ -178,7 +202,8 @@ export abstract class ShellSession {
     this.kubectl = kubectl;
     this.websocket = websocket;
     this.cluster = cluster;
-    this.terminalId = `${cluster.id}:${terminalId}`;
+    this.status = terminalStatusReporterFor(websocket);
+    this.terminalId = `${cluster?.id ?? standaloneSessionId}:${terminalId}`;
   }
 
   protected send(message: TerminalMessage): void {
@@ -221,6 +246,9 @@ export abstract class ShellSession {
 
   protected async openShellProcess(shell: string, args: string[], env: Record<string, string | undefined>) {
     const cwd = await this.getCwd(env);
+
+    this.status.info("Starting shell ...");
+
     const { shellProcess, resume } = this.ensureShellProcess(shell, args, env, cwd);
 
     if (resume) {
@@ -290,13 +318,13 @@ export abstract class ShellSession {
       .once("close", (code) => {
         this.dependencies.logger.info(
           `[SHELL-SESSION]: websocket for ${this.terminalId} closed with code=${WebSocketCloseEvent[code]}(${code})`,
-          { cluster: this.cluster.getMeta() },
+          { cluster: this.cluster?.getMeta() },
         );
 
         const stopShellSession =
           this.running &&
           ((code !== WebSocketCloseEvent.AbnormalClosure && code !== WebSocketCloseEvent.GoingAway) ||
-            this.cluster.disconnected.get());
+            (this.cluster?.disconnected.get() ?? false));
 
         if (stopShellSession) {
           this.running = false;
@@ -323,43 +351,77 @@ export abstract class ShellSession {
     this.dependencies.emitAppEvent({ name: this.ShellType, action: "open" });
   }
 
+  /**
+   * Extra directories put in front of the shell's own `PATH`, right after the
+   * directory containing kubectl. Only used by a session that has one.
+   */
   protected getPathEntries(): string[] {
     return [];
   }
 
   protected async getCachedShellEnv() {
-    const { id: clusterId } = this.cluster;
+    const cacheKey = this.cluster?.id ?? standaloneSessionId;
 
-    let env = this.dependencies.shellSessionEnvs.get(clusterId);
+    let env = this.dependencies.shellSessionEnvs.get(cacheKey);
 
     if (!env) {
-      env = await this.getShellEnv();
-      this.dependencies.shellSessionEnvs.set(clusterId, env);
+      env = await this.getShellEnv({ reportStatus: true });
+      this.dependencies.shellSessionEnvs.set(cacheKey, env);
     } else {
-      // refresh env in the background
+      // refresh env in the background, silently: the shell is already running
+      // and its prompt must not be written over
       this.getShellEnv().then((shellEnv: any) => {
-        this.dependencies.shellSessionEnvs.set(clusterId, shellEnv);
+        this.dependencies.shellSessionEnvs.set(cacheKey, shellEnv);
       });
     }
 
     return env;
   }
 
-  protected async getShellEnv() {
+  /**
+   * @param reportStatus whether the terminal is still waiting for this, and so
+   * should be told about it. Defaults to `false` because the background
+   * refresh of a warm cache must stay silent.
+   */
+  protected async getShellEnv({ reportStatus = false } = {}) {
     const shell = this.dependencies.userShellSetting.get() || this.dependencies.defaultShell;
+
+    if (reportStatus) {
+      this.status.info("Resolving shell environment ...");
+    }
+
     const result = await this.dependencies.computeShellEnvironment(shell);
     const rawEnv = (() => {
       if (result.callWasSuccessful) {
         return result.response ?? process.env;
       }
 
+      if (reportStatus) {
+        // The fallback to `process.env` is silent otherwise, and the abort
+        // message in particular is already written for a user to read.
+        this.status.error(result.error);
+      }
+
       return process.env;
     })();
 
-    const env = clearKubeconfigEnvVars(JSON.parse(JSON.stringify(rawEnv)));
-    const pathStr = [this.dependencies.directoryContainingKubectl, ...this.getPathEntries(), env.PATH].join(
-      path.delimiter,
-    );
+    const { directoryContainingKubectl, proxyKubeconfigPath, pathSuffixEntries = [] } = this.dependencies;
+    const copiedEnv: Partial<Record<string, string>> = JSON.parse(JSON.stringify(rawEnv));
+    /**
+     * The user's own kubeconfig is the whole point of a session without a
+     * cluster, so it is only cleared when there is a proxy kubeconfig to put
+     * in its place.
+     */
+    const env = proxyKubeconfigPath === undefined ? copiedEnv : clearKubeconfigEnvVars(copiedEnv);
+    /**
+     * Only a cluster session puts anything in front of the user's `PATH`: it
+     * must run the kubectl matched to its cluster. A session without one
+     * appends its fallbacks instead, so a `kubectl` the user already has keeps
+     * winning.
+     */
+    const pathPrefixEntries =
+      directoryContainingKubectl === undefined ? [] : [directoryContainingKubectl, ...this.getPathEntries()];
+    const pathStr = [...pathPrefixEntries, env.PATH, ...pathSuffixEntries].join(path.delimiter);
 
     delete env.DEBUG; // don't pass DEBUG into shells
 
@@ -375,18 +437,27 @@ export abstract class ShellSession {
       env.PTYSHELL = ""; // blank runs the system default shell
     }
 
-    if (path.basename(env.PTYSHELL) === "zsh") {
+    /**
+     * Redirecting `ZDOTDIR` re-implements the user's own zsh startup, which is
+     * only acceptable because a cluster session has to re-prepend its kubectl
+     * directory from inside the shell. Without one, zsh reads its own files.
+     */
+    if (directoryContainingKubectl !== undefined && path.basename(env.PTYSHELL ?? "") === "zsh") {
       env.OLD_ZDOTDIR = env.ZDOTDIR || env.HOME;
-      env.ZDOTDIR = this.dependencies.directoryContainingKubectl;
+      env.ZDOTDIR = directoryContainingKubectl;
       env.DISABLE_AUTO_UPDATE = "true";
     }
 
     env.PTYPID = process.pid.toString();
-    env.KUBECONFIG = this.dependencies.proxyKubeconfigPath;
+
+    if (proxyKubeconfigPath !== undefined) {
+      env.KUBECONFIG = proxyKubeconfigPath;
+    }
+
     env.TERM_PROGRAM = this.dependencies.appName;
     env.TERM_PROGRAM_VERSION = this.dependencies.buildVersion;
 
-    if (this.cluster.preferences.httpsProxy) {
+    if (this.cluster?.preferences.httpsProxy) {
       env.HTTPS_PROXY = this.cluster.preferences.httpsProxy;
     }
 

@@ -6,7 +6,6 @@
 
 import "./runtime-classes-details-tolerations.scss";
 
-import React from "react";
 import { DrawerItem, DrawerParamToggler } from "../drawer";
 import { RuntimeClassTolerations } from "./runtime-classes-tolerations";
 

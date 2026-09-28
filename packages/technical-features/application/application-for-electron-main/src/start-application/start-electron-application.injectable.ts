@@ -1,35 +1,30 @@
 import { startApplicationInjectionToken } from "@freelensapp/application";
 import { runManySyncFor } from "@freelensapp/run-many";
-import { createInstantiationTargetDecorator, getInjectable, instantiationDecoratorToken } from "@ogre-tools/injectable";
+import { getInjectable2, instantiationDecoratorToken } from "@ogre-tools/injectable";
 import { beforeAnythingInjectionToken, beforeElectronIsReadyInjectionToken } from "./time-slots";
 import whenAppIsReadyInjectable from "./when-app-is-ready.injectable";
 
-const startElectronApplicationInjectable = getInjectable({
+const startElectronApplicationInjectable = getInjectable2({
   id: "start-electron-application",
-  instantiate: () =>
-    createInstantiationTargetDecorator({
-      target: startApplicationInjectionToken,
-      decorate: (targetInstantiate) => (di) => {
-        const whenAppIsReady = di.inject(whenAppIsReadyInjectable);
-        const runManySync = runManySyncFor(di);
-        const beforeAnything = runManySync(beforeAnythingInjectionToken);
-        const beforeElectronIsReady = runManySync(beforeElectronIsReadyInjectionToken);
-        const startApplication = targetInstantiate(di);
+  instantiate: () => () => (targetInstantiate) => (di) => {
+    const whenAppIsReady = di.inject(whenAppIsReadyInjectable);
+    const runManySync = runManySyncFor(di);
+    const beforeAnything = runManySync(beforeAnythingInjectionToken);
+    const beforeElectronIsReady = runManySync(beforeElectronIsReadyInjectionToken);
+    const startApplication = targetInstantiate(di, undefined);
 
-        return () => {
-          beforeAnything();
-          beforeElectronIsReady();
+    return () => {
+      beforeAnything();
+      beforeElectronIsReady();
 
-          return (async () => {
-            await whenAppIsReady();
+      return (async () => {
+        await whenAppIsReady();
 
-            return startApplication();
-          })();
-        };
-      },
-    }),
-  decorable: false,
-  injectionToken: instantiationDecoratorToken,
+        return startApplication();
+      })();
+    };
+  },
+  injectionToken: instantiationDecoratorToken.for(startApplicationInjectionToken),
 });
 
 export default startElectronApplicationInjectable;

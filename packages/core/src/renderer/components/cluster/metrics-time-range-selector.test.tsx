@@ -1,6 +1,5 @@
 /**
  * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
@@ -8,7 +7,6 @@ import "@testing-library/jest-dom/vitest";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { act, fireEvent, screen } from "@testing-library/react";
 import { computed, observable } from "mobx";
-import React from "react";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import { renderFor } from "../test-utils/renderFor";
 import { MetricsTimeRangeSelector } from "./metrics-time-range-selector";

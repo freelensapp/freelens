@@ -7,7 +7,6 @@
 import assert from "node:assert";
 import https from "node:https";
 import net from "node:net";
-import stoppable from "stoppable";
 import { apiKubePrefix, apiPrefix } from "../../common/vars";
 import { getBoolean } from "../utils/parse-query";
 import type http from "node:http";
@@ -15,22 +14,23 @@ import type http from "node:http";
 import type { Logger } from "@freelensapp/logger";
 
 import type httpProxy from "http-proxy-node16";
-import type { SelfSignedCert } from "selfsigned";
 import type { SetRequired } from "type-fest";
 
 import type { EmitAppEvent } from "../../common/app-event-bus/emit-event.injectable";
+import type { SelfSignedCert } from "../../common/certificate/certificate";
 import type { Cluster } from "../../common/cluster/cluster";
 import type { KubeAuthProxyServer } from "../cluster/kube-auth-proxy-server.injectable";
 import type { Router } from "../router/router";
-import type { ProxyApiRequestArgs } from "./proxy-functions";
+import type { ProxyApiRequestArgs, ShellApiRequestArgs } from "./proxy-functions";
 
 export type GetClusterForRequest = (req: http.IncomingMessage) => Cluster | undefined;
 export type ServerIncomingMessage = SetRequired<http.IncomingMessage, "url" | "method">;
 export type LensProxyApiRequest = (args: ProxyApiRequestArgs) => void | Promise<void>;
+export type LensProxyShellApiRequest = (args: ShellApiRequestArgs) => void | Promise<void>;
 
 interface Dependencies {
   getClusterForRequest: GetClusterForRequest;
-  shellApiRequest: LensProxyApiRequest;
+  shellApiRequest: LensProxyShellApiRequest;
   kubeApiUpgradeRequest: LensProxyApiRequest;
   emitAppEvent: EmitAppEvent;
   getKubeAuthProxyServer: (cluster: Cluster) => KubeAuthProxyServer;
@@ -67,41 +67,55 @@ const disallowedPorts = new Set([
   6566, 6665, 6666, 6667, 6668, 6669, 6697, 10080,
 ]);
 
+/**
+ * How long a connection that is still serving a request is given to finish
+ * before it is destroyed, once the proxy has stopped accepting new ones.
+ */
+const closeGracePeriodMs = 500;
+
 export class LensProxy {
-  protected readonly proxyServer: https.Server & stoppable.WithStop;
+  protected readonly proxyServer: https.Server;
   protected closed = false;
   protected readonly retryCounters = new Map<string, number>();
 
   constructor(private readonly dependencies: Dependencies) {
     this.configureProxy(dependencies.proxy);
 
-    this.proxyServer = stoppable(
-      https.createServer(
-        {
-          key: dependencies.certificate.private,
-          cert: dependencies.certificate.cert,
-        },
-        (req, res) => {
-          this.handleRequest(req as ServerIncomingMessage, res);
-        },
-      ),
-      500,
+    this.proxyServer = https.createServer(
+      {
+        key: dependencies.certificate.private,
+        cert: dependencies.certificate.cert,
+      },
+      (req, res) => {
+        this.handleRequest(req as ServerIncomingMessage, res);
+      },
     );
 
     this.proxyServer.on("upgrade", (req: ServerIncomingMessage, socket: net.Socket, head: Buffer) => {
+      /**
+       * Decided before the cluster is looked up: an internal upgrade is a
+       * shell request, and a shell can be opened outside of any cluster
+       * session. Everything else is a kube-api upgrade and still requires one.
+       */
+      const isInternal = req.url.startsWith(`${apiPrefix}?`);
       const cluster = this.dependencies.getClusterForRequest(req);
 
-      if (!cluster) {
-        this.dependencies.logger.error(`[LENS-PROXY]: Could not find cluster for upgrade request from url=${req.url}`);
-        socket.destroy();
-      } else {
-        const isInternal = req.url.startsWith(`${apiPrefix}?`);
-        const reqHandler = isInternal ? this.dependencies.shellApiRequest : this.dependencies.kubeApiUpgradeRequest;
+      (async () => {
+        if (isInternal) {
+          return this.dependencies.shellApiRequest({ req, socket, head, cluster });
+        }
 
-        (async () => reqHandler({ req, socket, head, cluster }))().catch((error) =>
-          this.dependencies.logger.error("[LENS-PROXY]: failed to handle proxy upgrade", error),
-        );
-      }
+        if (!cluster) {
+          this.dependencies.logger.error(
+            `[LENS-PROXY]: Could not find cluster for upgrade request from url=${req.url}`,
+          );
+          socket.destroy();
+
+          return;
+        }
+
+        return this.dependencies.kubeApiUpgradeRequest({ req, socket, head, cluster });
+      })().catch((error) => this.dependencies.logger.error("[LENS-PROXY]: failed to handle proxy upgrade", error));
     });
   }
 
@@ -183,7 +197,23 @@ export class LensProxy {
     this.dependencies.logger.info("[LENS-PROXY]: Closing server");
 
     return new Promise<void>((resolve) => {
-      this.proxyServer.stop(() => resolve());
+      /**
+       * The proxy carries connections that are never idle -- watch and follow
+       * requests, and the sockets of upgraded shell sessions -- so waiting for
+       * them to end on their own would hang the quit sequence. Give them the
+       * grace period and then destroy whatever is left, which lets `close`
+       * finally call back.
+       */
+      const destroyRemaining = setTimeout(() => {
+        this.proxyServer.closeAllConnections();
+      }, closeGracePeriodMs);
+
+      this.proxyServer.close(() => {
+        clearTimeout(destroyRemaining);
+        resolve();
+      });
+
+      this.proxyServer.closeIdleConnections();
     });
   }
 

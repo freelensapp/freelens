@@ -76,7 +76,6 @@ export * from "../../renderer/components/layout/sub-title";
 export * from "../../renderer/components/layout/tab-layout";
 export * from "../../renderer/components/layout/wizard-layout";
 export * from "../../renderer/components/line-progress";
-export * from "../../renderer/components/list";
 export * from "../../renderer/components/locale-date";
 export * from "../../renderer/components/map";
 export * from "../../renderer/components/markdown-viewer";
@@ -90,7 +89,13 @@ export {
   type MonacoTheme,
 } from "../../renderer/components/monaco-editor";
 export * from "../../renderer/components/namespaces/namespace-select";
-export * from "../../renderer/components/namespaces/namespace-select-badge";
+// Explicit rather than a star export: the module also exports its uninjected
+// component and its dependency bag (`NamespaceSelectBadgeNonInjected`,
+// `Dependencies`), which are host internals and not API (#2478).
+export {
+  NamespaceSelectBadge,
+  type NamespaceSelectBadgeProps,
+} from "../../renderer/components/namespaces/namespace-select-badge";
 export * from "../../renderer/components/namespaces/namespace-select-filter";
 export * from "../../renderer/components/no-items";
 export * from "../../renderer/components/path-picker";
@@ -105,7 +110,6 @@ export * from "../../renderer/components/switch";
 export * from "../../renderer/components/table";
 export * from "../../renderer/components/tabs";
 export * from "../../renderer/components/tree-view";
-export * from "../../renderer/components/virtual-list";
 export * from "../../renderer/components/with-tooltip";
 export * from "../../renderer/components/wizard";
 export * from "../../renderer/components/workloads-pods/pod-charts";

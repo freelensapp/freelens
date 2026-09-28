@@ -6,8 +6,8 @@
 
 import assert from "node:assert";
 import { KubeObject } from "@freelensapp/kube-object";
+import { act } from "@testing-library/react";
 import { computed, observable, runInAction } from "mobx";
-import React from "react";
 import apiManagerInjectable from "../../../../common/k8s-api/api-manager/manager.injectable";
 import showDetailsInjectable from "../../../../renderer/components/kube-detail-params/show-details.injectable";
 import { getApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
@@ -73,7 +73,9 @@ describe("reactively hide kube object detail item", () => {
     const windowDi = builder.applicationWindow.only.di;
     const showDetails = windowDi.inject(showDetailsInjectable);
 
-    showDetails("/api/some-api-version/namespaces/some-namespace/some-kind/some-name");
+    await act(async () => {
+      showDetails("/api/some-api-version/namespaces/some-namespace/some-kind/some-name");
+    });
 
     builder.extensions.enable(testExtension);
   });
@@ -90,8 +92,10 @@ describe("reactively hide kube object detail item", () => {
 
   describe("when the item is shown", () => {
     beforeEach(() => {
-      runInAction(() => {
-        someObservable.set(true);
+      act(() => {
+        runInAction(() => {
+          someObservable.set(true);
+        });
       });
 
       const apiManager = builder.applicationWindow.only.di.inject(apiManagerInjectable);

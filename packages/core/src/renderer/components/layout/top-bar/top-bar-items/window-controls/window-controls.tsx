@@ -21,7 +21,6 @@
 
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import React from "react";
 import isLinuxInjectable from "../../../../../../common/vars/is-linux.injectable";
 import toggleMaximizeWindowInjectable from "../../toggle-maximize-window/toggle-maximize-window.injectable";
 import styles from "../../top-bar.module.scss";

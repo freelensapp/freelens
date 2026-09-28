@@ -7,7 +7,6 @@
 import "./drawer-title.scss";
 
 import { cssNames } from "@freelensapp/utilities";
-import React from "react";
 
 import type { StrictReactNode } from "@freelensapp/utilities";
 

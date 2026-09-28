@@ -6,6 +6,7 @@
 
 import asyncFn, { type AsyncFnMock } from "@async-fn/vitest";
 import { flushPromises } from "@freelensapp/test-utils";
+import { act, fireEvent } from "@testing-library/react";
 import appEventBusInjectable from "../../common/app-event-bus/app-event-bus.injectable";
 import { CatalogCategory, CatalogEntity, categoryVersion } from "../../common/catalog";
 import catalogCategoryRegistryInjectable from "../../common/catalog/category-registry.injectable";
@@ -116,7 +117,9 @@ describe("entity running technical tests", () => {
     beforeEach(() => {
       const navigateToCatalog = windowDi.inject(navigateToCatalogInjectable);
 
-      navigateToCatalog();
+      act(() => {
+        navigateToCatalog();
+      });
     });
 
     it("renders", () => {
@@ -125,9 +128,9 @@ describe("entity running technical tests", () => {
 
     describe("when details panel is opened", () => {
       beforeEach(() => {
-        rendered.getByTestId("icon-for-menu-actions-for-catalog-for-a_catalogEntity_uid").click();
+        fireEvent.click(rendered.getByTestId("icon-for-menu-actions-for-catalog-for-a_catalogEntity_uid"));
         advanceFakeTime(500);
-        rendered.getByTestId("open-details-menu-item-for-a_catalogEntity_uid").click();
+        fireEvent.click(rendered.getByTestId("open-details-menu-item-for-a_catalogEntity_uid"));
         advanceFakeTime(500);
       });
 
@@ -141,7 +144,7 @@ describe("entity running technical tests", () => {
         beforeEach(() => {
           onBeforeRunMock = asyncFn();
           catalogEntityRegistry.addOnBeforeRun(onBeforeRunMock);
-          rendered.getByTestId("detail-panel-hot-bar-icon").click();
+          fireEvent.click(rendered.getByTestId("detail-panel-hot-bar-icon"));
         });
 
         it("calls on before run event", () => {
@@ -170,7 +173,7 @@ describe("entity running technical tests", () => {
 
         catalogEntityRegistry.addOnBeforeRun(onBeforeRunMock);
 
-        rendered.getByTestId("detail-panel-hot-bar-icon").click();
+        fireEvent.click(rendered.getByTestId("detail-panel-hot-bar-icon"));
 
         await flushPromises();
 
@@ -182,7 +185,7 @@ describe("entity running technical tests", () => {
           throw new Error("some error");
         });
 
-        rendered.getByTestId("detail-panel-hot-bar-icon").click();
+        fireEvent.click(rendered.getByTestId("detail-panel-hot-bar-icon"));
 
         await flushPromises();
 
@@ -196,7 +199,7 @@ describe("entity running technical tests", () => {
 
         catalogEntityRegistry.addOnBeforeRun(async () => {});
 
-        rendered.getByTestId("detail-panel-hot-bar-icon").click();
+        fireEvent.click(rendered.getByTestId("detail-panel-hot-bar-icon"));
 
         await onRunCalled;
       });
@@ -204,7 +207,7 @@ describe("entity running technical tests", () => {
       it("addOnRunHook return a promise and prevents event wont be triggered", async () => {
         catalogEntityRegistry.addOnBeforeRun(async (event) => event.preventDefault());
 
-        rendered.getByTestId("detail-panel-hot-bar-icon").click();
+        fireEvent.click(rendered.getByTestId("detail-panel-hot-bar-icon"));
 
         expect(onRun).not.toHaveBeenCalled();
       });
@@ -214,7 +217,7 @@ describe("entity running technical tests", () => {
 
         catalogEntityRegistry.addOnBeforeRun(onBeforeRunMock);
 
-        rendered.getByTestId("detail-panel-hot-bar-icon").click();
+        fireEvent.click(rendered.getByTestId("detail-panel-hot-bar-icon"));
 
         await onBeforeRunMock.reject();
 
@@ -229,7 +232,7 @@ describe("entity running technical tests", () => {
       });
 
       it("emits catalog change AppEvent when changing the category", () => {
-        rendered.getByText("Web Links").click();
+        fireEvent.click(rendered.getByText("Web Links"));
 
         expect(appEventListener).toHaveBeenCalledWith({
           action: "change-category",

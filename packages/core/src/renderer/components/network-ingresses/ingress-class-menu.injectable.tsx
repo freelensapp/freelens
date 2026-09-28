@@ -8,7 +8,6 @@ import { Icon } from "@freelensapp/icon";
 import { getInjectable } from "@ogre-tools/injectable";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { computed } from "mobx";
-import React from "react";
 import hideDetailsInjectable from "../kube-detail-params/hide-details.injectable";
 import { kubeObjectMenuItemInjectionToken } from "../kube-object-menu/kube-object-menu-item-injection-token";
 import { MenuItem } from "../menu";

@@ -11,6 +11,7 @@ import apiBaseServerAddressInjectable from "./api-base-server-address.injectable
 import apiKubeInjectable from "./api-kube.injectable";
 import apiKubeGetInjectable from "./api-kube-get.injectable";
 import apiKubePatchInjectable from "./api-kube-patch.injectable";
+import clusterApiAddressInjectable from "./cluster-api-address.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
@@ -37,6 +38,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(apiKubePatchInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(clusterApiAddressInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

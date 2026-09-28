@@ -6,13 +6,19 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import browserFetchInjectable from "./browser-fetch.injectable";
 import downloadBinaryViaChannelInjectable from "./download-binary-via-channel.injectable";
 import downloadJsonViaChannelInjectable from "./download-json-via-channel-copy.injectable";
-import fetchInjectable from "./fetch.injectable";
+import lensProxyDispatcherInjectable from "./lens-proxy-dispatcher.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
+  try {
+    di.register(browserFetchInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
   try {
     di.register(downloadBinaryViaChannelInjectable);
   } catch (e) {
@@ -24,7 +30,7 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
-    di.register(fetchInjectable);
+    di.register(lensProxyDispatcherInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

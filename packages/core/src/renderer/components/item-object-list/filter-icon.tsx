@@ -5,7 +5,6 @@
  */
 
 import { Icon } from "@freelensapp/icon";
-import React from "react";
 import { FilterType } from "./page-filters/store";
 
 import type { IconProps } from "@freelensapp/icon";

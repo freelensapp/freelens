@@ -5,7 +5,6 @@
  */
 
 import asyncFn from "@async-fn/vitest";
-import React from "react";
 import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 
 import type { AsyncFnMock } from "@async-fn/vitest";

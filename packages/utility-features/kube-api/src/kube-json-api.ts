@@ -6,10 +6,8 @@
 
 import { JsonApi } from "@freelensapp/json-api";
 
-import type { JsonApiError } from "@freelensapp/json-api";
+import type { JsonApiError, FetchResponse as Response } from "@freelensapp/json-api";
 import type { KubeJsonApiData } from "@freelensapp/kube-object";
-
-import type { Response } from "node-fetch";
 
 export interface KubeJsonApiError extends JsonApiError {
   code: number;

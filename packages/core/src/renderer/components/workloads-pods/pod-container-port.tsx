@@ -12,8 +12,8 @@ import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { Spinner } from "@freelensapp/spinner";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { action, makeObservable, observable, reaction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { action, makeObservable, observable } from "mobx";
+import { observer } from "mobx-react";
 import React from "react";
 import { predictProtocol } from "../../port-forward";
 import aboutPortForwardingInjectable from "../../port-forward/about-port-forwarding.injectable";
@@ -57,13 +57,13 @@ class NonInjectedPodContainerPort extends React.Component<PodContainerPortProps 
     this.checkExistingPortForwarding();
   }
 
-  componentDidMount() {
-    disposeOnUnmount(this, [
-      reaction(
-        () => this.props.pod,
-        () => this.checkExistingPortForwarding(),
-      ),
-    ]);
+  componentDidUpdate(prevProps: PodContainerPortProps & Dependencies) {
+    // Re-check when the pod prop changes. Previously a reaction on this.props.pod
+    // did this; mobx-react 9 no longer makes this.props observable, so react to the
+    // prop change in the lifecycle instead.
+    if (prevProps.pod !== this.props.pod) {
+      this.checkExistingPortForwarding();
+    }
   }
 
   get portForwardStore() {

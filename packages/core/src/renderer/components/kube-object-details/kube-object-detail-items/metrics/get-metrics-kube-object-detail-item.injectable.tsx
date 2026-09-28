@@ -5,8 +5,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
-import React from "react";
+import { computedInjectManyInjectionToken } from "@ogre-tools/injectable-extension-for-mobx";
 import metricsDetailsComponentEnabledInjectable from "../../../../api/catalog/entity/metrics-details-component-enabled.injectable";
 import { DetailsMetricsContainer } from "./details-metrics-container";
 
@@ -27,7 +26,7 @@ export type GetMetricsKubeObjectDetailItem = <K extends KubeObject>(
 export const getMetricsKubeObjectDetailItemInjectable = getInjectable({
   id: "get-metrics-kube-object-detail-item",
   instantiate: (di): GetMetricsKubeObjectDetailItem => {
-    const computedInjectedMany = di.inject(computedInjectManyInjectable);
+    const computedInjectedMany = di.inject(computedInjectManyInjectionToken);
 
     return <K extends KubeObject>(
       token: InjectionToken<KubeObjectDetailMetrics<K>, void>,

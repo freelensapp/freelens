@@ -20,14 +20,13 @@
   "main": "./index.ts",
   "types": "./index.ts",
   "scripts": {
-    "clean": "pnpm dlx rimraf@6.1.3 dist",
-    "clean:node_modules": "pnpm dlx rimraf@6.1.3 node_modules"
+    "clean:dist": "pnpm dlx rimraf@6.1.3 dist"
   },
   "dependencies": {
     "@freelensapp/feature-core": "workspace:^",
     "@freelensapp/kube-api": "workspace:^",
     "@freelensapp/logger": "workspace:^",
-    "@ogre-tools/injectable": "^17.11.1"
+    "@ogre-tools/injectable": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^"

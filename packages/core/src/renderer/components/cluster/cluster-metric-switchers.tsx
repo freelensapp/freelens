@@ -6,7 +6,6 @@
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import { Radio, RadioGroup } from "../radio";
 import styles from "./cluster-metric-switchers.module.css";
 import { MetricsTimeRangeSelector } from "./metrics-time-range-selector";

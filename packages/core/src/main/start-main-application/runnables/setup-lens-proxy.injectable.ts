@@ -4,12 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { Agent } from "node:https";
 import { beforeApplicationIsLoadingInjectionToken } from "@freelensapp/application";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import lensProxyCertificateInjectable from "../../../common/certificate/lens-proxy-certificate.injectable";
-import nodeFetchInjectable from "../../../common/fetch/node-fetch.injectable";
+import fetchInjectable from "../../../common/fetch/fetch.injectable";
+import { lensProxyDispatcherInjectionToken } from "../../../common/fetch/lens-proxy-dispatcher-injection-token";
 import isProductionInjectable from "../../../common/vars/is-production.injectable";
 import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
 import { buildVersionInitializable } from "../../../features/vars/build-version/common/token";
@@ -18,6 +17,9 @@ import forceAppExitInjectable from "../../electron-app/features/force-app-exit.i
 import showErrorPopupInjectable from "../../electron-app/features/show-error-popup.injectable";
 import lensProxyInjectable from "../../lens-proxy/lens-proxy.injectable";
 import lensProxyPortInjectable from "../../lens-proxy/lens-proxy-port.injectable";
+import setupLensProxyCertificateInjectable from "./setup-lens-proxy-certificate.injectable";
+
+import type { MainFetch } from "../../fetch/main-fetch-request-init";
 
 const setupLensProxyInjectable = getInjectable({
   id: "setup-lens-proxy",
@@ -31,8 +33,8 @@ const setupLensProxyInjectable = getInjectable({
       const isWindows = di.inject(isWindowsInjectable);
       const showErrorPopup = di.inject(showErrorPopupInjectable);
       const buildVersion = di.inject(buildVersionInitializable.stateToken);
-      const lensProxyCertificate = di.inject(lensProxyCertificateInjectable);
-      const fetch = di.inject(nodeFetchInjectable);
+      const lensProxyDispatcher = di.inject(lensProxyDispatcherInjectionToken);
+      const fetch: MainFetch = di.inject(fetchInjectable);
       const isProduction = di.inject(isProductionInjectable);
 
       try {
@@ -48,9 +50,7 @@ const setupLensProxyInjectable = getInjectable({
       try {
         logger.info("🔎 Testing Freelens Proxy connection ...");
         const versionResponse = await fetch(`https://127.0.0.1:${lensProxyPort.get()}/version`, {
-          agent: new Agent({
-            ca: lensProxyCertificate.get()?.cert,
-          }),
+          dispatcher: lensProxyDispatcher(),
         });
 
         const { version: versionFromProxy } = (await versionResponse.json()) as { version: string };
@@ -90,9 +90,7 @@ const setupLensProxyInjectable = getInjectable({
           // Test the actual route that the window will load
           const response = await fetch(`https://127.0.0.1:${lensProxyPort.get()}${testPath}`, {
             method: "HEAD",
-            agent: new Agent({
-              ca: lensProxyCertificate.get()?.cert,
-            }),
+            dispatcher: lensProxyDispatcher(),
             signal: AbortSignal.timeout(2000),
           });
 
@@ -116,7 +114,7 @@ const setupLensProxyInjectable = getInjectable({
         }
       }
     },
-    runAfter: buildVersionInitializationInjectable,
+    runAfter: [buildVersionInitializationInjectable, setupLensProxyCertificateInjectable],
   }),
 
   causesSideEffects: true,

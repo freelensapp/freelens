@@ -6,7 +6,6 @@
 
 import { Pod } from "@freelensapp/kube-object";
 import { render } from "@testing-library/react";
-import React from "react";
 import { Projected } from "./projected";
 
 import type { ProjectedSource } from "@freelensapp/kube-object";

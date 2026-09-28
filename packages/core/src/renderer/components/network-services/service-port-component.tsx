@@ -12,8 +12,8 @@ import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { Spinner } from "@freelensapp/spinner";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { action, makeObservable, observable, reaction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { action, makeObservable, observable } from "mobx";
+import { observer } from "mobx-react";
 import React from "react";
 import { predictProtocol } from "../../port-forward";
 import aboutPortForwardingInjectable from "../../port-forward/about-port-forwarding.injectable";
@@ -57,13 +57,13 @@ class NonInjectedServicePortComponent extends React.Component<ServicePortCompone
     this.checkExistingPortForwarding();
   }
 
-  componentDidMount() {
-    disposeOnUnmount(this, [
-      reaction(
-        () => this.props.service,
-        () => this.checkExistingPortForwarding(),
-      ),
-    ]);
+  componentDidUpdate(prevProps: ServicePortComponentProps & Dependencies) {
+    // Re-check when the service prop changes. Previously a reaction on
+    // this.props.service did this; mobx-react 9 no longer makes this.props
+    // observable, so react to the prop change in the lifecycle instead.
+    if (prevProps.service !== this.props.service) {
+      this.checkExistingPortForwarding();
+    }
   }
 
   get portForwardStore() {

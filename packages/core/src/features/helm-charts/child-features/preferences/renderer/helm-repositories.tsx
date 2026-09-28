@@ -12,15 +12,13 @@
 import { Spinner } from "@freelensapp/spinner";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import { RemovableItem } from "../../../../preferences/renderer/removable-item/removable-item";
 import activeHelmRepositoriesInjectable from "./active-helm-repositories.injectable";
 import styles from "./helm-charts.module.scss";
 import removeHelmRepositoryInjectable from "./remove-helm-repository.injectable";
 
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
-
 import type { HelmRepo } from "../../../../../common/helm/helm-repo";
+import type { IAsyncComputed } from "../../../../../common/utils/async-computed";
 
 interface Dependencies {
   activeHelmRepositories: IAsyncComputed<HelmRepo[]>;

@@ -5,7 +5,6 @@
  */
 
 import { HorizontalPodAutoscaler } from "@freelensapp/kube-object";
-import React from "react";
 import directoryForKubeConfigsInjectable from "../../../common/app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../../common/cluster/cluster";
@@ -21,7 +20,8 @@ import type { RenderResult } from "@testing-library/react";
 
 import type { DiRender } from "../test-utils/renderFor";
 
-vi.mock("react-router-dom", () => ({
+vi.mock("@freelensapp/routing", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@freelensapp/routing")>()),
   Link: ({ children }: { children: StrictReactNode }) => children,
 }));
 

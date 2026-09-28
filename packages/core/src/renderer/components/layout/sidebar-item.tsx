@@ -5,10 +5,10 @@
  */
 
 import { Icon } from "@freelensapp/icon";
+import { NavLink } from "@freelensapp/routing";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import { NavLink } from "react-router-dom";
 import { sideBarItemCustomResourcePrefix } from "../custom-resource-definitions/groups-sidebar-items-computed.injectable";
 import favoritesOverviewSidebarItemInjectable from "../favorites/overview/sidebar-item.injectable";
 import favoritesStoreInjectable, { FavoritesStore } from "../favorites/store.injectable";

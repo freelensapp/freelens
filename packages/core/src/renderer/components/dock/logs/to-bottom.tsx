@@ -6,7 +6,6 @@
 
 import { Button } from "@freelensapp/button";
 import { Icon } from "@freelensapp/icon";
-import React from "react";
 
 export function ToBottom({ onClick }: { onClick: () => void }) {
   return (

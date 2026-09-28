@@ -5,7 +5,6 @@
  */
 
 import { screen, waitFor } from "@testing-library/react";
-import React from "react";
 
 import type { RenderResult } from "@testing-library/react";
 import type { Mocked } from "vitest";

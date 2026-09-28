@@ -7,7 +7,6 @@
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
-import React from "react";
 import { navigateToRouteInjectionToken } from "../../../common/front-end-routing/navigate-to-route-injection-token";
 import { extensionRegistratorInjectionToken } from "../../../extensions/extension-loader/extension-registrator-injection-token";
 import { getExtensionId, sanitizeExtensionName } from "../../../extensions/lens-extension";

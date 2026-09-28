@@ -7,7 +7,7 @@
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React, { createRef, useEffect } from "react";
+import { createRef, useEffect } from "react";
 import subscribeStoresInjectable from "../../../kube-watch-api/subscribe-stores.injectable";
 import podStoreInjectable from "../../workloads-pods/store.injectable";
 import { InfoPanel } from "../info-panel";

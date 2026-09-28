@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { act, fireEvent } from "@testing-library/react";
 import { KubernetesCluster, WebLink } from "../../common/catalog-entities";
 import navigateToCatalogInjectable from "../../common/front-end-routing/routes/catalog/navigate-to-catalog.injectable";
 import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable";
@@ -130,7 +131,9 @@ describe("opening catalog entity details panel", () => {
     beforeEach(async () => {
       const navigateToCatalog = windowDi.inject(navigateToCatalogInjectable);
 
-      navigateToCatalog();
+      act(() => {
+        navigateToCatalog();
+      });
     });
 
     it("renders", () => {
@@ -147,7 +150,7 @@ describe("opening catalog entity details panel", () => {
 
     describe("when opening the menu 'some-kubernetes-cluster'", () => {
       beforeEach(() => {
-        rendered.getByTestId("icon-for-menu-actions-for-catalog-for-some-entity-id").click();
+        fireEvent.click(rendered.getByTestId("icon-for-menu-actions-for-catalog-for-some-entity-id"));
         advanceFakeTime(1000);
       });
 
@@ -165,7 +168,7 @@ describe("opening catalog entity details panel", () => {
 
       describe("when clicking the 'View Details' menu item", () => {
         beforeEach(() => {
-          rendered.getByTestId("open-details-menu-item-for-some-entity-id").click();
+          fireEvent.click(rendered.getByTestId("open-details-menu-item-for-some-entity-id"));
         });
 
         it("renders", () => {
@@ -195,7 +198,7 @@ describe("opening catalog entity details panel", () => {
 
     describe("when opening the menu 'some-weblink'", () => {
       beforeEach(() => {
-        rendered.getByTestId("icon-for-menu-actions-for-catalog-for-some-weblink-id").click();
+        fireEvent.click(rendered.getByTestId("icon-for-menu-actions-for-catalog-for-some-weblink-id"));
       });
 
       it("renders", () => {
@@ -212,7 +215,7 @@ describe("opening catalog entity details panel", () => {
 
       describe("when clicking the 'View Details' menu item", () => {
         beforeEach(() => {
-          rendered.getByTestId("open-details-menu-item-for-some-weblink-id").click();
+          fireEvent.click(rendered.getByTestId("open-details-menu-item-for-some-weblink-id"));
         });
 
         it("renders", () => {
@@ -248,7 +251,9 @@ describe("opening catalog entity details panel", () => {
     beforeEach(async () => {
       const showEntityDetails = windowDi.inject(showEntityDetailsInjectable);
 
-      showEntityDetails("some-weblink-id");
+      act(() => {
+        showEntityDetails("some-weblink-id");
+      });
       advanceFakeTime(1000);
     });
 

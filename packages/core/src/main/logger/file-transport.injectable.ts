@@ -26,7 +26,6 @@ const fileLoggerTransportInjectable = getInjectable({
       tailable: true,
     }),
   injectionToken: loggerTransportInjectionToken,
-  decorable: false,
 });
 
 export default fileLoggerTransportInjectable;

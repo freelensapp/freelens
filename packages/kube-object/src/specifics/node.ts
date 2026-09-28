@@ -4,8 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { cpuUnitsToNumber, isObject, unitsToBytes } from "@freelensapp/utilities";
-import { TypedRegEx } from "typed-regex";
+import { cpuUnitsToNumber, isObject, namedCaptures, unitsToBytes } from "@freelensapp/utilities";
 import { KubeObject } from "../kube-object";
 
 import type { BaseKubeObjectCondition, ClusterScopedMetadata } from "../api-types";
@@ -44,7 +43,7 @@ const masterNodeLabels = ["master", "control-plane"];
  * This regex is used in the `getRoleLabels()` method bellow, but placed here
  * as factoring out regexes is best practice.
  */
-const nodeRoleLabelKeyMatcher = TypedRegEx("^.*node-role.kubernetes.io/+(?<role>.+)$");
+const nodeRoleLabelKeyMatcher = /^.*node-role.kubernetes.io\/+(?<role>.+)$/;
 
 export interface NodeSpec {
   podCIDR?: string;
@@ -175,10 +174,10 @@ export class Node extends KubeObject<ClusterScopedMetadata, NodeStatus, NodeSpec
     }
 
     for (const labelKey of Object.keys(labels)) {
-      const match = nodeRoleLabelKeyMatcher.match(labelKey);
+      const match = namedCaptures<{ role: string }>(nodeRoleLabelKeyMatcher, labelKey);
 
-      if (match?.groups) {
-        roleLabels.push(match.groups.role);
+      if (match) {
+        roleLabels.push(match.role);
       }
     }
 

@@ -6,10 +6,10 @@
 
 import { computed } from "mobx";
 
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import type { ObservableMap } from "mobx";
 
 import type { HelmRelease } from "../../../common/k8s-api/endpoints/helm-releases.api";
+import type { IAsyncComputed } from "../../../common/utils/async-computed";
 
 interface Dependencies {
   releases: IAsyncComputed<HelmRelease[]>;

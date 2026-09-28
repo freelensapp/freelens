@@ -208,7 +208,9 @@ export class WizardStep<D> extends React.Component<WizardStepProps<D>, WizardSte
       return;
     }
 
-    if (evt.key === "Enter") {
+    // An Enter already consumed by a field of the step (e.g. adding an item to an
+    // EditableList, picking an option of a Select) must not submit the whole step.
+    if (evt.key === "Enter" && !evt.defaultPrevented) {
       this.submit();
     }
   }
@@ -249,7 +251,9 @@ export class WizardStep<D> extends React.Component<WizardStepProps<D>, WizardSte
         onSubmit={prevDefault(this.submit)}
         noValidate={noValidate}
         onKeyDown={(evt) => this.keyDown(evt)}
-        ref={(e) => (this.form = e)}
+        ref={(e) => {
+          this.form = e;
+        }}
       >
         {beforeContent}
         <div className={cssNames("step-content", { scrollable }, contentClass)}>

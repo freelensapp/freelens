@@ -1,5 +1,4 @@
 import os from "node:os";
-import React from "react";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import createTerminalTabInjectable from "../../dock/terminal/create-terminal-tab.injectable";
 import sendCommandInjectable from "../../dock/terminal/send-command.injectable";

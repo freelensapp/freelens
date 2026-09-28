@@ -37,8 +37,8 @@ describe("quitting the app using application menu", () => {
     });
 
     describe("when application is quit", () => {
-      beforeEach(() => {
-        builder.applicationMenu.click("root", "mac", "quit");
+      beforeEach(async () => {
+        await builder.applicationMenu.click("root", "mac", "quit");
       });
 
       it("requests quit of application", () => {

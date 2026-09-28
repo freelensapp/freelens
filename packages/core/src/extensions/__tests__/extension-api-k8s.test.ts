@@ -162,7 +162,6 @@ describe("Extensions API", () => {
       expect(extensions.Renderer.K8sApi).toHaveProperty("apiManager");
       expect(extensions.Renderer.K8sApi).toHaveProperty("createResourceStack");
       expect(extensions.Renderer.K8sApi).toHaveProperty("forCluster");
-      expect(extensions.Renderer.K8sApi).toHaveProperty("forRemoteCluster");
       expect(extensions.Renderer.K8sApi).toHaveProperty("getPodsByOwnerId");
       expect(extensions.Renderer.K8sApi).toHaveProperty("requestMetrics");
     });

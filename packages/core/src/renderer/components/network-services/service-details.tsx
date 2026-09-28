@@ -11,7 +11,7 @@ import { type PortStatus, Service } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { formatDuration } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import portForwardStoreInjectable from "../../port-forward/port-forward-store/port-forward-store.injectable";
@@ -51,10 +51,16 @@ function getExternalProtocol(service: Service): string | undefined {
 
 @observer
 class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & Dependencies> {
+  private readonly disposers: (() => void)[] = [];
+
   componentDidMount() {
     const { subscribeStores, endpointSliceStore, portForwardStore } = this.props;
 
-    disposeOnUnmount(this, [subscribeStores([endpointSliceStore], {}), portForwardStore.watch()]);
+    this.disposers.push(subscribeStores([endpointSliceStore], {}), portForwardStore.watch());
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   render() {

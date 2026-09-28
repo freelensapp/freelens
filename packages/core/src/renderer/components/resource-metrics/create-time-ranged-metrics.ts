@@ -1,15 +1,15 @@
 /**
  * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import { asyncComputed } from "@ogre-tools/injectable-react";
+import { asyncComputed } from "../../../common/utils/async-computed";
 import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
 
 import type { DiContainer, DiContainerForInjection, Injectable } from "@ogre-tools/injectable";
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
+
+import type { IAsyncComputed } from "../../../common/utils/async-computed";
 
 interface RequestContext<ObjectType> {
   di: DiContainerForInjection;

@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { act } from "@testing-library/react";
 import { KubernetesCluster, WebLink } from "../../common/catalog-entities";
 import navigateToEntitySettingsInjectable from "../../common/front-end-routing/routes/entity-settings/navigate-to-entity-settings.injectable";
 import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable";
@@ -128,7 +129,9 @@ describe("Showing correct entity settings", () => {
     beforeEach(() => {
       const navigateToEntitySettings = windowDi.inject(navigateToEntitySettingsInjectable);
 
-      navigateToEntitySettings(clusterEntity.getId());
+      act(() => {
+        navigateToEntitySettings(clusterEntity.getId());
+      });
     });
 
     it("renders", () => {
@@ -175,7 +178,9 @@ describe("Showing correct entity settings", () => {
     beforeEach(() => {
       const navigateToEntitySettings = windowDi.inject(navigateToEntitySettingsInjectable);
 
-      navigateToEntitySettings(localClusterEntity.getId());
+      act(() => {
+        navigateToEntitySettings(localClusterEntity.getId());
+      });
     });
 
     it("renders", () => {
@@ -223,7 +228,9 @@ describe("Showing correct entity settings", () => {
     beforeEach(() => {
       const navigateToEntitySettings = windowDi.inject(navigateToEntitySettingsInjectable);
 
-      navigateToEntitySettings(otherEntity.getId());
+      act(() => {
+        navigateToEntitySettings(otherEntity.getId());
+      });
     });
 
     it("renders", () => {

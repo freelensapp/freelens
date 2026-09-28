@@ -11,7 +11,7 @@ import "./markdown-viewer.scss";
 import { cssNames } from "@freelensapp/utilities";
 import DOMPurify from "dompurify";
 import { marked } from "marked";
-import React, { Component } from "react";
+import { Component } from "react";
 
 DOMPurify.addHook("afterSanitizeAttributes", function (node) {
   // Set all elements owning target to target=_blank

@@ -11,7 +11,6 @@
 
 import { cssNames, prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import React from "react";
 import { Badge } from "../badge";
 import styles from "./namespace-select-badge.module.scss";
 import filterByNamespaceInjectable from "./namespace-select-filter-model/filter-by-namespace.injectable";

@@ -8,6 +8,5 @@ import { getGlobalOverride } from "@freelensapp/test-utils";
 import windowLocationInjectable from "./window-location.injectable";
 
 export default getGlobalOverride(windowLocationInjectable, () => ({
-  host: "localhost",
-  port: "12345",
+  host: "localhost:12345",
 }));

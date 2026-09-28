@@ -8,20 +8,17 @@ import "./namespace-details.scss";
 
 import { Namespace } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { Link } from "@freelensapp/routing";
 import { Spinner } from "@freelensapp/spinner";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { computed, makeObservable } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
-import { Link } from "react-router-dom";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import limitRangeStoreInjectable from "../config-limit-ranges/store.injectable";
 import resourceQuotaStoreInjectable from "../config-resource-quotas/store.injectable";
 import { DrawerItem } from "../drawer";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
-import { NamespaceTreeView } from "./namespace-tree-view";
-import namespaceStoreInjectable from "./store.injectable";
 
 import type { Logger } from "@freelensapp/logger";
 
@@ -30,7 +27,6 @@ import type { LimitRangeStore } from "../config-limit-ranges/store";
 import type { ResourceQuotaStore } from "../config-resource-quotas/store";
 import type { GetDetailsUrl } from "../kube-detail-params/get-details-url.injectable";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
-import type { NamespaceStore } from "./store";
 
 export interface NamespaceDetailsProps extends KubeObjectDetailsProps<Namespace> {}
 
@@ -39,28 +35,35 @@ interface Dependencies {
   getDetailsUrl: GetDetailsUrl;
   resourceQuotaStore: ResourceQuotaStore;
   limitRangeStore: LimitRangeStore;
-  namespaceStore: NamespaceStore;
   logger: Logger;
 }
 
 @observer
 class NonInjectedNamespaceDetails extends React.Component<NamespaceDetailsProps & Dependencies> {
+  private readonly disposers: (() => void)[] = [];
+
   constructor(props: NamespaceDetailsProps & Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   componentDidMount() {
-    disposeOnUnmount(this, [this.props.subscribeStores([this.props.resourceQuotaStore, this.props.limitRangeStore])]);
+    this.disposers.push(this.props.subscribeStores([this.props.resourceQuotaStore, this.props.limitRangeStore]));
   }
 
-  @computed get quotas() {
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
+  }
+
+  // Plain getters (not @computed): they read this.props, which mobx-react 9
+  // forbids inside a derivation. Read from render, reactivity is preserved by
+  // the observer render reaction.
+  get quotas() {
     const namespace = this.props.object.getName();
 
     return this.props.resourceQuotaStore.getAllByNs(namespace);
   }
 
-  @computed get limitranges() {
+  get limitranges() {
     const namespace = this.props.object.getName();
 
     return this.props.limitRangeStore.getAllByNs(namespace);
@@ -109,10 +112,6 @@ class NonInjectedNamespaceDetails extends React.Component<NamespaceDetailsProps 
               ),
           )}
         </DrawerItem>
-
-        {namespace.isControlledByHNC() && (
-          <NamespaceTreeView tree={this.props.namespaceStore.getNamespaceTree(namespace)} />
-        )}
       </div>
     );
   }
@@ -125,7 +124,6 @@ export const NamespaceDetails = withInjectables<Dependencies, NamespaceDetailsPr
     getDetailsUrl: di.inject(getDetailsUrlInjectable),
     limitRangeStore: di.inject(limitRangeStoreInjectable),
     resourceQuotaStore: di.inject(resourceQuotaStoreInjectable),
-    namespaceStore: di.inject(namespaceStoreInjectable),
     logger: di.inject(loggerInjectionToken),
   }),
 });

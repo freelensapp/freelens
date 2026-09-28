@@ -5,7 +5,7 @@
  */
 
 import "./chart.scss";
-import "chartjs-adapter-moment";
+import "./chartjs-adapter-native";
 
 import { cssNames } from "@freelensapp/utilities";
 import { Chart as ChartJS, registerables, Tooltip } from "chart.js";
@@ -116,6 +116,14 @@ export class Chart extends React.Component<ChartProps> {
         this.updateChart();
       }
     }
+  }
+
+  componentWillUnmount() {
+    // Destroy the Chart.js instance so its canvas is released. Without this the
+    // instance leaks on unmount and a remount hits "Canvas is already in use"
+    // (surfaced by React.StrictMode's mount → unmount → mount double-invoke).
+    this.chart?.destroy();
+    this.chart = null;
   }
 
   memoizeDataProps() {

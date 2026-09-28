@@ -12,7 +12,6 @@
 import { Icon } from "@freelensapp/icon";
 import { prevDefault } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import React from "react";
 import activeHotbarInjectable from "../../../../features/hotbar/storage/common/active.injectable";
 import { Avatar } from "../../avatar";
 import styles from "../catalog.module.scss";

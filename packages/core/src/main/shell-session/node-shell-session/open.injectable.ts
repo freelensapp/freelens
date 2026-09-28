@@ -21,6 +21,7 @@ import loadProxyKubeconfigInjectable from "../../cluster/load-proxy-kubeconfig.i
 import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
 import createKubectlInjectable from "../../kubectl/create-kubectl.injectable";
 import shellSessionProcessesInjectable from "../processes.injectable";
+import { kubectlStatusOptionsFor, terminalStatusReporterFor } from "../send-terminal-status";
 import shellSessionEnvsInjectable from "../shell-envs.injectable";
 import spawnPtyInjectable from "../spawn-pty.injectable";
 import { NodeShellSession } from "./node-shell-session";
@@ -68,8 +69,16 @@ const openNodeShellSessionInjectable = getInjectable({
       const kubectl = createKubectl(args.cluster.version.get());
       const kubeconfigManager = di.inject(kubeconfigManagerInjectable, args.cluster);
       const loadProxyKubeconfig = di.inject(loadProxyKubeconfigInjectable, args.cluster);
+      const status = terminalStatusReporterFor(args.websocket);
+
+      status.info("Starting cluster proxy ...");
       const proxyKubeconfigPath = await kubeconfigManager.ensurePath();
-      const directoryContainingKubectl = await kubectl.binDir();
+
+      const kubectlStatus = kubectlStatusOptionsFor(kubectl.kubectlVersion, status);
+
+      status.info(`Checking kubectl v${kubectl.kubectlVersion} ...`);
+
+      const directoryContainingKubectl = await kubectl.binDir(kubectlStatus).finally(() => kubectlStatus.done());
 
       const session = new NodeShellSession(
         {

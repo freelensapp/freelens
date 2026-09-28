@@ -6,7 +6,7 @@
 
 import { chainSignal } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import nodeFetchInjectable from "../../../common/fetch/node-fetch.injectable";
+import fetchInjectable from "../../../common/fetch/fetch.injectable";
 import { withTimeout } from "../../../common/fetch/timeout-controller";
 
 export type ValidateWeblink = (url: string, signal: AbortSignal) => Promise<"available" | "unavailable">;
@@ -14,7 +14,7 @@ export type ValidateWeblink = (url: string, signal: AbortSignal) => Promise<"ava
 const validateWeblinkInjectable = getInjectable({
   id: "validate-weblink",
   instantiate: (di): ValidateWeblink => {
-    const fetch = di.inject(nodeFetchInjectable);
+    const fetch = di.inject(fetchInjectable);
 
     return async (url, signal) => {
       const timeout = withTimeout(20_000);

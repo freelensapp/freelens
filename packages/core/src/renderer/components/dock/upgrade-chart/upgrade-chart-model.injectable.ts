@@ -6,9 +6,9 @@
 
 import { waitUntilDefined } from "@freelensapp/utilities";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import { asyncComputed } from "@ogre-tools/injectable-react";
 import { action, computed, observable, when } from "mobx";
 import requestHelmReleaseConfigurationInjectable from "../../../../common/k8s-api/endpoints/helm-releases.api/request-configuration.injectable";
+import { asyncComputed } from "../../../../common/utils/async-computed";
 import helmChartVersionsInjectable from "../../helm-charts/helm-charts/versions.injectable";
 import releasesInjectable from "../../helm-releases/releases.injectable";
 import updateReleaseInjectable from "../../helm-releases/update-release/update-release.injectable";

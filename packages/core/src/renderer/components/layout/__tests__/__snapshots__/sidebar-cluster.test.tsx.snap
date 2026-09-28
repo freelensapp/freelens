@@ -11,7 +11,7 @@ exports[`<SidebarCluster/> > renders w/o errors 1`] = `
   >
     <div
       class="Avatar rounded avatar"
-      style="width: 40px; height: 40px; background: rgb(96, 130, 10);"
+      style="width: 40px; height: 40px; background: rgb(110, 28, 94);"
     >
       tc
     </div>

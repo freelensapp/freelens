@@ -12,8 +12,8 @@
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { action, computed, makeObservable, observable, reaction, runInAction, when } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { action, makeObservable, observable, reaction, runInAction, when } from "mobx";
+import { observer } from "mobx-react";
 import React from "react";
 import emitAppEventInjectable from "../../../common/app-event-bus/emit-event.injectable";
 import catalogCategoryRegistryInjectable from "../../../common/catalog/category-registry.injectable";
@@ -84,29 +84,24 @@ interface Dependencies {
 
 @observer
 class NonInjectedCatalog extends React.Component<Dependencies> {
+  private readonly disposers: (() => void)[] = [];
   private readonly menuItems = observable.array<CatalogEntityContextMenu>();
   @observable activeTab: string | undefined = undefined;
 
+  // mobx-react 9 forbids reading this.props inside a derivation. renderItemMenu is
+  // invoked from the ItemListLayout row renderer — a derivation other than this
+  // component's own render — so it reads props from this observable snapshot,
+  // refreshed on every update, instead of this.props.
+  @observable.ref private observableProps: Readonly<Dependencies>;
+
   constructor(props: Dependencies) {
     super(props);
+    this.observableProps = props;
     makeObservable(this);
   }
 
-  @computed
-  get routeActiveTab(): string {
-    const {
-      routeParameters: { group, kind },
-      catalogPreviousActiveTabStorage,
-    } = this.props;
-
-    const dereferencedGroup = group.get();
-    const dereferencedKind = kind.get();
-
-    if (dereferencedGroup && dereferencedKind) {
-      return `${dereferencedGroup}/${dereferencedKind}`;
-    }
-
-    return catalogPreviousActiveTabStorage.get() || browseCatalogTab;
+  componentDidUpdate() {
+    this.observableProps = this.props;
   }
 
   async componentDidMount() {
@@ -116,14 +111,29 @@ class NonInjectedCatalog extends React.Component<Dependencies> {
       catalogCategoryRegistry,
       logger,
       showErrorNotification,
+      routeParameters,
     } = this.props;
 
-    disposeOnUnmount(this, [
+    // Capture props before the reaction: mobx-react 9 forbids reading this.props
+    // inside a derivation. Recompute routeActiveTab from the captured observables so
+    // the reaction's data function no longer touches this.props.
+    const routeActiveTab = (): string => {
+      const dereferencedGroup = routeParameters.group.get();
+      const dereferencedKind = routeParameters.kind.get();
+
+      if (dereferencedGroup && dereferencedKind) {
+        return `${dereferencedGroup}/${dereferencedKind}`;
+      }
+
+      return catalogPreviousActiveTabStorage.get() || browseCatalogTab;
+    };
+
+    this.disposers.push(
       catalogEntityStore.watch(),
       reaction(
-        () => this.routeActiveTab,
+        () => routeActiveTab(),
         async (routeTab) => {
-          catalogPreviousActiveTabStorage.set(this.routeActiveTab);
+          catalogPreviousActiveTabStorage.set(routeTab);
 
           try {
             if (routeTab !== browseCatalogTab) {
@@ -158,7 +168,7 @@ class NonInjectedCatalog extends React.Component<Dependencies> {
           const currentCategory = catalogEntityStore.activeCategory.get();
           const someCategory = categories[0];
 
-          if (this.routeActiveTab === browseCatalogTab || !someCategory) {
+          if (routeActiveTab() === browseCatalogTab || !someCategory) {
             return;
           }
 
@@ -168,16 +178,20 @@ class NonInjectedCatalog extends React.Component<Dependencies> {
 
           if (!currentCategory || !currentCategoryShouldBeShown) {
             this.activeTab = someCategory.getId();
-            this.props.catalogEntityStore.activeCategory.set(someCategory);
+            catalogEntityStore.activeCategory.set(someCategory);
           }
         },
       ),
-    ]);
+    );
 
     this.props.emitEvent({
       name: "catalog",
       action: "open",
     });
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   addToHotbar(entity: CatalogEntity): void {
@@ -209,11 +223,15 @@ class NonInjectedCatalog extends React.Component<Dependencies> {
   });
 
   renderItemMenu = (entity: CatalogEntity) => {
+    // Called from the ItemListLayout row renderer (a foreign derivation), so read
+    // props from the observable snapshot instead of this.props (mobx-react 9).
+    const { visitEntityContextMenu, navigate, normalizeMenuItem, showEntityDetails } = this.observableProps;
+
     const onOpen = () => {
       this.menuItems.clear();
-      this.props.visitEntityContextMenu(entity, {
+      visitEntityContextMenu(entity, {
         menuItems: this.menuItems,
-        navigate: this.props.navigate,
+        navigate,
       });
     };
 
@@ -226,11 +244,11 @@ class NonInjectedCatalog extends React.Component<Dependencies> {
         <MenuItem
           key="open-details"
           data-testid={`open-details-menu-item-for-${entity.getId()}`}
-          onClick={() => this.props.showEntityDetails(entity.getId())}
+          onClick={() => showEntityDetails(entity.getId())}
         >
           View Details
         </MenuItem>
-        {this.menuItems.map(this.props.normalizeMenuItem).map((menuItem, index) => (
+        {this.menuItems.map(normalizeMenuItem).map((menuItem, index) => (
           <MenuItem key={index} onClick={menuItem.onClick}>
             {menuItem.title}
           </MenuItem>

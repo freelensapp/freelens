@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import moment from "moment";
 import { formatDuration } from "./formatDuration";
 
 const second = 1000;
@@ -63,7 +62,10 @@ describe("human format durations", () => {
     });
 
     test("durations more than 8 years returns years", () => {
-      const timeValue = Date.now() - new Date(moment().subtract(9, "years").subtract(5, "days").toDate()).getTime();
+      const nineYearsFiveDaysAgo = new Date();
+      nineYearsFiveDaysAgo.setFullYear(nineYearsFiveDaysAgo.getFullYear() - 9);
+      nineYearsFiveDaysAgo.setDate(nineYearsFiveDaysAgo.getDate() - 5);
+      const timeValue = Date.now() - nineYearsFiveDaysAgo.getTime();
 
       const res = formatDuration(timeValue);
 

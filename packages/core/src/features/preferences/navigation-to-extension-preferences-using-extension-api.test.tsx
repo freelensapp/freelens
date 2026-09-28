@@ -1,11 +1,10 @@
 /**
  * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import { discoverFor } from "@freelensapp/react-testing-library-discovery";
-import React from "react";
+import { act } from "@testing-library/react";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import currentPathInjectable from "../../renderer/routes/current-path.injectable";
 
@@ -41,7 +40,9 @@ describe("preferences - navigation to extension preferences using extension api"
 
   describe("when extension navigates to its own preferences", () => {
     beforeEach(() => {
-      testExtension.navigateToPreferences();
+      act(() => {
+        testExtension.navigateToPreferences();
+      });
     });
 
     it("URL points to the extension's own preferences tab", () => {

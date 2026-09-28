@@ -1,11 +1,9 @@
 /**
  * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import { showInfoNotificationInjectable } from "@freelensapp/notifications";
-import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { buildVersionInitializable } from "../../../features/vars/build-version/common/token";
 import getLatestVersionViaChannelInjectable from "../../common/utils/get-latest-version-via-channel.injectable";

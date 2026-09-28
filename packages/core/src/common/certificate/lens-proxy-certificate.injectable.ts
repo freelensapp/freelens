@@ -6,7 +6,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 
-import type { SelfSignedCert } from "selfsigned";
+import type { SelfSignedCert } from "./certificate";
 
 const lensProxyCertificateInjectable = getInjectable({
   id: "lens-proxy-certificate",

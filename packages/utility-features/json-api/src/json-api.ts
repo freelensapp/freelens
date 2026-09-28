@@ -4,8 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { Agent as HttpAgent } from "node:http";
-import { Agent as HttpsAgent } from "node:https";
 import { stringify } from "node:querystring";
 import { EventEmitter } from "@freelensapp/event-emitter";
 import { isObject, isString, json } from "@freelensapp/utilities";
@@ -14,10 +12,10 @@ import { merge } from "es-toolkit/compat";
 import type { Logger } from "@freelensapp/logger";
 import type { Defaulted } from "@freelensapp/utilities";
 
-import type Fetch from "node-fetch";
-import type { RequestInit, Response } from "node-fetch";
 import type { Patch } from "rfc6902";
 import type { PartialDeep, ValueOf } from "type-fest";
+
+import type { Fetch, FetchRequestInit as RequestInit, FetchResponse as Response } from "./fetch";
 
 export interface JsonApiData {}
 
@@ -72,9 +70,6 @@ export interface JsonApiConfig {
   getRequestOptions?: GetRequestOptions;
 }
 
-const httpAgent = new HttpAgent({ keepAlive: true });
-const httpsAgent = new HttpsAgent({ keepAlive: true });
-
 export type QueryParam =
   | string
   | number
@@ -90,7 +85,7 @@ export type ParamsAndQuery<Params, Query> =
   ValueOf<Query> extends QueryParam ? Params & { query?: Query } : Params & { query?: undefined };
 
 export interface JsonApiDependencies {
-  fetch: typeof Fetch;
+  fetch: Fetch;
   readonly logger: Logger;
 }
 
@@ -147,15 +142,9 @@ export class JsonApi<Data = JsonApiData, Params extends JsonApiParams<Data> = Js
     init: RequestInit = {},
   ): Promise<Response> {
     let reqUrl = `${this.config.serverAddress}${this.config.apiBase}${path}`;
-    const reqInit = merge(
-      {
-        method: "get",
-        agent: reqUrl.startsWith("https:") ? httpsAgent : httpAgent,
-      },
-      this.reqInit,
-      await this.getRequestOptions(),
-      init,
-    );
+    // No keep-alive agent is supplied: undici pools per dispatcher and Chromium
+    // pools on its own, so neither client needs one per request.
+    const reqInit = merge({ method: "get" }, this.reqInit, await this.getRequestOptions(), init);
     const { query } = params ?? {};
 
     if (query && Object.keys(query).length > 0) {

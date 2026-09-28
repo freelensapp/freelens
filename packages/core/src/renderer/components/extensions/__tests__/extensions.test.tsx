@@ -10,7 +10,6 @@ import "@testing-library/jest-dom/vitest";
 import assert from "node:assert";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import { observable, when } from "mobx";
-import React from "react";
 import directoryForDownloadsInjectable from "../../../../common/app-paths/directory-for-downloads/directory-for-downloads.injectable";
 import directoryForUserDataInjectable from "../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import removePathInjectable from "../../../../common/fs/remove.injectable";
@@ -73,9 +72,11 @@ describe("Extensions", () => {
           engines: { freelens: "^0.1.0" },
         },
         absolutePath: "/absolute/path",
-        manifestPath: "/symlinked/path/package.json",
+        manifestPath: "/absolute/path/package.json",
         isEnabled: true,
         isCompatible: true,
+        isManaged: true,
+        isVerified: true,
       });
 
       extensionDiscovery.uninstallExtension = vi.fn(() => Promise.resolve());
@@ -96,7 +97,7 @@ describe("Extensions", () => {
     );
 
     const table = await screen.findByTestId("extensions-table");
-    const menuTrigger = table.querySelector(".table div[role='rowgroup'] .actions .Icon");
+    const menuTrigger = table.querySelector("tbody tr td:last-child .Icon");
 
     assert(menuTrigger);
     fireEvent.click(menuTrigger);
@@ -139,7 +140,7 @@ describe("Extensions", () => {
     });
 
     fireEvent.change(
-      await screen.findByPlaceholderText("File path or URL", {
+      await screen.findByPlaceholderText("URL, or path to a package or directory", {
         exact: false,
       }),
       {

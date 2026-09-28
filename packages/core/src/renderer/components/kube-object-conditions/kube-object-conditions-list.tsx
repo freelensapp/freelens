@@ -1,13 +1,11 @@
 /**
  * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import { KubeObject } from "@freelensapp/kube-object";
 import { Tooltip } from "@freelensapp/tooltip";
 import { observer } from "mobx-react";
-import React from "react";
 import { getClassName, getTooltip } from "./components";
 import { sortConditions } from "./utils";
 

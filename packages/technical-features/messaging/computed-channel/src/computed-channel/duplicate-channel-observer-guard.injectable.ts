@@ -1,6 +1,6 @@
 import { onLoadOfApplicationInjectionToken } from "@freelensapp/application";
 import { getInjectable } from "@ogre-tools/injectable";
-import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
+import { computedInjectManyInjectionToken } from "@ogre-tools/injectable-extension-for-mobx";
 import { groupBy } from "es-toolkit";
 import { reaction } from "mobx";
 import { computedChannelObserverInjectionToken } from "./computed-channel.injectable";
@@ -9,7 +9,7 @@ export const duplicateChannelObserverGuardInjectable = getInjectable({
   id: "duplicate-channel-observer-guard",
 
   instantiate: (di) => {
-    const computedInjectMany = di.inject(computedInjectManyInjectable);
+    const computedInjectMany = di.inject(computedInjectManyInjectionToken);
 
     return {
       run: () => {

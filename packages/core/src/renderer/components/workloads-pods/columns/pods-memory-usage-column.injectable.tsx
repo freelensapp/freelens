@@ -1,6 +1,5 @@
 /**
  * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
@@ -8,7 +7,6 @@ import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
 import { bytesToUnits } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { observer } from "mobx-react";
-import React from "react";
 import podStoreInjectable from "../../workloads-pods/store.injectable";
 import { COLUMN_PRIORITY } from "./column-priority";
 

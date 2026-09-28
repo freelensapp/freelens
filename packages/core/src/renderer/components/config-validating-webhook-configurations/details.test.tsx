@@ -5,7 +5,6 @@
  */
 
 import { ValidatingWebhookConfiguration } from "@freelensapp/kube-object";
-import React from "react";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import { renderFor } from "../test-utils/renderFor";
 import { ValidatingWebhookDetails } from "./validating-webhook-configurations-details";

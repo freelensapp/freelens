@@ -76,6 +76,27 @@ pnpm build:di
 pnpm build
 ```
 
+### Bundled binaries
+
+`pnpm build:resources:client` downloads `freelens-k8s-proxy`, `kubectl` and
+`helm`. Their versions live in the `config` block of `freelens/package.json`,
+and their exact digests are pinned in `freelens/binaries.lock.json`. The build
+verifies every download against that lock rather than against a checksum served
+by the same host as the artifact, so bumping a version without regenerating the
+lock fails the build:
+
+```sh
+pnpm update-binaries-lock
+```
+
+Regenerating downloads all eighteen artifacts (three tools, three platforms,
+two architectures) and verifies each against its publisher's signature — GitHub
+build provenance for freelens-k8s-proxy, PGP for helm, keyless cosign for
+kubectl — before writing the lock. Run `mise install` first so `cosign` is on
+`PATH`, and export `GITHUB_TOKEN` to avoid the 60 unauthenticated API calls per
+hour that build provenance lookups otherwise share across your whole IP. Pass
+`--only <tool>` to refresh a single tool.
+
 ### Cross compilation
 
 The official binary packages are built in a native environment, however you can
@@ -183,6 +204,13 @@ the project root, which is git-ignored.
 pnpm test:unit              # Run unit tests
 pnpm test:integration       # Run integration tests
 ```
+
+One unit test consumes a build artifact: the extension contract suite loads the
+built bundle of `packages/fixture-extension`. The `test:unit` scripts therefore
+run `pnpm build:fixture-extension` first, which is `turbo run build` filtered to
+that package — three tasks, and a no-op once its cache is warm. Running Vitest
+directly skips that, so build it yourself (`pnpm build:fixture-extension`, or
+any full `pnpm build`) when you do; the suite says so if you forget.
 
 ### When to regenerate DI files
 

@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { act } from "@testing-library/react";
 import { computed, observable, runInAction } from "mobx";
-import React from "react";
 import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 
 import type { RenderResult } from "@testing-library/react";
@@ -50,7 +50,9 @@ describe("reactively disable global pages", () => {
   });
 
   it("when navigating to the page, does not show the page", () => {
-    rendererTestExtension.navigate();
+    act(() => {
+      rendererTestExtension.navigate();
+    });
 
     const actual = rendered.queryByTestId("some-test-page");
 
@@ -58,11 +60,15 @@ describe("reactively disable global pages", () => {
   });
 
   it("given page becomes enabled, when navigating to the page, shows the page", () => {
-    runInAction(() => {
-      someObservable.set(true);
+    act(() => {
+      runInAction(() => {
+        someObservable.set(true);
+      });
     });
 
-    rendererTestExtension.navigate();
+    act(() => {
+      rendererTestExtension.navigate();
+    });
 
     const actual = rendered.queryByTestId("some-test-page");
 

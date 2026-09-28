@@ -10,7 +10,7 @@ import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { identity } from "es-toolkit";
 import { observable, reaction, runInAction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
 import navigateInjectable from "../../navigation/navigate.injectable";
@@ -60,6 +60,7 @@ interface Dependencies {
 class NonInjectedKubeObjectMenu<Kube extends KubeObject> extends React.Component<
   KubeObjectMenuProps<Kube> & Dependencies
 > {
+  private readonly disposers: (() => void)[] = [];
   private menuItems = observable.array<KubeObjectContextMenuItem>();
 
   componentDidUpdate(prevProps: Readonly<KubeObjectMenuProps<Kube> & Dependencies>): void {
@@ -69,9 +70,14 @@ class NonInjectedKubeObjectMenu<Kube extends KubeObject> extends React.Component
   }
 
   componentDidMount(): void {
-    disposeOnUnmount(this, [
+    // Capture props before the reactions: mobx-react 9 forbids reading this.props
+    // inside a derivation (the reaction data functions). The kube object is updated
+    // in place, so tracking the captured instance keeps its observable fields live.
+    const { object } = this.props;
+
+    this.disposers.push(
       reaction(
-        () => this.props.object?.metadata?.deletionTimestamp,
+        () => object?.metadata?.deletionTimestamp,
         () => {
           if (this.props.object) {
             this.emitOnContextMenuOpen(this.props.object);
@@ -79,14 +85,18 @@ class NonInjectedKubeObjectMenu<Kube extends KubeObject> extends React.Component
         },
       ),
       reaction(
-        () => this.props.object?.getFinalizers(),
+        () => object?.getFinalizers(),
         () => {
           if (this.props.object) {
             this.emitOnContextMenuOpen(this.props.object);
           }
         },
       ),
-    ]);
+    );
+  }
+
+  componentWillUnmount(): void {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   private renderDeleteMessage(object: KubeObject, title: string) {

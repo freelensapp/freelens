@@ -14,9 +14,10 @@ import type { LensRendererExtension } from "../../../../extensions/lens-renderer
 interface Dependencies {
   extensions: IComputedValue<LensRendererExtension[]>;
   navigateToCatalog: NavigateToCatalog;
+  navigateToTerminal: () => void;
 }
 
-export const getWelcomeMenuItems = ({ extensions, navigateToCatalog }: Dependencies) => {
+export const getWelcomeMenuItems = ({ extensions, navigateToCatalog, navigateToTerminal }: Dependencies) => {
   const browseClusters = {
     title: "Browse Clusters in Catalog",
     icon: "view_list",
@@ -28,5 +29,17 @@ export const getWelcomeMenuItems = ({ extensions, navigateToCatalog }: Dependenc
       }),
   };
 
-  return computed(() => [browseClusters, ...extensions.get().flatMap((extension) => extension.welcomeMenus)]);
+  // A shell that belongs to no cluster, so it can be opened from here
+  const openTerminal = {
+    title: "Open a Terminal",
+    icon: "terminal",
+
+    click: () => navigateToTerminal(),
+  };
+
+  return computed(() => [
+    browseClusters,
+    openTerminal,
+    ...extensions.get().flatMap((extension) => extension.welcomeMenus),
+  ]);
 };

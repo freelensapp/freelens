@@ -9,7 +9,7 @@ import "./welcome.scss";
 import { Icon } from "@freelensapp/icon";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { forumsUrl } from "../../../common/vars";
 import productNameInjectable from "../../../common/vars/product-name.injectable";
 import newVersionNotificationInjectable from "./new-version-notification.injectable";

@@ -15,7 +15,7 @@ import { TooltipPosition } from "@freelensapp/tooltip";
 import { prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import extensionInstallationStateStoreInjectable from "../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
 import { Input, InputValidators } from "../input";
 import { unionInputValidatorsAsync } from "../input/input_validators";
@@ -44,7 +44,7 @@ const installInputValidator = unionInputValidatorsAsync(
   InputValidators.isPath,
 );
 
-const installTitle = `Name or file path or URL to an extension package (${supportedExtensionFormats.join(", ")})`;
+const installTitle = `Name, URL, or path to an extension package (${supportedExtensionFormats.join(", ")}) or to an unpacked extension directory`;
 
 const NonInjectedInstall = observer(
   ({ installExtensionFromInput, installFromSelectFileDialog, installState }: Dependencies) => {
@@ -69,7 +69,7 @@ const NonInjectedInstall = observer(
             <Input
               theme="round-black"
               disabled={installState.anyPreInstallingOrInstalling}
-              placeholder="Name or file path or URL"
+              placeholder="Name, URL, or path to a package or directory"
               showErrorsAsTooltip={{ preferredPositions: TooltipPosition.BOTTOM }}
               validators={installPath ? installInputValidator : undefined}
               value={installPath}
@@ -98,7 +98,7 @@ const NonInjectedInstall = observer(
           </div>
         </div>
         <small className={styles.proTip}>
-          <b>Pro-Tip</b>: you can drag and drop a tarball file to this area
+          <b>Pro-Tip</b>: you can drag and drop a tarball file, or an unpacked extension directory, to this area
         </small>
       </section>
     );

@@ -8,7 +8,6 @@ import { SidebarItemDeclaration, sidebarItemsInjectable } from "@freelensapp/clu
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import userPreferencesStateInjectable, {
   UserPreferencesState,
 } from "../../../features/user-preferences/common/state.injectable";

@@ -5,7 +5,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import tempy from "tempy";
+import { temporaryFile } from "tempy";
 import removePathInjectable from "../../common/fs/remove.injectable";
 import writeFileInjectable from "../../common/fs/write-file.injectable";
 import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
@@ -40,7 +40,7 @@ const installHelmChartInjectable = getInjectable({
     const state = di.inject(userPreferencesStateInjectable);
 
     return async ({ chart, kubeconfigPath, name, namespace, values, version, forceConflicts }) => {
-      const valuesFilePath = tempy.file({ name: "values.yaml" });
+      const valuesFilePath = temporaryFile({ name: "values.yaml" });
 
       await writeFile(valuesFilePath, values);
 

@@ -73,19 +73,12 @@ export interface DownloadMirror {
 }
 
 export const defaultPackageMirror = "default";
-export const chinaPackageMirror = "china";
 export const customPackageMirror = "custom";
 
 const defaultDownloadMirrorData: DownloadMirror = {
   url: "https://dl.k8s.io/release",
   label: "Default (Google)",
   platforms: new Set(["darwin", "win32", "linux"]),
-};
-
-const chinaPackageMirrorData: DownloadMirror = {
-  url: "https://mirror.azure.cn/kubernetes/kubectl",
-  label: "China (Azure)",
-  platforms: new Set(["win32", "linux"]),
 };
 
 const customPackageMirrorData: DownloadMirror = {
@@ -96,20 +89,32 @@ const customPackageMirrorData: DownloadMirror = {
 
 export const packageMirrors = new Map<string, DownloadMirror>([
   [defaultPackageMirror, defaultDownloadMirrorData],
-  [chinaPackageMirror, chinaPackageMirrorData],
   [customPackageMirror, customPackageMirrorData],
 ]);
 
-export type ExtensionRegistryLocation = "default" | "npmrc" | "custom";
+export type ExtensionRegistryLocation = "default" | "custom";
 
 export type ExtensionRegistry =
   | {
-      location: "default" | "npmrc";
+      location: "default";
       customUrl?: undefined;
     }
   | {
       location: "custom";
       customUrl: string;
+    };
+
+/**
+ * The shapes `extensionRegistryUrl` may have on disk. The `npmrc` location was
+ * implemented by forking the bundled `pnpm`, which the application no longer
+ * ships, so a value stored before its removal names a location that no longer
+ * exists. `fromStore` coerces it to `default`.
+ */
+export type StoredExtensionRegistry =
+  | ExtensionRegistry
+  | {
+      location: "npmrc";
+      customUrl?: undefined;
     };
 
 export type ClusterPageMenuOrder = {

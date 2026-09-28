@@ -7,13 +7,21 @@
  */
 
 import { registerInjectables as registerCatalogInjectables } from "./catalog/register-injectables";
+import createStandaloneTerminalApiInjectable from "./create-standalone-terminal-api.injectable";
 import createTerminalApiInjectable from "./create-terminal-api.injectable";
 import defaultWebsocketApiParamsInjectable from "./default-websocket-api-params.injectable";
 import { registerInjectables as registerHelpersInjectables } from "./helpers/register-injectables";
+import requestClusterShellTokenInjectable from "./request-cluster-shell-token.injectable";
+import requestStandaloneShellTokenInjectable from "./request-standalone-shell-token.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
+  try {
+    di.register(createStandaloneTerminalApiInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
   try {
     di.register(createTerminalApiInjectable);
   } catch (e) {
@@ -21,6 +29,16 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(defaultWebsocketApiParamsInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(requestClusterShellTokenInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(requestStandaloneShellTokenInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
