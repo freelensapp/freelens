@@ -21,6 +21,16 @@
 // are lazy and resolve through the DI container when read, which this file has
 // no business doing.
 //
+// When a member fails, it is almost always a class re-exported type-only, with
+// `export type { C }` or `export type { C } from "…"`, somewhere under
+// `common-api/`, `main-api/` or `renderer-api/`. Replace the re-export with a
+// type alias carrying the class's type parameters, as the existing ones do:
+//
+//   export type C<T = Default> = import("@freelensapp/some-package").C<T>;
+//
+// The "Extension API" section of AGENTS.md describes this rule and its twin,
+// the type-and-value pair that loses its type.
+//
 // The declaration is a build artifact: `pnpm test:unit` builds it first, as a
 // dependency of the fixture extension. `typescript` 7 has no compiler API, so
 // the checker comes from `@typescript/typescript6`, as in rollup-plugin-dts.
@@ -109,6 +119,11 @@ describe("the values declared by dist/extension-api.d.ts", () => {
   });
 
   it("all exist on the runtime namespace objects", () => {
-    expect(declared.filter((memberPath) => !existsAtRuntime(memberPath))).toEqual([]);
+    expect(
+      declared.filter((memberPath) => !existsAtRuntime(memberPath)),
+      "These members are declared as values but do not exist at runtime. If one is a class re-exported with " +
+        '`export type { C }`, replace the re-export with a type alias, `export type C<T> = import("…").C<T>`, ' +
+        "carrying the class's type parameters (see the Extension API section of AGENTS.md)",
+    ).toEqual([]);
   });
 });
