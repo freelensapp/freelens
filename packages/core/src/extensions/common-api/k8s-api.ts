@@ -312,7 +312,8 @@ export interface LensExtensionKubeObjectCRD {
 // `K8sApi` namespace member from the last declaration of its name only, so a
 // pair exported under its own name keeps the `const` and loses the type: it
 // stays callable but is not nameable. A member whose exported name differs from
-// its local one is re-exported as it is, with both meanings.
+// its local one is re-exported as it is, with both meanings. The fixture
+// extension's `contract-types.ts` names each of them as a type.
 export {
   ExternalDeploymentApi as DeploymentApi,
   ExternalIngressApi as IngressApi,
