@@ -133,12 +133,12 @@ contains the Fedora-based submission workflow and RPM packaging files. It
 submits source RPM builds for Fedora 43, 44, and 45 whenever its packaging
 files change on `main`.
 
-To enable the workflow, an administrator of the packaging repository must
-create a COPR API token for an account that can submit builds to
+To enable either workflow, an administrator must create a COPR API token for
+an account that can submit builds to
 [`ok8219/Freelens`](https://copr.fedorainfracloud.org/coprs/ok8219/Freelens/).
-In that repository, open **Settings** → **Secrets and variables** →
-**Actions**, then add these secrets from the API token's COPR CLI
-configuration:
+In each repository where the workflow will run, open **Settings** →
+**Secrets and variables** → **Actions**, then add these secrets from the API
+token's COPR CLI configuration:
 
 - `COPR_LOGIN`
 - `COPR_USERNAME`
@@ -146,6 +146,8 @@ configuration:
 
 Copy the configuration's `login`, `username`, and `token` values into the
 correspondingly named secrets. Do not commit these values to the repository.
+Before manually running the upstream workflow, update the packaging
+repository for the FreeLens release being submitted.
 
 #### Snap
 
