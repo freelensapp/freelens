@@ -27,6 +27,10 @@ export type { InstalledExtension, LensExtensionManifest } from "../installed-ext
 // for a type-only namespace (TS2708 for consumers of the bundled d.ts).
 export type PackageJson = import("type-fest").PackageJson;
 
-export type { LensExtension } from "../lens-extension";
+// A type alias instead of a type-only re-export: rollup-plugin-dts declares a
+// class re-exported with `export type` inside a namespace as a value too, and
+// `Common.LensExtension` is not one at runtime, so `new` and `instanceof` on it
+// would compile and throw. A type alias stays a type in the declaration.
+export type LensExtension = import("../lens-extension").LensExtension;
 
 export const logger = asLazyInjectedForExtensionApi(loggerInjectionToken);

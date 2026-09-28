@@ -139,42 +139,45 @@ export const vpaStore = asLazyInjectedForExtensionApi(verticalPodAutoscalerStore
 
 export * from "../common-api/k8s-api";
 
-export type {
-  ClusterRoleApi,
-  ClusterRoleBindingApi,
-  ConfigMapApi,
-  CronJobApi,
-  CustomResourceDefinitionApi,
-  DaemonSetApi,
-  DeploymentApi,
-  EndpointSliceApi,
-  EndpointsApi,
-  HorizontalPodAutoscalerApi,
-  IngressApi,
-  JobApi,
-  KubeEventApi,
-  LimitRangeApi,
-  NamespaceApi,
-  NetworkPolicyApi,
-  NodeApi,
-  NodeMetricsApi,
-  PersistentVolumeApi,
-  PersistentVolumeClaimApi,
-  PodApi,
-  PodDisruptionBudgetApi,
-  PodMetricsApi,
-  PriorityClassApi,
-  ReplicaSetApi,
-  ResourceQuotaApi,
-  RoleApi,
-  RoleBindingApi,
-  SecretApi,
-  ServiceAccountApi,
-  ServiceApi,
-  StatefulSetApi,
-  StorageClassApi,
-  VerticalPodAutoscalerApi,
-} from "@freelensapp/kube-api";
+export type { DeploymentApi, IngressApi } from "@freelensapp/kube-api";
+
+// Type aliases instead of `export type { … } from "@freelensapp/kube-api"`:
+// rollup-plugin-dts declares a class re-exported type-only inside a namespace
+// as a value too, and none of these classes exists at runtime in
+// `Renderer.K8sApi`, so `new` and `instanceof` on them would compile and throw.
+// Their instances are the stores' `api` and the `*Api` singletons.
+export type ClusterRoleApi = import("@freelensapp/kube-api").ClusterRoleApi;
+export type ClusterRoleBindingApi = import("@freelensapp/kube-api").ClusterRoleBindingApi;
+export type ConfigMapApi = import("@freelensapp/kube-api").ConfigMapApi;
+export type CronJobApi = import("@freelensapp/kube-api").CronJobApi;
+export type CustomResourceDefinitionApi = import("@freelensapp/kube-api").CustomResourceDefinitionApi;
+export type DaemonSetApi = import("@freelensapp/kube-api").DaemonSetApi;
+export type EndpointSliceApi = import("@freelensapp/kube-api").EndpointSliceApi;
+export type EndpointsApi = import("@freelensapp/kube-api").EndpointsApi;
+export type HorizontalPodAutoscalerApi = import("@freelensapp/kube-api").HorizontalPodAutoscalerApi;
+export type JobApi = import("@freelensapp/kube-api").JobApi;
+export type KubeEventApi = import("@freelensapp/kube-api").KubeEventApi;
+export type LimitRangeApi = import("@freelensapp/kube-api").LimitRangeApi;
+export type NamespaceApi = import("@freelensapp/kube-api").NamespaceApi;
+export type NetworkPolicyApi = import("@freelensapp/kube-api").NetworkPolicyApi;
+export type NodeApi = import("@freelensapp/kube-api").NodeApi;
+export type NodeMetricsApi = import("@freelensapp/kube-api").NodeMetricsApi;
+export type PersistentVolumeApi = import("@freelensapp/kube-api").PersistentVolumeApi;
+export type PersistentVolumeClaimApi = import("@freelensapp/kube-api").PersistentVolumeClaimApi;
+export type PodApi = import("@freelensapp/kube-api").PodApi;
+export type PodDisruptionBudgetApi = import("@freelensapp/kube-api").PodDisruptionBudgetApi;
+export type PodMetricsApi = import("@freelensapp/kube-api").PodMetricsApi;
+export type PriorityClassApi = import("@freelensapp/kube-api").PriorityClassApi;
+export type ReplicaSetApi = import("@freelensapp/kube-api").ReplicaSetApi;
+export type ResourceQuotaApi = import("@freelensapp/kube-api").ResourceQuotaApi;
+export type RoleApi = import("@freelensapp/kube-api").RoleApi;
+export type RoleBindingApi = import("@freelensapp/kube-api").RoleBindingApi;
+export type SecretApi = import("@freelensapp/kube-api").SecretApi;
+export type ServiceAccountApi = import("@freelensapp/kube-api").ServiceAccountApi;
+export type ServiceApi = import("@freelensapp/kube-api").ServiceApi;
+export type StatefulSetApi = import("@freelensapp/kube-api").StatefulSetApi;
+export type StorageClassApi = import("@freelensapp/kube-api").StorageClassApi;
+export type VerticalPodAutoscalerApi = import("@freelensapp/kube-api").VerticalPodAutoscalerApi;
 
 export const requestMetrics = asLazyInjectedFunctionForExtensionApi(requestMetricsInjectable);
 
