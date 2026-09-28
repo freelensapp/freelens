@@ -7,15 +7,17 @@
 import kubernetesClusterCategoryInjectable from "../../common/catalog/categories/kubernetes-cluster.injectable";
 import { asLazyInjectedForExtensionApi } from "../extension-api-di";
 
-import type { KubernetesClusterCategory } from "../../common/catalog-entities/kubernetes-cluster";
-
 export {
   GeneralEntity,
   KubernetesCluster,
   WebLink,
 } from "../../common/catalog-entities";
 
-export type { KubernetesClusterCategory };
+// A type alias instead of `export type { KubernetesClusterCategory }`, which
+// rollup-plugin-dts would declare as a value too, although only the instance,
+// `kubernetesClusterCategory`, exists at runtime.
+export type KubernetesClusterCategory =
+  import("../../common/catalog-entities/kubernetes-cluster").KubernetesClusterCategory;
 
 export const kubernetesClusterCategory = asLazyInjectedForExtensionApi(kubernetesClusterCategoryInjectable);
 

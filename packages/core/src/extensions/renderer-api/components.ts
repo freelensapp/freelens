@@ -40,9 +40,13 @@ export {
   type NotificationId,
   type NotificationMessage,
   NotificationStatus,
-  type NotificationsStore,
   type ShowNotification,
 } from "@freelensapp/notifications";
+
+// A type alias instead of a type-only re-export, which rollup-plugin-dts would
+// declare as a value too, although only the instance, `notificationsStore`,
+// exists at runtime.
+export type NotificationsStore = import("@freelensapp/notifications").NotificationsStore;
 export * from "@freelensapp/spinner";
 export * from "@freelensapp/tooltip";
 export * from "../../renderer/components/add-remove-buttons";

@@ -1120,6 +1120,9 @@ importers:
       '@types/ws':
         specifier: 'catalog:'
         version: 8.18.1
+      '@typescript/typescript6':
+        specifier: 'catalog:'
+        version: 6.0.2
       electron:
         specifier: 'catalog:'
         version: 42.7.1(supports-color@8.1.1)
