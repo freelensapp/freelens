@@ -57,13 +57,26 @@ export type FixtureRendererFetch = typeof Renderer.Util.fetch;
 export type FixtureRendererNavigate = typeof Renderer.Navigation.navigate;
 export type FixtureIconProps = Renderer.Component.IconProps;
 
-// The same pairs in `Renderer.K8sApi`, where `DeploymentApi` and `IngressApi`
-// are the host's API classes instead and are not pairs.
+// The same pairs in `Renderer.K8sApi`.
 export type FixtureRendererKubeApi = Renderer.K8sApi.KubeApi<Renderer.K8sApi.Pod>;
 export type FixtureRendererKubeJsonApi = Renderer.K8sApi.KubeJsonApi;
 export type FixtureRendererPodsApi = Renderer.K8sApi.PodsApi;
 export type FixtureRendererNodesApi = Renderer.K8sApi.NodesApi;
+export type FixtureRendererDeploymentApi = Renderer.K8sApi.DeploymentApi;
+export type FixtureRendererIngressApi = Renderer.K8sApi.IngressApi;
 export type FixtureRendererPersistentVolumeClaimsApi = Renderer.K8sApi.PersistentVolumeClaimsApi;
+
+// `DeploymentApi` and `IngressApi` are the common pairs in `Renderer.K8sApi`
+// too, as they are at runtime: constructed with the options only, not with the
+// host's dependency bag that the host's classes of the same name take.
+type Holds<T extends true> = T;
+
+export type RendererDeploymentApiTakesOptionsOnly = Holds<
+  ConstructorParameters<typeof Renderer.K8sApi.DeploymentApi> extends [opts?: unknown] ? true : false
+>;
+export type RendererIngressApiTakesOptionsOnly = Holds<
+  ConstructorParameters<typeof Renderer.K8sApi.IngressApi> extends [opts?: unknown] ? true : false
+>;
 
 // The namespaces have to work in type positions in a signature, not only as
 // aliases — that is how an extension author actually reaches them.

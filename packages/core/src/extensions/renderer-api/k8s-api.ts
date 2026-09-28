@@ -139,13 +139,17 @@ export const vpaStore = asLazyInjectedForExtensionApi(verticalPodAutoscalerStore
 
 export * from "../common-api/k8s-api";
 
-export type { DeploymentApi, IngressApi } from "@freelensapp/kube-api";
-
 // Type aliases instead of `export type { … } from "@freelensapp/kube-api"`:
 // rollup-plugin-dts declares a class re-exported type-only inside a namespace
 // as a value too, and none of these classes exists at runtime in
 // `Renderer.K8sApi`, so `new` and `instanceof` on them would compile and throw.
 // Their instances are the stores' `api` and the `*Api` singletons.
+//
+// `DeploymentApi` and `IngressApi` are deliberately not among them. The
+// `export *` above brings the common type-and-value pair of each, whose
+// constructor takes the options only, and that pair is what `Renderer.K8sApi`
+// carries at runtime. Shadowing it here with the host's class would declare a
+// constructor that takes the host's dependency bag instead.
 export type ClusterRoleApi = import("@freelensapp/kube-api").ClusterRoleApi;
 export type ClusterRoleBindingApi = import("@freelensapp/kube-api").ClusterRoleBindingApi;
 export type ConfigMapApi = import("@freelensapp/kube-api").ConfigMapApi;
