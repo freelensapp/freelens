@@ -55,7 +55,7 @@
   "peerDependencies": {
     "@ogre-tools/injectable": "catalog:extensions",
     "@ogre-tools/injectable-react": "catalog:extensions",
-    "electron": ">=42.10.0",
+    "electron": ">=42.0.0",
     "mobx": "catalog:extensions",
     "mobx-react": "catalog:extensions",
     "monaco-editor": "catalog:extensions",
