@@ -117,6 +117,26 @@ When a `.json` file needs an explanation — why an entry is excluded, why a
 version is pinned — put it somewhere it survives: the package README, this
 file, or the pull request that introduced it. Do not smuggle it into the JSON.
 
+## Volatile Facts in Documentation
+
+Documentation — `docs/`, the READMEs, this file — describes how things are,
+and has to stay true without anyone maintaining it. Keep out of it whatever
+goes stale on its own:
+
+- issue and pull-request numbers,
+- dates,
+- counts that change without the document changing: how many extensions use
+  something, how many members a namespace has, how many files import a module.
+
+State the rule or the fact rather than the measurement or the history that led
+to it: "no extension is known to use it", not "none of the 29 surveyed
+extensions uses it"; "renderer code gets no guarantee of Node", not "decided in
+the API review". The measurement, the history and the issue references belong
+in the pull request description and the issue, which are dated by nature.
+
+Existing documents still carry such references. Do not copy them as a pattern,
+and drop them from a passage you are rewriting anyway.
+
 ## Build System
 
 ### Commands
@@ -139,6 +159,111 @@ When facing caching issues:
 rm -rf .turbo packages/core/dist freelens/dist
 pnpm build
 ```
+
+## Runtime Environments in Type-Checking
+
+The application runs code in two environments: **main** (Node, Electron) and
+**renderer** (a browser page). `pnpm type:check` checks the sources of
+`freelens/src` and `packages/core/src` once per environment, so that an API the
+environment does not have fails the check before it fails at runtime:
+
+| Program                   | Environment                     | Checks                                  |
+| ------------------------- | ------------------------------- | --------------------------------------- |
+| `tsconfig.typecheck.json` | DOM, Node and Vitest globals    | every file, tests and unclassified ones |
+| `tsconfig.main.json`      | Node, no DOM                    | main and common files                   |
+| `tsconfig.renderer.json`  | DOM, no Node                    | renderer and common files               |
+
+The two environment programs extend `tsconfig.typecheck.json`, so they share
+its `paths`. `pnpm type:check:environments` runs them alone.
+
+### Which environment a file belongs to
+
+The context segments in a file's path decide:
+
+- `main/` or `main-api/` anywhere in the path: the main program;
+- `renderer/` or `renderer-api/` anywhere in the path: the renderer program;
+- `common/` or `common-api/` with neither of the above: both programs. A main
+  or renderer segment wins over common, so `renderer/common/` is renderer code.
+
+Contexts nest anywhere (`features/*/{main,renderer,common}`), and the
+`include` and `exclude` globs of the two configs express exactly this rule.
+Put new code under a context directory. A file whose path carries no context
+has to be listed in the `include` of the config (or both configs, for common
+code) of the process that loads it; the lists at the end of both `include`
+arrays hold the existing ones. An unlisted one is checked by the combined
+program only, like `extensions/extension-api.ts`, which bundles the types of
+all three extension API namespaces on purpose.
+
+Tests and test support (`*.test.ts(x)`, `__tests__/`, `test-utils/`,
+`*.global-override-for-injectable.ts`, `getDiForUnitTesting`, …) are kept out
+of both programs, because Vitest runs them with DOM and Node alike.
+
+Common code uses only what both environments have: `globalThis.crypto`,
+`TextEncoder`, `URL`, `AbortController`, `structuredClone`, timers. Write
+`globalThis.` when in doubt. The extension-side version of the same rule is in
+the source-layout section of `docs/v2-extension-migration.md`.
+
+### How the check works
+
+`scripts/type-check-environments.mjs` runs both programs and counts only the
+errors in a program's own files, the ones its `include` classifies. A program
+also holds every file its files import, including the other environment's
+files and other packages, and their errors there say nothing about the
+environment rule; the combined program checks those files in full.
+
+Files that failed the check when it was introduced are on the legacy lists in
+`scripts/type-check-environments/legacy.jsonc`: main or common files that need
+DOM, and renderer or common files that need Node, which the node-integrated
+renderer still allows. Their errors are tolerated. **The lists may only
+shrink:** never add a file to make a new error pass. When a listed file stops
+failing, the check fails until it is removed from its list.
+
+`scripts/type-check-environments/expected-failures/` proves that the programs
+still reject what they should: every line there that must fail carries
+`@ts-expect-error`, so a program that lets it through reports an unused
+directive. Its `main/`, `renderer/` and `common/` subdirectories fall into the
+programs by the same rule as the sources.
+
+Two things in the dependencies would otherwise defeat the programs silently;
+the expected-failure files catch both if they come back:
+
+- A declaration file with `/// <reference types="node" />`, and winston,
+  electron and undici all have one, loads `@types/node` into any program that
+  reaches it, whatever `types` says. The renderer program sets `typeRoots` to
+  `scripts/type-check-environments/renderer-type-roots/`, whose empty `node`
+  package absorbs those references.
+- A declaration file with `/// <reference lib="dom" />` adds DOM to any program
+  that reaches it, whatever `lib` says. The main program reaches renderer code
+  through type imports, so the pnpm patch of `@xterm/xterm` removes that line
+  from its typings. A new dependency with the same line needs the same
+  treatment.
+
+DOM _type_ names such as `HTMLElement` still resolve in the main program,
+because `@types/react` declares empty stand-ins for them; values such as
+`document` and `window` do not.
+
+### The editor
+
+VS Code uses the root `tsconfig.json`, which has DOM and Node together, for
+every file. The environment programs are a CI check the editor does not
+reflect: a Node global in renderer code shows no type error in the editor and
+fails `pnpm type:check`.
+
+Biome covers part of the gap while you type. An override in `biome.jsonc`
+turns on `noNodejsModules` for the `renderer/`, `renderer-api/`, `common/` and
+`common-api/` files of `freelens/src` and `packages/core/src`, classified by
+the same path rule as the renderer program and with the same test files left
+out. It catches **imports** of Node builtins (`node:fs`, `path`, …), so the
+Biome extension flags them in the editor and `biome check` fails on them. It
+does not catch **Node globals** such as `Buffer`, `process`, `__dirname` or
+`NodeJS.*` types, and it does not look at the files that carry no context in
+their path; only `pnpm type:check` catches those.
+
+The files that import a Node builtin today are exempted in a second override,
+which turns the rule off for them. Every one of them is also on the renderer
+legacy list, and `scripts/type-check-environments.mjs` fails when an exempted
+file is not, so the exemptions can only shrink with that list: remove a file
+from both when you move its Node import out.
 
 ## Dependency Injection System
 
@@ -312,7 +437,8 @@ layer was removed in #2118.
 
 ### Build Failures
 
-1. Check for TypeScript errors: `pnpm type:check`
+1. Check for TypeScript errors: `pnpm type:check` (see "Runtime Environments in
+   Type-Checking" when the main or renderer program fails)
 2. Check for linting errors: `pnpm lint`
 3. Verify dependencies: `pnpm install`
 4. Check Node.js version matches `.nvmrc`
@@ -381,13 +507,36 @@ depends on the question:
 - [`docs/v2-extension-migration.md`](./docs/v2-extension-migration.md) — the
   author-facing **porting guide** from v1.
 
-Two traps worth carrying without looking them up. The API surface is only what
+Three traps worth carrying without looking them up. The API surface is only what
 the `Common` / `Main` / `Renderer` namespaces re-export — every other
 `@freelensapp/*` package is private and inlined into the published declaration,
 so a symbol that is not re-exported is unreachable by any means. And the host
 must be the single instance of React, mobx, monaco and ogre-tools; a second
 copy of mobx fails **silently**, so changes there need an identity assertion
 rather than a passing test suite.
+
+The third: the published declaration is not the source. `rollup-plugin-dts`
+rewrites each module behind a namespace into per-member helpers, and that
+rewrite can change what a name means inside the API namespaces:
+
+- A **type-and-value pair**, `type X` and `const X` of the same name, keeps
+  only the const: `X` stays callable but can no longer be named as a type.
+  Declare the pair under a local name and export it with
+  `export { Local as X }`; a member whose exported name differs from its local
+  one passes through with both meanings. Merging an interface with the const
+  does not help, because the plugin keeps whichever declaration comes last.
+- A **class re-exported type-only**, with `export type { C }` or
+  `export type { C } from "…"`, is declared as a value too, so `new C(…)` and
+  `x instanceof C` compile against the declaration and throw in the extension.
+  Use a type alias instead, `export type C<T> = import("…").C<T>`, carrying the
+  class's type parameters with their constraints and defaults.
+
+Two guards catch a regression. The fixture extension's
+`packages/fixture-extension/src/common/contract-types.ts` names the pairs as
+types, so its type check fails when one loses its type meaning.
+`packages/core/src/extensions/__tests__/extension-api-declared-values.test.ts`
+walks the built declaration with the TypeScript checker and fails on every
+value it declares that the runtime namespace object does not have.
 
 ## Best Practices
 
@@ -426,11 +575,11 @@ The trigger text may also carry `[model:<alias>]`, `[effort:<level>]` and
 the runner for that run (see the `parse` job for the accepted aliases). They are
 only read from the triggering text.
 
-The default model is `claude-opus-5[1m]` (Opus 5 with the 1M-token context) and
-it runs at `high` effort. Naming a model explicitly drops that default: the run
-then uses the CLI default effort unless `[effort:...]` also says otherwise.
-Accepted levels are `low`, `medium`, `high`, `xhigh` and `max`; anything else is
-ignored with a note in the job log.
+The default model is `claude-opus-5-5[1m]` (Opus 5.5 with the 1M-token
+context) and it runs at `high` effort. Naming a model explicitly drops that
+default: the run then uses the CLI default effort unless `[effort:...]` also
+says otherwise. Accepted levels are `low`, `medium`, `high`, `xhigh` and
+`max`; anything else is ignored with a note in the job log.
 
 ### Rules for the local agent
 

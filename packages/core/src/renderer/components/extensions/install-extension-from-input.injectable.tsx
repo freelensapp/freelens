@@ -18,9 +18,25 @@ import { getMessageFromError } from "./get-message-from-error/get-message-from-e
 export type InstallExtensionFromInput = (input: string) => Promise<void>;
 
 /**
+ * Only `http:` and `https:` are downloads. `InputValidators.isUrl` accepts
+ * anything `new URL` parses, and that includes a Windows drive path such as
+ * `C:\extensions\my-extension`, whose protocol is `c:`; such input has to reach
+ * the filesystem instead.
+ */
+const isDownloadUrl = (input: string) => {
+  try {
+    const { protocol } = new URL(input);
+
+    return protocol === "http:" || protocol === "https:";
+  } catch {
+    return false;
+  }
+};
+
+/**
  * The one install verb, with the source inferred from the argument.
  *
- * Four shapes: a package name, resolved against the registry; a URL; a path to a
+ * Four shapes: a package name, resolved against the registry; an `http(s)` URL; a path to a
  * `.tgz`; and a path to a directory. The first three produce a managed copy, the
  * fourth registers the extension in place.
  */
@@ -38,7 +54,7 @@ const installExtensionFromInputInjectable = getInjectable({
 
     return async (input) => {
       try {
-        if (InputValidators.isUrl.validate(input)) {
+        if (isDownloadUrl(input)) {
           return await installFromUrl(input);
         }
 

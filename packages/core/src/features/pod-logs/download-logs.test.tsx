@@ -113,17 +113,18 @@ describe("download logs options in logs dock tab", () => {
       });
     });
 
-    // TODO: TestingLibraryElementError: Unable to find an element by: [data-testid="download-all-logs"]
-    describe.skip("when logs not available", () => {
+    describe("when logs not available", () => {
       beforeEach(() => {
         const createLogsTab = windowDi.inject(createPodLogsTabInjectable);
 
         getLogsMock.mockReturnValue([]);
         getSplitLogsMock.mockReturnValue([]);
 
-        createLogsTab({
-          selectedPod: pod,
-          selectedContainer: container,
+        act(() => {
+          createLogsTab({
+            selectedPod: pod,
+            selectedContainer: container,
+          });
         });
       });
 
@@ -138,17 +139,18 @@ describe("download logs options in logs dock tab", () => {
       });
     });
 
-    // TODO: TestingLibraryElementError: Unable to find an element by: [data-testid="download-all-logs"]
-    describe.skip("when logs available", () => {
+    describe("when logs available", () => {
       beforeEach(() => {
         const createLogsTab = windowDi.inject(createPodLogsTabInjectable);
 
         getLogsMock.mockReturnValue(["some-logs"]);
         getSplitLogsMock.mockReturnValue([...logs]);
 
-        createLogsTab({
-          selectedPod: pod,
-          selectedContainer: container,
+        act(() => {
+          createLogsTab({
+            selectedPod: pod,
+            selectedContainer: container,
+          });
         });
       });
 
@@ -175,7 +177,7 @@ describe("download logs options in logs dock tab", () => {
           beforeEach(() => {
             const button = rendered.getByTestId("download-visible-logs");
 
-            button.click();
+            act(() => button.click());
           });
 
           it("shows save dialog with proper attributes", () => {
@@ -189,8 +191,8 @@ describe("download logs options in logs dock tab", () => {
           });
 
           describe("when selected 'download all logs'", () => {
-            beforeEach(() => {
-              act(() => {
+            beforeEach(async () => {
+              await act(async () => {
                 const button = rendered.getByTestId("download-all-logs");
 
                 button.click();
@@ -240,8 +242,8 @@ describe("download logs options in logs dock tab", () => {
           });
 
           describe("when selected 'download all logs'", () => {
-            beforeEach(() => {
-              act(() => {
+            beforeEach(async () => {
+              await act(async () => {
                 const button = rendered.getByTestId("download-all-logs");
 
                 button.click();
@@ -264,8 +266,8 @@ describe("download logs options in logs dock tab", () => {
           });
 
           describe("when selected 'download all logs'", () => {
-            beforeEach(() => {
-              act(() => {
+            beforeEach(async () => {
+              await act(async () => {
                 const button = rendered.getByTestId("download-all-logs");
 
                 button.click();

@@ -36,6 +36,9 @@ catalogs:
     '@mui/material':
       specifier: 9.2.0
       version: 9.2.0
+    '@noble/hashes':
+      specifier: 2.2.0
+      version: 2.2.0
     '@ogre-tools/fp':
       specifier: 23.2.0
       version: 23.2.0
@@ -388,15 +391,18 @@ catalogs:
     '@types/react':
       specifier: ^19.2.17
       version: 19.2.17
-    '@xterm/xterm':
-      specifier: ^6.0.0
-      version: 6.0.0
+    '@types/react-dom':
+      specifier: ^19.2.3
+      version: 19.2.3
     chart.js:
       specifier: ^4.5.1
       version: 4.5.1
     conf:
       specifier: ^15.1.0
       version: 15.1.0
+    es-toolkit:
+      specifier: ^1.49.0
+      version: 1.49.0
     immer:
       specifier: ^11.1.8
       version: 11.1.8
@@ -412,9 +418,6 @@ catalogs:
     react-select:
       specifier: ^5.10.2
       version: 5.10.2
-    react-window:
-      specifier: ^2.3.0
-      version: 2.3.0
     rfc6902:
       specifier: ^5.2.0
       version: 5.2.0
@@ -431,7 +434,7 @@ overrides:
 
 patchedDependencies:
   '@async-fn/vitest': 86478f697e61e0e2ca0274a6b255c31c05d0dd83078743e9e755910710d597ef
-  '@xterm/xterm@6.0.0': fb7ebbc29ef246137af8ea109596e698df4691ccaa0b87ed5969259bcb27e435
+  '@xterm/xterm@6.0.0': df931daebd9460ca3e9cf3ca3413eae5d331a96518b212c95c4bded3a564a11a
 
 importers:
 
@@ -923,7 +926,7 @@ importers:
         version: 0.12.0
       '@xterm/xterm':
         specifier: 'catalog:'
-        version: 6.0.0(patch_hash=fb7ebbc29ef246137af8ea109596e698df4691ccaa0b87ed5969259bcb27e435)
+        version: 6.0.0(patch_hash=df931daebd9460ca3e9cf3ca3413eae5d331a96518b212c95c4bded3a564a11a)
       ansi_up:
         specifier: 'catalog:'
         version: 6.0.6
@@ -1117,6 +1120,9 @@ importers:
       '@types/ws':
         specifier: 'catalog:'
         version: 8.18.1
+      '@typescript/typescript6':
+        specifier: 'catalog:'
+        version: 6.0.2
       electron:
         specifier: 'catalog:'
         version: 42.7.1(supports-color@8.1.1)
@@ -1223,9 +1229,9 @@ importers:
       '@types/react':
         specifier: catalog:extensions
         version: 19.2.17
-      '@xterm/xterm':
+      '@types/react-dom':
         specifier: catalog:extensions
-        version: 6.0.0(patch_hash=fb7ebbc29ef246137af8ea109596e698df4691ccaa0b87ed5969259bcb27e435)
+        version: 19.2.3(@types/react@19.2.17)
       chart.js:
         specifier: catalog:extensions
         version: 4.5.1
@@ -1235,12 +1241,18 @@ importers:
       electron:
         specifier: '>=42.0.0'
         version: 42.7.1(supports-color@8.1.1)
+      es-toolkit:
+        specifier: catalog:extensions
+        version: 1.49.0
       immer:
         specifier: catalog:extensions
         version: 11.1.8
       mobx:
         specifier: catalog:extensions
         version: 6.15.0
+      mobx-react:
+        specifier: ^9.1.1
+        version: 9.2.2(mobx@6.15.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       monaco-editor:
         specifier: catalog:extensions
         version: 0.56.0
@@ -1250,9 +1262,6 @@ importers:
       react-select:
         specifier: catalog:extensions
         version: 5.10.2(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(supports-color@8.1.1)
-      react-window:
-        specifier: catalog:extensions
-        version: 2.3.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       rfc6902:
         specifier: catalog:extensions
         version: 5.2.0
@@ -1280,11 +1289,13 @@ importers:
         version: 5.2.0(supports-color@8.1.1)(ts-node@10.9.2(@types/node@24.12.4)(typescript@7.0.2))(typescript@7.0.2)
 
   packages/fixture-extension:
-    dependencies:
+    devDependencies:
       '@freelensapp/extensions':
         specifier: workspace:^
         version: link:../extensions
-    devDependencies:
+      '@types/node':
+        specifier: catalog:extensions
+        version: 24.12.4
       '@types/react':
         specifier: catalog:extensions
         version: 19.2.17
@@ -2475,6 +2486,9 @@ importers:
       '@astronautlabs/jsonpath':
         specifier: 'catalog:'
         version: 1.1.2
+      '@noble/hashes':
+        specifier: 'catalog:'
+        version: 2.2.0
       es-toolkit:
         specifier: 'catalog:'
         version: 1.49.0
@@ -9454,7 +9468,7 @@ snapshots:
 
   '@xterm/addon-web-links@0.12.0': {}
 
-  '@xterm/xterm@6.0.0(patch_hash=fb7ebbc29ef246137af8ea109596e698df4691ccaa0b87ed5969259bcb27e435)': {}
+  '@xterm/xterm@6.0.0(patch_hash=df931daebd9460ca3e9cf3ca3413eae5d331a96518b212c95c4bded3a564a11a)': {}
 
   abbrev@4.0.0: {}
 

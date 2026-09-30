@@ -35,12 +35,12 @@
   "dependencies": {
     "@types/node": "catalog:extensions",
     "@types/react": "catalog:extensions",
-    "@xterm/xterm": "catalog:extensions",
+    "@types/react-dom": "catalog:extensions",
     "chart.js": "catalog:extensions",
     "conf": "catalog:extensions",
+    "es-toolkit": "catalog:extensions",
     "immer": "catalog:extensions",
     "react-select": "catalog:extensions",
-    "react-window": "catalog:extensions",
     "rfc6902": "catalog:extensions",
     "type-fest": "catalog:extensions"
   },
@@ -57,6 +57,7 @@
     "@ogre-tools/injectable-react": "catalog:extensions",
     "electron": ">=42.0.0",
     "mobx": "catalog:extensions",
+    "mobx-react": "catalog:extensions",
     "monaco-editor": "catalog:extensions",
     "react": "catalog:extensions"
   },
@@ -71,6 +72,9 @@
       "optional": true
     },
     "mobx": {
+      "optional": true
+    },
+    "mobx-react": {
       "optional": true
     },
     "monaco-editor": {

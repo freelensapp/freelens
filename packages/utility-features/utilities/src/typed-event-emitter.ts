@@ -13,8 +13,8 @@ export type EventMap = Record<string, (...args: never[]) => void>;
  * are restricted to the keys of `Events` and each listener is typed by the
  * corresponding entry.
  *
- * This is a purely structural type; it does not provide an implementation. Use
- * it by casting an `EventEmitter`:
+ * {@link TypedEmitter} implements it without Node. To type a `node:events`
+ * `EventEmitter` instead, cast it:
  *
  * ```typescript
  * type MyEvents = {
@@ -57,4 +57,165 @@ export interface TypedEventEmitter<Events extends EventMap> {
 
   getMaxListeners(): number;
   setMaxListeners(maxListeners: number): this;
+}
+
+type Listener = (...args: never[]) => void;
+
+/**
+ * A listener as stored: either the listener itself or, for `once`, a wrapper
+ * that remembers the listener it wraps so that it can be removed by it.
+ */
+type StoredListener = Listener & { readonly listener?: Listener };
+
+/**
+ * An implementation of {@link TypedEventEmitter} that does not need Node, for
+ * events that are emitted and handled in the same process.
+ *
+ * It behaves like `node:events`' `EventEmitter` for the members it declares:
+ * listeners are called synchronously, in registration order, with the emitter
+ * as `this`; a listener added or removed during an `emit` does not change which
+ * listeners that `emit` calls; `off` removes the most recently added matching
+ * listener, including one added by `once`.
+ *
+ * Unlike `EventEmitter`, it emits no `newListener` or `removeListener` events,
+ * gives an `error` event no special meaning, and does not warn when the
+ * maximum number of listeners is exceeded: `setMaxListeners` only stores the
+ * value that `getMaxListeners` returns.
+ *
+ * ```typescript
+ * type MyEvents = {
+ *   message: (from: string, content: string) => void;
+ * };
+ *
+ * class Chat extends TypedEmitter<MyEvents> {}
+ * ```
+ */
+export class TypedEmitter<Events extends EventMap> implements TypedEventEmitter<Events> {
+  readonly #listenersByEvent = new Map<keyof Events, StoredListener[]>();
+  #maxListeners = 10;
+
+  addListener<E extends keyof Events>(event: E, listener: Events[E]): this {
+    return this.#add(event, listener, false);
+  }
+
+  on<E extends keyof Events>(event: E, listener: Events[E]): this {
+    return this.#add(event, listener, false);
+  }
+
+  once<E extends keyof Events>(event: E, listener: Events[E]): this {
+    return this.#add(event, this.#wrapOnce(event, listener), false);
+  }
+
+  prependListener<E extends keyof Events>(event: E, listener: Events[E]): this {
+    return this.#add(event, listener, true);
+  }
+
+  prependOnceListener<E extends keyof Events>(event: E, listener: Events[E]): this {
+    return this.#add(event, this.#wrapOnce(event, listener), true);
+  }
+
+  off<E extends keyof Events>(event: E, listener: Events[E]): this {
+    return this.removeListener(event, listener);
+  }
+
+  removeListener<E extends keyof Events>(event: E, listener: Events[E]): this {
+    const listeners = this.#listenersByEvent.get(event);
+
+    if (listeners) {
+      const index = listeners.findLastIndex((stored) => stored === listener || stored.listener === listener);
+
+      if (index !== -1) {
+        listeners.splice(index, 1);
+
+        if (listeners.length === 0) {
+          this.#listenersByEvent.delete(event);
+        }
+      }
+    }
+
+    return this;
+  }
+
+  removeAllListeners<E extends keyof Events>(event?: E): this {
+    if (event === undefined) {
+      this.#listenersByEvent.clear();
+    } else {
+      this.#listenersByEvent.delete(event);
+    }
+
+    return this;
+  }
+
+  emit<E extends keyof Events>(event: E, ...args: Parameters<Events[E]>): boolean {
+    const listeners = this.#listenersByEvent.get(event);
+
+    if (!listeners) {
+      return false;
+    }
+
+    for (const listener of [...listeners]) {
+      Reflect.apply(listener, this, args);
+    }
+
+    return true;
+  }
+
+  eventNames(): (keyof Events)[] {
+    return [...this.#listenersByEvent.keys()];
+  }
+
+  listeners<E extends keyof Events>(event: E): Events[E][] {
+    return (this.#listenersByEvent.get(event) ?? []).map((stored) => stored.listener ?? stored) as Events[E][];
+  }
+
+  rawListeners<E extends keyof Events>(event: E): Events[E][] {
+    return [...(this.#listenersByEvent.get(event) ?? [])] as Events[E][];
+  }
+
+  listenerCount<E extends keyof Events>(event: E): number {
+    return this.#listenersByEvent.get(event)?.length ?? 0;
+  }
+
+  getMaxListeners(): number {
+    return this.#maxListeners;
+  }
+
+  setMaxListeners(maxListeners: number): this {
+    this.#maxListeners = maxListeners;
+
+    return this;
+  }
+
+  #add(event: keyof Events, listener: StoredListener, prepend: boolean): this {
+    const listeners = this.#listenersByEvent.get(event);
+
+    if (!listeners) {
+      this.#listenersByEvent.set(event, [listener]);
+    } else if (prepend) {
+      listeners.unshift(listener);
+    } else {
+      listeners.push(listener);
+    }
+
+    return this;
+  }
+
+  #wrapOnce<E extends keyof Events>(event: E, listener: Events[E]): StoredListener {
+    let fired = false;
+
+    // The flag covers an `emit` that already copied the listeners when the
+    // wrapper was removed by a nested `emit` of the same event.
+    const wrapper = Object.assign(
+      (...args: never[]) => {
+        if (!fired) {
+          fired = true;
+          this.removeListener(event, wrapper as unknown as Events[E]);
+          Reflect.apply(listener, this, args);
+        }
+      },
+      { listener },
+    );
+
+    return wrapper;
+  }
 }

@@ -95,12 +95,12 @@ function KubeApiCstr<
   return api;
 }
 
-export type KubeApi<
+type ExternalKubeApi<
   Object extends KubeObject = KubeObject,
   Data extends KubeJsonApiDataFor<Object> = KubeJsonApiDataFor<Object>,
 > = InternalKubeApi<Object, Data>;
 
-export const KubeApi = KubeApiCstr as unknown as new <
+const ExternalKubeApi = KubeApiCstr as unknown as new <
   Object extends KubeObject = KubeObject,
   Data extends KubeJsonApiDataFor<Object> = KubeJsonApiDataFor<Object>,
 >(
@@ -157,9 +157,9 @@ function KubeJsonApiCstr(config: JsonApiConfig, reqInit?: FetchRequestInit) {
   return createKubeJsonApi(config, reqInit);
 }
 
-export type KubeJsonApi = InternalKubeJsonApi;
+type ExternalKubeJsonApi = InternalKubeJsonApi;
 
-export const KubeJsonApi = Object.assign(
+const ExternalKubeJsonApi = Object.assign(
   KubeJsonApiCstr as unknown as new (
     config: JsonApiConfig,
     reqInit?: FetchRequestInit,
@@ -206,22 +206,22 @@ function PodsApiConstructor(opts?: DerivedKubeApiOptions) {
   return new PodApi(getKubeApiDeps(), opts);
 }
 
-export type PodsApi = PodApi;
-export const PodsApi = PodsApiConstructor as unknown as new (opts?: DerivedKubeApiOptions) => PodApi;
+type ExternalPodsApi = PodApi;
+const ExternalPodsApi = PodsApiConstructor as unknown as new (opts?: DerivedKubeApiOptions) => PodApi;
 
 function NodesApiConstructor(opts?: DerivedKubeApiOptions) {
   return new NodeApi(getKubeApiDeps(), opts);
 }
 
-export type NodesApi = NodeApi;
-export const NodesApi = NodesApiConstructor as unknown as new (opts?: DerivedKubeApiOptions) => NodeApi;
+type ExternalNodesApi = NodeApi;
+const ExternalNodesApi = NodesApiConstructor as unknown as new (opts?: DerivedKubeApiOptions) => NodeApi;
 
 function DeploymentApiConstructor(opts?: DerivedKubeApiOptions) {
   return new InternalDeploymentApi(getKubeApiDeps(), opts);
 }
 
-export type DeploymentApi = InternalDeploymentApi;
-export const DeploymentApi = DeploymentApiConstructor as unknown as new (
+type ExternalDeploymentApi = InternalDeploymentApi;
+const ExternalDeploymentApi = DeploymentApiConstructor as unknown as new (
   opts?: DerivedKubeApiOptions,
 ) => InternalDeploymentApi;
 
@@ -229,15 +229,15 @@ function IngressApiConstructor(opts?: DerivedKubeApiOptions) {
   return new InternalIngressApi(getKubeApiDeps(), opts);
 }
 
-export type IngressApi = InternalIngressApi;
-export const IngressApi = IngressApiConstructor as unknown as new (opts?: DerivedKubeApiOptions) => InternalIngressApi;
+type ExternalIngressApi = InternalIngressApi;
+const ExternalIngressApi = IngressApiConstructor as unknown as new (opts?: DerivedKubeApiOptions) => InternalIngressApi;
 
 function PersistentVolumeClaimsApiConstructor(opts?: DerivedKubeApiOptions) {
   return new PersistentVolumeClaimApi(getKubeApiDeps(), opts);
 }
 
-export type PersistentVolumeClaimsApi = PersistentVolumeClaimApi;
-export const PersistentVolumeClaimsApi = PersistentVolumeClaimsApiConstructor as unknown as new (
+type ExternalPersistentVolumeClaimsApi = PersistentVolumeClaimApi;
+const ExternalPersistentVolumeClaimsApi = PersistentVolumeClaimsApiConstructor as unknown as new (
   opts?: DerivedKubeApiOptions,
 ) => PersistentVolumeClaimApi;
 
@@ -263,7 +263,7 @@ export class LensExtensionKubeObject<
    * const url = api.formatUrlForNotListing({ name: "foo" });
    * ```
    */
-  static getApi<K extends KubeObject<any, any, any>, Api extends KubeApi<K> = KubeApi<K>>(): Api {
+  static getApi<K extends KubeObject<any, any, any>, Api extends ExternalKubeApi<K> = ExternalKubeApi<K>>(): Api {
     if (!this.crd) {
       throw new Error(`API for ${this.name} is not for CRD and misses metainfo. Extension won't work correctly.`);
     }
@@ -306,3 +306,20 @@ export interface LensExtensionKubeObjectCRD {
   singular: string;
   shortNames?: string[];
 }
+
+// The type-and-value pairs above are declared under an `External` local name and
+// exported under the public one. `rollup-plugin-dts` builds the helper of a
+// `K8sApi` namespace member from the last declaration of its name only, so a
+// pair exported under its own name keeps the `const` and loses the type: it
+// stays callable but is not nameable. A member whose exported name differs from
+// its local one is re-exported as it is, with both meanings. The fixture
+// extension's `contract-types.ts` names each of them as a type.
+export {
+  ExternalDeploymentApi as DeploymentApi,
+  ExternalIngressApi as IngressApi,
+  ExternalKubeApi as KubeApi,
+  ExternalKubeJsonApi as KubeJsonApi,
+  ExternalNodesApi as NodesApi,
+  ExternalPersistentVolumeClaimsApi as PersistentVolumeClaimsApi,
+  ExternalPodsApi as PodsApi,
+};

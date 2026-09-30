@@ -7,10 +7,14 @@
 import appEventBusInjectable from "../../common/app-event-bus/app-event-bus.injectable";
 import { asLazyInjectedForExtensionApi } from "../extension-api-di";
 
-import type { EventEmitter, EventEmitterCallback, EventEmitterOptions } from "@freelensapp/event-emitter";
+import type { EventEmitterCallback, EventEmitterOptions } from "@freelensapp/event-emitter";
 
 import type { AppEvent } from "../../common/app-event-bus/event-bus";
 
-export type { AppEvent, EventEmitter, EventEmitterCallback, EventEmitterOptions };
+export type { AppEvent, EventEmitterCallback, EventEmitterOptions };
+
+// A type alias instead of a type-only re-export, which rollup-plugin-dts would
+// declare as a value too, although the class does not exist at runtime here.
+export type EventEmitter<D extends any[]> = import("@freelensapp/event-emitter").EventEmitter<D>;
 
 export const appEventBus = asLazyInjectedForExtensionApi(appEventBusInjectable);

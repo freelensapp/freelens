@@ -67,6 +67,7 @@ class NonForwardedLogList extends React.Component<
   private resizeObserver: ResizeObserver | null = null;
   private virtualListRef = React.createRef<VirtualListRef>(); // A reference for VirtualList component
   private measuredRowHeights = new Map<number, number>();
+  private formattedLogs: { source: string[]; timezone: string; logs: string[] } | undefined;
   private pendingResetFromIndex: number | null = null;
   private pendingResetFrame: number | null = null;
   private lineHeight = 18;
@@ -302,9 +303,23 @@ class NonForwardedLogList extends React.Component<
       return model.logsWithoutTimestamps.get();
     }
 
-    return model.timestampSplitLogs
-      .get()
-      .map(([logTimestamp, log]) => `${logTimestamp && formatInTimeZone(logTimestamp, state.localeTimezone)}${log}`);
+    const source = model.logs.get();
+    const timezone = state.localeTimezone;
+
+    // This getter is read for every row the list renders, and formatting the
+    // timestamps of all the lines is the expensive part: they are formatted
+    // once for every change of the logs or of the time zone.
+    if (this.formattedLogs?.source !== source || this.formattedLogs.timezone !== timezone) {
+      this.formattedLogs = {
+        source,
+        timezone,
+        logs: model.timestampSplitLogs
+          .get()
+          .map(([logTimestamp, log]) => `${logTimestamp && formatInTimeZone(logTimestamp, timezone)}${log}`),
+      };
+    }
+
+    return this.formattedLogs.logs;
   }
 
   get showWordWrap(): boolean {

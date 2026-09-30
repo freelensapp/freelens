@@ -7,8 +7,6 @@ import browserFetchInjectable from "../../renderer/fetch/browser-fetch.injectabl
 import { Util as CommonUtil } from "../common-api/utils";
 import { asLazyInjectedFunctionForExtensionApi } from "../extension-api-di";
 
-export type { OpenLinkInBrowser } from "../common-api/utils";
-
 const Util = {
   ...CommonUtil,
 

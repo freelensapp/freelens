@@ -41,12 +41,12 @@ this repository. Every other `@freelensapp/*` package is private and must never
 appear in an extension's dependencies.
 
 **Surface.** One package, two files: `dist/extension-api.d.ts` (the rolled-up
-declaration, 13,038 lines) and `dist/extension-api.js` (the runtime shim, 734
-bytes, no dependencies).
+declaration) and `dist/extension-api.js` (the runtime shim, with no
+dependencies).
 
 The rollup is what makes the single-package model work rather than merely
-assert it: `rollup.dts.config.mjs` maps all 39 workspace entries to their
-emitted declarations and its `external` predicate returns false for them, so
+assert it: `rollup.dts.config.mjs` maps every workspace entry to its
+emitted declaration and its `external` predicate returns false for them, so
 every `@freelensapp/*` is inlined. Nothing else needs publishing.
 
 **Failure mode.** A direct dependency on any other `@freelensapp/*` package
@@ -205,11 +205,34 @@ same assertion over both maps so a typo fails in CI without launching the app.
 - **Renderer** entry points are **ESM**, loaded by URL from the privileged
   `freelens-extension` scheme.
 - **Top-level await is allowed.**
+- **Renderer code gets no guarantee of Node or Electron**, `require()`
+  included. They are reachable only because the renderer is not
+  context-isolated, and they may disappear in any release, a minor one included:
+  being reachable does not make them part of the surface that
+  [C14](#c14-versioning-and-compatibility) freezes. **Main** keeps both.
 
 **Surface.** `main` and `renderer` in the manifest, each a path relative to the
 package root. Under URL-based loading the renderer has **no `__dirname`**, which
 makes `LensExtension.manifestPath` the only route to an extension's own files —
 see [C6](#c6-registration-and-the-extension-instance).
+
+What a renderer entry point may rely on is what a browser page has — `fetch`,
+Web Crypto, `TextEncoder` / `TextDecoder`, `Uint8Array` — plus the API object of
+[C2](#c2-the-runtime-global-api) and the singletons of
+[C3](#c3-host-provided-singletons). Work that needs Node or Electron belongs in
+the main entry point, reached over `Renderer.Ipc` / `Main.Ipc`. The migration
+guide lists the replacement for each Node and Electron module v1 extensions
+used in the renderer, under
+[Node and Electron in the renderer](./v2-extension-migration.md#node-and-electron-in-the-renderer).
+
+The declaration cannot enforce this: `extension-api.d.ts` is one file for every
+process. The environment has to come from the extension's own compiler
+configuration, and the migration guide specifies the layout that provides it,
+under
+[Source layout: one tsconfig per runtime environment](./v2-extension-migration.md#source-layout-one-tsconfig-per-runtime-environment):
+`src/main/`, `src/renderer/` and `src/common/`, each with a `tsconfig.json` for
+its environment, so a Node API in renderer code or a DOM API in main code fails
+the type check rather than the running extension.
 
 **Failure mode.** A load failure is recorded in the extension's metadata and
 logged; the extension is skipped and nothing else aborts. A renderer bundle
@@ -219,6 +242,17 @@ correctly refuses. A rebuild which cannot be reloaded is **refused and logged**,
 naming the extension and the reason; the extension goes on running the build it
 already has, in both processes, rather than one process moving on without the
 other.
+
+Extension code calling `globalThis.require` in the renderer is **warned, not
+blocked**: the host logs a deprecation warning once per extension and module
+id, and returns the module. Nothing stronger would hold while the renderer is
+not context-isolated, since the globals are shared. The warning goes by the
+**immediate caller** — the call is the extension's when the frame that made it
+is at a `freelens-extension://extensions/<name>/` URL, which also names the
+extension. So the host's own calls, and host code an extension calls into, do
+not warn; code an extension bundles is part of its file and does. The wrapper
+is installed in every frame that loads extensions, cluster frames included,
+before the first extension loads.
 
 **Status:** shipped. The renderer imports the served URL and the main process
 imports a `file:` URL, both asynchronously, so **top-level await works in either
@@ -305,7 +339,7 @@ keeps the bare name, because v1 extensions already use it.
 `JobStatus` and the other resource statuses extend, and it carries
 `BaseKubeObjectCondition`s. An exclusion is a silent hole — the symbol exists in
 the source, is absent from the API, and nothing announces the difference. A
-rename is visible in the declaration and in the API report, and it keeps the
+rename is visible in the declaration, and it keeps the
 surface complete, which [C1](#c1-packaging-and-publication) makes a correctness
 property rather than a preference.
 
@@ -329,18 +363,68 @@ documented `string` aliases (`UUIDRegexString`, `UUID3RegexString`,
 frozen with it under [C14](#c14-versioning-and-compatibility).
 
 **Status:** the table above is transcribed from the built
-`dist/extension-api.d.ts`. It should be **generated** rather than hand-kept
-(#2366): a git-tracked API report makes the enumeration the checked-in file, so
-a surface change shows up as a PR diff and `ae-forgotten-export` catches the
-unexported-type-in-public-signature defect mechanically.
+`dist/extension-api.d.ts`, and it is **checked rather than generated**. Three
+things keep it honest, none of them a new tool:
+
+- `packages/core/src/extensions/__tests__/extension-api.test.ts` asserts the
+  three member lists **exactly** — the table is that list — and then asserts
+  only that each sub-namespace exists, is non-empty and still carries a handful
+  of anchor symbols.
+- `packages/core/src/extensions/__tests__/extension-api.types.ts` names those
+  anchors and the types of this section's failure mode **as types**, so a
+  symbol that stops being nameable stops `pnpm type:check` compiling.
+- `packages/fixture-extension/src/common/contract-types.ts` does the same
+  against the **built** declaration, which is the artifact an author resolves.
+
+**Generating the enumeration was tried and rejected** (#2366, #2476). An API
+Extractor report runs against TypeScript 7 output and produces a diffable file,
+but it records the *transitive closure* of the surface rather than its
+membership: 163 symbols nobody intends as API appeared in it — host-side
+dependency bags and internal states reached through a public signature — so
+refactoring one of those read as a contract change, while the thing this
+section guarantees is which names a namespace has. The report could not tell
+"the API broke" from "the API changed", which is the only distinction worth
+gating on. The `ae-forgotten-export` occurrences it found are real and remain a
+separate matter.
+
+### Decided: `Util` is `@freelensapp/utilities` minus the Node-bound members
+
+`Common.Util` is one family, judged as a whole rather than member by member,
+and it is delimited by a rule rather than by a list of what it offers:
+
+- **Every export of `@freelensapp/utilities` is extension API**, and frozen with
+  the rest under [C14](#c14-versioning-and-compatibility) — including an export
+  added to the package later.
+- **Except a member that needs Node or Electron in the renderer**, because
+  renderer code gets no guarantee of either ([C4](#c4-module-format-and-loading)). Such a member goes on the omit
+  list in `packages/core/src/extensions/common-api/utils.ts`, which
+  destructures it out of the spread so that its name and types do not reach
+  the bundled declarations either.
+
+`Main.Util` and `Renderer.Util` spread `Common.Util`, so an omitted member is
+gone from all three; each adds its own `fetch` ([C12](#c12-http)).
+`Common.Util.getAppVersion` is the one member the host defines itself.
+
+**Whoever adds an export to the package** is therefore adding API, and checks
+one thing: does it need Node or Electron to run in the renderer — a
+`node:`/Electron import, a Node global such as `Buffer` or `process`, or a Node
+type such as `NodeJS.ErrnoException` in its signature? If the dependency is
+incidental to the implementation, remove it, as was done for `node:assert` in
+`unitsToBytes` and `node:util` in `strictGet`; if it is what the function does,
+add the member to the omit list and a line to the migration guide.
+
+**Failure mode.** A member that needs Node and is not on the list fails at
+runtime in a renderer without Node — a `ReferenceError` for a global such as
+`Buffer`, a failed import for a builtin — and not at compile time, because
+nothing checks the rule mechanically.
 
 ---
 
 ## C6. Registration and the extension instance
 
 **Guarantee.** An extension contributes through **declarative fields on its
-`LensExtension` subclass**. Fourteen host-side registrators translate those
-fields into injectables, scoped to the extension and torn down with it.
+`LensExtension` subclass**. Host-side registrators translate those fields into
+injectables, scoped to the extension and torn down with it.
 
 **Surface.**
 
@@ -351,9 +435,9 @@ fields into injectables, scoped to the extension and torn down with it.
 `catalogEntityDetailItems`, `topBarItems`, `additionalCategoryColumns`,
 `customCategoryViews`, `kubeObjectHandlers`.
 
-`LensMainExtension` fields: `appMenus`, `trayMenus` — each accepting a plain
-array **or** an `IComputedValue` of one, in which case the host reacts to changes
-rather than reading once.
+`LensMainExtension` fields: `terminalShellEnvModifier`, a function the host
+calls with the environment of every terminal it opens. There is no field for the
+application menu or the tray: both are the host's own.
 
 `LensExtension` (both processes): `protocolHandlers`; the read-only `id`,
 `manifest`, `manifestPath`, `name`, `version`, `description`, `storeName`,
@@ -428,7 +512,7 @@ declares **119** injection tokens: **15** are extension-facing, **9** are
 consumed inside the namespaces to expose a member (where the member is the
 contract and the token need not be public), and the remaining ~95 are internal.
 The 15 are not being made public, because doing so buys **no new capability** —
-each of the 14 registrators exists to translate a declarative field, so
+each registrator exists to translate a declarative field, so
 extensions already reach every capability the tokens would unlock. Exposing them
 would mean re-exporting 15 tokens *and their generic parameter types* out of
 private packages. The question returns when someone wants a capability nobody
@@ -508,34 +592,60 @@ from the host, so its utility classes are inert.
 ## C11. Third-party bundled libraries
 
 **Guarantee.** `catalogs.extensions` in `pnpm-workspace.yaml` is the list of
-libraries the published API's type surface is pinned against — **15 entries**,
-down from the 21 this effort started with.
+libraries the published API's type surface is pinned against.
 
 It splits in two:
 
 - **Host-provided** ([C3](#c3-host-provided-singletons)): `react`, `mobx`,
-  `monaco-editor`, `@ogre-tools/injectable`, `@ogre-tools/injectable-react`.
-- **Free to bundle**: `chart.js`, `react-select`, `react-window`,
-  `@xterm/xterm`, `conf`, `immer`, `rfc6902`, `type-fest` (plus the `@types/*`
-  entries). A bundled `react-select` still gets the host's React, because that
-  copy's own `import "react"` is rewritten too.
+  `mobx-react`, `monaco-editor`, `@ogre-tools/injectable`,
+  `@ogre-tools/injectable-react`.
+- **Free to bundle**: `chart.js`, `react-select`, `conf`, `es-toolkit`, `immer`,
+  `rfc6902`, `type-fest` (plus the `@types/*` entries). A bundled `react-select`
+  still gets the host's React, because that copy's own `import "react"` is
+  rewritten too. `es-toolkit` is there only for the `DebouncedFunc` type the
+  declaration imports from `es-toolkit/compat`.
 
-**Surface.** The built declaration names **17 distinct external specifiers**
-across 20 import statements: `type-fest`, `mobx`, `react`, `conf`, `electron`,
-`child_process`, `node:child_process`, `node:http`, `rfc6902`, `immer`,
-`@ogre-tools/injectable`, `es-toolkit/compat`, `monaco-editor`, `chart.js`,
-`react-select`, `react-window`, `@xterm/xterm`.
+**Surface.** The built declaration imports these external specifiers:
+`type-fest`, `mobx`, `mobx-react`, `react`, `react/jsx-runtime`, `react-dom`,
+`conf`, `rfc6902`, `immer`, `@ogre-tools/injectable`,
+`@ogre-tools/injectable-react`, `es-toolkit/compat`, `monaco-editor`,
+`chart.js`, `react-select`.
 
-Three discrepancies between that list and the declared dependencies, recorded
-because they are the kind that rot quietly:
+This is the complement of the namespace enumeration in
+[C5](#c5-namespace-enumeration): that records what the API *exports*, this what
+it *imports* and therefore imposes on an author. It is read off the built
+bundle, not the source tree:
 
-- **`es-toolkit/compat` is undeclared** — the published type surface names a
-  package the package does not depend on (#2360).
-- **`child_process` appears spelled both ways**, bare and `node:`-prefixed (#2360).
-- **`@ogre-tools/injectable-react` is declared but never named by the
-  declaration.** It stays regardless: it is a host-provided singleton an
-  extension needs at *runtime* for `withInjectables`, which is a different
-  requirement from appearing in the types.
+```sh
+pnpm --filter @freelensapp/extensions build:dist
+rg -o "from '([^']+)'" -r '$1' packages/extensions/dist/extension-api.d.ts | sort -u
+```
+
+The quoting matters and is the reason an earlier count was low: rollup emits
+**single** quotes, so a pattern written against double quotes matches only the
+examples inside doc comments and reports nothing. The bundle inlines every
+`@freelensapp/*` package ([C1](#c1-packaging-and-publication)), so everything
+the command prints is external by construction.
+
+Nothing is imported from `electron`. What the declaration names of Electron it
+names through the ambient `Electron` namespace, in the `Main.Ipc` signatures and
+the `Common.Types` aliases of the main-process IPC events.
+
+**Every package the declaration imports is declared**, in `dependencies` or
+`peerDependencies`, either itself or through its `@types/` package: `react-dom`
+resolves through `@types/react-dom`, and a subpath such as `es-toolkit/compat` or
+`react/jsx-runtime` through its package. The requirement exists because an
+undeclared import fails quietly: an extension compiles with `skipLibCheck`, so a
+specifier that does not resolve in the author's tree becomes `any` instead of an
+error, and nothing in the monorepo notices, since every such package happens to
+be installed there. `packages/extensions/rollup.dts.config.mjs` therefore
+enforces it: `build:dist` fails and lists every external specifier of the
+bundle whose package is not declared.
+
+`@ogre-tools/injectable-react` is imported by the declaration like the other
+host-provided singletons. It would be declared either way, being needed at
+*runtime* for `withInjectables`, which is a different requirement from
+appearing in the types.
 
 **Failure mode.** A host-provided library in `dependencies` of
 `@freelensapp/extensions` **silently plants a real React in the author's tree**
@@ -543,22 +653,19 @@ for their bundler to find — which is precisely the mistake
 [C3](#c3-host-provided-singletons) exists to prevent. As peers they are still
 there to compile against, and bundling one's own copy becomes a deliberate act.
 
-**Status:** the five host-provided entries moved to `peerDependencies` in #2450,
-each **optional** in `peerDependenciesMeta` alongside `electron`. Optional
-because npm 7+ and pnpm install missing peers by default, so a required peer
-would install all five into every author's tree whether imported or not — and
+**Status:** the host-provided entries are in `peerDependencies`, each
+**optional** in `peerDependenciesMeta` alongside `electron`. Optional because
+npm 7+ and pnpm install missing peers by default, so a required peer would
+install every one of them into every author's tree whether imported or not — and
 `monaco-editor` alone is 99 MB, which an extension with only a `main` entry
 point would pay on every install and in every CI cache. What keeps a second copy
 out of the bundle is the author marking the specifier external, not the
 dependency field; the field only decides what gets installed. The `@types/*`
-entries stayed in `dependencies`: a second copy of a declaration is not a second
-instance of anything.
-
-`react-dom` and `mobx-react` are in neither the catalog nor the package's
-dependencies, so an extension using them supplies its own devDependency — which
-also resolves the two specifiers the ambient global declaration now names.
-Nothing in-repo type-checks the published declaration without `skipLibCheck`,
-the fixture extension included.
+entries are in `dependencies`: a second copy of a declaration is not a second
+instance of anything. `react-dom` itself is not declared; the declaration needs
+only its types, which `@types/react-dom` supplies. Nothing in-repo type-checks
+the published declaration without `skipLibCheck`, the fixture extension
+included.
 
 ---
 
@@ -647,10 +754,10 @@ the remedy differs: incompatible (`isCompatible`), deliberately disabled
 
 ### Stability: everything exported is public
 
-There is **no unstable tier**. Until a mechanism exists to mark one (#2366
-proposes TSDoc `@public` / `@beta` / `@internal` with trimmed rollup variants),
-every symbol the namespaces re-export is public and stable **for the lifetime of
-the major**.
+There is **no unstable tier**. Until a mechanism exists to mark one — TSDoc
+`@public` / `@beta` / `@internal` with trimmed rollup variants was the proposal
+in #2366, and it is deferred rather than pending — every symbol the namespaces
+re-export is public and stable **for the lifetime of the major**.
 
 This cuts towards the host, not the author, and it is the reason these documents
 were written before the implementation rather than after it: **whatever 2.0.0
@@ -662,8 +769,16 @@ Deprecation within a major: mark with `@deprecated`, keep it working for the
 rest of the major, remove it in the next one.
 
 **Status:** the gate is shipped and the policy above is decided. The tiering
-mechanism is #2366 and is not needed for 2.0.0 — its absence is what makes the
-freeze strict.
+mechanism is not needed for 2.0.0 — its absence is what makes the freeze
+strict, and adding a tier later is additive where exporting first and deciding
+later is not.
+
+What holds the frozen surface in place meanwhile is not a report but the
+runtime and type-level checks listed under
+[C5](#c5-namespace-enumeration): the namespace member lists are asserted
+exactly, so widening one is an edit made on purpose and read in review, which
+is what a freeze needs. The exhaustive alternative was tried in #2476 and
+rejected for tracking more than the contract.
 
 ---
 
@@ -693,11 +808,9 @@ The contract has three, not two:
 | Item | Tracked in |
 | --- | --- |
 | Close the known re-export gaps | #2365 |
-| Generate the namespace enumeration instead of maintaining it | #2366 |
-| `es-toolkit` undeclared; `child_process` spelled two ways | #2360 |
+| Triage the `ae-forgotten-export` occurrences found while generating the enumeration was being tried | #2366 |
 | Remove `pnpm` as an application dependency — the last step of the delivery mechanism | #2400 |
 | Renderer sandboxing — the reason several isolation claims are *not* made here | #2399 |
-| Fill the v1→v2 rename table while building out the fixture extension | #2451 |
 
 ## References
 

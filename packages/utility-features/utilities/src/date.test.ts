@@ -37,6 +37,33 @@ describe("formatInTimeZone", () => {
     expect(formatInTimeZone("2024-03-09T13:30:00Z", "UTC")).toBe("2024-03-09T13:30:00Z");
     expect(formatInTimeZone(instant.getTime(), "UTC")).toBe("2024-03-09T13:30:00Z");
   });
+
+  it("creates the formatter of a time zone once, however many dates it formats", () => {
+    const OriginalDateTimeFormat = Intl.DateTimeFormat;
+    let created = 0;
+
+    Intl.DateTimeFormat = class extends OriginalDateTimeFormat {
+      constructor(...args: ConstructorParameters<typeof OriginalDateTimeFormat>) {
+        super(...args);
+        created += 1;
+      }
+    } as typeof Intl.DateTimeFormat;
+
+    try {
+      expect(formatInTimeZone(instant, "America/Chicago")).toBe("2024-03-09T07:30:00-06:00");
+      expect(formatInTimeZone("2024-07-09T13:30:00Z", "America/Chicago")).toBe("2024-07-09T08:30:00-05:00");
+      expect(formatInTimeZone(instant, "America/Chicago")).toBe("2024-03-09T07:30:00-06:00");
+
+      expect(created).toBe(1);
+    } finally {
+      Intl.DateTimeFormat = OriginalDateTimeFormat;
+    }
+  });
+
+  it("rejects a time zone that does not exist every time it is asked for it", () => {
+    expect(() => formatInTimeZone(instant, "Not/A_Zone")).toThrow(RangeError);
+    expect(() => formatInTimeZone(instant, "Not/A_Zone")).toThrow(RangeError);
+  });
 });
 
 describe("timezone discovery", () => {
