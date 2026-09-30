@@ -14,7 +14,7 @@ catalog:
   '@types/react-dom': 19.2.3
   # MobX family (singletons)
   mobx: 6.15.0
-  mobx-react: 9.1.1
+  mobx-react: 10.0.2
   mobx-react-lite: 4.1.1
   # TypeScript
   typescript: 7.0.2
@@ -162,7 +162,7 @@ catalogs:
     es-toolkit: ^1.49.0
     immer: ^11.1.8
     mobx: ^6.15.0
-    mobx-react: ^9.1.1
+    mobx-react: ^10.0.2
     monaco-editor: ^0.56.0
     react: ^19.2.8
     react-select: ^5.10.2
@@ -188,7 +188,7 @@ overrides:
   '@kubernetes/client-node>@types/node': 24.12.4
   form-data: ^4.0.6
   http-proxy: npm:http-proxy-node16@^1.0.6
-  mobx-react: ^9.1.1
+  mobx-react: ^10.0.2
   tmp@^0.2.0: ^0.2.7
 
 peerDependencyRules:
