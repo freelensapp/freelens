@@ -116,7 +116,7 @@ built to `dist/renderer.js`, holds four things, chosen because each of them
 breaks without a compile error:
 
 1. a component with hooks — two React instances throw `invalid hook call`
-2. an observable it creates and the host reacts to — two copies of mobx 6 share
+2. an observable it creates and the host reacts to — two copies of mobx share
    their global state and keep interoperating, so the reaction fires either way;
    identity is therefore asserted as well as behaviour
 3. one declarative registration (`statusBarItems`), which reaches the host only
