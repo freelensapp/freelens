@@ -99,7 +99,7 @@ describe("KubeApi", () => {
           headers: {
             "content-type": "application/json",
           },
-          method: "get",
+          method: "GET",
         },
       ]);
     });
@@ -140,7 +140,7 @@ describe("KubeApi", () => {
             headers: {
               "content-type": "application/json",
             },
-            method: "get",
+            method: "GET",
           },
         ]);
       });
@@ -169,7 +169,7 @@ describe("KubeApi", () => {
               headers: {
                 "content-type": "application/json",
               },
-              method: "get",
+              method: "GET",
             },
           ]);
         });
@@ -226,7 +226,7 @@ describe("KubeApi", () => {
                   headers: {
                     "content-type": "application/json",
                   },
-                  method: "get",
+                  method: "GET",
                 },
               ]);
             });
@@ -299,7 +299,7 @@ describe("KubeApi", () => {
                   headers: {
                     "content-type": "application/json",
                   },
-                  method: "get",
+                  method: "GET",
                 },
               ]);
             });
@@ -346,7 +346,7 @@ describe("KubeApi", () => {
               headers: {
                 "content-type": "application/json",
               },
-              method: "get",
+              method: "GET",
             },
           ]);
         });
@@ -375,7 +375,7 @@ describe("KubeApi", () => {
                 headers: {
                   "content-type": "application/json",
                 },
-                method: "get",
+                method: "GET",
               },
             ]);
           });
@@ -436,7 +436,7 @@ describe("KubeApi", () => {
                     headers: {
                       "content-type": "application/json",
                     },
-                    method: "get",
+                    method: "GET",
                   },
                 ]);
               });
@@ -511,7 +511,7 @@ describe("KubeApi", () => {
                     headers: {
                       "content-type": "application/json",
                     },
-                    method: "get",
+                    method: "GET",
                   },
                 ]);
               });
@@ -575,7 +575,7 @@ describe("KubeApi", () => {
             headers: {
               "content-type": "application/json",
             },
-            method: "get",
+            method: "GET",
           },
         ]);
       });
@@ -612,7 +612,7 @@ describe("KubeApi", () => {
               headers: {
                 "content-type": "application/json",
               },
-              method: "get",
+              method: "GET",
             },
           ]);
         });
@@ -641,7 +641,7 @@ describe("KubeApi", () => {
                 headers: {
                   "content-type": "application/json",
                 },
-                method: "get",
+                method: "GET",
               },
             ]);
           });
@@ -698,7 +698,7 @@ describe("KubeApi", () => {
                     headers: {
                       "content-type": "application/json",
                     },
-                    method: "get",
+                    method: "GET",
                   },
                 ]);
               });
@@ -771,7 +771,7 @@ describe("KubeApi", () => {
                     headers: {
                       "content-type": "application/json",
                     },
-                    method: "get",
+                    method: "GET",
                   },
                 ]);
               });
@@ -835,7 +835,7 @@ describe("KubeApi", () => {
           headers: {
             "content-type": "application/json",
           },
-          method: "get",
+          method: "GET",
         },
       ]);
     });
@@ -876,7 +876,7 @@ describe("KubeApi", () => {
             headers: {
               "content-type": "application/json",
             },
-            method: "get",
+            method: "GET",
           },
         ]);
       });
@@ -922,7 +922,7 @@ describe("KubeApi", () => {
             headers: {
               "content-type": "application/json",
             },
-            method: "get",
+            method: "GET",
           },
         ]);
       });

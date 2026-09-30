@@ -3,11 +3,6 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-/**
- * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
- * Licensed under MIT License. See LICENSE in root directory for more information.
- */
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { cssNames, disposer } from "@freelensapp/utilities";
@@ -202,6 +197,8 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
   }
 
   componentDidMount() {
+    this.unmounting = false;
+
     try {
       this.createEditor();
       this.logger.debug(`[MONACO]: editor did mount`, this.logMetadata);
@@ -217,6 +214,7 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
     if (this.editor) {
       this.dispose();
       this.editor.dispose();
+      this.editor = undefined!;
     }
   }
 
@@ -258,6 +256,15 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
 
     const onContentSizeChangeDisposer = this.editor.onDidContentSizeChange((params) => {
       this.props.onDidContentSizeChange?.(params);
+    });
+
+    // Force Monaco to compute its visible viewport after DOM attachment.
+    requestAnimationFrame(() => {
+      if (this.editor && !this.unmounting) {
+        const container = this.editor.getContainerDomNode();
+        this.editor.layout({ width: container.clientWidth, height: container.clientHeight });
+        this.editor.revealLine(1);
+      }
     });
 
     this.dispose.push(
@@ -322,16 +329,25 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
   // avoid excessive validations during typing
   validateLazy = debounce(this.validate, 250);
 
+  private setContainerRef = (elem: HTMLDivElement | null) => {
+    this.containerElem = elem;
+  };
+
   get initialHeight() {
     return this.props.getEditorHeightFromLinesCount(this.model.getLineCount());
   }
 
   render() {
-    const { className, style } = this.props;
+    const { className, style, getEditorHeightFromLinesCount, id: propId, value } = this.props;
+
+    const editorId = propId ?? this.staticId;
+    const uri = createMonacoUri(editorId);
+    const existingModel = editor.getModel(uri);
+    const lineCount = existingModel?.getLineCount() ?? (typeof value === "string" ? value.split("\n").length : 1);
 
     const css: React.CSSProperties = {
       ...style,
-      height: style?.height ?? this.initialHeight,
+      height: style?.height ?? getEditorHeightFromLinesCount(lineCount),
     };
 
     return (
@@ -339,9 +355,7 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
         data-test-id="monaco-editor"
         className={cssNames(styles.MonacoEditor, className)}
         style={css}
-        ref={(elem) => {
-          this.containerElem = elem;
-        }}
+        ref={this.setContainerRef}
       />
     );
   }

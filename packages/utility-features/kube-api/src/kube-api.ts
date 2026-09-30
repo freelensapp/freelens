@@ -689,13 +689,15 @@ export class KubeApi<
     await this.checkPreferredVersion();
     const apiUrl = this.formatUrlForNotListing({ namespace, name });
 
+    const mergedData = merge(data, {
+      metadata: {
+        name,
+        namespace,
+      },
+    });
+
     const res = await this.request.put(apiUrl, {
-      data: merge(data, {
-        metadata: {
-          name,
-          namespace,
-        },
-      }),
+      data: mergedData,
     });
     const parsed = this.parseResponse(res);
 
@@ -947,6 +949,8 @@ export class KubeApi<
             }
           };
 
+          const yieldToEventLoop = () => new Promise<void>((resolve) => setTimeout(resolve, 0));
+
           try {
             for (;;) {
               const { done, value } = await reader.read();
@@ -956,6 +960,7 @@ export class KubeApi<
               }
 
               consume(decoder.decode(value, { stream: true }));
+              await yieldToEventLoop();
             }
 
             consume(decoder.decode());

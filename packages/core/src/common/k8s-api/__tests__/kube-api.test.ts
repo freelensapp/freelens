@@ -84,7 +84,7 @@ describe("KubeApi", () => {
             headers: {
               "content-type": "application/json",
             },
-            method: "post",
+            method: "POST",
           },
         ]);
       });
