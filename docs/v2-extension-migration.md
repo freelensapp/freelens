@@ -272,8 +272,13 @@ annotations:
 
 ## `tsconfig.json` for an extension
 
-The bundled `extension-api.d.ts` sets two floors for consumer compilers:
+The bundled `extension-api.d.ts` sets these floors for consumer compilers:
 
+- TypeScript 4.9 or newer — the declaration has `accessor` fields (on
+  `ItemStore`, `KubeApi` and `LensExtension`, among others), which older
+  compilers fail to parse with `TS1434: Unexpected keyword or identifier`.
+  `skipLibCheck` does not help, because it skips type checking, not parsing.
+  An extension that writes standard decorators itself needs TypeScript 5.0.
 - `"skipLibCheck": true` — the type dependency graph (for example
   `@ogre-tools/injectable`, which references jest types) is not clean under
   `skipLibCheck: false`, and checking it is not your job.

@@ -707,6 +707,7 @@ for the package** — #2396 showed the two diverge.
 
 | Requirement | Why |
 | --- | --- |
+| TypeScript 4.9 or newer | the declaration has `accessor` fields, which older compilers fail to parse whatever `skipLibCheck` says |
 | `"skipLibCheck": true` | the type dependency graph is not clean under `false`, and checking it is not an author's job |
 | `"lib"` including `DOM` and `DOM.Iterable`, `ES2024` or newer | the React component types name DOM types nothing else declares; the mobx types name `ReadonlySetLike`, which first appears in the ES2024 lib |
 | `"moduleResolution": "bundler"`, `node16` or `nodenext` | to resolve the package's `exports` |
@@ -716,7 +717,9 @@ The **fetch surface alone** needs `lib.dom` *or* `@types/node`: with structural
 types it names only `AbortSignal`, `ReadableStream`, `URL` and `Uint8Array`,
 which both declare. The package as a whole still requires `lib.dom`.
 
-**Failure mode.** Missing `skipLibCheck` produces errors in transitive type
+**Failure mode.** A compiler older than TypeScript 4.9 reports
+`TS1434: Unexpected keyword or identifier` at every `accessor` field of the
+declaration. Missing `skipLibCheck` produces errors in transitive type
 dependencies an author cannot fix; a missing DOM lib produces unresolved-name
 errors in the React component types.
 
