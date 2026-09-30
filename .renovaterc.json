@@ -54,6 +54,16 @@
       "semanticCommitScope": "peer-deps"
     },
     {
+      "description": [
+        "peerDependencies are not bumped by vulnerability fixes either.",
+        "Renovate turns every vulnerability alert into a package rule appended after these ones, with the vulnerabilityAlerts settings in its force object. Forced settings override every other rule, so vulnerabilityAlerts.rangeStrategy replaces the widen strategy above, and no package rule can put it back.",
+        "Package rules are applied again to each update after the lookup, when the update already carries isVulnerabilityAlert. This rule drops the peer range change from the fix at that point, while the other dependencies in the same fix keep the bump strategy."
+      ],
+      "matchDepTypes": ["peerDependencies"],
+      "matchJsonata": ["isVulnerabilityAlert = true"],
+      "enabled": false
+    },
+    {
       "description": "Non-major updates only.",
       "matchDepNames": ["electron", "npm"],
       "matchUpdateTypes": ["major"],
