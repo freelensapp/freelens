@@ -208,7 +208,21 @@ legacy, `experimentalDecorators` ones are gone, and so are the namespaced
 annotations:
 
 - Compile without `"experimentalDecorators"`. An extension compiled with it
-  hands the legacy call shape to mobx 7, which no longer understands it.
+  hands the legacy call shape to mobx 7, and none of the resulting errors
+  mentions decorators. Recognise them by the message:
+
+  | Message | Cause |
+  | --- | --- |
+  | `TypeError: Cannot use 'in' operator to search for 'constructor' in <field>` | a legacy `@observable` field |
+  | ``[MobX] Invalid arguments for `action` `` | a legacy `@action` method |
+  | `TypeError: Reflect.ownKeys called on non-object` | `makeObservable(this)` without annotations |
+
+  The first two throw while the module is evaluated, when the class is
+  defined, so the extension never loads. The third throws when the class is
+  first instantiated. The `action` check exists only in mobx's development
+  build: under the production build, and with a legacy `@computed` in any
+  build, nothing throws and the member silently stays a plain method or
+  getter.
 - A decorated field becomes an **auto-accessor**, and the constructor no longer
   calls `makeObservable(this)`:
 

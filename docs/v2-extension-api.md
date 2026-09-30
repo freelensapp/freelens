@@ -163,7 +163,13 @@ error:
 `invalid hook call`; ogre-tools fails to find registrations; **mobx fails
 silently** — two instances interoperate through shared global state well enough
 that observables appear to work and reactions simply do not fire where they
-should. A typo in a global name yields `undefined`, not a build error.
+should. A typo in a global name yields `undefined`, not a build error. Code
+built against another major of a listed package runs against the host's copy
+anyway: a mobx class compiled with legacy (`experimentalDecorators`) decorators
+throws when its module is evaluated, so the extension fails to load, and the
+annotations that do not throw are dropped silently (see
+[MobX 7 and mobx-react 10](./v2-extension-migration.md#mobx-7-and-mobx-react-10-standard-decorators-only)
+for the messages).
 
 **Status:** shipped in #2450. It had been a regression rather than an omission.
 What made the v1 entries' exports into globals was webpack's **output format**:
