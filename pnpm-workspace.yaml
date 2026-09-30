@@ -195,10 +195,11 @@ overrides:
 peerDependencyRules:
   # These rules silence peers that still ask for mobx 6 / mobx-react 9 and have
   # no release for mobx 7. Each package they cover must stay safe on mobx 7:
-  # - @ogre-tools/injectable-react (mobx ^6, mobx-react ^9) imports no mobx at
-  #   all;
+  # - @ogre-tools/injectable-react (mobx ^6, mobx-react ^9) imports neither
+  #   mobx nor mobx-react, in its build or in its typings;
   # - @ogre-tools/injectable-extension-for-mobx (mobx ^6) uses only `computed`,
-  #   `createAtom` and `runInAction`, which mobx 7 keeps unchanged;
+  #   `createAtom` and `runInAction`, and types with `IComputedValue` only,
+  #   all of which mobx 7 keeps unchanged;
   # - mobx-utils (mobx ^6) works for `now`, `fromResource` and `fromPromise`.
   #   Its classes are built with legacy decorators: `createViewModel` and
   #   `fromStream` throw on mobx 7 (`Reflect.ownKeys called on non-object`
