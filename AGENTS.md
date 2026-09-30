@@ -426,6 +426,28 @@ layer was removed in #2118.
 **Cache issues:** Delete the build output and rebuild
 (`rm -rf .turbo packages/core/dist freelens/dist`)
 
+### The Electron binary
+
+`pnpm install` leaves the `electron` package without its runtime binary. The
+package has no `postinstall` script, so `electron: true` in `allowBuilds` has
+nothing to run; it downloads the binary lazily instead, when
+`require("electron")` or its `electron` bin finds `path.txt` missing.
+electron-vite does not go through either: it reads
+`node_modules/electron/path.txt` itself and throws `Electron uninstall` when
+the file is absent, so `electron-vite dev` alone never triggers the download.
+
+The `predev` script of `freelens/package.json` therefore runs the package's
+`install-electron` bin (`electron/install.js`) before `electron-vite dev`.
+`install.js` exits at once when the binary of the installed version is
+already in place, and otherwise downloads it, verifies it against the
+package's `checksums.json` and writes `path.txt`. pnpm runs `pre` scripts for
+`pnpm run dev`, both inside `freelens/` and through the root `turbo run dev`,
+which invokes `pnpm run dev` in the package.
+
+The `dev` script is for local development only. CI does not use it: the
+workflows that need the binary run `electron/install.js` explicitly, as a
+separate step, before tests or the build.
+
 ## Troubleshooting Patterns
 
 ### Changes Not Appearing

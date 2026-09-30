@@ -160,6 +160,19 @@ The renderer is served by the Vite dev server (port 9191, overridable with
 rebuilt on change. If dev mode misbehaves, the packaged-app workflow
 `pnpm build && pnpm build:app:dir && pnpm start` always works.
 
+`pnpm install` does not download the Electron binary. `pnpm dev` does it
+first, through the `predev` script, the first time it runs after an install
+or an Electron version bump; later runs see the binary is in place and skip
+it. The download is verified against the checksums shipped in the `electron`
+package. If it fails, `pnpm dev` stops before starting the app:
+
+- check network and proxy access to `github.com`, or set `ELECTRON_MIRROR`
+  to a mirror you can reach;
+- retry it on its own with `pnpm --dir freelens exec install-electron`;
+- if a broken download is cached, delete the Electron cache directory
+  (`~/.cache/electron`, `~/Library/Caches/electron` or
+  `%LOCALAPPDATA%\electron\Cache`) and retry.
+
 ### Inspecting the running dev app from an AI agent (optional)
 
 The `pnpm dev` script launches Electron with `--remoteDebuggingPort 9223`, so
