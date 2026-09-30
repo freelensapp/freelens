@@ -22,6 +22,8 @@ export * from "./ingress-class";
 export * from "./job";
 export * from "./lease";
 export * from "./limit-range";
+export * from "./mutating-admission-policy";
+export * from "./mutating-admission-policy-binding";
 export * from "./mutating-webhook-configuration";
 export * from "./namespace";
 export * from "./network-policy";
