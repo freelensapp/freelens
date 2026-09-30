@@ -193,6 +193,19 @@ overrides:
   tmp@^0.2.0: ^0.2.7
 
 peerDependencyRules:
+  # These rules silence peers that still ask for mobx 6 / mobx-react 9 and have
+  # no release for mobx 7. Each package they cover must stay safe on mobx 7:
+  # - @ogre-tools/injectable-react (mobx ^6, mobx-react ^9) imports no mobx at
+  #   all;
+  # - @ogre-tools/injectable-extension-for-mobx (mobx ^6) uses only `computed`,
+  #   `createAtom` and `runInAction`, which mobx 7 keeps unchanged;
+  # - mobx-utils (mobx ^6) works for `now`, `fromResource` and `fromPromise`.
+  #   Its classes are built with legacy decorators: `createViewModel` and
+  #   `fromStream` throw on mobx 7 (`Reflect.ownKeys called on non-object`
+  #   from `makeObservable(this)`), because the removed `observable.ref` /
+  #   `action.bound` are skipped and leave no annotations behind. Do not use
+  #   `createViewModel`, `fromStream` or `toStream`.
+  # Check any new package these rules start to cover the same way.
   allowedVersions:
     mobx: '7'
     mobx-react: '10'
