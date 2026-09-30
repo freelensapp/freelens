@@ -261,11 +261,11 @@ catalogs:
       specifier: 4.1.4
       version: 4.1.4
     '@types/react':
-      specifier: 19.2.17
-      version: 19.2.17
+      specifier: 19.3.0
+      version: 19.3.0
     '@types/react-dom':
-      specifier: 19.2.3
-      version: 19.2.3
+      specifier: 19.3.0
+      version: 19.3.0
     '@types/semver':
       specifier: 7.7.1
       version: 7.7.1
@@ -435,11 +435,11 @@ catalogs:
       specifier: 4.1.2
       version: 4.1.2
     react:
-      specifier: 19.2.8
-      version: 19.2.8
+      specifier: 19.3.0
+      version: 19.3.0
     react-dom:
-      specifier: 19.2.8
-      version: 19.2.8
+      specifier: 19.3.0
+      version: 19.3.0
     react-select:
       specifier: 5.10.2
       version: 5.10.2
@@ -550,11 +550,11 @@ catalogs:
       specifier: ~24.12.4
       version: 24.12.4
     '@types/react':
-      specifier: ^19.2.17
-      version: 19.2.17
+      specifier: ^19.3.0
+      version: 19.3.0
     '@types/react-dom':
-      specifier: ^19.2.3
-      version: 19.2.3
+      specifier: ^19.3.0
+      version: 19.3.0
     chart.js:
       specifier: ^4.5.1
       version: 4.5.1
@@ -574,8 +574,8 @@ catalogs:
       specifier: ^0.56.0
       version: 0.56.0
     react:
-      specifier: ^19.2.8
-      version: 19.2.8
+      specifier: ^19.3.0
+      version: 19.3.0
     react-select:
       specifier: ^5.10.2
       version: 5.10.2
@@ -723,7 +723,7 @@ importers:
         version: 4.1.2
       react:
         specifier: 'catalog:'
-        version: 19.2.8
+        version: 19.3.0
       selfsigned:
         specifier: 'catalog:'
         version: 5.5.0
@@ -871,10 +871,10 @@ importers:
         version: 23.2.0(@ogre-tools/fp@23.2.0)
       '@ogre-tools/injectable-react':
         specifier: 'catalog:'
-        version: 23.2.0(@ogre-tools/fp@23.2.0)(@ogre-tools/injectable@23.2.0(@ogre-tools/fp@23.2.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.2.8))(mobx@7.0.5)(react@19.2.8)
+        version: 23.2.0(@ogre-tools/fp@23.2.0)(@ogre-tools/injectable@23.2.0(@ogre-tools/fp@23.2.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.3.0))(mobx@7.0.5)(react@19.3.0)
       react:
         specifier: 'catalog:'
-        version: 19.2.8
+        version: 19.3.0
     devDependencies:
       '@freelensapp/application':
         specifier: workspace:^
@@ -893,7 +893,7 @@ importers:
         version: 23.2.0(@ogre-tools/fp@23.2.0)(@ogre-tools/injectable@23.2.0(@ogre-tools/fp@23.2.0))(mobx@7.0.5)
       '@testing-library/react':
         specifier: 'catalog:'
-        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@testing-library/user-event':
         specifier: 'catalog:'
         version: 14.6.1(@testing-library/dom@10.4.1)
@@ -902,7 +902,7 @@ importers:
         version: 24.12.4
       '@types/react':
         specifier: 'catalog:'
-        version: 19.2.17
+        version: 19.3.0
       jsdom:
         specifier: 'catalog:'
         version: 29.1.1(@noble/hashes@2.2.0)
@@ -924,7 +924,7 @@ importers:
         version: link:../infrastructure/typescript
       '@types/react':
         specifier: 'catalog:'
-        version: 19.2.17
+        version: 19.3.0
 
   packages/cluster-sidebar:
     dependencies:
@@ -961,13 +961,13 @@ importers:
     dependencies:
       '@dnd-kit/core':
         specifier: 'catalog:'
-        version: 6.3.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        version: 6.3.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@dnd-kit/sortable':
         specifier: 'catalog:'
-        version: 10.0.0(@dnd-kit/core@6.3.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)
+        version: 10.0.0(@dnd-kit/core@6.3.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)
       '@dnd-kit/utilities':
         specifier: 'catalog:'
-        version: 3.2.2(react@19.2.8)
+        version: 3.2.2(react@19.3.0)
       '@freelensapp/animate':
         specifier: workspace:^
         version: link:../ui-components/animate
@@ -1072,7 +1072,7 @@ importers:
         version: 2.0.0-rc.1(supports-color@8.1.1)
       '@mui/material':
         specifier: 'catalog:'
-        version: 9.2.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1))(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1))(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        version: 9.2.0(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@ogre-tools/injectable':
         specifier: 'catalog:'
         version: 23.2.0(@ogre-tools/fp@23.2.0)
@@ -1081,7 +1081,7 @@ importers:
         version: 23.2.0(@ogre-tools/fp@23.2.0)(@ogre-tools/injectable@23.2.0(@ogre-tools/fp@23.2.0))(mobx@7.0.5)
       '@ogre-tools/injectable-react':
         specifier: 'catalog:'
-        version: 23.2.0(@ogre-tools/fp@23.2.0)(@ogre-tools/injectable@23.2.0(@ogre-tools/fp@23.2.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.2.8))(mobx@7.0.5)(react@19.2.8)
+        version: 23.2.0(@ogre-tools/fp@23.2.0)(@ogre-tools/injectable@23.2.0(@ogre-tools/fp@23.2.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.3.0))(mobx@7.0.5)(react@19.3.0)
       '@xterm/addon-fit':
         specifier: 'catalog:'
         version: 0.11.0
@@ -1153,10 +1153,10 @@ importers:
         version: 7.0.5
       mobx-react:
         specifier: ^10.0.2
-        version: 10.0.2(mobx@7.0.5)(react@19.2.8)
+        version: 10.0.2(mobx@7.0.5)(react@19.3.0)
       mobx-react-lite:
         specifier: 'catalog:'
-        version: 5.1.0(mobx@7.0.5)(react@19.2.8)
+        version: 5.1.0(mobx@7.0.5)(react@19.3.0)
       mobx-utils:
         specifier: 'catalog:'
         version: 6.1.1(mobx@7.0.5)
@@ -1171,16 +1171,16 @@ importers:
         version: 4.1.2
       react:
         specifier: 'catalog:'
-        version: 19.2.8
+        version: 19.3.0
       react-dom:
         specifier: 'catalog:'
-        version: 19.2.8(react@19.2.8)
+        version: 19.3.0(react@19.3.0)
       react-select:
         specifier: 'catalog:'
-        version: 5.10.2(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(supports-color@8.1.1)
+        version: 5.10.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(supports-color@8.1.1)
       react-window:
         specifier: 'catalog:'
-        version: 2.3.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        version: 2.3.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       rfc6902:
         specifier: 'catalog:'
         version: 5.2.0
@@ -1244,7 +1244,7 @@ importers:
         version: 7.0.0(@testing-library/dom@10.4.1)
       '@testing-library/react':
         specifier: 'catalog:'
-        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@testing-library/user-event':
         specifier: 'catalog:'
         version: 14.6.1(@testing-library/dom@10.4.1)
@@ -1268,10 +1268,10 @@ importers:
         version: 4.1.4
       '@types/react':
         specifier: 'catalog:'
-        version: 19.2.17
+        version: 19.3.0
       '@types/react-dom':
         specifier: 'catalog:'
-        version: 19.2.3(@types/react@19.2.17)
+        version: 19.3.0(@types/react@19.3.0)
       '@types/semver':
         specifier: 'catalog:'
         version: 7.7.1
@@ -1386,16 +1386,16 @@ importers:
         version: 23.2.0(@ogre-tools/fp@23.2.0)
       '@ogre-tools/injectable-react':
         specifier: catalog:extensions
-        version: 23.2.0(@ogre-tools/fp@23.2.0)(@ogre-tools/injectable@23.2.0(@ogre-tools/fp@23.2.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.2.8))(mobx@7.0.5)(react@19.2.8)
+        version: 23.2.0(@ogre-tools/fp@23.2.0)(@ogre-tools/injectable@23.2.0(@ogre-tools/fp@23.2.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.3.0))(mobx@7.0.5)(react@19.3.0)
       '@types/node':
         specifier: catalog:extensions
         version: 24.12.4
       '@types/react':
         specifier: catalog:extensions
-        version: 19.2.17
+        version: 19.3.0
       '@types/react-dom':
         specifier: catalog:extensions
-        version: 19.2.3(@types/react@19.2.17)
+        version: 19.3.0(@types/react@19.3.0)
       chart.js:
         specifier: catalog:extensions
         version: 4.5.1
@@ -1416,16 +1416,16 @@ importers:
         version: 7.0.5
       mobx-react:
         specifier: ^10.0.2
-        version: 10.0.2(mobx@7.0.5)(react@19.2.8)
+        version: 10.0.2(mobx@7.0.5)(react@19.3.0)
       monaco-editor:
         specifier: catalog:extensions
         version: 0.56.0
       react:
         specifier: catalog:extensions
-        version: 19.2.8
+        version: 19.3.0
       react-select:
         specifier: catalog:extensions
-        version: 5.10.2(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(supports-color@8.1.1)
+        version: 5.10.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(supports-color@8.1.1)
       rfc6902:
         specifier: catalog:extensions
         version: 5.2.0
@@ -1462,13 +1462,13 @@ importers:
         version: 24.12.4
       '@types/react':
         specifier: catalog:extensions
-        version: 19.2.17
+        version: 19.3.0
       mobx:
         specifier: catalog:extensions
         version: 7.0.5
       react:
         specifier: catalog:extensions
-        version: 19.2.8
+        version: 19.3.0
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
@@ -1633,10 +1633,10 @@ importers:
         version: link:../infrastructure/typescript
       '@types/react':
         specifier: 'catalog:'
-        version: 19.2.17
+        version: 19.3.0
       react:
         specifier: 'catalog:'
-        version: 19.2.8
+        version: 19.3.0
 
   packages/random:
     dependencies:
@@ -1669,16 +1669,16 @@ importers:
         version: 23.2.0(@ogre-tools/fp@23.2.0)
       '@ogre-tools/injectable-react':
         specifier: 'catalog:'
-        version: 23.2.0(@ogre-tools/fp@23.2.0)(@ogre-tools/injectable@23.2.0(@ogre-tools/fp@23.2.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.2.8))(mobx@7.0.5)(react@19.2.8)
+        version: 23.2.0(@ogre-tools/fp@23.2.0)(@ogre-tools/injectable@23.2.0(@ogre-tools/fp@23.2.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.3.0))(mobx@7.0.5)(react@19.3.0)
       mobx:
         specifier: 'catalog:'
         version: 7.0.5
       mobx-react:
         specifier: ^10.0.2
-        version: 10.0.2(mobx@7.0.5)(react@19.2.8)
+        version: 10.0.2(mobx@7.0.5)(react@19.3.0)
       react:
         specifier: 'catalog:'
-        version: 19.2.8
+        version: 19.3.0
     devDependencies:
       '@freelensapp/typescript':
         specifier: workspace:^
@@ -1691,19 +1691,19 @@ importers:
         version: 7.0.0(@testing-library/dom@10.4.1)
       '@testing-library/react':
         specifier: 'catalog:'
-        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@testing-library/user-event':
         specifier: 'catalog:'
         version: 14.6.1(@testing-library/dom@10.4.1)
       '@types/react':
         specifier: 'catalog:'
-        version: 19.2.17
+        version: 19.3.0
       '@types/react-dom':
         specifier: 'catalog:'
-        version: 19.2.3(@types/react@19.2.17)
+        version: 19.3.0(@types/react@19.3.0)
       react-dom:
         specifier: 'catalog:'
-        version: 19.2.8(react@19.2.8)
+        version: 19.3.0(react@19.3.0)
       vitest:
         specifier: 'catalog:'
         version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
@@ -1846,10 +1846,10 @@ importers:
         version: 7.0.0(@testing-library/dom@10.4.1)
       '@testing-library/react':
         specifier: 'catalog:'
-        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@types/react':
         specifier: 'catalog:'
-        version: 19.2.17
+        version: 19.3.0
       es-toolkit:
         specifier: 'catalog:'
         version: 1.49.0
@@ -1858,10 +1858,10 @@ importers:
         version: 29.1.1(@noble/hashes@2.2.0)
       mobx-react:
         specifier: ^10.0.2
-        version: 10.0.2(mobx@7.0.5)(react@19.2.8)
+        version: 10.0.2(mobx@7.0.5)(react@19.3.0)
       react:
         specifier: 'catalog:'
-        version: 19.2.8
+        version: 19.3.0
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
@@ -1941,7 +1941,7 @@ importers:
         version: 23.2.0(@ogre-tools/fp@23.2.0)(@ogre-tools/injectable@23.2.0(@ogre-tools/fp@23.2.0))(mobx@7.0.5)
       '@testing-library/react':
         specifier: 'catalog:'
-        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       jsdom:
         specifier: 'catalog:'
         version: 29.1.1(@noble/hashes@2.2.0)
@@ -2067,19 +2067,19 @@ importers:
         version: 23.2.0(@ogre-tools/fp@23.2.0)(@ogre-tools/injectable@23.2.0(@ogre-tools/fp@23.2.0))(mobx@7.0.5)
       '@ogre-tools/injectable-react':
         specifier: 'catalog:'
-        version: 23.2.0(@ogre-tools/fp@23.2.0)(@ogre-tools/injectable@23.2.0(@ogre-tools/fp@23.2.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.2.8))(mobx@7.0.5)(react@19.2.8)
+        version: 23.2.0(@ogre-tools/fp@23.2.0)(@ogre-tools/injectable@23.2.0(@ogre-tools/fp@23.2.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.3.0))(mobx@7.0.5)(react@19.3.0)
       mobx:
         specifier: 'catalog:'
         version: 7.0.5
       mobx-react:
         specifier: ^10.0.2
-        version: 10.0.2(mobx@7.0.5)(react@19.2.8)
+        version: 10.0.2(mobx@7.0.5)(react@19.3.0)
       react:
         specifier: 'catalog:'
-        version: 19.2.8
+        version: 19.3.0
       react-dom:
         specifier: 'catalog:'
-        version: 19.2.8(react@19.2.8)
+        version: 19.3.0(react@19.3.0)
     devDependencies:
       '@freelensapp/react-testing-library-discovery':
         specifier: workspace:^
@@ -2095,13 +2095,13 @@ importers:
         version: 23.2.0
       '@testing-library/react':
         specifier: 'catalog:'
-        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@types/react':
         specifier: 'catalog:'
-        version: 19.2.17
+        version: 19.3.0
       '@types/react-dom':
         specifier: 'catalog:'
-        version: 19.2.3(@types/react@19.2.17)
+        version: 19.3.0(@types/react@19.3.0)
       jsdom:
         specifier: 'catalog:'
         version: 29.1.1(@noble/hashes@2.2.0)
@@ -2125,23 +2125,23 @@ importers:
         version: 23.2.0(@ogre-tools/fp@23.2.0)
       '@ogre-tools/injectable-react':
         specifier: 'catalog:'
-        version: 23.2.0(@ogre-tools/fp@23.2.0)(@ogre-tools/injectable@23.2.0(@ogre-tools/fp@23.2.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.2.8))(mobx@7.0.5)(react@19.2.8)
+        version: 23.2.0(@ogre-tools/fp@23.2.0)(@ogre-tools/injectable@23.2.0(@ogre-tools/fp@23.2.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.3.0))(mobx@7.0.5)(react@19.3.0)
       mobx:
         specifier: 'catalog:'
         version: 7.0.5
       mobx-react:
         specifier: ^10.0.2
-        version: 10.0.2(mobx@7.0.5)(react@19.2.8)
+        version: 10.0.2(mobx@7.0.5)(react@19.3.0)
       react:
         specifier: 'catalog:'
-        version: 19.2.8
+        version: 19.3.0
     devDependencies:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
       '@types/react':
         specifier: 'catalog:'
-        version: 19.2.17
+        version: 19.3.0
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
@@ -2159,14 +2159,14 @@ importers:
         version: link:../../utility-features/utilities
       react:
         specifier: 'catalog:'
-        version: 19.2.8
+        version: 19.3.0
     devDependencies:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
       '@types/react':
         specifier: 'catalog:'
-        version: 19.2.17
+        version: 19.3.0
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
@@ -2187,16 +2187,16 @@ importers:
         version: 23.2.0(@ogre-tools/fp@23.2.0)
       '@ogre-tools/injectable-react':
         specifier: 'catalog:'
-        version: 23.2.0(@ogre-tools/fp@23.2.0)(@ogre-tools/injectable@23.2.0(@ogre-tools/fp@23.2.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.2.8))(mobx@7.0.5)(react@19.2.8)
+        version: 23.2.0(@ogre-tools/fp@23.2.0)(@ogre-tools/injectable@23.2.0(@ogre-tools/fp@23.2.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.3.0))(mobx@7.0.5)(react@19.3.0)
       mobx:
         specifier: 'catalog:'
         version: 7.0.5
       mobx-react:
         specifier: ^10.0.2
-        version: 10.0.2(mobx@7.0.5)(react@19.2.8)
+        version: 10.0.2(mobx@7.0.5)(react@19.3.0)
       react:
         specifier: 'catalog:'
-        version: 19.2.8
+        version: 19.3.0
     devDependencies:
       '@freelensapp/typescript':
         specifier: workspace:^
@@ -2206,7 +2206,7 @@ importers:
         version: link:../../utility-features/utilities
       '@types/react':
         specifier: 'catalog:'
-        version: 19.2.17
+        version: 19.3.0
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
@@ -2233,16 +2233,16 @@ importers:
         version: 23.2.0(@ogre-tools/fp@23.2.0)
       '@ogre-tools/injectable-react':
         specifier: 'catalog:'
-        version: 23.2.0(@ogre-tools/fp@23.2.0)(@ogre-tools/injectable@23.2.0(@ogre-tools/fp@23.2.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.2.8))(mobx@7.0.5)(react@19.2.8)
+        version: 23.2.0(@ogre-tools/fp@23.2.0)(@ogre-tools/injectable@23.2.0(@ogre-tools/fp@23.2.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.3.0))(mobx@7.0.5)(react@19.3.0)
       mobx:
         specifier: 'catalog:'
         version: 7.0.5
       mobx-react:
         specifier: ^10.0.2
-        version: 10.0.2(mobx@7.0.5)(react@19.2.8)
+        version: 10.0.2(mobx@7.0.5)(react@19.3.0)
       react:
         specifier: 'catalog:'
-        version: 19.2.8
+        version: 19.3.0
     devDependencies:
       '@freelensapp/feature-core':
         specifier: workspace:^
@@ -2261,7 +2261,7 @@ importers:
         version: 7.0.0(@testing-library/dom@10.4.1)
       '@types/react':
         specifier: 'catalog:'
-        version: 19.2.17
+        version: 19.3.0
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
@@ -2300,7 +2300,7 @@ importers:
         version: 23.2.0(@ogre-tools/fp@23.2.0)
       '@ogre-tools/injectable-react':
         specifier: 'catalog:'
-        version: 23.2.0(@ogre-tools/fp@23.2.0)(@ogre-tools/injectable@23.2.0(@ogre-tools/fp@23.2.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.2.8))(mobx@7.0.5)(react@19.2.8)
+        version: 23.2.0(@ogre-tools/fp@23.2.0)(@ogre-tools/injectable@23.2.0(@ogre-tools/fp@23.2.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.3.0))(mobx@7.0.5)(react@19.3.0)
       auto-bind:
         specifier: 'catalog:'
         version: 5.0.1
@@ -2312,17 +2312,17 @@ importers:
         version: 7.0.5
       mobx-react:
         specifier: ^10.0.2
-        version: 10.0.2(mobx@7.0.5)(react@19.2.8)
+        version: 10.0.2(mobx@7.0.5)(react@19.3.0)
       react:
         specifier: 'catalog:'
-        version: 19.2.8
+        version: 19.3.0
     devDependencies:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
       '@types/react':
         specifier: 'catalog:'
-        version: 19.2.17
+        version: 19.3.0
       type-fest:
         specifier: 'catalog:'
         version: 5.6.0
@@ -2346,17 +2346,17 @@ importers:
         version: 7.0.5
       mobx-react:
         specifier: ^10.0.2
-        version: 10.0.2(mobx@7.0.5)(react@19.2.8)
+        version: 10.0.2(mobx@7.0.5)(react@19.3.0)
       react:
         specifier: 'catalog:'
-        version: 19.2.8
+        version: 19.3.0
     devDependencies:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
       '@types/react':
         specifier: 'catalog:'
-        version: 19.2.17
+        version: 19.3.0
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
@@ -2371,14 +2371,14 @@ importers:
         version: link:../../utility-features/utilities
       react:
         specifier: 'catalog:'
-        version: 19.2.8
+        version: 19.3.0
     devDependencies:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
       '@types/react':
         specifier: 'catalog:'
-        version: 19.2.17
+        version: 19.3.0
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
@@ -2402,13 +2402,13 @@ importers:
         version: 7.0.5
       mobx-react:
         specifier: ^10.0.2
-        version: 10.0.2(mobx@7.0.5)(react@19.2.8)
+        version: 10.0.2(mobx@7.0.5)(react@19.3.0)
       react:
         specifier: 'catalog:'
-        version: 19.2.8
+        version: 19.3.0
       react-dom:
         specifier: 'catalog:'
-        version: 19.2.8(react@19.2.8)
+        version: 19.3.0(react@19.3.0)
     devDependencies:
       '@freelensapp/typescript':
         specifier: workspace:^
@@ -2418,16 +2418,16 @@ importers:
         version: 7.0.0(@testing-library/dom@10.4.1)
       '@testing-library/react':
         specifier: 'catalog:'
-        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@testing-library/user-event':
         specifier: 'catalog:'
         version: 14.6.1(@testing-library/dom@10.4.1)
       '@types/react':
         specifier: 'catalog:'
-        version: 19.2.17
+        version: 19.3.0
       '@types/react-dom':
         specifier: 'catalog:'
-        version: 19.2.3(@types/react@19.2.17)
+        version: 19.3.0(@types/react@19.3.0)
       jsdom:
         specifier: 'catalog:'
         version: 29.1.1(@noble/hashes@2.2.0)
@@ -2557,7 +2557,7 @@ importers:
         version: link:../../infrastructure/typescript
       '@testing-library/react':
         specifier: 'catalog:'
-        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
 
   packages/utility-features/run-many:
     dependencies:
@@ -2621,10 +2621,10 @@ importers:
         version: 23.2.0(@ogre-tools/fp@23.2.0)
       '@ogre-tools/injectable-react':
         specifier: 'catalog:'
-        version: 23.2.0(@ogre-tools/fp@23.2.0)(@ogre-tools/injectable@23.2.0(@ogre-tools/fp@23.2.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.2.8))(mobx@7.0.5)(react@19.2.8)
+        version: 23.2.0(@ogre-tools/fp@23.2.0)(@ogre-tools/injectable@23.2.0(@ogre-tools/fp@23.2.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.3.0))(mobx@7.0.5)(react@19.3.0)
       '@testing-library/react':
         specifier: 'catalog:'
-        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       es-toolkit:
         specifier: 'catalog:'
         version: 1.49.0
@@ -2633,7 +2633,7 @@ importers:
         version: 7.0.5
       react:
         specifier: 'catalog:'
-        version: 19.2.8
+        version: 19.3.0
     devDependencies:
       '@freelensapp/typescript':
         specifier: workspace:^
@@ -2643,10 +2643,10 @@ importers:
         version: 24.12.4
       '@types/react':
         specifier: 'catalog:'
-        version: 19.2.17
+        version: 19.3.0
       react-dom:
         specifier: 'catalog:'
-        version: 19.2.8(react@19.2.8)
+        version: 19.3.0(react@19.3.0)
       vitest:
         specifier: 'catalog:'
         version: 4.1.10(@types/node@24.12.4)(@vitest/coverage-v8@4.1.10)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.1.5(@types/node@24.12.4)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.100.0)(sass@1.101.0)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
@@ -2670,7 +2670,7 @@ importers:
         version: 7.3.0
       react:
         specifier: 'catalog:'
-        version: 19.2.8
+        version: 19.3.0
       semver:
         specifier: 'catalog:'
         version: 7.8.5
@@ -2686,7 +2686,7 @@ importers:
         version: 24.12.4
       '@types/react':
         specifier: 'catalog:'
-        version: 19.2.17
+        version: 19.3.0
       '@types/semver':
         specifier: 'catalog:'
         version: 7.7.1
@@ -4717,6 +4717,11 @@ packages:
     peerDependencies:
       '@types/react': ^19.2.0
 
+  '@types/react-dom@19.3.0':
+    resolution: {integrity: sha512-ZI7bU42mZXXKHn/qNLEw2IrbiINU7X5+vfgdixBHkCNpYWXjKgfQ/P+uyGb5CjOLB9UcnTeg3rylQtV2hym44Q==}
+    peerDependencies:
+      '@types/react': ^19.3.0
+
   '@types/react-transition-group@4.4.12':
     resolution: {integrity: sha512-8TV6R3h2j7a91c+1DXdJi3Syo69zzIZbz7Lg5tORM5LEJG7X/E6a1V3drRyBRZq7/utz7A+c4OgYLiLcYGHG6w==}
     peerDependencies:
@@ -4724,6 +4729,9 @@ packages:
 
   '@types/react@19.2.17':
     resolution: {integrity: sha512-MXfmqaVPEVgkBT/aY0aGCkRWWtByiYQXo3xdQ8r5RzuFrPiRn8Gar2tQdXSUQ2GKV3bkXckek89V8wQBY2Q/Aw==}
+
+  '@types/react@19.3.0':
+    resolution: {integrity: sha512-N0rFCuH9YoxG9/m61l9MfpJKfmLOVU0em7ipIz6TRgSSkvReLB9vL85GB+yr8Bs5leqpvg96JSwF4ZS1s4viQg==}
 
   '@types/responselike@1.0.0':
     resolution: {integrity: sha512-85Y2BjiufFzaMIlvJDvTTB8Fxl2xfLo4HgmHzVBz08w4wDePCTjYw66PdrolO0kzli3yam/YCgRufyo1DdQVTA==}
@@ -6731,10 +6739,10 @@ packages:
     resolution: {integrity: sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==}
     engines: {node: '>=10'}
 
-  react-dom@19.2.8:
-    resolution: {integrity: sha512-rVprimfGBG3DR+Tq0IQG2DT5PxKth1WIGDmj5yPmlzr4YBe7uyE+Du4oVqTDXZSHGGGXRtTJEGSSePyQCMBglQ==}
+  react-dom@19.3.0:
+    resolution: {integrity: sha512-JDk8dgif51OjFoDE70+OT9ICyYr+69HlmihNwp1+Nsfbna3t5sIiCa9ZJktDmQ4/1b/rn26hIAR2uYXDMr5r0Q==}
     peerDependencies:
-      react: ^19.2.8
+      react: ^19.3.0
 
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
@@ -6766,8 +6774,8 @@ packages:
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
 
-  react@19.2.8:
-    resolution: {integrity: sha512-PWaYA1L/q9u2u7xYQi+Y3L3Yfnie7XyLeaJICV1MGD6LprsBxcAqGjYyr0eY3p+QdsA+x/Irkt4Qif8D63+Sbw==}
+  react@19.3.0:
+    resolution: {integrity: sha512-E8LUcbtBWt20bbl2YoHfx4ZDBdxVTfOKtCZn9cDSJ4l6/nuoApcpIBcj47t2wZoVX8g2ZHuMHbiShgCR1T5Sog==}
     engines: {node: '>=0.10.0'}
 
   read-binary-file-arch@1.0.6:
@@ -7021,8 +7029,8 @@ packages:
     resolution: {integrity: sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==}
     engines: {node: '>=v12.22.7'}
 
-  scheduler@0.27.0:
-    resolution: {integrity: sha512-eNv+WrVbKu1f3vbYJT/xtiF5syA5HPIMtf9IgY/nKg0sWqzAUEvqY/xm7OcZc/qafLx/iO9FgOmeSAp4v5ti/Q==}
+  scheduler@0.28.0:
+    resolution: {integrity: sha512-juorfCmIkIw8tT+p5BXSm6PJjQF/ycEYmKyzURCIt/RaZIhL+PulbQ9Yu2z1HdOJDdqDTlxA1+xKBmHXJsczAw==}
 
   selfsigned@5.5.0:
     resolution: {integrity: sha512-ftnu3TW4+3eBfLRFnDEkzGxSF/10BJBkaLJuBHZX0kiPS7bRdlpZGu6YGt4KngMkdTwJE6MbjavFpqHvqVt+Ew==}
@@ -7941,29 +7949,29 @@ snapshots:
       enabled: 2.0.0
       kuler: 2.0.0
 
-  '@dnd-kit/accessibility@3.1.1(react@19.2.8)':
+  '@dnd-kit/accessibility@3.1.1(react@19.3.0)':
     dependencies:
-      react: 19.2.8
+      react: 19.3.0
       tslib: 2.8.1
 
-  '@dnd-kit/core@6.3.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
+  '@dnd-kit/core@6.3.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
     dependencies:
-      '@dnd-kit/accessibility': 3.1.1(react@19.2.8)
-      '@dnd-kit/utilities': 3.2.2(react@19.2.8)
-      react: 19.2.8
-      react-dom: 19.2.8(react@19.2.8)
+      '@dnd-kit/accessibility': 3.1.1(react@19.3.0)
+      '@dnd-kit/utilities': 3.2.2(react@19.3.0)
+      react: 19.3.0
+      react-dom: 19.3.0(react@19.3.0)
       tslib: 2.8.1
 
-  '@dnd-kit/sortable@10.0.0(@dnd-kit/core@6.3.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8))(react@19.2.8)':
+  '@dnd-kit/sortable@10.0.0(@dnd-kit/core@6.3.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)':
     dependencies:
-      '@dnd-kit/core': 6.3.1(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      '@dnd-kit/utilities': 3.2.2(react@19.2.8)
-      react: 19.2.8
+      '@dnd-kit/core': 6.3.1(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      '@dnd-kit/utilities': 3.2.2(react@19.3.0)
+      react: 19.3.0
       tslib: 2.8.1
 
-  '@dnd-kit/utilities@3.2.2(react@19.2.8)':
+  '@dnd-kit/utilities@3.2.2(react@19.3.0)':
     dependencies:
-      react: 19.2.8
+      react: 19.3.0
       tslib: 2.8.1
 
   '@electron-internal/extract-zip@1.0.3': {}
@@ -8116,19 +8124,19 @@ snapshots:
 
   '@emotion/memoize@0.9.0': {}
 
-  '@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1)':
+  '@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1)':
     dependencies:
       '@babel/runtime': 7.29.7
       '@emotion/babel-plugin': 11.13.5(supports-color@8.1.1)
       '@emotion/cache': 11.14.0
       '@emotion/serialize': 1.3.3
-      '@emotion/use-insertion-effect-with-fallbacks': 1.2.0(react@19.2.8)
+      '@emotion/use-insertion-effect-with-fallbacks': 1.2.0(react@19.3.0)
       '@emotion/utils': 1.4.2
       '@emotion/weak-memoize': 0.4.0
       hoist-non-react-statics: 3.3.2
-      react: 19.2.8
+      react: 19.3.0
     optionalDependencies:
-      '@types/react': 19.2.17
+      '@types/react': 19.3.0
     transitivePeerDependencies:
       - supports-color
 
@@ -8142,27 +8150,27 @@ snapshots:
 
   '@emotion/sheet@1.4.0': {}
 
-  '@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1))(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1)':
+  '@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1)':
     dependencies:
       '@babel/runtime': 7.29.7
       '@emotion/babel-plugin': 11.13.5(supports-color@8.1.1)
       '@emotion/is-prop-valid': 1.4.0
-      '@emotion/react': 11.14.0(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1)
+      '@emotion/react': 11.14.0(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1)
       '@emotion/serialize': 1.3.3
-      '@emotion/use-insertion-effect-with-fallbacks': 1.2.0(react@19.2.8)
+      '@emotion/use-insertion-effect-with-fallbacks': 1.2.0(react@19.3.0)
       '@emotion/utils': 1.4.2
-      react: 19.2.8
+      react: 19.3.0
     optionalDependencies:
-      '@types/react': 19.2.17
+      '@types/react': 19.3.0
     transitivePeerDependencies:
       - supports-color
     optional: true
 
   '@emotion/unitless@0.10.0': {}
 
-  '@emotion/use-insertion-effect-with-fallbacks@1.2.0(react@19.2.8)':
+  '@emotion/use-insertion-effect-with-fallbacks@1.2.0(react@19.3.0)':
     dependencies:
-      react: 19.2.8
+      react: 19.3.0
 
   '@emotion/utils@1.4.2': {}
 
@@ -8724,37 +8732,37 @@ snapshots:
 
   '@mui/core-downloads-tracker@9.2.0': {}
 
-  '@mui/material@9.2.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1))(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1))(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
+  '@mui/material@9.2.0(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
     dependencies:
       '@babel/runtime': 7.29.7
       '@mui/core-downloads-tracker': 9.2.0
-      '@mui/system': 9.2.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1))(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1))(@types/react@19.2.17)(react@19.2.8)
-      '@mui/types': 9.1.1(@types/react@19.2.17)
-      '@mui/utils': 9.2.0(@types/react@19.2.17)(react@19.2.8)
+      '@mui/system': 9.2.0(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)
+      '@mui/types': 9.1.1(@types/react@19.3.0)
+      '@mui/utils': 9.2.0(@types/react@19.3.0)(react@19.3.0)
       '@popperjs/core': 2.11.8
-      '@types/react-transition-group': 4.4.12(@types/react@19.2.17)
+      '@types/react-transition-group': 4.4.12(@types/react@19.3.0)
       clsx: 2.1.1
       csstype: 3.2.3
       prop-types: 15.8.1
-      react: 19.2.8
-      react-dom: 19.2.8(react@19.2.8)
+      react: 19.3.0
+      react-dom: 19.3.0(react@19.3.0)
       react-is: 19.2.8
-      react-transition-group: 4.4.5(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+      react-transition-group: 4.4.5(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
     optionalDependencies:
-      '@emotion/react': 11.14.0(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1)
-      '@emotion/styled': 11.14.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1))(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1)
-      '@types/react': 19.2.17
+      '@emotion/react': 11.14.0(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1)
+      '@emotion/styled': 11.14.0(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1)
+      '@types/react': 19.3.0
 
-  '@mui/private-theming@9.2.0(@types/react@19.2.17)(react@19.2.8)':
+  '@mui/private-theming@9.2.0(@types/react@19.3.0)(react@19.3.0)':
     dependencies:
       '@babel/runtime': 7.29.7
-      '@mui/utils': 9.2.0(@types/react@19.2.17)(react@19.2.8)
+      '@mui/utils': 9.2.0(@types/react@19.3.0)(react@19.3.0)
       prop-types: 15.8.1
-      react: 19.2.8
+      react: 19.3.0
     optionalDependencies:
-      '@types/react': 19.2.17
+      '@types/react': 19.3.0
 
-  '@mui/styled-engine@9.1.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1))(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1))(react@19.2.8)':
+  '@mui/styled-engine@9.1.1(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(react@19.3.0)':
     dependencies:
       '@babel/runtime': 7.29.7
       '@emotion/cache': 11.14.0
@@ -8762,44 +8770,44 @@ snapshots:
       '@emotion/sheet': 1.4.0
       csstype: 3.2.3
       prop-types: 15.8.1
-      react: 19.2.8
+      react: 19.3.0
     optionalDependencies:
-      '@emotion/react': 11.14.0(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1)
-      '@emotion/styled': 11.14.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1))(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1)
+      '@emotion/react': 11.14.0(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1)
+      '@emotion/styled': 11.14.0(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1)
 
-  '@mui/system@9.2.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1))(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1))(@types/react@19.2.17)(react@19.2.8)':
+  '@mui/system@9.2.0(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)':
     dependencies:
       '@babel/runtime': 7.29.7
-      '@mui/private-theming': 9.2.0(@types/react@19.2.17)(react@19.2.8)
-      '@mui/styled-engine': 9.1.1(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1))(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1))(react@19.2.8)
-      '@mui/types': 9.1.1(@types/react@19.2.17)
-      '@mui/utils': 9.2.0(@types/react@19.2.17)(react@19.2.8)
+      '@mui/private-theming': 9.2.0(@types/react@19.3.0)(react@19.3.0)
+      '@mui/styled-engine': 9.1.1(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(react@19.3.0)
+      '@mui/types': 9.1.1(@types/react@19.3.0)
+      '@mui/utils': 9.2.0(@types/react@19.3.0)(react@19.3.0)
       clsx: 2.1.1
       csstype: 3.2.3
       prop-types: 15.8.1
-      react: 19.2.8
+      react: 19.3.0
     optionalDependencies:
-      '@emotion/react': 11.14.0(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1)
-      '@emotion/styled': 11.14.0(@emotion/react@11.14.0(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1))(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1)
-      '@types/react': 19.2.17
+      '@emotion/react': 11.14.0(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1)
+      '@emotion/styled': 11.14.0(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1)
+      '@types/react': 19.3.0
 
-  '@mui/types@9.1.1(@types/react@19.2.17)':
+  '@mui/types@9.1.1(@types/react@19.3.0)':
     dependencies:
       '@babel/runtime': 7.29.7
     optionalDependencies:
-      '@types/react': 19.2.17
+      '@types/react': 19.3.0
 
-  '@mui/utils@9.2.0(@types/react@19.2.17)(react@19.2.8)':
+  '@mui/utils@9.2.0(@types/react@19.3.0)(react@19.3.0)':
     dependencies:
       '@babel/runtime': 7.29.7
-      '@mui/types': 9.1.1(@types/react@19.2.17)
+      '@mui/types': 9.1.1(@types/react@19.3.0)
       '@types/prop-types': 15.7.15
       clsx: 2.1.1
       prop-types: 15.8.1
-      react: 19.2.8
+      react: 19.3.0
       react-is: 19.2.8
     optionalDependencies:
-      '@types/react': 19.2.17
+      '@types/react': 19.3.0
 
   '@napi-rs/wasm-runtime@0.2.12':
     dependencies:
@@ -8909,14 +8917,14 @@ snapshots:
       '@ogre-tools/injectable': 23.2.0(@ogre-tools/fp@23.2.0)
       mobx: 7.0.5
 
-  '@ogre-tools/injectable-react@23.2.0(@ogre-tools/fp@23.2.0)(@ogre-tools/injectable@23.2.0(@ogre-tools/fp@23.2.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.2.8))(mobx@7.0.5)(react@19.2.8)':
+  '@ogre-tools/injectable-react@23.2.0(@ogre-tools/fp@23.2.0)(@ogre-tools/injectable@23.2.0(@ogre-tools/fp@23.2.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.3.0))(mobx@7.0.5)(react@19.3.0)':
     dependencies:
       '@ogre-tools/fp': 23.2.0
       '@ogre-tools/injectable': 23.2.0(@ogre-tools/fp@23.2.0)
       lodash: 4.18.1
       mobx: 7.0.5
-      mobx-react: 10.0.2(mobx@7.0.5)(react@19.2.8)
-      react: 19.2.8
+      mobx-react: 10.0.2(mobx@7.0.5)(react@19.3.0)
+      react: 19.3.0
 
   '@ogre-tools/injectable@23.2.0(@ogre-tools/fp@23.2.0)':
     dependencies:
@@ -9408,15 +9416,35 @@ snapshots:
       picocolors: 1.1.1
       redent: 3.0.0
 
-  '@testing-library/react@16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
+  '@testing-library/react@16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.2.17))(@types/react@19.2.17)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
     dependencies:
       '@babel/runtime': 7.29.7
       '@testing-library/dom': 10.4.1
-      react: 19.2.8
-      react-dom: 19.2.8(react@19.2.8)
+      react: 19.3.0
+      react-dom: 19.3.0(react@19.3.0)
     optionalDependencies:
       '@types/react': 19.2.17
       '@types/react-dom': 19.2.3(@types/react@19.2.17)
+
+  '@testing-library/react@16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.2.3(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+    dependencies:
+      '@babel/runtime': 7.29.7
+      '@testing-library/dom': 10.4.1
+      react: 19.3.0
+      react-dom: 19.3.0(react@19.3.0)
+    optionalDependencies:
+      '@types/react': 19.3.0
+      '@types/react-dom': 19.2.3(@types/react@19.3.0)
+
+  '@testing-library/react@16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+    dependencies:
+      '@babel/runtime': 7.29.7
+      '@testing-library/dom': 10.4.1
+      react: 19.3.0
+      react-dom: 19.3.0(react@19.3.0)
+    optionalDependencies:
+      '@types/react': 19.3.0
+      '@types/react-dom': 19.3.0(@types/react@19.3.0)
 
   '@testing-library/user-event@14.6.1(@testing-library/dom@10.4.1)':
     dependencies:
@@ -9561,12 +9589,27 @@ snapshots:
   '@types/react-dom@19.2.3(@types/react@19.2.17)':
     dependencies:
       '@types/react': 19.2.17
+    optional: true
 
-  '@types/react-transition-group@4.4.12(@types/react@19.2.17)':
+  '@types/react-dom@19.2.3(@types/react@19.3.0)':
     dependencies:
-      '@types/react': 19.2.17
+      '@types/react': 19.3.0
+    optional: true
+
+  '@types/react-dom@19.3.0(@types/react@19.3.0)':
+    dependencies:
+      '@types/react': 19.3.0
+
+  '@types/react-transition-group@4.4.12(@types/react@19.3.0)':
+    dependencies:
+      '@types/react': 19.3.0
 
   '@types/react@19.2.17':
+    dependencies:
+      csstype: 3.2.3
+    optional: true
+
+  '@types/react@19.3.0':
     dependencies:
       csstype: 3.2.3
 
@@ -11285,16 +11328,16 @@ snapshots:
     dependencies:
       minimist: 1.2.8
 
-  mobx-react-lite@5.1.0(mobx@7.0.5)(react@19.2.8):
+  mobx-react-lite@5.1.0(mobx@7.0.5)(react@19.3.0):
     dependencies:
       mobx: 7.0.5
-      react: 19.2.8
+      react: 19.3.0
 
-  mobx-react@10.0.2(mobx@7.0.5)(react@19.2.8):
+  mobx-react@10.0.2(mobx@7.0.5)(react@19.3.0):
     dependencies:
       mobx: 7.0.5
-      mobx-react-lite: 5.1.0(mobx@7.0.5)(react@19.2.8)
-      react: 19.2.8
+      mobx-react-lite: 5.1.0(mobx@7.0.5)(react@19.3.0)
+      react: 19.3.0
 
   mobx-utils@6.1.1(mobx@7.0.5):
     dependencies:
@@ -11623,10 +11666,10 @@ snapshots:
 
   quick-lru@5.1.1: {}
 
-  react-dom@19.2.8(react@19.2.8):
+  react-dom@19.3.0(react@19.3.0):
     dependencies:
-      react: 19.2.8
-      scheduler: 0.27.0
+      react: 19.3.0
+      scheduler: 0.28.0
 
   react-is@16.13.1: {}
 
@@ -11638,38 +11681,38 @@ snapshots:
     dependencies:
       '@testing-library/dom': 10.4.1
 
-  react-select@5.10.2(@types/react@19.2.17)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(supports-color@8.1.1):
+  react-select@5.10.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(supports-color@8.1.1):
     dependencies:
       '@babel/runtime': 7.29.7
       '@emotion/cache': 11.14.0
-      '@emotion/react': 11.14.0(@types/react@19.2.17)(react@19.2.8)(supports-color@8.1.1)
+      '@emotion/react': 11.14.0(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1)
       '@floating-ui/dom': 1.2.8
-      '@types/react-transition-group': 4.4.12(@types/react@19.2.17)
+      '@types/react-transition-group': 4.4.12(@types/react@19.3.0)
       memoize-one: 6.0.0
       prop-types: 15.8.1
-      react: 19.2.8
-      react-dom: 19.2.8(react@19.2.8)
-      react-transition-group: 4.4.5(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
-      use-isomorphic-layout-effect: 1.2.1(@types/react@19.2.17)(react@19.2.8)
+      react: 19.3.0
+      react-dom: 19.3.0(react@19.3.0)
+      react-transition-group: 4.4.5(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      use-isomorphic-layout-effect: 1.2.1(@types/react@19.3.0)(react@19.3.0)
     transitivePeerDependencies:
       - '@types/react'
       - supports-color
 
-  react-transition-group@4.4.5(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
+  react-transition-group@4.4.5(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
     dependencies:
       '@babel/runtime': 7.29.7
       dom-helpers: 5.2.1
       loose-envify: 1.4.0
       prop-types: 15.8.1
-      react: 19.2.8
-      react-dom: 19.2.8(react@19.2.8)
+      react: 19.3.0
+      react-dom: 19.3.0(react@19.3.0)
 
-  react-window@2.3.0(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
+  react-window@2.3.0(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
     dependencies:
-      react: 19.2.8
-      react-dom: 19.2.8(react@19.2.8)
+      react: 19.3.0
+      react-dom: 19.3.0(react@19.3.0)
 
-  react@19.2.8: {}
+  react@19.3.0: {}
 
   read-binary-file-arch@1.0.6(supports-color@8.1.1):
     dependencies:
@@ -11941,7 +11984,7 @@ snapshots:
     dependencies:
       xmlchars: 2.2.0
 
-  scheduler@0.27.0: {}
+  scheduler@0.28.0: {}
 
   selfsigned@5.5.0:
     dependencies:
@@ -12453,11 +12496,11 @@ snapshots:
       escalade: 3.2.0
       picocolors: 1.1.1
 
-  use-isomorphic-layout-effect@1.2.1(@types/react@19.2.17)(react@19.2.8):
+  use-isomorphic-layout-effect@1.2.1(@types/react@19.3.0)(react@19.3.0):
     dependencies:
-      react: 19.2.8
+      react: 19.3.0
     optionalDependencies:
-      '@types/react': 19.2.17
+      '@types/react': 19.3.0
 
   utf8-byte-length@1.0.4: {}
 
