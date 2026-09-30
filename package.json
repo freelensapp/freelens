@@ -15,8 +15,8 @@
     "email": "freelens@freelens.app"
   },
   "workspaces": [
-    "packages/**/*",
-    "freelens"
+    "freelens",
+    "packages/**"
   ],
   "scripts": {
     "asar": "pnpm dlx @electron/asar@4.2.1",
