@@ -15,8 +15,8 @@
     "email": "freelens@freelens.app"
   },
   "workspaces": [
-    "packages/**/*",
-    "freelens"
+    "freelens",
+    "packages/**"
   ],
   "scripts": {
     "asar": "pnpm dlx @electron/asar@4.2.1",
@@ -36,7 +36,7 @@
     "build:fixture-extension": "turbo run build --filter=@freelensapp/fixture-extension --",
     "build:freelens": "cd freelens && pnpm build",
     "build:resources": "turbo run build:resources --",
-    "bump-version": "pnpm version --no-commit-hooks --no-git-tag-version --workspaces --no-workspaces-update",
+    "bump-version": "pnpm -r version --no-commit-hooks --no-git-checks --no-git-tag-version",
     "clean": "pnpm run clean:dist && pnpm purge",
     "clean:cache": "pnpm dlx rimraf@6.1.3 .cache",
     "clean:dist": "pnpm dlx rimraf@6.1.3 .rimraf-dlx-warmup && pnpm -r run clean:dist",
@@ -82,7 +82,7 @@
     "typescript": "catalog:",
     "vitest": "catalog:"
   },
-  "packageManager": "pnpm@11.18.0+sha512.33d83c77da82f49fba836925c6f1b841181ec3132b670639bd012f7075f5c7cf634c5f870147c19aae7478fac01df09d8892e880454896edd23ee9b33757563c",
+  "packageManager": "pnpm@12.8.1+sha512.f64ba907507f5ceafe06c8d38e6052d0179444580ec1279ddd5bfc11cb48aa8a2644b66598e07e761da84872a9fc57d5f902b87fa49d024198d558612aabbe45",
   "engines": {
     "node": ">=24.0.0"
   }

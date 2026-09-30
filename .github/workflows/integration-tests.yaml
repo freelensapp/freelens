@@ -111,7 +111,12 @@ jobs:
 
       - name: Get Electron version
         shell: bash
-        run: echo "electron_version=$(yq -py -oy -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a $GITHUB_ENV
+        # pnpm-lock.yaml holds several YAML documents (pnpm 12 puts packageManagerDependencies
+        # in a document of its own), so evaluate them all and take the one that has the importer.
+        # The version carries a peer suffix, e.g. 1.2.3(supports-color@8.1.1), which split drops.
+        run: |
+          electron_version=$(yq ea -r '[.importers.freelens.devDependencies.electron.version | select(. != null)] | .[0] // error("electron not found in pnpm-lock.yaml") | split("(") | .[0]' pnpm-lock.yaml)
+          echo "electron_version=${electron_version}" | tee -a "${GITHUB_ENV}"
 
       # electron-builder's Electron zip downloader doesn't accept a cache
       # directory override (no ELECTRON_CACHE / electron_config_cache is read
@@ -266,13 +271,9 @@ jobs:
           EB_PATH=$(cd freelens && node -e "console.log(require.resolve('electron-builder/cli'))")
           echo "ELECTRON_BUILDER_PATH=$EB_PATH" | tee -a $GITHUB_ENV
 
-      - name: Deploy production node_modules
-        shell: bash
-        run: |
-          pnpm deploy --legacy --prod --filter=freelens freelens/node_modules_prod
-          mv freelens/node_modules freelens/node_modules_dev
-          mv freelens/node_modules_prod freelens/node_modules
-
+      # electron-builder collects the modules to package with `pnpm list --prod`,
+      # so app.asar gets only the production dependencies of freelens from the
+      # regular workspace node_modules, as in the release build.
       - name: Build Electron app
         id: build-electron-app
         shell: bash
@@ -322,12 +323,6 @@ jobs:
             exit 1
           fi
 
-      - name: Restore dev node_modules
-        shell: bash
-        run: |
-          mv freelens/node_modules freelens/node_modules_prod
-          mv freelens/node_modules_dev freelens/node_modules
-
       # Produce the SBOM and runtime package list only for the real branch build
       # (push/dispatch/schedule on main), never for PRs. The combine-and-scan
       # job below consumes both as run artifacts.
@@ -352,10 +347,12 @@ jobs:
           # keys as the runtime closure (to drop build-time findings) and the
           # paths as the code-scanning location for npm findings (grype otherwise
           # reports them against pnpm-lock.yaml). --legacy is required because the
-          # workspace does not set inject-workspace-packages.
+          # workspace does not set inject-workspace-packages. allow-unused-patches
+          # because patchedDependencies also patches devDependencies, which a
+          # production deploy does not install.
           deploy_dir="$RUNNER_TEMP/freelens-prod"
           rm -rf "$deploy_dir"
-          pnpm --filter freelens deploy --prod --legacy --ignore-scripts "$deploy_dir"
+          pnpm --filter freelens deploy --prod --legacy --ignore-scripts --config.allow-unused-patches=true "$deploy_dir"
           os="${{ matrix.os }}"
           arch="${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}"
           out="freelens/dist/${{ github.event.repository.name }}-${os}-${arch}-prod-packages.json"

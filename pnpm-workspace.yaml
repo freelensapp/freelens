@@ -47,7 +47,7 @@ catalog:
   electron-builder-squirrel-windows: 26.15.7
   electron-vite: 6.0.0-beta.1
   playwright: 1.61.1
-  pnpm: 11.18.0
+  pnpm: 12.8.1
   rollup: 4.62.2
   rollup-plugin-dts: 6.5.1
   sass-embedded: 1.100.0
@@ -175,6 +175,7 @@ allowBuilds:
   electron-winstaller: false
   esbuild: false
   node-pty: true
+  pnpm: true
   sharp: true
 
 engineStrict: true
