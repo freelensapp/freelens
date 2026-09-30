@@ -8,10 +8,10 @@ packages:
 # every update anyway, so ranges bought us no flexibility.
 catalog:
   # React family (singletons)
-  react: 19.2.8
-  react-dom: 19.2.8
-  '@types/react': 19.2.17
-  '@types/react-dom': 19.2.3
+  react: 19.3.0
+  react-dom: 19.3.0
+  '@types/react': 19.3.0
+  '@types/react-dom': 19.3.0
   # MobX family (singletons)
   mobx: 7.0.5
   mobx-react: 10.0.2
@@ -156,8 +156,8 @@ catalogs:
     '@ogre-tools/injectable': ^23.2.0
     '@ogre-tools/injectable-react': ^23.2.0
     '@types/node': ~24.12.4
-    '@types/react': ^19.2.17
-    '@types/react-dom': ^19.2.3
+    '@types/react': ^19.3.0
+    '@types/react-dom': ^19.3.0
     chart.js: ^4.5.1
     conf: ^15.1.0
     es-toolkit: ^1.49.0
@@ -165,7 +165,7 @@ catalogs:
     mobx: ^7.0.5
     mobx-react: ^10.0.2
     monaco-editor: ^0.56.0
-    react: ^19.2.8
+    react: ^19.3.0
     react-select: ^5.10.2
     rfc6902: ^5.2.0
     type-fest: ^5.6.0
