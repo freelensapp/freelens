@@ -402,8 +402,8 @@ catalogs:
       specifier: 6.15.0
       version: 6.15.0
     mobx-react-lite:
-      specifier: 4.1.1
-      version: 4.1.1
+      specifier: 5.1.0
+      version: 5.1.0
     mobx-utils:
       specifier: 6.1.1
       version: 6.1.1
@@ -1150,7 +1150,7 @@ importers:
         version: 9.2.2(mobx@6.15.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
       mobx-react-lite:
         specifier: 'catalog:'
-        version: 4.1.1(mobx@6.15.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)
+        version: 5.1.0(mobx@6.15.0)(react@19.2.8)
       mobx-utils:
         specifier: 'catalog:'
         version: 6.1.1(mobx@6.15.0)
@@ -6382,6 +6382,12 @@ packages:
       react-native:
         optional: true
 
+  mobx-react-lite@5.1.0:
+    resolution: {integrity: sha512-++LQTCRr4FJCWuaEvYl5gCtGBwOpOwrnWjm9uhCUDI5nmkzLR8eT1jgMeYfJ8wc88YOYyC/ygjw2KpYPBYGsww==}
+    peerDependencies:
+      mobx: ^7.0.0
+      react: ^18 || ^19
+
   mobx-react@9.2.2:
     resolution: {integrity: sha512-ShszmQzR/VrhU3M0cQ7DA/s8qNcLcF2emSuudJ/TnDILS3C1Im48mdaG6CpyjZHy8+WqgXUCC9mPqSRIwPPMuQ==}
     peerDependencies:
@@ -11300,6 +11306,11 @@ snapshots:
       use-sync-external-store: 1.5.0(react@19.2.8)
     optionalDependencies:
       react-dom: 19.2.8(react@19.2.8)
+
+  mobx-react-lite@5.1.0(mobx@6.15.0)(react@19.2.8):
+    dependencies:
+      mobx: 6.15.0
+      react: 19.2.8
 
   mobx-react@9.2.2(mobx@6.15.0)(react-dom@19.2.8(react@19.2.8))(react@19.2.8):
     dependencies:

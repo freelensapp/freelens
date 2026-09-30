@@ -15,7 +15,7 @@ catalog:
   # MobX family (singletons)
   mobx: 6.15.0
   mobx-react: 9.1.1
-  mobx-react-lite: 4.1.1
+  mobx-react-lite: 5.1.0
   # TypeScript
   typescript: 7.0.2
   # Compiler API for rollup-plugin-dts, which TypeScript 7 no longer provides
