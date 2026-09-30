@@ -610,12 +610,14 @@ jobs:
           # needs the keys as the runtime closure (to drop build-time findings)
           # and the paths as the reported location for npm findings (grype
           # otherwise reports them against pnpm-lock.yaml). --legacy is required
-          # because the workspace does not set inject-workspace-packages. The
+          # because the workspace does not set inject-workspace-packages, and
+          # allow-unused-patches because patchedDependencies also patches
+          # devDependencies, which a production deploy does not install. The
           # lowercase repo-name prefix keeps this file out of the Freelens*.*
           # release-upload glob; it travels as a run artifact instead.
           deploy_dir="$RUNNER_TEMP/freelens-prod"
           rm -rf "$deploy_dir"
-          pnpm --filter freelens deploy --prod --legacy --ignore-scripts "$deploy_dir"
+          pnpm --filter freelens deploy --prod --legacy --ignore-scripts --config.allow-unused-patches=true "$deploy_dir"
           os="${{ matrix.os }}"
           arch="${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}"
           out="freelens/dist/${{ github.event.repository.name }}-${os}-${arch}-prod-packages.json"
