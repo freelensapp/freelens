@@ -6,21 +6,20 @@
 
 import autoBind from "auto-bind";
 import { orderBy } from "es-toolkit/compat";
-import { action, computed, makeObservable, observable, when } from "mobx";
+import { action, computed, observable, when } from "mobx";
 
 import type { ItemObject } from "@freelensapp/list-layout";
 
 export abstract class ItemStore<Item extends ItemObject> {
   protected defaultSorting = (item: Item) => item.getName();
 
-  @observable failedLoading = false;
-  @observable isLoading = false;
-  @observable isLoaded = false;
-  @observable items = observable.array<Item>([], { deep: false });
-  @observable selectedItemsIds = observable.set<string>();
+  @observable accessor failedLoading = false;
+  @observable accessor isLoading = false;
+  @observable accessor isLoaded = false;
+  @observable accessor items = observable.array<Item>([], { deep: false });
+  @observable accessor selectedItemsIds = observable.set<string>();
 
   constructor() {
-    makeObservable(this);
     autoBind(this);
   }
 

@@ -5,7 +5,7 @@
  */
 
 import { Icon } from "@freelensapp/icon";
-import { makeObservable, observable, reaction } from "mobx";
+import { observable, reaction } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { Badge } from "../badge/badge";
@@ -21,11 +21,10 @@ export interface ShowMetricsSettingProps {
 export class ShowMetricsSetting extends React.Component<ShowMetricsSettingProps> {
   private readonly disposers: (() => void)[] = [];
 
-  @observable hiddenMetrics = observable.set<string>();
+  @observable accessor hiddenMetrics = observable.set<string>();
 
   constructor(props: ShowMetricsSettingProps) {
     super(props);
-    makeObservable(this);
   }
 
   componentDidMount() {

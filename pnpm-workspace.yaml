@@ -14,8 +14,8 @@ catalog:
   '@types/react-dom': 19.2.3
   # MobX family (singletons)
   mobx: 7.0.5
-  mobx-react: 9.1.1
-  mobx-react-lite: 4.1.1
+  mobx-react: 10.0.2
+  mobx-react-lite: 5.1.0
   # TypeScript
   typescript: 7.0.2
   # Compiler API for rollup-plugin-dts, which TypeScript 7 no longer provides
@@ -42,6 +42,7 @@ catalog:
   vitest-canvas-mock: 1.1.4
   vitest-mock-extended: 5.1.0
   # Build tooling
+  esbuild: 0.28.1
   '@vitejs/plugin-react': 6.0.4
   electron-builder: 26.15.7
   electron-builder-squirrel-windows: 26.15.7
@@ -162,7 +163,7 @@ catalogs:
     es-toolkit: ^1.49.0
     immer: ^11.1.8
     mobx: ^7.0.5
-    mobx-react: ^9.1.1
+    mobx-react: ^10.0.2
     monaco-editor: ^0.56.0
     react: ^19.2.8
     react-select: ^5.10.2
@@ -188,12 +189,13 @@ overrides:
   '@kubernetes/client-node>@types/node': 24.12.4
   form-data: ^4.0.6
   http-proxy: npm:http-proxy-node16@^1.0.6
-  mobx-react: ^9.1.1
+  mobx-react: ^10.0.2
   tmp@^0.2.0: ^0.2.7
 
 peerDependencyRules:
   allowedVersions:
-    mobx-react: '9'
+    mobx: '7'
+    mobx-react: '10'
 
 patchedDependencies:
   '@async-fn/vitest': patches/@async-fn__vitest.patch

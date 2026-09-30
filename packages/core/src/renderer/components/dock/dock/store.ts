@@ -6,7 +6,7 @@
 
 import autoBind from "auto-bind";
 import { throttle } from "es-toolkit/compat";
-import { action, comparer, computed, makeObservable, observable, reaction, runInAction } from "mobx";
+import { action, compareStructural, computed, observable, reaction, runInAction } from "mobx";
 import * as uuid from "uuid";
 
 import type { StorageLayer } from "../../../utils/storage-helper";
@@ -108,7 +108,6 @@ interface Dependencies {
 
 export class DockStore implements DockStorageState {
   constructor(private readonly dependencies: Dependencies) {
-    makeObservable(this);
     autoBind(this);
 
     // adjust terminal height if window size changes
@@ -124,7 +123,7 @@ export class DockStore implements DockStorageState {
   }
 
   readonly minHeight = 100;
-  @observable fullSize = false;
+  @observable accessor fullSize = false;
 
   @computed
   get isOpen(): boolean {
@@ -214,7 +213,7 @@ export class DockStore implements DockStorageState {
         }
       },
       {
-        equals: comparer.structural,
+        equals: compareStructural,
         fireImmediately: opts.fireImmediately,
       },
     );

@@ -9,7 +9,7 @@ import { parseKubeApi } from "@freelensapp/kube-api";
 import { KubeStatus } from "@freelensapp/kube-object";
 import { includes, isAbortError, object, rejectPromiseBy, waitUntilDefined } from "@freelensapp/utilities";
 import autoBind from "auto-bind";
-import { action, computed, makeObservable, observable, reaction } from "mobx";
+import { action, computed, observable, reaction } from "mobx";
 import { ItemStore } from "../item.store";
 
 import type { FetchRequestInit as RequestInit } from "@freelensapp/json-api";
@@ -114,7 +114,6 @@ export class KubeObjectStore<
     this.limit = opts?.limit;
     this.bufferSize = opts?.bufferSize ?? 50_000;
 
-    makeObservable(this);
     autoBind(this);
     this.bindWatchEventsUpdater();
   }

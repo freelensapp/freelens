@@ -12,7 +12,7 @@ import { showCheckedErrorNotificationInjectable, showSuccessNotificationInjectab
 import { Spinner } from "@freelensapp/spinner";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { makeObservable, observable } from "mobx";
+import { observable } from "mobx";
 import { observer } from "mobx-react";
 import React, { Component } from "react";
 import dockStoreInjectable from "./dock/store.injectable";
@@ -63,12 +63,11 @@ class NonInjectedInfoPanel extends Component<InfoPanelProps & Dependencies> {
     showStatusPanel: true,
   };
 
-  @observable error = "";
-  @observable waiting = false;
+  @observable accessor error = "";
+  @observable accessor waiting = false;
 
   constructor(props: InfoPanelProps & Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   componentDidUpdate(prevProps: InfoPanelProps & Dependencies) {

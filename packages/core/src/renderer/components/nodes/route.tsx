@@ -10,7 +10,7 @@ import { formatNodeTaint } from "@freelensapp/kube-object";
 import { Tooltip, TooltipPosition } from "@freelensapp/tooltip";
 import { bytesToUnits, cpuUnitsToNumber, interval, unitsToBytes } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { makeObservable, observable } from "mobx";
+import { observable, observableRef } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import requestAllNodeMetricsInjectable from "../../../common/k8s-api/endpoints/metrics.api/request-metrics-for-all-nodes.injectable";
@@ -156,7 +156,7 @@ function formatCores(cores: number): string {
 class NonInjectedNodesRoute extends React.Component<Dependencies> {
   private readonly disposers: (() => void)[] = [];
 
-  @observable metrics: NodeMetricData | null = null;
+  @observable accessor metrics: NodeMetricData | null = null;
 
   // mobx-react 9 forbids reading this.props inside a derivation. The row/cell
   // renderers and sorting callbacks (renderTableContents, renderCpuUsage,
@@ -164,7 +164,7 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
   // Table/KubeObjectListLayout render — a derivation other than this
   // component's own render — so they read props from this observable snapshot,
   // refreshed on every update, instead of this.props.
-  @observable.ref private observableProps: Readonly<Dependencies>;
+  @observableRef private accessor observableProps: Readonly<Dependencies>;
 
   private metricsWatcher = interval(30, () => {
     void (async () => {
@@ -176,7 +176,6 @@ class NonInjectedNodesRoute extends React.Component<Dependencies> {
   constructor(props: Dependencies) {
     super(props);
     this.observableProps = props;
-    makeObservable(this);
   }
 
   componentDidMount() {

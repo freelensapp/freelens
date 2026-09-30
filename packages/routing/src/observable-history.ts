@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { action, intercept, makeObservable, observable, reaction } from "mobx";
+import { action, intercept, makeObservable, observable, observableRef, reaction } from "mobx";
 import { ObservableSearchParams } from "./observable-search-params";
 import { createPath, parsePath } from "./vendor/history";
 
@@ -70,7 +70,7 @@ export class ObservableHistory<S = unknown> {
     makeObservable(this, {
       action: observable,
       location: observable,
-      searchParams: observable.ref,
+      searchParams: observableRef,
     });
 
     this.opts = opts;
