@@ -175,6 +175,7 @@ allowBuilds:
   electron-winstaller: false
   esbuild: false
   node-pty: true
+  pnpm: true
   sharp: true
 
 engineStrict: true
