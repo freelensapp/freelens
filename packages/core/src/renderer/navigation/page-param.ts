@@ -5,7 +5,7 @@
  */
 
 // Manage observable param from document's location.search
-import { action, makeObservable } from "mobx";
+import { action } from "mobx";
 
 import type { ObservableHistory } from "@freelensapp/routing";
 
@@ -29,7 +29,6 @@ export class PageParam<Value = any> {
     protected readonly dependencies: PageParamDependencies,
     private init: PageParamInit<Value>,
   ) {
-    makeObservable(this);
     const { name, defaultValue } = init;
 
     this.name = name;

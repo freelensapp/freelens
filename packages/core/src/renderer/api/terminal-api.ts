@@ -6,7 +6,7 @@
 
 import url from "node:url";
 import { isEqual, once } from "es-toolkit";
-import { makeObservable, observable } from "mobx";
+import { observable } from "mobx";
 import { TerminalChannels, type TerminalMessage, type TerminalStatusLevel } from "../../common/terminal/channels";
 import { WebSocketApi } from "./websocket-api";
 
@@ -64,7 +64,7 @@ export interface TerminalApiDependencies extends WebSocketApiDependencies {
 export class TerminalApi extends WebSocketApi<TerminalEvents> {
   protected size?: { width: number; height: number };
 
-  @observable public isReady = false;
+  @observable public accessor isReady = false;
 
   constructor(
     protected readonly dependencies: TerminalApiDependencies,
@@ -74,7 +74,6 @@ export class TerminalApi extends WebSocketApi<TerminalEvents> {
       flushOnOpen: false,
       pingInterval: 30,
     });
-    makeObservable(this);
 
     if (query.node) {
       query.type ||= "node";

@@ -6,7 +6,7 @@
 
 import { disposer, getOrInsert, isAbortError, noop, WrappedAbortController } from "@freelensapp/utilities";
 import { once } from "es-toolkit";
-import { comparer, reaction } from "mobx";
+import { compareShallow, reaction } from "mobx";
 
 import type { Logger } from "@freelensapp/logger";
 import type { Disposer } from "@freelensapp/utilities";
@@ -161,7 +161,7 @@ export class KubeWatchApi {
               loadThenSubscribe(namespaces).catch(noop);
             },
             {
-              equals: comparer.shallow,
+              equals: compareShallow,
             },
           )
         : noop; // don't watch namespaces if namespaces were provided

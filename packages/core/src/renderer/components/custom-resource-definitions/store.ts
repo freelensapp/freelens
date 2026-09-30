@@ -5,7 +5,7 @@
  */
 
 import autoBind from "auto-bind";
-import { computed, makeObservable } from "mobx";
+import { computed } from "mobx";
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
 
 import type { CustomResourceDefinitionApi } from "@freelensapp/kube-api";
@@ -23,7 +23,6 @@ export class CustomResourceDefinitionStore extends KubeObjectStore<
     opts?: KubeObjectStoreOptions,
   ) {
     super(dependencies, api, opts);
-    makeObservable(this);
     autoBind(this);
   }
 

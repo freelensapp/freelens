@@ -8,7 +8,7 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { Spinner } from "@freelensapp/spinner";
 import { iter, tuple } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { computed, makeObservable, observable, reaction } from "mobx";
+import { computed, observable, reaction } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import isWindowsInjectable from "../../../../../../common/vars/is-windows.injectable";
@@ -42,11 +42,10 @@ interface Dependencies {
 class NonInjectedKubeconfigSync extends React.Component<Dependencies> {
   private readonly disposers: (() => void)[] = [];
   readonly syncs = observable.map<string, SyncKind>();
-  @observable loaded = false;
+  @observable accessor loaded = false;
 
   constructor(props: Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   async componentDidMount() {

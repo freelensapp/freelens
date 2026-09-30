@@ -5,7 +5,7 @@
  */
 
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { computed, makeObservable, observable } from "mobx";
+import { computed, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import addWeblinkInjectable from "../../../features/weblinks/common/add.injectable";
@@ -22,13 +22,12 @@ interface Dependencies {
 
 @observer
 class NonInjectedWeblinkAddCommand extends React.Component<Dependencies> {
-  @observable url = "";
-  @observable nameHidden = true;
-  @observable dirty = false;
+  @observable accessor url = "";
+  @observable accessor nameHidden = true;
+  @observable accessor dirty = false;
 
   constructor(props: Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   onChangeUrl(url: string) {

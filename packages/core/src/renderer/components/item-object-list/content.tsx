@@ -10,7 +10,7 @@ import { Spinner } from "@freelensapp/spinner";
 import { cssNames, isDefined, isReactNode, noop, prevDefault, stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
-import { action, makeObservable, observable } from "mobx";
+import { action, observable, observableRef } from "mobx";
 import { Observer, observer } from "mobx-react";
 import React from "react";
 import isTableColumnHiddenInjectable from "../../../features/user-preferences/common/is-table-column-hidden.injectable";
@@ -106,19 +106,20 @@ export class NonInjectedItemListLayoutContent<
   private tableRef = React.createRef<HTMLDivElement>();
   private resizeGuideRef = React.createRef<HTMLDivElement>();
 
-  @observable private columnFlexGrow = new Map<string, number>();
-  @observable private resizeGuideX: number | null = null;
+  @observable private accessor columnFlexGrow = new Map<string, number>();
+  @observable private accessor resizeGuideX: number | null = null;
 
   // mobx-react 9 forbids reading this.props inside a derivation. getRow/getTableRow
   // (and the showColumn they call) are invoked from foreign derivations — the inner
   // <Observer> render prop and the <Table> row renderer — so they read props from
   // this observable snapshot, refreshed on every update, instead of this.props.
-  @observable.ref private observableProps: Readonly<ItemListLayoutContentProps<Item, PreLoadStores> & Dependencies>;
+  @observableRef private accessor observableProps: Readonly<
+    ItemListLayoutContentProps<Item, PreLoadStores> & Dependencies
+  >;
 
   constructor(props: ItemListLayoutContentProps<Item, PreLoadStores> & Dependencies) {
     super(props);
     this.observableProps = props;
-    makeObservable(this);
     autoBindReact(this);
     this.loadSavedColumnWidths();
   }

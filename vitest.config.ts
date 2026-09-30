@@ -2,6 +2,7 @@ import { existsSync, globSync, readFileSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "vitest/config";
+import { standardDecorators } from "./scripts/vite-plugin-standard-decorators.mjs";
 
 // Phase 6 of the v2 plan (docs/v2-plan.md, D8): a single root Vitest config
 // with per-package `projects`, replacing the per-package jest.config.js files
@@ -59,6 +60,8 @@ export default defineConfig({
     projects: projectDirs.map((dir) => {
       const name = JSON.parse(readFileSync(join(dir, "package.json"), "utf8")).name;
       return {
+        // Projects do not inherit the root config's plugins.
+        plugins: [standardDecorators()],
         // The shared Jest config mapped "^electron$" to identity-obj-proxy for
         // every monorepo package; vitest.electron-stub.ts keeps that behaviour
         // for the package projects. The freelens project is excluded: its

@@ -76,6 +76,7 @@
   "devDependencies": {
     "@types/node": "catalog:",
     "@vitest/coverage-v8": "catalog:",
+    "esbuild": "catalog:",
     "jsdom": "catalog:",
     "pnpm": "catalog:",
     "turbo": "catalog:",

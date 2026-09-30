@@ -163,7 +163,13 @@ error:
 `invalid hook call`; ogre-tools fails to find registrations; **mobx fails
 silently** — two instances interoperate through shared global state well enough
 that observables appear to work and reactions simply do not fire where they
-should. A typo in a global name yields `undefined`, not a build error.
+should. A typo in a global name yields `undefined`, not a build error. Code
+built against another major of a listed package runs against the host's copy
+anyway: a mobx class compiled with legacy (`experimentalDecorators`) decorators
+throws when its module is evaluated, so the extension fails to load, and the
+annotations that do not throw are dropped silently (see
+[MobX 7 and mobx-react 10](./v2-extension-migration.md#mobx-7-and-mobx-react-10-standard-decorators-only)
+for the messages).
 
 **Status:** shipped in #2450. It had been a regression rather than an omission.
 What made the v1 entries' exports into globals was webpack's **output format**:
@@ -701,8 +707,9 @@ for the package** — #2396 showed the two diverge.
 
 | Requirement | Why |
 | --- | --- |
+| TypeScript 4.9 or newer | the declaration has `accessor` fields, which older compilers fail to parse whatever `skipLibCheck` says |
 | `"skipLibCheck": true` | the type dependency graph is not clean under `false`, and checking it is not an author's job |
-| `"lib"` including `DOM` and `DOM.Iterable`, `ES2024` or newer | the React component types name DOM types nothing else declares; mobx 6.15 names `ReadonlySetLike`, which first appears in the ES2024 lib |
+| `"lib"` including `DOM` and `DOM.Iterable`, `ES2024` or newer | the React component types name DOM types nothing else declares; the mobx types name `ReadonlySetLike`, which first appears in the ES2024 lib |
 | `"moduleResolution": "bundler"`, `node16` or `nodenext` | to resolve the package's `exports` |
 | `electron` as a devDependency | an **optional** peer — a hard dependency would download the Electron binary into every extension install |
 
@@ -710,7 +717,9 @@ The **fetch surface alone** needs `lib.dom` *or* `@types/node`: with structural
 types it names only `AbortSignal`, `ReadableStream`, `URL` and `Uint8Array`,
 which both declare. The package as a whole still requires `lib.dom`.
 
-**Failure mode.** Missing `skipLibCheck` produces errors in transitive type
+**Failure mode.** A compiler older than TypeScript 4.9 reports
+`TS1434: Unexpected keyword or identifier` at every `accessor` field of the
+declaration. Missing `skipLibCheck` produces errors in transitive type
 dependencies an author cannot fix; a missing DOM lib produces unresolved-name
 errors in the React component types.
 

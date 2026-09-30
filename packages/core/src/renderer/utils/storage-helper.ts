@@ -8,7 +8,7 @@ import assert from "node:assert";
 import { isEqual, isPlainObject } from "es-toolkit";
 import { isDraft, produce } from "immer";
 // Helper for working with storages (e.g. window.localStorage, NodeJS/file-system, etc.)
-import { action, comparer, computed, makeObservable, observable, observe, toJS } from "mobx";
+import { action, compareStructural, computed, observable, observe, toJS } from "mobx";
 
 import type { Logger } from "@freelensapp/logger";
 
@@ -52,7 +52,7 @@ export class StorageHelper<T> implements StorageLayer<T> {
 
   private readonly data = observable.box<T>(undefined, {
     deep: true,
-    equals: comparer.structural,
+    equals: compareStructural,
   });
 
   private readonly value = computed(() => this.data.get() ?? this.defaultValue);
@@ -67,8 +67,6 @@ export class StorageHelper<T> implements StorageLayer<T> {
     readonly key: string,
     private readonly options: StorageHelperOptions<T>,
   ) {
-    makeObservable(this);
-
     this.storage = this.options.storage;
 
     observe(this.data, (change) => {

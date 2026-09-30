@@ -199,14 +199,90 @@ injectables against the `@ogre-tools/*` 23 type surface after upgrading.
   `meta.id`, be aware the id may now carry a `"<namespace>:"` prefix — strip it
   (take the segment after the last `:`) if you compare against a bare declared id.
 
+## MobX 7 and mobx-react 10 (standard decorators only)
+
+The host provides **mobx 7** and **mobx-react 10**. An extension uses the
+host's copies through the externals map, so it moves with them whatever its own
+`package.json` says. MobX 7 supports only **standard (TC39) decorators**; the
+legacy, `experimentalDecorators` ones are gone, and so are the namespaced
+annotations:
+
+- Compile without `"experimentalDecorators"`. An extension compiled with it
+  hands the legacy call shape to mobx 7, and none of the resulting errors
+  mentions decorators. Recognise them by the message:
+
+  | Message | Cause |
+  | --- | --- |
+  | `TypeError: Cannot use 'in' operator to search for 'constructor' in <field>` | a legacy `@observable` field |
+  | ``[MobX] Invalid arguments for `action` `` | a legacy `@action` method |
+  | `TypeError: Reflect.ownKeys called on non-object` | `makeObservable(this)` without annotations |
+
+  The first two throw while the module is evaluated, when the class is
+  defined, so the extension never loads. The third throws when the class is
+  first instantiated. The `action` check exists only in mobx's development
+  build: under the production build, and with a legacy `@computed` in any
+  build, nothing throws and the member silently stays a plain method or
+  getter.
+- A decorated field becomes an **auto-accessor**, and the constructor no longer
+  calls `makeObservable(this)`:
+
+  ```ts
+  // v1
+  class Store {
+    @observable items: string[] = [];
+    @observable.ref selected: Item | undefined;
+    @computed get count() { return this.items.length; }
+    @action add(item: string) { this.items.push(item); }
+
+    constructor() {
+      makeObservable(this);
+    }
+  }
+
+  // v2
+  class Store {
+    @observable accessor items: string[] = [];
+    @observableRef accessor selected: Item | undefined;
+    @computed get count() { return this.items.length; }
+    @action add(item: string) { this.items.push(item); }
+  }
+  ```
+
+- `observable.ref`, `observable.shallow`, `observable.deep`,
+  `observable.struct`, `computed.struct`, `action.bound` and `flow.bound`
+  become `observableRef`, `observableShallow`, `observableDeep`,
+  `observableStruct`, `computedStruct`, `actionBound` and `flowBound`; the
+  `comparer.*` members become `compareIdentity`, `compareDefault`,
+  `compareStructural` and `compareShallow`. All of them are named exports of
+  `mobx`, and they work both as decorators and as `makeObservable` annotations.
+- An auto-accessor lives on the prototype, so `toJS()`, `JSON.stringify`, spread
+  and structured cloning no longer see a decorated field. A class whose
+  instances are serialized, a catalog entity for example, keeps plain fields and
+  annotates them with `makeObservable(this, { … })` instead.
+- Your bundler has to lower standard decorators: no Node or Electron release
+  runs them natively yet. esbuild and Babel (with
+  `@babel/plugin-proposal-decorators` in version `2023-11`) do; Oxc, which
+  Vite 8 uses, passes them through untouched.
+- mobx-react 10 removed `Provider`, `inject`, `MobXProviderContext`,
+  `disposeOnUnmount`, `PropTypes`, `useObserver`, `useLocalStore`,
+  `useAsObservableSource`, `useStaticRendering`, the batching imports and
+  `observer(fn, { forwardRef: true })`. Use `React.createContext`, cleanup in
+  `componentWillUnmount` or `useEffect`, `useLocalObservable`,
+  `enableStaticRendering`, and `observer(React.forwardRef(…))`.
+
 ## `tsconfig.json` for an extension
 
-The bundled `extension-api.d.ts` sets two floors for consumer compilers:
+The bundled `extension-api.d.ts` sets these floors for consumer compilers:
 
+- TypeScript 4.9 or newer — the declaration has `accessor` fields (on
+  `ItemStore`, `KubeApi` and `LensExtension`, among others), which older
+  compilers fail to parse with `TS1434: Unexpected keyword or identifier`.
+  `skipLibCheck` does not help, because it skips type checking, not parsing.
+  An extension that writes standard decorators itself needs TypeScript 5.0.
 - `"skipLibCheck": true` — the type dependency graph (for example
   `@ogre-tools/injectable`, which references jest types) is not clean under
   `skipLibCheck: false`, and checking it is not your job.
-- `"lib"` with `ES2024` (or newer) — mobx 6.15 types reference
+- `"lib"` with `ES2024` (or newer) — the mobx types reference
   `ReadonlySetLike`, which first appears in the ES2024 lib. `DOM` and
   `DOM.Iterable` belong in the renderer's config only; see
   [Source layout](#source-layout-one-tsconfig-per-runtime-environment).
@@ -1405,6 +1481,11 @@ restarted once.
       [Node and Electron in the renderer](#node-and-electron-in-the-renderer),
       or into main behind `Ipc`, and stop marking the builtins external in the
       renderer build.
+- [ ] Move mobx decorators to standard decorators: drop
+      `experimentalDecorators`, write `@observable accessor`, replace the
+      namespaced annotations and `comparer.*` with their named exports, and
+      remove `makeObservable(this)` (see
+      [MobX 7 and mobx-react 10](#mobx-7-and-mobx-react-10-standard-decorators-only)).
 - [ ] Give main, renderer and common code a directory and a `tsconfig.json`
       each, so the type check catches the next Node API in renderer code (see
       [Source layout](#source-layout-one-tsconfig-per-runtime-environment)).

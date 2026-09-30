@@ -8,7 +8,7 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { disposer, isDefined, isRequestError, withConcurrencyLimit } from "@freelensapp/utilities";
 import { ApiException, type KubeConfig } from "@kubernetes/client-node";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import { comparer, reaction, runInAction } from "mobx";
+import { compareStructural, reaction, runInAction } from "mobx";
 import createAuthorizationApiInjectable from "../../common/cluster/create-authorization-api.injectable";
 import createCanIInjectable from "../../common/cluster/create-can-i.injectable";
 import createCoreApiInjectable from "../../common/cluster/create-core-api.injectable";
@@ -240,7 +240,7 @@ class ClusterConnection {
       reaction(
         () => this.cluster.prometheusPreferences.get(),
         (preferences) => this.dependencies.prometheusHandler.setupPrometheus(preferences),
-        { equals: comparer.structural },
+        { equals: compareStructural },
       ),
       () => clearInterval(refreshTimer),
       () => clearInterval(refreshMetadataTimer),

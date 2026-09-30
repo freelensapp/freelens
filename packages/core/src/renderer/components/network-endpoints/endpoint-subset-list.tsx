@@ -9,7 +9,7 @@ import "./endpoint-subset-list.scss";
 import { Link } from "@freelensapp/routing";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
-import { makeObservable, observable } from "mobx";
+import { observableRef } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
@@ -38,13 +38,12 @@ class NonInjectedEndpointSubsetList extends React.Component<EndpointSubsetListPr
   // other than this component's own render), so they (and renderAddressTableRow they
   // call) read props from this observable snapshot, refreshed on every update, instead
   // of this.props.
-  @observable.ref private observableProps: Readonly<EndpointSubsetListProps & Dependencies>;
+  @observableRef private accessor observableProps: Readonly<EndpointSubsetListProps & Dependencies>;
 
   constructor(props: EndpointSubsetListProps & Dependencies) {
     super(props);
     this.observableProps = props;
     autoBindReact(this);
-    makeObservable(this);
   }
 
   componentDidUpdate() {

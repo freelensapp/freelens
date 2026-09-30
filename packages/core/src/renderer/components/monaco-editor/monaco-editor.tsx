@@ -14,7 +14,7 @@ import { cssNames, disposer } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
 import { debounce, merge } from "es-toolkit/compat";
-import { action, makeObservable, observable, reaction } from "mobx";
+import { action, observable, observableRef, reaction } from "mobx";
 import { observer } from "mobx-react";
 import { editor, Uri } from "monaco-editor";
 import React from "react";
@@ -79,10 +79,10 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
   private staticId = `editor-id#${Math.round(1e7 * Math.random())}`;
   private dispose = disposer();
 
-  @observable.ref containerElem: HTMLDivElement | null = null;
-  @observable.ref editor!: editor.IStandaloneCodeEditor;
-  @observable readonly dimensions: { width?: number; height?: number } = {};
-  @observable unmounting = false;
+  @observableRef accessor containerElem: HTMLDivElement | null = null;
+  @observableRef accessor editor!: editor.IStandaloneCodeEditor;
+  @observable accessor dimensions: { width?: number; height?: number } = {};
+  @observable accessor unmounting = false;
 
   // TODO: investigate how to replace with "common/logger"
   //  currently leads for stucking UI forever & infinite loop.
@@ -93,12 +93,11 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
   // below are read from the componentDidMount reactions (their own derivations).
   // Keep an observable snapshot of props (refreshed on update) so those getters
   // stay reactive across that boundary.
-  @observable.ref private observableProps: Readonly<MonacoEditorProps & Dependencies>;
+  @observableRef private accessor observableProps: Readonly<MonacoEditorProps & Dependencies>;
 
   constructor(props: MonacoEditorProps & Dependencies) {
     super(props);
     this.observableProps = props;
-    makeObservable(this);
     autoBindReact(this);
   }
 

@@ -6,7 +6,7 @@
 
 import { Button } from "@freelensapp/button";
 import { Icon } from "@freelensapp/icon";
-import { makeObservable, observable, reaction } from "mobx";
+import { observable, reaction } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { ClusterMetricsResourceType } from "../../../common/cluster-types";
@@ -23,11 +23,10 @@ export interface ClusterMetricsSettingProps {
 export class ClusterMetricsSetting extends React.Component<ClusterMetricsSettingProps> {
   private readonly disposers: (() => void)[] = [];
 
-  @observable hiddenMetrics = observable.set<string>();
+  @observable accessor hiddenMetrics = observable.set<string>();
 
   constructor(props: ClusterMetricsSettingProps) {
     super(props);
-    makeObservable(this);
   }
 
   componentDidMount() {

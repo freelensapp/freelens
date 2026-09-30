@@ -6,7 +6,7 @@
 
 import { Spinner } from "@freelensapp/spinner";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { autorun, computed, makeObservable, observable } from "mobx";
+import { autorun, computed, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { initialFilesystemMountpoints } from "../../../common/cluster-types";
@@ -76,15 +76,15 @@ const requestMethodOptions: SelectOption<PrometheusRequestMethod>[] = [
 class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometheusSettingProps & Dependencies> {
   private readonly disposers: (() => void)[] = [];
 
-  @observable mountpoints = "";
-  @observable path = ""; // <namespace>/<service>:<port>
-  @observable customPrefix = ""; // e.g. "/prometheus"
-  @observable useHttps = false; // whether to use https scheme for service proxy
-  @observable directUrl = ""; // direct URL to Prometheus (bypasses K8s service proxy)
-  @observable bearerToken = ""; // bearer token for Prometheus authentication
-  @observable requestMethod: PrometheusRequestMethod = "POST";
-  @observable selectedOption: ProviderValue = autoDetectPrometheus;
-  @observable loading = true;
+  @observable accessor mountpoints = "";
+  @observable accessor path = ""; // <namespace>/<service>:<port>
+  @observable accessor customPrefix = ""; // e.g. "/prometheus"
+  @observable accessor useHttps = false; // whether to use https scheme for service proxy
+  @observable accessor directUrl = ""; // direct URL to Prometheus (bypasses K8s service proxy)
+  @observable accessor bearerToken = ""; // bearer token for Prometheus authentication
+  @observable accessor requestMethod: PrometheusRequestMethod = "POST";
+  @observable accessor selectedOption: ProviderValue = autoDetectPrometheus;
+  @observable accessor loading = true;
   readonly initialFilesystemMountpoints = initialFilesystemMountpoints;
   readonly loadedOptions = observable.map<string, MetricProviderInfo>();
 
@@ -105,7 +105,6 @@ class NonInjectedClusterPrometheusSetting extends React.Component<ClusterPrometh
 
   constructor(props: ClusterPrometheusSettingProps & Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   @computed get canEditPrometheusPath(): boolean {

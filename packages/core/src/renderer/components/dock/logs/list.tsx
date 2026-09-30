@@ -13,7 +13,7 @@ import { AnsiUp } from "ansi_up";
 import autoBindReact from "auto-bind/react";
 import DOMPurify from "dompurify";
 import { debounce } from "es-toolkit/compat";
-import { action, makeObservable, observable, reaction } from "mobx";
+import { action, observable, observableRef, reaction } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import userPreferencesStateInjectable from "../../../../features/user-preferences/common/state.injectable";
@@ -49,17 +49,17 @@ class NonForwardedLogList extends React.Component<
   Dependencies & LogListProps & { innerRef: ForwardedRef<LogListRef> }
 > {
   private readonly disposers: (() => void)[] = [];
-  @observable isJumpButtonVisible = false;
-  @observable isLastLineVisible = true;
-  @observable.ref private containerWidth = 0;
-  @observable private overlapVersion = 0;
+  @observable accessor isJumpButtonVisible = false;
+  @observable accessor isLastLineVisible = true;
+  @observableRef private accessor containerWidth = 0;
+  @observable private accessor overlapVersion = 0;
 
   // mobx-react 9 forbids reading this.props inside a derivation. getLogRow is
   // invoked from the VirtualList row renderer (a derivation other than this
   // component's own render), so it — and the logs/showWordWrap getters it calls —
   // read props from this observable snapshot, refreshed on every update, instead
   // of this.props.
-  @observable.ref private observableProps: Readonly<
+  @observableRef private accessor observableProps: Readonly<
     Dependencies & LogListProps & { innerRef: ForwardedRef<LogListRef> }
   >;
 
@@ -132,7 +132,6 @@ class NonForwardedLogList extends React.Component<
   constructor(props: any) {
     super(props);
     this.observableProps = props;
-    makeObservable(this);
     autoBindReact(this);
   }
 
