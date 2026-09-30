@@ -185,7 +185,7 @@ overrides:
   # Left alone it installs a second major of the Node typings next to the
   # catalog's 24.12.4, which then also becomes vite's resolved peer. The app
   # targets Node 24 (.nvmrc), so keep the whole tree on one copy.
-  '@kubernetes/client-node>@types/node': 24.12.4
+  '@kubernetes/client-node>@types/node': 24.19.0
   form-data: ^4.0.6
   http-proxy: npm:http-proxy-node16@^1.0.6
   mobx-react: ^9.1.1

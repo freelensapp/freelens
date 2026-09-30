@@ -584,7 +584,7 @@ catalogs:
       version: 5.6.0
 
 overrides:
-  '@kubernetes/client-node>@types/node': 24.12.4
+  '@kubernetes/client-node>@types/node': 24.19.0
   form-data: ^4.0.6
   http-proxy: npm:http-proxy-node16@^1.0.6
   mobx-react: ^9.1.1
@@ -4685,6 +4685,9 @@ packages:
   '@types/node@24.12.4':
     resolution: {integrity: sha512-GUUEShf+PBCGW2KaXwcIt3Yk+e3pkKwWKb9GSyM9WQVE+ep2jzmHdGsHzu4wgcZy5fN9FBdVzjpBQsYlpfpgLA==}
 
+  '@types/node@24.19.0':
+    resolution: {integrity: sha512-zY+5tKxXdhGh1PYI0ac+7juvEu4OI6vWtVVoj5i2m42jxAY1U+zHGt6QCyOFwykdP62sM3MJ9stoYYUw5aCWew==}
+
   '@types/parse-json@4.0.0':
     resolution: {integrity: sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==}
 
@@ -8693,7 +8696,7 @@ snapshots:
   '@kubernetes/client-node@2.0.0-rc.1(supports-color@8.1.1)':
     dependencies:
       '@types/js-yaml': 4.0.9
-      '@types/node': 24.12.4
+      '@types/node': 24.19.0
       '@types/stream-buffers': 3.0.7
       form-data: 4.0.6
       hpagent: 1.2.0
@@ -9548,6 +9551,10 @@ snapshots:
   '@types/node@24.12.4':
     dependencies:
       undici-types: 7.16.0
+
+  '@types/node@24.19.0':
+    dependencies:
+      undici-types: 7.24.4
 
   '@types/parse-json@4.0.0': {}
 
