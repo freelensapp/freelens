@@ -189,8 +189,8 @@ catalogs:
       specifier: 8.1.3
       version: 8.1.3
     '@kubernetes/client-node':
-      specifier: 2.0.0-rc.1
-      version: 2.0.0-rc.1
+      specifier: 2.0.0
+      version: 2.0.0
     '@mui/material':
       specifier: 9.2.0
       version: 9.2.0
@@ -666,7 +666,7 @@ importers:
         version: 8.1.3
       '@kubernetes/client-node':
         specifier: 'catalog:'
-        version: 2.0.0-rc.1(supports-color@8.1.1)
+        version: 2.0.0(supports-color@8.1.1)
       '@ogre-tools/fp':
         specifier: 'catalog:'
         version: 23.2.0
@@ -1069,7 +1069,7 @@ importers:
         version: 8.1.3
       '@kubernetes/client-node':
         specifier: 'catalog:'
-        version: 2.0.0-rc.1(supports-color@8.1.1)
+        version: 2.0.0(supports-color@8.1.1)
       '@mui/material':
         specifier: 'catalog:'
         version: 9.2.0(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.3.0)(react@19.3.0)(supports-color@8.1.1))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -2043,7 +2043,7 @@ importers:
         version: link:../../infrastructure/typescript
       '@kubernetes/client-node':
         specifier: 'catalog:'
-        version: 2.0.0-rc.1(supports-color@8.1.1)
+        version: 2.0.0(supports-color@8.1.1)
       '@ogre-tools/fp':
         specifier: 'catalog:'
         version: 23.2.0
@@ -3720,8 +3720,8 @@ packages:
     peerDependencies:
       tslib: '2'
 
-  '@kubernetes/client-node@2.0.0-rc.1':
-    resolution: {integrity: sha512-t0SHsOana+pp848zALTOMtRDyO3H5OSAqK8BN67WhHkxe42gmVrubFV3s0T89iuqZ2aptoPZhQ5tnqKu6aziog==}
+  '@kubernetes/client-node@2.0.0':
+    resolution: {integrity: sha512-Jx2cRxEVb4XkDNiR/cg8SX9dH6ZHdMhKmZdQcfhn2vdBWHdb2ldwM0P3I0dK4msYhFmC6TCODsNHH144IpA06w==}
 
   '@kurkle/color@0.3.4':
     resolution: {integrity: sha512-M5UknZPHRu3DEDWoipU6sE8PdkZ6Z/S+v4dD+Ke8IaNlpdSQah50lz1KtcFBa2vsdOnwbbnxJwVM4wty6udA5w==}
@@ -8691,7 +8691,7 @@ snapshots:
       '@jsonjoy.com/codegen': 17.67.0(tslib@2.8.1)
       tslib: 2.8.1
 
-  '@kubernetes/client-node@2.0.0-rc.1(supports-color@8.1.1)':
+  '@kubernetes/client-node@2.0.0(supports-color@8.1.1)':
     dependencies:
       '@types/js-yaml': 4.0.9
       '@types/node': 24.12.4
@@ -8699,7 +8699,7 @@ snapshots:
       form-data: 4.0.6
       hpagent: 1.2.0
       isomorphic-ws: 5.0.0(ws@8.21.0)
-      js-yaml: 4.3.0
+      js-yaml: 5.2.2
       jsonpath-plus: 10.3.0
       openid-client: 6.8.4
       rfc4648: 1.5.4
