@@ -130,8 +130,8 @@ scope, split on `-`, `/` and `.`, upper-case each segment. Canonical names would
 need an exception table — mobx's own UMD global is lower-case, and not every
 module has one — and the rule is machine-checkable in both directions: the host
 asserts its keys match the transform of the module ids, and a bundler plugin
-*derives* each name instead of being handed a map. It settles `ReactDom` over `ReactDOM` in
-favour of what published extensions already write.
+*derives* each name instead of being handed a map. It settles `ReactDom` over
+`ReactDOM` in favour of what published extensions already write.
 
 These ids leave the map **explicitly**, because dropping them silently is the
 error:
@@ -163,11 +163,12 @@ error:
 **Failure mode.** Bundling your own copy of a listed package. React throws
 `invalid hook call`; **mobx fails silently** — two instances interoperate
 through shared global state well enough that observables appear to work and
-reactions simply do not fire where they should. A typo in a global name yields `undefined`, not a build error. Code
-built against another major of a listed package runs against the host's copy
-anyway: a mobx class compiled with legacy (`experimentalDecorators`) decorators
-throws when its module is evaluated, so the extension fails to load, and the
-annotations that do not throw are dropped silently (see
+reactions simply do not fire where they should. A typo in a global name yields
+`undefined`, not a build error. Code built against another major of a listed
+package runs against the host's copy anyway: a mobx class compiled with legacy
+(`experimentalDecorators`) decorators throws when its module is evaluated, so
+the extension fails to load, and the annotations that do not throw are dropped
+silently (see
 [MobX 7 and mobx-react 10](./v2-extension-migration.md#mobx-7-and-mobx-react-10-standard-decorators-only)
 for the messages).
 

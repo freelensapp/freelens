@@ -4,8 +4,8 @@
  */
 
 // The naming rule for the singletons the host publishes on
-// `globalThis.FreelensExtensionApi` (#2450, contract in #2304), and the startup
-// assertion that holds the host to it.
+// `globalThis.FreelensExtensionApi` (contract C3 in `docs/v2-extension-api.md`),
+// and the startup assertion that holds the host to it.
 //
 // A published name is *derived* from the module id rather than chosen: drop the
 // `@` of a scope, split on `-`, `/` and `.`, capitalise each segment. So

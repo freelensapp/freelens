@@ -128,8 +128,9 @@ there, and marking it external gets you no error, only a later surprise.
 
 Everything else may be bundled freely: `chart.js`, `react-select`, `conf`,
 `immer`, `rfc6902`, `type-fest`, and a dependency-injection library of your own
-(see [Dependency injection](#dependency-injection-bundle-your-own)). A bundled `react-select` still gets the host's
-React, because that copy's own `import "react"` is rewritten too.
+(see [Dependency injection](#dependency-injection-bundle-your-own)). A bundled
+`react-select` still gets the host's React, because that copy's own
+`import "react"` is rewritten too.
 
 Two ids that **leave** the v1 externals map, and both fail at runtime rather
 than at build time if you keep them:

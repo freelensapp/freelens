@@ -29,7 +29,7 @@ describe("extension API singletons", () => {
       ["mobx-react", "MobxReact"],
       ["monaco-editor", "MonacoEditor"],
       ["@scope/some-name", "ScopeSomeName"],
-    ])("publishes %s as %s", (moduleId, expected) => {
+    ])("derives the name of %s as %s", (moduleId, expected) => {
       expect(globalNameForModuleId(moduleId)).toBe(expected);
     });
   });

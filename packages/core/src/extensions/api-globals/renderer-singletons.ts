@@ -5,7 +5,7 @@
 
 // What the renderer publishes on `globalThis.FreelensExtensionApi` besides the
 // `Common` and `Renderer` namespaces: the module instances an extension has to
-// share with the host instead of bundling its own (#2450).
+// share with the host instead of bundling its own.
 //
 // Membership is not editorial. A module belongs here when *two instances of it
 // misbehave*:
@@ -23,15 +23,15 @@
 // `@freelensapp/extensions` is not published here because its published runtime
 // is the shim that *reads* this global, so an extension bundling it is correct.
 // `react-router` and `react-router-dom` are not published here because the host
-// dropped them in #2261; the renderer entry's `ReactRouter` and `ReactRouterDom`
-// exports went with the dependencies in #2270, so both were v1 globals and both
-// left together. An extension still mapping either gets `undefined`, which is
-// the honest answer. `@ogre-tools/injectable` and `@ogre-tools/injectable-react`
-// are not published here because the host's container is not shared with
-// extensions: their identity only matters to code holding that container, and
-// publishing them would freeze the host on one ogre-tools major for the whole
-// 2.x line. An extension that wants dependency injection bundles its own copy,
-// with its own container.
+// no longer depends on them; the renderer entry's `ReactRouter` and
+// `ReactRouterDom` exports went with the dependencies, so both were v1 globals
+// and both left together. An extension still mapping either gets `undefined`,
+// which is the honest answer. `@ogre-tools/injectable` and
+// `@ogre-tools/injectable-react` are not published here because the host's
+// container is not shared with extensions: their identity only matters to code
+// holding that container, and publishing them would freeze the host on one
+// ogre-tools major for the whole 2.x line. An extension that wants dependency
+// injection bundles its own copy, with its own container.
 //
 // The modules are imported here, inside core, so what is published is the
 // instance core itself runs on rather than a second resolution of the same

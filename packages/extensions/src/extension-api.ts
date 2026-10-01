@@ -30,7 +30,7 @@ import type { rendererExtensionApi } from "@freelensapp/core/renderer";
 export { commonExtensionApi as Common, mainExtensionApi as Main } from "@freelensapp/core/main";
 export { rendererExtensionApi as Renderer } from "@freelensapp/core/renderer";
 
-// #2450: besides the namespaces, the global carries the singletons -- the
+// Besides the namespaces, the global carries the singletons -- the
 // modules an extension has to share with the host rather than bundle a second
 // copy of, because two instances of them misbehave (React throws "invalid hook
 // call", mobx stops reacting without throwing at all). An extension does not

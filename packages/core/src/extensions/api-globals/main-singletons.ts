@@ -4,7 +4,7 @@
  */
 
 // What the main process publishes on `globalThis.FreelensExtensionApi` besides
-// the `Common` and `Main` namespaces (#2450).
+// the `Common` and `Main` namespaces.
 //
 // Each process publishes the set it actually has, not the whole contract:
 // `react`, `react-dom`, `react/jsx-runtime`, `mobx-react` and `monaco-editor`
@@ -30,12 +30,12 @@
 // so `global.Pty` was the whole `node-pty` namespace by way of
 // `main/library.ts`. Main is still built as a library today
 // (`lib: { entry, formats: ["es"] }` in `freelens/electron.vite.config.ts`);
-// what #2118 changed is the output *format*, not library versus app. Rollup in
-// `es` format emits `export { Mobx, Pty }` and assigns nothing to `globalThis`,
-// and nothing imports the emitted entry because Electron runs it as the process
-// entry point -- so the exports go nowhere. No v2 build has ever carried
-// `global.Pty`; the export removed alongside this change was dead source, not a
-// working capability.
+// what the move from webpack changed is the output *format*, not library versus
+// app. Rollup in `es` format emits `export { Mobx, Pty }` and assigns nothing to
+// `globalThis`, and nothing imports the emitted entry because Electron runs it
+// as the process entry point -- so the exports go nowhere. No v2 build has ever
+// carried `global.Pty`; the export removed alongside this change was dead
+// source, not a working capability.
 //
 // It stays out, in this order:
 //
