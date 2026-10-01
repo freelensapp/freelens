@@ -91,7 +91,7 @@ That one mapping is the entire point of the package: it points
 Left to pnpm's workspace linking the specifier would resolve to
 `packages/extensions/src/extension-api.ts` — TypeScript source, a shape no real
 author ever sees — and the single bundled declaration that consumers actually
-install would go unchecked. A re-export that goes missing from the rollup fails
+install would go unchecked. A re-export that goes missing from the bundle fails
 `tsc` here. The declaration is produced by
 `pnpm --filter @freelensapp/extensions build`, which this package's `build`
 depends on through turbo.

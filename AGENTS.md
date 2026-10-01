@@ -541,28 +541,31 @@ must be the single instance of React, mobx and monaco; a second
 copy of mobx fails **silently**, so changes there need an identity assertion
 rather than a passing test suite.
 
-The third: the published declaration is not the source. `rollup-plugin-dts`
-rewrites each module behind a namespace into per-member helpers, and that
-rewrite can change what a name means inside the API namespaces:
+The third: the published declaration is not the source. `rolldown-plugin-dts`
+turns each module behind a namespace into a `declare namespace` that
+re-exports its members, and it drops the `type` modifier on the way. A **class
+re-exported type-only**, with `export type { C }` or `export type { C } from
+"…"`, is therefore declared as a value too, so `new C(…)` and `x instanceof C`
+compile against the declaration and throw in the extension. Use a type alias
+instead, `export type C<T> = import("…").C<T>`, carrying the class's type
+parameters with their constraints and defaults.
 
-- A **type-and-value pair**, `type X` and `const X` of the same name, keeps
-  only the const: `X` stays callable but can no longer be named as a type.
-  Declare the pair under a local name and export it with
-  `export { Local as X }`; a member whose exported name differs from its local
-  one passes through with both meanings. Merging an interface with the const
-  does not help, because the plugin keeps whichever declaration comes last.
-- A **class re-exported type-only**, with `export type { C }` or
-  `export type { C } from "…"`, is declared as a value too, so `new C(…)` and
-  `x instanceof C` compile against the declaration and throw in the extension.
-  Use a type alias instead, `export type C<T> = import("…").C<T>`, carrying the
-  class's type parameters with their constraints and defaults.
-
-Two guards catch a regression. The fixture extension's
-`packages/fixture-extension/src/common/contract-types.ts` names the pairs as
-types, so its type check fails when one loses its type meaning.
+Two guards catch a regression.
 `packages/core/src/extensions/__tests__/extension-api-declared-values.test.ts`
-walks the built declaration with the TypeScript checker and fails on every
-value it declares that the runtime namespace object does not have.
+walks the built declaration with the TypeScript 7 checker
+(`typescript/unstable/sync`) and fails on every value it declares that the
+runtime namespace object does not have. The fixture extension's
+`packages/fixture-extension/src/common/contract-types.ts` names the
+type-and-value pairs of `K8sApi`, `type X` and `const X` of the same name, as
+types, so its type check fails if one loses its type meaning in the bundle.
+
+The bundle also depends on a pnpm patch of `rolldown-plugin-dts`
+(`patchedDependencies` in `pnpm-workspace.yaml`). Without it, a namespace
+import whose members a declaration names only by qualified name, such as
+`import * as utilities` in `common-api/utils.ts`, keeps every member of the
+module in the bundle. That includes the Node-bound members `Common.Util`
+leaves out, with their `node:` imports. Check that the bundle still has no
+`node:` import before you drop or rebase the patch.
 
 ## Best Practices
 

@@ -44,9 +44,9 @@ appear in an extension's dependencies.
 declaration) and `dist/extension-api.js` (the runtime shim, with no
 dependencies).
 
-The rollup is what makes the single-package model work rather than merely
-assert it: `rollup.dts.config.mjs` maps every workspace entry to its
-emitted declaration and its `external` predicate returns false for them, so
+The bundled declaration is what makes the single-package model work rather
+than merely assert it: `rolldown.dts.config.mjs` maps every workspace entry to
+its emitted declaration and its `external` predicate returns false for them, so
 every `@freelensapp/*` is inlined. Nothing else needs publishing.
 
 **Failure mode.** A direct dependency on any other `@freelensapp/*` package
@@ -406,7 +406,10 @@ and it is delimited by a rule rather than by a list of what it offers:
   renderer code gets no guarantee of either ([C4](#c4-module-format-and-loading)). Such a member goes on the omit
   list in `packages/core/src/extensions/common-api/utils.ts`, which
   destructures it out of the spread so that its name and types do not reach
-  the bundled declarations either.
+  the bundled declarations either. Keeping them out also takes the pnpm patch of
+  `rolldown-plugin-dts`: unpatched, the plugin keeps every member of
+  `@freelensapp/utilities` in the bundle, because `utils.ts` reaches them
+  through `import * as utilities`.
 
 `Main.Util` and `Renderer.Util` spread `Common.Util`, so an omitted member is
 gone from all three; each adds its own `fetch` ([C12](#c12-http)).
@@ -624,12 +627,14 @@ bundle, not the source tree:
 
 ```sh
 pnpm --filter @freelensapp/extensions build:dist
-rg -o "from '([^']+)'" -r '$1' packages/extensions/dist/extension-api.d.ts | sort -u
+rg -o '^import .* from "([^"]+)";$|import\("([^"]+)"\)' -r '$1$2' \
+  packages/extensions/dist/extension-api.d.ts | sort -u
 ```
 
-The quoting matters and is the reason an earlier count was low: rollup emits
-**single** quotes, so a pattern written against double quotes matches only the
-examples inside doc comments and reports nothing. The bundle inlines every
+The pattern has two halves because the bundle names an external in two ways:
+in an import statement, and in an `import("…")` type, which the bundler leaves
+inline where it found it. The first half is anchored at the start of a line,
+because the examples inside doc comments use the same double quotes. The bundle inlines every
 `@freelensapp/*` package ([C1](#c1-packaging-and-publication)), so everything
 the command prints is external by construction.
 
@@ -644,7 +649,7 @@ resolves through `@types/react-dom`, and a subpath such as `es-toolkit/compat` o
 undeclared import fails quietly: an extension compiles with `skipLibCheck`, so a
 specifier that does not resolve in the author's tree becomes `any` instead of an
 error, and nothing in the monorepo notices, since every such package happens to
-be installed there. `packages/extensions/rollup.dts.config.mjs` therefore
+be installed there. `packages/extensions/rolldown.dts.config.mjs` therefore
 enforces it: `build:dist` fails and lists every external specifier of the
 bundle whose package is not declared.
 
