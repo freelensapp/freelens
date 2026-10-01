@@ -13,7 +13,7 @@ import type http from "node:http";
 
 import type { Logger } from "@freelensapp/logger";
 
-import type httpProxy from "http-proxy-node16";
+import type { ProxyServer } from "http-proxy-3";
 import type { SetRequired } from "type-fest";
 
 import type { EmitAppEvent } from "../../common/app-event-bus/emit-event.injectable";
@@ -35,7 +35,7 @@ interface Dependencies {
   emitAppEvent: EmitAppEvent;
   getKubeAuthProxyServer: (cluster: Cluster) => KubeAuthProxyServer;
   readonly router: Router;
-  readonly proxy: httpProxy;
+  readonly proxy: ProxyServer;
   readonly lensProxyPort: { set: (portNumber: number) => void };
   readonly contentSecurityPolicy: string;
   readonly logger: Logger;
@@ -217,7 +217,7 @@ export class LensProxy {
     });
   }
 
-  protected configureProxy(proxy: httpProxy): httpProxy {
+  protected configureProxy(proxy: ProxyServer): ProxyServer {
     proxy.on("proxyRes", (proxyRes, req, res) => {
       const retryCounterId = this.getRequestId(req);
 

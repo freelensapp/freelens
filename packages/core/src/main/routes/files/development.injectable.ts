@@ -7,7 +7,7 @@
 import assert from "node:assert";
 import path from "node:path";
 import { getInjectable } from "@ogre-tools/injectable";
-import httpProxy from "http-proxy-node16";
+import { createProxyServer } from "http-proxy-3";
 
 import type { LensApiRequest, RouteResponse } from "../../router/route";
 
@@ -21,7 +21,7 @@ assert(Number.isInteger(devServerPort), "FREELENS_DEV_SERVER_PORT environment va
 const devStaticFileRouteHandlerInjectable = getInjectable({
   id: "dev-static-file-route-handler",
   instantiate: () => {
-    const proxy = httpProxy.createProxy();
+    const proxy = createProxyServer();
     const proxyTarget = `http://127.0.0.1:${devServerPort}`;
 
     return async ({ raw: { req, res }, params }: LensApiRequest<"/{path*}">): Promise<RouteResponse<Buffer>> => {
