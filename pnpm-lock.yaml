@@ -6293,11 +6293,6 @@ packages:
     resolution: {integrity: sha512-0D10M2/MnEyvoog7tmozlpSqL3HEU1evxUFa3v1dsKYmBDFSP1dLSX4CH2rNjpQ+4Fps8GKmUkCwiKryaKqd9A==}
     engines: {node: '>=20'}
 
-  nanoid@3.3.16:
-    resolution: {integrity: sha512-bzlKTyNJ7+LdGIIwy8ijFpIqEQIvafahV7eYykJ8Cvh42EdJeODoJ6gUJXpQJvej1BddH8OqTXZNE/KfbWAu8Q==}
-    engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
-    hasBin: true
-
   nanoid@3.3.19:
     resolution: {integrity: sha512-Y2tUNy4ouw6tq5oDSKeQYGOyhkUBhNOcGV/02KC+6kd9eDGqdZd++mjMiIDilrBYvjEnCYvVtsuHCuP+okSfug==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
@@ -6530,10 +6525,6 @@ packages:
 
   postcss-value-parser@4.2.0:
     resolution: {integrity: sha512-1NNCs6uurfkVbeXG4S8JFT9t19m45ICnif8zWLd5oPSZ50QnwMfK+H3jv408d4jw/7Bttv5axS5IiHoLaVNHeQ==}
-
-  postcss@8.5.19:
-    resolution: {integrity: sha512-Mz8SaolMd8nB+G13WkORcxQKHZ/NE4xXevtkJHVuG+guo9/wYKlIMTKAqGdEmYOXR2ijPjTYNHssizdaVSUNdQ==}
-    engines: {node: ^10 || ^12 || >=14}
 
   postcss@8.5.28:
     resolution: {integrity: sha512-RRuzqDtt5Y9h3quz5hWhK+TPnsmVs6WwSU6LkJMeY4HstUEDuYTG8UJSdawMRzmzAtV+KEoG8N3Qg2qLy5vM/A==}
@@ -9097,7 +9088,7 @@ snapshots:
       '@alloc/quick-lru': 5.2.0
       '@tailwindcss/node': 4.2.4
       '@tailwindcss/oxide': 4.2.4
-      postcss: 8.5.19
+      postcss: 8.5.28
       tailwindcss: 4.2.4
 
   '@testing-library/dom@10.4.1':
@@ -9279,11 +9270,11 @@ snapshots:
 
   '@types/postcss-modules-local-by-default@4.0.2':
     dependencies:
-      postcss: 8.5.19
+      postcss: 8.5.28
 
   '@types/postcss-modules-scope@3.0.4':
     dependencies:
-      postcss: 8.5.19
+      postcss: 8.5.28
 
   '@types/prop-types@15.7.15': {}
 
@@ -10565,9 +10556,9 @@ snapshots:
       safer-buffer: 2.1.2
     optional: true
 
-  icss-utils@5.1.0(postcss@8.5.19):
+  icss-utils@5.1.0(postcss@8.5.28):
     dependencies:
-      postcss: 8.5.19
+      postcss: 8.5.28
 
   image-size@0.5.5:
     optional: true
@@ -11125,8 +11116,6 @@ snapshots:
       array-union: 3.0.1
       minimatch: 10.2.5
 
-  nanoid@3.3.16: {}
-
   nanoid@3.3.19: {}
 
   needle@3.2.0(supports-color@8.1.1):
@@ -11319,28 +11308,28 @@ snapshots:
       '@pnpm/exe.win32-arm64': 12.8.1
       '@pnpm/exe.win32-x64': 12.8.1
 
-  postcss-load-config@3.1.4(postcss@8.5.19)(ts-node@10.9.2(@types/node@24.19.0)(typescript@7.0.2)):
+  postcss-load-config@3.1.4(postcss@8.5.28)(ts-node@10.9.2(@types/node@24.19.0)(typescript@7.0.2)):
     dependencies:
       lilconfig: 2.1.0
       yaml: 1.10.2
     optionalDependencies:
-      postcss: 8.5.19
+      postcss: 8.5.28
       ts-node: 10.9.2(@types/node@24.19.0)(typescript@7.0.2)
 
-  postcss-modules-extract-imports@3.1.0(postcss@8.5.19):
+  postcss-modules-extract-imports@3.1.0(postcss@8.5.28):
     dependencies:
-      postcss: 8.5.19
+      postcss: 8.5.28
 
-  postcss-modules-local-by-default@4.2.0(postcss@8.5.19):
+  postcss-modules-local-by-default@4.2.0(postcss@8.5.28):
     dependencies:
-      icss-utils: 5.1.0(postcss@8.5.19)
-      postcss: 8.5.19
+      icss-utils: 5.1.0(postcss@8.5.28)
+      postcss: 8.5.28
       postcss-selector-parser: 7.1.0
       postcss-value-parser: 4.2.0
 
-  postcss-modules-scope@3.2.1(postcss@8.5.19):
+  postcss-modules-scope@3.2.1(postcss@8.5.28):
     dependencies:
-      postcss: 8.5.19
+      postcss: 8.5.28
       postcss-selector-parser: 7.1.0
 
   postcss-selector-parser@7.1.0:
@@ -11349,12 +11338,6 @@ snapshots:
       util-deprecate: 1.0.2
 
   postcss-value-parser@4.2.0: {}
-
-  postcss@8.5.19:
-    dependencies:
-      nanoid: 3.3.16
-      picocolors: 1.1.1
-      source-map-js: 1.2.1
 
   postcss@8.5.28:
     dependencies:
@@ -12139,14 +12122,14 @@ snapshots:
       '@types/postcss-modules-local-by-default': 4.0.2
       '@types/postcss-modules-scope': 3.0.4
       dotenv: 16.4.7
-      icss-utils: 5.1.0(postcss@8.5.19)
+      icss-utils: 5.1.0(postcss@8.5.28)
       less: 4.2.2(supports-color@8.1.1)
       lodash.camelcase: 4.3.0
-      postcss: 8.5.19
-      postcss-load-config: 3.1.4(postcss@8.5.19)(ts-node@10.9.2(@types/node@24.19.0)(typescript@7.0.2))
-      postcss-modules-extract-imports: 3.1.0(postcss@8.5.19)
-      postcss-modules-local-by-default: 4.2.0(postcss@8.5.19)
-      postcss-modules-scope: 3.2.1(postcss@8.5.19)
+      postcss: 8.5.28
+      postcss-load-config: 3.1.4(postcss@8.5.28)(ts-node@10.9.2(@types/node@24.19.0)(typescript@7.0.2))
+      postcss-modules-extract-imports: 3.1.0(postcss@8.5.28)
+      postcss-modules-local-by-default: 4.2.0(postcss@8.5.28)
+      postcss-modules-scope: 3.2.1(postcss@8.5.28)
       reserved-words: 0.1.2
       sass: 1.101.0
       source-map-js: 1.2.1
