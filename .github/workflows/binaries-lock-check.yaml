@@ -26,14 +26,26 @@ jobs:
     runs-on: ubuntu-24.04-arm
     timeout-minutes: 30
 
+    outputs:
+      stale: ${{ steps.up_to_date.outputs.stale }}
+
     env:
       DO_NOT_TRACK: "1"
+      # Renovate bumps a bundled version but cannot regenerate the lock: the
+      # generator downloads and verifies every artifact, which the hosted app
+      # does not run. On its branches a stale lock is therefore committed by the
+      # update job below instead of failing the check. Only branches of this
+      # repository qualify, never a fork's.
+      RENOVATE_PR: ${{ github.event_name == 'pull_request' && startsWith(github.head_ref, 'renovate/') && github.event.pull_request.head.repo.full_name == github.repository }}
 
     steps:
+      # A Renovate branch is checked out at its head rather than merged with
+      # main, so that a regenerated lock matches the branch it is committed to.
       - name: Checkout
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
+          ref: ${{ env.RENOVATE_PR == 'true' && github.event.pull_request.head.sha || '' }}
 
       # Verifying costs a few hundred megabytes of downloads, so establish up
       # front whether anything that feeds the lock actually moved. This runs
@@ -113,24 +125,13 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: pnpm --color=always update-binaries-lock
 
-      - name: Check the lock is up to date
-        if: steps.decide.outputs.needed == 'true'
-        run: |-
-          if git diff --exit-code --stat freelens/binaries.lock.json; then
-            echo "freelens/binaries.lock.json is up to date."
-            exit 0
-          fi
-
-          echo "::error::freelens/binaries.lock.json is out of date. Run \`pnpm update-binaries-lock\` and commit the result." >&2
-          git --no-pager diff freelens/binaries.lock.json
-          exit 1
-
-      # The check above proves the lock matches what the vendors serve today. It
+      # The regenerated lock matches what the vendors serve today, but that
       # cannot tell a legitimate version bump from an artifact swapped behind an
       # unchanged URL, because both simply produce a new digest. Comparing
       # against the base commit does: keyed on tool + version + platform, so a
       # bump or a newly added platform is not flagged, but a digest that moved
-      # while its version stood still is.
+      # while its version stood still is. It runs before the up-to-date check,
+      # so that a lock with a replaced artifact is never committed.
       - name: Check for replaced artifacts
         if: steps.decide.outputs.needed == 'true'
         env:
@@ -180,3 +181,81 @@ jobs:
 
           echo "::error::A digest changed without a version change - the artifact behind a pinned URL was replaced." >&2
           exit 1
+
+      - name: Check the lock is up to date
+        id: up_to_date
+        if: steps.decide.outputs.needed == 'true'
+        run: |-
+          if git diff --exit-code --stat freelens/binaries.lock.json; then
+            echo "freelens/binaries.lock.json is up to date."
+            exit 0
+          fi
+
+          if [ "$RENOVATE_PR" = 'true' ]; then
+            echo "stale=true" | tee -a "$GITHUB_OUTPUT"
+            echo "::notice::freelens/binaries.lock.json is out of date on a Renovate branch; the update job commits the regenerated lock."
+            git --no-pager diff --stat freelens/binaries.lock.json
+            exit 0
+          fi
+
+          echo "::error::freelens/binaries.lock.json is out of date. Run \`pnpm update-binaries-lock\` and commit the result." >&2
+          git --no-pager diff freelens/binaries.lock.json
+          exit 1
+
+      - name: Upload the regenerated lock
+        if: steps.up_to_date.outputs.stale == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: binaries-lock
+          path: freelens/binaries.lock.json
+          retention-days: 1
+
+  # Commits the lock the check job regenerated and verified onto the Renovate
+  # branch. The push uses GH_TOKEN rather than the workflow token, so that it
+  # starts the checks again: the next run regenerates the lock once more and
+  # finds it up to date, and every other workflow runs on the new commit.
+  update:
+    name: Commit the regenerated binaries.lock.json
+
+    needs: check
+    if: needs.check.outputs.stale == 'true'
+
+    runs-on: ubuntu-24.04-arm
+    environment: automated
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          token: ${{ secrets.GH_TOKEN }}
+
+      - name: Download the regenerated lock
+        uses: actions/download-artifact@v8
+        with:
+          name: binaries-lock
+          path: freelens
+
+      # The push goes to the commit the check job verified. If the branch moved
+      # meanwhile, the push is rejected as non-fast-forward, and the run on the
+      # newer commit takes over. A run on a commit this job made must never
+      # find the lock stale again; if it does, the generator is not
+      # deterministic, and committing once more would only loop.
+      - name: Refuse to commit the lock twice
+        env:
+          MESSAGE: Regenerate freelens/binaries.lock.json
+        run: |-
+          if [ "$(git log -1 --format=%s)" = "$MESSAGE" ]; then
+            echo "::error::The lock is still out of date after it was regenerated and committed." >&2
+            exit 1
+          fi
+
+      - name: Commit and push to the pull request branch
+        uses: EndBug/add-and-commit@v10
+        with:
+          github_token: ${{ secrets.GH_TOKEN }}
+          default_author: github_actions
+          add: freelens/binaries.lock.json
+          message: Regenerate freelens/binaries.lock.json
+          push: origin HEAD:refs/heads/${{ github.head_ref }}

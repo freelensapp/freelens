@@ -346,7 +346,11 @@ calls per hour with the rest of your IP. Use `--only <tool>` to refresh a single
 tool while iterating.
 
 `.github/workflows/binaries-lock-check.yaml` enforces both that the lock is
-current and that no digest changed while its version stood still.
+current and that no digest changed while its version stood still. On a
+Renovate branch a stale lock does not fail the check: Renovate bumps the
+version but cannot run the generator, so the workflow regenerates the lock,
+checks it for replaced artifacts, and commits it to the branch with `GH_TOKEN`,
+which starts the checks again on the new commit.
 
 ### Downloaded kubectl Versions
 
