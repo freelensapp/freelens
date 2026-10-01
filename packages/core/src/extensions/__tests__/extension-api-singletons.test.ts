@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-// The naming rule of the host-provided singletons (#2450), and the two maps the
+// The naming rule of the host-provided singletons, and the two maps the
 // application entry points publish, checked against it.
 //
 // The entry points assert the same thing at startup, which is where it protects

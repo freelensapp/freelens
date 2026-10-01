@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-// The unit level of the extension contract (#2451). It loads the built bundle
+// The unit level of the extension contract. It loads the built bundle
 // of `@freelensapp/fixture-extension` — an extension written the way a
 // third-party extension is written, against the published
 // `dist/extension-api.d.ts` and with its externals mapped onto
@@ -138,7 +138,7 @@ describe("extension contract, against the built fixture extension", () => {
     });
   });
 
-  // The renderer half of the singleton contract (#2450): every module an
+  // The renderer half of the singleton contract: every module an
   // extension must share rather than bundle, published under the name the rule
   // derives from its module id, and being the host's *own* instance of it. The
   // last part is why these are `toBe` against this file's own imports rather
