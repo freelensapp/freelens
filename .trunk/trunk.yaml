@@ -67,7 +67,6 @@ lint:
       files:
         - sass
   enabled:
-    - oxlint@1.86.0
     - actionlint@1.7.12
     - biome@2.5.4! # datasource=npm depName=@biomejs/biome
     - git-diff-check
@@ -82,7 +81,9 @@ lint:
     - checkov
     - grype
     - osv-scanner
+    - oxfmt
     - oxipng
+    - oxlint
     - pinact
     - renovate
     - svgo
@@ -118,6 +119,3 @@ actions:
     - trunk-check-pre-push
     - trunk-fmt-pre-commit
     - trunk-upgrade-available
-tools:
-  enabled:
-    - oxfmt@0.71.0
