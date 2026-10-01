@@ -140,7 +140,7 @@ export const vpaStore = asLazyInjectedForExtensionApi(verticalPodAutoscalerStore
 export * from "../common-api/k8s-api";
 
 // Type aliases instead of `export type { … } from "@freelensapp/kube-api"`:
-// rollup-plugin-dts declares a class re-exported type-only inside a namespace
+// rolldown-plugin-dts declares a class re-exported type-only inside a namespace
 // as a value too, and none of these classes exists at runtime in
 // `Renderer.K8sApi`, so `new` and `instanceof` on them would compile and throw.
 // Their instances are the stores' `api` and the `*Api` singletons.

@@ -13,7 +13,7 @@ import type { AppEvent } from "../../common/app-event-bus/event-bus";
 
 export type { AppEvent, EventEmitterCallback, EventEmitterOptions };
 
-// A type alias instead of a type-only re-export, which rollup-plugin-dts would
+// A type alias instead of a type-only re-export, which rolldown-plugin-dts would
 // declare as a value too, although the class does not exist at runtime here.
 export type EventEmitter<D extends any[]> = import("@freelensapp/event-emitter").EventEmitter<D>;
 

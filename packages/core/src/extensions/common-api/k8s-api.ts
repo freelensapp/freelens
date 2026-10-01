@@ -308,12 +308,12 @@ export interface LensExtensionKubeObjectCRD {
 }
 
 // The type-and-value pairs above are declared under an `External` local name and
-// exported under the public one. `rollup-plugin-dts` builds the helper of a
-// `K8sApi` namespace member from the last declaration of its name only, so a
-// pair exported under its own name keeps the `const` and loses the type: it
-// stays callable but is not nameable. A member whose exported name differs from
-// its local one is re-exported as it is, with both meanings. The fixture
-// extension's `contract-types.ts` names each of them as a type.
+// exported under the public one. A member whose exported name differs from its
+// local one reaches the bundled declaration as it is, with both meanings,
+// whereas a bundler that builds a helper per namespace member can keep only the
+// last declaration of a name: the `const`, which stays callable but is not
+// nameable. The fixture extension's `contract-types.ts` names each of them as a
+// type.
 export {
   ExternalDeploymentApi as DeploymentApi,
   ExternalIngressApi as IngressApi,

@@ -33,7 +33,7 @@ export type { URLParams } from "@freelensapp/utilities";
 
 export type { PageParamInit } from "../../renderer/navigation/page-param";
 
-// A type alias instead of a type-only re-export, which rollup-plugin-dts would
+// A type alias instead of a type-only re-export, which rolldown-plugin-dts would
 // declare as a value too, although only `createPageParam` exists at runtime.
 export type PageParam<Value = any> = import("../../renderer/navigation/page-param").PageParam<Value>;
 export type {

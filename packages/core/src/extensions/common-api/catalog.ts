@@ -14,7 +14,7 @@ export {
 } from "../../common/catalog-entities";
 
 // A type alias instead of `export type { KubernetesClusterCategory }`, which
-// rollup-plugin-dts would declare as a value too, although only the instance,
+// rolldown-plugin-dts would declare as a value too, although only the instance,
 // `kubernetesClusterCategory`, exists at runtime.
 export type KubernetesClusterCategory =
   import("../../common/catalog-entities/kubernetes-cluster").KubernetesClusterCategory;
