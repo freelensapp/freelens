@@ -153,8 +153,6 @@ catalogs:
   # relies on. Versions here intentionally duplicate the default catalog and
   # must be kept in sync with it.
   extensions:
-    '@ogre-tools/injectable': ^27.0.0
-    '@ogre-tools/injectable-react': ^27.0.0
     '@types/node': ~24.12.4
     '@types/react': ^19.3.0
     '@types/react-dom': ^19.3.0
