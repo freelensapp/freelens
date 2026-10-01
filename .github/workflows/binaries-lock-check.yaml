@@ -252,7 +252,7 @@ jobs:
           fi
 
       - name: Commit and push to the pull request branch
-        uses: EndBug/add-and-commit@v10
+        uses: EndBug/add-and-commit@v11
         with:
           github_token: ${{ secrets.GH_TOKEN }}
           default_author: github_actions
