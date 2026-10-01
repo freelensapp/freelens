@@ -23,7 +23,7 @@ permissions:
 
 env:
   kind_version: 0.33.0 # datasource=github-releases depName=kubernetes-sigs/kind
-  kubernetes_version: 1.36.1 # datasource=docker depName=kindest/node
+  kubernetes_version: 1.37.0 # datasource=docker depName=kindest/node
 
 jobs:
   test-integration:
