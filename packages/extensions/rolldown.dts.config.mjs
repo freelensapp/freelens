@@ -5,6 +5,8 @@
 
 // Bundles the declaration tree emitted by `tsc -p tsconfig.dts.generated.json`
 // (see `dist-types/`) into a single self-contained `dist/extension-api.d.ts`.
+// The declarations already exist, so `rolldown-plugin-dts` only bundles them
+// (`dtsInput`) and never runs a compiler of its own.
 //
 // The emitted declarations keep bare `@freelensapp/*` specifiers exactly as
 // written in the sources. Those packages are private workspace packages in v2
@@ -25,7 +27,9 @@
 import { readFileSync } from "node:fs";
 import { isBuiltin } from "node:module";
 import path from "node:path";
-import dts from "rollup-plugin-dts";
+import { defineConfig } from "rolldown";
+import { parseAst } from "rolldown/parseAst";
+import { dts } from "rolldown-plugin-dts";
 import { enumerateWorkspaceEntries } from "./scripts/workspace-entries.mjs";
 
 const packageRoot = import.meta.dirname;
@@ -41,29 +45,37 @@ for (const [specifier, sourcePath] of enumerateWorkspaceEntries(repoRoot)) {
 
 // Style and asset imports survive declaration emit as side-effect imports
 // (e.g. `import "./components/app.scss"` in core's renderer library); they
-// carry no types and are resolved to an empty module.
+// carry no types and are resolved to an empty module. Its id ends in `.d.ts`
+// so that the dts plugin takes it for a declaration like the others.
 const assetModule = /\.(s?css|svg|png|jpg|ttf|woff2?|eot)$|\?(raw|worker)$/;
-const emptyModuleId = "\0empty-asset-module";
+const emptyModuleId = "\0empty-asset-module.d.ts";
 
 const workspaceDtsAlias = {
   name: "workspace-dts-alias",
 
-  resolveId(source) {
-    const aliased = workspaceAliases.get(source);
+  // `pre`, ahead of the dts plugin's own `pre` resolver: that one prefers its
+  // own resolution through node_modules, which would take a workspace
+  // specifier to the package's sources instead of their emitted declarations.
+  resolveId: {
+    order: "pre",
 
-    if (aliased) {
-      return aliased;
-    }
+    handler(source) {
+      const aliased = workspaceAliases.get(source);
 
-    if (assetModule.test(source)) {
-      return emptyModuleId;
-    }
+      if (aliased) {
+        return aliased;
+      }
 
-    if (source.startsWith("@freelensapp/")) {
-      this.warn(`no emitted declaration mapped for workspace specifier "${source}"; leaving it external`);
-    }
+      if (assetModule.test(source)) {
+        return emptyModuleId;
+      }
 
-    return null;
+      if (source.startsWith("@freelensapp/")) {
+        this.warn(`no emitted declaration mapped for workspace specifier "${source}"; leaving it external`);
+      }
+
+      return null;
+    },
   },
 
   load(id) {
@@ -101,34 +113,58 @@ const isDeclared = (specifier) => {
   return declaredPackages.has(packageName) || declaredPackages.has(typesPackageOf(packageName));
 };
 
-/** Bare specifiers `external` has left external. */
-const externalSpecifiers = new Set();
+const isBareSpecifier = (id) => !id.startsWith(".") && !path.isAbsolute(id) && !id.startsWith("\0");
 
-const external = (id) => {
-  const isExternal = !id.startsWith(".") && !path.isAbsolute(id) && !workspaceAliases.has(id);
+const external = (id) => isBareSpecifier(id) && !workspaceAliases.has(id);
 
-  if (isExternal && !id.startsWith("\0")) {
-    externalSpecifiers.add(id);
-  }
+/** AST nodes whose `source` names a module the declaration depends on. */
+const moduleReferences = new Set([
+  "ImportDeclaration",
+  "ExportNamedDeclaration",
+  "ExportAllDeclaration",
+  "ImportExpression",
+  "TSImportType",
+]);
 
-  return isExternal;
+/** Every module specifier a declaration imports, re-exports or names in an `import("…")` type. */
+const referencedSpecifiers = (code) => {
+  const specifiers = new Set();
+
+  const visit = (node) => {
+    if (Array.isArray(node)) {
+      node.forEach(visit);
+    } else if (node !== null && typeof node === "object") {
+      if (moduleReferences.has(node.type) && typeof node.source?.value === "string") {
+        specifiers.add(node.source.value);
+      }
+
+      Object.values(node).forEach(visit);
+    }
+  };
+
+  visit(parseAst(code, { lang: "dts" }));
+
+  return specifiers;
 };
 
-// Checked against the imports of the generated bundle rather than everything
-// `external` saw: the inlined workspace declarations import more than the API
-// surface reaches (winston, node-pty, ...), and tree-shaking drops those
-// imports together with the declarations that used them.
+// Checked against the generated bundle rather than everything `external` saw:
+// the inlined workspace declarations import more than the API surface reaches
+// (winston, node-pty, ...), and tree-shaking drops those imports together with
+// the declarations that used them. The bundle is parsed rather than read off
+// the chunk's `imports`, because the dts plugin leaves an external
+// `import("…")` type inline where it found it instead of hoisting it into an
+// import statement, so it never shows up there.
 const declaredExternals = {
   name: "declared-externals",
 
   generateBundle(_options, bundle) {
-    const imported = new Set(
+    const referenced = new Set(
       Object.values(bundle).flatMap((output) =>
-        output.type === "chunk" ? [...output.imports, ...output.dynamicImports] : [],
+        output.type === "chunk" ? [...referencedSpecifiers(output.code)] : [],
       ),
     );
-    const undeclared = [...imported]
-      .filter((specifier) => externalSpecifiers.has(specifier) && !isDeclared(specifier))
+    const undeclared = [...referenced]
+      .filter((specifier) => isBareSpecifier(specifier) && !isDeclared(specifier))
       .sort();
 
     if (undeclared.length > 0) {
@@ -141,12 +177,21 @@ const declaredExternals = {
   },
 };
 
-export default {
-  input: path.join(outRoot, "packages/extensions/src/extension-api.d.ts"),
+export default defineConfig({
+  input: {
+    "extension-api": path.join(outRoot, "packages/extensions/src/extension-api.d.ts"),
+  },
   output: {
-    file: path.join(packageRoot, "dist/extension-api.d.ts"),
+    dir: path.join(packageRoot, "dist"),
     format: "es",
   },
   external,
-  plugins: [workspaceDtsAlias, dts({ respectExternal: false }), declaredExternals],
-};
+  plugins: [
+    workspaceDtsAlias,
+    // No generator runs on declaration input, but the plugin still picks one
+    // up front, and with TypeScript 7 installed it picks `tsgo`, which refuses
+    // to start without a tsconfig. Oxc needs none.
+    dts({ dtsInput: true, emitDtsOnly: true, generator: "oxc", tsconfig: false }),
+    declaredExternals,
+  ],
+});

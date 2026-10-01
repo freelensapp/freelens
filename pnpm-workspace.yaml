@@ -18,8 +18,6 @@ catalog:
   mobx-react-lite: 5.1.0
   # TypeScript
   typescript: 7.0.2
-  # Compiler API for rollup-plugin-dts, which TypeScript 7 no longer provides
-  '@typescript/typescript6': 6.0.2
   # Dependency injection (Ogre Tools)
   '@ogre-tools/injectable': 27.0.0
   '@ogre-tools/injectable-extension-for-mobx': 27.0.0
@@ -49,8 +47,8 @@ catalog:
   electron-vite: 6.0.0-beta.5
   playwright: 1.61.1
   pnpm: 12.8.1
-  rollup: 4.63.5
-  rollup-plugin-dts: 6.5.1
+  rolldown: 1.2.12
+  rolldown-plugin-dts: 0.28.6
   sass-embedded: 1.100.0
   tailwindcss: 4.2.4
   turbo: 2.10.2
@@ -212,6 +210,12 @@ peerDependencyRules:
 patchedDependencies:
   '@async-fn/vitest': patches/@async-fn__vitest.patch
   '@xterm/xterm@6.0.0': patches/@xterm__xterm@6.0.0.patch
+  # Keeps a namespace import whose members a declaration names only by
+  # qualified name (`typeof utilities.X`, `utilities.Y`) from pulling the whole
+  # namespace object, and every member of the module, into the extension API
+  # declaration. Without it the members `common-api/utils.ts` omits from `Util`
+  # come back, with their `node:` imports.
+  rolldown-plugin-dts@0.28.6: patches/rolldown-plugin-dts@0.28.6.patch
 
 shellEmulator: true
 

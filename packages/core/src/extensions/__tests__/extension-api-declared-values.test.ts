@@ -5,7 +5,7 @@
 
 // Every value the published declaration promises exists at runtime.
 //
-// `dist/extension-api.d.ts` is not the source: it is what rollup-plugin-dts
+// `dist/extension-api.d.ts` is not the source: it is what rolldown-plugin-dts
 // rewrites the source into, and that rewrite can change the meaning of a name.
 // A type-only re-export of a class, erased from the runtime namespace, can come
 // out of it as a value, so `new Renderer.K8sApi.PodApi(…)` or
@@ -28,17 +28,20 @@
 //
 //   export type C<T = Default> = import("@freelensapp/some-package").C<T>;
 //
-// The "Extension API" section of AGENTS.md describes this rule and its twin,
-// the type-and-value pair that loses its type.
+// The "Extension API" section of AGENTS.md describes this rule.
 //
 // The declaration is a build artifact: `pnpm test:unit` builds it first, as a
-// dependency of the fixture extension. `typescript` 7 has no compiler API, so
-// the checker comes from `@typescript/typescript6`, as in rollup-plugin-dts.
+// dependency of the fixture extension. The checker is TypeScript 7's API,
+// `typescript/unstable/sync`, which runs `tsgo` in a child process and serves
+// it a project read from a tsconfig, so the suite writes one that holds the
+// declaration alone. The API is marked unstable, so a `typescript` update may
+// need this file adjusted.
 
-import { existsSync } from "node:fs";
+import { existsSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import ts from "@typescript/typescript6";
+import { API, SymbolFlags, type Symbol as TsSymbol } from "typescript/unstable/sync";
 import * as extensions from "../extension-api";
 
 const declarationPath = path.resolve(
@@ -48,44 +51,64 @@ const declarationPath = path.resolve(
 
 /** The dotted paths of the values the declaration exports, namespaces included. */
 const declaredValuePaths = (): string[] => {
-  const program = ts.createProgram([declarationPath], {
-    noEmit: true,
-    skipLibCheck: true,
-    types: [],
-  });
-  const checker = program.getTypeChecker();
-  const sourceFile = program.getSourceFile(declarationPath);
-  const moduleSymbol = sourceFile && checker.getSymbolAtLocation(sourceFile);
+  const projectDir = mkdtempSync(path.join(tmpdir(), "extension-api-declared-values-"));
+  const configPath = path.join(projectDir, "tsconfig.json");
 
-  if (!moduleSymbol) {
-    throw new Error(`${declarationPath} is not a module`);
-  }
+  writeFileSync(
+    configPath,
+    JSON.stringify({
+      compilerOptions: {
+        module: "esnext",
+        moduleResolution: "bundler",
+        noEmit: true,
+        skipLibCheck: true,
+        types: [],
+      },
+      files: [declarationPath],
+    }),
+  );
 
-  const resolve = (symbol: ts.Symbol) =>
-    symbol.flags & ts.SymbolFlags.Alias ? checker.getAliasedSymbol(symbol) : symbol;
-  const paths: string[] = [];
+  const api = new API({ cwd: projectDir });
 
-  const walk = (container: ts.Symbol, prefix: string) => {
-    for (const member of checker.getExportsOfModule(container)) {
-      const target = resolve(member);
+  try {
+    const project = api.updateSnapshot({ openProjects: [configPath] }).getProject(configPath);
+    const checker = project?.checker;
+    const sourceFile = project?.program.getSourceFile(declarationPath);
+    const moduleSymbol = sourceFile && checker?.getSymbolAtLocation(sourceFile);
 
-      if (!(target.flags & ts.SymbolFlags.Value)) {
-        continue;
-      }
-
-      const memberPath = prefix ? `${prefix}.${member.name}` : member.name;
-
-      paths.push(memberPath);
-
-      if (target.flags & ts.SymbolFlags.ValueModule) {
-        walk(target, memberPath);
-      }
+    if (!checker || !moduleSymbol) {
+      throw new Error(`${declarationPath} is not a module`);
     }
-  };
 
-  walk(moduleSymbol, "");
+    const resolve = (symbol: TsSymbol) =>
+      symbol.flags & SymbolFlags.Alias ? checker.getAliasedSymbol(symbol) : symbol;
+    const paths: string[] = [];
 
-  return paths.sort();
+    const walk = (container: TsSymbol, prefix: string) => {
+      for (const member of checker.getExportsOfModule(container)) {
+        const target = resolve(member);
+
+        if (!(target.flags & SymbolFlags.Value)) {
+          continue;
+        }
+
+        const memberPath = prefix ? `${prefix}.${member.name}` : member.name;
+
+        paths.push(memberPath);
+
+        if (target.flags & SymbolFlags.ValueModule) {
+          walk(target, memberPath);
+        }
+      }
+    };
+
+    walk(moduleSymbol, "");
+
+    return paths.sort();
+  } finally {
+    api.close();
+    rmSync(projectDir, { recursive: true, force: true });
+  }
 };
 
 /** Whether the runtime namespace object at `memberPath` has the member's key, reading only namespaces. */
