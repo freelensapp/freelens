@@ -116,7 +116,7 @@ jobs:
 
       - name: Trunk Check
         if: env.changes == 'true'
-        uses: trunk-io/trunk-action@v1
+        uses: trunk-io/trunk-action@v2.0.0
         with:
           check-mode: all
         continue-on-error: true
