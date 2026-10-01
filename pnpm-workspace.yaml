@@ -111,7 +111,7 @@ catalog:
   gunzip-maybe: 1.4.2
   handlebars: 4.7.9
   http-proxy-node16: 1.0.6
-  immer: 11.1.8
+  immer: 11.1.18
   joi: 18.2.6
   js-yaml: 5.2.2
   logform: 2.7.0
@@ -159,7 +159,7 @@ catalogs:
     chart.js: ^4.5.1
     conf: ^15.1.0
     es-toolkit: ^1.49.0
-    immer: ^11.1.8
+    immer: ^11.1.18
     mobx: ^7.0.5
     mobx-react: ^10.0.2
     monaco-editor: ^0.56.0
