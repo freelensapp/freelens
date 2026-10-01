@@ -26,6 +26,21 @@ lint:
         - cjs
         - mjs
   definitions:
+    # shfmt ignores .editorconfig when it is given any formatting flag, and
+    # the plugin passes `-s`, so it would indent with tabs regardless of
+    # indent_style. Run it without flags; `simplify = true` in .editorconfig
+    # keeps the simplification.
+    - name: shfmt
+      commands:
+        - name: format
+          output: shfmt
+          run: shfmt -w ${target}
+          success_codes: [0, 1]
+          cache_results: true
+          formatter: true
+          batch: true
+          in_place: true
+
     # See https://github.com/trunk-io/plugins/pull/1063
     - name: biome
       files:
