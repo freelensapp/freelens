@@ -103,7 +103,7 @@ the namespace for the process your code runs in.
 object. An extension declares them in `devDependencies` for compilation only,
 marks them external, and lets its bundler rewrite the bare id to the global.
 
-**Surface.** A closed list of eight module ids:
+**Surface.** A closed list of module ids:
 
 | Module id | Global | Published in |
 | --- | --- | --- |
@@ -113,32 +113,27 @@ marks them external, and lets its bundler rewrite the bare id to the global.
 | `mobx` | `Mobx` | both |
 | `mobx-react` | `MobxReact` | renderer |
 | `monaco-editor` | `MonacoEditor` | renderer |
-| `@ogre-tools/injectable` | `OgreToolsInjectable` | both |
-| `@ogre-tools/injectable-react` | `OgreToolsInjectableReact` | renderer |
 
 **Each process publishes the set it has**, which is why the third column exists.
-Publishing all eight in main would pull a DOM renderer and a code editor into a
-bundle with no window to render into, for an entry point that cannot use them
-either; `@ogre-tools/injectable-react` is left out of main on the same ground,
-being a React binding. What main has is what an extension's main entry point can
-really share: `mobx`, where an extension's stores and catalog entities live, and
-`@ogre-tools/injectable`.
+Publishing the whole list in main would pull a DOM renderer and a code editor
+into a bundle with no window to render into, for an entry point that cannot use
+them either. What main has is what an extension's main entry point can really
+share: `mobx`, where an extension's stores and catalog entities live.
 
 **Membership is testable, not editorial: a package belongs on this list if two
 instances of it misbehave.** React (hook and reconciler identity), mobx
-(observable identity), ogre-tools (container and registry identity), monaco
-(global theme and worker registration). Nothing else in the API's dependency set
-meets it.
+(observable identity), monaco (global theme and worker registration). Nothing
+else in the API's dependency set meets it.
 
 **The names follow a mechanical rule rather than a lookup table:** strip the
 scope, split on `-`, `/` and `.`, upper-case each segment. Canonical names would
-need an exception table — mobx's own UMD global is lower-case and ogre-tools has
-none — and the rule is machine-checkable in both directions: the host asserts its
-keys match the transform of the module ids, and a bundler plugin *derives* each
-name instead of being handed a map. It settles `ReactDom` over `ReactDOM` in
-favour of what published extensions already write.
+need an exception table — mobx's own UMD global is lower-case, and not every
+module has one — and the rule is machine-checkable in both directions: the host
+asserts its keys match the transform of the module ids, and a bundler plugin
+*derives* each name instead of being handed a map. It settles `ReactDom` over
+`ReactDOM` in favour of what published extensions already write.
 
-Three ids leave the map **explicitly**, because dropping them silently is the
+These ids leave the map **explicitly**, because dropping them silently is the
 error:
 
 - **`@freelensapp/extensions`** — mapped in v1, when the package was a fat
@@ -158,16 +153,22 @@ error:
   of [`v2-extension-abi.md`](./v2-extension-abi.md) — rather than a map entry;
   an extension that needs to run a program uses `node:child_process`. The rule
   would name it `NodePty` in any case.
+- **`@ogre-tools/injectable` and `@ogre-tools/injectable-react`** — the host's
+  dependency-injection library, which it keeps as an implementation detail (see
+  [C7](#c7-the-dependency-injection-surface)). Their identity only matters to
+  code that shares the host's container, and no extension does. An extension
+  still mapping either to `FreelensExtensionApi` gets `undefined` at runtime, not
+  a build error; one that uses them bundles its own copy, at any version.
 
 **Failure mode.** Bundling your own copy of a listed package. React throws
-`invalid hook call`; ogre-tools fails to find registrations; **mobx fails
-silently** — two instances interoperate through shared global state well enough
-that observables appear to work and reactions simply do not fire where they
-should. A typo in a global name yields `undefined`, not a build error. Code
-built against another major of a listed package runs against the host's copy
-anyway: a mobx class compiled with legacy (`experimentalDecorators`) decorators
-throws when its module is evaluated, so the extension fails to load, and the
-annotations that do not throw are dropped silently (see
+`invalid hook call`; **mobx fails silently** — two instances interoperate
+through shared global state well enough that observables appear to work and
+reactions simply do not fire where they should. A typo in a global name yields
+`undefined`, not a build error. Code built against another major of a listed
+package runs against the host's copy anyway: a mobx class compiled with legacy
+(`experimentalDecorators`) decorators throws when its module is evaluated, so
+the extension fails to load, and the annotations that do not throw are dropped
+silently (see
 [MobX 7 and mobx-react 10](./v2-extension-migration.md#mobx-7-and-mobx-react-10-standard-decorators-only)
 for the messages).
 
@@ -471,64 +472,60 @@ or of registering after the host has already read the field.
 
 ## C7. The dependency-injection surface
 
-**Guarantee.** **The container stays in the host.** `OgreToolsInjectable` is
-exposed so an extension can *create* injectables and use `withInjectables`
-against the host's DI context. The container itself and an `inject`-by-token
-facade are not exposed.
+**Guarantee.** **The container and the DI library stay in the host.** The host
+is built on `@ogre-tools/injectable`, but neither its container nor the library
+is part of the extension API: no namespace exposes a container, an injection
+token or a hook that registers an injectable, and the global publishes neither
+`@ogre-tools/injectable` nor `@ogre-tools/injectable-react`
+([C3](#c3-host-provided-singletons)). The host may change its DI library, or the
+library's major, in any release.
 
-**Surface.** `@ogre-tools/injectable` 27 and `@ogre-tools/injectable-react` 27,
-via [C3](#c3-host-provided-singletons), plus the extension's own namespaced view
-of the container. The supported way to build an injectable or a token is the
-package's creator — `getInjectable`, `getInjectionToken` and their
-`injectable-react` counterparts — never an object literal typed as `Injectable`
-or `InjectionToken`. The container keys on the `aliasType` the creators set:
-registering an object without one does not throw, but registers nothing, and
-the first `inject` of it fails as non-registered.
+**Surface.** None for authors. An extension contributes through the declarative
+fields of [C6](#c6-registration-and-the-extension-instance), and the host's
+registrators turn those fields into injectables in a view of the host's
+container kept for that extension. An extension that wants dependency injection
+for its own code bundles a DI library as an ordinary dependency — ogre-tools at
+any version, or anything else — with its own container and, for
+`withInjectables`, its own `DiContextProvider`. That container is the
+extension's alone: it holds none of the host's injectables, and the host never
+reads from it.
 
-Two properties are stated plainly rather than implied:
+**The per-extension view is host-internal and no security boundary.** It is a
+namespaced view, not an isolated container: the registrations made for an
+extension get an id prefix and are torn down with the extension, and nothing
+else about them is private. With `contextIsolation: false` an
+extension reaches everything through `globalThis` anyway, so keeping the
+container out of the API is a contract boundary, not a security one. What is
+supported is what the namespaces expose; anything else may change without
+notice.
 
-- **It is a namespaced view, not an isolated container.** Registrations get an
-  id prefix and are torn down with the extension, but another extension that
-  knew the prefixed id could reach them. **No security boundary may be built on
-  this.**
-- **An extension's injectable can inject anything the host has.** This follows
-  from the container being shared, and it is accepted rather than fenced: with
-  `contextIsolation: false` an extension already reaches everything through
-  `globalThis`, so a restricted container would be theatre until #2399. What is
-  supported is what the namespaces expose; anything else may change without
-  notice.
+**The lifecycle invariant:** *the view exists before the author's first hook and
+is released after their last.* The loader injects it right after it constructs
+the extension instance; the registrators populate it after activation, because
+activation can register catalog categories they must see; and `disable()` runs
+`onDeactivate` before `deregister()`.
 
-**The lifecycle invariant:** *the container exists before the author's first
-hook and is released after their last.*
+**Failure mode.** An extension that still maps `@ogre-tools/*` to
+`FreelensExtensionApi` gets `undefined` at runtime, not a build error. An
+injectable created by an extension's own copy of ogre-tools means nothing to the
+host's container, so there is nothing of the host's to pass it to.
 
-**Failure mode.** Registering an injectable outside that window is lost, without
-an error.
+**Status:** shipped. The invariant holds; the container and the library are
+internal.
 
-**Status:** the invariant holds as of #2450. It did not before: the view came
-into existence with the first `getExtension` call, in `loadExtensions`, *after*
-`activate()` had run the author's `onActivate` — and `enable()` has no author
-hook — so there was no point in the lifecycle at which an extension could
-register anything. The loader now injects the view right after it constructs the
-instance, and population by the registrators stays after activation, which is
-where it has to be (activation can register catalog categories the registrators
-must see). Teardown always was correct: `disable()` runs `onDeactivate` before
-`deregister()`.
-
-**What is still missing is the author-facing half.** The moment exists; no hook
-hands an author a container to register into at it. That is a separate decision,
-not a consequence of this one.
-
-**Deferred, with the measurement that justifies deferring it.** The repository
-declares **119** injection tokens: **15** are extension-facing, **9** are
-consumed inside the namespaces to expose a member (where the member is the
-contract and the token need not be public), and the remaining ~95 are internal.
-The 15 are not being made public, because doing so buys **no new capability** —
-each registrator exists to translate a declarative field, so
-extensions already reach every capability the tokens would unlock. Exposing them
-would mean re-exporting 15 tokens *and their generic parameter types* out of
-private packages. The question returns when someone wants a capability nobody
-wishes to write a registrator for, and it will then be a decision about one
-token rather than fifteen.
+**The author-facing half is deferred.** The moment for it exists in the
+lifecycle; no hook hands an author a container to register into at it. Most of
+the repository's injection tokens are internal, and making the extension-facing
+ones public buys **no new capability**: each has a registrator translating a
+declarative field, so extensions already reach everything those tokens would
+unlock. Exposing them would mean re-exporting the tokens *and their generic
+parameter types* out of private packages. The question returns when someone
+wants a capability nobody wishes to write a registrator for, and it will then be
+a decision about one token rather than all of them. If that brings author-facing
+injection in a 2.x minor, the DI library can join
+[C3](#c3-host-provided-singletons) then, as an addition; publishing it before
+anything uses it would freeze the host on one major for the whole 2.x line
+([C14](#c14-versioning-and-compatibility)).
 
 ---
 
@@ -608,8 +605,7 @@ libraries the published API's type surface is pinned against.
 It splits in two:
 
 - **Host-provided** ([C3](#c3-host-provided-singletons)): `react`, `mobx`,
-  `mobx-react`, `monaco-editor`, `@ogre-tools/injectable`,
-  `@ogre-tools/injectable-react`.
+  `mobx-react`, `monaco-editor`.
 - **Free to bundle**: `chart.js`, `react-select`, `conf`, `es-toolkit`, `immer`,
   `rfc6902`, `type-fest` (plus the `@types/*` entries). A bundled `react-select`
   still gets the host's React, because that copy's own `import "react"` is
@@ -618,9 +614,8 @@ It splits in two:
 
 **Surface.** The built declaration imports these external specifiers:
 `type-fest`, `mobx`, `mobx-react`, `react`, `react/jsx-runtime`, `react-dom`,
-`conf`, `rfc6902`, `immer`, `@ogre-tools/injectable`,
-`@ogre-tools/injectable-react`, `es-toolkit/compat`, `monaco-editor`,
-`chart.js`, `react-select`.
+`conf`, `rfc6902`, `immer`, `es-toolkit/compat`, `monaco-editor`, `chart.js`,
+`react-select`.
 
 This is the complement of the namespace enumeration in
 [C5](#c5-namespace-enumeration): that records what the API *exports*, this what
@@ -652,11 +647,6 @@ error, and nothing in the monorepo notices, since every such package happens to
 be installed there. `packages/extensions/rollup.dts.config.mjs` therefore
 enforces it: `build:dist` fails and lists every external specifier of the
 bundle whose package is not declared.
-
-`@ogre-tools/injectable-react` is imported by the declaration like the other
-host-provided singletons. It would be declared either way, being needed at
-*runtime* for `withInjectables`, which is a different requirement from
-appearing in the types.
 
 **Failure mode.** A host-provided library in `dependencies` of
 `@freelensapp/extensions` **silently plants a real React in the author's tree**

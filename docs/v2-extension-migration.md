@@ -103,7 +103,7 @@ runtime.
 
 ### The host-provided libraries, and how to mark them external
 
-Eight module ids must resolve to the host's instance rather than to a copy in
+These module ids must resolve to the host's instance rather than to a copy in
 your bundle. You declare them in **`devDependencies`** — for compilation only —
 and your bundler rewrites the bare id to a property of the host's global:
 
@@ -115,22 +115,22 @@ and your bundler rewrites the bare id to a property of the host's global:
 | `mobx` | `FreelensExtensionApi.Mobx` |
 | `mobx-react` | `FreelensExtensionApi.MobxReact` |
 | `monaco-editor` | `FreelensExtensionApi.MonacoEditor` |
-| `@ogre-tools/injectable` | `FreelensExtensionApi.OgreToolsInjectable` |
-| `@ogre-tools/injectable-react` | `FreelensExtensionApi.OgreToolsInjectableReact` |
 
 The global names follow a mechanical rule — strip the scope, split on `-`, `/`
 and `.`, upper-case each segment — so a bundler plugin can *derive* each name
 instead of being handed a map. Note `ReactDom`, not `ReactDOM`.
 
-**Each process publishes the set it has.** The renderer publishes all eight; the
-main process publishes `Mobx` and `OgreToolsInjectable` and nothing else, because
-a code editor and a DOM renderer have no place in a process with no window. Map
+**Each process publishes the set it has.** The renderer publishes the whole
+table; the main process publishes `Mobx` and nothing else, because a code editor
+and a DOM renderer have no place in a process with no window. Map
 in your main entry point only what main publishes — the rest is `undefined`
 there, and marking it external gets you no error, only a later surprise.
 
 Everything else may be bundled freely: `chart.js`, `react-select`, `conf`,
-`immer`, `rfc6902`, `type-fest`. A bundled `react-select` still gets the host's
-React, because that copy's own `import "react"` is rewritten too.
+`immer`, `rfc6902`, `type-fest`, and a dependency-injection library of your own
+(see [Dependency injection](#dependency-injection-bundle-your-own)). A bundled
+`react-select` still gets the host's React, because that copy's own
+`import "react"` is rewritten too.
 
 Two ids that **leave** the v1 externals map, and both fail at runtime rather
 than at build time if you keep them:
@@ -180,44 +180,34 @@ you through the externals map in
   APIs (for example `ReactDOM.render` / `findDOMNode` and legacy string refs),
   so audit for those while upgrading.
 
-## `@ogre-tools/*` 27 (dependency-injection major)
+## Dependency injection: bundle your own
 
-Freelens v2 bumps the `@ogre-tools/*` dependency-injection packages
-(`injectable`, `injectable-react`, …) from **17 to 27**. This is
-extension-facing because the `@ogre-tools/*` types leak through the
-`@freelensapp/*` packages and the extension API (injection tokens, `getInjectable`,
-the React injection helpers). Move the `@ogre-tools/injectable` and
-`@ogre-tools/injectable-react` `devDependencies` to `^27`, so that you compile
-against the types of the runtime the host provides, and re-check any code that
-constructs or consumes injectables against that type surface.
+The host's dependency-injection library, `@ogre-tools/injectable` and
+`@ogre-tools/injectable-react`, is **not** part of the extension API. The host
+does not publish either on `FreelensExtensionApi`, the API exposes no container
+and no injection token, and the host may move to another major — or another
+library — in any release. A shared copy would give an extension nothing to work
+with anyway: an injectable it created could not be registered in the host's
+container, and it has no injectable of the host's to inject.
 
-- **`aliasType` on injectables and tokens.** `Injectable` carries a required
-  `readonly aliasType: "injectable"`, and `InjectionToken` a
-  `readonly aliasType: "injection-token"`. `getInjectable` and
-  `getInjectionToken` set it, so code that uses them needs no change. A helper
-  that wraps `getInjectable` and types its options as `Injectable<…>`, or as
-  `Omit<Injectable<…>, …>`, must omit `"aliasType"` as well: otherwise its
-  callers fail to type-check for want of the field, and when the helper is
-  generic the error may show up instead as its type parameters inferred as
-  `unknown`. Do not build an injectable as an object literal: the container
-  registers nothing for an object without the `aliasType` the creators set,
-  and says so only when it is first injected.
-- **The v2 token API changed shape.** `getInjectionToken2` is curried, requires
-  a `cardinality` and takes its type parameters as a named bag; an
-  `injectable2` that injects tokens declares them in `consumptions`; and
-  `getAbstractInjectionToken2` and `getSpecificInjectionToken2` are gone, along
-  with their `injectable-react` component-token counterparts. The host declares
-  none of its tokens with this API, so this affects only an extension that
-  adopted it on its own; port such code with the `@ogre-tools` changelog.
-- **Namespaced runtime-registered ids.** `@ogre-tools/*` namespaces the id of
-  an injectable registered at runtime through a namespaced `di` (for example an
-  extension-scoped registration) as `"<namespace>:<declaredId>"`. The host
-  already strips this namespace where it surfaces ids for its own registries
-  (see `packages/cluster-sidebar/src/sidebar-items.injectable.ts`), so
-  extensions that only register injectables against the documented tokens need
-  no change. If your extension does its **own** `injectManyWithMeta` and keys off
-  `meta.id`, be aware the id may now carry a `"<namespace>:"` prefix — strip it
-  (take the segment after the last `:`) if you compare against a bare declared id.
+What to do instead:
+
+- **Stop mapping `@ogre-tools/*` to `FreelensExtensionApi`.** Remove
+  `@ogre-tools/injectable` and `@ogre-tools/injectable-react` from the externals
+  of your bundler. A mapping left in place reads `undefined` at runtime, and the
+  build does not warn you.
+- **If your extension uses dependency injection for its own code, bundle the
+  library** as an ordinary `dependency`, at whatever version you like, or use
+  another library altogether. With ogre-tools, create your own container with
+  `createContainer`, register your own injectables in it, and, if you use
+  `withInjectables` in the renderer, wrap your components in your own
+  `DiContextProvider` with that container. Your container is separate from the
+  host's: it holds none of the host's injectables, and the host never reads from
+  it.
+- **Contribute to the host through the declarative fields** of your
+  `LensExtension` subclass (see
+  [Registering things: declarative fields](#registering-things-declarative-fields)),
+  not through injectables. That is the only route into the host's container.
 
 ## MobX 7 and mobx-react 10 (standard decorators only)
 
@@ -299,9 +289,8 @@ The bundled `extension-api.d.ts` sets these floors for consumer compilers:
   compilers fail to parse with `TS1434: Unexpected keyword or identifier`.
   `skipLibCheck` does not help, because it skips type checking, not parsing.
   An extension that writes standard decorators itself needs TypeScript 5.0.
-- `"skipLibCheck": true` — the type dependency graph (for example
-  `@ogre-tools/injectable`, which references jest types) is not clean under
-  `skipLibCheck: false`, and checking it is not your job.
+- `"skipLibCheck": true` — the type dependency graph is not guaranteed to be
+  clean under `skipLibCheck: false`, and checking it is not your job.
 - `"lib"` with `ES2024` (or newer) — the mobx types reference
   `ReadonlySetLike`, which first appears in the ES2024 lib. `DOM` and
   `DOM.Iterable` belong in the renderer's config only; see

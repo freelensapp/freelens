@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-// The unit level of the extension contract (#2451). It loads the built bundle
+// The unit level of the extension contract. It loads the built bundle
 // of `@freelensapp/fixture-extension` — an extension written the way a
 // third-party extension is written, against the published
 // `dist/extension-api.d.ts` and with its externals mapped onto
@@ -33,8 +33,6 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import * as OgreToolsInjectable from "@ogre-tools/injectable";
-import * as OgreToolsInjectableReact from "@ogre-tools/injectable-react";
 import { fireEvent, render } from "@testing-library/react";
 import * as Mobx from "mobx";
 import { autorun, observable, runInAction } from "mobx";
@@ -140,7 +138,7 @@ describe("extension contract, against the built fixture extension", () => {
     });
   });
 
-  // The renderer half of the singleton contract (#2450): every module an
+  // The renderer half of the singleton contract: every module an
   // extension must share rather than bundle, published under the name the rule
   // derives from its module id, and being the host's *own* instance of it. The
   // last part is why these are `toBe` against this file's own imports rather
@@ -154,12 +152,29 @@ describe("extension contract, against the built fixture extension", () => {
     ["Mobx", Mobx],
     ["MobxReact", MobxReact],
     ["MonacoEditor", MonacoEditor],
-    ["OgreToolsInjectable", OgreToolsInjectable],
-    ["OgreToolsInjectableReact", OgreToolsInjectableReact],
   ])("publishes the host's own instance of %s", (name, hostInstance) => {
     const published = Reflect.get(globalThis, "FreelensExtensionApi") as Record<string, unknown>;
 
     expect(published[name]).toBe(hostInstance);
+  });
+
+  it("publishes no singleton besides those", () => {
+    // The host's DI library stays internal: the container is not shared with
+    // extensions, so an extension that wants injection bundles its own copy.
+    const published = Reflect.get(globalThis, "FreelensExtensionApi") as Record<string, unknown>;
+
+    expect(Object.keys(published).sort()).toEqual([
+      "Common",
+      "Mobx",
+      "MobxReact",
+      "MonacoEditor",
+      "React",
+      "ReactDom",
+      "ReactJsxRuntime",
+      "Renderer",
+    ]);
+    expect(published).not.toHaveProperty("OgreToolsInjectable");
+    expect(published).not.toHaveProperty("OgreToolsInjectableReact");
   });
 
   it("shares the host's singletons by identity, not by shape", () => {

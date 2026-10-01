@@ -533,7 +533,7 @@ Three traps worth carrying without looking them up. The API surface is only what
 the `Common` / `Main` / `Renderer` namespaces re-export — every other
 `@freelensapp/*` package is private and inlined into the published declaration,
 so a symbol that is not re-exported is unreachable by any means. And the host
-must be the single instance of React, mobx, monaco and ogre-tools; a second
+must be the single instance of React, mobx and monaco; a second
 copy of mobx fails **silently**, so changes there need an identity assertion
 rather than a passing test suite.
 

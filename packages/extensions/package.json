@@ -53,8 +53,6 @@
     "typescript-plugin-css-modules": "catalog:"
   },
   "peerDependencies": {
-    "@ogre-tools/injectable": "catalog:extensions",
-    "@ogre-tools/injectable-react": "catalog:extensions",
     "electron": ">=42.0.0",
     "mobx": "catalog:extensions",
     "mobx-react": "catalog:extensions",
@@ -62,12 +60,6 @@
     "react": "catalog:extensions"
   },
   "peerDependenciesMeta": {
-    "@ogre-tools/injectable": {
-      "optional": true
-    },
-    "@ogre-tools/injectable-react": {
-      "optional": true
-    },
     "electron": {
       "optional": true
     },
