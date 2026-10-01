@@ -48,8 +48,7 @@
     "@freelensapp/core": "workspace:^",
     "rolldown": "catalog:",
     "rolldown-plugin-dts": "catalog:",
-    "typescript": "catalog:",
-    "typescript-plugin-css-modules": "catalog:"
+    "typescript": "catalog:"
   },
   "peerDependencies": {
     "electron": ">=43.0.0",
