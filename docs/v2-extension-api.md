@@ -476,9 +476,14 @@ exposed so an extension can *create* injectables and use `withInjectables`
 against the host's DI context. The container itself and an `inject`-by-token
 facade are not exposed.
 
-**Surface.** `@ogre-tools/injectable` 23 and `@ogre-tools/injectable-react` 23,
+**Surface.** `@ogre-tools/injectable` 27 and `@ogre-tools/injectable-react` 27,
 via [C3](#c3-host-provided-singletons), plus the extension's own namespaced view
-of the container.
+of the container. The supported way to build an injectable or a token is the
+package's creator — `getInjectable`, `getInjectionToken` and their
+`injectable-react` counterparts — never an object literal typed as `Injectable`
+or `InjectionToken`. The container keys on the `aliasType` the creators set:
+registering an object without one does not throw, but registers nothing, and
+the first `inject` of it fails as non-registered.
 
 Two properties are stated plainly rather than implied:
 

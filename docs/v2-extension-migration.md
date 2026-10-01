@@ -180,16 +180,36 @@ you through the externals map in
   APIs (for example `ReactDOM.render` / `findDOMNode` and legacy string refs),
   so audit for those while upgrading.
 
-## `@ogre-tools/*` 23 (dependency-injection major)
+## `@ogre-tools/*` 27 (dependency-injection major)
 
 Freelens v2 bumps the `@ogre-tools/*` dependency-injection packages
-(`injectable`, `injectable-react`, …) from **17 to 23**. This is
+(`injectable`, `injectable-react`, …) from **17 to 27**. This is
 extension-facing because the `@ogre-tools/*` types leak through the
 `@freelensapp/*` packages and the extension API (injection tokens, `getInjectable`,
-the React injection helpers). Re-check any code that constructs or consumes
-injectables against the `@ogre-tools/*` 23 type surface after upgrading.
+the React injection helpers). Move the `@ogre-tools/injectable` and
+`@ogre-tools/injectable-react` `devDependencies` to `^27`, so that you compile
+against the types of the runtime the host provides, and re-check any code that
+constructs or consumes injectables against that type surface.
 
-- **Namespaced runtime-registered ids.** `@ogre-tools/*` 23 namespaces the id of
+- **`aliasType` on injectables and tokens.** `Injectable` carries a required
+  `readonly aliasType: "injectable"`, and `InjectionToken` a
+  `readonly aliasType: "injection-token"`. `getInjectable` and
+  `getInjectionToken` set it, so code that uses them needs no change. A helper
+  that wraps `getInjectable` and types its options as `Injectable<…>`, or as
+  `Omit<Injectable<…>, …>`, must omit `"aliasType"` as well: otherwise its
+  callers fail to type-check for want of the field, and when the helper is
+  generic the error may show up instead as its type parameters inferred as
+  `unknown`. Do not build an injectable as an object literal: the container
+  registers nothing for an object without the `aliasType` the creators set,
+  and says so only when it is first injected.
+- **The v2 token API changed shape.** `getInjectionToken2` is curried, requires
+  a `cardinality` and takes its type parameters as a named bag; an
+  `injectable2` that injects tokens declares them in `consumptions`; and
+  `getAbstractInjectionToken2` and `getSpecificInjectionToken2` are gone, along
+  with their `injectable-react` component-token counterparts. The host declares
+  none of its tokens with this API, so this affects only an extension that
+  adopted it on its own; port such code with the `@ogre-tools` changelog.
+- **Namespaced runtime-registered ids.** `@ogre-tools/*` namespaces the id of
   an injectable registered at runtime through a namespaced `di` (for example an
   extension-scoped registration) as `"<namespace>:<declaredId>"`. The host
   already strips this namespace where it surfaces ids for its own registries
