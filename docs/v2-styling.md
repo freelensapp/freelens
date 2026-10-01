@@ -24,7 +24,10 @@ role (see [Roles](#roles-which-mechanism-to-use)):
 3. **CSS Modules** (`*.module.scss`). Mangled class names via
    `generateScopedName: "[name]__[local]--[hash:base64:5]"`
    (`freelens/electron.vite.config.ts`). The component imports the generated
-   name map and references `styles.someClass`.
+   name map and references `styles.someClass`. The map is typed only as
+   `{ [key: string]: string }`, by the wildcard `declare module "*.module.scss"`
+   in `packages/core/types/mocks.d.ts`, so neither `tsc` nor the editor
+   catches a misspelt class name.
 4. **Tailwind v4** utilities. `@import "tailwindcss"` + `@config` live only in
    `packages/core/src/renderer/components/app.scss`; utility classes appear
    inline in core TSX.
