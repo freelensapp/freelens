@@ -84,7 +84,7 @@
     "electron-window-state": "catalog:",
     "fs-extra": "catalog:",
     "handlebars": "catalog:",
-    "http-proxy-node16": "catalog:",
+    "http-proxy-3": "catalog:",
     "immer": "catalog:",
     "joi": "catalog:",
     "js-yaml": "catalog:",

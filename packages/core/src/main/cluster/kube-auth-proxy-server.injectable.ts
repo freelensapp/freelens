@@ -9,7 +9,7 @@ import clusterApiUrlInjectable from "../../features/cluster/connections/main/api
 import createKubeAuthProxyInjectable from "../kube-auth-proxy/create-kube-auth-proxy.injectable";
 import kubeAuthProxyCertificateInjectable from "../kube-auth-proxy/kube-auth-proxy-certificate.injectable";
 
-import type { ServerOptions } from "http-proxy-node16";
+import type { ServerOptions } from "http-proxy-3";
 
 import type { Cluster } from "../../common/cluster/cluster";
 import type { KubeAuthProxy } from "../kube-auth-proxy/create-kube-auth-proxy.injectable";
@@ -58,13 +58,11 @@ const kubeAuthProxyServerInjectable = getInjectable({
       const { port, apiPrefix: path } = await ensureServerHelper();
 
       return {
-        target: {
-          protocol: "https:",
-          host: "127.0.0.1",
-          port,
-          path,
-          ca: certificate.cert,
-        },
+        // http-proxy-3 prepends the `pathname` of the target and ignores a
+        // `path` field, so the API prefix has to travel in a URL, and the CA,
+        // which a URL cannot carry, in the options.
+        target: new URL(`https://127.0.0.1:${port}${path}`),
+        ca: certificate.cert,
         changeOrigin: true,
         timeout,
         secure: true,

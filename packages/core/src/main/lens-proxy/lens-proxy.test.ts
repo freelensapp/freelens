@@ -4,9 +4,11 @@
  */
 
 import { once } from "node:events";
+import http from "node:http";
 import net from "node:net";
 import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
+import kubeAuthProxyServerInjectable from "../cluster/kube-auth-proxy-server.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import routerInjectable from "../router/router.injectable";
 import getClusterForRequestInjectable from "./get-cluster-for-request.injectable";
@@ -14,12 +16,12 @@ import lensProxyInjectable from "./lens-proxy.injectable";
 import lensProxyPortInjectable from "./lens-proxy-port.injectable";
 import kubeApiUpgradeRequestInjectable from "./proxy-functions/kube-api-upgrade-request.injectable";
 import shellApiRequestInjectable from "./proxy-functions/shell-api-request.injectable";
-import type http from "node:http";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { Mock } from "vitest";
 
 import type { Cluster } from "../../common/cluster/cluster";
+import type { KubeAuthProxyServer } from "../cluster/kube-auth-proxy-server.injectable";
 import type { Router } from "../router/router";
 import type { ServerIncomingMessage } from "./lens-proxy";
 
@@ -173,6 +175,93 @@ describe("closing the lens proxy", () => {
     await proxy.close();
 
     expect(proxy.close()).toBeUndefined();
+  });
+});
+
+describe("lens proxy kube api requests", () => {
+  let proxy: { listen: () => Promise<void>; close: () => Promise<void> | undefined };
+  let port: number;
+  let target: http.Server;
+  let targetReceived: { url?: string; host?: string; authorization?: string }[];
+
+  const apiPrefix = "/some-api-prefix";
+
+  const get = (path: string) =>
+    new Promise<{ statusCode?: number; body: string }>((resolve, reject) => {
+      http
+        .get({ host: "127.0.0.1", port, path, agent: false, headers: { authorization: "some-token" } }, (res) => {
+          let body = "";
+
+          res.setEncoding("utf8");
+          res.on("data", (chunk: string) => (body += chunk));
+          res.on("end", () => resolve({ statusCode: res.statusCode, body }));
+        })
+        .on("error", reject);
+    });
+
+  beforeEach(async () => {
+    const di = getDiForUnitTesting();
+
+    targetReceived = [];
+    target = http.createServer((req, res) => {
+      targetReceived.push({ url: req.url, host: req.headers.host, authorization: req.headers.authorization });
+
+      if (req.url?.endsWith("/aborted")) {
+        res.writeHead(200).write("some-partial-body");
+        setTimeout(() => req.socket.destroy(), 10);
+
+        return;
+      }
+
+      res.end("some-body");
+    });
+    target.listen(0, "127.0.0.1");
+    await once(target, "listening");
+
+    const { port: targetPort } = target.address() as net.AddressInfo;
+
+    di.override(directoryForUserDataInjectable, () => "/some-directory-for-user-data");
+    di.override(directoryForTempInjectable, () => "/some-directory-for-tmp");
+    di.override(getClusterForRequestInjectable, () => () => ({ id: "some-cluster-id" }) as Cluster);
+    di.override(shellApiRequestInjectable, () => vi.fn());
+    di.override(kubeApiUpgradeRequestInjectable, () => vi.fn());
+    di.override(
+      kubeAuthProxyServerInjectable,
+      () =>
+        ({
+          getApiTarget: async () => ({
+            target: new URL(`http://127.0.0.1:${targetPort}${apiPrefix}`),
+            changeOrigin: true,
+            headers: { Host: "some-cluster-host" },
+          }),
+        }) as unknown as KubeAuthProxyServer,
+    );
+
+    proxy = di.inject(lensProxyInjectable);
+
+    await proxy.listen();
+    port = di.inject(lensProxyPortInjectable).get();
+  });
+
+  afterEach(async () => {
+    await proxy.close();
+    target.closeAllConnections();
+    target.close();
+  });
+
+  it("forwards the request below the path of the target, with the host of the cluster", async () => {
+    const response = await get("/api-kube/api/v1/pods?watch=true");
+
+    expect(response).toEqual({ statusCode: 200, body: "some-body" });
+    expect(targetReceived).toEqual([
+      { url: `${apiPrefix}/api/v1/pods?watch=true`, host: "some-cluster-host", authorization: undefined },
+    ]);
+  });
+
+  it("ends the response when the target aborts its own", async () => {
+    const response = await get("/api-kube/api/v1/aborted");
+
+    expect(response).toEqual({ statusCode: 200, body: "some-partial-body" });
   });
 });
 

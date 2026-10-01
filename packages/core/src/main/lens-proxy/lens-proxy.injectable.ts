@@ -6,7 +6,7 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import httpProxy from "http-proxy-node16";
+import { createProxyServer } from "http-proxy-3";
 import emitAppEventInjectable from "../../common/app-event-bus/emit-event.injectable";
 import lensProxyCertificateInjectable from "../../common/certificate/lens-proxy-certificate.injectable";
 import contentSecurityPolicyInjectable from "../../common/vars/content-security-policy.injectable";
@@ -24,7 +24,7 @@ const lensProxyInjectable = getInjectable({
   instantiate: (di) =>
     new LensProxy({
       router: di.inject(routerInjectable),
-      proxy: httpProxy.createProxy(),
+      proxy: createProxyServer(),
       kubeApiUpgradeRequest: di.inject(kubeApiUpgradeRequestInjectable),
       shellApiRequest: di.inject(shellApiRequestInjectable),
       getClusterForRequest: di.inject(getClusterForRequestInjectable),

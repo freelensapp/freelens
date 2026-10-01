@@ -110,7 +110,7 @@ catalog:
   fs-extra: 11.3.6
   gunzip-maybe: 1.4.2
   handlebars: 4.7.9
-  http-proxy-node16: 1.0.6
+  http-proxy-3: 2.0.1
   immer: 11.1.18
   joi: 18.2.6
   js-yaml: 5.4.1

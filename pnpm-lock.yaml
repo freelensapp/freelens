@@ -374,9 +374,9 @@ catalogs:
     handlebars:
       specifier: 4.7.9
       version: 4.7.9
-    http-proxy-node16:
-      specifier: 1.0.6
-      version: 1.0.6
+    http-proxy-3:
+      specifier: 2.0.1
+      version: 2.0.1
     immer:
       specifier: 11.1.18
       version: 11.1.18
@@ -691,9 +691,9 @@ importers:
       handlebars:
         specifier: 'catalog:'
         version: 4.7.9
-      http-proxy-node16:
+      http-proxy-3:
         specifier: 'catalog:'
-        version: 1.0.6(debug@4.4.3(supports-color@8.1.1))
+        version: 2.0.1(supports-color@8.1.1)
       immer:
         specifier: 'catalog:'
         version: 11.1.18
@@ -1127,9 +1127,9 @@ importers:
       handlebars:
         specifier: 'catalog:'
         version: 4.7.9
-      http-proxy-node16:
+      http-proxy-3:
         specifier: 'catalog:'
-        version: 1.0.6(debug@4.4.3(supports-color@8.1.1))
+        version: 2.0.1(supports-color@8.1.1)
       immer:
         specifier: 'catalog:'
         version: 11.1.18
@@ -5451,9 +5451,6 @@ packages:
     resolution: {integrity: sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==}
     engines: {node: '>=0.10.0'}
 
-  eventemitter3@4.0.7:
-    resolution: {integrity: sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==}
-
   expect-type@1.4.0:
     resolution: {integrity: sha512-KfYbmpRm0VbLjEvVa9yGwCi9GI34xvi7A/HXYWQO65CSD2u3MczUJSuwXKFIxlGsgBQizV9q5J9NHj4VG0n+pA==}
     engines: {node: '>=12.0.0'}
@@ -5514,8 +5511,8 @@ packages:
   fn.name@1.1.0:
     resolution: {integrity: sha512-GRnmB5gPyJpAhTQdSZTSp9uaPSvl09KoYcMQtsB9rQoOmzs9dH6ffeccH+Z+cv6P68Hu5bC6JjRh4Ah/mHSNRw==}
 
-  follow-redirects@1.15.9:
-    resolution: {integrity: sha512-gew4GsXizNgdoRyqmyfMHyAmXsZDk6mHkSxZFCzW9gwlbtOW44CDtYavM+y+72qD/Vq2l550kMF52DT8fOLJqQ==}
+  follow-redirects@1.16.0:
+    resolution: {integrity: sha512-y5rN/uOsadFT/JfYwhxRS5R7Qce+g3zG97+JrtFZlC9klX/W5hD7iiLzScI4nZqUS7DNUdhPgw4xI8W2LuXlUw==}
     engines: {node: '>=4.0'}
     peerDependencies:
       debug: '*'
@@ -5666,6 +5663,10 @@ packages:
   http-cache-semantics@4.1.1:
     resolution: {integrity: sha512-er295DKPVsV82j5kw1Gjt+ADA/XYHsajl82cGNQG2eyoPkvgUhX+nDIyelzhIWbbsXP39EHcI6l5tYs2FYqYXQ==}
 
+  http-proxy-3@2.0.1:
+    resolution: {integrity: sha512-CK9FEsoFko6wv5Y5+YvO6A0KANMZEXh7SvHjbne6zzQpih6qhTmA3xgS/5/QFlIF2HIFH5vZhtvk1Fk2udIsDw==}
+    engines: {node: '>=22'}
+
   http-proxy-agent@7.0.2:
     resolution: {integrity: sha512-T1gkAiYYDWYx3V5Bmyu7HcfcvL7mUrTWiM6yOfa3PIphViJ/gFPbvidQ+veqSOHci/PxBcDabeUNCzpOODJZig==}
     engines: {node: '>= 14'}
@@ -5673,10 +5674,6 @@ packages:
   http-proxy-agent@9.1.0:
     resolution: {integrity: sha512-2NxoveTT58mjYT4n3RPTEfCZGLMbidoO8XEieXfpSYxu+PQJ1qpx4ypwH6N+uF9twBPIvRRgvkvW5HUTYWENig==}
     engines: {node: '>= 20'}
-
-  http-proxy-node16@1.0.6:
-    resolution: {integrity: sha512-RLtYkbmbLmh+To4lmqLpiEitu0igXb/j1SOW8F6w/esXsapGT5dSShMF9vg7shtxGJSXaWiFE3wYWCoLOuiibg==}
-    engines: {node: '>=8.0.0'}
 
   http2-wrapper@1.0.3:
     resolution: {integrity: sha512-V+23sDMr12Wnz7iTcDeJr3O6AIxlnvT/bmaAAAP/Xda35C90p9599p0F1eHR/N1KILWSoWVAiOMFjBBXaXSMxg==}
@@ -6700,9 +6697,6 @@ packages:
   require-from-string@2.0.2:
     resolution: {integrity: sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==}
     engines: {node: '>=0.10.0'}
-
-  requires-port@1.0.0:
-    resolution: {integrity: sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==}
 
   resedit@1.7.2:
     resolution: {integrity: sha512-vHjcY2MlAITJhC0eRD/Vv8Vlgmu9Sd3LX9zZvtGzU5ZImdTN3+d6e/4mnTyV8vEbyf1sgNIrWxhWlrys52OkEA==}
@@ -10292,8 +10286,6 @@ snapshots:
 
   esutils@2.0.3: {}
 
-  eventemitter3@4.0.7: {}
-
   expect-type@1.4.0: {}
 
   exponential-backoff@3.1.2: {}
@@ -10341,7 +10333,7 @@ snapshots:
 
   fn.name@1.1.0: {}
 
-  follow-redirects@1.15.9(debug@4.4.3(supports-color@8.1.1)):
+  follow-redirects@1.16.0(debug@4.4.3(supports-color@8.1.1)):
     optionalDependencies:
       debug: 4.4.3(supports-color@8.1.1)
 
@@ -10528,6 +10520,13 @@ snapshots:
 
   http-cache-semantics@4.1.1: {}
 
+  http-proxy-3@2.0.1(supports-color@8.1.1):
+    dependencies:
+      debug: 4.4.3(supports-color@8.1.1)
+      follow-redirects: 1.16.0(debug@4.4.3(supports-color@8.1.1))
+    transitivePeerDependencies:
+      - supports-color
+
   http-proxy-agent@7.0.2(supports-color@8.1.1):
     dependencies:
       agent-base: 7.1.3
@@ -10543,14 +10542,6 @@ snapshots:
     transitivePeerDependencies:
       - kerberos
       - supports-color
-
-  http-proxy-node16@1.0.6(debug@4.4.3(supports-color@8.1.1)):
-    dependencies:
-      eventemitter3: 4.0.7
-      follow-redirects: 1.15.9(debug@4.4.3(supports-color@8.1.1))
-      requires-port: 1.0.0
-    transitivePeerDependencies:
-      - debug
 
   http2-wrapper@1.0.3:
     dependencies:
@@ -11533,8 +11524,6 @@ snapshots:
   require-directory@2.1.1: {}
 
   require-from-string@2.0.2: {}
-
-  requires-port@1.0.0: {}
 
   resedit@1.7.2:
     dependencies:
