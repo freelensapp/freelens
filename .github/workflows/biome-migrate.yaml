@@ -34,12 +34,33 @@ jobs:
     timeout-minutes: 10
 
     if: >-
-      github.event_name != 'issue_comment' || (startsWith(github.event.issue.title, 'Automated biome migrate') && contains(github.event.comment.body, '/rerun'))
+      github.event_name != 'issue_comment' || (startsWith(github.event.issue.title, 'Automated biome migrate') && contains(github.event.comment.body, '/rerun') && contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association))
 
     env:
       DO_NOT_TRACK: "1"
 
     steps:
+      # author_association in the job condition is only a cheap pre-filter:
+      # MEMBER and COLLABORATOR do not imply write access. The permission API
+      # reports maintain as write and triage as read, and a failed lookup
+      # fails the job, so an unknown permission never passes.
+      - name: Require write access
+        if: github.event_name == 'issue_comment'
+        shell: bash
+        run: |
+          PERMISSION=$(gh api "repos/${GITHUB_REPOSITORY}/collaborators/${COMMENTER}/permission" --jq '.permission')
+          echo "Permission of ${COMMENTER}: ${PERMISSION}"
+          case "$PERMISSION" in
+            admin|write) ;;
+            *)
+              echo "::error::${COMMENTER} needs write access to the repository to run this workflow"
+              exit 1
+              ;;
+          esac
+        env:
+          GH_TOKEN: ${{ github.token }}
+          COMMENTER: ${{ github.event.comment.user.login }}
+
       - name: Checkout
         uses: actions/checkout@v7
         with:
