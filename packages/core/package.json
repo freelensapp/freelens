@@ -163,7 +163,6 @@
     "@types/tcp-port-used": "catalog:",
     "@types/triple-beam": "catalog:",
     "@types/ws": "catalog:",
-    "@typescript/typescript6": "catalog:",
     "electron": "catalog:",
     "jsdom": "catalog:",
     "logform": "catalog:",

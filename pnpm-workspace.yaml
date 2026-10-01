@@ -18,9 +18,6 @@ catalog:
   mobx-react-lite: 5.1.0
   # TypeScript
   typescript: 7.0.2
-  # Compiler API for extension-api-declared-values.test.ts, which TypeScript 7
-  # no longer provides
-  '@typescript/typescript6': 6.0.2
   # Dependency injection (Ogre Tools)
   '@ogre-tools/injectable': 27.0.0
   '@ogre-tools/injectable-extension-for-mobx': 27.0.0
