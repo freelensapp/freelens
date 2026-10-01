@@ -507,8 +507,8 @@ catalogs:
       specifier: 5.2.0
       version: 5.2.0
     undici:
-      specifier: 8.9.0
-      version: 8.9.0
+      specifier: 8.10.2
+      version: 8.10.2
     uuid:
       specifier: 14.0.1
       version: 14.0.1
@@ -738,7 +738,7 @@ importers:
         version: 1.4.1
       undici:
         specifier: 'catalog:'
-        version: 8.9.0
+        version: 8.10.2
       uuid:
         specifier: 'catalog:'
         version: 14.0.1
@@ -1198,7 +1198,7 @@ importers:
         version: 1.4.1
       undici:
         specifier: 'catalog:'
-        version: 8.9.0
+        version: 8.10.2
       uuid:
         specifier: 'catalog:'
         version: 14.0.1
@@ -1346,7 +1346,7 @@ importers:
         version: 3.2.0
       undici:
         specifier: 'catalog:'
-        version: 8.9.0
+        version: 8.10.2
       yauzl-promise:
         specifier: 'catalog:'
         version: 4.0.0
@@ -1561,7 +1561,7 @@ importers:
         version: 7.0.2
       undici:
         specifier: 'catalog:'
-        version: 8.9.0
+        version: 8.10.2
 
   packages/list-layout:
     dependencies:
@@ -7442,8 +7442,8 @@ packages:
     resolution: {integrity: sha512-xXnp4kTyor2Zq+J1FfPI6Eq3ew5h6Vl0F/8d9XU5zZQf1tX9s2Su1/3PiMmUANFULpmksxkClamIZcaUqryHsQ==}
     engines: {node: '>=20.18.1'}
 
-  undici@8.9.0:
-    resolution: {integrity: sha512-aWZpUj7XoGonMClx4gdDRfgBjqeA+F473aDmROQQbM9n6PRfK/u1q/a0X4wMTgcHfT8H6fpbt98PFuDUwFg2YA==}
+  undici@8.10.2:
+    resolution: {integrity: sha512-/y4/bH9YNU5hi9NIrpOuvGXFcxrj3CMrV+/AYpowAYTpHn8gX/XPFjNy766FPoYY0miQhdW977JFWKGNhBdwyQ==}
     engines: {node: '>=22.19.0'}
 
   unique-string@3.0.0:
@@ -8695,7 +8695,7 @@ snapshots:
       socks-proxy-agent: 10.1.0(supports-color@8.1.1)
       stream-buffers: 3.0.3
       tar-fs: 3.1.3
-      undici: 8.9.0
+      undici: 8.10.2
       ws: 8.21.0
     transitivePeerDependencies:
       - bare-buffer
@@ -12454,7 +12454,7 @@ snapshots:
 
   undici@7.25.0: {}
 
-  undici@8.9.0: {}
+  undici@8.10.2: {}
 
   unique-string@3.0.0:
     dependencies:
