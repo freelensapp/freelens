@@ -5,8 +5,8 @@
 
 // Emits the runtime shim (src/runtime-shim.ts) as a single ESM file in dist/.
 // The shim only re-exports `globalThis.FreelensExtensionApi`, so the emitted
-// file has no runtime dependencies. The matching types are the d.ts rollup of
-// src/extension-api.ts (see rollup.dts.config.mjs).
+// file has no runtime dependencies. The matching types are the bundled d.ts of
+// src/extension-api.ts (see rolldown.dts.config.mjs).
 //
 // The only TypeScript syntax in the shim is the two `!` non-null assertions, so
 // a text substitution replaces them and `node --check` verifies that what was

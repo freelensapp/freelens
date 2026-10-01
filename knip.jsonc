@@ -109,7 +109,7 @@
     },
 
     "packages/extensions": {
-      "entry": ["rollup.dts.config.mjs", "scripts/*.mjs", "src/runtime-shim.ts!"],
+      "entry": ["rolldown.dts.config.mjs", "scripts/*.mjs", "src/runtime-shim.ts!"],
       "project": ["*.mjs", "scripts/*.mjs", "src/**/*.ts!"],
       // build:dist output: the bundled declarations inline the types of the
       // whole workspace, so scanning them reports every transitive import of

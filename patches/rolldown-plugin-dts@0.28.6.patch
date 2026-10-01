@@ -1,0 +1,12 @@
+diff --git a/dist/index.mjs b/dist/index.mjs
+index cb3854eccb1c8208bdd18bde6d9026a6261dff61..e1e1fb462ae0ead2e3c27014135714d36c39249b 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -599,6 +599,7 @@ async function collectDependencies(context, node, importer, namespaceStmts, chil
+ 					addDependency(TSEntityNameToRuntime(node.typeName));
+ 					break;
+ 				case "TSQualifiedName":
++					if (parent && is.oneOf(parent, ["TSTypeReference", "TSTypeQuery", "TSQualifiedName", "TSImportType"])) break;
+ 					addDependency(getIdFromTSEntityName(node.left));
+ 					break;
+ 				case "TSTypeQuery":
