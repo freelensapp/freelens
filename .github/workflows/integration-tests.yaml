@@ -81,7 +81,7 @@ jobs:
       # Windows runners, where winget/choco is not on every image (in particular
       # the windows-11-arm one) and yq used to be downloaded by hand.
       - name: Set up mise
-        uses: jdx/mise-action@v4
+        uses: jdx/mise-action@v5
         with:
           version: 2026.8.0 # datasource=github-releases depName=jdx/mise
           install_args: yq
@@ -466,7 +466,7 @@ jobs:
       # yq comes from mise so that its version has a single source (mise.toml)
       # and the download is verified against mise.lock.
       - name: Set up mise
-        uses: jdx/mise-action@v4
+        uses: jdx/mise-action@v5
         with:
           version: 2026.8.0 # datasource=github-releases depName=jdx/mise
           install_args: yq
@@ -670,7 +670,7 @@ jobs:
       # yq comes from mise so that its version has a single source (mise.toml)
       # and the download is verified against mise.lock.
       - name: Set up mise
-        uses: jdx/mise-action@v4
+        uses: jdx/mise-action@v5
         with:
           version: 2026.8.0 # datasource=github-releases depName=jdx/mise
           install_args: yq
