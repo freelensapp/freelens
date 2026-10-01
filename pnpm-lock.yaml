@@ -414,8 +414,8 @@ catalogs:
       specifier: 1.1.1
       version: 1.1.1
     monaco-editor:
-      specifier: 0.56.0
-      version: 0.56.0
+      specifier: 0.57.0
+      version: 0.57.0
     node-pty:
       specifier: 1.2.0-beta.14
       version: 1.2.0-beta.14
@@ -565,8 +565,8 @@ catalogs:
       specifier: ^7.0.5
       version: 7.0.5
     monaco-editor:
-      specifier: ^0.56.0
-      version: 0.56.0
+      specifier: ^0.57.0
+      version: 0.57.0
     react:
       specifier: ^19.3.0
       version: 19.3.0
@@ -1156,7 +1156,7 @@ importers:
         version: 6.1.1(mobx@7.0.5)
       monaco-editor:
         specifier: 'catalog:'
-        version: 0.56.0
+        version: 0.57.0
       node-pty:
         specifier: 'catalog:'
         version: 1.2.0-beta.14
@@ -1407,7 +1407,7 @@ importers:
         version: 10.0.2(mobx@7.0.5)(react@19.3.0)
       monaco-editor:
         specifier: catalog:extensions
-        version: 0.56.0
+        version: 0.57.0
       react:
         specifier: catalog:extensions
         version: 19.3.0
@@ -5389,8 +5389,8 @@ packages:
   dompurify@3.4.16:
     resolution: {integrity: sha512-sqo+pNp3qRhCIpbgRi1y8Tgk27Bo2Ry7w0dC1NBeNTdZChWjz9Xb/KOoZbRP/R6pQZ80Qw8YhXw13hWWBbMRnQ==}
 
-  dompurify@3.4.8:
-    resolution: {integrity: sha512-yb1cEmaOum7wFvOCSQxyfgVlv5D47Rc30iZWoMpbDIWTnJ6grDDQyu2KFJzB2k7u0pMuJcQ1zphH//fFnw2tjQ==}
+  dompurify@3.4.15:
+    resolution: {integrity: sha512-EUBjM+B+lkDE41iE82DDSCfkoPGfXx8IxFxPMjNzm/Uk4xDet77rTN9wqlxlVg71kK7XGuUMv6wUxJUwwv+Xyw==}
 
   dot-prop@10.1.0:
     resolution: {integrity: sha512-MVUtAugQMOff5RnBy2d9N31iG0lNwg1qAoAOn7pOK5wf94WIaE3My2p3uwTQuvS2AcqchkcR3bHByjaM0mmi7Q==}
@@ -6326,8 +6326,8 @@ packages:
     resolution: {integrity: sha512-97fZUUUd+/cUhLv1nNoMpB2vjNS1rNqfuXqxcWXZNiDjEQbwbiZfxnkvg1YpUDJS6LP99Ic5OVVszu+bQDQcDg==}
     engines: {node: '>=6.0.0'}
 
-  monaco-editor@0.56.0:
-    resolution: {integrity: sha512-sXboRm3BeBeLm938eaiyLMe0OxzfXIlZvbv4ir/jVgQy1zDhWjgmny0WoN45fuDKhCCQsYMbBJrv/A6jd8aCUg==}
+  monaco-editor@0.57.0:
+    resolution: {integrity: sha512-5BkI9KGoqrNvBGUe15/QlZq3OooZ8WLg1AxTpaqHRCP3HNpzPPZKE2EDz8M7c+VRmCeUw1Brp4cx/PWm3kI/5A==}
 
   moo-color@1.0.3:
     resolution: {integrity: sha512-i/+ZKXMDf6aqYtBhuOcej71YSlbjT3wCO/4H1j8rPvxDJEifdwgg5MaFyu6iYAT8GBZJg2z0dkgK4YMzvURALQ==}
@@ -10165,7 +10165,7 @@ snapshots:
     optionalDependencies:
       '@types/trusted-types': 2.0.7
 
-  dompurify@3.4.8:
+  dompurify@3.4.15:
     optionalDependencies:
       '@types/trusted-types': 2.0.7
 
@@ -11171,9 +11171,9 @@ snapshots:
     dependencies:
       mergee: 1.0.1
 
-  monaco-editor@0.56.0:
+  monaco-editor@0.57.0:
     dependencies:
-      dompurify: 3.4.8
+      dompurify: 3.4.15
       marked: 14.0.0
 
   moo-color@1.0.3:
