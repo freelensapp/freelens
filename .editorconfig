@@ -7,6 +7,8 @@ indent_size = 2
 end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
+simplify = true
+switch_case_indent = true
 
 [freelens/build/*-deb.sh]
 indent_style = tab
