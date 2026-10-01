@@ -721,6 +721,13 @@ local checkout are lost. To make the work resumable in a follow-up session:
    should land on the remote branch as soon as it is committed, so a
    timed-out session can be resumed from the last pushed commit instead of
    starting over.
+3. **Run every command in the foreground.** The workflow runs Claude
+   headless: the session ends as soon as the agent ends its turn, and
+   nothing wakes it up when a background command finishes. A build, a
+   test run or `trunk check` started in the background and then waited on
+   is killed with the job, together with every uncommitted change. Give
+   long commands a foreground timeout (up to ten minutes) instead, and
+   commit and push what is done before starting a long validation.
 
 ### Modifying GitHub Actions Workflows
 
