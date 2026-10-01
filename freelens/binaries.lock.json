@@ -58,31 +58,31 @@
     }
   },
   "helm": {
-    "version": "4.2.3",
+    "version": "4.3.0",
     "artifacts": {
       "darwin/x64": {
-        "url": "https://get.helm.sh/helm-v4.2.3-darwin-amd64.tar.gz",
-        "sha256": "ff3ac86755a45f3422473bc1200776aac0fe04c5766abe6ca66699f7b564b23b"
+        "url": "https://get.helm.sh/helm-v4.3.0-darwin-amd64.tar.gz",
+        "sha256": "347a784877e0e20eac865e8d1c36a80f6bb0861d6f29abd34defb6570ef95d92"
       },
       "darwin/arm64": {
-        "url": "https://get.helm.sh/helm-v4.2.3-darwin-arm64.tar.gz",
-        "sha256": "048ecf5ad3160f83d918f9fe945238d2132b079640f7b106175331c25f242c64"
+        "url": "https://get.helm.sh/helm-v4.3.0-darwin-arm64.tar.gz",
+        "sha256": "d3870437e1e95b67f8edbde964156c84a26503f560821d40c542441658934fba"
       },
       "linux/x64": {
-        "url": "https://get.helm.sh/helm-v4.2.3-linux-amd64.tar.gz",
-        "sha256": "e9b88b4ee95b18c706839c28d3a0220e5bc470e9cd9262410c90793c45ff8b7c"
+        "url": "https://get.helm.sh/helm-v4.3.0-linux-amd64.tar.gz",
+        "sha256": "86584a54def73570558f66f5111cc53dfed56689637ae32c1201205d494f54fb"
       },
       "linux/arm64": {
-        "url": "https://get.helm.sh/helm-v4.2.3-linux-arm64.tar.gz",
-        "sha256": "21abd9354d39b2cd79a8d76be6912cd137a983cbf997193503fb8a6a6e2f2785"
+        "url": "https://get.helm.sh/helm-v4.3.0-linux-arm64.tar.gz",
+        "sha256": "31c5794dd55c66a51e6b7d2e2ac7a114ae8b1de41ff1d9ba51748ac973b06a08"
       },
       "windows/x64": {
-        "url": "https://get.helm.sh/helm-v4.2.3-windows-amd64.tar.gz",
-        "sha256": "02c6137bb5f050479193afad5a28804e9edc3beeab7e7b53a6e1499c9ba387ef"
+        "url": "https://get.helm.sh/helm-v4.3.0-windows-amd64.tar.gz",
+        "sha256": "551b0065fdfae8ba74ddac3a213e46e0144188cacf997ae1002f508af169728e"
       },
       "windows/arm64": {
-        "url": "https://get.helm.sh/helm-v4.2.3-windows-arm64.tar.gz",
-        "sha256": "c7a6b0fc66521ba0ff4f8d7930f38c658fbf1a5aa2569042305b12eac41ed0c3"
+        "url": "https://get.helm.sh/helm-v4.3.0-windows-arm64.tar.gz",
+        "sha256": "39d032c21fb256c81567f931c85daccc26b2a05c8a33e497695473e8d2076b33"
       }
     }
   }
