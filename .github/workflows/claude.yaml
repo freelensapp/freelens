@@ -348,7 +348,7 @@ jobs:
       # unavailable.
       - name: Install trunk
         if: needs.parse.outputs.is-fork != 'true'
-        uses: trunk-io/trunk-action/install@v1
+        uses: trunk-io/trunk-action/install@v2.0.0
         continue-on-error: true
 
       # Fetched by URL from the base repository, so the system prompt never
