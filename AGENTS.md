@@ -586,8 +586,11 @@ it writes on GitHub is a potential trigger for it.
 
 `claude.yaml` starts a run when the body of a **newly created** comment (issue
 comment or PR review comment), a **newly opened** issue (body or title), or a
-**submitted** PR review contains the string `@claude`, and the author is an
-OWNER, MEMBER or COLLABORATOR. The check is a plain
+**submitted** PR review contains the string `@claude`, and its author has
+write access to the repository (the admin, maintain or write role). The
+workflow condition pre-filters on OWNER, MEMBER or COLLABORATOR, which does not
+imply write access, and the first step of the run checks the actual
+permission; a run triggered by anyone else fails there. The check is a plain
 `contains(github.event.comment.body, '@claude')` substring test, so the string
 fires the workflow wherever it appears — including inside a code span, a fenced
 block, a quoted line, or a URL. Markdown formatting is not an escape.
@@ -776,11 +779,11 @@ When you have commits ready to push but the PR originates from a fork
 repository. Instead:
 
 1. Create a new branch on `freelensapp/freelens` with the prefix `claude/`
-   followed by the original branch name.
-   Push to the `upstream` remote (not `origin`, which points to the fork):
+   followed by the original branch name, and push it to `origin`, which is
+   always `freelensapp/freelens`:
    ```bash
    git checkout -b claude/<original-branch-name>
-   git push --force-with-lease upstream claude/<original-branch-name>
+   git push --force-with-lease origin claude/<original-branch-name>
    ```
 
 2. Open a new PR from that branch. The new PR MUST use the **exact same
@@ -845,11 +848,17 @@ failed and left its tool or `node_modules` missing. Verify that what you need
 is actually there before relying on it, and never report a check as passing
 when it did not run — say that it was unavailable instead.
 
-For fork PRs, the `origin` remote points to the contributor's fork. An
-`upstream` remote is configured pointing to `freelensapp/freelens`. Push
-new branches to `upstream` (never to `origin`) when the PR originates
-from a fork — this ensures the resulting PR is internal and CI workflows
-run automatically.
+The `origin` remote is always `freelensapp/freelens`, for fork PRs too: their
+commits are checked out through the pull ref. Pushing a new branch there makes
+the resulting PR internal, so CI workflows run on it automatically.
+
+A PR from a fork runs in review mode, because its code is untrusted and the
+job holds write tokens. None of the setup above runs, and the tools that
+execute the repository's code (`pnpm`, `node`, `npx`, `bash`, `trunk`) are not
+available, so review the code and edit files by reading them, and say that no
+check ran. A branch moved to `origin` this way is a same-repository PR from
+then on, and later runs on it get the full setup and execute its code; the
+maintainer who asks for the move vouches for that code.
 
 The following CLI tools are explicitly allowed in the workflow:
 
