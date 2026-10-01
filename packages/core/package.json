@@ -173,7 +173,6 @@
     "tailwindcss": "catalog:",
     "type-fest": "catalog:",
     "typescript": "catalog:",
-    "typescript-plugin-css-modules": "catalog:",
     "vitest": "catalog:",
     "vitest-canvas-mock": "catalog:",
     "vitest-mock-extended": "catalog:"

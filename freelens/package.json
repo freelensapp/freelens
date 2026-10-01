@@ -136,7 +136,6 @@
     "playwright": "catalog:",
     "sass-embedded": "catalog:",
     "typescript": "catalog:",
-    "typescript-plugin-css-modules": "catalog:",
     "vite": "catalog:",
     "vitest": "catalog:"
   },
