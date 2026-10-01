@@ -99,7 +99,7 @@ jobs:
       # are verified in pure JavaScript.
       - name: Set up mise
         if: steps.decide.outputs.needed == 'true'
-        uses: jdx/mise-action@v4
+        uses: jdx/mise-action@v5
         with:
           version: 2026.8.0 # datasource=github-releases depName=jdx/mise
           install_args: yq cosign
