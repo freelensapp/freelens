@@ -1391,7 +1391,7 @@ importers:
         specifier: catalog:extensions
         version: 15.1.0
       electron:
-        specifier: '>=42.0.0'
+        specifier: '>=43.0.0'
         version: 43.7.7(supports-color@8.1.1)
       es-toolkit:
         specifier: catalog:extensions
