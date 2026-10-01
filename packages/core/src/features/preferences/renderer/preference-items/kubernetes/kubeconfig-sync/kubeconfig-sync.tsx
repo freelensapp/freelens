@@ -11,6 +11,7 @@ import { withInjectables } from "@ogre-tools/injectable-react";
 import { computed, observable, reaction } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
+import kubeDirectoryPathInjectable from "../../../../../../common/os/kube-directory-path.injectable";
 import isWindowsInjectable from "../../../../../../common/vars/is-windows.injectable";
 import { Notice } from "../../../../../../renderer/components/extensions/notice";
 import { SubTitle } from "../../../../../../renderer/components/layout/sub-title";
@@ -33,6 +34,7 @@ interface Entry extends SyncKind {
 interface Dependencies {
   state: UserPreferencesState;
   isWindows: boolean;
+  kubeDirectoryPath: string;
   logger: Logger;
   discoverAllKubeconfigSyncKinds: DiscoverAllKubeconfigSyncKinds;
   discoverKubeconfigSyncKind: DiscoverKubeconfigSyncKind;
@@ -136,6 +138,7 @@ class NonInjectedKubeconfigSync extends React.Component<Dependencies> {
             message="Sync file(s)"
             onPick={this.onPick}
             buttonLabel="Sync"
+            defaultPath={this.props.kubeDirectoryPath}
             properties={["showHiddenFiles", "multiSelections", "openFile"]}
           />
           <span>or</span>
@@ -143,6 +146,7 @@ class NonInjectedKubeconfigSync extends React.Component<Dependencies> {
             message="Sync folder(s)"
             onPick={this.onPick}
             buttonLabel="Sync"
+            defaultPath={this.props.kubeDirectoryPath}
             properties={["showHiddenFiles", "multiSelections", "openDirectory"]}
           />
         </div>
@@ -155,6 +159,7 @@ class NonInjectedKubeconfigSync extends React.Component<Dependencies> {
           message="Sync Files and Folders"
           onPick={this.onPick}
           buttonLabel="Sync"
+          defaultPath={this.props.kubeDirectoryPath}
           properties={["showHiddenFiles", "multiSelections", "openFile", "openDirectory"]}
         />
       </div>
@@ -178,6 +183,7 @@ export const KubeconfigSync = withInjectables<Dependencies>(NonInjectedKubeconfi
   getProps: (di) => ({
     state: di.inject(userPreferencesStateInjectable),
     isWindows: di.inject(isWindowsInjectable),
+    kubeDirectoryPath: di.inject(kubeDirectoryPathInjectable),
     logger: di.inject(loggerInjectionToken),
     discoverAllKubeconfigSyncKinds: di.inject(discoverAllKubeconfigSyncKindsInjectable),
     discoverKubeconfigSyncKind: di.inject(discoverKubeconfigSyncKindInjectable),

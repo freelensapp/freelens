@@ -53,7 +53,7 @@
     "typescript-plugin-css-modules": "catalog:"
   },
   "peerDependencies": {
-    "electron": ">=42.0.0",
+    "electron": ">=43.0.0",
     "mobx": "catalog:extensions",
     "mobx-react": "catalog:extensions",
     "monaco-editor": "catalog:extensions",

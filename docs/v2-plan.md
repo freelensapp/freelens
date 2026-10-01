@@ -162,11 +162,11 @@ TypeScript version from the build:
 
 ### D7. Electron: any ESM-supporting version, tracked forward
 
-Current Electron 41 (Node 24) already provides everything required
+Electron 41 (Node 24) already provides everything required
 (`require(esm)`, ESM main, module workers). v2 sets Electron ≥ 41 as the
-floor and upgrades to the latest stable (43.x at the time of writing)
-opportunistically; nothing in this plan depends on a specific version above
-that floor.
+floor and moves to a newer Electron major as a deliberate, manual update,
+with Node.js pinned to the version that Electron bundles; nothing in this
+plan depends on a specific version above that floor.
 
 ### D8. Tests: Vitest 4 with a single root projects config
 
