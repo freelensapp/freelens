@@ -37,7 +37,7 @@ export { rendererExtensionApi as Renderer } from "@freelensapp/core/renderer";
 // import them from this package: its bundler marks each specifier external and
 // emits a module reading it back off this global, under the name the rule in
 // `globalNameForModuleId` derives from the specifier -- `react-dom` is
-// `ReactDom`, `@ogre-tools/injectable-react` is `OgreToolsInjectableReact`.
+// `ReactDom`, `react/jsx-runtime` is `ReactJsxRuntime`.
 //
 // Required members are published by both processes; optional ones by the
 // renderer only, which is why `Renderer` is optional too. An extension only

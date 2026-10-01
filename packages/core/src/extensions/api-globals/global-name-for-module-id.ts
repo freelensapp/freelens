@@ -10,11 +10,12 @@
 // A published name is *derived* from the module id rather than chosen: drop the
 // `@` of a scope, split on `-`, `/` and `.`, capitalise each segment. So
 // `react-dom` is `ReactDom`, `react/jsx-runtime` is `ReactJsxRuntime` and
-// `@ogre-tools/injectable-react` is `OgreToolsInjectableReact`.
+// `mobx-react` is `MobxReact`; a scoped `@scope/some-name` would be
+// `ScopeSomeName`.
 //
 // A rule rather than canonical names, because canonical names need an exception
-// table -- mobx's own UMD global is lower-case and ogre-tools has none -- and
-// because a rule is something an extension's bundler plugin can apply to the
+// table -- mobx's own UMD global is lower-case, and not every module has one --
+// and because a rule is something an extension's bundler plugin can apply to the
 // specifiers it marks external instead of carrying a map it can mistype. It
 // also settles `ReactDom` against `ReactDOM` in favour of what the published
 // extensions already write, so the host's spelling is the one that changed.

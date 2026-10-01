@@ -15,16 +15,15 @@
 //
 //  - `mobx` -- observable identity, and the failure that does not throw. The
 //    main process is where an extension's stores and its catalog entities live,
-//    so this is the one that matters most here.
-//  - `@ogre-tools/injectable` -- container and registry identity, so an
-//    injectable an extension creates is one the host's container recognises.
+//    so this is the one that matters here.
 //
-// `@ogre-tools/injectable-react` is deliberately not here even though it is
-// part of the eight: it is a React binding, so publishing it in main would drag
-// React into the main bundle to serve an extension that has no renderer to bind
-// to. The renderer publishes it.
+// `@ogre-tools/injectable` is not published by either process. The host's
+// container is not shared with extensions, so its registry identity is nothing
+// an extension can observe, and publishing the module would freeze the host on
+// one ogre-tools major for the whole 2.x line. An extension that wants
+// dependency injection bundles its own copy, with its own container.
 //
-// `node-pty` is the one omission here that is a decision rather than a
+// `node-pty` is the other omission here that is a decision rather than a
 // non-decision, so it is written down too. Main's v1 entry exported `Pty`, and
 // webpack's `libraryTarget: "global"` -- a *global* library target, with no
 // library name -- assigned each of the entry's exports straight onto `global`,
@@ -62,7 +61,6 @@
 // instance core itself runs on rather than a second resolution of the same
 // specifier from the application package.
 
-import * as OgreToolsInjectable from "@ogre-tools/injectable";
 import * as Mobx from "mobx";
 
 /**
@@ -71,7 +69,6 @@ import * as Mobx from "mobx";
  */
 export const mainExtensionApiSingletons = {
   Mobx,
-  OgreToolsInjectable,
 };
 
 /**
@@ -83,5 +80,4 @@ export const mainExtensionApiSingletons = {
  */
 export const mainExtensionApiSingletonModuleIds: Record<keyof typeof mainExtensionApiSingletons, string> = {
   Mobx: "mobx",
-  OgreToolsInjectable: "@ogre-tools/injectable",
 };

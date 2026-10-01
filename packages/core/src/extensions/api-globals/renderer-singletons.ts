@@ -18,25 +18,25 @@
 //    both write to `globalThis`, so nothing throws and the host simply stops
 //    reacting to part of what the extension made observable.
 //  - `monaco-editor` -- theme and worker registration are module-global.
-//  - `@ogre-tools/injectable`, `@ogre-tools/injectable-react` -- container and
-//    registry identity. An injectable created by a second copy is not one the
-//    host's container recognises.
 //
-// Two modules are outside the map on purpose rather than by omission.
+// Some modules are outside the map on purpose rather than by omission.
 // `@freelensapp/extensions` is not published here because its published runtime
 // is the shim that *reads* this global, so an extension bundling it is correct.
 // `react-router` and `react-router-dom` are not published here because the host
 // dropped them in #2261; the renderer entry's `ReactRouter` and `ReactRouterDom`
 // exports went with the dependencies in #2270, so both were v1 globals and both
 // left together. An extension still mapping either gets `undefined`, which is
-// the honest answer.
+// the honest answer. `@ogre-tools/injectable` and `@ogre-tools/injectable-react`
+// are not published here because the host's container is not shared with
+// extensions: their identity only matters to code holding that container, and
+// publishing them would freeze the host on one ogre-tools major for the whole
+// 2.x line. An extension that wants dependency injection bundles its own copy,
+// with its own container.
 //
 // The modules are imported here, inside core, so what is published is the
 // instance core itself runs on rather than a second resolution of the same
 // specifier from the application package.
 
-import * as OgreToolsInjectable from "@ogre-tools/injectable";
-import * as OgreToolsInjectableReact from "@ogre-tools/injectable-react";
 import * as Mobx from "mobx";
 import * as MobxReact from "mobx-react";
 import * as MonacoEditor from "monaco-editor";
@@ -59,8 +59,6 @@ export const rendererExtensionApiSingletons = {
   Mobx,
   MobxReact,
   MonacoEditor,
-  OgreToolsInjectable,
-  OgreToolsInjectableReact,
 };
 
 /**
@@ -77,6 +75,4 @@ export const rendererExtensionApiSingletonModuleIds: Record<keyof typeof rendere
   Mobx: "mobx",
   MobxReact: "mobx-react",
   MonacoEditor: "monaco-editor",
-  OgreToolsInjectable: "@ogre-tools/injectable",
-  OgreToolsInjectableReact: "@ogre-tools/injectable-react",
 };

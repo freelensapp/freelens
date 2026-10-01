@@ -77,8 +77,8 @@ startApplication();
 // The renderer gets `{ Common, Renderer }`; main gets `{ Common, Main }`.
 // The global's ambient type lives in `../freelens-extension-api.ts`.
 //
-// #2450: alongside the namespaces, the renderer publishes all eight singletons
-// of the contract -- the modules an extension must share with the host rather
+// #2450: alongside the namespaces, the renderer publishes every singleton of
+// the contract -- the modules an extension must share with the host rather
 // than bundle. `packages/core/src/extensions/api-globals/renderer-singletons.ts`
 // says which and why; main publishes only the subset it has.
 //
