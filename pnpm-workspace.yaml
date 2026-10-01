@@ -180,7 +180,7 @@ allowBuilds:
 engineStrict: true
 
 overrides:
-  # @kubernetes/client-node declares @types/node ^25 as a runtime dependency.
+  # @kubernetes/client-node declares @types/node ^26 as a runtime dependency.
   # Left alone it installs a second major of the Node typings next to the
   # catalog's 24.19.0, which then also becomes vite's resolved peer. The app
   # targets Node 24 (.nvmrc), so keep the whole tree on one copy.

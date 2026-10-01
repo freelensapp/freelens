@@ -70,8 +70,8 @@
       "enabled": false
     },
     {
-      "description": "Patch updates only.",
-      "matchDepNames": ["@types/node"],
+      "description": "Patch updates only. The override of @kubernetes/client-node's @types/node follows the same rule, so that it stays on the catalog's version.",
+      "matchDepNames": ["@types/node", "@kubernetes/client-node>@types/node"],
       "matchUpdateTypes": ["major", "minor"],
       "enabled": false
     },
