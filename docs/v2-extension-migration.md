@@ -1,8 +1,7 @@
 # Migrating extensions to Freelens v2
 
-Freelens v2 breaks compatibility with the v1 extension API on purpose (see
-[`docs/v2-plan.md`](./v2-plan.md), decisions D2/D5). This guide is for authors
-of third-party extensions moving from v1 to v2.
+Freelens v2 breaks compatibility with the v1 extension API on purpose. This
+guide is for authors of third-party extensions moving from v1 to v2.
 
 It is the developer-facing half of the v2 extension specification. The
 normative half — what the host guarantees, and what happens when a guarantee is
@@ -136,10 +135,10 @@ Two ids that **leave** the v1 externals map, and both fail at runtime rather
 than at build time if you keep them:
 
 - **`@freelensapp/extensions`** — mapped in v1, when it was a fat re-export of
-  core. The v2 package is 734 bytes that already read the global, so bundling
-  it is correct.
-- **`react-router-dom`** — removed from the host in #2261. Mapping it now
-  yields `undefined`.
+  core. The v2 package is a thin shim that already reads the global, so
+  bundling it is correct.
+- **`react-router-dom`** — no longer part of the host. Mapping it now yields
+  `undefined`.
 
 If your v1 build used a Vite or Rolldown plugin that rewrote these ids to
 `global.React` and friends, keep the plugin and change the target: the host
@@ -156,9 +155,8 @@ Freelens v2 ships **React 19**. React is **host-provided**: the running app
 publishes a single React instance on `globalThis.FreelensExtensionApi`, and
 extensions must render through that shared instance.
 
-There is no `Renderer.React` and no `Renderer.ReactDOM`. Earlier drafts of this
-guide said otherwise; they described API that never existed in v2. React reaches
-you through the externals map in
+There is no `Renderer.React` and no `Renderer.ReactDOM`. React reaches you
+through the externals map in
 [the section above](#the-host-provided-libraries-and-how-to-mark-them-external).
 
 - **Do not bundle your own React.** Two copies of React in the same renderer
@@ -791,7 +789,7 @@ HTTP that respects the user's proxy and CA settings — is `Main.Util.fetch`.
 ## `K8sApi.forRemoteCluster` removed
 
 `Main.K8sApi.forRemoteCluster` / `Renderer.K8sApi.forRemoteCluster` and the
-`IRemoteKubeApiConfig` type are gone in v2 (#2374). The function built a
+`IRemoteKubeApiConfig` type are gone in v2. The function built a
 `KubeApi` pointing straight at an arbitrary API server URL, bypassing both the
 catalog and the proxy, and configured TLS itself from `caData`,
 `skipTLSVerify`, `clientCertificateData` / `clientKeyData` or a custom
@@ -1104,8 +1102,7 @@ extension migration guide.
 ## Routing: `react-router` re-exports removed
 
 Freelens v2 dropped `react-router` 5, `react-router-dom` 5, and `history` v4
-from the host (Phase 2 routing modernization, #2261 — `react-router` 5 is
-unmaintained and blocked the React 19 upgrade). Navigation now runs on the
+from the host: `react-router` 5 is unmaintained and does not support React 19. Navigation now runs on the
 in-house pieces in `@freelensapp/routing`. **This is an intended, extension-
 facing breaking change:** the `Common.ReactRouter` / `Renderer.ReactRouterDom`
 bundle re-exports no longer exist, so `import { Link } from "react-router-dom"`
@@ -1125,24 +1122,20 @@ If your extension used them, migrate one of two ways:
   `react-router` / `react-router-dom` to your extension's own dependencies and
   bundle them; do not rely on the host providing them.
 
-See [`docs/v2-routing-modernization.md`](./v2-routing-modernization.md) (§2.5
-and §5) for the rationale and the full list of what was removed.
+See [`docs/v2-routing-modernization.md`](./v2-routing-modernization.md) for the
+full list of what was removed.
 
 ## `Renderer.Component.List` removed
 
 `Renderer.Component.List`, along with its `ListProps` and `SearchFilter` types,
-is gone in v2 (#2360). It was a thin search box plus a `react-table` 7 table,
+is gone in v2. It was a thin search box plus a `react-table` 7 table,
 and its props extended `react-table`'s own `UseTableOptions`, so the package
 was part of the published type surface: the column objects an extension passed
 in (`Header`, `accessor`, `sortType`, `disableSortBy`, `width`) were
 `react-table` column objects.
 
-`react-table` 7.8.0 was last released in 2022-05, the repository moved on to
-TanStack, and its peer range stops at React 18 — Freelens v2 runs React 19. It
-had exactly one consumer in the host (the installed-extensions screen), which
-now uses an internal table, so keeping the dependency alive only to keep this
-one re-export would have frozen an unmaintained package into the v2 extension
-API.
+`react-table` 7 is unmaintained, and its peer range stops at React 18, while
+Freelens v2 runs React 19, so the extension API no longer carries it.
 
 If your extension used `List`:
 
@@ -1515,21 +1508,9 @@ check rather than a smoke test:
       throws nothing at all — its reactions simply do not fire. Assert on an
       observable the host reacts to rather than eyeballing the UI.
 
-## Still pending
-
-Noted here so the guide is honest about what an author cannot do yet, even
-having done everything above.
-
-| Pending | Effect on you | Tracked in |
-| --- | --- | --- |
-| No author-facing hook for registering an injectable | the container view now exists before `onActivate`, but nothing hands it to you | [#2450](https://github.com/freelensapp/freelens/issues/2450) |
-| Known missing re-exports | some types are callable but not nameable | [#2365](https://github.com/freelensapp/freelens/issues/2365) |
-
-The rolled-up, self-contained `.d.ts` for the published
-`@freelensapp/extensions` (no `@freelensapp/*` imports, declared type
-dependencies, namespaces usable in type positions) is done and verified
-against a strict-mode scratch consumer.
+## Shipping executables
 
 If your extension ships executables alongside its JavaScript, read
-[`docs/v2-extension-abi.md`](./v2-extension-abi.md) — the short version is that
-2.0.0 extracts them and never uses them.
+[`docs/v2-extension-abi.md`](./v2-extension-abi.md). In short: the host extracts
+them with their mode bits and does nothing else with them, and your main entry
+point runs them with `node:child_process`.
