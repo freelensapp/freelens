@@ -1,9 +1,8 @@
 # Styling conventions in Freelens v2
 
 This document is the canonical guide for **how to style UI in Freelens v2**.
-It exists because the v2 Vite migration (see [`docs/v2-plan.md`](./v2-plan.md),
-decision **D11**) carried four different styling systems forward, and without a
-written contract new code drifts between them. Read this before adding or
+It exists because Freelens carries four different styling systems, and without
+a written contract new code drifts between them. Read this before adding or
 changing any stylesheet or `className`.
 
 ## The styling systems in play

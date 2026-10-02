@@ -4,11 +4,8 @@ import { fileURLToPath } from "node:url";
 import { defineConfig } from "vitest/config";
 import { standardDecorators } from "./scripts/vite-plugin-standard-decorators.mjs";
 
-// Phase 6 of the v2 plan (docs/v2-plan.md, D8): a single root Vitest config
-// with per-package `projects`, replacing the per-package jest.config.js files
-// and the shared @freelensapp/jest package. Per-package projects preserve the
-// ability to run and isolate each package's tests separately (relevant to
-// D4's optional future package collapse).
+// A single root Vitest config with per-package `projects`. Per-package projects
+// preserve the ability to run and isolate each package's tests separately.
 
 const root = dirname(fileURLToPath(import.meta.url));
 
