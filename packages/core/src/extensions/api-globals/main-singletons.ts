@@ -41,15 +41,14 @@
 //
 //  - Publishing the namespace would hand extensions live `IPty` handles across
 //    the extension boundary, into processes whose lifetime and cleanup the host
-//    owns (`processes.injectable.ts`, `shell-session.ts`). A pty is therefore a
-//    supervised host API -- option 3 of `docs/v2-extension-abi.md` -- rather
-//    than an entry in an externals map.
+//    owns (`processes.injectable.ts`, `shell-session.ts`). A pty would therefore
+//    be a supervised host API rather than an entry in an externals map.
 //  - Nothing asks for it: of 69 published Lens/OpenLens/Freelens extension
 //    bundler configs, every one of which externalises some subset of `react`,
 //    `mobx`, `mobx-react`, `react-dom`, `react/jsx-runtime`, `react-router` and
 //    `react-router-dom`, none mentions `node-pty`.
 //  - An extension that needs to run a program spawns it with
-//    `node:child_process`, which `docs/v2-extension-abi.md` settles as the
+//    `node:child_process`, which `docs/extensions/binaries.md` describes as the
 //    supported route. Only a program that demands a TTY needs a pty at all.
 //  - Under C14 everything published here is frozen until 3.0.0, so adding to
 //    this map in a 2.x release is cheap and removing from it is not.

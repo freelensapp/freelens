@@ -4,7 +4,7 @@
  */
 
 // The v2 side of every "Renamed or moved" row of the v1→v2 rename table in
-// `docs/v2-extension-migration.md`, named in a type position with the v1 path
+// `docs/extensions/migrating-from-v1.md`, named in a type position with the v1 path
 // it replaces next to it. Like `contract-types.ts` it carries no runtime code:
 // the fixture's `type:check` is the assertion, so a replacement the guide
 // points authors to that stops being reachable from the built declaration

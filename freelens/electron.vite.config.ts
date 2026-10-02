@@ -4,7 +4,7 @@
  */
 
 // Faithful translation of freelens/webpack/{main,renderer,vars}.ts to
-// electron-vite — see docs/v2-plan.md, decisions D1/D2/D11.
+// electron-vite.
 //
 // Differences from the webpack setup that are intentional:
 //

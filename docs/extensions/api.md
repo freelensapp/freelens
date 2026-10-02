@@ -1,36 +1,27 @@
-# Freelens v2 extension API — contracts
+# Freelens extension API — contracts
 
-This is the **normative** half of the v2 extension specification: what the host
-guarantees, what surface an extension may rely on, and what happens when a
-contract is violated. The developer-facing porting guide is
-[`docs/v2-extension-migration.md`](./v2-extension-migration.md); the binary side
-is [`docs/v2-extension-abi.md`](./v2-extension-abi.md).
+This is the **normative** half of the extension specification of Freelens 2:
+what the host guarantees, what surface an extension may rely on, and what
+happens when a contract is violated. The developer-facing porting guide is
+[`docs/extensions/migrating-from-v1.md`](./migrating-from-v1.md); the binary side
+is [`docs/extensions/binaries.md`](./binaries.md).
 
-v2 breaks v1 compatibility on purpose (see [`docs/v2-plan.md`](./v2-plan.md),
-decisions **D2** and **D5**). **No compatibility is promised for v1 extensions.**
-The migration guide is what they get instead.
+**No compatibility is promised for v1 extensions.** The migration guide is what
+they get instead.
 
 ## How to read this document
 
-Each contract states four things:
+Each contract states three things:
 
 - **Guarantee** — what the host promises.
 - **Surface** — the stable names the guarantee is expressed in.
 - **Failure mode** — what an author sees when the contract is violated. This is
   recorded because most of these fail at runtime rather than at build time, and
   several fail *silently*.
-- **Status** — `shipped` when the code matches this document, or the issue that
-  makes it match.
 
 Anything not stated here is not part of the contract. Extensions run with full
 privileges and can reach much more than this document describes; reaching it is
 not supported, and it may change without notice.
-
-**On the `docs/v2-*` naming.** It stays until the v2 implementation lands. This
-tree is working material, organised for whoever is building the thing; once
-there is a shipped implementation to describe, the extension documentation gets
-a structure built for extension authors instead, and these three files are its
-input rather than its final shape.
 
 ---
 
@@ -58,8 +49,6 @@ any means.** There is no package left to install and a type-only import fails at
 module resolution with no `@types/` fallback. Re-export completeness is
 therefore a correctness property, not a convenience. See [C5](#c5-namespace-enumeration).
 
-**Status:** shipped. The publication pipeline was repaired in #2363.
-
 ---
 
 ## C2. The runtime-global API
@@ -67,9 +56,9 @@ therefore a correctness property, not a convenience. See [C5](#c5-namespace-enum
 **Guarantee.** The host assigns one object at startup, in each process:
 
 ```ts
-// main      (freelens/src/main/index.ts:75)
+// main      (freelens/src/main/index.ts)
 globalThis.FreelensExtensionApi = { Common, Main, ...mainExtensionApiSingletons };
-// renderer  (freelens/src/renderer/index.ts:91)
+// renderer  (freelens/src/renderer/index.ts)
 globalThis.FreelensExtensionApi = { Common, Renderer, ...rendererExtensionApiSingletons };
 ```
 
@@ -93,8 +82,6 @@ while the types expose the full surface, so `Main.Util.fetch` in a renderer
 entry type-checks and throws `Cannot read properties of undefined`. Touch only
 the namespace for the process your code runs in.
 
-**Status:** shipped.
-
 ---
 
 ## C3. Host-provided singletons
@@ -115,50 +102,48 @@ marks them external, and lets its bundler rewrite the bare id to the global.
 | `monaco-editor` | `MonacoEditor` | renderer |
 
 **Each process publishes the set it has**, which is why the third column exists.
-Publishing the whole list in main would pull a DOM renderer and a code editor
-into a bundle with no window to render into, for an entry point that cannot use
-them either. What main has is what an extension's main entry point can really
-share: `mobx`, where an extension's stores and catalog entities live.
+Main has no window, so it publishes no DOM renderer and no code editor. What it
+has is what an extension's main entry point can really share: `mobx`, where an
+extension's stores and catalog entities live.
 
-**Membership is testable, not editorial: a package belongs on this list if two
-instances of it misbehave.** React (hook and reconciler identity), mobx
-(observable identity), monaco (global theme and worker registration). Nothing
-else in the API's dependency set meets it.
+**A package belongs on this list if two instances of it misbehave.** React (hook
+and reconciler identity), mobx (observable identity), monaco (global theme and
+worker registration). Nothing else in the API's dependency set meets it.
 
-**The names follow a mechanical rule rather than a lookup table:** strip the
-scope, split on `-`, `/` and `.`, upper-case each segment. Canonical names would
-need an exception table — mobx's own UMD global is lower-case, and not every
-module has one — and the rule is machine-checkable in both directions: the host
-asserts its keys match the transform of the module ids, and a bundler plugin
-*derives* each name instead of being handed a map. It settles `ReactDom` over
-`ReactDOM` in favour of what published extensions already write.
+**The names follow a mechanical rule:** strip the scope, split on `-`, `/` and
+`.`, upper-case each segment, so `react-dom` is `ReactDom` and
+`react/jsx-runtime` is `ReactJsxRuntime`. The host asserts at startup that every
+key it publishes follows the rule, so a bundler plugin can derive each name from
+the specifier instead of carrying a map.
 
-These ids leave the map **explicitly**, because dropping them silently is the
-error:
+These ids are **not** on the list, and an extension that still maps one of them
+to the global gets `undefined` at runtime, not a build error:
 
-- **`@freelensapp/extensions`** — mapped in v1, when the package was a fat
-  re-export of core. In v2 it is 734 bytes that already read the global, so
-  bundling it is correct.
-- **`react-router` and `react-router-dom`** — removed from the host in #2261.
-  Both were v1 globals: the renderer entry's `ReactRouter` and `ReactRouterDom`
-  exports went with the dependencies in #2270. An extension still mapping either
-  gets `undefined` at runtime, not a build error.
-- **`node-pty`** — main's v1 entry exported `Pty`, but no v2 build has assigned
-  that global. What made the v1 exports into globals was webpack's
-  `libraryTarget: "global"`; #2118 replaced it with a Rollup `es`-format library
-  build, whose `export` statements nothing imports because Electron runs main as
-  the process entry point. No published extension externalises it either.
-  Publishing the namespace would hand out live `IPty` handles into processes the
-  host owns the lifetime of, which makes a pty a supervised host API — option 3
-  of [`v2-extension-abi.md`](./v2-extension-abi.md) — rather than a map entry;
-  an extension that needs to run a program uses `node:child_process`. The rule
-  would name it `NodePty` in any case.
+- **`@freelensapp/extensions`** — the package is a thin shim that already reads
+  the global, so bundling it is correct.
+- **`react-router` and `react-router-dom`** — not dependencies of the host. An
+  extension that wants them bundles its own ([C9](#c9-routing)).
+- **`node-pty`** — v2 publishes no `Pty` global. An extension that needs to run a
+  program uses `node:child_process` in its main entry point (see
+  [`docs/extensions/binaries.md`](./binaries.md)).
 - **`@ogre-tools/injectable` and `@ogre-tools/injectable-react`** — the host's
   dependency-injection library, which it keeps as an implementation detail (see
-  [C7](#c7-the-dependency-injection-surface)). Their identity only matters to
-  code that shares the host's container, and no extension does. An extension
-  still mapping either to `FreelensExtensionApi` gets `undefined` at runtime, not
-  a build error; one that uses them bundles its own copy, at any version.
+  [C7](#c7-the-dependency-injection-surface)). An extension that uses them
+  bundles its own copy, at any version.
+
+**The process entries export nothing to extensions.** Neither build of the host
+assigns its entry's exports onto `globalThis`: the renderer is an app, and main
+is an `es`-format library build whose `export` statements nothing imports,
+because Electron runs it as the process entry point. A v1 extension that read
+`global.React`, `global.Pty` or another export of a host entry finds nothing;
+the singletons are reachable only through `FreelensExtensionApi`.
+
+The maps live in `packages/core/src/extensions/api-globals/`, one per process,
+each paired with the module id of every name it publishes. Membership cannot
+drift between the two objects — the id map is typed `Record<keyof …, string>` —
+and a name cannot drift from the rule: `assertExtensionApiSingletonNames` checks
+every key against `globalNameForModuleId` at startup, and a unit test runs the
+same assertion over both maps so a typo fails in CI without launching the app.
 
 **Failure mode.** Bundling your own copy of a listed package. React throws
 `invalid hook call`; **mobx fails silently** — two instances interoperate
@@ -169,34 +154,8 @@ package runs against the host's copy anyway: a mobx class compiled with legacy
 (`experimentalDecorators`) decorators throws when its module is evaluated, so
 the extension fails to load, and the annotations that do not throw are dropped
 silently (see
-[MobX 7 and mobx-react 10](./v2-extension-migration.md#mobx-7-and-mobx-react-10-standard-decorators-only)
+[MobX 7 and mobx-react 10](./migrating-from-v1.md#mobx-7-and-mobx-react-10-standard-decorators-only)
 for the messages).
-
-**Status:** shipped in #2450. It had been a regression rather than an omission.
-What made the v1 entries' exports into globals was webpack's **output format**:
-both entry configs set `libraryTarget: "global"` with no library name, which
-assigns each export onto `global`. #2118 replaced webpack with electron-vite,
-and neither of its outputs does that — the renderer became an app
-(`rollupOptions.input: src/renderer/index.html`), while main is *still* a
-library build (`lib: { entry, formats: ["es"] }`) that simply emits ESM `export`
-statements nothing imports, because Electron runs it as the process entry point.
-So nothing assigned the globals for the whole of the v2 line until the
-singletons moved onto the API object. The orphaned v1 exports in the two process
-entries went with that change; the unreferenced
-`packages/core/src/renderer/extension-api.ts` is still there for the #2134
-sweep.
-
-Library versus app is the wrong axis here, and it is worth stating because the
-mistake is natural: a Rollup library build in `es` format publishes nothing to
-`globalThis` either. The global library target was the mechanism, and it is gone
-from both processes.
-
-The maps live in `packages/core/src/extensions/api-globals/`, one per process,
-each paired with the module id of every name it publishes. Membership cannot
-drift between the two objects — the id map is typed `Record<keyof …, string>` —
-and a name cannot drift from the rule: `assertExtensionApiSingletonNames` checks
-every key against `globalNameForModuleId` at startup, and a unit test runs the
-same assertion over both maps so a typo fails in CI without launching the app.
 
 ---
 
@@ -211,7 +170,8 @@ same assertion over both maps so a typo fails in CI without launching the app.
   first time is unaffected, which is what this guarantee is about.
 - **Renderer** entry points are **ESM**, loaded by URL from the privileged
   `freelens-extension` scheme.
-- **Top-level await is allowed.**
+- **Top-level await is allowed** in either entry point: the renderer imports the
+  served URL and main imports a `file:` URL, both asynchronously.
 - **Renderer code gets no guarantee of Node or Electron**, `require()`
   included. They are reachable only because the renderer is not
   context-isolated, and they may disappear in any release, a minor one included:
@@ -230,16 +190,28 @@ Web Crypto, `TextEncoder` / `TextDecoder`, `Uint8Array` — plus the API object 
 the main entry point, reached over `Renderer.Ipc` / `Main.Ipc`. The migration
 guide lists the replacement for each Node and Electron module v1 extensions
 used in the renderer, under
-[Node and Electron in the renderer](./v2-extension-migration.md#node-and-electron-in-the-renderer).
+[Node and Electron in the renderer](./migrating-from-v1.md#node-and-electron-in-the-renderer).
 
 The declaration cannot enforce this: `extension-api.d.ts` is one file for every
 process. The environment has to come from the extension's own compiler
 configuration, and the migration guide specifies the layout that provides it,
 under
-[Source layout: one tsconfig per runtime environment](./v2-extension-migration.md#source-layout-one-tsconfig-per-runtime-environment):
+[Source layout: one tsconfig per runtime environment](./migrating-from-v1.md#source-layout-one-tsconfig-per-runtime-environment):
 `src/main/`, `src/renderer/` and `src/common/`, each with a `tsconfig.json` for
 its environment, so a Node API in renderer code or a DOM API in main code fails
 the type check rather than the running extension.
+
+**Reloading.** A development install is reloaded when its entry points are
+rebuilt: the host tears the extension down through `onDeactivate` and imports it
+again under a fresh URL. That is why only an ESM `main` reloads. Node keys its
+module map by URL, so the fresh URL is what makes a new module of the rebuilt
+file — but a CommonJS module is cached below that by filename, which no URL
+reaches, and the format Node resolved for a path is cached with it. So a path
+once loaded as CommonJS is frozen as the module it was, for the life of the
+process, however the file is rewritten; and a CommonJS build reached through
+the ESM loader throws `ReferenceError: module is not defined in ES module
+scope`. Neither cache can be evicted, so the host refuses those reloads instead
+of attempting them.
 
 **Failure mode.** A load failure is recorded in the extension's metadata and
 logged; the extension is skipped and nothing else aborts. A renderer bundle
@@ -261,21 +233,6 @@ not warn; code an extension bundles is part of its file and does. The wrapper
 is installed in every frame that loads extensions, cluster frames included,
 before the first extension loads.
 
-**Status:** shipped. The renderer imports the served URL and the main process
-imports a `file:` URL, both asynchronously, so **top-level await works in either
-entry point**. A development install is reloaded when its entry points are
-rebuilt: the host tears the extension down through `onDeactivate` and imports it
-again under a fresh URL.
-
-That last step is why only an ESM `main` reloads. Node keys its module map by
-URL, so the fresh URL is what makes a new module of the rebuilt file — but a
-CommonJS module is cached below that by filename, which no URL reaches, and the
-format Node resolved for a path is cached with it. So a path once loaded as
-CommonJS is frozen as the module it was, for the life of the process, however
-the file is rewritten; and a CommonJS build reached through the ESM loader
-throws `ReferenceError: module is not defined in ES module scope`. Neither cache
-can be evicted, so the host refuses those reloads instead of attempting them.
-
 ---
 
 ## C5. Namespace enumeration
@@ -289,89 +246,12 @@ is not reachable (see [C1](#c1-packaging-and-publication)).
 | `Main` | `Catalog`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Power`, `Util` |
 | `Renderer` | `Catalog`, `Component`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Theme`, `Util` |
 
-Note what is **not** there: there is no `Renderer.React`, no `Renderer.ReactDOM`
-and no `Renderer.Registrations`. Earlier drafts of this specification and of the
-migration guide named all three; they never existed in v2. React reaches
-extensions through [C3](#c3-host-provided-singletons), registrations through
+There is no `Renderer.React`, no `Renderer.ReactDOM` and no
+`Renderer.Registrations`. React reaches extensions through
+[C3](#c3-host-provided-singletons), registrations through
 [C6](#c6-registration-and-the-extension-instance).
 
-**Failure mode.** A missing re-export is a compile error with no workaround. The
-two known classes of gap are closed in #2365: `K8sApi` now star-exports
-`@freelensapp/kube-object`, and the kube-api option and descriptor types that
-appear in exported signatures — `KubeApiOptions`, `DerivedKubeApiOptions`,
-`KubeObjectStoreOptions`, `KubeApiListOptions`, `KubeApiQueryParams`,
-`DeleteOptions`, `PropagationPolicy`, `ResourceDescriptor`, `IKubeWatchEvent` —
-are exported alongside `parseKubeApi` and `createKubeApiURL`, so they are
-nameable and not merely callable. A third turned up while doing it — four
-modules `@freelensapp/kube-object` declares but its own index did not export,
-which no namespace change could reach — and is closed in the same PR at the
-source; see [the decision below](#decided-k8sapi-star-exports-freelensappkube-object).
-
-### Decided: `K8sApi` star-exports `@freelensapp/kube-object`
-
-The namespace exports **all** of `@freelensapp/kube-object`, not a curated
-selection. Before this it re-exported 55 of the 419 symbols the package then
-exported, and the missing ones were most of the shared spec vocabulary —
-`Affinity`, `Capabilities`, `ContainerPort`, `Probe`, `ResourceRequirements`,
-`SecurityContext`, `Toleration` — which is precisely what an extension adding
-resource views needs. Two published
-extensions already import them from the private package directly, which the
-packaging contract forbids, so without this they simply cannot port.
-
-Picking symbols one at a time as authors ask does not scale, and every round
-trip is a release an author waits for.
-
-**This interacts with the freeze in [C14](#c14-versioning-and-compatibility),
-and the interaction is benign — but only because of what these symbols are.**
-By kind: **293 interfaces, 59 type aliases and 12 enums against 50 classes, 15
-functions and 2 constants** — the nine added by the index fix below are all
-shapes. Roughly 84% of the surface is a *transcription of upstream Kubernetes
-API shapes*, whose stability is not ours to promise or to break — it is
-inherited from Kubernetes. Freezing those until the next major
-costs approximately nothing.
-
-The risk is therefore concentrated in the ~67 behavioural symbols, and that is
-where the review effort belongs — a count the index fix does not change:
-**skim the classes, functions and constants before the star export lands; do not
-spend the time re-reviewing 364 data shapes.**
-
-**One name collision exists, and it is real** — two different types share the
-name `KubeObjectStatus`: a Kubernetes resource status shape
-(`{ conditions?: BaseKubeObjectCondition[] }`) and the extension-facing status
-registration type that extensions register status providers against. The second
-keeps the bare name, because v1 extensions already use it.
-
-**The first is renamed on export rather than excluded**, to
-**`BaseKubeObjectStatus`** — it is the base that `DeploymentStatus`,
-`JobStatus` and the other resource statuses extend, and it carries
-`BaseKubeObjectCondition`s. An exclusion is a silent hole — the symbol exists in
-the source, is absent from the API, and nothing announces the difference. A
-rename is visible in the declaration, and it keeps the
-surface complete, which [C1](#c1-packaging-and-publication) makes a correctness
-property rather than a preference.
-
-**The star export alone did not reach everything, and the reason is worth
-recording.** `SecurityContext`, `PreemptionPolicy`, `JSONSchemaProps` and
-`ExternalDocumentation` are declared in `@freelensapp/kube-object` and appear in
-the signatures of types it exports (`Container.securityContext`,
-`PriorityClass.preemptionPolicy`, the CRD schema), but its own
-`src/types/index.ts` did not export the modules that declare them — and
-`export *` resolves through a package's own index, so a module the index skips
-is invisible to the namespace no matter what the namespace does. The same defect
-as the one this decision addresses, one level further down.
-
-It is **fixed at the source** in #2365: `types/index.ts` now exports all four
-modules, so the namespace reaches them like everything else. The package is
-private, so its export list is not a contract with anything outside this
-repository and no type was altered to do it. `json-schema-props` carries five
-documented `string` aliases (`UUIDRegexString`, `UUID3RegexString`,
-`UUID4RegexString`, `UUID5RegexString`, `CreditCardRegexString`) alongside
-`JSONSchemaProps`; they are the `format` vocabulary for the CRD schema and are
-frozen with it under [C14](#c14-versioning-and-compatibility).
-
-**Status:** the table above is transcribed from the built
-`dist/extension-api.d.ts`, and it is **checked rather than generated**. Three
-things keep it honest, none of them a new tool:
+The table is asserted, not generated, by three checks:
 
 - `packages/core/src/extensions/__tests__/extension-api.test.ts` asserts the
   three member lists **exactly** — the table is that list — and then asserts
@@ -383,30 +263,58 @@ things keep it honest, none of them a new tool:
 - `packages/fixture-extension/src/common/contract-types.ts` does the same
   against the **built** declaration, which is the artifact an author resolves.
 
-**Generating the enumeration was tried and rejected** (#2366, #2476). An API
-Extractor report runs against TypeScript 7 output and produces a diffable file,
-but it records the *transitive closure* of the surface rather than its
-membership: 163 symbols nobody intends as API appeared in it — host-side
-dependency bags and internal states reached through a public signature — so
-refactoring one of those read as a contract change, while the thing this
-section guarantees is which names a namespace has. The report could not tell
-"the API broke" from "the API changed", which is the only distinction worth
-gating on. The `ae-forgotten-export` occurrences it found are real and remain a
-separate matter.
+**Failure mode.** A missing re-export is a compile error with no workaround.
+That is why `K8sApi` exports all of `@freelensapp/kube-object`, and why the
+kube-api option and descriptor types that appear in exported signatures —
+`KubeApiOptions`, `DerivedKubeApiOptions`, `KubeObjectStoreOptions`,
+`KubeApiListOptions`, `KubeApiQueryParams`, `DeleteOptions`,
+`PropagationPolicy`, `ResourceDescriptor`, `IKubeWatchEvent` — are exported
+alongside `parseKubeApi` and `createKubeApiURL`, so they are nameable and not
+merely callable.
 
-### Decided: `Util` is `@freelensapp/utilities` minus the Node-bound members
+### `K8sApi` exports all of `@freelensapp/kube-object`
 
-`Common.Util` is one family, judged as a whole rather than member by member,
-and it is delimited by a rule rather than by a list of what it offers:
+The namespace exports **all** of `@freelensapp/kube-object`, including the shared
+spec vocabulary — `Affinity`, `Capabilities`, `ContainerPort`, `Probe`,
+`ResourceRequirements`, `SecurityContext`, `Toleration` — that an extension
+adding resource views needs. Most of the package is interfaces, type aliases and
+enums transcribing upstream Kubernetes API shapes, whose stability is inherited
+from Kubernetes; its classes, functions and constants are what can change the
+behaviour of the API.
+
+**Two types share the name `KubeObjectStatus` in the source**: a Kubernetes
+resource status shape (`{ conditions?: BaseKubeObjectCondition[] }`) and the
+status registration type that extensions register status providers against.
+The registration type keeps the name `KubeObjectStatus`. The resource status
+shape is exported as **`BaseKubeObjectStatus`** — the base that
+`DeploymentStatus`, `JobStatus` and the other resource statuses extend.
+
+**The namespace reaches only what the package's own index exports.** `export *`
+resolves through a package's index, so a module the index skips is invisible to
+the namespace no matter what the namespace does. `SecurityContext`,
+`PreemptionPolicy`, `JSONSchemaProps` and `ExternalDocumentation` appear in the
+signatures of types the package exports (`Container.securityContext`,
+`PriorityClass.preemptionPolicy`, the CRD schema), so its `src/types/index.ts`
+exports the modules that declare them, and a type added to the package later
+needs the same. `json-schema-props` carries documented `string` aliases
+(`UUIDRegexString`, `UUID3RegexString`, `UUID4RegexString`,
+`UUID5RegexString`, `CreditCardRegexString`) alongside `JSONSchemaProps`; they
+are the `format` vocabulary for the CRD schema and are frozen with it under
+[C14](#c14-versioning-and-compatibility).
+
+### `Util` is `@freelensapp/utilities` minus the Node-bound members
+
+`Common.Util` is delimited by a rule rather than by a list of what it offers:
 
 - **Every export of `@freelensapp/utilities` is extension API**, and frozen with
   the rest under [C14](#c14-versioning-and-compatibility) — including an export
   added to the package later.
 - **Except a member that needs Node or Electron in the renderer**, because
-  renderer code gets no guarantee of either ([C4](#c4-module-format-and-loading)). Such a member goes on the omit
-  list in `packages/core/src/extensions/common-api/utils.ts`, which
-  destructures it out of the spread so that its name and types do not reach
-  the bundled declarations either. Keeping them out also takes the pnpm patch of
+  renderer code gets no guarantee of either
+  ([C4](#c4-module-format-and-loading)). Such a member goes on the omit list in
+  `packages/core/src/extensions/common-api/utils.ts`, which destructures it out
+  of the spread so that its name and types do not reach the bundled
+  declarations either. Keeping them out also takes the pnpm patch of
   `rolldown-plugin-dts`: unpatched, the plugin keeps every member of
   `@freelensapp/utilities` in the bundle, because `utils.ts` reaches them
   through `import * as utilities`, and `build:dist` fails on their Node
@@ -420,14 +328,12 @@ gone from all three; each adds its own `fetch` ([C12](#c12-http)).
 one thing: does it need Node or Electron to run in the renderer — a
 `node:`/Electron import, a Node global such as `Buffer` or `process`, or a Node
 type such as `NodeJS.ErrnoException` in its signature? If the dependency is
-incidental to the implementation, remove it, as was done for `node:assert` in
-`unitsToBytes` and `node:util` in `strictGet`; if it is what the function does,
+incidental to the implementation, remove it; if it is what the function does,
 add the member to the omit list and a line to the migration guide.
 
-**Failure mode.** A member that needs Node and is not on the list fails at
-runtime in a renderer without Node — a `ReferenceError` for a global such as
-`Buffer`, a failed import for a builtin — and not at compile time, because
-nothing checks the rule mechanically.
+**Failure mode.** A member that needs a Node global and is not on the list fails
+at runtime in a renderer without Node — a `ReferenceError` for a global such as
+`Buffer` — and not at compile time.
 
 ---
 
@@ -455,7 +361,7 @@ application menu or the tray: both are the host's own.
 `sanitizedExtensionId`, `isEnabled`; `getExtensionFileFolder()`; and the author
 hooks `onActivate()` / `onDeactivate()`.
 
-Two of these deserve emphasis because the loader changes make them load-bearing:
+Two of these matter more than they look:
 
 - **`manifestPath`** is how an extension locates its own shipped files. In the
   renderer it is the *only* route, since there is no `__dirname` under URL
@@ -468,9 +374,6 @@ Two of these deserve emphasis because the loader changes make them load-bearing:
 **Failure mode.** A field left at its default contributes nothing, silently — a
 registration that never appears is the common symptom of a typo in a field name
 or of registering after the host has already read the field.
-
-**Status:** shipped, except the registration *moment* — see
-[C7](#c7-the-dependency-injection-surface).
 
 ---
 
@@ -514,23 +417,6 @@ activation can register catalog categories they must see; and `disable()` runs
 injectable created by an extension's own copy of ogre-tools means nothing to the
 host's container, so there is nothing of the host's to pass it to.
 
-**Status:** shipped. The invariant holds; the container and the library are
-internal.
-
-**The author-facing half is deferred.** The moment for it exists in the
-lifecycle; no hook hands an author a container to register into at it. Most of
-the repository's injection tokens are internal, and making the extension-facing
-ones public buys **no new capability**: each has a registrator translating a
-declarative field, so extensions already reach everything those tokens would
-unlock. Exposing them would mean re-exporting the tokens *and their generic
-parameter types* out of private packages. The question returns when someone
-wants a capability nobody wishes to write a registrator for, and it will then be
-a decision about one token rather than all of them. If that brings author-facing
-injection in a 2.x minor, the DI library can join
-[C3](#c3-host-provided-singletons) then, as an addition; publishing it before
-anything uses it would freeze the host on one major for the whole 2.x line
-([C14](#c14-versioning-and-compatibility)).
-
 ---
 
 ## C8. React
@@ -539,50 +425,42 @@ anything uses it would freeze the host on one major for the whole 2.x line
 [C3](#c3-host-provided-singletons). Extensions must not bundle their own.
 
 **Surface.** `react`, `react-dom`, `react/jsx-runtime` as externals; `@types/react`
-as a devDependency.
+as a devDependency. React is not reached through a `Renderer.React` namespace,
+which does not exist, and an extension does not declare React as a peer
+dependency: the host provides it through the global, in development and in an
+installed extension alike.
 
 **Failure mode.** The invalid-hook-call trap: two copies of React in one renderer
 break the Rules of Hooks, and any hook — including those inside host components
 an extension renders — throws at runtime. It fails only at runtime, never at
 build time.
 
-**Two earlier statements were wrong and are corrected here.** React is not
-reached through `Renderer.React`, which does not exist; and the instruction to
-"declare `react`/`react-dom` as peers `^19`" described nothing real — **no
-published extension declares any peer dependency at all**, and the v1 mechanism
-that populated `global.React` is gone.
-
-**Status:** shipped with #2450. Before it, the single-React guarantee held only
-by pnpm peer-resolution accident in a development tree, and not at all for an
-installed extension.
-
 ---
 
 ## C9. Routing
 
-**Guarantee.** Navigation runs on the in-house `@freelensapp/routing`. The
-`react-router` 5 / `react-router-dom` 5 / `history` 4 re-exports are **removed**
-(#2261).
+**Guarantee.** Navigation runs on the in-house `@freelensapp/routing`. The API
+re-exports no `react-router`, `react-router-dom` or `history`.
 
 **Surface.** Pages are registered through `globalPages` / `clusterPages`
 ([C6](#c6-registration-and-the-extension-instance)) and navigated with
-`navigateToRoute` and the route helpers. The **v5 path dialect is preserved** —
-`/:param?` optionals and inline `/:param(regex)` patterns — by the in-house
-`matchPath`, so existing path strings need no rewriting.
+`navigateToRoute` and the route helpers. The **react-router 5 path dialect is
+supported** — `/:param?` optionals and inline `/:param(regex)` patterns — by the
+in-house `matchPath`, so existing path strings need no rewriting.
 
 **Failure mode.** `import { Link } from "react-router-dom"` through the Freelens
-bundle no longer resolves. An extension that wants react-router JSX bundles its
+bundle does not resolve. An extension that wants react-router JSX bundles its
 own.
-
-**Status:** shipped. See [`docs/v2-routing-modernization.md`](./v2-routing-modernization.md).
 
 ---
 
 ## C10. Styling and CSS
 
 **Guarantee.** The host injects an extension's sibling stylesheet — either
-`<entry>.css` or a `style.css` next to the renderer entry — so a normal
-stylesheet import works without the v1 `?inline` + `<style>` workaround.
+`<entry>.css` or a `style.css` next to the renderer entry — as a `<link>` at the
+URL main serves it from, the same route the renderer entry point takes. A
+normal stylesheet import therefore works without the v1 `?inline` + `<style>`
+workaround.
 
 **Surface.** One CSS asset next to the renderer entry. The host's shared
 component classes (`.Tooltip`, `.Button`, …) are global and part of the public
@@ -593,11 +471,8 @@ belong in CSS Modules.
 not look for, and the extension renders unstyled. **The host's Tailwind does not
 reach extensions** — its JIT scans only core's own sources, so an unprefixed
 utility class produces no CSS and silently does nothing. An extension may run
-its own Tailwind build; see the migration guide.
-
-**Status:** shipped as a `<link>` at the URL main serves the stylesheet from,
-which is the same route the renderer entry point takes. `flexbox.scss` is removed
-from the host, so its utility classes are inert.
+its own Tailwind build; see the migration guide. The host carries no
+`flexbox.scss`, so its utility classes do nothing either.
 
 ---
 
@@ -635,9 +510,9 @@ rg -o '^import .* from "([^"]+)";$|import\("([^"]+)"\)' -r '$1$2' \
 The pattern has two halves because the bundle names an external in two ways:
 in an import statement, and in an `import("…")` type, which the bundler leaves
 inline where it found it. The first half is anchored at the start of a line,
-because the examples inside doc comments use the same double quotes. The bundle inlines every
-`@freelensapp/*` package ([C1](#c1-packaging-and-publication)), so everything
-the command prints is external by construction.
+because the examples inside doc comments use the same double quotes. The bundle
+inlines every `@freelensapp/*` package ([C1](#c1-packaging-and-publication)), so
+everything the command prints is external by construction.
 
 Nothing is imported from `electron`. What the declaration names of Electron it
 names through the ambient `Electron` namespace, in the `Main.Ipc` signatures and
@@ -663,29 +538,29 @@ fails and lists every Node reference of the bundle. The likely cause of one is
 the pnpm patch of `rolldown-plugin-dts` (`patchedDependencies` in
 `pnpm-workspace.yaml`) no longer applying, which brings back the Node-bound
 members `Common.Util` leaves out
-([C5](#decided-util-is-freelensapputilities-minus-the-node-bound-members)) with
-their `node:` imports. `@types/node` is therefore not a dependency of the
-package: an extension whose main code needs it declares it itself.
+([C5](#util-is-freelensapputilities-minus-the-node-bound-members)) with their
+`node:` imports. `@types/node` is therefore not a dependency of the package: an
+extension whose main code needs it declares it itself.
+
+**How the package declares them.** The host-provided entries are in
+`peerDependencies`, each **optional** in `peerDependenciesMeta` alongside
+`electron`. Optional because npm 7+ and pnpm install missing peers by default,
+so a required peer would install every one of them into every author's tree
+whether imported or not — `monaco-editor` alone is large, and an extension with
+only a `main` entry point would pay for it on every install and in every CI
+cache. What keeps a second copy out of the bundle is the author marking the
+specifier external, not the dependency field; the field only decides what gets
+installed. The `@types/*` entries are in `dependencies`: a second copy of a
+declaration is not a second instance of anything. `react-dom` itself is not
+declared; the declaration needs only its types, which `@types/react-dom`
+supplies. Nothing in-repo type-checks the published declaration without
+`skipLibCheck`, the fixture extension included.
 
 **Failure mode.** A host-provided library in `dependencies` of
 `@freelensapp/extensions` **silently plants a real React in the author's tree**
 for their bundler to find — which is precisely the mistake
 [C3](#c3-host-provided-singletons) exists to prevent. As peers they are still
 there to compile against, and bundling one's own copy becomes a deliberate act.
-
-**Status:** the host-provided entries are in `peerDependencies`, each
-**optional** in `peerDependenciesMeta` alongside `electron`. Optional because
-npm 7+ and pnpm install missing peers by default, so a required peer would
-install every one of them into every author's tree whether imported or not — and
-`monaco-editor` alone is 99 MB, which an extension with only a `main` entry
-point would pay on every install and in every CI cache. What keeps a second copy
-out of the bundle is the author marking the specifier external, not the
-dependency field; the field only decides what gets installed. The `@types/*`
-entries are in `dependencies`: a second copy of a declaration is not a second
-instance of anything. `react-dom` itself is not declared; the declaration needs
-only its types, which `@types/react-dom` supplies. Nothing in-repo type-checks
-the published declaration without `skipLibCheck`, the fixture extension
-included.
 
 ---
 
@@ -707,15 +582,13 @@ type is imposed on an extension.
 user's proxy or custom CAs, so an extension using it simply fails on corporate
 networks. `res instanceof Response` is not a reliable check in main.
 
-**Status:** shipped (#2395).
-
 ---
 
 ## C13. Consumer toolchain floors
 
 **Guarantee.** The published declaration compiles in a consumer project that
 meets these floors. **The floor is stated per surface area, not as one number
-for the package** — #2396 showed the two diverge.
+for the package**, because the two differ.
 
 **Surface.**
 
@@ -736,8 +609,6 @@ which both declare. The package as a whole still requires `lib.dom`.
 declaration. Missing `skipLibCheck` produces errors in transitive type
 dependencies an author cannot fix; a missing DOM lib produces unresolved-name
 errors in the React component types.
-
-**Status:** shipped.
 
 ---
 
@@ -766,10 +637,10 @@ prerelease stripped. The consequence is the policy:
 - The declaration must start with `^` or a digit. Anything else throws at
   discovery with an explanatory error rather than being silently refused.
 
-**Failure mode.** `isCompatible: false` at discovery. **All 24 published
-extensions are already refused on v2** without a line of code being written,
-which is why bumping `engines.freelens` is step one of the migration guide and
-not a footnote.
+**Failure mode.** `isCompatible: false` at discovery. **Every v1 extension is
+refused on v2** until it declares `engines.freelens: ^2.0`, without a line of
+its code running, which is why bumping `engines.freelens` is step one of the
+migration guide and not a footnote.
 
 "Not loaded" has several distinct causes and the UI distinguishes them, because
 the remedy differs: incompatible (`isCompatible`), deliberately disabled
@@ -777,44 +648,28 @@ the remedy differs: incompatible (`isCompatible`), deliberately disabled
 
 ### Stability: everything exported is public
 
-There is **no unstable tier**. Until a mechanism exists to mark one — TSDoc
-`@public` / `@beta` / `@internal` with trimmed rollup variants was the proposal
-in #2366, and it is deferred rather than pending — every symbol the namespaces
-re-export is public and stable **for the lifetime of the major**.
+There is **no unstable tier**: every symbol the namespaces re-export is public
+and stable **for the lifetime of the major**. Whatever a major release ships is
+frozen until the next one, and a symbol exported by accident cannot be retracted
+in a minor.
 
-This cuts towards the host, not the author, and it is the reason these documents
-were written before the implementation rather than after it: **whatever 2.0.0
-ships is frozen until 3.0.0.** A symbol exported by accident is not retractable
-in 2.1. Adding a `@beta` tier later is additive and can wait; exporting first and
-deciding later cannot.
+The namespace member lists are asserted exactly ([C5](#c5-namespace-enumeration)),
+so widening one is an edit made on purpose and read in review.
 
 Deprecation within a major: mark with `@deprecated`, keep it working for the
 rest of the major, remove it in the next one.
 
-**Status:** the gate is shipped and the policy above is decided. The tiering
-mechanism is not needed for 2.0.0 — its absence is what makes the freeze
-strict, and adding a tier later is additive where exporting first and deciding
-later is not.
-
-What holds the frozen surface in place meanwhile is not a report but the
-runtime and type-level checks listed under
-[C5](#c5-namespace-enumeration): the namespace member lists are asserted
-exactly, so widening one is an edit made on purpose and read in review, which
-is what a freeze needs. The exhaustive alternative was tried in #2476 and
-rejected for tracking more than the contract.
-
 ---
 
-## Delivery, in one paragraph
+## Delivery
 
-How an extension reaches the process is specified in #2400 and summarized here
-only where it constrains the API. An extension **vendors or bundles whatever it
-needs apart from what the host provides**, so installing one is downloading a
-tarball and extracting it — there is nothing to resolve and no package manager
-involved. Installs land under `<userData>/extensions/<sanitized-name>/<version>-<digest8>/`;
-a *directory* install registers an extension in place and is the development
-mode, which is why there is no packing step and no symlink. The renderer loads
-from `freelens-extension://extensions/<sanitized-name>/<version>-<digest8>/<file>`
+An extension **vendors or bundles whatever it needs apart from what the host
+provides**, so installing one is downloading a tarball and extracting it — there
+is nothing to resolve and no package manager involved. Installs land under
+`<userData>/extensions/<sanitized-name>/<version>-<digest8>/`; a *directory*
+install registers an extension in place and is the development mode, which is
+why there is no packing step and no symlink. The renderer loads from
+`freelens-extension://extensions/<sanitized-name>/<version>-<digest8>/<file>`
 — one origin for all extensions, because an origin per extension would advertise
 an isolation the host cannot guarantee under `contextIsolation: false`.
 
@@ -824,21 +679,10 @@ The contract has three, not two:
 
 - **host-provided** — must not be bundled ([C3](#c3-host-provided-singletons));
 - **free** — bundle or vendor as you like ([C11](#c11-third-party-bundled-libraries));
-- **forbidden** — native `.node` addons ([the ABI document](./v2-extension-abi.md)).
-
-## Open items
-
-| Item | Tracked in |
-| --- | --- |
-| Close the known re-export gaps | #2365 |
-| Triage the `ae-forgotten-export` occurrences found while generating the enumeration was being tried | #2366 |
-| Remove `pnpm` as an application dependency — the last step of the delivery mechanism | #2400 |
-| Renderer sandboxing — the reason several isolation claims are *not* made here | #2399 |
+- **forbidden** — native `.node` addons ([the ABI document](./binaries.md)).
 
 ## References
 
-- [`docs/v2-extension-migration.md`](./v2-extension-migration.md) — the porting guide
-- [`docs/v2-extension-abi.md`](./v2-extension-abi.md) — shipped binaries and process invocation
-- [`docs/v2-plan.md`](./v2-plan.md) — decisions **D2** and **D5**
-- [`docs/v2-styling.md`](./v2-styling.md) — the styling model in full
-- [`docs/v2-routing-modernization.md`](./v2-routing-modernization.md) — what routing removed
+- [`docs/extensions/migrating-from-v1.md`](./migrating-from-v1.md) — the porting guide
+- [`docs/extensions/binaries.md`](./binaries.md) — shipped binaries and process invocation
+- [`docs/styling.md`](../styling.md) — the styling model in full

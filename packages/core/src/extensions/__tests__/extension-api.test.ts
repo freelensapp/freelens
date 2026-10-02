@@ -10,7 +10,7 @@
 // and `Renderer`; that each of the three carries exactly the members listed
 // below; and that every sub-namespace exists, is non-empty, and still carries a
 // handful of anchor symbols. The three top-level lists are the contract — they
-// are C5's table in `docs/v2-extension-api.md`, and a change to one of them is
+// are C5's table in `docs/extensions/api.md`, and a change to one of them is
 // a change to the API that has to be made on purpose and read in review.
 //
 // **What it deliberately does not check.** The membership of a sub-namespace,

@@ -111,7 +111,7 @@ export { createKubeApiURL, parseKubeApi } from "@freelensapp/kube-api";
 // The whole of `@freelensapp/kube-object` is part of the API surface. The
 // package is private in v2 and is inlined into the bundled declaration, so a
 // type it declares is unreachable by any means unless this namespace re-exports
-// it — see C1 and C5 of `docs/v2-extension-api.md`.
+// it — see C1 and C5 of `docs/extensions/api.md`.
 export * from "@freelensapp/kube-object";
 // Deliberate v1-compatibility aliases, on top of the star export above.
 export {

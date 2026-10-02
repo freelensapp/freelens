@@ -43,7 +43,7 @@ proves nothing about how extensions are actually loaded.
 ### How the type level is wired
 
 The sources follow the layout documented for extensions in
-[`docs/v2-extension-migration.md`](../../docs/v2-extension-migration.md)
+[`docs/extensions/migrating-from-v1.md`](../../docs/extensions/migrating-from-v1.md)
 ("Source layout: one tsconfig per runtime environment"), and this package is
 where that layout is proven:
 
@@ -134,5 +134,5 @@ Plus [`src/common/contract-types.ts`](./src/common/contract-types.ts), which
 carries no runtime code and names types out of `Common`, `Main` and `Renderer`
 in real signatures, and [`src/common/v1-renames.ts`](./src/common/v1-renames.ts),
 which names the v2 side of every "Renamed or moved" row of the v1→v2 rename
-table in [`docs/v2-extension-migration.md`](../../docs/v2-extension-migration.md#v1v2-rename-table),
+table in [`docs/extensions/migrating-from-v1.md`](../../docs/extensions/migrating-from-v1.md#v1v2-rename-table),
 with the v1 path next to each. A row added to that table gets a line there.
