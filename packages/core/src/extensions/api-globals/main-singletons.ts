@@ -48,7 +48,7 @@
 //    `mobx`, `mobx-react`, `react-dom`, `react/jsx-runtime`, `react-router` and
 //    `react-router-dom`, none mentions `node-pty`.
 //  - An extension that needs to run a program spawns it with
-//    `node:child_process`, which `docs/v2-extension-abi.md` describes as the
+//    `node:child_process`, which `docs/extensions/binaries.md` describes as the
 //    supported route. Only a program that demands a TTY needs a pty at all.
 //  - Under C14 everything published here is frozen until 3.0.0, so adding to
 //    this map in a 2.x release is cheap and removing from it is not.

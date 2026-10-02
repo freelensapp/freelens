@@ -206,7 +206,7 @@ of both programs, because Vitest runs them with DOM and Node alike.
 Common code uses only what both environments have: `globalThis.crypto`,
 `TextEncoder`, `URL`, `AbortController`, `structuredClone`, timers. Write
 `globalThis.` when in doubt. The extension-side version of the same rule is in
-the source-layout section of `docs/v2-extension-migration.md`.
+the source-layout section of `docs/extensions/migrating-from-v1.md`.
 
 ### How the check works
 
@@ -506,10 +506,10 @@ Uses pnpm workspaces for:
 
 ## Styling
 
-Freelens v2 carries four styling systems (theme CSS custom properties, global
+Freelens carries four styling systems (theme CSS custom properties, global
 plain SCSS, CSS Modules, and Tailwind v4). Which one to use is not a matter of
 taste — each has a defined role. Before adding or changing any stylesheet or
-`className`, read [`docs/v2-styling.md`](./docs/v2-styling.md). In short:
+`className`, read [`docs/styling.md`](./docs/styling.md). In short:
 
 - **Theme values** (colors, fonts): CSS custom properties from the TS theme
   system (`var(--…)`) — the single contract every other system reads.
@@ -521,20 +521,20 @@ taste — each has a defined role. Before adding or changing any stylesheet or
 - **Local layout inside core-only TSX**: Tailwind utilities. The legacy
   `flexbox.scss` utilities have been removed — do not reintroduce them.
 - **Extensions**: see the styling section of
-  [`docs/v2-extension-migration.md`](./docs/v2-extension-migration.md).
+  [`docs/extensions/migrating-from-v1.md`](./docs/extensions/migrating-from-v1.md).
 
 ## Extension API
 
-The v2 extension specification lives in three documents, and which one to read
+The extension specification lives in three documents, and which one to read
 depends on the question:
 
-- [`docs/v2-extension-api.md`](./docs/v2-extension-api.md) — the **normative
+- [`docs/extensions/api.md`](./docs/extensions/api.md) — the **normative
   contracts**. Each states the guarantee, the stable surface and the failure
   mode. Read this before changing anything under `packages/extensions/` or
   `packages/core/src/extensions/`.
-- [`docs/v2-extension-abi.md`](./docs/v2-extension-abi.md) — what an extension
+- [`docs/extensions/binaries.md`](./docs/extensions/binaries.md) — what an extension
   may **ship and execute** besides JavaScript, and what the host does with it.
-- [`docs/v2-extension-migration.md`](./docs/v2-extension-migration.md) — the
+- [`docs/extensions/migrating-from-v1.md`](./docs/extensions/migrating-from-v1.md) — the
   author-facing **porting guide** from v1.
 
 Three traps worth carrying without looking them up. The API surface is only what

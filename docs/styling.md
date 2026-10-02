@@ -1,6 +1,6 @@
-# Styling conventions in Freelens v2
+# Styling conventions in Freelens
 
-This document is the canonical guide for **how to style UI in Freelens v2**.
+This document is the canonical guide for **how to style UI in Freelens**.
 It exists because Freelens carries four different styling systems, and without
 a written contract new code drifts between them. Read this before adding or
 changing any stylesheet or `className`.
@@ -31,11 +31,11 @@ role (see [Roles](#roles-which-mechanism-to-use)):
    `packages/core/src/renderer/components/app.scss`; utility classes appear
    inline in core TSX.
 
-The v2 migration also **removed** a fifth, legacy layer that used to overlap
-Tailwind: the in-house **flexbox utilities** (`flexbox.scss` — `.flex`,
-`.column`, `.gaps`, `.box`, `.grow`, `.align-center`, …). Core no longer ships
-them; use Tailwind for layout. Extension authors still using those classes: see
-[migrating off `flexbox.scss`](./v2-extension-migration.md#migrating-off-flexboxscss).
+There is no fifth layer of in-house **flexbox utilities** (`flexbox.scss` —
+`.flex`, `.column`, `.gaps`, `.box`, `.grow`, `.align-center`, …): core does not
+ship them, so use Tailwind for layout. Extension authors still using those
+classes: see
+[migrating off `flexbox.scss`](./extensions/migrating-from-v1.md#migrating-off-flexboxscss).
 
 ## Roles: which mechanism to use
 
@@ -45,7 +45,7 @@ them; use Tailwind for layout. Extension authors still using those classes: see
 | **Shared components** (`packages/ui-components`) and anything an extension may restyle | Global PascalCase class + plain SCSS + `var(--…)`. **No Tailwind, no CSS Modules** | The class names (`.Tooltip`, `.Button`, `.Icon`) are **public API** — extensions target and override them; mangled ids would break that. Tailwind cannot reach here at all (see below) |
 | **Core single components / full views** | CSS Modules (`*.module.scss`, mangled ids) | Component-private styling that should not leak into the global namespace |
 | Local layout/spacing **inside core-only TSX** | Tailwind utilities | Throwaway layout that never needs to be themed beyond the bridged tokens or restyled from outside |
-| Extensions | CSS Modules + a working injection mechanism | See [`docs/v2-extension-migration.md`](./v2-extension-migration.md#styling-and-css) |
+| Extensions | CSS Modules + a working injection mechanism | See [`docs/extensions/migrating-from-v1.md`](./extensions/migrating-from-v1.md#styling-and-css) |
 
 So the answer to "Tailwind or mangled CSS ids?" is **both, with a boundary**:
 Tailwind for disposable layout in core-only TSX; CSS Modules for anything that
@@ -61,7 +61,7 @@ use produces **no CSS** — it silently does nothing. Never use Tailwind
 utilities outside core TSX expecting the host to emit them. (An extension can
 still run its **own** Tailwind build and ship the generated utilities in its
 stylesheet — see
-[Bringing your own Tailwind](./v2-extension-migration.md#bringing-your-own-tailwind).)
+[Bringing your own Tailwind](./extensions/migrating-from-v1.md#bringing-your-own-tailwind).)
 
 ### Why ui-components stay global
 
@@ -85,10 +85,10 @@ they are no longer loaded, so those class names now do nothing.
   TSX — see above); style layout with plain rules in the component's own SCSS.
   Extensions cannot use the *host's* Tailwind either, but may run their own
   Tailwind build (see
-  [Bringing your own Tailwind](./v2-extension-migration.md#bringing-your-own-tailwind)).
+  [Bringing your own Tailwind](./extensions/migrating-from-v1.md#bringing-your-own-tailwind)).
 - Extension authors migrating code that still uses the old classes: the
   legacy-token → plain-CSS mapping lives in
-  [migrating off `flexbox.scss`](./v2-extension-migration.md#migrating-off-flexboxscss).
+  [migrating off `flexbox.scss`](./extensions/migrating-from-v1.md#migrating-off-flexboxscss).
 
 ## Tailwind configuration caveats
 

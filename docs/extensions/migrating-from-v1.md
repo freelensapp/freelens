@@ -5,8 +5,8 @@ guide is for authors of third-party extensions moving from v1 to v2.
 
 It is the developer-facing half of the v2 extension specification. The
 normative half — what the host guarantees, and what happens when a guarantee is
-violated — is [`docs/v2-extension-api.md`](./v2-extension-api.md), with the
-binary side in [`docs/v2-extension-abi.md`](./v2-extension-abi.md). Where this
+violated — is [`docs/extensions/api.md`](./api.md), with the
+binary side in [`docs/extensions/binaries.md`](./binaries.md). Where this
 guide says "the host does X", that document says why and what breaks otherwise.
 
 Every v1 namespace path that moved or was removed is listed in the
@@ -301,7 +301,7 @@ How depends on the bundler:
   only legacy decorators and passes standard ones through untouched. Add a
   plugin that runs before Oxc and hands each module with a decorator to esbuild.
   Freelens builds itself this way, with
-  [`scripts/vite-plugin-standard-decorators.mjs`](../scripts/vite-plugin-standard-decorators.mjs),
+  [`scripts/vite-plugin-standard-decorators.mjs`](../../scripts/vite-plugin-standard-decorators.mjs),
   which you may copy under the MIT license:
 
   ```js
@@ -385,7 +385,7 @@ function renderIcon(props: Renderer.Component.IconProps) { /* ... */ }
 An extension has code for two runtime environments in one project. The main
 entry point runs in Node, under Electron; the renderer entry point runs in a
 browser page, which gets no Node and no Electron
-([C4](./v2-extension-api.md#c4-module-format-and-loading)). One `tsconfig.json`
+([C4](./api.md#c4-module-format-and-loading)). One `tsconfig.json`
 with both the DOM lib and `@types/node` cannot tell which APIs are valid where:
 `import fs from "node:fs"`, `Buffer` and `process.env` compile in renderer code,
 `document` and `window` compile in main code, and the mistake shows at runtime
@@ -489,7 +489,7 @@ Some settings here are required, and some are easy to lose:
 - **The split does not cover the API namespaces.** The declaration exposes
   `Main` and `Renderer` to every process, so `Main.Util.fetch` still compiles in
   renderer code and is `undefined` when it runs
-  ([C2](./v2-extension-api.md#c2-the-runtime-global-api)). Use `Common` in
+  ([C2](./api.md#c2-the-runtime-global-api)). Use `Common` in
   common code.
 
 Each entry point bundles its own copy of `src/common/`. Build the renderer for
@@ -542,7 +542,7 @@ export const buffer = Buffer.from("text");
 Export what each line declares, so that a line cannot go on failing for the
 wrong reason, such as an unused import, once the config lets its API through.
 The in-repo fixture extension checks its own configs this way, in
-[`packages/fixture-extension/environment-tests/`](../packages/fixture-extension/environment-tests).
+[`packages/fixture-extension/environment-tests/`](../../packages/fixture-extension/environment-tests).
 
 ### Optional: lint builtin imports in the renderer
 
@@ -904,7 +904,7 @@ first constructor argument — `CronJobStore`'s is
 extension can neither build nor name, so the classes could not be instantiated
 from outside the host in the first place. Exporting them anyway would freeze
 those bags as public API under
-[C14](./v2-extension-api.md#c14-versioning-and-compatibility), which means
+[C14](./api.md#c14-versioning-and-compatibility), which means
 refactoring an internal store dependency would formally become a breaking change
 to the extension API. v2.0.0 is where that goes away.
 
@@ -975,7 +975,7 @@ resolves the namespace filter from the host container itself:
 
 `Common.Util` carries every export of the host's utilities package except the
 ones that need Node or Electron in the renderer, which v2 does not guarantee
-there ([C5](./v2-extension-api.md#util-is-freelensapputilities-minus-the-node-bound-members)).
+there ([C5](./api.md#util-is-freelensapputilities-minus-the-node-bound-members)).
 These are gone from `Common.Util`, and with it from `Main.Util` and
 `Renderer.Util`. No extension is known to use them; if you need one back in a
 form that works without Node, ask for it.
@@ -1026,7 +1026,7 @@ the latter in `Common`, which renderer code reads too.
 ## Node and Electron in the renderer
 
 **Renderer code gets no Node and no Electron in v2**, `require()` included
-([C4](./v2-extension-api.md#c4-module-format-and-loading)). They are still
+([C4](./api.md#c4-module-format-and-loading)). They are still
 reachable, because the renderer is not context-isolated yet, but nothing
 guarantees them and they may disappear in any release. Everything that used to
 lean on them in the renderer has a replacement already:
@@ -1294,7 +1294,7 @@ styles; the class names are mangled at build time so they never collide with
 the host or with other extensions. For the host's shared component classes
 (`.Tooltip`, `.Button`, …), which are global and part of the public API, you
 may target them directly — do not redefine them. See
-[`docs/v2-styling.md`](./v2-styling.md) for the full styling model.
+[`docs/styling.md`](../styling.md) for the full styling model.
 
 > Note: the **host's** Tailwind does not reach extensions — its JIT only scans
 > core's own source, so a Tailwind class you write expecting the host to have
@@ -1368,7 +1368,7 @@ The host cannot hand its Tailwind to extensions: `packages/core/tailwind.config.
 sets `content: ["src/**/*.tsx"]` and the host CSS is generated at **host build
 time**, while extensions are installed at **runtime** — the host JIT can never
 see an extension's class usage, so a class only "works" if core happens to emit
-it (the trap [`docs/v2-styling.md`](./v2-styling.md) warns about). But nothing
+it (the trap [`docs/styling.md`](../styling.md) warns about). But nothing
 stops an extension from running **its own** Tailwind v4 build and shipping the
 generated utilities in the single CSS asset the host already injects (the loader
 appends your sibling `style.css`/`<entry>.css` — see
@@ -1581,6 +1581,6 @@ check rather than a smoke test:
 ## Shipping executables
 
 If your extension ships executables alongside its JavaScript, read
-[`docs/v2-extension-abi.md`](./v2-extension-abi.md). In short: the host extracts
+[`docs/extensions/binaries.md`](./binaries.md). In short: the host extracts
 them with their mode bits and does nothing else with them, and your main entry
 point runs them with `node:child_process`.

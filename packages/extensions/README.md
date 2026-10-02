@@ -45,6 +45,6 @@ Everything else this package depends on — `chart.js`, `react-select`, `conf`,
 
 ## Documentation
 
-- [Extension API contracts](https://github.com/freelensapp/freelens/blob/main/docs/v2-extension-api.md)
-- [Migrating an extension from v1](https://github.com/freelensapp/freelens/blob/main/docs/v2-extension-migration.md)
-- [What an extension may ship besides JavaScript](https://github.com/freelensapp/freelens/blob/main/docs/v2-extension-abi.md)
+- [Extension API contracts](https://github.com/freelensapp/freelens/blob/main/docs/extensions/api.md)
+- [Migrating an extension from v1](https://github.com/freelensapp/freelens/blob/main/docs/extensions/migrating-from-v1.md)
+- [What an extension may ship besides JavaScript](https://github.com/freelensapp/freelens/blob/main/docs/extensions/binaries.md)

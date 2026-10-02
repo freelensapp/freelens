@@ -1,8 +1,8 @@
-# Freelens v2 extension ABI — shipped binaries and process invocation
+# Freelens extensions — shipped binaries and process invocation
 
-The binary half of the v2 extension contract: what an extension may ship
+The binary half of the Freelens extension contract: what an extension may ship
 besides JavaScript, and how it runs it. The API half is
-[`docs/v2-extension-api.md`](./v2-extension-api.md).
+[`docs/extensions/api.md`](./api.md).
 
 The two are kept apart because they have different failure modes. An API
 mistake is a type error at build time. An ABI mistake is a binary that will not
@@ -24,7 +24,7 @@ error and no effect beyond the extracted files.
 
 ## Native modules: no
 
-**There is no Node ABI in the v2 extension contract.** `.node` addons are not
+**There is no Node ABI in the extension contract.** `.node` addons are not
 supported.
 
 A native addon is coupled to the host's ABI — Electron version, Node version,
@@ -35,7 +35,7 @@ linked, and it covers what an addon would have been wanted for.
 ## Running a shipped program
 
 A main entry point runs it with `node:child_process`. A renderer entry point
-has no Node ([C4](./v2-extension-api.md#c4-module-format-and-loading)), so it
+has no Node ([C4](./api.md#c4-module-format-and-loading)), so it
 asks its own main half to run the program over `Renderer.Ipc` / `Main.Ipc`. The
 host adds no API for this.
 
@@ -118,5 +118,5 @@ as a reverse shell. **Sign your binaries.**
 
 ## References
 
-- [`docs/v2-extension-api.md`](./v2-extension-api.md) — the API contracts
-- [`docs/v2-extension-migration.md`](./v2-extension-migration.md) — the porting guide
+- [`docs/extensions/api.md`](./api.md) — the API contracts
+- [`docs/extensions/migrating-from-v1.md`](./migrating-from-v1.md) — the porting guide

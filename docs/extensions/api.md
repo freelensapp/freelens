@@ -1,10 +1,10 @@
-# Freelens v2 extension API — contracts
+# Freelens extension API — contracts
 
-This is the **normative** half of the v2 extension specification: what the host
-guarantees, what surface an extension may rely on, and what happens when a
-contract is violated. The developer-facing porting guide is
-[`docs/v2-extension-migration.md`](./v2-extension-migration.md); the binary side
-is [`docs/v2-extension-abi.md`](./v2-extension-abi.md).
+This is the **normative** half of the extension specification of Freelens 2:
+what the host guarantees, what surface an extension may rely on, and what
+happens when a contract is violated. The developer-facing porting guide is
+[`docs/extensions/migrating-from-v1.md`](./migrating-from-v1.md); the binary side
+is [`docs/extensions/binaries.md`](./binaries.md).
 
 **No compatibility is promised for v1 extensions.** The migration guide is what
 they get instead.
@@ -125,7 +125,7 @@ to the global gets `undefined` at runtime, not a build error:
   extension that wants them bundles its own ([C9](#c9-routing)).
 - **`node-pty`** — v2 publishes no `Pty` global. An extension that needs to run a
   program uses `node:child_process` in its main entry point (see
-  [`v2-extension-abi.md`](./v2-extension-abi.md)).
+  [`docs/extensions/binaries.md`](./binaries.md)).
 - **`@ogre-tools/injectable` and `@ogre-tools/injectable-react`** — the host's
   dependency-injection library, which it keeps as an implementation detail (see
   [C7](#c7-the-dependency-injection-surface)). An extension that uses them
@@ -154,7 +154,7 @@ package runs against the host's copy anyway: a mobx class compiled with legacy
 (`experimentalDecorators`) decorators throws when its module is evaluated, so
 the extension fails to load, and the annotations that do not throw are dropped
 silently (see
-[MobX 7 and mobx-react 10](./v2-extension-migration.md#mobx-7-and-mobx-react-10-standard-decorators-only)
+[MobX 7 and mobx-react 10](./migrating-from-v1.md#mobx-7-and-mobx-react-10-standard-decorators-only)
 for the messages).
 
 ---
@@ -190,13 +190,13 @@ Web Crypto, `TextEncoder` / `TextDecoder`, `Uint8Array` — plus the API object 
 the main entry point, reached over `Renderer.Ipc` / `Main.Ipc`. The migration
 guide lists the replacement for each Node and Electron module v1 extensions
 used in the renderer, under
-[Node and Electron in the renderer](./v2-extension-migration.md#node-and-electron-in-the-renderer).
+[Node and Electron in the renderer](./migrating-from-v1.md#node-and-electron-in-the-renderer).
 
 The declaration cannot enforce this: `extension-api.d.ts` is one file for every
 process. The environment has to come from the extension's own compiler
 configuration, and the migration guide specifies the layout that provides it,
 under
-[Source layout: one tsconfig per runtime environment](./v2-extension-migration.md#source-layout-one-tsconfig-per-runtime-environment):
+[Source layout: one tsconfig per runtime environment](./migrating-from-v1.md#source-layout-one-tsconfig-per-runtime-environment):
 `src/main/`, `src/renderer/` and `src/common/`, each with a `tsconfig.json` for
 its environment, so a Node API in renderer code or a DOM API in main code fails
 the type check rather than the running extension.
@@ -679,10 +679,10 @@ The contract has three, not two:
 
 - **host-provided** — must not be bundled ([C3](#c3-host-provided-singletons));
 - **free** — bundle or vendor as you like ([C11](#c11-third-party-bundled-libraries));
-- **forbidden** — native `.node` addons ([the ABI document](./v2-extension-abi.md)).
+- **forbidden** — native `.node` addons ([the ABI document](./binaries.md)).
 
 ## References
 
-- [`docs/v2-extension-migration.md`](./v2-extension-migration.md) — the porting guide
-- [`docs/v2-extension-abi.md`](./v2-extension-abi.md) — shipped binaries and process invocation
-- [`docs/v2-styling.md`](./v2-styling.md) — the styling model in full
+- [`docs/extensions/migrating-from-v1.md`](./migrating-from-v1.md) — the porting guide
+- [`docs/extensions/binaries.md`](./binaries.md) — shipped binaries and process invocation
+- [`docs/styling.md`](../styling.md) — the styling model in full
