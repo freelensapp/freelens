@@ -30,6 +30,9 @@ export type EventMap = Record<string, (...args: never[]) => void>;
  * The cast is needed because `EventEmitter` declares the same method names with
  * wider signatures, which are not assignable to the narrowed ones.
  *
+ * The extension API does not export this interface, so an extension cannot
+ * name it; it extends `Common.Util.TypedEmitter` instead.
+ *
  * Replaces the `typed-emitter` package, which was last released in 2022-01 and
  * only ever contained declarations.
  */
@@ -83,11 +86,13 @@ type StoredListener = Listener & { readonly listener?: Listener };
  * value that `getMaxListeners` returns.
  *
  * ```typescript
+ * import { Common } from "@freelensapp/extensions";
+ *
  * type MyEvents = {
  *   message: (from: string, content: string) => void;
  * };
  *
- * class Chat extends TypedEmitter<MyEvents> {}
+ * class Chat extends Common.Util.TypedEmitter<MyEvents> {}
  * ```
  */
 export class TypedEmitter<Events extends EventMap> implements TypedEventEmitter<Events> {

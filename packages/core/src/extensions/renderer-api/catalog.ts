@@ -70,9 +70,9 @@ const clusterEnumeration = asLazyInjectedForExtensionApi(rendererClusterEnumerat
  * @returns Array of cluster information objects
  * @example
  * ```typescript
- * import { Catalog } from "@freelensapp/core/renderer";
+ * import { Renderer } from "@freelensapp/extensions";
  *
- * const clusters = Catalog.getAllClusters();
+ * const clusters = Renderer.Catalog.getAllClusters();
  * for (const cluster of clusters) {
  *   console.log(`${cluster.name}: ${cluster.status}`);
  * }
@@ -89,9 +89,9 @@ export function getAllClusters(): ClusterInfo[] {
  * @returns The cluster information or undefined if not found
  * @example
  * ```typescript
- * import { Catalog } from "@freelensapp/core/renderer";
+ * import { Renderer } from "@freelensapp/extensions";
  *
- * const cluster = Catalog.getClusterById("my-cluster-id");
+ * const cluster = Renderer.Catalog.getClusterById("my-cluster-id");
  * if (cluster) {
  *   console.log(`Found: ${cluster.name}`);
  * }
@@ -107,9 +107,9 @@ export function getClusterById(id: ClusterId): ClusterInfo | undefined {
  * @returns The active cluster information or undefined if no cluster is active
  * @example
  * ```typescript
- * import { Catalog } from "@freelensapp/core/renderer";
+ * import { Renderer } from "@freelensapp/extensions";
  *
- * const active = Catalog.getActiveCluster();
+ * const active = Renderer.Catalog.getActiveCluster();
  * if (active) {
  *   console.log(`Active cluster: ${active.name}`);
  * }

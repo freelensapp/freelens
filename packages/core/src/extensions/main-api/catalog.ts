@@ -38,9 +38,9 @@ const clusterEnumeration = asLazyInjectedForExtensionApi(clusterEnumerationInjec
  * @returns Array of cluster information objects
  * @example
  * ```typescript
- * import { Catalog } from "@freelensapp/core/main";
+ * import { Main } from "@freelensapp/extensions";
  *
- * const clusters = Catalog.getAllClusters();
+ * const clusters = Main.Catalog.getAllClusters();
  * for (const cluster of clusters) {
  *   console.log(`${cluster.name}: ${cluster.status}`);
  * }
@@ -57,9 +57,9 @@ export function getAllClusters(): ClusterInfo[] {
  * @returns The cluster information or undefined if not found
  * @example
  * ```typescript
- * import { Catalog } from "@freelensapp/core/main";
+ * import { Main } from "@freelensapp/extensions";
  *
- * const cluster = Catalog.getClusterById("my-cluster-id");
+ * const cluster = Main.Catalog.getClusterById("my-cluster-id");
  * if (cluster) {
  *   console.log(`Found: ${cluster.name}`);
  * }

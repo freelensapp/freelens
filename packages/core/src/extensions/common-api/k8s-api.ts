@@ -244,6 +244,23 @@ const ExternalPersistentVolumeClaimsApi = PersistentVolumeClaimsApiConstructor a
 /**
  * The `KubeObject` that can be used in extensions with additional property to
  * get CRD metainfo and the API and Store objects.
+ *
+ * @example
+ *
+ * ```ts
+ * import { Renderer } from "@freelensapp/extensions";
+ *
+ * class Example extends Renderer.K8sApi.LensExtensionKubeObject {
+ *   static readonly kind = "Example";
+ *   static readonly namespaced = true;
+ *   static readonly apiBase = "/apis/example.com/v1/examples";
+ *   static readonly crd = {
+ *     apiVersions: ["example.com/v1"],
+ *     plural: "examples",
+ *     singular: "example",
+ *   };
+ * }
+ * ```
  */
 export class LensExtensionKubeObject<
   Metadata extends KubeObjectMetadata = KubeObjectMetadata,
@@ -259,6 +276,7 @@ export class LensExtensionKubeObject<
    * @example
    *
    * ```ts
+   * // `Example` as declared in the example of `LensExtensionKubeObject`
    * const api = Example.getApi<Example>();
    * const url = api.formatUrlForNotListing({ name: "foo" });
    * ```
@@ -283,8 +301,9 @@ export class LensExtensionKubeObject<
    * @example
    *
    * ```ts
-   * const api = Example.getStore<Example>();
-   * await store.loadAll({ namespaces });
+   * // `Example` as declared in the example of `LensExtensionKubeObject`
+   * const store = Example.getStore<Example>();
+   * await store.loadAll({ namespaces: ["default"] });
    * ```
    */
   static getStore<
