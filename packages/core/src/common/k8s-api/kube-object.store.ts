@@ -217,7 +217,9 @@ export class KubeObjectStore<
           // arrived) is not a real failure -- let it propagate so the
           // abort-aware catch in `loadAll` can no-op on it instead of
           // surfacing a spurious "Failed to load" error and blanking the list.
-          if (isAbortError(error)) {
+          // The signal is checked too, for an error raised after the abort
+          // that does not carry the AbortError name.
+          if (isAbortError(error) || reqInit?.signal?.aborted) {
             throw error;
           }
 
@@ -248,9 +250,9 @@ export class KubeObjectStore<
           break;
 
         case "rejected":
-          // See the single-namespace branch above: an aborted request must
+          // See the cluster-scoped branch above: an aborted request must
           // propagate, not be reported through onLoadFailure.
-          if (isAbortError(result.reason)) {
+          if (isAbortError(result.reason) || reqInit?.signal?.aborted) {
             throw result.reason;
           }
 
