@@ -1122,9 +1122,6 @@ If your extension used them, migrate one of two ways:
   `react-router` / `react-router-dom` to your extension's own dependencies and
   bundle them; do not rely on the host providing them.
 
-See [`docs/v2-routing-modernization.md`](./v2-routing-modernization.md) for the
-full list of what was removed.
-
 ## `Renderer.Component.List` removed
 
 `Renderer.Component.List`, along with its `ListProps` and `SearchFilter` types,

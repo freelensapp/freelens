@@ -686,4 +686,3 @@ The contract has three, not two:
 - [`docs/v2-extension-migration.md`](./v2-extension-migration.md) — the porting guide
 - [`docs/v2-extension-abi.md`](./v2-extension-abi.md) — shipped binaries and process invocation
 - [`docs/v2-styling.md`](./v2-styling.md) — the styling model in full
-- [`docs/v2-routing-modernization.md`](./v2-routing-modernization.md) — what routing removed
