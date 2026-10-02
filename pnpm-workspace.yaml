@@ -150,7 +150,6 @@ catalogs:
   # relies on. Versions here intentionally duplicate the default catalog and
   # must be kept in sync with it.
   extensions:
-    '@types/node': ~24.19.0
     '@types/react': ^19.3.0
     '@types/react-dom': ^19.3.0
     chart.js: ^4.5.1

@@ -534,9 +534,6 @@ catalogs:
       specifier: 4.4.3
       version: 4.4.3
   extensions:
-    '@types/node':
-      specifier: ~24.19.0
-      version: 24.19.0
     '@types/react':
       specifier: ^19.3.0
       version: 19.3.0
@@ -1361,9 +1358,6 @@ importers:
 
   packages/extensions:
     dependencies:
-      '@types/node':
-        specifier: catalog:extensions
-        version: 24.19.0
       '@types/react':
         specifier: catalog:extensions
         version: 19.3.0
@@ -1426,7 +1420,7 @@ importers:
         specifier: workspace:^
         version: link:../extensions
       '@types/node':
-        specifier: catalog:extensions
+        specifier: 'catalog:'
         version: 24.19.0
       '@types/react':
         specifier: catalog:extensions
