@@ -24,6 +24,11 @@ import type { Cluster } from "../../common/cluster/cluster";
 export interface KubeAuthProxy {
   readonly apiPrefix: string;
   readonly port: number;
+  /**
+   * Whether the proxy process is serving: true from the moment it is ready
+   * until it exits, on its own or through `exit()`.
+   */
+  readonly isRunning: boolean;
   run: () => Promise<void>;
   exit: () => void;
 }
@@ -49,6 +54,7 @@ const createKubeAuthProxyInjectable = getInjectable({
     return (env) => {
       let port: number | undefined;
       let proxyProcess: ChildProcess | undefined;
+      let starting: Promise<void> | undefined;
       const ready = observable.box(false);
       const apiPrefix = `/${randomBytes(8).toString("hex")}`;
 
@@ -65,11 +71,25 @@ const createKubeAuthProxyInjectable = getInjectable({
         }
       };
 
-      const run = async (): Promise<void> => {
+      const run = (): Promise<void> => {
+        // Concurrent callers share one start, so they get one process: there
+        // is no process to see until the start has spawned it.
+        if (starting) {
+          return starting;
+        }
+
         if (proxyProcess) {
           return when(() => ready.get());
         }
 
+        starting = start().finally(() => {
+          starting = undefined;
+        });
+
+        return starting;
+      };
+
+      const start = async (): Promise<void> => {
         const apiUrl = await clusterApiUrl();
         const certificate = await di.inject(kubeAuthProxyCertificateInjectable, apiUrl.hostname);
 
@@ -155,7 +175,7 @@ const createKubeAuthProxyInjectable = getInjectable({
           });
           exit();
 
-          return run();
+          return start();
         }
 
         logger.info(`[KUBE-AUTH-PROXY]: found port=${port}`);
@@ -171,7 +191,7 @@ const createKubeAuthProxyInjectable = getInjectable({
           });
           exit();
 
-          return run();
+          return start();
         }
       };
 
@@ -179,6 +199,9 @@ const createKubeAuthProxyInjectable = getInjectable({
         apiPrefix,
         exit,
         run,
+        get isRunning() {
+          return ready.get();
+        },
         get port() {
           assert(port, "port has not yet been initialized");
 

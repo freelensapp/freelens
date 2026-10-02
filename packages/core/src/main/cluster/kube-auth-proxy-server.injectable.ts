@@ -84,7 +84,13 @@ const kubeAuthProxyServerInjectable = getInjectable({
           return newApiTarget(fourHoursInMs);
         }
 
-        return (apiTarget ??= await newApiTarget(thirtySecondsInMs));
+        // The cached target points at the port of one proxy process. Once that
+        // process has exited, on its own or not, a new target starts a new one.
+        if (!apiTarget || !kubeAuthProxy?.isRunning) {
+          apiTarget = await newApiTarget(thirtySecondsInMs);
+        }
+
+        return apiTarget;
       },
       ensureAuthProxyUrl: async () => {
         const kubeAuthProxy = await ensureServerHelper();
