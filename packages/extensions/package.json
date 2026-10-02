@@ -33,7 +33,6 @@
     "prepack": "pnpm build:dist"
   },
   "dependencies": {
-    "@types/node": "catalog:extensions",
     "@types/react": "catalog:extensions",
     "@types/react-dom": "catalog:extensions",
     "chart.js": "catalog:extensions",

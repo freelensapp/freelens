@@ -564,8 +564,10 @@ The bundle also depends on a pnpm patch of `rolldown-plugin-dts`
 import whose members a declaration names only by qualified name, such as
 `import * as utilities` in `common-api/utils.ts`, keeps every member of the
 module in the bundle. That includes the Node-bound members `Common.Util`
-leaves out, with their `node:` imports. Check that the bundle still has no
-`node:` import before you drop or rebase the patch.
+leaves out, with their `node:` imports. `build:dist` of
+`@freelensapp/extensions` fails when the bundle imports a Node builtin or
+references Node's types, and names the patch as the likely cause, so a patch
+that stops applying fails the build rather than reaching an extension.
 
 ## Best Practices
 

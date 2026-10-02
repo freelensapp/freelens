@@ -403,6 +403,9 @@ Some settings here are required, and some are easy to lose:
   `Main.Ipc` names the global `Electron` namespace, which only a config with
   Electron types has. Checking it under any one environment reports errors in
   the declaration, not in your code.
+- **`@types/node` is yours to declare.** `"types": ["node"]` in the main config
+  needs it as a development dependency of the extension. `@freelensapp/extensions`
+  does not bring it, because its declaration names nothing of Node.
 - **Electron types are optional in main.** Without them the `event` parameter of
   a `Main.Ipc` handler is untyped. For a typed one, add `electron` as a
   development dependency (for its types; it is never bundled) and write

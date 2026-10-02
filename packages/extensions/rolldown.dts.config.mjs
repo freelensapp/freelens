@@ -21,8 +21,16 @@
 // its tree silently becomes `any` instead of an error, and nothing in the
 // monorepo notices, where every such package happens to be installed. The
 // `declared-externals` plugin fails the build on any that is not. A subpath
-// counts as its package (`react/jsx-runtime` is `react`), and a Node builtin
-// as `node`, which `@types/node` covers.
+// counts as its package (`react/jsx-runtime` is `react`).
+//
+// The same plugin fails the build on any dependency on Node: an import of a
+// builtin (`node:fs`, or a bare `fs`) or a `/// <reference types="node" />`,
+// which is how a declaration names Node's global types. Renderer code gets no
+// guarantee of Node, so the API declaration must not reference it. When this
+// fails, the likely cause is the pnpm patch of `rolldown-plugin-dts` no longer
+// applying: unpatched, the plugin keeps every member of `@freelensapp/utilities`
+// in the bundle, the Node-bound ones `Common.Util` leaves out included,
+// together with their `node:` imports.
 
 import { readFileSync } from "node:fs";
 import { isBuiltin } from "node:module";
@@ -93,12 +101,8 @@ const declaredPackages = new Set([
   ...Object.keys(manifest.peerDependencies ?? {}),
 ]);
 
-/** Maps a bare specifier to its package: "react/jsx-runtime" to "react", "node:fs" to "node". */
+/** Maps a bare specifier to its package: "react/jsx-runtime" to "react". */
 const packageOf = (specifier) => {
-  if (isBuiltin(specifier)) {
-    return "node";
-  }
-
   const segments = specifier.split("/");
 
   return specifier.startsWith("@") ? segments.slice(0, 2).join("/") : segments[0];
@@ -147,6 +151,9 @@ const referencedSpecifiers = (code) => {
   return specifiers;
 };
 
+/** A `/// <reference types="node" />` directive, which pulls in `@types/node` wherever the file goes. */
+const nodeTypesReference = /^\/\/\/\s*<reference\s+types\s*=\s*["']node["']/m;
+
 // Checked against the generated bundle rather than everything `external` saw:
 // the inlined workspace declarations import more than the API surface reaches
 // (winston, node-pty, ...), and tree-shaking drops those imports together with
@@ -158,14 +165,26 @@ const declaredExternals = {
   name: "declared-externals",
 
   generateBundle(_options, bundle) {
-    const referenced = new Set(
-      Object.values(bundle).flatMap((output) =>
-        output.type === "chunk" ? [...referencedSpecifiers(output.code)] : [],
-      ),
-    );
-    const undeclared = [...referenced]
-      .filter((specifier) => isBareSpecifier(specifier) && !isDeclared(specifier))
-      .sort();
+    const chunks = Object.values(bundle).filter((output) => output.type === "chunk");
+    const referenced = new Set(chunks.flatMap((chunk) => [...referencedSpecifiers(chunk.code)]));
+    const externals = [...referenced].filter(isBareSpecifier).sort();
+    const builtins = externals.filter((specifier) => isBuiltin(specifier));
+
+    if (chunks.some((chunk) => nodeTypesReference.test(chunk.code))) {
+      builtins.push('/// <reference types="node" />');
+    }
+
+    if (builtins.length > 0) {
+      this.error(
+        "the API declaration must not depend on Node, but it references:\n" +
+          builtins.map((specifier) => `  ${specifier}`).join("\n") +
+          "\nA likely cause is the pnpm patch of rolldown-plugin-dts (patchedDependencies in" +
+          " pnpm-workspace.yaml) no longer applying, which lets the Node-bound members of" +
+          " @freelensapp/utilities that Common.Util leaves out into the bundle.",
+      );
+    }
+
+    const undeclared = externals.filter((specifier) => !isDeclared(specifier));
 
     if (undeclared.length > 0) {
       this.error(

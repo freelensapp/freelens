@@ -409,7 +409,8 @@ and it is delimited by a rule rather than by a list of what it offers:
   the bundled declarations either. Keeping them out also takes the pnpm patch of
   `rolldown-plugin-dts`: unpatched, the plugin keeps every member of
   `@freelensapp/utilities` in the bundle, because `utils.ts` reaches them
-  through `import * as utilities`.
+  through `import * as utilities`, and `build:dist` fails on their Node
+  imports ([C11](#c11-third-party-bundled-libraries)).
 
 `Main.Util` and `Renderer.Util` spread `Common.Util`, so an omitted member is
 gone from all three; each adds its own `fetch` ([C12](#c12-http)).
@@ -652,6 +653,19 @@ error, and nothing in the monorepo notices, since every such package happens to
 be installed there. `packages/extensions/rolldown.dts.config.mjs` therefore
 enforces it: `build:dist` fails and lists every external specifier of the
 bundle whose package is not declared.
+
+**Nothing of Node is imported or referenced**: no builtin, whether written
+`node:fs` or `fs`, and no `/// <reference types="node" />`, which is how a
+declaration names Node's global types. Renderer code gets no guarantee of Node
+([C4](#c4-module-format-and-loading)), and an author's renderer config has no
+Node types to resolve them against. The same config enforces it: `build:dist`
+fails and lists every Node reference of the bundle. The likely cause of one is
+the pnpm patch of `rolldown-plugin-dts` (`patchedDependencies` in
+`pnpm-workspace.yaml`) no longer applying, which brings back the Node-bound
+members `Common.Util` leaves out
+([C5](#decided-util-is-freelensapputilities-minus-the-node-bound-members)) with
+their `node:` imports. `@types/node` is therefore not a dependency of the
+package: an extension whose main code needs it declares it itself.
 
 **Failure mode.** A host-provided library in `dependencies` of
 `@freelensapp/extensions` **silently plants a real React in the author's tree**
