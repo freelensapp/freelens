@@ -234,11 +234,9 @@ export class LensProxy {
         this.dependencies.logger.debug(`Failed proxy to target: ${JSON.stringify(target, null, 2)}`);
       }
 
-      /**
-       * Not retried here: whoever sent the request decides whether to send it
-       * again (a watch that fails is restarted by its store), so a retry would
-       * only delay the error it handles anyway.
-       */
+      // Not retried here: whoever sent the request decides whether to send it
+      // again (a watch that fails is restarted by its store), so a retry would
+      // only delay the error it handles anyway.
       try {
         res.writeHead(500).end(`Oops, something went wrong.\n${error}`);
       } catch (e) {
