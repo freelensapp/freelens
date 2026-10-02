@@ -265,6 +265,76 @@ describe("lens proxy kube api requests", () => {
   });
 });
 
+describe("lens proxy kube api requests to a refused target", () => {
+  let proxy: { listen: () => Promise<void>; close: () => Promise<void> | undefined };
+  let port: number;
+  let getApiTarget: Mock;
+  let route: Mock;
+
+  const get = (path: string) =>
+    new Promise<{ statusCode?: number; body: string }>((resolve, reject) => {
+      http
+        .get({ host: "127.0.0.1", port, path, agent: false }, (res) => {
+          let body = "";
+
+          res.setEncoding("utf8");
+          res.on("data", (chunk: string) => (body += chunk));
+          res.on("end", () => resolve({ statusCode: res.statusCode, body }));
+        })
+        .on("error", reject);
+    });
+
+  beforeEach(async () => {
+    const di = getDiForUnitTesting();
+
+    // A port that was free a moment ago and has nothing listening on it now
+    const closed = http.createServer();
+
+    closed.listen(0, "127.0.0.1");
+    await once(closed, "listening");
+
+    const { port: refusedPort } = closed.address() as net.AddressInfo;
+
+    closed.close();
+    await once(closed, "close");
+
+    getApiTarget = vi.fn(async () => ({ target: new URL(`http://127.0.0.1:${refusedPort}/some-api-prefix`) }));
+    route = vi.fn(async (_cluster: Cluster | undefined, _req: ServerIncomingMessage, res: http.ServerResponse) => {
+      res.end();
+    });
+
+    di.override(directoryForUserDataInjectable, () => "/some-directory-for-user-data");
+    di.override(directoryForTempInjectable, () => "/some-directory-for-tmp");
+    di.override(getClusterForRequestInjectable, () => () => ({ id: "some-cluster-id" }) as Cluster);
+    di.override(shellApiRequestInjectable, () => vi.fn());
+    di.override(kubeApiUpgradeRequestInjectable, () => vi.fn());
+    di.override(kubeAuthProxyServerInjectable, () => ({ getApiTarget }) as unknown as KubeAuthProxyServer);
+    di.override(routerInjectable, () => ({ route }) as unknown as Router);
+
+    proxy = di.inject(lensProxyInjectable);
+
+    await proxy.listen();
+    port = di.inject(lensProxyPortInjectable).get();
+  });
+
+  afterEach(async () => {
+    await proxy.close();
+  });
+
+  it("answers a GET with 500 at once, and does not send it again", async () => {
+    const response = await get("/api-kube/api/v1/pods");
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body).toContain("ECONNREFUSED");
+
+    // Long enough for a retry scheduled on the error to have started
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    expect(getApiTarget).toHaveBeenCalledTimes(1);
+    expect(route).not.toHaveBeenCalled();
+  });
+});
+
 describe("lens proxy upgrade requests", () => {
   let di: DiContainer;
   let cluster: Cluster | undefined;
