@@ -268,15 +268,88 @@ annotations:
   instances are serialized, a catalog entity for example, keeps plain fields and
   annotates them with `makeObservable(this, { … })` instead.
 - Your bundler has to lower standard decorators: no Node or Electron release
-  runs them natively yet. esbuild and Babel (with
-  `@babel/plugin-proposal-decorators` in version `2023-11`) do; Oxc, which
-  Vite 8 uses, passes them through untouched.
+  runs them natively yet. See
+  [Lowering standard decorators](#lowering-standard-decorators) below.
 - mobx-react 10 removed `Provider`, `inject`, `MobXProviderContext`,
   `disposeOnUnmount`, `PropTypes`, `useObserver`, `useLocalStore`,
   `useAsObservableSource`, `useStaticRendering`, the batching imports and
   `observer(fn, { forwardRef: true })`. Use `React.createContext`, cleanup in
   `componentWillUnmount` or `useEffect`, `useLocalObservable`,
   `enableStaticRendering`, and `observer(React.forwardRef(…))`.
+
+### Lowering standard decorators
+
+The build must turn every standard decorator, and the `accessor` field it sits
+on, into plain JavaScript, because the host's Node and Chromium cannot run them.
+How depends on the bundler:
+
+- **esbuild** lowers them itself. Mark decorators as unsupported, so that it
+  lowers them whatever `target` says, and compile without
+  `experimentalDecorators`:
+
+  ```js
+  await esbuild.build({
+    // …
+    supported: { decorators: false },
+    tsconfigRaw: { compilerOptions: { experimentalDecorators: false } },
+  });
+  ```
+
+- **Babel** lowers them with `@babel/plugin-proposal-decorators` set to
+  `{ version: "2023-11" }`.
+- **Vite 8, Rolldown and Vitest** transpile TypeScript with Oxc, which lowers
+  only legacy decorators and passes standard ones through untouched. Add a
+  plugin that runs before Oxc and hands each module with a decorator to esbuild.
+  Freelens builds itself this way, with
+  [`scripts/vite-plugin-standard-decorators.mjs`](../scripts/vite-plugin-standard-decorators.mjs),
+  which you may copy under the MIT license:
+
+  ```js
+  import { transform } from "esbuild";
+
+  const typeScriptModule = /\.[cm]?tsx?$/;
+  const decoratorAtLineStart = /^\s*@[A-Za-z_$]/m;
+
+  export function standardDecorators() {
+    return {
+      name: "standard-decorators",
+      enforce: "pre",
+      async transform(code, id) {
+        const path = id.split("?", 1)[0];
+
+        if (!typeScriptModule.test(path) || path.includes("/node_modules/") || !decoratorAtLineStart.test(code)) {
+          return null;
+        }
+
+        const result = await transform(code, {
+          loader: path.endsWith("x") ? "tsx" : "ts",
+          jsx: "preserve",
+          target: "esnext",
+          supported: { decorators: false },
+          sourcefile: path,
+          sourcemap: "external",
+          tsconfigRaw: {
+            compilerOptions: {
+              experimentalDecorators: false,
+              useDefineForClassFields: true,
+              verbatimModuleSyntax: false,
+            },
+          },
+        });
+
+        return { code: result.code, map: result.map };
+      },
+    };
+  }
+  ```
+
+  Add `standardDecorators()` to the `plugins` of `vite.config` (and of
+  `vitest.config`, if the tests import decorated classes), and `esbuild` to your
+  `devDependencies`. The plugin lowers only the decorators and leaves JSX and
+  everything else to Oxc, so the rest of the build is unchanged.
+
+A decorator that reaches the host unlowered is a syntax error when the module
+is evaluated, so the extension fails to load.
 
 ## `tsconfig.json` for an extension
 
