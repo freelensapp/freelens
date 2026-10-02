@@ -57,6 +57,7 @@ describe("PrometheusHandler", () => {
       exit: () => {},
       run: async () => {},
       port: 9191,
+      isRunning: true,
     }));
     di.override(directoryForTempInjectable, () => "/some-temp-dir");
     di.inject(lensProxyPortInjectable).set(12345);

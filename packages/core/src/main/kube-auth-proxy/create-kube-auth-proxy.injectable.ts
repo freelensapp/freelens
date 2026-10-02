@@ -24,6 +24,11 @@ import type { Cluster } from "../../common/cluster/cluster";
 export interface KubeAuthProxy {
   readonly apiPrefix: string;
   readonly port: number;
+  /**
+   * Whether the proxy process is serving: true from the moment it is ready
+   * until it exits, on its own or through `exit()`.
+   */
+  readonly isRunning: boolean;
   run: () => Promise<void>;
   exit: () => void;
 }
@@ -194,6 +199,9 @@ const createKubeAuthProxyInjectable = getInjectable({
         apiPrefix,
         exit,
         run,
+        get isRunning() {
+          return ready.get();
+        },
         get port() {
           assert(port, "port has not yet been initialized");
 

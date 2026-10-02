@@ -85,6 +85,41 @@ describe("kube auth proxy server", () => {
     expect(spawnMock).toHaveBeenCalledTimes(1);
   });
 
+  describe("given the proxy has exited on its own after a short request", () => {
+    beforeEach(async () => {
+      expect(await portOf()).toBe("9001");
+
+      processes[0].emit("exit", 1);
+    });
+
+    it("gives the next short request a target for a newly started proxy", async () => {
+      expect(await portOf()).toBe("9002");
+      expect(spawnMock).toHaveBeenCalledTimes(2);
+    });
+
+    it("keeps reusing the target of the new proxy", async () => {
+      const first = await kubeAuthProxyServer.getApiTarget();
+      const second = await kubeAuthProxyServer.getApiTarget();
+
+      expect(second).toBe(first);
+      expect(spawnMock).toHaveBeenCalledTimes(2);
+    });
+
+    it("starts one new proxy for concurrent short requests", async () => {
+      const ports = await Promise.all([portOf(), portOf(), portOf()]);
+
+      expect(ports).toEqual(["9002", "9002", "9002"]);
+      expect(spawnMock).toHaveBeenCalledTimes(2);
+    });
+
+    it("starts one new proxy for concurrent short and long requests", async () => {
+      const ports = await Promise.all([portOf(), portOf(true), portOf()]);
+
+      expect(ports).toEqual(["9002", "9002", "9002"]);
+      expect(spawnMock).toHaveBeenCalledTimes(2);
+    });
+  });
+
   it("starts a new proxy for a short request after stop()", async () => {
     expect(await portOf()).toBe("9001");
 
