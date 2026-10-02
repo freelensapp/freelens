@@ -904,7 +904,7 @@ resolves the namespace filter from the host container itself:
 
 `Common.Util` carries every export of the host's utilities package except the
 ones that need Node or Electron in the renderer, which v2 does not guarantee
-there ([C5](./v2-extension-api.md#decided-util-is-freelensapputilities-minus-the-node-bound-members)).
+there ([C5](./v2-extension-api.md#util-is-freelensapputilities-minus-the-node-bound-members)).
 These are gone from `Common.Util`, and with it from `Main.Util` and
 `Renderer.Util`. No extension is known to use them; if you need one back in a
 form that works without Node, ask for it.
