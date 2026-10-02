@@ -533,8 +533,7 @@ depends on the question:
   mode. Read this before changing anything under `packages/extensions/` or
   `packages/core/src/extensions/`.
 - [`docs/v2-extension-abi.md`](./docs/v2-extension-abi.md) — what an extension
-  may **ship and execute** besides JavaScript. Specified, but deliberately not
-  implemented in 2.0.0.
+  may **ship and execute** besides JavaScript, and what the host does with it.
 - [`docs/v2-extension-migration.md`](./docs/v2-extension-migration.md) — the
   author-facing **porting guide** from v1.
 
