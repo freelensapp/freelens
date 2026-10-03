@@ -212,17 +212,20 @@ describe("computeUnixShellEnvironment technical tests", () => {
     it("should spawn a process with the correct arguments", () => {
       expect(spawnMock).toBeCalledWith(
         shellPath,
-        ["-l", "-i"],
+        [
+          "-l",
+          "-i",
+          "-c",
+          `'/some/process/exec/path' -e 'process.stdout.write("deadfoobarfoobeef" + JSON.stringify(process.env) + "deadfoobarfoobeef")'`,
+        ],
         expect.objectContaining({
           env: expectedEnv,
         }),
       );
     });
 
-    it("should send the command via stdin", () => {
-      expect(stdinValue).toBe(
-        ` '/some/process/exec/path' -e 'process.stdout.write("deadfoobarfoobeef" + JSON.stringify(process.env) + "deadfoobarfoobeef")'`,
-      );
+    it("should not send the probe via stdin to avoid recording it in shell history", () => {
+      expect(stdinValue).toBe("");
     });
 
     it("should close stdin", () => {
