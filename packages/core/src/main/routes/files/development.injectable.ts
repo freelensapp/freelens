@@ -5,27 +5,16 @@
  */
 
 import assert from "node:assert";
-import http from "node:http";
 import path from "node:path";
 import { prefixedLoggerInjectable } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import { createProxyServer } from "http-proxy-3";
 import { abortWhenClientCloses, isClientGone } from "../../lens-proxy/abort-when-client-closes";
 import { respondText } from "../../utils/http-responses";
+import type http from "node:http";
 
 import type { ServerResponse } from "../../lens-proxy/lens-proxy";
 import type { LensApiRequest, RouteResponse } from "../../router/route";
-
-/**
- * Over HTTP/2 the page sends every module request at once, and without an
- * agent http-proxy-3 opens a new connection to the dev server for each one.
- * Hundreds of simultaneous connections overflow the listen queue of the dev
- * server, which holds 128 on macOS, and the connections that do not fit are
- * reset or stall, leaving modules unanswered. A keep-alive agent reuses this
- * many connections instead, which is in the order of what Chromium itself
- * opens over HTTP/1.1.
- */
-const maxDevServerSockets = 16;
 
 const devStaticFileRouteHandlerInjectable = getInjectable({
   id: "dev-static-file-route-handler",
@@ -39,9 +28,7 @@ const devStaticFileRouteHandlerInjectable = getInjectable({
 
     assert(Number.isInteger(devServerPort), "FREELENS_DEV_SERVER_PORT environment variable must only be an integer");
 
-    const proxy = createProxyServer({
-      agent: new http.Agent({ keepAlive: true, maxSockets: maxDevServerSockets }),
-    });
+    const proxy = createProxyServer();
     const proxyTarget = `http://127.0.0.1:${devServerPort}`;
 
     abortWhenClientCloses(proxy);

@@ -729,8 +729,6 @@ describe("lens proxy development static files", () => {
   let proxy: { listen: () => Promise<void>; close: () => Promise<void> | undefined };
   let port: number;
   let devServer: http.Server;
-  let openConnections: number;
-  let mostOpenConnections: number;
   let pendingRequestReceived: Promise<http.IncomingMessage>;
   const sessions: http2.ClientHttp2Session[] = [];
 
@@ -744,9 +742,6 @@ describe("lens proxy development static files", () => {
 
   beforeEach(async () => {
     const di = getDiForUnitTesting();
-
-    openConnections = 0;
-    mostOpenConnections = 0;
 
     let receivePendingRequest: (req: http.IncomingMessage) => void;
 
@@ -778,10 +773,6 @@ describe("lens proxy development static files", () => {
 
       setTimeout(() => res.end(`some-module-at-${req.url}`), 20);
     });
-    devServer.on("connection", (socket: net.Socket) => {
-      mostOpenConnections = Math.max(mostOpenConnections, ++openConnections);
-      socket.once("close", () => openConnections--);
-    });
     devServer.listen(0, "127.0.0.1");
     await once(devServer, "listening");
 
@@ -811,15 +802,12 @@ describe("lens proxy development static files", () => {
     devServer.close();
   });
 
-  it("proxies the module requests of a page, all sent at once over HTTP/2, over a bounded number of connections", async () => {
+  it("proxies the module requests of a page, all sent at once over HTTP/2", async () => {
     const session = await connectSession();
     const paths = Array.from({ length: 100 }, (_, index) => `/@fs/some-module-${index}.ts`);
     const responses = await Promise.all(paths.map((path) => getHttp2(session, path)));
 
     expect(responses).toEqual(paths.map((path) => ({ statusCode: 200, body: `some-module-at-${path}` })));
-    // One connection per request would overflow the listen queue of the dev
-    // server, which is 128 on macOS
-    expect(mostOpenConnections).toBeLessThanOrEqual(16);
   });
 
   it("answers 502 over HTTP/2 when the dev server resets the connection", async () => {
