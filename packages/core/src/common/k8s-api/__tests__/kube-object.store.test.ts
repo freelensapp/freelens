@@ -10,7 +10,7 @@ import { KubeObjectStore } from "../kube-object.store";
 
 import type { FetchRequestInit as RequestInit } from "@freelensapp/json-api";
 import type { KubeApi, KubeApiWatchOptions } from "@freelensapp/kube-api";
-import type { KubeJsonApiData } from "@freelensapp/kube-object";
+import type { KubeJsonApiDataFor } from "@freelensapp/kube-object";
 
 import type { KubeObjectStoreLoadingParams } from "../kube-object.store";
 
@@ -483,7 +483,7 @@ describe("KubeObjectStore", () => {
     const createWatchedStore = () => {
       const watchSignals: AbortSignal[] = [];
       const watchCallbacks: Array<(data: null, error: unknown) => void> = [];
-      const watch = vi.fn((opts: KubeApiWatchOptions<KubeObject, KubeJsonApiData>) => {
+      const watch = vi.fn((opts: KubeApiWatchOptions<KubeObject, KubeJsonApiDataFor<KubeObject>>) => {
         // Like KubeApi.watch, which wraps the controller it is given
         const controller = new WrappedAbortController(opts.abortController);
 
