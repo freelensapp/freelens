@@ -281,6 +281,18 @@ export class LensProxy {
         // happens when proxy target aborts connection
         res.end();
       });
+
+      /**
+       * The response headers are only sent with the first byte of the body,
+       * and a watch has none until its first event, so the renderer would not
+       * see the request answered until then. The proxy sets the status and the
+       * headers right after this event, so send them once it has.
+       */
+      setImmediate(() => {
+        if (!res.headersSent && !res.writableEnded) {
+          res.flushHeaders();
+        }
+      });
     });
 
     proxy.on("error", (error, req, res, target) => {

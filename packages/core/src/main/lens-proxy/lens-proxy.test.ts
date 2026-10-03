@@ -480,6 +480,29 @@ describe("lens proxy kube api requests", () => {
     expect(response).toEqual({ statusCode: 200, body: "some-partial-body" });
   });
 
+  it("sends the headers of a watch over HTTP/1.1 before its first event", async () => {
+    const response = new Promise<http.IncomingMessage>((resolve, reject) => {
+      https
+        .get({ host: "127.0.0.1", port, path: "/api-kube/api/v1/pods?watch=true", rejectUnauthorized: false }, resolve)
+        .on("error", reject);
+    });
+
+    const { statusCode, headers, socket } = await response;
+
+    socket.destroy();
+    expect(statusCode).toBe(200);
+    expect(headers["content-type"]).toBe("application/json");
+  });
+
+  it("sends the headers of a watch over HTTP/2 before its first event", async () => {
+    const session = await connectSession();
+    const stream = session.request({ ":path": "/api-kube/api/v1/pods?watch=true" });
+    const [headers] = (await once(stream, "response")) as [http2.IncomingHttpHeaders];
+
+    expect(headers[":status"]).toBe(200);
+    expect(headers["content-type"]).toBe("application/json");
+  });
+
   it("ends an HTTP/2 request once it has been idle for the timeout of its target, and not the session", async () => {
     timeout = 100;
 
