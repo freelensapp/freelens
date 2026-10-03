@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import https from "node:https";
+import http2 from "node:http2";
 import net from "node:net";
 import { apiKubePrefix, apiPrefix } from "../../common/vars";
 import { getBoolean } from "../utils/parse-query";
@@ -12,7 +12,7 @@ import type http from "node:http";
 
 import type { Logger } from "@freelensapp/logger";
 
-import type { ProxyServer } from "http-proxy-3";
+import type { ProxyServer, ServerOptions } from "http-proxy-3";
 import type { SetRequired } from "type-fest";
 
 import type { EmitAppEvent } from "../../common/app-event-bus/emit-event.injectable";
@@ -22,8 +22,14 @@ import type { KubeAuthProxyServer } from "../cluster/kube-auth-proxy-server.inje
 import type { Router } from "../router/router";
 import type { ProxyApiRequestArgs, ShellApiRequestArgs } from "./proxy-functions";
 
-export type GetClusterForRequest = (req: http.IncomingMessage) => Cluster | undefined;
-export type ServerIncomingMessage = SetRequired<http.IncomingMessage, "url" | "method">;
+/**
+ * The server answers HTTP/2 and falls back to HTTP/1.1, so a request and its
+ * response are either the `http2` compatibility objects or the `http` ones.
+ */
+export type ServerRequest = http.IncomingMessage | http2.Http2ServerRequest;
+export type ServerResponse = http.ServerResponse | http2.Http2ServerResponse;
+export type GetClusterForRequest = (req: ServerRequest) => Cluster | undefined;
+export type ServerIncomingMessage = SetRequired<ServerRequest, "url" | "method">;
 export type LensProxyApiRequest = (args: ProxyApiRequestArgs) => void | Promise<void>;
 export type LensProxyShellApiRequest = (args: ShellApiRequestArgs) => void | Promise<void>;
 
@@ -40,6 +46,11 @@ interface Dependencies {
   readonly logger: Logger;
   readonly certificate: SelfSignedCert;
 }
+
+/**
+ * An upgrade is always an HTTP/1.1 request: HTTP/2 has no upgrade.
+ */
+type UpgradeRequest = ProxyApiRequestArgs["req"];
 
 const watchParam = "watch";
 const followParam = "follow";
@@ -72,24 +83,64 @@ const disallowedPorts = new Set([
  */
 const closeGracePeriodMs = 500;
 
+/**
+ * Every watch and follow request of a renderer is a stream that stays open, so
+ * a session carries many more of them than the default settings assume. The
+ * stream limit is far above what a renderer opens, and the memory limit, in
+ * megabytes, keeps a session with many streams from being ended with
+ * `NGHTTP2_ENHANCE_YOUR_CALM`, which the default of 10 does.
+ */
+const maxConcurrentStreams = 1000;
+const maxSessionMemory = 100;
+
 export class LensProxy {
-  protected readonly proxyServer: https.Server;
+  protected readonly proxyServer: http2.Http2SecureServer;
   protected closed = false;
+
+  /**
+   * The open HTTP/2 sessions, and the sockets of every connection, which
+   * includes the HTTP/1.1 ones and those upgraded to a shell session. They are
+   * what `close` has to end: the HTTP/2 server has no `closeAllConnections`.
+   */
+  protected readonly sessions = new Set<http2.ServerHttp2Session>();
+  protected readonly sockets = new Set<net.Socket>();
 
   constructor(private readonly dependencies: Dependencies) {
     this.configureProxy(dependencies.proxy);
 
-    this.proxyServer = https.createServer(
+    /**
+     * Chromium allows six HTTP/1.1 connections per host, and every open watch
+     * holds one of them, so over HTTP/1.1 a few list views leave further
+     * requests queued. Over HTTP/2 all requests of a frame share one
+     * connection. Chromium negotiates it through ALPN on its own, and
+     * HTTP/1.1 stays available for the clients that need it, and for upgrades.
+     */
+    this.proxyServer = http2.createSecureServer(
       {
         key: dependencies.certificate.private,
         cert: dependencies.certificate.cert,
+        allowHTTP1: true,
+        maxSessionMemory,
+        settings: { maxConcurrentStreams },
       },
-      (req, res) => {
+      // With `allowHTTP1` the listener receives the `http` objects for an
+      // HTTP/1.1 request, which the types of `createSecureServer` do not say
+      (req: ServerRequest, res: ServerResponse) => {
         this.handleRequest(req as ServerIncomingMessage, res);
       },
     );
 
-    this.proxyServer.on("upgrade", (req: ServerIncomingMessage, socket: net.Socket, head: Buffer) => {
+    this.proxyServer.on("session", (session) => {
+      this.sessions.add(session);
+      session.once("close", () => this.sessions.delete(session));
+    });
+
+    this.proxyServer.on("connection", (socket: net.Socket) => {
+      this.sockets.add(socket);
+      socket.once("close", () => this.sockets.delete(socket));
+    });
+
+    this.proxyServer.on("upgrade", (req: UpgradeRequest, socket: net.Socket, head: Buffer) => {
       /**
        * Decided before the cluster is looked up: an internal upgrade is a
        * shell request, and a shell can be opened outside of any cluster
@@ -203,15 +254,24 @@ export class LensProxy {
        * finally call back.
        */
       const destroyRemaining = setTimeout(() => {
-        this.proxyServer.closeAllConnections();
+        for (const socket of this.sockets) {
+          socket.destroy();
+        }
       }, closeGracePeriodMs);
 
+      /**
+       * Closing the server also closes the idle HTTP/1.1 connections. A
+       * session is closed here as well, which refuses new streams and ends it
+       * once its open ones have ended: at once when it has none.
+       */
       this.proxyServer.close(() => {
         clearTimeout(destroyRemaining);
         resolve();
       });
 
-      this.proxyServer.closeIdleConnections();
+      for (const session of this.sessions) {
+        session.close();
+      }
     });
   }
 
@@ -247,7 +307,7 @@ export class LensProxy {
     return proxy;
   }
 
-  protected async handleRequest(req: ServerIncomingMessage, res: http.ServerResponse) {
+  protected async handleRequest(req: ServerIncomingMessage, res: ServerResponse) {
     const cluster = this.dependencies.getClusterForRequest(req);
 
     if (cluster && req.url.startsWith(apiKubePrefix)) {
@@ -258,11 +318,31 @@ export class LensProxy {
       const proxyTarget = await kubeAuthProxyServer.getApiTarget(isLongRunningRequest(req.url));
 
       if (proxyTarget) {
-        return this.dependencies.proxy.web(req, res, proxyTarget);
+        return this.proxyWeb(req, res, proxyTarget);
       }
     }
 
     res.setHeader("Content-Security-Policy", this.dependencies.contentSecurityPolicy);
     await this.dependencies.router.route(cluster, req, res);
+  }
+
+  protected proxyWeb(req: ServerIncomingMessage, res: ServerResponse, target: ServerOptions) {
+    if (req instanceof http2.Http2ServerRequest && target.timeout) {
+      /**
+       * http-proxy-3 applies `timeout` to `req.socket`, which for an HTTP/2
+       * request stands for the session, where it does nothing. Apply it to the
+       * stream instead, and end the stream once it has been idle that long,
+       * as the socket of an HTTP/1.1 request is.
+       */
+      const { timeout, ...options } = target;
+      const { stream } = req;
+
+      stream.setTimeout(timeout, () => stream.close(http2.constants.NGHTTP2_CANCEL));
+      target = options;
+    }
+
+    // http-proxy-3 proxies an HTTP/2 request as well, but its types only name
+    // the `http` objects
+    this.dependencies.proxy.web(req as http.IncomingMessage, res as http.ServerResponse, target);
   }
 }

@@ -8,14 +8,14 @@ import Call from "@hapi/call";
 import type http from "node:http";
 
 import type { Cluster } from "../../common/cluster/cluster";
-import type { ServerIncomingMessage } from "../lens-proxy/lens-proxy";
+import type { ServerIncomingMessage, ServerRequest, ServerResponse } from "../lens-proxy/lens-proxy";
 import type { CreateHandlerForRoute, RouteHandler } from "./create-handler-for-route.injectable";
 import type { ParseRequest } from "./parse-request.injectable";
 import type { LensApiRequest, Route } from "./route";
 
 export interface RouterRequestOpts {
-  req: http.IncomingMessage;
-  res: http.ServerResponse;
+  req: ServerRequest;
+  res: ServerResponse;
   cluster: Cluster | undefined;
   params: Partial<Record<string, string>>;
   url: URL;
@@ -36,11 +36,7 @@ export class Router {
     }
   }
 
-  public async route(
-    cluster: Cluster | undefined,
-    req: ServerIncomingMessage,
-    res: http.ServerResponse,
-  ): Promise<boolean> {
+  public async route(cluster: Cluster | undefined, req: ServerIncomingMessage, res: ServerResponse): Promise<boolean> {
     const url = new URL(req.url, "http://localhost");
     const path = url.pathname;
     const method = req.method.toLowerCase();
@@ -59,7 +55,9 @@ export class Router {
 
   protected async getRequest(opts: RouterRequestOpts): Promise<LensApiRequest<string>> {
     const { req, res, url, cluster, params } = opts;
-    const { payload } = await this.dependencies.parseRequest(req, null, {
+    // Subtext reads the headers and the body stream, which the `http2`
+    // compatibility request has as well, but its types only name the `http` one
+    const { payload } = await this.dependencies.parseRequest(req as http.IncomingMessage, null, {
       parse: true,
       output: "data",
     });

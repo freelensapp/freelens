@@ -5,9 +5,12 @@
 
 import { once } from "node:events";
 import http from "node:http";
-import net from "node:net";
+import http2 from "node:http2";
+import https from "node:https";
+import tls from "node:tls";
 import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
+import lensProxyCertificateInjectable from "../../common/certificate/lens-proxy-certificate.injectable";
 import kubeAuthProxyServerInjectable from "../cluster/kube-auth-proxy-server.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import routerInjectable from "../router/router.injectable";
@@ -16,6 +19,7 @@ import lensProxyInjectable from "./lens-proxy.injectable";
 import lensProxyPortInjectable from "./lens-proxy-port.injectable";
 import kubeApiUpgradeRequestInjectable from "./proxy-functions/kube-api-upgrade-request.injectable";
 import shellApiRequestInjectable from "./proxy-functions/shell-api-request.injectable";
+import type net from "node:net";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { Mock } from "vitest";
@@ -23,38 +27,113 @@ import type { Mock } from "vitest";
 import type { Cluster } from "../../common/cluster/cluster";
 import type { KubeAuthProxyServer } from "../cluster/kube-auth-proxy-server.injectable";
 import type { Router } from "../router/router";
-import type { ServerIncomingMessage } from "./lens-proxy";
+import type { ServerIncomingMessage, ServerResponse } from "./lens-proxy";
 
 /**
- * The certificate is a placeholder in unit tests and the real RSA keygen is
- * mocked away, so the TLS server cannot be created. Nothing here needs TLS:
- * the upgrade handler is registered on the server object, which a plain http
- * server models exactly.
+ * The proxy chooses between HTTP/2 and HTTP/1.1 through ALPN, which needs a
+ * real TLS server, and the certificate of unit tests is a placeholder. This
+ * one was made for these tests only, with `openssl req -x509 -newkey ec`: its
+ * key protects nothing. It is generated ahead of time because generating keys
+ * inside a Vitest worker can crash the worker at teardown.
  */
-vi.mock("node:https", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("node:https")>();
-  const http = await import("node:http");
-  const createServer = (_options: unknown, handler: Parameters<typeof http.createServer>[1]) =>
-    http.createServer(handler);
+const testCertificate = {
+  cert: `-----BEGIN CERTIFICATE-----
+MIIB4jCCAYigAwIBAgIUNX6HxilPxIoumHygDgdlXj8GWDAwCgYIKoZIzj0EAwIw
+JDEiMCAGA1UEAwwZRnJlZWxlbnMgdGVzdCBjZXJ0aWZpY2F0ZTAgFw0yNjEwMDMx
+MjA1MzFaGA8yMTI2MDkwOTEyMDUzMVowJDEiMCAGA1UEAwwZRnJlZWxlbnMgdGVz
+dCBjZXJ0aWZpY2F0ZTBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABBuA47PQuI9Q
+HWHiY897aJWFHMwvCi7ohSWaEwUqcoQ8AzL/q5ZOxQLST/7kPyZAY9Ja3ZL6mD+0
+wGIh4hYteYGjgZUwgZIwHQYDVR0OBBYEFMBn+ApS+M2jGTTGV1p2RUp9utMmMB8G
+A1UdIwQYMBaAFMBn+ApS+M2jGTTGV1p2RUp9utMmMA8GA1UdEwEB/wQFMAMBAf8w
+PwYDVR0RBDgwNoIVcmVuZGVyZXIuZnJlZWxlbnMuYXBwghcqLnJlbmRlcmVyLmZy
+ZWVsZW5zLmFwcIcEfwAAATAKBggqhkjOPQQDAgNIADBFAiEA7PpvR9DsxXAaFafD
+0Vj0RNDa13ZvJaeZUtuCWZ/YYIgCIASDveKIahqYM+sn2wtcOLsnsrs+z8qg1S1y
+IwI5cqTs
+-----END CERTIFICATE-----`,
+  private: `-----BEGIN PRIVATE KEY-----
+MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgMzK6YmXo+/pfi+/3
+mqufu4FJqWVZWcxYepT9H7s7bBWhRANCAAQbgOOz0LiPUB1h4mPPe2iVhRzMLwou
+6IUlmhMFKnKEPAMy/6uWTsUC0k/+5D8mQGPSWt2S+pg/tMBiIeIWLXmB
+-----END PRIVATE KEY-----`,
+  public: "",
+};
 
-  return { ...actual, createServer, default: { ...actual, createServer } };
-});
+const overrideEnvironment = (di: DiContainer) => {
+  di.override(directoryForUserDataInjectable, () => "/some-directory-for-user-data");
+  di.override(directoryForTempInjectable, () => "/some-directory-for-tmp");
+  di.override(lensProxyCertificateInjectable, () => ({ get: () => testCertificate, set: () => {} }));
+};
+
+/**
+ * A TLS connection that offers only HTTP/1.1, as a client without HTTP/2
+ * support does.
+ */
+const connectHttp1 = async (port: number) => {
+  const socket = tls.connect({ port, host: "127.0.0.1", rejectUnauthorized: false, ALPNProtocols: ["http/1.1"] });
+
+  await once(socket, "secureConnect");
+
+  return socket;
+};
+
+const connectHttp2 = async (port: number) => {
+  const session = http2.connect(`https://127.0.0.1:${port}`, { rejectUnauthorized: false });
+
+  await once(session, "connect");
+
+  return session;
+};
+
+const getHttp1 = (port: number, path: string, headers: http.OutgoingHttpHeaders = {}) =>
+  new Promise<{ statusCode?: number; body: string }>((resolve, reject) => {
+    https
+      .get({ host: "127.0.0.1", port, path, agent: false, rejectUnauthorized: false, headers }, (res) => {
+        let body = "";
+
+        res.setEncoding("utf8");
+        res.on("data", (chunk: string) => (body += chunk));
+        res.on("end", () => resolve({ statusCode: res.statusCode, body }));
+      })
+      .on("error", reject);
+  });
+
+const getHttp2 = (session: http2.ClientHttp2Session, path: string, headers: http2.OutgoingHttpHeaders = {}) =>
+  new Promise<{ statusCode?: number; body: string }>((resolve, reject) => {
+    const stream = session.request({ ":path": path, ...headers });
+    let statusCode: number | undefined;
+    let body = "";
+
+    stream.setEncoding("utf8");
+    stream.on("response", (responseHeaders) => (statusCode = responseHeaders[":status"]));
+    stream.on("data", (chunk: string) => (body += chunk));
+    stream.on("end", () => resolve({ statusCode, body }));
+    stream.on("error", reject);
+  });
 
 describe("closing the lens proxy", () => {
   let di: DiContainer;
   let proxy: { listen: () => Promise<void>; close: () => Promise<void> | undefined };
   let port: number;
   let requestReachedTheRouter: Promise<void>;
+  let upgradeReachedTheShell: Promise<void>;
   const sockets: net.Socket[] = [];
+  const sessions: http2.ClientHttp2Session[] = [];
   const answeredPath = "/some-answered-path";
 
   const connect = async () => {
-    const socket = net.connect(port, "127.0.0.1");
+    const socket = await connectHttp1(port);
 
     sockets.push(socket);
-    await once(socket, "connect");
 
     return socket;
+  };
+
+  const connectSession = async () => {
+    const session = await connectHttp2(port);
+
+    sessions.push(session);
+
+    return session;
   };
 
   const request = (socket: net.Socket, path: string) => {
@@ -80,12 +159,18 @@ describe("closing the lens proxy", () => {
   beforeEach(async () => {
     di = getDiForUnitTesting();
 
-    di.override(directoryForUserDataInjectable, () => "/some-directory-for-user-data");
-    di.override(directoryForTempInjectable, () => "/some-directory-for-tmp");
+    overrideEnvironment(di);
     di.override(getClusterForRequestInjectable, () => () => undefined);
-    // Not exercised here, and instantiating them for real pulls in the whole
-    // shell session graph
-    di.override(shellApiRequestInjectable, () => vi.fn());
+
+    // The shell session never answers, so its socket stays open, as the
+    // socket of a real shell session does. Instantiating it for real pulls in
+    // the whole shell session graph.
+    let upgradeReceived: () => void;
+
+    upgradeReachedTheShell = new Promise<void>((resolve) => {
+      upgradeReceived = resolve;
+    });
+    di.override(shellApiRequestInjectable, () => () => upgradeReceived());
     di.override(kubeApiUpgradeRequestInjectable, () => vi.fn());
 
     // Every route but one never answers, standing in for the watch and follow
@@ -101,7 +186,7 @@ describe("closing the lens proxy", () => {
       routerInjectable,
       () =>
         ({
-          route: (_cluster: Cluster | undefined, req: ServerIncomingMessage, res: http.ServerResponse) => {
+          route: (_cluster: Cluster | undefined, req: ServerIncomingMessage, res: ServerResponse) => {
             if (req.url === answeredPath) {
               res.end();
 
@@ -126,23 +211,27 @@ describe("closing the lens proxy", () => {
       socket.destroy();
     }
 
+    for (const session of sessions) {
+      session.destroy();
+    }
+
     sockets.length = 0;
+    sessions.length = 0;
   });
 
   it("resolves when nothing is connected", async () => {
     await expect(proxy.close()).resolves.toBeUndefined();
   });
 
-  it("resolves without waiting out the grace period when a connection is idle", async () => {
+  it("resolves without waiting out the grace period when an HTTP/1.1 connection is idle", async () => {
     const socket = await connect();
 
     /**
      * The request has to be driven to completion for this to test anything:
      * Node only tracks a connection from the moment a message begins on it, so
-     * a socket that has merely been accepted is invisible to
-     * `closeIdleConnections` and would be reaped by the forced destroy
-     * instead. What is idle is the keep-alive connection left behind by an
-     * answered request.
+     * a socket that has merely been accepted is invisible to the closing of
+     * idle connections and would be reaped by the forced destroy instead. What
+     * is idle is the keep-alive connection left behind by an answered request.
      */
     request(socket, answeredPath);
     await readResponse(socket);
@@ -154,7 +243,7 @@ describe("closing the lens proxy", () => {
     expect(performance.now() - startedAt).toBeLessThan(400);
   });
 
-  it("destroys a connection that is still serving a request, once the grace period is up", async () => {
+  it("destroys an HTTP/1.1 connection that is still serving a request, once the grace period is up", async () => {
     const socket = await connect();
     const socketClosed = once(socket, "close");
 
@@ -171,10 +260,116 @@ describe("closing the lens proxy", () => {
     await socketClosed;
   });
 
+  it("resolves without waiting out the grace period when an HTTP/2 session is idle", async () => {
+    const session = await connectSession();
+    const sessionClosed = once(session, "close");
+
+    await getHttp2(session, answeredPath);
+
+    const startedAt = performance.now();
+
+    await proxy.close();
+
+    expect(performance.now() - startedAt).toBeLessThan(400);
+    await sessionClosed;
+  });
+
+  it("destroys an HTTP/2 session that still has an open stream, once the grace period is up", async () => {
+    const session = await connectSession();
+    const sessionClosed = once(session, "close");
+
+    session.request({ ":path": "/some-path" }).on("error", () => {});
+    await requestReachedTheRouter;
+
+    const startedAt = performance.now();
+
+    await proxy.close();
+
+    expect(performance.now() - startedAt).toBeGreaterThanOrEqual(400);
+    await sessionClosed;
+  });
+
+  it("destroys the connection of an upgraded request, once the grace period is up", async () => {
+    const socket = await connect();
+    const socketClosed = once(socket, "close");
+
+    socket.write(
+      "GET /api?id=some-tab-id HTTP/1.1\r\nHost: 127.0.0.1\r\nConnection: Upgrade\r\nUpgrade: websocket\r\n\r\n",
+    );
+    await upgradeReachedTheShell;
+
+    const startedAt = performance.now();
+
+    await proxy.close();
+
+    expect(performance.now() - startedAt).toBeGreaterThanOrEqual(400);
+    await socketClosed;
+  });
+
   it("does nothing on a second call", async () => {
     await proxy.close();
 
     expect(proxy.close()).toBeUndefined();
+  });
+});
+
+describe("lens proxy protocols", () => {
+  let proxy: { listen: () => Promise<void>; close: () => Promise<void> | undefined };
+  let port: number;
+
+  beforeEach(async () => {
+    const di = getDiForUnitTesting();
+
+    overrideEnvironment(di);
+    di.override(getClusterForRequestInjectable, () => () => undefined);
+    di.override(shellApiRequestInjectable, () => vi.fn());
+    di.override(kubeApiUpgradeRequestInjectable, () => vi.fn());
+    di.override(
+      routerInjectable,
+      () =>
+        ({
+          route: async (_cluster: Cluster | undefined, req: ServerIncomingMessage, res: ServerResponse) => {
+            res.end(`some-response-over-${req.httpVersion}`);
+          },
+        }) as unknown as Router,
+    );
+
+    proxy = di.inject(lensProxyInjectable);
+
+    await proxy.listen();
+    port = di.inject(lensProxyPortInjectable).get();
+  });
+
+  afterEach(async () => {
+    await proxy.close();
+  });
+
+  it("negotiates HTTP/2 with a client that offers it", async () => {
+    const socket = tls.connect({
+      port,
+      host: "127.0.0.1",
+      rejectUnauthorized: false,
+      ALPNProtocols: ["h2", "http/1.1"],
+    });
+
+    await once(socket, "secureConnect");
+    socket.destroy();
+
+    expect(socket.alpnProtocol).toBe("h2");
+  });
+
+  it("answers a request over HTTP/2", async () => {
+    const session = await connectHttp2(port);
+
+    try {
+      expect(await getHttp2(session, "/some-path")).toEqual({ statusCode: 200, body: "some-response-over-2.0" });
+    } finally {
+      session.destroy();
+    }
+  });
+
+  it("answers a request over HTTP/1.1 from a client that does not offer HTTP/2", async () => {
+    expect(await getHttp1(port, "/some-path")).toEqual({ statusCode: 200, body: "some-response-over-1.1" });
   });
 });
 
@@ -183,32 +378,38 @@ describe("lens proxy kube api requests", () => {
   let port: number;
   let target: http.Server;
   let targetReceived: { url?: string; host?: string; authorization?: string }[];
+  let timeout: number | undefined;
+  const sessions: http2.ClientHttp2Session[] = [];
 
   const apiPrefix = "/some-api-prefix";
 
-  const get = (path: string) =>
-    new Promise<{ statusCode?: number; body: string }>((resolve, reject) => {
-      http
-        .get({ host: "127.0.0.1", port, path, agent: false, headers: { authorization: "some-token" } }, (res) => {
-          let body = "";
+  const connectSession = async () => {
+    const session = await connectHttp2(port);
 
-          res.setEncoding("utf8");
-          res.on("data", (chunk: string) => (body += chunk));
-          res.on("end", () => resolve({ statusCode: res.statusCode, body }));
-        })
-        .on("error", reject);
-    });
+    sessions.push(session);
+
+    return session;
+  };
 
   beforeEach(async () => {
     const di = getDiForUnitTesting();
 
     targetReceived = [];
+    timeout = undefined;
     target = http.createServer((req, res) => {
       targetReceived.push({ url: req.url, host: req.headers.host, authorization: req.headers.authorization });
 
       if (req.url?.endsWith("/aborted")) {
         res.writeHead(200).write("some-partial-body");
         setTimeout(() => req.socket.destroy(), 10);
+
+        return;
+      }
+
+      // A watch with no event yet: the target sends its headers at once, as
+      // freelens-k8s-proxy does, and then nothing
+      if (req.url?.includes("watch=true")) {
+        res.writeHead(200, { "content-type": "application/json" }).flushHeaders();
 
         return;
       }
@@ -220,8 +421,7 @@ describe("lens proxy kube api requests", () => {
 
     const { port: targetPort } = target.address() as net.AddressInfo;
 
-    di.override(directoryForUserDataInjectable, () => "/some-directory-for-user-data");
-    di.override(directoryForTempInjectable, () => "/some-directory-for-tmp");
+    overrideEnvironment(di);
     di.override(getClusterForRequestInjectable, () => () => ({ id: "some-cluster-id" }) as Cluster);
     di.override(shellApiRequestInjectable, () => vi.fn());
     di.override(kubeApiUpgradeRequestInjectable, () => vi.fn());
@@ -232,6 +432,7 @@ describe("lens proxy kube api requests", () => {
           getApiTarget: async () => ({
             target: new URL(`http://127.0.0.1:${targetPort}${apiPrefix}`),
             changeOrigin: true,
+            timeout,
             headers: { Host: "some-cluster-host" },
           }),
         }) as unknown as KubeAuthProxyServer,
@@ -244,24 +445,52 @@ describe("lens proxy kube api requests", () => {
   });
 
   afterEach(async () => {
+    for (const session of sessions) {
+      session.destroy();
+    }
+
+    sessions.length = 0;
     await proxy.close();
     target.closeAllConnections();
     target.close();
   });
 
   it("forwards the request below the path of the target, with the host of the cluster", async () => {
-    const response = await get("/api-kube/api/v1/pods?watch=true");
+    const response = await getHttp1(port, "/api-kube/api/v1/pods", { authorization: "some-token" });
 
     expect(response).toEqual({ statusCode: 200, body: "some-body" });
     expect(targetReceived).toEqual([
-      { url: `${apiPrefix}/api/v1/pods?watch=true`, host: "some-cluster-host", authorization: undefined },
+      { url: `${apiPrefix}/api/v1/pods`, host: "some-cluster-host", authorization: undefined },
+    ]);
+  });
+
+  it("forwards an HTTP/2 request below the path of the target, with the host of the cluster", async () => {
+    const session = await connectSession();
+    const response = await getHttp2(session, "/api-kube/api/v1/pods", { authorization: "some-token" });
+
+    expect(response).toEqual({ statusCode: 200, body: "some-body" });
+    expect(targetReceived).toEqual([
+      { url: `${apiPrefix}/api/v1/pods`, host: "some-cluster-host", authorization: undefined },
     ]);
   });
 
   it("ends the response when the target aborts its own", async () => {
-    const response = await get("/api-kube/api/v1/aborted");
+    const response = await getHttp1(port, "/api-kube/api/v1/aborted");
 
     expect(response).toEqual({ statusCode: 200, body: "some-partial-body" });
+  });
+
+  it("ends an HTTP/2 request once it has been idle for the timeout of its target, and not the session", async () => {
+    timeout = 100;
+
+    const session = await connectSession();
+    const stream = session.request({ ":path": "/api-kube/api/v1/pods?watch=true" });
+
+    stream.on("error", () => {});
+    await once(stream, "close");
+
+    expect(stream.rstCode).toBe(http2.constants.NGHTTP2_CANCEL);
+    expect(session.closed || session.destroyed).toBe(false);
   });
 });
 
@@ -270,19 +499,6 @@ describe("lens proxy kube api requests to a refused target", () => {
   let port: number;
   let getApiTarget: Mock;
   let route: Mock;
-
-  const get = (path: string) =>
-    new Promise<{ statusCode?: number; body: string }>((resolve, reject) => {
-      http
-        .get({ host: "127.0.0.1", port, path, agent: false }, (res) => {
-          let body = "";
-
-          res.setEncoding("utf8");
-          res.on("data", (chunk: string) => (body += chunk));
-          res.on("end", () => resolve({ statusCode: res.statusCode, body }));
-        })
-        .on("error", reject);
-    });
 
   beforeEach(async () => {
     const di = getDiForUnitTesting();
@@ -299,12 +515,11 @@ describe("lens proxy kube api requests to a refused target", () => {
     await once(closed, "close");
 
     getApiTarget = vi.fn(async () => ({ target: new URL(`http://127.0.0.1:${refusedPort}/some-api-prefix`) }));
-    route = vi.fn(async (_cluster: Cluster | undefined, _req: ServerIncomingMessage, res: http.ServerResponse) => {
+    route = vi.fn(async (_cluster: Cluster | undefined, _req: ServerIncomingMessage, res: ServerResponse) => {
       res.end();
     });
 
-    di.override(directoryForUserDataInjectable, () => "/some-directory-for-user-data");
-    di.override(directoryForTempInjectable, () => "/some-directory-for-tmp");
+    overrideEnvironment(di);
     di.override(getClusterForRequestInjectable, () => () => ({ id: "some-cluster-id" }) as Cluster);
     di.override(shellApiRequestInjectable, () => vi.fn());
     di.override(kubeApiUpgradeRequestInjectable, () => vi.fn());
@@ -322,7 +537,7 @@ describe("lens proxy kube api requests to a refused target", () => {
   });
 
   it("answers a GET with 500 at once, and does not send it again", async () => {
-    const response = await get("/api-kube/api/v1/pods");
+    const response = await getHttp1(port, "/api-kube/api/v1/pods");
 
     expect(response.statusCode).toBe(500);
     expect(response.body).toContain("ECONNREFUSED");
@@ -332,6 +547,19 @@ describe("lens proxy kube api requests to a refused target", () => {
 
     expect(getApiTarget).toHaveBeenCalledTimes(1);
     expect(route).not.toHaveBeenCalled();
+  });
+
+  it("answers an HTTP/2 GET with 500 at once", async () => {
+    const session = await connectHttp2(port);
+
+    try {
+      const response = await getHttp2(session, "/api-kube/api/v1/pods");
+
+      expect(response.statusCode).toBe(500);
+      expect(response.body).toContain("ECONNREFUSED");
+    } finally {
+      session.destroy();
+    }
   });
 });
 
@@ -354,8 +582,7 @@ describe("lens proxy upgrade requests", () => {
   beforeEach(() => {
     di = getDiForUnitTesting();
 
-    di.override(directoryForUserDataInjectable, () => "/some-directory-for-user-data");
-    di.override(directoryForTempInjectable, () => "/some-directory-for-tmp");
+    overrideEnvironment(di);
 
     cluster = { id: "some-cluster-id" } as Cluster;
     shellApiRequest = vi.fn();

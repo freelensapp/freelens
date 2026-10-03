@@ -8,6 +8,7 @@ import assert from "node:assert";
 import path from "node:path";
 import { getInjectable } from "@ogre-tools/injectable";
 import { createProxyServer } from "http-proxy-3";
+import type http from "node:http";
 
 import type { LensApiRequest, RouteResponse } from "../../router/route";
 
@@ -39,7 +40,9 @@ const devStaticFileRouteHandlerInjectable = getInjectable({
         req.url = "/index.html";
       }
 
-      proxy.web(req, res, { target: proxyTarget });
+      // http-proxy-3 proxies an HTTP/2 request as well, but its types only
+      // name the `http` objects
+      proxy.web(req as http.IncomingMessage, res as http.ServerResponse, { target: proxyTarget });
 
       return { proxy };
     };
