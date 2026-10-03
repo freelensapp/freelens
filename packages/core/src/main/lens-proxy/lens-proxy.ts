@@ -94,6 +94,19 @@ const closeGracePeriodMs = 500;
 const maxConcurrentStreams = 1000;
 const maxSessionMemory = 100;
 
+/**
+ * nghttp2 guards against the rapid reset attack (CVE-2023-44487) by allowing a
+ * client a burst of 1000 stream resets, refilled at 33 per second, and ends the
+ * session with `GOAWAY(INTERNAL_ERROR)` past that, which fails every stream
+ * still open on it. Chromium resets streams in that number on its own: on a
+ * reload it cancels each module it already has in its cache once the headers
+ * have arrived, and switching views cancels watches and lists. The server
+ * listens on the loopback only, and its clients are Freelens itself, so the
+ * limit protects nothing here and is set far beyond what Chromium reaches.
+ */
+const streamResetBurst = 100_000;
+const streamResetRate = 10_000;
+
 export class LensProxy {
   protected readonly proxyServer: http2.Http2SecureServer;
   protected closed = false;
@@ -123,6 +136,8 @@ export class LensProxy {
         allowHTTP1: true,
         maxSessionMemory,
         settings: { maxConcurrentStreams },
+        streamResetBurst,
+        streamResetRate,
       },
       // With `allowHTTP1` the listener receives the `http` objects for an
       // HTTP/1.1 request, which the types of `createSecureServer` do not say

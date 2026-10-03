@@ -340,6 +340,14 @@ describe("lens proxy protocols", () => {
       () =>
         ({
           route: async (_cluster: Cluster | undefined, req: ServerIncomingMessage, res: ServerResponse) => {
+            // A response whose headers have gone out and whose body has not
+            // ended yet, which is what the client then cancels
+            if (req.url === "/some-open-response") {
+              res.writeHead(200).write("some-start");
+
+              return;
+            }
+
             res.end(`some-response-over-${req.httpVersion}`);
           },
         }) as unknown as Router,
@@ -373,6 +381,32 @@ describe("lens proxy protocols", () => {
     const session = await connectHttp2(port);
 
     try {
+      expect(await getHttp2(session, "/some-path")).toEqual({ statusCode: 200, body: "some-response-over-2.0" });
+    } finally {
+      session.destroy();
+    }
+  });
+
+  it("keeps serving a session whose client has cancelled more than a thousand streams", async () => {
+    const session = await connectHttp2(port);
+
+    try {
+      // As Chromium does on a reload, cancelling each module it has in its
+      // cache once the headers have arrived; nghttp2 ends the session past a
+      // burst of 1000 by default
+      for (let batch = 0; batch < 11; batch++) {
+        await Promise.all(
+          Array.from({ length: 100 }, async () => {
+            const stream = session.request({ ":path": "/some-open-response" });
+            const closed = untilClosed(stream);
+
+            await once(stream, "response");
+            stream.close(http2.constants.NGHTTP2_CANCEL);
+            await closed;
+          }),
+        );
+      }
+
       expect(await getHttp2(session, "/some-path")).toEqual({ statusCode: 200, body: "some-response-over-2.0" });
     } finally {
       session.destroy();
