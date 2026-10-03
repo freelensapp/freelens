@@ -9,8 +9,8 @@ import freelensProxyPortInjectable from "../freelens-proxy/freelens-proxy-port.i
 
 import type { Cluster } from "../../common/cluster/cluster";
 
-const kubeAuthProxyUrlInjectable = getInjectable({
-  id: "kube-auth-proxy-url",
+const freelensProxyClusterUrlInjectable = getInjectable({
+  id: "freelens-proxy-cluster-url",
   instantiate: (di, cluster) => {
     const freelensProxyPort = di.inject(freelensProxyPortInjectable);
 
@@ -21,4 +21,4 @@ const kubeAuthProxyUrlInjectable = getInjectable({
   }),
 });
 
-export default kubeAuthProxyUrlInjectable;
+export default freelensProxyClusterUrlInjectable;

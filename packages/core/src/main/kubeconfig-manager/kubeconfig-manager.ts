@@ -27,7 +27,7 @@ interface KubeconfigManagerDependencies {
   readonly logger: Logger;
   readonly certificate: SelfSignedCert;
   readonly freelensK8sProxyServer: FreelensK8sProxyServer;
-  readonly kubeAuthProxyUrl: string;
+  readonly freelensProxyClusterUrl: string;
   joinPaths: JoinPaths;
   getDirnameOfPath: GetDirnameOfPath;
   pathExists: PathExists;
@@ -89,12 +89,12 @@ export class KubeconfigManager {
 
       return (this.tempFilePath = await this.createProxyKubeconfig());
     } catch (error) {
-      throw new Error(`Failed to create temp config for auth-proxy: ${error}`);
+      throw new Error(`Failed to create temp kubeconfig for freelens-proxy: ${error}`);
     }
   }
 
   /**
-   * Creates new "temporary" kubeconfig that point to the kubectl-proxy.
+   * Creates new "temporary" kubeconfig that points to the freelens-proxy.
    * This way any user of the config does not need to know anything about the auth etc. details.
    */
   protected async createProxyKubeconfig(): Promise<string> {
@@ -110,7 +110,7 @@ export class KubeconfigManager {
       clusters: [
         {
           name: contextName,
-          server: this.dependencies.kubeAuthProxyUrl,
+          server: this.dependencies.freelensProxyClusterUrl,
           skipTLSVerify: false,
           caData: Buffer.from(this.dependencies.certificate.cert).toString("base64"),
         },
