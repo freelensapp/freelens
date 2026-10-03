@@ -94,6 +94,28 @@ is, git itself detects the file as a rename, move, or copy of fork-era code:
 git log --follow --format= --name-only -- <path> | sort -u
 ```
 
+`--follow` sees a move only when git pairs the deleted and the added path of
+one commit, at 50% similarity by default. A short file whose renamed
+identifiers make up most of its lines falls below that, and its trace stops at
+the commit that moved it, which then shows as an addition. A trace that stops
+short is therefore no proof that a file's `OpenLens Authors` line is a
+mistake. When it ends at an addition other than `0a5798c9`, look for the path
+that commit deleted in its place:
+
+```sh
+commit=$(git log --follow --format=%h -- <path> | tail -n 1)
+git show --format= --name-status --find-renames=20% "$commit" |
+  awk -v p=<path> '$1 ~ /^R/ && $3 == p'
+```
+
+An `R` line names the path the file may have come from. Compare the two with
+`git diff "$commit^:<old>" "$commit:<path>"`: when the new file is the old one
+with identifiers renamed, it continues the old path, and the check goes on
+from there. Lower the threshold for that one commit only, never for the whole
+`--follow` walk: below 50%, git pairs unrelated small files that share little
+more than the header and the injectable boilerplate, and the walk reports
+continuations that do not exist.
+
 Never add the `OpenLens Authors` line to a file that does not already have it
 just because neighbouring files do. Do not touch legal or license text
 (`LICENSE`, `README.md`, `freelens/license-header.txt`,
