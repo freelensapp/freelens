@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { action, makeObservable, observable } from "mobx";
+import { action, makeObservable, observable, observableRef } from "mobx";
 
 export interface ObservableSearchParamsOptions {
   /** Skip empty params, e.g. "?x=&y=2" becomes "?y=2". */
@@ -37,7 +37,7 @@ export class ObservableSearchParams {
   constructor(init?: SearchParamsInit, opts: ObservableSearchParamsOptions = {}) {
     makeObservable<ObservableSearchParams, "search" | "searchParams">(this, {
       search: observable,
-      searchParams: observable.ref,
+      searchParams: observableRef,
       replace: action,
       deleteAll: action,
     });

@@ -7,7 +7,7 @@
 import type http from "node:http";
 import type { URLSearchParams } from "node:url";
 
-import type httpProxy from "http-proxy-node16";
+import type { ProxyServer } from "http-proxy-3";
 import type Joi from "joi";
 
 import type { Cluster } from "../../common/cluster/cluster";
@@ -49,7 +49,7 @@ export interface LensApiResult<Response> {
   error?: any;
   contentType?: LensApiResultContentType;
   headers?: Partial<Record<string, string>>;
-  proxy?: httpProxy;
+  proxy?: ProxyServer;
 }
 
 export type RouteResponse<Response> = LensApiResult<Response> | void;

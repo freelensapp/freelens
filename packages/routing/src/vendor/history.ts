@@ -13,10 +13,9 @@
  * effectively frozen -- React Router absorbed the code and develops it there.
  * The package nevertheless sat in `catalogs.extensions`, so every extension
  * author had to resolve an unmaintained package to compile against the API,
- * because `To`, `Location` and `History` reach it through `@freelensapp/icon`,
- * `renderer/ipc` and the drawer. Vendoring it is the same move as
- * `path-to-regexp` v1 in #2261: the routing contract stays put and we own the
- * code. See `docs/v2-routing-modernization.md`.
+ * because `To`, `Location` and `History` reach it through the `Icon` component,
+ * `renderer/ipc` and the drawer. Vendoring it is the same move as the vendored
+ * `path-to-regexp` v1: the routing contract stays put and we own the code.
  *
  * Deliberately faithful to upstream so it can be diffed against v5.3.0. Only
  * the following changes were made:

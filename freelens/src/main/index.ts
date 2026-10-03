@@ -60,10 +60,10 @@ startApplication().catch((error) => {
 // Main gets `{ Common, Main }`; the renderer gets `{ Common, Renderer }`.
 // The global's ambient type lives in `../freelens-extension-api.ts`.
 //
-// #2450: alongside the namespaces, main publishes the singletons it actually
-// has -- `mobx` and `@ogre-tools/injectable` -- and not the five the renderer
-// carries, which would pull a DOM renderer and a code editor into a bundle with
-// no window. `packages/core/src/extensions/api-globals/main-singletons.ts` is
+// Alongside the namespaces, main publishes the singleton it actually
+// has -- `mobx` -- and not the React and editor modules the renderer carries,
+// which would pull a DOM renderer and a code editor into a bundle with no
+// window. `packages/core/src/extensions/api-globals/main-singletons.ts` is
 // where that split is argued.
 //
 // The assertion runs first because the failure it catches is silent: a key that

@@ -57,6 +57,7 @@ describe("PrometheusHandler", () => {
       exit: () => {},
       run: async () => {},
       port: 9191,
+      isRunning: true,
     }));
     di.override(directoryForTempInjectable, () => "/some-temp-dir");
     di.inject(lensProxyPortInjectable).set(12345);
@@ -113,7 +114,7 @@ describe("PrometheusHandler", () => {
         }
       });
 
-      expect(() => di.inject(prometheusHandlerInjectable, cluster).getPrometheusDetails()).rejects.toThrowError();
+      await expect(() => di.inject(prometheusHandlerInjectable, cluster).getPrometheusDetails()).rejects.toThrowError();
     });
 
     it.each([

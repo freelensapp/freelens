@@ -10,7 +10,6 @@
     "noImplicitAny": true,
     "noUnusedLocals": true,
     "noImplicitReturns": true,
-    "experimentalDecorators": true,
     "isolatedModules": true,
     "skipLibCheck": true,
     "allowJs": false,
@@ -19,12 +18,7 @@
     "verbatimModuleSyntax": false,
     "traceResolution": false,
     "resolveJsonModule": true,
-    "useDefineForClassFields": true,
-    "plugins": [
-      {
-        "name": "typescript-plugin-css-modules"
-      }
-    ]
+    "useDefineForClassFields": true
   },
   "ts-node": {
     "transpileOnly": true,

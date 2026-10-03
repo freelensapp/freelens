@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { computed, makeObservable } from "mobx";
+import { computed } from "mobx";
 import { mapClusterToClusterInfo } from "./cluster-mapping";
 
 import type { KubernetesCluster } from "../../../../common/catalog-entities/kubernetes-cluster";
@@ -23,9 +23,7 @@ export interface ClusterEnumerationDependencies {
  * Used by both Main and Renderer with process-specific dependencies.
  */
 export class ClusterEnumeration {
-  constructor(private readonly deps: ClusterEnumerationDependencies) {
-    makeObservable(this);
-  }
+  constructor(private readonly deps: ClusterEnumerationDependencies) {}
 
   /**
    * All clusters as ClusterInfo objects. Reactive.

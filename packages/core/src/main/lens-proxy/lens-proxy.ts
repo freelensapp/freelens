@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import assert from "node:assert";
 import https from "node:https";
 import net from "node:net";
 import { apiKubePrefix, apiPrefix } from "../../common/vars";
@@ -13,7 +12,7 @@ import type http from "node:http";
 
 import type { Logger } from "@freelensapp/logger";
 
-import type httpProxy from "http-proxy-node16";
+import type { ProxyServer } from "http-proxy-3";
 import type { SetRequired } from "type-fest";
 
 import type { EmitAppEvent } from "../../common/app-event-bus/emit-event.injectable";
@@ -35,7 +34,7 @@ interface Dependencies {
   emitAppEvent: EmitAppEvent;
   getKubeAuthProxyServer: (cluster: Cluster) => KubeAuthProxyServer;
   readonly router: Router;
-  readonly proxy: httpProxy;
+  readonly proxy: ProxyServer;
   readonly lensProxyPort: { set: (portNumber: number) => void };
   readonly contentSecurityPolicy: string;
   readonly logger: Logger;
@@ -76,7 +75,6 @@ const closeGracePeriodMs = 500;
 export class LensProxy {
   protected readonly proxyServer: https.Server;
   protected closed = false;
-  protected readonly retryCounters = new Map<string, number>();
 
   constructor(private readonly dependencies: Dependencies) {
     this.configureProxy(dependencies.proxy);
@@ -217,14 +215,8 @@ export class LensProxy {
     });
   }
 
-  protected configureProxy(proxy: httpProxy): httpProxy {
-    proxy.on("proxyRes", (proxyRes, req, res) => {
-      const retryCounterId = this.getRequestId(req);
-
-      if (this.retryCounters.has(retryCounterId)) {
-        this.retryCounters.delete(retryCounterId);
-      }
-
+  protected configureProxy(proxy: ProxyServer): ProxyServer {
+    proxy.on("proxyRes", (proxyRes, _req, res) => {
       proxyRes.on("aborted", () => {
         // happens when proxy target aborts connection
         res.end();
@@ -240,24 +232,11 @@ export class LensProxy {
 
       if (target) {
         this.dependencies.logger.debug(`Failed proxy to target: ${JSON.stringify(target, null, 2)}`);
-
-        if (req.method === "GET" && (!res.statusCode || res.statusCode >= 500)) {
-          const reqId = this.getRequestId(req);
-          const retryCount = this.retryCounters.get(reqId) || 0;
-          const timeoutMs = retryCount * 250;
-
-          if (retryCount < 20) {
-            this.dependencies.logger.debug(`Retrying proxy request to url: ${reqId}`);
-            setTimeout(() => {
-              this.retryCounters.set(reqId, retryCount + 1);
-              this.handleRequest(req as ServerIncomingMessage, res).catch((error) =>
-                this.dependencies.logger.error(`[LENS-PROXY]: failed to handle request on proxy error: ${error}`),
-              );
-            }, timeoutMs);
-          }
-        }
       }
 
+      // Not retried here: whoever sent the request decides whether to send it
+      // again (a watch that fails is restarted by its store), so a retry would
+      // only delay the error it handles anyway.
       try {
         res.writeHead(500).end(`Oops, something went wrong.\n${error}`);
       } catch (e) {
@@ -266,12 +245,6 @@ export class LensProxy {
     });
 
     return proxy;
-  }
-
-  protected getRequestId(req: http.IncomingMessage): string {
-    assert(req.headers.host);
-
-    return req.headers.host + req.url;
   }
 
   protected async handleRequest(req: ServerIncomingMessage, res: http.ServerResponse) {

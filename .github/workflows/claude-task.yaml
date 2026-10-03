@@ -64,10 +64,14 @@ jobs:
       actions: read
 
     steps:
+      # persist-credentials is off because the action configures git
+      # authentication with its own token, and the checkout token would
+      # otherwise sit in .git/config for every step, install scripts included.
       - name: Checkout
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Setup node
         uses: actions/setup-node@v7
@@ -118,14 +122,14 @@ jobs:
       # download plus a cold tool fetch inside the session. Never fails the
       # job.
       - name: Install trunk
-        uses: trunk-io/trunk-action/install@v1
+        uses: trunk-io/trunk-action/install@v2.0.0
         continue-on-error: true
 
       - name: Prepare prompt
         id: prompt
         shell: bash
         run: |
-          PROMPT=$(echo "$INPUT_PROMPT" | jq -r '.')
+          PROMPT=$(printf '%s' "$INPUT_PROMPT" | jq -r '.')
           if [[ "$CREATE_PR" == "true" ]]; then
             PROMPT="${PROMPT}
 
@@ -133,9 +137,14 @@ jobs:
           changes, commit, push to origin, and open a pull request. Follow the
           rules in AGENTS.md (no Conventional Commits prefixes, no emoji)."
           fi
-          echo "text<<EOF" >> "$GITHUB_OUTPUT"
-          echo "$PROMPT" >> "$GITHUB_OUTPUT"
-          echo "EOF" >> "$GITHUB_OUTPUT"
+          # A random delimiter, so that a line of the prompt cannot close the
+          # block early and write further outputs.
+          DELIMITER="EOF_$(openssl rand -hex 16)"
+          {
+            echo "text<<$DELIMITER"
+            printf '%s\n' "$PROMPT"
+            echo "$DELIMITER"
+          } >> "$GITHUB_OUTPUT"
         env:
           INPUT_PROMPT: ${{ toJSON(github.event.inputs.prompt) }}
           CREATE_PR: ${{ github.event.inputs.create-pr }}
@@ -144,10 +153,12 @@ jobs:
         id: parse-model
         shell: bash
         run: |
-          DEFAULT_MODEL="claude-opus-5-5"
+          # The model chosen in the form, unless the prompt overrides it with
+          # a [model:...] marker.
+          DEFAULT_MODEL="${MODEL_INPUT:-claude-opus-5-5}"
           TEXT="${PROMPT_INPUT}"
 
-          MODEL_ALIAS=$(echo "$TEXT" \
+          MODEL_ALIAS=$(printf '%s\n' "$TEXT" \
             | grep -oP '\[model:[^\]]+\]' \
             | head -1 \
             | sed 's/\[model://;s/\]//' || true)
@@ -163,13 +174,25 @@ jobs:
             sonnet-4|sonnet-4.6|claude-sonnet-4-6)      MODEL_ID="claude-sonnet-4-6" ;;
             haiku|haiku-4|haiku-4.5)                    MODEL_ID="claude-haiku-4-5-20251001" ;;
             "")                                          MODEL_ID="$DEFAULT_MODEL" ;;
-            *)                                           MODEL_ID="$MODEL_ALIAS" ;;
+            *)
+              # A full model ID outside the alias list passes only when it
+              # cannot carry quotes, spaces or anything else that would
+              # split into extra arguments inside claude_args.
+              if [[ "$MODEL_ALIAS" =~ ^claude-[a-z0-9.-]+(\[1m\])?$ ]]; then
+                MODEL_ID="$MODEL_ALIAS"
+              else
+                echo "Ignoring invalid model: '$MODEL_ALIAS'"
+                MODEL_ALIAS=""
+                MODEL_ID="$DEFAULT_MODEL"
+              fi
+              ;;
           esac
 
           echo "Resolved model: '${MODEL_ALIAS:-<none>}' -> $MODEL_ID"
           echo "model=$MODEL_ID" >> "$GITHUB_OUTPUT"
         env:
           PROMPT_INPUT: ${{ github.event.inputs.prompt || '' }}
+          MODEL_INPUT: ${{ github.event.inputs.model || '' }}
 
       - name: Use the latest AGENTS.md
         shell: bash
@@ -183,7 +206,7 @@ jobs:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           prompt: ${{ steps.prompt.outputs.text }}
           claude_args: |-
-            --model ${{ steps.parse-model.outputs.model }}
+            --model "${{ steps.parse-model.outputs.model }}"
             --fallback-model claude-opus-5
             --max-turns 100
             --allowedTools "Read" "Write" "Edit" "Glob" "Grep" "Task" "WebSearch" "WebFetch" "BashOutput" "KillShell" "Bash(trunk:*)" "Bash(bash:*)" "Bash(pnpm:*)" "Bash(npx:*)" "Bash(node:*)" "Bash(git:*)" "Bash(gh:*)" "Bash(yq:*)" "Bash(jq:*)" "Bash(grep:*)" "Bash(rg:*)" "Bash(sed:*)" "Bash(awk:*)" "Bash(cut:*)" "Bash(tr:*)" "Bash(sort:*)" "Bash(uniq:*)" "Bash(cat:*)" "Bash(head:*)" "Bash(tail:*)" "Bash(wc:*)" "Bash(find:*)" "Bash(xargs:*)" "Bash(ls:*)" "Bash(tree:*)" "Bash(mkdir:*)" "Bash(touch:*)" "Bash(cp:*)" "Bash(mv:*)" "Bash(rm:*)" "Bash(tee:*)" "Bash(echo:*)"

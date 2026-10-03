@@ -18,8 +18,8 @@ import type { Location, To } from "./vendor/history";
  * In-house replacements for `react-router` v5's `<Route>` / `<Switch>` /
  * `<Redirect>`.
  *
- * `react-router` 5 is unmaintained and blocks the React 19 upgrade (see
- * `docs/v2-routing-modernization.md`). Freelens routes its primary view tree
+ * `react-router` 5 is unmaintained and does not support React 19.
+ * Freelens routes its primary view tree
  * through its own injectable route registry, so only a handful of declarative
  * react-router components remained (`<Switch>`/`<Route>` in `tab-layout.tsx`
  * plus a few `<Redirect>` sites). These components reproduce exactly that small

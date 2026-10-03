@@ -354,12 +354,19 @@ export abstract class CatalogEntity<
    */
   public abstract readonly kind: string;
 
-  @observable metadata: Metadata;
-  @observable status: Status;
-  @observable spec: Spec;
+  // Annotated in the constructor rather than decorated: a decorated field is an
+  // accessor on the prototype, which toJS() and structured cloning skip, and
+  // the entity crosses IPC as toJS(entity).
+  metadata: Metadata;
+  status: Status;
+  spec: Spec;
 
   constructor({ metadata, status, spec }: CatalogEntityData<Metadata, Status, Spec>) {
-    makeObservable(this);
+    makeObservable(this, {
+      metadata: observable,
+      status: observable,
+      spec: observable,
+    });
 
     if (!metadata || typeof metadata !== "object") {
       throw new TypeError("CatalogEntity's metadata must be a defined object");

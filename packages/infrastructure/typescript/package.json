@@ -19,8 +19,7 @@
   },
   "scripts": {},
   "dependencies": {
-    "typescript": "catalog:",
-    "typescript-plugin-css-modules": "catalog:"
+    "typescript": "catalog:"
   },
   "publishConfig": {
     "access": "public",

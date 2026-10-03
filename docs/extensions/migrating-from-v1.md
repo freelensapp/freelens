@@ -1,18 +1,17 @@
 # Migrating extensions to Freelens v2
 
-Freelens v2 breaks compatibility with the v1 extension API on purpose (see
-[`docs/v2-plan.md`](./v2-plan.md), decisions D2/D5). This guide is for authors
-of third-party extensions moving from v1 to v2.
+Freelens v2 breaks compatibility with the v1 extension API on purpose. This
+guide is for authors of third-party extensions moving from v1 to v2.
 
 It is the developer-facing half of the v2 extension specification. The
 normative half — what the host guarantees, and what happens when a guarantee is
-violated — is [`docs/v2-extension-api.md`](./v2-extension-api.md), with the
-binary side in [`docs/v2-extension-abi.md`](./v2-extension-abi.md). Where this
+violated — is [`docs/extensions/api.md`](./api.md), with the
+binary side in [`docs/extensions/binaries.md`](./binaries.md). Where this
 guide says "the host does X", that document says why and what breaks otherwise.
 
-The rename table below is filled while the in-repo fixture extension is built
-out against the v2 contract ([#2451](https://github.com/freelensapp/freelens/issues/2451)),
-which is what walks the whole v2 surface.
+Every v1 namespace path that moved or was removed is listed in the
+[v1→v2 rename table](#v1v2-rename-table), with a link to the section that
+explains the replacement.
 
 ## Step one: bump `engines.freelens`
 
@@ -103,7 +102,7 @@ runtime.
 
 ### The host-provided libraries, and how to mark them external
 
-Eight module ids must resolve to the host's instance rather than to a copy in
+These module ids must resolve to the host's instance rather than to a copy in
 your bundle. You declare them in **`devDependencies`** — for compilation only —
 and your bundler rewrites the bare id to a property of the host's global:
 
@@ -115,31 +114,31 @@ and your bundler rewrites the bare id to a property of the host's global:
 | `mobx` | `FreelensExtensionApi.Mobx` |
 | `mobx-react` | `FreelensExtensionApi.MobxReact` |
 | `monaco-editor` | `FreelensExtensionApi.MonacoEditor` |
-| `@ogre-tools/injectable` | `FreelensExtensionApi.OgreToolsInjectable` |
-| `@ogre-tools/injectable-react` | `FreelensExtensionApi.OgreToolsInjectableReact` |
 
 The global names follow a mechanical rule — strip the scope, split on `-`, `/`
 and `.`, upper-case each segment — so a bundler plugin can *derive* each name
 instead of being handed a map. Note `ReactDom`, not `ReactDOM`.
 
-**Each process publishes the set it has.** The renderer publishes all eight; the
-main process publishes `Mobx` and `OgreToolsInjectable` and nothing else, because
-a code editor and a DOM renderer have no place in a process with no window. Map
+**Each process publishes the set it has.** The renderer publishes the whole
+table; the main process publishes `Mobx` and nothing else, because a code editor
+and a DOM renderer have no place in a process with no window. Map
 in your main entry point only what main publishes — the rest is `undefined`
 there, and marking it external gets you no error, only a later surprise.
 
 Everything else may be bundled freely: `chart.js`, `react-select`, `conf`,
-`immer`, `rfc6902`, `type-fest`. A bundled `react-select` still gets the host's
-React, because that copy's own `import "react"` is rewritten too.
+`immer`, `rfc6902`, `type-fest`, and a dependency-injection library of your own
+(see [Dependency injection](#dependency-injection-bundle-your-own)). A bundled
+`react-select` still gets the host's React, because that copy's own
+`import "react"` is rewritten too.
 
 Two ids that **leave** the v1 externals map, and both fail at runtime rather
 than at build time if you keep them:
 
 - **`@freelensapp/extensions`** — mapped in v1, when it was a fat re-export of
-  core. The v2 package is 734 bytes that already read the global, so bundling
-  it is correct.
-- **`react-router-dom`** — removed from the host in #2261. Mapping it now
-  yields `undefined`.
+  core. The v2 package is a thin shim that already reads the global, so
+  bundling it is correct.
+- **`react-router-dom`** — no longer part of the host. Mapping it now yields
+  `undefined`.
 
 If your v1 build used a Vite or Rolldown plugin that rewrote these ids to
 `global.React` and friends, keep the plugin and change the target: the host
@@ -156,9 +155,8 @@ Freelens v2 ships **React 19**. React is **host-provided**: the running app
 publishes a single React instance on `globalThis.FreelensExtensionApi`, and
 extensions must render through that shared instance.
 
-There is no `Renderer.React` and no `Renderer.ReactDOM`. Earlier drafts of this
-guide said otherwise; they described API that never existed in v2. React reaches
-you through the externals map in
+There is no `Renderer.React` and no `Renderer.ReactDOM`. React reaches you
+through the externals map in
 [the section above](#the-host-provided-libraries-and-how-to-mark-them-external).
 
 - **Do not bundle your own React.** Two copies of React in the same renderer
@@ -180,33 +178,191 @@ you through the externals map in
   APIs (for example `ReactDOM.render` / `findDOMNode` and legacy string refs),
   so audit for those while upgrading.
 
-## `@ogre-tools/*` 23 (dependency-injection major)
+## Dependency injection: bundle your own
 
-Freelens v2 bumps the `@ogre-tools/*` dependency-injection packages
-(`injectable`, `injectable-react`, …) from **17 to 23**. This is
-extension-facing because the `@ogre-tools/*` types leak through the
-`@freelensapp/*` packages and the extension API (injection tokens, `getInjectable`,
-the React injection helpers). Re-check any code that constructs or consumes
-injectables against the `@ogre-tools/*` 23 type surface after upgrading.
+The host's dependency-injection library, `@ogre-tools/injectable` and
+`@ogre-tools/injectable-react`, is **not** part of the extension API. The host
+does not publish either on `FreelensExtensionApi`, the API exposes no container
+and no injection token, and the host may move to another major — or another
+library — in any release. A shared copy would give an extension nothing to work
+with anyway: an injectable it created could not be registered in the host's
+container, and it has no injectable of the host's to inject.
 
-- **Namespaced runtime-registered ids.** `@ogre-tools/*` 23 namespaces the id of
-  an injectable registered at runtime through a namespaced `di` (for example an
-  extension-scoped registration) as `"<namespace>:<declaredId>"`. The host
-  already strips this namespace where it surfaces ids for its own registries
-  (see `packages/cluster-sidebar/src/sidebar-items.injectable.ts`), so
-  extensions that only register injectables against the documented tokens need
-  no change. If your extension does its **own** `injectManyWithMeta` and keys off
-  `meta.id`, be aware the id may now carry a `"<namespace>:"` prefix — strip it
-  (take the segment after the last `:`) if you compare against a bare declared id.
+What to do instead:
+
+- **Stop mapping `@ogre-tools/*` to `FreelensExtensionApi`.** Remove
+  `@ogre-tools/injectable` and `@ogre-tools/injectable-react` from the externals
+  of your bundler. A mapping left in place reads `undefined` at runtime, and the
+  build does not warn you.
+- **If your extension uses dependency injection for its own code, bundle the
+  library** as an ordinary `dependency`, at whatever version you like, or use
+  another library altogether. With ogre-tools, create your own container with
+  `createContainer`, register your own injectables in it, and, if you use
+  `withInjectables` in the renderer, wrap your components in your own
+  `DiContextProvider` with that container. Your container is separate from the
+  host's: it holds none of the host's injectables, and the host never reads from
+  it.
+- **Contribute to the host through the declarative fields** of your
+  `LensExtension` subclass (see
+  [Registering things: declarative fields](#registering-things-declarative-fields)),
+  not through injectables. That is the only route into the host's container.
+
+## MobX 7 and mobx-react 10 (standard decorators only)
+
+The host provides **mobx 7** and **mobx-react 10**. An extension uses the
+host's copies through the externals map, so it moves with them whatever its own
+`package.json` says. MobX 7 supports only **standard (TC39) decorators**; the
+legacy, `experimentalDecorators` ones are gone, and so are the namespaced
+annotations:
+
+- Compile without `"experimentalDecorators"`. An extension compiled with it
+  hands the legacy call shape to mobx 7, and none of the resulting errors
+  mentions decorators. Recognise them by the message:
+
+  | Message | Cause |
+  | --- | --- |
+  | `TypeError: Cannot use 'in' operator to search for 'constructor' in <field>` | a legacy `@observable` field |
+  | ``[MobX] Invalid arguments for `action` `` | a legacy `@action` method |
+  | `TypeError: Reflect.ownKeys called on non-object` | `makeObservable(this)` without annotations |
+
+  The first two throw while the module is evaluated, when the class is
+  defined, so the extension never loads. The third throws when the class is
+  first instantiated. The `action` check exists only in mobx's development
+  build: under the production build, and with a legacy `@computed` in any
+  build, nothing throws and the member silently stays a plain method or
+  getter.
+- A decorated field becomes an **auto-accessor**, and the constructor no longer
+  calls `makeObservable(this)`:
+
+  ```ts
+  // v1
+  class Store {
+    @observable items: string[] = [];
+    @observable.ref selected: Item | undefined;
+    @computed get count() { return this.items.length; }
+    @action add(item: string) { this.items.push(item); }
+
+    constructor() {
+      makeObservable(this);
+    }
+  }
+
+  // v2
+  class Store {
+    @observable accessor items: string[] = [];
+    @observableRef accessor selected: Item | undefined;
+    @computed get count() { return this.items.length; }
+    @action add(item: string) { this.items.push(item); }
+  }
+  ```
+
+- `observable.ref`, `observable.shallow`, `observable.deep`,
+  `observable.struct`, `computed.struct`, `action.bound` and `flow.bound`
+  become `observableRef`, `observableShallow`, `observableDeep`,
+  `observableStruct`, `computedStruct`, `actionBound` and `flowBound`; the
+  `comparer.*` members become `compareIdentity`, `compareDefault`,
+  `compareStructural` and `compareShallow`. All of them are named exports of
+  `mobx`, and they work both as decorators and as `makeObservable` annotations.
+- An auto-accessor lives on the prototype, so `toJS()`, `JSON.stringify`, spread
+  and structured cloning no longer see a decorated field. A class whose
+  instances are serialized, a catalog entity for example, keeps plain fields and
+  annotates them with `makeObservable(this, { … })` instead.
+- Your bundler has to lower standard decorators: no Node or Electron release
+  runs them natively yet. See
+  [Lowering standard decorators](#lowering-standard-decorators) below.
+- mobx-react 10 removed `Provider`, `inject`, `MobXProviderContext`,
+  `disposeOnUnmount`, `PropTypes`, `useObserver`, `useLocalStore`,
+  `useAsObservableSource`, `useStaticRendering`, the batching imports and
+  `observer(fn, { forwardRef: true })`. Use `React.createContext`, cleanup in
+  `componentWillUnmount` or `useEffect`, `useLocalObservable`,
+  `enableStaticRendering`, and `observer(React.forwardRef(…))`.
+
+### Lowering standard decorators
+
+The build must turn every standard decorator, and the `accessor` field it sits
+on, into plain JavaScript, because the host's Node and Chromium cannot run them.
+How depends on the bundler:
+
+- **esbuild** lowers them itself. Mark decorators as unsupported, so that it
+  lowers them whatever `target` says, and compile without
+  `experimentalDecorators`:
+
+  ```js
+  await esbuild.build({
+    // …
+    supported: { decorators: false },
+    tsconfigRaw: { compilerOptions: { experimentalDecorators: false } },
+  });
+  ```
+
+- **Babel** lowers them with `@babel/plugin-proposal-decorators` set to
+  `{ version: "2023-11" }`.
+- **Vite 8, Rolldown and Vitest** transpile TypeScript with Oxc, which lowers
+  only legacy decorators and passes standard ones through untouched. Add a
+  plugin that runs before Oxc and hands each module with a decorator to esbuild.
+  Freelens builds itself this way, with
+  [`scripts/vite-plugin-standard-decorators.mjs`](../../scripts/vite-plugin-standard-decorators.mjs),
+  which you may copy under the MIT license:
+
+  ```js
+  import { transform } from "esbuild";
+
+  const typeScriptModule = /\.[cm]?tsx?$/;
+  const decoratorAtLineStart = /^\s*@[A-Za-z_$]/m;
+
+  export function standardDecorators() {
+    return {
+      name: "standard-decorators",
+      enforce: "pre",
+      async transform(code, id) {
+        const path = id.split("?", 1)[0];
+
+        if (!typeScriptModule.test(path) || path.includes("/node_modules/") || !decoratorAtLineStart.test(code)) {
+          return null;
+        }
+
+        const result = await transform(code, {
+          loader: path.endsWith("x") ? "tsx" : "ts",
+          jsx: "preserve",
+          target: "esnext",
+          supported: { decorators: false },
+          sourcefile: path,
+          sourcemap: "external",
+          tsconfigRaw: {
+            compilerOptions: {
+              experimentalDecorators: false,
+              useDefineForClassFields: true,
+              verbatimModuleSyntax: false,
+            },
+          },
+        });
+
+        return { code: result.code, map: result.map };
+      },
+    };
+  }
+  ```
+
+  Add `standardDecorators()` to the `plugins` of `vite.config` (and of
+  `vitest.config`, if the tests import decorated classes), and `esbuild` to your
+  `devDependencies`. The plugin lowers only the decorators and leaves JSX and
+  everything else to Oxc, so the rest of the build is unchanged.
+
+A decorator that reaches the host unlowered is a syntax error when the module
+is evaluated, so the extension fails to load.
 
 ## `tsconfig.json` for an extension
 
-The bundled `extension-api.d.ts` sets two floors for consumer compilers:
+The bundled `extension-api.d.ts` sets these floors for consumer compilers:
 
-- `"skipLibCheck": true` — the type dependency graph (for example
-  `@ogre-tools/injectable`, which references jest types) is not clean under
-  `skipLibCheck: false`, and checking it is not your job.
-- `"lib"` with `ES2024` (or newer) — mobx 6.15 types reference
+- TypeScript 4.9 or newer — the declaration has `accessor` fields (on
+  `ItemStore`, `KubeApi` and `LensExtension`, among others), which older
+  compilers fail to parse with `TS1434: Unexpected keyword or identifier`.
+  `skipLibCheck` does not help, because it skips type checking, not parsing.
+  An extension that writes standard decorators itself needs TypeScript 5.0.
+- `"skipLibCheck": true` — the type dependency graph is not guaranteed to be
+  clean under `skipLibCheck: false`, and checking it is not your job.
+- `"lib"` with `ES2024` (or newer) — the mobx types reference
   `ReadonlySetLike`, which first appears in the ES2024 lib. `DOM` and
   `DOM.Iterable` belong in the renderer's config only; see
   [Source layout](#source-layout-one-tsconfig-per-runtime-environment).
@@ -229,7 +385,7 @@ function renderIcon(props: Renderer.Component.IconProps) { /* ... */ }
 An extension has code for two runtime environments in one project. The main
 entry point runs in Node, under Electron; the renderer entry point runs in a
 browser page, which gets no Node and no Electron
-([C4](./v2-extension-api.md#c4-module-format-and-loading)). One `tsconfig.json`
+([C4](./api.md#c4-module-format-and-loading)). One `tsconfig.json`
 with both the DOM lib and `@types/node` cannot tell which APIs are valid where:
 `import fs from "node:fs"`, `Buffer` and `process.env` compile in renderer code,
 `document` and `window` compile in main code, and the mistake shows at runtime
@@ -318,6 +474,9 @@ Some settings here are required, and some are easy to lose:
   `Main.Ipc` names the global `Electron` namespace, which only a config with
   Electron types has. Checking it under any one environment reports errors in
   the declaration, not in your code.
+- **`@types/node` is yours to declare.** `"types": ["node"]` in the main config
+  needs it as a development dependency of the extension. `@freelensapp/extensions`
+  does not bring it, because its declaration names nothing of Node.
 - **Electron types are optional in main.** Without them the `event` parameter of
   a `Main.Ipc` handler is untyped. For a typed one, add `electron` as a
   development dependency (for its types; it is never bundled) and write
@@ -330,7 +489,7 @@ Some settings here are required, and some are easy to lose:
 - **The split does not cover the API namespaces.** The declaration exposes
   `Main` and `Renderer` to every process, so `Main.Util.fetch` still compiles in
   renderer code and is `undefined` when it runs
-  ([C2](./v2-extension-api.md#c2-the-runtime-global-api)). Use `Common` in
+  ([C2](./api.md#c2-the-runtime-global-api)). Use `Common` in
   common code.
 
 Each entry point bundles its own copy of `src/common/`. Build the renderer for
@@ -383,7 +542,7 @@ export const buffer = Buffer.from("text");
 Export what each line declares, so that a line cannot go on failing for the
 wrong reason, such as an unused import, once the config lets its API through.
 The in-repo fixture extension checks its own configs this way, in
-[`packages/fixture-extension/environment-tests/`](../packages/fixture-extension/environment-tests).
+[`packages/fixture-extension/environment-tests/`](../../packages/fixture-extension/environment-tests).
 
 ### Optional: lint builtin imports in the renderer
 
@@ -475,16 +634,113 @@ Two names to watch:
   error in your extension, never as a runtime break, and renaming your own type
   or qualifying the namespace member fixes it.
 
-The concrete v1→v2 rename table is filled while the in-repo fixture extension
-is built out against this surface
-([#2451](https://github.com/freelensapp/freelens/issues/2451)), and will be
-appended here.
+### v1→v2 rename table
 
-It is derived by comparing the **published v1 declaration** against the v2 one
-above, rather than from porting a single extension. A port only covers the
-symbols that one extension happened to use; a surface-to-surface comparison
-covers all of them, and the fixture is what proves the v2 side is actually
-reachable under real build conditions rather than merely present in a `.d.ts`.
+The table compares the **published v1 declaration** of `@freelensapp/extensions`
+with the v2 one, path by path: every value and type reachable through `Common`,
+`Main` and `Renderer`, and the members of the classes, interfaces and object
+types among them (written `Path#member`). A v1 path that is not listed is still
+there under the same name. Names that are new in v2 are not listed; the names
+`K8sApi` gained are covered [above](#freelensappkube-object-imports-move-into-k8sapi),
+including `BaseKubeObjectStatus` and the `Condition` and `ObjectReference`
+collisions to watch for.
+
+The comparison covers the whole surface, not only the symbols one ported
+extension happened to use. The in-repo fixture extension names every v2 path
+of the first table in a type position and compiles against the built
+declaration, so each replacement is proven reachable under real build
+conditions rather than merely present in a `.d.ts`.
+
+#### Renamed or moved
+
+| v1 | v2 | Notes |
+| --- | --- | --- |
+| `Renderer.Component.getDetailsUrl` | `Renderer.Navigation.getDetailsUrl` | same function |
+| `Renderer.Component.showDetails` | `Renderer.Navigation.showDetails` | same function |
+| `Renderer.Theme.getActiveTheme()` | `Renderer.Theme.activeTheme.get()` | `activeTheme` is a mobx computed, so reading it inside a reaction tracks theme changes |
+| `new Main.K8sApi.ResourceStack(cluster, name)` | `Main.K8sApi.createResourceStack(cluster, name)` | same `kubectlApplyFolder` / `kubectlDeleteFolder`; name the type as `ReturnType<typeof Main.K8sApi.createResourceStack>` |
+| `new Renderer.K8sApi.ResourceStack(cluster, name)` | `Renderer.K8sApi.createResourceStack(cluster, name)` | as for `Main` |
+| `Renderer.Component.InputValidators.isExtensionNameInstallRegex.isMatch(value)` | `Renderer.Component.InputValidators.isExtensionNameInstallRegex.test(value)` | the regex is a plain `RegExp` now |
+| `Renderer.Component.InputValidators.isExtensionNameInstallRegex.captures(value)` | `Renderer.Component.InputValidators.extensionNameInstallCaptures(value)` | same `{ name, version? } \| undefined` result |
+
+#### Removed
+
+Each entry is marked *value*, *type*, *class* (a value and a type) or *member*.
+
+`Common`:
+
+- `Common.Types.IpcMainEvent`, `IpcMainInvokeEvent`, `IpcRendererEvent`,
+  `MenuRegistration`, `TrayMenuRegistration` (*type*) — see
+  [Unused members removed](#unused-members-removed).
+- `Common.Util.base64`, `isBuffer`, `isChildProcessError`, `isErrnoException`,
+  `isExecException`, `isExecFileException`, `isRequestError`, `listTarEntries`,
+  `openBrowser`, `openExternal`, `readFileFromTar`, `unionPATHs` (*value*) —
+  see [`Util` members that need Node removed](#util-members-that-need-node-removed).
+- `Common.PackageJson.Person`, `BugsLocation`, `Dependency`,
+  `DirectoryLocations`, `ExportCondition`, `Exports`, `JSPMConfiguration`,
+  `NonStandardEntryPoints`, `Scripts`, `TypeScriptConfiguration`,
+  `WorkspaceConfig`, `WorkspacePattern`, `YarnConfiguration` (*type*) —
+  `Common.PackageJson` itself stays, but no longer carries type-fest's
+  namespace of the same name. Import `PackageJson` from `type-fest` in your
+  own `devDependencies` if you need its members.
+- `Common.App.slackUrl` (*value*) — it was always `""`.
+- `Common.InstalledExtension#isBundled`, `Common.LensExtension#isBundled`
+  (*member*) — no replacement.
+
+`Main`:
+
+- `Main.K8sApi.forRemoteCluster` (*value*), `Main.K8sApi.IRemoteKubeApiConfig`
+  (*type*) — see [`K8sApi.forRemoteCluster` removed](#k8sapiforremotecluster-removed).
+- `Main.K8sApi.isAllowedResource` (*value*) — in main it always returned
+  `false`. `Renderer.K8sApi.isAllowedResource`, which does answer, is unchanged
+  and renderer-only.
+- `Main.K8sApi.IKubeApiCluster`, `Main.K8sApi.IgnoredKubeApiOptions` (*type*) —
+  both were deprecated and had no effect; drop them, and drop the ignored
+  `objectConstructor`, `kind`, `isNamespaces` and `apiBase` options from what
+  you pass to the `*Api` constructors.
+- `Main.LensExtension#appMenus`, `Main.LensExtension#trayMenus` (*member*) — see
+  [Unused members removed](#unused-members-removed).
+- `Main.LensExtension#isBundled` (*member*) — no replacement.
+
+`Renderer`:
+
+- `Renderer.Component.List` (*value*), `ListProps`, `SearchFilter` (*type*) —
+  see [`Renderer.Component.List` removed](#renderercomponentlist-removed).
+- `Renderer.Component.VirtualList` (*value*), `VirtualListProps`,
+  `VirtualListRef`, `RowProps` (*type*) — see
+  [Unused members removed](#unused-members-removed).
+- `Renderer.Component.NamespaceSelectBadgeNonInjected` (*value*),
+  `Renderer.Component.Dependencies` (*type*) — see
+  [`NamespaceSelectBadgeNonInjected` is gone with them](#namespaceselectbadgenoninjected-is-gone-with-them).
+- `Renderer.Component.SliderProps`: the members it inherited from MUI's
+  `SliderProps` — `sx`, `slots`, `slotProps`, `marks`, `track`,
+  `valueLabelFormat` and the rest, and the HTML and ARIA attributes (*member*).
+  `SliderProps` now declares only `className`, `min`, `max`, `step`, `value`,
+  `disabled`, `orientation`, `valueLabelDisplay`, `onChange` and
+  `onChangeCommitted`.
+- `Renderer.K8sApi` store classes (*class*): `ClusterRoleBindingStore`,
+  `ClusterRoleStore`, `ConfigMapStore` / `ConfigMapsStore`, `CronJobStore`,
+  `CustomResourceDefinitionStore` / `CRDStore`, `CustomResourceStore` /
+  `CRDResourceStore`, `DaemonSetStore`, `DeploymentStore`, `EndpointSliceStore`,
+  `EndpointsStore` / `EndpointStore`, `EventStore`,
+  `HorizontalPodAutoscalerStore` / `HPAStore`, `IngressClassStore`,
+  `IngressStore`, `JobStore`, `LimitRangeStore` / `LimitRangesStore`,
+  `NamespaceStore`, `NetworkPolicyStore`, `NodeStore` / `NodesStore`,
+  `PersistentVolumeClaimStore` / `VolumeClaimStore`, `PersistentVolumeStore` /
+  `PersistentVolumesStore`, `PodDisruptionBudgetStore` /
+  `PodDisruptionBudgetsStore`, `PodStore` / `PodsStore`, `PriorityClassStore` /
+  `PriorityClassStoreStore`, `ReplicaSetStore`, `ResourceQuotaStore` /
+  `ResourceQuotasStore`, `RoleBindingStore` / `RoleBindingsStore`, `RoleStore` /
+  `RolesStore`, `SecretStore` / `SecretsStore`, `ServiceAccountStore` /
+  `ServiceAccountsStore`, `ServiceStore`, `StatefulSetStore`,
+  `StorageClassStore`, `VerticalPodAutoscalerStore` — see
+  [`Renderer.K8sApi` concrete store classes removed](#rendererk8sapi-concrete-store-classes-removed).
+- `Renderer.K8sApi.forRemoteCluster` (*value*),
+  `Renderer.K8sApi.IRemoteKubeApiConfig` (*type*) — see
+  [`K8sApi.forRemoteCluster` removed](#k8sapiforremotecluster-removed).
+- `Renderer.K8sApi.IKubeApiCluster`, `Renderer.K8sApi.IgnoredKubeApiOptions`
+  (*type*) — as for `Main`.
+- `Renderer.LensExtension#isBundled` (*member*) — no replacement.
 
 ## Registering things: declarative fields
 
@@ -606,7 +862,7 @@ HTTP that respects the user's proxy and CA settings — is `Main.Util.fetch`.
 ## `K8sApi.forRemoteCluster` removed
 
 `Main.K8sApi.forRemoteCluster` / `Renderer.K8sApi.forRemoteCluster` and the
-`IRemoteKubeApiConfig` type are gone in v2 (#2374). The function built a
+`IRemoteKubeApiConfig` type are gone in v2. The function built a
 `KubeApi` pointing straight at an arbitrary API server URL, bypassing both the
 catalog and the proxy, and configured TLS itself from `caData`,
 `skipTLSVerify`, `clientCertificateData` / `clientKeyData` or a custom
@@ -648,7 +904,7 @@ first constructor argument — `CronJobStore`'s is
 extension can neither build nor name, so the classes could not be instantiated
 from outside the host in the first place. Exporting them anyway would freeze
 those bags as public API under
-[C14](./v2-extension-api.md#c14-versioning-and-compatibility), which means
+[C14](./api.md#c14-versioning-and-compatibility), which means
 refactoring an internal store dependency would formally become a breaking change
 to the extension API. v2.0.0 is where that goes away.
 
@@ -719,7 +975,7 @@ resolves the namespace filter from the host container itself:
 
 `Common.Util` carries every export of the host's utilities package except the
 ones that need Node or Electron in the renderer, which v2 does not guarantee
-there ([C5](./v2-extension-api.md#decided-util-is-freelensapputilities-minus-the-node-bound-members)).
+there ([C5](./api.md#util-is-freelensapputilities-minus-the-node-bound-members)).
 These are gone from `Common.Util`, and with it from `Main.Util` and
 `Renderer.Util`. No extension is known to use them; if you need one back in a
 form that works without Node, ask for it.
@@ -770,7 +1026,7 @@ the latter in `Common`, which renderer code reads too.
 ## Node and Electron in the renderer
 
 **Renderer code gets no Node and no Electron in v2**, `require()` included
-([C4](./v2-extension-api.md#c4-module-format-and-loading)). They are still
+([C4](./api.md#c4-module-format-and-loading)). They are still
 reachable, because the renderer is not context-isolated yet, but nothing
 guarantees them and they may disappear in any release. Everything that used to
 lean on them in the renderer has a replacement already:
@@ -919,8 +1175,7 @@ extension migration guide.
 ## Routing: `react-router` re-exports removed
 
 Freelens v2 dropped `react-router` 5, `react-router-dom` 5, and `history` v4
-from the host (Phase 2 routing modernization, #2261 — `react-router` 5 is
-unmaintained and blocked the React 19 upgrade). Navigation now runs on the
+from the host: `react-router` 5 is unmaintained and does not support React 19. Navigation now runs on the
 in-house pieces in `@freelensapp/routing`. **This is an intended, extension-
 facing breaking change:** the `Common.ReactRouter` / `Renderer.ReactRouterDom`
 bundle re-exports no longer exist, so `import { Link } from "react-router-dom"`
@@ -940,24 +1195,17 @@ If your extension used them, migrate one of two ways:
   `react-router` / `react-router-dom` to your extension's own dependencies and
   bundle them; do not rely on the host providing them.
 
-See [`docs/v2-routing-modernization.md`](./v2-routing-modernization.md) (§2.5
-and §5) for the rationale and the full list of what was removed.
-
 ## `Renderer.Component.List` removed
 
 `Renderer.Component.List`, along with its `ListProps` and `SearchFilter` types,
-is gone in v2 (#2360). It was a thin search box plus a `react-table` 7 table,
+is gone in v2. It was a thin search box plus a `react-table` 7 table,
 and its props extended `react-table`'s own `UseTableOptions`, so the package
 was part of the published type surface: the column objects an extension passed
 in (`Header`, `accessor`, `sortType`, `disableSortBy`, `width`) were
 `react-table` column objects.
 
-`react-table` 7.8.0 was last released in 2022-05, the repository moved on to
-TanStack, and its peer range stops at React 18 — Freelens v2 runs React 19. It
-had exactly one consumer in the host (the installed-extensions screen), which
-now uses an internal table, so keeping the dependency alive only to keep this
-one re-export would have frozen an unmaintained package into the v2 extension
-API.
+`react-table` 7 is unmaintained, and its peer range stops at React 18, while
+Freelens v2 runs React 19, so the extension API no longer carries it.
 
 If your extension used `List`:
 
@@ -1046,7 +1294,7 @@ styles; the class names are mangled at build time so they never collide with
 the host or with other extensions. For the host's shared component classes
 (`.Tooltip`, `.Button`, …), which are global and part of the public API, you
 may target them directly — do not redefine them. See
-[`docs/v2-styling.md`](./v2-styling.md) for the full styling model.
+[`docs/styling.md`](../styling.md) for the full styling model.
 
 > Note: the **host's** Tailwind does not reach extensions — its JIT only scans
 > core's own source, so a Tailwind class you write expecting the host to have
@@ -1120,7 +1368,7 @@ The host cannot hand its Tailwind to extensions: `packages/core/tailwind.config.
 sets `content: ["src/**/*.tsx"]` and the host CSS is generated at **host build
 time**, while extensions are installed at **runtime** — the host JIT can never
 see an extension's class usage, so a class only "works" if core happens to emit
-it (the trap [`docs/v2-styling.md`](./v2-styling.md) warns about). But nothing
+it (the trap [`docs/styling.md`](../styling.md) warns about). But nothing
 stops an extension from running **its own** Tailwind v4 build and shipping the
 generated utilities in the single CSS asset the host already injects (the loader
 appends your sibling `style.css`/`<entry>.css` — see
@@ -1272,7 +1520,8 @@ restarted once.
       `package.json` declares it.
 - [ ] Access only the process-appropriate namespace (`Main` in main,
       `Renderer` in the renderer, `Common` in both).
-- [ ] Re-check any moved API symbols against the published type surface.
+- [ ] Look up every v1 namespace path you use in the
+      [v1→v2 rename table](#v1v2-rename-table).
 - [ ] Replace any `K8sApi.forRemoteCluster` usage with a direct call to the API
       server — it was removed (see
       [`K8sApi.forRemoteCluster` removed](#k8sapiforremotecluster-removed)).
@@ -1307,6 +1556,11 @@ restarted once.
       [Node and Electron in the renderer](#node-and-electron-in-the-renderer),
       or into main behind `Ipc`, and stop marking the builtins external in the
       renderer build.
+- [ ] Move mobx decorators to standard decorators: drop
+      `experimentalDecorators`, write `@observable accessor`, replace the
+      namespaced annotations and `comparer.*` with their named exports, and
+      remove `makeObservable(this)` (see
+      [MobX 7 and mobx-react 10](#mobx-7-and-mobx-react-10-standard-decorators-only)).
 - [ ] Give main, renderer and common code a directory and a `tsconfig.json`
       each, so the type check catches the next Node API in renderer code (see
       [Source layout](#source-layout-one-tsconfig-per-runtime-environment)).
@@ -1324,22 +1578,9 @@ check rather than a smoke test:
       throws nothing at all — its reactions simply do not fire. Assert on an
       observable the host reacts to rather than eyeballing the UI.
 
-## Still pending
-
-Noted here so the guide is honest about what an author cannot do yet, even
-having done everything above.
-
-| Pending | Effect on you | Tracked in |
-| --- | --- | --- |
-| No author-facing hook for registering an injectable | the container view now exists before `onActivate`, but nothing hands it to you | [#2450](https://github.com/freelensapp/freelens/issues/2450) |
-| Known missing re-exports | some types are callable but not nameable | [#2365](https://github.com/freelensapp/freelens/issues/2365) |
-| The fixture extension is not yet built out against the full v2 surface | the namespace rename table above is not filled | [#2451](https://github.com/freelensapp/freelens/issues/2451) |
-
-The rolled-up, self-contained `.d.ts` for the published
-`@freelensapp/extensions` (no `@freelensapp/*` imports, declared type
-dependencies, namespaces usable in type positions) is done and verified
-against a strict-mode scratch consumer.
+## Shipping executables
 
 If your extension ships executables alongside its JavaScript, read
-[`docs/v2-extension-abi.md`](./v2-extension-abi.md) — the short version is that
-2.0.0 extracts them and never uses them.
+[`docs/extensions/binaries.md`](./binaries.md). In short: the host extracts
+them with their mode bits and does nothing else with them, and your main entry
+point runs them with `node:child_process`.

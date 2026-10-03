@@ -7,7 +7,7 @@
 import { beforeApplicationIsLoadingInjectionToken } from "@freelensapp/application";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import { comparer, reaction, runInAction, toJS } from "mobx";
+import { compareStructural, reaction, runInAction, toJS } from "mobx";
 import directoryForLensLocalStorageInjectable from "../../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
 import readJsonFileInjectable from "../../../common/fs/read-json-file.injectable";
 import writeJsonFileInjectable from "../../../common/fs/write-json-file.injectable";
@@ -51,7 +51,7 @@ const initializeStateInjectable = getInjectable({
 
       reaction(() => toJS(lensLocalStorageState), saveFile, {
         delay: storageSaveDelay, // lazy, avoid excessive writes to fs
-        equals: comparer.structural, // save only when something really changed
+        equals: compareStructural, // save only when something really changed
       });
 
       async function saveFile(state: Record<string, unknown>) {

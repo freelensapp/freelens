@@ -5,7 +5,7 @@
  */
 
 import { TypedEmitter } from "@freelensapp/utilities";
-import { makeObservable, observable } from "mobx";
+import { observable } from "mobx";
 
 import type { Defaulted } from "@freelensapp/utilities";
 
@@ -75,14 +75,13 @@ export class WebSocketApi<Events extends WebSocketEvents> extends TypedEmitter<E
   protected pingTimer?: number;
   protected params: Defaulted<WebsocketApiParams, keyof DefaultWebsocketApiParams>;
 
-  @observable readyState = WebSocketApiState.PENDING;
+  @observable accessor readyState = WebSocketApiState.PENDING;
 
   constructor(
     protected readonly dependencies: WebSocketApiDependencies,
     params: WebsocketApiParams,
   ) {
     super();
-    makeObservable(this);
     this.params = {
       ...this.dependencies.defaultParams,
       ...params,

@@ -10,7 +10,7 @@ import { cssNames, noop } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
 import { groupBy } from "es-toolkit";
-import { makeObservable, observable, untracked } from "mobx";
+import { observableRef, untracked } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import selectedFilterNamespacesInjectable from "../../../common/k8s-api/selected-filter-namespaces.injectable";
@@ -189,12 +189,11 @@ class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends bool
   // header/filters/content observers invoke the getters below from within their
   // own render reactions. Keep an observable snapshot of props (updated on every
   // update) so those getters can be read reactively from any derivation.
-  @observable.ref private observableProps: Readonly<ItemListLayoutProps<I, PreLoadStores> & Dependencies>;
+  @observableRef private accessor observableProps: Readonly<ItemListLayoutProps<I, PreLoadStores> & Dependencies>;
 
   constructor(props: ItemListLayoutProps<I, PreLoadStores> & Dependencies) {
     super(props);
     this.observableProps = props;
-    makeObservable(this);
     autoBindReact(this);
   }
 

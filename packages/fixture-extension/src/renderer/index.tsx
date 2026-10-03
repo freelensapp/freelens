@@ -29,7 +29,7 @@ import { FIXTURE_PROBE_URL } from "../common/host-info";
  * The host-provided singletons this bundle actually resolved, so the harness can
  * compare them by identity with what the host published.
  *
- * A behavioural check alone is not enough for mobx: two copies of mobx 6 still
+ * A behavioural check alone is not enough for mobx: two copies of mobx still
  * interoperate through the shared global state they both write to
  * `globalThis`, so a reaction can keep firing while the extension carries its
  * own duplicate — which is the failure the identity comparison catches and the

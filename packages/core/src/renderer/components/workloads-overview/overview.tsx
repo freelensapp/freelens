@@ -9,7 +9,7 @@ import "./overview.scss";
 import { Icon } from "@freelensapp/icon";
 import { TooltipPosition } from "@freelensapp/tooltip";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { makeObservable, observable, reaction } from "mobx";
+import { observable, reaction } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import clusterFrameContextForNamespacedResourcesInjectable from "../../cluster-frame-context/for-namespaced-resources.injectable";
@@ -56,11 +56,10 @@ interface Dependencies {
 @observer
 class NonInjectedWorkloadsOverview extends React.Component<Dependencies> {
   private readonly disposers: (() => void)[] = [];
-  @observable loadErrors: string[] = [];
+  @observable accessor loadErrors: string[] = [];
 
   constructor(props: Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   componentDidMount() {

@@ -61,6 +61,7 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
     kubeAuthProxyMock = {
       apiPrefix: "/some-api-prefix",
       port: 0,
+      isRunning: true,
       exit: vi.fn(),
       run: asyncFn(),
     };

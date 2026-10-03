@@ -9,7 +9,7 @@ import { Icon } from "@freelensapp/icon";
 import { Spinner } from "@freelensapp/spinner";
 import { cssNames, hasTypedProperty, isObject, isString } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { computed, makeObservable, observable } from "mobx";
+import { computed, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import navigateToEntitySettingsInjectable from "../../../common/front-end-routing/routes/entity-settings/navigate-to-entity-settings.injectable";
@@ -41,12 +41,11 @@ interface Dependencies {
 class NonInjectedClusterStatus extends React.Component<ClusterStatusProps & Dependencies> {
   private readonly disposers: (() => void)[] = [];
 
-  @observable authOutput: KubeAuthUpdate[] = [];
-  @observable isReconnecting = false;
+  @observable accessor authOutput: KubeAuthUpdate[] = [];
+  @observable accessor isReconnecting = false;
 
   constructor(props: ClusterStatusProps & Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   get cluster(): Cluster {

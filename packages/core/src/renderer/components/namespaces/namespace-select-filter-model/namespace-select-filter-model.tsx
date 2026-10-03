@@ -6,7 +6,7 @@
 
 import { Icon } from "@freelensapp/icon";
 import { observableCrate } from "@freelensapp/utilities";
-import { action, comparer, computed, observable } from "mobx";
+import { action, compareStructural, computed, observable } from "mobx";
 import React from "react";
 
 import type { IComputedValue } from "mobx";
@@ -68,7 +68,7 @@ export function namespaceSelectFilterModelFor(dependencies: Dependencies): Names
     },
   ]);
   const selectedNames = computed(() => new Set(context.contextNamespaces), {
-    equals: comparer.structural,
+    equals: compareStructural,
   });
   const optionsSortingSelected = observable.set(selectedNames.get());
   const sortNamespacesByIfTheyHaveBeenSelected = (left: string, right: string) => {

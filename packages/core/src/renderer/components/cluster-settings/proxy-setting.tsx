@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { autorun, makeObservable, observable } from "mobx";
+import { autorun, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { Input, InputValidators } from "../input";
@@ -20,11 +20,10 @@ export interface ClusterProxySettingProps {
 export class ClusterProxySetting extends React.Component<ClusterProxySettingProps> {
   private readonly disposers: (() => void)[] = [];
 
-  @observable proxy = "";
+  @observable accessor proxy = "";
 
   constructor(props: ClusterProxySettingProps) {
     super(props);
-    makeObservable(this);
   }
 
   componentDidMount() {

@@ -109,7 +109,7 @@
     },
 
     "packages/extensions": {
-      "entry": ["rollup.dts.config.mjs", "scripts/*.mjs", "src/runtime-shim.ts!"],
+      "entry": ["rolldown.dts.config.mjs", "scripts/*.mjs", "src/runtime-shim.ts!"],
       "project": ["*.mjs", "scripts/*.mjs", "src/**/*.ts!"],
       // build:dist output: the bundled declarations inline the types of the
       // whole workspace, so scanning them reports every transitive import of
@@ -127,15 +127,16 @@
         // extension projects resolve these packages for types through
         // @freelensapp/extensions, so they must stay declared even though no
         // runtime code in this package imports them
-        "@ogre-tools/injectable",
-        "@ogre-tools/injectable-react",
         "@types/react",
+        "@types/react-dom",
         "@types/react-window",
         "@xterm/xterm",
         "chart.js",
         "conf",
+        "es-toolkit",
         "immer",
         "mobx",
+        "mobx-react",
         "monaco-editor",
         "react",
         "react-select",
@@ -157,6 +158,7 @@
         // type-only by design: the type level of the contract, with no runtime
         // importer here or anywhere else
         "src/common/contract-types.ts!",
+        "src/common/v1-renames.ts!",
         "src/main/index.ts!",
         "src/renderer/index.tsx!"
       ],

@@ -10,7 +10,7 @@ import { Icon } from "@freelensapp/icon";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { makeObservable, observable } from "mobx";
+import { observable } from "mobx";
 import { observer } from "mobx-react";
 import { Component } from "react";
 import { Checkbox } from "../components/checkbox";
@@ -46,13 +46,12 @@ interface Dependencies {
 
 @observer
 class NonInjectedPortForwardDialog extends Component<PortForwardDialogProps & Dependencies> {
-  @observable currentPort = 0;
-  @observable desiredPort = 0;
-  @observable desiredAddress = "localhost";
+  @observable accessor currentPort = 0;
+  @observable accessor desiredPort = 0;
+  @observable accessor desiredAddress = "localhost";
 
   constructor(props: PortForwardDialogProps & Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   get portForwardStore() {
