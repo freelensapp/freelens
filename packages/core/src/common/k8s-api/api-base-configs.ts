@@ -11,7 +11,7 @@ export const apiBaseServerAddressInjectionToken = getInjectionToken<string>({
 });
 
 /**
- * The `Host` header requests to lens-proxy must carry, or `undefined` when the
+ * The `Host` header requests to freelens-proxy must carry, or `undefined` when the
  * process does not need to set one.
  *
  * Main connects to 127.0.0.1 and has to name the target itself. The renderer

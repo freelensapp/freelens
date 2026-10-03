@@ -8,7 +8,7 @@ import Call from "@hapi/call";
 import type http from "node:http";
 
 import type { Cluster } from "../../common/cluster/cluster";
-import type { ServerIncomingMessage, ServerRequest, ServerResponse } from "../lens-proxy/lens-proxy";
+import type { ServerIncomingMessage, ServerRequest, ServerResponse } from "../freelens-proxy/freelens-proxy";
 import type { CreateHandlerForRoute, RouteHandler } from "./create-handler-for-route.injectable";
 import type { ParseRequest } from "./parse-request.injectable";
 import type { LensApiRequest, Route } from "./route";

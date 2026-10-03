@@ -20,14 +20,14 @@ import type { RemovePath } from "../../common/fs/remove.injectable";
 import type { WriteFile } from "../../common/fs/write-file.injectable";
 import type { GetDirnameOfPath } from "../../common/path/get-dirname.injectable";
 import type { JoinPaths } from "../../common/path/join-paths.injectable";
-import type { KubeAuthProxyServer } from "../cluster/kube-auth-proxy-server.injectable";
+import type { FreelensK8sProxyServer } from "../cluster/freelens-k8s-proxy-server.injectable";
 
 interface KubeconfigManagerDependencies {
   readonly directoryForTemp: string;
   readonly logger: Logger;
   readonly certificate: SelfSignedCert;
-  readonly kubeAuthProxyServer: KubeAuthProxyServer;
-  readonly kubeAuthProxyUrl: string;
+  readonly freelensK8sProxyServer: FreelensK8sProxyServer;
+  readonly freelensProxyClusterUrl: string;
   joinPaths: JoinPaths;
   getDirnameOfPath: GetDirnameOfPath;
   pathExists: PathExists;
@@ -85,16 +85,16 @@ export class KubeconfigManager {
 
   protected async ensureFile() {
     try {
-      await this.dependencies.kubeAuthProxyServer.ensureRunning();
+      await this.dependencies.freelensK8sProxyServer.ensureRunning();
 
       return (this.tempFilePath = await this.createProxyKubeconfig());
     } catch (error) {
-      throw new Error(`Failed to create temp config for auth-proxy: ${error}`);
+      throw new Error(`Failed to create temp kubeconfig for freelens-proxy: ${error}`);
     }
   }
 
   /**
-   * Creates new "temporary" kubeconfig that point to the kubectl-proxy.
+   * Creates new "temporary" kubeconfig that points to the freelens-proxy.
    * This way any user of the config does not need to know anything about the auth etc. details.
    */
   protected async createProxyKubeconfig(): Promise<string> {
@@ -110,7 +110,7 @@ export class KubeconfigManager {
       clusters: [
         {
           name: contextName,
-          server: this.dependencies.kubeAuthProxyUrl,
+          server: this.dependencies.freelensProxyClusterUrl,
           skipTLSVerify: false,
           caData: Buffer.from(this.dependencies.certificate.cert).toString("base64"),
         },

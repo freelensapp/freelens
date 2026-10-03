@@ -23,7 +23,7 @@ import { replaceObservableObject } from "../../common/utils/replace-observable-o
 import clusterVersionDetectorInjectable from "../cluster-detectors/cluster-version-detector.injectable";
 import detectClusterMetadataInjectable from "../cluster-detectors/detect-cluster-metadata.injectable";
 import broadcastConnectionUpdateInjectable from "./broadcast-connection-update.injectable";
-import kubeAuthProxyServerInjectable from "./kube-auth-proxy-server.injectable";
+import freelensK8sProxyServerInjectable from "./freelens-k8s-proxy-server.injectable";
 import loadProxyKubeconfigInjectable from "./load-proxy-kubeconfig.injectable";
 import prometheusHandlerInjectable from "./prometheus-handler/prometheus-handler.injectable";
 import removeProxyKubeconfigInjectable from "./remove-proxy-kubeconfig.injectable";
@@ -46,7 +46,7 @@ import type { KubeApiResource } from "../../common/rbac";
 import type { DetectClusterMetadata } from "../cluster-detectors/detect-cluster-metadata.injectable";
 import type { FallibleOnlyClusterMetadataDetector } from "../cluster-detectors/token";
 import type { BroadcastConnectionUpdate } from "./broadcast-connection-update.injectable";
-import type { KubeAuthProxyServer } from "./kube-auth-proxy-server.injectable";
+import type { FreelensK8sProxyServer } from "./freelens-k8s-proxy-server.injectable";
 import type { LoadProxyKubeconfig } from "./load-proxy-kubeconfig.injectable";
 import type { ClusterPrometheusHandler } from "./prometheus-handler/prometheus-handler";
 import type { RemoveProxyKubeconfig } from "./remove-proxy-kubeconfig.injectable";
@@ -55,7 +55,7 @@ import type { RequestApiResources } from "./request-api-resources.injectable";
 interface Dependencies {
   readonly logger: Logger;
   readonly prometheusHandler: ClusterPrometheusHandler;
-  readonly kubeAuthProxyServer: KubeAuthProxyServer;
+  readonly freelensK8sProxyServer: FreelensK8sProxyServer;
   readonly clusterVersionDetector: FallibleOnlyClusterMetadataDetector;
   createCanI: CreateCanI;
   requestApiResources: RequestApiResources;
@@ -335,7 +335,7 @@ class ClusterConnection {
   async reconnect() {
     this.dependencies.logger.info(`[CLUSTER]: reconnect`, this.cluster.getMeta());
     this.resetAuthFailureTracking();
-    await this.dependencies.kubeAuthProxyServer?.restart();
+    await this.dependencies.freelensK8sProxyServer?.restart();
 
     runInAction(() => {
       this.cluster.disconnected.set(false);
@@ -352,7 +352,7 @@ class ClusterConnection {
     runInAction(() => {
       this.dependencies.logger.info(`[CLUSTER]: disconnecting`, { id: this.cluster.id });
       this.eventsDisposer();
-      this.dependencies.kubeAuthProxyServer?.stop();
+      this.dependencies.freelensK8sProxyServer?.stop();
       this.cluster.disconnected.set(true);
       this.cluster.online.set(false);
       this.cluster.accessible.set(false);
@@ -610,7 +610,7 @@ const clusterConnectionInjectable = getInjectable({
     new ClusterConnection(
       {
         clusterVersionDetector: di.inject(clusterVersionDetectorInjectable),
-        kubeAuthProxyServer: di.inject(kubeAuthProxyServerInjectable, cluster),
+        freelensK8sProxyServer: di.inject(freelensK8sProxyServerInjectable, cluster),
         logger: di.inject(loggerInjectionToken),
         prometheusHandler: di.inject(prometheusHandlerInjectable, cluster),
         broadcastConnectionUpdate: di.inject(broadcastConnectionUpdateInjectable, cluster),

@@ -7,11 +7,11 @@
  */
 
 import clustersThatAreBeingDeletedInjectable from "./are-being-deleted.injectable";
-import kubeAuthProxyUrlInjectable from "./auth-proxy-url.injectable";
 import broadcastConnectionUpdateInjectable from "./broadcast-connection-update.injectable";
 import clusterConnectionInjectable from "./cluster-connection.injectable";
+import freelensK8sProxyServerInjectable from "./freelens-k8s-proxy-server.injectable";
+import freelensProxyClusterUrlInjectable from "./freelens-proxy-cluster-url.injectable";
 import initializeClusterManagerInjectable from "./initialize-manager.injectable";
-import kubeAuthProxyServerInjectable from "./kube-auth-proxy-server.injectable";
 import loadProxyKubeconfigInjectable from "./load-proxy-kubeconfig.injectable";
 import clusterManagerInjectable from "./manager.injectable";
 import { registerInjectables as registerPrometheusHandlerInjectables } from "./prometheus-handler/register-injectables";
@@ -55,17 +55,17 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
+    di.register(freelensK8sProxyServerInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(freelensProxyClusterUrlInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
     di.register(initializeClusterManagerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(kubeAuthProxyServerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(kubeAuthProxyUrlInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

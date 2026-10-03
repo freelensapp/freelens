@@ -9,11 +9,11 @@ import path from "node:path";
 import { prefixedLoggerInjectable } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import { createProxyServer } from "http-proxy-3";
-import { abortWhenClientCloses, isClientGone } from "../../lens-proxy/abort-when-client-closes";
+import { abortWhenClientCloses, isClientGone } from "../../freelens-proxy/abort-when-client-closes";
 import { respondText } from "../../utils/http-responses";
 import type http from "node:http";
 
-import type { ServerResponse } from "../../lens-proxy/lens-proxy";
+import type { ServerResponse } from "../../freelens-proxy/freelens-proxy";
 import type { LensApiRequest, RouteResponse } from "../../router/route";
 
 const devStaticFileRouteHandlerInjectable = getInjectable({

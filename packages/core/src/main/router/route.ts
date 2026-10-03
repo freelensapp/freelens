@@ -10,7 +10,7 @@ import type { ProxyServer } from "http-proxy-3";
 import type Joi from "joi";
 
 import type { Cluster } from "../../common/cluster/cluster";
-import type { ServerRequest, ServerResponse } from "../lens-proxy/lens-proxy";
+import type { ServerRequest, ServerResponse } from "../freelens-proxy/freelens-proxy";
 import type { LensApiResultContentType } from "./router-content-types";
 
 export type InferParam<T extends string, PathParams extends Record<string, string>> = T extends `{${infer P}?}`

@@ -10,9 +10,9 @@ import downloadBinaryInjectable from "./download-binary.injectable";
 import nodeFetchChannelListenerInjectable from "./download-binary-channel-listener.injectable";
 import downloadJsonInjectable from "./download-json.injectable";
 import nodeFetchChannelListenerInjectable2 from "./download-json-channel-listener-copy.injectable";
+import freelensProxyDispatcherInjectable from "./freelens-proxy-dispatcher.injectable";
 import httpsAgentInjectable from "./https-agent.injectable";
 import lensFetchInjectable from "./lens-fetch.injectable";
-import lensProxyDispatcherInjectable from "./lens-proxy-dispatcher.injectable";
 import proxyFetchInjectable from "./proxy-fetch.injectable";
 import undiciFetchInjectable from "./undici-fetch.injectable";
 
@@ -30,17 +30,17 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
+    di.register(freelensProxyDispatcherInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
     di.register(httpsAgentInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
   try {
     di.register(lensFetchInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(lensProxyDispatcherInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

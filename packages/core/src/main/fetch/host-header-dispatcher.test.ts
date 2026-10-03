@@ -40,7 +40,7 @@ describe("withHostHeaderPreserved", () => {
     return receivedHost;
   };
 
-  // lens-proxy routes to a cluster on this header, so losing it breaks every
+  // freelens-proxy routes to a cluster on this header, so losing it breaks every
   // cluster view. undici's `fetch` drops it on its own: it is a forbidden
   // header name.
   it("sends a Host header given as a record", async () => {

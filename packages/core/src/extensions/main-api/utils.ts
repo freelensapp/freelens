@@ -15,7 +15,7 @@ const Util = {
    *
    * `globalThis.fetch` exists here too, but it knows nothing about the
    * `httpsProxy` preference, `caCertificates` / `allowUntrustedCAs`, or
-   * lens-proxy — all three of which this client already honours. An extension
+   * freelens-proxy — all three of which this client already honours. An extension
    * reaching a cluster or an external service from main should use this rather
    * than bundle an HTTP client of its own.
    *

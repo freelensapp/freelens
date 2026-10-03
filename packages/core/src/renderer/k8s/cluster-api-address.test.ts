@@ -19,7 +19,7 @@ describe("cluster-api-address in the renderer", () => {
     return di.inject(clusterApiAddressInjectionToken)(clusterId);
   };
 
-  // lens-proxy routes on the request's host, and Chromium drops a `Host`
+  // freelens-proxy routes on the request's host, and Chromium drops a `Host`
   // header, so the cluster has to be named in the URL. Getting this wrong does
   // not fail loudly: the request lands on the frame's own origin and silently
   // answers for the wrong cluster.
