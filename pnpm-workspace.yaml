@@ -51,7 +51,7 @@ catalog:
   rolldown-plugin-dts: 0.28.6
   sass-embedded: 1.100.0
   tailwindcss: 4.2.4
-  turbo: 2.10.2
+  turbo: 2.11.7
   vite: 8.3.1
   # Electron
   electron: 43.7.7
