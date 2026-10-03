@@ -16,9 +16,10 @@ const agents = new Map<string, Agent>();
  * replaces — a fresh one per request would leak connections. The certificate is
  * generated once per process, so one dispatcher per certificate is enough.
  *
- * lens-proxy answers HTTP/2 as well, which undici negotiates by default. Main
- * stays on HTTP/1.1: the agent opens as many connections to a host as it
- * needs, so HTTP/2 would gain it nothing.
+ * Main negotiates HTTP/2 with lens-proxy on purpose, as undici does by default:
+ * the renderer does too, so every client of the server takes the same protocol
+ * path. undici sends the `Host` header of a request as `:authority`, which is
+ * what lens-proxy routes on over HTTP/2.
  */
 export const getLensProxyAgent = (ca: string | undefined): Dispatcher => {
   const key = ca ?? "";
@@ -28,7 +29,7 @@ export const getLensProxyAgent = (ca: string | undefined): Dispatcher => {
     return existing;
   }
 
-  const agent = new Agent({ allowH2: false, connect: { ca } });
+  const agent = new Agent({ connect: { ca } });
 
   agents.set(key, agent);
 
