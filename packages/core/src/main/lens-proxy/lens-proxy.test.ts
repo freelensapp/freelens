@@ -84,6 +84,16 @@ const connectHttp2 = async (port: number) => {
   return session;
 };
 
+/**
+ * Resolves once the stream or socket has closed, whether or not it errored on
+ * the way, which `once(emitter, "close")` would reject on.
+ */
+const untilClosed = (emitter: NodeJS.EventEmitter) =>
+  new Promise<void>((resolve) => {
+    emitter.on("error", () => {});
+    emitter.once("close", () => resolve());
+  });
+
 const getHttp1 = (port: number, path: string, headers: http.OutgoingHttpHeaders = {}) =>
   new Promise<{ statusCode?: number; body: string }>((resolve, reject) => {
     https
@@ -378,6 +388,7 @@ describe("lens proxy kube api requests", () => {
   let port: number;
   let target: http.Server;
   let targetReceived: { url?: string; host?: string; authorization?: string }[];
+  let watchReceived: Promise<http.IncomingMessage>;
   let timeout: number | undefined;
   const sessions: http2.ClientHttp2Session[] = [];
 
@@ -394,7 +405,12 @@ describe("lens proxy kube api requests", () => {
   beforeEach(async () => {
     const di = getDiForUnitTesting();
 
+    let receiveWatch: (req: http.IncomingMessage) => void;
+
     targetReceived = [];
+    watchReceived = new Promise((resolve) => {
+      receiveWatch = resolve;
+    });
     timeout = undefined;
     target = http.createServer((req, res) => {
       targetReceived.push({ url: req.url, host: req.headers.host, authorization: req.headers.authorization });
@@ -410,6 +426,7 @@ describe("lens proxy kube api requests", () => {
       // freelens-k8s-proxy does, and then nothing
       if (req.url?.includes("watch=true")) {
         res.writeHead(200, { "content-type": "application/json" }).flushHeaders();
+        receiveWatch(req);
 
         return;
       }
@@ -501,6 +518,22 @@ describe("lens proxy kube api requests", () => {
 
     expect(headers[":status"]).toBe(200);
     expect(headers["content-type"]).toBe("application/json");
+  });
+
+  it("ends the request to the target when the client cancels its HTTP/2 stream", async () => {
+    const session = await connectSession();
+    const stream = session.request({ ":path": "/api-kube/api/v1/pods?watch=true" });
+
+    stream.on("error", () => {});
+
+    const req = await watchReceived;
+    const targetRequestClosed = untilClosed(req.socket);
+
+    // As Chromium does when a view stops watching
+    stream.close(http2.constants.NGHTTP2_CANCEL);
+    await targetRequestClosed;
+
+    expect(session.closed || session.destroyed).toBe(false);
   });
 
   it("ends an HTTP/2 request once it has been idle for the timeout of its target, and not the session", async () => {

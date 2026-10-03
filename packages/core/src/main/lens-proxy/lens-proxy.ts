@@ -8,6 +8,7 @@ import http2 from "node:http2";
 import net from "node:net";
 import { apiKubePrefix, apiPrefix } from "../../common/vars";
 import { getBoolean } from "../utils/parse-query";
+import { abortWhenClientCloses, isClientGone } from "./abort-when-client-closes";
 import type http from "node:http";
 
 import type { Logger } from "@freelensapp/logger";
@@ -276,6 +277,8 @@ export class LensProxy {
   }
 
   protected configureProxy(proxy: ProxyServer): ProxyServer {
+    abortWhenClientCloses(proxy);
+
     proxy.on("proxyRes", (proxyRes, _req, res) => {
       proxyRes.on("aborted", () => {
         // happens when proxy target aborts connection
@@ -296,7 +299,10 @@ export class LensProxy {
     });
 
     proxy.on("error", (error, req, res, target) => {
-      if (this.closed || res instanceof net.Socket) {
+      // A client that went away is no error of the target: over HTTP/1.1
+      // http-proxy-3 tells it apart by the closed socket of the request, but
+      // over HTTP/2 that socket is the session's, which stays open
+      if (this.closed || res instanceof net.Socket || isClientGone(res)) {
         return;
       }
 
