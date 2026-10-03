@@ -17,7 +17,7 @@ import type { DiContainer } from "@ogre-tools/injectable";
 import type { Mock } from "vitest";
 
 import type { Cluster } from "../../../common/cluster/cluster";
-import type { ServerIncomingMessage } from "../lens-proxy";
+import type { ShellApiRequestArgs } from "./types";
 
 vi.mock("ws", () => ({
   WebSocketServer: class {
@@ -40,7 +40,7 @@ describe("shell api requests", () => {
 
   const request = (url: string) => {
     di.inject(shellApiRequestInjectable)({
-      req: { url, method: "GET", headers: {} } as ServerIncomingMessage,
+      req: { url, method: "GET", headers: {} } as ShellApiRequestArgs["req"],
       socket: socket as Partial<net.Socket> as net.Socket,
       head: Buffer.from([]),
       cluster: undefined,

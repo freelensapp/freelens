@@ -8,8 +8,8 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { object } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { contentTypes } from "./router-content-types";
-import type { ServerResponse } from "node:http";
 
+import type { ServerResponse } from "../lens-proxy/lens-proxy";
 import type { LensApiRequest, Route } from "./route";
 
 export type RouteHandler = (request: LensApiRequest<string>, response: ServerResponse) => Promise<void>;
@@ -33,7 +33,11 @@ const writeServerResponseFor =
     }
 
     if (content instanceof Buffer) {
-      serverResponse.write(content);
+      // Both kinds of response take a buffer, but the overloads of their
+      // `write` leave the union of the two without a call signature
+      const writer: { write(chunk: Uint8Array): boolean } = serverResponse;
+
+      writer.write(content);
       serverResponse.end();
     } else if (content) {
       serverResponse.end(content);

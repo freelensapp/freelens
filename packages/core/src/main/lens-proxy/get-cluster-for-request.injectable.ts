@@ -9,7 +9,17 @@ import { getClusterIdFromHost } from "../../common/utils";
 import { apiKubePrefix } from "../../common/vars";
 import getClusterByIdInjectable from "../../features/cluster/storage/common/get-by-id.injectable";
 
-import type { GetClusterForRequest } from "./lens-proxy";
+import type { GetClusterForRequest, ServerRequest } from "./lens-proxy";
+
+/**
+ * An HTTP/2 request carries its host in the `:authority` pseudo-header, and
+ * Chromium sends no `host` header with it.
+ */
+const getAuthority = (req: ServerRequest) => {
+  const authority = req.headers[":authority"] ?? req.headers.host;
+
+  return typeof authority === "string" ? authority : undefined;
+};
 
 const getClusterForRequestInjectable = getInjectable({
   id: "get-cluster-for-request",
@@ -17,12 +27,14 @@ const getClusterForRequestInjectable = getInjectable({
     const getClusterById = di.inject(getClusterByIdInjectable);
 
     return (req) => {
-      if (!req.headers.host) {
+      const authority = getAuthority(req);
+
+      if (!authority) {
         return undefined;
       }
 
       // lens-server is connecting to 127.0.0.1:<port>/<uid>
-      if (req.url && req.headers.host.startsWith("127.0.0.1")) {
+      if (req.url && authority.startsWith("127.0.0.1")) {
         const clusterId = req.url.split("/")[1];
         const cluster = getClusterById(clusterId);
 
@@ -34,7 +46,7 @@ const getClusterForRequestInjectable = getInjectable({
         return cluster;
       }
 
-      const clusterId = getClusterIdFromHost(req.headers.host);
+      const clusterId = getClusterIdFromHost(authority);
 
       if (!clusterId) {
         return undefined;
