@@ -7,7 +7,7 @@
 import assert from "node:assert";
 import { parseKubeApi } from "@freelensapp/kube-api";
 import { KubeStatus } from "@freelensapp/kube-object";
-import { includes, isAbortError, object, rejectPromiseBy, waitUntilDefined } from "@freelensapp/utilities";
+import { includes, isAbortError, noop, object, rejectPromiseBy, waitUntilDefined } from "@freelensapp/utilities";
 import autoBind from "auto-bind";
 import { action, computed, observable, reaction } from "mobx";
 import { ItemStore } from "../item.store";
@@ -495,6 +495,13 @@ export class KubeObjectStore<
   }
 
   subscribe({ onLoadFailure, abortController = new AbortController() }: KubeObjectStoreSubscribeParams = {}): Disposer {
+    if (abortController.signal.aborted) {
+      // The subscriber went away before it subscribed, e.g. a view that
+      // unmounted while its list was loading. A watch started now would
+      // outlive it.
+      return noop;
+    }
+
     if (this.api.isNamespaced) {
       void (async () => {
         try {
@@ -527,17 +534,25 @@ export class KubeObjectStore<
     }
 
     let timedRetry: NodeJS.Timeout;
-    const startNewWatch = () =>
+    const signal = abortController.signal;
+
+    const startNewWatch = () => {
+      // A retry or a reload scheduled before the abort must not start a
+      // watch the subscriber can no longer stop.
+      if (signal.aborted) return;
+
       this.api.watch({
         namespace,
         abortController,
         callback,
       });
-
-    const signal = abortController.signal;
+    };
 
     const callback: KubeApiWatchCallback<D> = (data, error) => {
-      if (!this.isLoaded || (error as Record<string, unknown> | null)?.type === "aborted") return;
+      // The fetch of an aborted watch rejects with a DOMException, which is
+      // not the `{ type: "aborted" }` shape node-fetch used; without checking
+      // the signal the abort would be retried.
+      if (signal.aborted || !this.isLoaded || (error as Record<string, unknown> | null)?.type === "aborted") return;
 
       if (error instanceof Response) {
         if (error.status === 404 || error.status === 401) {

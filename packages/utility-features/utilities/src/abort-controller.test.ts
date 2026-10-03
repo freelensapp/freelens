@@ -3,7 +3,46 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { isAbortError } from "./abort-controller";
+import { isAbortError, WrappedAbortController } from "./abort-controller";
+
+describe("WrappedAbortController", () => {
+  it("aborts when its parent aborts", () => {
+    const parent = new AbortController();
+    const child = new WrappedAbortController(parent);
+
+    expect(child.signal.aborted).toBe(false);
+
+    parent.abort();
+
+    expect(child.signal.aborted).toBe(true);
+  });
+
+  it("starts aborted when its parent has already aborted", () => {
+    const parent = new AbortController();
+
+    parent.abort();
+
+    expect(new WrappedAbortController(parent).signal.aborted).toBe(true);
+  });
+
+  it("does not abort its parent", () => {
+    const parent = new AbortController();
+    const child = new WrappedAbortController(parent);
+
+    child.abort();
+
+    expect(parent.signal.aborted).toBe(false);
+  });
+
+  it("aborts a grandchild made after the grandparent aborted", () => {
+    const grandparent = new AbortController();
+    const parent = new WrappedAbortController(grandparent);
+
+    grandparent.abort();
+
+    expect(new WrappedAbortController(parent).signal.aborted).toBe(true);
+  });
+});
 
 describe("isAbortError", () => {
   it("matches a DOMException named AbortError", () => {
