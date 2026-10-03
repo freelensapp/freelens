@@ -117,10 +117,18 @@ export class KubeWatchApi {
     let childController = new WrappedAbortController(parent);
     const unsubscribe = disposer();
 
-    const loadThenSubscribe = async (namespaces: string[] | undefined) => {
+    const loadThenSubscribe = async (namespaces: string[] | undefined, controller: AbortController) => {
       try {
-        await store.loadAll({ namespaces, reqInit: { signal: childController.signal }, onLoadFailure });
-        unsubscribe.push(store.subscribe({ onLoadFailure, abortController: childController }));
+        await store.loadAll({ namespaces, reqInit: { signal: controller.signal }, onLoadFailure });
+
+        // An aborted load resolves too: the subscription has been disposed,
+        // or the namespaces changed and a newer load has taken over. Neither
+        // wants a watch from this one.
+        if (controller.signal.aborted) {
+          return;
+        }
+
+        unsubscribe.push(store.subscribe({ onLoadFailure, abortController: controller }));
       } catch (error) {
         if (!isAbortError(error)) {
           this.log(new Error("Loading stores has failed", { cause: error }), {
@@ -134,7 +142,7 @@ export class KubeWatchApi {
      * We don't want to wait because we want to start reacting to namespace
      * selection changes ASAP
      */
-    loadThenSubscribe(namespaces).catch(noop);
+    loadThenSubscribe(namespaces, childController).catch(noop);
 
     const cancelReloading =
       isNamespaceFilterWatch && store.api.isNamespaced
@@ -158,7 +166,7 @@ export class KubeWatchApi {
               childController.abort();
               unsubscribe();
               childController = new WrappedAbortController(parent);
-              loadThenSubscribe(namespaces).catch(noop);
+              loadThenSubscribe(namespaces, childController).catch(noop);
             },
             {
               equals: compareShallow,
