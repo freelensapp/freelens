@@ -17,7 +17,7 @@ import {
 } from "@freelensapp/kube-object";
 import { isDefined, noop, WrappedAbortController } from "@freelensapp/utilities";
 import { matches, merge } from "es-toolkit/compat";
-import { makeObservable, observable } from "mobx";
+import { observable } from "mobx";
 import { createKubeApiURL, parseKubeApi } from "./kube-api-parse";
 
 import type { FetchRequestInit as RequestInit, FetchResponse as Response } from "@freelensapp/json-api";
@@ -349,7 +349,7 @@ export class KubeApi<
 
   readonly apiVersion: string;
 
-  @observable apiBase: string;
+  @observable accessor apiBase: string;
 
   apiPrefix: string;
 
@@ -422,7 +422,6 @@ export class KubeApi<
     this.apiResource = resource;
     this.request = request;
     this.objectConstructor = objectConstructor;
-    makeObservable(this);
   }
 
   get apiVersionWithGroup() {

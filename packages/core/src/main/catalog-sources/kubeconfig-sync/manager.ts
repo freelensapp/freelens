@@ -5,7 +5,7 @@
  */
 
 import { iter } from "@freelensapp/utilities";
-import { action, computed, makeObservable, observable, reaction } from "mobx";
+import { action, computed, observable, reaction } from "mobx";
 
 import type { Logger } from "@freelensapp/logger";
 import type { Disposer } from "@freelensapp/utilities";
@@ -27,9 +27,7 @@ export class KubeconfigSyncManager {
   protected readonly sources = observable.map<string, [IComputedValue<CatalogEntity[]>, Disposer]>();
   protected syncListDisposer?: Disposer;
 
-  constructor(protected readonly dependencies: KubeconfigSyncManagerDependencies) {
-    makeObservable(this);
-  }
+  constructor(protected readonly dependencies: KubeconfigSyncManagerDependencies) {}
 
   public readonly source = computed(() => {
     /**

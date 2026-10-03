@@ -4,7 +4,7 @@
  */
 
 // Faithful translation of freelens/webpack/{main,renderer,vars}.ts to
-// electron-vite — see docs/v2-plan.md, decisions D1/D2/D11.
+// electron-vite.
 //
 // Differences from the webpack setup that are intentional:
 //
@@ -35,6 +35,7 @@ import { fileURLToPath } from "node:url";
 import tailwindcss from "@tailwindcss/postcss";
 import react from "@vitejs/plugin-react";
 import { defineConfig, externalizeDepsPlugin } from "electron-vite";
+import { standardDecorators } from "../scripts/vite-plugin-standard-decorators.mjs";
 
 const require = createRequire(import.meta.url);
 
@@ -330,6 +331,7 @@ function rendererBuildBasePlugin(base: string) {
 export default defineConfig({
   main: {
     plugins: [
+      standardDecorators(),
       externalizeDepsPlugin({ exclude: [...workspacePackages, ...bundledCjsPackages] }),
       rewriteElectronNamedImportsPlugin(),
     ],
@@ -360,12 +362,10 @@ export default defineConfig({
   renderer: {
     root: resolve(root, "src/renderer"),
     plugins: [
-      // @vitejs/plugin-react v6 dropped Babel: on Vite 8 the dev-only
-      // react-refresh pass is performed by Oxc, whose parser accepts the
-      // legacy @observer/@injectable decorators used across the codebase out
-      // of the box, so the former babel.parserOpts decorators-legacy plugin is
-      // no longer needed. esbuild still performs the actual decorator
-      // transform per tsconfig experimentalDecorators.
+      // Oxc cannot lower standard decorators, so standardDecorators() does
+      // it first; @vitejs/plugin-react v6 then runs its dev-only
+      // react-refresh pass through Oxc on the lowered code.
+      standardDecorators(),
       react(),
       runtimeRequireExternalsPlugin(),
       rendererBuildBasePlugin("/build/"),

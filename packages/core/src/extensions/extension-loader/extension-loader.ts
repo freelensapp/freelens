@@ -655,7 +655,7 @@ export class ExtensionLoader {
       // in Vite library mode, which extracts CSS to a sibling asset and injects
       // nothing (unlike the host's own application build). Without this, an
       // extension has to import its SCSS twice and inline it through a manual
-      // `<style>` tag (see docs/v2-extension-migration.md). Fire-and-forget: the
+      // `<style>` tag (see docs/extensions/migrating-from-v1.md). Fire-and-forget: the
       // entry point is loaded, style injection is a side effect.
       void this.injectRendererStyles(extension, toFileSegments(entryPointPath));
 

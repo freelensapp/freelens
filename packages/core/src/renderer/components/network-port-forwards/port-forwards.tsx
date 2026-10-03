@@ -7,7 +7,7 @@
 import "./port-forwards.scss";
 
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { makeObservable, observable } from "mobx";
+import { observableRef } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import navigateToPortForwardsInjectable from "../../../common/front-end-routing/routes/cluster/network/port-forwards/navigate-to-port-forwards.injectable";
@@ -50,12 +50,11 @@ class NonInjectedPortForwards extends React.Component<Dependencies> {
   // from ItemListLayout's render (a derivation other than this component's own render),
   // so it reads props from this observable snapshot, refreshed on every update, instead
   // of this.props.
-  @observable.ref private observableProps: Readonly<Dependencies>;
+  @observableRef private accessor observableProps: Readonly<Dependencies>;
 
   constructor(props: Dependencies) {
     super(props);
     this.observableProps = props;
-    makeObservable(this);
   }
 
   componentDidMount() {

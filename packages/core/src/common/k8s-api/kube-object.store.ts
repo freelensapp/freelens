@@ -7,9 +7,9 @@
 import assert from "node:assert";
 import { parseKubeApi } from "@freelensapp/kube-api";
 import { KubeStatus } from "@freelensapp/kube-object";
-import { includes, isAbortError, object, rejectPromiseBy, waitUntilDefined } from "@freelensapp/utilities";
+import { includes, isAbortError, noop, object, rejectPromiseBy, waitUntilDefined } from "@freelensapp/utilities";
 import autoBind from "auto-bind";
-import { action, computed, makeObservable, observable, reaction } from "mobx";
+import { action, computed, observable, reaction } from "mobx";
 import { ItemStore } from "../item.store";
 
 import type { FetchRequestInit as RequestInit } from "@freelensapp/json-api";
@@ -114,7 +114,6 @@ export class KubeObjectStore<
     this.limit = opts?.limit;
     this.bufferSize = opts?.bufferSize ?? 50_000;
 
-    makeObservable(this);
     autoBind(this);
     this.bindWatchEventsUpdater();
   }
@@ -213,6 +212,16 @@ export class KubeObjectStore<
         try {
           return (await res) ?? [];
         } catch (error) {
+          // An aborted request (e.g. the view unmounted before the list
+          // arrived) is not a real failure -- let it propagate so the
+          // abort-aware catch in `loadAll` can no-op on it instead of
+          // surfacing a spurious "Failed to load" error and blanking the list.
+          // The signal is checked too, for an error raised after the abort
+          // that does not carry the AbortError name.
+          if (isAbortError(error) || reqInit?.signal?.aborted) {
+            throw error;
+          }
+
           onLoadFailure(new Error(`Failed to load ${this.api.apiBase}`, { cause: error }));
 
           // reset the store because we are loading all, so that nothing is displayed
@@ -240,6 +249,12 @@ export class KubeObjectStore<
           break;
 
         case "rejected":
+          // See the cluster-scoped branch above: an aborted request must
+          // propagate, not be reported through onLoadFailure.
+          if (isAbortError(result.reason) || reqInit?.signal?.aborted) {
+            throw result.reason;
+          }
+
           if (onLoadFailure) {
             onLoadFailure(new Error(`Failed to load ${this.api.apiBase}`, { cause: result.reason }));
           } else {
@@ -480,6 +495,13 @@ export class KubeObjectStore<
   }
 
   subscribe({ onLoadFailure, abortController = new AbortController() }: KubeObjectStoreSubscribeParams = {}): Disposer {
+    if (abortController.signal.aborted) {
+      // The subscriber went away before it subscribed, e.g. a view that
+      // unmounted while its list was loading. A watch started now would
+      // outlive it.
+      return noop;
+    }
+
     if (this.api.isNamespaced) {
       void (async () => {
         try {
@@ -512,17 +534,25 @@ export class KubeObjectStore<
     }
 
     let timedRetry: NodeJS.Timeout;
-    const startNewWatch = () =>
+    const signal = abortController.signal;
+
+    const startNewWatch = () => {
+      // A retry or a reload scheduled before the abort must not start a
+      // watch the subscriber can no longer stop.
+      if (signal.aborted) return;
+
       this.api.watch({
         namespace,
         abortController,
         callback,
       });
-
-    const signal = abortController.signal;
+    };
 
     const callback: KubeApiWatchCallback<D> = (data, error) => {
-      if (!this.isLoaded || (error as Record<string, unknown> | null)?.type === "aborted") return;
+      // The fetch of an aborted watch rejects with a DOMException, which is
+      // not the `{ type: "aborted" }` shape node-fetch used; without checking
+      // the signal the abort would be retried.
+      if (signal.aborted || !this.isLoaded || (error as Record<string, unknown> | null)?.type === "aborted") return;
 
       if (error instanceof Response) {
         if (error.status === 404 || error.status === 401) {

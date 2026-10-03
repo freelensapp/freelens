@@ -7,7 +7,7 @@
 import { Pod } from "@freelensapp/kube-object";
 import autoBind from "auto-bind";
 import { compact, groupBy } from "es-toolkit";
-import { computed, makeObservable } from "mobx";
+import { computed } from "mobx";
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
 
 import type { KubeEventApi } from "@freelensapp/kube-api";
@@ -29,7 +29,6 @@ export class EventStore extends KubeObjectStore<KubeEvent, KubeEventApi> {
     opts: KubeObjectStoreOptions = {},
   ) {
     super(dependencies, api, { limit: 1000, ...opts });
-    makeObservable(this);
     autoBind(this);
   }
 

@@ -11,7 +11,7 @@ import { getDiForExtensionApi } from "../extension-api-di";
 /**
  * Every export of `@freelensapp/utilities` is extension API, except the
  * members below: each needs Node in the renderer, which the v2 contract does
- * not guarantee (C4, C5 in `docs/v2-extension-api.md`). A new export of the
+ * not guarantee (C4, C5 in `docs/extensions/api.md`). A new export of the
  * package becomes API unless it is added here. The host keeps importing all
  * of them from the package.
  *

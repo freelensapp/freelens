@@ -7,7 +7,7 @@
 import "../../common/ipc/cluster";
 
 import { once } from "es-toolkit";
-import { action, makeObservable, observe, reaction, toJS } from "mobx";
+import { action, observe, reaction, toJS } from "mobx";
 import {
   isKubernetesCluster,
   KubernetesCluster,
@@ -46,9 +46,7 @@ interface Dependencies {
 }
 
 export class ClusterManager {
-  constructor(private readonly dependencies: Dependencies) {
-    makeObservable(this);
-  }
+  constructor(private readonly dependencies: Dependencies) {}
 
   init = once(() => {
     // reacting to every cluster's state change and total amount of items

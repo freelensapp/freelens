@@ -22,8 +22,8 @@ permissions:
   contents: read
 
 env:
-  kind_version: 0.32.0 # datasource=github-releases depName=kubernetes-sigs/kind
-  kubernetes_version: 1.36.1 # datasource=docker depName=kindest/node
+  kind_version: 0.33.0 # datasource=github-releases depName=kubernetes-sigs/kind
+  kubernetes_version: 1.37.0 # datasource=docker depName=kindest/node
 
 jobs:
   test-integration:
@@ -81,7 +81,7 @@ jobs:
       # Windows runners, where winget/choco is not on every image (in particular
       # the windows-11-arm one) and yq used to be downloaded by hand.
       - name: Set up mise
-        uses: jdx/mise-action@v4
+        uses: jdx/mise-action@v5
         with:
           version: 2026.8.0 # datasource=github-releases depName=jdx/mise
           install_args: yq
@@ -111,7 +111,12 @@ jobs:
 
       - name: Get Electron version
         shell: bash
-        run: echo "electron_version=$(yq -py -oy -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a $GITHUB_ENV
+        # pnpm-lock.yaml holds several YAML documents (pnpm 12 puts packageManagerDependencies
+        # in a document of its own), so evaluate them all and take the one that has the importer.
+        # The version carries a peer suffix, e.g. 1.2.3(supports-color@8.1.1), which split drops.
+        run: |
+          electron_version=$(yq ea -r '[.importers.freelens.devDependencies.electron.version | select(. != null)] | .[0] // error("electron not found in pnpm-lock.yaml") | split("(") | .[0]' pnpm-lock.yaml)
+          echo "electron_version=${electron_version}" | tee -a "${GITHUB_ENV}"
 
       # electron-builder's Electron zip downloader doesn't accept a cache
       # directory override (no ELECTRON_CACHE / electron_config_cache is read
@@ -266,13 +271,9 @@ jobs:
           EB_PATH=$(cd freelens && node -e "console.log(require.resolve('electron-builder/cli'))")
           echo "ELECTRON_BUILDER_PATH=$EB_PATH" | tee -a $GITHUB_ENV
 
-      - name: Deploy production node_modules
-        shell: bash
-        run: |
-          pnpm deploy --legacy --prod --filter=freelens freelens/node_modules_prod
-          mv freelens/node_modules freelens/node_modules_dev
-          mv freelens/node_modules_prod freelens/node_modules
-
+      # electron-builder collects the modules to package with `pnpm list --prod`,
+      # so app.asar gets only the production dependencies of freelens from the
+      # regular workspace node_modules, as in the release build.
       - name: Build Electron app
         id: build-electron-app
         shell: bash
@@ -322,12 +323,6 @@ jobs:
             exit 1
           fi
 
-      - name: Restore dev node_modules
-        shell: bash
-        run: |
-          mv freelens/node_modules freelens/node_modules_prod
-          mv freelens/node_modules_dev freelens/node_modules
-
       # Produce the SBOM and runtime package list only for the real branch build
       # (push/dispatch/schedule on main), never for PRs. The combine-and-scan
       # job below consumes both as run artifacts.
@@ -352,10 +347,12 @@ jobs:
           # keys as the runtime closure (to drop build-time findings) and the
           # paths as the code-scanning location for npm findings (grype otherwise
           # reports them against pnpm-lock.yaml). --legacy is required because the
-          # workspace does not set inject-workspace-packages.
+          # workspace does not set inject-workspace-packages. allow-unused-patches
+          # because patchedDependencies also patches devDependencies, which a
+          # production deploy does not install.
           deploy_dir="$RUNNER_TEMP/freelens-prod"
           rm -rf "$deploy_dir"
-          pnpm --filter freelens deploy --prod --legacy --ignore-scripts "$deploy_dir"
+          pnpm --filter freelens deploy --prod --legacy --ignore-scripts --config.allow-unused-patches=true "$deploy_dir"
           os="${{ matrix.os }}"
           arch="${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}"
           out="freelens/dist/${{ github.event.repository.name }}-${os}-${arch}-prod-packages.json"
@@ -426,7 +423,6 @@ jobs:
         run: timeout 600 pnpm --color=always test:integration --reporter=verbose --reporter=github-actions --includeTaskLocation
         env:
           DEBUG: pw:browser
-          EXTENSION_PATH: skip
         continue-on-error: true
 
       - name: Run integration tests (Windows) (retry)
@@ -435,7 +431,6 @@ jobs:
         run: timeout 600 pnpm --color=always test:integration --reporter=verbose --reporter=github-actions --includeTaskLocation
         env:
           DEBUG: pw:browser
-          EXTENSION_PATH: skip
 
   security-scan:
     name: security scan
@@ -458,7 +453,7 @@ jobs:
 
     env:
       # Renovate keeps this version up to date via the inline datasource hint
-      # below (see .renovaterc.json5 customManagers). Stored without the leading
+      # below (see .renovaterc.json customManagers). Stored without the leading
       # "v" because that manager's extractVersionTemplate strips it on every
       # bump; grype's installer needs the exact tag, so the "v" is re-added
       # where this is consumed rather than kept here (it would not survive).
@@ -471,7 +466,7 @@ jobs:
       # yq comes from mise so that its version has a single source (mise.toml)
       # and the download is verified against mise.lock.
       - name: Set up mise
-        uses: jdx/mise-action@v4
+        uses: jdx/mise-action@v5
         with:
           version: 2026.8.0 # datasource=github-releases depName=jdx/mise
           install_args: yq
@@ -675,7 +670,7 @@ jobs:
       # yq comes from mise so that its version has a single source (mise.toml)
       # and the download is verified against mise.lock.
       - name: Set up mise
-        uses: jdx/mise-action@v4
+        uses: jdx/mise-action@v5
         with:
           version: 2026.8.0 # datasource=github-releases depName=jdx/mise
           install_args: yq

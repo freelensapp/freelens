@@ -6,7 +6,7 @@
 
 import { iter } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import { action, comparer } from "mobx";
+import { action, compareStructural } from "mobx";
 import catalogCatalogEntityInjectable from "../../../../common/catalog-entities/general-catalog-entities/implementations/catalog-catalog-entity.injectable";
 import welcomeCatalogEntityInjectable from "../../../../common/catalog-entities/general-catalog-entities/implementations/welcome-catalog-entity.injectable";
 import storeMigrationVersionInjectable from "../../../../common/vars/store-migration-version.injectable";
@@ -39,7 +39,7 @@ const hotbarsPersistentStorageInjectable = getInjectable({
       configName: "lens-hotbar-store",
       accessPropertiesByDotNotation: false, // To make dots safe in cluster context names
       syncOptions: {
-        equals: comparer.structural,
+        equals: compareStructural,
       },
       projectVersion: di.inject(storeMigrationVersionInjectable),
       migrations: di.inject(persistentStorageMigrationsInjectable, hotbarStoreMigrationInjectionToken),

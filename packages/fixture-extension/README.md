@@ -1,7 +1,8 @@
 # `@freelensapp/fixture-extension`
 
 A private, deliberately minimal Freelens extension that exists to test Freelens'
-own extension contract. It is never published and never installed by anybody.
+own extension contract. It is never published, and nothing but this
+repository's integration test installs it.
 
 ## This is not a template
 
@@ -37,12 +38,12 @@ proves nothing about how extensions are actually loaded.
 | --- | --- | --- |
 | Types | `pnpm --filter @freelensapp/fixture-extension type:check`, run by its `build` | a re-export that disappeared from the published surface, including one that exists as a value but is not nameable as a type; a tsconfig that lets one runtime environment's APIs into another's code |
 | Unit | `packages/core/src/extensions/__tests__/fixture-extension.test.tsx` | instance identity of React and mobx, the registrators, the lifecycle, `Util.fetch` reaching the host's DI |
-| Integration | not yet — see [#2400](https://github.com/freelensapp/freelens/issues/2400) | the same, against a real application instance rather than a harness |
+| Integration | `freelens/integration/__tests__/extensions.tests.ts`, against the `dist/` of the `pnpm build` that the packaged application needs anyway | the packaged application installing this directory in place, accepting its `engines.freelens`, and rendering its hooked status bar item with the React it publishes |
 
 ### How the type level is wired
 
 The sources follow the layout documented for extensions in
-[`docs/v2-extension-migration.md`](../../docs/v2-extension-migration.md)
+[`docs/extensions/migrating-from-v1.md`](../../docs/extensions/migrating-from-v1.md)
 ("Source layout: one tsconfig per runtime environment"), and this package is
 where that layout is proven:
 
@@ -90,7 +91,7 @@ That one mapping is the entire point of the package: it points
 Left to pnpm's workspace linking the specifier would resolve to
 `packages/extensions/src/extension-api.ts` — TypeScript source, a shape no real
 author ever sees — and the single bundled declaration that consumers actually
-install would go unchecked. A re-export that goes missing from the rollup fails
+install would go unchecked. A re-export that goes missing from the bundle fails
 `tsc` here. The declaration is produced by
 `pnpm --filter @freelensapp/extensions build`, which this package's `build`
 depends on through turbo.
@@ -115,7 +116,7 @@ built to `dist/renderer.js`, holds four things, chosen because each of them
 breaks without a compile error:
 
 1. a component with hooks — two React instances throw `invalid hook call`
-2. an observable it creates and the host reacts to — two copies of mobx 6 share
+2. an observable it creates and the host reacts to — two copies of mobx share
    their global state and keep interoperating, so the reaction fires either way;
    identity is therefore asserted as well as behaviour
 3. one declarative registration (`statusBarItems`), which reaches the host only
@@ -131,4 +132,7 @@ both runtimes have.
 
 Plus [`src/common/contract-types.ts`](./src/common/contract-types.ts), which
 carries no runtime code and names types out of `Common`, `Main` and `Renderer`
-in real signatures.
+in real signatures, and [`src/common/v1-renames.ts`](./src/common/v1-renames.ts),
+which names the v2 side of every "Renamed or moved" row of the v1→v2 rename
+table in [`docs/extensions/migrating-from-v1.md`](../../docs/extensions/migrating-from-v1.md#v1v2-rename-table),
+with the v1 path next to each. A row added to that table gets a line there.

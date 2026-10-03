@@ -7,7 +7,7 @@
 import { EventEmitter } from "node:events";
 import { isErrnoException } from "@freelensapp/utilities";
 import { ipcRenderer } from "electron";
-import { makeObservable, observable, reaction, when } from "mobx";
+import { observable, reaction, when } from "mobx";
 import { rcompare, valid } from "semver";
 import { broadcastMessage, ipcMainHandle, ipcRendererOn } from "../../common/ipc";
 import { extensionDiscoveryStateChannel } from "../../common/ipc/extension-handling";
@@ -109,7 +109,7 @@ export class ExtensionDiscovery {
   private rescanTimer: ReturnType<typeof setTimeout> | undefined;
 
   // True if extensions have been loaded from the disk after app startup
-  @observable isLoaded = false;
+  @observable accessor isLoaded = false;
 
   get whenLoaded() {
     return when(() => this.isLoaded);
@@ -118,9 +118,7 @@ export class ExtensionDiscovery {
   public readonly events: TypedEventEmitter<ExtensionDiscoveryEvents> =
     new EventEmitter() as unknown as TypedEventEmitter<ExtensionDiscoveryEvents>;
 
-  constructor(protected readonly dependencies: Dependencies) {
-    makeObservable(this);
-  }
+  constructor(protected readonly dependencies: Dependencies) {}
 
   /**
    * The root of every managed install, e.g. "<userData>/extensions".

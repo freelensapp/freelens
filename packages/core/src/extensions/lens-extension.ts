@@ -5,7 +5,7 @@
  */
 
 import { disposer } from "@freelensapp/utilities";
-import { action, computed, makeObservable, observable } from "mobx";
+import { action, computed, observable } from "mobx";
 
 import type { ProtocolHandlerRegistration } from "../common/protocol-handler/registration";
 import type { Logger } from "./common-api";
@@ -35,7 +35,7 @@ export class LensExtension {
 
   protocolHandlers: ProtocolHandlerRegistration[] = [];
 
-  @observable private _isEnabled = false;
+  @observable private accessor _isEnabled = false;
 
   @computed get isEnabled() {
     return this._isEnabled;
@@ -51,7 +51,6 @@ export class LensExtension {
     this.id = id;
     this.manifest = manifest as LensExtensionManifest;
     this.manifestPath = manifestPath;
-    makeObservable(this);
   }
 
   get name() {

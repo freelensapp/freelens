@@ -6,15 +6,22 @@
 
 /**
  * This is like an `AbortController` but will also abort if the parent aborts,
- * but won't make the parent abort if this aborts (single direction)
+ * but won't make the parent abort if this aborts (single direction).
+ *
+ * A child of a parent that has already aborted starts aborted: the `abort`
+ * event has been dispatched by then and would never reach it.
  */
 export class WrappedAbortController extends AbortController {
   constructor(parent?: AbortController | undefined) {
     super();
 
-    parent?.signal.addEventListener("abort", () => {
+    if (parent?.signal.aborted) {
       this.abort();
-    });
+    } else {
+      parent?.signal.addEventListener("abort", () => {
+        this.abort();
+      });
+    }
   }
 }
 

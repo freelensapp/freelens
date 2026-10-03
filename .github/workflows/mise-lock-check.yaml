@@ -29,7 +29,7 @@ jobs:
       # checksums. It covers the runner platform only; the diff check below
       # covers the rest. It also puts the pinned yq on PATH for that check.
       - name: Install tools from mise.lock
-        uses: jdx/mise-action@v4
+        uses: jdx/mise-action@v5
         with:
           version: 2026.8.0 # datasource=github-releases depName=jdx/mise
 

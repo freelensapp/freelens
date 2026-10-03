@@ -9,7 +9,7 @@ import "./dialog.scss";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
-import { action, makeObservable, observable } from "mobx";
+import { action, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { Dialog } from "../../dialog";
@@ -40,11 +40,10 @@ interface Dependencies {
 
 @observer
 class NonInjectedAddNamespaceDialog extends React.Component<AddNamespaceDialogProps & Dependencies> {
-  @observable namespace = "";
+  @observable accessor namespace = "";
 
   constructor(props: AddNamespaceDialogProps & Dependencies) {
     super(props);
-    makeObservable(this);
     autoBindReact(this);
   }
 

@@ -26,7 +26,7 @@ jobs:
       # yq comes from mise so that its version has a single source (mise.toml)
       # and the download is verified against mise.lock.
       - name: Set up mise
-        uses: jdx/mise-action@v4
+        uses: jdx/mise-action@v5
         with:
           version: 2026.8.0 # datasource=github-releases depName=jdx/mise
           install_args: yq
@@ -110,7 +110,7 @@ jobs:
       # Windows runners, where winget/choco is not on every image (in particular
       # the windows-11-arm one) and yq used to be downloaded by hand.
       - name: Set up mise
-        uses: jdx/mise-action@v4
+        uses: jdx/mise-action@v5
         with:
           version: 2026.8.0 # datasource=github-releases depName=jdx/mise
           install_args: yq
@@ -144,11 +144,19 @@ jobs:
 
       - name: Get Electron version
         shell: bash
-        run: echo "electron_version=$(yq -py -oy -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a $GITHUB_ENV
+        # pnpm-lock.yaml holds several YAML documents (pnpm 12 puts packageManagerDependencies
+        # in a document of its own), so evaluate them all and take the one that has the importer.
+        # The version carries a peer suffix, e.g. 1.2.3(supports-color@8.1.1), which split drops.
+        run: |
+          electron_version=$(yq ea -r '[.importers.freelens.devDependencies.electron.version | select(. != null)] | .[0] // error("electron not found in pnpm-lock.yaml") | split("(") | .[0]' pnpm-lock.yaml)
+          echo "electron_version=${electron_version}" | tee -a "${GITHUB_ENV}"
 
       - name: Get Electron Builder version
         shell: bash
-        run: echo "electron_builder_version=$(yq -py -oy -r .importers.freelens.devDependencies.electron-builder.version pnpm-lock.yaml | sed 's/(.*)//')" | tee -a $GITHUB_ENV
+        # Same multi-document lookup as the Electron version above.
+        run: |
+          electron_builder_version=$(yq ea -r '[.importers.freelens.devDependencies.electron-builder.version | select(. != null)] | .[0] // error("electron-builder not found in pnpm-lock.yaml") | split("(") | .[0]' pnpm-lock.yaml)
+          echo "electron_builder_version=${electron_builder_version}" | tee -a "${GITHUB_ENV}"
 
       # electron-builder's Electron zip downloader doesn't accept a cache
       # directory override and always writes into the OS-default Electron cache
@@ -602,12 +610,14 @@ jobs:
           # needs the keys as the runtime closure (to drop build-time findings)
           # and the paths as the reported location for npm findings (grype
           # otherwise reports them against pnpm-lock.yaml). --legacy is required
-          # because the workspace does not set inject-workspace-packages. The
+          # because the workspace does not set inject-workspace-packages, and
+          # allow-unused-patches because patchedDependencies also patches
+          # devDependencies, which a production deploy does not install. The
           # lowercase repo-name prefix keeps this file out of the Freelens*.*
           # release-upload glob; it travels as a run artifact instead.
           deploy_dir="$RUNNER_TEMP/freelens-prod"
           rm -rf "$deploy_dir"
-          pnpm --filter freelens deploy --prod --legacy --ignore-scripts "$deploy_dir"
+          pnpm --filter freelens deploy --prod --legacy --ignore-scripts --config.allow-unused-patches=true "$deploy_dir"
           os="${{ matrix.os }}"
           arch="${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}"
           out="freelens/dist/${{ github.event.repository.name }}-${os}-${arch}-prod-packages.json"
@@ -725,7 +735,7 @@ jobs:
       # yq comes from mise so that its version has a single source (mise.toml)
       # and the download is verified against mise.lock.
       - name: Set up mise
-        uses: jdx/mise-action@v4
+        uses: jdx/mise-action@v5
         with:
           version: 2026.8.0 # datasource=github-releases depName=jdx/mise
           install_args: yq

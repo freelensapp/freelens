@@ -126,13 +126,18 @@ goes stale on its own:
 - issue and pull-request numbers,
 - dates,
 - counts that change without the document changing: how many extensions use
-  something, how many members a namespace has, how many files import a module.
+  something, how many members a namespace has, how many files import a module,
+- the record of how it got there: which decisions were taken, which
+  alternatives were tried and rejected, what was deferred and why, what an
+  earlier version said, and status lines such as "shipped" or "open".
 
 State the rule or the fact rather than the measurement or the history that led
 to it: "no extension is known to use it", not "none of the 29 surveyed
 extensions uses it"; "renderer code gets no guarantee of Node", not "decided in
 the API review". The measurement, the history and the issue references belong
 in the pull request description and the issue, which are dated by nature.
+Those are working notes; documentation is for the reader who uses the thing
+now, and needs only its current state.
 
 Existing documents still carry such references. Do not copy them as a pattern,
 and drop them from a passage you are rewriting anyway.
@@ -201,7 +206,7 @@ of both programs, because Vitest runs them with DOM and Node alike.
 Common code uses only what both environments have: `globalThis.crypto`,
 `TextEncoder`, `URL`, `AbortController`, `structuredClone`, timers. Write
 `globalThis.` when in doubt. The extension-side version of the same rule is in
-the source-layout section of `docs/v2-extension-migration.md`.
+the source-layout section of `docs/extensions/migrating-from-v1.md`.
 
 ### How the check works
 
@@ -346,7 +351,11 @@ calls per hour with the rest of your IP. Use `--only <tool>` to refresh a single
 tool while iterating.
 
 `.github/workflows/binaries-lock-check.yaml` enforces both that the lock is
-current and that no digest changed while its version stood still.
+current and that no digest changed while its version stood still. On a
+Renovate branch a stale lock does not fail the check: Renovate bumps the
+version but cannot run the generator, so the workflow regenerates the lock,
+checks it for replaced artifacts, and commits it to the branch with `GH_TOKEN`,
+which starts the checks again on the new commit.
 
 ### Downloaded kubectl Versions
 
@@ -426,6 +435,28 @@ layer was removed in #2118.
 **Cache issues:** Delete the build output and rebuild
 (`rm -rf .turbo packages/core/dist freelens/dist`)
 
+### The Electron binary
+
+`pnpm install` leaves the `electron` package without its runtime binary. The
+package has no `postinstall` script, so `electron: true` in `allowBuilds` has
+nothing to run; it downloads the binary lazily instead, when
+`require("electron")` or its `electron` bin finds `path.txt` missing.
+electron-vite does not go through either: it reads
+`node_modules/electron/path.txt` itself and throws `Electron uninstall` when
+the file is absent, so `electron-vite dev` alone never triggers the download.
+
+The `predev` script of `freelens/package.json` therefore runs the package's
+`install-electron` bin (`electron/install.js`) before `electron-vite dev`.
+`install.js` exits at once when the binary of the installed version is
+already in place, and otherwise downloads it, verifies it against the
+package's `checksums.json` and writes `path.txt`. pnpm runs `pre` scripts for
+`pnpm run dev`, both inside `freelens/` and through the root `turbo run dev`,
+which invokes `pnpm run dev` in the package.
+
+The `dev` script is for local development only. CI does not use it: the
+workflows that need the binary run `electron/install.js` explicitly, as a
+separate step, before tests or the build.
+
 ## Troubleshooting Patterns
 
 ### Changes Not Appearing
@@ -475,10 +506,10 @@ Uses pnpm workspaces for:
 
 ## Styling
 
-Freelens v2 carries four styling systems (theme CSS custom properties, global
+Freelens carries four styling systems (theme CSS custom properties, global
 plain SCSS, CSS Modules, and Tailwind v4). Which one to use is not a matter of
 taste — each has a defined role. Before adding or changing any stylesheet or
-`className`, read [`docs/v2-styling.md`](./docs/v2-styling.md). In short:
+`className`, read [`docs/styling.md`](./docs/styling.md). In short:
 
 - **Theme values** (colors, fonts): CSS custom properties from the TS theme
   system (`var(--…)`) — the single contract every other system reads.
@@ -490,30 +521,57 @@ taste — each has a defined role. Before adding or changing any stylesheet or
 - **Local layout inside core-only TSX**: Tailwind utilities. The legacy
   `flexbox.scss` utilities have been removed — do not reintroduce them.
 - **Extensions**: see the styling section of
-  [`docs/v2-extension-migration.md`](./docs/v2-extension-migration.md).
+  [`docs/extensions/migrating-from-v1.md`](./docs/extensions/migrating-from-v1.md).
 
 ## Extension API
 
-The v2 extension specification lives in three documents, and which one to read
+The extension specification lives in three documents, and which one to read
 depends on the question:
 
-- [`docs/v2-extension-api.md`](./docs/v2-extension-api.md) — the **normative
-  contracts**. Each states the guarantee, the stable surface, the failure mode
-  and whether it is shipped or still an open issue. Read this before changing
-  anything under `packages/extensions/` or `packages/core/src/extensions/`.
-- [`docs/v2-extension-abi.md`](./docs/v2-extension-abi.md) — what an extension
-  may **ship and execute** besides JavaScript. Specified, but deliberately not
-  implemented in 2.0.0.
-- [`docs/v2-extension-migration.md`](./docs/v2-extension-migration.md) — the
+- [`docs/extensions/api.md`](./docs/extensions/api.md) — the **normative
+  contracts**. Each states the guarantee, the stable surface and the failure
+  mode. Read this before changing anything under `packages/extensions/` or
+  `packages/core/src/extensions/`.
+- [`docs/extensions/binaries.md`](./docs/extensions/binaries.md) — what an extension
+  may **ship and execute** besides JavaScript, and what the host does with it.
+- [`docs/extensions/migrating-from-v1.md`](./docs/extensions/migrating-from-v1.md) — the
   author-facing **porting guide** from v1.
 
-Two traps worth carrying without looking them up. The API surface is only what
+Three traps worth carrying without looking them up. The API surface is only what
 the `Common` / `Main` / `Renderer` namespaces re-export — every other
 `@freelensapp/*` package is private and inlined into the published declaration,
 so a symbol that is not re-exported is unreachable by any means. And the host
-must be the single instance of React, mobx, monaco and ogre-tools; a second
+must be the single instance of React, mobx and monaco; a second
 copy of mobx fails **silently**, so changes there need an identity assertion
 rather than a passing test suite.
+
+The third: the published declaration is not the source. `rolldown-plugin-dts`
+turns each module behind a namespace into a `declare namespace` that
+re-exports its members, and it drops the `type` modifier on the way. A **class
+re-exported type-only**, with `export type { C }` or `export type { C } from
+"…"`, is therefore declared as a value too, so `new C(…)` and `x instanceof C`
+compile against the declaration and throw in the extension. Use a type alias
+instead, `export type C<T> = import("…").C<T>`, carrying the class's type
+parameters with their constraints and defaults.
+
+Two guards catch a regression.
+`packages/core/src/extensions/__tests__/extension-api-declared-values.test.ts`
+walks the built declaration with the TypeScript 7 checker
+(`typescript/unstable/sync`) and fails on every value it declares that the
+runtime namespace object does not have. The fixture extension's
+`packages/fixture-extension/src/common/contract-types.ts` names the
+type-and-value pairs of `K8sApi`, `type X` and `const X` of the same name, as
+types, so its type check fails if one loses its type meaning in the bundle.
+
+The bundle also depends on a pnpm patch of `rolldown-plugin-dts`
+(`patchedDependencies` in `pnpm-workspace.yaml`). Without it, a namespace
+import whose members a declaration names only by qualified name, such as
+`import * as utilities` in `common-api/utils.ts`, keeps every member of the
+module in the bundle. That includes the Node-bound members `Common.Util`
+leaves out, with their `node:` imports. `build:dist` of
+`@freelensapp/extensions` fails when the bundle imports a Node builtin or
+references Node's types, and names the patch as the likely cause, so a patch
+that stops applying fails the build rather than reaching an extension.
 
 ## Best Practices
 
@@ -541,8 +599,11 @@ it writes on GitHub is a potential trigger for it.
 
 `claude.yaml` starts a run when the body of a **newly created** comment (issue
 comment or PR review comment), a **newly opened** issue (body or title), or a
-**submitted** PR review contains the string `@claude`, and the author is an
-OWNER, MEMBER or COLLABORATOR. The check is a plain
+**submitted** PR review contains the string `@claude`, and its author has
+write access to the repository (the admin, maintain or write role). The
+workflow condition pre-filters on OWNER, MEMBER or COLLABORATOR, which does not
+imply write access, and the first step of the run checks the actual
+permission; a run triggered by anyone else fails there. The check is a plain
 `contains(github.event.comment.body, '@claude')` substring test, so the string
 fires the workflow wherever it appears — including inside a code span, a fenced
 block, a quoted line, or a URL. Markdown formatting is not an escape.
@@ -666,6 +727,13 @@ local checkout are lost. To make the work resumable in a follow-up session:
    should land on the remote branch as soon as it is committed, so a
    timed-out session can be resumed from the last pushed commit instead of
    starting over.
+3. **Run every command in the foreground.** The workflow runs Claude
+   headless: the session ends as soon as the agent ends its turn, and
+   nothing wakes it up when a background command finishes. A build, a
+   test run or `trunk check` started in the background and then waited on
+   is killed with the job, together with every uncommitted change. Give
+   long commands a foreground timeout (up to ten minutes) instead, and
+   commit and push what is done before starting a long validation.
 
 ### Modifying GitHub Actions Workflows
 
@@ -731,11 +799,11 @@ When you have commits ready to push but the PR originates from a fork
 repository. Instead:
 
 1. Create a new branch on `freelensapp/freelens` with the prefix `claude/`
-   followed by the original branch name.
-   Push to the `upstream` remote (not `origin`, which points to the fork):
+   followed by the original branch name, and push it to `origin`, which is
+   always `freelensapp/freelens`:
    ```bash
    git checkout -b claude/<original-branch-name>
-   git push --force-with-lease upstream claude/<original-branch-name>
+   git push --force-with-lease origin claude/<original-branch-name>
    ```
 
 2. Open a new PR from that branch. The new PR MUST use the **exact same
@@ -800,11 +868,17 @@ failed and left its tool or `node_modules` missing. Verify that what you need
 is actually there before relying on it, and never report a check as passing
 when it did not run — say that it was unavailable instead.
 
-For fork PRs, the `origin` remote points to the contributor's fork. An
-`upstream` remote is configured pointing to `freelensapp/freelens`. Push
-new branches to `upstream` (never to `origin`) when the PR originates
-from a fork — this ensures the resulting PR is internal and CI workflows
-run automatically.
+The `origin` remote is always `freelensapp/freelens`, for fork PRs too: their
+commits are checked out through the pull ref. Pushing a new branch there makes
+the resulting PR internal, so CI workflows run on it automatically.
+
+A PR from a fork runs in review mode, because its code is untrusted and the
+job holds write tokens. None of the setup above runs, and the tools that
+execute the repository's code (`pnpm`, `node`, `npx`, `bash`, `trunk`) are not
+available, so review the code and edit files by reading them, and say that no
+check ran. A branch moved to `origin` this way is a same-repository PR from
+then on, and later runs on it get the full setup and execute its code; the
+maintainer who asks for the move vouches for that code.
 
 The following CLI tools are explicitly allowed in the workflow:
 

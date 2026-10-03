@@ -6,7 +6,7 @@
 
 import assert from "node:assert";
 import { onceDefined } from "@freelensapp/utilities";
-import { action, makeObservable, observable, when } from "mobx";
+import { action, observable, when } from "mobx";
 import { getClusterFrameUrl } from "../../../common/utils";
 
 import type { Logger } from "@freelensapp/logger";
@@ -29,9 +29,7 @@ interface Dependencies {
 export class ClusterFrameHandler {
   private readonly views = observable.map<string, LensView>();
 
-  constructor(protected readonly dependencies: Dependencies) {
-    makeObservable(this);
-  }
+  constructor(protected readonly dependencies: Dependencies) {}
 
   public hasLoadedView(clusterId: string): boolean {
     return Boolean(this.views.get(clusterId)?.isLoaded);

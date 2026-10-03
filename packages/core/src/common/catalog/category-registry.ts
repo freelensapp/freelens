@@ -6,7 +6,7 @@
 
 import { getOrInsertMap, iter, strictSet } from "@freelensapp/utilities";
 import { once } from "es-toolkit";
-import { action, computed, makeObservable, observable } from "mobx";
+import { action, computed, observable } from "mobx";
 
 import type { Disposer } from "@freelensapp/utilities";
 
@@ -20,10 +20,6 @@ export class CatalogCategoryRegistry {
   protected readonly filters = observable.set<CategoryFilter>([], {
     deep: false,
   });
-
-  constructor() {
-    makeObservable(this);
-  }
 
   @action add(category: CatalogCategory): Disposer {
     const byGroup = getOrInsertMap(this.groupKinds, category.spec.group);

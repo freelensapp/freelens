@@ -1,0 +1,141 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": [
+    "rangeStrategy: always bump dependencies, even when the new version is already in the range.",
+    "rebaseWhen: rebase only on conflicts, to save unnecessary workflow runs.",
+    "internalChecksFilter: hold updates that do not yet satisfy minimumReleaseAge instead of raising a pending PR, which would run CI and fail pnpm's minimumReleaseAge policy.",
+    "ignoreDeps: node must be the version bundled in Electron; ubuntu must be the oldest possible version, for binary compatibility with older operating systems."
+  ],
+  "extends": ["config:recommended", ":semanticCommitsDisabled"],
+  "prHourlyLimit": 20,
+  "addLabels": ["renovate"],
+  "osvVulnerabilityAlerts": true,
+  "rangeStrategy": "bump",
+  "vulnerabilityAlerts": {
+    "description": "Security fixes must not be delayed by minimumReleaseAge.",
+    "labels": ["security"],
+    "rangeStrategy": "bump",
+    "minimumReleaseAge": "0 days"
+  },
+  "rebaseWhen": "conflicted",
+  "internalChecksFilter": "strict",
+  "ignoreDeps": ["node", "ubuntu"],
+  "lockFileMaintenance": {
+    "description": [
+      "mise.lock pins a checksum and a URL per tool per platform, but a local `mise install` re-locks only the platform it runs on and silently leaves the other seven stale.",
+      "Lock file maintenance runs plain `mise lock`, which refreshes every tool on every platform already in the file.",
+      "Defaults are disabled and weekly, hence the explicit settings. The packageRules keep it to mise.lock, since pnpm-lock.yaml is maintained by its own workflows and does not want a periodic refresh PR."
+    ],
+    "enabled": true,
+    "schedule": ["at any time"],
+    "automerge": true
+  },
+  "packageRules": [
+    {
+      "description": "No lock file maintenance by default: pnpm-lock.yaml is maintained by its own workflows.",
+      "matchUpdateTypes": ["lockFileMaintenance"],
+      "enabled": false
+    },
+    {
+      "description": "Lock file maintenance for mise.lock only.",
+      "matchManagers": ["mise"],
+      "matchUpdateTypes": ["lockFileMaintenance"],
+      "enabled": true
+    },
+    {
+      "description": "Delay npm updates until they satisfy pnpm's minimumReleaseAge policy (1 day by default since pnpm v11). Only npm packages land in pnpm-lock.yaml, so this is scoped to the npm datasource and leaves the other datasources untouched.",
+      "matchDatasources": ["npm"],
+      "minimumReleaseAge": "25 hours"
+    },
+    {
+      "description": "peerDependencies are widened.",
+      "matchDepTypes": ["peerDependencies"],
+      "rangeStrategy": "widen",
+      "semanticCommitScope": "peer-deps"
+    },
+    {
+      "description": [
+        "peerDependencies are not bumped by vulnerability fixes either.",
+        "Renovate turns every vulnerability alert into a package rule appended after these ones, with the vulnerabilityAlerts settings in its force object. Forced settings override every other rule, so vulnerabilityAlerts.rangeStrategy replaces the widen strategy above, and no package rule can put it back.",
+        "Package rules are applied again to each update after the lookup, when the update already carries isVulnerabilityAlert. This rule drops the peer range change from the fix at that point, while the other dependencies in the same fix keep the bump strategy."
+      ],
+      "matchDepTypes": ["peerDependencies"],
+      "matchJsonata": ["isVulnerabilityAlert = true"],
+      "enabled": false
+    },
+    {
+      "description": "Non-major updates only.",
+      "matchDepNames": ["electron", "npm"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    },
+    {
+      "description": "Patch updates only. The override of @kubernetes/client-node's @types/node follows the same rule, so that it stays on the catalog's version.",
+      "matchDepNames": ["@types/node", "@kubernetes/client-node>@types/node"],
+      "matchUpdateTypes": ["major", "minor"],
+      "enabled": false
+    },
+    {
+      "description": "Packages that misuse semver.",
+      "matchDepNames": ["node-pty"],
+      "versioning": "deb",
+      "enabled": true
+    },
+    {
+      "description": "Bundle.",
+      "groupName": "electron-builder bundle",
+      "matchDepNames": ["electron-builder", "electron-builder-squirrel-windows"]
+    },
+    {
+      "description": "Monorepo.",
+      "groupName": "ogre-tools monorepo",
+      "matchSourceUrls": ["https://github.com/ogre-works/ogre-tools"]
+    }
+  ],
+  "customManagers": [
+    {
+      "description": "Bundled freelens-k8s-proxy.",
+      "customType": "regex",
+      "extractVersionTemplate": "^(?<version>.*)$",
+      "managerFilePatterns": ["/^freelens/package\\.json$/"],
+      "matchStrings": ["\"k8sProxyVersion\":\\s*\"(?<currentValue>\\d+\\.\\d+\\.\\d+)\""],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "freelensapp/freelens-k8s-proxy",
+      "versioningTemplate": "semver"
+    },
+    {
+      "description": "Bundled helm.",
+      "customType": "regex",
+      "extractVersionTemplate": "^(?<version>.*)$",
+      "managerFilePatterns": ["/^freelens/package\\.json$/"],
+      "matchStrings": ["\"bundledHelmVersion\":\\s*\"(?<currentValue>\\d+\\.\\d+\\.\\d+)\""],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "helm/helm",
+      "versioningTemplate": "semver"
+    },
+    {
+      "description": "Tools run with pnpm dlx.",
+      "customType": "regex",
+      "extractVersionTemplate": "^(?<version>.*)$",
+      "managerFilePatterns": ["/package\\.json$/"],
+      "matchStrings": ["pnpm\\s+dlx\\s+(?<depName>\\S+)@(?<currentValue>\\S+?)[\\s\"|<>]"],
+      "datasourceTemplate": "npm",
+      "versioningTemplate": "npm"
+    },
+    {
+      "description": "Renovate hints in a comment after the version.",
+      "customType": "regex",
+      "extractVersionTemplate": "^v?(?<version>.*)$",
+      "managerFilePatterns": [
+        "/^\\.github/workflows/.*\\.ya?ml$/",
+        "/^\\.trunk/trunk.yaml/",
+        "/^\\.tool-versions$/",
+        "/^freelens/electron-builder\\.yml$/"
+      ],
+      "matchStrings": [
+        "(\\s+|.*?@)(?<currentValue>\\S+?)!?\\s*#\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)(\\s+versioning=(?<versioning>\\S+))?(\\s+registryUrl=(?<registryUrl>\\S+))?\\s*\\n"
+      ],
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
+    }
+  ]
+}

@@ -16,13 +16,13 @@ export type LensExtensionConstructor = new (ext: InstalledExtension) => LensExte
 export interface InstalledExtension {
   /**
    * Identifies the extension independently of the version installed: the name
-   * from its manifest, e.g. "@freelensapp/helloworld".
+   * from its manifest, e.g. "@my-org/helloworld".
    */
   readonly id: LensExtensionId;
   /**
    * Absolute path to the directory holding the extension's files. For a managed
    * install this is the live build,
-   * e.g. "<userData>/extensions/freelensapp--helloworld/1.0.0-0f1e2d3c"; for a
+   * e.g. "<userData>/extensions/my-org--helloworld/1.0.0-0f1e2d3c"; for a
    * development install it is the directory registered in place.
    */
   readonly absolutePath: string;

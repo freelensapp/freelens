@@ -11,7 +11,7 @@ import { roleApiInjectable } from "@freelensapp/kube-api-specifics";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 import { iter, ObservableHashSet } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { action, computed, makeObservable, observable } from "mobx";
+import { action, computed, observable, observableRef } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { Dialog } from "../../../dialog";
@@ -62,7 +62,6 @@ interface Dependencies {
 class NonInjectedRoleBindingDialog extends React.Component<RoleBindingDialogProps & Dependencies> {
   constructor(props: RoleBindingDialogProps & Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   // Plain getters (not @computed): they read this.props (directly or via
@@ -76,9 +75,9 @@ class NonInjectedRoleBindingDialog extends React.Component<RoleBindingDialogProp
     return !!this.roleBinding;
   }
 
-  @observable.ref selectedRoleRef: Role | ClusterRole | null | undefined = null;
-  @observable bindingName = "";
-  @observable bindingNamespace: string | null = null;
+  @observableRef accessor selectedRoleRef: Role | ClusterRole | null | undefined = null;
+  @observable accessor bindingName = "";
+  @observable accessor bindingNamespace: string | null = null;
   selectedAccounts = new ObservableHashSet<ServiceAccount>([], (sa) => sa.getId());
   selectedUsers = observable.set<string>([]);
   selectedGroups = observable.set<string>([]);

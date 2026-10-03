@@ -45,7 +45,17 @@ export interface RequestMetricsParams {
   namespace?: string;
 }
 
-export type RequestMetrics = ReturnType<(typeof requestMetricsInjectable)["instantiate"]>;
+// Written out rather than derived from the injectable: it is part of the
+// extension API (`Renderer.K8sApi.RequestMetrics`), and a type derived through
+// `instantiate` would make the published declaration import the DI library.
+export type RequestMetrics = {
+  (query: string, params?: RequestMetricsParams): Promise<MetricData>;
+  (query: string[], params?: RequestMetricsParams): Promise<MetricData[]>;
+  <Keys extends string>(
+    query: Record<Keys, Partial<Record<string, string>>>,
+    params?: RequestMetricsParams,
+  ): Promise<Record<Keys, MetricData>>;
+};
 
 function normalizeTimestampToUnixSeconds(value: number | string | undefined): number | undefined {
   if (typeof value === "number") {
@@ -88,7 +98,7 @@ function calculateAdaptiveStep(rangeSeconds: number): number {
 
 const requestMetricsInjectable = getInjectable({
   id: "request-metrics",
-  instantiate: (di) => {
+  instantiate: (di): RequestMetrics => {
     const apiBase = di.inject(apiBaseInjectable);
     const inFlightRequests = new Map<
       string,

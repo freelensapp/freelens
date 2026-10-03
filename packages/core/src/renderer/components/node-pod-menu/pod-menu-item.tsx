@@ -4,7 +4,6 @@
  */
 
 import { Icon } from "@freelensapp/icon";
-import { prevDefault } from "@freelensapp/utilities";
 import React from "react";
 import { findOptimalDefaultContainer } from "../dock/logs/default-container-helper";
 import { MenuItem, SubMenu } from "../menu";
@@ -37,7 +36,13 @@ const PodMenuItem: React.FC<NodePodMenuItemProps> = (props) => {
 
   return (
     <>
-      <MenuItem onClick={prevDefault(() => onMenuItemClick(findOptimalDefaultContainer(containers, annotations)))}>
+      <MenuItem
+        onClick={(evt) => {
+          // Prevent parent menu-item click without preventing submenu auto-close.
+          evt.stopPropagation();
+          onMenuItemClick(findOptimalDefaultContainer(containers, annotations));
+        }}
+      >
         <Icon material={material} svg={svg} interactive={toolbar} tooltip={toolbar && tooltip} />
         <span className="title">{title}</span>
         <Icon className="arrow" material="keyboard_arrow_right" />
@@ -50,7 +55,10 @@ const PodMenuItem: React.FC<NodePodMenuItemProps> = (props) => {
             return (
               <MenuItem
                 key={name}
-                onClick={prevDefault(() => onMenuItemClick(container))}
+                onClick={(evt) => {
+                  evt.stopPropagation();
+                  onMenuItemClick(container);
+                }}
                 className="flex items-center"
               >
                 {brick}

@@ -29,15 +29,50 @@ import type {
   KubeconfigSyncEntry,
   KubeconfigSyncValue,
   LogViewerPreferences,
+  PreferenceDescription,
   StoredExtensionRegistry,
   TerminalConfig,
 } from "./preferences-helpers";
 
-export type PreferenceDescriptors = ReturnType<(typeof userPreferenceDescriptorsInjectable)["instantiate"]>;
+// Written out rather than derived from the injectable: the user preferences
+// state reaches the extension API through `ItemListLayout`, and a type derived
+// through `instantiate` would make the published declaration import the DI
+// library. `instantiate` is annotated with it, so the two cannot drift apart.
+export type PreferenceDescriptors = {
+  readonly httpsProxy: PreferenceDescription<string | undefined>;
+  readonly shell: PreferenceDescription<string | undefined>;
+  readonly colorTheme: PreferenceDescription<string>;
+  readonly terminalTheme: PreferenceDescription<string>;
+  readonly localeTimezone: PreferenceDescription<string>;
+  readonly allowUntrustedCAs: PreferenceDescription<boolean>;
+  readonly allowErrorReporting: PreferenceDescription<boolean>;
+  readonly downloadMirror: PreferenceDescription<string>;
+  readonly downloadCustomMirror: PreferenceDescription<string>;
+  readonly downloadKubectlBinaries: PreferenceDescription<boolean>;
+  readonly downloadBinariesPath: PreferenceDescription<string | undefined>;
+  readonly kubectlBinariesPath: PreferenceDescription<string | undefined>;
+  readonly helmBinariesPath: PreferenceDescription<string | undefined>;
+  readonly helmServerSide: PreferenceDescription<boolean>;
+  readonly openAtLogin: PreferenceDescription<boolean>;
+  readonly showTrayIcon: PreferenceDescription<boolean>;
+  readonly hotbarAutoHide: PreferenceDescription<boolean>;
+  readonly persistentSearch: PreferenceDescription<boolean>;
+  readonly logViewerPreferences: PreferenceDescription<Partial<LogViewerPreferences>, LogViewerPreferences>;
+  readonly terminalCopyOnSelect: PreferenceDescription<boolean>;
+  readonly hiddenTableColumns: PreferenceDescription<[string, string[]][], Map<string, Set<string>>>;
+  readonly syncKubeconfigEntries: PreferenceDescription<
+    KubeconfigSyncEntry[],
+    ObservableMap<string, KubeconfigSyncValue>
+  >;
+  readonly editorConfiguration: PreferenceDescription<Partial<EditorConfiguration>, EditorConfiguration>;
+  readonly terminalConfig: PreferenceDescription<Partial<TerminalConfig>, TerminalConfig>;
+  readonly extensionRegistryUrl: PreferenceDescription<StoredExtensionRegistry, ExtensionRegistry>;
+  readonly clusterPageMenuOrder: PreferenceDescription<ClusterPageMenuOrder | undefined>;
+};
 
 const userPreferenceDescriptorsInjectable = getInjectable({
   id: "user-preference-descriptors",
-  instantiate: (di) => {
+  instantiate: (di): PreferenceDescriptors => {
     const currentTimezone = di.inject(currentTimezoneInjectable);
     const mainKubeFolderPath = di.inject(kubeDirectoryPathInjectable);
 

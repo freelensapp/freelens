@@ -6,7 +6,7 @@
 
 import autoBind from "auto-bind";
 import { uniqueId } from "es-toolkit/compat";
-import { action, makeObservable, observable } from "mobx";
+import { action, observable } from "mobx";
 
 import type { JsonApiErrorParsed } from "@freelensapp/json-api";
 
@@ -42,7 +42,6 @@ export class NotificationsStore {
   protected autoHideTimers = new Map<NotificationId, number>();
 
   constructor() {
-    makeObservable(this);
     autoBind(this);
   }
 

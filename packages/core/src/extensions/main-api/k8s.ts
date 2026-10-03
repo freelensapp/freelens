@@ -18,17 +18,17 @@ const executeOnClusterHandler = asLazyInjectedFunctionForExtensionApi(executeOnC
  *
  * @example
  * ```typescript
- * import { K8s } from "@freelensapp/core/main";
+ * import { Main } from "@freelensapp/extensions";
  *
  * // Query pods from a cluster
- * const pods = await K8s.queryCluster<Pod>("my-cluster", {
+ * const pods = await Main.K8s.queryCluster<Main.K8sApi.KubeJsonApiData>("my-cluster", {
  *   apiVersion: "v1",
  *   kind: "Pod",
  *   namespace: "default",
  * });
  *
  * // Apply a resource
- * const configMap = await K8s.applyOnCluster("my-cluster", {
+ * const configMap = await Main.K8s.applyOnCluster("my-cluster", {
  *   apiVersion: "v1",
  *   kind: "ConfigMap",
  *   metadata: { name: "my-config", namespace: "default" },
