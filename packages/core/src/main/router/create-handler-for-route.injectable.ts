@@ -9,7 +9,7 @@ import { object } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { contentTypes } from "./router-content-types";
 
-import type { ServerResponse } from "../lens-proxy/lens-proxy";
+import type { ServerResponse } from "../freelens-proxy/freelens-proxy";
 import type { LensApiRequest, Route } from "./route";
 
 export type RouteHandler = (request: LensApiRequest<string>, response: ServerResponse) => Promise<void>;

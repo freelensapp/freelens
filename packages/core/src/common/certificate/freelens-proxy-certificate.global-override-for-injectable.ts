@@ -5,9 +5,9 @@
  */
 
 import { getGlobalOverride } from "@freelensapp/test-utils";
-import lensProxyCertificateInjectable from "./lens-proxy-certificate.injectable";
+import freelensProxyCertificateInjectable from "./freelens-proxy-certificate.injectable";
 
-export default getGlobalOverride(lensProxyCertificateInjectable, () => {
+export default getGlobalOverride(freelensProxyCertificateInjectable, () => {
   return {
     get: () => ({
       public: "<public-data>",

@@ -7,14 +7,14 @@
 import { beforeApplicationIsLoadingInjectionToken } from "@freelensapp/application";
 import { getInjectable } from "@ogre-tools/injectable";
 import { generate } from "selfsigned";
-import lensProxyCertificateInjectable from "../../../common/certificate/lens-proxy-certificate.injectable";
+import freelensProxyCertificateInjectable from "../../../common/certificate/freelens-proxy-certificate.injectable";
 
-const setupLensProxyCertificateInjectable = getInjectable({
-  id: "setup-lens-proxy-certificate",
+const setupFreelensProxyCertificateInjectable = getInjectable({
+  id: "setup-freelens-proxy-certificate",
 
   instantiate: (di) => ({
     run: async () => {
-      const lensProxyCertificate = di.inject(lensProxyCertificateInjectable);
+      const freelensProxyCertificate = di.inject(freelensProxyCertificateInjectable);
 
       // selfsigned v5 dropped the `days` option in favor of explicit dates.
       const notAfterDate = new Date();
@@ -47,11 +47,11 @@ const setupLensProxyCertificateInjectable = getInjectable({
         },
       );
 
-      lensProxyCertificate.set(cert);
+      freelensProxyCertificate.set(cert);
     },
   }),
 
   injectionToken: beforeApplicationIsLoadingInjectionToken,
 });
 
-export default setupLensProxyCertificateInjectable;
+export default setupFreelensProxyCertificateInjectable;

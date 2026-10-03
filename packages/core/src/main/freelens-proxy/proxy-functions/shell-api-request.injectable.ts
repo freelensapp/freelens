@@ -13,12 +13,12 @@ import getClusterForRequestInjectable from "../get-cluster-for-request.injectabl
 import { standaloneShellScope } from "./shell-request-authenticator/shell-request-authenticator";
 import shellRequestAuthenticatorInjectable from "./shell-request-authenticator/shell-request-authenticator.injectable";
 
-import type { LensProxyShellApiRequest } from "../lens-proxy";
+import type { FreelensProxyShellApiRequest } from "../freelens-proxy";
 
 const shellApiRequestInjectable = getInjectable({
   id: "shell-api-request",
 
-  instantiate: (di): LensProxyShellApiRequest => {
+  instantiate: (di): FreelensProxyShellApiRequest => {
     const openShellSession = di.inject(openShellSessionInjectable);
     const authenticateRequest = di.inject(shellRequestAuthenticatorInjectable).authenticate;
     const getClusterForRequest = di.inject(getClusterForRequestInjectable);

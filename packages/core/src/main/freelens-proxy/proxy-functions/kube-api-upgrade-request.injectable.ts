@@ -14,14 +14,14 @@ import kubeAuthProxyServerInjectable from "../../cluster/kube-auth-proxy-server.
 import kubeAuthProxyCertificateInjectable from "../../kube-auth-proxy/kube-auth-proxy-certificate.injectable";
 import type { ConnectionOptions } from "node:tls";
 
-import type { LensProxyApiRequest } from "../lens-proxy";
+import type { FreelensProxyApiRequest } from "../freelens-proxy";
 
 const skipRawHeaders = new Set(["Host", "Authorization"]);
 
 const kubeApiUpgradeRequestInjectable = getInjectable({
   id: "kube-api-upgrade-request",
   instantiate:
-    (di): LensProxyApiRequest =>
+    (di): FreelensProxyApiRequest =>
     async ({ req, socket, head, cluster }) => {
       const clusterApiUrl = await di.inject(clusterApiUrlInjectable, cluster)();
       const kubeAuthProxyServer = di.inject(kubeAuthProxyServerInjectable, cluster);

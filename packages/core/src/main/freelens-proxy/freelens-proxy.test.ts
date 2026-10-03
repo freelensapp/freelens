@@ -10,14 +10,14 @@ import https from "node:https";
 import tls from "node:tls";
 import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
-import lensProxyCertificateInjectable from "../../common/certificate/lens-proxy-certificate.injectable";
+import freelensProxyCertificateInjectable from "../../common/certificate/freelens-proxy-certificate.injectable";
 import { nodeEnvInjectionToken } from "../../common/vars/node-env-injection-token";
 import kubeAuthProxyServerInjectable from "../cluster/kube-auth-proxy-server.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import routerInjectable from "../router/router.injectable";
+import freelensProxyInjectable from "./freelens-proxy.injectable";
+import freelensProxyPortInjectable from "./freelens-proxy-port.injectable";
 import getClusterForRequestInjectable from "./get-cluster-for-request.injectable";
-import lensProxyInjectable from "./lens-proxy.injectable";
-import lensProxyPortInjectable from "./lens-proxy-port.injectable";
 import kubeApiUpgradeRequestInjectable from "./proxy-functions/kube-api-upgrade-request.injectable";
 import shellApiRequestInjectable from "./proxy-functions/shell-api-request.injectable";
 import type net from "node:net";
@@ -28,7 +28,7 @@ import type { Mock } from "vitest";
 import type { Cluster } from "../../common/cluster/cluster";
 import type { KubeAuthProxyServer } from "../cluster/kube-auth-proxy-server.injectable";
 import type { Router } from "../router/router";
-import type { ServerIncomingMessage, ServerResponse } from "./lens-proxy";
+import type { ServerIncomingMessage, ServerResponse } from "./freelens-proxy";
 
 /**
  * The proxy chooses between HTTP/2 and HTTP/1.1 through ALPN, which needs a
@@ -62,7 +62,7 @@ mqufu4FJqWVZWcxYepT9H7s7bBWhRANCAAQbgOOz0LiPUB1h4mPPe2iVhRzMLwou
 const overrideEnvironment = (di: DiContainer) => {
   di.override(directoryForUserDataInjectable, () => "/some-directory-for-user-data");
   di.override(directoryForTempInjectable, () => "/some-directory-for-tmp");
-  di.override(lensProxyCertificateInjectable, () => ({ get: () => testCertificate, set: () => {} }));
+  di.override(freelensProxyCertificateInjectable, () => ({ get: () => testCertificate, set: () => {} }));
 };
 
 /**
@@ -121,7 +121,7 @@ const getHttp2 = (session: http2.ClientHttp2Session, path: string, headers: http
     stream.on("error", reject);
   });
 
-describe("closing the lens proxy", () => {
+describe("closing the Freelens proxy", () => {
   let di: DiContainer;
   let proxy: { listen: () => Promise<void>; close: () => Promise<void> | undefined };
   let port: number;
@@ -211,10 +211,10 @@ describe("closing the lens proxy", () => {
         }) as unknown as Router,
     );
 
-    proxy = di.inject(lensProxyInjectable);
+    proxy = di.inject(freelensProxyInjectable);
 
     await proxy.listen();
-    port = di.inject(lensProxyPortInjectable).get();
+    port = di.inject(freelensProxyPortInjectable).get();
   });
 
   afterEach(() => {
@@ -324,7 +324,7 @@ describe("closing the lens proxy", () => {
   });
 });
 
-describe("lens proxy protocols", () => {
+describe("Freelens proxy protocols", () => {
   let proxy: { listen: () => Promise<void>; close: () => Promise<void> | undefined };
   let port: number;
 
@@ -353,10 +353,10 @@ describe("lens proxy protocols", () => {
         }) as unknown as Router,
     );
 
-    proxy = di.inject(lensProxyInjectable);
+    proxy = di.inject(freelensProxyInjectable);
 
     await proxy.listen();
-    port = di.inject(lensProxyPortInjectable).get();
+    port = di.inject(freelensProxyPortInjectable).get();
   });
 
   afterEach(async () => {
@@ -418,7 +418,7 @@ describe("lens proxy protocols", () => {
   });
 });
 
-describe("lens proxy kube api requests", () => {
+describe("Freelens proxy kube api requests", () => {
   let proxy: { listen: () => Promise<void>; close: () => Promise<void> | undefined };
   let port: number;
   let target: http.Server;
@@ -490,10 +490,10 @@ describe("lens proxy kube api requests", () => {
         }) as unknown as KubeAuthProxyServer,
     );
 
-    proxy = di.inject(lensProxyInjectable);
+    proxy = di.inject(freelensProxyInjectable);
 
     await proxy.listen();
-    port = di.inject(lensProxyPortInjectable).get();
+    port = di.inject(freelensProxyPortInjectable).get();
   });
 
   afterEach(async () => {
@@ -585,7 +585,7 @@ describe("lens proxy kube api requests", () => {
   });
 });
 
-describe("lens proxy kube api requests to a refused target", () => {
+describe("Freelens proxy kube api requests to a refused target", () => {
   let proxy: { listen: () => Promise<void>; close: () => Promise<void> | undefined };
   let port: number;
   let getApiTarget: Mock;
@@ -617,10 +617,10 @@ describe("lens proxy kube api requests to a refused target", () => {
     di.override(kubeAuthProxyServerInjectable, () => ({ getApiTarget }) as unknown as KubeAuthProxyServer);
     di.override(routerInjectable, () => ({ route }) as unknown as Router);
 
-    proxy = di.inject(lensProxyInjectable);
+    proxy = di.inject(freelensProxyInjectable);
 
     await proxy.listen();
-    port = di.inject(lensProxyPortInjectable).get();
+    port = di.inject(freelensProxyPortInjectable).get();
   });
 
   afterEach(async () => {
@@ -654,7 +654,7 @@ describe("lens proxy kube api requests to a refused target", () => {
   });
 });
 
-describe("lens proxy upgrade requests", () => {
+describe("Freelens proxy upgrade requests", () => {
   let di: DiContainer;
   let cluster: Cluster | undefined;
   let shellApiRequest: Mock;
@@ -662,7 +662,7 @@ describe("lens proxy upgrade requests", () => {
   let socket: { destroy: Mock };
 
   const upgrade = (url: string) => {
-    const proxy = di.inject(lensProxyInjectable);
+    const proxy = di.inject(freelensProxyInjectable);
     // The upgrade handler is what is under test, and it runs long before the
     // server is listening.
     const server = (proxy as unknown as { proxyServer: NodeJS.EventEmitter }).proxyServer;
@@ -725,7 +725,7 @@ describe("lens proxy upgrade requests", () => {
   });
 });
 
-describe("lens proxy development static files", () => {
+describe("Freelens proxy development static files", () => {
   let proxy: { listen: () => Promise<void>; close: () => Promise<void> | undefined };
   let port: number;
   let devServer: http.Server;
@@ -784,10 +784,10 @@ describe("lens proxy development static files", () => {
     di.override(shellApiRequestInjectable, () => vi.fn());
     di.override(kubeApiUpgradeRequestInjectable, () => vi.fn());
 
-    proxy = di.inject(lensProxyInjectable);
+    proxy = di.inject(freelensProxyInjectable);
 
     await proxy.listen();
-    port = di.inject(lensProxyPortInjectable).get();
+    port = di.inject(freelensProxyPortInjectable).get();
   });
 
   afterEach(async () => {

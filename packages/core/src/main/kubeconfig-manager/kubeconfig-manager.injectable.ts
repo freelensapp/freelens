@@ -7,7 +7,7 @@
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
-import lensProxyCertificateInjectable from "../../common/certificate/lens-proxy-certificate.injectable";
+import freelensProxyCertificateInjectable from "../../common/certificate/freelens-proxy-certificate.injectable";
 import loadKubeconfigInjectable from "../../common/cluster/load-kubeconfig.injectable";
 import pathExistsInjectable from "../../common/fs/path-exists.injectable";
 import removePathInjectable from "../../common/fs/remove.injectable";
@@ -33,7 +33,7 @@ const kubeconfigManagerInjectable = getInjectable({
         removePath: di.inject(removePathInjectable),
         pathExists: di.inject(pathExistsInjectable),
         writeFile: di.inject(writeFileInjectable),
-        certificate: di.inject(lensProxyCertificateInjectable).get(),
+        certificate: di.inject(freelensProxyCertificateInjectable).get(),
         loadKubeconfig: di.inject(loadKubeconfigInjectable, cluster),
         kubeAuthProxyServer: di.inject(kubeAuthProxyServerInjectable, cluster),
         kubeAuthProxyUrl: di.inject(kubeAuthProxyUrlInjectable, cluster),

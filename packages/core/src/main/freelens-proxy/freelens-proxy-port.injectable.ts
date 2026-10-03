@@ -6,8 +6,8 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 
-const lensProxyPortInjectable = getInjectable({
-  id: "lens-proxy-port",
+const freelensProxyPortInjectable = getInjectable({
+  id: "freelens-proxy-port",
 
   instantiate: () => {
     let _portNumber: number;
@@ -32,4 +32,4 @@ const lensProxyPortInjectable = getInjectable({
   },
 });
 
-export default lensProxyPortInjectable;
+export default freelensProxyPortInjectable;

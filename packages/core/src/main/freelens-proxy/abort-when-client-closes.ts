@@ -7,7 +7,7 @@ import http2 from "node:http2";
 
 import type { ProxyServer } from "http-proxy-3";
 
-import type { ServerResponse } from "./lens-proxy";
+import type { ServerResponse } from "./freelens-proxy";
 
 /**
  * Whether the client has gone away, which over HTTP/2 closes only its stream.

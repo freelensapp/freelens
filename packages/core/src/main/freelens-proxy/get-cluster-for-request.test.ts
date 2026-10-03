@@ -10,9 +10,9 @@ import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import getClusterForRequestInjectable from "./get-cluster-for-request.injectable";
 
 import type { Cluster } from "../../common/cluster/cluster";
-import type { GetClusterForRequest, ServerRequest } from "./lens-proxy";
+import type { GetClusterForRequest, ServerRequest } from "./freelens-proxy";
 
-describe("getting the cluster of a lens proxy request", () => {
+describe("getting the cluster of a Freelens proxy request", () => {
   let getClusterForRequest: GetClusterForRequest;
   const cluster = { id: "some-cluster-id" } as Cluster;
 

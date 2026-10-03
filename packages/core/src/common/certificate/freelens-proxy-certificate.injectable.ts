@@ -8,8 +8,8 @@ import { getInjectable } from "@ogre-tools/injectable";
 
 import type { SelfSignedCert } from "./certificate";
 
-const lensProxyCertificateInjectable = getInjectable({
-  id: "lens-proxy-certificate",
+const freelensProxyCertificateInjectable = getInjectable({
+  id: "freelens-proxy-certificate",
   instantiate: () => {
     let certState: SelfSignedCert;
     const cert = {
@@ -33,4 +33,4 @@ const lensProxyCertificateInjectable = getInjectable({
   },
 });
 
-export default lensProxyCertificateInjectable;
+export default freelensProxyCertificateInjectable;

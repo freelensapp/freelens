@@ -31,18 +31,18 @@ export type ServerRequest = http.IncomingMessage | http2.Http2ServerRequest;
 export type ServerResponse = http.ServerResponse | http2.Http2ServerResponse;
 export type GetClusterForRequest = (req: ServerRequest) => Cluster | undefined;
 export type ServerIncomingMessage = SetRequired<ServerRequest, "url" | "method">;
-export type LensProxyApiRequest = (args: ProxyApiRequestArgs) => void | Promise<void>;
-export type LensProxyShellApiRequest = (args: ShellApiRequestArgs) => void | Promise<void>;
+export type FreelensProxyApiRequest = (args: ProxyApiRequestArgs) => void | Promise<void>;
+export type FreelensProxyShellApiRequest = (args: ShellApiRequestArgs) => void | Promise<void>;
 
 interface Dependencies {
   getClusterForRequest: GetClusterForRequest;
-  shellApiRequest: LensProxyShellApiRequest;
-  kubeApiUpgradeRequest: LensProxyApiRequest;
+  shellApiRequest: FreelensProxyShellApiRequest;
+  kubeApiUpgradeRequest: FreelensProxyApiRequest;
   emitAppEvent: EmitAppEvent;
   getKubeAuthProxyServer: (cluster: Cluster) => KubeAuthProxyServer;
   readonly router: Router;
   readonly proxy: ProxyServer;
-  readonly lensProxyPort: { set: (portNumber: number) => void };
+  readonly freelensProxyPort: { set: (portNumber: number) => void };
   readonly contentSecurityPolicy: string;
   readonly logger: Logger;
   readonly certificate: SelfSignedCert;
@@ -107,7 +107,7 @@ const maxSessionMemory = 100;
 const streamResetBurst = 100_000;
 const streamResetRate = 10_000;
 
-export class LensProxy {
+export class FreelensProxy {
   protected readonly proxyServer: http2.Http2SecureServer;
   protected closed = false;
 
@@ -172,7 +172,7 @@ export class LensProxy {
 
         if (!cluster) {
           this.dependencies.logger.error(
-            `[LENS-PROXY]: Could not find cluster for upgrade request from url=${req.url}`,
+            `[FREELENS-PROXY]: Could not find cluster for upgrade request from url=${req.url}`,
           );
           socket.destroy();
 
@@ -180,7 +180,7 @@ export class LensProxy {
         }
 
         return this.dependencies.kubeApiUpgradeRequest({ req, socket, head, cluster });
-      })().catch((error) => this.dependencies.logger.error("[LENS-PROXY]: failed to handle proxy upgrade", error));
+      })().catch((error) => this.dependencies.logger.error("[FREELENS-PROXY]: failed to handle proxy upgrade", error));
     });
   }
 
@@ -200,26 +200,26 @@ export class LensProxy {
 
           const { address, port } = this.proxyServer.address() as net.AddressInfo;
 
-          this.dependencies.lensProxyPort.set(port);
+          this.dependencies.freelensProxyPort.set(port);
 
-          this.dependencies.logger.info(`[LENS-PROXY]: Proxy server has started at ${address}:${port}`);
+          this.dependencies.logger.info(`[FREELENS-PROXY]: Proxy server has started at ${address}:${port}`);
 
           this.proxyServer.on("error", (error) => {
-            this.dependencies.logger.info(`[LENS-PROXY]: Subsequent error: ${error}`);
+            this.dependencies.logger.info(`[FREELENS-PROXY]: Subsequent error: ${error}`);
           });
 
           this.dependencies.emitAppEvent({ name: "lens-proxy", action: "listen", params: { port } });
           resolve(port);
         })
         .once("error", (error) => {
-          this.dependencies.logger.info(`[LENS-PROXY]: Proxy server failed to start: ${error}`);
+          this.dependencies.logger.info(`[FREELENS-PROXY]: Proxy server failed to start: ${error}`);
           reject(error);
         });
     });
   }
 
   /**
-   * Starts the lens proxy.
+   * Starts the Freelens proxy.
    * @resolves After the server is listening on a good port
    * @rejects if there is an error before that happens
    */
@@ -236,7 +236,7 @@ export class LensProxy {
       }
 
       this.dependencies.logger.warn(
-        `[LENS-PROXY]: Proxy server has with port known to be considered unsafe to connect to by chrome, restarting...`,
+        `[FREELENS-PROXY]: Proxy server has with port known to be considered unsafe to connect to by chrome, restarting...`,
       );
 
       if (seenPorts.has(port)) {
@@ -259,7 +259,7 @@ export class LensProxy {
 
     // mark as closed immediately
     this.closed = true;
-    this.dependencies.logger.info("[LENS-PROXY]: Closing server");
+    this.dependencies.logger.info("[FREELENS-PROXY]: Closing server");
 
     return new Promise<void>((resolve) => {
       /**
@@ -321,7 +321,7 @@ export class LensProxy {
         return;
       }
 
-      this.dependencies.logger.error(`[LENS-PROXY]: http proxy errored for cluster: ${error}`, { url: req.url });
+      this.dependencies.logger.error(`[FREELENS-PROXY]: http proxy errored for cluster: ${error}`, { url: req.url });
 
       if (target) {
         this.dependencies.logger.debug(`Failed proxy to target: ${JSON.stringify(target, null, 2)}`);
@@ -333,7 +333,7 @@ export class LensProxy {
       try {
         res.writeHead(500).end(`Oops, something went wrong.\n${error}`);
       } catch (e) {
-        this.dependencies.logger.error(`[LENS-PROXY]: Failed to write headers: `, e);
+        this.dependencies.logger.error(`[FREELENS-PROXY]: Failed to write headers: `, e);
       }
     });
 

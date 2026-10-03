@@ -9,7 +9,7 @@ import { apiBaseHostHeaderInjectionToken } from "../../common/k8s-api/api-base-c
 
 /**
  * None: the renderer requests its own origin, so Chromium sends the `Host`
- * lens-proxy routes on by itself.
+ * freelens-proxy routes on by itself.
  */
 const apiBaseHostHeaderInjectable = getInjectable({
   id: "api-base-host-header",

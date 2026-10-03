@@ -6,15 +6,15 @@
 
 import { requestFromChannelInjectionToken } from "@freelensapp/messaging";
 import { getInjectable } from "@ogre-tools/injectable";
-import { lensProxyCertificateChannel } from "../../common/certificate/lens-proxy-certificate-channel";
+import { freelensProxyCertificateChannel } from "../../common/certificate/freelens-proxy-certificate-channel";
 
-const requestLensProxyCertificateInjectable = getInjectable({
-  id: "request-lens-proxy-certificate",
+const requestFreelensProxyCertificateInjectable = getInjectable({
+  id: "request-freelens-proxy-certificate",
   instantiate: (di) => {
     const requestFromChannel = di.inject(requestFromChannelInjectionToken);
 
-    return () => requestFromChannel(lensProxyCertificateChannel);
+    return () => requestFromChannel(freelensProxyCertificateChannel);
   },
 });
 
-export default requestLensProxyCertificateInjectable;
+export default requestFreelensProxyCertificateInjectable;

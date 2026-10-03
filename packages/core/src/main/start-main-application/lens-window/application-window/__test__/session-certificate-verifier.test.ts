@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import lensProxyCertificateInjectable from "../../../../../common/certificate/lens-proxy-certificate.injectable";
+import freelensProxyCertificateInjectable from "../../../../../common/certificate/freelens-proxy-certificate.injectable";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
 import sessionCertificateVerifierInjectable, { ChromiumNetError } from "../session-certificate-verifier.injectable";
 
@@ -13,7 +13,7 @@ import type { DiContainer } from "@ogre-tools/injectable";
 // A static self-signed certificate is used instead of generating one at test
 // time: selfsigned v5 only exposes an async, native WebCrypto based API and
 // generating real keys inside a vitest worker can crash the worker at teardown.
-const lensProxyCertificate = `-----BEGIN CERTIFICATE-----
+const freelensProxyCertificate = `-----BEGIN CERTIFICATE-----
 MIIDdTCCAl2gAwIBAgIUKCuayowKL/ZUl07QWi5CIBSl8o4wDQYJKoZIhvcNAQEL
 BQAwPDEnMCUGA1UEAwweRnJlZWxlbnMgQ2VydGlmaWNhdGUgQXV0aG9yaXR5MREw
 DwYDVQQKDAhGcmVlbGVuczAeFw0yNjA3MTcyMjEwNDhaFw0zNjA3MTQyMjEwNDha
@@ -75,19 +75,19 @@ describe("sessionCertificateVerifier", () => {
 
   beforeEach(() => {
     di = getDiForUnitTesting();
-    di.override(lensProxyCertificateInjectable, () => ({
-      get: () => ({ cert: lensProxyCertificate, public: "", private: "" }),
+    di.override(freelensProxyCertificateInjectable, () => ({
+      get: () => ({ cert: freelensProxyCertificate, public: "", private: "" }),
       set: () => {},
     }));
   });
 
-  it("marks lens proxy certificate as trusted", () => {
+  it("marks Freelens proxy certificate as trusted", () => {
     const sessionCertificateVerifier = di.inject(sessionCertificateVerifierInjectable);
     const callback = vi.fn();
 
     sessionCertificateVerifier(
       {
-        certificate: { data: lensProxyCertificate },
+        certificate: { data: freelensProxyCertificate },
       } as any,
       callback,
     );
@@ -95,7 +95,7 @@ describe("sessionCertificateVerifier", () => {
     expect(callback).toHaveBeenCalledWith(ChromiumNetError.SUCCESS);
   });
 
-  it("passes verification to chromium on non lens proxy certificate", () => {
+  it("passes verification to chromium on non Freelens proxy certificate", () => {
     const sessionCertificateVerifier = di.inject(sessionCertificateVerifierInjectable);
     const callback = vi.fn();
 

@@ -17,9 +17,9 @@ import { Cluster } from "../../common/cluster/cluster";
 import { apiKubePrefix } from "../../common/vars";
 import clusterApiUrlInjectable from "../../features/cluster/connections/main/api-url.injectable";
 import kubeAuthProxyServerInjectable from "../cluster/kube-auth-proxy-server.injectable";
+import kubeApiUpgradeRequestInjectable from "../freelens-proxy/proxy-functions/kube-api-upgrade-request.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import kubeAuthProxyCertificateInjectable from "../kube-auth-proxy/kube-auth-proxy-certificate.injectable";
-import kubeApiUpgradeRequestInjectable from "../lens-proxy/proxy-functions/kube-api-upgrade-request.injectable";
 
 import type { MockedFunction } from "vitest";
 

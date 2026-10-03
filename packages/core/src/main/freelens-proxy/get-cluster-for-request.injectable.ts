@@ -9,7 +9,7 @@ import { getClusterIdFromHost } from "../../common/utils";
 import { apiKubePrefix } from "../../common/vars";
 import getClusterByIdInjectable from "../../features/cluster/storage/common/get-by-id.injectable";
 
-import type { GetClusterForRequest, ServerRequest } from "./lens-proxy";
+import type { GetClusterForRequest, ServerRequest } from "./freelens-proxy";
 
 /**
  * An HTTP/2 request carries its host in the `:authority` pseudo-header, and

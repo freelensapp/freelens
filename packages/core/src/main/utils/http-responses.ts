@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ServerResponse } from "../lens-proxy/lens-proxy";
+import type { ServerResponse } from "../freelens-proxy/freelens-proxy";
 
 /**
  * Respond to a HTTP request with a body of JSON data

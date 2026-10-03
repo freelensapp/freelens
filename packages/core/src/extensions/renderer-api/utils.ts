@@ -15,7 +15,7 @@ const Util = {
    *
    * Today this is Chromium's `fetch`, which is already enough here: requests
    * go to the frame's own origin, whose certificate the window's session
-   * trusts and which lens-proxy routes on without anyone setting a header.
+   * trusts and which freelens-proxy routes on without anyone setting a header.
    *
    * It is deliberately not documented as "an alias for the global". The
    * renderer session takes the *system* proxy

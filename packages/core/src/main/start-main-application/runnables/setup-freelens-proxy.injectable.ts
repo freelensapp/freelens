@@ -8,38 +8,38 @@ import { beforeApplicationIsLoadingInjectionToken } from "@freelensapp/applicati
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import fetchInjectable from "../../../common/fetch/fetch.injectable";
-import { lensProxyDispatcherInjectionToken } from "../../../common/fetch/lens-proxy-dispatcher-injection-token";
+import { freelensProxyDispatcherInjectionToken } from "../../../common/fetch/freelens-proxy-dispatcher-injection-token";
 import isProductionInjectable from "../../../common/vars/is-production.injectable";
 import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
 import { buildVersionInitializable } from "../../../features/vars/build-version/common/token";
 import { buildVersionInitializationInjectable } from "../../../features/vars/build-version/main/init.injectable";
 import forceAppExitInjectable from "../../electron-app/features/force-app-exit.injectable";
 import showErrorPopupInjectable from "../../electron-app/features/show-error-popup.injectable";
-import lensProxyInjectable from "../../lens-proxy/lens-proxy.injectable";
-import lensProxyPortInjectable from "../../lens-proxy/lens-proxy-port.injectable";
-import setupLensProxyCertificateInjectable from "./setup-lens-proxy-certificate.injectable";
+import freelensProxyInjectable from "../../freelens-proxy/freelens-proxy.injectable";
+import freelensProxyPortInjectable from "../../freelens-proxy/freelens-proxy-port.injectable";
+import setupFreelensProxyCertificateInjectable from "./setup-freelens-proxy-certificate.injectable";
 
 import type { MainFetch } from "../../fetch/main-fetch-request-init";
 
-const setupLensProxyInjectable = getInjectable({
-  id: "setup-lens-proxy",
+const setupFreelensProxyInjectable = getInjectable({
+  id: "setup-freelens-proxy",
 
   instantiate: (di) => ({
     run: async () => {
-      const lensProxy = di.inject(lensProxyInjectable);
+      const freelensProxy = di.inject(freelensProxyInjectable);
       const forceAppExit = di.inject(forceAppExitInjectable);
       const logger = di.inject(loggerInjectionToken);
-      const lensProxyPort = di.inject(lensProxyPortInjectable);
+      const freelensProxyPort = di.inject(freelensProxyPortInjectable);
       const isWindows = di.inject(isWindowsInjectable);
       const showErrorPopup = di.inject(showErrorPopupInjectable);
       const buildVersion = di.inject(buildVersionInitializable.stateToken);
-      const lensProxyDispatcher = di.inject(lensProxyDispatcherInjectionToken);
+      const freelensProxyDispatcher = di.inject(freelensProxyDispatcherInjectionToken);
       const fetch: MainFetch = di.inject(fetchInjectable);
       const isProduction = di.inject(isProductionInjectable);
 
       try {
         logger.info("🔌 Starting Freelens Proxy");
-        await lensProxy.listen(); // lensProxy.port available
+        await freelensProxy.listen(); // freelensProxy.port available
       } catch (error: any) {
         showErrorPopup("Freelens Error", `Could not start proxy: ${error?.message || "unknown error"}`);
 
@@ -49,8 +49,8 @@ const setupLensProxyInjectable = getInjectable({
       // test proxy connection
       try {
         logger.info("🔎 Testing Freelens Proxy connection ...");
-        const versionResponse = await fetch(`https://127.0.0.1:${lensProxyPort.get()}/version`, {
-          dispatcher: lensProxyDispatcher(),
+        const versionResponse = await fetch(`https://127.0.0.1:${freelensProxyPort.get()}/version`, {
+          dispatcher: freelensProxyDispatcher(),
         });
 
         const { version: versionFromProxy } = (await versionResponse.json()) as { version: string };
@@ -88,9 +88,9 @@ const setupLensProxyInjectable = getInjectable({
       for (let attempt = 1; attempt <= maxAttempts; attempt++) {
         try {
           // Test the actual route that the window will load
-          const response = await fetch(`https://127.0.0.1:${lensProxyPort.get()}${testPath}`, {
+          const response = await fetch(`https://127.0.0.1:${freelensProxyPort.get()}${testPath}`, {
             method: "HEAD",
-            dispatcher: lensProxyDispatcher(),
+            dispatcher: freelensProxyDispatcher(),
             signal: AbortSignal.timeout(2000),
           });
 
@@ -114,7 +114,7 @@ const setupLensProxyInjectable = getInjectable({
         }
       }
     },
-    runAfter: [buildVersionInitializationInjectable, setupLensProxyCertificateInjectable],
+    runAfter: [buildVersionInitializationInjectable, setupFreelensProxyCertificateInjectable],
   }),
 
   causesSideEffects: true,
@@ -122,4 +122,4 @@ const setupLensProxyInjectable = getInjectable({
   injectionToken: beforeApplicationIsLoadingInjectionToken,
 });
 
-export default setupLensProxyInjectable;
+export default setupFreelensProxyInjectable;

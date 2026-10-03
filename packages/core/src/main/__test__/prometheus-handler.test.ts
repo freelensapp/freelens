@@ -11,9 +11,9 @@ import directoryForTempInjectable from "../../common/app-paths/directory-for-tem
 import { Cluster } from "../../common/cluster/cluster";
 import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable";
 import prometheusHandlerInjectable from "../cluster/prometheus-handler/prometheus-handler.injectable";
+import freelensProxyPortInjectable from "../freelens-proxy/freelens-proxy-port.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import createKubeAuthProxyInjectable from "../kube-auth-proxy/create-kube-auth-proxy.injectable";
-import lensProxyPortInjectable from "../lens-proxy/lens-proxy-port.injectable";
 
 import type { PrometheusProvider } from "@freelensapp/prometheus";
 
@@ -60,7 +60,7 @@ describe("PrometheusHandler", () => {
       isRunning: true,
     }));
     di.override(directoryForTempInjectable, () => "/some-temp-dir");
-    di.inject(lensProxyPortInjectable).set(12345);
+    di.inject(freelensProxyPortInjectable).set(12345);
 
     const writeJsonFile = di.inject(writeJsonFileInjectable);
     const kubeConfigPath = "/some/path-to-a-config";

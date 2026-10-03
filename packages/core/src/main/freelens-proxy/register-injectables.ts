@@ -6,38 +6,38 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import closeLensProxyOnQuitInjectable from "./close-on-quit.injectable";
+import closeFreelensProxyOnQuitInjectable from "./close-on-quit.injectable";
+import freelensProxyInjectable from "./freelens-proxy.injectable";
+import freelensProxyCertificateRequestHandlerInjectable from "./freelens-proxy-certificate-request-handler.injectable";
+import freelensProxyPortInjectable from "./freelens-proxy-port.injectable";
 import getClusterForRequestInjectable from "./get-cluster-for-request.injectable";
-import lensProxyInjectable from "./lens-proxy.injectable";
-import lensProxyCertificateRequestHandlerInjectable from "./lens-proxy-certificate-request-handler.injectable";
-import lensProxyPortInjectable from "./lens-proxy-port.injectable";
 import { registerInjectables as registerProxyFunctionsInjectables } from "./proxy-functions/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
   try {
-    di.register(closeLensProxyOnQuitInjectable);
+    di.register(closeFreelensProxyOnQuitInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(freelensProxyCertificateRequestHandlerInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(freelensProxyInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(freelensProxyPortInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
   try {
     di.register(getClusterForRequestInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(lensProxyCertificateRequestHandlerInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(lensProxyInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(lensProxyPortInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

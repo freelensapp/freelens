@@ -24,7 +24,7 @@ const apiKubeInjectable = getInjectable({
     const showErrorNotification = di.inject(showErrorNotificationInjectable);
 
     // No `Host` header: `apiBaseServerAddress` is the frame's own origin, which
-    // already is the host lens-proxy routes on, so Chromium sends it.
+    // already is the host freelens-proxy routes on, so Chromium sends it.
     const apiKube = createKubeJsonApi({
       serverAddress: apiBaseServerAddress,
       apiBase: apiKubePrefix,

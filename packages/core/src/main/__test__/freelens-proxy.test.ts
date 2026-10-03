@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { isLongRunningRequest } from "../lens-proxy/lens-proxy";
+import { isLongRunningRequest } from "../freelens-proxy/freelens-proxy";
 
 describe("isLongRunningRequest", () => {
   it("returns true on watches", () => {

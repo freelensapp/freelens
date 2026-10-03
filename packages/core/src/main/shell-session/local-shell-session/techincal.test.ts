@@ -20,10 +20,10 @@ import computeShellEnvironmentInjectable from "../../../features/shell-sync/main
 import userShellSettingInjectable from "../../../features/user-preferences/common/shell-setting.injectable";
 import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 import { buildVersionStateInjectable } from "../../../features/vars/build-version/main/init.injectable";
+import freelensProxyPortInjectable from "../../freelens-proxy/freelens-proxy-port.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
 import createKubectlInjectable from "../../kubectl/create-kubectl.injectable";
-import lensProxyPortInjectable from "../../lens-proxy/lens-proxy-port.injectable";
 import spawnPtyInjectable from "../spawn-pty.injectable";
 import openLocalShellSessionInjectable from "./open.injectable";
 
@@ -62,7 +62,7 @@ describe("technical unit tests for local shell sessions", () => {
     di.override(statInjectable, () => () => {
       throw new Error("tried call stat without override");
     });
-    di.inject(lensProxyPortInjectable).set(1111);
+    di.inject(freelensProxyPortInjectable).set(1111);
   });
 
   describe("when on windows", () => {
