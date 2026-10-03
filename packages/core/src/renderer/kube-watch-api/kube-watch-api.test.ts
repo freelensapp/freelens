@@ -134,6 +134,57 @@ describe("KubeWatchApi", () => {
     expect(openWatches()).toBe(0);
   });
 
+  it("keeps the shared watch of a store open until its last subscription is disposed", async () => {
+    const { kubeWatchApi } = createKubeWatchApi();
+    const { store, finishLoads, openWatches } = createStore();
+
+    const unsubscribeFirst = kubeWatchApi.subscribeStores([store]);
+    const unsubscribeSecond = kubeWatchApi.subscribeStores([store]);
+
+    await finishLoads();
+
+    expect(store.subscribe).toHaveBeenCalledTimes(1);
+    expect(openWatches()).toBe(1);
+
+    unsubscribeFirst();
+
+    expect(openWatches()).toBe(1);
+
+    unsubscribeSecond();
+
+    expect(openWatches()).toBe(0);
+  });
+
+  it("ends the shared watch of a store and its namespace reaction with the last subscription", async () => {
+    const { kubeWatchApi, clusterContext } = createKubeWatchApi();
+    const { store, finishLoads, openWatches } = createStore({ isNamespaced: true });
+
+    const unsubscribeFirst = kubeWatchApi.subscribeStores([store]);
+    const unsubscribeSecond = kubeWatchApi.subscribeStores([store]);
+
+    await finishLoads();
+    unsubscribeFirst();
+
+    runInAction(() => {
+      clusterContext.contextNamespaces = ["kube-system"];
+    });
+    await finishLoads();
+
+    expect(openWatches()).toBe(1);
+
+    unsubscribeSecond();
+
+    expect(openWatches()).toBe(0);
+
+    runInAction(() => {
+      clusterContext.contextNamespaces = ["default"];
+    });
+    await finishLoads();
+
+    expect(store.loadAll).toHaveBeenCalledTimes(2);
+    expect(openWatches()).toBe(0);
+  });
+
   it("leaves one watch open after the namespaces change while the list is loading, and none after disposal", async () => {
     const { kubeWatchApi, clusterContext } = createKubeWatchApi();
     const { store, finishLoads, openWatches } = createStore({ isNamespaced: true });

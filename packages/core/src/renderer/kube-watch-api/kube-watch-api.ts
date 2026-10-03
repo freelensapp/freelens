@@ -27,6 +27,13 @@ interface SubscribeStoreParams {
   onLoadFailure?: (err: any) => void;
 }
 
+interface WatchStoreParams {
+  store: SubscribableStore;
+  parent?: AbortController;
+  namespaces?: string[];
+  onLoadFailure?: (err: any) => void;
+}
+
 interface WatchCountDependencies {
   readonly logger: Logger;
 }
@@ -99,21 +106,39 @@ export type SubscribeStores = (stores: SubscribableStore[], opts?: KubeWatchSubs
 
 export class KubeWatchApi {
   readonly #watch: WatchCount;
+  readonly #sharedWatches = new Map<SubscribableStore, Disposer>();
 
   constructor(private readonly dependencies: Dependencies) {
     this.#watch = new WatchCount(this.dependencies);
   }
 
   private subscribeStore({ store, parent, namespaces, onLoadFailure }: SubscribeStoreParams): Disposer {
-    const isNamespaceFilterWatch = !namespaces;
-
-    if (isNamespaceFilterWatch && this.#watch.inc(store) > 1) {
-      // don't load or subscribe to a store more than once
-      return () => this.#watch.dec(store);
+    if (namespaces) {
+      // A watch of the given namespaces belongs to this subscription alone
+      return this.watchStore({ store, parent, namespaces, onLoadFailure });
     }
 
-    namespaces ??= this.dependencies.clusterContext.contextNamespaces ?? [];
+    // A watch of the selected namespaces is shared by every subscription of
+    // the store. The first one starts it, and the last one to be disposed,
+    // whichever that is, ends it; no subscription's own controller may.
+    if (this.#watch.inc(store) === 1) {
+      this.#sharedWatches.set(store, this.watchStore({ store, onLoadFailure }));
+    }
 
+    return () => {
+      if (this.#watch.dec(store) === 0) {
+        this.#sharedWatches.get(store)?.();
+        this.#sharedWatches.delete(store);
+      }
+    };
+  }
+
+  /**
+   * Loads the store and then watches it, for the given namespaces or, when
+   * there are none, for the selected ones, following the selection.
+   */
+  private watchStore({ store, parent, namespaces, onLoadFailure }: WatchStoreParams): Disposer {
+    const followsSelection = !namespaces;
     let childController = new WrappedAbortController(parent);
     const unsubscribe = disposer();
 
@@ -142,10 +167,10 @@ export class KubeWatchApi {
      * We don't want to wait because we want to start reacting to namespace
      * selection changes ASAP
      */
-    loadThenSubscribe(namespaces, childController).catch(noop);
+    loadThenSubscribe(namespaces ?? this.dependencies.clusterContext.contextNamespaces, childController).catch(noop);
 
     const cancelReloading =
-      isNamespaceFilterWatch && store.api.isNamespaced
+      followsSelection && store.api.isNamespaced
         ? reaction(
             // Note: must slice because reaction won't fire if it isn't there
             () =>
@@ -175,12 +200,9 @@ export class KubeWatchApi {
         : noop; // don't watch namespaces if namespaces were provided
 
     return () => {
-      if (isNamespaceFilterWatch && this.#watch.dec(store) === 0) {
-        // only stop the subcribe if this is the last one
-        cancelReloading();
-        childController.abort();
-        unsubscribe();
-      }
+      cancelReloading();
+      childController.abort();
+      unsubscribe();
     };
   }
 
