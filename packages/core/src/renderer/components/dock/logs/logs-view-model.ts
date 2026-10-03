@@ -8,6 +8,7 @@ import assert from "node:assert";
 import { isDefined } from "@freelensapp/utilities";
 import { computed } from "mobx";
 import { defaultLogViewerPreferences } from "../../../../features/user-preferences/common/preferences-helpers";
+import { maxCombinedLogsPods, stripAnsiColors } from "./merge-pod-logs";
 
 import type { ResourceDescriptor } from "@freelensapp/kube-api";
 import type { Pod, PodLogsQuery } from "@freelensapp/kube-object";
@@ -20,6 +21,7 @@ import type { SearchStore } from "../../../search-store/search-store";
 import type { GetPodById } from "../../workloads-pods/get-pod-by-id.injectable";
 import type { GetPodsByOwnerId } from "../../workloads-pods/get-pods-by-owner-id.injectable";
 import type { TabId } from "../dock/store";
+import type { GetWorkloadPods } from "./get-workload-pods.injectable";
 import type { LoadLogs } from "./load-logs.injectable";
 import type { LogTabData } from "./tab-store";
 
@@ -32,16 +34,22 @@ export interface LogTabViewModelDependencies {
   loadLogs: LoadLogs;
   reloadLogs: (
     tabId: TabId,
-    pod: IComputedValue<Pod | undefined>,
+    pods: IComputedValue<Pod[]>,
     logTabData: IComputedValue<LogTabData | undefined>,
   ) => Promise<void>;
   renameTab: (tabId: TabId, title: string) => void;
   stopLoadingLogs: (tabId: TabId) => void;
   getPodById: GetPodById;
   getPodsByOwnerId: GetPodsByOwnerId;
+  getWorkloadPods: GetWorkloadPods;
   areLogsPresent: (tabId: TabId) => boolean;
   downloadLogs: (filename: string, logs: string[]) => void;
   downloadAllLogs: (params: ResourceDescriptor, query: PodLogsQuery) => Promise<void>;
+  downloadAllLogsForPods: (
+    filename: string,
+    pods: readonly { name: string; namespace: string }[],
+    query: PodLogsQuery,
+  ) => Promise<void>;
   searchStore: SearchStore;
   userPreferencesState: UserPreferencesState;
 }
@@ -81,7 +89,57 @@ export class LogTabViewModel {
       return undefined;
     }
 
+    // The pod a combined tab was opened with can be gone after a rollout: the
+    // first pod the workload has now stands for all of them.
+    if (data.combined) {
+      return this.logSourcePods.get()[0];
+    }
+
     return this.dependencies.getPodById(data.selectedPodId);
+  });
+
+  /**
+   * True when this tab combines the logs of the pods of a workload (a
+   * "combined logs" tab) rather than showing a single pod.
+   */
+  readonly isMerged = computed(() => Boolean(this.logTabData.get()?.combined));
+
+  /**
+   * All the pods the workload of a combined logs tab has now, in name order.
+   * It is read again at every refresh, so the tab follows a rollout or a
+   * scale of the workload.
+   */
+  readonly workloadPods = computed(() => {
+    const data = this.logTabData.get();
+
+    if (!data?.combined || !data.owner) {
+      return [];
+    }
+
+    return this.dependencies.getWorkloadPods({
+      owner: data.owner,
+      namespace: data.namespace,
+      podSelector: data.podSelector,
+    });
+  });
+
+  /**
+   * The pods whose logs are fetched and merged into this tab's log stream:
+   * just the selected pod normally, or the pods of the workload, up to
+   * `maxCombinedLogsPods`, for a combined logs tab.
+   */
+  readonly logSourcePods = computed(() => {
+    const data = this.logTabData.get();
+
+    if (!data) {
+      return [];
+    }
+
+    if (data.combined) {
+      return this.workloadPods.get().slice(0, maxCombinedLogsPods);
+    }
+
+    return [this.dependencies.getPodById(data.selectedPodId)].filter(isDefined);
   });
 
   updateLogTabData = (partialData: Partial<LogTabData>) => {
@@ -105,38 +163,50 @@ export class LogTabViewModel {
     this.updateLogTabData(partialPreferences);
   };
 
-  loadLogs = () => this.dependencies.loadLogs(this.tabId, this.pod, this.logTabData);
-  reloadLogs = () => this.dependencies.reloadLogs(this.tabId, this.pod, this.logTabData);
+  loadLogs = () => this.dependencies.loadLogs(this.tabId, this.logSourcePods, this.logTabData);
+  reloadLogs = () => this.dependencies.reloadLogs(this.tabId, this.logSourcePods, this.logTabData);
   renameTab = (title: string) => this.dependencies.renameTab(this.tabId, title);
   stopLoadingLogs = () => this.dependencies.stopLoadingLogs(this.tabId);
 
   downloadLogs = () => {
-    const pod = this.pod.get();
     const tabData = this.logTabData.get();
+    const pods = this.logSourcePods.get();
 
-    if (pod && tabData) {
-      const fileName = pod.getName();
-      const logsToDownload: string[] = tabData.showTimestamps ? this.logs.get() : this.logsWithoutTimestamps.get();
+    if (pods.length && tabData) {
+      // A combined logs tab is named after the workload it was opened for, not
+      // any single one of its pods.
+      const isMerged = this.isMerged.get();
+      const fileName = isMerged && tabData.owner ? tabData.owner.name : pods[0].getName();
+      const logs: string[] = tabData.showTimestamps ? this.logs.get() : this.logsWithoutTimestamps.get();
 
-      this.dependencies.downloadLogs(`${fileName}.log`, logsToDownload);
+      // The colors of the pod tags are for the screen: the file keeps the tags.
+      this.dependencies.downloadLogs(`${fileName}.log`, isMerged ? logs.map(stripAnsiColors) : logs);
     }
   };
 
   downloadAllLogs = () => {
-    const pod = this.pod.get();
     const tabData = this.logTabData.get();
+    const pods = this.logSourcePods.get();
 
-    if (pod && tabData) {
-      const params = { name: pod.getName(), namespace: pod.getNs() };
-      const query = {
-        timestamps: tabData.showTimestamps,
-        previous: tabData.showPrevious,
-        container: tabData.selectedContainer,
-      };
-
-      return this.dependencies.downloadAllLogs(params, query);
+    if (!pods.length || !tabData) {
+      return;
     }
 
-    return;
+    const query = {
+      timestamps: tabData.showTimestamps,
+      previous: tabData.showPrevious,
+      container: tabData.selectedContainer,
+    };
+
+    if (this.isMerged.get()) {
+      const fileName = tabData.owner?.name ?? pods[0].getName();
+      const podDescriptors = pods.map((pod) => ({ name: pod.getName(), namespace: pod.getNs() }));
+
+      return this.dependencies.downloadAllLogsForPods(fileName, podDescriptors, query);
+    }
+
+    const params = { name: pods[0].getName(), namespace: pods[0].getNs() };
+
+    return this.dependencies.downloadAllLogs(params, query);
   };
 }

@@ -9,6 +9,7 @@ import { deploymentApiInjectable } from "@freelensapp/kube-api-specifics";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import openConfirmDialogInjectable from "../confirm-dialog/open.injectable";
+import createWorkloadLogsTabInjectable from "../dock/logs/create-workload-logs-tab.injectable";
 import { MenuItem } from "../menu";
 import openDeploymentScaleDialogInjectable from "./scale/open.injectable";
 
@@ -27,6 +28,7 @@ interface Dependencies {
   deploymentApi: DeploymentApi;
   openConfirmDialog: OpenConfirmDialog;
   showCheckedErrorNotification: ShowCheckedErrorNotification;
+  createWorkloadLogsTab: ReturnType<typeof createWorkloadLogsTabInjectable.instantiate>;
 }
 
 const NonInjectedDeploymentMenu = ({
@@ -36,8 +38,13 @@ const NonInjectedDeploymentMenu = ({
   toolbar,
   openConfirmDialog,
   showCheckedErrorNotification,
+  createWorkloadLogsTab,
 }: Dependencies & DeploymentMenuProps) => (
   <>
+    <MenuItem onClick={() => createWorkloadLogsTab({ workload: object })}>
+      <Icon material="subject" tooltip={`${object.kind} Logs`} interactive={toolbar} />
+      <span className="title">Logs</span>
+    </MenuItem>
     <MenuItem onClick={() => openDeploymentScaleDialog(object)}>
       <Icon material="open_with" tooltip="Scale" interactive={toolbar} />
       <span className="title">Scale</span>
@@ -78,5 +85,6 @@ export const DeploymentMenu = withInjectables<Dependencies, DeploymentMenuProps>
     openDeploymentScaleDialog: di.inject(openDeploymentScaleDialogInjectable),
     openConfirmDialog: di.inject(openConfirmDialogInjectable),
     showCheckedErrorNotification: di.inject(showCheckedErrorNotificationInjectable),
+    createWorkloadLogsTab: di.inject(createWorkloadLogsTabInjectable),
   }),
 });

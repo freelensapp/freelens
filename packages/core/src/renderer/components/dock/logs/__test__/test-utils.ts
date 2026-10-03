@@ -45,10 +45,12 @@ export function createMockLogTabViewModel(
     stopLoadingLogs: vi.fn(),
     getPodById: vi.fn(),
     getPodsByOwnerId: vi.fn(),
+    getWorkloadPods: vi.fn(() => []),
     areLogsPresent: vi.fn(() => false),
     searchStore: new SearchStore(),
     downloadLogs: vi.fn(),
     downloadAllLogs: vi.fn(),
+    downloadAllLogsForPods: vi.fn(),
     userPreferencesState,
     ...deps,
   });

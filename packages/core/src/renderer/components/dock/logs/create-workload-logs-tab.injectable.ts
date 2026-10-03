@@ -5,15 +5,15 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import getPodsByOwnerIdInjectable from "../../workloads-pods/get-pods-by-owner-id.injectable";
 import createLogsTabInjectable from "./create-logs-tab.injectable";
 import { findOptimalDefaultContainerOfPod } from "./default-container-helper";
+import getWorkloadPodsInjectable from "./get-workload-pods.injectable";
 
 import type { DaemonSet, Deployment, Job, ReplicaSet, StatefulSet } from "@freelensapp/kube-object";
 
-import type { GetPodsByOwnerId } from "../../workloads-pods/get-pods-by-owner-id.injectable";
 import type { TabId } from "../dock/store";
 import type { CreateLogsTabData } from "./create-logs-tab.injectable";
+import type { GetWorkloadPods } from "./get-workload-pods.injectable";
 
 export interface WorkloadLogsTabData {
   workload: StatefulSet | Job | Deployment | DaemonSet | ReplicaSet;
@@ -21,29 +21,53 @@ export interface WorkloadLogsTabData {
 
 interface Dependencies {
   createLogsTab: (title: string, data: CreateLogsTabData) => TabId;
-  getPodsByOwnerId: GetPodsByOwnerId;
+  getWorkloadPods: GetWorkloadPods;
+}
+
+/**
+ * The pods of a Deployment are owned by its ReplicaSets, so they are found by
+ * the labels of its selector. The template labels stand in for a selector
+ * made of expressions only.
+ */
+function getPodSelector(workload: WorkloadLogsTabData["workload"]): string[] | undefined {
+  if (workload.kind !== "Deployment") {
+    return undefined;
+  }
+
+  const selectors = workload.getSelectors();
+
+  return selectors.length ? selectors : workload.getTemplateLabels();
 }
 
 const createWorkloadLogsTab =
-  ({ createLogsTab, getPodsByOwnerId }: Dependencies) =>
+  ({ createLogsTab, getWorkloadPods }: Dependencies) =>
   ({ workload }: WorkloadLogsTabData): TabId | undefined => {
-    const pods = getPodsByOwnerId(workload.getId());
+    const owner = {
+      kind: workload.kind,
+      name: workload.getName(),
+      uid: workload.getId(),
+    };
+    const podSelector = getPodSelector(workload);
 
-    if (pods.length === 0) {
+    // A selector without labels would match every pod of the namespace.
+    if (podSelector && podSelector.length === 0) {
       return undefined;
     }
 
-    const selectedPod = pods[0];
+    const namespace = workload.getNs();
+    const [firstPod] = getWorkloadPods({ owner, namespace, podSelector });
 
-    return createLogsTab(`${workload.kind} ${selectedPod.getName()}`, {
-      selectedContainer: findOptimalDefaultContainerOfPod(selectedPod).name,
-      selectedPodId: selectedPod.getId(),
-      namespace: selectedPod.getNs(),
-      owner: {
-        kind: workload.kind,
-        name: workload.getName(),
-        uid: workload.getId(),
-      },
+    if (!firstPod) {
+      return undefined;
+    }
+
+    return createLogsTab(`${workload.kind} ${workload.getName()}`, {
+      selectedContainer: findOptimalDefaultContainerOfPod(firstPod).name,
+      selectedPodId: firstPod.getId(),
+      namespace,
+      owner,
+      combined: true,
+      podSelector,
     });
   };
 
@@ -53,7 +77,7 @@ const createWorkloadLogsTabInjectable = getInjectable({
   instantiate: (di) =>
     createWorkloadLogsTab({
       createLogsTab: di.inject(createLogsTabInjectable),
-      getPodsByOwnerId: di.inject(getPodsByOwnerIdInjectable),
+      getWorkloadPods: di.inject(getWorkloadPodsInjectable),
     }),
 });
 

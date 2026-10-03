@@ -37,6 +37,20 @@ export interface LogTabData {
   selectedPodId: string;
 
   /**
+   * True for the tab of a workload: it shows the logs of all the pods of
+   * `owner` interleaved chronologically, every line tagged with a color-coded
+   * pod name, and it follows the workload when its pods come and go.
+   * `selectedPodId` is then only the pod the tab was opened with.
+   */
+  combined?: boolean;
+
+  /**
+   * The labels, as `key=value`, that select the pods of `owner` when it does
+   * not own them directly, as a Deployment does through its ReplicaSets.
+   */
+  podSelector?: string[];
+
+  /**
    * The namespace of the pods/workload
    */
   namespace: string;
