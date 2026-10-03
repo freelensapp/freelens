@@ -212,6 +212,16 @@ export class KubeObjectStore<
         try {
           return (await res) ?? [];
         } catch (error) {
+          // An aborted request (e.g. the view unmounted before the list
+          // arrived) is not a real failure -- let it propagate so the
+          // abort-aware catch in `loadAll` can no-op on it instead of
+          // surfacing a spurious "Failed to load" error and blanking the list.
+          // The signal is checked too, for an error raised after the abort
+          // that does not carry the AbortError name.
+          if (isAbortError(error) || reqInit?.signal?.aborted) {
+            throw error;
+          }
+
           onLoadFailure(new Error(`Failed to load ${this.api.apiBase}`, { cause: error }));
 
           // reset the store because we are loading all, so that nothing is displayed
@@ -239,6 +249,12 @@ export class KubeObjectStore<
           break;
 
         case "rejected":
+          // See the cluster-scoped branch above: an aborted request must
+          // propagate, not be reported through onLoadFailure.
+          if (isAbortError(result.reason) || reqInit?.signal?.aborted) {
+            throw result.reason;
+          }
+
           if (onLoadFailure) {
             onLoadFailure(new Error(`Failed to load ${this.api.apiBase}`, { cause: result.reason }));
           } else {
