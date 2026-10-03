@@ -6,17 +6,17 @@
 
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import clusterApiUrlInjectable from "../../features/cluster/connections/main/api-url.injectable";
-import createKubeAuthProxyInjectable from "../kube-auth-proxy/create-kube-auth-proxy.injectable";
-import kubeAuthProxyCertificateInjectable from "../kube-auth-proxy/kube-auth-proxy-certificate.injectable";
+import createFreelensK8sProxyInjectable from "../freelens-k8s-proxy/create-freelens-k8s-proxy.injectable";
+import freelensK8sProxyCertificateInjectable from "../freelens-k8s-proxy/freelens-k8s-proxy-certificate.injectable";
 
 import type { ServerOptions } from "http-proxy-3";
 
 import type { Cluster } from "../../common/cluster/cluster";
-import type { KubeAuthProxy } from "../kube-auth-proxy/create-kube-auth-proxy.injectable";
+import type { FreelensK8sProxy } from "../freelens-k8s-proxy/create-freelens-k8s-proxy.injectable";
 
-export interface KubeAuthProxyServer {
+export interface FreelensK8sProxyServer {
   getApiTarget(isLongRunningRequest?: boolean): Promise<ServerOptions>;
-  ensureAuthProxyUrl(): Promise<string>;
+  ensureFreelensK8sProxyUrl(): Promise<string>;
   restart(): Promise<void>;
   ensureRunning(): Promise<void>;
   stop(): void;
@@ -25,17 +25,17 @@ export interface KubeAuthProxyServer {
 const fourHoursInMs = 4 * 60 * 60 * 1000;
 const thirtySecondsInMs = 30 * 1000;
 
-const kubeAuthProxyServerInjectable = getInjectable({
-  id: "kube-auth-proxy-server",
-  instantiate: (di, cluster): KubeAuthProxyServer => {
+const freelensK8sProxyServerInjectable = getInjectable({
+  id: "freelens-k8s-proxy-server",
+  instantiate: (di, cluster): FreelensK8sProxyServer => {
     const clusterApiUrl = di.inject(clusterApiUrlInjectable, cluster);
-    const createKubeAuthProxy = di.inject(createKubeAuthProxyInjectable, cluster);
+    const createFreelensK8sProxy = di.inject(createFreelensK8sProxyInjectable, cluster);
 
-    let kubeAuthProxy: KubeAuthProxy | undefined = undefined;
+    let freelensK8sProxy: FreelensK8sProxy | undefined = undefined;
     let apiTarget: ServerOptions | undefined = undefined;
 
-    const ensureServerHelper = async (): Promise<KubeAuthProxy> => {
-      if (!kubeAuthProxy) {
+    const ensureServerHelper = async (): Promise<FreelensK8sProxy> => {
+      if (!freelensK8sProxy) {
         const proxyEnv = {
           ...process.env,
         };
@@ -44,17 +44,17 @@ const kubeAuthProxyServerInjectable = getInjectable({
           proxyEnv.HTTPS_PROXY = cluster.preferences.httpsProxy;
         }
 
-        kubeAuthProxy = createKubeAuthProxy(proxyEnv);
+        freelensK8sProxy = createFreelensK8sProxy(proxyEnv);
       }
 
-      await kubeAuthProxy.run();
+      await freelensK8sProxy.run();
 
-      return kubeAuthProxy;
+      return freelensK8sProxy;
     };
 
     const newApiTarget = async (timeout: number): Promise<ServerOptions> => {
       const { hostname } = await clusterApiUrl();
-      const certificate = await di.inject(kubeAuthProxyCertificateInjectable, hostname);
+      const certificate = await di.inject(freelensK8sProxyCertificateInjectable, hostname);
       const { port, apiPrefix: path } = await ensureServerHelper();
 
       return {
@@ -73,8 +73,8 @@ const kubeAuthProxyServerInjectable = getInjectable({
     };
 
     const stopServer = () => {
-      kubeAuthProxy?.exit();
-      kubeAuthProxy = undefined;
+      freelensK8sProxy?.exit();
+      freelensK8sProxy = undefined;
       apiTarget = undefined;
     };
 
@@ -86,16 +86,16 @@ const kubeAuthProxyServerInjectable = getInjectable({
 
         // The cached target points at the port of one proxy process. Once that
         // process has exited, on its own or not, a new target starts a new one.
-        if (!apiTarget || !kubeAuthProxy?.isRunning) {
+        if (!apiTarget || !freelensK8sProxy?.isRunning) {
           apiTarget = await newApiTarget(thirtySecondsInMs);
         }
 
         return apiTarget;
       },
-      ensureAuthProxyUrl: async () => {
-        const kubeAuthProxy = await ensureServerHelper();
+      ensureFreelensK8sProxyUrl: async () => {
+        const freelensK8sProxy = await ensureServerHelper();
 
-        return `https://127.0.0.1:${kubeAuthProxy.port}${kubeAuthProxy.apiPrefix}`;
+        return `https://127.0.0.1:${freelensK8sProxy.port}${freelensK8sProxy.apiPrefix}`;
       },
       ensureRunning: async () => {
         await ensureServerHelper();
@@ -112,4 +112,4 @@ const kubeAuthProxyServerInjectable = getInjectable({
   }),
 });
 
-export default kubeAuthProxyServerInjectable;
+export default freelensK8sProxyServerInjectable;

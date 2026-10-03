@@ -12,7 +12,7 @@ import directoryForTempInjectable from "../../common/app-paths/directory-for-tem
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import freelensProxyCertificateInjectable from "../../common/certificate/freelens-proxy-certificate.injectable";
 import { nodeEnvInjectionToken } from "../../common/vars/node-env-injection-token";
-import kubeAuthProxyServerInjectable from "../cluster/kube-auth-proxy-server.injectable";
+import freelensK8sProxyServerInjectable from "../cluster/freelens-k8s-proxy-server.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import routerInjectable from "../router/router.injectable";
 import freelensProxyInjectable from "./freelens-proxy.injectable";
@@ -26,7 +26,7 @@ import type { DiContainer } from "@ogre-tools/injectable";
 import type { Mock } from "vitest";
 
 import type { Cluster } from "../../common/cluster/cluster";
-import type { KubeAuthProxyServer } from "../cluster/kube-auth-proxy-server.injectable";
+import type { FreelensK8sProxyServer } from "../cluster/freelens-k8s-proxy-server.injectable";
 import type { Router } from "../router/router";
 import type { ServerIncomingMessage, ServerResponse } from "./freelens-proxy";
 
@@ -478,7 +478,7 @@ describe("Freelens proxy kube api requests", () => {
     di.override(shellApiRequestInjectable, () => vi.fn());
     di.override(kubeApiUpgradeRequestInjectable, () => vi.fn());
     di.override(
-      kubeAuthProxyServerInjectable,
+      freelensK8sProxyServerInjectable,
       () =>
         ({
           getApiTarget: async () => ({
@@ -487,7 +487,7 @@ describe("Freelens proxy kube api requests", () => {
             timeout,
             headers: { Host: "some-cluster-host" },
           }),
-        }) as unknown as KubeAuthProxyServer,
+        }) as unknown as FreelensK8sProxyServer,
     );
 
     proxy = di.inject(freelensProxyInjectable);
@@ -614,7 +614,7 @@ describe("Freelens proxy kube api requests to a refused target", () => {
     di.override(getClusterForRequestInjectable, () => () => ({ id: "some-cluster-id" }) as Cluster);
     di.override(shellApiRequestInjectable, () => vi.fn());
     di.override(kubeApiUpgradeRequestInjectable, () => vi.fn());
-    di.override(kubeAuthProxyServerInjectable, () => ({ getApiTarget }) as unknown as KubeAuthProxyServer);
+    di.override(freelensK8sProxyServerInjectable, () => ({ getApiTarget }) as unknown as FreelensK8sProxyServer);
     di.override(routerInjectable, () => ({ route }) as unknown as Router);
 
     proxy = di.inject(freelensProxyInjectable);

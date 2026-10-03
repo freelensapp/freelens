@@ -10,8 +10,8 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { chunk } from "es-toolkit";
 import { apiKubePrefix } from "../../../common/vars";
 import clusterApiUrlInjectable from "../../../features/cluster/connections/main/api-url.injectable";
-import kubeAuthProxyServerInjectable from "../../cluster/kube-auth-proxy-server.injectable";
-import kubeAuthProxyCertificateInjectable from "../../kube-auth-proxy/kube-auth-proxy-certificate.injectable";
+import freelensK8sProxyServerInjectable from "../../cluster/freelens-k8s-proxy-server.injectable";
+import freelensK8sProxyCertificateInjectable from "../../freelens-k8s-proxy/freelens-k8s-proxy-certificate.injectable";
 import type { ConnectionOptions } from "node:tls";
 
 import type { FreelensProxyApiRequest } from "../freelens-proxy";
@@ -24,15 +24,18 @@ const kubeApiUpgradeRequestInjectable = getInjectable({
     (di): FreelensProxyApiRequest =>
     async ({ req, socket, head, cluster }) => {
       const clusterApiUrl = await di.inject(clusterApiUrlInjectable, cluster)();
-      const kubeAuthProxyServer = di.inject(kubeAuthProxyServerInjectable, cluster);
-      const kubeAuthProxyCertificate = await di.inject(kubeAuthProxyCertificateInjectable, clusterApiUrl.hostname);
+      const freelensK8sProxyServer = di.inject(freelensK8sProxyServerInjectable, cluster);
+      const freelensK8sProxyCertificate = await di.inject(
+        freelensK8sProxyCertificateInjectable,
+        clusterApiUrl.hostname,
+      );
 
-      const proxyUrl = (await kubeAuthProxyServer.ensureAuthProxyUrl()) + req.url.replace(apiKubePrefix, "");
+      const proxyUrl = (await freelensK8sProxyServer.ensureFreelensK8sProxyUrl()) + req.url.replace(apiKubePrefix, "");
       const pUrl = url.parse(proxyUrl);
       const connectOpts: ConnectionOptions = {
         port: pUrl.port ? parseInt(pUrl.port) : undefined,
         host: pUrl.hostname ?? undefined,
-        ca: kubeAuthProxyCertificate.cert,
+        ca: freelensK8sProxyCertificate.cert,
       };
       const proxySocket = connect(connectOpts);
 

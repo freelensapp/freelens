@@ -19,13 +19,13 @@ import { registerInjectables as registerCryptoInjectables } from "./crypto/regis
 import { registerInjectables as registerElectronAppInjectables } from "./electron-app/register-injectables";
 import { registerInjectables as registerExtensionLoaderInjectables } from "./extension-loader/register-injectables";
 import { registerInjectables as registerFetchInjectables } from "./fetch/register-injectables";
+import { registerInjectables as registerFreelensK8sProxyInjectables } from "./freelens-k8s-proxy/register-injectables";
 import { registerInjectables as registerFreelensProxyInjectables } from "./freelens-proxy/register-injectables";
 import getMetricsInjectable from "./get-metrics.injectable";
 import { registerInjectables as registerHelmInjectables } from "./helm/register-injectables";
 import { registerInjectables as registerIpcInjectables } from "./ipc/register-injectables";
 import { registerInjectables as registerK8sInjectables } from "./k8s/register-injectables";
 import k8sRequestInjectable from "./k8s-request.injectable";
-import { registerInjectables as registerKubeAuthProxyInjectables } from "./kube-auth-proxy/register-injectables";
 import { registerInjectables as registerKubeconfigManagerInjectables } from "./kubeconfig-manager/register-injectables";
 import { registerInjectables as registerKubectlInjectables } from "./kubectl/register-injectables";
 import { registerInjectables as registerLoggerInjectables } from "./logger/register-injectables";
@@ -129,6 +129,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
+    registerFreelensK8sProxyInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
     registerFreelensProxyInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
@@ -145,11 +150,6 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     registerK8sInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerKubeAuthProxyInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }

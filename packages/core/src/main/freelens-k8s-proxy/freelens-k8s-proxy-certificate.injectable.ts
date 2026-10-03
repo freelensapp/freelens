@@ -16,8 +16,8 @@ const notAfterDateInOneYear = () => {
   return notAfterDate;
 };
 
-const kubeAuthProxyCertificateInjectable = getInjectable({
-  id: "kube-auth-proxy-certificate",
+const freelensK8sProxyCertificateInjectable = getInjectable({
+  id: "freelens-k8s-proxy-certificate",
   instantiate: (di, hostname): Promise<SelfSignedCert> =>
     // selfsigned v5 returns a Promise and dropped the `days` option in favor of
     // explicit dates; consumers await this injectable.
@@ -48,4 +48,4 @@ const kubeAuthProxyCertificateInjectable = getInjectable({
   }),
 });
 
-export default kubeAuthProxyCertificateInjectable;
+export default freelensK8sProxyCertificateInjectable;

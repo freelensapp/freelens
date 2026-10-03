@@ -15,7 +15,7 @@ import writeFileInjectable from "../../common/fs/write-file.injectable";
 import getDirnameOfPathInjectable from "../../common/path/get-dirname.injectable";
 import joinPathsInjectable from "../../common/path/join-paths.injectable";
 import kubeAuthProxyUrlInjectable from "../cluster/auth-proxy-url.injectable";
-import kubeAuthProxyServerInjectable from "../cluster/kube-auth-proxy-server.injectable";
+import freelensK8sProxyServerInjectable from "../cluster/freelens-k8s-proxy-server.injectable";
 import { KubeconfigManager } from "./kubeconfig-manager";
 
 import type { Cluster } from "../../common/cluster/cluster";
@@ -35,7 +35,7 @@ const kubeconfigManagerInjectable = getInjectable({
         writeFile: di.inject(writeFileInjectable),
         certificate: di.inject(freelensProxyCertificateInjectable).get(),
         loadKubeconfig: di.inject(loadKubeconfigInjectable, cluster),
-        kubeAuthProxyServer: di.inject(kubeAuthProxyServerInjectable, cluster),
+        freelensK8sProxyServer: di.inject(freelensK8sProxyServerInjectable, cluster),
         kubeAuthProxyUrl: di.inject(kubeAuthProxyUrlInjectable, cluster),
       },
       cluster,

@@ -19,7 +19,7 @@ import type { SetRequired } from "type-fest";
 import type { EmitAppEvent } from "../../common/app-event-bus/emit-event.injectable";
 import type { SelfSignedCert } from "../../common/certificate/certificate";
 import type { Cluster } from "../../common/cluster/cluster";
-import type { KubeAuthProxyServer } from "../cluster/kube-auth-proxy-server.injectable";
+import type { FreelensK8sProxyServer } from "../cluster/freelens-k8s-proxy-server.injectable";
 import type { Router } from "../router/router";
 import type { ProxyApiRequestArgs, ShellApiRequestArgs } from "./proxy-functions";
 
@@ -39,7 +39,7 @@ interface Dependencies {
   shellApiRequest: FreelensProxyShellApiRequest;
   kubeApiUpgradeRequest: FreelensProxyApiRequest;
   emitAppEvent: EmitAppEvent;
-  getKubeAuthProxyServer: (cluster: Cluster) => KubeAuthProxyServer;
+  getFreelensK8sProxyServer: (cluster: Cluster) => FreelensK8sProxyServer;
   readonly router: Router;
   readonly proxy: ProxyServer;
   readonly freelensProxyPort: { set: (portNumber: number) => void };
@@ -347,8 +347,8 @@ export class FreelensProxy {
       delete req.headers.authorization;
       req.url = req.url.replace(apiKubePrefix, "");
 
-      const kubeAuthProxyServer = this.dependencies.getKubeAuthProxyServer(cluster);
-      const proxyTarget = await kubeAuthProxyServer.getApiTarget(isLongRunningRequest(req.url));
+      const freelensK8sProxyServer = this.dependencies.getFreelensK8sProxyServer(cluster);
+      const proxyTarget = await freelensK8sProxyServer.getApiTarget(isLongRunningRequest(req.url));
 
       if (proxyTarget) {
         return this.proxyWeb(req, res, proxyTarget);

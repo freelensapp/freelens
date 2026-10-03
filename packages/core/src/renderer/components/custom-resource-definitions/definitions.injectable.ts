@@ -27,7 +27,7 @@ const customResourceDefinitionsInjectable = getInjectable({
 
     // Defer subscribing the CRD store until the cluster is ready. This injectable
     // is instantiated as a side-effect of building the sidebar, which can happen
-    // before `cluster.activate()` has finished starting the kube-auth-proxy. If the
+    // before `cluster.activate()` has finished starting the freelens-k8s-proxy. If the
     // store subscribes too early, `loadAll()` fails against an unreachable proxy and
     // the store's refcount gets stuck, leaving the CRD watch permanently broken and
     // the cluster view stuck on the loading screen (see issue #1617).

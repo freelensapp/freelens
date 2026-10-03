@@ -6,16 +6,16 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import createKubeAuthProxyInjectable from "./create-kube-auth-proxy.injectable";
+import createFreelensK8sProxyInjectable from "./create-freelens-k8s-proxy.injectable";
+import freelensK8sProxyCertificateInjectable from "./freelens-k8s-proxy-certificate.injectable";
 import freeLensK8sProxyPathInjectable from "./freelens-k8s-proxy-path.injectable";
-import kubeAuthProxyCertificateInjectable from "./kube-auth-proxy-certificate.injectable";
 import { registerInjectables as registerWaitUntilPortIsUsedInjectables } from "./wait-until-port-is-used/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
   try {
-    di.register(createKubeAuthProxyInjectable);
+    di.register(createFreelensK8sProxyInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
@@ -25,7 +25,7 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
-    di.register(kubeAuthProxyCertificateInjectable);
+    di.register(freelensK8sProxyCertificateInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

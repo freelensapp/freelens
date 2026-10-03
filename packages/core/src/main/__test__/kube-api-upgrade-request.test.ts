@@ -16,10 +16,10 @@ import { connect } from "node:tls";
 import { Cluster } from "../../common/cluster/cluster";
 import { apiKubePrefix } from "../../common/vars";
 import clusterApiUrlInjectable from "../../features/cluster/connections/main/api-url.injectable";
-import kubeAuthProxyServerInjectable from "../cluster/kube-auth-proxy-server.injectable";
+import freelensK8sProxyServerInjectable from "../cluster/freelens-k8s-proxy-server.injectable";
+import freelensK8sProxyCertificateInjectable from "../freelens-k8s-proxy/freelens-k8s-proxy-certificate.injectable";
 import kubeApiUpgradeRequestInjectable from "../freelens-proxy/proxy-functions/kube-api-upgrade-request.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
-import kubeAuthProxyCertificateInjectable from "../kube-auth-proxy/kube-auth-proxy-certificate.injectable";
 
 import type { MockedFunction } from "vitest";
 
@@ -44,7 +44,7 @@ const mockConnectImplementation = (proxySocket: MockSocket) =>
   ((..._args: unknown[]) => proxySocket as never) as unknown as typeof connect;
 
 describe("kube api upgrade request", () => {
-  it("forwards the upgrade request to the auth proxy", async () => {
+  it("forwards the upgrade request to the freelens-k8s-proxy", async () => {
     const di = getDiForUnitTesting();
     const connectMock = connect as MockedFunction<typeof connect>;
     const proxySocket = new MockSocket();
@@ -57,14 +57,14 @@ describe("kube api upgrade request", () => {
     });
 
     di.override(clusterApiUrlInjectable, () => async () => new URL("https://cluster.example.test"));
-    di.override(kubeAuthProxyServerInjectable, () => ({
+    di.override(freelensK8sProxyServerInjectable, () => ({
       getApiTarget: vi.fn(),
-      ensureAuthProxyUrl: vi.fn(async () => "https://127.0.0.1:9443/proxy-prefix"),
+      ensureFreelensK8sProxyUrl: vi.fn(async () => "https://127.0.0.1:9443/proxy-prefix"),
       restart: vi.fn(),
       ensureRunning: vi.fn(),
       stop: vi.fn(),
     }));
-    di.override(kubeAuthProxyCertificateInjectable, () =>
+    di.override(freelensK8sProxyCertificateInjectable, () =>
       Promise.resolve({
         cert: "some-cert",
         private: "some-key",
@@ -116,7 +116,7 @@ describe("kube api upgrade request", () => {
     expect(proxySocket.write).toHaveBeenNthCalledWith(6, head);
   });
 
-  it("applies backpressure from the auth proxy socket to the client socket", async () => {
+  it("applies backpressure from the freelens-k8s-proxy socket to the client socket", async () => {
     const di = getDiForUnitTesting();
     const connectMock = connect as MockedFunction<typeof connect>;
     const proxySocket = new MockSocket();
@@ -128,14 +128,14 @@ describe("kube api upgrade request", () => {
     });
 
     di.override(clusterApiUrlInjectable, () => async () => new URL("https://cluster.example.test"));
-    di.override(kubeAuthProxyServerInjectable, () => ({
+    di.override(freelensK8sProxyServerInjectable, () => ({
       getApiTarget: vi.fn(),
-      ensureAuthProxyUrl: vi.fn(async () => "https://127.0.0.1:9443/proxy-prefix"),
+      ensureFreelensK8sProxyUrl: vi.fn(async () => "https://127.0.0.1:9443/proxy-prefix"),
       restart: vi.fn(),
       ensureRunning: vi.fn(),
       stop: vi.fn(),
     }));
-    di.override(kubeAuthProxyCertificateInjectable, () =>
+    di.override(freelensK8sProxyCertificateInjectable, () =>
       Promise.resolve({
         cert: "some-cert",
         private: "some-key",
@@ -173,7 +173,7 @@ describe("kube api upgrade request", () => {
     expect(socket.resume).toHaveBeenCalledTimes(1);
   });
 
-  it("applies backpressure from the client socket to the auth proxy socket", async () => {
+  it("applies backpressure from the client socket to the freelens-k8s-proxy socket", async () => {
     const di = getDiForUnitTesting();
     const connectMock = connect as MockedFunction<typeof connect>;
     const proxySocket = new MockSocket();
@@ -185,14 +185,14 @@ describe("kube api upgrade request", () => {
     });
 
     di.override(clusterApiUrlInjectable, () => async () => new URL("https://cluster.example.test"));
-    di.override(kubeAuthProxyServerInjectable, () => ({
+    di.override(freelensK8sProxyServerInjectable, () => ({
       getApiTarget: vi.fn(),
-      ensureAuthProxyUrl: vi.fn(async () => "https://127.0.0.1:9443/proxy-prefix"),
+      ensureFreelensK8sProxyUrl: vi.fn(async () => "https://127.0.0.1:9443/proxy-prefix"),
       restart: vi.fn(),
       ensureRunning: vi.fn(),
       stop: vi.fn(),
     }));
-    di.override(kubeAuthProxyCertificateInjectable, () =>
+    di.override(freelensK8sProxyCertificateInjectable, () =>
       Promise.resolve({
         cert: "some-cert",
         private: "some-key",
@@ -242,14 +242,14 @@ describe("kube api upgrade request", () => {
     });
 
     di.override(clusterApiUrlInjectable, () => async () => new URL("https://cluster.example.test"));
-    di.override(kubeAuthProxyServerInjectable, () => ({
+    di.override(freelensK8sProxyServerInjectable, () => ({
       getApiTarget: vi.fn(),
-      ensureAuthProxyUrl: vi.fn(async () => "https://127.0.0.1:9443/proxy-prefix"),
+      ensureFreelensK8sProxyUrl: vi.fn(async () => "https://127.0.0.1:9443/proxy-prefix"),
       restart: vi.fn(),
       ensureRunning: vi.fn(),
       stop: vi.fn(),
     }));
-    di.override(kubeAuthProxyCertificateInjectable, () =>
+    di.override(freelensK8sProxyCertificateInjectable, () =>
       Promise.resolve({
         cert: "some-cert",
         private: "some-key",

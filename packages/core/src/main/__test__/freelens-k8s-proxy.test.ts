@@ -15,9 +15,9 @@ import getBasenameOfPathInjectable from "../../common/path/get-basename.injectab
 import normalizedPlatformInjectable from "../../common/vars/normalized-platform.injectable";
 import addClusterInjectable from "../../features/cluster/storage/common/add.injectable";
 import spawnInjectable from "../child-process/spawn.injectable";
+import createFreelensK8sProxyInjectable from "../freelens-k8s-proxy/create-freelens-k8s-proxy.injectable";
+import waitUntilPortIsUsedInjectable from "../freelens-k8s-proxy/wait-until-port-is-used/wait-until-port-is-used.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
-import createKubeAuthProxyInjectable from "../kube-auth-proxy/create-kube-auth-proxy.injectable";
-import waitUntilPortIsUsedInjectable from "../kube-auth-proxy/wait-until-port-is-used/wait-until-port-is-used.injectable";
 import kubectlBinaryNameInjectable from "../kubectl/binary-name.injectable";
 import { Kubectl } from "../kubectl/kubectl";
 import kubectlDownloadingNormalizedArchInjectable from "../kubectl/normalized-arch.injectable";
@@ -29,15 +29,15 @@ import type { DeepMockProxy } from "vitest-mock-extended";
 
 import type { Cluster } from "../../common/cluster/cluster";
 import type { GetBasenameOfPath } from "../../common/path/get-basename.injectable";
-import type { KubeAuthProxy } from "../kube-auth-proxy/create-kube-auth-proxy.injectable";
+import type { FreelensK8sProxy } from "../freelens-k8s-proxy/create-freelens-k8s-proxy.injectable";
 
-describe("kube auth proxy tests", () => {
+describe("freelens-k8s-proxy tests", () => {
   let spawnMock: Mock;
   let waitUntilPortIsUsedMock: Mock;
   let broadcastMessageMock: Mock;
   let getBasenameOfPath: GetBasenameOfPath;
   let cluster: Cluster;
-  let kubeAuthProxy: KubeAuthProxy;
+  let freelensK8sProxy: FreelensK8sProxy;
 
   beforeEach(async () => {
     const di = getDiForUnitTesting();
@@ -100,13 +100,13 @@ describe("kube auth proxy tests", () => {
       kubeConfigPath: "/kind-config.yml",
       contextName: "kind-kind",
     });
-    kubeAuthProxy = di.inject(createKubeAuthProxyInjectable, cluster)({});
+    freelensK8sProxy = di.inject(createFreelensK8sProxyInjectable, cluster)({});
   });
 
   it("calling exit multiple times shouldn't throw", async () => {
-    kubeAuthProxy.exit();
-    kubeAuthProxy.exit();
-    kubeAuthProxy.exit();
+    freelensK8sProxy.exit();
+    freelensK8sProxy.exit();
+    freelensK8sProxy.exit();
   });
 
   describe("spawn tests", () => {
@@ -208,7 +208,7 @@ describe("kube auth proxy tests", () => {
       });
       waitUntilPortIsUsedMock.mockReturnValueOnce(Promise.resolve());
 
-      await kubeAuthProxy.run();
+      await freelensK8sProxy.run();
     });
 
     it("should call spawn and broadcast errors", () => {

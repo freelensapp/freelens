@@ -14,14 +14,14 @@ import clusterApiUrlInjectable from "../../features/cluster/connections/main/api
 import spawnInjectable from "../child-process/spawn.injectable";
 import broadcastConnectionUpdateInjectable from "../cluster/broadcast-connection-update.injectable";
 import getPortFromStreamInjectable from "../utils/get-port-from-stream.injectable";
+import freelensK8sProxyCertificateInjectable from "./freelens-k8s-proxy-certificate.injectable";
 import freeLensK8sProxyPathInjectable from "./freelens-k8s-proxy-path.injectable";
-import kubeAuthProxyCertificateInjectable from "./kube-auth-proxy-certificate.injectable";
 import waitUntilPortIsUsedInjectable from "./wait-until-port-is-used/wait-until-port-is-used.injectable";
 import type { ChildProcess } from "node:child_process";
 
 import type { Cluster } from "../../common/cluster/cluster";
 
-export interface KubeAuthProxy {
+export interface FreelensK8sProxy {
   readonly apiPrefix: string;
   readonly port: number;
   /**
@@ -33,14 +33,14 @@ export interface KubeAuthProxy {
   exit: () => void;
 }
 
-export type CreateKubeAuthProxy = (env: NodeJS.ProcessEnv) => KubeAuthProxy;
+export type CreateFreelensK8sProxy = (env: NodeJS.ProcessEnv) => FreelensK8sProxy;
 
 const startingServeRegex = /starting to serve on (?<address>.+)/i;
 
-const createKubeAuthProxyInjectable = getInjectable({
-  id: "create-kube-auth-proxy",
+const createFreelensK8sProxyInjectable = getInjectable({
+  id: "create-freelens-k8s-proxy",
 
-  instantiate: (di, cluster): CreateKubeAuthProxy => {
+  instantiate: (di, cluster): CreateFreelensK8sProxy => {
     const freeLensK8sProxyPath = di.inject(freeLensK8sProxyPathInjectable);
     const spawn = di.inject(spawnInjectable);
     const logger = di.inject(loggerInjectionToken);
@@ -91,7 +91,7 @@ const createKubeAuthProxyInjectable = getInjectable({
 
       const start = async (): Promise<void> => {
         const apiUrl = await clusterApiUrl();
-        const certificate = await di.inject(kubeAuthProxyCertificateInjectable, apiUrl.hostname);
+        const certificate = await di.inject(freelensK8sProxyCertificateInjectable, apiUrl.hostname);
 
         proxyProcess = spawn(freeLensK8sProxyPath, [], {
           env: {
@@ -168,7 +168,7 @@ const createKubeAuthProxyInjectable = getInjectable({
               }),
           });
         } catch (error) {
-          logger.warn("[KUBE-AUTH-PROXY]: getPortFromStream failed", error);
+          logger.warn("[FREELENS-K8S-PROXY]: getPortFromStream failed", error);
           broadcastConnectionUpdate({
             level: "error",
             message: "Proxy port can't be found, restarting...",
@@ -178,13 +178,13 @@ const createKubeAuthProxyInjectable = getInjectable({
           return start();
         }
 
-        logger.info(`[KUBE-AUTH-PROXY]: found port=${port}`);
+        logger.info(`[FREELENS-K8S-PROXY]: found port=${port}`);
 
         try {
           await waitUntilPortIsUsed(port, 500, 10000);
           ready.set(true);
         } catch (error) {
-          logger.warn("[KUBE-AUTH-PROXY]: waitUntilUsed failed", error);
+          logger.warn("[FREELENS-K8S-PROXY]: waitUntilUsed failed", error);
           broadcastConnectionUpdate({
             level: "error",
             message: "Proxy port failed to be used within time limit, restarting...",
@@ -215,4 +215,4 @@ const createKubeAuthProxyInjectable = getInjectable({
   }),
 });
 
-export default createKubeAuthProxyInjectable;
+export default createFreelensK8sProxyInjectable;
