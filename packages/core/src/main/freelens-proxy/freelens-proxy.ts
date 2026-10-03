@@ -208,6 +208,7 @@ export class FreelensProxy {
             this.dependencies.logger.info(`[FREELENS-PROXY]: Subsequent error: ${error}`);
           });
 
+          // Extensions can subscribe to this event through `appEventBus`, so its name stays.
           this.dependencies.emitAppEvent({ name: "lens-proxy", action: "listen", params: { port } });
           resolve(port);
         })
