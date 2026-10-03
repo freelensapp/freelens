@@ -123,6 +123,30 @@ export async function clickWelcomeButton(window: Page) {
 }
 
 /**
+ * Save the files the application downloads into `directory`, instead of asking where with
+ * the dialog of the operating system, which a test cannot answer.
+ */
+export async function saveDownloadsTo(app: ElectronApplication, directory: string) {
+  await mkdirp(directory);
+  await app.evaluate(({ app: electronApp, webContents }, downloadsDirectory) => {
+    const sessions = new Set<unknown>();
+    const saveDownloadsOf = (contents: Electron.WebContents) => {
+      if (sessions.has(contents.session)) {
+        return;
+      }
+
+      sessions.add(contents.session);
+      contents.session.on("will-download", (_event, item) => {
+        item.setSavePath(`${downloadsDirectory}/${item.getFilename()}`);
+      });
+    };
+
+    webContents.getAllWebContents().forEach(saveDownloadsOf);
+    electronApp.on("web-contents-created", (_event, contents) => saveDownloadsOf(contents));
+  }, directory);
+}
+
+/**
  * Click a sidebar navigation item by its test id.
  *
  * The sidebar links are React Router `NavLink`s that navigate from their `onClick` handler
