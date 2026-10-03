@@ -93,6 +93,24 @@ describe("shell api requests", () => {
     expect(socket.end).toHaveBeenCalled();
   });
 
+  it("authenticates a debugger against its cluster and passes its pod identity", () => {
+    request(
+      "/api?id=tab&type=debug-container&shellToken=token&namespace=default&pod=app&podUid=uid&container=freelens-debug-123",
+    );
+    expect(authenticate).toHaveBeenCalledWith("some-cluster-id", "tab", "token");
+    expect(openShellSession).toHaveBeenCalledWith(
+      expect.objectContaining({
+        debugContainer: { namespace: "default", name: "app", uid: "uid", containerName: "freelens-debug-123" },
+      }),
+    );
+  });
+
+  it("rejects a debugger request missing the original pod UID", () => {
+    request("/api?id=tab&type=debug-container&shellToken=token&namespace=default&pod=app&container=freelens-debug-123");
+    expect(openShellSession).not.toHaveBeenCalled();
+    expect(socket.end).toHaveBeenCalled();
+  });
+
   it("ignores a node name on a standalone request, since a node shell needs a cluster", () => {
     request("/api?id=some-tab-id&type=standalone&node=some-node&shellToken=some-token");
 

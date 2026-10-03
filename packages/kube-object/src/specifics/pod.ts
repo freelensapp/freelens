@@ -575,6 +575,7 @@ export interface PodSpec {
   imagePullSecrets?: LocalObjectReference[];
   initContainers?: Container[];
   nodeName?: string;
+  os?: { name: "linux" | "windows" };
   nodeSelector?: Partial<Record<string, string>>;
   overhead?: Partial<Record<string, string>>;
   preemptionPolicy?: string;

@@ -101,6 +101,10 @@ export class JsonApiErrorParsed {
     return this.error.code === DOMException.ABORT_ERR;
   }
 
+  get code() {
+    return this.error?.code;
+  }
+
   toString() {
     return this.messages.join("\n");
   }
@@ -185,7 +189,7 @@ export class JsonApi<Data = JsonApiData, Params extends JsonApiParams<Data> = Js
     params?: ParamsAndQuery<Omit<Params, "data">, Query> & { data?: Patch | PartialDeep<Data> },
     reqInit: RequestInit = {},
   ) {
-    return this.request<OutData, Query>(path, params, { ...reqInit, method: "patch" });
+    return this.request<OutData, Query>(path, params, { ...reqInit, method: "PATCH" });
   }
 
   del<OutData = Data, Query = QueryParams>(
