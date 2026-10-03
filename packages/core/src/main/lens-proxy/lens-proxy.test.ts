@@ -11,6 +11,7 @@ import tls from "node:tls";
 import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import lensProxyCertificateInjectable from "../../common/certificate/lens-proxy-certificate.injectable";
+import { nodeEnvInjectionToken } from "../../common/vars/node-env-injection-token";
 import kubeAuthProxyServerInjectable from "../cluster/kube-auth-proxy-server.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import routerInjectable from "../router/router.injectable";
@@ -687,5 +688,144 @@ describe("lens proxy upgrade requests", () => {
       expect(kubeApiUpgradeRequest).not.toHaveBeenCalled();
       expect(shellApiRequest).not.toHaveBeenCalled();
     });
+  });
+});
+
+describe("lens proxy development static files", () => {
+  let proxy: { listen: () => Promise<void>; close: () => Promise<void> | undefined };
+  let port: number;
+  let devServer: http.Server;
+  let openConnections: number;
+  let mostOpenConnections: number;
+  let pendingRequestReceived: Promise<http.IncomingMessage>;
+  const sessions: http2.ClientHttp2Session[] = [];
+
+  const connectSession = async () => {
+    const session = await connectHttp2(port);
+
+    sessions.push(session);
+
+    return session;
+  };
+
+  beforeEach(async () => {
+    const di = getDiForUnitTesting();
+
+    openConnections = 0;
+    mostOpenConnections = 0;
+
+    let receivePendingRequest: (req: http.IncomingMessage) => void;
+
+    pendingRequestReceived = new Promise((resolve) => {
+      receivePendingRequest = resolve;
+    });
+
+    // Stands in for the Vite dev server, which takes a while to transform a
+    // module
+    devServer = http.createServer((req, res) => {
+      if (req.url === "/reset.js") {
+        req.socket.destroy();
+
+        return;
+      }
+
+      if (req.url === "/pending.js") {
+        receivePendingRequest(req);
+
+        return;
+      }
+
+      if (req.url === "/cut-off.js") {
+        res.writeHead(200, { "content-length": 1000 }).write("some-partial-module");
+        setTimeout(() => req.socket.destroy(), 10);
+
+        return;
+      }
+
+      setTimeout(() => res.end(`some-module-at-${req.url}`), 20);
+    });
+    devServer.on("connection", (socket: net.Socket) => {
+      mostOpenConnections = Math.max(mostOpenConnections, ++openConnections);
+      socket.once("close", () => openConnections--);
+    });
+    devServer.listen(0, "127.0.0.1");
+    await once(devServer, "listening");
+
+    vi.stubEnv("FREELENS_DEV_SERVER_PORT", String((devServer.address() as net.AddressInfo).port));
+
+    overrideEnvironment(di);
+    di.override(nodeEnvInjectionToken, () => "development");
+    di.override(getClusterForRequestInjectable, () => () => undefined);
+    di.override(shellApiRequestInjectable, () => vi.fn());
+    di.override(kubeApiUpgradeRequestInjectable, () => vi.fn());
+
+    proxy = di.inject(lensProxyInjectable);
+
+    await proxy.listen();
+    port = di.inject(lensProxyPortInjectable).get();
+  });
+
+  afterEach(async () => {
+    for (const session of sessions) {
+      session.destroy();
+    }
+
+    sessions.length = 0;
+    vi.unstubAllEnvs();
+    await proxy.close();
+    devServer.closeAllConnections();
+    devServer.close();
+  });
+
+  it("proxies the module requests of a page, all sent at once over HTTP/2, over a bounded number of connections", async () => {
+    const session = await connectSession();
+    const paths = Array.from({ length: 100 }, (_, index) => `/@fs/some-module-${index}.ts`);
+    const responses = await Promise.all(paths.map((path) => getHttp2(session, path)));
+
+    expect(responses).toEqual(paths.map((path) => ({ statusCode: 200, body: `some-module-at-${path}` })));
+    // One connection per request would overflow the listen queue of the dev
+    // server, which is 128 on macOS
+    expect(mostOpenConnections).toBeLessThanOrEqual(16);
+  });
+
+  it("answers 502 over HTTP/2 when the dev server resets the connection", async () => {
+    const session = await connectSession();
+
+    expect(await getHttp2(session, "/reset.js")).toEqual({ statusCode: 502, body: expect.any(String) });
+  });
+
+  it("answers 502 over HTTP/1.1 when the dev server resets the connection", async () => {
+    expect(await getHttp1(port, "/reset.js")).toEqual({ statusCode: 502, body: expect.any(String) });
+  });
+
+  it("resets the HTTP/2 stream when the dev server cuts off its response", async () => {
+    const session = await connectSession();
+    const stream = session.request({ ":path": "/cut-off.js" });
+    let statusCode: number | undefined;
+
+    stream.on("response", (headers) => (statusCode = headers[":status"]));
+    stream.resume();
+    await untilClosed(stream);
+
+    expect(statusCode).toBe(200);
+    expect(stream.rstCode).toBe(http2.constants.NGHTTP2_INTERNAL_ERROR);
+    expect(session.closed || session.destroyed).toBe(false);
+  });
+
+  it("lets go of the dev server request when the client cancels its HTTP/2 stream", async () => {
+    const session = await connectSession();
+    const stream = session.request({ ":path": "/pending.js" });
+
+    stream.on("error", () => {});
+
+    const req = await pendingRequestReceived;
+    const devServerRequestClosed = untilClosed(req.socket);
+
+    // Over HTTP/1.1 the client closes its socket; over HTTP/2 only the stream
+    // ends, and the proxy must not take that for an error of the dev server
+    stream.close(http2.constants.NGHTTP2_CANCEL);
+    await devServerRequestClosed;
+
+    expect(session.closed || session.destroyed).toBe(false);
   });
 });

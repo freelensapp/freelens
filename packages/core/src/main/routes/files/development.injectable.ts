@@ -5,25 +5,76 @@
  */
 
 import assert from "node:assert";
+import http from "node:http";
 import path from "node:path";
+import { prefixedLoggerInjectable } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
 import { createProxyServer } from "http-proxy-3";
-import type http from "node:http";
+import { abortWhenClientCloses, isClientGone } from "../../lens-proxy/abort-when-client-closes";
+import { respondText } from "../../utils/http-responses";
 
+import type { ServerResponse } from "../../lens-proxy/lens-proxy";
 import type { LensApiRequest, RouteResponse } from "../../router/route";
 
-// Must match the `server.port` of the Vite dev server started by
-// `electron-vite dev` (freelens/electron.vite.config.ts); both sides read the
-// same environment variable.
-const devServerPort = Number(process.env.FREELENS_DEV_SERVER_PORT) || 9191;
-
-assert(Number.isInteger(devServerPort), "FREELENS_DEV_SERVER_PORT environment variable must only be an integer");
+/**
+ * Over HTTP/2 the page sends every module request at once, and without an
+ * agent http-proxy-3 opens a new connection to the dev server for each one.
+ * Hundreds of simultaneous connections overflow the listen queue of the dev
+ * server, which holds 128 on macOS, and the connections that do not fit are
+ * reset or stall, leaving modules unanswered. A keep-alive agent reuses this
+ * many connections instead, which is in the order of what Chromium itself
+ * opens over HTTP/1.1.
+ */
+const maxDevServerSockets = 16;
 
 const devStaticFileRouteHandlerInjectable = getInjectable({
   id: "dev-static-file-route-handler",
-  instantiate: () => {
-    const proxy = createProxyServer();
+  instantiate: (di) => {
+    const logger = di.inject(prefixedLoggerInjectable, "DEV-FILE-ROUTE");
+
+    // Must match the `server.port` of the Vite dev server started by
+    // `electron-vite dev` (freelens/electron.vite.config.ts); both sides read
+    // the same environment variable.
+    const devServerPort = Number(process.env.FREELENS_DEV_SERVER_PORT) || 9191;
+
+    assert(Number.isInteger(devServerPort), "FREELENS_DEV_SERVER_PORT environment variable must only be an integer");
+
+    const proxy = createProxyServer({
+      agent: new http.Agent({ keepAlive: true, maxSockets: maxDevServerSockets }),
+    });
     const proxyTarget = `http://127.0.0.1:${devServerPort}`;
+
+    abortWhenClientCloses(proxy);
+
+    proxy.on("proxyRes", (proxyRes, _req, res) => {
+      // A response the dev server cuts off would otherwise stay open for good,
+      // holding the `load` event of the page
+      proxyRes.once("close", () => {
+        if (!proxyRes.complete) {
+          res.destroy(new Error("the dev server cut off the response"));
+        }
+      });
+    });
+
+    // Without a listener http-proxy-3 throws the error, and the request is
+    // never answered
+    proxy.on("error", (error, req, res) => {
+      // The two kinds of response, but the types of http-proxy-3 name only one;
+      // this route proxies no upgrades, so it is never a socket
+      const response = res as ServerResponse;
+
+      if (isClientGone(response)) {
+        return;
+      }
+
+      logger.warn(`request for ${req.url} failed: ${error}`);
+
+      if (response.headersSent) {
+        response.destroy(error);
+      } else {
+        respondText(response, `Dev server request failed: ${error}`, 502);
+      }
+    });
 
     return async ({ raw: { req, res }, params }: LensApiRequest<"/{path*}">): Promise<RouteResponse<Buffer>> => {
       // Vite's own namespaces (/@vite/client, /@react-refresh, /@fs/, /@id/)
