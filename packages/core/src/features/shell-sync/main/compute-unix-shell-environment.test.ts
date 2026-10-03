@@ -212,7 +212,7 @@ describe("computeUnixShellEnvironment technical tests", () => {
     it("should spawn a process with the correct arguments", () => {
       expect(spawnMock).toBeCalledWith(
         shellPath,
-        ["-l", "-i"],
+        ["-l"],
         expect.objectContaining({
           env: expectedEnv,
         }),
