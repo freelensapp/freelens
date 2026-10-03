@@ -50,6 +50,7 @@ const createFakeEditor = (containerElem: HTMLElement): FakeEditor => {
 describe("<MonacoEditor />", () => {
   let render: DiRender;
   let fakeEditors: FakeEditor[];
+  let model: editor.ITextModel;
 
   beforeEach(() => {
     const di = getDiForUnitTesting();
@@ -57,9 +58,10 @@ describe("<MonacoEditor />", () => {
     render = renderFor(di);
     fakeEditors = [];
 
-    const model = { uri: { path: "/monaco-editor/some-id" }, getLineCount: () => 1 };
+    model = { uri: { path: "/monaco-editor/some-id" }, getLineCount: () => 1 } as unknown as editor.ITextModel;
 
-    vi.mocked(editor.getModel).mockReturnValue(model as unknown as editor.ITextModel);
+    vi.mocked(editor.getModel).mockReset();
+    vi.mocked(editor.getModel).mockReturnValue(model);
     vi.mocked(editor.create).mockReset();
     vi.mocked(editor.create).mockImplementation((containerElem) => {
       const fakeEditor = createFakeEditor(containerElem);
@@ -103,6 +105,34 @@ describe("<MonacoEditor />", () => {
       );
 
       expect(fakeEditors.at(-1)?.value).toBe("some-other-value");
+    });
+
+    it("settles after the parent renders it again", () => {
+      let modelReads = 0;
+
+      // Render reads the model, so this counts the renders. Throwing past the
+      // limit turns an endless render loop into a failure instead of a hang.
+      vi.mocked(editor.getModel).mockImplementation(() => {
+        modelReads += 1;
+
+        if (modelReads > 100) {
+          throw new Error("MonacoEditor keeps rendering");
+        }
+
+        return model;
+      });
+
+      try {
+        rerender(
+          <React.StrictMode>
+            <MonacoEditor id="some-id" theme="vs" value="some-value" />
+          </React.StrictMode>,
+        );
+      } finally {
+        vi.mocked(editor.getModel).mockReturnValue(model);
+      }
+
+      expect(modelReads).toBeLessThan(20);
     });
 
     it("disposes the last editor when unmounted", () => {

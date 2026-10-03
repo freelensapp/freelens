@@ -14,7 +14,7 @@ import { cssNames, disposer } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
 import { debounce, merge } from "es-toolkit/compat";
-import { action, observable, observableRef, reaction } from "mobx";
+import { action, compareShallow, observable, observableRef, reaction } from "mobx";
 import { observer } from "mobx-react";
 import { editor, Uri } from "monaco-editor";
 import React from "react";
@@ -101,8 +101,14 @@ class NonInjectedMonacoEditor extends React.Component<MonacoEditorProps & Depend
     autoBindReact(this);
   }
 
-  componentDidUpdate() {
-    this.observableProps = this.props;
+  componentDidUpdate(prevProps: Readonly<MonacoEditorProps & Dependencies>) {
+    // React 19 resolves `defaultProps` into a new props object on every render,
+    // including the re-render that the observer runs when observableProps
+    // changes. Replacing the snapshot unconditionally would make every update
+    // schedule another one, forever, since render reads observableProps.
+    if (!compareShallow(prevProps, this.props)) {
+      this.observableProps = this.props;
+    }
   }
 
   // These getters read props from the observable snapshot (observableProps), not
