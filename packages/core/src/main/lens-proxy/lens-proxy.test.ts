@@ -342,7 +342,7 @@ describe("lens proxy protocols", () => {
           route: async (_cluster: Cluster | undefined, req: ServerIncomingMessage, res: ServerResponse) => {
             // A response whose headers have gone out and whose body has not
             // ended yet, which is what the client then cancels
-            if (req.url === "/some-open-response") {
+            if (req.url === "/some-open-response" && res instanceof http2.Http2ServerResponse) {
               res.writeHead(200).write("some-start");
 
               return;
