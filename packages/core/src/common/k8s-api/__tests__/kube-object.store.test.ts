@@ -5,11 +5,12 @@
  */
 
 import { KubeObject } from "@freelensapp/kube-object";
-import { noop } from "@freelensapp/utilities";
+import { noop, WrappedAbortController } from "@freelensapp/utilities";
 import { KubeObjectStore } from "../kube-object.store";
 
 import type { FetchRequestInit as RequestInit } from "@freelensapp/json-api";
-import type { KubeApi } from "@freelensapp/kube-api";
+import type { KubeApi, KubeApiWatchOptions } from "@freelensapp/kube-api";
+import type { KubeJsonApiDataFor } from "@freelensapp/kube-object";
 
 import type { KubeObjectStoreLoadingParams } from "../kube-object.store";
 
@@ -476,5 +477,105 @@ describe("KubeObjectStore", () => {
 
     expect(onLoadFailure).toHaveBeenCalledTimes(1);
     expect(onLoadFailure.mock.calls[0][0].message).toContain("Failed to load");
+  });
+
+  describe("subscribe", () => {
+    const createWatchedStore = () => {
+      const watchSignals: AbortSignal[] = [];
+      const watchCallbacks: Array<(data: null, error: unknown) => void> = [];
+      const watch = vi.fn((opts: KubeApiWatchOptions<KubeObject, KubeJsonApiDataFor<KubeObject>>) => {
+        // Like KubeApi.watch, which wraps the controller it is given
+        const controller = new WrappedAbortController(opts.abortController);
+
+        watchSignals.push(controller.signal);
+        watchCallbacks.push(opts.callback as (data: null, error: unknown) => void);
+
+        return () => controller.abort();
+      });
+      const store = new FakeKubeObjectStore(() => [], {
+        isNamespaced: false,
+        getResourceVersion: () => "1",
+        watch,
+      });
+
+      return { store, watch, watchSignals, watchCallbacks };
+    };
+
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it("aborts the watch request when the subscription is disposed", async () => {
+      const { store, watchSignals } = createWatchedStore();
+
+      await store.loadAll({});
+
+      const unsubscribe = store.subscribe();
+
+      expect(watchSignals).toHaveLength(1);
+      expect(watchSignals[0].aborted).toBe(false);
+
+      unsubscribe();
+
+      expect(watchSignals[0].aborted).toBe(true);
+    });
+
+    it("aborts the watch request when the controller it was given aborts", async () => {
+      const { store, watchSignals } = createWatchedStore();
+      const abortController = new AbortController();
+
+      await store.loadAll({});
+      store.subscribe({ abortController });
+      abortController.abort();
+
+      expect(watchSignals).toHaveLength(1);
+      expect(watchSignals[0].aborted).toBe(true);
+    });
+
+    it("does not start a watch for a controller that has already aborted", async () => {
+      const { store, watch } = createWatchedStore();
+      const abortController = new AbortController();
+
+      await store.loadAll({});
+      abortController.abort();
+      store.subscribe({ abortController });
+
+      expect(watch).not.toHaveBeenCalled();
+    });
+
+    it("aborts a watch request restarted after an error when the subscription is disposed", async () => {
+      const { store, watchSignals, watchCallbacks } = createWatchedStore();
+
+      await store.loadAll({});
+      vi.useFakeTimers();
+
+      const unsubscribe = store.subscribe();
+
+      watchCallbacks[0](null, new Error("stream broke"));
+      vi.advanceTimersByTime(5000);
+
+      expect(watchSignals).toHaveLength(2);
+      expect(watchSignals[1].aborted).toBe(false);
+
+      unsubscribe();
+
+      expect(watchSignals.every((signal) => signal.aborted)).toBe(true);
+    });
+
+    it("does not restart a watch request that failed because it was aborted", async () => {
+      const { store, watch, watchCallbacks } = createWatchedStore();
+
+      await store.loadAll({});
+      vi.useFakeTimers();
+
+      const unsubscribe = store.subscribe();
+
+      unsubscribe();
+      // the fetch of an aborted watch rejects with a DOMException
+      watchCallbacks[0](null, new DOMException("signal is aborted without reason", "AbortError"));
+      vi.advanceTimersByTime(60_000);
+
+      expect(watch).toHaveBeenCalledTimes(1);
+    });
   });
 });
