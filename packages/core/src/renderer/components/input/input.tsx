@@ -66,6 +66,7 @@ export type InputProps = Omit<InputElementProps, "onChange" | "onSubmit"> & {
   showErrorsAsTooltip?: boolean | Omit<TooltipProps, "targetId">; // show validation errors as a tooltip :hover (instead of block below)
   iconLeft?: IconData;
   iconRight?: IconData;
+  contentLeft?: string | StrictReactNode; // Any component or string goes before iconLeft, inside the field
   contentRight?: string | StrictReactNode; // Any component of string goes after iconRight
   validators?: SingleOrMany<InputValidator>;
   blurOnEnter?: boolean;
@@ -397,6 +398,7 @@ export class Input extends React.Component<InputProps, State> {
       autoSelectOnFocus,
       iconLeft,
       iconRight,
+      contentLeft,
       contentRight,
       id,
       dirty: _dirty, // excluded from passing to input-element
@@ -457,6 +459,7 @@ export class Input extends React.Component<InputProps, State> {
       <div id={componentId} className={className}>
         {tooltipError}
         <label className="input-area flex items-center gap-2" id="">
+          {contentLeft}
           {this.renderIcon(iconLeft)}
           {multiLine ? <textarea {...(inputProps as object)} /> : <input {...(inputProps as object)} />}
           {this.renderIcon(iconRight)}
