@@ -33,7 +33,7 @@ catalog:
   '@testing-library/react': 16.3.3
   '@testing-library/user-event': 14.6.7
   jsdom: 30.1.1
-  memfs: 4.64.0
+  memfs: 4.80.0
   memorystream: 0.3.1
   mock-http: 1.1.1
   react-select-event: 5.5.1
