@@ -83,7 +83,7 @@ jobs:
       - name: Set up mise
         uses: jdx/mise-action@v5
         with:
-          version: 2026.10.1 # datasource=github-releases depName=jdx/mise
+          version: 2026.10.2 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Setup node
@@ -468,7 +468,7 @@ jobs:
       - name: Set up mise
         uses: jdx/mise-action@v5
         with:
-          version: 2026.10.1 # datasource=github-releases depName=jdx/mise
+          version: 2026.10.2 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Download SBOMs
@@ -672,7 +672,7 @@ jobs:
       - name: Set up mise
         uses: jdx/mise-action@v5
         with:
-          version: 2026.10.1 # datasource=github-releases depName=jdx/mise
+          version: 2026.10.2 # datasource=github-releases depName=jdx/mise
           install_args: yq
 
       - name: Download merged vulnerability report
