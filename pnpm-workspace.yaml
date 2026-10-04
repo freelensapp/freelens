@@ -101,7 +101,7 @@ catalog:
   cronstrue: 3.27.0
   dompurify: 3.4.16
   electron-window-state: 5.0.3
-  es-toolkit: 1.49.0
+  es-toolkit: 1.52.0
   fast-xml-parser: 5.11.2
   fs-extra: 11.3.6
   gunzip-maybe: 1.4.2
@@ -152,7 +152,7 @@ catalogs:
     '@types/react-dom': ^19.3.0
     chart.js: ^4.5.1
     conf: ^15.1.0
-    es-toolkit: ^1.49.0
+    es-toolkit: ^1.52.0
     immer: ^11.1.21
     mobx: ^7.0.6
     mobx-react: ^10.0.2

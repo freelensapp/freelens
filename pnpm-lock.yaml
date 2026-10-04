@@ -348,8 +348,8 @@ catalogs:
       specifier: 5.0.3
       version: 5.0.3
     es-toolkit:
-      specifier: 1.49.0
-      version: 1.49.0
+      specifier: 1.52.0
+      version: 1.52.0
     esbuild:
       specifier: 0.28.2
       version: 0.28.2
@@ -541,8 +541,8 @@ catalogs:
       specifier: ^15.1.0
       version: 15.1.0
     es-toolkit:
-      specifier: ^1.49.0
-      version: 1.49.0
+      specifier: ^1.52.0
+      version: 1.52.0
     immer:
       specifier: ^11.1.21
       version: 11.1.21
@@ -929,7 +929,7 @@ importers:
         version: link:../infrastructure/typescript
       es-toolkit:
         specifier: 'catalog:'
-        version: 1.49.0
+        version: 1.52.0
       jsdom:
         specifier: 'catalog:'
         version: 30.1.1(@noble/hashes@2.4.0)
@@ -1106,7 +1106,7 @@ importers:
         version: 5.0.3
       es-toolkit:
         specifier: 'catalog:'
-        version: 1.49.0
+        version: 1.52.0
       fs-extra:
         specifier: 'catalog:'
         version: 11.3.6
@@ -1366,7 +1366,7 @@ importers:
         version: 43.7.7(supports-color@8.1.1)
       es-toolkit:
         specifier: catalog:extensions
-        version: 1.49.0
+        version: 1.52.0
       immer:
         specifier: catalog:extensions
         version: 11.1.21
@@ -1486,7 +1486,7 @@ importers:
         version: 5.0.1
       es-toolkit:
         specifier: 'catalog:'
-        version: 1.49.0
+        version: 1.52.0
     devDependencies:
       '@freelensapp/typescript':
         specifier: workspace:^
@@ -1548,7 +1548,7 @@ importers:
         version: 27.0.0(@ogre-tools/fp@27.0.0)
       es-toolkit:
         specifier: 'catalog:'
-        version: 1.49.0
+        version: 1.52.0
       winston:
         specifier: 'catalog:'
         version: 3.19.0
@@ -1796,7 +1796,7 @@ importers:
         version: 19.3.0
       es-toolkit:
         specifier: 'catalog:'
-        version: 1.49.0
+        version: 1.52.0
       jsdom:
         specifier: 'catalog:'
         version: 30.1.1(@noble/hashes@2.4.0)
@@ -1842,7 +1842,7 @@ importers:
         version: link:../../../utility-features/utilities
       es-toolkit:
         specifier: 'catalog:'
-        version: 1.49.0
+        version: 1.52.0
       jsdom:
         specifier: 'catalog:'
         version: 30.1.1(@noble/hashes@2.4.0)
@@ -2250,7 +2250,7 @@ importers:
         version: 5.0.1
       es-toolkit:
         specifier: 'catalog:'
-        version: 1.49.0
+        version: 1.52.0
       mobx:
         specifier: 'catalog:'
         version: 7.0.6
@@ -2284,7 +2284,7 @@ importers:
         version: link:../../utility-features/utilities
       es-toolkit:
         specifier: 'catalog:'
-        version: 1.49.0
+        version: 1.52.0
       mobx:
         specifier: 'catalog:'
         version: 7.0.6
@@ -2340,7 +2340,7 @@ importers:
         version: 5.0.1
       es-toolkit:
         specifier: 'catalog:'
-        version: 1.49.0
+        version: 1.52.0
       mobx:
         specifier: 'catalog:'
         version: 7.0.6
@@ -2404,7 +2404,7 @@ importers:
         version: link:../utilities
       es-toolkit:
         specifier: 'catalog:'
-        version: 1.49.0
+        version: 1.52.0
     devDependencies:
       '@freelensapp/logger':
         specifier: workspace:^
@@ -2441,7 +2441,7 @@ importers:
         version: 27.0.0(@ogre-tools/fp@27.0.0)
       es-toolkit:
         specifier: 'catalog:'
-        version: 1.49.0
+        version: 1.52.0
       mobx:
         specifier: 'catalog:'
         version: 7.0.6
@@ -2571,7 +2571,7 @@ importers:
         version: 16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       es-toolkit:
         specifier: 'catalog:'
-        version: 1.49.0
+        version: 1.52.0
       mobx:
         specifier: 'catalog:'
         version: 7.0.6
@@ -2605,7 +2605,7 @@ importers:
         version: 2.4.0
       es-toolkit:
         specifier: 'catalog:'
-        version: 1.49.0
+        version: 1.52.0
       mobx:
         specifier: 'catalog:'
         version: 7.0.6
@@ -5327,8 +5327,8 @@ packages:
     resolution: {integrity: sha512-j6vWzfrGVfyXxge+O0x5sh6cvxAog0a/4Rdd2K36zCMV5eJ+/+tOAngRO8cODMNWbVRdVlmGZQL2YS3yR8bIUA==}
     engines: {node: '>= 0.4'}
 
-  es-toolkit@1.49.0:
-    resolution: {integrity: sha512-G5iZ6Pc/FNRY/soKZHC+TxGDD83rHUDXxzaWhGCX44vAv/tMs56WMusnm/KMNK+luUPsgA9U28cGr4RDlSzL2g==}
+  es-toolkit@1.52.0:
+    resolution: {integrity: sha512-XTNEJQh1tY1ZJVcf6ayP/2n4ZPyaHlW2FWs7xvw5ddPuhUVjLD3olQVQS7kf58JbAB48iL0uL/jerTrjtV3lDA==}
 
   es6-error@4.1.1:
     resolution: {integrity: sha512-Um/+FxMr9CISWh0bi5Zv0iOD+4cFh5qLeks1qhAopKVAJw3drgKbKySikp7wGhDL0HPeaja0P5ULZrxLkniUVg==}
@@ -9981,7 +9981,7 @@ snapshots:
       has-tostringtag: 1.0.2
       hasown: 2.0.4
 
-  es-toolkit@1.49.0: {}
+  es-toolkit@1.52.0: {}
 
   es6-error@4.1.1:
     optional: true
