@@ -52,7 +52,7 @@
     "knip:production": "pnpm knip --production --strict",
     "lint": "pnpm trunk check",
     "lint:fix": "pnpm trunk check --fix",
-    "prettier": "pnpm dlx prettier@3.8.5",
+    "prettier": "pnpm dlx prettier@3.9.9",
     "prettier:check": "pnpm prettier --check .",
     "prettier:fix": "pnpm prettier --write .",
     "start": "cd freelens && pnpm start",
