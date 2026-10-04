@@ -28,11 +28,10 @@
   "devDependencies": {
     "@freelensapp/ensure-binaries": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
-    "@types/semver": "catalog:",
     "fast-xml-parser": "catalog:",
-    "semver": "catalog:",
     "typescript": "catalog:",
-    "undici": "catalog:"
+    "undici": "catalog:",
+    "verkit": "catalog:"
   },
   "publishConfig": {
     "access": "public",

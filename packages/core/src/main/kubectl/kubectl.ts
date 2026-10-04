@@ -11,7 +11,7 @@ import { hasTypedProperty, isObject, isString, json } from "@freelensapp/utiliti
 import { noop } from "es-toolkit";
 import { ensureDir, pathExists } from "fs-extra";
 import * as lockFile from "proper-lockfile";
-import { coerce, SemVer } from "semver";
+import * as verkit from "verkit";
 import {
   customPackageMirror,
   defaultPackageMirror,
@@ -114,11 +114,11 @@ export class Kubectl {
     protected readonly dependencies: KubectlDependencies,
     clusterVersion: string,
   ) {
-    let version: SemVer;
-    const bundledVersion = new SemVer(this.dependencies.bundledKubectlVersion);
+    let version: verkit.SemVer;
+    const bundledVersion = verkit.parse(this.dependencies.bundledKubectlVersion);
 
     try {
-      version = new SemVer(clusterVersion);
+      version = verkit.parse(clusterVersion);
     } catch {
       version = bundledVersion;
     }
@@ -136,9 +136,7 @@ export class Kubectl {
       );
     } else {
       /* this is the version (without possible prelease tag) to get from the download mirror */
-      const ver = coerce(version.format()) ?? bundledVersion;
-
-      this.kubectlVersion = ver.format();
+      this.kubectlVersion = `${version.major}.${version.minor}.${version.patch}`;
       this.dependencies.logger.debug(
         `Set kubectl version ${this.kubectlVersion} for cluster version ${clusterVersion} using fallback`,
       );

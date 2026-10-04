@@ -7,7 +7,7 @@
  */
 
 import commandLineArgs from "command-line-args";
-import { SemVer } from "semver";
+import * as verkit from "verkit";
 
 const options = commandLineArgs([
   {
@@ -74,7 +74,8 @@ if (showOptionsSet > 1) {
   process.exit(1);
 }
 
-const version = new SemVer(options.version);
+const version = verkit.parse(options.version);
+const prerelease = version.prerelease ?? [];
 
 if (showMajor) {
   console.log(version.major.toString());
@@ -84,9 +85,9 @@ if (showMajor) {
   console.log(version.patch.toString());
 } else if (showPrerelease) {
   if ((options.prerelease ?? true) === true) {
-    console.log(JSON.stringify(version.prerelease));
-  } else if (version.prerelease.length > options.prerelease) {
-    console.log(version.prerelease[options.prerelease].toString());
+    console.log(JSON.stringify(prerelease));
+  } else if (prerelease.length > options.prerelease) {
+    console.log(prerelease[options.prerelease].toString());
   }
 } else if (showJson) {
   console.log(
@@ -94,7 +95,7 @@ if (showMajor) {
       major: version.major,
       minor: version.minor,
       patch: version.patch,
-      prerelease: version.prerelease,
+      prerelease,
     }),
   );
 }

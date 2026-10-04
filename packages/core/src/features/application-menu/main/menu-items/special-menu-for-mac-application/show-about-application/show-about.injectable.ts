@@ -6,7 +6,7 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import * as semver from "semver";
+import * as verkit from "verkit";
 import openLinkInBrowserInjectable from "../../../../../../common/utils/open-link-in-browser.injectable";
 import appNameInjectable from "../../../../../../common/vars/app-name.injectable";
 import applicationCopyrightInjectable from "../../../../../../common/vars/application-copyright.injectable";
@@ -50,7 +50,7 @@ const showAboutInjectable = getInjectable({
 
       try {
         const latestVersion = await getLatestVersion("@freelensapp/core");
-        if (latestVersion && semver.gt(latestVersion, buildVersion)) {
+        if (latestVersion && verkit.isGreaterThan(latestVersion, buildVersion)) {
           newVersion = latestVersion;
           appInfo.push("", `Latest version: ${latestVersion}`);
           buttons.push("Open Release Notes");

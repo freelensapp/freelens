@@ -95,12 +95,12 @@
     "proper-lockfile": "catalog:",
     "react": "catalog:",
     "selfsigned": "catalog:",
-    "semver": "catalog:",
     "tar": "catalog:",
     "tcp-port-used": "catalog:",
     "tempy": "catalog:",
     "triple-beam": "catalog:",
     "uuid": "catalog:",
+    "verkit": "catalog:",
     "winston": "catalog:",
     "ws": "catalog:",
     "zod": "catalog:"
