@@ -108,10 +108,18 @@ jobs:
           echo '' >> .github/pr_body.log
           echo '```' >> .github/pr_body.log
 
+      # A rerun on the same main commit reproduces what the branch already
+      # holds. Committing it would be empty, which add-and-commit treats as
+      # an error, so the branch is left alone. Only the files the dedupe
+      # changed are compared, as the branch may differ from main elsewhere.
       - name: Check for changes
         run: |
           if git diff --exit-code; then
             echo "changes=false" | tee -a $GITHUB_ENV
+          elif git rev-parse -q --verify origin/automated/npm-dedupe >/dev/null \
+            && git diff --name-only -z | xargs -0 git diff --quiet origin/automated/npm-dedupe --; then
+            echo "Branch automated/npm-dedupe already has this result"
+            echo "changes=unchanged" | tee -a $GITHUB_ENV
           else
             echo "changes=true" | tee -a $GITHUB_ENV
           fi
