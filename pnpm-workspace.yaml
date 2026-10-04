@@ -98,7 +98,7 @@ catalog:
   color: 5.0.3
   command-line-args: 6.0.2
   conf: 15.1.0
-  cronstrue: 3.24.0
+  cronstrue: 3.27.0
   dompurify: 3.4.16
   electron-window-state: 5.0.3
   es-toolkit: 1.49.0
