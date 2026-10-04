@@ -213,7 +213,8 @@ jobs:
       # needed on Linux: it apt-installs the shared libraries that Chromium (and
       # thus the Electron app) needs to launch under xvfb. Scope it to `chromium`
       # so only Chromium's libraries are installed, skipping the heavier
-      # Firefox/WebKit dependency set that the Electron app never uses.
+      # Firefox/WebKit dependency set that the Electron app never uses. It runs
+      # after "Install pnpm dependencies", which provides the playwright CLI.
       - name: Install Playwright's OS dependencies (Linux)
         if: runner.os == 'Linux' && github.event_name != 'schedule'
         shell: bash
@@ -229,7 +230,10 @@ jobs:
           Dir::Cache::archives "$PWD/.apt/cache/archives";
           Dir::State::lists "$PWD/.apt/state/lists";
           EOF
-          pnpx playwright install-deps chromium
+          # Run the playwright that pnpm-lock.yaml pins for freelens, not
+          # `pnpx`/`pnpm dlx`, which fetches the latest release from the
+          # registry, so the dependency set matches the version under test.
+          pnpm --filter freelens exec playwright install-deps chromium
           # apt ran as root, so hand the cache dir back to the runner user for the
           # cache-save post step to read.
           sudo chown -R "$(id -u):$(id -g)" .apt
