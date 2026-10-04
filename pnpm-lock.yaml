@@ -417,8 +417,8 @@ catalogs:
       specifier: 1.2.0-beta.15
       version: 1.2.0-beta.15
     openpgp:
-      specifier: 6.3.1
-      version: 6.3.1
+      specifier: 6.3.2
+      version: 6.3.2
     p-limit:
       specifier: 7.3.3
       version: 7.3.3
@@ -1323,7 +1323,7 @@ importers:
         version: 1.4.2
       openpgp:
         specifier: 'catalog:'
-        version: 6.3.1
+        version: 6.3.2
       sigstore:
         specifier: 'catalog:'
         version: 5.0.0(supports-color@8.1.1)
@@ -6329,8 +6329,8 @@ packages:
   openid-client@6.8.4:
     resolution: {integrity: sha512-QSw0BA08piujetEwfZsHoTrDpMEha7GDZDicQqVwX4u0ChCjefvjDB++TZ8BTg76UpwhzIQgdvvfgfl3HpCSAw==}
 
-  openpgp@6.3.1:
-    resolution: {integrity: sha512-7oSPvmlKPojxFoyelT5DWPIAVmqWZh4qU/5pO6bdoShEtRpCw9Sye9IXUQj6EFM3XpgGssqccAr705YtTcLNQw==}
+  openpgp@6.3.2:
+    resolution: {integrity: sha512-wcZTzHz41LV8Y48zH/JlD1JT8YdNmpWOuMAjQ/podvvCwsjBEU37K3znJh4UQcj3hksE5z9TzvhbUbwzsGvlLQ==}
     engines: {node: '>= 18.0.0', typescript: '>= 5.0.0'}
     peerDependencies:
       '@openpgp/web-stream-tools': ~0.3.0
@@ -10995,7 +10995,7 @@ snapshots:
       jose: 6.2.2
       oauth4webapi: 3.8.5
 
-  openpgp@6.3.1: {}
+  openpgp@6.3.2: {}
 
   optionator@0.8.3:
     dependencies:
