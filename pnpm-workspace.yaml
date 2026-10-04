@@ -38,7 +38,7 @@ catalog:
   mock-http: 1.1.1
   react-select-event: 5.5.1
   vitest-canvas-mock: 1.1.4
-  vitest-mock-extended: 5.1.0
+  vitest-mock-extended: 5.1.1
   # Build tooling
   esbuild: 0.28.2
   '@vitejs/plugin-react': 6.1.1

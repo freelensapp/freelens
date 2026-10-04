@@ -516,8 +516,8 @@ catalogs:
       specifier: 1.1.4
       version: 1.1.4
     vitest-mock-extended:
-      specifier: 5.1.0
-      version: 5.1.0
+      specifier: 5.1.1
+      version: 5.1.1
     winston:
       specifier: 3.19.0
       version: 3.19.0
@@ -1308,7 +1308,7 @@ importers:
         version: 1.1.4(vitest@5.0.3)
       vitest-mock-extended:
         specifier: 'catalog:'
-        version: 5.1.0(typescript@7.0.2)(vitest@5.0.3)
+        version: 5.1.1(typescript@7.0.2)(vitest@5.0.3)
 
   packages/ensure-binaries:
     dependencies:
@@ -7296,8 +7296,8 @@ packages:
     peerDependencies:
       vitest: ^3.0.0 || ^4.0.0
 
-  vitest-mock-extended@5.1.0:
-    resolution: {integrity: sha512-xW28qmo6CbEROzwFRKw+fhLQcwoxBbUHdezDtBJXiHinthfyYZ3pwt4ez4r+XPdimTbXJcFetjzKBJqMw1A6Jw==}
+  vitest-mock-extended@5.1.1:
+    resolution: {integrity: sha512-k5Ji2+t4+nsdepXeakCkilyKydtgaULtP0HsjwQGIZsYr5hDTqrwCtC0+Sh0YBKUS7cY/Wxplf7SVjcZstTIMQ==}
     peerDependencies:
       typescript: 3.x || 4.x || 5.x || 6.x || 7.x
       vitest: '>=4.0.0'
@@ -11959,7 +11959,7 @@ snapshots:
       moo-color: 1.0.3
       vitest: 5.0.3(@types/node@24.19.1)(@vitest/coverage-v8@5.0.3)(jsdom@30.1.1(@noble/hashes@2.2.0))(vite@8.3.2(@types/node@24.19.1)(esbuild@0.28.2)(jiti@2.6.1)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.100.0)(sass@1.100.0)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
-  vitest-mock-extended@5.1.0(typescript@7.0.2)(vitest@5.0.3):
+  vitest-mock-extended@5.1.1(typescript@7.0.2)(vitest@5.0.3):
     dependencies:
       ts-essentials: 10.2.1(typescript@7.0.2)
       typescript: 7.0.2
