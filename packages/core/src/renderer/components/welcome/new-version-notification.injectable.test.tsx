@@ -5,6 +5,7 @@
 
 import { showInfoNotificationInjectable } from "@freelensapp/notifications";
 import { renderToStaticMarkup } from "react-dom/server";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { buildVersionInitializable } from "../../../features/vars/build-version/common/token";
 import getLatestVersionViaChannelInjectable from "../../common/utils/get-latest-version-via-channel.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";

@@ -5,6 +5,7 @@ import { createContainer, DiContainer, getInjectable } from "@ogre-tools/injecta
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { act, render } from "@testing-library/react";
 import { computed, IObservableValue, observable, runInAction } from "mobx";
+import { beforeEach, describe, expect, it } from "vitest";
 import { clusterFrameChildComponentInjectionToken } from "./cluster-frame/cluster-frame-child-component-injection-token";
 import { reactApplicationFeature } from "./feature";
 import { reactApplicationChildrenInjectionToken } from "./react-application/react-application-children-injection-token";

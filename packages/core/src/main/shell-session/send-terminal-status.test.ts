@@ -3,6 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { TerminalChannels } from "../../common/terminal/channels";
 import { kubectlStatusOptionsFor, messageOfError, terminalStatusReporterFor } from "./send-terminal-status";
 import { ShellOpenError } from "./shell-session";

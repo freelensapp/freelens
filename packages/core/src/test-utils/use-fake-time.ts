@@ -5,6 +5,7 @@
  */
 
 import { act } from "@testing-library/react";
+import { vi } from "vitest";
 
 let usingFakeTime = false;
 

@@ -6,6 +6,7 @@
 
 import { getRandomIdInjectionToken } from "@freelensapp/random";
 import { computed } from "mobx";
+import { beforeEach, describe, expect, it } from "vitest";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 import type { RenderResult } from "@testing-library/react";

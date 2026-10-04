@@ -4,6 +4,7 @@
  */
 
 import { requestFromChannelInjectionToken } from "@freelensapp/messaging";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../../../../../renderer/getDiForUnitTesting";
 import executeOnClusterInjectable from "../execute-on-cluster.injectable";
 

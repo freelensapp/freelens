@@ -3,6 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, it } from "vitest";
 import lensFetchInjectable from "./fetch/lens-fetch.injectable";
 import { getDiForUnitTesting } from "./getDiForUnitTesting";
 import k8sRequestInjectable from "./k8s-request.injectable";

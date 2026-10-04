@@ -9,6 +9,7 @@ import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { DiContextProvider } from "@ogre-tools/injectable-react";
 import { render, waitFor } from "@testing-library/react";
 import React from "react";
+import { describe, expect, it } from "vitest";
 import { routingFeature } from "./feature";
 import { historyInjectable } from "./history.injectable";
 import { observableHistoryInjectionToken } from "./observable-history.injectable";

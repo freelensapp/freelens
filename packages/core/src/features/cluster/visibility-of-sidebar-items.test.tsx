@@ -7,6 +7,7 @@
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
 import { getInjectable } from "@ogre-tools/injectable";
 import { runInAction } from "mobx";
+import { beforeEach, describe, expect, it } from "vitest";
 import { frontEndRouteInjectionToken } from "../../common/front-end-routing/front-end-route-injection-token";
 import { navigateToRouteInjectionToken } from "../../common/front-end-routing/navigate-to-route-injection-token";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";

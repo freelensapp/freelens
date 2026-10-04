@@ -3,6 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createLogger, format } from "winston";
 import { BrowserConsoleTransport } from "./browser-console-transport";
 

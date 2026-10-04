@@ -2,6 +2,7 @@ import asyncFn from "@async-fn/vitest";
 import { registerFeature } from "@freelensapp/feature-core";
 import { getPromiseStatus } from "@freelensapp/test-utils";
 import { createContainer } from "@ogre-tools/injectable";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { messagingFeatureForMain } from "../feature";
 import ipcMainInjectable from "../ipc-main/ipc-main.injectable";
 import enlistRequestChannelListenerInjectable from "./enlist-request-channel-listener.injectable";

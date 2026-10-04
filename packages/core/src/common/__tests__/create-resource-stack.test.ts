@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, it } from "vitest";
 import { getDiForUnitTesting } from "../../main/getDiForUnitTesting";
 import kubectlApplyAllInjectable from "../../main/kubectl/kubectl-apply-all.injectable";
 import appPathsStateInjectable from "../app-paths/app-paths-state.injectable";

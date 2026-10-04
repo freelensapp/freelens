@@ -5,6 +5,7 @@
 
 import { act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import { EditableList } from "../editable-list";
 import { Input } from "../input";

@@ -4,6 +4,7 @@
  */
 
 import { runInAction } from "mobx";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import ensureDirInjectable from "../../common/fs/ensure-dir.injectable";
 import pathExistsInjectable from "../../common/fs/path-exists.injectable";

@@ -3,6 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, it } from "vitest";
 import directoryForUserDataInjectable from "../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import readFileBufferInjectable from "../../../../common/fs/read-file-buffer.injectable";
 import realPathInjectable from "../../../../common/fs/realpath.injectable";

@@ -5,6 +5,7 @@
  */
 
 import asyncFn from "@async-fn/vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import k8sRequestInjectable from "../k8s-request.injectable";
 import requestNonCoreApiVersionsInjectable from "./request-non-core-api-versions.injectable";

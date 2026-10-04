@@ -6,6 +6,7 @@
 import { KubeObject } from "@freelensapp/kube-object";
 import { act } from "@testing-library/react";
 import { useState } from "react";
+import { beforeEach, describe, expect, it } from "vitest";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
 import showDetailsInjectable from "../../../renderer/components/kube-detail-params/show-details.injectable";
 import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";

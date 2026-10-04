@@ -109,6 +109,51 @@
   },
   "overrides": [
     {
+      // No tsconfig declares the Vitest globals, so test code imports them
+      // from "vitest". The module resolves from every program, so only this
+      // rule keeps it out of production code; the next override lifts it for
+      // tests and test support.
+      "includes": ["**"],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "paths": {
+                  "vitest": "Vitest is for test code only"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      // Tests and test support, which import their Vitest functions from
+      // "vitest" explicitly.
+      "includes": [
+        "**/*.test.*",
+        "**/*.tests.*",
+        "**/__mocks__/**",
+        "**/__test__/**",
+        "**/__tests__/**",
+        "**/test-utils/**",
+        "**/getDiForUnitTesting*",
+        "**/vitest*.setup.*",
+        "**/mock-responses.ts",
+        "**/features/cluster/execute/common/testing.ts",
+        "**/vitest.electron-stub.ts"
+      ],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": "off"
+          }
+        }
+      }
+    },
+    {
       // The browser-side trees of the fixture extension, linted as the
       // extension migration guide recommends for any extension: a Node builtin
       // import belongs in the main entry point only.

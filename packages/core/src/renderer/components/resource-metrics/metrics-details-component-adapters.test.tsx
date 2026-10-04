@@ -3,6 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
 import type { Injectable } from "@ogre-tools/injectable";
 import "@testing-library/jest-dom/vitest";
 import React from "react";

@@ -5,6 +5,7 @@
  */
 
 import { runInAction } from "mobx";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import ensureDirInjectable from "../../../common/fs/ensure-dir.injectable";
 import { getDiForUnitTesting } from "../../../main/getDiForUnitTesting";
 import directoryForExtensionDataInjectable from "./directory-for-extension-data.injectable";

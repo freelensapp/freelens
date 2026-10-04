@@ -7,6 +7,7 @@
 import { prometheusProviderInjectionToken } from "@freelensapp/prometheus";
 import { getInjectable } from "@ogre-tools/injectable";
 import { runInAction } from "mobx";
+import { beforeEach, describe, expect, it } from "vitest";
 import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import { Cluster } from "../../common/cluster/cluster";
 import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable";

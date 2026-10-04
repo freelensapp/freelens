@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { convertKubectlJsonPathToNodeJsonPath, safeJSONPathValue } from "./jsonPath";
 
 describe("convertKubectlJsonPathToNodeJsonPath", () => {

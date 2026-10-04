@@ -4,6 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { describe, expect, it } from "vitest";
+
 // The runtime half of the extension-API surface check.
 //
 // **What it checks.** That `@freelensapp/extensions` exports `Common`, `Main`

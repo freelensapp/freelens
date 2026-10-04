@@ -3,6 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import homeDirectoryPathInjectable from "../../common/os/home-directory-path.injectable";
 import showOpenDialogInjectable from "../electron-app/features/show-open-dialog.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";

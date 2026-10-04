@@ -6,6 +6,7 @@
 
 import { type RenderResult } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { beforeEach, describe, expect, it } from "vitest";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 import type { UserEvent } from "@testing-library/user-event";

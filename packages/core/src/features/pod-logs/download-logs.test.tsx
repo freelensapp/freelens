@@ -6,6 +6,7 @@
 
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { act, waitFor } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import dockStoreInjectable from "../../renderer/components/dock/dock/store.injectable";
 import { dockerPod } from "../../renderer/components/dock/logs/__test__/pod.mock";
 import areLogsPresentInjectable from "../../renderer/components/dock/logs/are-logs-present.injectable";

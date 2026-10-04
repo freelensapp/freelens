@@ -5,6 +5,7 @@
  */
 
 import { KubeConfig } from "@kubernetes/client-node";
+import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { loadConfigFromString, validateKubeConfig } from "../kube-helpers";
 
 const kubeconfig = `

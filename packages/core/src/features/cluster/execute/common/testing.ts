@@ -3,6 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { vi } from "vitest";
 import { KubernetesCluster } from "../../../../common/catalog-entities/kubernetes-cluster";
 import { Cluster } from "../../../../common/cluster/cluster";
 

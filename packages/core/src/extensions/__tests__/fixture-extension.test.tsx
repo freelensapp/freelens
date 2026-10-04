@@ -3,6 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
 // The unit level of the extension contract. It loads the built bundle
 // of `@freelensapp/fixture-extension` — an extension written the way a
 // third-party extension is written, against the published

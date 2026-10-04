@@ -3,6 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { vi } from "vitest";
 import { defaultLogViewerPreferences } from "../../../../../features/user-preferences/common/preferences-helpers";
 import { SearchStore } from "../../../../search-store/search-store";
 import { LogTabViewModel } from "../logs-view-model";

@@ -1,4 +1,5 @@
 import os from "node:os";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import createTerminalTabInjectable from "../../dock/terminal/create-terminal-tab.injectable";
 import sendCommandInjectable from "../../dock/terminal/send-command.injectable";

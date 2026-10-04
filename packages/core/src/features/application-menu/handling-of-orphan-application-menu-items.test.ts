@@ -6,6 +6,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { runInAction } from "mobx";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import logErrorInjectable from "../../common/log-error.injectable";
 import { getCompositePaths } from "../../common/utils/composite/get-composite-paths/get-composite-paths";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";

@@ -3,6 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { describe, expect, it } from "vitest";
 import { formatInTimeZone, getAvailableTimezones, guessUserTimezone, isIso8601DateString } from "./date";
 
 describe("isIso8601DateString", () => {

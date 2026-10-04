@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { KubeJsonApi } from "../kube-json-api";
 import { DeploymentApi } from "./deployment.api";
 

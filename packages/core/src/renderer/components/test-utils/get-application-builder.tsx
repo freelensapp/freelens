@@ -22,6 +22,7 @@ import { act, fireEvent, queryByText } from "@testing-library/react";
 import { action, computed, observable, runInAction } from "mobx";
 import React from "react";
 import { openMenu } from "react-select-event";
+import { vi } from "vitest";
 import { Cluster } from "../../../common/cluster/cluster";
 import { navigateToRouteInjectionToken } from "../../../common/front-end-routing/navigate-to-route-injection-token";
 import navigateToHelmChartsInjectable from "../../../common/front-end-routing/routes/cluster/helm/charts/navigate-to-helm-charts.injectable";

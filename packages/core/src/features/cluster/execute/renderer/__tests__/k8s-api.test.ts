@@ -5,6 +5,7 @@
 
 import { requestFromChannelInjectionToken } from "@freelensapp/messaging";
 import { runInAction } from "mobx";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { KubernetesCluster } from "../../../../../common/catalog-entities/kubernetes-cluster";
 import catalogEntityRegistryInjectable from "../../../../../renderer/api/catalog/entity/registry.injectable";
 import { getDiForUnitTesting } from "../../../../../renderer/getDiForUnitTesting";

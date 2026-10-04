@@ -8,6 +8,7 @@ import http from "node:http";
 import http2 from "node:http2";
 import https from "node:https";
 import tls from "node:tls";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import freelensProxyCertificateInjectable from "../../common/certificate/freelens-proxy-certificate.injectable";

@@ -51,8 +51,14 @@ const coreMockAliases = {
 
 export default defineConfig({
   test: {
-    // D8: globals enabled for the transition so the jest.* -> vi.* codemod does
-    // not have to add per-file `import { vi } from "vitest"`.
+    // Tests import describe, it, expect, vi and the hooks from "vitest"; no
+    // tsconfig declares them as globals. `globals` stays on at runtime because
+    // React Testing Library registers its automatic `afterEach(cleanup)` and
+    // its IS_REACT_ACT_ENVIRONMENT hooks only when `afterEach` and `beforeAll`
+    // exist as globals, and the "Hooks cannot be defined inside tests" kludge
+    // in core's vitest-after-env.setup.ts relies on that registration. Turning
+    // it off first needs that cleanup in the setup of every package that uses
+    // React Testing Library, or the rendered DOM leaks between tests silently.
     globals: true,
     projects: projectDirs.map((dir) => {
       const name = JSON.parse(readFileSync(join(dir, "package.json"), "utf8")).name;

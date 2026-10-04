@@ -4,6 +4,7 @@
  */
 
 import { computed } from "mobx";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import activeThemeInjectable from "../../themes/active.injectable";
 import selectedMetricsTimeRangeInjectable from "../cluster/overview/selected-metrics-time-range.injectable";
