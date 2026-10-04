@@ -219,17 +219,17 @@ catalogs:
       specifier: 4.2.4
       version: 4.2.4
     '@testing-library/dom':
-      specifier: 10.4.1
-      version: 10.4.1
+      specifier: 10.4.2
+      version: 10.4.2
     '@testing-library/jest-dom':
-      specifier: 7.0.0
-      version: 7.0.0
+      specifier: 7.0.1
+      version: 7.0.1
     '@testing-library/react':
-      specifier: 16.3.2
-      version: 16.3.2
+      specifier: 16.3.3
+      version: 16.3.3
     '@testing-library/user-event':
-      specifier: 14.6.1
-      version: 14.6.1
+      specifier: 14.6.7
+      version: 14.6.7
     '@types/cli-progress':
       specifier: 3.11.6
       version: 3.11.6
@@ -876,10 +876,10 @@ importers:
         version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx@7.0.5)
       '@testing-library/react':
         specifier: 'catalog:'
-        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@testing-library/user-event':
         specifier: 'catalog:'
-        version: 14.6.1(@testing-library/dom@10.4.1)
+        version: 14.6.7(@testing-library/dom@10.4.2)
       '@types/node':
         specifier: 'catalog:'
         version: 24.19.0
@@ -1221,16 +1221,16 @@ importers:
         version: 4.2.4
       '@testing-library/dom':
         specifier: 'catalog:'
-        version: 10.4.1
+        version: 10.4.2
       '@testing-library/jest-dom':
         specifier: 'catalog:'
-        version: 7.0.0(@testing-library/dom@10.4.1)
+        version: 7.0.1(@testing-library/dom@10.4.2)(vitest@5.0.3)
       '@testing-library/react':
         specifier: 'catalog:'
-        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@testing-library/user-event':
         specifier: 'catalog:'
-        version: 14.6.1(@testing-library/dom@10.4.1)
+        version: 14.6.7(@testing-library/dom@10.4.2)
       '@types/fs-extra':
         specifier: 'catalog:'
         version: 11.0.4
@@ -1647,13 +1647,13 @@ importers:
         version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx@7.0.5)
       '@testing-library/jest-dom':
         specifier: 'catalog:'
-        version: 7.0.0(@testing-library/dom@10.4.1)
+        version: 7.0.1(@testing-library/dom@10.4.2)(vitest@5.0.3)
       '@testing-library/react':
         specifier: 'catalog:'
-        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@testing-library/user-event':
         specifier: 'catalog:'
-        version: 14.6.1(@testing-library/dom@10.4.1)
+        version: 14.6.7(@testing-library/dom@10.4.2)
       '@types/react':
         specifier: 'catalog:'
         version: 19.3.0
@@ -1802,10 +1802,10 @@ importers:
         version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx@7.0.5)
       '@testing-library/jest-dom':
         specifier: 'catalog:'
-        version: 7.0.0(@testing-library/dom@10.4.1)
+        version: 7.0.1(@testing-library/dom@10.4.2)(vitest@5.0.3)
       '@testing-library/react':
         specifier: 'catalog:'
-        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@types/react':
         specifier: 'catalog:'
         version: 19.3.0
@@ -1900,7 +1900,7 @@ importers:
         version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx@7.0.5)
       '@testing-library/react':
         specifier: 'catalog:'
-        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       jsdom:
         specifier: 'catalog:'
         version: 29.1.1(@noble/hashes@2.2.0)
@@ -2054,7 +2054,7 @@ importers:
         version: 27.0.0
       '@testing-library/react':
         specifier: 'catalog:'
-        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@types/react':
         specifier: 'catalog:'
         version: 19.3.0
@@ -2217,7 +2217,7 @@ importers:
         version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx@7.0.5)
       '@testing-library/jest-dom':
         specifier: 'catalog:'
-        version: 7.0.0(@testing-library/dom@10.4.1)
+        version: 7.0.1(@testing-library/dom@10.4.2)(vitest@5.0.3)
       '@types/react':
         specifier: 'catalog:'
         version: 19.3.0
@@ -2374,13 +2374,13 @@ importers:
         version: link:../../infrastructure/typescript
       '@testing-library/jest-dom':
         specifier: 'catalog:'
-        version: 7.0.0(@testing-library/dom@10.4.1)
+        version: 7.0.1(@testing-library/dom@10.4.2)(vitest@5.0.3)
       '@testing-library/react':
         specifier: 'catalog:'
-        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       '@testing-library/user-event':
         specifier: 'catalog:'
-        version: 14.6.1(@testing-library/dom@10.4.1)
+        version: 14.6.7(@testing-library/dom@10.4.2)
       '@types/react':
         specifier: 'catalog:'
         version: 19.3.0
@@ -2509,14 +2509,14 @@ importers:
     dependencies:
       '@testing-library/dom':
         specifier: 'catalog:'
-        version: 10.4.1
+        version: 10.4.2
     devDependencies:
       '@freelensapp/typescript':
         specifier: workspace:^
         version: link:../../infrastructure/typescript
       '@testing-library/react':
         specifier: 'catalog:'
-        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
 
   packages/utility-features/run-many:
     dependencies:
@@ -2583,7 +2583,7 @@ importers:
         version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.3.0))(mobx@7.0.5)(react@19.3.0)
       '@testing-library/react':
         specifier: 'catalog:'
-        version: 16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+        version: 16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       es-toolkit:
         specifier: 'catalog:'
         version: 1.49.0
@@ -4199,18 +4199,22 @@ packages:
   '@tailwindcss/postcss@4.2.4':
     resolution: {integrity: sha512-wgAVj6nUWAolAu8YFvzT2cTBIElWHkjZwFYovF+xsqKsW2ADxM/X2opxj5NsF/qVccAOjRNe8X2IdPzMsWyHTg==}
 
-  '@testing-library/dom@10.4.1':
-    resolution: {integrity: sha512-o4PXJQidqJl82ckFaXUeoAW+XysPLauYI43Abki5hABd853iMhitooc6znOnczgbTYmEP6U6/y1ZyKAIsvMKGg==}
+  '@testing-library/dom@10.4.2':
+    resolution: {integrity: sha512-yzr2S9HyAIdhz2/6qHgbs665Q7PKVcDF05vsOlHPxG1mo36gKVesdYVeDLnXgfjJ03CrKRk08knc6+E/9m8v2Q==}
     engines: {node: '>=18'}
 
-  '@testing-library/jest-dom@7.0.0':
-    resolution: {integrity: sha512-HKAH9C6mBo5yBG6yRO5i43L2iisencAo5z+o5P/saHUoY+miC5ivXRxHBJcFyB5ypPNxHJdK3BoF/3O4DIptMg==}
+  '@testing-library/jest-dom@7.0.1':
+    resolution: {integrity: sha512-oMDTC3oA+6CXSO2JZnvOI7CA6oVub6kij5ggk9ohwye5slmkwxYDXcPOVxgMw/RQlticjtO0C1RZkR97HgrWMw==}
     engines: {node: '>=22', npm: '>=6', yarn: '>=1'}
     peerDependencies:
       '@testing-library/dom': '>=10 <11'
+      vitest: '>= 0.32'
+    peerDependenciesMeta:
+      vitest:
+        optional: true
 
-  '@testing-library/react@16.3.2':
-    resolution: {integrity: sha512-XU5/SytQM+ykqMnAnvB2umaJNIOsLF3PVv//1Ew4CTcpz0/BRyy/af40qqrt7SjKpDdT1saBMc42CUok5gaw+g==}
+  '@testing-library/react@16.3.3':
+    resolution: {integrity: sha512-Uo193NgQbPMz6lrrhtRQQFcMC6Re/ELLFbbuVL30WDlZxlpZf9/lMHTAVxPRLw1q1iu9OJmR1c2BLiENRstdBg==}
     engines: {node: '>=18'}
     peerDependencies:
       '@testing-library/dom': ^10.0.0
@@ -4224,8 +4228,8 @@ packages:
       '@types/react-dom':
         optional: true
 
-  '@testing-library/user-event@14.6.1':
-    resolution: {integrity: sha512-vq7fv0rnt+QTXgPxr5Hjc210p6YKq2kmdziLgnsZGgLJ9e6VAShx1pACLuRjd/AS/sr7phAR58OIIpf0LlmQNw==}
+  '@testing-library/user-event@14.6.7':
+    resolution: {integrity: sha512-MPCpX8bxe8zS+JmmTwLp8jd0dy1rAm60Te/SL8JrQM3qvQJcBOs1d7IefJMyZzqM3EWBrDn/LWDt1BCGu4ASfg==}
     engines: {node: '>=12', npm: '>=6'}
     peerDependencies:
       '@testing-library/dom': '>=7.21.4'
@@ -8939,7 +8943,7 @@ snapshots:
       postcss: 8.5.28
       tailwindcss: 4.2.4
 
-  '@testing-library/dom@10.4.1':
+  '@testing-library/dom@10.4.2':
     dependencies:
       '@babel/code-frame': 7.29.7
       '@babel/runtime': 7.29.7
@@ -8950,29 +8954,31 @@ snapshots:
       picocolors: 1.1.1
       pretty-format: 27.5.1
 
-  '@testing-library/jest-dom@7.0.0(@testing-library/dom@10.4.1)':
+  '@testing-library/jest-dom@7.0.1(@testing-library/dom@10.4.2)(vitest@5.0.3)':
     dependencies:
       '@adobe/css-tools': 4.4.2
-      '@testing-library/dom': 10.4.1
+      '@testing-library/dom': 10.4.2
       aria-query: 5.3.2
       css.escape: 1.5.1
       dom-accessibility-api: 0.6.3
       picocolors: 1.1.1
       redent: 3.0.0
+    optionalDependencies:
+      vitest: 5.0.3(@types/node@24.19.0)(@vitest/coverage-v8@5.0.3)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.3.1(@types/node@24.19.0)(esbuild@0.28.1)(jiti@2.6.1)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.100.0)(sass@1.100.0)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
 
-  '@testing-library/react@16.3.2(@testing-library/dom@10.4.1)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
+  '@testing-library/react@16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)':
     dependencies:
       '@babel/runtime': 7.29.7
-      '@testing-library/dom': 10.4.1
+      '@testing-library/dom': 10.4.2
       react: 19.3.0
       react-dom: 19.3.0(react@19.3.0)
     optionalDependencies:
       '@types/react': 19.3.0
       '@types/react-dom': 19.3.0(@types/react@19.3.0)
 
-  '@testing-library/user-event@14.6.1(@testing-library/dom@10.4.1)':
+  '@testing-library/user-event@14.6.7(@testing-library/dom@10.4.2)':
     dependencies:
-      '@testing-library/dom': 10.4.1
+      '@testing-library/dom': 10.4.2
 
   '@tufjs/canonical-json@2.0.0': {}
 
@@ -11170,7 +11176,7 @@ snapshots:
 
   react-select-event@5.5.1:
     dependencies:
-      '@testing-library/dom': 10.4.1
+      '@testing-library/dom': 10.4.2
 
   react-select@5.10.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(supports-color@8.1.1):
     dependencies:
