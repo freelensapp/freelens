@@ -30,14 +30,13 @@
     "mobx": "catalog:",
     "p-limit": "catalog:",
     "react": "catalog:",
-    "semver": "catalog:",
-    "tar": "catalog:"
+    "tar": "catalog:",
+    "verkit": "catalog:"
   },
   "devDependencies": {
     "@freelensapp/typescript": "workspace:^",
     "@types/node": "catalog:",
     "@types/react": "catalog:",
-    "@types/semver": "catalog:",
     "jsdom": "catalog:",
     "type-fest": "catalog:",
     "vitest": "catalog:"

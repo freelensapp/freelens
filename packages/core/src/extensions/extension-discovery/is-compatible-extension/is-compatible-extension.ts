@@ -4,7 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import semver from "semver";
+import { coerce, normalizeRange, satisfies } from "verkit";
+
+import type { SemVer } from "verkit";
 
 import type { LensExtensionManifest } from "../../installed-extension";
 
@@ -29,12 +31,12 @@ export const isCompatibleExtension = ({
       throw new Error(errorInfo);
     }
 
-    const { major: extMajor, minor: extMinor } = semver.coerce(manifestLensEngine, {
+    const { major: extMajor, minor: extMinor } = coerce(manifestLensEngine, {
       loose: true,
-    }) as semver.SemVer;
-    const supportedVersionsByExtension = semver.validRange(`^${extMajor}.${extMinor}`) as string;
+    }) as SemVer;
+    const supportedVersionsByExtension = normalizeRange(`^${extMajor}.${extMinor}`) as string;
 
-    return semver.satisfies(extensionApiVersion, supportedVersionsByExtension, {
+    return satisfies(extensionApiVersion, supportedVersionsByExtension, {
       loose: true,
       includePrerelease: false,
     });

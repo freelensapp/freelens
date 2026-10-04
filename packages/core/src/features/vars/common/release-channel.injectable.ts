@@ -11,7 +11,7 @@ const releaseChannelInjectable = getInjectable({
   id: "release-channel",
   instantiate: (di) => {
     const buildSemanticVersion = di.inject(semanticBuildVersionInjectable);
-    const currentReleaseChannel = buildSemanticVersion.prerelease[0];
+    const currentReleaseChannel = buildSemanticVersion.prerelease?.[0];
 
     switch (currentReleaseChannel) {
       case "latest":

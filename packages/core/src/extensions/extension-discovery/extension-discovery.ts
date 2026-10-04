@@ -8,7 +8,7 @@ import { EventEmitter } from "node:events";
 import { isErrnoException } from "@freelensapp/utilities";
 import { ipcRenderer } from "electron";
 import { observable, reaction, when } from "mobx";
-import { rcompare, valid } from "semver";
+import { compareReversed, normalize } from "verkit";
 import { broadcastMessage, ipcMainHandle, ipcRendererOn } from "../../common/ipc";
 import { extensionDiscoveryStateChannel } from "../../common/ipc/extension-handling";
 import { toJS } from "../../common/utils";
@@ -634,7 +634,7 @@ export class ExtensionDiscovery {
     const versionOf = (build: string): string | undefined => {
       const version = parseVersionDirectoryName(this.dependencies.getBasenameOfPath(build))?.version;
 
-      return version && valid(version) ? version : undefined;
+      return version && normalize(version) ? version : undefined;
     };
 
     return [...builds].sort((left, right) => {
@@ -642,7 +642,7 @@ export class ExtensionDiscovery {
       const rightVersion = versionOf(right);
 
       if (leftVersion && rightVersion && leftVersion !== rightVersion) {
-        return rcompare(leftVersion, rightVersion);
+        return compareReversed(leftVersion, rightVersion);
       }
 
       if (Boolean(leftVersion) !== Boolean(rightVersion)) {

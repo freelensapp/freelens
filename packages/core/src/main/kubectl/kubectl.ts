@@ -11,7 +11,7 @@ import { hasTypedProperty, isObject, isString, json } from "@freelensapp/utiliti
 import { noop } from "es-toolkit";
 import { ensureDir, pathExists } from "fs-extra";
 import * as lockFile from "proper-lockfile";
-import { coerce, SemVer } from "semver";
+import { parse } from "verkit";
 import {
   customPackageMirror,
   defaultPackageMirror,
@@ -19,6 +19,8 @@ import {
 } from "../../features/user-preferences/common/preferences-helpers";
 
 import type { Logger } from "@freelensapp/logger";
+
+import type { SemVer } from "verkit";
 
 import type { ExecFile, ExecFileError } from "../../common/fs/exec-file.injectable";
 import type { Unlink } from "../../common/fs/unlink.injectable";
@@ -115,10 +117,10 @@ export class Kubectl {
     clusterVersion: string,
   ) {
     let version: SemVer;
-    const bundledVersion = new SemVer(this.dependencies.bundledKubectlVersion);
+    const bundledVersion = parse(this.dependencies.bundledKubectlVersion);
 
     try {
-      version = new SemVer(clusterVersion);
+      version = parse(clusterVersion);
     } catch {
       version = bundledVersion;
     }
@@ -136,9 +138,7 @@ export class Kubectl {
       );
     } else {
       /* this is the version (without possible prelease tag) to get from the download mirror */
-      const ver = coerce(version.format()) ?? bundledVersion;
-
-      this.kubectlVersion = ver.format();
+      this.kubectlVersion = `${version.major}.${version.minor}.${version.patch}`;
       this.dependencies.logger.debug(
         `Set kubectl version ${this.kubectlVersion} for cluster version ${clusterVersion} using fallback`,
       );

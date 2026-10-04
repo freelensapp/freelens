@@ -6,7 +6,7 @@
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { showInfoNotificationInjectable } from "@freelensapp/notifications";
 import { getInjectable } from "@ogre-tools/injectable";
-import * as semver from "semver";
+import { isGreaterThan } from "verkit";
 import productNameInjectable from "../../../common/vars/product-name.injectable";
 import { buildVersionInitializable } from "../../../features/vars/build-version/common/token";
 import getLatestVersionViaChannelInjectable from "../../common/utils/get-latest-version-via-channel.injectable";
@@ -31,7 +31,7 @@ const newVersionNotificationInjectable = getInjectable({
         logger.error(`[WELCOME]: Failed to check latest version: ${error}`);
       }
 
-      if (newVersion && semver.gt(newVersion, currentVersion)) {
+      if (newVersion && isGreaterThan(newVersion, currentVersion)) {
         showInfoNotification(
           <div className="flex flex-col gap-2">
             <div>

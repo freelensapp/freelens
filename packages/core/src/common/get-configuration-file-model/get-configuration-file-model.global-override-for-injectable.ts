@@ -8,7 +8,7 @@ import assert from "node:assert";
 import path from "node:path";
 import { getGlobalOverride } from "@freelensapp/test-utils";
 import { get, has, set } from "es-toolkit/compat";
-import semver from "semver";
+import { clean, isEqual, isGreaterThan, isLessThanOrEqual, satisfies } from "verkit";
 import readJsonSyncInjectable from "../fs/read-json-sync.injectable";
 import writeJsonSyncInjectable from "../fs/write-json-sync.injectable";
 import getConfigurationFileModelInjectable from "./get-configuration-file-model.injectable";
@@ -18,7 +18,7 @@ import type Config from "conf";
 const MIGRATION_KEY = `__internal__.migrations.version`;
 
 const _isVersionInRangeFormat = (version: string) => {
-  return semver.clean(version) === null;
+  return clean(version) === null;
 };
 
 const _shouldPerformMigration = (
@@ -27,18 +27,18 @@ const _shouldPerformMigration = (
   versionToMigrate: string,
 ) => {
   if (_isVersionInRangeFormat(candidateVersion)) {
-    if (previousMigratedVersion !== "0.0.0" && semver.satisfies(previousMigratedVersion, candidateVersion)) {
+    if (previousMigratedVersion !== "0.0.0" && satisfies(previousMigratedVersion, candidateVersion)) {
       return false;
     }
 
-    return semver.satisfies(versionToMigrate, candidateVersion);
+    return satisfies(versionToMigrate, candidateVersion);
   }
 
-  if (semver.lte(candidateVersion, previousMigratedVersion)) {
+  if (isLessThanOrEqual(candidateVersion, previousMigratedVersion)) {
     return false;
   }
 
-  if (semver.gt(candidateVersion, versionToMigrate)) {
+  if (isGreaterThan(candidateVersion, versionToMigrate)) {
     return false;
   }
 
@@ -130,7 +130,7 @@ export default getGlobalOverride(getConfigurationFileModelInjectable, (di) => {
         }
       }
 
-      if (_isVersionInRangeFormat(previousMigratedVersion) || !semver.eq(previousMigratedVersion, versionToMigrate)) {
+      if (_isVersionInRangeFormat(previousMigratedVersion) || !isEqual(previousMigratedVersion, versionToMigrate)) {
         set(store, MIGRATION_KEY, versionToMigrate);
       }
     }
