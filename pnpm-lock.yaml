@@ -327,8 +327,8 @@ catalogs:
       specifier: 15.1.0
       version: 15.1.0
     cronstrue:
-      specifier: 3.24.0
-      version: 3.24.0
+      specifier: 3.27.0
+      version: 3.27.0
     dompurify:
       specifier: 3.4.16
       version: 3.4.16
@@ -1097,7 +1097,7 @@ importers:
         version: 15.1.0
       cronstrue:
         specifier: 'catalog:'
-        version: 3.24.0
+        version: 3.27.0
       dompurify:
         specifier: 'catalog:'
         version: 3.4.16
@@ -5113,8 +5113,8 @@ packages:
     resolution: {integrity: sha512-AdmX6xUzdNASswsFtmwSt7Vj8po9IuqXm0UXz7QKPuEUmPB4XyjGfaAr2PSuELMwkRMVH1EpIkX5bTZGRB3eCA==}
     engines: {node: '>=10'}
 
-  cronstrue@3.24.0:
-    resolution: {integrity: sha512-t/Ji3Ur2c/pzhIAWNwC0ftl3JAE4dLfCjAdZoTZXmPDZwcispnS1PaMcMS4OmIIXyIVouAz+yw+mfQiE3hz5OQ==}
+  cronstrue@3.27.0:
+    resolution: {integrity: sha512-AKhV4ilvx73NmicrZCGASdszUIf2ew0A/6jQQTh4pu3lIUzgWOGjT3Gv3CGIcTQ/p8Qy/tZuCmlaOftj8PXaNg==}
     hasBin: true
 
   cross-dirname@0.1.0:
@@ -9762,7 +9762,7 @@ snapshots:
       path-type: 4.0.0
       yaml: 1.10.2
 
-  cronstrue@3.24.0: {}
+  cronstrue@3.27.0: {}
 
   cross-dirname@0.1.0:
     optional: true
