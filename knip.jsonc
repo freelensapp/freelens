@@ -63,6 +63,11 @@
         "src/freelens-extension-api.ts!",
         "src/main/**/*.ts!"
       ],
+      // the electron-vite plugin turns every input of electron.vite.config.ts
+      // into a production entry, the renderer included, which would demand
+      // the renderer's devDependencies be dependencies; the entries above
+      // already cover the config and its inputs
+      "electron-vite": false,
       "ignoreBinaries": ["distwin-unpackedFreelens.exe"],
       "ignoreDependencies": [
         // imported by the bundled static/build/main.js but declared as a
