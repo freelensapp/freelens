@@ -80,7 +80,7 @@ const prerelease = version.prerelease ?? [];
 if (showMajor) {
   console.log(version.major.toString());
 } else if (showMinor) {
-  console.log(version.major.toString());
+  console.log(version.minor.toString());
 } else if (showPatch) {
   console.log(version.patch.toString());
 } else if (showPrerelease) {
