@@ -58,7 +58,7 @@ catalog:
   '@electron/notarize': 3.1.1
   electron-devtools-installer: 4.0.0
   # Types and utilities
-  '@types/node': 24.19.0
+  '@types/node': 24.19.1
   '@types/cli-progress': 3.11.6
   '@types/command-line-args': 5.2.3
   '@types/fs-extra': 11.0.4
