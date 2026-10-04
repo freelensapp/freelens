@@ -267,8 +267,8 @@ catalogs:
       specifier: 19.3.0
       version: 19.3.0
     '@types/semver':
-      specifier: 7.7.1
-      version: 7.7.1
+      specifier: 7.8.0
+      version: 7.8.0
     '@types/tcp-port-used':
       specifier: 1.0.4
       version: 1.0.4
@@ -1257,7 +1257,7 @@ importers:
         version: 19.3.0(@types/react@19.3.0)
       '@types/semver':
         specifier: 'catalog:'
-        version: 7.7.1
+        version: 7.8.0
       '@types/tcp-port-used':
         specifier: 'catalog:'
         version: 1.0.4
@@ -1517,7 +1517,7 @@ importers:
         version: link:../infrastructure/typescript
       '@types/semver':
         specifier: 'catalog:'
-        version: 7.7.1
+        version: 7.8.0
       fast-xml-parser:
         specifier: 'catalog:'
         version: 5.11.2
@@ -1681,7 +1681,7 @@ importers:
         version: 24.19.1
       '@types/semver':
         specifier: 'catalog:'
-        version: 7.7.1
+        version: 7.8.0
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
@@ -2645,7 +2645,7 @@ importers:
         version: 19.3.0
       '@types/semver':
         specifier: 'catalog:'
-        version: 7.7.1
+        version: 7.8.0
       jsdom:
         specifier: 'catalog:'
         version: 30.1.1(@noble/hashes@2.2.0)
@@ -4365,8 +4365,8 @@ packages:
   '@types/retry@0.12.2':
     resolution: {integrity: sha512-XISRgDJ2Tc5q4TRqvgJtzsRkFYNJzZrhTdtMoGVBttwzzQJkPnS3WWTFc7kuDRoPtPakl+T+OfdEUjYJj7Jbow==}
 
-  '@types/semver@7.7.1':
-    resolution: {integrity: sha512-FmgJfu+MOcQ370SD0ev7EI8TlCAfKYU+B4m5T3yXc1CiRN94g/SZPtsCkk506aUDtlMnFZvasDwHHUcZUEaYuA==}
+  '@types/semver@7.8.0':
+    resolution: {integrity: sha512-1mAINjtQCXXeLkJ9ehXkwOcBpqtLxiVtKhpUf83DdRNdQKV0iXZpaHYqRr7nj+wvxuJzoAmAwXI+sCNMv1CzLQ==}
 
   '@types/stream-buffers@3.0.7':
     resolution: {integrity: sha512-azOCy05sXVXrO+qklf0c/B07H/oHaIuDDAiHPVwlk3A9Ek+ksHyTeMajLZl3r76FxpPpxem//4Te61G1iW3Giw==}
@@ -9161,7 +9161,7 @@ snapshots:
 
   '@types/retry@0.12.2': {}
 
-  '@types/semver@7.7.1': {}
+  '@types/semver@7.8.0': {}
 
   '@types/stream-buffers@3.0.7':
     dependencies:
