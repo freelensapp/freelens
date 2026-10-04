@@ -41,7 +41,7 @@ catalog:
   vitest-mock-extended: 5.1.0
   # Build tooling
   esbuild: 0.28.2
-  '@vitejs/plugin-react': 6.0.4
+  '@vitejs/plugin-react': 6.1.1
   electron-builder: 26.17.0
   electron-builder-squirrel-windows: 26.17.0
   electron-vite: 6.0.0-beta.5
