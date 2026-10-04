@@ -142,8 +142,8 @@
         "**/getDiForUnitTesting*",
         "**/vitest*.setup.*",
         "**/mock-responses.ts",
-        "packages/core/src/features/cluster/execute/common/testing.ts",
-        "vitest.electron-stub.ts"
+        "**/features/cluster/execute/common/testing.ts",
+        "**/vitest.electron-stub.ts"
       ],
       "linter": {
         "rules": {
