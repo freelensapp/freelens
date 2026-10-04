@@ -414,8 +414,8 @@ catalogs:
       specifier: 0.57.0
       version: 0.57.0
     node-pty:
-      specifier: 1.2.0-beta.14
-      version: 1.2.0-beta.14
+      specifier: 1.2.0-beta.15
+      version: 1.2.0-beta.15
     openpgp:
       specifier: 6.3.1
       version: 6.3.1
@@ -700,7 +700,7 @@ importers:
         version: 7.0.5
       node-pty:
         specifier: 'catalog:'
-        version: 1.2.0-beta.14
+        version: 1.2.0-beta.15
       p-limit:
         specifier: 'catalog:'
         version: 7.3.3
@@ -1148,7 +1148,7 @@ importers:
         version: 0.57.0
       node-pty:
         specifier: 'catalog:'
-        version: 1.2.0-beta.14
+        version: 1.2.0-beta.15
       proper-lockfile:
         specifier: 'catalog:'
         version: 4.1.2
@@ -6274,8 +6274,8 @@ packages:
   node-int64@0.4.0:
     resolution: {integrity: sha512-O5lz91xSOeoXP6DulyHfllpq+Eg00MWitZIbtPfoSEvqIHdl5gfcY6hYzDWnj0qD5tz52PI08u9qUvSVeUBeHw==}
 
-  node-pty@1.2.0-beta.14:
-    resolution: {integrity: sha512-XORU9BQgpxVgqr7WivjJ17mLenOHUgKKWzuZZNaw3NDYgHc/wPJQMSaoLDrpEgqV6aU1nNwil1o/OqYj6lWmUA==}
+  node-pty@1.2.0-beta.15:
+    resolution: {integrity: sha512-vORSzHXi4Ofl7HemVWpuudLqCPdaQb4LfpRCUpE5HPxhp4JYscl8zZwxh11p26v2wvW24WMwnMfLjhRLixrfxA==}
 
   node-releases@2.0.27:
     resolution: {integrity: sha512-nmh3lCkYZ3grZvqcCH+fjmQ7X+H0OeZgP40OierEaAptX4XofMh5kwNbWh7lBduUzCcV/8kZ+NDLCwm2iorIlA==}
@@ -10944,7 +10944,7 @@ snapshots:
 
   node-int64@0.4.0: {}
 
-  node-pty@1.2.0-beta.14:
+  node-pty@1.2.0-beta.15:
     dependencies:
       node-addon-api: 7.1.1
 
