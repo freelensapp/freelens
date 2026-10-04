@@ -47,7 +47,6 @@
     "@types/cli-progress": "catalog:",
     "@types/gunzip-maybe": "catalog:",
     "@types/node": "catalog:",
-    "@types/tar-stream": "catalog:",
     "@types/yauzl-promise": "catalog:",
     "typescript": "catalog:"
   },

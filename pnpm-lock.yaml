@@ -269,9 +269,6 @@ catalogs:
     '@types/semver':
       specifier: 7.7.1
       version: 7.7.1
-    '@types/tar-stream':
-      specifier: 3.1.5
-      version: 3.1.5
     '@types/tcp-port-used':
       specifier: 1.0.4
       version: 1.0.4
@@ -1349,9 +1346,6 @@ importers:
       '@types/node':
         specifier: 'catalog:'
         version: 24.19.1
-      '@types/tar-stream':
-        specifier: 'catalog:'
-        version: 3.1.5
       '@types/yauzl-promise':
         specifier: 'catalog:'
         version: 4.0.1
@@ -4374,9 +4368,6 @@ packages:
 
   '@types/stream-buffers@3.0.7':
     resolution: {integrity: sha512-azOCy05sXVXrO+qklf0c/B07H/oHaIuDDAiHPVwlk3A9Ek+ksHyTeMajLZl3r76FxpPpxem//4Te61G1iW3Giw==}
-
-  '@types/tar-stream@3.1.5':
-    resolution: {integrity: sha512-zCUA6CSDw0t2cpQiZixpyzfubpeuVZmBr5wztvuCG4bhy7reX/9wGXdZxEzz2CjMFLQ32UPR/01jzUUSRJeCeQ==}
 
   '@types/tcp-port-used@1.0.4':
     resolution: {integrity: sha512-0vQ4fz9TTM4bCdllYWEJ2JHBUXR9xqPtc70dJ7BMRDVfvZyYdrgey3nP5RRcVj+qAgnHJM8r9fvgrfnPMxdnhA==}
@@ -9164,10 +9155,6 @@ snapshots:
   '@types/semver@7.7.1': {}
 
   '@types/stream-buffers@3.0.7':
-    dependencies:
-      '@types/node': 24.19.1
-
-  '@types/tar-stream@3.1.5':
     dependencies:
       '@types/node': 24.19.1
 
