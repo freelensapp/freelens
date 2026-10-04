@@ -20,9 +20,9 @@
 //   a listed file that no longer has any fails the check until it is removed
 //   from the list, so the lists only ever shrink.
 //
-// It also keeps biome.jsonc in step with the renderer legacy list: the files
-// exempted there from `noNodejsModules` must be on that list, so the
-// exemptions shrink with it.
+// It also checks biome.jsonc: every override path must start with `**/`, and
+// the files exempted there from `noNodejsModules` must be on the renderer
+// legacy list, so the exemptions shrink with it.
 
 import { spawn } from "node:child_process";
 import { readFileSync } from "node:fs";
@@ -140,33 +140,36 @@ async function checkProgram({ name, config }, legacyFiles) {
   return { problems, summary };
 }
 
+// Trunk Check runs Biome from a sandbox outside the repository, where an
+// override path anchored at the repository root matches no file, so the
+// override silently does nothing. Every path of every override must therefore
+// be `**` or start with `**/` or `!**/`.
+function checkBiomeOverridePaths(overrides) {
+  return overrides
+    .flatMap((override) => override.includes ?? [])
+    .filter((include) => include !== "**" && !include.startsWith("**/") && !include.startsWith("!**/"))
+    .map(
+      (include) =>
+        `${include}: override path in biome.jsonc does not start with "**/" or "!**/", so it does not apply under Trunk Check`,
+    );
+}
+
 // The Biome override that turns `noNodejsModules` off exempts renderer and
 // common files that import a Node builtin today. Each of them also fails the
 // renderer program, so an exemption that is not on the renderer legacy list is
-// either stale or new, and neither is allowed. The exemptions start with
-// `**/`, which Biome needs when Trunk runs it from a sandbox outside the
-// repository; the legacy list is root-relative, so the prefix is dropped for
-// the comparison.
-function checkBiomeExemptions(rendererLegacyFiles) {
+// either stale or new, and neither is allowed. The legacy list is
+// root-relative, so the `**/` prefix is dropped for the comparison.
+function checkBiomeExemptions(overrides, rendererLegacyFiles) {
   const legacy = new Set(rendererLegacyFiles);
-  const overrides = parseJsonc(readFileSync(biomeConfigFile, "utf8")).overrides ?? [];
-  const exempted = overrides
+
+  return overrides
     .filter((override) => override.linter?.rules?.correctness?.noNodejsModules === "off")
-    .flatMap((override) => override.includes ?? []);
-
-  return exempted.flatMap((include) => {
-    if (!include.startsWith("**/")) {
-      return [`${include}: exemption in biome.jsonc does not start with "**/", so it does not apply under Trunk Check`];
-    }
-
-    if (!legacy.has(include.slice(3))) {
-      return [
+    .flatMap((override) => override.includes ?? [])
+    .filter((include) => !legacy.has(include.replace(/^\*\*\//, "")))
+    .map(
+      (include) =>
         `${include}: exempted from noNodejsModules in biome.jsonc but not on the "renderer" legacy list; remove the exemption`,
-      ];
-    }
-
-    return [];
-  });
+    );
 }
 
 const legacyLists = parseJsonc(readFileSync(legacyListsFile, "utf8"));
@@ -184,7 +187,11 @@ for (const [index, { problems, summary }] of results.entries()) {
   }
 }
 
-const biomeProblems = checkBiomeExemptions(legacyLists.renderer ?? []);
+const biomeOverrides = parseJsonc(readFileSync(biomeConfigFile, "utf8")).overrides ?? [];
+const biomeProblems = [
+  ...checkBiomeOverridePaths(biomeOverrides),
+  ...checkBiomeExemptions(biomeOverrides, legacyLists.renderer ?? []),
+];
 
 if (biomeProblems.length > 0) {
   failed = true;

@@ -293,7 +293,8 @@ runs Biome in CI, runs it from a sandbox outside the repository with
 the repository root matches no file, so the override silently does nothing.
 A plain `biome check` from the repository root matches both forms, so only
 `trunk check` shows the difference. `scripts/type-check-environments.mjs`
-fails on an exemption that lacks the prefix.
+checks every path of every override and fails on one that is neither `**` nor
+starts with `**/` or `!**/`.
 
 ## Dependency Injection System
 
