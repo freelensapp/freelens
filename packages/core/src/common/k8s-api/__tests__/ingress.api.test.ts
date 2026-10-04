@@ -5,6 +5,7 @@
  */
 
 import { computeRuleDeclarations, Ingress } from "@freelensapp/kube-object";
+import { describe, expect, it } from "vitest";
 
 describe("Ingress", () => {
   it("given no loadbalancer ingresses in status property, loadbalancers should be an empty array", () => {

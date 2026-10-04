@@ -6,6 +6,7 @@
 import { existsSync } from "node:fs";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
+import { afterEach, beforeAll, beforeEach, describe, it } from "vitest";
 import * as utils from "../helpers/utils";
 
 import type { ElectronApplication, Page } from "playwright";

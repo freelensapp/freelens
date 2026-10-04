@@ -3,6 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { describe, expect, it } from "vitest";
 import { managedDirectoryOf } from "./managed-directory";
 
 const root = "/user-data/extensions";

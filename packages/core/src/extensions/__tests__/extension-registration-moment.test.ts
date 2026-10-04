@@ -3,6 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
 // The lifecycle invariant of the DI surface (#2450, part 3): *the extension's
 // container view exists before the author's first hook and is released after
 // their last.*

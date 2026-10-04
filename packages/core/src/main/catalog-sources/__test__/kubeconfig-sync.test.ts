@@ -8,6 +8,7 @@ import EventEmitter from "node:events";
 import asyncFn from "@async-fn/vitest";
 import { iter, strictGet } from "@freelensapp/utilities";
 import { ObservableMap, observable, runInAction } from "mobx";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForTempInjectable from "../../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import createReadFileStreamInjectable from "../../../common/fs/create-read-file-stream.injectable";

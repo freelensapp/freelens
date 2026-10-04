@@ -3,6 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { describe, expect, it } from "vitest";
 import { createReactKey } from "./create-react-key";
 
 // The algorithm is not part of the contract, so these tests check the format,

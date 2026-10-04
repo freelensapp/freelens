@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { describe, expect, it } from "vitest";
 import { isLongRunningRequest } from "../freelens-proxy/freelens-proxy";
 
 describe("isLongRunningRequest", () => {

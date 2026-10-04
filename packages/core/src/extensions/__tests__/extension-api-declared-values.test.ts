@@ -3,6 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeAll, describe, expect, it } from "vitest";
+
 // Every value the published declaration promises exists at runtime.
 //
 // `dist/extension-api.d.ts` is not the source: it is what rolldown-plugin-dts

@@ -6,6 +6,7 @@
 
 import { asyncFn, flushPromises } from "@freelensapp/test-utils";
 import { act, fireEvent } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForLensLocalStorageInjectable from "../../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
 import readJsonFileInjectable from "../../../common/fs/read-json-file.injectable";
 import writeJsonFileInjectable from "../../../common/fs/write-json-file.injectable";

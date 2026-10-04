@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, it } from "vitest";
 import directoryForUserDataInjectable from "../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import hostedClusterIdInjectable from "../../../cluster-frame-context/hosted-cluster-id.injectable";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";

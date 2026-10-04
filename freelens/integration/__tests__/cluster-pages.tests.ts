@@ -5,6 +5,7 @@
  */
 
 import { describeIf } from "@freelensapp/test-utils";
+import { afterEach, beforeEach, it } from "vitest";
 import { kindReady } from "../helpers/kind";
 /*
   Cluster tests are run if there is a pre-existing kind cluster. Before running cluster tests the TEST_NAMESPACE

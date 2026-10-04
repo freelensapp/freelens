@@ -5,6 +5,7 @@
 
 import { editor } from "monaco-editor";
 import React from "react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import { renderFor } from "../test-utils/renderFor";
 import { MonacoEditor } from "./monaco-editor";

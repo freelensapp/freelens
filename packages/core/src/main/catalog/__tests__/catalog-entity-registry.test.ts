@@ -5,6 +5,7 @@
  */
 
 import { observable, reaction } from "mobx";
+import { beforeEach, describe, expect, it } from "vitest";
 import { CatalogEntity } from "../../../common/catalog";
 import { WebLink } from "../../../common/catalog-entities";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";

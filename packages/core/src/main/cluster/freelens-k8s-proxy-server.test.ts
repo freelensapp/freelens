@@ -4,6 +4,7 @@
  */
 
 import { EventEmitter } from "node:events";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { Cluster } from "../../common/cluster/cluster";
 import broadcastMessageInjectable from "../../common/ipc/broadcast-message.injectable";
 import clusterApiUrlInjectable from "../../features/cluster/connections/main/api-url.injectable";

@@ -7,6 +7,7 @@
 import { statefulSetApiInjectable } from "@freelensapp/kube-api-specifics";
 import { StatefulSet } from "@freelensapp/kube-object";
 import { fireEvent, waitFor } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import storesAndApisCanBeCreatedInjectable from "../../../stores-apis-can-be-created.injectable";
 import { type DiRender, renderFor } from "../../test-utils/renderFor";

@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, it } from "vitest";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import defaultWebsocketApiParamsInjectable from "../default-websocket-api-params.injectable";
 import { WebSocketApi } from "../websocket-api";

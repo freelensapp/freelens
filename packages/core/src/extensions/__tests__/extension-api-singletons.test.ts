@@ -3,6 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { describe, expect, it } from "vitest";
+
 // The naming rule of the host-provided singletons, and the two maps the
 // application entry points publish, checked against it.
 //

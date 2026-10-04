@@ -5,6 +5,7 @@
  */
 
 import { computed } from "mobx";
+import { beforeEach, describe, expect, it } from "vitest";
 import rendererExtensionsInjectable from "../../../../extensions/renderer-extensions.injectable";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import customCategoryViewsInjectable from "../custom-views.injectable";

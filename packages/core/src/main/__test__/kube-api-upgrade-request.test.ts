@@ -3,6 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { describe, expect, it, vi } from "vitest";
+
 vi.mock("node:tls", () => {
   const connect = vi.fn();
 

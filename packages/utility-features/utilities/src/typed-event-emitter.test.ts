@@ -4,6 +4,7 @@
  */
 
 import { EventEmitter } from "node:events";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { TypedEmitter } from "./typed-event-emitter";
 
 import type { TypedEventEmitter } from "./typed-event-emitter";

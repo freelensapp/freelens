@@ -6,6 +6,7 @@
 
 import asyncFn from "@async-fn/vitest";
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../common/cluster/cluster";

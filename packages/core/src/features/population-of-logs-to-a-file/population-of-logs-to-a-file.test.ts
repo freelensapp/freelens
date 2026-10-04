@@ -8,6 +8,7 @@ import { winstonLoggerInjectable } from "@freelensapp/logger";
 import { noop } from "@freelensapp/utilities";
 import { runInAction } from "mobx";
 import { MESSAGE } from "triple-beam";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import windowLocationInjectable from "../../common/k8s-api/window-location.injectable";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import browserLoggerTransportInjectable from "../../renderer/logger/browser-transport.injectable";

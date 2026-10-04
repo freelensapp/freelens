@@ -5,6 +5,7 @@
  */
 
 import { asyncFn } from "@freelensapp/test-utils";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForLensLocalStorageInjectable from "../../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
 import writeJsonFileInjectable from "../../../common/fs/write-json-file.injectable";
 import { HelmChart } from "../../../common/k8s-api/endpoints/helm-charts.api";

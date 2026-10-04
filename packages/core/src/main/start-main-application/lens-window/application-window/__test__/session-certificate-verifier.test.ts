@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import freelensProxyCertificateInjectable from "../../../../../common/certificate/freelens-proxy-certificate.injectable";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
 import sessionCertificateVerifierInjectable, { ChromiumNetError } from "../session-certificate-verifier.injectable";

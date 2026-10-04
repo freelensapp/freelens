@@ -5,6 +5,7 @@
  */
 
 import { waitFor } from "@testing-library/react";
+import { beforeEach, describe, expect, it } from "vitest";
 import { CustomResourceDefinition } from "../../extensions/common-api/k8s-api";
 import customResourceDefinitionStoreInjectable from "../../renderer/components/custom-resource-definitions/store.injectable";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";

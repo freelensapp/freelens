@@ -4,6 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { vi } from "vitest";
+
 import type { FetchResponse as Response } from "@freelensapp/json-api";
 
 import type { Mocked } from "vitest";

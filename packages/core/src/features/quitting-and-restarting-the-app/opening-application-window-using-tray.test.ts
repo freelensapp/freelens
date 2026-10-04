@@ -7,6 +7,7 @@
 import asyncFn from "@async-fn/vitest";
 import { getInjectable2, instantiationDecoratorToken } from "@ogre-tools/injectable";
 import { runInAction } from "mobx";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import staticFilesDirectoryInjectable from "../../common/vars/static-files-directory.injectable";
 import focusApplicationInjectable from "../../main/electron-app/features/focus-application.injectable";
 import createElectronWindowInjectable from "../../main/start-main-application/lens-window/application-window/create-electron-window.injectable";

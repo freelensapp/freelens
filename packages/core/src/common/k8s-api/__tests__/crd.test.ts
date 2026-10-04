@@ -5,6 +5,7 @@
  */
 
 import { CustomResourceDefinition } from "@freelensapp/kube-object";
+import { describe, expect, it } from "vitest";
 
 import type { CustomResourceDefinitionSpec } from "@freelensapp/kube-object";
 

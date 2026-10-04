@@ -5,6 +5,7 @@
 
 import { createHash } from "node:crypto";
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForUserDataInjectable from "../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import attemptInstallInjectable from "./attempt-install.injectable";

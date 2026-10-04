@@ -5,6 +5,7 @@
  */
 
 import { act, render, screen } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
 import { HelmChartIcon } from "../icon";
 
 const mainImageSrc = "https://example.com/main-picture.jpg";

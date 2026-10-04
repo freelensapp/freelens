@@ -12,6 +12,7 @@ import {
 } from "@freelensapp/routing";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed, runInAction } from "mobx";
+import { beforeEach, describe, expect, it } from "vitest";
 import { frontEndRouteInjectionToken } from "../../common/front-end-routing/front-end-route-injection-token";
 import navigateToFrontPageInjectable from "../../common/front-end-routing/navigate-to-front-page.injectable";
 import { navigateToRouteInjectionToken } from "../../common/front-end-routing/navigate-to-route-injection-token";

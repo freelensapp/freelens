@@ -6,6 +6,7 @@
 
 import EventEmitter from "node:events";
 import { getPromiseStatus } from "@freelensapp/test-utils";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../../../../../getDiForUnitTesting";
 import execFileWithInputInjectable from "./exec-file-with-input.injectable";
 import nonPromiseExecFileInjectable from "./non-promise-exec-file.injectable";

@@ -5,6 +5,7 @@
 
 import { noop, WrappedAbortController } from "@freelensapp/utilities";
 import { observable, runInAction } from "mobx";
+import { describe, expect, it, vi } from "vitest";
 import { KubeWatchApi } from "./kube-watch-api";
 
 import type { Logger } from "@freelensapp/logger";

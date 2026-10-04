@@ -7,6 +7,7 @@
 import EventEmitter from "node:events";
 import { flushPromises } from "@freelensapp/test-utils";
 import MemoryStream from "memorystream";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import spawnInjectable from "../../../main/child-process/spawn.injectable";
 import randomUUIDInjectable from "../../../main/crypto/random-uuid.injectable";
 import { getDiForUnitTesting } from "../../../main/getDiForUnitTesting";

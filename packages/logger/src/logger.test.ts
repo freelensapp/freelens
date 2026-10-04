@@ -1,6 +1,7 @@
 import { registerFeature } from "@freelensapp/feature-core";
 import { getFeature } from "@freelensapp/feature-core/src/feature";
 import { createContainer, getInjectable } from "@ogre-tools/injectable";
+import { describe, expect, it, vi } from "vitest";
 import TransportStream from "winston-transport";
 import { loggerFeature } from "./feature";
 import {

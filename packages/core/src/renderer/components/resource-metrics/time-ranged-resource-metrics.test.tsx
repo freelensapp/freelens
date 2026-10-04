@@ -3,6 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { describe, expect, it, vi } from "vitest";
 import "@testing-library/jest-dom/vitest";
 import { screen } from "@testing-library/react";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";

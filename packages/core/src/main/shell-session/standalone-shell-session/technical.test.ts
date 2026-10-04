@@ -4,6 +4,7 @@
  */
 
 import { computed } from "mobx";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForTempInjectable from "../../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import pathExistsInjectable from "../../../common/fs/path-exists.injectable";

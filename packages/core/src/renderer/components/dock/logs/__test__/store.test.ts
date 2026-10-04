@@ -4,6 +4,7 @@
  */
 
 import { computed, observable } from "mobx";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { LogStore } from "../store";
 import { dockerPod } from "./pod.mock";
 

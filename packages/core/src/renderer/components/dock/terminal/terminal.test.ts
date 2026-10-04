@@ -6,6 +6,7 @@
 
 import EventEmitter from "node:events";
 import { computed } from "mobx";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { Terminal } from "./terminal";
 import { getMacNaturalTextEditingMapping, handleMacNaturalTextEditingKey } from "./terminal-key-mapping";
 

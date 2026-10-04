@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { describe, expect, test } from "vitest";
 import { formatDuration } from "./formatDuration";
 
 const second = 1000;

@@ -4,6 +4,7 @@ import { createContainer, type DiContainer, type Injectable } from "@ogre-tools/
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { noop } from "es-toolkit";
 import { _resetGlobalState, configure, runInAction } from "mobx";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { listeningOfChannelsInjectionToken } from "./features/actual/listening-of-channels/listening-of-channels.injectable";
 import {
   type EnlistRequestChannelListener,

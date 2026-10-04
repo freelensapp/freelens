@@ -3,6 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { describe, expect, it } from "vitest";
 import { clusterApiAddressInjectionToken } from "../../common/k8s-api/cluster-api-address-injection-token";
 import windowLocationInjectable from "../../common/k8s-api/window-location.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";

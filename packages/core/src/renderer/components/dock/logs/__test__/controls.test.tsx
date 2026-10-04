@@ -6,6 +6,7 @@
 
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import userPreferencesStateInjectable from "../../../../../features/user-preferences/common/state.injectable";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
 import { renderFor } from "../../../test-utils/renderFor";

@@ -7,6 +7,7 @@
 // for the same input: `sha256Hex` replaces it in renderer code, and has to give
 // the same bytes.
 import crypto from "node:crypto";
+import { describe, expect, it } from "vitest";
 import { sha256Hex } from "./sha256";
 
 const nodeSha256Hex = (data: string | Uint8Array) => crypto.createHash("sha256").update(data).digest("hex");

@@ -5,6 +5,7 @@
  */
 
 import asyncFn from "@async-fn/vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 
 import type { AsyncFnMock } from "@async-fn/vitest";

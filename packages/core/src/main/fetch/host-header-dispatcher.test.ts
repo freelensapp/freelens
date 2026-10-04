@@ -5,6 +5,7 @@
 
 import { createServer, type Server } from "node:http";
 import { fetch as undiciFetch } from "undici";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { withHostHeaderPreserved } from "./host-header-dispatcher";
 import type { AddressInfo } from "node:net";
 
