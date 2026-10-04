@@ -504,8 +504,8 @@ catalogs:
       specifier: 8.11.2
       version: 8.11.2
     uuid:
-      specifier: 14.0.1
-      version: 14.0.1
+      specifier: 14.0.2
+      version: 14.0.2
     vite:
       specifier: 8.3.2
       version: 8.3.2
@@ -736,7 +736,7 @@ importers:
         version: 8.11.2
       uuid:
         specifier: 'catalog:'
-        version: 14.0.1
+        version: 14.0.2
       winston:
         specifier: 'catalog:'
         version: 3.19.0
@@ -1193,7 +1193,7 @@ importers:
         version: 8.11.2
       uuid:
         specifier: 'catalog:'
-        version: 14.0.1
+        version: 14.0.2
       winston:
         specifier: 'catalog:'
         version: 3.19.0
@@ -1610,7 +1610,7 @@ importers:
         version: 27.0.0(@ogre-tools/fp@27.0.0)
       uuid:
         specifier: 'catalog:'
-        version: 14.0.1
+        version: 14.0.2
     devDependencies:
       '@freelensapp/typescript':
         specifier: workspace:^
@@ -2528,7 +2528,7 @@ importers:
         version: link:../utilities
       uuid:
         specifier: 'catalog:'
-        version: 14.0.1
+        version: 14.0.2
     devDependencies:
       '@async-fn/vitest':
         specifier: 'catalog:'
@@ -7241,8 +7241,8 @@ packages:
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
 
-  uuid@14.0.1:
-    resolution: {integrity: sha512-6ZxzVpzDXDa3bJWaHilVayA+BH/1zmxCJoVgvmqJnid/gPoKHxUrS/aC/T6LGQtNHT+XHG9fXPJB4d+IrU30Ew==}
+  uuid@14.0.2:
+    resolution: {integrity: sha512-xZe/16rV4aa+HGSOCiY2YeLT1OybRLrrkL/Rqaq7p7GMVXjFh+6wN4oMYgjFmnSnhY8t6Xpdl2l9qmnHYuMHwQ==}
     hasBin: true
 
   varint@6.0.0:
@@ -11931,7 +11931,7 @@ snapshots:
 
   util-deprecate@1.0.2: {}
 
-  uuid@14.0.1: {}
+  uuid@14.0.2: {}
 
   varint@6.0.0: {}
 

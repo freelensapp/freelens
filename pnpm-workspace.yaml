@@ -134,7 +134,7 @@ catalog:
   tempy: 3.2.0
   triple-beam: 1.4.1
   undici: 8.11.2
-  uuid: 14.0.1
+  uuid: 14.0.2
   winston: 3.19.0
   winston-transport: 4.9.0
   ws: 8.22.0
