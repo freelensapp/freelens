@@ -28,7 +28,6 @@
     "@noble/hashes": "catalog:",
     "es-toolkit": "catalog:",
     "mobx": "catalog:",
-    "p-limit": "catalog:",
     "react": "catalog:",
     "tar": "catalog:",
     "verkit": "catalog:"
