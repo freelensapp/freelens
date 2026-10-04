@@ -399,8 +399,8 @@ catalogs:
       specifier: 0.3.1
       version: 0.3.1
     mobx:
-      specifier: 7.0.5
-      version: 7.0.5
+      specifier: 7.0.6
+      version: 7.0.6
     mobx-react-lite:
       specifier: 5.1.0
       version: 5.1.0
@@ -553,8 +553,8 @@ catalogs:
       specifier: ^11.1.21
       version: 11.1.21
     mobx:
-      specifier: ^7.0.5
-      version: 7.0.5
+      specifier: ^7.0.6
+      version: 7.0.6
     monaco-editor:
       specifier: ^0.57.0
       version: 0.57.0
@@ -661,7 +661,7 @@ importers:
         version: 27.0.0(@ogre-tools/fp@27.0.0)
       '@ogre-tools/injectable-extension-for-mobx':
         specifier: 'catalog:'
-        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx@7.0.5)
+        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx@7.0.6)
       auto-bind:
         specifier: 'catalog:'
         version: 5.0.1
@@ -697,7 +697,7 @@ importers:
         version: 5.4.2
       mobx:
         specifier: 'catalog:'
-        version: 7.0.5
+        version: 7.0.6
       node-pty:
         specifier: 'catalog:'
         version: 1.2.0-beta.14
@@ -854,7 +854,7 @@ importers:
         version: 27.0.0(@ogre-tools/fp@27.0.0)
       '@ogre-tools/injectable-react':
         specifier: 'catalog:'
-        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.3.0))(mobx@7.0.5)(react@19.3.0)
+        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx-react@10.0.2(mobx@7.0.6)(react@19.3.0))(mobx@7.0.6)(react@19.3.0)
       react:
         specifier: 'catalog:'
         version: 19.3.0
@@ -873,7 +873,7 @@ importers:
         version: link:../../utility-features/utilities
       '@ogre-tools/injectable-extension-for-mobx':
         specifier: 'catalog:'
-        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx@7.0.5)
+        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx@7.0.6)
       '@testing-library/react':
         specifier: 'catalog:'
         version: 16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -891,7 +891,7 @@ importers:
         version: 29.1.1(@noble/hashes@2.2.0)
       mobx:
         specifier: 'catalog:'
-        version: 7.0.5
+        version: 7.0.6
       vitest:
         specifier: 'catalog:'
         version: 5.0.3(@types/node@24.19.1)(@vitest/coverage-v8@5.0.3)(jsdom@29.1.1(@noble/hashes@2.2.0))(vite@8.3.2(@types/node@24.19.1)(esbuild@0.28.2)(jiti@2.6.1)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.100.0)(sass@1.100.0)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
@@ -922,10 +922,10 @@ importers:
         version: 27.0.0(@ogre-tools/fp@27.0.0)
       '@ogre-tools/injectable-extension-for-mobx':
         specifier: 'catalog:'
-        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx@7.0.5)
+        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx@7.0.6)
       mobx:
         specifier: 'catalog:'
-        version: 7.0.5
+        version: 7.0.6
     devDependencies:
       '@freelensapp/typescript':
         specifier: workspace:^
@@ -1061,10 +1061,10 @@ importers:
         version: 27.0.0(@ogre-tools/fp@27.0.0)
       '@ogre-tools/injectable-extension-for-mobx':
         specifier: 'catalog:'
-        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx@7.0.5)
+        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx@7.0.6)
       '@ogre-tools/injectable-react':
         specifier: 'catalog:'
-        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.3.0))(mobx@7.0.5)(react@19.3.0)
+        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx-react@10.0.2(mobx@7.0.6)(react@19.3.0))(mobx@7.0.6)(react@19.3.0)
       '@xterm/addon-fit':
         specifier: 'catalog:'
         version: 0.11.0
@@ -1133,16 +1133,16 @@ importers:
         version: 18.0.14
       mobx:
         specifier: 'catalog:'
-        version: 7.0.5
+        version: 7.0.6
       mobx-react:
         specifier: ^10.0.2
-        version: 10.0.2(mobx@7.0.5)(react@19.3.0)
+        version: 10.0.2(mobx@7.0.6)(react@19.3.0)
       mobx-react-lite:
         specifier: 'catalog:'
-        version: 5.1.0(mobx@7.0.5)(react@19.3.0)
+        version: 5.1.0(mobx@7.0.6)(react@19.3.0)
       mobx-utils:
         specifier: 'catalog:'
-        version: 6.1.1(mobx@7.0.5)
+        version: 6.1.1(mobx@7.0.6)
       monaco-editor:
         specifier: 'catalog:'
         version: 0.57.0
@@ -1381,10 +1381,10 @@ importers:
         version: 11.1.21
       mobx:
         specifier: catalog:extensions
-        version: 7.0.5
+        version: 7.0.6
       mobx-react:
         specifier: ^10.0.2
-        version: 10.0.2(mobx@7.0.5)(react@19.3.0)
+        version: 10.0.2(mobx@7.0.6)(react@19.3.0)
       monaco-editor:
         specifier: catalog:extensions
         version: 0.57.0
@@ -1427,7 +1427,7 @@ importers:
         version: 19.3.0
       mobx:
         specifier: catalog:extensions
-        version: 7.0.5
+        version: 7.0.6
       react:
         specifier: catalog:extensions
         version: 19.3.0
@@ -1628,13 +1628,13 @@ importers:
         version: 27.0.0(@ogre-tools/fp@27.0.0)
       '@ogre-tools/injectable-react':
         specifier: 'catalog:'
-        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.3.0))(mobx@7.0.5)(react@19.3.0)
+        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx-react@10.0.2(mobx@7.0.6)(react@19.3.0))(mobx@7.0.6)(react@19.3.0)
       mobx:
         specifier: 'catalog:'
-        version: 7.0.5
+        version: 7.0.6
       mobx-react:
         specifier: ^10.0.2
-        version: 10.0.2(mobx@7.0.5)(react@19.3.0)
+        version: 10.0.2(mobx@7.0.6)(react@19.3.0)
       react:
         specifier: 'catalog:'
         version: 19.3.0
@@ -1644,7 +1644,7 @@ importers:
         version: link:../infrastructure/typescript
       '@ogre-tools/injectable-extension-for-mobx':
         specifier: 'catalog:'
-        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx@7.0.5)
+        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx@7.0.6)
       '@testing-library/jest-dom':
         specifier: 'catalog:'
         version: 7.0.1(@testing-library/dom@10.4.2)(vitest@5.0.3)
@@ -1780,7 +1780,7 @@ importers:
         version: 27.0.0(@ogre-tools/fp@27.0.0)
       mobx:
         specifier: 'catalog:'
-        version: 7.0.5
+        version: 7.0.6
     devDependencies:
       '@freelensapp/application':
         specifier: workspace:^
@@ -1799,7 +1799,7 @@ importers:
         version: link:../../../infrastructure/typescript
       '@ogre-tools/injectable-extension-for-mobx':
         specifier: 'catalog:'
-        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx@7.0.5)
+        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx@7.0.6)
       '@testing-library/jest-dom':
         specifier: 'catalog:'
         version: 7.0.1(@testing-library/dom@10.4.2)(vitest@5.0.3)
@@ -1817,7 +1817,7 @@ importers:
         version: 29.1.1(@noble/hashes@2.2.0)
       mobx-react:
         specifier: ^10.0.2
-        version: 10.0.2(mobx@7.0.5)(react@19.3.0)
+        version: 10.0.2(mobx@7.0.6)(react@19.3.0)
       react:
         specifier: 'catalog:'
         version: 19.3.0
@@ -1844,10 +1844,10 @@ importers:
         version: 27.0.0(@ogre-tools/fp@27.0.0)
       '@ogre-tools/injectable-extension-for-mobx':
         specifier: 'catalog:'
-        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx@7.0.5)
+        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx@7.0.6)
       mobx:
         specifier: 'catalog:'
-        version: 7.0.5
+        version: 7.0.6
     devDependencies:
       '@freelensapp/typescript':
         specifier: workspace:^
@@ -1897,7 +1897,7 @@ importers:
         version: 27.0.0(@ogre-tools/fp@27.0.0)
       '@ogre-tools/injectable-extension-for-mobx':
         specifier: 'catalog:'
-        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx@7.0.5)
+        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx@7.0.6)
       '@testing-library/react':
         specifier: 'catalog:'
         version: 16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -1906,7 +1906,7 @@ importers:
         version: 29.1.1(@noble/hashes@2.2.0)
       mobx:
         specifier: 'catalog:'
-        version: 7.0.5
+        version: 7.0.6
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
@@ -1968,13 +1968,13 @@ importers:
         version: link:../../../infrastructure/typescript
       '@ogre-tools/injectable-extension-for-mobx':
         specifier: 'catalog:'
-        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx@7.0.5)
+        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx@7.0.6)
       electron:
         specifier: 'catalog:'
         version: 43.7.7(supports-color@8.1.1)
       mobx:
         specifier: 'catalog:'
-        version: 7.0.5
+        version: 7.0.6
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
@@ -2023,16 +2023,16 @@ importers:
         version: 27.0.0(@ogre-tools/fp@27.0.0)
       '@ogre-tools/injectable-extension-for-mobx':
         specifier: 'catalog:'
-        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx@7.0.5)
+        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx@7.0.6)
       '@ogre-tools/injectable-react':
         specifier: 'catalog:'
-        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.3.0))(mobx@7.0.5)(react@19.3.0)
+        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx-react@10.0.2(mobx@7.0.6)(react@19.3.0))(mobx@7.0.6)(react@19.3.0)
       mobx:
         specifier: 'catalog:'
-        version: 7.0.5
+        version: 7.0.6
       mobx-react:
         specifier: ^10.0.2
-        version: 10.0.2(mobx@7.0.5)(react@19.3.0)
+        version: 10.0.2(mobx@7.0.6)(react@19.3.0)
       react:
         specifier: 'catalog:'
         version: 19.3.0
@@ -2084,13 +2084,13 @@ importers:
         version: 27.0.0(@ogre-tools/fp@27.0.0)
       '@ogre-tools/injectable-react':
         specifier: 'catalog:'
-        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.3.0))(mobx@7.0.5)(react@19.3.0)
+        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx-react@10.0.2(mobx@7.0.6)(react@19.3.0))(mobx@7.0.6)(react@19.3.0)
       mobx:
         specifier: 'catalog:'
-        version: 7.0.5
+        version: 7.0.6
       mobx-react:
         specifier: ^10.0.2
-        version: 10.0.2(mobx@7.0.5)(react@19.3.0)
+        version: 10.0.2(mobx@7.0.6)(react@19.3.0)
       react:
         specifier: 'catalog:'
         version: 19.3.0
@@ -2146,13 +2146,13 @@ importers:
         version: 27.0.0(@ogre-tools/fp@27.0.0)
       '@ogre-tools/injectable-react':
         specifier: 'catalog:'
-        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.3.0))(mobx@7.0.5)(react@19.3.0)
+        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx-react@10.0.2(mobx@7.0.6)(react@19.3.0))(mobx@7.0.6)(react@19.3.0)
       mobx:
         specifier: 'catalog:'
-        version: 7.0.5
+        version: 7.0.6
       mobx-react:
         specifier: ^10.0.2
-        version: 10.0.2(mobx@7.0.5)(react@19.3.0)
+        version: 10.0.2(mobx@7.0.6)(react@19.3.0)
       react:
         specifier: 'catalog:'
         version: 19.3.0
@@ -2192,13 +2192,13 @@ importers:
         version: 27.0.0(@ogre-tools/fp@27.0.0)
       '@ogre-tools/injectable-react':
         specifier: 'catalog:'
-        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.3.0))(mobx@7.0.5)(react@19.3.0)
+        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx-react@10.0.2(mobx@7.0.6)(react@19.3.0))(mobx@7.0.6)(react@19.3.0)
       mobx:
         specifier: 'catalog:'
-        version: 7.0.5
+        version: 7.0.6
       mobx-react:
         specifier: ^10.0.2
-        version: 10.0.2(mobx@7.0.5)(react@19.3.0)
+        version: 10.0.2(mobx@7.0.6)(react@19.3.0)
       react:
         specifier: 'catalog:'
         version: 19.3.0
@@ -2214,7 +2214,7 @@ importers:
         version: link:../../infrastructure/typescript
       '@ogre-tools/injectable-extension-for-mobx':
         specifier: 'catalog:'
-        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx@7.0.5)
+        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx@7.0.6)
       '@testing-library/jest-dom':
         specifier: 'catalog:'
         version: 7.0.1(@testing-library/dom@10.4.2)(vitest@5.0.3)
@@ -2259,7 +2259,7 @@ importers:
         version: 27.0.0(@ogre-tools/fp@27.0.0)
       '@ogre-tools/injectable-react':
         specifier: 'catalog:'
-        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.3.0))(mobx@7.0.5)(react@19.3.0)
+        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx-react@10.0.2(mobx@7.0.6)(react@19.3.0))(mobx@7.0.6)(react@19.3.0)
       auto-bind:
         specifier: 'catalog:'
         version: 5.0.1
@@ -2268,10 +2268,10 @@ importers:
         version: 1.49.0
       mobx:
         specifier: 'catalog:'
-        version: 7.0.5
+        version: 7.0.6
       mobx-react:
         specifier: ^10.0.2
-        version: 10.0.2(mobx@7.0.5)(react@19.3.0)
+        version: 10.0.2(mobx@7.0.6)(react@19.3.0)
       react:
         specifier: 'catalog:'
         version: 19.3.0
@@ -2302,10 +2302,10 @@ importers:
         version: 1.49.0
       mobx:
         specifier: 'catalog:'
-        version: 7.0.5
+        version: 7.0.6
       mobx-react:
         specifier: ^10.0.2
-        version: 10.0.2(mobx@7.0.5)(react@19.3.0)
+        version: 10.0.2(mobx@7.0.6)(react@19.3.0)
       react:
         specifier: 'catalog:'
         version: 19.3.0
@@ -2358,10 +2358,10 @@ importers:
         version: 1.49.0
       mobx:
         specifier: 'catalog:'
-        version: 7.0.5
+        version: 7.0.6
       mobx-react:
         specifier: ^10.0.2
-        version: 10.0.2(mobx@7.0.5)(react@19.3.0)
+        version: 10.0.2(mobx@7.0.6)(react@19.3.0)
       react:
         specifier: 'catalog:'
         version: 19.3.0
@@ -2459,7 +2459,7 @@ importers:
         version: 1.49.0
       mobx:
         specifier: 'catalog:'
-        version: 7.0.5
+        version: 7.0.6
     devDependencies:
       '@async-fn/vitest':
         specifier: 'catalog:'
@@ -2550,7 +2550,7 @@ importers:
         version: 29.1.1(@noble/hashes@2.2.0)
       mobx:
         specifier: 'catalog:'
-        version: 7.0.5
+        version: 7.0.6
       type-fest:
         specifier: 'catalog:'
         version: 5.6.0
@@ -2580,7 +2580,7 @@ importers:
         version: 27.0.0(@ogre-tools/fp@27.0.0)
       '@ogre-tools/injectable-react':
         specifier: 'catalog:'
-        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.3.0))(mobx@7.0.5)(react@19.3.0)
+        version: 27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx-react@10.0.2(mobx@7.0.6)(react@19.3.0))(mobx@7.0.6)(react@19.3.0)
       '@testing-library/react':
         specifier: 'catalog:'
         version: 16.3.3(@testing-library/dom@10.4.2)(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
@@ -2589,7 +2589,7 @@ importers:
         version: 1.49.0
       mobx:
         specifier: 'catalog:'
-        version: 7.0.5
+        version: 7.0.6
       react:
         specifier: 'catalog:'
         version: 19.3.0
@@ -2623,7 +2623,7 @@ importers:
         version: 1.49.0
       mobx:
         specifier: 'catalog:'
-        version: 7.0.5
+        version: 7.0.6
       p-limit:
         specifier: 'catalog:'
         version: 7.3.3
@@ -6216,8 +6216,8 @@ packages:
     peerDependencies:
       mobx: ^6.0.0
 
-  mobx@7.0.5:
-    resolution: {integrity: sha512-Q3TZfmgJhhHfEVyQ2Wl+1Q9nkfH+y3DnoAB/Gny/gm7Yga43kMdwmfwa8lO4aiGmkty3NNy4rgjfjVM1D8vYAQ==}
+  mobx@7.0.6:
+    resolution: {integrity: sha512-VJwjVS5K/rojqPSOoDYlXaYl38Lj+gDfLOFeJ/3Pbdh5ITbAO4ks9RgL0TeRI0bydRZ7b/7WrtPPb9Onuj/pcA==}
 
   mock-http@1.1.1:
     resolution: {integrity: sha512-97fZUUUd+/cUhLv1nNoMpB2vjNS1rNqfuXqxcWXZNiDjEQbwbiZfxnkvg1YpUDJS6LP99Ic5OVVszu+bQDQcDg==}
@@ -8545,19 +8545,19 @@ snapshots:
     dependencies:
       lodash: 4.18.1
 
-  '@ogre-tools/injectable-extension-for-mobx@27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx@7.0.5)':
+  '@ogre-tools/injectable-extension-for-mobx@27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx@7.0.6)':
     dependencies:
       '@ogre-tools/fp': 27.0.0
       '@ogre-tools/injectable': 27.0.0(@ogre-tools/fp@27.0.0)
-      mobx: 7.0.5
+      mobx: 7.0.6
 
-  '@ogre-tools/injectable-react@27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx-react@10.0.2(mobx@7.0.5)(react@19.3.0))(mobx@7.0.5)(react@19.3.0)':
+  '@ogre-tools/injectable-react@27.0.0(@ogre-tools/fp@27.0.0)(@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0))(mobx-react@10.0.2(mobx@7.0.6)(react@19.3.0))(mobx@7.0.6)(react@19.3.0)':
     dependencies:
       '@ogre-tools/fp': 27.0.0
       '@ogre-tools/injectable': 27.0.0(@ogre-tools/fp@27.0.0)
       lodash: 4.18.1
-      mobx: 7.0.5
-      mobx-react: 10.0.2(mobx@7.0.5)(react@19.3.0)
+      mobx: 7.0.6
+      mobx-react: 10.0.2(mobx@7.0.6)(react@19.3.0)
       react: 19.3.0
 
   '@ogre-tools/injectable@27.0.0(@ogre-tools/fp@27.0.0)':
@@ -10864,22 +10864,22 @@ snapshots:
     dependencies:
       minimist: 1.2.8
 
-  mobx-react-lite@5.1.0(mobx@7.0.5)(react@19.3.0):
+  mobx-react-lite@5.1.0(mobx@7.0.6)(react@19.3.0):
     dependencies:
-      mobx: 7.0.5
+      mobx: 7.0.6
       react: 19.3.0
 
-  mobx-react@10.0.2(mobx@7.0.5)(react@19.3.0):
+  mobx-react@10.0.2(mobx@7.0.6)(react@19.3.0):
     dependencies:
-      mobx: 7.0.5
-      mobx-react-lite: 5.1.0(mobx@7.0.5)(react@19.3.0)
+      mobx: 7.0.6
+      mobx-react-lite: 5.1.0(mobx@7.0.6)(react@19.3.0)
       react: 19.3.0
 
-  mobx-utils@6.1.1(mobx@7.0.5):
+  mobx-utils@6.1.1(mobx@7.0.6):
     dependencies:
-      mobx: 7.0.5
+      mobx: 7.0.6
 
-  mobx@7.0.5: {}
+  mobx@7.0.6: {}
 
   mock-http@1.1.1:
     dependencies:
