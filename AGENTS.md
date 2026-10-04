@@ -174,7 +174,7 @@ environment does not have fails the check before it fails at runtime:
 
 | Program                   | Environment                     | Checks                                  |
 | ------------------------- | ------------------------------- | --------------------------------------- |
-| `tsconfig.typecheck.json` | DOM, Node and Vitest globals    | every file, tests and unclassified ones |
+| `tsconfig.typecheck.json` | DOM and Node                    | every file, tests and unclassified ones |
 | `tsconfig.main.json`      | Node, no DOM                    | main and common files                   |
 | `tsconfig.renderer.json`  | DOM, no Node                    | renderer and common files               |
 
@@ -202,6 +202,22 @@ all three extension API namespaces on purpose.
 Tests and test support (`*.test.ts(x)`, `__tests__/`, `test-utils/`,
 `*.global-override-for-injectable.ts`, `getDiForUnitTesting`, …) are kept out
 of both programs, because Vitest runs them with DOM and Node alike.
+
+No tsconfig declares the Vitest globals. TypeScript has no per-file globals,
+and tests share a program with the sources next to them, so declaring
+`describe` or `vi` for the tests would declare them for production code too.
+Test code imports what it uses instead:
+
+```ts
+import { describe, expect, it, vi } from "vitest";
+```
+
+`globals: true` stays on in the Vitest configs, because React Testing Library
+registers its automatic cleanup only when the hooks exist as globals; it has no
+effect on type checking. An override in `biome.jsonc` sets
+`noRestrictedImports` on `vitest` for every file and lifts it for tests and
+test support, so production code in any package fails `biome check` when it
+imports Vitest. A new kind of test-support path needs adding to that override.
 
 Common code uses only what both environments have: `globalThis.crypto`,
 `TextEncoder`, `URL`, `AbortController`, `structuredClone`, timers. Write
