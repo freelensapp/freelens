@@ -104,7 +104,7 @@ catalog:
   dompurify: 3.4.16
   electron-window-state: 5.0.3
   es-toolkit: 1.49.0
-  fast-xml-parser: 5.10.1
+  fast-xml-parser: 5.11.2
   fs-extra: 11.3.6
   gunzip-maybe: 1.4.2
   handlebars: 4.7.9
