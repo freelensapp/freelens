@@ -143,7 +143,10 @@ async function checkProgram({ name, config }, legacyFiles) {
 // The Biome override that turns `noNodejsModules` off exempts renderer and
 // common files that import a Node builtin today. Each of them also fails the
 // renderer program, so an exemption that is not on the renderer legacy list is
-// either stale or new, and neither is allowed.
+// either stale or new, and neither is allowed. The exemptions start with
+// `**/`, which Biome needs when Trunk runs it from a sandbox outside the
+// repository; the legacy list is root-relative, so the prefix is dropped for
+// the comparison.
 function checkBiomeExemptions(rendererLegacyFiles) {
   const legacy = new Set(rendererLegacyFiles);
   const overrides = parseJsonc(readFileSync(biomeConfigFile, "utf8")).overrides ?? [];
@@ -151,12 +154,19 @@ function checkBiomeExemptions(rendererLegacyFiles) {
     .filter((override) => override.linter?.rules?.correctness?.noNodejsModules === "off")
     .flatMap((override) => override.includes ?? []);
 
-  return exempted
-    .filter((file) => !legacy.has(file))
-    .map(
-      (file) =>
-        `${file}: exempted from noNodejsModules in biome.jsonc but not on the "renderer" legacy list; remove the exemption`,
-    );
+  return exempted.flatMap((include) => {
+    if (!include.startsWith("**/")) {
+      return [`${include}: exemption in biome.jsonc does not start with "**/", so it does not apply under Trunk Check`];
+    }
+
+    if (!legacy.has(include.slice(3))) {
+      return [
+        `${include}: exempted from noNodejsModules in biome.jsonc but not on the "renderer" legacy list; remove the exemption`,
+      ];
+    }
+
+    return [];
+  });
 }
 
 const legacyLists = parseJsonc(readFileSync(legacyListsFile, "utf8"));
