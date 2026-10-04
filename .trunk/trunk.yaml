@@ -42,6 +42,9 @@ lint:
           in_place: true
 
     # See https://github.com/trunk-io/plugins/pull/1063
+    # parse_regex is matched against the whole output of a batch, so `^`
+    # needs `(?m)` to match at every line; without it Trunk reports only the
+    # first issue Biome prints and silently drops the rest.
     - name: biome
       files:
         - astro
@@ -60,7 +63,7 @@ lint:
           batch: true
           cache_results: false
           name: lint
-          parse_regex: ^::(?P<severity>.*) title=(?P<code>[^,]+),file=(?P<path>[^,]+),line=(?P<line>[^,]+),endLine=[^,]+,col=(?P<col>[^,]+),endColumn=[^:]+::(?P<message>.*)
+          parse_regex: (?m)^::(?P<severity>.*) title=(?P<code>[^,]+),file=(?P<path>[^,]+),line=(?P<line>[^,]+),endLine=[^,]+,col=(?P<col>[^,]+),endColumn=[^:]+::(?P<message>.*)
           read_output_from: stdout
           run: biome check --config-path=${workspace}/biome.jsonc --reporter=github --no-errors-on-unmatched ${target}
           run_from: ${root_or_parent_with(biome.jsonc)}
@@ -71,7 +74,7 @@ lint:
           cache_results: false
           formatter: true
           name: fmt
-          parse_regex: ^::(?P<severity>.*) title=(?P<code>[^,]+),file=(?P<path>[^,]+),line=(?P<line>[^,]+),endLine=[^,]+,col=(?P<col>[^,]+),endColumn=[^:]+::(?P<message>.*)
+          parse_regex: (?m)^::(?P<severity>.*) title=(?P<code>[^,]+),file=(?P<path>[^,]+),line=(?P<line>[^,]+),endLine=[^,]+,col=(?P<col>[^,]+),endColumn=[^:]+::(?P<message>.*)
           read_output_from: stdout
           run: biome format --config-path=${workspace}/biome.jsonc --reporter=github --write --no-errors-on-unmatched ${target}
           run_from: ${root_or_parent_with(biome.jsonc)}
