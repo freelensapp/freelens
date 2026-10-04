@@ -5,7 +5,7 @@
  */
 
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import { isGreaterThanOrEqual } from "verkit";
+import * as verkit from "verkit";
 
 import type { InjectionToken } from "@ogre-tools/injectable";
 
@@ -21,7 +21,7 @@ const storageMigrationVersionInjectable = getInjectable({
     const declarations = di.injectMany(token);
 
     return declarations.reduce((version, decl) => {
-      if (isGreaterThanOrEqual(decl.version, version)) {
+      if (verkit.isGreaterThanOrEqual(decl.version, version)) {
         return decl.version;
       }
 

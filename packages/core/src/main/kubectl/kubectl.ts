@@ -11,7 +11,7 @@ import { hasTypedProperty, isObject, isString, json } from "@freelensapp/utiliti
 import { noop } from "es-toolkit";
 import { ensureDir, pathExists } from "fs-extra";
 import * as lockFile from "proper-lockfile";
-import { parse } from "verkit";
+import * as verkit from "verkit";
 import {
   customPackageMirror,
   defaultPackageMirror,
@@ -19,8 +19,6 @@ import {
 } from "../../features/user-preferences/common/preferences-helpers";
 
 import type { Logger } from "@freelensapp/logger";
-
-import type { SemVer } from "verkit";
 
 import type { ExecFile, ExecFileError } from "../../common/fs/exec-file.injectable";
 import type { Unlink } from "../../common/fs/unlink.injectable";
@@ -116,11 +114,11 @@ export class Kubectl {
     protected readonly dependencies: KubectlDependencies,
     clusterVersion: string,
   ) {
-    let version: SemVer;
-    const bundledVersion = parse(this.dependencies.bundledKubectlVersion);
+    let version: verkit.SemVer;
+    const bundledVersion = verkit.parse(this.dependencies.bundledKubectlVersion);
 
     try {
-      version = parse(clusterVersion);
+      version = verkit.parse(clusterVersion);
     } catch {
       version = bundledVersion;
     }

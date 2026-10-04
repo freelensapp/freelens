@@ -5,12 +5,12 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { parse } from "verkit";
+import * as verkit from "verkit";
 import { buildVersionInitializable } from "../build-version/common/token";
 
 const semanticBuildVersionInjectable = getInjectable({
   id: "semantic-build-version",
-  instantiate: (di) => parse(di.inject(buildVersionInitializable.stateToken)),
+  instantiate: (di) => verkit.parse(di.inject(buildVersionInitializable.stateToken)),
 });
 
 export default semanticBuildVersionInjectable;

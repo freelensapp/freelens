@@ -5,13 +5,13 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { parse } from "verkit";
+import * as verkit from "verkit";
 import packageJson from "../../../package.json";
 
 const extensionApiVersionInjectable = getInjectable({
   id: "extension-api-version",
   instantiate: () => {
-    const { major, minor, patch } = parse(packageJson.version);
+    const { major, minor, patch } = verkit.parse(packageJson.version);
 
     return `${major}.${minor}.${patch}`;
   },

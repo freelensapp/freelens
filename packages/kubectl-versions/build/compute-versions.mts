@@ -3,7 +3,7 @@ import { fileURLToPath } from "url";
 import { XMLParser } from "fast-xml-parser";
 import { writeFile } from "fs/promises";
 import { fetch } from "undici";
-import { getMinor } from "verkit";
+import * as verkit from "verkit";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -56,7 +56,7 @@ async function requestAllVersions(): Promise<[string, string][]> {
     return [];
   }
 
-  const greatestMinor = getMinor(greatestVersion);
+  const greatestMinor = verkit.getMinor(greatestVersion);
   const majorMinorRequests = new Array<string>(Math.max(greatestMinor - minSupportedMinor + 1, 0))
     .fill("")
     .map((value, index) => `1.${index + minSupportedMinor}`)

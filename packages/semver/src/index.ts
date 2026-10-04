@@ -7,7 +7,7 @@
  */
 
 import commandLineArgs from "command-line-args";
-import { parse } from "verkit";
+import * as verkit from "verkit";
 
 const options = commandLineArgs([
   {
@@ -74,7 +74,7 @@ if (showOptionsSet > 1) {
   process.exit(1);
 }
 
-const version = parse(options.version);
+const version = verkit.parse(options.version);
 const prerelease = version.prerelease ?? [];
 
 if (showMajor) {
