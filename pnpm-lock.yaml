@@ -441,8 +441,8 @@ catalogs:
       specifier: 2.3.3
       version: 2.3.3
     rfc6902:
-      specifier: 5.2.0
-      version: 5.2.0
+      specifier: 5.3.0
+      version: 5.3.0
     rolldown:
       specifier: 1.2.12
       version: 1.2.12
@@ -559,8 +559,8 @@ catalogs:
       specifier: ^5.10.2
       version: 5.10.2
     rfc6902:
-      specifier: ^5.2.0
-      version: 5.2.0
+      specifier: ^5.3.0
+      version: 5.3.0
     type-fest:
       specifier: ^5.6.0
       version: 5.6.0
@@ -1163,7 +1163,7 @@ importers:
         version: 2.3.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       rfc6902:
         specifier: 'catalog:'
-        version: 5.2.0
+        version: 5.3.0
       selfsigned:
         specifier: 'catalog:'
         version: 5.5.0
@@ -1387,7 +1387,7 @@ importers:
         version: 5.10.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(supports-color@8.1.1)
       rfc6902:
         specifier: catalog:extensions
-        version: 5.2.0
+        version: 5.3.0
       type-fest:
         specifier: catalog:extensions
         version: 5.6.0
@@ -2417,7 +2417,7 @@ importers:
         version: 24.19.1
       rfc6902:
         specifier: 'catalog:'
-        version: 5.2.0
+        version: 5.3.0
       type-fest:
         specifier: 'catalog:'
         version: 5.6.0
@@ -2460,7 +2460,7 @@ importers:
         version: link:../../infrastructure/typescript
       rfc6902:
         specifier: 'catalog:'
-        version: 5.2.0
+        version: 5.3.0
       type-fest:
         specifier: 'catalog:'
         version: 5.6.0
@@ -6588,8 +6588,8 @@ packages:
   rfc4648@1.5.4:
     resolution: {integrity: sha512-rRg/6Lb+IGfJqO05HZkN50UtY7K/JhxJag1kP23+zyMfrvoB0B7RWv06MbOzoc79RgCdNTiUaNsTT1AJZ7Z+cg==}
 
-  rfc6902@5.2.0:
-    resolution: {integrity: sha512-ZNQpVnWsdLMTCcLZcUY9ZBhxWuj7/H13EM7NL2gvbAMBXfLeN3iOLi3TWT1+8Or7OTLYXRDCy7sTEStk3j4KBA==}
+  rfc6902@5.3.0:
+    resolution: {integrity: sha512-8x9uqKB5FeC3jhdtmBtI2Z2GR0+VE1VLbQ7Luy5RcnCxUa4+Z1n8w2G1D+GevkRUT33nbbfpAK5O4LhRbnaIPQ==}
 
   rimraf@2.6.3:
     resolution: {integrity: sha512-mwqeW5XsA2qAejG46gYdENaxXjx9onRNCfn7L0duuP4hCuTIi/QO7PDK07KJfp1d+izWPrzEJDcSqBa0OZQriA==}
@@ -11255,7 +11255,7 @@ snapshots:
 
   rfc4648@1.5.4: {}
 
-  rfc6902@5.2.0: {}
+  rfc6902@5.3.0: {}
 
   rimraf@2.6.3:
     dependencies:
