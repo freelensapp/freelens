@@ -139,7 +139,7 @@ catalog:
   winston-transport: 4.9.0
   ws: 8.21.0
   yauzl-promise: 4.0.0
-  zod: 4.4.3
+  zod: 4.6.5
 
 catalogs:
   # Runtime dependencies of the published @freelensapp/extensions package.

@@ -531,8 +531,8 @@ catalogs:
       specifier: 4.0.0
       version: 4.0.0
     zod:
-      specifier: 4.4.3
-      version: 4.4.3
+      specifier: 4.6.5
+      version: 4.6.5
   extensions:
     '@types/react':
       specifier: ^19.3.0
@@ -742,7 +742,7 @@ importers:
         version: 8.21.0
       zod:
         specifier: 'catalog:'
-        version: 4.4.3
+        version: 4.6.5
     devDependencies:
       '@electron/notarize':
         specifier: 'catalog:'
@@ -1202,7 +1202,7 @@ importers:
         version: 8.21.0
       zod:
         specifier: 'catalog:'
-        version: 4.4.3
+        version: 4.6.5
     devDependencies:
       '@async-fn/vitest':
         specifier: 'catalog:'
@@ -1335,7 +1335,7 @@ importers:
         version: 4.0.0
       zod:
         specifier: 'catalog:'
-        version: 4.4.3
+        version: 4.6.5
     devDependencies:
       '@types/cli-progress':
         specifier: 'catalog:'
@@ -7475,6 +7475,9 @@ packages:
   zod@4.4.3:
     resolution: {integrity: sha512-ytENFjIJFl2UwYglde2jchW2Hwm4GJFLDiSXWdTrJQBIN9Fcyp7n4DhxJEiWNAJMV1/BqWfW/kkg71UDcHJyTQ==}
 
+  zod@4.6.5:
+    resolution: {integrity: sha512-v5l/aFXZQeai4awLbOpSoHecE9UiMrnfx75tEXLjNonXVARxQ5mOeipTjROUchszUNCqnE+hqAMujRsRHsut2Q==}
+
 snapshots:
 
   '@adobe/css-tools@4.3.3':
@@ -12116,3 +12119,5 @@ snapshots:
       '@yuku-parser/binding-win32-x64': 0.10.2
 
   zod@4.4.3: {}
+
+  zod@4.6.5: {}
