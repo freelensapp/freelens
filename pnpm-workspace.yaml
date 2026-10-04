@@ -82,7 +82,7 @@ catalog:
   '@hapi/call': 9.0.1
   '@hapi/subtext': 8.1.3
   '@kubernetes/client-node': 2.0.0
-  '@mui/material': 9.2.0
+  '@mui/material': 9.4.0
   '@noble/hashes': 2.4.0
   '@quantco/pnpm-licenses': 2.4.2
   '@tailwindcss/postcss': 4.3.3
