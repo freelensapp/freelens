@@ -270,8 +270,8 @@ catalogs:
       specifier: 7.7.1
       version: 7.7.1
     '@types/tar-stream':
-      specifier: 3.1.4
-      version: 3.1.4
+      specifier: 3.1.5
+      version: 3.1.5
     '@types/tcp-port-used':
       specifier: 1.0.4
       version: 1.0.4
@@ -480,8 +480,8 @@ catalogs:
       specifier: 7.5.22
       version: 7.5.22
     tar-stream:
-      specifier: 3.2.0
-      version: 3.2.0
+      specifier: 3.2.2
+      version: 3.2.2
     tcp-port-used:
       specifier: 1.0.3
       version: 1.0.3
@@ -1329,7 +1329,7 @@ importers:
         version: 5.0.0(supports-color@8.1.1)
       tar-stream:
         specifier: 'catalog:'
-        version: 3.2.0
+        version: 3.2.2
       undici:
         specifier: 'catalog:'
         version: 8.11.2
@@ -1351,7 +1351,7 @@ importers:
         version: 24.19.1
       '@types/tar-stream':
         specifier: 'catalog:'
-        version: 3.1.4
+        version: 3.1.5
       '@types/yauzl-promise':
         specifier: 'catalog:'
         version: 4.0.1
@@ -4375,8 +4375,8 @@ packages:
   '@types/stream-buffers@3.0.7':
     resolution: {integrity: sha512-azOCy05sXVXrO+qklf0c/B07H/oHaIuDDAiHPVwlk3A9Ek+ksHyTeMajLZl3r76FxpPpxem//4Te61G1iW3Giw==}
 
-  '@types/tar-stream@3.1.4':
-    resolution: {integrity: sha512-921gW0+g29mCJX0fRvqeHzBlE/XclDaAG0Ousy1LCghsOhvaKacDeRGEVzQP9IPfKn8Vysy7FEXAIxycpc/CMg==}
+  '@types/tar-stream@3.1.5':
+    resolution: {integrity: sha512-zCUA6CSDw0t2cpQiZixpyzfubpeuVZmBr5wztvuCG4bhy7reX/9wGXdZxEzz2CjMFLQ32UPR/01jzUUSRJeCeQ==}
 
   '@types/tcp-port-used@1.0.4':
     resolution: {integrity: sha512-0vQ4fz9TTM4bCdllYWEJ2JHBUXR9xqPtc70dJ7BMRDVfvZyYdrgey3nP5RRcVj+qAgnHJM8r9fvgrfnPMxdnhA==}
@@ -4847,6 +4847,14 @@ packages:
   b4a@1.6.4:
     resolution: {integrity: sha512-fpWrvyVHEKyeEvbKZTVOeZF3VSKKWtJxFIxX/jaVPf+cLbGUSitjb49pHLqPV2BUNNZ0LcoeEGfE/YCpyDYHIw==}
 
+  b4a@1.9.0:
+    resolution: {integrity: sha512-dpfcF9fDNR6++cthXR67iyhgqWy9CBouAvIWhIntzBG6cvK/cnIPiZQjBwi/ZqjjBEDGfoNDtmB0kTjroOJ3pQ==}
+    peerDependencies:
+      react-native-b4a: '*'
+    peerDependenciesMeta:
+      react-native-b4a:
+        optional: true
+
   babel-plugin-macros@3.1.0:
     resolution: {integrity: sha512-Cg7TFGpIr01vOQNODXOOaGz2NpCU5gl8x1qJFbb6hbZxR7XrcE2vtbAsTAbJ7/xwJtUuJEw8K8Zr/AE0LHlesg==}
     engines: {node: '>=10', npm: '>=6'}
@@ -4861,9 +4869,26 @@ packages:
   bare-events@2.5.4:
     resolution: {integrity: sha512-+gFfDkR8pj4/TrWCGUGWmJIkBwuxPS5F+a5yWjOHQt2hHvNZd5YLzadjmDUtFmMM4y429bnKLa8bYBMHcYdnQA==}
 
+  bare-events@2.9.2:
+    resolution: {integrity: sha512-AIPKioV7/Y/8KfZ3AAhjPJxLLbY49S64Ym5DakZlUg75qQiTgUq9hEJoEwa4eUezPUlXRy/i5NpsKvo9jgKmoA==}
+    peerDependencies:
+      bare-abort-controller: '*'
+    peerDependenciesMeta:
+      bare-abort-controller:
+        optional: true
+
   bare-fs@4.5.6:
     resolution: {integrity: sha512-1QovqDrR80Pmt5HPAsMsXTCFcDYr+NSUKW6nd6WO5v0JBmnItc/irNRzm2KOQ5oZ69P37y+AMujNyNtG+1Rggw==}
     engines: {bare: '>=1.16.0'}
+    peerDependencies:
+      bare-buffer: '*'
+    peerDependenciesMeta:
+      bare-buffer:
+        optional: true
+
+  bare-fs@4.8.2:
+    resolution: {integrity: sha512-+ZI68KHMUvosXfKbg/UOHK0tbCdRnegbvPEdEcZ3Nd6TetieQsJPRXBRXPdLyy8+3VSEbPXtsumTpEtt78xv9w==}
+    engines: {bare: '>=1.28.0'}
     peerDependencies:
       bare-buffer: '*'
     peerDependenciesMeta:
@@ -5390,6 +5415,9 @@ packages:
   esutils@2.0.3:
     resolution: {integrity: sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==}
     engines: {node: '>=0.10.0'}
+
+  events-universal@1.0.1:
+    resolution: {integrity: sha512-LUd5euvbMLpwOF8m6ivPCbhQeSiYVNb8Vs0fQ8QjXo0JTkEHpz8pxdQf0gStltaPpw0Cca8b39KxvK9cfKRiAw==}
 
   expect-type@1.4.0:
     resolution: {integrity: sha512-KfYbmpRm0VbLjEvVa9yGwCi9GI34xvi7A/HXYWQO65CSD2u3MczUJSuwXKFIxlGsgBQizV9q5J9NHj4VG0n+pA==}
@@ -6939,6 +6967,9 @@ packages:
   streamx@2.22.0:
     resolution: {integrity: sha512-sLh1evHOzBy/iWRiR6d1zRcLao4gGZr3C1kzNz4fopCOKJb6xD9ub8Mpi9Mr1R6id5o43S+d93fI48UC5uM9aw==}
 
+  streamx@2.28.1:
+    resolution: {integrity: sha512-zEzXb0s5Cds7tqMH6rhZ05lcJydCWiQPEwiNngVqzsxCc962vLY4Uw+mW7od8kDH258k2Uz/JrOkdIAAhSh9VA==}
+
   string-width@4.2.3:
     resolution: {integrity: sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==}
     engines: {node: '>=8'}
@@ -7016,6 +7047,9 @@ packages:
 
   tar-stream@3.2.0:
     resolution: {integrity: sha512-ojzvCvVaNp6aOTFmG7jaRD0meowIAuPc3cMMhSgKiVWws1GyHbGd/xvnyuRKcKlMpt3qvxx6r0hreCNITP9hIg==}
+
+  tar-stream@3.2.2:
+    resolution: {integrity: sha512-+8NeqHRjQWH9nYlwo2gamAMImZCVzI4UoEgDpWorBt9OEfppiZn+uSkskzQKPWIZyji/C8fpWO7u69G0DX0tbg==}
 
   tar@7.5.22:
     resolution: {integrity: sha512-MFO/QzvtAOmJbkhOaCTvbGcFN9L9b+JunIsDwaKljSOdcLMea3NJ1k9Usz/rjdfSXTq4dfzfeS7W4p4YOAAHeA==}
@@ -9133,7 +9167,7 @@ snapshots:
     dependencies:
       '@types/node': 24.19.1
 
-  '@types/tar-stream@3.1.4':
+  '@types/tar-stream@3.1.5':
     dependencies:
       '@types/node': 24.19.1
 
@@ -9459,6 +9493,8 @@ snapshots:
 
   b4a@1.6.4: {}
 
+  b4a@1.9.0: {}
+
   babel-plugin-macros@3.1.0:
     dependencies:
       '@babel/runtime': 7.29.7
@@ -9471,7 +9507,17 @@ snapshots:
 
   bare-events@2.5.4: {}
 
+  bare-events@2.9.2: {}
+
   bare-fs@4.5.6:
+    dependencies:
+      bare-events: 2.5.4
+      bare-path: 3.0.0
+      bare-stream: 2.6.5(bare-events@2.5.4)
+      bare-url: 2.4.0
+      fast-fifo: 1.3.2
+
+  bare-fs@4.8.2:
     dependencies:
       bare-events: 2.5.4
       bare-path: 3.0.0
@@ -10060,6 +10106,12 @@ snapshots:
       '@types/estree': 1.0.9
 
   esutils@2.0.3: {}
+
+  events-universal@1.0.1:
+    dependencies:
+      bare-events: 2.9.2
+    transitivePeerDependencies:
+      - bare-abort-controller
 
   expect-type@1.4.0: {}
 
@@ -11599,6 +11651,14 @@ snapshots:
     optionalDependencies:
       bare-events: 2.5.4
 
+  streamx@2.28.1:
+    dependencies:
+      events-universal: 1.0.1
+      fast-fifo: 1.3.2
+      text-decoder: 1.2.3
+    transitivePeerDependencies:
+      - bare-abort-controller
+
   string-width@4.2.3:
     dependencies:
       emoji-regex: 8.0.0
@@ -11692,6 +11752,17 @@ snapshots:
       streamx: 2.22.0
     transitivePeerDependencies:
       - bare-buffer
+
+  tar-stream@3.2.2:
+    dependencies:
+      b4a: 1.9.0
+      bare-fs: 4.8.2
+      fast-fifo: 1.3.2
+      streamx: 2.28.1
+    transitivePeerDependencies:
+      - bare-abort-controller
+      - bare-buffer
+      - react-native-b4a
 
   tar@7.5.22:
     dependencies:
