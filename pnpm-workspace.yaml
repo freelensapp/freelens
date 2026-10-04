@@ -120,7 +120,7 @@ catalog:
   proper-lockfile: 4.1.2
   react-select: 5.10.2
   react-window: 2.3.3
-  rfc6902: 5.2.0
+  rfc6902: 5.3.0
   selfsigned: 5.5.0
   sharp: 0.35.5
   sigstore: 5.0.0
@@ -159,7 +159,7 @@ catalogs:
     monaco-editor: ^0.57.0
     react: ^19.3.0
     react-select: ^5.10.2
-    rfc6902: ^5.2.0
+    rfc6902: ^5.3.0
     type-fest: ^5.6.0
 
 allowBuilds:
