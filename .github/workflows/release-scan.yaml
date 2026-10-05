@@ -87,9 +87,12 @@ jobs:
           mkdir -p sboms prod
           # `|| true`: gh exits non-zero when a pattern matches nothing, which is
           # the "release predates this" case handled below, not an error.
-          gh release download "$tag" -R "$GITHUB_REPOSITORY" --pattern '*-sbom.spdx.json' --dir sboms || true
+          # The syft-json SBOMs, not the SPDX ones next to them: only syft-json
+          # carries the Go symbols that let Grype match a Go advisory by the
+          # functions it names rather than by the whole module.
+          gh release download "$tag" -R "$GITHUB_REPOSITORY" --pattern '*-sbom.syft.json' --dir sboms || true
           gh release download "$tag" -R "$GITHUB_REPOSITORY" --pattern '*-prod-packages.json' --dir prod || true
-          sboms=$(find sboms -name '*-sbom.spdx.json' | wc -l)
+          sboms=$(find sboms -name '*-sbom.syft.json' | wc -l)
           lists=$(find prod -name '*-prod-packages.json' | wc -l)
           echo "sboms=$sboms" >> "$GITHUB_OUTPUT"
           echo "lists=$lists" >> "$GITHUB_OUTPUT"
@@ -106,7 +109,7 @@ jobs:
         run: |
           set -eo pipefail
           if [[ "${{ steps.release.outputs.sboms }}" -eq 0 ]]; then
-            missing="ships no SBOM"
+            missing="ships no syft-json SBOM, which this report scans for the Go symbols the SPDX SBOMs cannot carry"
           else
             missing="ships SBOMs but no runtime package list, which this report needs to reduce them to what actually runs on a user's machine"
           fi
@@ -141,47 +144,73 @@ jobs:
             echo "Runtime package set is empty - refusing to scan (every npm finding would be dropped)" >&2
             exit 1
           fi
-          for sbom in sboms/*-sbom.spdx.json; do
-            name=$(basename "$sbom" .spdx.json)
+          for sbom in sboms/*-sbom.syft.json; do
+            name=$(basename "$sbom" .syft.json)
             # Reduce the SBOM to runtime packages before scanning.
-            # sub("\x5c"; "/"): the Windows SBOM records sourceInfo paths with
+            # sub("\x5c"; "/"): the Windows SBOM records location paths with
             # backslashes, which the /freelens/... test below would never match -
             # every shipped non-npm package (Electron DLLs, node-pty, the bundled
             # Go CLIs) would silently drop out of the scan. \x5c rather than a
             # literal backslash because yq unescapes the string first, leaving
             # the regex engine a trailing backslash.
+            #
+            # The Go modules of Windows binaries (*.exe) are dropped too. Syft
+            # reads symbols from ELF and Mach-O binaries only, so Grype matches
+            # these by whole module and reports advisories for functions the
+            # binary does not contain. The Linux and macOS builds of the same
+            # CLIs come from the same modules and carry the symbols, and Grype's
+            # symbol check does not look at GOOS, so an advisory against Windows
+            # code still shows up through them when the vulnerable function is
+            # compiled into those builds too.
+            #
+            # Relationships that point at a dropped package go with it, so the
+            # decoder does not warn about every one of them.
             yq -pj -oj '
               (load("prod-set.json")) as $set |
-              .packages |= map(
-                ( ((.externalRefs // []) | map(select(.referenceType == "purl")))[0].referenceLocator // "" ) as $purl |
-                (.name + "@" + (.versionInfo // "")) as $key |
-                (((.sourceInfo // "") | sub("\\x5c"; "/")) | (capture("(?<p>/[^,]*)").p // "")) as $path |
-                select(
+              .artifacts |= map(
+                (.purl // "") as $purl |
+                (.name + "@" + (.version // "")) as $key |
+                (((.locations // [])[0].path // "") | sub("\\x5c"; "/")) as $path |
+                .runtime = (
                   (($purl | test("^pkg:npm/")) and ($set[$key] != null))
                   or
-                  (($purl | test("^pkg:npm/") | not) and ($path | test("^/freelens/(dist|binaries)/")))
+                  (($purl | test("^pkg:npm/") | not) and ($path | test("^/freelens/(dist|binaries)/"))
+                    and (($purl | test("^pkg:golang/") | not) or ($path | test("\\.exe$") | not)))
                 )
-              )
-            ' "$sbom" > "runtime-${name}.spdx.json"
-            all=$(yq -pj -oj '.packages | length' "$sbom")
-            run=$(yq -pj -oj '.packages | length' "runtime-${name}.spdx.json")
-            echo "::group::grype ${sbom} (${all} -> ${run} runtime packages)"
-            "$grype" "sbom:runtime-${name}.spdx.json" -o json="jsons/${name}.json"
+              ) |
+              ([.artifacts[] | select(.runtime | not) | {"key": .id, "value": true}] | from_entries) as $dropped |
+              .artifacts |= map(select(.runtime) | del(.runtime)) |
+              .artifactRelationships |= ((. // []) | map(
+                .parent as $parent | .child as $child |
+                select(($dropped[$parent] == null) and ($dropped[$child] == null))
+              ))
+            ' "$sbom" > "runtime-${name}.syft.json"
+            all=$(yq -pj -oj '.artifacts | length' "$sbom")
+            run=$(yq -pj -oj '.artifacts | length' "runtime-${name}.syft.json")
+            # Symbol capture failing would not fail the scan, only bring back the
+            # whole-module matches this SBOM format is here to avoid - so say it
+            # where it is seen rather than only in Grype's log.
+            go=$(yq -pj -oj '[.artifacts[] | select((.purl // "") | test("^pkg:golang/"))] | length' "runtime-${name}.syft.json")
+            symbols=$(yq -pj -oj '[.artifacts[] | select((.purl // "") | test("^pkg:golang/")) | select(((.metadata.symbols // {}) | length) > 0)] | length' "runtime-${name}.syft.json")
+            if [[ "$go" -gt 0 && "$symbols" -eq 0 ]]; then
+              echo "::warning::${sbom}: none of its ${go} runtime Go packages carries symbols - Go advisories are matched by whole module"
+            fi
+            echo "::group::grype ${sbom} (${all} -> ${run} runtime packages, ${symbols} of ${go} Go packages with symbols)"
+            "$grype" "sbom:runtime-${name}.syft.json" -o json="jsons/${name}.json"
             echo "::endgroup::"
           done
           # grype leaves the artifact location empty for SBOM scans. For non-npm
-          # packages (Go modules, native binaries) the SPDX sourceInfo carries a
+          # packages (Go modules, native binaries) the SBOM location carries a
           # real path, so build a <name>@<version> -> path map. Build it from the
           # filtered SBOMs so a package present in several binaries (e.g. the Go
           # stdlib in kubectl and in the dev-only tsc binary) maps to a shipped
           # location, not a dropped build-time one.
-          yq ea -pj -oj -I0 '[.]' runtime-*.spdx.json |
+          yq ea -pj -oj -I0 '[.]' runtime-*.syft.json |
             yq -pj -oj '
-                [ .[].packages[]
-                  | select(has("sourceInfo"))
+                [ .[].artifacts[]
                   | {
-                      "key": (.name + "@" + (.versionInfo // "")),
-                      "value": (((.sourceInfo | sub("\\x5c"; "/")) | capture("(?<p>/[^,]*)").p) // "" | sub("^/"; ""))
+                      "key": (.name + "@" + (.version // "")),
+                      "value": ((.locations // [])[0].path // "" | sub("\\x5c"; "/") | sub("^/"; ""))
                     }
                   | select(.value != "")
                 ] | from_entries
@@ -190,7 +219,7 @@ jobs:
           # vulnerability + package + version (a finding shared by every platform
           # is one row, not six) and resolve each match's location from its
           # <name>@<version> - the pnpm-store path for npm packages, the
-          # sourceInfo path for non-npm ones, and a synthetic
+          # SBOM location for non-npm ones, and a synthetic
           # "sbom/<package>@<version>" as a last resort.
           yq ea -pj -oj -I0 '[.]' jsons/*.json |
             yq -pj -oj '
