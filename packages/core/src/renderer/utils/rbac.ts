@@ -47,6 +47,8 @@ export const ResourceNames: Record<KubeResource, string> = {
   clusterroles: "Cluster Roles",
   serviceaccounts: "Service Accounts",
   verticalpodautoscalers: "Vertical Pod Autoscalers",
+  mutatingadmissionpolicies: "Mutating Admission Policies",
+  mutatingadmissionpolicybindings: "Mutating Admission Policy Bindings",
   mutatingwebhookconfigurations: "Mutating Webhook Configurations",
   validatingadmissionpolicies: "Validating Admission Policies",
   validatingadmissionpolicybindings: "Validating Admission Policy Bindings",
