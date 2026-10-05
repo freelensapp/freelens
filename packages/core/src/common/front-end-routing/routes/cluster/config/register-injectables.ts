@@ -10,6 +10,8 @@ import { registerInjectables as registerConfigMapsInjectables } from "./config-m
 import { registerInjectables as registerHorizontalPodAutoscalersInjectables } from "./horizontal-pod-autoscalers/register-injectables";
 import { registerInjectables as registerLeasesInjectables } from "./leases/register-injectables";
 import { registerInjectables as registerLimitRangesInjectables } from "./limit-ranges/register-injectables";
+import { registerInjectables as registerMutatingAdmissionPoliciesInjectables } from "./mutating-admission-policies/register-injectables";
+import { registerInjectables as registerMutatingAdmissionPolicyBindingsInjectables } from "./mutating-admission-policy-bindings/register-injectables";
 import { registerInjectables as registerMutatingWebhookConfigurationsInjectables } from "./mutating-webhook-configurations/register-injectables";
 import { registerInjectables as registerPodDisruptionBudgetsInjectables } from "./pod-disruption-budgets/register-injectables";
 import { registerInjectables as registerPriorityClassesInjectables } from "./priority-classes/register-injectables";
@@ -41,6 +43,16 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     registerLimitRangesInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerMutatingAdmissionPoliciesInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerMutatingAdmissionPolicyBindingsInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }

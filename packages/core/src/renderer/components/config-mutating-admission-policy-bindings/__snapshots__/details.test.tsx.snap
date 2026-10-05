@@ -1,0 +1,175 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`MutatingAdmissionPolicyBindingDetails > renders 1`] = `
+<body>
+  <div>
+    <div
+      class="MutatingAdmissionPolicyBindingDetails"
+    >
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          API version
+        </span>
+        <span
+          class="value"
+        >
+          admissionregistration.k8s.io/v1
+        </span>
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Policy Name
+        </span>
+        <span
+          class="value"
+        >
+          sidecar-policy.example.com
+        </span>
+      </div>
+      <div
+        class="DrawerTitle title"
+      >
+        Param Ref
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Name
+        </span>
+        <span
+          class="value"
+        >
+          mesh-proxy
+        </span>
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Namespace
+        </span>
+        <span
+          class="value"
+        >
+          default
+        </span>
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Parameter Not Found Action
+        </span>
+        <span
+          class="value"
+        >
+          Deny
+        </span>
+      </div>
+      <div
+        class="DrawerTitle title"
+      >
+        Match Resources
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Match Policy
+        </span>
+        <span
+          class="value"
+        >
+          Equivalent
+        </span>
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Resource Rules
+        </span>
+        <span
+          class="value"
+        >
+          <div>
+            <div>
+              API Groups: 
+            </div>
+            <div>
+              API Versions: 
+              v1
+            </div>
+            <div>
+              Operations: 
+              CREATE
+            </div>
+            <div>
+              Resources: 
+              pods
+            </div>
+          </div>
+        </span>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`MutatingAdmissionPolicyBindingDetails > renders with no param ref 1`] = `
+<body>
+  <div>
+    <div
+      class="MutatingAdmissionPolicyBindingDetails"
+    >
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          API version
+        </span>
+        <span
+          class="value"
+        >
+          admissionregistration.k8s.io/v1
+        </span>
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Policy Name
+        </span>
+        <span
+          class="value"
+        >
+          sidecar-policy.example.com
+        </span>
+      </div>
+    </div>
+  </div>
+</body>
+`;
