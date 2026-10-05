@@ -483,8 +483,8 @@ catalogs:
       specifier: 2.10.2
       version: 2.10.2
     type-fest:
-      specifier: 5.6.0
-      version: 5.6.0
+      specifier: 5.10.0
+      version: 5.10.0
     typescript:
       specifier: 7.0.2
       version: 7.0.2
@@ -559,8 +559,8 @@ catalogs:
       specifier: ^5.3.0
       version: 5.3.0
     type-fest:
-      specifier: ^5.6.0
-      version: 5.6.0
+      specifier: ^5.10.0
+      version: 5.10.0
 
 overrides:
   '@kubernetes/client-node>@types/node': 24.19.1
@@ -1281,7 +1281,7 @@ importers:
         version: 4.3.3
       type-fest:
         specifier: 'catalog:'
-        version: 5.6.0
+        version: 5.10.0
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
@@ -1384,7 +1384,7 @@ importers:
         version: 5.3.0
       type-fest:
         specifier: catalog:extensions
-        version: 5.6.0
+        version: 5.10.0
     devDependencies:
       '@freelensapp/core':
         specifier: workspace:^
@@ -1490,7 +1490,7 @@ importers:
         version: 30.1.1(@noble/hashes@2.4.0)
       type-fest:
         specifier: 'catalog:'
-        version: 5.6.0
+        version: 5.10.0
       vitest:
         specifier: 'catalog:'
         version: 5.0.3(@types/node@24.19.1)(@vitest/coverage-v8@5.0.3)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@24.19.1)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.105.1)(sass@1.105.1)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
@@ -2263,7 +2263,7 @@ importers:
         version: 19.3.0
       type-fest:
         specifier: 'catalog:'
-        version: 5.6.0
+        version: 5.10.0
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
@@ -2414,7 +2414,7 @@ importers:
         version: 5.3.0
       type-fest:
         specifier: 'catalog:'
-        version: 5.6.0
+        version: 5.10.0
 
   packages/utility-features/kube-api:
     dependencies:
@@ -2457,7 +2457,7 @@ importers:
         version: 5.3.0
       type-fest:
         specifier: 'catalog:'
-        version: 5.6.0
+        version: 5.10.0
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
@@ -2532,7 +2532,7 @@ importers:
         version: 7.0.6
       type-fest:
         specifier: 'catalog:'
-        version: 5.6.0
+        version: 5.10.0
       vitest:
         specifier: 'catalog:'
         version: 5.0.3(@types/node@24.19.1)(@vitest/coverage-v8@5.0.3)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@24.19.1)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.105.1)(sass@1.105.1)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
@@ -2627,7 +2627,7 @@ importers:
         version: 30.1.1(@noble/hashes@2.4.0)
       type-fest:
         specifier: 'catalog:'
-        version: 5.6.0
+        version: 5.10.0
       vitest:
         specifier: 'catalog:'
         version: 5.0.3(@types/node@24.19.1)(@vitest/coverage-v8@5.0.3)(jsdom@30.1.1(@noble/hashes@2.4.0))(vite@8.3.2(@types/node@24.19.1)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.105.1)(sass@1.105.1)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
@@ -7110,6 +7110,10 @@ packages:
   type-fest@2.19.0:
     resolution: {integrity: sha512-RAH822pAdBgcNMAfWnCBU3CFZcfZ/i1eZjwFU/dsLKumyuuP3niueg2UAukXYF0E2AAoc82ZSSf9J0WQBinzHA==}
     engines: {node: '>=12.20'}
+
+  type-fest@5.10.0:
+    resolution: {integrity: sha512-NoSdpq/WEiAg5sjmBkmV/hfxv6HJH4NqPNrqjtSO5CwRmpsDfaf4begxW34KdJykH/l1yHtwBWQkCRdoXO8mPA==}
+    engines: {node: '>=20'}
 
   type-fest@5.6.0:
     resolution: {integrity: sha512-8ZiHFm91orbSAe2PSAiSVBVko18pbhbiB3U9GglSzF/zCGkR+rxpHx6sEMCUm4kxY4LjDIUGgCfUMtwfZfjfUA==}
@@ -11792,6 +11796,10 @@ snapshots:
   type-fest@1.4.0: {}
 
   type-fest@2.19.0: {}
+
+  type-fest@5.10.0:
+    dependencies:
+      tagged-tag: 1.0.0
 
   type-fest@5.6.0:
     dependencies:
