@@ -5,9 +5,10 @@
  */
 
 import { loggerInjectionToken } from "@freelensapp/logger";
-import { disposer, isDefined, isRequestError, withConcurrencyLimit } from "@freelensapp/utilities";
+import { disposer, isDefined, isRequestError } from "@freelensapp/utilities";
 import { ApiException, type KubeConfig } from "@kubernetes/client-node";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
+import { limitAsync } from "es-toolkit";
 import { compareStructural, reaction, runInAction } from "mobx";
 import createAuthorizationApiInjectable from "../../common/cluster/create-authorization-api.injectable";
 import createCanIInjectable from "../../common/cluster/create-can-i.injectable";
@@ -596,7 +597,7 @@ class ClusterConnection {
       return [];
     }
 
-    const requestNamespaceListPermissions = withConcurrencyLimit(5)(req);
+    const requestNamespaceListPermissions = limitAsync(req, 5);
     const namespaceListPermissions = allowedNamespaces.map(requestNamespaceListPermissions);
     const canListResources = await Promise.all(namespaceListPermissions);
 

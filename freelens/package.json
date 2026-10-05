@@ -91,7 +91,6 @@
     "mobx": "catalog:",
     "undici": "catalog:",
     "node-pty": "catalog:",
-    "p-limit": "catalog:",
     "proper-lockfile": "catalog:",
     "react": "catalog:",
     "selfsigned": "catalog:",

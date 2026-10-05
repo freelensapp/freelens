@@ -116,7 +116,6 @@ catalog:
   monaco-editor: 0.57.0
   node-pty: 1.2.0-beta.15
   openpgp: 6.3.2
-  p-limit: 7.3.3
   proper-lockfile: 4.1.2
   react-select: 5.10.2
   react-window: 2.3.3
