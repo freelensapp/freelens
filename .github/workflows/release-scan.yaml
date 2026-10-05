@@ -164,7 +164,9 @@ jobs:
             # compiled into those builds too.
             #
             # Relationships that point at a dropped package go with it, so the
-            # decoder does not warn about every one of them.
+            # decoder does not warn about every one of them. The dropped set is
+            # selected and mapped in separate steps: yq builds an object from an
+            # empty stream as {"value": true}, which from_entries rejects.
             yq -pj -oj '
               (load("prod-set.json")) as $set |
               .artifacts |= map(
@@ -178,7 +180,7 @@ jobs:
                     and (($purl | test("^pkg:golang/") | not) or ($path | test("\\.exe$") | not)))
                 )
               ) |
-              ([.artifacts[] | select(.runtime | not) | {"key": .id, "value": true}] | from_entries) as $dropped |
+              (.artifacts | map(select(.runtime | not)) | map({"key": .id, "value": true}) | from_entries) as $dropped |
               .artifacts |= map(select(.runtime) | del(.runtime)) |
               .artifactRelationships |= ((. // []) | map(
                 .parent as $parent | .child as $child |
