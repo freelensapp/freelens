@@ -238,6 +238,10 @@ export class Node extends KubeObject<ClusterScopedMetadata, NodeStatus, NodeSpec
     return this.status?.nodeInfo?.kubeletVersion ?? "<unknown>";
   }
 
+  getKernelVersion() {
+    return this.status?.nodeInfo?.kernelVersion ?? "<unknown>";
+  }
+
   getOperatingSystem(): string {
     return (
       this.metadata?.labels?.["kubernetes.io/os"] ||
