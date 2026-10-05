@@ -417,8 +417,8 @@ catalogs:
       specifier: 7.3.3
       version: 7.3.3
     playwright:
-      specifier: 1.61.1
-      version: 1.61.1
+      specifier: 1.63.0
+      version: 1.63.0
     pnpm:
       specifier: 12.9.1
       version: 12.9.1
@@ -441,8 +441,8 @@ catalogs:
       specifier: 2.3.3
       version: 2.3.3
     rfc6902:
-      specifier: 5.2.0
-      version: 5.2.0
+      specifier: 5.3.0
+      version: 5.3.0
     rolldown:
       specifier: 1.2.12
       version: 1.2.12
@@ -559,8 +559,8 @@ catalogs:
       specifier: ^5.10.2
       version: 5.10.2
     rfc6902:
-      specifier: ^5.2.0
-      version: 5.2.0
+      specifier: ^5.3.0
+      version: 5.3.0
     type-fest:
       specifier: ^5.6.0
       version: 5.6.0
@@ -824,7 +824,7 @@ importers:
         version: 6.0.0-beta.5(supports-color@8.1.1)(vite@8.3.2(@types/node@24.19.1)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.100.0)(sass@1.100.0)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
       playwright:
         specifier: 'catalog:'
-        version: 1.61.1
+        version: 1.63.0
       sass-embedded:
         specifier: 'catalog:'
         version: 1.100.0
@@ -1163,7 +1163,7 @@ importers:
         version: 2.3.3(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       rfc6902:
         specifier: 'catalog:'
-        version: 5.2.0
+        version: 5.3.0
       selfsigned:
         specifier: 'catalog:'
         version: 5.5.0
@@ -1387,7 +1387,7 @@ importers:
         version: 5.10.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(supports-color@8.1.1)
       rfc6902:
         specifier: catalog:extensions
-        version: 5.2.0
+        version: 5.3.0
       type-fest:
         specifier: catalog:extensions
         version: 5.6.0
@@ -2417,7 +2417,7 @@ importers:
         version: 24.19.1
       rfc6902:
         specifier: 'catalog:'
-        version: 5.2.0
+        version: 5.3.0
       type-fest:
         specifier: 'catalog:'
         version: 5.6.0
@@ -2460,7 +2460,7 @@ importers:
         version: link:../../infrastructure/typescript
       rfc6902:
         specifier: 'catalog:'
-        version: 5.2.0
+        version: 5.3.0
       type-fest:
         specifier: 'catalog:'
         version: 5.6.0
@@ -5470,11 +5470,6 @@ packages:
   fs.realpath@1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
 
-  fsevents@2.3.2:
-    resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
-    engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
-    os: [darwin]
-
   fsevents@2.3.3:
     resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
@@ -6395,14 +6390,14 @@ packages:
     resolution: {integrity: sha512-emEcLuomt2j03vxD54giVB4SxTjnsqkU692xZOZXHDVoYyypEm+b3jpiTcc+Cf+myooc+/Ly0z01jqeNHVgJGw==}
     engines: {node: '>=16.0.0'}
 
-  playwright-core@1.61.1:
-    resolution: {integrity: sha512-h7Qlt6m4REp25qvIdvbDtVmD4LqVXfpRxhORv9L0jzETM05p4fuPJ3dKyuSXQxDSbXnmS79HAgi9589lGSpLkg==}
-    engines: {node: '>=18'}
+  playwright-core@1.63.0:
+    resolution: {integrity: sha512-rYCsBF/M5HjUch52bbtVONEFjv6Xu8sm8h72dNlR5bzIE1fvC/bxgspzkjSfU+MweEMmPM8KJebG6nnyxo5mCg==}
+    engines: {node: '>=20'}
     hasBin: true
 
-  playwright@1.61.1:
-    resolution: {integrity: sha512-DWnY5o3YbLWK4GovuAVwpqL+1VwGNdUGrRr++8j8PtQQzvAVZUIMjKQ90fY689sEJZJBbZVw1rXaOKSTitkzPQ==}
-    engines: {node: '>=18'}
+  playwright@1.63.0:
+    resolution: {integrity: sha512-+7ziBLidS4NaNCdt57SUDT+wYmmd5fmiQejUic/kb+YsYSCPyOOE9sebzMjNmQrsnNpDJqd4WHvV/8lfKfUDUg==}
+    engines: {node: '>=20'}
     hasBin: true
 
   plist@3.1.0:
@@ -6593,8 +6588,8 @@ packages:
   rfc4648@1.5.4:
     resolution: {integrity: sha512-rRg/6Lb+IGfJqO05HZkN50UtY7K/JhxJag1kP23+zyMfrvoB0B7RWv06MbOzoc79RgCdNTiUaNsTT1AJZ7Z+cg==}
 
-  rfc6902@5.2.0:
-    resolution: {integrity: sha512-ZNQpVnWsdLMTCcLZcUY9ZBhxWuj7/H13EM7NL2gvbAMBXfLeN3iOLi3TWT1+8Or7OTLYXRDCy7sTEStk3j4KBA==}
+  rfc6902@5.3.0:
+    resolution: {integrity: sha512-8x9uqKB5FeC3jhdtmBtI2Z2GR0+VE1VLbQ7Luy5RcnCxUa4+Z1n8w2G1D+GevkRUT33nbbfpAK5O4LhRbnaIPQ==}
 
   rimraf@2.6.3:
     resolution: {integrity: sha512-mwqeW5XsA2qAejG46gYdENaxXjx9onRNCfn7L0duuP4hCuTIi/QO7PDK07KJfp1d+izWPrzEJDcSqBa0OZQriA==}
@@ -10138,9 +10133,6 @@ snapshots:
 
   fs.realpath@1.0.0: {}
 
-  fsevents@2.3.2:
-    optional: true
-
   fsevents@2.3.3:
     optional: true
 
@@ -11050,13 +11042,11 @@ snapshots:
       pvutils: 1.1.5
       tslib: 2.8.1
 
-  playwright-core@1.61.1: {}
+  playwright-core@1.63.0: {}
 
-  playwright@1.61.1:
+  playwright@1.63.0:
     dependencies:
-      playwright-core: 1.61.1
-    optionalDependencies:
-      fsevents: 2.3.2
+      playwright-core: 1.63.0
 
   plist@3.1.0:
     dependencies:
@@ -11265,7 +11255,7 @@ snapshots:
 
   rfc4648@1.5.4: {}
 
-  rfc6902@5.2.0: {}
+  rfc6902@5.3.0: {}
 
   rimraf@2.6.3:
     dependencies:

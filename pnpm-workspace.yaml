@@ -45,7 +45,7 @@ catalog:
   electron-builder: 26.17.0
   electron-builder-squirrel-windows: 26.17.0
   electron-vite: 6.0.0-beta.5
-  playwright: 1.61.1
+  playwright: 1.63.0
   pnpm: 12.9.1
   rolldown: 1.2.12
   rolldown-plugin-dts: 0.28.6
@@ -120,7 +120,7 @@ catalog:
   proper-lockfile: 4.1.2
   react-select: 5.10.2
   react-window: 2.3.3
-  rfc6902: 5.2.0
+  rfc6902: 5.3.0
   selfsigned: 5.5.0
   sharp: 0.35.5
   sigstore: 5.0.0
@@ -159,7 +159,7 @@ catalogs:
     monaco-editor: ^0.57.0
     react: ^19.3.0
     react-select: ^5.10.2
-    rfc6902: ^5.2.0
+    rfc6902: ^5.3.0
     type-fest: ^5.6.0
 
 allowBuilds:
