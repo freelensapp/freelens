@@ -91,12 +91,21 @@ jobs:
           # carries the Go symbols that let Grype match a Go advisory by the
           # functions it names rather than by the whole module.
           gh release download "$tag" -R "$GITHUB_REPOSITORY" --pattern '*-sbom.syft.json' --dir sboms || true
+          format=syft
+          # A release published before the syft-json SBOM still ships the SPDX
+          # ones, so scan those rather than nothing. Go advisories are then
+          # matched by whole module, which the report says.
+          if [[ -z "$(find sboms -name '*-sbom.syft.json')" ]]; then
+            gh release download "$tag" -R "$GITHUB_REPOSITORY" --pattern '*-sbom.spdx.json' --dir sboms || true
+            format=spdx
+          fi
           gh release download "$tag" -R "$GITHUB_REPOSITORY" --pattern '*-prod-packages.json' --dir prod || true
-          sboms=$(find sboms -name '*-sbom.syft.json' | wc -l)
+          sboms=$(find sboms -name "*-sbom.${format}.json" | wc -l)
           lists=$(find prod -name '*-prod-packages.json' | wc -l)
+          echo "format=$format" >> "$GITHUB_OUTPUT"
           echo "sboms=$sboms" >> "$GITHUB_OUTPUT"
           echo "lists=$lists" >> "$GITHUB_OUTPUT"
-          echo "$tag publishes $sboms SBOM(s) and $lists runtime package list(s)"
+          echo "$tag publishes $sboms $format SBOM(s) and $lists runtime package list(s)"
           # A release publishes one merged list, but the loops below take
           # whatever is there - an older release that published one per platform
           # scans just as well.
@@ -109,7 +118,7 @@ jobs:
         run: |
           set -eo pipefail
           if [[ "${{ steps.release.outputs.sboms }}" -eq 0 ]]; then
-            missing="ships no syft-json SBOM, which this report scans for the Go symbols the SPDX SBOMs cannot carry"
+            missing="ships no SBOM"
           else
             missing="ships SBOMs but no runtime package list, which this report needs to reduce them to what actually runs on a user's machine"
           fi
@@ -144,8 +153,9 @@ jobs:
             echo "Runtime package set is empty - refusing to scan (every npm finding would be dropped)" >&2
             exit 1
           fi
-          for sbom in sboms/*-sbom.syft.json; do
-            name=$(basename "$sbom" .syft.json)
+          format="${{ steps.release.outputs.format }}"
+          for sbom in sboms/*-sbom."$format".json; do
+            name=$(basename "$sbom" ".${format}.json")
             # Reduce the SBOM to runtime packages before scanning.
             # sub("\x5c"; "/"): the Windows SBOM records location paths with
             # backslashes, which the /freelens/... test below would never match -
@@ -161,44 +171,67 @@ jobs:
             # CLIs come from the same modules and carry the symbols, and Grype's
             # symbol check does not look at GOOS, so an advisory against Windows
             # code still shows up through them when the vulnerable function is
-            # compiled into those builds too.
-            #
-            # Relationships that point at a dropped package go with it, so the
-            # decoder does not warn about every one of them. The dropped set is
-            # selected and mapped in separate steps: yq builds an object from an
-            # empty stream as {"value": true}, which from_entries rejects.
-            yq -pj -oj '
-              (load("prod-set.json")) as $set |
-              .artifacts |= map(
-                (.purl // "") as $purl |
-                (.name + "@" + (.version // "")) as $key |
-                (((.locations // [])[0].path // "") | sub("\\x5c"; "/")) as $path |
-                .runtime = (
-                  (($purl | test("^pkg:npm/")) and ($set[$key] != null))
-                  or
-                  (($purl | test("^pkg:npm/") | not) and ($path | test("^/freelens/(dist|binaries)/"))
-                    and (($purl | test("^pkg:golang/") | not) or ($path | test("\\.exe$") | not)))
+            # compiled into those builds too. The SPDX fallback drops them as
+            # well, so that both formats scan the same packages.
+            if [[ "$format" == syft ]]; then
+              # Relationships that point at a dropped package go with it, so
+              # the decoder does not warn about every one of them. The dropped
+              # set is selected and mapped in separate steps: yq builds an
+              # object from an empty stream as {"value": true}, which
+              # from_entries rejects.
+              yq -pj -oj '
+                (load("prod-set.json")) as $set |
+                .artifacts |= map(
+                  (.purl // "") as $purl |
+                  (.name + "@" + (.version // "")) as $key |
+                  (((.locations // [])[0].path // "") | sub("\\x5c"; "/")) as $path |
+                  .runtime = (
+                    (($purl | test("^pkg:npm/")) and ($set[$key] != null))
+                    or
+                    (($purl | test("^pkg:npm/") | not) and ($path | test("^/freelens/(dist|binaries)/"))
+                      and (($purl | test("^pkg:golang/") | not) or ($path | test("\\.exe$") | not)))
+                  )
+                ) |
+                (.artifacts | map(select(.runtime | not)) | map({"key": .id, "value": true}) | from_entries) as $dropped |
+                .artifacts |= map(select(.runtime) | del(.runtime)) |
+                .artifactRelationships |= ((. // []) | map(
+                  .parent as $parent | .child as $child |
+                  select(($dropped[$parent] == null) and ($dropped[$child] == null))
+                ))
+              ' "$sbom" > "runtime-${name}.json"
+              all=$(yq -pj -oj '.artifacts | length' "$sbom")
+              run=$(yq -pj -oj '.artifacts | length' "runtime-${name}.json")
+              # Symbol capture failing would not fail the scan, only bring back
+              # the whole-module matches this SBOM format is here to avoid - so
+              # say it where it is seen rather than only in Grype's log.
+              go=$(yq -pj -oj '[.artifacts[] | select((.purl // "") | test("^pkg:golang/"))] | length' "runtime-${name}.json")
+              symbols=$(yq -pj -oj '[.artifacts[] | select((.purl // "") | test("^pkg:golang/")) | select(((.metadata.symbols // {}) | length) > 0)] | length' "runtime-${name}.json")
+              if [[ "$go" -gt 0 && "$symbols" -eq 0 ]]; then
+                echo "::warning::${sbom}: none of its ${go} runtime Go packages carries symbols - Go advisories are matched by whole module"
+              fi
+              echo "::group::grype ${sbom} (${all} -> ${run} runtime packages, ${symbols} of ${go} Go packages with symbols)"
+            else
+              # SPDX keeps the purl in externalRefs and the path in sourceInfo,
+              # after a description of how Syft found the package.
+              yq -pj -oj '
+                (load("prod-set.json")) as $set |
+                .packages |= map(
+                  ( ((.externalRefs // []) | map(select(.referenceType == "purl")))[0].referenceLocator // "" ) as $purl |
+                  (.name + "@" + (.versionInfo // "")) as $key |
+                  (((.sourceInfo // "") | sub("\\x5c"; "/")) | (capture("(?<p>/[^,]*)").p // "")) as $path |
+                  select(
+                    (($purl | test("^pkg:npm/")) and ($set[$key] != null))
+                    or
+                    (($purl | test("^pkg:npm/") | not) and ($path | test("^/freelens/(dist|binaries)/"))
+                      and (($purl | test("^pkg:golang/") | not) or ($path | test("\\.exe$") | not)))
+                  )
                 )
-              ) |
-              (.artifacts | map(select(.runtime | not)) | map({"key": .id, "value": true}) | from_entries) as $dropped |
-              .artifacts |= map(select(.runtime) | del(.runtime)) |
-              .artifactRelationships |= ((. // []) | map(
-                .parent as $parent | .child as $child |
-                select(($dropped[$parent] == null) and ($dropped[$child] == null))
-              ))
-            ' "$sbom" > "runtime-${name}.syft.json"
-            all=$(yq -pj -oj '.artifacts | length' "$sbom")
-            run=$(yq -pj -oj '.artifacts | length' "runtime-${name}.syft.json")
-            # Symbol capture failing would not fail the scan, only bring back the
-            # whole-module matches this SBOM format is here to avoid - so say it
-            # where it is seen rather than only in Grype's log.
-            go=$(yq -pj -oj '[.artifacts[] | select((.purl // "") | test("^pkg:golang/"))] | length' "runtime-${name}.syft.json")
-            symbols=$(yq -pj -oj '[.artifacts[] | select((.purl // "") | test("^pkg:golang/")) | select(((.metadata.symbols // {}) | length) > 0)] | length' "runtime-${name}.syft.json")
-            if [[ "$go" -gt 0 && "$symbols" -eq 0 ]]; then
-              echo "::warning::${sbom}: none of its ${go} runtime Go packages carries symbols - Go advisories are matched by whole module"
+              ' "$sbom" > "runtime-${name}.json"
+              all=$(yq -pj -oj '.packages | length' "$sbom")
+              run=$(yq -pj -oj '.packages | length' "runtime-${name}.json")
+              echo "::group::grype ${sbom} (${all} -> ${run} runtime packages, Go advisories matched by whole module)"
             fi
-            echo "::group::grype ${sbom} (${all} -> ${run} runtime packages, ${symbols} of ${go} Go packages with symbols)"
-            "$grype" "sbom:runtime-${name}.syft.json" -o json="jsons/${name}.json"
+            "$grype" "sbom:runtime-${name}.json" -o json="jsons/${name}.json"
             echo "::endgroup::"
           done
           # grype leaves the artifact location empty for SBOM scans. For non-npm
@@ -207,16 +240,29 @@ jobs:
           # filtered SBOMs so a package present in several binaries (e.g. the Go
           # stdlib in kubectl and in the dev-only tsc binary) maps to a shipped
           # location, not a dropped build-time one.
-          yq ea -pj -oj -I0 '[.]' runtime-*.syft.json |
-            yq -pj -oj '
-                [ .[].artifacts[]
-                  | {
-                      "key": (.name + "@" + (.version // "")),
-                      "value": ((.locations // [])[0].path // "" | sub("\\x5c"; "/") | sub("^/"; ""))
-                    }
-                  | select(.value != "")
-                ] | from_entries
-              ' > sbom-paths.json
+          if [[ "$format" == syft ]]; then
+            paths='
+              [ .[].artifacts[]
+                | {
+                    "key": (.name + "@" + (.version // "")),
+                    "value": ((.locations // [])[0].path // "" | sub("\\x5c"; "/") | sub("^/"; ""))
+                  }
+                | select(.value != "")
+              ] | from_entries
+            '
+          else
+            paths='
+              [ .[].packages[]
+                | select(has("sourceInfo"))
+                | {
+                    "key": (.name + "@" + (.versionInfo // "")),
+                    "value": (((.sourceInfo | sub("\\x5c"; "/")) | capture("(?<p>/[^,]*)").p) // "" | sub("^/"; ""))
+                  }
+                | select(.value != "")
+              ] | from_entries
+            '
+          fi
+          yq ea -pj -oj -I0 '[.]' runtime-*.json | yq -pj -oj "$paths" > sbom-paths.json
           # Merge the per-platform reports into one: dedupe matches by
           # vulnerability + package + version (a finding shared by every platform
           # is one row, not six) and resolve each match's location from its
@@ -275,6 +321,10 @@ jobs:
           {
             echo "Grype runtime vulnerability scan of the artifacts published with [\`${{ steps.release.outputs.tag }}\`](${{ steps.release.outputs.url }}), scanned from the ${{ steps.release.outputs.sboms }} SBOMs shipped with the release. Updated $(date -u +'%Y-%m-%d %H:%M UTC') by [this run]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID)."
             echo
+            if [[ "${{ steps.release.outputs.format }}" == spdx ]]; then
+              echo "This release predates the syft-json SBOMs, so its SPDX SBOMs were scanned instead. They carry no Go symbols, so a Go advisory is reported for the whole module, even when the binary does not contain the vulnerable function."
+              echo
+            fi
             if [[ "$count" -eq 0 ]]; then
               echo "No runtime vulnerabilities found."
             else
