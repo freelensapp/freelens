@@ -92,6 +92,12 @@ jobs:
     env:
       DO_NOT_TRACK: "1"
       ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
+      # The Syft that creates the SBOMs. anchore/sbom-action@v0 defaults to an
+      # older one, without the Go symbol capture the scan needs (see Create
+      # SBOM for the vulnerability scan). Stored without the leading "v"
+      # because the Renovate manager that bumps it strips the "v" on every
+      # bump; it is re-added where this is consumed.
+      SYFT_VERSION: 1.54.0 # datasource=github-releases depName=anchore/syft
 
     steps:
       - name: Checkout
@@ -592,10 +598,37 @@ jobs:
       - name: Create SBOM
         uses: anchore/sbom-action@v0
         with:
+          # The "v" is added here, not in SYFT_VERSION: the installer resolves
+          # the value as a literal git tag, and a bare version 404s.
+          syft-version: v${{ env.SYFT_VERSION }}
           format: spdx-json
           output-file: "freelens/dist/${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-sbom.spdx.json"
           github-token: ${{ secrets.GITHUB_TOKEN }}
           artifact-name: "${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-sbom.spdx.json"
+          upload-release-assets: false
+
+      # The SBOM release-scan.yaml scans, published next to the SPDX one above.
+      # It is syft-json with Go symbol capture, because Grype matches a Go
+      # advisory against the vulnerable functions it names only when the
+      # package carries the symbols compiled into the binary. Without them it
+      # falls back to the whole module and reports advisories for code the
+      # binary never contains. Only syft-json can carry the symbols: SPDX and
+      # CycloneDX have no field for them.
+      #
+      # Created by the same Syft from the same tree as the SPDX SBOM, so the
+      # two describe the same build. Syft does not read SBOM files in a
+      # directory scan unless asked to, so the SPDX SBOM does not show up in
+      # this one.
+      - name: Create SBOM for the vulnerability scan
+        uses: anchore/sbom-action@v0
+        env:
+          SYFT_GOLANG_CAPTURE_SYMBOLS: all
+        with:
+          syft-version: v${{ env.SYFT_VERSION }}
+          format: syft-json
+          output-file: "freelens/dist/${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-sbom.syft.json"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          upload-artifact: false
           upload-release-assets: false
 
       - name: Create runtime package list
@@ -649,8 +682,8 @@ jobs:
           version="${GITHUB_REF_NAME#v}"
           os="${{ matrix.os }}"
           arch="${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}"
-          for f in freelens/dist/*-sbom.spdx.json; do
-            newname="freelens/dist/Freelens-${version}-${os}-${arch}-sbom.spdx.json"
+          for f in freelens/dist/*-sbom.spdx.json freelens/dist/*-sbom.syft.json; do
+            newname="freelens/dist/Freelens-${version}-${os}-${arch}-sbom.${f##*-sbom.}"
             mv "$f" "$newname"
             if [ -f "${f}.sha256" ]; then
               mv "${f}.sha256" "${newname}.sha256"
@@ -661,7 +694,7 @@ jobs:
         if: runner.os == 'Linux' || runner.os == 'Windows'
         shell: bash
         run: |
-          for f in freelens/dist/*-sbom.spdx.json; do
+          for f in freelens/dist/*-sbom.spdx.json freelens/dist/*-sbom.syft.json; do
             pushd freelens/dist > /dev/null
             sha256sum $(basename $f) | tee $(basename $f).sha256
             popd > /dev/null
@@ -671,7 +704,7 @@ jobs:
         if: runner.os == 'macOS'
         shell: bash
         run: |
-          for f in freelens/dist/*-sbom.spdx.json; do
+          for f in freelens/dist/*-sbom.spdx.json freelens/dist/*-sbom.syft.json; do
             pushd freelens/dist > /dev/null
             shasum -a 256 $(basename $f) | tee $(basename $f).sha256
             popd > /dev/null
