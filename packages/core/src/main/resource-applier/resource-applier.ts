@@ -103,17 +103,10 @@ export class ResourceApplier {
 
     this.dependencies.logger.debug(`shooting manifests with ${kubectlPath}`, { args });
 
-    const execEnv = this.getExecEnv(proxyKubeconfig);
-    const httpsProxy = this.cluster.preferences?.httpsProxy;
-
-    if (httpsProxy) {
-      execEnv.HTTPS_PROXY = httpsProxy;
-    }
-
     try {
       await this.dependencies.writeFile(fileName, content);
 
-      const result = await this.dependencies.execFile(kubectlPath, args, { env: execEnv });
+      const result = await this.dependencies.execFile(kubectlPath, args, { env: this.getExecEnv(proxyKubeconfig) });
 
       if (result.callWasSuccessful) {
         return result;

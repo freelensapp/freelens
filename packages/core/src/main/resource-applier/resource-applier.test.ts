@@ -80,7 +80,7 @@ describe("ResourceApplier", () => {
     );
   });
 
-  it("applies with the proxy kubeconfig, its cache directory and the cluster's HTTPS proxy", async () => {
+  it("applies with the proxy kubeconfig and its cache directory", async () => {
     await resourceApplier.create("apiVersion: v1\nkind: Pod\nmetadata:\n  name: some-pod\n");
 
     expect(execFileMock).toHaveBeenCalledWith(
@@ -96,13 +96,23 @@ describe("ResourceApplier", () => {
         "-f",
         expect.any(String),
       ],
-      {
-        env: expect.objectContaining({
-          KUBECACHEDIR: cacheDirectoryPath,
-          HTTPS_PROXY: "http://some-https-proxy:3128",
-        }),
-      },
+      { env: withKubeCacheDir() },
     );
+  });
+
+  // The cluster's HTTPS proxy is for the hop from the Freelens proxy to the API
+  // server. kubectl only talks to the Freelens proxy on 127.0.0.1.
+  it.each([
+    ["patch", (applier: ResourceApplier) => applier.patch("some-pod", "Pod", [])],
+    ["apply", (applier: ResourceApplier) => applier.create("apiVersion: v1\nkind: Pod\nmetadata:\n  name: some-pod\n")],
+    ["apply all", (applier: ResourceApplier) => applier.kubectlApplyAll(["some-resource"])],
+    ["delete all", (applier: ResourceApplier) => applier.kubectlDeleteAll(["some-resource"])],
+  ])("does not give kubectl the cluster's HTTPS proxy for %s", async (_, run) => {
+    await run(resourceApplier);
+
+    const [, , { env }] = execFileMock.mock.calls[0] as [string, string[], { env: NodeJS.ProcessEnv }];
+
+    expect(env.HTTPS_PROXY).not.toBe("http://some-https-proxy:3128");
   });
 
   it.each([
