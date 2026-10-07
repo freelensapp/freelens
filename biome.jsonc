@@ -315,6 +315,54 @@
           }
         }
       }
+    },
+    {
+      // Production code must not import test-only modules: they are
+      // devDependencies, and "react-dom/test-utils" delegates to React.act,
+      // which production builds of React do not export, so the call throws at
+      // runtime while every unit test passes. Tests and test support are left
+      // out.
+      "includes": [
+        "freelens/src/**",
+        "packages/**/src/**",
+        "!**/*.test.ts",
+        "!**/*.test.tsx",
+        "!**/__mocks__/**",
+        "!**/__test__/**",
+        "!**/__tests__/**",
+        "!**/test-env/**",
+        "!**/test-utils/**",
+        "!**/*.global-override-for-injectable.ts",
+        "!**/getDiForUnitTesting.ts",
+        "!**/getDiForUnitTesting.tsx",
+        "!packages/core/src/features/cluster/execute/common/testing.ts",
+        "!packages/core/src/vitest-after-env.setup.ts",
+        "!packages/technical-features/messaging/messaging-fake-bridge/**",
+        "!packages/utility-features/kube-api/src/mock-responses.ts",
+        "!packages/utility-features/react-testing-library-discovery/**"
+      ],
+      "linter": {
+        "rules": {
+          "style": {
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "paths": {
+                  "@async-fn/vitest": "Test-only module: keep it out of production code.",
+                  "react-dom/test-utils": "Test-only module: it delegates to React.act, which production builds of React do not export.",
+                  "vitest": "Test-only module: keep it out of production code."
+                },
+                "patterns": [
+                  {
+                    "group": ["@testing-library/*"],
+                    "message": "Test-only module: keep it out of production code."
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
     }
   ],
   "vcs": {
