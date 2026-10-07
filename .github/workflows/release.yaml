@@ -97,7 +97,7 @@ jobs:
       # SBOM for the vulnerability scan). Stored without the leading "v"
       # because the Renovate manager that bumps it strips the "v" on every
       # bump; it is re-added where this is consumed.
-      SYFT_VERSION: 1.54.0 # datasource=github-releases depName=anchore/syft
+      SYFT_VERSION: 1.54.1 # datasource=github-releases depName=anchore/syft
 
     steps:
       - name: Checkout
