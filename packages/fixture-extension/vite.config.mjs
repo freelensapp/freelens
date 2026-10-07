@@ -28,6 +28,8 @@ const HOST_GLOBAL = "globalThis.FreelensExtensionApi";
  * `@freelensapp/extensions` reproduces what the published runtime shim
  * (`packages/extensions/src/runtime-shim.ts`) does; the rest are the singletons
  * the host re-exports alongside it.
+ *
+ * @type {Record<string, string>}
  */
 const hostProvidedModules = {
   "@freelensapp/extensions": `const api = ${HOST_GLOBAL};

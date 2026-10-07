@@ -189,8 +189,8 @@
         "react"
       ],
       "typescript": {
-        // one program per runtime environment
-        "config": ["src/main/tsconfig.json", "src/renderer/tsconfig.json", "src/common/tsconfig.json"]
+        // one program per runtime environment, and one for vite.config.mjs
+        "config": ["src/main/tsconfig.json", "src/renderer/tsconfig.json", "src/common/tsconfig.json", "tsconfig.json"]
       }
     },
 

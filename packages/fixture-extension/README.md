@@ -56,7 +56,9 @@ where that layout is proven:
 `type:check` compiles all three. Common code is therefore checked three
 times: by the main program, which has no DOM, by the renderer program, which has
 no Node, and by its own config, which is what an editor uses for a file in
-`src/common/`.
+`src/common/`. It also compiles [`vite.config.mjs`](./vite.config.mjs) with the
+root `tsconfig.json`, which has `checkJs` and Node, so the build configuration
+is type-checked through its JSDoc types like the sources.
 
 A config that compiles is not yet a config that separates anything, so
 `type:check` also compiles the files in [`environment-tests/`](./environment-tests)
