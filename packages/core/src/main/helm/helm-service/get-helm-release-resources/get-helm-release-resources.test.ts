@@ -42,19 +42,17 @@ describe("get helm release resources", () => {
     let actualPromise: AsyncResult<KubeJsonApiData[], string>;
 
     beforeEach(() => {
-      actualPromise = getHelmReleaseResources("some-release", "some-namespace", "/some-kubeconfig-path");
+      actualPromise = getHelmReleaseResources("some-release", "some-namespace", {
+        kubeconfigPath: "/some-kubeconfig-path",
+        cacheDirectoryPath: "/some-cache-directory-path",
+      });
     });
 
-    it("calls for release manifest", () => {
-      expect(execHelmMock).toHaveBeenCalledWith([
-        "get",
-        "manifest",
-        "some-release",
-        "--namespace",
-        "some-namespace",
-        "--kubeconfig",
-        "/some-kubeconfig-path",
-      ]);
+    it("calls for release manifest with the cache directory of the kubeconfig", () => {
+      expect(execHelmMock).toHaveBeenCalledWith(
+        ["get", "manifest", "some-release", "--namespace", "some-namespace", "--kubeconfig", "/some-kubeconfig-path"],
+        { env: { KUBECACHEDIR: "/some-cache-directory-path" } },
+      );
     });
 
     it("does not call for resources yet", () => {

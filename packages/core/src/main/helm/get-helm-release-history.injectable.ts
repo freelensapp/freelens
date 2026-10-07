@@ -5,9 +5,10 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import execHelmInjectable from "./exec-helm/exec-helm.injectable";
+import execHelmInjectable, { proxyKubeconfigHelmOptions } from "./exec-helm/exec-helm.injectable";
 
 import type { HelmReleaseRevision } from "../../common/k8s-api/endpoints/helm-releases.api/request-history.injectable";
+import type { ProxyKubeconfigPaths } from "../kubeconfig-manager/kubeconfig-manager";
 
 export interface GetHelmReleaseHistoryData {
   name: string;
@@ -15,7 +16,7 @@ export interface GetHelmReleaseHistoryData {
 }
 
 export type GetHelmReleaseHistory = (
-  kubeconfigPath: string,
+  kubeconfig: ProxyKubeconfigPaths,
   data: GetHelmReleaseHistoryData,
 ) => Promise<HelmReleaseRevision[]>;
 
@@ -24,17 +25,11 @@ const getHelmReleaseHistoryInjectable = getInjectable({
   instantiate: (di): GetHelmReleaseHistory => {
     const execHelm = di.inject(execHelmInjectable);
 
-    return async (kubeconfigPath, { name, namespace }) => {
-      const result = await execHelm([
-        "history",
-        name,
-        "--output",
-        "json",
-        "--namespace",
-        namespace,
-        "--kubeconfig",
-        kubeconfigPath,
-      ]);
+    return async (kubeconfig, { name, namespace }) => {
+      const result = await execHelm(
+        ["history", name, "--output", "json", "--namespace", namespace, "--kubeconfig", kubeconfig.kubeconfigPath],
+        proxyKubeconfigHelmOptions(kubeconfig),
+      );
 
       if (result.callWasSuccessful) {
         return JSON.parse(result.response);
