@@ -117,7 +117,10 @@ describe("the identity of a shell session's PTY", () => {
       kubeconfigManagerInjectable,
       () =>
         ({
-          ensurePath: async () => "/some-proxy-kubeconfig-file",
+          ensurePaths: async () => ({
+            kubeconfigPath: "/some-proxy-kubeconfig-file",
+            cacheDirectoryPath: "/some-proxy-kubeconfig-cache-directory",
+          }),
         }) as Partial<KubeconfigManager> as KubeconfigManager,
     );
 

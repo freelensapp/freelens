@@ -109,12 +109,15 @@ describe("technical unit tests for local shell sessions", () => {
         kubeconfigManagerInjectable,
         () =>
           ({
-            ensurePath: async () => {
+            ensurePaths: async () => {
               if (ensurePathError) {
                 throw new Error(ensurePathError);
               }
 
-              return "/some-proxy-kubeconfig-file";
+              return {
+                kubeconfigPath: "/some-proxy-kubeconfig-file",
+                cacheDirectoryPath: "/some-proxy-kubeconfig-cache-directory",
+              };
             },
           }) as Partial<KubeconfigManager> as KubeconfigManager,
       );
@@ -327,6 +330,7 @@ describe("technical unit tests for local shell sessions", () => {
         response: {
           PATH: "/home/some-user/bin:/usr/local/bin:/usr/bin",
           KUBECONFIG: "/home/some-user/.kube/config",
+          KUBECACHEDIR: "/home/some-user/.kube/some-cache",
           HOME: "/home/some-user",
         },
       }));
@@ -344,7 +348,10 @@ describe("technical unit tests for local shell sessions", () => {
         kubeconfigManagerInjectable,
         () =>
           ({
-            ensurePath: async () => "/some-proxy-kubeconfig-file",
+            ensurePaths: async () => ({
+              kubeconfigPath: "/some-proxy-kubeconfig-file",
+              cacheDirectoryPath: "/some-proxy-kubeconfig-cache-directory",
+            }),
           }) as Partial<KubeconfigManager> as KubeconfigManager,
       );
 
@@ -392,6 +399,19 @@ describe("technical unit tests for local shell sessions", () => {
       expect(env.KUBECONFIG).toBe("/some-proxy-kubeconfig-file");
     });
 
+    it("points KUBECACHEDIR at the cache directory of the proxy kubeconfig, replacing the user's own", async () => {
+      const { env } = await openWithShell("/bin/bash");
+
+      expect(env.KUBECACHEDIR).toBe("/some-proxy-kubeconfig-cache-directory");
+    });
+
+    it("passes KUBECACHEDIR on to WSL as a path, like KUBECONFIG", async () => {
+      const { env } = await openWithShell("powershell.exe", "win32");
+
+      expect(env.KUBECACHEDIR).toBe("/some-proxy-kubeconfig-cache-directory");
+      expect((env.WSLENV ?? "").split(":")).toContain("KUBECACHEDIR/up");
+    });
+
     it("starts bash with the init file that re-prepends the kubectl directory", async () => {
       const { args } = await openWithShell("/bin/bash");
 
@@ -406,13 +426,13 @@ describe("technical unit tests for local shell sessions", () => {
       expect(env.OLD_ZDOTDIR).toBe("/home/some-user");
     });
 
-    it("forces PATH and KUBECONFIG through an init command for fish", async () => {
+    it("forces PATH, KUBECONFIG and KUBECACHEDIR through an init command for fish", async () => {
       const { args } = await openWithShell("/usr/bin/fish");
 
       expect(args).toEqual([
         "--login",
         "--init-command",
-        `export PATH="/some-kubectl-binary-dir:/some-directory-for-user-data/binaries:/some-bundled-binaries-directory:$PATH"; export KUBECONFIG="/some-proxy-kubeconfig-file"`,
+        `export PATH="/some-kubectl-binary-dir:/some-directory-for-user-data/binaries:/some-bundled-binaries-directory:$PATH"; export KUBECONFIG="/some-proxy-kubeconfig-file"; export KUBECACHEDIR="/some-proxy-kubeconfig-cache-directory"`,
       ]);
     });
 

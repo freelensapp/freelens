@@ -107,7 +107,7 @@ export class LocalShellSession extends ShellSession {
         return [
           "--login",
           "--init-command",
-          `export PATH="${kubectlPathDir}:${this.dependencies.directoryForBinaries}:${bundledBinariesDir}:$PATH"; export KUBECONFIG="${await this.dependencies.proxyKubeconfigPath}"`,
+          `export PATH="${kubectlPathDir}:${this.dependencies.directoryForBinaries}:${bundledBinariesDir}:$PATH"; export KUBECONFIG="${await this.dependencies.proxyKubeconfigPath}"; export KUBECACHEDIR="${this.dependencies.proxyCacheDirectoryPath}"`,
         ];
       case "zsh":
         return ["--login"];

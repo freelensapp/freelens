@@ -125,6 +125,12 @@ export interface ShellSessionDependencies {
    */
   readonly proxyKubeconfigPath?: string;
   /**
+   * The cache directory of {@link proxyKubeconfigPath}, exported as
+   * `KUBECACHEDIR` so that kubectl and helm keep their cache for the proxy out
+   * of `~/.kube/cache`. Set exactly when the proxy kubeconfig is.
+   */
+  readonly proxyCacheDirectoryPath?: string;
+  /**
    * The directory holding the kubectl matched to the cluster's version. A
    * session without a cluster has none: it runs the user's own tools, and its
    * fallbacks are appended to `PATH` through {@link pathSuffixEntries}.
@@ -405,7 +411,12 @@ export abstract class ShellSession {
       return process.env;
     })();
 
-    const { directoryContainingKubectl, proxyKubeconfigPath, pathSuffixEntries = [] } = this.dependencies;
+    const {
+      directoryContainingKubectl,
+      proxyKubeconfigPath,
+      proxyCacheDirectoryPath,
+      pathSuffixEntries = [],
+    } = this.dependencies;
     const copiedEnv: Partial<Record<string, string>> = JSON.parse(JSON.stringify(rawEnv));
     /**
      * The user's own kubeconfig is the whole point of a session without a
@@ -429,7 +440,7 @@ export abstract class ShellSession {
       env.PTYSHELL = shell || "powershell.exe";
       env.PATH = pathStr;
       env.LENS_SESSION = "true";
-      env.WSLENV = [env.WSLENV, "KUBECONFIG/up:LENS_SESSION/u"].filter(Boolean).join(":");
+      env.WSLENV = [env.WSLENV, "KUBECONFIG/up:KUBECACHEDIR/up:LENS_SESSION/u"].filter(Boolean).join(":");
     } else if (shell !== undefined) {
       env.PTYSHELL = shell;
       env.PATH = pathStr;
@@ -452,6 +463,10 @@ export abstract class ShellSession {
 
     if (proxyKubeconfigPath !== undefined) {
       env.KUBECONFIG = proxyKubeconfigPath;
+    }
+
+    if (proxyCacheDirectoryPath !== undefined) {
+      env.KUBECACHEDIR = proxyCacheDirectoryPath;
     }
 
     env.TERM_PROGRAM = this.dependencies.appName;

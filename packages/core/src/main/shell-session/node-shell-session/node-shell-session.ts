@@ -86,7 +86,11 @@ export class NodeShellSession extends ShellSession {
     }
 
     const env = await this.getCachedShellEnv();
-    const args = ["attach", "-q", "-i", "-t", "-n", "kube-system", this.podName];
+    const { proxyCacheDirectoryPath } = this.dependencies;
+    // `KUBECACHEDIR` is in the environment already, but the kubectl matched to
+    // an older cluster may predate it.
+    const cacheDirArgs = proxyCacheDirectoryPath === undefined ? [] : ["--cache-dir", proxyCacheDirectoryPath];
+    const args = [...cacheDirArgs, "attach", "-q", "-i", "-t", "-n", "kube-system", this.podName];
     const { kubectl } = this;
 
     assert(kubectl, "A node shell session always has a kubectl");

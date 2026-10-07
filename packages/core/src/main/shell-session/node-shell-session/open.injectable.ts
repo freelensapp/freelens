@@ -46,7 +46,7 @@ const openNodeShellSessionInjectable = getInjectable({
     const createKubectl = di.inject(createKubectlInjectable);
     const dependencies: Omit<
       NodeShellSessionDependencies,
-      "proxyKubeconfigPath" | "loadProxyKubeconfig" | "directoryContainingKubectl"
+      "proxyKubeconfigPath" | "proxyCacheDirectoryPath" | "loadProxyKubeconfig" | "directoryContainingKubectl"
     > = {
       isMac: di.inject(isMacInjectable),
       isWindows: di.inject(isWindowsInjectable),
@@ -72,7 +72,8 @@ const openNodeShellSessionInjectable = getInjectable({
       const status = terminalStatusReporterFor(args.websocket);
 
       status.info("Starting cluster proxy ...");
-      const proxyKubeconfigPath = await kubeconfigManager.ensurePath();
+      const { kubeconfigPath: proxyKubeconfigPath, cacheDirectoryPath: proxyCacheDirectoryPath } =
+        await kubeconfigManager.ensurePaths();
 
       const kubectlStatus = kubectlStatusOptionsFor(kubectl.kubectlVersion, status);
 
@@ -85,6 +86,7 @@ const openNodeShellSessionInjectable = getInjectable({
           ...dependencies,
           loadProxyKubeconfig,
           proxyKubeconfigPath,
+          proxyCacheDirectoryPath,
           directoryContainingKubectl,
         },
         { kubectl, ...args },
