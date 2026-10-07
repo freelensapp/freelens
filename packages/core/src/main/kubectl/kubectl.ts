@@ -32,6 +32,26 @@ import type { GetKubectlChecksum } from "./kubectl-checksums.injectable";
 const initScriptVersionString = "# freelens-initscript v3";
 
 /**
+ * The init scripts source the user's profile files, which may export a
+ * `KUBECACHEDIR` of their own. A cluster session sets one for its proxy
+ * kubeconfig, so it is put back afterwards, like `KUBECONFIG`. A session that
+ * started without one keeps whatever the profile sets rather than getting an
+ * empty value.
+ */
+const saveKubeCacheDirectory = [
+  'if test -n "${KUBECACHEDIR+set}"; then',
+  '  tempkubecachedir="$KUBECACHEDIR"',
+  "else",
+  "  unset tempkubecachedir",
+  "fi",
+];
+const restoreKubeCacheDirectory = [
+  'if test -n "${tempkubecachedir+set}"; then',
+  '  export KUBECACHEDIR="$tempkubecachedir"',
+  "fi",
+];
+
+/**
  * How long the download may go without receiving a single byte before it is
  * given up on. A fixed overall deadline would kill a legitimate ~50 MB
  * download over a slow link, while an unresponsive host would otherwise hang
@@ -535,6 +555,7 @@ export class Kubectl {
     const bashScript = [
       initScriptVersionString,
       'tempkubeconfig="$KUBECONFIG"',
+      ...saveKubeCacheDirectory,
       'test -f "/etc/profile" && . "/etc/profile"',
       'if test -f "$HOME/.bash_profile"; then',
       '  . "$HOME/.bash_profile"',
@@ -545,18 +566,20 @@ export class Kubectl {
       "fi",
       `export PATH="${kubectlPath}:${binariesDir}:$PATH"`,
       'export KUBECONFIG="$tempkubeconfig"',
+      ...restoreKubeCacheDirectory,
       `NO_PROXY=",\${NO_PROXY:-localhost},"`,
       `NO_PROXY="\${NO_PROXY//,localhost,/,}"`,
       `NO_PROXY="\${NO_PROXY//,127.0.0.1,/,}"`,
       `NO_PROXY="localhost,127.0.0.1\${NO_PROXY%,}"`,
       "export NO_PROXY",
-      "unset tempkubeconfig",
+      "unset tempkubeconfig tempkubecachedir",
     ].join("\n");
 
     const zshScriptPath = this.dependencies.joinPaths(this.dirname, ".zlogin");
     const zshScript = [
       initScriptVersionString,
       'tempkubeconfig="$KUBECONFIG"',
+      ...saveKubeCacheDirectory,
 
       // restore previous ZDOTDIR
       'export ZDOTDIR="$OLD_ZDOTDIR"',
@@ -576,12 +599,13 @@ export class Kubectl {
       `d=\${d/#:/}`,
       `export PATH="$kubectlpath:$binariesDir:\${d/%:/}"`,
       'export KUBECONFIG="$tempkubeconfig"',
+      ...restoreKubeCacheDirectory,
       `NO_PROXY=",\${NO_PROXY:-localhost},"`,
       `NO_PROXY="\${NO_PROXY//,localhost,/,}"`,
       `NO_PROXY="\${NO_PROXY//,127.0.0.1,/,}"`,
       `NO_PROXY="localhost,127.0.0.1\${NO_PROXY%,}"`,
       "export NO_PROXY",
-      "unset tempkubeconfig",
+      "unset tempkubeconfig tempkubecachedir",
       "unset OLD_ZDOTDIR",
     ].join("\n");
 

@@ -3,10 +3,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { execFile, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
+import { promisify } from "node:util";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { Kubectl } from "./kubectl";
 
@@ -257,6 +259,86 @@ describe("kubectl", () => {
         expect(await kubectl.ensureKubectl({ onPhase })).toBe(true);
 
         expect(events).toEqual(["execFile"]);
+      });
+    });
+  });
+
+  describe.skipIf(process.platform === "win32")("init scripts", () => {
+    const isInstalled = (shell: string) => !spawnSync(shell, ["-c", "true"]).error;
+    // The lines under test are plain POSIX sh, which bash runs the same way, and
+    // the unit-test runners have no zsh.
+    const zsh = isInstalled("zsh") ? "zsh" : "bash";
+    const proxyCacheDirectory = "/some-proxy-kubeconfig-cache-directory";
+    const profileCacheDirectory = "/some-profile-cache-directory";
+
+    let home: string;
+
+    beforeEach(async () => {
+      home = path.join(directory, "home");
+      await fs.mkdir(home);
+      await new Kubectl(dependencies, pinnedVersion).binDir();
+    });
+
+    const shells = [
+      {
+        name: "bash",
+        shell: "bash",
+        args: ["--noprofile", "--norc", "-c"],
+        initScript: ".bash_set_path",
+        profile: ".bash_profile",
+      },
+      {
+        name: "zsh",
+        shell: zsh,
+        args: zsh === "zsh" ? ["-f", "-c"] : ["--noprofile", "--norc", "-c"],
+        initScript: ".zlogin",
+        profile: ".zshrc",
+      },
+    ];
+
+    describe.each(shells)("for $name", ({ shell, args, initScript, profile }) => {
+      const run = async ({ before, profileExports }: { before?: string; profileExports?: string }) => {
+        if (profileExports !== undefined) {
+          await fs.writeFile(path.join(home, profile), `export KUBECACHEDIR="${profileExports}"\n`);
+        }
+
+        const script = path.join(directory, pinnedVersion, initScript);
+        const { stdout } = await promisify(execFile)(
+          shell,
+          [
+            ...args,
+            `. "${script}"; printf '\\nresult:%s|%s' "\${KUBECACHEDIR-<unset>}" "\${tempkubecachedir-<unset>}"`,
+          ],
+          {
+            env: {
+              PATH: process.env.PATH,
+              HOME: home,
+              OLD_ZDOTDIR: home,
+              ...(before === undefined ? {} : { KUBECACHEDIR: before }),
+            },
+          },
+        );
+        const [kubeCacheDir, temporary] = stdout.split("\nresult:").at(-1)!.split("|");
+
+        return { kubeCacheDir, temporary };
+      };
+
+      it("puts back the session's KUBECACHEDIR over the one the profile exports", async () => {
+        const result = await run({ before: proxyCacheDirectory, profileExports: profileCacheDirectory });
+
+        expect(result).toEqual({ kubeCacheDir: proxyCacheDirectory, temporary: "<unset>" });
+      });
+
+      it("keeps the profile's KUBECACHEDIR when the session started without one", async () => {
+        const result = await run({ profileExports: profileCacheDirectory });
+
+        expect(result).toEqual({ kubeCacheDir: profileCacheDirectory, temporary: "<unset>" });
+      });
+
+      it("leaves KUBECACHEDIR unset when neither the session nor the profile sets it", async () => {
+        const result = await run({});
+
+        expect(result).toEqual({ kubeCacheDir: "<unset>", temporary: "<unset>" });
       });
     });
   });
