@@ -9,6 +9,7 @@ import directoryForUserDataInjectable from "../../common/app-paths/directory-for
 import fetchInjectable from "../../common/fetch/fetch.injectable";
 import pathExistsInjectable from "../../common/fs/path-exists.injectable";
 import readFileInjectable from "../../common/fs/read-file.injectable";
+import { isExtensionFileProbe } from "../../features/extensions/loader/common/scheme";
 import { getDiForUnitTesting } from "../../renderer/getDiForUnitTesting";
 import currentlyInClusterFrameInjectable from "../../renderer/routes/currently-in-cluster-frame.injectable";
 import extensionLoaderInjectable from "../extension-loader/extension-loader.injectable";
@@ -65,18 +66,27 @@ describe("linking an extension's renderer stylesheet", () => {
   // answered the way the handler answers a file it cannot find.
   let servedUrls: Set<string>;
 
+  // Every status main answered with. Chromium logs each error status of a
+  // `fetch` to the renderer console, so none of them may be one.
+  let answeredStatuses: number[];
+
   beforeEach(() => {
     document.head.innerHTML = "";
     servedUrls = new Set();
+    answeredStatuses = [];
 
     const di = getDiForUnitTesting();
 
-    fetchMock = vi.fn(
-      async (url: string | URL): Promise<FetchResponse> =>
-        (servedUrls.has(String(url))
-          ? { ok: true, status: 200 }
-          : { ok: false, status: 404 }) as unknown as FetchResponse,
-    );
+    fetchMock = vi.fn(async (url: string | URL): Promise<FetchResponse> => {
+      const requested = String(url);
+      const isProbe = isExtensionFileProbe(requested);
+      const isServed = servedUrls.has(isProbe ? requested.replace(/\?.*$/, "") : requested);
+      const status = isServed ? 200 : isProbe ? 204 : 404;
+
+      answeredStatuses.push(status);
+
+      return { ok: status < 300, status } as unknown as FetchResponse;
+    });
     pathExistsMock = vi.fn(async () => true);
     readFileMock = vi.fn(async () => "");
 
@@ -106,7 +116,7 @@ describe("linking an extension's renderer stylesheet", () => {
     // The renderer has to work without filesystem privileges (#2399), which is
     // the whole reason extensions are served over a URL. A probe which reads an
     // absolute path off disk takes that back.
-    expect(fetchMock).toHaveBeenCalledWith(`${servedPrefix}/dist/renderer.css`);
+    expect(fetchMock).toHaveBeenCalledWith(`${servedPrefix}/dist/renderer.css?probe`);
     expect(pathExistsMock).not.toHaveBeenCalled();
     expect(readFileMock).not.toHaveBeenCalled();
   });
@@ -119,11 +129,47 @@ describe("linking an extension's renderer stylesheet", () => {
     expect(linkedStylesheets()).toEqual([`${servedPrefix}/dist/style.css`]);
   });
 
+  it("stops at the stylesheet named after the entry, and does not ask for the default one", async () => {
+    servedUrls.add(`${servedPrefix}/dist/renderer.css`);
+    servedUrls.add(`${servedPrefix}/dist/style.css`);
+
+    await styles.injectRendererStyles(extension, ["dist", "renderer.js"]);
+
+    expect(linkedStylesheets()).toEqual([`${servedPrefix}/dist/renderer.css`]);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not ask for the default stylesheet when the one named after the entry is already linked", async () => {
+    servedUrls.add(`${servedPrefix}/dist/renderer.css`);
+
+    await styles.injectRendererStyles(extension, ["dist", "renderer.js"]);
+    await styles.injectRendererStyles(extension, ["dist", "renderer.js"]);
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
   it("links nothing for the majority of extensions, which ship no stylesheet", async () => {
     await styles.injectRendererStyles(extension, ["dist", "renderer.js"]);
 
     expect(linkedStylesheets()).toEqual([]);
     expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  describe("leaves no failed request in the renderer console", () => {
+    it.each([
+      ["ships the stylesheet named after the entry", ["renderer.css"]],
+      ["ships only the default stylesheet", ["style.css"]],
+      ["ships no stylesheet", []],
+    ])("when the extension %s", async (_, shipped) => {
+      for (const fileName of shipped) {
+        servedUrls.add(`${servedPrefix}/dist/${fileName}`);
+      }
+
+      await styles.injectRendererStyles(extension, ["dist", "renderer.js"]);
+
+      expect(answeredStatuses.length).toBeGreaterThan(0);
+      expect(answeredStatuses.filter((status) => status >= 400)).toEqual([]);
+    });
   });
 
   it("marks the link with the extension it belongs to", async () => {

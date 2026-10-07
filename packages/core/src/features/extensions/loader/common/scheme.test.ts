@@ -4,7 +4,14 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { contentTypeForFile, extensionFileUrl, parseExtensionFileUrl, toFileSegments } from "./scheme";
+import {
+  contentTypeForFile,
+  extensionFileProbeUrl,
+  extensionFileUrl,
+  isExtensionFileProbe,
+  parseExtensionFileUrl,
+  toFileSegments,
+} from "./scheme";
 
 describe("extension scheme URLs", () => {
   it("puts the extension in the path of the one origin", () => {
@@ -25,6 +32,15 @@ describe("extension scheme URLs", () => {
     };
 
     expect(parseExtensionFileUrl(extensionFileUrl(request))).toEqual(request);
+  });
+
+  it("turns a file URL into the probe for it, which still names the same file", () => {
+    const fileUrl = "freelens-extension://extensions/freelensapp--helloworld/1.0.0-0f1e2d3c/dist/renderer.css";
+    const probeUrl = extensionFileProbeUrl(fileUrl);
+
+    expect(isExtensionFileProbe(probeUrl)).toBe(true);
+    expect(isExtensionFileProbe(fileUrl)).toBe(false);
+    expect(parseExtensionFileUrl(probeUrl)).toEqual(parseExtensionFileUrl(fileUrl));
   });
 
   it("normalises a manifest path into segments", () => {

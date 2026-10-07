@@ -18,7 +18,12 @@ import {
   extensionLoaderReloadDevelopmentChannel,
 } from "../../common/ipc/extension-handling";
 import { developmentBuildSegment } from "../../features/extensions/loader/common/build-segment";
-import { extensionFileUrl, toFileSegments } from "../../features/extensions/loader/common/scheme";
+import {
+  extensionFilePresentStatus,
+  extensionFileProbeUrl,
+  extensionFileUrl,
+  toFileSegments,
+} from "../../features/extensions/loader/common/scheme";
 import { requestExtensionLoaderInitialState } from "../../renderer/ipc";
 import { sanitizeExtensionName } from "../lens-extension";
 
@@ -762,7 +767,8 @@ export class ExtensionLoader {
     }
 
     // Prefer a stylesheet named after the entry (renderer.js -> renderer.css),
-    // then Vite's default library CSS asset name (style.css).
+    // then Vite's default library CSS asset name (style.css). The first one
+    // there is the extension's stylesheet, and the rest are not asked for.
     const candidates = new Set([entryFileName.replace(/\.[^.]+$/, ".css"), "style.css"]);
 
     candidates.delete(entryFileName);
@@ -772,32 +778,31 @@ export class ExtensionLoader {
       const url = this.servedUrlOf(extension, fileSegments);
 
       if (this.injectedStyleUrls.has(url)) {
-        continue;
+        return;
       }
 
       try {
-        // A `<link>` at a URL which is not there logs a failed request and
-        // nothing else, but the extensions which do not ship CSS are the
-        // majority, so the existence check stays. It asks the scheme rather
-        // than the filesystem, because a renderer which reads an absolute path
-        // off disk here is a renderer that still needs filesystem privileges
-        // (#2399) -- the very thing serving extensions over a URL is for. Main
-        // answers a file it does not have with 404, out of the same registry it
-        // consulted for the entry point, and the status is the whole answer:
-        // nothing here reads the body. A plain GET rather than a HEAD because
-        // the handler reads the file whatever the method is, so a HEAD would
-        // save only this hop's copy of a stylesheet the `<link>` is about to
-        // ask for anyway -- and GET is the request the scheme is known to
-        // answer, being the one the entry-point import itself makes.
-        const response = await this.dependencies.fetch(url);
+        // A `<link>` at a URL which is not there logs a failed request, and
+        // the extensions which do not ship CSS are the majority, so the
+        // existence check stays. It asks the scheme rather than the
+        // filesystem, because a renderer which reads an absolute path off disk
+        // here is a renderer that still needs filesystem privileges (#2399) --
+        // the very thing serving extensions over a URL is for. It asks with the
+        // probe form of the URL rather than for the file: Chromium logs every
+        // `fetch` answered with an error status to the console, so a plain GET
+        // of a stylesheet the extension does not ship would leave an error
+        // there for an extension which did nothing wrong. Main answers the
+        // probe out of the same registry it consulted for the entry point, and
+        // the status is the whole answer.
+        const response = await this.dependencies.fetch(extensionFileProbeUrl(url));
 
-        if (!response.ok) {
+        if (response.status !== extensionFilePresentStatus) {
           continue;
         }
 
-        // Guard again: another async candidate may have won the race meanwhile.
+        // Guard again: a concurrent load may have linked it meanwhile.
         if (this.injectedStyleUrls.has(url)) {
-          continue;
+          return;
         }
         this.injectedStyleUrls.add(url);
 
@@ -809,6 +814,8 @@ export class ExtensionLoader {
         document.head.appendChild(link);
 
         this.dependencies.logger.debug(`${logModule}: linked stylesheet "${url}" for "${extension.manifest.name}"`);
+
+        return;
       } catch (error) {
         this.dependencies.logger.warn(
           `${logModule}: failed to link stylesheet "${url}" for "${extension.manifest.name}": ${error}`,

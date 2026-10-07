@@ -63,6 +63,40 @@ export function extensionFileUrl({ sanitizedName, buildSegment, fileSegments }: 
   return `${extensionSchemeOrigin}/${path}`;
 }
 
+const probeParameter = "probe";
+
+/**
+ * What main answers a probe with when it would serve the file. Anything else,
+ * {@link extensionFileAbsentStatus} included, means the file is not there.
+ */
+export const extensionFilePresentStatus = 200;
+
+/**
+ * What main answers a probe with when the plain request would get a 404.
+ *
+ * A success status on purpose: Chromium logs every response of a `fetch` with
+ * an error status to the renderer console, at error level, and asking whether
+ * an optional file exists is not an error.
+ */
+export const extensionFileAbsentStatus = 204;
+
+/**
+ * The URL which asks main whether it would serve a file, rather than for the
+ * file itself. The answer is the status alone, and neither form has a body.
+ * {@link extensionFileUrl} never puts a query on a URL, so this is the only one.
+ */
+export function extensionFileProbeUrl(fileUrl: string): string {
+  return `${fileUrl}?${probeParameter}`;
+}
+
+export function isExtensionFileProbe(url: string): boolean {
+  try {
+    return new URL(url).searchParams.has(probeParameter);
+  } catch {
+    return false;
+  }
+}
+
 /**
  * The inverse of {@link extensionFileUrl}, and the first gate of the handler:
  * anything which is not exactly this shape is refused rather than resolved.

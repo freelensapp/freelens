@@ -143,6 +143,44 @@ describe("serveExtensionFile", () => {
 
       expect(response.status).toBe(400);
     });
+
+    describe("a probe", () => {
+      it("answers that a file is there, without sending it", async () => {
+        const response = await request(
+          "freelens-extension://extensions/freelensapp--helloworld/1.0.0-0f1e2d3c/dist/renderer.js?probe",
+        );
+
+        expect(response.status).toBe(200);
+        await expect(response.text()).resolves.toBe("");
+      });
+
+      it.each([
+        ["a file which is not there", "freelensapp--helloworld/1.0.0-0f1e2d3c/dist/missing.css"],
+        ["a build which is not the live one", "freelensapp--helloworld/0.9.0-aabbccdd/dist/renderer.js"],
+        ["an extension which is not installed", "someone--else/1.0.0-0f1e2d3c/dist/renderer.js"],
+      ])("answers %s with a success status, which the renderer console does not report", async (_, path) => {
+        const response = await request(`freelens-extension://extensions/${path}?probe`);
+
+        expect(response.status).toBe(204);
+      });
+
+      it("still refuses a symlink pointing out of the extension", async () => {
+        symlinks.set(`${liveBuild}/dist/escape.js`, "/etc/shadow");
+        files.set("/etc/shadow", "not yours");
+
+        const response = await request(
+          "freelens-extension://extensions/freelensapp--helloworld/1.0.0-0f1e2d3c/dist/escape.js?probe",
+        );
+
+        expect(response.status).toBe(403);
+      });
+
+      it("still refuses a malformed URL", async () => {
+        const response = await request("freelens-extension://extensions/freelensapp--helloworld?probe");
+
+        expect(response.status).toBe(400);
+      });
+    });
   });
 
   describe("a development install", () => {
