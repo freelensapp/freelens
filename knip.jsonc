@@ -144,6 +144,7 @@
         "mobx-react",
         "monaco-editor",
         "react",
+        "react-dom",
         "react-select",
         "react-window",
         "rfc6902",

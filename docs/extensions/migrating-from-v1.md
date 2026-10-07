@@ -178,6 +178,12 @@ through the externals map in
   real React into your tree for your bundler to find, which is the mistake this
   is trying to prevent. The `@freelensapp/extensions` types pin the React 19
   major, so authoring against them keeps type-checking honest.
+- Keep those devDependencies at the versions the host runs.
+  `@freelensapp/extensions` declares `react`, `react-dom`, `@types/react` and
+  `@types/react-dom` as optional peers, so its declaration compiles against your
+  copies and your package manager reports a version outside the host's range.
+  pnpm does that as a warning; set `strictPeerDependencies: true` to make it fail
+  the install.
 - **This is a breaking change from the earlier React 18 preview.** Extensions
   built against React 18 types must move to React 19, because host-provided
   React and any React the extension bundles must share the same major (see the

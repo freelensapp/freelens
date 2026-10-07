@@ -424,11 +424,15 @@ host's container, so there is nothing of the host's to pass it to.
 **Guarantee.** Host-provided React **19**, reached through
 [C3](#c3-host-provided-singletons). Extensions must not bundle their own.
 
-**Surface.** `react`, `react-dom`, `react/jsx-runtime` as externals; `@types/react`
-as a devDependency. React is not reached through a `Renderer.React` namespace,
-which does not exist, and an extension does not declare React as a peer
-dependency: the host provides it through the global, in development and in an
-installed extension alike.
+**Surface.** `react`, `react-dom`, `react/jsx-runtime` as externals; `@types/react`,
+and `@types/react-dom` for an extension that imports `react-dom`, as
+devDependencies at the host's version. `@freelensapp/extensions` declares both
+as optional peers ([C11](#c11-third-party-bundled-libraries)), so the package
+manager resolves the declaration's React types to the author's copy and reports
+a version outside the host's range. React is not reached through a
+`Renderer.React` namespace, which does not exist, and an extension does not
+declare React as a peer dependency: the host provides it through the global, in
+development and in an installed extension alike.
 
 **Failure mode.** The invalid-hook-call trap: two copies of React in one renderer
 break the Rules of Hooks, and any hook — including those inside host components
@@ -485,13 +489,14 @@ libraries the published API's type surface is pinned against.
 
 It splits in two:
 
-- **Host-provided** ([C3](#c3-host-provided-singletons)): `react`, `mobx`,
-  `mobx-react`, `monaco-editor`.
+- **Host-provided** ([C3](#c3-host-provided-singletons)): `react`, `react-dom`,
+  `mobx`, `mobx-react`, `monaco-editor`, and the `@types/react` and
+  `@types/react-dom` that type the first two.
 - **Free to bundle**: `chart.js`, `react-select`, `conf`, `es-toolkit`, `immer`,
-  `rfc6902`, `type-fest` (plus the `@types/*` entries). A bundled `react-select`
-  still gets the host's React, because that copy's own `import "react"` is
-  rewritten too. `es-toolkit` is there only for the `DebouncedFunc` type the
-  declaration imports from `es-toolkit/compat`.
+  `rfc6902`, `type-fest`. A bundled `react-select` still gets the host's React,
+  because that copy's own `import "react"` is rewritten too. `es-toolkit` is
+  there only for the `DebouncedFunc` type the declaration imports from
+  `es-toolkit/compat`.
 
 **Surface.** The built declaration imports these external specifiers:
 `type-fest`, `mobx`, `mobx-react`, `react`, `react/jsx-runtime`, `react-dom`,
@@ -552,17 +557,34 @@ whether imported or not — `monaco-editor` alone is large, and an extension wit
 only a `main` entry point would pay for it on every install and in every CI
 cache. What keeps a second copy out of the bundle is the author marking the
 specifier external, not the dependency field; the field only decides what gets
-installed. The `@types/*` entries are in `dependencies`: a second copy of a
-declaration is not a second instance of anything. `react-dom` itself is not
-declared; the declaration needs only its types, which `@types/react-dom`
-supplies. Nothing in-repo type-checks the published declaration without
-`skipLibCheck`, the fixture extension included.
+installed, and which copy the declaration resolves.
 
-**Failure mode.** A host-provided library in `dependencies` of
-`@freelensapp/extensions` **silently plants a real React in the author's tree**
-for their bundler to find — which is precisely the mistake
-[C3](#c3-host-provided-singletons) exists to prevent. As peers they are still
-there to compile against, and bundling one's own copy becomes a deliberate act.
+`@types/react` and `@types/react-dom` are optional peers for that second
+reason. An extension with renderer code declares them itself anyway: under
+pnpm's isolated layout a package's `dependencies` are visible to that package
+only, so without its own copy the author's `.tsx` fails with `TS7016` for
+`react/jsx-runtime`. As peers, the declaration resolves to the author's copy and
+its version is checked against the host's range. A main-only extension
+compiles without declaring either. `react-dom` is an optional peer like
+`react`, so an author's copy is checked the same way.
+
+The free-to-bundle entries are in `dependencies`, `react-select` included, so
+that the types of `Renderer.Component.Select` are always there: as an optional
+peer that an author did not install, they would turn into `any` without a
+diagnostic. `react-select` has `react` and `react-dom` as **required** peers,
+so every extension's tree has a React and a `react-dom` installed whether it
+imports them or not, hoisted by npm to where a bundler finds them. That copy
+does no harm only because the author marks the specifiers external, as
+[C3](#c3-host-provided-singletons) requires. Nothing in-repo type-checks the
+published declaration without `skipLibCheck`, the fixture extension included.
+
+**Failure mode.** A bundler that is not told to map `react` finds the React
+that `react-select` installed and **bundles a second React**, which throws
+`invalid hook call` at runtime. The dependency fields cannot prevent that; only
+the externals of C3 do. What the fields decide is the types: a `@types/*` entry
+in `dependencies` would install a second copy, without a warning, for an author
+who pins another version, and the declaration and the author's code would be
+checked against different React types.
 
 ---
 
