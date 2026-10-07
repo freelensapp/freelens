@@ -67,7 +67,7 @@ jobs:
       # older one, without the Go symbol capture the scan needs (see Create
       # SBOM). Stored without the leading "v" for the same reason as
       # GRYPE_VERSION in security-scan.
-      SYFT_VERSION: 1.54.0 # datasource=github-releases depName=anchore/syft
+      SYFT_VERSION: 1.54.1 # datasource=github-releases depName=anchore/syft
 
     steps:
       - name: Checkout
