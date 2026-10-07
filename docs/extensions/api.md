@@ -460,7 +460,9 @@ own.
 `<entry>.css` or a `style.css` next to the renderer entry — as a `<link>` at the
 URL main serves it from, the same route the renderer entry point takes. A
 normal stylesheet import therefore works without the v1 `?inline` + `<style>`
-workaround.
+workaround. At most one stylesheet is linked per renderer entry: `<entry>.css`
+when it exists, `style.css` otherwise. Looking for a stylesheet the extension
+does not ship leaves no error in the renderer console.
 
 **Surface.** One CSS asset next to the renderer entry. The host's shared
 component classes (`.Tooltip`, `.Button`, …) are global and part of the public
