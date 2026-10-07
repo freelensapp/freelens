@@ -1260,9 +1260,10 @@ migration guides for the full list.
 In v1 the extension bundler ran a `style-loader`, which injected each imported
 stylesheet into the document at runtime. In v2 extensions are built by their
 authors in Vite **library mode**, which does the opposite: it *extracts* CSS to
-a sibling asset next to the JS entry and injects nothing. The host loads an
-extension by `require()`-ing its JS entry, so without help that extracted CSS
-would never reach the page — which is why early v2 extensions had to import
+a sibling asset next to the JS entry and injects nothing. The host loads only
+the renderer's JS entry, as an ES module by URL
+([C4](./api.md#c4-module-format-and-loading)), so without help that extracted
+CSS would never reach the page — which is why early v2 extensions had to import
 each stylesheet twice and inline it through a manual `<style>` tag:
 
 ```tsx
