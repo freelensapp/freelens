@@ -20,7 +20,7 @@ import type { ExecFile } from "../../common/fs/exec-file.injectable";
 import type { RemovePath } from "../../common/fs/remove.injectable";
 import type { WriteFile } from "../../common/fs/write-file.injectable";
 import type { JoinPaths } from "../../common/path/join-paths.injectable";
-import type { KubeconfigManager } from "../kubeconfig-manager/kubeconfig-manager";
+import type { KubeconfigManager, ProxyKubeconfigPaths } from "../kubeconfig-manager/kubeconfig-manager";
 import type { CreateKubectl } from "../kubectl/create-kubectl.injectable";
 
 export interface ResourceApplierDependencies {
@@ -49,6 +49,18 @@ export class ResourceApplier {
   }
 
   /**
+   * `--cache-dir` as well as `KUBECACHEDIR`: the downloaded kubectl may be
+   * older than the environment variable.
+   */
+  private getKubeconfigArgs({ kubeconfigPath, cacheDirectoryPath }: ProxyKubeconfigPaths): string[] {
+    return ["--kubeconfig", kubeconfigPath, "--cache-dir", cacheDirectoryPath];
+  }
+
+  private getExecEnv({ cacheDirectoryPath }: ProxyKubeconfigPaths): NodeJS.ProcessEnv {
+    return { ...process.env, KUBECACHEDIR: cacheDirectoryPath };
+  }
+
+  /**
    * Patch a kube resource's manifest, throwing any error that occurs.
    * @param name The name of the kube resource
    * @param kind The kind of the kube resource
@@ -59,8 +71,8 @@ export class ResourceApplier {
     this.dependencies.emitAppEvent({ name: "resource", action: "patch" });
 
     const kubectlPath = await this.getKubectlPath();
-    const proxyKubeconfigPath = await this.dependencies.proxyKubeconfigManager.ensurePath();
-    const args = ["--kubeconfig", proxyKubeconfigPath, "patch", kind, name];
+    const proxyKubeconfig = await this.dependencies.proxyKubeconfigManager.ensurePaths();
+    const args = [...this.getKubeconfigArgs(proxyKubeconfig), "patch", kind, name];
 
     if (ns) {
       args.push("--namespace", ns);
@@ -68,7 +80,7 @@ export class ResourceApplier {
 
     args.push("--type", "json", "--patch", JSON.stringify(patch), "-o", "json");
 
-    const result = await this.dependencies.execFile(kubectlPath, args);
+    const result = await this.dependencies.execFile(kubectlPath, args, { env: this.getExecEnv(proxyKubeconfig) });
 
     if (result.callWasSuccessful) {
       return result.response;
@@ -85,13 +97,13 @@ export class ResourceApplier {
 
   protected async kubectlApply(content: string): AsyncResult<string, string> {
     const kubectlPath = await this.getKubectlPath();
-    const proxyKubeconfigPath = await this.dependencies.proxyKubeconfigManager.ensurePath();
+    const proxyKubeconfig = await this.dependencies.proxyKubeconfigManager.ensurePaths();
     const fileName = temporaryFile({ name: "resource.yaml" });
-    const args = ["apply", "--kubeconfig", proxyKubeconfigPath, "-o", "json", "-f", fileName];
+    const args = ["apply", ...this.getKubeconfigArgs(proxyKubeconfig), "-o", "json", "-f", fileName];
 
     this.dependencies.logger.debug(`shooting manifests with ${kubectlPath}`, { args });
 
-    const execEnv = { ...process.env };
+    const execEnv = this.getExecEnv(proxyKubeconfig);
     const httpsProxy = this.cluster.preferences?.httpsProxy;
 
     if (httpsProxy) {
@@ -101,7 +113,7 @@ export class ResourceApplier {
     try {
       await this.dependencies.writeFile(fileName, content);
 
-      const result = await this.dependencies.execFile(kubectlPath, args);
+      const result = await this.dependencies.execFile(kubectlPath, args, { env: execEnv });
 
       if (result.callWasSuccessful) {
         return result;
@@ -130,7 +142,7 @@ export class ResourceApplier {
     parentArgs: string[] = [],
   ): AsyncResult<string, string> {
     const kubectlPath = await this.getKubectlPath();
-    const proxyKubeconfigPath = await this.dependencies.proxyKubeconfigManager.ensurePath();
+    const proxyKubeconfig = await this.dependencies.proxyKubeconfigManager.ensurePaths();
     const tmpDir = temporaryDirectory();
 
     await Promise.all(
@@ -139,10 +151,10 @@ export class ResourceApplier {
       ),
     );
 
-    const args = [subCmd, "--kubeconfig", proxyKubeconfigPath, ...parentArgs, "-f", tmpDir];
+    const args = [subCmd, ...this.getKubeconfigArgs(proxyKubeconfig), ...parentArgs, "-f", tmpDir];
 
     this.dependencies.logger.info(`[RESOURCE-APPLIER] running kubectl`, { args });
-    const result = await this.dependencies.execFile(kubectlPath, args);
+    const result = await this.dependencies.execFile(kubectlPath, args, { env: this.getExecEnv(proxyKubeconfig) });
 
     if (result.callWasSuccessful) {
       return result;

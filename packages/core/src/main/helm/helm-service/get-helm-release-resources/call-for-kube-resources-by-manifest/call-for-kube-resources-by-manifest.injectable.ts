@@ -14,9 +14,11 @@ import type { KubeJsonApiData } from "@freelensapp/kube-object";
 
 import type { JsonObject } from "type-fest";
 
+import type { ProxyKubeconfigPaths } from "../../../../kubeconfig-manager/kubeconfig-manager";
+
 export type CallForKubeResourcesByManifest = (
   namespace: string,
-  kubeconfigPath: string,
+  proxyKubeconfig: ProxyKubeconfigPaths,
   kubectlPath: string,
   resourceManifests: KubeJsonApiData[],
 ) => Promise<JsonObject[]>;
@@ -27,7 +29,7 @@ const callForKubeResourcesByManifestInjectable = getInjectable({
   instantiate: (di): CallForKubeResourcesByManifest => {
     const execFileWithInput = di.inject(execFileWithInputInjectable);
 
-    return async (namespace, kubeconfigPath, kubectlPath, resourceManifests) => {
+    return async (namespace, { kubeconfigPath, cacheDirectoryPath }, kubectlPath, resourceManifests) => {
       const input = wideJoin("---\n")(resourceManifests.map((manifest) => yaml.dump(manifest, defaultYamlDumpOptions)));
 
       const result = await execFileWithInput({
@@ -38,6 +40,8 @@ const callForKubeResourcesByManifestInjectable = getInjectable({
           "get",
           "--kubeconfig",
           kubeconfigPath,
+          "--cache-dir",
+          cacheDirectoryPath,
           "-f",
           "-",
           "--namespace",
