@@ -10,6 +10,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../common/cluster/cluster";
+import ensureDirInjectable from "../../common/fs/ensure-dir.injectable";
 import pathExistsInjectable from "../../common/fs/path-exists.injectable";
 import pathExistsSyncInjectable from "../../common/fs/path-exists-sync.injectable";
 import readFileInjectable from "../../common/fs/read-file.injectable";
@@ -29,8 +30,9 @@ import type { Logger } from "@freelensapp/logger";
 
 import type { AsyncFnMock } from "@async-fn/vitest";
 import type { DiContainer } from "@ogre-tools/injectable";
-import type { Mocked } from "vitest";
+import type { Mocked, MockedFunction } from "vitest";
 
+import type { EnsureDirectory } from "../../common/fs/ensure-dir.injectable";
 import type { PathExists } from "../../common/fs/path-exists.injectable";
 import type { ReadFile } from "../../common/fs/read-file.injectable";
 import type { RemovePath } from "../../common/fs/remove.injectable";
@@ -45,6 +47,7 @@ describe("kubeconfig manager tests", () => {
   let loggerMock: Mocked<Logger>;
   let readFileMock: AsyncFnMock<ReadFile>;
   let deleteFileMock: AsyncFnMock<RemovePath>;
+  let ensureDirMock: MockedFunction<EnsureDirectory>;
   let writeFileMock: AsyncFnMock<WriteFile>;
   let pathExistsMock: AsyncFnMock<PathExists>;
   let kubeConfManager: KubeconfigManager;
@@ -77,6 +80,8 @@ describe("kubeconfig manager tests", () => {
     di.override(pathExistsInjectable, () => pathExistsMock);
     deleteFileMock = asyncFn();
     di.override(removePathInjectable, () => deleteFileMock);
+    ensureDirMock = vi.fn(async () => {});
+    di.override(ensureDirInjectable, () => ensureDirMock);
 
     loggerMock = {
       warn: vi.fn(),
@@ -188,6 +193,21 @@ describe("kubeconfig manager tests", () => {
             expect(await getPathPromise).toBe("/some-directory-for-temp/kubeconfig-foo");
           });
 
+          it("should create the cache directory next to the kubeconfig", () => {
+            expect(ensureDirMock).toHaveBeenCalledExactlyOnceWith("/some-directory-for-temp/kubecache-foo");
+          });
+
+          it("should allow ensurePaths to resolve with the kubeconfig and its cache directory", async () => {
+            const pathsPromise = kubeConfManager.ensurePaths();
+
+            await pathExistsMock.resolveSpecific(["/some-directory-for-temp/kubeconfig-foo"], true);
+
+            expect(await pathsPromise).toEqual({
+              kubeconfigPath: "/some-directory-for-temp/kubeconfig-foo",
+              cacheDirectoryPath: "/some-directory-for-temp/kubecache-foo",
+            });
+          });
+
           describe("when calling clear", () => {
             let clearPromise: Promise<void>;
 
@@ -195,42 +215,74 @@ describe("kubeconfig manager tests", () => {
               clearPromise = kubeConfManager.clear();
             });
 
-            it("should call deleteFile", () => {
-              expect(deleteFileMock).toBeCalledTimes(1);
+            it("should remove the kubeconfig and the cache directory without waiting for either", () => {
+              expect(deleteFileMock).toHaveBeenCalledTimes(2);
+              expect(deleteFileMock).toHaveBeenCalledWith("/some-directory-for-temp/kubeconfig-foo");
+              expect(deleteFileMock).toHaveBeenCalledWith("/some-directory-for-temp/kubecache-foo");
             });
 
-            describe("when deleteFile resolves", () => {
+            describe("when both removals resolve", () => {
               beforeEach(async () => {
                 await deleteFileMock.resolveSpecific(["/some-directory-for-temp/kubeconfig-foo"]);
+                await deleteFileMock.resolveSpecific(["/some-directory-for-temp/kubecache-foo"]);
               });
 
               it("should allow clear to resolve", async () => {
                 await clearPromise;
               });
-            });
 
-            describe("when deleteFile rejects with ENOENT", () => {
-              beforeEach(async () => {
-                await deleteFileMock.resolveSpecific(
-                  ["/some-directory-for-temp/kubeconfig-foo"],
-                  Promise.reject(
-                    Object.assign(new Error("file not found"), {
-                      code: "ENOENT",
-                    }),
-                  ),
-                );
+              it("should not log a warning", () => {
+                expect(loggerMock.warn).not.toHaveBeenCalled();
               });
 
-              it("should allow clear to resolve", async () => {
-                await clearPromise;
+              it("should not remove anything when called again", async () => {
+                await kubeConfManager.clear();
+
+                expect(deleteFileMock).toHaveBeenCalledTimes(2);
               });
             });
 
-            it("when deleteFile rejects with some other error; clear should also reject", async () => {
-              const expectPromise = expect(clearPromise).rejects.toBeDefined();
+            describe.each(["EBUSY", "EPERM"])("when a removal rejects with %s", (code) => {
+              const kubeconfig = "/some-directory-for-temp/kubeconfig-foo";
+              const cacheDirectory = "/some-directory-for-temp/kubecache-foo";
 
-              await deleteFileMock.reject(new Error("some other error"));
-              await expectPromise;
+              describe.each([
+                { failing: "the kubeconfig", rejected: [kubeconfig] },
+                { failing: "the cache directory", rejected: [cacheDirectory] },
+                { failing: "both", rejected: [kubeconfig, cacheDirectory] },
+              ])("for $failing", ({ rejected }) => {
+                beforeEach(async () => {
+                  for (const path of [kubeconfig, cacheDirectory]) {
+                    await deleteFileMock.resolveSpecific(
+                      [path],
+                      rejected.includes(path)
+                        ? Promise.reject(Object.assign(new Error(`${code}: resource busy or locked`), { code }))
+                        : undefined,
+                    );
+                  }
+                });
+
+                it("should allow clear to resolve", async () => {
+                  await clearPromise;
+                });
+
+                it("should still attempt both removals, once each", () => {
+                  expect(deleteFileMock).toHaveBeenCalledTimes(2);
+                  expect(deleteFileMock).toHaveBeenCalledWith(kubeconfig);
+                  expect(deleteFileMock).toHaveBeenCalledWith(cacheDirectory);
+                });
+
+                it("should log a warning for each failed removal", () => {
+                  expect(loggerMock.warn).toHaveBeenCalledTimes(rejected.length);
+                });
+
+                it("should create the kubeconfig again on the next ensurePath", () => {
+                  void kubeConfManager.ensurePath();
+
+                  expect(pathExistsMock).not.toHaveBeenCalled();
+                  expect(ensureServerMock).toHaveBeenCalledTimes(1);
+                });
+              });
             });
           });
 

@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { isErrnoException } from "@freelensapp/utilities";
 import { dumpConfigYaml } from "../../common/kube-helpers";
 
 import type { Logger } from "@freelensapp/logger";
@@ -15,6 +14,7 @@ import type { PartialDeep } from "type-fest";
 import type { SelfSignedCert } from "../../common/certificate/certificate";
 import type { Cluster } from "../../common/cluster/cluster";
 import type { LoadKubeconfig } from "../../common/cluster/load-kubeconfig.injectable";
+import type { EnsureDirectory } from "../../common/fs/ensure-dir.injectable";
 import type { PathExists } from "../../common/fs/path-exists.injectable";
 import type { RemovePath } from "../../common/fs/remove.injectable";
 import type { WriteFile } from "../../common/fs/write-file.injectable";
@@ -33,7 +33,23 @@ interface KubeconfigManagerDependencies {
   pathExists: PathExists;
   removePath: RemovePath;
   writeFile: WriteFile;
+  ensureDirectory: EnsureDirectory;
   loadKubeconfig: LoadKubeconfig;
+}
+
+/**
+ * What a process run against the cluster's proxy needs: the kubeconfig, and
+ * the directory kubectl and helm keep their discovery and HTTP cache in.
+ *
+ * The proxy listens on a different port after every start, and kubectl and
+ * helm name their cache after the API host, so the default `~/.kube/cache`
+ * would collect a directory per session that nothing reads again. Pass the
+ * cache directory as `KUBECACHEDIR` to every such process, and to kubectl also
+ * as `--cache-dir`, which the older versions that ignore the variable read.
+ */
+export interface ProxyKubeconfigPaths {
+  readonly kubeconfigPath: string;
+  readonly cacheDirectoryPath: string;
 }
 
 export class KubeconfigManager {
@@ -55,31 +71,55 @@ export class KubeconfigManager {
    * @returns The path to the temporary kubeconfig
    */
   async ensurePath(): Promise<string> {
-    if (this.tempFilePath === null || !(await this.dependencies.pathExists(this.tempFilePath))) {
-      return await this.ensureFile();
-    }
-
-    return this.tempFilePath;
+    return (await this.ensurePaths()).kubeconfigPath;
   }
 
   /**
-   * Deletes the temporary kubeconfig file
+   *
+   * @returns The paths to the temporary kubeconfig and to its cache directory
+   */
+  async ensurePaths(): Promise<ProxyKubeconfigPaths> {
+    const kubeconfigPath =
+      this.tempFilePath === null || !(await this.dependencies.pathExists(this.tempFilePath))
+        ? await this.ensureFile()
+        : this.tempFilePath;
+
+    return { kubeconfigPath, cacheDirectoryPath: this.cacheDirectoryPath };
+  }
+
+  /**
+   * Deletes the temporary kubeconfig file and its cache directory.
+   *
+   * The removal is best-effort and never throws. Both live in the temp
+   * directory and hold nothing secret, while a file still open in another
+   * process (a terminal, a port-forward, an antivirus scanner) cannot be
+   * deleted on Windows. A disconnect must neither fail nor wait because of it.
    */
   async clear(): Promise<void> {
     if (!this.tempFilePath) {
       return;
     }
 
-    this.dependencies.logger.info(`[KUBECONFIG-MANAGER]: Deleting temporary kubeconfig: ${this.tempFilePath}`);
+    const kubeconfigPath = this.tempFilePath;
+    const { cacheDirectoryPath } = this;
 
+    this.tempFilePath = null;
+    this.dependencies.logger.info(
+      `[KUBECONFIG-MANAGER]: Deleting temporary kubeconfig: ${kubeconfigPath} and its cache: ${cacheDirectoryPath}`,
+    );
+
+    await Promise.all([this.removeBestEffort(kubeconfigPath), this.removeBestEffort(cacheDirectoryPath)]);
+  }
+
+  protected get cacheDirectoryPath(): string {
+    return this.dependencies.joinPaths(this.dependencies.directoryForTemp, `kubecache-${this.cluster.id}`);
+  }
+
+  protected async removeBestEffort(path: string): Promise<void> {
     try {
-      await this.dependencies.removePath(this.tempFilePath);
+      await this.dependencies.removePath(path);
     } catch (error) {
-      if (isErrnoException(error) && error.code !== "ENOENT") {
-        throw error;
-      }
-    } finally {
-      this.tempFilePath = null;
+      this.dependencies.logger.warn(`[KUBECONFIG-MANAGER]: Could not delete ${path}, leaving it in place: ${error}`);
     }
   }
 
@@ -87,7 +127,11 @@ export class KubeconfigManager {
     try {
       await this.dependencies.freelensK8sProxyServer.ensureRunning();
 
-      return (this.tempFilePath = await this.createProxyKubeconfig());
+      const kubeconfigPath = await this.createProxyKubeconfig();
+
+      await this.dependencies.ensureDirectory(this.cacheDirectoryPath);
+
+      return (this.tempFilePath = kubeconfigPath);
     } catch (error) {
       throw new Error(`Failed to create temp kubeconfig for freelens-proxy: ${error}`);
     }

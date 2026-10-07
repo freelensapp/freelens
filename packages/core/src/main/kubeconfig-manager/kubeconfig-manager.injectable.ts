@@ -9,6 +9,7 @@ import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import freelensProxyCertificateInjectable from "../../common/certificate/freelens-proxy-certificate.injectable";
 import loadKubeconfigInjectable from "../../common/cluster/load-kubeconfig.injectable";
+import ensureDirInjectable from "../../common/fs/ensure-dir.injectable";
 import pathExistsInjectable from "../../common/fs/path-exists.injectable";
 import removePathInjectable from "../../common/fs/remove.injectable";
 import writeFileInjectable from "../../common/fs/write-file.injectable";
@@ -33,6 +34,7 @@ const kubeconfigManagerInjectable = getInjectable({
         removePath: di.inject(removePathInjectable),
         pathExists: di.inject(pathExistsInjectable),
         writeFile: di.inject(writeFileInjectable),
+        ensureDirectory: di.inject(ensureDirInjectable),
         certificate: di.inject(freelensProxyCertificateInjectable).get(),
         loadKubeconfig: di.inject(loadKubeconfigInjectable, cluster),
         freelensK8sProxyServer: di.inject(freelensK8sProxyServerInjectable, cluster),
