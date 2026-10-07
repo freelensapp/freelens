@@ -687,4 +687,7 @@ The contract has three, not two:
 
 - [`docs/extensions/migrating-from-v1.md`](./migrating-from-v1.md) — the porting guide
 - [`docs/extensions/binaries.md`](./binaries.md) — shipped binaries and process invocation
+- [freelens-example-extension](https://github.com/freelensapp/freelens-example-extension) —
+  the reference template for building, type-checking, testing and releasing an
+  extension, which this document leaves to the author
 - [`docs/styling.md`](../styling.md) — the styling model in full

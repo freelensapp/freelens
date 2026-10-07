@@ -13,6 +13,14 @@ Every v1 namespace path that moved or was removed is listed in the
 [v1→v2 rename table](#v1v2-rename-table), with a link to the section that
 explains the replacement.
 
+How an extension is built, type-checked, tested and released is up to its
+author, and outside the contract; this guide says what each of them has to
+achieve, not how to wire it up. The reference template for those patterns —
+the bundler configuration, the type-check programs, the test setup and the CI
+workflows — is
+[freelens-example-extension](https://github.com/freelensapp/freelens-example-extension).
+Start from it rather than rediscovering them.
+
 ## Step one: bump `engines.freelens`
 
 Before anything else:
