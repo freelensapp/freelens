@@ -256,6 +256,14 @@ annotations:
   }
   ```
 
+  **Do not drop the `accessor`.** `@observable enabled = false;` on a plain
+  field still type-checks and builds, because mobx types its decorators as
+  field decorators too. The development build of mobx throws
+  ``Please use `@observable accessor enabled` instead of `@observable enabled` ``
+  when the class is defined; the production build skips anything that is not
+  an accessor and leaves the field unobservable, so nothing reacts to it, and a
+  store whose `toJSON()` the host watches is never saved.
+
 - `observable.ref`, `observable.shallow`, `observable.deep`,
   `observable.struct`, `computed.struct`, `action.bound` and `flow.bound`
   become `observableRef`, `observableShallow`, `observableDeep`,
