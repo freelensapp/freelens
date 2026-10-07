@@ -104,9 +104,10 @@ runtime.
   `"type": "module"` (or use `.mjs`). Your renderer entry must be ESM.
 - Do not add any other `@freelensapp/*` package as a dependency — they are
   private in v2 and are not published.
-- Add **`electron`** as a `devDependency` for its types. It is an *optional*
-  peer of `@freelensapp/extensions`; a hard dependency would download the
-  Electron binary into every extension install.
+- Add **`electron`** as a `devDependency` for its types, at the version the
+  host runs. It is an *optional* peer of `@freelensapp/extensions`: a required
+  `>=43.0.0` peer would be installed automatically at the newest Electron
+  major, not the host's.
 
 ### The host-provided libraries, and how to mark them external
 

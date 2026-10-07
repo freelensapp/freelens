@@ -600,7 +600,7 @@ for the package**, because the two differ.
 | `"skipLibCheck": true` | the type dependency graph is not clean under `false`, and checking it is not an author's job |
 | `"lib"` including `DOM` and `DOM.Iterable`, `ES2024` or newer | the React component types name DOM types nothing else declares; the mobx types name `ReadonlySetLike`, which first appears in the ES2024 lib |
 | `"moduleResolution": "bundler"`, `node16` or `nodenext` | to resolve the package's `exports` |
-| `electron` as a devDependency | an **optional** peer — a hard dependency would download the Electron binary into every extension install |
+| `electron` as a devDependency, at the host's version | an **optional** peer — a required `>=43.0.0` peer would be installed automatically at the newest Electron major, not the one the host runs |
 
 The **fetch surface alone** needs `lib.dom` *or* `@types/node`: with structural
 types it names only `AbortSignal`, `ReadableStream`, `URL` and `Uint8Array`,
