@@ -119,6 +119,25 @@ describe("linking an extension's renderer stylesheet", () => {
     expect(linkedStylesheets()).toEqual([`${servedPrefix}/dist/style.css`]);
   });
 
+  it("stops at the stylesheet named after the entry, and does not ask for the default one", async () => {
+    servedUrls.add(`${servedPrefix}/dist/renderer.css`);
+    servedUrls.add(`${servedPrefix}/dist/style.css`);
+
+    await styles.injectRendererStyles(extension, ["dist", "renderer.js"]);
+
+    expect(linkedStylesheets()).toEqual([`${servedPrefix}/dist/renderer.css`]);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not ask for the default stylesheet when the one named after the entry is already linked", async () => {
+    servedUrls.add(`${servedPrefix}/dist/renderer.css`);
+
+    await styles.injectRendererStyles(extension, ["dist", "renderer.js"]);
+    await styles.injectRendererStyles(extension, ["dist", "renderer.js"]);
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
   it("links nothing for the majority of extensions, which ship no stylesheet", async () => {
     await styles.injectRendererStyles(extension, ["dist", "renderer.js"]);
 

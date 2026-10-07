@@ -762,7 +762,8 @@ export class ExtensionLoader {
     }
 
     // Prefer a stylesheet named after the entry (renderer.js -> renderer.css),
-    // then Vite's default library CSS asset name (style.css).
+    // then Vite's default library CSS asset name (style.css). The first one
+    // there is the extension's stylesheet, and the rest are not asked for.
     const candidates = new Set([entryFileName.replace(/\.[^.]+$/, ".css"), "style.css"]);
 
     candidates.delete(entryFileName);
@@ -772,7 +773,7 @@ export class ExtensionLoader {
       const url = this.servedUrlOf(extension, fileSegments);
 
       if (this.injectedStyleUrls.has(url)) {
-        continue;
+        return;
       }
 
       try {
@@ -795,9 +796,9 @@ export class ExtensionLoader {
           continue;
         }
 
-        // Guard again: another async candidate may have won the race meanwhile.
+        // Guard again: a concurrent load may have linked it meanwhile.
         if (this.injectedStyleUrls.has(url)) {
-          continue;
+          return;
         }
         this.injectedStyleUrls.add(url);
 
@@ -809,6 +810,8 @@ export class ExtensionLoader {
         document.head.appendChild(link);
 
         this.dependencies.logger.debug(`${logModule}: linked stylesheet "${url}" for "${extension.manifest.name}"`);
+
+        return;
       } catch (error) {
         this.dependencies.logger.warn(
           `${logModule}: failed to link stylesheet "${url}" for "${extension.manifest.name}": ${error}`,
