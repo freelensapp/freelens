@@ -62,7 +62,11 @@ A config that compiles is not yet a config that separates anything, so
 `type:check` also compiles the files in [`environment-tests/`](./environment-tests)
 with the same settings. Each line there that must not compile carries a
 `@ts-expect-error`, which inverts the check: a config that starts accepting the
-line fails with an unused directive.
+line fails with an unused directive. Each of those configs extends a source
+config and keeps its `include`, so the probes are compiled together with the
+sources and with every declaration the sources reach. Compiled alone they would
+miss a third-party declaration with `/// <reference types="node" />` or
+`/// <reference lib="dom" />`, which enters a program only through an import.
 
 | Config | Compiles | Settings of |
 | --- | --- | --- |

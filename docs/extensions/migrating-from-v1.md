@@ -549,6 +549,30 @@ export const buffer = Buffer.from("text");
 
 Export what each line declares, so that a line cannot go on failing for the
 wrong reason, such as an unused import, once the config lets its API through.
+
+**Compile that file together with your sources**, not on its own. `types` and
+`lib` alone do not keep an environment pure: a declaration file with
+`/// <reference types="node" />` loads all of `@types/node` into any program
+that reaches it, whatever `types` says, and one with
+`/// <reference lib="dom" />` loads the DOM. Such a declaration enters a
+program only when a source file imports the package it belongs to, so a file
+of probes compiled alone never reaches it and goes on passing while your
+renderer code compiles against Node. A config that extends the source config,
+keeps its `include` and adds the probes under `files` compiles both:
+
+```json
+{
+  "extends": "../src/renderer/tsconfig.json",
+  "files": ["node-apis.ts"]
+}
+```
+
+When one of them catches a leak, keep the leak out rather than relax the probe.
+For Node in the renderer, point `typeRoots` of the renderer config at a
+directory with an empty `node` package, which a reference directive resolves to
+first; for the DOM in main, remove the directive from the declaration with
+`pnpm patch` or your package manager's equivalent.
+
 The in-repo fixture extension checks its own configs this way, in
 [`packages/fixture-extension/environment-tests/`](../../packages/fixture-extension/environment-tests).
 
