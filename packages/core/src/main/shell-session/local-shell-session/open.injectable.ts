@@ -48,7 +48,10 @@ const openLocalShellSessionInjectable = getInjectable({
 
   instantiate: (di): OpenLocalShellSession => {
     const createKubectl = di.inject(createKubectlInjectable);
-    const dependencies: Omit<LocalShellSessionDependencies, "proxyKubeconfigPath" | "directoryContainingKubectl"> = {
+    const dependencies: Omit<
+      LocalShellSessionDependencies,
+      "proxyKubeconfigPath" | "proxyCacheDirectoryPath" | "directoryContainingKubectl"
+    > = {
       directoryForBinaries: di.inject(directoryForBinariesInjectable),
       baseBundledBinariesDirectory: di.inject(baseBundledBinariesDirectoryInjectable),
       isMac: di.inject(isMacInjectable),
@@ -79,7 +82,8 @@ const openLocalShellSessionInjectable = getInjectable({
       const status = terminalStatusReporterFor(args.websocket);
 
       status.info("Starting cluster proxy ...");
-      const proxyKubeconfigPath = await kubeconfigManager.ensurePath();
+      const { kubeconfigPath: proxyKubeconfigPath, cacheDirectoryPath: proxyCacheDirectoryPath } =
+        await kubeconfigManager.ensurePaths();
 
       const kubectlStatus = kubectlStatusOptionsFor(kubectl.kubectlVersion, status);
 
@@ -91,6 +95,7 @@ const openLocalShellSessionInjectable = getInjectable({
         {
           ...dependencies,
           proxyKubeconfigPath,
+          proxyCacheDirectoryPath,
           directoryContainingKubectl,
         },
         { kubectl, ...args },

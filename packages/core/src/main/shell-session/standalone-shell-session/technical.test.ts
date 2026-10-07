@@ -31,7 +31,7 @@ import type { MockedFunction } from "vitest";
 import type WebSocket from "ws";
 
 import type { TerminalMessage } from "../../../common/terminal/channels";
-import type { KubeconfigManager } from "../../kubeconfig-manager/kubeconfig-manager";
+import type { KubeconfigManager, ProxyKubeconfigPaths } from "../../kubeconfig-manager/kubeconfig-manager";
 import type { CreateKubectl } from "../../kubectl/create-kubectl.injectable";
 import type { SpawnPty } from "../spawn-pty.injectable";
 import type { OpenStandaloneShellSession } from "./open.injectable";
@@ -43,6 +43,7 @@ describe("technical unit tests for standalone shell sessions", () => {
   let sent: TerminalMessage[];
   let createKubectl: MockedFunction<() => unknown>;
   let ensurePath: MockedFunction<() => Promise<string>>;
+  let ensurePaths: MockedFunction<() => Promise<ProxyKubeconfigPaths>>;
 
   const websocket = () => {
     const socket = {
@@ -97,6 +98,7 @@ describe("technical unit tests for standalone shell sessions", () => {
       response: {
         PATH: "/home/some-user/bin:/usr/local/bin:/usr/bin",
         KUBECONFIG: "/home/some-user/.kube/config",
+        KUBECACHEDIR: "/home/some-user/.kube/some-cache",
         HOME: "/home/some-user",
       },
     }));
@@ -109,7 +111,13 @@ describe("technical unit tests for standalone shell sessions", () => {
       throw new Error("tried to start the cluster proxy for a session without a cluster");
     });
     di.override(createKubectlInjectable, () => createKubectl as unknown as CreateKubectl);
-    di.override(kubeconfigManagerInjectable, () => ({ ensurePath }) as Partial<KubeconfigManager> as KubeconfigManager);
+    ensurePaths = vi.fn(async () => {
+      throw new Error("tried to start the cluster proxy for a session without a cluster");
+    });
+    di.override(
+      kubeconfigManagerInjectable,
+      () => ({ ensurePath, ensurePaths }) as Partial<KubeconfigManager> as KubeconfigManager,
+    );
 
     spawnPtyMock = vi.fn(
       () =>
@@ -140,6 +148,7 @@ describe("technical unit tests for standalone shell sessions", () => {
 
     expect(createKubectl).not.toHaveBeenCalled();
     expect(ensurePath).not.toHaveBeenCalled();
+    expect(ensurePaths).not.toHaveBeenCalled();
   });
 
   it("reports only the phases that a session without a cluster actually has", async () => {
@@ -156,6 +165,12 @@ describe("technical unit tests for standalone shell sessions", () => {
     await openStandaloneShellSession({ tabId: "my-tab-id", websocket: websocket() });
 
     expect(spawnedWith().env.KUBECONFIG).toBe("/home/some-user/.kube/config");
+  });
+
+  it("leaves the user's own KUBECACHEDIR alone", async () => {
+    await openStandaloneShellSession({ tabId: "my-tab-id", websocket: websocket() });
+
+    expect(spawnedWith().env.KUBECACHEDIR).toBe("/home/some-user/.kube/some-cache");
   });
 
   it("appends the bundled binaries after the user's own PATH, so a host kubectl still wins", async () => {

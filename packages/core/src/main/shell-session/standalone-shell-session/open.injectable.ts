@@ -59,7 +59,7 @@ const openStandaloneShellSessionInjectable = getInjectable({
     const getDirnameOfPath = di.inject(getDirnameOfPathInjectable);
     const dependencies: Omit<
       LocalShellSessionDependencies,
-      "proxyKubeconfigPath" | "directoryContainingKubectl" | "pathSuffixEntries"
+      "proxyKubeconfigPath" | "proxyCacheDirectoryPath" | "directoryContainingKubectl" | "pathSuffixEntries"
     > = {
       directoryForBinaries,
       baseBundledBinariesDirectory: di.inject(baseBundledBinariesDirectoryInjectable),

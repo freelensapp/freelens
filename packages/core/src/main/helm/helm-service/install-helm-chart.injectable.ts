@@ -27,11 +27,11 @@ const installClusterHelmChartInjectable = getInjectable({
 
     return async (cluster: Cluster, data: InstallChartArgs) => {
       const proxyKubeconfigManager = di.inject(kubeconfigManagerInjectable, cluster);
-      const proxyKubeconfigPath = await proxyKubeconfigManager.ensurePath();
+      const proxyKubeconfig = await proxyKubeconfigManager.ensurePaths();
 
       return installHelmChart({
         ...data,
-        kubeconfigPath: proxyKubeconfigPath,
+        kubeconfig: proxyKubeconfig,
       });
     };
   },

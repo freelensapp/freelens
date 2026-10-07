@@ -11,7 +11,7 @@ import removePathInjectable from "../../../common/fs/remove.injectable";
 import writeFileInjectable from "../../../common/fs/write-file.injectable";
 import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
-import execHelmInjectable from "../exec-helm/exec-helm.injectable";
+import execHelmInjectable, { proxyKubeconfigHelmOptions } from "../exec-helm/exec-helm.injectable";
 import getHelmReleaseInjectable from "./get-helm-release.injectable";
 
 import type { Cluster } from "../../../common/cluster/cluster";
@@ -36,7 +36,7 @@ const updateHelmReleaseInjectable = getInjectable({
 
     return async (cluster: Cluster, releaseName: string, namespace: string, data: UpdateChartArgs) => {
       const proxyKubeconfigManager = di.inject(kubeconfigManagerInjectable, cluster);
-      const proxyKubeconfigPath = await proxyKubeconfigManager.ensurePath();
+      const proxyKubeconfig = await proxyKubeconfigManager.ensurePaths();
       const valuesFilePath = temporaryFile({ name: "values.yaml" });
 
       logger.debug(`[HELM]: upgrading "${releaseName}" in "${namespace}" to ${data.version}`);
@@ -59,7 +59,7 @@ const updateHelmReleaseInjectable = getInjectable({
           "--namespace",
           namespace,
           "--kubeconfig",
-          proxyKubeconfigPath,
+          proxyKubeconfig.kubeconfigPath,
         ];
 
         if (data.forceConflicts) {
@@ -72,7 +72,7 @@ const updateHelmReleaseInjectable = getInjectable({
           args.push("--server-side=false");
         }
 
-        const result = await execHelm(args);
+        const result = await execHelm(args, proxyKubeconfigHelmOptions(proxyKubeconfig));
 
         if (result.callWasSuccessful === false) {
           throw result.error; // keep the same interface

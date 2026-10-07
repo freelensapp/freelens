@@ -9,7 +9,9 @@ import { temporaryFile } from "tempy";
 import removePathInjectable from "../../common/fs/remove.injectable";
 import writeFileInjectable from "../../common/fs/write-file.injectable";
 import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
-import execHelmInjectable from "./exec-helm/exec-helm.injectable";
+import execHelmInjectable, { proxyKubeconfigHelmOptions } from "./exec-helm/exec-helm.injectable";
+
+import type { ProxyKubeconfigPaths } from "../kubeconfig-manager/kubeconfig-manager";
 
 export interface InstallHelmChartData {
   chart: string;
@@ -17,7 +19,7 @@ export interface InstallHelmChartData {
   name?: string;
   namespace: string;
   version: string;
-  kubeconfigPath: string;
+  kubeconfig: ProxyKubeconfigPaths;
   forceConflicts?: boolean;
 }
 
@@ -39,7 +41,7 @@ const installHelmChartInjectable = getInjectable({
     const execHelm = di.inject(execHelmInjectable);
     const state = di.inject(userPreferencesStateInjectable);
 
-    return async ({ chart, kubeconfigPath, name, namespace, values, version, forceConflicts }) => {
+    return async ({ chart, kubeconfig, name, namespace, values, version, forceConflicts }) => {
       const valuesFilePath = temporaryFile({ name: "values.yaml" });
 
       await writeFile(valuesFilePath, values);
@@ -59,7 +61,7 @@ const installHelmChartInjectable = getInjectable({
         "--namespace",
         namespace,
         "--kubeconfig",
-        kubeconfigPath,
+        kubeconfig.kubeconfigPath,
       );
 
       if (!name) {
@@ -81,7 +83,7 @@ const installHelmChartInjectable = getInjectable({
       }
 
       try {
-        const result = await execHelm(args);
+        const result = await execHelm(args, proxyKubeconfigHelmOptions(kubeconfig));
 
         if (!result.callWasSuccessful) {
           throw result.error;

@@ -10,9 +10,10 @@ import bundledKubectlInjectable from "../../../kubectl/bundled-kubectl.injectabl
 import getPortFromStreamInjectable from "../../../utils/get-port-from-stream.injectable";
 import { PortForward } from "./port-forward";
 
+import type { ProxyKubeconfigPaths } from "../../../kubeconfig-manager/kubeconfig-manager";
 import type { PortForwardArgs, PortForwardDependencies } from "./port-forward";
 
-export type CreatePortForward = (pathToKubeConfig: string, args: PortForwardArgs) => PortForward;
+export type CreatePortForward = (proxyKubeconfig: ProxyKubeconfigPaths, args: PortForwardArgs) => PortForward;
 
 const createPortForwardInjectable = getInjectable({
   id: "create-port-forward",
@@ -24,7 +25,7 @@ const createPortForwardInjectable = getInjectable({
       logger: di.inject(loggerInjectionToken),
     };
 
-    return (pathToKubeConfig, args) => new PortForward(dependencies, pathToKubeConfig, args);
+    return (proxyKubeconfig, args) => new PortForward(dependencies, proxyKubeconfig, args);
   },
 });
 

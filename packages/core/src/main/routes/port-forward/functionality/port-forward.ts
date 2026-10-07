@@ -10,6 +10,7 @@ import type { ChildProcessWithoutNullStreams } from "node:child_process";
 
 import type { Logger } from "@freelensapp/logger";
 
+import type { ProxyKubeconfigPaths } from "../../../kubeconfig-manager/kubeconfig-manager";
 import type { GetPortFromStream } from "../../../utils/get-port-from-stream.injectable";
 
 const internalPortRegex = /^forwarding from (?<address>.+) ->/i;
@@ -55,7 +56,7 @@ export class PortForward {
 
   constructor(
     private dependencies: PortForwardDependencies,
-    public pathToKubeConfig: string,
+    public proxyKubeconfig: ProxyKubeconfigPaths,
     args: PortForwardArgs,
   ) {
     this.clusterId = args.clusterId;
@@ -69,9 +70,12 @@ export class PortForward {
 
   public async start() {
     const kubectlBin = await this.dependencies.getKubectlBinPath(true);
+    const { kubeconfigPath, cacheDirectoryPath } = this.proxyKubeconfig;
     const commandArgs = [
       "--kubeconfig",
-      this.pathToKubeConfig,
+      kubeconfigPath,
+      "--cache-dir",
+      cacheDirectoryPath,
       "port-forward",
       "--address",
       this.address,
@@ -82,7 +86,7 @@ export class PortForward {
     ];
 
     this.process = spawn(kubectlBin, commandArgs, {
-      env: process.env,
+      env: { ...process.env, KUBECACHEDIR: cacheDirectoryPath },
     });
     PortForward.portForwards.push(this);
     this.process.on("exit", () => {
