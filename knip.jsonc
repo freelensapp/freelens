@@ -144,6 +144,7 @@
         "mobx-react",
         "monaco-editor",
         "react",
+        "react-dom",
         "react-select",
         "react-window",
         "rfc6902",
@@ -171,6 +172,11 @@
       // build output: one self-contained bundle in which every import has been
       // replaced by a read of the host global, so there is nothing to resolve
       "ignore": ["dist/**"],
+      // The Vite plugin adds the renderer entry of vite.config.mjs as an entry
+      // of its own, which is not a production one, and it replaces the
+      // `src/renderer/index.tsx!` above: the --production pass would then skip
+      // the whole renderer. vite.config.mjs is listed as an entry instead.
+      "vite": false,
       "ignoreDependencies": [
         // host-provided modules. The bundle maps them onto
         // globalThis.FreelensExtensionApi (see vite.config.mjs), and Freelens
@@ -183,8 +189,8 @@
         "react"
       ],
       "typescript": {
-        // one program per runtime environment
-        "config": ["src/main/tsconfig.json", "src/renderer/tsconfig.json", "src/common/tsconfig.json"]
+        // one program per runtime environment, and one for vite.config.mjs
+        "config": ["src/main/tsconfig.json", "src/renderer/tsconfig.json", "src/common/tsconfig.json", "tsconfig.json"]
       }
     },
 

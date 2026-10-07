@@ -552,6 +552,9 @@ catalogs:
     react:
       specifier: ^19.3.0
       version: 19.3.0
+    react-dom:
+      specifier: ^19.3.0
+      version: 19.3.0
     react-select:
       specifier: ^5.10.2
       version: 5.10.2
@@ -1376,6 +1379,9 @@ importers:
       react:
         specifier: catalog:extensions
         version: 19.3.0
+      react-dom:
+        specifier: catalog:extensions
+        version: 19.3.0(react@19.3.0)
       react-select:
         specifier: catalog:extensions
         version: 5.10.2(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(supports-color@8.1.1)

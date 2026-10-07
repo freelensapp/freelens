@@ -13,6 +13,14 @@ Every v1 namespace path that moved or was removed is listed in the
 [v1→v2 rename table](#v1v2-rename-table), with a link to the section that
 explains the replacement.
 
+How an extension is built, type-checked, tested and released is up to its
+author, and outside the contract; this guide says what each of them has to
+achieve, not how to wire it up. The reference template for those patterns —
+the bundler configuration, the type-check programs, the test setup and the CI
+workflows — is
+[freelens-example-extension](https://github.com/freelensapp/freelens-example-extension).
+Start from it rather than rediscovering them.
+
 ## Step one: bump `engines.freelens`
 
 Before anything else:
@@ -96,9 +104,10 @@ runtime.
   `"type": "module"` (or use `.mjs`). Your renderer entry must be ESM.
 - Do not add any other `@freelensapp/*` package as a dependency — they are
   private in v2 and are not published.
-- Add **`electron`** as a `devDependency` for its types. It is an *optional*
-  peer of `@freelensapp/extensions`; a hard dependency would download the
-  Electron binary into every extension install.
+- Add **`electron`** as a `devDependency` for its types, at the version the
+  host runs. It is an *optional* peer of `@freelensapp/extensions`: a required
+  `>=43.0.0` peer would be installed automatically at the newest Electron
+  major, not the host's.
 
 ### The host-provided libraries, and how to mark them external
 
@@ -169,6 +178,12 @@ through the externals map in
   real React into your tree for your bundler to find, which is the mistake this
   is trying to prevent. The `@freelensapp/extensions` types pin the React 19
   major, so authoring against them keeps type-checking honest.
+- Keep those devDependencies at the versions the host runs.
+  `@freelensapp/extensions` declares `react`, `react-dom`, `@types/react` and
+  `@types/react-dom` as optional peers, so its declaration compiles against your
+  copies and your package manager reports a version outside the host's range.
+  pnpm does that as a warning; set `strictPeerDependencies: true` to make it fail
+  the install.
 - **This is a breaking change from the earlier React 18 preview.** Extensions
   built against React 18 types must move to React 19, because host-provided
   React and any React the extension bundles must share the same major (see the
@@ -255,6 +270,14 @@ annotations:
     @action add(item: string) { this.items.push(item); }
   }
   ```
+
+  **Do not drop the `accessor`.** `@observable enabled = false;` on a plain
+  field still type-checks and builds, because mobx types its decorators as
+  field decorators too. The development build of mobx throws
+  ``Please use `@observable accessor enabled` instead of `@observable enabled` ``
+  when the class is defined; the production build skips anything that is not
+  an accessor and leaves the field unobservable, so nothing reacts to it, and a
+  store whose `toJSON()` the host watches is never saved.
 
 - `observable.ref`, `observable.shallow`, `observable.deep`,
   `observable.struct`, `computed.struct`, `action.bound` and `flow.bound`
@@ -541,6 +564,30 @@ export const buffer = Buffer.from("text");
 
 Export what each line declares, so that a line cannot go on failing for the
 wrong reason, such as an unused import, once the config lets its API through.
+
+**Compile that file together with your sources**, not on its own. `types` and
+`lib` alone do not keep an environment pure: a declaration file with
+`/// <reference types="node" />` loads all of `@types/node` into any program
+that reaches it, whatever `types` says, and one with
+`/// <reference lib="dom" />` loads the DOM. Such a declaration enters a
+program only when a source file imports the package it belongs to, so a file
+of probes compiled alone never reaches it and goes on passing while your
+renderer code compiles against Node. A config that extends the source config,
+keeps its `include` and adds the probes under `files` compiles both:
+
+```json
+{
+  "extends": "../src/renderer/tsconfig.json",
+  "files": ["node-apis.ts"]
+}
+```
+
+When one of them catches a leak, keep the leak out rather than relax the probe.
+For Node in the renderer, point `typeRoots` of the renderer config at a
+directory with an empty `node` package, which a reference directive resolves to
+first; for the DOM in main, remove the directive from the declaration with
+`pnpm patch` or your package manager's equivalent.
+
 The in-repo fixture extension checks its own configs this way, in
 [`packages/fixture-extension/environment-tests/`](../../packages/fixture-extension/environment-tests).
 
@@ -1252,9 +1299,10 @@ migration guides for the full list.
 In v1 the extension bundler ran a `style-loader`, which injected each imported
 stylesheet into the document at runtime. In v2 extensions are built by their
 authors in Vite **library mode**, which does the opposite: it *extracts* CSS to
-a sibling asset next to the JS entry and injects nothing. The host loads an
-extension by `require()`-ing its JS entry, so without help that extracted CSS
-would never reach the page — which is why early v2 extensions had to import
+a sibling asset next to the JS entry and injects nothing. The host loads only
+the renderer's JS entry, as an ES module by URL
+([C4](./api.md#c4-module-format-and-loading)), so without help that extracted
+CSS would never reach the page — which is why early v2 extensions had to import
 each stylesheet twice and inline it through a manual `<style>` tag:
 
 ```tsx
