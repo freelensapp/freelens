@@ -425,6 +425,13 @@ and coverage is not uniform below that floor's neighbours: v1.22.17 has no
 on rather than failing. `.github/workflows/kubectl-checksums-check.yaml`
 verifies added pins and asserts that no existing digest changed.
 
+### Development Tools (mise)
+
+The development tools (`cosign`, `node`, `yq`) are declared in `mise.toml` and
+pinned with their checksums in `mise.lock`. The lock uses lockfile format
+version 3 (`lockfile_version = 3`), which **needs mise 2026.9.16 or newer**: an
+older mise rejects the lock, so `mise install` fails until mise is upgraded.
+
 ## Common Development Tasks
 
 ### Adding a New Feature
