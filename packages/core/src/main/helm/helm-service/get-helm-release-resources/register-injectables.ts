@@ -7,7 +7,6 @@
  */
 
 import { registerInjectables as registerCallForHelmManifestInjectables } from "./call-for-helm-manifest/register-injectables";
-import { registerInjectables as registerCallForKubeResourcesByManifestInjectables } from "./call-for-kube-resources-by-manifest/register-injectables";
 import getHelmReleaseResourcesInjectable from "./get-helm-release-resources.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
@@ -20,11 +19,6 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     registerCallForHelmManifestInjectables(di);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    registerCallForKubeResourcesByManifestInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }

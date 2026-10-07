@@ -8,7 +8,6 @@ import asyncFn from "@async-fn/vitest";
 import { beforeEach, describe, expect, it } from "vitest";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import execHelmInjectable from "../../exec-helm/exec-helm.injectable";
-import execFileWithInputInjectable from "./call-for-kube-resources-by-manifest/exec-file-with-input/exec-file-with-input.injectable";
 import getHelmReleaseResourcesInjectable from "./get-helm-release-resources.injectable";
 
 import type { KubeJsonApiData } from "@freelensapp/kube-object";
@@ -17,23 +16,18 @@ import type { AsyncResult } from "@freelensapp/utilities";
 import type { AsyncFnMock } from "@async-fn/vitest";
 
 import type { ExecHelm } from "../../exec-helm/exec-helm.injectable";
-import type { ExecFileWithInput } from "./call-for-kube-resources-by-manifest/exec-file-with-input/exec-file-with-input.injectable";
 import type { GetHelmReleaseResources } from "./get-helm-release-resources.injectable";
 
 describe("get helm release resources", () => {
   let getHelmReleaseResources: GetHelmReleaseResources;
   let execHelmMock: AsyncFnMock<ExecHelm>;
-  let execFileWithStreamInputMock: AsyncFnMock<ExecFileWithInput>;
 
   beforeEach(() => {
     const di = getDiForUnitTesting();
 
     execHelmMock = asyncFn();
-    execFileWithStreamInputMock = asyncFn();
 
     di.override(execHelmInjectable, () => execHelmMock);
-
-    di.override(execFileWithInputInjectable, () => execFileWithStreamInputMock);
 
     getHelmReleaseResources = di.inject(getHelmReleaseResourcesInjectable);
   });
@@ -53,10 +47,6 @@ describe("get helm release resources", () => {
         ["get", "manifest", "some-release", "--namespace", "some-namespace", "--kubeconfig", "/some-kubeconfig-path"],
         { env: { KUBECACHEDIR: "/some-cache-directory-path" } },
       );
-    });
-
-    it("does not call for resources yet", () => {
-      expect(execFileWithStreamInputMock).not.toHaveBeenCalled();
     });
 
     it("when call for manifest resolves without resources, resolves without resources", async () => {
