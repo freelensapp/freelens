@@ -78,6 +78,45 @@ export type RendererIngressApiTakesOptionsOnly = Holds<
   ConstructorParameters<typeof Renderer.K8sApi.IngressApi> extends [opts?: unknown] ? true : false
 >;
 
+// A registered component gets only the props the host renders it with. One that
+// requires another prop, such as the extension instance, must not compile: the
+// host would render it with that prop `undefined`.
+type RequiresExtension = (props: { extension: FixtureRendererExtensionType }) => null;
+type FixturePage = Common.Types.PageComponents["Page"];
+type FixturePreferenceInput = Common.Types.AppPreferenceComponents["Input"];
+type FixturePreferenceHint = Common.Types.AppPreferenceComponents["Hint"];
+type FixtureMenuItem = Common.Types.KubeObjectMenuRegistration["components"]["MenuItem"];
+type FixtureClusterFrameComponent = FixtureRendererExtensionType["clusterFrameComponents"][number]["Component"];
+
+export type PageTakesParams = Holds<
+  ((props: Common.Types.PageComponentProps) => null) extends FixturePage ? true : false
+>;
+export type PageRequiringMoreThanParamsIsRejected = Holds<
+  // @ts-expect-error a page receives only `params`
+  RequiresExtension extends FixturePage ? true : false
+>;
+export type PreferenceInputRequiringPropsIsRejected = Holds<
+  // @ts-expect-error a preference input is rendered without props
+  RequiresExtension extends FixturePreferenceInput ? true : false
+>;
+export type PreferenceHintRequiringPropsIsRejected = Holds<
+  // @ts-expect-error a preference hint is rendered without props
+  RequiresExtension extends FixturePreferenceHint ? true : false
+>;
+export type MenuItemTypedForItsKindFits = Holds<
+  ((props: Common.Types.KubeObjectMenuItemProps<Renderer.K8sApi.Pod>) => null) extends FixtureMenuItem ? true : false
+>;
+export type MenuItemRequiringMoreThanItsPropsIsRejected = Holds<
+  // @ts-expect-error a menu item receives only `object` and `toolbar`
+  ((props: Common.Types.KubeObjectMenuItemProps & Parameters<RequiresExtension>[0]) => null) extends FixtureMenuItem
+    ? true
+    : false
+>;
+export type ClusterFrameComponentRequiringPropsIsRejected = Holds<
+  // @ts-expect-error a cluster frame component is rendered without props
+  RequiresExtension extends FixtureClusterFrameComponent ? true : false
+>;
+
 // The namespaces have to work in type positions in a signature, not only as
 // aliases — that is how an extension author actually reaches them.
 export declare function describeFixtureExtension(

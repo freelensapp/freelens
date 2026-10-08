@@ -352,6 +352,13 @@ injectables, scoped to the extension and torn down with it.
 `catalogEntityDetailItems`, `topBarItems`, `additionalCategoryColumns`,
 `customCategoryViews`, `kubeObjectHandlers`.
 
+Every component in a renderer registration is typed with the props the host
+renders it with and nothing more, so a component that requires another prop
+does not compile. One that needs the extension instance gets it from the
+registration, which runs inside the extension class:
+`Input: () => <MyInput extension={this} />`. Pages are described in
+[C9](#c9-routing).
+
 `LensMainExtension` fields: `terminalShellEnvModifier`, a function the host
 calls with the environment of every terminal it opens. There is no field for the
 application menu or the tray: both are the host's own.
@@ -451,6 +458,33 @@ re-exports no `react-router`, `react-router-dom` or `history`.
 `navigateToRoute` and the route helpers. The **react-router 5 path dialect is
 supported** — `/:param?` optionals and inline `/:param(regex)` patterns — by the
 in-house `matchPath`, so existing path strings need no rewriting.
+
+A page component receives **only `params`**: `PageComponentProps`, one
+`PageParam` for each entry of the registration's `params`. `components.Page` is
+typed with exactly that, so a component that requires another prop does not
+compile. A page that needs the extension instance gets it from the
+registration, which runs inside the extension class:
+
+```tsx
+clusterPages = [{ id: "my-page", components: { Page: () => <MyPage extension={this} /> } }];
+```
+
+A page reads a named parameter from `params`: it takes `PageComponentProps` and
+reads `params.<name>`, a `PageParam` whose `get()` returns the current value.
+The names are the keys of the registration's `params`, and a name the
+registration does not declare is `undefined`, which the type does not show:
+
+```tsx
+const MyPage = ({ params }: PageComponentProps) => <p>{params.query.get()}</p>;
+
+clusterPages = [{ id: "my-page", params: { query: "" }, components: { Page: MyPage } }];
+```
+
+A props type with named parameters, such as
+`PageComponentProps<{ query: string }>`, does not fit `Page`: the host knows the
+names only at runtime, from the registration, so `Page` is typed with the
+general form and a component that requires particular names is not assignable
+to it.
 
 **Failure mode.** `import { Link } from "react-router-dom"` through the Freelens
 bundle does not resolve. An extension that wants react-router JSX bundles its
