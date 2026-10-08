@@ -85,8 +85,8 @@ type RequiresExtension = (props: { extension: FixtureRendererExtensionType }) =>
 type FixturePage = Common.Types.PageComponents["Page"];
 type FixturePreferenceInput = Common.Types.AppPreferenceComponents["Input"];
 type FixturePreferenceHint = Common.Types.AppPreferenceComponents["Hint"];
-
 type FixtureMenuItem = Common.Types.KubeObjectMenuRegistration["components"]["MenuItem"];
+type FixtureClusterFrameComponent = FixtureRendererExtensionType["clusterFrameComponents"][number]["Component"];
 
 export type PageTakesParams = Holds<
   ((props: Common.Types.PageComponentProps) => null) extends FixturePage ? true : false
@@ -111,6 +111,10 @@ export type MenuItemRequiringMoreThanItsPropsIsRejected = Holds<
   ((props: Common.Types.KubeObjectMenuItemProps & Parameters<RequiresExtension>[0]) => null) extends FixtureMenuItem
     ? true
     : false
+>;
+export type ClusterFrameComponentRequiringPropsIsRejected = Holds<
+  // @ts-expect-error a cluster frame component is rendered without props
+  RequiresExtension extends FixtureClusterFrameComponent ? true : false
 >;
 
 // The namespaces have to work in type positions in a signature, not only as

@@ -352,6 +352,13 @@ injectables, scoped to the extension and torn down with it.
 `catalogEntityDetailItems`, `topBarItems`, `additionalCategoryColumns`,
 `customCategoryViews`, `kubeObjectHandlers`.
 
+Every component in a renderer registration is typed with the props the host
+renders it with and nothing more, so a component that requires another prop
+does not compile. One that needs the extension instance gets it from the
+registration, which runs inside the extension class:
+`Input: () => <MyInput extension={this} />`. Pages are described in
+[C9](#c9-routing).
+
 `LensMainExtension` fields: `terminalShellEnvModifier`, a function the host
 calls with the environment of every terminal it opens. There is no field for the
 application menu or the tray: both are the host's own.

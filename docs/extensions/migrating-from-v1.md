@@ -811,10 +811,13 @@ On both: `protocolHandlers`, plus the `onActivate()` / `onDeactivate()` hooks.
 A field you leave at its default contributes nothing, silently, so a
 registration that never appears is usually a typo in a field name.
 
-A page component receives only `params` (`Common.Types.PageComponentProps`).
-In v1 `components.Page` accepted any component, so one that required more,
-such as the extension instance, compiled and got `undefined` for it; in v2 it
-does not compile. Pass what the page needs from the registration instead:
+A registered component is typed with the props the host renders it with. A
+page component receives only `params` (`Common.Types.PageComponentProps`), a
+`kubeObjectMenuItems` `MenuItem` only `object` and `toolbar`, and the
+`appPreferences` `Hint` and `Input` and a `clusterFrameComponents` `Component`
+nothing. In v1 these accepted any component, so one that required more, such as
+the extension instance, compiled and got `undefined` for it; in v2 it does not
+compile. Pass what the component needs from the registration instead:
 `Page: () => <MyPage extension={this} />`.
 
 Two members are worth knowing before you need them:
