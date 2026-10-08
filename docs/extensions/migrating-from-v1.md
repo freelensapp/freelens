@@ -820,6 +820,18 @@ the extension instance, compiled and got `undefined` for it; in v2 it does not
 compile. Pass what the component needs from the registration instead:
 `Page: () => <MyPage extension={this} />`.
 
+A page that typed its parameters by name, such as
+`PageComponentProps<{ query: string }>` or `{ params?: { query: PageParam } }`,
+no longer fits `Page`, because the host knows the names only at runtime, from
+the registration. Take `Common.Types.PageComponentProps` instead and read
+`params.<name>`, a `Renderer.Navigation.PageParam` whose `get()` returns the
+current value; a name the registration's `params` does not declare is
+`undefined`:
+
+```tsx
+const MyPage = ({ params }: Common.Types.PageComponentProps) => <p>{params.query.get()}</p>;
+```
+
 Two members are worth knowing before you need them:
 
 - **`this.manifestPath`** is how you locate your own shipped files. In the

@@ -469,6 +469,23 @@ registration, which runs inside the extension class:
 clusterPages = [{ id: "my-page", components: { Page: () => <MyPage extension={this} /> } }];
 ```
 
+A page reads a named parameter from `params`: it takes `PageComponentProps` and
+reads `params.<name>`, a `PageParam` whose `get()` returns the current value.
+The names are the keys of the registration's `params`, and a name the
+registration does not declare is `undefined`, which the type does not show:
+
+```tsx
+const MyPage = ({ params }: PageComponentProps) => <p>{params.query.get()}</p>;
+
+clusterPages = [{ id: "my-page", params: { query: "" }, components: { Page: MyPage } }];
+```
+
+A props type with named parameters, such as
+`PageComponentProps<{ query: string }>`, does not fit `Page`: the host knows the
+names only at runtime, from the registration, so `Page` is typed with the
+general form and a component that requires particular names is not assignable
+to it.
+
 **Failure mode.** `import { Link } from "react-router-dom"` through the Freelens
 bundle does not resolve. An extension that wants react-router JSX bundles its
 own.
