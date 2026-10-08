@@ -811,6 +811,12 @@ On both: `protocolHandlers`, plus the `onActivate()` / `onDeactivate()` hooks.
 A field you leave at its default contributes nothing, silently, so a
 registration that never appears is usually a typo in a field name.
 
+A page component receives only `params` (`Common.Types.PageComponentProps`).
+In v1 `components.Page` accepted any component, so one that required more,
+such as the extension instance, compiled and got `undefined` for it; in v2 it
+does not compile. Pass what the page needs from the registration instead:
+`Page: () => <MyPage extension={this} />`.
+
 Two members are worth knowing before you need them:
 
 - **`this.manifestPath`** is how you locate your own shipped files. In the

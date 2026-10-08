@@ -78,6 +78,19 @@ export type RendererIngressApiTakesOptionsOnly = Holds<
   ConstructorParameters<typeof Renderer.K8sApi.IngressApi> extends [opts?: unknown] ? true : false
 >;
 
+// A registered component gets only the props the host renders it with. One that
+// requires another prop, such as the extension instance, must not compile: the
+// host would render it with that prop `undefined`.
+type FixturePage = Common.Types.PageComponents["Page"];
+
+export type PageTakesParams = Holds<
+  ((props: Common.Types.PageComponentProps) => null) extends FixturePage ? true : false
+>;
+export type PageRequiringMoreThanParamsIsRejected = Holds<
+  // @ts-expect-error a page receives only `params`
+  ((props: { extension: FixtureRendererExtensionType }) => null) extends FixturePage ? true : false
+>;
+
 // The namespaces have to work in type positions in a signature, not only as
 // aliases — that is how an extension author actually reaches them.
 export declare function describeFixtureExtension(

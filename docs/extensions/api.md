@@ -452,6 +452,16 @@ re-exports no `react-router`, `react-router-dom` or `history`.
 supported** — `/:param?` optionals and inline `/:param(regex)` patterns — by the
 in-house `matchPath`, so existing path strings need no rewriting.
 
+A page component receives **only `params`**: `PageComponentProps`, one
+`PageParam` for each entry of the registration's `params`. `components.Page` is
+typed with exactly that, so a component that requires another prop does not
+compile. A page that needs the extension instance gets it from the
+registration, which runs inside the extension class:
+
+```tsx
+clusterPages = [{ id: "my-page", components: { Page: () => <MyPage extension={this} /> } }];
+```
+
 **Failure mode.** `import { Link } from "react-router-dom"` through the Freelens
 bundle does not resolve. An extension that wants react-router JSX bundles its
 own.
