@@ -35,7 +35,7 @@ const setupAutoCrdApiCreationsInjectable = getInjectable({
       );
 
       reaction(
-        () => customResourceDefinitionStore.getItems().map(toCrdApiInjectable),
+        () => customResourceDefinitionStore.getItems().flatMap(toCrdApiInjectables),
         injectableDifferencingRegistrator,
         {
           fireImmediately: true,
@@ -48,14 +48,24 @@ const setupAutoCrdApiCreationsInjectable = getInjectable({
 
 export default setupAutoCrdApiCreationsInjectable;
 
-const toCrdApiInjectable = (crd: CustomResourceDefinition) =>
+// One API for every served version, so that an object of any of them, or an
+// extension that names one, finds its API. The preferred version always gets
+// one, served or not: the custom resources view reads through it, and says so
+// when it is not served.
+const toCrdApiInjectables = (crd: CustomResourceDefinition) => {
+  const versions = new Set([crd.getVersion(), ...crd.getServedVersions().map((version) => version.name)]);
+
+  return [...versions].map((version) => toCrdApiInjectable(crd, crd.getResourceApiBase(version)));
+};
+
+const toCrdApiInjectable = (crd: CustomResourceDefinition, apiBase: string) =>
   getInjectable({
-    id: `default-kube-api-for-custom-resource-definition-${crd.getResourceApiBase()}`,
+    id: `default-kube-api-for-custom-resource-definition-${apiBase}`,
     instantiate: (di) => {
       const objectConstructor = class extends KubeObject {
         static readonly kind = crd.getResourceKind();
         static readonly namespaced = crd.isNamespaced();
-        static readonly apiBase = crd.getResourceApiBase();
+        static readonly apiBase = apiBase;
       };
 
       return new KubeApi(

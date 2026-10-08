@@ -162,10 +162,14 @@ export class CustomResourceDefinition extends KubeObject<
     });
   }
 
-  getResourceApiBase() {
+  /**
+   * @param version The version to read the resources through, the preferred
+   * version by default.
+   */
+  getResourceApiBase(version = this.getVersion()) {
     const { group } = this.spec;
 
-    return `/apis/${group}/${this.getVersion()}/${this.getPluralName()}`;
+    return `/apis/${group}/${version}/${this.getPluralName()}`;
   }
 
   getPluralName() {

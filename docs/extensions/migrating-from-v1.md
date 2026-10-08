@@ -1007,7 +1007,10 @@ const ingressClasses = Renderer.K8sApi.apiManager.getStore(
 
 For a custom resource, pass that resource's base path
 (`/apis/<group>/<version>/<plural>`), or call the static `getStore()` on your
-own `LensExtensionKubeObject` subclass.
+own `LensExtensionKubeObject` subclass. The host registers an API, and with it a
+store, for every version of a CRD that the cluster serves, so `getApi()` and
+`getStore()` resolve to the first entry of your class's `crd.apiVersions` that
+the cluster serves; list the version you prefer first.
 
 If you were subclassing a built-in store, extend `KubeObjectStore` over your own
 `KubeApi` instead, and register it with `apiManager`. If you find a case none of
