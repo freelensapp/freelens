@@ -86,6 +86,8 @@ type FixturePage = Common.Types.PageComponents["Page"];
 type FixturePreferenceInput = Common.Types.AppPreferenceComponents["Input"];
 type FixturePreferenceHint = Common.Types.AppPreferenceComponents["Hint"];
 
+type FixtureMenuItem = Common.Types.KubeObjectMenuRegistration["components"]["MenuItem"];
+
 export type PageTakesParams = Holds<
   ((props: Common.Types.PageComponentProps) => null) extends FixturePage ? true : false
 >;
@@ -100,6 +102,15 @@ export type PreferenceInputRequiringPropsIsRejected = Holds<
 export type PreferenceHintRequiringPropsIsRejected = Holds<
   // @ts-expect-error a preference hint is rendered without props
   RequiresExtension extends FixturePreferenceHint ? true : false
+>;
+export type MenuItemTypedForItsKindFits = Holds<
+  ((props: Common.Types.KubeObjectMenuItemProps<Renderer.K8sApi.Pod>) => null) extends FixtureMenuItem ? true : false
+>;
+export type MenuItemRequiringMoreThanItsPropsIsRejected = Holds<
+  // @ts-expect-error a menu item receives only `object` and `toolbar`
+  ((props: Common.Types.KubeObjectMenuItemProps & { extension: FixtureRendererExtensionType }) => null) extends FixtureMenuItem
+    ? true
+    : false
 >;
 
 // The namespaces have to work in type positions in a signature, not only as

@@ -18,7 +18,13 @@ export interface KubeObjectMenuComponents<Props extends KubeObjectMenuItemProps 
   MenuItem: React.ComponentType<Props>;
 }
 
-export interface KubeObjectMenuRegistration<Props extends KubeObjectMenuItemProps = any> {
+/**
+ * `MenuItem` is rendered with {@link KubeObjectMenuItemProps} and nothing else.
+ * The default leaves the object `any`, because the host renders the item only
+ * for the `kind` and `apiVersions` registered, so a component typed for that
+ * resource, such as `KubeObjectMenuItemProps<Pod>`, fits.
+ */
+export interface KubeObjectMenuRegistration<Props extends KubeObjectMenuItemProps = KubeObjectMenuItemProps<any>> {
   kind: string;
   apiVersions: string[];
   components: KubeObjectMenuComponents<Props>;
