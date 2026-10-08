@@ -108,7 +108,7 @@ export type MenuItemTypedForItsKindFits = Holds<
 >;
 export type MenuItemRequiringMoreThanItsPropsIsRejected = Holds<
   // @ts-expect-error a menu item receives only `object` and `toolbar`
-  ((props: Common.Types.KubeObjectMenuItemProps & { extension: FixtureRendererExtensionType }) => null) extends FixtureMenuItem
+  ((props: Common.Types.KubeObjectMenuItemProps & Parameters<RequiresExtension>[0]) => null) extends FixtureMenuItem
     ? true
     : false
 >;
