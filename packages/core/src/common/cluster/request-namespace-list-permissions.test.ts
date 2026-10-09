@@ -228,6 +228,7 @@ describe("requestNamespaceListPermissions", () => {
 const someKubeResource: KubeApiResource = {
   apiName: "some-kind",
   group: "some-api-group",
+  version: "v1",
   kind: "SomeKind",
   namespaced: true,
 };

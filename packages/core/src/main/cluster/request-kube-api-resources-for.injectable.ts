@@ -25,7 +25,7 @@ const requestKubeApiResourcesForInjectable = getInjectable({
     const k8sRequest = di.inject(k8sRequestInjectable);
 
     return (cluster) =>
-      async ({ group, path }) => {
+      async ({ group, version, path }) => {
         try {
           const { resources } = (await k8sRequest(cluster, path)) as V1APIResourceList;
 
@@ -35,6 +35,7 @@ const requestKubeApiResourcesForInjectable = getInjectable({
               apiName: resource.name,
               kind: resource.kind,
               group,
+              version,
               namespaced: resource.namespaced,
             })),
           };

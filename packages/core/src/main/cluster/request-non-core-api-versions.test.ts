@@ -78,6 +78,7 @@ describe("requestNonCoreApiVersions", () => {
           response: [
             {
               group: "some-name",
+              version: "v1",
               path: "/apis/some-name/v1",
             },
           ],
@@ -112,10 +113,12 @@ describe("requestNonCoreApiVersions", () => {
           response: [
             {
               group: "some-name",
+              version: "v1",
               path: "/apis/some-name/v1",
             },
             {
               group: "some-name",
+              version: "v1beta1",
               path: "/apis/some-name/v1beta1",
             },
           ],
@@ -163,18 +166,22 @@ describe("requestNonCoreApiVersions", () => {
           response: [
             {
               group: "some-name",
+              version: "v1",
               path: "/apis/some-name/v1",
             },
             {
               group: "some-name",
+              version: "v1beta1",
               path: "/apis/some-name/v1beta1",
             },
             {
               group: "some-other-name.foo.com",
+              version: "v1",
               path: "/apis/some-other-name.foo.com/v1",
             },
             {
               group: "some-other-name.foo.com",
+              version: "v1beta1",
               path: "/apis/some-other-name.foo.com/v1beta1",
             },
           ],

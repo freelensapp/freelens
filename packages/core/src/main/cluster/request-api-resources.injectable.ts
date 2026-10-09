@@ -16,13 +16,9 @@ import type { AsyncResult } from "@freelensapp/utilities";
 
 import type { Cluster } from "../../common/cluster/cluster";
 import type { KubeApiResource } from "../../common/rbac";
+import type { KubeResourceListGroup } from "./api-versions-requester";
 
 export type RequestApiResources = (cluster: Cluster) => AsyncResult<KubeApiResource[], Error>;
-
-export interface KubeResourceListGroup {
-  group: string;
-  path: string;
-}
 
 const requestApiResourcesInjectable = getInjectable({
   id: "request-api-resources",
