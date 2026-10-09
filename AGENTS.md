@@ -578,6 +578,28 @@ depends on the question:
 - [`docs/extensions/migrating-from-v1.md`](./docs/extensions/migrating-from-v1.md) — the
   author-facing **porting guide** from v1.
 
+The agent skills of freelensapp/freelens-example-extension,
+`create-freelens-extension` and `port-freelens-extension-to-v2`, link to these
+documents on `main` and cite their sections by name. Renaming or removing one
+of the sections below therefore needs a matching change to the `SKILL.md` files
+under `skills/` in that repository:
+
+- in `api.md`, the contracts C1 to C14 by number as a range, and C6
+  (registration) and C9 (routing) on their own;
+- in `migrating-from-v1.md`, these headings:
+  - "Step one: bump `engines.freelens`"
+  - "`package.json` for an extension"
+  - "Source layout: one tsconfig per runtime environment"
+  - "MobX 7 and mobx-react 10 (standard decorators only)"
+  - "Registering things: declarative fields"
+  - "v1→v2 rename table"
+  - "Node and Electron in the renderer"
+  - "Styling and CSS"
+  - "The development loop"
+  - "Checklist", and the two items at its end that it marks as failing
+    silently;
+- `binaries.md` as a whole document, by its file name.
+
 Three traps worth carrying without looking them up. The API surface is only what
 the `Common` / `Main` / `Renderer` namespaces re-export — every other
 `@freelensapp/*` package is private and inlined into the published declaration,
