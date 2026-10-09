@@ -508,7 +508,8 @@ to it.
 bundle does not resolve. An extension that wants react-router JSX bundles its
 own. A relative pathname passed to `Renderer.Navigation.navigate` does not
 fail: it lands on a page that depends on the current URL, so it works from one
-page and goes wrong from another, without an error or a warning.
+page and goes wrong from another, without an error. The host logs a warning
+naming the location, in every build, which is the only sign of it.
 
 ---
 
