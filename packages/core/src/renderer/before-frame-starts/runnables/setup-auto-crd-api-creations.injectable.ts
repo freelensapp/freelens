@@ -18,8 +18,10 @@ import { reaction } from "mobx";
 import dependencyInjectionContainerInjectable from "../../../common/dependency-injection/dependency-injection-container.injectable";
 import { customResourceDefinitionApiInjectionToken } from "../../../common/k8s-api/api-manager/crd-api-token";
 import { injectableDifferencingRegistratorWith } from "../../../common/utils/registrator-helper";
-import hostedClusterInjectable from "../../cluster-frame-context/hosted-cluster.injectable";
 import customResourceDefinitionStoreInjectable from "../../components/custom-resource-definitions/store.injectable";
+import discoveredCustomResourcesInjectable, {
+  getDiscoveredApiBase,
+} from "../../components/custom-resources/discovered-custom-resources.injectable";
 import { beforeClusterFrameStartsSecondInjectionToken } from "../tokens";
 
 import type { CustomResourceDefinition } from "@freelensapp/kube-object";
@@ -31,7 +33,7 @@ const setupAutoCrdApiCreationsInjectable = getInjectable({
   instantiate: (di) => ({
     run: () => {
       const customResourceDefinitionStore = di.inject(customResourceDefinitionStoreInjectable);
-      const hostedCluster = di.inject(hostedClusterInjectable);
+      const discoveredCustomResources = di.inject(discoveredCustomResourcesInjectable);
       // Register against the root container so the CRD api ids stay bare (not
       // namespaced under this registrator by @ogre-tools 23).
       const injectableDifferencingRegistrator = injectableDifferencingRegistratorWith(
@@ -39,12 +41,11 @@ const setupAutoCrdApiCreationsInjectable = getInjectable({
       );
 
       // A user who may not list the definitions still gets the APIs of the
-      // custom resources, from the discovery of the cluster. Only a refused
-      // list falls back to it: an empty one means there is no definition.
+      // custom resources, from the discovery of the cluster.
       reaction(
         () =>
           customResourceDefinitionStore.failedLoading
-            ? (hostedCluster?.knownResources ?? []).filter(isCustomResource).map(toDiscoveredApiInjectable)
+            ? discoveredCustomResources.get().map(toDiscoveredApiInjectable)
             : customResourceDefinitionStore.getItems().flatMap(toCrdApiInjectables),
         injectableDifferencingRegistrator,
         {
@@ -74,43 +75,14 @@ const toCrdApiInjectables = (crd: CustomResourceDefinition) => {
   );
 };
 
-// The groups that Kubernetes defines itself. A group without a dot is one of
-// them too, because the API server refuses a definition of a custom resource
-// in such a group.
-const kubernetesApiGroups = new Set([
-  "admissionregistration.k8s.io",
-  "apiextensions.k8s.io",
-  "apiregistration.k8s.io",
-  "authentication.k8s.io",
-  "authorization.k8s.io",
-  "certificates.k8s.io",
-  "coordination.k8s.io",
-  "custom.metrics.k8s.io",
-  "discovery.k8s.io",
-  "events.k8s.io",
-  "external.metrics.k8s.io",
-  "flowcontrol.apiserver.k8s.io",
-  "internal.apiserver.k8s.io",
-  "metrics.k8s.io",
-  "networking.k8s.io",
-  "node.k8s.io",
-  "rbac.authorization.k8s.io",
-  "resource.k8s.io",
-  "scheduling.k8s.io",
-  "storage.k8s.io",
-  "storagemigration.k8s.io",
-]);
-
-// Discovery lists every resource the cluster serves, in every version it
-// serves, subresources such as `<plural>/status` included, and does not say
-// which of them are custom.
-const isCustomResource = ({ group, apiName }: KubeApiResource) =>
-  group.includes(".") && !kubernetesApiGroups.has(group) && !apiName.includes("/");
-
 // The same id as the API of a definition for the same version, so that the API
 // and its store stay when the definitions can be listed again.
-const toDiscoveredApiInjectable = ({ kind, namespaced, group, version, apiName }: KubeApiResource) =>
-  toCustomResourceApiInjectable({ kind, namespaced, apiBase: `/apis/${group}/${version}/${apiName}` });
+const toDiscoveredApiInjectable = (resource: KubeApiResource) =>
+  toCustomResourceApiInjectable({
+    kind: resource.kind,
+    namespaced: resource.namespaced,
+    apiBase: getDiscoveredApiBase(resource),
+  });
 
 interface CustomResourceApiDescriptor {
   kind: string;
