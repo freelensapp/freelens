@@ -858,12 +858,12 @@ compile. Pass what the component needs from the registration instead:
 A `kubeObjectDetailItems` `Details` or a `kubeObjectMenuItems` `MenuItem` may
 be typed for the resource it is registered for, such as
 `Renderer.Component.KubeObjectDetailsProps<Renderer.K8sApi.Pod>` or the props
-of your own `K8sApi.LensExtensionKubeObject` subclass. The type check does not
-tie the component to the registration's `kind` and `apiVersions`, though: the
-host renders it only for the kind registered, but nothing checks that the
-component was written for that kind. A component registered under the wrong
-`kind` compiles and gets an object whose `spec` and `status` are not the ones it
-reads, so check the pairing by hand or with a test.
+of your own `Renderer.K8sApi.LensExtensionKubeObject` subclass. The type check
+does not tie the component to the registration's `kind` and `apiVersions`,
+though: the host renders it only for the kind registered, but nothing checks
+that the component was written for that kind. A component registered under the
+wrong `kind` compiles and gets an object whose `spec` and `status` are not the
+ones it reads, so check the pairing by hand or with a test.
 
 A page that typed its parameters by name, such as
 `PageComponentProps<{ query: string }>` or `{ params?: { query: PageParam } }`,

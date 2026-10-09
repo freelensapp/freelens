@@ -360,8 +360,8 @@ registration, which runs inside the extension class:
 [C9](#c9-routing).
 
 The `Details` of a `kubeObjectDetailItems` registration and the `MenuItem` of a
-`kubeObjectMenuItems` one are typed with the object as `any`, so a component typed for
-the registered resource fits, a built-in class or an extension's own
+`kubeObjectMenuItems` one are typed with the object as `any`, so a component
+typed for the registered resource fits, a built-in class or an extension's own
 `LensExtensionKubeObject` subclass alike. The type check does not tie the
 component to the registration's `kind` and `apiVersions`: the host renders it
 only for the registered kind, but nothing checks that the component was written
