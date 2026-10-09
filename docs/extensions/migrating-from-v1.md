@@ -1085,7 +1085,9 @@ show it. Either list every version in one class, or pick one class yourself,
 for example the first whose `getStore()` succeeds:
 
 ```ts
-// In preference order; call it when rendering, once the CRDs have loaded.
+// In preference order. Call it while rendering an `observer`: the host registers
+// the APIs after the cluster frame has loaded the CRDs, and `getStore()` reads
+// the observable registry, so the component renders again when they arrive.
 const findServedMyKind = () =>
   [MyKind_v1, MyKind_v1beta1].find((kind) => {
     try {
@@ -1096,6 +1098,12 @@ const findServedMyKind = () =>
     }
   });
 ```
+
+The same holds for any code that calls `getStore()` or `getApi()` to decide
+what to render. A page can render before the CRDs have loaded — the host
+restores the last page when a cluster is opened — and a component that is not
+an `observer` keeps the result of its first render, typically that the kind is
+not installed.
 
 If you were subclassing a built-in store, extend `KubeObjectStore` over your own
 `KubeApi` instead, and register it with `apiManager`. If you find a case none of
