@@ -48,7 +48,7 @@
     "fmt": "pnpm trunk fmt",
     "knip": "pnpm dlx knip@6.39.0 --dependencies --no-gitignore --no-config-hints",
     "knip:check": "pnpm \"/^knip:(development|production)\\$/\"",
-    "knip:development": "pnpm knip",
+    "knip:development": "pnpm knip --files",
     "knip:production": "pnpm knip --production --strict",
     "lint": "pnpm trunk check",
     "lint:fix": "pnpm trunk check --fix",
