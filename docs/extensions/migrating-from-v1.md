@@ -1067,7 +1067,9 @@ For a custom resource, pass that resource's base path
 own `LensExtensionKubeObject` subclass. The host registers an API, and with it a
 store, for every version of a CRD that the cluster serves, so `getApi()` and
 `getStore()` resolve to the first entry of your class's `crd.apiVersions` that
-the cluster serves; list the version you prefer first.
+the cluster serves; list the version you prefer first. When the CRD is deleted,
+its APIs and stores go with it: `getApi()` and `getStore()` fail again, and the
+watches of the stores stop.
 
 That advice assumes one class that lists every version. A v1 extension often
 has one class per version instead, each with a single `apiVersions` entry, such
