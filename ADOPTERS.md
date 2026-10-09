@@ -8,13 +8,13 @@ Feel free to submit a Pull Request to be added.
 | Type | Name | Company | Since | Website | Use-Case |
 |:-|:-|:-|:-|:-|:-|
 | Individual | [Bandini Roberto](https://github.com/robertobandini) | Freelensapp | 2024 | [Roberto Bandini](https://www.robertobandini.it) | As the founder of Freelens I am its first user for managing Kubernetes clusters whether for work or personal R&D |
-| Individual | [Capuano Leopoldo](https://github.com/leo-capvano) | Freelensapp | 2024 | [Leopoldo Capuano](https://www.linkedin.com/in/leo-capuano?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=ios_app) | Maintainer of Freelens |
+| Individual | [Capuano Leopoldo](https://github.com/leo-capvano) | Freelensapp | 2024 | [Leopoldo Capuano](https://www.linkedin.com/in/leo-capuano) | Maintainer of Freelens |
 | Organization | [Clastix Labs](https://github.com/clastix) | Clastix | 2025 | [Clastix](https://clastix.io) | Clastix is using Freelens as tooling for managing Kubernetes clusters and resources. |
 | Individual | Gambhir Sharma | CGI | 2025 | [gambhir.dev](https://gambhir.dev) | Daily driver for DevOps workflows |
-| Individual | [Nedzad Winter](https://github.com/dazden94) | Freelensapp | 2025 | - | As a Cloud Engineer I am daily driving freelens. |
+| Individual | [Nedzad Winter](https://github.com/nedzad-winter) | Freelensapp | 2025 | - | As a Cloud Engineer I am daily driving freelens. |
 | Individual | Offertucci Mario | Freelensapp | 2024 | - | Maintainer of Freelens |
 | Individual | Roszatycki Piotr | Freelensapp | 2024 | - | Maintainer of Freelens |
-| Individual | [Juan Trejo](https://github.com/trejo08) | Ginnius | 2024 | [Juan Trejo](https://juantrejo.cloud) | A really compromised and commited Cloud Engineer with long experience working with K8S with different flavors/distributions like EKS, GPC, AKS, DOKS, RKE2 and many others, CNCF speaker multiple times and K8S evangelist |
+| Individual | [Juan Trejo](https://github.com/trejo08) | Ginnius | 2024 | - | A really compromised and commited Cloud Engineer with long experience working with K8S with different flavors/distributions like EKS, GPC, AKS, DOKS, RKE2 and many others, CNCF speaker multiple times and K8S evangelist |
 | Organization | [mobilistics GmbH](https://github.com/mobilistics) | mobilistics GmbH | 2025 | [mobilistics GmbH](https://www.mobilistics.de) | mobilistics is using Freelens for employees and customers to manage applications on their managed Kubernetes offering | 
 
 ## Adopter Types

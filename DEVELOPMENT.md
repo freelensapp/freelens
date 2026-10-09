@@ -22,7 +22,7 @@ apt install libnss3
 
 Use [NVM](https://github.com/nvm-sh/nvm) or
 [mise-en-place](https://mise.jdx.dev/) or
-[windows-nvm](https://github.com/coreybutler/nvm-windows) to install the
+[windows-nvm](https://github.com/nvm-windows/nvm) to install the
 required Node.js version.
 
 From the root of this repository:
