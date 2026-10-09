@@ -21,6 +21,21 @@ workflows — is
 [freelens-example-extension](https://github.com/freelensapp/freelens-example-extension).
 Start from it rather than rediscovering them.
 
+To port with a coding agent, the template ships the
+[`port-freelens-extension-to-v2`](https://github.com/freelensapp/freelens-example-extension/blob/main/skills/port-freelens-extension-to-v2/SKILL.md)
+skill, in the [Agent Skills](https://agentskills.io/specification) format.
+Install it into the extension's repository:
+
+```sh
+npx skills add freelensapp/freelens-example-extension --skill port-freelens-extension-to-v2
+```
+
+The skill holds the workflow of the port and follows this guide, which it links
+to for every API change; it does not replace it. For a new extension, the
+template's
+[`create-freelens-extension`](https://github.com/freelensapp/freelens-example-extension/blob/main/skills/create-freelens-extension/SKILL.md)
+skill starts one from a copy of the template.
+
 ## Step one: bump `engines.freelens`
 
 Before anything else:
