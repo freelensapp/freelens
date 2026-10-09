@@ -6,6 +6,7 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import discoveredCustomResourcesInjectable from "./discovered-custom-resources.injectable";
 import customResourcesRouteComponentInjectable from "./route-component.injectable";
 import customResourcesRouteParametersInjectable from "./route-parameters.injectable";
 import customResourcesSidebarItemInjectable from "./sidebar-item.injectable";
@@ -25,6 +26,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(customResourcesSidebarItemInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(discoveredCustomResourcesInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
