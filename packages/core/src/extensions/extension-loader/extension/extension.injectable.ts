@@ -40,7 +40,6 @@ const extensionInjectable = getInjectable({
 
       instantiate: (childDi) => {
         const reactionDisposer = disposer();
-        const injectableDifferencingRegistrator = injectableDifferencingRegistratorWith(childDi);
 
         return {
           register: () => {
@@ -48,6 +47,9 @@ const extensionInjectable = getInjectable({
 
             for (const extensionRegistrator of extensionRegistrators) {
               const injectables = extensionRegistrator(instance);
+              // One per registrator: it deregisters what it registered and the
+              // registrator no longer lists.
+              const injectableDifferencingRegistrator = injectableDifferencingRegistratorWith(childDi);
 
               if (Array.isArray(injectables)) {
                 runInAction(() => {
