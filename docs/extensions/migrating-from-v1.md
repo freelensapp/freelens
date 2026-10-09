@@ -1312,14 +1312,36 @@ via the Freelens bundle will fail to resolve at runtime.
 
 If your extension used them, migrate one of two ways:
 
-- **Preferred — use the internal navigation API.** Register pages with
+- **Preferred — use the host's navigation.** Register pages with
   the declarative `globalPages` / `clusterPages` fields on your
   `LensRendererExtension` subclass — there is no `Renderer.Registrations` — and
-  navigate with the injectable `navigateToRoute` / route helpers instead of react-router
-  `Link` / `Redirect` / `Route`. Route schemas keep the same
-  `react-router` v5 dialect (`/:param?` optionals, inline `/:param(regex)`
-  patterns), matched by the in-house `matchPath`, so existing path strings are
-  unchanged.
+  replace react-router `Link` / `Redirect` / `Route` with one of the two ways
+  the API navigates:
+  - **`navigate(pageId?, params?)` on your `LensRendererExtension` instance**,
+    for your own pages. It finds the page by the `id` of its registration, the
+    page registered without an `id` when you pass none, and passes `params` as
+    the page's parameters, whose keys must be ones the registration's `params`
+    declares: another key rejects the promise `navigate` returns. A page
+    component gets the instance from its
+    registration (`Page: () => <MyPage extension={this} />`, see
+    [Registering things](#registering-things-declarative-fields)). A `pageId`
+    that matches no registration does nothing, without an error.
+  - **`Renderer.Navigation.navigate(location)`** for any other location, given
+    as a path string or a `{ pathname, search, hash }` object. **The pathname
+    must be absolute.** `navigate` hands it to the browser history unchanged,
+    and the browser resolves a relative one against the current URL, so a v1
+    call such as `navigate({ pathname: "my-kind" })` reaches the right page only
+    from a page at the right depth, and a wrong one from anywhere else, without
+    an error.
+
+  `navigateToRoute`, which the declaration shows among the `dependencies` of
+  `LensRendererExtension`, is not one of them: `dependencies` is the host's
+  `protected` injection bag, not API, and it may change in any release (see
+  [Dependency injection: bundle your own](#dependency-injection-bundle-your-own)).
+
+  Route schemas keep the same `react-router` v5 dialect (`/:param?` optionals,
+  inline `/:param(regex)` patterns), matched by the in-house `matchPath`, so
+  existing path strings are unchanged.
 - **Or bundle your own `react-router`.** If you must keep react-router JSX, add
   `react-router` / `react-router-dom` to your extension's own dependencies and
   bundle them; do not rely on the host providing them.

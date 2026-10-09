@@ -454,10 +454,28 @@ build time.
 re-exports no `react-router`, `react-router-dom` or `history`.
 
 **Surface.** Pages are registered through `globalPages` / `clusterPages`
-([C6](#c6-registration-and-the-extension-instance)) and navigated with
-`navigateToRoute` and the route helpers. The **react-router 5 path dialect is
-supported** — `/:param?` optionals and inline `/:param(regex)` patterns — by the
-in-house `matchPath`, so existing path strings need no rewriting.
+([C6](#c6-registration-and-the-extension-instance)). The **react-router 5 path
+dialect is supported** — `/:param?` optionals and inline `/:param(regex)`
+patterns — by the in-house `matchPath`, so existing path strings need no
+rewriting.
+
+Two calls navigate:
+
+- **`LensRendererExtension#navigate(pageId?, params?)`** goes to one of the
+  extension's own pages, found by the `id` of its registration; no `pageId`
+  means the page registered without an `id`. `params` become the page's
+  parameters, keyed by the names the registration's `params` declares; another
+  key rejects the returned promise. A `pageId` that matches no registration
+  does nothing.
+- **`Renderer.Navigation.navigate(location)`** goes to any location, a path
+  string or a `{ pathname, search, hash }` object, whose **pathname is
+  absolute**. The location is pushed onto the browser history as given, and the
+  browser resolves a relative pathname against the current URL.
+
+The `dependencies` of `LensRendererExtension`, which the declaration shows
+because they are `protected`, are the host's injection bag
+([C7](#c7-the-dependency-injection-surface)) and not part of this surface;
+`navigateToRoute` among them may change in any release.
 
 A page component receives **only `params`**: `PageComponentProps`, one
 `PageParam` for each entry of the registration's `params`. `components.Page` is
@@ -488,7 +506,9 @@ to it.
 
 **Failure mode.** `import { Link } from "react-router-dom"` through the Freelens
 bundle does not resolve. An extension that wants react-router JSX bundles its
-own.
+own. A relative pathname passed to `Renderer.Navigation.navigate` does not
+fail: it lands on a page that depends on the current URL, so it works from one
+page and goes wrong from another, without an error or a warning.
 
 ---
 
