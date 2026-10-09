@@ -24,6 +24,7 @@ const requestCoreApiVersionsInjectable = getInjectable({
             callWasSuccessful: true,
             response: versions.map((version) => ({
               group: "",
+              version,
               path: `/api/${version}`,
             })),
           };

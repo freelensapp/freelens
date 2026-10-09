@@ -50,6 +50,7 @@ export type KubeResource =
 export interface KubeApiResource {
   kind: string;
   group: string; // api-group, if empty then "core"
+  version: string; // the version of the group that serves it
   apiName: string;
   namespaced: boolean;
 }
