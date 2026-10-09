@@ -78,7 +78,7 @@ export class LensRendererExtension extends LensExtension {
   /**
    * @ignore
    */
-  protected declare readonly dependencies: LensRendererExtensionDependencies;
+  declare protected readonly dependencies: LensRendererExtensionDependencies;
 
   constructor(extension: InstalledExtension) {
     const di = getEnvironmentSpecificDiForExtensionApi("renderer");
