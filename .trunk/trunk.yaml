@@ -45,6 +45,15 @@ lint:
     # parse_regex is matched against the whole output of a batch, so `^`
     # needs `(?m)` to match at every line; without it Trunk reports only the
     # first issue Biome prints and silently drops the rest.
+    #
+    # Trunk runs biome on a copy of the files in a sandbox outside the
+    # repository, pointing it back at biome.jsonc with --config-path. With
+    # vcs.useIgnoreFile on, biome 2.5.15 matches every target against the
+    # repository's .gitignore and panics on a path outside the repository root
+    # ("path is expected to be under the root"), so every file fails. Trunk
+    # applies .gitignore itself before it picks the targets, so the commands
+    # below turn biome's own .gitignore handling off. biome.jsonc keeps it on
+    # for `pnpm biome` and editors, which run inside the repository.
     - name: biome
       files:
         - astro
@@ -65,7 +74,7 @@ lint:
           name: lint
           parse_regex: (?m)^::(?P<severity>.*) title=(?P<code>[^,]+),file=(?P<path>[^,]+),line=(?P<line>[^,]+),endLine=[^,]+,col=(?P<col>[^,]+),endColumn=[^:]+::(?P<message>.*)
           read_output_from: stdout
-          run: biome check --config-path=${workspace}/biome.jsonc --reporter=github --no-errors-on-unmatched ${target}
+          run: biome check --config-path=${workspace}/biome.jsonc --vcs-use-ignore-file=false --reporter=github --no-errors-on-unmatched ${target}
           run_from: ${root_or_parent_with(biome.jsonc)}
         - output: regex
           success_codes:
@@ -76,7 +85,7 @@ lint:
           name: fmt
           parse_regex: (?m)^::(?P<severity>.*) title=(?P<code>[^,]+),file=(?P<path>[^,]+),line=(?P<line>[^,]+),endLine=[^,]+,col=(?P<col>[^,]+),endColumn=[^:]+::(?P<message>.*)
           read_output_from: stdout
-          run: biome format --config-path=${workspace}/biome.jsonc --reporter=github --write --no-errors-on-unmatched ${target}
+          run: biome format --config-path=${workspace}/biome.jsonc --vcs-use-ignore-file=false --reporter=github --write --no-errors-on-unmatched ${target}
           run_from: ${root_or_parent_with(biome.jsonc)}
       run_timeout: 1m
 
@@ -86,7 +95,7 @@ lint:
         - sass
   enabled:
     - actionlint@1.7.12
-    - biome@2.5.4! # datasource=npm depName=@biomejs/biome
+    - biome@2.5.15! # datasource=npm depName=@biomejs/biome
     - git-diff-check
     - markdownlint@0.49.1
     - prettier@3.9.9! # datasource=npm depName=prettier
