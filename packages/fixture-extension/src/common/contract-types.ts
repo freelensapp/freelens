@@ -112,6 +112,41 @@ export type MenuItemRequiringMoreThanItsPropsIsRejected = Holds<
     ? true
     : false
 >;
+// A details or menu component typed for the resource it is registered for has
+// to fit the registration without a cast: a built-in class, whose members the
+// registration's default object type must not require, and an extension's own
+// model with a member beyond `spec` and `status`.
+interface FixtureModelWithMethod
+  extends Renderer.K8sApi.LensExtensionKubeObject<
+    Renderer.K8sApi.KubeObject["metadata"],
+    { conditions: string[] },
+    { listeners: string[] }
+  > {
+  getListeners(): string[];
+}
+type FixtureDetails = FixtureRendererExtensionType["kubeObjectDetailItems"][number]["components"]["Details"];
+type FixtureRegisteredMenuItem = FixtureRendererExtensionType["kubeObjectMenuItems"][number]["components"]["MenuItem"];
+
+export type DetailsTypedForBuiltInKindFits = Holds<
+  ((props: Renderer.Component.KubeObjectDetailsProps<Renderer.K8sApi.Pod>) => null) extends FixtureDetails
+    ? true
+    : false
+>;
+export type DetailsTypedForModelWithMethodFits = Holds<
+  ((props: Renderer.Component.KubeObjectDetailsProps<FixtureModelWithMethod>) => null) extends FixtureDetails
+    ? true
+    : false
+>;
+export type RegisteredMenuItemTypedForBuiltInKindFits = Holds<
+  ((props: Common.Types.KubeObjectMenuItemProps<Renderer.K8sApi.Pod>) => null) extends FixtureRegisteredMenuItem
+    ? true
+    : false
+>;
+export type RegisteredMenuItemTypedForModelWithMethodFits = Holds<
+  ((props: Common.Types.KubeObjectMenuItemProps<FixtureModelWithMethod>) => null) extends FixtureRegisteredMenuItem
+    ? true
+    : false
+>;
 export type ClusterFrameComponentRequiringPropsIsRejected = Holds<
   // @ts-expect-error a cluster frame component is rendered without props
   RequiresExtension extends FixtureClusterFrameComponent ? true : false

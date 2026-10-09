@@ -359,6 +359,14 @@ registration, which runs inside the extension class:
 `Input: () => <MyInput extension={this} />`. Pages are described in
 [C9](#c9-routing).
 
+The `Details` of a `kubeObjectDetailItems` registration and the `MenuItem` of a
+`kubeObjectMenuItems` one are typed with the object as `any`, so a component
+typed for the registered resource fits, a built-in class or an extension's own
+`LensExtensionKubeObject` subclass alike. The type check does not tie the
+component to the registration's `kind` and `apiVersions`: the host renders it
+only for the registered kind, but nothing checks that the component was written
+for that kind, so the pairing has to be checked by hand or by a test.
+
 `LensMainExtension` fields: `terminalShellEnvModifier`, a function the host
 calls with the environment of every terminal it opens. There is no field for the
 application menu or the tray: both are the host's own.
