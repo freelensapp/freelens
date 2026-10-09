@@ -1,0 +1,384 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`MutatingAdmissionPolicyDetails > renders 1`] = `
+<body>
+  <div>
+    <div
+      class="MutatingAdmissionPolicyDetails"
+    >
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          API version
+        </span>
+        <span
+          class="value"
+        >
+          admissionregistration.k8s.io/v1
+        </span>
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Failure Policy
+        </span>
+        <span
+          class="value"
+        >
+          Fail
+        </span>
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Reinvocation Policy
+        </span>
+        <span
+          class="value"
+        >
+          IfNeeded
+        </span>
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Param Kind
+        </span>
+        <span
+          class="value"
+        >
+          mutations.example.com/v1/Sidecar
+        </span>
+      </div>
+      <div
+        class="DrawerTitle title"
+      >
+        Match Conditions
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          does-not-already-have-sidecar
+        </span>
+        <span
+          class="value"
+        >
+          !object.spec.initContainers.exists(ic, ic.name == "mesh-proxy")
+        </span>
+      </div>
+      <div
+        class="DrawerTitle title"
+      >
+        Variables
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          containerName
+        </span>
+        <span
+          class="value"
+        >
+          params.name
+        </span>
+      </div>
+      <div
+        class="DrawerTitle title"
+      >
+        Mutations
+      </div>
+      <div>
+        <div
+          class="DrawerItem"
+        >
+          <span
+            class="name"
+          >
+            Patch Type
+          </span>
+          <span
+            class="value"
+          >
+            ApplyConfiguration
+          </span>
+        </div>
+        <div
+          class="DrawerItem"
+        >
+          <span
+            class="name"
+          >
+            Expression
+          </span>
+          <span
+            class="value"
+          >
+            Object{spec: Object.spec{initContainers: [Object.spec.initContainers{name: "mesh-proxy", image: "mesh/proxy:v1.0.0"}]}}
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          class="DrawerItem"
+        >
+          <span
+            class="name"
+          >
+            Patch Type
+          </span>
+          <span
+            class="value"
+          >
+            JSONPatch
+          </span>
+        </div>
+        <div
+          class="DrawerItem"
+        >
+          <span
+            class="name"
+          >
+            Expression
+          </span>
+          <span
+            class="value"
+          >
+            [JSONPatch{op: "add", path: "/metadata/labels/injected", value: "true"}]
+          </span>
+        </div>
+      </div>
+      <div
+        class="DrawerTitle title"
+      >
+        Match Constraints
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Match Policy
+        </span>
+        <span
+          class="value"
+        >
+          Equivalent
+        </span>
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Resource Rules
+        </span>
+        <span
+          class="value"
+        >
+          <div>
+            <div>
+              API Groups: 
+            </div>
+            <div>
+              API Versions: 
+              v1
+            </div>
+            <div>
+              Operations: 
+              CREATE
+            </div>
+            <div>
+              Resources: 
+              pods
+            </div>
+          </div>
+        </span>
+      </div>
+    </div>
+  </div>
+</body>
+`;
+
+exports[`MutatingAdmissionPolicyDetails > renders with no mutations 1`] = `
+<body>
+  <div>
+    <div
+      class="MutatingAdmissionPolicyDetails"
+    >
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          API version
+        </span>
+        <span
+          class="value"
+        >
+          admissionregistration.k8s.io/v1
+        </span>
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Failure Policy
+        </span>
+        <span
+          class="value"
+        >
+          Fail
+        </span>
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Reinvocation Policy
+        </span>
+        <span
+          class="value"
+        >
+          IfNeeded
+        </span>
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Param Kind
+        </span>
+        <span
+          class="value"
+        >
+          mutations.example.com/v1/Sidecar
+        </span>
+      </div>
+      <div
+        class="DrawerTitle title"
+      >
+        Match Conditions
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          does-not-already-have-sidecar
+        </span>
+        <span
+          class="value"
+        >
+          !object.spec.initContainers.exists(ic, ic.name == "mesh-proxy")
+        </span>
+      </div>
+      <div
+        class="DrawerTitle title"
+      >
+        Variables
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          containerName
+        </span>
+        <span
+          class="value"
+        >
+          params.name
+        </span>
+      </div>
+      <div
+        class="DrawerTitle title"
+      >
+        Mutations
+      </div>
+      <div
+        style="opacity: 0.6;"
+      >
+        No mutations set
+      </div>
+      <div
+        class="DrawerTitle title"
+      >
+        Match Constraints
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Match Policy
+        </span>
+        <span
+          class="value"
+        >
+          Equivalent
+        </span>
+      </div>
+      <div
+        class="DrawerItem"
+      >
+        <span
+          class="name"
+        >
+          Resource Rules
+        </span>
+        <span
+          class="value"
+        >
+          <div>
+            <div>
+              API Groups: 
+            </div>
+            <div>
+              API Versions: 
+              v1
+            </div>
+            <div>
+              Operations: 
+              CREATE
+            </div>
+            <div>
+              Resources: 
+              pods
+            </div>
+          </div>
+        </span>
+      </div>
+    </div>
+  </div>
+</body>
+`;
