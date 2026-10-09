@@ -1332,7 +1332,8 @@ If your extension used them, migrate one of two ways:
     and the browser resolves a relative one against the current URL, so a v1
     call such as `navigate({ pathname: "my-kind" })` reaches the right page only
     from a page at the right depth, and a wrong one from anywhere else, without
-    an error.
+    an error. The host logs a warning that names the location, so look for one
+    in the DevTools console after the first run.
 
   `navigateToRoute`, which the declaration shows among the `dependencies` of
   `LensRendererExtension`, is not one of them: `dependencies` is the host's
