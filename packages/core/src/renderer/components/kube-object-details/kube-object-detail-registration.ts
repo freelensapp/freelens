@@ -3,18 +3,25 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
-import type { KubeObject, KubeObjectMetadata, KubeObjectScope } from "@freelensapp/kube-object";
+import type { KubeObject } from "@freelensapp/kube-object";
 
 import type { IComputedValue } from "mobx";
 import type React from "react";
 
 import type { KubeObjectDetailsProps } from "./kube-object-details";
-export interface KubeObjectDetailComponents<T extends KubeObject = KubeObject> {
+
+export interface KubeObjectDetailComponents<T extends KubeObject = any> {
   Details: React.ComponentType<KubeObjectDetailsProps<T>>;
 }
-export interface KubeObjectDetailRegistration<
-  T extends KubeObject = KubeObject<KubeObjectMetadata<KubeObjectScope>, any, any>,
-> {
+
+/**
+ * `Details` is rendered with {@link KubeObjectDetailsProps} and nothing else.
+ * The default leaves the object `any`, because the host renders the component
+ * only for the `kind` and `apiVersions` registered, so a component typed for
+ * that resource, such as `KubeObjectDetailsProps<Pod>`, fits. Nothing checks
+ * that the component was written for that resource, though.
+ */
+export interface KubeObjectDetailRegistration<T extends KubeObject = any> {
   kind: string;
   apiVersions: string[];
   components: KubeObjectDetailComponents<T>;
