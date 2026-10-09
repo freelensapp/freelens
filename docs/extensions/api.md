@@ -745,5 +745,10 @@ The contract has three, not two:
 - [`docs/extensions/binaries.md`](./binaries.md) — shipped binaries and process invocation
 - [freelens-example-extension](https://github.com/freelensapp/freelens-example-extension) —
   the reference template for building, type-checking, testing and releasing an
-  extension, which this document leaves to the author
+  extension, which this document leaves to the author. It ships two agent
+  skills for coding agents:
+  [`create-freelens-extension`](https://github.com/freelensapp/freelens-example-extension/blob/main/skills/create-freelens-extension/SKILL.md)
+  starts a new extension from a copy of the template, and
+  [`port-freelens-extension-to-v2`](https://github.com/freelensapp/freelens-example-extension/blob/main/skills/port-freelens-extension-to-v2/SKILL.md)
+  ports a v1 extension to this API
 - [`docs/styling.md`](../styling.md) — the styling model in full
