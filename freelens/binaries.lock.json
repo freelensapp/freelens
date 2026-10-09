@@ -1,30 +1,30 @@
 {
   "freelens-k8s-proxy": {
-    "version": "1.9.0",
+    "version": "1.9.1",
     "artifacts": {
       "darwin/x64": {
-        "url": "https://github.com/freelensapp/freelens-k8s-proxy/releases/download/v1.9.0/freelens-k8s-proxy-darwin-amd64",
-        "sha256": "76033b18c6c8402c4f9ead7f66d591a56313f0d347e9f194bf0276c61e410b5b"
+        "url": "https://github.com/freelensapp/freelens-k8s-proxy/releases/download/v1.9.1/freelens-k8s-proxy-darwin-amd64",
+        "sha256": "af5b647496462ba5a2d2c8a1ea60ad474a63347c9ddf02bd1422f806dd8d8cf0"
       },
       "darwin/arm64": {
-        "url": "https://github.com/freelensapp/freelens-k8s-proxy/releases/download/v1.9.0/freelens-k8s-proxy-darwin-arm64",
-        "sha256": "0a04455d4a461d578dd041e70e1ef8c8a1dcd76f5f5db8f6f4f24f091157f387"
+        "url": "https://github.com/freelensapp/freelens-k8s-proxy/releases/download/v1.9.1/freelens-k8s-proxy-darwin-arm64",
+        "sha256": "146b9438fda5611a46bfe727aa4d9e101b8b76fd42706ad2140089c272efc5ca"
       },
       "linux/x64": {
-        "url": "https://github.com/freelensapp/freelens-k8s-proxy/releases/download/v1.9.0/freelens-k8s-proxy-linux-amd64",
-        "sha256": "d33cf9e2e4cb8722dad077a9763461ca69aacb0d430bb5954c50df10e4ba3c9a"
+        "url": "https://github.com/freelensapp/freelens-k8s-proxy/releases/download/v1.9.1/freelens-k8s-proxy-linux-amd64",
+        "sha256": "02f02e55d921dba0867d09136fde5bff73350d66d8874fdb2240a1b62545b063"
       },
       "linux/arm64": {
-        "url": "https://github.com/freelensapp/freelens-k8s-proxy/releases/download/v1.9.0/freelens-k8s-proxy-linux-arm64",
-        "sha256": "4808a48b243e848099b51bc680b93bac5934aea89c9d77cfd54df287376b75c1"
+        "url": "https://github.com/freelensapp/freelens-k8s-proxy/releases/download/v1.9.1/freelens-k8s-proxy-linux-arm64",
+        "sha256": "cba1700f68a80e11e0b75fe2d122e44c57c3f0c6a3e399b87dc141006bfb6fb2"
       },
       "windows/x64": {
-        "url": "https://github.com/freelensapp/freelens-k8s-proxy/releases/download/v1.9.0/freelens-k8s-proxy-windows-amd64.exe",
-        "sha256": "e9240745593118ae6c8589803c6b218506508657cecfaa5bb0fcdfcf44073bdb"
+        "url": "https://github.com/freelensapp/freelens-k8s-proxy/releases/download/v1.9.1/freelens-k8s-proxy-windows-amd64.exe",
+        "sha256": "8fb5fbf431a14d2358a24c5e855307bee93698ae22330d2a92b7a1cac83128ea"
       },
       "windows/arm64": {
-        "url": "https://github.com/freelensapp/freelens-k8s-proxy/releases/download/v1.9.0/freelens-k8s-proxy-windows-arm64.exe",
-        "sha256": "bec4a4c00ab54e51e7448c9ef0b89bee28c6d8ce4ab181d8e8d51bb354131b42"
+        "url": "https://github.com/freelensapp/freelens-k8s-proxy/releases/download/v1.9.1/freelens-k8s-proxy-windows-arm64.exe",
+        "sha256": "69b528eeda60097e1998d49e9c62f52bf59485511f56897f288f12576e4a8b3c"
       }
     }
   },
