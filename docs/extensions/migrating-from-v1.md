@@ -199,14 +199,34 @@ through the externals map in
   copies and your package manager reports a version outside the host's range.
   pnpm does that as a warning; set `strictPeerDependencies: true` to make it fail
   the install.
-- **This is a breaking change from the earlier React 18 preview.** Extensions
-  built against React 18 types must move to React 19, because host-provided
-  React and any React the extension bundles must share the same major (see the
-  invalid-hook-call trap above). Extensions relying on host-provided React move
-  with the host automatically once their peer range is `^19`; extensions that
-  bundled their own React need a matching bump. React 19 removed long-deprecated
-  APIs (for example `ReactDOM.render` / `findDOMNode` and legacy string refs),
-  so audit for those while upgrading.
+- **A v1 extension starts from React 17.** Freelens 1.x ran React 17, so a v1
+  extension was type-checked against `@types/react` 17, and it moves two majors
+  to 19, because host-provided React and any React the extension bundles must
+  share the same major (see the invalid-hook-call trap above). Extensions
+  relying on host-provided React move with the host once their devDependencies
+  are at 19; extensions that bundled their own React need a matching bump.
+  React 18 and 19 removed long-deprecated APIs (for example `ReactDOM.render` /
+  `findDOMNode` and legacy string refs), so audit for those while upgrading.
+
+Two changes between the React 17 and 19 types fail the type check of most v1
+extensions. Neither changes what the host renders:
+
+- **`children` is no longer implicit.** The React 17 types added `children` to
+  the props of every component; the React 19 types accept only the props a
+  component declares. Passing children to a host component whose props do not
+  declare them fails with TS2322. `Renderer.Component.LinkToObject` is the
+  common case: it renders its `content`, or the object's name without one, and
+  never rendered its children, so drop them, or pass the text as `content`:
+
+  ```diff
+  -<LinkToObject objectRef={ref} object={object}>{ref.name}</LinkToObject>
+  +<LinkToObject objectRef={ref} object={object} />
+  ```
+
+  In your own components, declare `children` in the props, or wrap them in
+  `PropsWithChildren<P>`.
+- **`JSX` is no longer a global namespace.** `JSX.Element` fails with TS2503;
+  write `React.JSX.Element`, or `import type { JSX } from "react"`.
 
 ## Dependency injection: bundle your own
 
@@ -1039,6 +1059,29 @@ store, for every version of a CRD that the cluster serves, so `getApi()` and
 `getStore()` resolve to the first entry of your class's `crd.apiVersions` that
 the cluster serves; list the version you prefer first.
 
+That advice assumes one class that lists every version. A v1 extension often
+has one class per version instead, each with a single `apiVersions` entry, such
+as `MyKind_v1` and `MyKind_v1beta1`. The v1 host registered an API only for the
+preferred version of a CRD, so only one of those classes resolved. In v2 every
+class whose version the cluster serves resolves, and code that walks the
+classes sees the same objects once per served version: loaded and watched
+twice, and rendered twice under the same React key. The type check does not
+show it. Either list every version in one class, or pick one class yourself,
+for example the first whose `getStore()` succeeds:
+
+```ts
+// In preference order; call it when rendering, once the CRDs have loaded.
+const findServedMyKind = () =>
+  [MyKind_v1, MyKind_v1beta1].find((kind) => {
+    try {
+      kind.getStore();
+      return true;
+    } catch {
+      return false;
+    }
+  });
+```
+
 If you were subclassing a built-in store, extend `KubeObjectStore` over your own
 `KubeApi` instead, and register it with `apiManager`. If you find a case none of
 the three replacements covers, open an issue: adding a symbol back to the API is
@@ -1632,6 +1675,11 @@ restarted once.
       (`PodStore`, `CRDStore`, `HPAStore`, …) with the store singleton, with
       `typeof` that singleton in type positions, or with
       `KubeObjectStore<T>` as the base class for your own store (see
+      [`Renderer.K8sApi` concrete store classes removed](#rendererk8sapi-concrete-store-classes-removed)).
+- [ ] If you declare one `LensExtensionKubeObject` class per version of a CRD,
+      list every version in one class or pick one class yourself. In v2 every
+      class whose version the cluster serves resolves, so code that walks them
+      shows the same objects twice, and no type check catches it (see
       [`Renderer.K8sApi` concrete store classes removed](#rendererk8sapi-concrete-store-classes-removed)).
 - [ ] Replace any use of `Renderer.Component.VirtualList`, `appMenus`,
       `trayMenus`, `Common.Types.IpcRendererEvent`,
