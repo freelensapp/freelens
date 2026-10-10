@@ -31,7 +31,7 @@ jobs:
       - name: Install tools from mise.lock
         uses: jdx/mise-action@v5
         with:
-          version: 2026.10.4 # datasource=github-releases depName=jdx/mise
+          version: 2026.10.7 # datasource=github-releases depName=jdx/mise
 
       # Lock file maintenance PRs are automerged and nobody reads their diff,
       # so the one thing a human could have spotted there is checked here: a
