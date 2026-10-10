@@ -5,12 +5,16 @@
 
 import { sidebarItemsInjectable } from "@freelensapp/cluster-sidebar";
 import { CustomResourceDefinition, KubeObject } from "@freelensapp/kube-object";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import { act, waitFor } from "@testing-library/react";
-import { beforeEach, describe, expect, it } from "vitest";
+import { noop } from "es-toolkit";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import navigateToCustomResourceDefinitionsInjectable from "../../common/front-end-routing/routes/cluster/custom-resources/navigate-to-custom-resource-definitions.injectable";
 import navigateToCustomResourcesInjectable from "../../common/front-end-routing/routes/cluster/custom-resources/navigate-to-custom-resources.injectable";
 import navigateToFavoritesOverviewInjectable from "../../common/front-end-routing/routes/cluster/favorites/overview/navigate-to-favorites-overview.injectable";
 import apiManagerInjectable from "../../common/k8s-api/api-manager/manager.injectable";
 import { LensExtensionKubeObject } from "../../extensions/common-api/k8s-api";
+import hostedClusterInjectable from "../../renderer/cluster-frame-context/hosted-cluster.injectable";
 import sidebarNavigationCommandsInjectable from "../../renderer/components/command-palette/registered-commands/sidebar-navigation-commands.injectable";
 import customResourceDefinitionStoreInjectable from "../../renderer/components/custom-resource-definitions/store.injectable";
 import favoritesStoreInjectable from "../../renderer/components/favorites/store.injectable";
@@ -18,10 +22,12 @@ import kubeDetailsUrlParamInjectable from "../../renderer/components/kube-detail
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 import type { SidebarItemDeclaration } from "@freelensapp/cluster-sidebar";
+import type { Logger } from "@freelensapp/logger";
 
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
 
+import type { KubeApiResource } from "../../common/rbac";
 import type { CommandContext } from "../../renderer/components/command-palette/registered-commands/commands";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import type { FakeExtensionOptions } from "../../renderer/components/test-utils/get-extension-fake";
@@ -60,6 +66,18 @@ class Gateway extends LensExtensionKubeObject {
   static readonly crd = { apiVersions: [`${group}/v1`], plural: "gateways", singular: "gateway" };
 }
 
+class HTTPRoute extends LensExtensionKubeObject {
+  static readonly kind = "HTTPRoute";
+  static readonly namespaced = true;
+  static readonly crd = { apiVersions: [`${group}/v1`], plural: "httproutes", singular: "httproute" };
+}
+
+// What discovery reports when the list of definitions is refused.
+const discoveredResources: KubeApiResource[] = [
+  { group, version: "v1", apiName: "gateways", kind: "Gateway", namespaced: true },
+  { group, version: "v1", apiName: "httproutes", kind: "HTTPRoute", namespaced: true },
+];
+
 const someGateway = new KubeObject({
   apiVersion: `${group}/v1`,
   kind: "Gateway",
@@ -82,6 +100,7 @@ describe("custom resources an extension presents", () => {
   let builder: ApplicationBuilder;
   let result: RenderResult;
   let windowDi: DiContainer;
+  let loggerStub: Logger;
 
   const getRows = () => result.container.querySelectorAll(".CustomResources .TableRow");
 
@@ -100,6 +119,18 @@ describe("custom resources an extension presents", () => {
   beforeEach(async () => {
     builder = getApplicationBuilder();
     builder.setEnvironmentToClusterFrame();
+
+    loggerStub = {
+      error: vi.fn(),
+      debug: noop,
+      info: noop,
+      silly: noop,
+      warn: noop,
+    };
+
+    builder.beforeWindowStart(({ windowDi }) => {
+      windowDi.override(loggerInjectionToken, () => loggerStub);
+    });
 
     builder.afterWindowStart(({ windowDi }) => {
       windowDi.inject(customResourceDefinitionStoreInjectable).items.replace([gatewayDefinition, httpRouteDefinition]);
@@ -207,6 +238,168 @@ describe("custom resources an extension presents", () => {
       act(() => builder.navigateWith(navigateToFavoritesOverviewInjectable));
 
       expect(result.getByTestId("page-for-favorites-overview")).not.toHaveTextContent("Not available in this cluster");
+    });
+  });
+
+  describe("the Custom Resources tree", () => {
+    const expandCustomResources = () =>
+      waitFor(() => result.getByTestId("expand-icon-for-sidebar-item-custom-resources").click(), { timeout: 300 });
+
+    const expandGroup = () =>
+      waitFor(() => result.getByTestId(`expand-icon-for-${groupItemTestId}`).click(), { timeout: 300 });
+
+    describe("given no extension registers the resources", () => {
+      beforeEach(async () => {
+        await expandCustomResources();
+        await expandGroup();
+      });
+
+      it.each([gatewaysItemTestId, httpRoutesItemTestId])("shows %s", (testId) => {
+        expect(result.getByTestId(testId)).toBeInTheDocument();
+      });
+    });
+
+    describe("given an enabled extension registers one kind of the group", () => {
+      beforeEach(async () => {
+        await enableExtension(gatewayExtension);
+        await expandCustomResources();
+        await expandGroup();
+      });
+
+      it("does not show the kind", async () => {
+        await waitFor(() => expect(result.queryByTestId(gatewaysItemTestId)).not.toBeInTheDocument(), {
+          timeout: 300,
+        });
+      });
+
+      it("shows the other kind of the group", () => {
+        expect(result.getByTestId(httpRoutesItemTestId)).toHaveTextContent("HTTP Route");
+      });
+
+      it("keeps the group", () => {
+        expect(result.getByTestId(groupItemTestId)).toBeInTheDocument();
+      });
+
+      describe("when the extension is disabled", () => {
+        beforeEach(() => {
+          act(() => builder.extensions.disable(gatewayExtension));
+        });
+
+        it("shows the kind again", async () => {
+          await waitFor(() => expect(result.getByTestId(gatewaysItemTestId)).toHaveTextContent("Gateway"), {
+            timeout: 300,
+          });
+        });
+      });
+
+      describe("when the Definitions list is opened", () => {
+        beforeEach(() => {
+          act(() => builder.navigateWith(navigateToCustomResourceDefinitionsInjectable));
+        });
+
+        it("still lists the definition of the kind", async () => {
+          await waitFor(
+            () => {
+              const rows = Array.from(
+                result.container.querySelectorAll(".CustomResourceDefinitions .TableRow"),
+                (row) => row.textContent,
+              );
+
+              expect(rows).toEqual(
+                expect.arrayContaining([expect.stringContaining("Gateway"), expect.stringContaining("HTTPRoute")]),
+              );
+            },
+            { timeout: 300 },
+          );
+        });
+      });
+    });
+
+    describe("given an enabled extension registers every kind of the group", () => {
+      beforeEach(async () => {
+        await enableExtension({
+          ...gatewayExtension,
+          rendererOptions: { customResources: [Gateway, HTTPRoute] },
+        });
+        await expandCustomResources();
+      });
+
+      it("does not show the group", async () => {
+        await waitFor(() => expect(result.queryByTestId(groupItemTestId)).not.toBeInTheDocument(), {
+          timeout: 300,
+        });
+      });
+
+      it("keeps the Definitions item", () => {
+        expect(result.getByTestId("sidebar-item-custom-resource-definitions")).toBeInTheDocument();
+      });
+    });
+
+    describe("given an extension registers an invalid class next to a valid one", () => {
+      class HTTPRouteWithoutKind extends LensExtensionKubeObject {
+        static readonly crd = HTTPRoute.crd;
+      }
+
+      beforeEach(async () => {
+        await enableExtension({
+          ...gatewayExtension,
+          rendererOptions: { customResources: [HTTPRouteWithoutKind, Gateway] },
+        });
+        await expandCustomResources();
+        await expandGroup();
+      });
+
+      it("logs the rejection, naming the extension, the entry and the class", () => {
+        expect(loggerStub.error).toHaveBeenCalledWith(
+          '[EXTENSIONS]: gateway-extension: customResources[0] (HTTPRouteWithoutKind) is rejected: the class has no static "kind"',
+        );
+      });
+
+      it("keeps the resource of the invalid class in the tree", () => {
+        expect(result.getByTestId(httpRoutesItemTestId)).toBeInTheDocument();
+      });
+
+      it("still leaves the resource of the valid class out of the tree", async () => {
+        await waitFor(() => expect(result.queryByTestId(gatewaysItemTestId)).not.toBeInTheDocument(), {
+          timeout: 300,
+        });
+      });
+    });
+
+    describe("given the list of definitions is refused and the resources are known from discovery", () => {
+      beforeEach(async () => {
+        const customResourceDefinitionStore = windowDi.inject(customResourceDefinitionStoreInjectable);
+        const hostedCluster = windowDi.inject(hostedClusterInjectable);
+
+        if (!hostedCluster) {
+          throw new Error("Expected a hosted cluster in the cluster frame");
+        }
+
+        hostedCluster.knownResources.replace(discoveredResources);
+        vi.spyOn(console, "warn").mockImplementation(() => {});
+
+        await act(async () => {
+          customResourceDefinitionStore.items.clear();
+          vi.spyOn(customResourceDefinitionStore.api, "list").mockRejectedValue(
+            new Error("customresourcedefinitions.apiextensions.k8s.io is forbidden"),
+          );
+          await customResourceDefinitionStore.loadAll();
+        });
+
+        await enableExtension(gatewayExtension);
+        await expandCustomResources();
+        await expandGroup();
+      });
+
+      it("does not show the kind the extension registers", async () => {
+        await waitFor(() => expect(result.queryByTestId(gatewaysItemTestId)).not.toBeInTheDocument(), {
+          timeout: 300,
+        });
+      });
+
+      it("shows the other discovered kind of the group", () => {
+        expect(result.getByTestId(httpRoutesItemTestId)).toHaveTextContent("HTTP Route");
+      });
     });
   });
 });
