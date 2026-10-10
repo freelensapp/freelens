@@ -6,7 +6,11 @@
 
 import path from "node:path";
 import { loggerInjectionToken } from "@freelensapp/logger";
-import { showErrorNotificationInjectable, showInfoNotificationInjectable } from "@freelensapp/notifications";
+import {
+  showErrorNotificationInjectable,
+  showInfoNotificationInjectable,
+  showSuccessNotificationInjectable,
+} from "@freelensapp/notifications";
 import { noop } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import fse from "fs-extra";
@@ -47,6 +51,7 @@ const unpackExtensionInjectable = getInjectable({
     const extractTar = di.inject(extractTarInjectable);
     const logger = di.inject(loggerInjectionToken);
     const showInfoNotification = di.inject(showInfoNotificationInjectable);
+    const showSuccessNotification = di.inject(showSuccessNotificationInjectable);
     const showErrorNotification = di.inject(showErrorNotificationInjectable);
 
     const displayErrorMessage = (message: string, displayName: string) => {
@@ -133,7 +138,7 @@ const unpackExtensionInjectable = getInjectable({
             // Enable installed extensions by default.
             extensionLoader.setIsEnabled(id, true);
 
-            showInfoNotification(
+            showSuccessNotification(
               <p>
                 {"Extension "}
                 <b>{displayName}</b>
