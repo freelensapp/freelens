@@ -51,6 +51,7 @@ export type CommonKubeObjectMenuItemProps = Common.Types.KubeObjectMenuItemProps
 export type CommonStatusBarRegistration = Common.Types.StatusBarRegistration;
 export type CommonPageRegistration = Common.Types.PageRegistration;
 export type CommonAppPreferenceRegistration = Common.Types.AppPreferenceRegistration;
+export type CommonCustomResourceRegistration = Common.Types.CustomResourceRegistration;
 
 // --- Main --------------------------------------------------------------------
 
@@ -209,4 +210,12 @@ export function checkNarrowedVersions(extension: RendererExtension) {
     // @ts-expect-error a class component written for `v1alpha2`, registered for `v1alpha1`
     menuItemFor(ExampleV1alpha1, { MenuItem: ExampleV1alpha2MenuItemClass }),
   ];
+}
+
+// `customResources` takes the model classes themselves, not a description of
+// them, so the host can read their statics.
+export function checkCustomResources(extension: RendererExtension) {
+  extension.customResources = [ExampleV1alpha1, ExampleV1alpha2];
+  // @ts-expect-error a registration is the class, not its `crd`
+  extension.customResources = [ExampleV1alpha1.crd];
 }

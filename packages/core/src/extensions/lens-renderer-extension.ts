@@ -32,6 +32,7 @@ import type { AdditionalCategoryColumnRegistration } from "../renderer/component
 import type { CustomCategoryViewRegistration } from "../renderer/components/catalog/custom-views";
 import type { CatalogEntityDetailRegistration } from "../renderer/components/catalog/entity-details/token";
 import type { CommandRegistration } from "../renderer/components/command-palette/registered-commands/commands";
+import type { CustomResourceRegistration } from "../renderer/components/custom-resource-definitions/custom-resource-registration";
 import type { EntitySettingRegistration } from "../renderer/components/entity-settings/extension-registrator.injectable";
 import type { KubeObjectDetailRegistration } from "../renderer/components/kube-object-details/kube-object-detail-registration";
 import type { KubeObjectMenuRegistration } from "../renderer/components/kube-object-menu/kube-object-menu-registration";
@@ -74,6 +75,14 @@ export class LensRendererExtension extends LensExtension {
   additionalCategoryColumns: AdditionalCategoryColumnRegistration[] = [];
   customCategoryViews: CustomCategoryViewRegistration[] = [];
   kubeObjectHandlers: KubeObjectHandlerRegistration[] = [];
+
+  /**
+   * The model classes of the custom resources this extension presents with
+   * pages of its own. While the extension is enabled, the Custom Resources tree
+   * of the cluster sidebar leaves them out; their definitions stay in the
+   * Definitions list.
+   */
+  customResources: CustomResourceRegistration[] = [];
 
   /**
    * @ignore

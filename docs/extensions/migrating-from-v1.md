@@ -886,7 +886,7 @@ On `LensRendererExtension`: `globalPages`, `clusterPages`, `clusterPageMenus`,
 `entitySettings`, `statusBarItems`, `kubeObjectDetailItems`,
 `kubeObjectMenuItems`, `kubeWorkloadsOverviewItems`, `commands`, `welcomeMenus`,
 `catalogEntityDetailItems`, `topBarItems`, `additionalCategoryColumns`,
-`customCategoryViews`, `kubeObjectHandlers`.
+`customCategoryViews`, `kubeObjectHandlers`, `customResources`.
 
 On `LensMainExtension`: `terminalShellEnvModifier`, which the host calls with
 the environment of every terminal it opens. `appMenus` and `trayMenus` are gone
@@ -976,6 +976,29 @@ runtime as before; keep it, because under standard class-field semantics a
 field written without it (`kind!: "Example"`) resets the value the base class
 assigned. See
 [C6](./api.md#c6-registration-and-the-extension-instance) for the details.
+
+`customResources` is new in v2. List in it the model classes of the custom
+resources your extension presents with a sidebar entry and pages of its own:
+
+```ts
+export default class MyExtension extends Renderer.LensExtension {
+  customResources = [Kustomization, HelmRelease];
+}
+```
+
+The host reads the group and plural of each from its `crd.apiVersions` and
+`crd.plural`, or, for a class without a `crd`, from its `apiBase`, and while
+your extension is enabled it leaves those resources out of the **Custom
+Resources** tree of the cluster sidebar, where they would otherwise be listed a
+second time under their API group. Their definitions stay in the
+**Definitions** list, and the host's own list and details stay reachable by URL
+and from the command palette. Leave out a model you only decorate with detail
+or menu items and do not list yourself: registered, it would leave the tree
+with nothing in its place. The classes of two versions of one resource name the
+same group and plural, so listing both is harmless. A class without a `kind`,
+without a `crd` or `apiBase` the group and plural can be read from, or naming a
+resource of the core group, is rejected with an error in the log naming it, and
+its resource stays in the tree.
 
 A page that typed its parameters by name, such as
 `PageComponentProps<{ query: string }>` or `{ params?: { query: PageParam } }`,

@@ -7,6 +7,7 @@
  */
 
 import customResourceDefinitionsInjectable from "./definitions.injectable";
+import extensionCustomResourceRegistratorInjectable from "./extension-custom-resource-registrator.injectable";
 import customResourceDefinitionGroupsSidebarItemsComputedInjectable from "./groups-sidebar-items-computed.injectable";
 import customResourceDefinitionGroupsSidebarItemsRegistratorInjectable from "./groups-sidebar-items-registrator.injectable";
 import customResourceDefinitionsRouteComponentInjectable from "./route-component.injectable";
@@ -44,6 +45,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(customResourceDefinitionsSidebarItemInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(extensionCustomResourceRegistratorInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

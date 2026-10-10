@@ -9,7 +9,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 // of `@freelensapp/fixture-extension` — an extension written the way a
 // third-party extension is written, against the published
 // `dist/extension-api.d.ts` and with its externals mapped onto
-// `globalThis.FreelensExtensionApi` — and asserts the five things that break
+// `globalThis.FreelensExtensionApi` — and asserts the six things that break
 // silently and that a hand-written list of `toHaveProperty` calls cannot see:
 //
 //  1. instance identity of React: a hook in the extension's component only
@@ -29,6 +29,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 //     declaration promises exist on the runtime namespace, and the model they
 //     take, which narrows its `kind` and `apiVersion` with `declare`, keeps the
 //     values its base class assigns
+//  6. `customResources`: the host reads the group and plural of the model
+//     class the bundle registers
 //
 // The bundle is loaded through a file URL rather than a static import for two
 // reasons: it throws while evaluating if the globals are not installed first
@@ -50,6 +52,7 @@ import ReactDom from "react-dom";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import isFlatpakPackageInjectable from "../../common/vars/is-flatpak-package.injectable";
 import { buildVersionInitializable } from "../../features/vars/build-version/common/token";
+import { extensionCustomResourceInjectionToken } from "../../renderer/components/custom-resource-definitions/extension-custom-resource-injection-token";
 import statusBarItemsInjectable from "../../renderer/components/status-bar/status-bar-items.injectable";
 import browserFetchInjectable from "../../renderer/fetch/browser-fetch.injectable";
 import { getDiForUnitTesting } from "../../renderer/getDiForUnitTesting";
@@ -261,6 +264,16 @@ describe("extension contract, against the built fixture extension", () => {
 
     it("shows the extension's declarative registration in the host", () => {
       expect(statusBarItems.right.map((item) => item.origin)).toContain(EXTENSION_NAME);
+    });
+
+    it("registers its custom resources with the host, read from the model class", () => {
+      const registered = di
+        .injectMany(extensionCustomResourceInjectionToken)
+        .map(({ group, plural, extensionName }) => ({ group, plural, extensionName }));
+
+      expect(registered).toEqual([
+        { group: "fixture.freelens.app", plural: "fixtureexamples", extensionName: EXTENSION_NAME },
+      ]);
     });
 
     it("reacts to an observable the extension created, through the host's own mobx", () => {

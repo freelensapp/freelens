@@ -32,6 +32,7 @@ export type FixtureShellEnvModifier = Common.Types.ShellEnvModifier;
 export type FixturePageRegistration = Common.Types.PageRegistration;
 export type FixtureAppPreferenceRegistration = Common.Types.AppPreferenceRegistration;
 export type FixtureProtocolHandlerRegistration = Common.Types.ProtocolHandlerRegistration;
+export type FixtureCustomResourceRegistration = Common.Types.CustomResourceRegistration;
 
 // --- Main ------------------------------------------------------------------
 

@@ -356,7 +356,7 @@ injectables, scoped to the extension and torn down with it.
 `appPreferenceTabs`, `entitySettings`, `statusBarItems`, `kubeObjectDetailItems`,
 `kubeObjectMenuItems`, `kubeWorkloadsOverviewItems`, `commands`, `welcomeMenus`,
 `catalogEntityDetailItems`, `topBarItems`, `additionalCategoryColumns`,
-`customCategoryViews`, `kubeObjectHandlers`.
+`customCategoryViews`, `kubeObjectHandlers`, `customResources`.
 
 Every component in a renderer registration is typed with the props the host
 renders it with and nothing more, so a component that requires another prop
@@ -435,6 +435,30 @@ fields (`kind!: "Example"`) under standard class-field semantics
 after the base constructor has assigned the object's data, and reset `kind` and
 `apiVersion` to `undefined`.
 
+`customResources` takes the model classes of the custom resources the extension
+presents with pages of its own, typed `Common.Types.CustomResourceRegistration`:
+
+```ts
+customResources = [Example];
+```
+
+The host reads each class's group and plural, in this order:
+
+1. the groups of its `crd.apiVersions` and its `crd.plural`, one resource per
+   group, for a `LensExtensionKubeObject` subclass;
+2. the group and resource of its static `apiBase`, as `parseKubeApi` reads it.
+
+While the extension is enabled for the cluster, the **Custom Resources** tree of
+the cluster sidebar leaves those resources out, and a group of the tree left
+with no kinds leaves with them. Disabled or uninstalled, the extension's
+resources are back in the tree. That is the whole effect: the definition of a
+registered resource stays in the **Definitions** list, and the resource's list,
+details and route are the host's as before, so it stays reachable by URL, from
+its definition and from the command palette. The registration is opt-in, so a
+model the extension declares without presenting it, one it only decorates
+through `kubeObjectDetailItems` or `kubeObjectMenuItems`, stays out of the
+field and in the tree.
+
 `LensMainExtension` fields: `terminalShellEnvModifier`, a function the host
 calls with the environment of every terminal it opens. There is no field for the
 application menu or the tray: both are the host's own.
@@ -461,7 +485,13 @@ or of registering after the host has already read the field. `detailsFor` and
 given and the class has neither `crd.apiVersions` nor an `apiBase` it can be
 read from, or when the list resolved is empty; called from a field initializer,
 that fails the extension's load rather than leaving a registration that never
-appears.
+appears. A `customResources` entry is rejected when it is not a class, has no
+static `kind`, has neither a `crd` nor an `apiBase` it can be read from, has a
+`crd` with no `apiVersions` or no `plural`, or names a resource of the core
+group. The host logs the error with the extension's name, the entry's index and
+the class's name, skips the entry and keeps the others, and the rejected
+resource stays in the Custom Resources tree. The field is read once, when the
+extension is registered, so a class assigned to it later is not seen.
 
 ---
 
