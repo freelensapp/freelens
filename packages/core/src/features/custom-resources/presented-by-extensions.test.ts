@@ -8,10 +8,12 @@ import { CustomResourceDefinition, KubeObject } from "@freelensapp/kube-object";
 import { act, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it } from "vitest";
 import navigateToCustomResourcesInjectable from "../../common/front-end-routing/routes/cluster/custom-resources/navigate-to-custom-resources.injectable";
+import navigateToFavoritesOverviewInjectable from "../../common/front-end-routing/routes/cluster/favorites/overview/navigate-to-favorites-overview.injectable";
 import apiManagerInjectable from "../../common/k8s-api/api-manager/manager.injectable";
 import { LensExtensionKubeObject } from "../../extensions/common-api/k8s-api";
 import sidebarNavigationCommandsInjectable from "../../renderer/components/command-palette/registered-commands/sidebar-navigation-commands.injectable";
 import customResourceDefinitionStoreInjectable from "../../renderer/components/custom-resource-definitions/store.injectable";
+import favoritesStoreInjectable from "../../renderer/components/favorites/store.injectable";
 import kubeDetailsUrlParamInjectable from "../../renderer/components/kube-detail-params/kube-details-url.injectable";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
@@ -160,6 +162,51 @@ describe("custom resources an extension presents", () => {
           );
         });
       });
+    });
+  });
+
+  describe("given the user made a favorite of a resource before an extension registered it", () => {
+    const favoriteTestId = `favorite-${gatewaysItemTestId}`;
+
+    beforeEach(async () => {
+      await waitFor(() => expect(findSidebarItem(gatewaysItemTestId)).toBeDefined(), { timeout: 300 });
+
+      const gatewaysItem = findSidebarItem(gatewaysItemTestId);
+
+      if (!gatewaysItem) {
+        throw new Error(`no sidebar item "${gatewaysItemTestId}"`);
+      }
+
+      act(() => windowDi.inject(favoritesStoreInjectable).toggle(gatewaysItem, "crd"));
+
+      await enableExtension(gatewayExtension);
+      await waitFor(() => expect(findSidebarItem(gatewaysItemTestId)?.isHiddenInTree.get()).toBe(true), {
+        timeout: 300,
+      });
+
+      await waitFor(() => result.getByTestId("expand-icon-for-sidebar-item-favorites").click(), { timeout: 300 });
+    });
+
+    it("keeps the favorite in the Favorites section", () => {
+      expect(result.getByTestId(favoriteTestId)).toHaveTextContent("Gateway");
+    });
+
+    it("opens the host's list of the resource from the favorite", async () => {
+      windowDi
+        .inject(apiManagerInjectable)
+        .getStore(gatewayDefinition.getResourceApiBase())
+        ?.items.replace([someGateway]);
+
+      act(() => result.getByTestId(`link-for-${favoriteTestId}`).click());
+
+      await waitFor(() => expect(getRows()).toHaveLength(1), { timeout: 300 });
+      expect(getRows()[0]).toHaveTextContent("some-gateway");
+    });
+
+    it("shows the favorite as available in the favorites overview", () => {
+      act(() => builder.navigateWith(navigateToFavoritesOverviewInjectable));
+
+      expect(result.getByTestId("page-for-favorites-overview")).not.toHaveTextContent("Not available in this cluster");
     });
   });
 });

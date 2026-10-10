@@ -83,7 +83,8 @@ const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectab
             }),
             // An enabled extension that registered the resource in its
             // `customResources` lists it under its own entry. The item stays
-            // registered, so the command palette still reaches the host's list.
+            // registered, so the command palette and a favorite of it still
+            // reach the host's list.
             isHiddenInTree: computed(() =>
               customResourcesPresentedByExtensions.get().has(getCustomResourceKey(group, pluralName)),
             ),

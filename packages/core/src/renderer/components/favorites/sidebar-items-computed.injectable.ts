@@ -21,6 +21,7 @@ const favoritesSidebarItemsComputedInjectable = getInjectable({
   instantiate: (di) => {
     const favoritesStore = di.inject(favoritesStoreInjectable);
     const sidebarItemsComputed = di.inject(sidebarItemsInjectable);
+    const inTree = computed(() => false);
 
     return computed((): FavoriteSidebarItem[] => {
       const favoriteItems = favoritesStore.items;
@@ -58,7 +59,10 @@ const favoritesSidebarItemsComputedInjectable = getInjectable({
             onClick: originalItem.onClick,
             isActive: originalItem.isActive,
             isVisible: originalItem.isVisible,
-            isHiddenInTree: originalItem.isHiddenInTree,
+            // A favorite is the user's own pin, so it stays in the Favorites
+            // section while its item is hidden in the tree, such as a custom
+            // resource an extension lists under an entry of its own.
+            isHiddenInTree: inTree,
             getIcon: originalItem.getIcon,
             orderNumber: fav.order,
             children: originalItem.children,

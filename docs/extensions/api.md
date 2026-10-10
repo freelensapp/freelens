@@ -454,7 +454,9 @@ with no kinds leaves with them. Disabled or uninstalled, the extension's
 resources are back in the tree. That is the whole effect: the definition of a
 registered resource stays in the **Definitions** list, and the resource's list,
 details and route are the host's as before, so it stays reachable by URL, from
-its definition and from the command palette. The registration is opt-in, so a
+its definition and from the command palette. A favorite the user made of it in
+the tree stays in the Favorites section and opens the host's list. The
+registration is opt-in, so a
 model the extension declares without presenting it, one it only decorates
 through `kubeObjectDetailItems` or `kubeObjectMenuItems`, stays out of the
 field and in the tree.
