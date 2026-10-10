@@ -44,10 +44,10 @@ const groupOfApiVersion = (apiVersion: string) => {
  * The custom resources a `customResources` registration names: one per group
  * of its `crd.apiVersions`, or the one of its `apiBase`.
  *
- * Throws, with the reason, when the class has no `kind`, when it has neither a
- * `crd` nor an `apiBase` that can be parsed, when its `crd` lacks versions or a
- * plural, or when it names a resource of the core group, which is no custom
- * resource.
+ * Throws, with the reason, when the registration is not a class, when the class
+ * has no `kind`, when it has neither a `crd` nor an `apiBase` that can be
+ * parsed, when its `crd` lacks versions or a plural, or when it names a
+ * resource of the core group, which has no custom resources.
  */
 export const getCustomResourcesOfRegistration = (
   registration: CustomResourceRegistration,

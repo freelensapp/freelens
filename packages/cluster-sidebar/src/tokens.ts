@@ -19,9 +19,10 @@ export interface SidebarItemRegistration {
   isActive?: IComputedValue<boolean>;
   isVisible?: IComputedValue<boolean>;
   /**
-   * Leaves a visible item out of the sidebar tree, and out of the tabs of its
-   * siblings. It stays a sidebar item for everything else that reads them: the
-   * command palette lists it and a favorite of it works. Defaults to `false`.
+   * Leaves a visible item out of the sidebar tree, and out of the tabs shown
+   * for the pages of its parent. It stays a sidebar item for everything else
+   * that reads them: the command palette lists it, and a favorite of it or of
+   * its parent shows it. Defaults to `false`.
    */
   isHiddenInTree?: IComputedValue<boolean>;
   orderNumber: number | IComputedValue<number>;

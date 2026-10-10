@@ -442,10 +442,10 @@ presents with pages of its own, typed `Common.Types.CustomResourceRegistration`:
 customResources = [Example];
 ```
 
-The host reads each class's group and plural, in this order:
+The host reads each class's group and plural from the first of these it has:
 
 1. the groups of its `crd.apiVersions` and its `crd.plural`, one resource per
-   group, for a `LensExtensionKubeObject` subclass;
+   group, for a class with a `crd` such as a `LensExtensionKubeObject` subclass;
 2. the group and resource of its static `apiBase`, as `parseKubeApi` reads it.
 
 While the extension is enabled for the cluster, the **Custom Resources** tree of
@@ -457,11 +457,9 @@ details and route are the host's as before, so it stays reachable by URL, from
 its definition and from the command palette. A favorite the user made of it in
 the tree stays in the Favorites section and opens the host's list, and a
 favorite of its group lists every kind of the group, those left out of the tree
-included. The
-registration is opt-in, so a
-model the extension declares without presenting it, one it only decorates
-through `kubeObjectDetailItems` or `kubeObjectMenuItems`, stays out of the
-field and in the tree.
+included. The registration is opt-in, so a model the extension declares without
+presenting it, one it only decorates through `kubeObjectDetailItems` or
+`kubeObjectMenuItems`, stays out of the field and in the tree.
 
 `LensMainExtension` fields: `terminalShellEnvModifier`, a function the host
 calls with the environment of every terminal it opens. There is no field for the

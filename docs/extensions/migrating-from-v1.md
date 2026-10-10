@@ -993,7 +993,7 @@ Resources** tree of the cluster sidebar, where they would otherwise be listed a
 second time under their API group. Their definitions stay in the
 **Definitions** list, and the host's own list and details stay reachable by URL
 and from the command palette. Leave out a model you only decorate with detail
-or menu items and do not list yourself: registered, it would leave the tree
+or menu items and give no page of its own: registered, it would leave the tree
 with nothing in its place. The classes of two versions of one resource name the
 same group and plural, so listing both is harmless. A class without a `kind`,
 without a `crd` or `apiBase` the group and plural can be read from, or naming a
