@@ -7,6 +7,8 @@
 import { describe, expect, it } from "vitest";
 import { Node } from "./node";
 
+import type { NodeCondition } from "./node";
+
 describe("Node tests", () => {
   describe("isMasterNode()", () => {
     it("given a master node labelled before kubernetes 1.20, should return true", () => {
@@ -186,6 +188,111 @@ describe("Node tests", () => {
       });
 
       expect(node.getRoleLabels()).toBe("foobar, master, master-v2-max");
+    });
+  });
+
+  describe("getWarningConditions()", () => {
+    const createNode = (conditions: NodeCondition[]) =>
+      new Node({
+        apiVersion: "foo",
+        kind: "Node",
+        metadata: {
+          name: "bar",
+          resourceVersion: "1",
+          uid: "bat",
+          selfLink: "/api/v1/nodes/bar",
+        },
+        spec: {},
+        status: {
+          conditions,
+        },
+      });
+
+    it("given an active k3s EtcdIsVoter condition, should not return it as a warning", () => {
+      const node = createNode([
+        {
+          type: "Ready",
+          status: "True",
+        },
+        {
+          type: "EtcdIsVoter",
+          status: "True",
+          reason: "MemberNotLearner",
+          message: "Node is a voting member of the etcd cluster",
+        },
+      ]);
+
+      expect(node.getWarningConditions()).toEqual([]);
+    });
+
+    it("given an active MemoryPressure condition, should return it as a warning", () => {
+      const node = createNode([
+        {
+          type: "Ready",
+          status: "True",
+        },
+        {
+          type: "MemoryPressure",
+          status: "True",
+        },
+      ]);
+
+      expect(node.getWarningConditions()).toEqual([
+        {
+          type: "MemoryPressure",
+          status: "True",
+        },
+      ]);
+    });
+
+    it("given an active Ready condition, should not return it as a warning", () => {
+      const node = createNode([
+        {
+          type: "Ready",
+          status: "True",
+        },
+      ]);
+
+      expect(node.getWarningConditions()).toEqual([]);
+    });
+
+    it("given an active KernelDeadlock condition from node-problem-detector, should return it as a warning", () => {
+      const node = createNode([
+        {
+          type: "Ready",
+          status: "True",
+        },
+        {
+          type: "KernelDeadlock",
+          status: "True",
+          reason: "KernelDeadlock",
+          message: "docker is hung",
+        },
+      ]);
+
+      expect(node.getWarningConditions()).toEqual([
+        {
+          type: "KernelDeadlock",
+          status: "True",
+          reason: "KernelDeadlock",
+          message: "docker is hung",
+        },
+      ]);
+    });
+
+    it("given an inactive DiskPressure condition, should not return it as a warning", () => {
+      const node = createNode([
+        {
+          type: "Ready",
+          status: "True",
+        },
+        {
+          type: "DiskPressure",
+          status: "False",
+        },
+      ]);
+
+      expect(node.getWarningConditions()).toEqual([]);
     });
   });
 });
