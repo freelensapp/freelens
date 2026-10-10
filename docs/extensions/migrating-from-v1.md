@@ -858,12 +858,40 @@ compile. Pass what the component needs from the registration instead:
 A `kubeObjectDetailItems` `Details` or a `kubeObjectMenuItems` `MenuItem` may
 be typed for the resource it is registered for, such as
 `Renderer.Component.KubeObjectDetailsProps<Renderer.K8sApi.Pod>` or the props
-of your own `Renderer.K8sApi.LensExtensionKubeObject` subclass. The type check
-does not tie the component to the registration's `kind` and `apiVersions`,
-though: the host renders it only for the kind registered, but nothing checks
-that the component was written for that kind. A component registered under the
-wrong `kind` compiles and gets an object whose `spec` and `status` are not the
-ones it reads, so check the pairing by hand or with a test.
+of your own `Renderer.K8sApi.LensExtensionKubeObject` subclass. Register it with
+`Renderer.K8sApi.detailsFor` or `Renderer.K8sApi.menuItemFor`, which take the
+model class instead of `kind` and `apiVersions`:
+
+```tsx
+import { Renderer } from "@freelensapp/extensions";
+
+export default class MyExtension extends Renderer.LensExtension {
+  kubeObjectDetailItems = [
+    Renderer.K8sApi.detailsFor(Gateway, { priority: 10, Details: GatewayDetails }),
+  ];
+
+  kubeObjectMenuItems = [
+    Renderer.K8sApi.menuItemFor(Gateway, { MenuItem: GatewayMenuItem }),
+  ];
+}
+```
+
+The helpers return the plain registrations, with `kind` from the class's static
+`kind` and `apiVersions` from its `crd.apiVersions` or, for a built-in class,
+its `apiBase`. They type the component's `object` as an instance of the class,
+so a component written for another kind does not compile. A plain registration,
+with `kind`, `apiVersions` and `components` written out, still works, but
+nothing ties its component to its `kind`: one registered under the wrong `kind`
+compiles and gets an object whose `spec` and `status` are not the ones it reads.
+
+Pass `apiVersions` to the helper when the cluster may serve the resource under
+a version the class does not name, as it does for `HorizontalPodAutoscaler`,
+`Ingress` and `IngressClass`; an object read under another version does not
+match the registration. The check compares the models' shapes, so it tells your
+models apart only when they declare their `spec` and `status` types. A class
+without a `kind`, or without any source of `apiVersions`, makes the helper
+throw, and your extension fails to load with that error. See
+[C6](./api.md#c6-registration-and-the-extension-instance) for the details.
 
 A page that typed its parameters by name, such as
 `PageComponentProps<{ query: string }>` or `{ params?: { query: PageParam } }`,
@@ -1745,6 +1773,10 @@ restarted once.
 - [ ] Give main, renderer and common code a directory and a `tsconfig.json`
       each, so the type check catches the next Node API in renderer code (see
       [Source layout](#source-layout-one-tsconfig-per-runtime-environment)).
+- [ ] Write your `kubeObjectDetailItems` and `kubeObjectMenuItems` with
+      `Renderer.K8sApi.detailsFor` and `menuItemFor`, so a component typed for
+      another kind than its registration's fails the type check (see
+      [Registering things](#registering-things-declarative-fields)).
 - [ ] Load your extension in a v2 build and verify its UI renders through the
       runtime global.
 

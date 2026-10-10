@@ -362,10 +362,36 @@ registration, which runs inside the extension class:
 The `Details` of a `kubeObjectDetailItems` registration and the `MenuItem` of a
 `kubeObjectMenuItems` one are typed with the object as `any`, so a component
 typed for the registered resource fits, a built-in class or an extension's own
-`LensExtensionKubeObject` subclass alike. The type check does not tie the
-component to the registration's `kind` and `apiVersions`: the host renders it
-only for the registered kind, but nothing checks that the component was written
-for that kind, so the pairing has to be checked by hand or by a test.
+`LensExtensionKubeObject` subclass alike. A plain registration does not tie the
+component to its `kind` and `apiVersions`: the host renders it only for the
+registered kind, but nothing checks that the component was written for that
+kind.
+
+`Renderer.K8sApi.detailsFor(Class, { Details, apiVersions?, priority?, visible? })`
+and `Renderer.K8sApi.menuItemFor(Class, { MenuItem, apiVersions?, visible? })`
+make that check. Each takes the model class and returns a plain registration
+whose `kind` is the class's static `kind`, and types the component's `object` as
+an instance of the class, so a component written for another kind does not
+compile, a function component and a class component alike. `apiVersions` is, in
+this order:
+
+1. the `apiVersions` given to the helper;
+2. the `crd.apiVersions` of a `LensExtensionKubeObject` subclass;
+3. the group and version of the class's static `apiBase`, as `parseKubeApi`
+   reads it: `/api/v1/pods` gives `v1`, `/apis/apps/v1/deployments` gives
+   `apps/v1`.
+
+The class's `apiBase` names one version, and the host reads some resources under
+more: `HorizontalPodAutoscaler` under each version its API allows, `Ingress` and
+`IngressClass` under `extensions/v1beta1` as well. An object read under a
+version the registration does not list carries that `apiVersion` and does not
+match it, so a registration for such a resource gives `apiVersions`. An
+extension with one class per version of its resource calls the helper once per
+class.
+
+The check is structural: two models of the same shape, such as two with
+`spec: unknown`, are not told apart, so it protects only models that declare
+their `spec` and `status` types.
 
 `LensMainExtension` fields: `terminalShellEnvModifier`, a function the host
 calls with the environment of every terminal it opens. There is no field for the
@@ -388,7 +414,12 @@ Two of these matter more than they look:
 
 **Failure mode.** A field left at its default contributes nothing, silently — a
 registration that never appears is the common symptom of a typo in a field name
-or of registering after the host has already read the field.
+or of registering after the host has already read the field. `detailsFor` and
+`menuItemFor` throw when the class has no `kind`, or when no `apiVersions` is
+given and the class has neither `crd.apiVersions` nor an `apiBase` it can be
+read from, or when the list resolved is empty; called from a field initializer,
+that fails the extension's load rather than leaving a registration that never
+appears.
 
 ---
 
