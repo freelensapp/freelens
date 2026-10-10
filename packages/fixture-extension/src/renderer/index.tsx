@@ -7,7 +7,7 @@
 // way a third-party extension is written — the only import that reaches into
 // Freelens is `@freelensapp/extensions`, and it is compiled against the built
 // `dist/extension-api.d.ts` rather than the workspace source — and it is kept
-// to the four things that break silently:
+// to the five things that break silently:
 //
 //  1. a component with a hook, which throws "invalid hook call" under two Reacts
 //  2. an observable the host has to react to, which fails *without* an error
@@ -16,13 +16,17 @@
 //     the extension lifecycle both work
 //  4. one `Util.fetch` call, which only resolves if the host's DI container is
 //     reachable through the API namespace
+//  5. one detail and one menu registration made with `Renderer.K8sApi.detailsFor`
+//     and `menuItemFor`, which only construct if the helpers exist at runtime
+//     as the declaration says they do; the pairings the helpers must reject are
+//     in `./registration-pairings.ts`
 //
 // Everything here is asserted from
 // `packages/core/src/extensions/__tests__/fixture-extension.test.tsx`.
 
 import { Common, Renderer } from "@freelensapp/extensions";
 import { computed, observable, runInAction } from "mobx";
-import { useCallback, useMemo, useState } from "react";
+import { Component, useCallback, useMemo, useState } from "react";
 import { FIXTURE_PROBE_URL } from "../common/host-info";
 
 /**
@@ -81,6 +85,22 @@ export const FixtureStatusBarItem = () => {
   );
 };
 
+/**
+ * A details component typed for `Pod`, in the function-component form. The
+ * registration below ties it to `Renderer.K8sApi.Pod`; registered for another
+ * class, it does not compile.
+ */
+export const FixturePodDetails = ({ object }: Renderer.Component.KubeObjectDetailsProps<Renderer.K8sApi.Pod>) => (
+  <span data-testid="fixture-pod-details">{object.getName()}</span>
+);
+
+/** A menu item typed for `Pod`, in the class-component form. */
+export class FixturePodMenuItem extends Component<Common.Types.KubeObjectMenuItemProps<Renderer.K8sApi.Pod>> {
+  render() {
+    return <span data-testid="fixture-pod-menu-item">{this.props.object.getName()}</span>;
+  }
+}
+
 export default class FixtureRendererExtension extends Renderer.LensExtension {
   /**
    * The declarative registration. It reaches the host only through the
@@ -96,6 +116,11 @@ export default class FixtureRendererExtension extends Renderer.LensExtension {
       visible: computed(() => statusBarItemIsVisible.get()),
     },
   ];
+
+  /** `kind` and `apiVersions` come from the class, which the component is checked against. */
+  kubeObjectDetailItems = [Renderer.K8sApi.detailsFor(Renderer.K8sApi.Pod, { Details: FixturePodDetails })];
+
+  kubeObjectMenuItems = [Renderer.K8sApi.menuItemFor(Renderer.K8sApi.Pod, { MenuItem: FixturePodMenuItem })];
 
   protected async onActivate(): Promise<void> {
     const response = await Renderer.Util.fetch(FIXTURE_PROBE_URL);
