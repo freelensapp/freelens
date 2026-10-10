@@ -18,8 +18,10 @@ export interface KubeObjectDetailComponents<T extends KubeObject = any> {
  * `Details` is rendered with {@link KubeObjectDetailsProps} and nothing else.
  * The default leaves the object `any`, because the host renders the component
  * only for the `kind` and `apiVersions` registered, so a component typed for
- * that resource, such as `KubeObjectDetailsProps<Pod>`, fits. Nothing checks
- * that the component was written for that resource, though.
+ * that resource, such as `KubeObjectDetailsProps<Pod>`, fits. Nothing here
+ * checks that the component was written for that resource, though;
+ * `Renderer.K8sApi.detailsFor` builds the registration from the model class and
+ * does.
  */
 export interface KubeObjectDetailRegistration<T extends KubeObject = any> {
   kind: string;
