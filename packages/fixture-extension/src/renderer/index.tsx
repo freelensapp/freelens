@@ -7,7 +7,7 @@
 // way a third-party extension is written — the only import that reaches into
 // Freelens is `@freelensapp/extensions`, and it is compiled against the built
 // `dist/extension-api.d.ts` rather than the workspace source — and it is kept
-// to the four things that break silently:
+// to the five things that break silently:
 //
 //  1. a component with a hook, which throws "invalid hook call" under two Reacts
 //  2. an observable the host has to react to, which fails *without* an error
@@ -16,14 +16,20 @@
 //     the extension lifecycle both work
 //  4. one `Util.fetch` call, which only resolves if the host's DI container is
 //     reachable through the API namespace
+//  5. one detail and one menu registration made with `Renderer.K8sApi.detailsFor`
+//     and `menuItemFor` for a model that narrows its `kind` and `apiVersion`,
+//     which only construct if the helpers exist at runtime as the declaration
+//     says they do; the pairings the helpers must reject are in
+//     `./registration-pairings.ts`
 //
 // Everything here is asserted from
 // `packages/core/src/extensions/__tests__/fixture-extension.test.tsx`.
 
 import { Common, Renderer } from "@freelensapp/extensions";
 import { computed, observable, runInAction } from "mobx";
-import { useCallback, useMemo, useState } from "react";
+import { Component, useCallback, useMemo, useState } from "react";
 import { FIXTURE_PROBE_URL } from "../common/host-info";
+import { FixtureExample } from "./fixture-example";
 
 /**
  * The host-provided singletons this bundle actually resolved, so the harness can
@@ -37,11 +43,16 @@ import { FIXTURE_PROBE_URL } from "../common/host-info";
  * throws "invalid hook call" the first time the host renders the component
  * below.
  *
+ * `FixtureExample`, the model the registrations below take, is exported with
+ * them so the harness can construct one from the bundle and see that its
+ * narrowed `kind` and `apiVersion` emit no field.
+ *
  * No extension would export these. This one is a fixture for the contract, and
  * this is the contract.
  */
 export { observable as resolvedMobxObservable } from "mobx";
 export { useState as resolvedReactUseState } from "react";
+export { FixtureExample };
 
 /**
  * Drives the `visible` flag of the registration below.
@@ -81,6 +92,22 @@ export const FixtureStatusBarItem = () => {
   );
 };
 
+/**
+ * A details component typed for `FixtureExample`, in the function-component
+ * form. The registration below ties it to the class; registered for another
+ * kind, or another version of the kind, it does not compile.
+ */
+export const FixtureExampleDetails = ({ object }: Renderer.Component.KubeObjectDetailsProps<FixtureExample>) => (
+  <span data-testid="fixture-example-details">{object.spec.title ?? object.getName()}</span>
+);
+
+/** A menu item typed for `FixtureExample`, in the class-component form. */
+export class FixtureExampleMenuItem extends Component<Common.Types.KubeObjectMenuItemProps<FixtureExample>> {
+  render() {
+    return <span data-testid="fixture-example-menu-item">{this.props.object.getName()}</span>;
+  }
+}
+
 export default class FixtureRendererExtension extends Renderer.LensExtension {
   /**
    * The declarative registration. It reaches the host only through the
@@ -96,6 +123,11 @@ export default class FixtureRendererExtension extends Renderer.LensExtension {
       visible: computed(() => statusBarItemIsVisible.get()),
     },
   ];
+
+  /** `kind` and `apiVersions` come from the class, which the component is checked against. */
+  kubeObjectDetailItems = [Renderer.K8sApi.detailsFor(FixtureExample, { Details: FixtureExampleDetails })];
+
+  kubeObjectMenuItems = [Renderer.K8sApi.menuItemFor(FixtureExample, { MenuItem: FixtureExampleMenuItem })];
 
   protected async onActivate(): Promise<void> {
     const response = await Renderer.Util.fetch(FIXTURE_PROBE_URL);

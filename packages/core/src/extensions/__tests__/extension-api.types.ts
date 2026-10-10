@@ -16,9 +16,9 @@
 // Naming a type **is** the assertion here. If a type stops being reachable
 // through its namespace, this file stops compiling, and `pnpm type:check`
 // already compiles it — there is no runner, no vitest typecheck mode and no
-// tool behind this beyond the compiler the repository runs anyway. The file has
-// no runtime content and is imported by nothing; `knip.jsonc` lists it as an
-// entry for that reason.
+// tool behind this beyond the compiler the repository runs anyway. The file is
+// never run and is imported by nothing; `knip.jsonc` lists it as an entry for
+// that reason.
 //
 // It is the in-repo, source-level check. Its complement is
 // `packages/fixture-extension/src/common/contract-types.ts`, which makes the
@@ -29,6 +29,8 @@
 // two published extensions name in their own signatures, plus the three that
 // were the bugs. It is deliberately not an enumeration; see the header of that
 // file for why the exhaustive version was removed.
+
+import type { ComponentClass, FunctionComponent } from "react";
 
 import type { Common, Main, Renderer } from "../extension-api";
 
@@ -109,3 +111,102 @@ export declare function describeContract(
   manifest: CommonManifest,
   props: RendererKubeObjectDetailsProps,
 ): CommonStatusBarRegistration;
+
+// `detailsFor` and `menuItemFor` tie the component to the model class they are
+// given, which the plain registrations cannot. Every `@ts-expect-error` below
+// is a pairing that must not compile; a helper that accepts it leaves the
+// directive unused, which fails the check. The function is never called: only
+// its body's types matter.
+declare const detailsFor: typeof Renderer.K8sApi.detailsFor;
+declare const menuItemFor: typeof Renderer.K8sApi.menuItemFor;
+declare const Pod: typeof Renderer.K8sApi.Pod;
+declare const Deployment: typeof Renderer.K8sApi.Deployment;
+declare const PodDetails: FunctionComponent<Renderer.Component.KubeObjectDetailsProps<Renderer.K8sApi.Pod>>;
+declare const PodDetailsClass: ComponentClass<Renderer.Component.KubeObjectDetailsProps<Renderer.K8sApi.Pod>>;
+declare const PodMenuItem: FunctionComponent<Common.Types.KubeObjectMenuItemProps<Renderer.K8sApi.Pod>>;
+declare const PodMenuItemClass: ComponentClass<Common.Types.KubeObjectMenuItemProps<Renderer.K8sApi.Pod>>;
+
+export function checkRegistrationHelpers(extension: RendererExtension) {
+  extension.kubeObjectDetailItems = [
+    detailsFor(Pod, { Details: PodDetails }),
+    detailsFor(Pod, { Details: PodDetailsClass, apiVersions: ["v1"], priority: 10 }),
+    // @ts-expect-error a function component written for `Pod`, registered for `Deployment`
+    detailsFor(Deployment, { Details: PodDetails }),
+    // @ts-expect-error a class component written for `Pod`, registered for `Deployment`
+    detailsFor(Deployment, { Details: PodDetailsClass }),
+  ];
+  extension.kubeObjectMenuItems = [
+    menuItemFor(Pod, { MenuItem: PodMenuItem }),
+    menuItemFor(Pod, { MenuItem: PodMenuItemClass, apiVersions: ["v1"] }),
+    // @ts-expect-error a function component written for `Pod`, registered for `Deployment`
+    menuItemFor(Deployment, { MenuItem: PodMenuItem }),
+    // @ts-expect-error a class component written for `Pod`, registered for `Deployment`
+    menuItemFor(Deployment, { MenuItem: PodMenuItemClass }),
+  ];
+}
+
+// Two versions of one kind whose specs differ only in optional fields, as
+// per-version classes usually do. Their specs are assignable to each other, so
+// without the literal `kind` and `apiVersion` below a component of one version
+// would compile against the class of the other; nothing here relies on that.
+// With them, the swapped pairings must fail. `LensExtensionKubeObject` is a
+// declared value because the namespaces are imported as types only.
+declare const LensExtensionKubeObject: typeof Renderer.K8sApi.LensExtensionKubeObject;
+
+interface ExampleSpecV1alpha1 {
+  title?: string;
+  active?: boolean;
+}
+
+interface ExampleSpecV1alpha2 {
+  title?: string;
+  suspended?: boolean;
+}
+
+class ExampleV1alpha1 extends LensExtensionKubeObject<
+  Renderer.K8sApi.NamespaceScopedMetadata,
+  unknown,
+  ExampleSpecV1alpha1
+> {
+  declare kind: "Example";
+  declare apiVersion: "example.freelens.app/v1alpha1";
+
+  static readonly kind = "Example";
+  static readonly crd = { apiVersions: ["example.freelens.app/v1alpha1"], plural: "examples", singular: "example" };
+}
+
+class ExampleV1alpha2 extends LensExtensionKubeObject<
+  Renderer.K8sApi.NamespaceScopedMetadata,
+  unknown,
+  ExampleSpecV1alpha2
+> {
+  declare kind: "Example";
+  declare apiVersion: "example.freelens.app/v1alpha2";
+
+  static readonly kind = "Example";
+  static readonly crd = { apiVersions: ["example.freelens.app/v1alpha2"], plural: "examples", singular: "example" };
+}
+
+declare const ExampleV1alpha1Details: FunctionComponent<Renderer.Component.KubeObjectDetailsProps<ExampleV1alpha1>>;
+declare const ExampleV1alpha2DetailsClass: ComponentClass<Renderer.Component.KubeObjectDetailsProps<ExampleV1alpha2>>;
+declare const ExampleV1alpha1MenuItem: FunctionComponent<Common.Types.KubeObjectMenuItemProps<ExampleV1alpha1>>;
+declare const ExampleV1alpha2MenuItemClass: ComponentClass<Common.Types.KubeObjectMenuItemProps<ExampleV1alpha2>>;
+
+export function checkNarrowedVersions(extension: RendererExtension) {
+  extension.kubeObjectDetailItems = [
+    detailsFor(ExampleV1alpha1, { Details: ExampleV1alpha1Details }),
+    detailsFor(ExampleV1alpha2, { Details: ExampleV1alpha2DetailsClass }),
+    // @ts-expect-error a function component written for `v1alpha1`, registered for `v1alpha2`
+    detailsFor(ExampleV1alpha2, { Details: ExampleV1alpha1Details }),
+    // @ts-expect-error a class component written for `v1alpha2`, registered for `v1alpha1`
+    detailsFor(ExampleV1alpha1, { Details: ExampleV1alpha2DetailsClass }),
+  ];
+  extension.kubeObjectMenuItems = [
+    menuItemFor(ExampleV1alpha1, { MenuItem: ExampleV1alpha1MenuItem }),
+    menuItemFor(ExampleV1alpha2, { MenuItem: ExampleV1alpha2MenuItemClass }),
+    // @ts-expect-error a function component written for `v1alpha1`, registered for `v1alpha2`
+    menuItemFor(ExampleV1alpha2, { MenuItem: ExampleV1alpha1MenuItem }),
+    // @ts-expect-error a class component written for `v1alpha2`, registered for `v1alpha1`
+    menuItemFor(ExampleV1alpha1, { MenuItem: ExampleV1alpha2MenuItemClass }),
+  ];
+}

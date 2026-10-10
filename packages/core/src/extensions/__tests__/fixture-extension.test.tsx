@@ -9,7 +9,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 // of `@freelensapp/fixture-extension` — an extension written the way a
 // third-party extension is written, against the published
 // `dist/extension-api.d.ts` and with its externals mapped onto
-// `globalThis.FreelensExtensionApi` — and asserts the four things that break
+// `globalThis.FreelensExtensionApi` — and asserts the five things that break
 // silently and that a hand-written list of `toHaveProperty` calls cannot see:
 //
 //  1. instance identity of React: a hook in the extension's component only
@@ -25,6 +25,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 //  3. the lifecycle: the declarative registration reaches the host only through
 //     the registrators and `extension.register()`
 //  4. `Renderer.Util.fetch`: the API namespace reaches the host's DI container
+//  5. `Renderer.K8sApi.detailsFor` and `menuItemFor`: the helpers the
+//     declaration promises exist on the runtime namespace, and the model they
+//     take, which narrows its `kind` and `apiVersion` with `declare`, keeps the
+//     values its base class assigns
 //
 // The bundle is loaded through a file URL rather than a static import for two
 // reasons: it throws while evaluating if the globals are not installed first
@@ -64,6 +68,9 @@ interface FixtureBundle {
   default: new (extension: InstalledExtension) => LensRendererExtension;
   FIXTURE_PROBE_URL: string;
   FixtureStatusBarItem: React.ComponentType;
+  FixtureExampleDetails: React.ComponentType;
+  FixtureExampleMenuItem: React.ComponentType;
+  FixtureExample: new (data: object) => { kind: string; apiVersion: string };
   activationRecord: IObservableValue<{ appVersion: string; probeStatus: number } | undefined>;
   setStatusBarItemVisible: (value: boolean) => void;
   resolvedMobxObservable: typeof observable;
@@ -213,6 +220,43 @@ describe("extension contract, against the built fixture extension", () => {
 
     afterEach(() => {
       disposeObserver?.();
+    });
+
+    it("builds its detail and menu registrations with the helpers of Renderer.K8sApi", () => {
+      // The helpers run in the extension's field initializers, through the
+      // namespace the bundle read off the global, so a helper the declaration
+      // promises and the runtime lacks fails the construction above.
+      expect(extension.kubeObjectDetailItems).toEqual([
+        {
+          kind: "FixtureExample",
+          apiVersions: ["fixture.freelens.app/v1alpha1"],
+          components: { Details: fixture.FixtureExampleDetails },
+        },
+      ]);
+      expect(extension.kubeObjectMenuItems).toEqual([
+        {
+          kind: "FixtureExample",
+          apiVersions: ["fixture.freelens.app/v1alpha1"],
+          components: { MenuItem: fixture.FixtureExampleMenuItem },
+        },
+      ]);
+    });
+
+    it("keeps the kind and apiVersion of a model that narrows them with declare", () => {
+      // `declare` emits nothing. A plain field in its place would be defined
+      // after the base constructor assigned the object's data, and reset both.
+      const object = new fixture.FixtureExample({
+        apiVersion: "fixture.freelens.app/v1alpha1",
+        kind: "FixtureExample",
+        metadata: {
+          name: "fixture",
+          namespace: "default",
+          selfLink: "/apis/fixture.freelens.app/v1alpha1/namespaces/default/fixtureexamples/fixture",
+        },
+      });
+
+      expect(object.kind).toBe("FixtureExample");
+      expect(object.apiVersion).toBe("fixture.freelens.app/v1alpha1");
     });
 
     it("shows the extension's declarative registration in the host", () => {

@@ -362,10 +362,72 @@ registration, which runs inside the extension class:
 The `Details` of a `kubeObjectDetailItems` registration and the `MenuItem` of a
 `kubeObjectMenuItems` one are typed with the object as `any`, so a component
 typed for the registered resource fits, a built-in class or an extension's own
-`LensExtensionKubeObject` subclass alike. The type check does not tie the
-component to the registration's `kind` and `apiVersions`: the host renders it
-only for the registered kind, but nothing checks that the component was written
-for that kind, so the pairing has to be checked by hand or by a test.
+`LensExtensionKubeObject` subclass alike. A plain registration does not tie the
+component to its `kind` and `apiVersions`: the host renders it only for the
+registered kind, but nothing checks that the component was written for that
+kind.
+
+`Renderer.K8sApi.detailsFor(Class, { Details, apiVersions?, priority?, visible? })`
+and `Renderer.K8sApi.menuItemFor(Class, { MenuItem, apiVersions?, visible? })`
+make that check. Each takes the model class and returns a plain registration
+whose `kind` is the class's static `kind`, and types the component's `object` as
+an instance of the class, so a component written for another kind does not
+compile, a function component and a class component alike. `apiVersions` is, in
+this order:
+
+1. the `apiVersions` given to the helper;
+2. the `crd.apiVersions` of a `LensExtensionKubeObject` subclass;
+3. the group and version of the class's static `apiBase`, as `parseKubeApi`
+   reads it: `/api/v1/pods` gives `v1`, `/apis/apps/v1/deployments` gives
+   `apps/v1`.
+
+The class's `apiBase` names one version, and the host reads some resources under
+more: `HorizontalPodAutoscaler` under each version its API allows, `Ingress` and
+`IngressClass` under `extensions/v1beta1` as well. An object read under a
+version the registration does not list carries that `apiVersion` and does not
+match it, so a registration for such a resource gives `apiVersions`. An
+extension with one class per version of its resource calls the helper once per
+class.
+
+The check is structural, and declaring the `spec` and `status` types is not
+enough for it. Two models of the same shape, such as two with `spec: unknown`,
+are not told apart, and neither are two whose `spec` types differ only in
+optional fields: each is assignable to the other, so a component written for
+one compiles against the class of the other. The classes of two versions of one
+kind usually have that shape. A model class therefore declares its instance
+`kind` and `apiVersion` as literal types, matching its static `kind` and
+`crd.apiVersions`, with a union of literals for a class that serves several
+versions:
+
+```ts
+export class Example extends Renderer.K8sApi.LensExtensionKubeObject<
+  Renderer.K8sApi.NamespaceScopedMetadata,
+  ExampleStatus,
+  ExampleSpec
+> {
+  declare kind: "Example";
+  declare apiVersion: "example.freelens.app/v1alpha1";
+
+  static readonly kind = "Example";
+  static readonly namespaced = true;
+  static readonly apiBase = "/apis/example.freelens.app/v1alpha1/examples";
+  static readonly crd = {
+    apiVersions: ["example.freelens.app/v1alpha1"],
+    plural: "examples",
+    singular: "example",
+  };
+}
+```
+
+With the literals, a component written for the `v1alpha2` class does not
+compile against the `v1alpha1` one, whatever their specs. `declare` emits
+nothing, so the class behaves at runtime as it did without the two lines, and
+the narrowing holds: the host renders the component only for objects of the
+registered `kind` and `apiVersions`. The two lines need `declare`: written as
+fields (`kind!: "Example"`) under standard class-field semantics
+(`useDefineForClassFields`, the default from target ES2022), they are defined
+after the base constructor has assigned the object's data, and reset `kind` and
+`apiVersion` to `undefined`.
 
 `LensMainExtension` fields: `terminalShellEnvModifier`, a function the host
 calls with the environment of every terminal it opens. There is no field for the
@@ -388,7 +450,12 @@ Two of these matter more than they look:
 
 **Failure mode.** A field left at its default contributes nothing, silently — a
 registration that never appears is the common symptom of a typo in a field name
-or of registering after the host has already read the field.
+or of registering after the host has already read the field. `detailsFor` and
+`menuItemFor` throw when the class has no `kind`, or when no `apiVersions` is
+given and the class has neither `crd.apiVersions` nor an `apiBase` it can be
+read from, or when the list resolved is empty; called from a field initializer,
+that fails the extension's load rather than leaving a registration that never
+appears.
 
 ---
 

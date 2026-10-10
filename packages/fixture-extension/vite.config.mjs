@@ -40,7 +40,7 @@ export const Renderer = api.Renderer;
 
   react: `const React = ${HOST_GLOBAL}.React;
 export default React;
-export const { useCallback, useMemo, useState } = React;
+export const { Component, useCallback, useMemo, useState } = React;
 `,
 
   "react/jsx-runtime": `const jsxRuntime = ${HOST_GLOBAL}.ReactJsxRuntime;
