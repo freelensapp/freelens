@@ -101,6 +101,12 @@ marks them external, and lets its bundler rewrite the bare id to the global.
 | `mobx-react` | `MobxReact` | renderer |
 | `monaco-editor` | `MonacoEditor` | renderer |
 
+An extension declares a listed package also when it does not import it but
+uses a host API whose types name it: `Renderer.Component.MonacoEditor` takes its
+`options` and the arguments of its callbacks from `monaco-editor`, so an
+extension that renders it declares `monaco-editor`, at the host's version
+([C11](#c11-third-party-bundled-libraries)).
+
 **Each process publishes the set it has**, which is why the third column exists.
 Main has no window, so it publishes no DOM renderer and no code editor. What it
 has is what an extension's main entry point can really share: `mobx`, where an
@@ -699,6 +705,15 @@ only, so without its own copy the author's `.tsx` fails with `TS7016` for
 its version is checked against the host's range. A main-only extension
 compiles without declaring either. `react-dom` is an optional peer like
 `react`, so an author's copy is checked the same way.
+
+`monaco-editor` is the optional peer an author most easily leaves out, because
+an extension uses it through the host's `Renderer.Component.MonacoEditor` and
+never imports it. `MonacoEditorProps` names its types for `options` and for the
+arguments of `onChange` and the other callbacks. Without the author's copy that
+import does not resolve, and `skipLibCheck` turns those props into `any`
+without a diagnostic. An extension that renders `MonacoEditor` therefore
+declares `monaco-editor` in `devDependencies` at the host's version, the
+`catalogs.extensions` entry, as it does `react` and `mobx`.
 
 The free-to-bundle entries are in `dependencies`, `react-select` included, so
 that the types of `Renderer.Component.Select` are always there: as an optional

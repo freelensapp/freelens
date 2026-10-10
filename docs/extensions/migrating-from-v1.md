@@ -143,6 +143,16 @@ The global names follow a mechanical rule — strip the scope, split on `-`, `/`
 and `.`, upper-case each segment — so a bundler plugin can *derive* each name
 instead of being handed a map. Note `ReactDom`, not `ReactDOM`.
 
+Declare a listed package also when you never import it yourself but use a host
+component whose props name its types. **`monaco-editor` is the one to watch.**
+`Renderer.Component.MonacoEditor` takes its `options`, and the arguments of
+`onChange` and its other callbacks, from `monaco-editor`'s types, and
+`@freelensapp/extensions` declares `monaco-editor` only as an optional peer, so
+nothing installs it for you. Without it in your `devDependencies`, those props
+are `any`, and the type check does not say so, because `skipLibCheck` hides the
+import that does not resolve. An extension that renders `MonacoEditor` declares
+`monaco-editor` at the version the host runs, as it does `react` and `mobx`.
+
 **Each process publishes the set it has.** The renderer publishes the whole
 table; the main process publishes `Mobx` and nothing else, because a code editor
 and a DOM renderer have no place in a process with no window. Map
