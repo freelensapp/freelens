@@ -344,6 +344,47 @@ annotations:
   `observer(fn, { forwardRef: true })`. Use `React.createContext`, cleanup in
   `componentWillUnmount` or `useEffect`, `useLocalObservable`,
   `enableStaticRendering`, and `observer(React.forwardRef(…))`.
+- **`this.props` of an `@observer` class component is not observable.** Its own
+  `render()` may read `this.props` and `this.state`; any other derivation that
+  reads them throws
+  `[mobx-react] Cannot read "MyPage.props" in a reactive context, as it isn't observable`.
+  That covers a `@computed` getter of the component, which could read
+  `this.props` under mobx-react 7 with `makeObservable(this)`. It also covers a
+  plain method the host calls from a derivation of its own: `getItems` and
+  `customizeHeader` of `KubeObjectListLayout` run inside the host's computed
+  values and in the render of another observer component. The type check, the
+  build and unit tests outside a renderer all pass; the page crashes when it
+  renders.
+
+  Read `this.props` only in `render()`, and hand a callback the host calls the
+  values it needs from there:
+
+  ```tsx
+  // v1: throws under mobx-react 10 when the host calls getItems
+  @observer
+  class MyPage extends React.Component<MyPageProps> {
+    @computed get failed() {
+      return this.props.store.items.filter((item) => item.isFailed());
+    }
+
+    render() {
+      return <KubeObjectListLayout getItems={() => this.failed} /* … */ />;
+    }
+  }
+
+  // v2
+  @observer
+  class MyPage extends React.Component<MyPageProps> {
+    render() {
+      const { store } = this.props;
+
+      return <KubeObjectListLayout getItems={() => store.items.filter((item) => item.isFailed())} /* … */ />;
+    }
+  }
+  ```
+
+  Or make it a function component, `observer((props: MyPageProps) => …)`,
+  whose props are a plain argument.
 
 ### Lowering standard decorators
 
@@ -1838,8 +1879,9 @@ restarted once.
       renderer build.
 - [ ] Move mobx decorators to standard decorators: drop
       `experimentalDecorators`, write `@observable accessor`, replace the
-      namespaced annotations and `comparer.*` with their named exports, and
-      remove `makeObservable(this)` (see
+      namespaced annotations and `comparer.*` with their named exports,
+      remove `makeObservable(this)`, and read `this.props` of an `@observer`
+      class component only in its `render()` (see
       [MobX 7 and mobx-react 10](#mobx-7-and-mobx-react-10-standard-decorators-only)).
 - [ ] Give main, renderer and common code a directory and a `tsconfig.json`
       each, so the type check catches the next Node API in renderer code (see
