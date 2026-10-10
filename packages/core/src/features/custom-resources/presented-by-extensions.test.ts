@@ -241,6 +241,49 @@ describe("custom resources an extension presents", () => {
     });
   });
 
+  describe("given the user made a favorite of a group before an extension registered every kind of it", () => {
+    const favoriteTestId = `favorite-${groupItemTestId}`;
+
+    beforeEach(async () => {
+      await waitFor(() => expect(findSidebarItem(groupItemTestId)).toBeDefined(), { timeout: 300 });
+
+      const groupItem = findSidebarItem(groupItemTestId);
+
+      if (!groupItem) {
+        throw new Error(`no sidebar item "${groupItemTestId}"`);
+      }
+
+      act(() => windowDi.inject(favoritesStoreInjectable).toggle(groupItem, "crd"));
+
+      await enableExtension({
+        ...gatewayExtension,
+        rendererOptions: { customResources: [Gateway, HTTPRoute] },
+      });
+      await waitFor(() => expect(findSidebarItem(groupItemTestId)?.isHiddenInTree.get()).toBe(true), {
+        timeout: 300,
+      });
+
+      await waitFor(() => result.getByTestId("expand-icon-for-sidebar-item-favorites").click(), { timeout: 300 });
+      await waitFor(() => result.getByTestId(`expand-icon-for-${favoriteTestId}`).click(), { timeout: 300 });
+    });
+
+    it.each([gatewaysItemTestId, httpRoutesItemTestId])("shows %s under the favorite", (testId) => {
+      expect(result.getByTestId(favoriteTestId)).toContainElement(result.getByTestId(testId));
+    });
+
+    it("opens the host's list of a kind from the favorite", async () => {
+      windowDi
+        .inject(apiManagerInjectable)
+        .getStore(gatewayDefinition.getResourceApiBase())
+        ?.items.replace([someGateway]);
+
+      act(() => result.getByTestId(`link-for-${gatewaysItemTestId}`).click());
+
+      await waitFor(() => expect(getRows()).toHaveLength(1), { timeout: 300 });
+      expect(getRows()[0]).toHaveTextContent("some-gateway");
+    });
+  });
+
   describe("the Custom Resources tree", () => {
     const expandCustomResources = () =>
       waitFor(() => result.getByTestId("expand-icon-for-sidebar-item-custom-resources").click(), { timeout: 300 });
