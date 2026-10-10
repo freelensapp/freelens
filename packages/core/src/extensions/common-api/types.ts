@@ -22,6 +22,7 @@ export type {
   CustomCategoryViewProps,
   CustomCategoryViewRegistration,
 } from "../../renderer/components/catalog/custom-views";
+export type { CustomResourceRegistration } from "../../renderer/components/custom-resource-definitions/custom-resource-registration";
 export type {
   KubeObjectDetailComponents,
   KubeObjectDetailRegistration,

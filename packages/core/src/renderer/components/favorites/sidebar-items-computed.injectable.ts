@@ -21,6 +21,16 @@ const favoritesSidebarItemsComputedInjectable = getInjectable({
   instantiate: (di) => {
     const favoritesStore = di.inject(favoritesStoreInjectable);
     const sidebarItemsComputed = di.inject(sidebarItemsInjectable);
+    const notHiddenInTree = computed(() => false);
+
+    // A favorite is the user's own pin, so it shows what the user pinned while
+    // its item, or any item under it, is hidden in the tree, such as a custom
+    // resource an extension lists under an entry of its own.
+    const asPinned = (item: SidebarItemDeclaration): SidebarItemDeclaration => ({
+      ...item,
+      isHiddenInTree: notHiddenInTree,
+      children: item.children.map(asPinned),
+    });
 
     return computed((): FavoriteSidebarItem[] => {
       const favoriteItems = favoritesStore.items;
@@ -58,9 +68,10 @@ const favoritesSidebarItemsComputedInjectable = getInjectable({
             onClick: originalItem.onClick,
             isActive: originalItem.isActive,
             isVisible: originalItem.isVisible,
+            isHiddenInTree: notHiddenInTree,
             getIcon: originalItem.getIcon,
             orderNumber: fav.order,
-            children: originalItem.children,
+            children: originalItem.children.map(asPinned),
           } as FavoriteSidebarItem;
         })
         .filter((item): item is FavoriteSidebarItem => Boolean(item));

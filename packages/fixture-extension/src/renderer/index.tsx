@@ -7,7 +7,7 @@
 // way a third-party extension is written — the only import that reaches into
 // Freelens is `@freelensapp/extensions`, and it is compiled against the built
 // `dist/extension-api.d.ts` rather than the workspace source — and it is kept
-// to the five things that break silently:
+// to the six things that break silently:
 //
 //  1. a component with a hook, which throws "invalid hook call" under two Reacts
 //  2. an observable the host has to react to, which fails *without* an error
@@ -21,6 +21,8 @@
 //     which only construct if the helpers exist at runtime as the declaration
 //     says they do; the pairings the helpers must reject are in
 //     `./registration-pairings.ts`
+//  6. one `customResources` registration of the same model, which only reaches
+//     the host if its registrator can read the class's `crd` off the bundle
 //
 // Everything here is asserted from
 // `packages/core/src/extensions/__tests__/fixture-extension.test.tsx`.
@@ -128,6 +130,9 @@ export default class FixtureRendererExtension extends Renderer.LensExtension {
   kubeObjectDetailItems = [Renderer.K8sApi.detailsFor(FixtureExample, { Details: FixtureExampleDetails })];
 
   kubeObjectMenuItems = [Renderer.K8sApi.menuItemFor(FixtureExample, { MenuItem: FixtureExampleMenuItem })];
+
+  /** The host reads the group and plural from the class's `crd`. */
+  customResources = [FixtureExample];
 
   protected async onActivate(): Promise<void> {
     const response = await Renderer.Util.fetch(FIXTURE_PROBE_URL);

@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { loggerInjectionToken } from "@freelensapp/logger";
 import { disposer } from "@freelensapp/utilities";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import { reaction, runInAction } from "mobx";
@@ -43,24 +44,33 @@ const extensionInjectable = getInjectable({
 
         return {
           register: () => {
-            const extensionRegistrators = childDi.injectMany(extensionRegistratorInjectionToken);
+            const logger = childDi.inject(loggerInjectionToken);
+            const extensionRegistrators = childDi.injectManyWithMeta(extensionRegistratorInjectionToken);
 
-            for (const extensionRegistrator of extensionRegistrators) {
-              const injectables = extensionRegistrator(instance);
-              // One per registrator: it deregisters what it registered and the
-              // registrator no longer lists.
-              const injectableDifferencingRegistrator = injectableDifferencingRegistratorWith(childDi);
+            for (const { instance: extensionRegistrator, meta } of extensionRegistrators) {
+              // A registrator that throws on a malformed field costs that field
+              // alone: the loader registers every extension in one loop, so an
+              // uncaught error would also cost the registrators after it and
+              // every extension after this one.
+              try {
+                const injectables = extensionRegistrator(instance);
+                // One per registrator: it deregisters what it registered and the
+                // registrator no longer lists.
+                const injectableDifferencingRegistrator = injectableDifferencingRegistratorWith(childDi);
 
-              if (Array.isArray(injectables)) {
-                runInAction(() => {
-                  injectableDifferencingRegistrator(injectables);
-                });
-              } else {
-                reactionDisposer.push(
-                  reaction(() => injectables.get(), injectableDifferencingRegistrator, {
-                    fireImmediately: true,
-                  }),
-                );
+                if (Array.isArray(injectables)) {
+                  runInAction(() => {
+                    injectableDifferencingRegistrator(injectables);
+                  });
+                } else {
+                  reactionDisposer.push(
+                    reaction(() => injectables.get(), injectableDifferencingRegistrator, {
+                      fireImmediately: true,
+                    }),
+                  );
+                }
+              } catch (error) {
+                logger.error(`[EXTENSIONS]: ${instance.name}: registrator "${meta.id}" failed and is skipped`, error);
               }
             }
           },

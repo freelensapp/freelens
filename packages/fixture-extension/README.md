@@ -118,8 +118,8 @@ onto this package would close a cycle in the turbo task graph
 ## What it contains
 
 The renderer entry point, [`src/renderer/index.tsx`](./src/renderer/index.tsx),
-built to `dist/renderer.js`, holds five things, chosen because each of them
-breaks without a compile error:
+built to `dist/renderer.js`, holds these, chosen because each of them breaks
+without a compile error:
 
 1. a component with hooks — two React instances throw `invalid hook call`
 2. an observable it creates and the host reacts to — two copies of mobx share
@@ -135,6 +135,8 @@ breaks without a compile error:
    class, [`src/renderer/fixture-example.ts`](./src/renderer/fixture-example.ts),
    that narrows its `kind` and `apiVersion` to literals with `declare`, which
    has to leave the fields the host assigns in place
+6. one `customResources` registration of the same model class, which reaches
+   the host only if its registrator can read the class's `crd` off the bundle
 
 The main entry point, [`src/main/index.ts`](./src/main/index.ts), built to
 `dist/main.js`, is a skeleton for the main-side contract: a `Main.LensExtension`

@@ -10,7 +10,7 @@ const getSidebarItemsHierarchy = (
 ): SidebarItemDeclaration[] =>
   registrations
     .filter(({ instance }) => instance.parentId === parentId)
-    .map(({ instance: { isActive, isVisible, ...registration }, meta }) => {
+    .map(({ instance: { isActive, isVisible, isHiddenInTree, ...registration }, meta }) => {
       // @ogre-tools 23 namespaces the id of an injectable registered at runtime
       // through a namespaced `di` (e.g. extension-scoped sidebar items) as
       // "<namespace>:<declaredId>". Children link to their parent by its declared
@@ -33,6 +33,15 @@ const getSidebarItemsHierarchy = (
           }
 
           return children.some((child) => child.isVisible.get());
+        }),
+        // A parent whose visible children are all hidden in the tree is hidden
+        // with them, so a group left with nothing to show leaves the tree.
+        isHiddenInTree: computed(() => {
+          if (children.length === 0) {
+            return isHiddenInTree?.get() ?? false;
+          }
+
+          return !children.some((child) => child.isVisible.get() && !child.isHiddenInTree.get());
         }),
         isActive: computed(() => {
           if (children.length === 0) {
