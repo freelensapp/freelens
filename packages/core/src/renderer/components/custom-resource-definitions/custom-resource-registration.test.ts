@@ -6,7 +6,11 @@
 import { KubeObject } from "@freelensapp/kube-object";
 import { describe, expect, it } from "vitest";
 import { LensExtensionKubeObject } from "../../../extensions/common-api/k8s-api";
-import { describeCustomResourceRegistration, getCustomResourcesOfRegistration } from "./custom-resource-registration";
+import {
+  describeCustomResourceRegistration,
+  describeCustomResourcesField,
+  getCustomResourcesOfRegistration,
+} from "./custom-resource-registration";
 
 import type { CustomResourceRegistration } from "./custom-resource-registration";
 
@@ -102,6 +106,18 @@ describe("getCustomResourcesOfRegistration", () => {
     expect(() => getCustomResourcesOfRegistration({} as unknown as CustomResourceRegistration)).toThrow(
       "it is not a class",
     );
+  });
+});
+
+describe("describeCustomResourcesField", () => {
+  it.each([
+    [undefined, "undefined"],
+    [null, "null"],
+    [{}, "an object"],
+    [Example, "the class Example"],
+    ["Example", "a string"],
+  ])("names %s as %s", (value, expected) => {
+    expect(describeCustomResourcesField(value)).toBe(expected);
   });
 });
 

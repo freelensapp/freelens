@@ -10,13 +10,14 @@ import { extensionRegistratorInjectionToken } from "../../../extensions/extensio
 import extensionShouldBeEnabledForClusterFrameInjectable from "../../extension-loader/extension-should-be-enabled-for-cluster-frame.injectable";
 import {
   describeCustomResourceRegistration,
+  describeCustomResourcesField,
   getCustomResourceKey,
   getCustomResourcesOfRegistration,
 } from "./custom-resource-registration";
 import { extensionCustomResourceInjectionToken } from "./extension-custom-resource-injection-token";
 
 import type { LensRendererExtension } from "../../../extensions/lens-renderer-extension";
-import type { RegisteredCustomResource } from "./custom-resource-registration";
+import type { CustomResourceRegistration, RegisteredCustomResource } from "./custom-resource-registration";
 
 const extensionCustomResourceRegistratorInjectable = getInjectable({
   id: "extension-custom-resource-registrator",
@@ -35,12 +36,24 @@ const extensionCustomResourceRegistratorInjectable = getInjectable({
       // By "group/plural": the classes of two versions of one kind name the
       // same resource.
       const resources = new Map<string, RegisteredCustomResource>();
+      const registrations: unknown = extension.customResources;
 
-      // `register()` runs the registrators of every extension in one loop, so
-      // a registration that throws here would stop the extensions after this
-      // one from registering anything. A rejected one is logged and skipped
-      // instead, and its resource stays in the Custom Resources tree.
-      extension.customResources.forEach((registration, index) => {
+      // A field that is not an array registers nothing, with one error for the
+      // whole field rather than a failure that costs the extension's other
+      // fields.
+      if (!Array.isArray(registrations)) {
+        logger.error(
+          `[EXTENSIONS]: ${extension.name}: customResources is rejected: it is not an array but ${describeCustomResourcesField(
+            registrations,
+          )}`,
+        );
+
+        return [];
+      }
+
+      // A rejected entry is logged and skipped, so it costs only its own
+      // resource, which stays in the Custom Resources tree.
+      registrations.forEach((registration: CustomResourceRegistration, index) => {
         try {
           for (const resource of getCustomResourcesOfRegistration(registration)) {
             resources.set(getCustomResourceKey(resource.group, resource.plural), resource);

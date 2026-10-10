@@ -492,8 +492,10 @@ static `kind`, has neither a `crd` nor an `apiBase` it can be read from, has a
 `crd` with no `apiVersions` or no `plural`, or names a resource of the core
 group. The host logs the error with the extension's name, the entry's index and
 the class's name, skips the entry and keeps the others, and the rejected
-resource stays in the Custom Resources tree. The field is read once, when the
-extension is registered, so a class assigned to it later is not seen.
+resource stays in the Custom Resources tree. A `customResources` that is not an
+array is rejected whole: the host logs one error with the extension's name and
+what the field holds, and registers none of it. The field is read once, when
+the extension is registered, so a class assigned to it later is not seen.
 
 ---
 

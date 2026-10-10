@@ -94,6 +94,22 @@ export const getCustomResourcesOfRegistration = (
 };
 
 /**
+ * What a `customResources` field that is not an array holds, as the error that
+ * rejects the field names it.
+ */
+export const describeCustomResourcesField = (value: unknown) => {
+  if (value === null || value === undefined) {
+    return String(value);
+  }
+
+  if (typeof value === "function") {
+    return value.name ? `the class ${value.name}` : "an anonymous class";
+  }
+
+  return typeof value === "object" ? "an object" : `a ${typeof value}`;
+};
+
+/**
  * How a rejected registration is named in the error: its index in the field
  * and the name of its class.
  */

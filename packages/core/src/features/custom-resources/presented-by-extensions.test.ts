@@ -366,6 +366,28 @@ describe("custom resources an extension presents", () => {
       });
     });
 
+    describe("given an extension sets customResources to a single class instead of an array", () => {
+      beforeEach(async () => {
+        await enableExtension({
+          ...gatewayExtension,
+          rendererOptions: { customResources: Gateway as unknown as [] },
+        });
+        await expandCustomResources();
+        await expandGroup();
+      });
+
+      it("logs one error naming the extension and what the field holds", () => {
+        expect(loggerStub.error).toHaveBeenCalledTimes(1);
+        expect(loggerStub.error).toHaveBeenCalledWith(
+          "[EXTENSIONS]: gateway-extension: customResources is rejected: it is not an array but the class Gateway",
+        );
+      });
+
+      it("registers nothing, so the resource stays in the tree", () => {
+        expect(result.getByTestId(gatewaysItemTestId)).toHaveTextContent("Gateway");
+      });
+    });
+
     describe("given the list of definitions is refused and the resources are known from discovery", () => {
       beforeEach(async () => {
         const customResourceDefinitionStore = windowDi.inject(customResourceDefinitionStoreInjectable);
