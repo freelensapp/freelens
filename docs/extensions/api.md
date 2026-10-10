@@ -389,9 +389,45 @@ match it, so a registration for such a resource gives `apiVersions`. An
 extension with one class per version of its resource calls the helper once per
 class.
 
-The check is structural: two models of the same shape, such as two with
-`spec: unknown`, are not told apart, so it protects only models that declare
-their `spec` and `status` types.
+The check is structural, and declaring the `spec` and `status` types is not
+enough for it. Two models of the same shape, such as two with `spec: unknown`,
+are not told apart, and neither are two whose `spec` types differ only in
+optional fields: each is assignable to the other, so a component written for
+one compiles against the class of the other. The classes of two versions of one
+kind usually have that shape. A model class therefore declares its instance
+`kind` and `apiVersion` as literal types, matching its static `kind` and
+`crd.apiVersions`, with a union of literals for a class that serves several
+versions:
+
+```ts
+export class Example extends Renderer.K8sApi.LensExtensionKubeObject<
+  Renderer.K8sApi.NamespaceScopedMetadata,
+  ExampleStatus,
+  ExampleSpec
+> {
+  declare kind: "Example";
+  declare apiVersion: "example.freelens.app/v1alpha1";
+
+  static readonly kind = "Example";
+  static readonly namespaced = true;
+  static readonly apiBase = "/apis/example.freelens.app/v1alpha1/examples";
+  static readonly crd = {
+    apiVersions: ["example.freelens.app/v1alpha1"],
+    plural: "examples",
+    singular: "example",
+  };
+}
+```
+
+With the literals, a component written for the `v1alpha2` class does not
+compile against the `v1alpha1` one, whatever their specs. `declare` emits
+nothing, so the class behaves at runtime as it did without the two lines, and
+the narrowing holds: the host renders the component only for objects of the
+registered `kind` and `apiVersions`. The two lines need `declare`: written as
+fields (`kind!: "Example"`) under standard class-field semantics
+(`useDefineForClassFields`, the default from target ES2022), they are defined
+after the base constructor has assigned the object's data, and reset `kind` and
+`apiVersion` to `undefined`.
 
 `LensMainExtension` fields: `terminalShellEnvModifier`, a function the host
 calls with the environment of every terminal it opens. There is no field for the

@@ -26,7 +26,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 //     the registrators and `extension.register()`
 //  4. `Renderer.Util.fetch`: the API namespace reaches the host's DI container
 //  5. `Renderer.K8sApi.detailsFor` and `menuItemFor`: the helpers the
-//     declaration promises exist on the runtime namespace
+//     declaration promises exist on the runtime namespace, and the model they
+//     take, which narrows its `kind` and `apiVersion` with `declare`, keeps the
+//     values its base class assigns
 //
 // The bundle is loaded through a file URL rather than a static import for two
 // reasons: it throws while evaluating if the globals are not installed first
@@ -66,8 +68,9 @@ interface FixtureBundle {
   default: new (extension: InstalledExtension) => LensRendererExtension;
   FIXTURE_PROBE_URL: string;
   FixtureStatusBarItem: React.ComponentType;
-  FixturePodDetails: React.ComponentType;
-  FixturePodMenuItem: React.ComponentType;
+  FixtureExampleDetails: React.ComponentType;
+  FixtureExampleMenuItem: React.ComponentType;
+  FixtureExample: new (data: object) => { kind: string; apiVersion: string };
   activationRecord: IObservableValue<{ appVersion: string; probeStatus: number } | undefined>;
   setStatusBarItemVisible: (value: boolean) => void;
   resolvedMobxObservable: typeof observable;
@@ -224,11 +227,36 @@ describe("extension contract, against the built fixture extension", () => {
       // namespace the bundle read off the global, so a helper the declaration
       // promises and the runtime lacks fails the construction above.
       expect(extension.kubeObjectDetailItems).toEqual([
-        { kind: "Pod", apiVersions: ["v1"], components: { Details: fixture.FixturePodDetails } },
+        {
+          kind: "FixtureExample",
+          apiVersions: ["fixture.freelens.app/v1alpha1"],
+          components: { Details: fixture.FixtureExampleDetails },
+        },
       ]);
       expect(extension.kubeObjectMenuItems).toEqual([
-        { kind: "Pod", apiVersions: ["v1"], components: { MenuItem: fixture.FixturePodMenuItem } },
+        {
+          kind: "FixtureExample",
+          apiVersions: ["fixture.freelens.app/v1alpha1"],
+          components: { MenuItem: fixture.FixtureExampleMenuItem },
+        },
       ]);
+    });
+
+    it("keeps the kind and apiVersion of a model that narrows them with declare", () => {
+      // `declare` emits nothing. A plain field in its place would be defined
+      // after the base constructor assigned the object's data, and reset both.
+      const object = new fixture.FixtureExample({
+        apiVersion: "fixture.freelens.app/v1alpha1",
+        kind: "FixtureExample",
+        metadata: {
+          name: "fixture",
+          namespace: "default",
+          selfLink: "/apis/fixture.freelens.app/v1alpha1/namespaces/default/fixtureexamples/fixture",
+        },
+      });
+
+      expect(object.kind).toBe("FixtureExample");
+      expect(object.apiVersion).toBe("fixture.freelens.app/v1alpha1");
     });
 
     it("shows the extension's declarative registration in the host", () => {

@@ -144,3 +144,69 @@ export function checkRegistrationHelpers(extension: RendererExtension) {
     menuItemFor(Deployment, { MenuItem: PodMenuItemClass }),
   ];
 }
+
+// Two versions of one kind whose specs differ only in optional fields, as
+// per-version classes usually do. Their specs are assignable to each other, so
+// without the literal `kind` and `apiVersion` below a component of one version
+// would compile against the class of the other; nothing here relies on that.
+// With them, the swapped pairings must fail. `LensExtensionKubeObject` is a
+// declared value because the namespaces are imported as types only.
+declare const LensExtensionKubeObject: typeof Renderer.K8sApi.LensExtensionKubeObject;
+
+interface ExampleSpecV1alpha1 {
+  title?: string;
+  active?: boolean;
+}
+
+interface ExampleSpecV1alpha2 {
+  title?: string;
+  suspended?: boolean;
+}
+
+class ExampleV1alpha1 extends LensExtensionKubeObject<
+  Renderer.K8sApi.NamespaceScopedMetadata,
+  unknown,
+  ExampleSpecV1alpha1
+> {
+  declare kind: "Example";
+  declare apiVersion: "example.freelens.app/v1alpha1";
+
+  static readonly kind = "Example";
+  static readonly crd = { apiVersions: ["example.freelens.app/v1alpha1"], plural: "examples", singular: "example" };
+}
+
+class ExampleV1alpha2 extends LensExtensionKubeObject<
+  Renderer.K8sApi.NamespaceScopedMetadata,
+  unknown,
+  ExampleSpecV1alpha2
+> {
+  declare kind: "Example";
+  declare apiVersion: "example.freelens.app/v1alpha2";
+
+  static readonly kind = "Example";
+  static readonly crd = { apiVersions: ["example.freelens.app/v1alpha2"], plural: "examples", singular: "example" };
+}
+
+declare const ExampleV1alpha1Details: FunctionComponent<Renderer.Component.KubeObjectDetailsProps<ExampleV1alpha1>>;
+declare const ExampleV1alpha2DetailsClass: ComponentClass<Renderer.Component.KubeObjectDetailsProps<ExampleV1alpha2>>;
+declare const ExampleV1alpha1MenuItem: FunctionComponent<Common.Types.KubeObjectMenuItemProps<ExampleV1alpha1>>;
+declare const ExampleV1alpha2MenuItemClass: ComponentClass<Common.Types.KubeObjectMenuItemProps<ExampleV1alpha2>>;
+
+export function checkNarrowedVersions(extension: RendererExtension) {
+  extension.kubeObjectDetailItems = [
+    detailsFor(ExampleV1alpha1, { Details: ExampleV1alpha1Details }),
+    detailsFor(ExampleV1alpha2, { Details: ExampleV1alpha2DetailsClass }),
+    // @ts-expect-error a function component written for `v1alpha1`, registered for `v1alpha2`
+    detailsFor(ExampleV1alpha2, { Details: ExampleV1alpha1Details }),
+    // @ts-expect-error a class component written for `v1alpha2`, registered for `v1alpha1`
+    detailsFor(ExampleV1alpha1, { Details: ExampleV1alpha2DetailsClass }),
+  ];
+  extension.kubeObjectMenuItems = [
+    menuItemFor(ExampleV1alpha1, { MenuItem: ExampleV1alpha1MenuItem }),
+    menuItemFor(ExampleV1alpha2, { MenuItem: ExampleV1alpha2MenuItemClass }),
+    // @ts-expect-error a function component written for `v1alpha1`, registered for `v1alpha2`
+    menuItemFor(ExampleV1alpha2, { MenuItem: ExampleV1alpha1MenuItem }),
+    // @ts-expect-error a class component written for `v1alpha2`, registered for `v1alpha1`
+    menuItemFor(ExampleV1alpha1, { MenuItem: ExampleV1alpha2MenuItemClass }),
+  ];
+}

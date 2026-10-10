@@ -17,9 +17,10 @@
 //  4. one `Util.fetch` call, which only resolves if the host's DI container is
 //     reachable through the API namespace
 //  5. one detail and one menu registration made with `Renderer.K8sApi.detailsFor`
-//     and `menuItemFor`, which only construct if the helpers exist at runtime
-//     as the declaration says they do; the pairings the helpers must reject are
-//     in `./registration-pairings.ts`
+//     and `menuItemFor` for a model that narrows its `kind` and `apiVersion`,
+//     which only construct if the helpers exist at runtime as the declaration
+//     says they do; the pairings the helpers must reject are in
+//     `./registration-pairings.ts`
 //
 // Everything here is asserted from
 // `packages/core/src/extensions/__tests__/fixture-extension.test.tsx`.
@@ -28,6 +29,7 @@ import { Common, Renderer } from "@freelensapp/extensions";
 import { computed, observable, runInAction } from "mobx";
 import { Component, useCallback, useMemo, useState } from "react";
 import { FIXTURE_PROBE_URL } from "../common/host-info";
+import { FixtureExample } from "./fixture-example";
 
 /**
  * The host-provided singletons this bundle actually resolved, so the harness can
@@ -41,11 +43,16 @@ import { FIXTURE_PROBE_URL } from "../common/host-info";
  * throws "invalid hook call" the first time the host renders the component
  * below.
  *
+ * `FixtureExample`, the model the registrations below take, is exported with
+ * them so the harness can construct one from the bundle and see that its
+ * narrowed `kind` and `apiVersion` emit no field.
+ *
  * No extension would export these. This one is a fixture for the contract, and
  * this is the contract.
  */
 export { observable as resolvedMobxObservable } from "mobx";
 export { useState as resolvedReactUseState } from "react";
+export { FixtureExample };
 
 /**
  * Drives the `visible` flag of the registration below.
@@ -86,18 +93,18 @@ export const FixtureStatusBarItem = () => {
 };
 
 /**
- * A details component typed for `Pod`, in the function-component form. The
- * registration below ties it to `Renderer.K8sApi.Pod`; registered for another
- * class, it does not compile.
+ * A details component typed for `FixtureExample`, in the function-component
+ * form. The registration below ties it to the class; registered for another
+ * kind, or another version of the kind, it does not compile.
  */
-export const FixturePodDetails = ({ object }: Renderer.Component.KubeObjectDetailsProps<Renderer.K8sApi.Pod>) => (
-  <span data-testid="fixture-pod-details">{object.getName()}</span>
+export const FixtureExampleDetails = ({ object }: Renderer.Component.KubeObjectDetailsProps<FixtureExample>) => (
+  <span data-testid="fixture-example-details">{object.spec.title ?? object.getName()}</span>
 );
 
-/** A menu item typed for `Pod`, in the class-component form. */
-export class FixturePodMenuItem extends Component<Common.Types.KubeObjectMenuItemProps<Renderer.K8sApi.Pod>> {
+/** A menu item typed for `FixtureExample`, in the class-component form. */
+export class FixtureExampleMenuItem extends Component<Common.Types.KubeObjectMenuItemProps<FixtureExample>> {
   render() {
-    return <span data-testid="fixture-pod-menu-item">{this.props.object.getName()}</span>;
+    return <span data-testid="fixture-example-menu-item">{this.props.object.getName()}</span>;
   }
 }
 
@@ -118,9 +125,9 @@ export default class FixtureRendererExtension extends Renderer.LensExtension {
   ];
 
   /** `kind` and `apiVersions` come from the class, which the component is checked against. */
-  kubeObjectDetailItems = [Renderer.K8sApi.detailsFor(Renderer.K8sApi.Pod, { Details: FixturePodDetails })];
+  kubeObjectDetailItems = [Renderer.K8sApi.detailsFor(FixtureExample, { Details: FixtureExampleDetails })];
 
-  kubeObjectMenuItems = [Renderer.K8sApi.menuItemFor(Renderer.K8sApi.Pod, { MenuItem: FixturePodMenuItem })];
+  kubeObjectMenuItems = [Renderer.K8sApi.menuItemFor(FixtureExample, { MenuItem: FixtureExampleMenuItem })];
 
   protected async onActivate(): Promise<void> {
     const response = await Renderer.Util.fetch(FIXTURE_PROBE_URL);

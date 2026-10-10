@@ -131,7 +131,10 @@ breaks without a compile error:
    container
 5. one `kubeObjectDetailItems` and one `kubeObjectMenuItems` registration made
    with `Renderer.K8sApi.detailsFor` and `menuItemFor`, which construct only if
-   the helpers exist at runtime as the declaration says they do
+   the helpers exist at runtime as the declaration says they do, for a model
+   class, [`src/renderer/fixture-example.ts`](./src/renderer/fixture-example.ts),
+   that narrows its `kind` and `apiVersion` to literals with `declare`, which
+   has to leave the fields the host assigns in place
 
 The main entry point, [`src/main/index.ts`](./src/main/index.ts), built to
 `dist/main.js`, is a skeleton for the main-side contract: a `Main.LensExtension`
@@ -146,6 +149,7 @@ which names the v2 side of every "Renamed or moved" row of the v1→v2 rename
 table in [`docs/extensions/migrating-from-v1.md`](../../docs/extensions/migrating-from-v1.md#v1v2-rename-table),
 with the v1 path next to each. A row added to that table gets a line there.
 [`src/renderer/registration-pairings.ts`](./src/renderer/registration-pairings.ts)
-holds the pairings of a model class and a component written for another kind
-that `detailsFor` and `menuItemFor` must reject, each under a
-`@ts-expect-error`.
+holds the pairings of a model class and a component written for another kind,
+or for another version of the same kind, that `detailsFor` and `menuItemFor`
+must reject, each under a `@ts-expect-error`, and names the API and store types
+of the narrowed model.

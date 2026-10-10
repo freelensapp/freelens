@@ -245,12 +245,21 @@ const ExternalPersistentVolumeClaimsApi = PersistentVolumeClaimsApiConstructor a
  * The `KubeObject` that can be used in extensions with additional property to
  * get CRD metainfo and the API and Store objects.
  *
+ * The `declare` lines narrow the instance `kind` and `apiVersion` to the
+ * literals of the static `kind` and `crd.apiVersions` (a union of literals for
+ * a class that serves several versions), so that `Renderer.K8sApi.detailsFor`
+ * and `menuItemFor` tell this class apart from another version of the same
+ * kind. `declare` emits nothing, so they change no runtime behaviour.
+ *
  * @example
  *
  * ```ts
  * import { Renderer } from "@freelensapp/extensions";
  *
  * class Example extends Renderer.K8sApi.LensExtensionKubeObject {
+ *   declare kind: "Example";
+ *   declare apiVersion: "example.com/v1";
+ *
  *   static readonly kind = "Example";
  *   static readonly namespaced = true;
  *   static readonly apiBase = "/apis/example.com/v1/examples";

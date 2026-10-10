@@ -887,10 +887,43 @@ compiles and gets an object whose `spec` and `status` are not the ones it reads.
 Pass `apiVersions` to the helper when the cluster may serve the resource under
 a version the class does not name, as it does for `HorizontalPodAutoscaler`,
 `Ingress` and `IngressClass`; an object read under another version does not
-match the registration. The check compares the models' shapes, so it tells your
-models apart only when they declare their `spec` and `status` types. A class
-without a `kind`, or without any source of `apiVersions`, makes the helper
-throw, and your extension fails to load with that error. See
+match the registration. A class without a `kind`, or without any source of
+`apiVersions`, makes the helper throw, and your extension fails to load with
+that error.
+
+The check compares the models' shapes, and declared `spec` and `status` types
+do not make two models different enough for it: specs that differ only in
+optional fields, as those of two versions of one kind usually do, are each
+assignable to the other, and a component written for one version compiles
+against the class of the other. Declare the instance `kind` and `apiVersion` of
+your model class as literal types, matching its static `kind` and
+`crd.apiVersions`, with a union of literals for a class that serves several
+versions:
+
+```ts
+export class Example extends Renderer.K8sApi.LensExtensionKubeObject<
+  Renderer.K8sApi.NamespaceScopedMetadata,
+  ExampleStatus,
+  ExampleSpec
+> {
+  declare kind: "Example";
+  declare apiVersion: "example.freelens.app/v1alpha1";
+
+  static readonly kind = "Example";
+  static readonly crd = {
+    apiVersions: ["example.freelens.app/v1alpha1"],
+    plural: "examples",
+    singular: "example",
+  };
+  // …
+}
+```
+
+Then a component written for another version, or another kind, does not
+compile against the class. `declare` emits nothing, so the class behaves at
+runtime as before; keep it, because under standard class-field semantics a
+field written without it (`kind!: "Example"`) resets the value the base class
+assigned. See
 [C6](./api.md#c6-registration-and-the-extension-instance) for the details.
 
 A page that typed its parameters by name, such as
@@ -1774,8 +1807,10 @@ restarted once.
       each, so the type check catches the next Node API in renderer code (see
       [Source layout](#source-layout-one-tsconfig-per-runtime-environment)).
 - [ ] Write your `kubeObjectDetailItems` and `kubeObjectMenuItems` with
-      `Renderer.K8sApi.detailsFor` and `menuItemFor`, so a component typed for
-      another kind than its registration's fails the type check (see
+      `Renderer.K8sApi.detailsFor` and `menuItemFor`, and declare the instance
+      `kind` and `apiVersion` of your model classes as literal types, so a
+      component typed for another kind or version than its registration's
+      fails the type check (see
       [Registering things](#registering-things-declarative-fields)).
 - [ ] Load your extension in a v2 build and verify its UI renders through the
       runtime global.

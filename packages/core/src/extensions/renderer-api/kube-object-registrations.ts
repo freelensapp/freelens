@@ -104,8 +104,11 @@ const apiVersionsOf = (
  * extension that calls it from a field initializer fails to load instead of
  * contributing a registration that never appears.
  *
- * The check is structural: two models of the same shape, such as two with
- * `spec: unknown`, are not told apart.
+ * The check is structural: two models of the same shape are not told apart,
+ * and neither are two whose `spec` types differ only in optional fields, as
+ * the classes of two versions of one kind usually do. A model class that
+ * declares its instance `kind` and `apiVersion` as literal types
+ * (`declare apiVersion: "example.com/v1"`) is told apart from the others.
  *
  * @example
  *
