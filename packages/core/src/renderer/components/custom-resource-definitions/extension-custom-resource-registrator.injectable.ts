@@ -38,9 +38,8 @@ const extensionCustomResourceRegistratorInjectable = getInjectable({
       const resources = new Map<string, RegisteredCustomResource>();
       const registrations: unknown = extension.customResources;
 
-      // A field that is not an array registers nothing, with one error for the
-      // whole field rather than a failure that costs the extension's other
-      // fields.
+      // A field that is not an array registers nothing, with one error that
+      // names what the field holds.
       if (!Array.isArray(registrations)) {
         logger.error(
           `[EXTENSIONS]: ${extension.name}: customResources is rejected: it is not an array but ${describeCustomResourcesField(

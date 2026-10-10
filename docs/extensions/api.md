@@ -482,20 +482,24 @@ Two of these matter more than they look:
 
 **Failure mode.** A field left at its default contributes nothing, silently — a
 registration that never appears is the common symptom of a typo in a field name
-or of registering after the host has already read the field. `detailsFor` and
-`menuItemFor` throw when the class has no `kind`, or when no `apiVersions` is
-given and the class has neither `crd.apiVersions` nor an `apiBase` it can be
-read from, or when the list resolved is empty; called from a field initializer,
-that fails the extension's load rather than leaving a registration that never
-appears. A `customResources` entry is rejected when it is not a class, has no
-static `kind`, has neither a `crd` nor an `apiBase` it can be read from, has a
-`crd` with no `apiVersions` or no `plural`, or names a resource of the core
-group. The host logs the error with the extension's name, the entry's index and
-the class's name, skips the entry and keeps the others, and the rejected
-resource stays in the Custom Resources tree. A `customResources` that is not an
-array is rejected whole: the host logs one error with the extension's name and
-what the field holds, and registers none of it. The field is read once, when
-the extension is registered, so a class assigned to it later is not seen.
+or of registering after the host has already read the field. A field the host
+cannot read, such as one set to something other than an array, costs that field
+alone: the host logs an error with the extension's name and the registrator that
+failed on it, skips the field, and goes on with the extension's other fields and
+with the other extensions. `detailsFor` and `menuItemFor` throw when the class
+has no `kind`, or when no `apiVersions` is given and the class has neither
+`crd.apiVersions` nor an `apiBase` it can be read from, or when the list
+resolved is empty; called from a field initializer, that fails the extension's
+load rather than leaving a registration that never appears. A `customResources`
+entry is rejected when it is not a class, has no static `kind`, has neither a
+`crd` nor an `apiBase` it can be read from, has a `crd` with no `apiVersions` or
+no `plural`, or names a resource of the core group. The host logs the error with
+the extension's name, the entry's index and the class's name, skips the entry
+and keeps the others, and the rejected resource stays in the Custom Resources
+tree. A `customResources` that is not an array is rejected whole: the host logs
+one error with the extension's name and what the field holds, and registers
+none of it. The field is read once, when the extension is registered, so a
+class assigned to it later is not seen.
 
 ---
 
