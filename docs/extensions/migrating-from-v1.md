@@ -143,6 +143,16 @@ The global names follow a mechanical rule — strip the scope, split on `-`, `/`
 and `.`, upper-case each segment — so a bundler plugin can *derive* each name
 instead of being handed a map. Note `ReactDom`, not `ReactDOM`.
 
+Declare a listed package also when you never import it yourself but use a host
+component whose props name its types. **`monaco-editor` is the one to watch.**
+`Renderer.Component.MonacoEditor` takes its `options`, and the arguments of
+`onChange` and its other callbacks, from `monaco-editor`'s types, and
+`@freelensapp/extensions` declares `monaco-editor` only as an optional peer, so
+nothing installs it for you. Without it in your `devDependencies`, those props
+are `any`, and the type check does not say so, because `skipLibCheck` hides the
+import that does not resolve. An extension that renders `MonacoEditor` declares
+`monaco-editor` at the version the host runs, as it does `react` and `mobx`.
+
 **Each process publishes the set it has.** The renderer publishes the whole
 table; the main process publishes `Mobx` and nothing else, because a code editor
 and a DOM renderer have no place in a process with no window. Map
@@ -334,6 +344,47 @@ annotations:
   `observer(fn, { forwardRef: true })`. Use `React.createContext`, cleanup in
   `componentWillUnmount` or `useEffect`, `useLocalObservable`,
   `enableStaticRendering`, and `observer(React.forwardRef(…))`.
+- **`this.props` of an `@observer` class component is not observable.** Its own
+  `render()` may read `this.props` and `this.state`; any other derivation that
+  reads them throws
+  `[mobx-react] Cannot read "MyPage.props" in a reactive context, as it isn't observable`.
+  That covers a `@computed` getter of the component, which could read
+  `this.props` under mobx-react 7 with `makeObservable(this)`. It also covers a
+  plain method the host calls from a derivation of its own: `getItems` and
+  `customizeHeader` of `KubeObjectListLayout` run inside the host's computed
+  values and in the render of another observer component. The type check, the
+  build and unit tests outside a renderer all pass; the page crashes when it
+  renders.
+
+  Read `this.props` only in `render()`, and hand a callback the host calls the
+  values it needs from there:
+
+  ```tsx
+  // v1: throws under mobx-react 10 when the host calls getItems
+  @observer
+  class MyPage extends React.Component<MyPageProps> {
+    @computed get failed() {
+      return this.props.store.items.filter((item) => item.isFailed());
+    }
+
+    render() {
+      return <KubeObjectListLayout getItems={() => this.failed} /* … */ />;
+    }
+  }
+
+  // v2
+  @observer
+  class MyPage extends React.Component<MyPageProps> {
+    render() {
+      const { store } = this.props;
+
+      return <KubeObjectListLayout getItems={() => store.items.filter((item) => item.isFailed())} /* … */ />;
+    }
+  }
+  ```
+
+  Or make it a function component, `observer((props: MyPageProps) => …)`,
+  whose props are a plain argument.
 
 ### Lowering standard decorators
 
@@ -1424,12 +1475,39 @@ If your extension used them, migrate one of two ways:
   `protected` injection bag, not API, and it may change in any release (see
   [Dependency injection: bundle your own](#dependency-injection-bundle-your-own)).
 
+  A `<Link>` in your markup becomes **`Renderer.Component.MaybeLink`**, the
+  link the host's own details views render. It takes the same `to` as
+  `navigate`, a path string or a location object, follows it through the
+  host's history on a plain click, and renders its children without a link
+  when `to` is empty or missing. For a link to an object's details,
+  `Renderer.Navigation` builds the `to`:
+  - **`getDetailsUrl(selfLink)`** returns the search string that opens the
+    details panel of the object at `selfLink`, on the current page.
+  - **`getMaybeDetailsUrl(selfLink?)`** does the same, and returns `""` when
+    `selfLink` is empty, so `MaybeLink` renders plain text for an object it
+    cannot link to.
+  - **`showDetails(selfLink)`** opens the details panel from code, for a click
+    handler rather than a link.
+
+  ```diff
+  -import { Link } from "react-router-dom";
+  +const { MaybeLink } = Renderer.Component;
+  +const { getMaybeDetailsUrl } = Renderer.Navigation;
+
+  -<Link to={getDetailsUrl(object.selfLink)}>{object.getName()}</Link>
+  +<MaybeLink to={getMaybeDetailsUrl(object.selfLink)}>{object.getName()}</MaybeLink>
+  ```
+
   Route schemas keep the same `react-router` v5 dialect (`/:param?` optionals,
   inline `/:param(regex)` patterns), matched by the in-house `matchPath`, so
   existing path strings are unchanged.
-- **Or bundle your own `react-router`.** If you must keep react-router JSX, add
+- **Or bundle your own `react-router`, for an extension that renders its own
+  router.** The host renders no react-router `<Router>`, so a bundled `Link`,
+  `Route` or `useHistory` has no router context in a page or a details panel
+  the host renders, and throws when it renders there. This route is only for an extension that
+  mounts a `<Router>` of its own around everything that uses it. Add
   `react-router` / `react-router-dom` to your extension's own dependencies and
-  bundle them; do not rely on the host providing them.
+  bundle them, at a major that supports React 19: react-router 5 does not.
 
 ## `Renderer.Component.List` removed
 
@@ -1773,7 +1851,8 @@ restarted once.
       shared fetch types are structural now, so `const r: Response = await
       fetch(...)` no longer compiles.
 - [ ] Replace any `react-router` / `react-router-dom` usage imported via the
-      Freelens bundle — the `ReactRouter*` re-exports were removed (see
+      Freelens bundle, a `Link` with `Renderer.Component.MaybeLink` — the
+      `ReactRouter*` re-exports were removed (see
       [Routing: `react-router` re-exports removed](#routing-react-router-re-exports-removed)).
 - [ ] Replace any `Renderer.Component.List` usage with your own table — it was
       removed along with the `react-table` dependency behind it (see
@@ -1800,8 +1879,9 @@ restarted once.
       renderer build.
 - [ ] Move mobx decorators to standard decorators: drop
       `experimentalDecorators`, write `@observable accessor`, replace the
-      namespaced annotations and `comparer.*` with their named exports, and
-      remove `makeObservable(this)` (see
+      namespaced annotations and `comparer.*` with their named exports,
+      remove `makeObservable(this)`, and read `this.props` of an `@observer`
+      class component only in its `render()` (see
       [MobX 7 and mobx-react 10](#mobx-7-and-mobx-react-10-standard-decorators-only)).
 - [ ] Give main, renderer and common code a directory and a `tsconfig.json`
       each, so the type check catches the next Node API in renderer code (see
