@@ -1424,12 +1424,39 @@ If your extension used them, migrate one of two ways:
   `protected` injection bag, not API, and it may change in any release (see
   [Dependency injection: bundle your own](#dependency-injection-bundle-your-own)).
 
+  A `<Link>` in your markup becomes **`Renderer.Component.MaybeLink`**, the
+  link the host's own details views render. It takes the same `to` as
+  `navigate`, a path string or a location object, follows it through the
+  host's history on a plain click, and renders its children without a link
+  when `to` is empty or missing. For a link to an object's details,
+  `Renderer.Navigation` builds the `to`:
+  - **`getDetailsUrl(selfLink)`** returns the search string that opens the
+    details panel of the object at `selfLink`, on the current page.
+  - **`getMaybeDetailsUrl(selfLink?)`** does the same, and returns `""` when
+    `selfLink` is empty, so `MaybeLink` renders plain text for an object it
+    cannot link to.
+  - **`showDetails(selfLink)`** opens the details panel from code, for a click
+    handler rather than a link.
+
+  ```diff
+  -import { Link } from "react-router-dom";
+  +const { MaybeLink } = Renderer.Component;
+  +const { getMaybeDetailsUrl } = Renderer.Navigation;
+
+  -<Link to={getDetailsUrl(object.selfLink)}>{object.getName()}</Link>
+  +<MaybeLink to={getMaybeDetailsUrl(object.selfLink)}>{object.getName()}</MaybeLink>
+  ```
+
   Route schemas keep the same `react-router` v5 dialect (`/:param?` optionals,
   inline `/:param(regex)` patterns), matched by the in-house `matchPath`, so
   existing path strings are unchanged.
-- **Or bundle your own `react-router`.** If you must keep react-router JSX, add
+- **Or bundle your own `react-router`, for an extension that renders its own
+  router.** The host renders no react-router `<Router>`, so a bundled `Link`,
+  `Route` or `useHistory` has no router context in a page or a details panel
+  the host renders, and throws when it renders there. This route is only for an extension that
+  mounts a `<Router>` of its own around everything that uses it. Add
   `react-router` / `react-router-dom` to your extension's own dependencies and
-  bundle them; do not rely on the host providing them.
+  bundle them, at a major that supports React 19: react-router 5 does not.
 
 ## `Renderer.Component.List` removed
 
@@ -1773,7 +1800,8 @@ restarted once.
       shared fetch types are structural now, so `const r: Response = await
       fetch(...)` no longer compiles.
 - [ ] Replace any `react-router` / `react-router-dom` usage imported via the
-      Freelens bundle — the `ReactRouter*` re-exports were removed (see
+      Freelens bundle, a `Link` with `Renderer.Component.MaybeLink` — the
+      `ReactRouter*` re-exports were removed (see
       [Routing: `react-router` re-exports removed](#routing-react-router-re-exports-removed)).
 - [ ] Replace any `Renderer.Component.List` usage with your own table — it was
       removed along with the `react-table` dependency behind it (see

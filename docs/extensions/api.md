@@ -580,8 +580,10 @@ general form and a component that requires particular names is not assignable
 to it.
 
 **Failure mode.** `import { Link } from "react-router-dom"` through the Freelens
-bundle does not resolve. An extension that wants react-router JSX bundles its
-own. A relative pathname passed to `Renderer.Navigation.navigate` does not
+bundle does not resolve. A link in the markup is `Renderer.Component.MaybeLink`.
+An extension that wants react-router JSX bundles its own and mounts its own
+router around it: the host renders no react-router `<Router>`, so a bundled
+`Link` in a page the host renders has no router context. A relative pathname passed to `Renderer.Navigation.navigate` does not
 fail: it lands on a page that depends on the current URL, so it works from one
 page and goes wrong from another, without an error. The host logs a warning
 naming the location, in every build, which is the only sign of it.
