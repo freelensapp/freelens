@@ -1915,6 +1915,11 @@ restarted once.
       component typed for another kind or version than its registration's
       fails the type check (see
       [Registering things](#registering-things-declarative-fields)).
+- [ ] List in `customResources` the model class of every custom resource your
+      extension presents with a sidebar entry and pages of its own, so the
+      Custom Resources tree stops listing it a second time; leave out the
+      models you only decorate (see
+      [Registering things](#registering-things-declarative-fields)).
 - [ ] Load your extension in a v2 build and verify its UI renders through the
       runtime global.
 
