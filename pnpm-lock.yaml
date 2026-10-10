@@ -342,8 +342,8 @@ catalogs:
       specifier: 4.0.0
       version: 4.0.0
     electron-vite:
-      specifier: 6.0.0-beta.5
-      version: 6.0.0-beta.5
+      specifier: 6.0.0-beta.7
+      version: 6.0.0-beta.7
     electron-window-state:
       specifier: 5.0.3
       version: 5.0.3
@@ -818,7 +818,7 @@ importers:
         version: 26.17.0(dmg-builder@26.17.0)(supports-color@8.1.1)
       electron-vite:
         specifier: 'catalog:'
-        version: 6.0.0-beta.5(supports-color@8.1.1)(vite@8.3.4(@types/node@24.19.1)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.105.1)(sass@1.105.1)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
+        version: 6.0.0-beta.7(supports-color@8.1.1)(vite@8.3.4(@types/node@24.19.1)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.105.1)(sass@1.105.1)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0))
       playwright:
         specifier: 'catalog:'
         version: 1.64.0
@@ -5246,8 +5246,8 @@ packages:
   electron-to-chromium@1.5.267:
     resolution: {integrity: sha512-0Drusm6MVRXSOJpGbaSVgcQsuB4hEkMpHXaVstcPmhu5LIedxs1xNK/nIxmQIU/RPC0+1/o0AVZfBTkTNJOdUw==}
 
-  electron-vite@6.0.0-beta.5:
-    resolution: {integrity: sha512-e3C3tpwpyFPl6IHq+8hgqIroX8tZGjbqWOyL325el0MYqF4JYc13MtPIqF2tg0zn4xp4Q0ctHNYIrHruz58g2g==}
+  electron-vite@6.0.0-beta.7:
+    resolution: {integrity: sha512-1ZrQRC4oqNehDxv0gkFURYIDRpwTEXc+nSfMiAvW4FV5uV+LMzVFd/pBa2Wo9wx8Rg6rDx+EZsedLFtJlloyiA==}
     engines: {node: ^20.19.0 || >=22.12.0}
     hasBin: true
     peerDependencies:
@@ -9879,7 +9879,7 @@ snapshots:
 
   electron-to-chromium@1.5.267: {}
 
-  electron-vite@6.0.0-beta.5(supports-color@8.1.1)(vite@8.3.4(@types/node@24.19.1)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.105.1)(sass@1.105.1)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0)):
+  electron-vite@6.0.0-beta.7(supports-color@8.1.1)(vite@8.3.4(@types/node@24.19.1)(esbuild@0.28.2)(jiti@2.7.0)(less@4.2.2(supports-color@8.1.1))(sass-embedded@1.105.1)(sass@1.105.1)(stylus@0.62.0(supports-color@8.1.1))(terser@5.39.0)):
     dependencies:
       '@babel/core': 7.29.7(supports-color@8.1.1)
       '@babel/plugin-transform-arrow-functions': 7.29.7(@babel/core@7.29.7(supports-color@8.1.1))
