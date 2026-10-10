@@ -8,7 +8,11 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import { extensionRegistratorInjectionToken } from "../../../extensions/extension-loader/extension-registrator-injection-token";
 import extensionShouldBeEnabledForClusterFrameInjectable from "../../extension-loader/extension-should-be-enabled-for-cluster-frame.injectable";
-import { describeCustomResourceRegistration, getCustomResourcesOfRegistration } from "./custom-resource-registration";
+import {
+  describeCustomResourceRegistration,
+  getCustomResourceKey,
+  getCustomResourcesOfRegistration,
+} from "./custom-resource-registration";
 import { extensionCustomResourceInjectionToken } from "./extension-custom-resource-injection-token";
 
 import type { LensRendererExtension } from "../../../extensions/lens-renderer-extension";
@@ -39,7 +43,7 @@ const extensionCustomResourceRegistratorInjectable = getInjectable({
       extension.customResources.forEach((registration, index) => {
         try {
           for (const resource of getCustomResourcesOfRegistration(registration)) {
-            resources.set(`${resource.group}/${resource.plural}`, resource);
+            resources.set(getCustomResourceKey(resource.group, resource.plural), resource);
           }
         } catch (error) {
           logger.error(

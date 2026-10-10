@@ -18,6 +18,7 @@ const makeSidebarItem = (overrides: Partial<SidebarItemDeclaration> & { id: stri
   onClick: noop,
   isActive: computed(() => false),
   isVisible: computed(() => true),
+  isHiddenInTree: computed(() => false),
   children: [],
   ...overrides,
 });

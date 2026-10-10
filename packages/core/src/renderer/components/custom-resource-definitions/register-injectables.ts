@@ -6,6 +6,7 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import customResourcesPresentedByExtensionsInjectable from "./custom-resources-presented-by-extensions.injectable";
 import customResourceDefinitionsInjectable from "./definitions.injectable";
 import extensionCustomResourceRegistratorInjectable from "./extension-custom-resource-registrator.injectable";
 import customResourceDefinitionGroupsSidebarItemsComputedInjectable from "./groups-sidebar-items-computed.injectable";
@@ -45,6 +46,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(customResourceDefinitionsSidebarItemInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(customResourcesPresentedByExtensionsInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

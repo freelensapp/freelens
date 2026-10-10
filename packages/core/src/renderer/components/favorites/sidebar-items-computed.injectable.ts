@@ -58,6 +58,7 @@ const favoritesSidebarItemsComputedInjectable = getInjectable({
             onClick: originalItem.onClick,
             isActive: originalItem.isActive,
             isVisible: originalItem.isVisible,
+            isHiddenInTree: originalItem.isHiddenInTree,
             getIcon: originalItem.getIcon,
             orderNumber: fav.order,
             children: originalItem.children,

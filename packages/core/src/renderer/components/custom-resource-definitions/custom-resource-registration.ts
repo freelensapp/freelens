@@ -31,6 +31,9 @@ export interface RegisteredCustomResource {
   plural: string;
 }
 
+/** The key a custom resource is told apart by: its group and plural. */
+export const getCustomResourceKey = (group: string, plural: string) => `${group}/${plural}`;
+
 const groupOfApiVersion = (apiVersion: string) => {
   const separator = apiVersion.indexOf("/");
 

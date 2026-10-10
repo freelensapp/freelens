@@ -19,6 +19,8 @@ import discoveredCustomResourcesInjectable, {
   inPreferredVersions,
 } from "../custom-resources/discovered-custom-resources.injectable";
 import customResourcesSidebarItemInjectable from "../custom-resources/sidebar-item.injectable";
+import { getCustomResourceKey } from "./custom-resource-registration";
+import customResourcesPresentedByExtensionsInjectable from "./custom-resources-presented-by-extensions.injectable";
 import customResourceDefinitionsInjectable from "./definitions.injectable";
 
 import type { SidebarItemRegistration } from "@freelensapp/cluster-sidebar";
@@ -43,6 +45,7 @@ const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectab
     const navigateToCustomResources = di.inject(navigateToCustomResourcesInjectable);
     const customResourcesRoute = di.inject(customResourcesRouteInjectable);
     const pathParameters = di.inject(routePathParametersInjectable, customResourcesRoute);
+    const customResourcesPresentedByExtensions = di.inject(customResourcesPresentedByExtensionsInjectable);
 
     const toCustomResourceGroupToSidebarItems = (
       [group, resources]: [string, SidebarCustomResource[]],
@@ -78,6 +81,12 @@ const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectab
               group,
               apiName: pluralName,
             }),
+            // An enabled extension that registered the resource in its
+            // `customResources` lists it under its own entry. The item stays
+            // registered, so the command palette still reaches the host's list.
+            isHiddenInTree: computed(() =>
+              customResourcesPresentedByExtensions.get().has(getCustomResourceKey(group, pluralName)),
+            ),
             orderNumber: index,
           }),
           injectionToken: sidebarItemInjectionToken,
