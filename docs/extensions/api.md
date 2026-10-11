@@ -899,7 +899,11 @@ The environment is a `Record<string, string>` to pass as `env` to
 gets only Freelens' own directories, never one derived from a preference, so
 a tool run by name through it is not necessarily the binary its function
 returns: run kubectl and helm by their paths. `PATH` has no empty entry, which
-POSIX would read as the current directory. The user's shell environment is
+POSIX would read as the current directory. The variable is under the key
+`PATH` and under no other spelling of it, on Windows too, where the
+environment the host starts from spells it `Path`: an extension reads and
+extends `env.PATH` on every platform, with `node:path`'s `delimiter` between
+entries. The user's shell environment is
 what a login shell of the user's shell setting has, and Freelens' own
 environment when it cannot be read or on Windows.
 

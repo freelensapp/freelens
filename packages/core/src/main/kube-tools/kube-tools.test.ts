@@ -3,6 +3,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { execFile } from "node:child_process";
+import os from "node:os";
+import path from "node:path";
+import { promisify } from "node:util";
 import { describe, expect, it } from "vitest";
 import { composeKubeToolsEnvironment } from "./kube-tools";
 
@@ -28,15 +32,48 @@ describe("composeKubeToolsEnvironment", () => {
     expect(env.PATH).toBe("/some-kubectl-directory");
   });
 
-  it("extends the PATH variable Windows spells Path, rather than adding a second one", () => {
+  it("extends the variable Windows spells Path under the one key PATH", () => {
     const env = composeKubeToolsEnvironment({
-      baseEnvironment: { Path: "C:\\Windows" },
+      baseEnvironment: { Path: "C:\\Windows", SystemRoot: "C:\\Windows" },
       tools: tools({ pathSuffix: ["C:\\Freelens\\resources"] }),
       isWindows: true,
     });
 
-    expect(env).toMatchObject({ Path: "C:\\Windows;C:\\Freelens\\resources" });
-    expect(env.PATH).toBeUndefined();
+    expect(env.PATH).toBe("C:\\Windows;C:\\Freelens\\resources");
+    expect(Object.keys(env).filter((key) => key.toUpperCase() === "PATH")).toEqual(["PATH"]);
+  });
+
+  it("keeps the value of PATH itself when Windows' environment has more than one spelling", () => {
+    const env = composeKubeToolsEnvironment({
+      baseEnvironment: { Path: "C:\\Other", PATH: "C:\\Windows" },
+      tools: tools(),
+      isWindows: true,
+    });
+
+    expect(Object.entries(env).filter(([key]) => key.toUpperCase() === "PATH")).toEqual([["PATH", "C:\\Windows"]]);
+  });
+
+  /**
+   * On Windows, `process.env` itself is case-insensitive and its copy is not,
+   * which is what the two tests above emulate. This one runs on the real
+   * thing: Freelens' own environment, as the user's shell environment is on
+   * Windows, passed to a child process.
+   */
+  it("gives a child process the PATH it composes, from this platform's own environment", async () => {
+    const env = composeKubeToolsEnvironment({
+      baseEnvironment: process.env,
+      tools: tools({ pathSuffix: [path.join(os.tmpdir(), "some-bundled-directory")] }),
+      isWindows: process.platform === "win32",
+    });
+
+    expect(Object.keys(env).filter((key) => key.toUpperCase() === "PATH")).toEqual(["PATH"]);
+
+    const { stdout } = await promisify(execFile)(process.execPath, ["-e", "process.stdout.write(process.env.PATH)"], {
+      env: env as Record<string, string>,
+    });
+
+    expect(stdout).toBe(env.PATH);
+    expect(stdout.split(path.delimiter).at(-1)).toBe(path.join(os.tmpdir(), "some-bundled-directory"));
   });
 
   it("does not modify the environment it is given", () => {

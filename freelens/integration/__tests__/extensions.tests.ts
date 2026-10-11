@@ -3,13 +3,27 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { execFile } from "node:child_process";
 import { existsSync } from "node:fs";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
-import { afterEach, beforeAll, beforeEach, describe, it } from "vitest";
+import { promisify } from "node:util";
+import { afterEach, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import * as utils from "../helpers/utils";
 
 import type { ElectronApplication, Page } from "playwright";
+
+/** The part of the main process's extension API global this test calls. */
+interface MainShellGlobal {
+  FreelensExtensionApi: {
+    Main: {
+      Shell: {
+        getKubectlPath(): Promise<string>;
+        getEnvironment(): Promise<Record<string, string>>;
+      };
+    };
+  };
+}
 
 // The in-repo contract fixture, installed as an unpacked directory: the
 // installer registers it in place, so what the application loads is exactly
@@ -74,6 +88,30 @@ describe("extensions page tests", () => {
       // with its hooks, so it appears only if the renderer entry ran against the
       // host's React.
       await window.waitForSelector('[data-testid="fixture-status-bar-item"]', { timeout: 60_000 });
+    },
+    10 * 60 * 1000,
+  );
+
+  // What `Main.Shell` hands a main-process extension in the packaged
+  // application, on each platform the integration tests run on. On Windows the
+  // environment Freelens starts from spells the variable `Path`, and the record
+  // must still carry it under the one key `PATH`.
+  it(
+    "hands main-process extensions an environment with one PATH key, which runs the host's kubectl",
+    async () => {
+      const { kubectlPath, env } = await app.evaluate(async () => {
+        const { Shell } = (globalThis as unknown as MainShellGlobal).FreelensExtensionApi.Main;
+
+        return { kubectlPath: await Shell.getKubectlPath(), env: await Shell.getEnvironment() };
+      });
+
+      expect(Object.keys(env).filter((key) => key.toUpperCase() === "PATH")).toEqual(["PATH"]);
+      // The bundled binaries directory, last, as the fallback.
+      expect(env.PATH.split(path.delimiter).at(-1)).toBe(path.dirname(kubectlPath));
+
+      const { stdout } = await promisify(execFile)(kubectlPath, ["version", "--client", "--output", "json"], { env });
+
+      expect(JSON.parse(stdout)).toHaveProperty("clientVersion.gitVersion");
     },
     10 * 60 * 1000,
   );

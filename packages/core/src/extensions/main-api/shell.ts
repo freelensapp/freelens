@@ -107,7 +107,9 @@ export async function getHelmPath(clusterId?: ClusterId): Promise<string> {
  *
  * `PATH` gets only Freelens' own directories, never one derived from a
  * preference: run kubectl and helm by the paths {@link getKubectlPath} and
- * {@link getHelmPath} return, not by name.
+ * {@link getHelmPath} return, not by name. It is under the key `PATH` and no
+ * other spelling of it, on Windows too, where the host's own environment
+ * spells it `Path`.
  */
 export function getEnvironment(): Promise<Record<string, string>>;
 /**
@@ -121,7 +123,9 @@ export function getEnvironment(): Promise<Record<string, string>>;
  *
  * `PATH` gets only Freelens' own directories, never one derived from a
  * preference: run kubectl and helm by the paths {@link getKubectlPath} and
- * {@link getHelmPath} return, not by name.
+ * {@link getHelmPath} return, not by name. It is under the key `PATH` and no
+ * other spelling of it, on Windows too, where the host's own environment
+ * spells it `Path`.
  *
  * Only reaching the cluster through Freelens is promised, not the server
  * address `KUBECONFIG` names or the content of the file. The files exist while
