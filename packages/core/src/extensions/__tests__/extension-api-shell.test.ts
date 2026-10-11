@@ -30,6 +30,7 @@ describe("Main.Shell", () => {
   let di: DiContainer;
   let cluster: Cluster;
   let kubectlPath: string;
+  let bundleUsable: boolean;
   let createKubectl: MockedFunction<(version: string) => Kubectl>;
   let ensurePaths: MockedFunction<KubeconfigManager["ensurePaths"]>;
   let modifyTerminalShellEnv: MockedFunction<() => never>;
@@ -64,10 +65,24 @@ describe("Main.Shell", () => {
     di.override(getClusterByIdInjectable, () => (id) => (id === cluster.id ? cluster : undefined));
 
     kubectlPath = "/some-directory-for-user-data/binaries/kubectl/1.33.4/kubectl";
+    bundleUsable = true;
     createKubectl = vi.fn(
       () =>
         ({
-          getPath: async (options?: KubectlProgressOptions) => {
+          // What `Kubectl.getPath` does, as far as its callers can tell.
+          getPath: async (options?: KubectlProgressOptions, { whenBundleUnusable = "use-path" } = {}) => {
+            if (!bundleUsable) {
+              const problem = "The bundled kubectl v1.34.1 is not usable, so kubectl v1.33.4 was not prepared";
+
+              if (whenBundleUnusable === "reject") {
+                throw new Error(`${problem} and Freelens has no kubectl of its own to run`);
+              }
+
+              options?.onProblem?.(`${problem} - using whichever kubectl is on PATH`);
+
+              return "kubectl";
+            }
+
             options?.onDownloadProgress?.({ transferred: 10, total: 10 });
             options?.onPhase?.("Verifying kubectl v1.33.4 ...");
 
@@ -214,19 +229,26 @@ describe("Main.Shell", () => {
       expect(modifyTerminalShellEnv).not.toHaveBeenCalled();
     });
 
-    it("rejects a bare kubectl name, which is what an unusable bundle leaves", async () => {
-      kubectlPath = "kubectl";
+    it("rejects getKubectlPath when the bundled kubectl is not usable, rather than reporting it goes on", async () => {
+      const onProblem = vi.fn();
 
-      await expect(Main.Shell.getKubectlPath(cluster.id)).rejects.toThrow("is not usable");
+      bundleUsable = false;
+
+      await expect(Main.Shell.getKubectlPath(cluster.id, { onProblem })).rejects.toThrow(
+        "Freelens has no kubectl of its own to run",
+      );
+      expect(onProblem).not.toHaveBeenCalled();
     });
 
-    it("leaves no empty entry on PATH when kubectl is a bare name", async () => {
-      kubectlPath = "kubectl";
+    it("leaves kubectl to the user's PATH in getEnvironment when the bundled kubectl is not usable, and says so", async () => {
+      const problems: string[] = [];
 
-      const env = await Main.Shell.getEnvironment(cluster.id);
+      bundleUsable = false;
 
-      expect(env.PATH.split(":")).not.toContain("");
-      expect(env.PATH.split(":")).not.toContain(".");
+      const env = await Main.Shell.getEnvironment(cluster.id, { onProblem: (p) => problems.push(p) });
+
+      expect(problems).toEqual([expect.stringContaining("using whichever kubectl is on PATH")]);
+      expect(env.PATH.split(":")).toEqual(["/home/some-user/bin", "/usr/bin", "/some-bundled-binaries-directory"]);
     });
 
     it.each([

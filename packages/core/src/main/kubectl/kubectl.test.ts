@@ -366,6 +366,21 @@ describe("kubectl", () => {
       expect(problems).toEqual([expect.stringContaining("using whichever kubectl is on PATH")]);
     });
 
+    it("rejects on an unusable bundle when asked to, without claiming to go on with PATH", async () => {
+      const problems: string[] = [];
+
+      await expect(
+        new Kubectl(dependencies, pinnedVersion).getPath(
+          { onProblem: (p) => problems.push(p) },
+          { whenBundleUnusable: "reject" },
+        ),
+      ).rejects.toThrow(
+        `The bundled kubectl v${pinnedVersion} is not usable, so kubectl v${pinnedVersion} was not prepared ` +
+          "and Freelens has no kubectl of its own to run",
+      );
+      expect(problems).toEqual([]);
+    });
+
     describe("with a usable bundle of another version", () => {
       beforeEach(async () => {
         await fs.mkdir(path.dirname(bundledPath()), { recursive: true });

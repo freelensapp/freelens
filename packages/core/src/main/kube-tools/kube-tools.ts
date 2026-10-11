@@ -41,12 +41,6 @@ export interface KubeTools {
   readonly pathSuffix: readonly string[];
 }
 
-/**
- * Whether a kubectl path is the bare binary name, to be looked up on `PATH`,
- * rather than a path.
- */
-export const isBareBinaryName = (binaryPath: string) => !/[\\/]/.test(binaryPath);
-
 /** What a process run against a cluster through Freelens needs. */
 export interface KubeToolsClusterAccess {
   /** The proxy kubeconfig, exported as `KUBECONFIG`. */

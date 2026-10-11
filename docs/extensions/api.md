@@ -913,8 +913,10 @@ the variables of another.
 the callbacks the cluster terminal shows its status from, all optional:
 `onPhase(message)` for a phase that is about to begin and may take a while,
 `onDownloadProgress({ transferred, total? })` as the bytes arrive, and
-`onProblem(message)` for a problem preparing the version-matched kubectl,
-stated with its consequence. Their type is `Main.Shell.KubectlDownloadOptions`.
+`onProblem(message)` for a problem preparing the version-matched kubectl that
+the call goes on from, stated with what it goes on with. A problem the call
+does not go on from rejects it instead, and is not reported through
+`onProblem`. Their type is `Main.Shell.KubectlDownloadOptions`.
 The host adds no interface of its own for an extension's call: where the
 progress goes, an extension's renderer, a tool's output or the log, is the
 extension's choice. Calls that prepare the same kubectl at once, from the
@@ -939,7 +941,8 @@ cluster with the id and when the cluster is not connected: the host does not
 connect it on the extension's behalf, which could start an authentication flow
 the user did not ask for. `getKubectlPath` for a cluster also rejects when the
 bundled kubectl is not usable, so that Freelens has no kubectl of its own to
-run; `getEnvironment` then leaves the lookup to the user's `PATH`. A failed
+run; `getEnvironment` then leaves the lookup to the user's `PATH`, and says so
+through `onProblem`. A failed
 download does not reject: it is reported through `onProblem`, and the call
 resolves with the bundled kubectl, as the terminal does.
 

@@ -10,7 +10,7 @@ import getClusterByIdInjectable from "../../features/cluster/storage/common/get-
 import kubeconfigManagerInjectable from "../kubeconfig-manager/kubeconfig-manager.injectable";
 import createKubectlInjectable from "../kubectl/create-kubectl.injectable";
 import computeUserShellEnvironmentInjectable from "./compute-user-shell-environment.injectable";
-import { composeKubeToolsEnvironment, isBareBinaryName } from "./kube-tools";
+import { composeKubeToolsEnvironment } from "./kube-tools";
 import resolveKubeToolsInjectable from "./resolve-kube-tools.injectable";
 
 import type { Cluster } from "../../common/cluster/cluster";
@@ -100,15 +100,11 @@ const kubeToolsForExtensionsInjectable = getInjectable({
           return resolveKubeTools.withoutCluster().kubectlPath;
         }
 
-        const { kubectlPath } = await toolsForCluster(connectedCluster(clusterId), options);
-
-        if (isBareBinaryName(kubectlPath)) {
-          throw new Error(
-            "The kubectl bundled with Freelens is not usable, so Freelens has no kubectl of its own for the cluster",
-          );
-        }
-
-        return kubectlPath;
+        // The same kubectl as `resolveKubeTools.forCluster`, except that an
+        // unusable bundle rejects rather than leaving a bare name to `PATH`.
+        return createKubectl(connectedCluster(clusterId).version.get()).getPath(options, {
+          whenBundleUnusable: "reject",
+        });
       },
       getHelmPath: async (clusterId) => {
         if (clusterId !== undefined) {

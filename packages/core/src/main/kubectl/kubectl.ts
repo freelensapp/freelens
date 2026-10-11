@@ -268,21 +268,34 @@ export class Kubectl {
    * downloading is turned off, otherwise the version-matched one, downloaded
    * when it is missing, and the bundled one when that fails.
    *
-   * @returns an absolute path, or the bare binary name when the bundled kubectl
-   * is not usable, which leaves the lookup to `PATH`
+   * @param whenBundleUnusable what to do when the bundled kubectl is not
+   * usable, so that no kubectl is prepared: `"use-path"` returns the bare
+   * binary name, for a caller that leaves the lookup to `PATH`, and `"reject"`
+   * rejects, for a caller that must return a kubectl of Freelens' own
+   * @returns an absolute path, or the bare binary name as above
    */
-  public getPath = async (opts?: KubectlProgressOptions): Promise<string> => {
+  public getPath = async (
+    opts?: KubectlProgressOptions,
+    { whenBundleUnusable = "use-path" }: { whenBundleUnusable?: "use-path" | "reject" } = {},
+  ): Promise<string> => {
     if (this.dependencies.state.downloadKubectlBinaries === false) {
       return this.getPathFromPreferences();
     }
 
-    // return binary name if bundled path is not functional
-    if (!(await this.checkBinary(this.getBundledPath(), false))) {
-      Kubectl.invalidBundle = true;
-      opts?.onProblem?.(
+    // Checked on every call, so that a bundle that works again is used again.
+    Kubectl.invalidBundle = !(await this.checkBinary(this.getBundledPath(), false));
+
+    if (Kubectl.invalidBundle) {
+      const problem =
         `The bundled kubectl v${this.dependencies.bundledKubectlVersion} is not usable, so kubectl ` +
-          `v${this.kubectlVersion} was not prepared - using whichever kubectl is on PATH`,
-      );
+        `v${this.kubectlVersion} was not prepared`;
+
+      if (whenBundleUnusable === "reject") {
+        // The rejection is the report: the caller does not go on.
+        throw new Error(`${problem} and Freelens has no kubectl of its own to run`);
+      }
+
+      opts?.onProblem?.(`${problem} - using whichever kubectl is on PATH`);
 
       return this.dependencies.getBasenameOfPath(this.getBundledPath());
     }
@@ -463,11 +476,13 @@ export class Kubectl {
   }
 
   protected async prepareKubectl(opts: KubectlProgressOptions): Promise<boolean> {
+    // Set by `getPath`, which reports what it does about an unusable bundle
+    // itself; what any other caller does next is that caller's to say.
     if (Kubectl.invalidBundle) {
       this.dependencies.logger.error(`Detected invalid bundle binary, returning ...`);
       opts.onProblem?.(
-        `The bundled kubectl v${this.dependencies.bundledKubectlVersion} is not usable, so kubectl ` +
-          `v${this.kubectlVersion} was not prepared - using whichever kubectl is on PATH`,
+        `The bundled kubectl v${this.dependencies.bundledKubectlVersion} was found not usable, so kubectl ` +
+          `v${this.kubectlVersion} was not prepared`,
       );
 
       return false;

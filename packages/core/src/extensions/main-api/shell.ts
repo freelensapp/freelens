@@ -30,8 +30,11 @@ export interface KubectlDownloadOptions {
   /** The download progress, called as the bytes arrive. */
   onDownloadProgress?: (progress: KubectlDownloadProgress) => void;
   /**
-   * A problem preparing the version-matched kubectl, with its consequence:
-   * the call goes on with the bundled kubectl and still resolves.
+   * A problem preparing the version-matched kubectl that the call goes on
+   * from, with what it goes on with: the bundled kubectl, or, for
+   * {@link getEnvironment} when the bundled kubectl is not usable, whichever
+   * kubectl is on `PATH`. A problem the call does not go on from rejects it
+   * instead and is not reported here.
    */
   onProblem?: (message: string) => void;
 }
