@@ -165,7 +165,7 @@ const ExternalKubeJsonApi = Object.assign(
     reqInit?: FetchRequestInit,
   ) => InternalKubeJsonApi,
   {
-    forCluster: asLazyInjectedForExtensionApi(createKubeJsonApiForClusterInjectable),
+    forCluster: asLazyInjectedFunctionForExtensionApi(createKubeJsonApiForClusterInjectable),
   },
 );
 
