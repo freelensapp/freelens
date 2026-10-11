@@ -9,10 +9,13 @@ import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
+import * as lockFile from "proper-lockfile";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { Kubectl } from "./kubectl";
 
 import type { Logger } from "@freelensapp/logger";
+
+import type { MockedFunction } from "vitest";
 
 import type { DownloadProgress } from "../fetch/download-binary.injectable";
 import type { KubectlDependencies } from "./kubectl";
@@ -217,6 +220,78 @@ describe("kubectl", () => {
         expect(await new Kubectl(dependencies, pinnedVersion).ensureKubectl({ onProblem })).toBe(true);
 
         expect(problems).toEqual([]);
+      });
+    });
+
+    describe("when the same version is prepared more than once at a time", () => {
+      let downloadBinary: MockedFunction<KubectlDependencies["downloadBinary"]>;
+      let otherVersionBundled: KubectlDependencies;
+
+      beforeEach(() => {
+        downloadBinary = vi.fn(async () => ({ callWasSuccessful: true, response: downloaded }) as const);
+        dependencies.execFile = async () => ({
+          callWasSuccessful: true,
+          response: JSON.stringify({ clientVersion: { gitVersion: `v${pinnedVersion}` } }),
+        });
+        otherVersionBundled = { ...dependencies, downloadBinary, bundledKubectlVersion: "9.9.8" };
+      });
+
+      it("downloads once, and every caller in the process gets the version-matched kubectl", async () => {
+        const problems: string[] = [];
+        const onProblem = (message: string) => problems.push(message);
+
+        expect(
+          await Promise.all([
+            new Kubectl(otherVersionBundled, pinnedVersion).ensureKubectl({ onProblem }),
+            new Kubectl(otherVersionBundled, pinnedVersion).ensureKubectl({ onProblem }),
+          ]),
+        ).toEqual([true, true]);
+        expect(downloadBinary).toHaveBeenCalledTimes(1);
+        expect(problems).toEqual([]);
+      });
+
+      it("reports a failed preparation to every caller waiting on it", async () => {
+        const problems: string[] = [];
+
+        downloadBinary.mockResolvedValue({ callWasSuccessful: false, error: "Not Found" });
+
+        expect(
+          await Promise.all([
+            new Kubectl(otherVersionBundled, pinnedVersion).ensureKubectl({
+              onProblem: (p) => problems.push(`a: ${p}`),
+            }),
+            new Kubectl(otherVersionBundled, pinnedVersion).ensureKubectl({
+              onProblem: (p) => problems.push(`b: ${p}`),
+            }),
+          ]),
+        ).toEqual([false, false]);
+        expect(problems).toEqual([
+          expect.stringMatching(/^a: Failed to download kubectl v9\.9\.9/),
+          expect.stringMatching(/^b: Failed to download kubectl v9\.9\.9/),
+        ]);
+      });
+
+      it("waits for another process that holds the lock, and uses what it prepared", async () => {
+        const versionDirectory = path.join(directory, pinnedVersion);
+        const phases: string[] = [];
+
+        await fs.mkdir(versionDirectory, { recursive: true });
+
+        const releaseOtherProcess = await lockFile.lock(versionDirectory);
+        const result = new Kubectl(otherVersionBundled, pinnedVersion).ensureKubectl({
+          onPhase: (message) => phases.push(message),
+        });
+
+        await vi.waitFor(() =>
+          expect(phases).toEqual([`Waiting for another Freelens process to prepare kubectl v${pinnedVersion} ...`]),
+        );
+
+        // What the other process downloaded before it let go of the lock.
+        await fs.writeFile(binaryPath(), content);
+        await releaseOtherProcess();
+
+        expect(await result).toBe(true);
+        expect(downloadBinary).not.toHaveBeenCalled();
       });
     });
 

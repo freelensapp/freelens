@@ -915,10 +915,12 @@ the callbacks the cluster terminal shows its status from, all optional:
 stated with its consequence. Their type is `Main.Shell.KubectlDownloadOptions`.
 The host adds no interface of its own for an extension's call: where the
 progress goes, an extension's renderer, a tool's output or the log, is the
-extension's choice. Two calls that prepare the same kubectl at once, from the
-terminal and an extension or from two extensions, are safe: the download is
-made under a lock, and the call that does not get it goes on with the bundled
-kubectl and says so through `onProblem`.
+extension's choice. Calls that prepare the same kubectl at once, from the
+terminal and an extension, from two extensions or from two Freelens processes,
+wait for one preparation: the kubectl is downloaded once, and every call
+resolves with its outcome, the version-matched kubectl or, when the
+preparation fails, the bundled one with the problem reported to each caller.
+A call that waits for another Freelens process says so through `onPhase`.
 
 **For a cluster, the cluster is connected.** The files `KUBECONFIG` and
 `KUBECACHEDIR` name exist only while it is: a disconnect removes them, and the

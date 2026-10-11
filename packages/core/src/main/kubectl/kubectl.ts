@@ -96,6 +96,59 @@ const transientRenameErrorCodes = new Set(["EPERM", "EBUSY", "EACCES"]);
 const renameAttempts = 5;
 const renameRetryDelay = 100;
 
+/**
+ * How another Freelens process preparing the same kubectl version is waited
+ * for. Its lock is refreshed while it works and goes stale ten seconds after
+ * it dies, so the wait ends when the other process finishes or dies; the
+ * bound, about ten minutes, only covers one that hangs.
+ */
+const lockRetries = { retries: 300, factor: 1.5, minTimeout: 200, maxTimeout: 2000 };
+
+/**
+ * The reporting hooks of every caller waiting on one preparation of a kubectl
+ * version. A caller that joins late is told the phase in progress and the
+ * problems reported before it joined.
+ */
+class ProgressListeners implements KubectlProgressOptions {
+  protected readonly listeners = new Set<KubectlProgressOptions>();
+  protected readonly problems: string[] = [];
+  protected phase?: string;
+
+  add(listener: KubectlProgressOptions | undefined): () => void {
+    if (listener === undefined) {
+      return noop;
+    }
+
+    if (this.phase !== undefined) {
+      listener.onPhase?.(this.phase);
+    }
+
+    this.problems.forEach((problem) => listener.onProblem?.(problem));
+    this.listeners.add(listener);
+
+    return () => this.listeners.delete(listener);
+  }
+
+  onDownloadProgress = (progress: DownloadProgress) => {
+    this.listeners.forEach((listener) => listener.onDownloadProgress?.(progress));
+  };
+
+  onPhase = (message: string) => {
+    this.phase = message;
+    this.listeners.forEach((listener) => listener.onPhase?.(message));
+  };
+
+  onProblem = (message: string) => {
+    this.problems.push(message);
+    this.listeners.forEach((listener) => listener.onProblem?.(message));
+  };
+}
+
+interface Preparation {
+  readonly listeners: ProgressListeners;
+  readonly result: Promise<boolean>;
+}
+
 export interface KubectlDependencies {
   readonly directoryForKubectlBinaries: string;
   readonly normalizedDownloadPlatform: NormalizedPlatform;
@@ -128,6 +181,14 @@ export class Kubectl {
   protected readonly dirname: string;
 
   public static invalidBundle = false;
+
+  /**
+   * The preparations in progress in this process, by the directory of the
+   * version they prepare, so that a second caller, such as an extension while
+   * a terminal downloads, waits for the same kubectl instead of failing to
+   * get the lock the first one holds.
+   */
+  protected static readonly preparations = new Map<string, Preparation>();
 
   constructor(
     protected readonly dependencies: KubectlDependencies,
@@ -341,14 +402,62 @@ export class Kubectl {
     }
   }
 
+  /**
+   * Makes the kubectl of this version ready to run. Callers in this process
+   * share one preparation per version, and another Freelens process preparing
+   * the same version is waited for, so every caller gets the outcome of the
+   * one preparation rather than a fallback because someone else holds it.
+   *
+   * @returns whether the version-matched kubectl is ready; when it is not, the
+   * reason has been reported through `opts.onProblem`
+   */
   public async ensureKubectl(opts?: KubectlProgressOptions): Promise<boolean> {
     if (this.dependencies.state.downloadKubectlBinaries === false) {
       return true;
     }
 
+    let preparation = Kubectl.preparations.get(this.dirname);
+
+    if (preparation === undefined) {
+      const listeners = new ProgressListeners();
+      const result = this.prepareKubectl(listeners).finally(() => Kubectl.preparations.delete(this.dirname));
+
+      preparation = { listeners, result };
+      Kubectl.preparations.set(this.dirname, preparation);
+    }
+
+    const removeListener = preparation.listeners.add(opts);
+
+    try {
+      return await preparation.result;
+    } finally {
+      removeListener();
+    }
+  }
+
+  /**
+   * Takes the lock on the version directory, waiting for another process that
+   * holds it, and says so, because that wait can be as long as a download.
+   */
+  protected async lockVersionDirectory(opts: KubectlProgressOptions): Promise<() => Promise<void>> {
+    try {
+      return await lockFile.lock(this.dirname);
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException)?.code !== "ELOCKED") {
+        throw error;
+      }
+    }
+
+    this.dependencies.logger.info(`[KUBECTL]: waiting for another process to prepare kubectl ${this.kubectlVersion}`);
+    opts.onPhase?.(`Waiting for another Freelens process to prepare kubectl v${this.kubectlVersion} ...`);
+
+    return lockFile.lock(this.dirname, { retries: lockRetries });
+  }
+
+  protected async prepareKubectl(opts: KubectlProgressOptions): Promise<boolean> {
     if (Kubectl.invalidBundle) {
       this.dependencies.logger.error(`Detected invalid bundle binary, returning ...`);
-      opts?.onProblem?.(
+      opts.onProblem?.(
         `The bundled kubectl v${this.dependencies.bundledKubectlVersion} is not usable, so kubectl ` +
           `v${this.kubectlVersion} was not prepared - using whichever kubectl is on PATH`,
       );
@@ -371,7 +480,7 @@ export class Kubectl {
           `so it will not be downloaded. The bundled kubectl ${this.dependencies.bundledKubectlVersion} is used ` +
           `instead; set the "Path to kubectl binary" preference (kubectlBinariesPath) to use a different one.`,
       );
-      opts?.onProblem?.(
+      opts.onProblem?.(
         `No verified checksum is pinned for kubectl v${this.kubectlVersion} on ` +
           `${this.dependencies.normalizedDownloadPlatform}/${this.dependencies.normalizedDownloadArch}, so it was ` +
           `not downloaded - using the bundled v${this.dependencies.bundledKubectlVersion}`,
@@ -380,72 +489,88 @@ export class Kubectl {
       return false;
     }
 
+    let release: () => Promise<void>;
+
     try {
-      const release = await lockFile.lock(this.dirname);
-
-      this.dependencies.logger.debug(`Acquired a lock for ${this.kubectlVersion}`);
-      const bundled = await this.checkBundled();
-      let isValid = await this.checkBinary(this.path, !bundled);
-
-      if (!isValid && !bundled) {
-        try {
-          await this.downloadKubectl(opts);
-        } catch (error) {
-          this.dependencies.logger.error(`[KUBECTL]: failed to download kubectl`, error);
-          this.dependencies.logger.debug(`[KUBECTL]: Releasing lock for ${this.kubectlVersion}`);
-          await release();
-          opts?.onProblem?.(
-            `Failed to download kubectl v${this.kubectlVersion} (${this.reasonOf(error)}) - ` +
-              `using the bundled v${this.dependencies.bundledKubectlVersion}`,
-          );
-
-          return false;
-        }
-
-        // The longest silent stretch of the whole startup: the first `exec` of
-        // a freshly written 50+ MB binary blocks in the kernel while the OS
-        // validates it (macOS code signing, Windows real-time scanning), which
-        // is seconds to tens of seconds. Nothing here can make it shorter, so
-        // the least it can do is say what is being waited on.
-        opts?.onPhase?.(`Verifying kubectl v${this.kubectlVersion} ...`);
-        isValid = await this.checkBinary(this.path, false);
-
-        if (!isValid) {
-          this.dependencies.logger.debug(`[KUBECTL]: Releasing lock for ${this.kubectlVersion}`);
-          await release();
-          opts?.onProblem?.(
-            `The downloaded kubectl v${this.kubectlVersion} did not run properly - ` +
-              `using the bundled v${this.dependencies.bundledKubectlVersion}`,
-          );
-
-          return false;
-        }
-      }
-
-      if (!isValid) {
-        this.dependencies.logger.debug(`[KUBECTL]: Releasing lock for ${this.kubectlVersion}`);
-        await release();
-        opts?.onProblem?.(
-          `The local kubectl v${this.kubectlVersion} did not run properly - ` +
-            `using the bundled v${this.dependencies.bundledKubectlVersion}`,
-        );
-
-        return false;
-      }
-
-      this.dependencies.logger.debug(`[KUBECTL]: Releasing lock for ${this.kubectlVersion}`);
-      await release();
-
-      return true;
+      release = await this.lockVersionDirectory(opts);
     } catch (error) {
       this.dependencies.logger.error(`[KUBECTL]: Failed to get a lock for ${this.kubectlVersion}`, error);
-      opts?.onProblem?.(
+      opts.onProblem?.(
         `Failed to get a lock for kubectl v${this.kubectlVersion} (${this.reasonOf(error)}) - ` +
           `using the bundled v${this.dependencies.bundledKubectlVersion}`,
       );
 
       return false;
     }
+
+    this.dependencies.logger.debug(`Acquired a lock for ${this.kubectlVersion}`);
+
+    try {
+      return await this.prepareLockedKubectl(opts);
+    } catch (error) {
+      this.dependencies.logger.error(`[KUBECTL]: failed to prepare kubectl ${this.kubectlVersion}`, error);
+      opts.onProblem?.(
+        `Failed to prepare kubectl v${this.kubectlVersion} (${this.reasonOf(error)}) - ` +
+          `using the bundled v${this.dependencies.bundledKubectlVersion}`,
+      );
+
+      return false;
+    } finally {
+      this.dependencies.logger.debug(`[KUBECTL]: Releasing lock for ${this.kubectlVersion}`);
+      await release().catch((error) =>
+        this.dependencies.logger.warn(`[KUBECTL]: failed to release the lock for ${this.kubectlVersion}`, error),
+      );
+    }
+  }
+
+  /** {@link prepareKubectl} under the lock of the version directory. */
+  protected async prepareLockedKubectl(opts: KubectlProgressOptions): Promise<boolean> {
+    // Another process may have put the binary in place while this one waited
+    // for the lock, in which case there is nothing left to download.
+    const bundled = await this.checkBundled();
+    let isValid = await this.checkBinary(this.path, !bundled);
+
+    if (!isValid && !bundled) {
+      try {
+        await this.downloadKubectl(opts);
+      } catch (error) {
+        this.dependencies.logger.error(`[KUBECTL]: failed to download kubectl`, error);
+        opts.onProblem?.(
+          `Failed to download kubectl v${this.kubectlVersion} (${this.reasonOf(error)}) - ` +
+            `using the bundled v${this.dependencies.bundledKubectlVersion}`,
+        );
+
+        return false;
+      }
+
+      // The longest silent stretch of the whole startup: the first `exec` of
+      // a freshly written 50+ MB binary blocks in the kernel while the OS
+      // validates it (macOS code signing, Windows real-time scanning), which
+      // is seconds to tens of seconds. Nothing here can make it shorter, so
+      // the least it can do is say what is being waited on.
+      opts.onPhase?.(`Verifying kubectl v${this.kubectlVersion} ...`);
+      isValid = await this.checkBinary(this.path, false);
+
+      if (!isValid) {
+        opts.onProblem?.(
+          `The downloaded kubectl v${this.kubectlVersion} did not run properly - ` +
+            `using the bundled v${this.dependencies.bundledKubectlVersion}`,
+        );
+
+        return false;
+      }
+    }
+
+    if (!isValid) {
+      opts.onProblem?.(
+        `The local kubectl v${this.kubectlVersion} did not run properly - ` +
+          `using the bundled v${this.dependencies.bundledKubectlVersion}`,
+      );
+
+      return false;
+    }
+
+    return true;
   }
 
   public async downloadKubectl(opts?: KubectlProgressOptions) {
