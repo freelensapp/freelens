@@ -7,6 +7,7 @@
  */
 
 import computeUserShellEnvironmentInjectable from "./compute-user-shell-environment.injectable";
+import kubeToolsForExtensionsInjectable from "./kube-tools-for-extensions.injectable";
 import resolveKubeToolsInjectable from "./resolve-kube-tools.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
@@ -14,6 +15,11 @@ import type { DiContainerForInjection } from "@ogre-tools/injectable";
 export function registerInjectables(di: DiContainerForInjection): void {
   try {
     di.register(computeUserShellEnvironmentInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(kubeToolsForExtensionsInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
