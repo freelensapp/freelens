@@ -249,7 +249,7 @@ is not reachable (see [C1](#c1-packaging-and-publication)).
 | Namespace | Members |
 | --- | --- |
 | `Common` | `App`, `Catalog`, `Clusters`, `EventBus`, `LensExtension`, `Proxy`, `Store`, `Types`, `Util`, `logger`; types `InstalledExtension`, `LensExtensionManifest`, `Logger`, `PackageJson` |
-| `Main` | `Catalog`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Power`, `Util` |
+| `Main` | `Catalog`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Power`, `Shell`, `Util` |
 | `Renderer` | `Catalog`, `Component`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Theme`, `Util` |
 
 There is no `Renderer.React`, no `Renderer.ReactDOM` and no
@@ -462,8 +462,11 @@ presenting it, one it only decorates through `kubeObjectDetailItems` or
 `kubeObjectMenuItems`, stays out of the field and in the tree.
 
 `LensMainExtension` fields: `terminalShellEnvModifier`, a function the host
-calls with the environment of every terminal it opens. There is no field for the
-application menu or the tray: both are the host's own.
+calls with the environment of every local shell it opens in a cluster's
+terminal. The
+environment `Main.Shell.getEnvironment` hands to an extension does not go
+through it ([C15](#c15-the-hosts-kubectl-helm-and-terminal-environment)). There
+is no field for the application menu or the tray: both are the host's own.
 
 `LensExtension` (both processes): `protocolHandlers`; the read-only `id`,
 `manifest`, `manifestPath`, `name`, `version`, `description`, `storeName`,
@@ -867,6 +870,79 @@ so widening one is an edit made on purpose and read in review.
 
 Deprecation within a major: mark with `@deprecated`, keep it working for the
 rest of the major, remove it in the next one.
+
+---
+
+## C15. The host's kubectl, helm and terminal environment
+
+**Guarantee.** A main entry point gets the kubectl and the helm Freelens runs,
+and the environment its terminal starts from, with the user's preferences
+applied the way Freelens applies them for itself. They are computed by the
+same function the terminals use, so the path of a binary and the directory the
+environment puts on `PATH` for it are the same binary, in every build of the
+application.
+
+**Surface.** `Main.Shell`, three functions. Each answers for a terminal opened
+outside any cluster when called without a cluster id, and for the terminal of
+the cluster when called with one:
+
+| Function | Without a cluster | For a cluster |
+| --- | --- | --- |
+| `getKubectlPath(clusterId?, options?)` | the "Path to kubectl binary" preference (`kubectlBinariesPath`), else the bundled kubectl | the preference when downloading kubectl binaries is turned off (`downloadKubectlBinaries`); otherwise the kubectl matched to the cluster's Kubernetes version in the download directory (`downloadBinariesPath`), downloaded when it is missing, else the bundled kubectl |
+| `getHelmPath(clusterId?)` | the "Path to helm binary" preference (`helmBinariesPath`), else the bundled helm | the same: helm does not depend on the cluster's version |
+| `getEnvironment(clusterId?, options?)` | the user's shell environment, with the directories of the kubectl and the helm above appended to `PATH`, so that a kubectl or helm the user installed keeps winning; `KUBECONFIG` is the user's own | the user's shell environment, with the directories of the kubectl and the helm above first on `PATH`, `KUBECONFIG` and `KUBECACHEDIR` that reach the cluster through Freelens in place of every kubeconfig variable of the user's, the cluster's proxy setting as `HTTPS_PROXY`, and `localhost` and `127.0.0.1` added to `NO_PROXY` |
+
+Every path is absolute. The environment is a `Record<string, string>` to pass as
+`env` to `node:child_process`, the explicit environment
+[`binaries.md`](./binaries.md#running-a-shipped-program) asks for: `kubectl` and
+`helm` resolve by name in it to the binaries the paths name, provided the files
+the preferences name are called `kubectl` and `helm`. `PATH` has no empty entry,
+which POSIX would read as the current directory. The user's shell environment
+is what a login shell of the user's shell setting has, and Freelens' own
+environment when it cannot be read or on Windows.
+
+The environment is not a terminal's. It has none of the variables only a
+terminal needs, such as `PTYSHELL`, `ZDOTDIR` or `TERM_PROGRAM`, and it does not
+go through any extension's `terminalShellEnvModifier`
+([C6](#c6-registration-and-the-extension-instance)), so that no extension sees
+the variables of another.
+
+`options` reports what a function that may download kubectl is doing, through
+the callbacks the cluster terminal shows its status from, all optional:
+`onPhase(message)` for a phase that is about to begin and may take a while,
+`onDownloadProgress({ transferred, total? })` as the bytes arrive, and
+`onProblem(message)` for a problem preparing the version-matched kubectl,
+stated with its consequence. Their type is `Main.Shell.KubectlDownloadOptions`.
+The host adds no interface of its own for an extension's call: where the
+progress goes, an extension's renderer, a tool's output or the log, is the
+extension's choice. Two calls that prepare the same kubectl at once, from the
+terminal and an extension or from two extensions, are safe: the download is
+made under a lock, and the call that does not get it goes on with the bundled
+kubectl and says so through `onProblem`.
+
+**For a cluster, the cluster is connected.** The files `KUBECONFIG` and
+`KUBECACHEDIR` name exist only while it is: a disconnect removes them, and the
+environment stops working until it is asked for again after the cluster
+reconnects. Only reaching the cluster through Freelens is promised, not the
+server address the kubeconfig names or the content of the file.
+
+**Two kubectl functions, two meanings.** `Common.App.Preferences.getKubectlPath()`
+is the user's preference, `undefined` when it is not set.
+`Main.Shell.getKubectlPath()` is the kubectl Freelens runs.
+
+**Failure mode.** A function called for a cluster rejects when there is no
+cluster with the id and when the cluster is not connected: the host does not
+connect it on the extension's behalf, which could start an authentication flow
+the user did not ask for. `getKubectlPath` for a cluster also rejects when the
+bundled kubectl is not usable, so that Freelens has no kubectl of its own to
+run; `getEnvironment` then leaves the lookup to the user's `PATH`. A failed
+download does not reject: it is reported through `onProblem`, and the call
+resolves with the bundled kubectl, as the terminal does.
+
+Finding the host's binaries through its directory layout, `process.resourcesPath`
+or the `binaries` directory of the user data, is not supported: the layout
+differs between builds, a development build included, and the download
+directory moves with the `downloadBinariesPath` preference.
 
 ---
 

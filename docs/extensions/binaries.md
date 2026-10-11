@@ -53,6 +53,16 @@ obligations on the author:
   starts at `/`. Derive one from `manifestPath` or from
   `getExtensionFileFolder()`.
 
+## Running the host's kubectl and helm
+
+An extension that runs kubectl or helm for the user runs the ones Freelens runs,
+which are not the extension's to ship. `Main.Shell` returns their paths and the
+environment of the terminal to pass as `env`, with and without a cluster, and
+downloads the kubectl matched to a cluster's version as the terminal does (see
+[C15](./api.md#c15-the-hosts-kubectl-helm-and-terminal-environment)). The host's
+directory layout is not part of the contract, so an extension does not look for
+the binaries there.
+
 ## How an extension finds its own files
 
 `LensExtension.manifestPath` is how an extension derives its own directory, and
@@ -92,7 +102,8 @@ An extension handles a platform it does not ship a binary for itself. Whether to
 ship every platform or fetch the tool on first use is the author's choice:
 shipping all of them makes a tarball with six copies of a tool, and fetching
 makes the extension responsible for verifying what it downloaded. The host's own
-binary download code is not exposed to extensions.
+binary download code is not exposed to extensions, beyond the kubectl
+`Main.Shell` prepares for a cluster.
 
 ## Executable mode bits
 
