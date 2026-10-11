@@ -15,6 +15,9 @@ export const FIXTURE_PROBE_URL = "https://fixture.invalid/contract-probe";
 /** The `Main.Ipc` / `Renderer.Ipc` channel main answers on, in one place so both ends agree on it. */
 export const HOST_INFO_CHANNEL = "host-info";
 
+/** The `Main.Ipc` channel main runs the host's kubectl on, for a cluster id or for none. */
+export const HOST_KUBECTL_CHANNEL = "host-kubectl";
+
 export interface HostInfo {
   platform: string;
   requestId: string;

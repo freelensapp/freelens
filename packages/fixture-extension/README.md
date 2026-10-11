@@ -37,7 +37,7 @@ proves nothing about how extensions are actually loaded.
 | Level | Where | What it can catch |
 | --- | --- | --- |
 | Types | `pnpm --filter @freelensapp/fixture-extension type:check`, run by its `build` | a re-export that disappeared from the published surface, including one that exists as a value but is not nameable as a type; a tsconfig that lets one runtime environment's APIs into another's code |
-| Unit | `packages/core/src/extensions/__tests__/fixture-extension.test.tsx` | instance identity of React and mobx, the registrators, the lifecycle, `Util.fetch` reaching the host's DI |
+| Unit | `packages/core/src/extensions/__tests__/fixture-extension.test.tsx` and `fixture-extension-main.test.ts` | instance identity of React and mobx, the registrators, the lifecycle, `Util.fetch` reaching the host's DI; in main, the host's kubectl and its environment reaching a spawned process through `Main.Shell` |
 | Integration | `freelens/integration/__tests__/extensions.tests.ts`, against the `dist/` of the `pnpm build` that the packaged application needs anyway | the packaged application installing this directory in place, accepting its `engines.freelens`, and rendering its hooked status bar item with the React it publishes |
 
 ### How the type level is wired
@@ -140,7 +140,10 @@ without a compile error:
 
 The main entry point, [`src/main/index.ts`](./src/main/index.ts), built to
 `dist/main.js`, is a skeleton for the main-side contract: a `Main.LensExtension`
-with a `Main.Ipc` handler and a Node builtin. Both entry points import
+with `Main.Ipc` handlers and a Node builtin, and
+[`src/main/host-kubectl.ts`](./src/main/host-kubectl.ts), which runs the host's
+kubectl with `node:child_process`, its path and its `env` both from
+`Main.Shell`, with a cluster and without one. Both entry points import
 [`src/common/host-info.ts`](./src/common/host-info.ts), which uses only globals
 both runtimes have.
 

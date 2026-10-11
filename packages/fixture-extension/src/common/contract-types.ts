@@ -40,6 +40,9 @@ export type FixtureMainExtension = Main.LensExtension;
 export type FixtureMainFetch = typeof Main.Util.fetch;
 export type FixtureMainNavigate = typeof Main.Navigation.navigate;
 export type FixturePowerEventListener = Main.Power.PowerEventListener;
+export type FixtureShellDownloadOptions = Main.Shell.KubectlDownloadOptions;
+export type FixtureShellDownloadProgress = Main.Shell.KubectlDownloadProgress;
+export type FixtureShellEnvironment = Awaited<ReturnType<typeof Main.Shell.getEnvironment>>;
 
 // The `K8sApi` members the source declares as a type alias and a const of the
 // same name. The bundler used to keep only the const of such a pair.
