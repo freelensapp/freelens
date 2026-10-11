@@ -29,7 +29,7 @@ import type { NormalizedPlatform } from "../../common/vars/normalized-platform.i
 import type { DownloadBinary, DownloadProgress } from "../fetch/download-binary.injectable";
 import type { GetKubectlChecksum } from "./kubectl-checksums.injectable";
 
-const initScriptVersionString = "# freelens-initscript v3";
+const initScriptVersionString = "# freelens-initscript v4";
 
 /**
  * The init scripts source the user's profile files, which may export a
@@ -102,7 +102,6 @@ export interface KubectlDependencies {
   readonly normalizedDownloadArch: "amd64" | "arm64" | "386";
   readonly kubectlBinaryName: string;
   readonly bundledKubectlBinaryPath: string;
-  readonly baseBundledBinariesDirectory: string;
   readonly state: {
     readonly kubectlBinariesPath?: string;
     readonly downloadBinariesPath?: string;
@@ -195,11 +194,15 @@ export class Kubectl {
     return this.dependencies.directoryForKubectlBinaries;
   }
 
-  public getPath = async (bundled = false): Promise<string> => {
-    if (bundled) {
-      return this.getBundledPath();
-    }
-
+  /**
+   * The kubectl to run for this cluster version: the user's own one when
+   * downloading is turned off, otherwise the version-matched one, downloaded
+   * when it is missing, and the bundled one when that fails.
+   *
+   * @returns an absolute path, or the bare binary name when the bundled kubectl
+   * is not usable, which leaves the lookup to `PATH`
+   */
+  public getPath = async (opts?: KubectlProgressOptions): Promise<string> => {
     if (this.dependencies.state.downloadKubectlBinaries === false) {
       return this.getPathFromPreferences();
     }
@@ -207,12 +210,16 @@ export class Kubectl {
     // return binary name if bundled path is not functional
     if (!(await this.checkBinary(this.getBundledPath(), false))) {
       Kubectl.invalidBundle = true;
+      opts?.onProblem?.(
+        `The bundled kubectl v${this.dependencies.bundledKubectlVersion} is not usable, so kubectl ` +
+          `v${this.kubectlVersion} was not prepared - using whichever kubectl is on PATH`,
+      );
 
       return this.dependencies.getBasenameOfPath(this.getBundledPath());
     }
 
     try {
-      if (!(await this.ensureKubectl())) {
+      if (!(await this.ensureKubectl(opts))) {
         this.dependencies.logger.error(
           `Failed to ensure kubectl ${this.kubectlVersion}, fallback to the bundled version`,
         );
@@ -226,27 +233,14 @@ export class Kubectl {
         `Failed to ensure kubectl ${this.kubectlVersion}, fallback to the bundled version`,
         err,
       );
+      opts?.onProblem?.(
+        `Failed to prepare kubectl v${this.kubectlVersion} (${this.reasonOf(err)}) - ` +
+          `using the bundled v${this.dependencies.bundledKubectlVersion}`,
+      );
 
       return this.getBundledPath();
     }
   };
-
-  public async binDir(opts?: KubectlProgressOptions) {
-    try {
-      await this.ensureKubectl(opts);
-      await this.writeInitScripts();
-
-      return this.dirname;
-    } catch (err) {
-      this.dependencies.logger.error("Failed to get binary directory", err);
-      opts?.onProblem?.(
-        `Failed to prepare the kubectl v${this.kubectlVersion} directory (${this.reasonOf(err)}) - ` +
-          `using the bundled v${this.dependencies.bundledKubectlVersion}`,
-      );
-
-      return "";
-    }
-  }
 
   /** The human-readable half of an error, without the `Error: ` prefix. */
   protected reasonOf(error: unknown): string {
@@ -362,10 +356,8 @@ export class Kubectl {
       return false;
     }
 
-    // Created before refusing below, because `binDir` writes the shell
-    // session's init scripts into this directory whether or not a download
-    // happens. Those scripts also put the bundled binaries directory on PATH,
-    // which is what makes the fallback work in a terminal.
+    // The lock below is taken on this directory, which a cluster shell also
+    // reads its init scripts from (`writeInitScripts`).
     await ensureDir(this.dirname, 0o755);
 
     // Nothing may be downloaded without a digest to check it against. One
@@ -545,11 +537,20 @@ export class Kubectl {
     }
   }
 
-  protected async writeInitScripts() {
-    const binariesDir = this.dependencies.baseBundledBinariesDirectory;
-    const kubectlPath = this.dependencies.state.downloadKubectlBinaries
-      ? this.dirname
-      : this.dependencies.getDirnameOfPath(this.getPathFromPreferences());
+  /**
+   * Writes the init scripts of a cluster shell, `.bash_set_path` and `.zlogin`,
+   * into the directory of this kubectl version, and returns that directory.
+   * The scripts source the user's profile files and then put `pathEntries` in
+   * front of the `PATH` the profile leaves, so that the profile cannot shadow
+   * the binaries the session resolved.
+   *
+   * @param pathEntries the directories to put first on `PATH`, in order, which
+   * must not be empty strings: an empty entry is read as the current directory
+   */
+  public async writeInitScripts(pathEntries: readonly string[]): Promise<string> {
+    await ensureDir(this.dirname, 0o755);
+
+    const toolsPath = pathEntries.join(":");
 
     const bashScriptPath = this.dependencies.joinPaths(this.dirname, ".bash_set_path");
     const bashScript = [
@@ -564,7 +565,7 @@ export class Kubectl {
       'elif test -f "$HOME/.profile"; then',
       '  . "$HOME/.profile"',
       "fi",
-      `export PATH="${kubectlPath}:${binariesDir}:$PATH"`,
+      `export PATH="${toolsPath}:$PATH"`,
       'export KUBECONFIG="$tempkubeconfig"',
       ...restoreKubeCacheDirectory,
       `NO_PROXY=",\${NO_PROXY:-localhost},"`,
@@ -590,14 +591,13 @@ export class Kubectl {
       'test -f "$OLD_ZDOTDIR/.zlogin" && . "$OLD_ZDOTDIR/.zlogin"',
       'test -f "$OLD_ZDOTDIR/.zshrc" && . "$OLD_ZDOTDIR/.zshrc"',
 
-      // voodoo to replace any previous occurrences of kubectl path in the PATH
-      `kubectlpath="${kubectlPath}"`,
-      `binariesDir="${binariesDir}"`,
-      'p=":$kubectlpath:"',
+      // voodoo to replace any previous occurrences of the tools path in the PATH
+      `toolspath="${toolsPath}"`,
+      'p=":$toolspath:"',
       'd=":$PATH:"',
       `d=\${d//$p/:}`,
       `d=\${d/#:/}`,
-      `export PATH="$kubectlpath:$binariesDir:\${d/%:/}"`,
+      `export PATH="$toolspath:\${d/%:/}"`,
       'export KUBECONFIG="$tempkubeconfig"',
       ...restoreKubeCacheDirectory,
       `NO_PROXY=",\${NO_PROXY:-localhost},"`,
@@ -613,6 +613,8 @@ export class Kubectl {
       fs.promises.writeFile(bashScriptPath, bashScript, { mode: 0o644 }),
       fs.promises.writeFile(zshScriptPath, zshScript, { mode: 0o644 }),
     ]);
+
+    return this.dirname;
   }
 
   protected getDownloadMirror(): string {

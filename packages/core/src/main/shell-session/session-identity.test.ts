@@ -109,8 +109,8 @@ describe("the identity of a shell session's PTY", () => {
       () => () =>
         ({
           kubectlVersion: "1.33.4",
-          binDir: async () => "/some-kubectl-binary-dir",
-          getBundledPath: () => "/some-bundled-kubectl-path",
+          getPath: async () => "/some-kubectl-binary-dir/kubectl",
+          writeInitScripts: async () => "/some-kubectl-binary-dir",
         }) as Partial<Kubectl> as Kubectl,
     );
     di.override(

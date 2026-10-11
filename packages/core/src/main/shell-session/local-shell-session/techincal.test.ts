@@ -87,11 +87,11 @@ describe("technical unit tests for local shell sessions", () => {
         () => () =>
           ({
             kubectlVersion: "1.33.4",
-            binDir: async (opts?: KubectlProgressOptions) => {
+            getPath: async (opts?: KubectlProgressOptions) => {
               if (kubectlProblem) {
                 opts?.onProblem?.(kubectlProblem);
 
-                return "";
+                return "/some-bundled-kubectl-path";
               }
 
               if (kubectlDownloads) {
@@ -99,9 +99,9 @@ describe("technical unit tests for local shell sessions", () => {
                 opts?.onPhase?.("Verifying kubectl v1.33.4 ...");
               }
 
-              return "/some-kubectl-binary-dir";
+              return "/some-kubectl-binary-dir/kubectl";
             },
-            getBundledPath: () => "/some-bundled-kubectl-path",
+            writeInitScripts: async () => "/some-kubectl-binary-dir",
           }) as Partial<Kubectl> as Kubectl,
       );
 
@@ -290,7 +290,7 @@ describe("technical unit tests for local shell sessions", () => {
       const socket = {
         on: vi.fn(() => socket),
         once: vi.fn(() => socket),
-        send: vi.fn(),
+        send: vi.fn((raw: string) => void sent.push(JSON.parse(raw))),
         readyState: 1,
         OPEN: 1,
       } as Partial<WebSocket> as WebSocket;
@@ -299,6 +299,8 @@ describe("technical unit tests for local shell sessions", () => {
     };
 
     let spawnPtyMock: MockedFunction<SpawnPty>;
+    let writeInitScripts: MockedFunction<(pathEntries: readonly string[]) => Promise<string>>;
+    let sent: TerminalMessage[];
 
     const openWithShell = async (shell: string, platform = "linux") => {
       di.override(platformInjectable, () => platform);
@@ -335,13 +337,15 @@ describe("technical unit tests for local shell sessions", () => {
         },
       }));
 
+      sent = [];
+      writeInitScripts = vi.fn(async () => "/some-kubectl-binary-dir");
       di.override(
         createKubectlInjectable,
         () => () =>
           ({
             kubectlVersion: "1.33.4",
-            binDir: async () => "/some-kubectl-binary-dir",
-            getBundledPath: () => "/some-bundled-binaries-directory/kubectl",
+            getPath: async () => "/some-kubectl-binary-dir/kubectl",
+            writeInitScripts,
           }) as Partial<Kubectl> as Kubectl,
       );
       di.override(
@@ -386,11 +390,56 @@ describe("technical unit tests for local shell sessions", () => {
 
       expect((env.PATH ?? "").split(":")).toEqual([
         "/some-kubectl-binary-dir",
+        "/some-bundled-binaries-directory",
         "/some-directory-for-user-data/binaries",
         "/home/some-user/bin",
         "/usr/local/bin",
         "/usr/bin",
       ]);
+    });
+
+    it("puts the configured helm directory on PATH right after the kubectl directory", async () => {
+      di.inject(userPreferencesStateInjectable).helmBinariesPath = "/opt/homebrew/bin/helm";
+
+      const { env } = await openWithShell("/bin/bash");
+
+      expect((env.PATH ?? "").split(":")).toEqual([
+        "/some-kubectl-binary-dir",
+        "/opt/homebrew/bin",
+        "/some-directory-for-user-data/binaries",
+        "/some-bundled-binaries-directory",
+        "/home/some-user/bin",
+        "/usr/local/bin",
+        "/usr/bin",
+      ]);
+    });
+
+    it("writes the init scripts with the same directories it puts in front of PATH", async () => {
+      const { env } = await openWithShell("/bin/bash");
+
+      expect(writeInitScripts).toHaveBeenCalledWith([
+        "/some-kubectl-binary-dir",
+        "/some-bundled-binaries-directory",
+        "/some-directory-for-user-data/binaries",
+      ]);
+      expect((env.PATH ?? "").split(":").slice(0, 3)).toEqual(writeInitScripts.mock.calls[0][0]);
+    });
+
+    it("starts bash without its rc files, and says so, when the init scripts cannot be written", async () => {
+      writeInitScripts.mockRejectedValueOnce(new Error("EACCES: permission denied"));
+
+      const { args, env } = await openWithShell("/bin/bash");
+
+      expect(args).toEqual(["--norc"]);
+      expect(env.KUBECONFIG).toBe("/some-proxy-kubeconfig-file");
+      expect(sent).toContainEqual({
+        type: TerminalChannels.STATUS,
+        data: {
+          message:
+            "Failed to write the shell init scripts for kubectl v1.33.4 (EACCES: permission denied) - starting the shell without them",
+          level: "error",
+        },
+      });
     });
 
     it("points KUBECONFIG at the cluster's proxy kubeconfig", async () => {
@@ -432,7 +481,7 @@ describe("technical unit tests for local shell sessions", () => {
       expect(args).toEqual([
         "--login",
         "--init-command",
-        `export PATH="/some-kubectl-binary-dir:/some-directory-for-user-data/binaries:/some-bundled-binaries-directory:$PATH"; export KUBECONFIG="/some-proxy-kubeconfig-file"; export KUBECACHEDIR="/some-proxy-kubeconfig-cache-directory"`,
+        `export PATH="/some-kubectl-binary-dir:/some-bundled-binaries-directory:/some-directory-for-user-data/binaries:$PATH"; export KUBECONFIG="/some-proxy-kubeconfig-file"; export KUBECACHEDIR="/some-proxy-kubeconfig-cache-directory"`,
       ]);
     });
 
@@ -442,7 +491,7 @@ describe("technical unit tests for local shell sessions", () => {
       expect(args).toEqual([
         "-NoExit",
         "-command",
-        `& {$Env:PATH="/some-kubectl-binary-dir;/some-directory-for-user-data/binaries;/some-bundled-binaries-directory;$Env:PATH"}`,
+        `& {$Env:PATH="/some-kubectl-binary-dir;/some-bundled-binaries-directory;/some-directory-for-user-data/binaries;$Env:PATH"}`,
       ]);
     });
   });

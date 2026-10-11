@@ -39,7 +39,6 @@ describe("kubectl", () => {
       normalizedDownloadArch: "amd64",
       kubectlBinaryName: "kubectl",
       bundledKubectlBinaryPath: path.join(directory, "bundled", "kubectl"),
-      baseBundledBinariesDirectory: path.join(directory, "bundled"),
       state: {
         downloadKubectlBinaries: true,
         downloadMirror: "default",
@@ -67,6 +66,8 @@ describe("kubectl", () => {
   });
 
   afterEach(async () => {
+    // Set by `getPath` for the rest of the process once the bundle is found unusable.
+    Kubectl.invalidBundle = false;
     await fs.rm(directory, { recursive: true, force: true });
   });
 
@@ -263,6 +264,75 @@ describe("kubectl", () => {
     });
   });
 
+  describe("getPath", () => {
+    const bundledPath = () => path.join(directory, "bundled", "kubectl");
+
+    it("returns the user's kubectl when downloading is turned off, without downloading", async () => {
+      const downloadBinary = vi.fn(async () => ({ callWasSuccessful: true, response: downloaded }) as const);
+      const kubectl = new Kubectl(
+        {
+          ...dependencies,
+          downloadBinary,
+          state: { ...dependencies.state, downloadKubectlBinaries: false, kubectlBinariesPath: "/some/kubectl" },
+        },
+        pinnedVersion,
+      );
+
+      expect(await kubectl.getPath()).toBe("/some/kubectl");
+      expect(downloadBinary).not.toHaveBeenCalled();
+    });
+
+    it("reports an unusable bundle, and returns the bare binary name", async () => {
+      const problems: string[] = [];
+
+      expect(await new Kubectl(dependencies, pinnedVersion).getPath({ onProblem: (p) => problems.push(p) })).toBe(
+        "kubectl",
+      );
+      expect(problems).toEqual([expect.stringContaining("using whichever kubectl is on PATH")]);
+    });
+
+    describe("with a usable bundle of another version", () => {
+      beforeEach(async () => {
+        await fs.mkdir(path.dirname(bundledPath()), { recursive: true });
+        await fs.writeFile(bundledPath(), "the bundled kubectl");
+        dependencies.execFile = async () => ({
+          callWasSuccessful: true,
+          response: JSON.stringify({ clientVersion: { gitVersion: `v${pinnedVersion}` } }),
+        });
+      });
+
+      it("downloads the version-matched kubectl, reporting the progress and the verification", async () => {
+        const events: string[] = [];
+
+        dependencies.downloadBinary = async (_url, opts) => {
+          opts?.onProgress?.({ transferred: content.length, total: content.length });
+
+          return { callWasSuccessful: true, response: downloaded };
+        };
+        const kubectl = new Kubectl({ ...dependencies, bundledKubectlVersion: "9.9.8" }, pinnedVersion);
+
+        expect(
+          await kubectl.getPath({
+            onDownloadProgress: ({ transferred }) => events.push(`progress: ${transferred}`),
+            onPhase: (message) => events.push(`phase: ${message}`),
+            onProblem: (message) => events.push(`problem: ${message}`),
+          }),
+        ).toBe(binaryPath());
+        expect(events).toEqual([`progress: ${content.length}`, `phase: Verifying kubectl v${pinnedVersion} ...`]);
+      });
+
+      it("falls back to the bundled kubectl when the download fails, and says so", async () => {
+        const problems: string[] = [];
+
+        dependencies.downloadBinary = async () => ({ callWasSuccessful: false, error: "Not Found" });
+        const kubectl = new Kubectl({ ...dependencies, bundledKubectlVersion: "9.9.8" }, pinnedVersion);
+
+        expect(await kubectl.getPath({ onProblem: (p) => problems.push(p) })).toBe(bundledPath());
+        expect(problems).toEqual([expect.stringContaining("Failed to download kubectl v9.9.9")]);
+      });
+    });
+  });
+
   describe.skipIf(process.platform === "win32")("init scripts", () => {
     const isInstalled = (shell: string) => !spawnSync(shell, ["-c", "true"]).error;
     // The lines under test are plain POSIX sh, which bash runs the same way, and
@@ -270,13 +340,18 @@ describe("kubectl", () => {
     const zsh = isInstalled("zsh") ? "zsh" : "bash";
     const proxyCacheDirectory = "/some-proxy-kubeconfig-cache-directory";
     const profileCacheDirectory = "/some-profile-cache-directory";
+    const toolsDirectories = ["/some-kubectl-directory", "/some-helm-directory", "/some-bundled-directory"];
 
     let home: string;
 
     beforeEach(async () => {
       home = path.join(directory, "home");
       await fs.mkdir(home);
-      await new Kubectl(dependencies, pinnedVersion).binDir();
+      // Into a directory that does not exist yet, as it does not when
+      // downloading kubectl is turned off.
+      expect(await new Kubectl(dependencies, pinnedVersion).writeInitScripts(toolsDirectories)).toBe(
+        path.join(directory, pinnedVersion),
+      );
     });
 
     const shells = [
@@ -297,9 +372,22 @@ describe("kubectl", () => {
     ];
 
     describe.each(shells)("for $name", ({ shell, args, initScript, profile }) => {
-      const run = async ({ before, profileExports }: { before?: string; profileExports?: string }) => {
-        if (profileExports !== undefined) {
-          await fs.writeFile(path.join(home, profile), `export KUBECACHEDIR="${profileExports}"\n`);
+      const run = async ({
+        before,
+        profileExports,
+        profilePrepends,
+      }: {
+        before?: string;
+        profileExports?: string;
+        profilePrepends?: string;
+      }) => {
+        const profileLines = [
+          ...(profileExports === undefined ? [] : [`export KUBECACHEDIR="${profileExports}"`]),
+          ...(profilePrepends === undefined ? [] : [`export PATH="${profilePrepends}:$PATH"`]),
+        ];
+
+        if (profileLines.length > 0) {
+          await fs.writeFile(path.join(home, profile), `${profileLines.join("\n")}\n`);
         }
 
         const script = path.join(directory, pinnedVersion, initScript);
@@ -307,38 +395,45 @@ describe("kubectl", () => {
           shell,
           [
             ...args,
-            `. "${script}"; printf '\\nresult:%s|%s' "\${KUBECACHEDIR-<unset>}" "\${tempkubecachedir-<unset>}"`,
+            `. "${script}"; printf '\\nresult:%s|%s|%s' "\${KUBECACHEDIR-<unset>}" "\${tempkubecachedir-<unset>}" "$PATH"`,
           ],
           {
             env: {
-              PATH: process.env.PATH,
+              // What the session's environment has: the tools in front.
+              PATH: [...toolsDirectories, process.env.PATH].join(":"),
               HOME: home,
               OLD_ZDOTDIR: home,
               ...(before === undefined ? {} : { KUBECACHEDIR: before }),
             },
           },
         );
-        const [kubeCacheDir, temporary] = stdout.split("\nresult:").at(-1)!.split("|");
+        const [kubeCacheDir, temporary, pathAfter] = stdout.split("\nresult:").at(-1)!.split("|");
 
-        return { kubeCacheDir, temporary };
+        return { kubeCacheDir, temporary, path: pathAfter.split(":") };
       };
+
+      it("puts the tools directories back in front of what the profile prepends to PATH", async () => {
+        const result = await run({ profilePrepends: "/some-profile-directory" });
+
+        expect(result.path.slice(0, 4)).toEqual([...toolsDirectories, "/some-profile-directory"]);
+      });
 
       it("puts back the session's KUBECACHEDIR over the one the profile exports", async () => {
         const result = await run({ before: proxyCacheDirectory, profileExports: profileCacheDirectory });
 
-        expect(result).toEqual({ kubeCacheDir: proxyCacheDirectory, temporary: "<unset>" });
+        expect(result).toMatchObject({ kubeCacheDir: proxyCacheDirectory, temporary: "<unset>" });
       });
 
       it("keeps the profile's KUBECACHEDIR when the session started without one", async () => {
         const result = await run({ profileExports: profileCacheDirectory });
 
-        expect(result).toEqual({ kubeCacheDir: profileCacheDirectory, temporary: "<unset>" });
+        expect(result).toMatchObject({ kubeCacheDir: profileCacheDirectory, temporary: "<unset>" });
       });
 
       it("leaves KUBECACHEDIR unset when neither the session nor the profile sets it", async () => {
         const result = await run({});
 
-        expect(result).toEqual({ kubeCacheDir: "<unset>", temporary: "<unset>" });
+        expect(result).toMatchObject({ kubeCacheDir: "<unset>", temporary: "<unset>" });
       });
     });
   });

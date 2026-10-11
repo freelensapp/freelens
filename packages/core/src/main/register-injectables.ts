@@ -26,6 +26,7 @@ import { registerInjectables as registerHelmInjectables } from "./helm/register-
 import { registerInjectables as registerIpcInjectables } from "./ipc/register-injectables";
 import { registerInjectables as registerK8sInjectables } from "./k8s/register-injectables";
 import k8sRequestInjectable from "./k8s-request.injectable";
+import { registerInjectables as registerKubeToolsInjectables } from "./kube-tools/register-injectables";
 import { registerInjectables as registerKubeconfigManagerInjectables } from "./kubeconfig-manager/register-injectables";
 import { registerInjectables as registerKubectlInjectables } from "./kubectl/register-injectables";
 import { registerInjectables as registerLoggerInjectables } from "./logger/register-injectables";
@@ -150,6 +151,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     registerK8sInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerKubeToolsInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }
