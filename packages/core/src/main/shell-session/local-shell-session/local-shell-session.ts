@@ -13,10 +13,11 @@ import type { ShellSessionArgs, ShellSessionDependencies } from "../shell-sessio
 
 export interface LocalShellSessionDependencies extends ShellSessionDependencies {
   /**
-   * The directory holding the init scripts of a cluster shell, which re-prepend
-   * {@link ShellSessionDependencies.kubeTools}' `PATH` entries from inside the
-   * shell's own startup files. A session without a cluster has none, and so
-   * has a cluster session whose scripts could not be written.
+   * The directory holding the init scripts of a cluster shell, which put
+   * {@link ShellSessionDependencies.kubeTools}' `PATH` entries back around the
+   * user's `PATH` from inside the shell's own startup files. A session without
+   * a cluster has none, and so has a cluster session whose scripts could not be
+   * written.
    */
   readonly shellInitDirectory?: string;
   modifyTerminalShellEnv: ModifyTerminalShellEnv;
@@ -85,9 +86,9 @@ export class LocalShellSession extends ShellSession {
     if (this.cluster === undefined) {
       // A session without a cluster is meant to be the user's own shell: no
       // init file, no ZDOTDIR and no PATH-forcing argument, so every shell
-      // reads its own rc files the way a normal terminal emulator would. Its
-      // fallback binaries are appended to PATH by `kubeTools.pathSuffix`, and
-      // forcing PATH here would undo exactly that.
+      // reads its own rc files the way a normal terminal emulator would. The
+      // bundled binaries directory is appended to PATH by
+      // `kubeTools.pathSuffix`, as a fallback the user's own tools win over.
       switch (shellName) {
         case "powershell":
           return ["-NoExit"];
@@ -100,14 +101,13 @@ export class LocalShellSession extends ShellSession {
       }
     }
 
-    // The same directories, in the same order, as the environment's PATH and
-    // the bash and zsh init scripts, so that every shell resolves kubectl and
-    // helm to the binaries the session resolved.
-    const { pathPrefix } = kubeTools;
+    // The same directories, in the same places, as the environment's PATH and
+    // the bash and zsh init scripts: Freelens' own, around the user's PATH.
+    const { pathPrefix, pathSuffix } = kubeTools;
 
     switch (shellName) {
       case "powershell":
-        return ["-NoExit", "-command", `& {$Env:PATH="${[...pathPrefix, "$Env:PATH"].join(";")}"}`];
+        return ["-NoExit", "-command", `& {$Env:PATH="${[...pathPrefix, "$Env:PATH", ...pathSuffix].join(";")}"}`];
       case "bash":
         // Without its init file, bash reads no rc file either, so the
         // environment's PATH and KUBECONFIG stay as the session set them.
@@ -118,7 +118,7 @@ export class LocalShellSession extends ShellSession {
         return [
           "--login",
           "--init-command",
-          `export PATH="${[...pathPrefix, "$PATH"].join(":")}"; export KUBECONFIG="${this.dependencies.proxyKubeconfigPath}"; export KUBECACHEDIR="${this.dependencies.proxyCacheDirectoryPath}"`,
+          `export PATH="${[...pathPrefix, "$PATH", ...pathSuffix].join(":")}"; export KUBECONFIG="${this.dependencies.proxyKubeconfigPath}"; export KUBECACHEDIR="${this.dependencies.proxyCacheDirectoryPath}"`,
         ];
       case "zsh":
         return ["--login"];

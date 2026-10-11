@@ -3,9 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { composeKubeToolsEnvironment, directoriesForPath } from "./kube-tools";
+import { composeKubeToolsEnvironment } from "./kube-tools";
 
 import type { KubeTools } from "./kube-tools";
 
@@ -15,22 +14,6 @@ const tools = (overrides: Partial<KubeTools> = {}): KubeTools => ({
   pathPrefix: [],
   pathSuffix: [],
   ...overrides,
-});
-
-describe("directoriesForPath", () => {
-  it("keeps the order, dropping repeated directories", () => {
-    expect(
-      directoriesForPath(
-        path.posix.dirname,
-        ["/bundled/kubectl", "/bundled/helm"],
-        ["/user-data/binaries", "/bundled"],
-      ),
-    ).toEqual(["/bundled", "/user-data/binaries"]);
-  });
-
-  it("gives a bare binary name no directory, rather than the current one", () => {
-    expect(directoriesForPath(path.posix.dirname, ["kubectl", "/bundled/helm"], [""])).toEqual(["/bundled"]);
-  });
 });
 
 describe("composeKubeToolsEnvironment", () => {

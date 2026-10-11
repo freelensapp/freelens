@@ -73,6 +73,7 @@ describe("Main.Shell", () => {
 
             return kubectlPath;
           },
+          getVersionMatchedPath: () => "/some-directory-for-user-data/binaries/kubectl/1.33.4/kubectl",
         }) as Partial<Kubectl> as Kubectl,
     );
     di.override(createKubectlInjectable, () => createKubectl);
@@ -100,9 +101,10 @@ describe("Main.Shell", () => {
       expect(await Main.Shell.getHelmPath()).toBe("/some-bundled-binaries-directory/helm");
     });
 
-    it("returns the user's kubectl and helm when the preferences name them", async () => {
+    it("returns the user's kubectl and helm when the preferences apply", async () => {
       const state = di.inject(userPreferencesStateInjectable);
 
+      state.downloadKubectlBinaries = false;
       state.kubectlBinariesPath = "/opt/kubectl/bin/kubectl";
       state.helmBinariesPath = "/opt/homebrew/bin/helm";
 
@@ -110,18 +112,22 @@ describe("Main.Shell", () => {
       expect(await Main.Shell.getHelmPath()).toBe("/opt/homebrew/bin/helm");
     });
 
-    it("appends the tools after the user's PATH and keeps the user's KUBECONFIG", async () => {
-      di.inject(userPreferencesStateInjectable).helmBinariesPath = "/opt/homebrew/bin/helm";
+    it("ignores the kubectl preference while downloading kubectl is turned on, as Freelens does", async () => {
+      di.inject(userPreferencesStateInjectable).kubectlBinariesPath = "/opt/kubectl/bin/kubectl";
+
+      expect(await Main.Shell.getKubectlPath()).toBe("/some-bundled-binaries-directory/kubectl");
+    });
+
+    it("appends only the bundled binaries directory to the user's PATH and keeps the user's KUBECONFIG", async () => {
+      const state = di.inject(userPreferencesStateInjectable);
+
+      state.downloadKubectlBinaries = false;
+      state.kubectlBinariesPath = "/opt/kubectl/bin/kubectl";
+      state.helmBinariesPath = "/opt/homebrew/bin/helm";
 
       const env = await Main.Shell.getEnvironment();
 
-      expect(env.PATH.split(":")).toEqual([
-        "/home/some-user/bin",
-        "/usr/bin",
-        "/some-bundled-binaries-directory",
-        "/opt/homebrew/bin",
-        "/some-directory-for-user-data/binaries",
-      ]);
+      expect(env.PATH.split(":")).toEqual(["/home/some-user/bin", "/usr/bin", "/some-bundled-binaries-directory"]);
       expect(env.KUBECONFIG).toBe("/home/some-user/.kube/config");
       expect(env.KUBECACHEDIR).toBeUndefined();
       expect(env.DEBUG).toBeUndefined();
@@ -159,17 +165,32 @@ describe("Main.Shell", () => {
       expect(await Main.Shell.getHelmPath(cluster.id)).toBe("/opt/homebrew/bin/helm");
     });
 
-    it("puts kubectl and helm first on PATH, the directories of the paths it returns", async () => {
+    it("puts the version-matched kubectl first on PATH and the bundled binaries directory last", async () => {
+      di.inject(userPreferencesStateInjectable).helmBinariesPath = "/opt/homebrew/bin/helm";
+
       const env = await Main.Shell.getEnvironment(cluster.id);
 
       expect(env.PATH.split(":")).toEqual([
         "/some-directory-for-user-data/binaries/kubectl/1.33.4",
-        "/some-bundled-binaries-directory",
-        "/some-directory-for-user-data/binaries",
         "/home/some-user/bin",
         "/usr/bin",
+        "/some-bundled-binaries-directory",
       ]);
-      expect(env.PATH.split(":")[0]).toBe(kubectlPath.replace(/\/kubectl$/, ""));
+    });
+
+    it("puts no kubectl directory first on PATH when the version-matched kubectl is not the one it runs", async () => {
+      const state = di.inject(userPreferencesStateInjectable);
+
+      state.downloadKubectlBinaries = false;
+      state.kubectlBinariesPath = "/opt/kubectl/bin/kubectl";
+      kubectlPath = "/opt/kubectl/bin/kubectl";
+
+      expect(await Main.Shell.getKubectlPath(cluster.id)).toBe("/opt/kubectl/bin/kubectl");
+      expect((await Main.Shell.getEnvironment(cluster.id)).PATH.split(":")).toEqual([
+        "/home/some-user/bin",
+        "/usr/bin",
+        "/some-bundled-binaries-directory",
+      ]);
     });
 
     it("reaches the cluster through Freelens, replacing every kubeconfig variable of the user's", async () => {

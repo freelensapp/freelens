@@ -177,31 +177,22 @@ describe("technical unit tests for standalone shell sessions", () => {
     await openStandaloneShellSession({ tabId: "my-tab-id", websocket: websocket() });
 
     expect(spawnedWith().env.PATH).toBe(
-      [
-        "/home/some-user/bin",
-        "/usr/local/bin",
-        "/usr/bin",
-        "/some-bundled-binaries-directory",
-        "/some-directory-for-user-data/binaries",
-      ].join(":"),
+      ["/home/some-user/bin", "/usr/local/bin", "/usr/bin", "/some-bundled-binaries-directory"].join(":"),
     );
   });
 
-  it("appends the configured helm directory when there is one", async () => {
-    di.inject(userPreferencesStateInjectable).helmBinariesPath = "/opt/homebrew/bin/helm";
+  it("puts no directory derived from the kubectl or helm preference on PATH", async () => {
+    const state = di.inject(userPreferencesStateInjectable);
+
+    state.helmBinariesPath = "/opt/homebrew/bin/helm";
+    state.kubectlBinariesPath = "/opt/kubectl/bin/kubectl";
+    state.downloadKubectlBinaries = false;
 
     await openStandaloneShellSession({ tabId: "my-tab-id", websocket: websocket() });
 
     const path = (spawnedWith().env.PATH ?? "").split(":");
 
-    expect(path).toEqual([
-      "/home/some-user/bin",
-      "/usr/local/bin",
-      "/usr/bin",
-      "/some-bundled-binaries-directory",
-      "/opt/homebrew/bin",
-      "/some-directory-for-user-data/binaries",
-    ]);
+    expect(path).toEqual(["/home/some-user/bin", "/usr/local/bin", "/usr/bin", "/some-bundled-binaries-directory"]);
   });
 
   it("passes no init file, no ZDOTDIR and no PATH-forcing argument to the shell", async () => {

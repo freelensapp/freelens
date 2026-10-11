@@ -8,10 +8,15 @@ import { clearKubeconfigEnvVars } from "../utils/clear-kube-env-vars";
 import type { EnvironmentVariables } from "../../features/shell-sync/main/compute-shell-environment.injectable";
 
 /**
- * The kubectl and helm Freelens runs, and the directories that make them
- * resolve by name. This is the one place they are computed: the terminals, the
- * shell init scripts and the extension API all read them from here, so the
- * path of a binary and the directory put on `PATH` for it cannot disagree.
+ * The kubectl and helm Freelens runs, and the directories of Freelens' own
+ * binaries it puts on `PATH`. This is the one place they are computed: the
+ * terminals, the shell init scripts and the extension API all read them from
+ * here.
+ *
+ * The paths and `PATH` are independent. A path is what runs its tool, and may
+ * be one a preference names, used as it is; `PATH` only ever gets Freelens' own
+ * directories, never one derived from a preference, for whatever runs a tool
+ * by name.
  */
 export interface KubeTools {
   /**
@@ -23,13 +28,15 @@ export interface KubeTools {
   /** The helm to run, an absolute path. */
   readonly helmPath: string;
   /**
-   * Directories put in front of the user's own `PATH`. Only a cluster has any:
-   * it must run the kubectl matched to its version.
+   * Directories put in front of the user's own `PATH`: for a cluster, the
+   * directory of the kubectl matched to its version once it is in place, so
+   * that it wins over any other. Empty otherwise.
    */
   readonly pathPrefix: readonly string[];
   /**
-   * Directories appended after the user's own `PATH`, so that anything the
-   * user already has installed keeps winning. Only without a cluster.
+   * Directories appended after the user's own `PATH`: the bundled binaries
+   * directory, the fallback for a machine that has neither kubectl nor helm,
+   * with and without a cluster.
    */
   readonly pathSuffix: readonly string[];
 }
@@ -39,24 +46,6 @@ export interface KubeTools {
  * rather than a path.
  */
 export const isBareBinaryName = (binaryPath: string) => !/[\\/]/.test(binaryPath);
-
-/**
- * The directories of the given paths followed by the extra directories, in
- * order, without a repeated or an empty entry: POSIX reads an empty `PATH`
- * entry as the current directory. A bare binary name has no directory.
- */
-export const directoriesForPath = (
-  getDirnameOfPath: (path: string) => string,
-  binaryPaths: readonly string[],
-  extraDirectories: readonly string[],
-): string[] => {
-  const directories = [
-    ...binaryPaths.filter((binaryPath) => !isBareBinaryName(binaryPath)).map(getDirnameOfPath),
-    ...extraDirectories,
-  ];
-
-  return [...new Set(directories.filter((directory) => directory !== ""))];
-};
 
 /** What a process run against a cluster through Freelens needs. */
 export interface KubeToolsClusterAccess {
@@ -81,10 +70,11 @@ export interface ComposeKubeToolsEnvironmentArgs {
  * The environment Freelens runs kubectl and helm with, the terminal's included
  * before it adds what only a terminal needs.
  *
- * For a cluster, the tools go first on `PATH`, and `KUBECONFIG` replaces every
- * kubeconfig variable of the user's, because kubectl reads other spellings of
- * it before `KUBECONFIG`. Without a cluster, the user's own kubeconfig is the
- * point, so it is left alone, and the tools are only appended to `PATH`.
+ * `PATH` gets the tools' prefix in front of the user's own and their suffix
+ * after it. For a cluster, `KUBECONFIG` replaces every kubeconfig variable of
+ * the user's, because kubectl reads other spellings of it before `KUBECONFIG`.
+ * Without a cluster, the user's own kubeconfig is the point, so it is left
+ * alone.
  */
 export const composeKubeToolsEnvironment = ({
   baseEnvironment,

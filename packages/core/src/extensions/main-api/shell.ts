@@ -40,8 +40,9 @@ const kubeTools = () => getDiForExtensionApi().inject(kubeToolsForExtensionsInje
 
 /**
  * The kubectl Freelens runs in a terminal opened outside any cluster: the
- * user's "Path to kubectl binary" preference, else the kubectl bundled with
- * Freelens. An absolute path.
+ * user's "Path to kubectl binary" preference when "Download kubectl binaries
+ * matching the Kubernetes cluster version" is off, else the kubectl bundled
+ * with Freelens. An absolute path, to run kubectl by.
  */
 export function getKubectlPath(): Promise<string>;
 /**
@@ -49,7 +50,7 @@ export function getKubectlPath(): Promise<string>;
  * kubectl binary" preference when "Download kubectl binaries matching the
  * Kubernetes cluster version" is off, else the kubectl matched to the
  * cluster's version, downloaded when it is missing, else the bundled one. An
- * absolute path.
+ * absolute path, to run kubectl by.
  *
  * Rejects when there is no cluster with the id, when the cluster is not
  * connected, and when the bundled kubectl is not usable, so that Freelens has
@@ -97,20 +98,27 @@ export async function getHelmPath(clusterId?: ClusterId): Promise<string> {
 
 /**
  * The environment of a terminal opened outside any cluster, to pass as `env`
- * to a spawned process: the user's shell environment, with the directories of
- * {@link getKubectlPath} and {@link getHelmPath} appended to `PATH`, so that a
- * kubectl or helm the user installed keeps winning. `KUBECONFIG` is the
- * user's own.
+ * to a spawned process: the user's shell environment, with the directory of
+ * the binaries bundled with Freelens appended to `PATH`, so that a kubectl or
+ * helm the user installed keeps winning. `KUBECONFIG` is the user's own.
+ *
+ * `PATH` gets only Freelens' own directories, never one derived from a
+ * preference: run kubectl and helm by the paths {@link getKubectlPath} and
+ * {@link getHelmPath} return, not by name.
  */
 export function getEnvironment(): Promise<Record<string, string>>;
 /**
  * The environment of the terminal of a cluster, to pass as `env` to a spawned
- * process: the user's shell environment, with the directories of
- * {@link getKubectlPath} and {@link getHelmPath} for the cluster first on
- * `PATH`, `KUBECONFIG` and `KUBECACHEDIR` that reach the cluster through
- * Freelens, the cluster's proxy setting as `HTTPS_PROXY`, and `NO_PROXY` with
- * the local addresses added. kubectl is downloaded when it is missing, as for
- * {@link getKubectlPath}.
+ * process: the user's shell environment, with the directory of the kubectl
+ * matched to the cluster's version first on `PATH` when that is the kubectl the
+ * cluster runs, the directory of the bundled binaries last, `KUBECONFIG` and
+ * `KUBECACHEDIR` that reach the cluster through Freelens, the cluster's proxy
+ * setting as `HTTPS_PROXY`, and `NO_PROXY` with the local addresses added.
+ * kubectl is downloaded when it is missing, as for {@link getKubectlPath}.
+ *
+ * `PATH` gets only Freelens' own directories, never one derived from a
+ * preference: run kubectl and helm by the paths {@link getKubectlPath} and
+ * {@link getHelmPath} return, not by name.
  *
  * Only reaching the cluster through Freelens is promised, not the server
  * address `KUBECONFIG` names or the content of the file. The files exist while

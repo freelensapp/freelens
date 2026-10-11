@@ -35,8 +35,9 @@ export type OpenStandaloneShellSession = (args: OpenStandaloneShellSessionArgs) 
 /**
  * A shell that belongs to no cluster: it runs with the user's own kubeconfig
  * and the user's own tools, so it needs neither a proxy kubeconfig nor a
- * version-matched kubectl. Freelens' kubectl and helm are only appended to
- * `PATH`, as a fallback for a machine that has neither.
+ * version-matched kubectl. Freelens' bundled binaries directory is only
+ * appended to `PATH`, as a fallback for a machine that has neither kubectl nor
+ * helm.
  */
 const openStandaloneShellSessionInjectable = getInjectable({
   id: "open-standalone-shell-session",

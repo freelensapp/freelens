@@ -110,6 +110,7 @@ describe("the identity of a shell session's PTY", () => {
         ({
           kubectlVersion: "1.33.4",
           getPath: async () => "/some-kubectl-binary-dir/kubectl",
+          getVersionMatchedPath: () => "/some-kubectl-binary-dir/kubectl",
           writeInitScripts: async () => "/some-kubectl-binary-dir",
         }) as Partial<Kubectl> as Kubectl,
     );

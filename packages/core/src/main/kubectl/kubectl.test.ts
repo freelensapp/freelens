@@ -410,23 +410,25 @@ describe("kubectl", () => {
 
   describe.skipIf(process.platform === "win32")("init scripts", () => {
     const isInstalled = (shell: string) => !spawnSync(shell, ["-c", "true"]).error;
-    // The lines under test are plain POSIX sh, which bash runs the same way, and
-    // the unit-test runners have no zsh.
+    // The lines under test are the same in both scripts and run the same way
+    // in bash, and the unit-test runners have no zsh.
     const zsh = isInstalled("zsh") ? "zsh" : "bash";
     const proxyCacheDirectory = "/some-proxy-kubeconfig-cache-directory";
     const profileCacheDirectory = "/some-profile-cache-directory";
-    const toolsDirectories = ["/some-kubectl-directory", "/some-helm-directory", "/some-bundled-directory"];
+    const kubectlDirectory = "/some-kubectl-directory";
+    const bundledDirectory = "/some-bundled-directory";
 
     let home: string;
+
+    const writeInitScripts = (pathPrefix: string[]) =>
+      new Kubectl(dependencies, pinnedVersion).writeInitScripts({ pathPrefix, pathSuffix: [bundledDirectory] });
 
     beforeEach(async () => {
       home = path.join(directory, "home");
       await fs.mkdir(home);
       // Into a directory that does not exist yet, as it does not when
       // downloading kubectl is turned off.
-      expect(await new Kubectl(dependencies, pinnedVersion).writeInitScripts(toolsDirectories)).toBe(
-        path.join(directory, pinnedVersion),
-      );
+      expect(await writeInitScripts([kubectlDirectory])).toBe(path.join(directory, pinnedVersion));
     });
 
     const shells = [
@@ -451,13 +453,16 @@ describe("kubectl", () => {
         before,
         profileExports,
         profilePrepends,
+        profileSets,
       }: {
         before?: string;
         profileExports?: string;
         profilePrepends?: string;
+        profileSets?: string;
       }) => {
         const profileLines = [
           ...(profileExports === undefined ? [] : [`export KUBECACHEDIR="${profileExports}"`]),
+          ...(profileSets === undefined ? [] : [`export PATH="${profileSets}"`]),
           ...(profilePrepends === undefined ? [] : [`export PATH="${profilePrepends}:$PATH"`]),
         ];
 
@@ -474,8 +479,9 @@ describe("kubectl", () => {
           ],
           {
             env: {
-              // What the session's environment has: the tools in front.
-              PATH: [...toolsDirectories, process.env.PATH].join(":"),
+              // What the session's environment has: the tools around the
+              // user's PATH.
+              PATH: [kubectlDirectory, process.env.PATH, bundledDirectory].join(":"),
               HOME: home,
               OLD_ZDOTDIR: home,
               ...(before === undefined ? {} : { KUBECACHEDIR: before }),
@@ -487,10 +493,32 @@ describe("kubectl", () => {
         return { kubeCacheDir, temporary, path: pathAfter.split(":") };
       };
 
-      it("puts the tools directories back in front of what the profile prepends to PATH", async () => {
+      it("puts the kubectl directory back in front of what the profile prepends to PATH", async () => {
         const result = await run({ profilePrepends: "/some-profile-directory" });
 
-        expect(result.path.slice(0, 4)).toEqual([...toolsDirectories, "/some-profile-directory"]);
+        expect(result.path.slice(0, 2)).toEqual([kubectlDirectory, "/some-profile-directory"]);
+      });
+
+      it("keeps the bundled binaries directory last, and each directory once", async () => {
+        const result = await run({ profilePrepends: "/some-profile-directory" });
+
+        expect(result.path.at(-1)).toBe(bundledDirectory);
+        expect(result.path.filter((entry) => entry === kubectlDirectory)).toHaveLength(1);
+        expect(result.path.filter((entry) => entry === bundledDirectory)).toHaveLength(1);
+      });
+
+      it("puts both back when the profile replaces PATH", async () => {
+        const result = await run({ profileSets: "/usr/bin:/bin" });
+
+        expect(result.path).toEqual([kubectlDirectory, "/usr/bin", "/bin", bundledDirectory]);
+      });
+
+      it("leaves no empty entry without a kubectl directory", async () => {
+        await writeInitScripts([]);
+
+        const result = await run({ profileSets: "/usr/bin:/bin" });
+
+        expect(result.path).toEqual(["/usr/bin", "/bin", bundledDirectory]);
       });
 
       it("puts back the session's KUBECACHEDIR over the one the profile exports", async () => {

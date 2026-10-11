@@ -116,8 +116,8 @@ export interface ShellSessionDependencies {
   readonly appName: string;
   readonly buildVersion: string;
   /**
-   * The kubectl and helm the session runs, and the directories that put them
-   * on `PATH`: in front of the user's own for a cluster, after it without one.
+   * The kubectl and helm the session runs, and the directories of Freelens'
+   * own binaries it puts on `PATH` around the user's own.
    */
   readonly kubeTools: KubeTools;
   /**

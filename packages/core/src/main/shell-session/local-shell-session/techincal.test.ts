@@ -101,6 +101,7 @@ describe("technical unit tests for local shell sessions", () => {
 
               return "/some-kubectl-binary-dir/kubectl";
             },
+            getVersionMatchedPath: () => "/some-kubectl-binary-dir/kubectl",
             writeInitScripts: async () => "/some-kubectl-binary-dir",
           }) as Partial<Kubectl> as Kubectl,
       );
@@ -299,7 +300,8 @@ describe("technical unit tests for local shell sessions", () => {
     };
 
     let spawnPtyMock: MockedFunction<SpawnPty>;
-    let writeInitScripts: MockedFunction<(pathEntries: readonly string[]) => Promise<string>>;
+    let writeInitScripts: MockedFunction<Kubectl["writeInitScripts"]>;
+    let kubectlPath: string;
     let sent: TerminalMessage[];
 
     const openWithShell = async (shell: string, platform = "linux") => {
@@ -339,12 +341,14 @@ describe("technical unit tests for local shell sessions", () => {
 
       sent = [];
       writeInitScripts = vi.fn(async () => "/some-kubectl-binary-dir");
+      kubectlPath = "/some-kubectl-binary-dir/kubectl";
       di.override(
         createKubectlInjectable,
         () => () =>
           ({
             kubectlVersion: "1.33.4",
-            getPath: async () => "/some-kubectl-binary-dir/kubectl",
+            getPath: async () => kubectlPath,
+            getVersionMatchedPath: () => "/some-kubectl-binary-dir/kubectl",
             writeInitScripts,
           }) as Partial<Kubectl> as Kubectl,
       );
@@ -385,44 +389,62 @@ describe("technical unit tests for local shell sessions", () => {
       di.inject(userPreferencesStateInjectable).downloadKubectlBinaries = true;
     });
 
-    it("prepends the cluster's kubectl directory to PATH, ahead of everything else, and appends nothing", async () => {
+    it("prepends the cluster's kubectl directory to PATH and appends the bundled binaries directory", async () => {
       const { env } = await openWithShell("/bin/bash");
 
       expect((env.PATH ?? "").split(":")).toEqual([
         "/some-kubectl-binary-dir",
-        "/some-bundled-binaries-directory",
-        "/some-directory-for-user-data/binaries",
         "/home/some-user/bin",
         "/usr/local/bin",
         "/usr/bin",
+        "/some-bundled-binaries-directory",
       ]);
     });
 
-    it("puts the configured helm directory on PATH right after the kubectl directory", async () => {
-      di.inject(userPreferencesStateInjectable).helmBinariesPath = "/opt/homebrew/bin/helm";
+    it("puts no directory derived from the kubectl or helm preference on PATH", async () => {
+      const state = di.inject(userPreferencesStateInjectable);
+
+      state.helmBinariesPath = "/opt/homebrew/bin/helm";
+      state.kubectlBinariesPath = "/opt/kubectl/bin/kubectl";
+      state.downloadKubectlBinaries = false;
+      kubectlPath = "/opt/kubectl/bin/kubectl";
 
       const { env } = await openWithShell("/bin/bash");
 
       expect((env.PATH ?? "").split(":")).toEqual([
-        "/some-kubectl-binary-dir",
-        "/opt/homebrew/bin",
-        "/some-directory-for-user-data/binaries",
-        "/some-bundled-binaries-directory",
         "/home/some-user/bin",
         "/usr/local/bin",
         "/usr/bin",
+        "/some-bundled-binaries-directory",
+      ]);
+      expect(writeInitScripts).toHaveBeenCalledWith(
+        expect.objectContaining({ pathPrefix: [], pathSuffix: ["/some-bundled-binaries-directory"] }),
+      );
+    });
+
+    it("puts the kubectl directory on PATH only once the version-matched kubectl is in place", async () => {
+      // What `getPath` falls back to when the download failed.
+      kubectlPath = "/some-bundled-binaries-directory/kubectl";
+
+      const { env } = await openWithShell("/bin/bash");
+
+      expect((env.PATH ?? "").split(":")).toEqual([
+        "/home/some-user/bin",
+        "/usr/local/bin",
+        "/usr/bin",
+        "/some-bundled-binaries-directory",
       ]);
     });
 
-    it("writes the init scripts with the same directories it puts in front of PATH", async () => {
-      const { env } = await openWithShell("/bin/bash");
+    it("writes the init scripts with the same directories it puts around PATH", async () => {
+      await openWithShell("/bin/bash");
 
-      expect(writeInitScripts).toHaveBeenCalledWith([
-        "/some-kubectl-binary-dir",
-        "/some-bundled-binaries-directory",
-        "/some-directory-for-user-data/binaries",
-      ]);
-      expect((env.PATH ?? "").split(":").slice(0, 3)).toEqual(writeInitScripts.mock.calls[0][0]);
+      expect(writeInitScripts).toHaveBeenCalledWith(
+        expect.objectContaining({
+          pathPrefix: ["/some-kubectl-binary-dir"],
+          pathSuffix: ["/some-bundled-binaries-directory"],
+        }),
+      );
     });
 
     it("starts bash without its rc files, and says so, when the init scripts cannot be written", async () => {
@@ -481,7 +503,7 @@ describe("technical unit tests for local shell sessions", () => {
       expect(args).toEqual([
         "--login",
         "--init-command",
-        `export PATH="/some-kubectl-binary-dir:/some-bundled-binaries-directory:/some-directory-for-user-data/binaries:$PATH"; export KUBECONFIG="/some-proxy-kubeconfig-file"; export KUBECACHEDIR="/some-proxy-kubeconfig-cache-directory"`,
+        `export PATH="/some-kubectl-binary-dir:$PATH:/some-bundled-binaries-directory"; export KUBECONFIG="/some-proxy-kubeconfig-file"; export KUBECACHEDIR="/some-proxy-kubeconfig-cache-directory"`,
       ]);
     });
 
@@ -491,7 +513,7 @@ describe("technical unit tests for local shell sessions", () => {
       expect(args).toEqual([
         "-NoExit",
         "-command",
-        `& {$Env:PATH="/some-kubectl-binary-dir;/some-bundled-binaries-directory;/some-directory-for-user-data/binaries;$Env:PATH"}`,
+        `& {$Env:PATH="/some-kubectl-binary-dir;$Env:PATH;/some-bundled-binaries-directory"}`,
       ]);
     });
   });

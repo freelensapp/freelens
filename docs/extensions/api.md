@@ -877,10 +877,10 @@ rest of the major, remove it in the next one.
 
 **Guarantee.** A main entry point gets the kubectl and the helm Freelens runs,
 and the environment its terminal starts from, with the user's preferences
-applied the way Freelens applies them for itself. They are computed by the
-same function the terminals use, so the path of a binary and the directory the
-environment puts on `PATH` for it are the same binary, in every build of the
-application.
+applied the way Freelens applies them for itself, in every build of the
+application. They are computed by the same functions the terminals use. Run a
+tool by the path its function returns; the environment provides `KUBECONFIG`,
+`KUBECACHEDIR` and a `PATH` with Freelens' own directories for everything else.
 
 **Surface.** `Main.Shell`, three functions. Each answers for a terminal opened
 outside any cluster when called without a cluster id, and for the terminal of
@@ -888,17 +888,19 @@ the cluster when called with one:
 
 | Function | Without a cluster | For a cluster |
 | --- | --- | --- |
-| `getKubectlPath(clusterId?, options?)` | the "Path to kubectl binary" preference (`kubectlBinariesPath`), else the bundled kubectl | the preference when downloading kubectl binaries is turned off (`downloadKubectlBinaries`); otherwise the kubectl matched to the cluster's Kubernetes version in the download directory (`downloadBinariesPath`), downloaded when it is missing, else the bundled kubectl |
+| `getKubectlPath(clusterId?, options?)` | the "Path to kubectl binary" preference (`kubectlBinariesPath`) when downloading kubectl binaries is turned off (`downloadKubectlBinaries`), else the bundled kubectl | the same preference when downloading is turned off; otherwise the kubectl matched to the cluster's Kubernetes version in the download directory (`downloadBinariesPath`), downloaded when it is missing, else the bundled kubectl |
 | `getHelmPath(clusterId?)` | the "Path to helm binary" preference (`helmBinariesPath`), else the bundled helm | the same: helm does not depend on the cluster's version |
-| `getEnvironment(clusterId?, options?)` | the user's shell environment, with the directories of the kubectl and the helm above appended to `PATH`, so that a kubectl or helm the user installed keeps winning; `KUBECONFIG` is the user's own | the user's shell environment, with the directories of the kubectl and the helm above first on `PATH`, `KUBECONFIG` and `KUBECACHEDIR` that reach the cluster through Freelens in place of every kubeconfig variable of the user's, the cluster's proxy setting as `HTTPS_PROXY`, and `localhost` and `127.0.0.1` added to `NO_PROXY` |
+| `getEnvironment(clusterId?, options?)` | the user's shell environment, with the bundled binaries directory appended to `PATH`, so that a kubectl or helm the user installed keeps winning; `KUBECONFIG` is the user's own | the user's shell environment, with the directory of the version-matched kubectl first on `PATH` when downloading is turned on and that kubectl is in place, the bundled binaries directory last, `KUBECONFIG` and `KUBECACHEDIR` that reach the cluster through Freelens in place of every kubeconfig variable of the user's, the cluster's proxy setting as `HTTPS_PROXY`, and `localhost` and `127.0.0.1` added to `NO_PROXY` |
 
-Every path is absolute. The environment is a `Record<string, string>` to pass as
-`env` to `node:child_process`, the explicit environment
-[`binaries.md`](./binaries.md#running-a-shipped-program) asks for: `kubectl` and
-`helm` resolve by name in it to the binaries the paths name, provided the files
-the preferences name are called `kubectl` and `helm`. `PATH` has no empty entry,
-which POSIX would read as the current directory. The user's shell environment
-is what a login shell of the user's shell setting has, and Freelens' own
+Every path is absolute, and a path a preference names is returned as it is.
+The environment is a `Record<string, string>` to pass as `env` to
+`node:child_process`, the explicit environment
+[`binaries.md`](./binaries.md#running-a-shipped-program) asks for. Its `PATH`
+gets only Freelens' own directories, never one derived from a preference, so
+a tool run by name through it is not necessarily the binary its function
+returns: run kubectl and helm by their paths. `PATH` has no empty entry, which
+POSIX would read as the current directory. The user's shell environment is
+what a login shell of the user's shell setting has, and Freelens' own
 environment when it cannot be read or on Windows.
 
 The environment is not a terminal's. It has none of the variables only a

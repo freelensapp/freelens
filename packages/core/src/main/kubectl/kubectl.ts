@@ -232,6 +232,14 @@ export class Kubectl {
   }
 
   /**
+   * Where the kubectl matched to this cluster version is put in the download
+   * directory, whether or not it is there yet.
+   */
+  public getVersionMatchedPath() {
+    return this.path;
+  }
+
+  /**
    * The verified digest this download must match, or `undefined` when there is
    * none for this version on this platform and architecture.
    */
@@ -665,17 +673,37 @@ export class Kubectl {
   /**
    * Writes the init scripts of a cluster shell, `.bash_set_path` and `.zlogin`,
    * into the directory of this kubectl version, and returns that directory.
-   * The scripts source the user's profile files and then put `pathEntries` in
-   * front of the `PATH` the profile leaves, so that the profile cannot shadow
-   * the binaries the session resolved.
+   * The scripts source the user's profile files and then put `pathPrefix` in
+   * front of the `PATH` the profile leaves and `pathSuffix` after it, each
+   * once, so that the profile can neither shadow the version-matched kubectl
+   * nor drop the fallback.
    *
-   * @param pathEntries the directories to put first on `PATH`, in order, which
-   * must not be empty strings: an empty entry is read as the current directory
+   * @param path the directories to put on `PATH`, in order, none of them an
+   * empty string: an empty entry is read as the current directory
    */
-  public async writeInitScripts(pathEntries: readonly string[]): Promise<string> {
+  public async writeInitScripts(path: {
+    readonly pathPrefix: readonly string[];
+    readonly pathSuffix: readonly string[];
+  }): Promise<string> {
     await ensureDir(this.dirname, 0o755);
 
-    const toolsPath = pathEntries.join(":");
+    // Both shells run the same lines: they take every occurrence of the two
+    // lists out of the PATH the profile left, then put them back around it,
+    // without an empty entry when one of the three parts is empty.
+    const setPath = [
+      `toolsprefix="${path.pathPrefix.join(":")}"`,
+      `toolssuffix="${path.pathSuffix.join(":")}"`,
+      'd=":$PATH:"',
+      'if test -n "$toolsprefix"; then d=${d//":$toolsprefix:"/:}; fi',
+      'if test -n "$toolssuffix"; then d=${d//":$toolssuffix:"/:}; fi',
+      "d=${d#:}",
+      "d=${d%:}",
+      'p="$toolsprefix"',
+      'if test -n "$d"; then p="${p:+$p:}$d"; fi',
+      'if test -n "$toolssuffix"; then p="${p:+$p:}$toolssuffix"; fi',
+      'export PATH="$p"',
+      "unset toolsprefix toolssuffix d p",
+    ];
 
     const bashScriptPath = this.dependencies.joinPaths(this.dirname, ".bash_set_path");
     const bashScript = [
@@ -690,7 +718,7 @@ export class Kubectl {
       'elif test -f "$HOME/.profile"; then',
       '  . "$HOME/.profile"',
       "fi",
-      `export PATH="${toolsPath}:$PATH"`,
+      ...setPath,
       'export KUBECONFIG="$tempkubeconfig"',
       ...restoreKubeCacheDirectory,
       `NO_PROXY=",\${NO_PROXY:-localhost},"`,
@@ -716,13 +744,7 @@ export class Kubectl {
       'test -f "$OLD_ZDOTDIR/.zlogin" && . "$OLD_ZDOTDIR/.zlogin"',
       'test -f "$OLD_ZDOTDIR/.zshrc" && . "$OLD_ZDOTDIR/.zshrc"',
 
-      // voodoo to replace any previous occurrences of the tools path in the PATH
-      `toolspath="${toolsPath}"`,
-      'p=":$toolspath:"',
-      'd=":$PATH:"',
-      `d=\${d//$p/:}`,
-      `d=\${d/#:/}`,
-      `export PATH="$toolspath:\${d/%:/}"`,
+      ...setPath,
       'export KUBECONFIG="$tempkubeconfig"',
       ...restoreKubeCacheDirectory,
       `NO_PROXY=",\${NO_PROXY:-localhost},"`,

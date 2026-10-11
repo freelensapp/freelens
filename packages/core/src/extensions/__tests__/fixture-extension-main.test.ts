@@ -20,6 +20,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../common/cluster/cluster";
+import baseBundledBinariesDirectoryInjectable from "../../common/vars/base-bundled-binaries-dir.injectable";
 import platformInjectable from "../../common/vars/platform.injectable";
 import getClusterByIdInjectable from "../../features/cluster/storage/common/get-by-id.injectable";
 import computeShellEnvironmentInjectable from "../../features/shell-sync/main/compute-shell-environment.injectable";
@@ -94,7 +95,8 @@ describe.skipIf(process.platform === "win32")("Main.Shell, from the built fixtur
     di.override(getClusterByIdInjectable, () => (id) => (id === cluster.id ? cluster : undefined));
     di.override(
       createKubectlInjectable,
-      () => () => ({ getPath: async () => kubectlPath }) as Partial<Kubectl> as Kubectl,
+      () => () =>
+        ({ getPath: async () => kubectlPath, getVersionMatchedPath: () => kubectlPath }) as Partial<Kubectl> as Kubectl,
     );
     di.override(
       kubeconfigManagerInjectable,
@@ -129,14 +131,19 @@ describe.skipIf(process.platform === "win32")("Main.Shell, from the built fixtur
   });
 
   it("runs the user's kubectl outside any cluster, with the user's own kubeconfig", async () => {
-    di.inject(userPreferencesStateInjectable).kubectlBinariesPath = kubectlPath;
+    const state = di.inject(userPreferencesStateInjectable);
+
+    state.downloadKubectlBinaries = false;
+    state.kubectlBinariesPath = kubectlPath;
 
     const { kubectlPath: ran, stdout } = await fixture.runHostKubectl();
 
     expect(ran).toBe(kubectlPath);
     expect(ranWith(stdout)).toEqual({
       kubeconfig: "/home/some-user/.kube/config",
-      path: expect.stringMatching(new RegExp(`^/usr/bin:/bin:${directory}(:|$)`)),
+      // The bundled binaries directory as the fallback, and nothing derived
+      // from the preference.
+      path: `/usr/bin:/bin:${di.inject(baseBundledBinariesDirectoryInjectable)}`,
     });
   });
 });

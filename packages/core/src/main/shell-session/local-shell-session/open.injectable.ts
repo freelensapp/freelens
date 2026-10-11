@@ -81,7 +81,7 @@ const openLocalShellSessionInjectable = getInjectable({
       status.info(`Checking kubectl v${kubectl.kubectlVersion} ...`);
 
       const kubeTools = await resolveKubeTools.forCluster(kubectl, kubectlStatus).finally(() => kubectlStatus.done());
-      const shellInitDirectory = await kubectl.writeInitScripts(kubeTools.pathPrefix).catch((error) => {
+      const shellInitDirectory = await kubectl.writeInitScripts(kubeTools).catch((error) => {
         logger.error("[LOCAL-SHELL]: failed to write the shell init scripts", error);
         status.error(
           `Failed to write the shell init scripts for kubectl v${kubectl.kubectlVersion} (${messageOfError(error)}) - ` +
