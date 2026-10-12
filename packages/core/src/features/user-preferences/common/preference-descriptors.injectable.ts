@@ -65,6 +65,7 @@ export type PreferenceDescriptors = {
     ObservableMap<string, KubeconfigSyncValue>
   >;
   readonly editorConfiguration: PreferenceDescription<Partial<EditorConfiguration>, EditorConfiguration>;
+  readonly crdGroup: PreferenceDescription<string | undefined>;
   readonly terminalConfig: PreferenceDescription<Partial<TerminalConfig>, TerminalConfig>;
   readonly extensionRegistryUrl: PreferenceDescription<StoredExtensionRegistry, ExtensionRegistry>;
   readonly clusterPageMenuOrder: PreferenceDescription<ClusterPageMenuOrder | undefined>;

@@ -5,6 +5,7 @@
 
 import { sidebarItemInjectionToken } from "@freelensapp/cluster-sidebar";
 import { getInjectable } from "@ogre-tools/injectable";
+import { describe, expect, it } from "vitest";
 import { differencingRegistratorWithContentCheck } from "../groups-sidebar-items-differencing-registrator";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
@@ -35,7 +36,10 @@ describe("differencingRegistratorWithContentCheck", () => {
     const previous = createSidebarItem("group-a", "parent", 0);
     const current = createSidebarItem("group-a", "parent", 0);
 
-    registrator([current], [previous]);
+    registrator([previous]);
+    registered.length = 0;
+    deregistered.length = 0;
+    registrator([current]);
 
     expect(registered).toEqual([]);
     expect(deregistered).toEqual([]);
@@ -47,7 +51,10 @@ describe("differencingRegistratorWithContentCheck", () => {
     const previous = createSidebarItem("group-a", "parent", 0);
     const current = createSidebarItem("group-a", "parent", 1);
 
-    registrator([current], [previous]);
+    registrator([previous]);
+    registered.length = 0;
+    deregistered.length = 0;
+    registrator([current]);
 
     expect(deregistered).toEqual(["group-a"]);
     expect(registered).toEqual(["group-a"]);
@@ -59,7 +66,10 @@ describe("differencingRegistratorWithContentCheck", () => {
     const previous = createSidebarItem("group-a", "old-parent", 0);
     const current = createSidebarItem("group-a", "new-parent", 0);
 
-    registrator([current], [previous]);
+    registrator([previous]);
+    registered.length = 0;
+    deregistered.length = 0;
+    registrator([current]);
 
     expect(deregistered).toEqual(["group-a"]);
     expect(registered).toEqual(["group-a"]);
@@ -71,7 +81,10 @@ describe("differencingRegistratorWithContentCheck", () => {
     const stale = createSidebarItem("group-old", "parent", 0);
     const added = createSidebarItem("group-new", "parent", 0);
 
-    registrator([added], [stale]);
+    registrator([stale]);
+    registered.length = 0;
+    deregistered.length = 0;
+    registrator([added]);
 
     expect(registered).toEqual(["group-new"]);
     expect(deregistered).toEqual(["group-old"]);

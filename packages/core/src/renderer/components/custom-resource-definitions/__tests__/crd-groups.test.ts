@@ -5,6 +5,7 @@
 
 import { CustomResourceDefinition } from "@freelensapp/kube-object";
 import { computed } from "mobx";
+import { describe, expect, it } from "vitest";
 import customResourcesSidebarItemInjectable from "../../custom-resources/sidebar-item.injectable";
 // Import functions and types from the module for testing
 import {

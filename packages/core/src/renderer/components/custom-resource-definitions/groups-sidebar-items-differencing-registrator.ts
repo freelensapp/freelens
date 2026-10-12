@@ -21,11 +21,15 @@ function contentSignatureOf(injectable: Injectable<any, any, any>, di: DiContain
   return JSON.stringify([parentId, orderNumber, title]);
 }
 
-export const differencingRegistratorWithContentCheck =
-  (di: DiContainerForInjection) =>
-  (current: Injectable<any, any, any>[], previous: Injectable<any, any, any>[] = []) => {
-    // Adds/removes ids present on only one side, unchanged.
-    injectableDifferencingRegistratorWith(di)(current, previous);
+export const differencingRegistratorWithContentCheck = (di: DiContainerForInjection) => {
+  // Adds/removes ids present on only one side, unchanged.
+  const byIdRegistrator = injectableDifferencingRegistratorWith(di);
+  // This registrator manages its own previous state, the same way
+  // `injectableDifferencingRegistratorWith` does internally for by-id diffing.
+  let previous: Injectable<any, any, any>[] = [];
+
+  return (current: Injectable<any, any, any>[]) => {
+    byIdRegistrator(current);
 
     const previousById = new Map(previous.map((injectable) => [injectable.id, injectable]));
     for (const currentInjectable of current) {
@@ -36,4 +40,6 @@ export const differencingRegistratorWithContentCheck =
         di.register(currentInjectable);
       }
     }
+    previous = current;
   };
+};
