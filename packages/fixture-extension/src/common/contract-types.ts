@@ -34,6 +34,26 @@ export type FixtureAppPreferenceRegistration = Common.Types.AppPreferenceRegistr
 export type FixtureProtocolHandlerRegistration = Common.Types.ProtocolHandlerRegistration;
 export type FixtureCustomResourceRegistration = Common.Types.CustomResourceRegistration;
 
+// A store model declared as an `interface` has no implicit index signature, and
+// the store's params have to take it anyway: as `defaults`, exactly as declared,
+// and as the model of the store a migration is given.
+interface FixtureStoreModel {
+  podLogsTailLines: number;
+}
+type FixtureStoreParams = ConstructorParameters<typeof Common.Store.ExtensionStore<FixtureStoreModel>>[0];
+type FixtureStoreMigration = NonNullable<FixtureStoreParams["migrations"]>[string];
+type FixtureMigratedModel = Parameters<FixtureStoreMigration>[0]["store"];
+
+export type StoreTakesAnInterfaceModelAsDefaults = Holds<
+  { configName: string; defaults: FixtureStoreModel } extends FixtureStoreParams ? true : false
+>;
+export type StoreParamsAreTheExportedOnes = Holds<
+  FixtureStoreParams extends Common.Store.ExtensionStoreParams<FixtureStoreModel> ? true : false
+>;
+export type StoreMigrationIsTypedByTheModel = Holds<FixtureMigratedModel extends FixtureStoreModel ? true : false>;
+// By the model alone: widened with an index signature, any key would be one.
+export type StoreMigrationHasOnlyTheKeysOfTheModel = Holds<string extends keyof FixtureMigratedModel ? false : true>;
+
 // --- Main ------------------------------------------------------------------
 
 export type FixtureMainExtension = Main.LensExtension;

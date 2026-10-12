@@ -35,7 +35,15 @@ export interface PersistentStorage {
 }
 
 export interface PersistentStorageParams<T extends object = any>
-  extends Omit<Options<T & Record<string, unknown>>, "migrations"> {
+  extends Omit<Options<T & Record<string, unknown>>, "defaults" | "migrations"> {
+  /**
+   * The model used when there is no stored one yet.
+   *
+   * Typed as the model itself rather than as conf's `T & Record<string,
+   * unknown>`, so that a model declared as an `interface`, which has no
+   * implicit index signature, is accepted. It is widened where it reaches conf.
+   */
+  readonly defaults?: Readonly<T>;
   readonly syncOptions?: {
     readonly fireImmediately?: boolean;
     equals?: IEqualsComparer<T>;
@@ -79,7 +87,7 @@ const createPersistentStorageInjectable = getInjectable({
     const sendMessageToChannel = di.inject(sendMessageToChannelInjectionToken);
 
     return <T extends object>(rawParams: PersistentStorageParams<T>) => {
-      const { fromStore, toJSON, syncOptions, migrations, cwd = directoryForUserData, ...params } = rawParams;
+      const { fromStore, toJSON, syncOptions, migrations, defaults, cwd = directoryForUserData, ...params } = rawParams;
       const displayName = kebabCase(params.configName).toUpperCase();
 
       const loadAndStartSyncing = () => {
@@ -89,6 +97,7 @@ const createPersistentStorageInjectable = getInjectable({
           projectName: "lens",
           cwd,
           migrations: migrations as Options<T & Record<string, unknown>>["migrations"],
+          defaults: defaults as Options<T & Record<string, unknown>>["defaults"],
           ...params,
         }) as Config<T>;
 
