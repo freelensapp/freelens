@@ -8,6 +8,7 @@ import http from "node:http";
 import http2 from "node:http2";
 import https from "node:https";
 import tls from "node:tls";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
@@ -655,12 +656,91 @@ describe("Freelens proxy kube api requests to a refused target", () => {
   });
 });
 
+describe("Freelens proxy kube api requests whose cluster proxy cannot start", () => {
+  let proxy: { listen: () => Promise<void>; close: () => Promise<void> | undefined };
+  let port: number;
+  let route: Mock;
+  let logError: Mock;
+
+  const reason =
+    'freelens-k8s-proxy exited with code 255 before it was ready: failed to initialize proxy handlerparse "::not-a-url/": missing protocol scheme';
+  const expectedStatus = {
+    kind: "Status",
+    apiVersion: "v1",
+    metadata: {},
+    status: "Failure",
+    message: `Failed to start the proxy of cluster some-cluster-id: ${reason}`,
+    reason: "ServiceUnavailable",
+    code: 503,
+  };
+
+  beforeEach(async () => {
+    const di = getDiForUnitTesting();
+
+    route = vi.fn();
+    logError = vi.fn();
+
+    overrideEnvironment(di);
+    di.override(getClusterForRequestInjectable, () => () => ({ id: "some-cluster-id" }) as Cluster);
+    di.override(shellApiRequestInjectable, () => vi.fn());
+    di.override(kubeApiUpgradeRequestInjectable, () => vi.fn());
+    di.override(
+      freelensK8sProxyServerInjectable,
+      () =>
+        ({
+          getApiTarget: async () => {
+            throw new Error(reason);
+          },
+        }) as unknown as FreelensK8sProxyServer,
+    );
+    di.override(routerInjectable, () => ({ route }) as unknown as Router);
+    di.override(loggerInjectionToken, () => ({
+      warn: vi.fn(),
+      debug: vi.fn(),
+      error: logError,
+      info: vi.fn(),
+      silly: vi.fn(),
+    }));
+
+    proxy = di.inject(freelensProxyInjectable);
+
+    await proxy.listen();
+    port = di.inject(freelensProxyPortInjectable).get();
+  });
+
+  afterEach(async () => {
+    await proxy.close();
+  });
+
+  it("answers an HTTP/1.1 request with 503 and the reason as a Kubernetes Status, and logs it", async () => {
+    const response = await getHttp1(port, "/api-kube/version");
+
+    expect(response.statusCode).toBe(503);
+    expect(JSON.parse(response.body)).toEqual(expectedStatus);
+    expect(route).not.toHaveBeenCalled();
+    expect(logError).toHaveBeenCalledWith(`[FREELENS-PROXY]: ${expectedStatus.message}`, { url: "/version" });
+  });
+
+  it("answers an HTTP/2 request with 503 and the reason as a Kubernetes Status", async () => {
+    const session = await connectHttp2(port);
+
+    try {
+      const response = await getHttp2(session, "/api-kube/api/v1/pods?watch=true");
+
+      expect(response.statusCode).toBe(503);
+      expect(JSON.parse(response.body)).toEqual(expectedStatus);
+    } finally {
+      session.destroy();
+    }
+  });
+});
+
 describe("Freelens proxy upgrade requests", () => {
   let di: DiContainer;
   let cluster: Cluster | undefined;
   let shellApiRequest: Mock;
   let kubeApiUpgradeRequest: Mock;
-  let socket: { destroy: Mock };
+  let socket: { destroy: Mock; end: Mock; destroyed: boolean; writable: boolean; bytesWritten: number };
 
   const upgrade = (url: string) => {
     const proxy = di.inject(freelensProxyInjectable);
@@ -679,7 +759,7 @@ describe("Freelens proxy upgrade requests", () => {
     cluster = { id: "some-cluster-id" } as Cluster;
     shellApiRequest = vi.fn();
     kubeApiUpgradeRequest = vi.fn();
-    socket = { destroy: vi.fn() };
+    socket = { destroy: vi.fn(), end: vi.fn(), destroyed: false, writable: true, bytesWritten: 0 };
 
     di.override(getClusterForRequestInjectable, () => () => cluster);
     di.override(shellApiRequestInjectable, () => shellApiRequest);
@@ -701,6 +781,29 @@ describe("Freelens proxy upgrade requests", () => {
       expect(kubeApiUpgradeRequest).toHaveBeenCalledWith(expect.objectContaining({ cluster }));
       expect(shellApiRequest).not.toHaveBeenCalled();
       expect(socket.destroy).not.toHaveBeenCalled();
+    });
+
+    it("answers 503 with the reason and closes the socket when the cluster proxy cannot start", async () => {
+      kubeApiUpgradeRequest.mockRejectedValue(new Error("freelens-k8s-proxy exited with code 255 before it was ready"));
+
+      upgrade("/api-kube/api/v1/namespaces/default/pods/some-pod/exec");
+
+      await vi.waitFor(() => expect(socket.end).toHaveBeenCalledTimes(1));
+
+      const [response] = socket.end.mock.calls[0] as [string];
+
+      expect(response).toMatch(/^HTTP\/1\.1 503 Service Unavailable\r\n/);
+      expect(response).toMatch(/\r\n\r\nfreelens-k8s-proxy exited with code 255 before it was ready\n$/);
+    });
+
+    it("destroys the socket of a failed upgrade that has already written to it", async () => {
+      socket.bytesWritten = 10;
+      kubeApiUpgradeRequest.mockRejectedValue(new Error("some-error"));
+
+      upgrade("/api-kube/api/v1/namespaces/default/pods/some-pod/exec");
+
+      await vi.waitFor(() => expect(socket.destroy).toHaveBeenCalledTimes(1));
+      expect(socket.end).not.toHaveBeenCalled();
     });
   });
 
