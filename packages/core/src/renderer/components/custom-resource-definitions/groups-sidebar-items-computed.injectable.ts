@@ -231,7 +231,11 @@ function parseGroupConfig(configString: string): ParsedConfig | null {
 function matchesPattern(crdName: string, pattern: string): boolean {
   if (pattern === "") return true;
   if (pattern === null) return false;
-  return crdName.includes(pattern);
+  // `crdName` is always `plural.group`, which Kubernetes names lowercase, but a
+  // pattern copied from a CRD's Kind (e.g. "ClusterIssuer", the identifier shown
+  // by `kubectl get crd` and in this app's own UI) or typed with different casing
+  // would otherwise never match and silently leave the CRD out of every group.
+  return crdName.toLowerCase().includes(pattern.toLowerCase());
 }
 
 function getPatternSpecificity(pattern: string): number {

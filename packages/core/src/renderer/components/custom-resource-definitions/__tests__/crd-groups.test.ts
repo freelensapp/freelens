@@ -260,6 +260,10 @@ Cluster Management:
     it("should not match when pattern is null", () => {
       expect(matchesPattern("foo.bar.com", null as any)).toBe(false);
     });
+
+    it("should match regardless of case, so a pattern copied from a CRD's Kind still matches its lowercase plural.group name", () => {
+      expect(matchesPattern("clusterissuers.cert-manager.io", "ClusterIssuer")).toBe(true);
+    });
   });
 
   describe("getPatternSpecificity", () => {
