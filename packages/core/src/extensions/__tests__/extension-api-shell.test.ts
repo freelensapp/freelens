@@ -83,6 +83,7 @@ describe("Main.Shell", () => {
               return "kubectl";
             }
 
+            options?.onPhase?.("Downloading kubectl v1.33.4 ...");
             options?.onDownloadProgress?.({ transferred: 10, total: 10 });
             options?.onPhase?.("Verifying kubectl v1.33.4 ...");
 
@@ -171,7 +172,11 @@ describe("Main.Shell", () => {
         onPhase: (message) => events.push(`phase: ${message}`),
       });
 
-      expect(events).toEqual(["progress: 10/10", "phase: Verifying kubectl v1.33.4 ..."]);
+      expect(events).toEqual([
+        "phase: Downloading kubectl v1.33.4 ...",
+        "progress: 10/10",
+        "phase: Verifying kubectl v1.33.4 ...",
+      ]);
     });
 
     it("returns the same helm as without a cluster", async () => {
