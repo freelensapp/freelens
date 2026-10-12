@@ -142,6 +142,33 @@ describe("kubectl", () => {
       ]);
     });
 
+    it("reports the download phase with the version before the first progress", async () => {
+      const events: string[] = [];
+
+      dependencies.downloadBinary = async (_url, opts) => {
+        opts?.onProgress?.({ transferred: 0, total: content.length });
+
+        return { callWasSuccessful: true, response: downloaded };
+      };
+
+      await new Kubectl(dependencies, pinnedVersion).downloadKubectl({
+        onDownloadProgress: ({ transferred }) => events.push(`progress: ${transferred}`),
+        onPhase: (message) => events.push(`phase: ${message}`),
+      });
+
+      expect(events).toEqual([`phase: Downloading kubectl v${pinnedVersion} ...`, "progress: 0"]);
+    });
+
+    it("reports no download phase for a version it refuses to download", async () => {
+      const phases: string[] = [];
+      const kubectl = new Kubectl(dependencies, "1.21.14");
+
+      await expect(kubectl.downloadKubectl({ onPhase: (message) => phases.push(message) })).rejects.toThrow(
+        "No verified checksum is pinned",
+      );
+      expect(phases).toEqual([]);
+    });
+
     it("gives the download a stall timeout", async () => {
       const downloadBinary = vi.fn(async () => ({ callWasSuccessful: true, response: downloaded }) as const);
 
@@ -320,7 +347,11 @@ describe("kubectl", () => {
       it("reports the verification once, before the downloaded binary is executed", async () => {
         expect(await new Kubectl(dependencies, pinnedVersion).ensureKubectl({ onPhase })).toBe(true);
 
-        expect(events).toEqual([`phase: Verifying kubectl v${pinnedVersion} ...`, "execFile"]);
+        expect(events).toEqual([
+          `phase: Downloading kubectl v${pinnedVersion} ...`,
+          `phase: Verifying kubectl v${pinnedVersion} ...`,
+          "execFile",
+        ]);
       });
 
       it("says nothing when nothing was downloaded", async () => {
@@ -391,7 +422,7 @@ describe("kubectl", () => {
         });
       });
 
-      it("downloads the version-matched kubectl, reporting the progress and the verification", async () => {
+      it("downloads the version-matched kubectl, reporting the download, its progress and the verification", async () => {
         const events: string[] = [];
 
         dependencies.downloadBinary = async (_url, opts) => {
@@ -408,7 +439,11 @@ describe("kubectl", () => {
             onProblem: (message) => events.push(`problem: ${message}`),
           }),
         ).toBe(binaryPath());
-        expect(events).toEqual([`progress: ${content.length}`, `phase: Verifying kubectl v${pinnedVersion} ...`]);
+        expect(events).toEqual([
+          `phase: Downloading kubectl v${pinnedVersion} ...`,
+          `progress: ${content.length}`,
+          `phase: Verifying kubectl v${pinnedVersion} ...`,
+        ]);
       });
 
       it("falls back to the bundled kubectl when the download fails, and says so", async () => {
