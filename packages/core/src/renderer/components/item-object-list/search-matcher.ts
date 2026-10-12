@@ -18,17 +18,16 @@ function stripSeparators(text: string) {
 /**
  * Creates a case-insensitive substring matcher for a search query.
  *
- * Besides the plain substring match, a value also matches when it contains the query once
- * dashes and underscores are removed from both, so `nginxingress` and `nginx-ingress`
- * find each other.
+ * Besides the plain substring match, a value also matches when its text with dashes and
+ * underscores removed contains the query. Separators in the query stay literal, so
+ * `nginxingress` finds `nginx-ingress`, while `nginx-ingress` does not find `nginxingress`.
  */
 export function createSearchMatcher(search: string): (value: Primitive) => boolean {
   const query = normalizeText(search);
-  const strippedQuery = stripSeparators(query);
 
   return (value) => {
     const text = normalizeText(value);
 
-    return text.includes(query) || (strippedQuery !== "" && stripSeparators(text).includes(strippedQuery));
+    return text.includes(query) || stripSeparators(text).includes(query);
   };
 }
