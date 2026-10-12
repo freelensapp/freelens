@@ -1040,7 +1040,9 @@ there, but it knows nothing about the user's `httpsProxy` preference, their
 `caCertificates` / `allowUntrustedCAs` settings, or the Freelens proxy. The
 host-provided client honours all three, so an extension that uses it works in
 the corporate-proxy and custom-CA setups where the global would simply fail —
-without the extension having to implement any of it.
+without the extension having to implement any of it. Neither `fetch` is the way
+to a catalog cluster's API server; see
+[Reaching a catalog cluster](#reaching-a-catalog-cluster).
 
 In the renderer, `Renderer.Util.fetch` is today Chromium's `fetch` and needs
 none of that: requests to the cluster go to the frame's own origin, whose
@@ -1107,6 +1109,170 @@ use of, so the slot is gone and `undici` is no longer among the type
 dependencies `@freelensapp/extensions` declares. The capability it gestured at —
 HTTP that respects the user's proxy and CA settings — is `Main.Util.fetch`.
 
+### Reaching a catalog cluster
+
+`Util.fetch` is for HTTP outside the cluster. It cannot talk to a cluster's API
+server on its own: `reqInit` has no slot for the kubeconfig's client
+certificate or cluster CA, it runs no `exec` credential plugin
+(`gke-gcloud-auth-plugin`, `aws`, `kubelogin`) and refreshes no OIDC token, and
+the proxy it applies is the app-wide `httpsProxy` preference, while a cluster
+has a proxy setting of its own.
+
+A v1 extension that talked to a catalog cluster from main usually built its own
+client from the cluster entity's `kubeConfigPath`: `@kubernetes/client-node`
+loaded from the file, or a `fetch` to the server address with the kubeconfig's
+TLS settings. Such a client still works in v2 on a plain network, so nothing
+points at it, but it goes around the Freelens proxy: it ignores the cluster's
+proxy setting and everything else Freelens does for the cluster.
+
+Reach a catalog cluster through the host instead, in main as in the renderer:
+
+- `K8sApi.forCluster(cluster, Kind)` gives a `KubeApi` of one kind, as in v1;
+- `K8sApi.KubeJsonApi.forCluster(clusterId)` gives a client that takes the path
+  of any request to the API server.
+
+Both send the request through the Freelens proxy to the cluster's own proxy,
+which authenticates with the cluster's kubeconfig, credential plugins included,
+and applies the cluster's proxy setting. A `kubectl` or `helm` you spawn needs
+the same: run it with the environment of `Main.Shell.getEnvironment(clusterId)`
+rather than with the raw kubeconfig (see C15 in
+[`api.md`](./api.md#c15-the-hosts-kubectl-helm-and-terminal-environment)).
+
+In main, by path:
+
+```ts
+import { Main } from "@freelensapp/extensions";
+
+type KubeJsonApiData = Main.K8sApi.KubeJsonApiData;
+type KubeJsonApiDataList = Main.K8sApi.KubeJsonApiDataList;
+
+const api = Main.K8sApi.KubeJsonApi.forCluster(clusterId);
+
+// The path starts at the API server's root, with `/api` or `/apis`
+const pods = await api.get<KubeJsonApiDataList>("/api/v1/namespaces/default/pods", {
+  query: { labelSelector: "app=web" },
+});
+
+// `data` is sent as the JSON body
+await api.post("/api/v1/namespaces/default/configmaps", {
+  data: {
+    apiVersion: "v1",
+    kind: "ConfigMap",
+    metadata: { name: "example" },
+    data: { key: "value" },
+  },
+});
+
+// A patch type goes in the `content-type` header, in lowercase
+await api.patch(
+  "/api/v1/namespaces/default/configmaps/example",
+  { data: { data: { key: "other" } } },
+  { headers: { "content-type": "application/merge-patch+json" } },
+);
+
+// A subresource continues the path past the object's name
+const scale = await api.get<KubeJsonApiData>("/apis/apps/v1/namespaces/default/deployments/web/scale");
+
+await api.patch(
+  "/apis/apps/v1/namespaces/default/deployments/web/scale",
+  { data: { spec: { replicas: 3 } } },
+  { headers: { "content-type": "application/merge-patch+json" } },
+);
+
+await api.del("/api/v1/namespaces/default/configmaps/example");
+```
+
+The patch types are `application/json-patch+json`,
+`application/merge-patch+json` and `application/strategic-merge-patch+json`,
+and `application/apply-patch+yaml` for server-side apply, which the API server
+also refuses without a `fieldManager` query parameter
+(`{ data, query: { fieldManager: "my-extension" } }`). Without the header the
+request goes out as `application/json`, which the API server refuses for a
+patch.
+
+**Header names in `reqInit` must be lowercase.** `reqInit` is merged into the
+client's default headers, `{ "content-type": "application/json" }`, key by key
+and case-sensitively. A patch type given as `Content-Type` does not replace
+the default: the request carries both keys, and the API server does not get
+the patch type alone. Only `content-type` replaces it, which is the spelling the
+host itself uses for its patch requests.
+
+**What a failed request rejects with.** A request that is answered with a
+status outside 2xx rejects, with one of two shapes, neither of them an `Error`:
+
+- A GET answered 403 rejects with the response body itself: the Kubernetes
+  `Status` object (`{ kind: "Status", message, reason, code, … }`), or the
+  text of a body that is not JSON.
+- Every other failure rejects with a `JsonApiErrorParsed`. It has no
+  `message`, and its `toString()` gives the messages parsed from the response,
+  one per line: the `message` of a `Status`, or the text of the body. The class
+  is not part of the API, so test for it by its shape, not with `instanceof`.
+
+A request that gets no answer at all rejects with the `Error` of the
+underlying `fetch`. The usual `error instanceof Error ? error.message :
+String(error)` therefore shows `[object Object]` for a 403. A formatter that
+handles all three:
+
+```ts
+function describeError(error: unknown): string {
+  if (error instanceof Error) {
+    return error.message;
+  }
+
+  if (typeof error === "string") {
+    return error;
+  }
+
+  if (typeof error === "object" && error !== null) {
+    // A `Status` object, the body of a GET answered 403
+    if ("message" in error && typeof error.message === "string") {
+      return error.message;
+    }
+
+    // A `JsonApiErrorParsed`, whose `toString()` gives the parsed messages
+    const text = String(error);
+
+    if (text && text !== "[object Object]") {
+      return text;
+    }
+  }
+
+  return JSON.stringify(error);
+}
+```
+
+The methods of a `KubeApi` from `K8sApi.forCluster` make their requests through
+the same client and reject with the same shapes, or with an `Error` of their
+own: when API discovery finds no version of the resource the cluster serves,
+or when a response is a list where one object was expected, or the other way
+round.
+
+**A cluster that is not connected.** The Freelens proxy does not look at the
+cluster's state. For a cluster in the catalog it starts the cluster's own proxy
+on demand and the request is answered, with the kubeconfig's authentication run
+for it, while the cluster stays disconnected in the UI. If that proxy cannot
+start, the request is answered 503 with a Kubernetes `Status` whose `reason` is
+`ServiceUnavailable`, so the call rejects with a `JsonApiErrorParsed` as above.
+The other ways to reach a cluster from main refuse instead: `Main.K8s` answers
+a cluster that is not connected with a 503 `ClusterNotAccessible` result, and
+its functions reject with that result's message, while the functions of
+`Main.Shell` reject with "The cluster … is not connected".
+
+When your extension should not connect a cluster the user left disconnected,
+check its state before the request:
+
+```ts
+import { Common, Main } from "@freelensapp/extensions";
+
+const cluster = Main.Catalog.getClusterById(clusterId);
+
+if (cluster?.status !== Common.Clusters.ClusterConnectionStatus.CONNECTED) {
+  throw new Error(`The cluster ${cluster?.name ?? clusterId} is not connected`);
+}
+```
+
+The same state is the `status.phase` of the cluster's catalog entity.
+
 ## `K8sApi.forRemoteCluster` removed
 
 `Main.K8sApi.forRemoteCluster` / `Renderer.K8sApi.forRemoteCluster` and the
@@ -1124,7 +1290,8 @@ is Chromium's and has no hook for a custom TLS configuration, so those options
 would be silently ignored rather than applied.
 
 `forCluster` is unaffected — it addresses a **catalog** cluster through the
-proxy, which keeps handling authentication.
+proxy, which keeps handling authentication (see
+[Reaching a catalog cluster](#reaching-a-catalog-cluster)).
 
 If your extension needs to reach a cluster that is not in the catalog, talk to
 its API server directly — the `KubeApi` machinery does not buy you anything
@@ -1872,10 +2039,18 @@ restarted once.
 - [ ] Replace any `K8sApi.forRemoteCluster` usage with a direct call to the API
       server — it was removed (see
       [`K8sApi.forRemoteCluster` removed](#k8sapiforremotecluster-removed)).
-- [ ] Replace any bundled HTTP client, and any `globalThis.fetch` in main, with
-      `Main.Util.fetch` / `Renderer.Util.fetch` — the host's client is the one
-      that honours the user's proxy and CA settings (see
+- [ ] For HTTP to anything other than the cluster, replace any bundled HTTP
+      client, and any `globalThis.fetch` in main, with `Main.Util.fetch` /
+      `Renderer.Util.fetch` — the host's client is the one that honours the
+      user's proxy and CA settings (see
       [HTTP: `Main.Util.fetch` and `Renderer.Util.fetch`](#http-mainutilfetch-and-rendererutilfetch)).
+- [ ] Replace any client of a catalog cluster built from its `kubeConfigPath`
+      — a bundled Kubernetes client, a `fetch` to the API server — with
+      `K8sApi.forCluster` / `K8sApi.KubeJsonApi.forCluster`, and run a spawned
+      `kubectl` or `helm` with the environment of
+      `Main.Shell.getEnvironment(clusterId)`. Such a client works on a plain
+      network and ignores the cluster's proxy setting (see
+      [Reaching a catalog cluster](#reaching-a-catalog-cluster)).
 - [ ] Drop any `undici` dependency added for the `dispatcher` field of
       `reqInit` — the field is gone and `undici` is no longer a declared type
       dependency of `@freelensapp/extensions`.
