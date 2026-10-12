@@ -25,6 +25,12 @@
     }
   }
 
+  // Set while the typed regular expression is still incomplete, so the list is
+  // showing everything rather than the pattern's matches.
+  &.invalidRegex > label {
+    box-shadow: 0 0 0 1px var(--colorError);
+  }
+
   &.compact {
     min-width: 0;
 
