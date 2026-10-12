@@ -19,6 +19,7 @@ import freeLensK8sProxyPathInjectable from "./freelens-k8s-proxy-path.injectable
 import waitUntilPortIsUsedInjectable from "./wait-until-port-is-used/wait-until-port-is-used.injectable";
 import type { ChildProcess } from "node:child_process";
 
+import type { SelfSignedCert } from "../../common/certificate/certificate";
 import type { Cluster } from "../../common/cluster/cluster";
 
 export interface FreelensK8sProxy {
@@ -36,6 +37,54 @@ export interface FreelensK8sProxy {
 export type CreateFreelensK8sProxy = (env: NodeJS.ProcessEnv) => FreelensK8sProxy;
 
 const startingServeRegex = /starting to serve on (?<address>.+)/i;
+
+/**
+ * How many processes one start spawns when they do not get to serving: when a
+ * process prints no port in time, or does not listen on the one it printed. A
+ * process that exits or fails to spawn before then ends the start at once,
+ * because the next one would fail the same way; the next request starts again.
+ */
+const maxStartAttempts = 3;
+
+/**
+ * The delay before the second process of a start, doubled for each one after.
+ */
+const firstRestartDelayMs = 1000;
+
+/**
+ * How much of what a process writes to stderr while it starts is kept, to say
+ * why the start failed.
+ */
+const maxStartupStderrLength = 2000;
+
+/**
+ * Resolves after `ms`, or rejects with the reason of the signal once it aborts.
+ */
+const delay = (ms: number, signal: AbortSignal) =>
+  new Promise<void>((resolve, reject) => {
+    const onAbort = () => {
+      clearTimeout(timer);
+      reject(signal.reason);
+    };
+    const timer = setTimeout(() => {
+      signal.removeEventListener("abort", onAbort);
+      resolve();
+    }, ms);
+
+    signal.addEventListener("abort", onAbort, { once: true });
+  });
+
+/**
+ * Rejects with the reason of the signal once it aborts, and never resolves.
+ */
+const whenAborted = (signal: AbortSignal) =>
+  new Promise<never>((_resolve, reject) => {
+    if (signal.aborted) {
+      reject(signal.reason);
+    } else {
+      signal.addEventListener("abort", () => reject(signal.reason), { once: true });
+    }
+  });
 
 const createFreelensK8sProxyInjectable = getInjectable({
   id: "create-freelens-k8s-proxy",
@@ -55,10 +104,13 @@ const createFreelensK8sProxyInjectable = getInjectable({
       let port: number | undefined;
       let proxyProcess: ChildProcess | undefined;
       let starting: Promise<void> | undefined;
+      // Aborted when the start in progress cannot succeed: its process ended,
+      // or `exit()` stopped it
+      let startInProgress: AbortController | undefined;
       const ready = observable.box(false);
       const apiPrefix = `/${randomBytes(8).toString("hex")}`;
 
-      const exit = () => {
+      const stopProcess = () => {
         ready.set(false);
 
         if (proxyProcess) {
@@ -69,6 +121,11 @@ const createFreelensK8sProxyInjectable = getInjectable({
           proxyProcess.kill();
           proxyProcess = undefined;
         }
+      };
+
+      const exit = () => {
+        startInProgress?.abort(new Error("freelens-k8s-proxy was stopped before it was ready"));
+        stopProcess();
       };
 
       const run = (): Promise<void> => {
@@ -89,9 +146,19 @@ const createFreelensK8sProxyInjectable = getInjectable({
         return starting;
       };
 
-      const start = async (): Promise<void> => {
-        const apiUrl = await clusterApiUrl();
-        const certificate = await di.inject(freelensK8sProxyCertificateInjectable, apiUrl.hostname);
+      /**
+       * Spawns one process and waits until it serves. Resolves with why it
+       * did not when another process may fix that, and rejects when the start
+       * is aborted.
+       */
+      const spawnProcess = async (certificate: SelfSignedCert, start: AbortController): Promise<string | undefined> => {
+        let startupStderr = "";
+
+        const failedStart = (message: string) => {
+          const output = startupStderr.trim();
+
+          return new Error(output ? `${message}: ${output}` : message);
+        };
 
         proxyProcess = spawn(freeLensK8sProxyPath, [], {
           env: {
@@ -109,10 +176,11 @@ const createFreelensK8sProxyInjectable = getInjectable({
             level: "error",
             message: error.message,
           });
-          exit();
+          start.abort(failedStart(`freelens-k8s-proxy failed before it was ready: ${error.message}`));
+          stopProcess();
         });
 
-        proxyProcess.on("exit", (code) => {
+        proxyProcess.on("exit", (code, signal) => {
           if (code) {
             broadcastConnectionUpdate({
               level: "error",
@@ -124,7 +192,13 @@ const createFreelensK8sProxyInjectable = getInjectable({
               message: "proxy exited successfully",
             });
           }
-          exit();
+          // Once the process is serving, its start is over and this does nothing
+          start.abort(
+            failedStart(
+              `freelens-k8s-proxy exited with ${code === null ? `signal ${signal}` : `code ${code}`} before it was ready`,
+            ),
+          );
+          stopProcess();
         });
 
         proxyProcess.on("disconnect", () => {
@@ -132,7 +206,8 @@ const createFreelensK8sProxyInjectable = getInjectable({
             level: "error",
             message: "Proxy disconnected communications",
           });
-          exit();
+          start.abort(failedStart("freelens-k8s-proxy disconnected before it was ready"));
+          stopProcess();
         });
 
         assert(proxyProcess.stderr);
@@ -141,6 +216,10 @@ const createFreelensK8sProxyInjectable = getInjectable({
         proxyProcess.stderr.on("data", (data: Buffer) => {
           if (data.includes("http: TLS handshake error")) {
             return;
+          }
+
+          if (!ready.get()) {
+            startupStderr = (startupStderr + data.toString()).slice(-maxStartupStderrLength);
           }
 
           broadcastConnectionUpdate({
@@ -166,32 +245,75 @@ const createFreelensK8sProxyInjectable = getInjectable({
                 level: "info",
                 message: "Authentication proxy started",
               }),
+            signal: start.signal,
           });
         } catch (error) {
+          start.signal.throwIfAborted();
           logger.warn("[FREELENS-K8S-PROXY]: getPortFromStream failed", error);
-          broadcastConnectionUpdate({
-            level: "error",
-            message: "Proxy port can't be found, restarting...",
-          });
-          exit();
 
-          return start();
+          return "Proxy port can't be found";
         }
 
         logger.info(`[FREELENS-K8S-PROXY]: found port=${port}`);
 
         try {
-          await waitUntilPortIsUsed(port, 500, 10000);
-          ready.set(true);
+          await Promise.race([waitUntilPortIsUsed(port, 500, 10000), whenAborted(start.signal)]);
         } catch (error) {
+          start.signal.throwIfAborted();
           logger.warn("[FREELENS-K8S-PROXY]: waitUntilUsed failed", error);
-          broadcastConnectionUpdate({
-            level: "error",
-            message: "Proxy port failed to be used within time limit, restarting...",
-          });
-          exit();
 
-          return start();
+          return "Proxy port failed to be used within time limit";
+        }
+
+        ready.set(true);
+
+        return undefined;
+      };
+
+      const start = async (): Promise<void> => {
+        const thisStart = new AbortController();
+
+        startInProgress = thisStart;
+
+        try {
+          const apiUrl = await clusterApiUrl();
+          const certificate = await di.inject(freelensK8sProxyCertificateInjectable, apiUrl.hostname);
+
+          for (let attempt = 1; ; attempt += 1) {
+            thisStart.signal.throwIfAborted();
+
+            const failure = await spawnProcess(certificate, thisStart);
+
+            if (!failure) {
+              return;
+            }
+
+            stopProcess();
+
+            if (attempt >= maxStartAttempts) {
+              broadcastConnectionUpdate({
+                level: "error",
+                message: `${failure}, giving up after ${attempt} attempts`,
+              });
+
+              throw new Error(`freelens-k8s-proxy failed to start after ${attempt} attempts: ${failure}`);
+            }
+
+            broadcastConnectionUpdate({
+              level: "error",
+              message: `${failure}, restarting...`,
+            });
+
+            await delay(firstRestartDelayMs * 2 ** (attempt - 1), thisStart.signal);
+          }
+        } catch (error) {
+          stopProcess();
+
+          throw error;
+        } finally {
+          if (startInProgress === thisStart) {
+            startInProgress = undefined;
+          }
         }
       };
 
