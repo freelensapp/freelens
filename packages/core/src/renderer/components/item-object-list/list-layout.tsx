@@ -23,13 +23,13 @@ import { ItemListLayoutHeader } from "./header";
 import { PageFiltersList } from "./page-filters/list";
 import { FilterType } from "./page-filters/store";
 import pageFiltersStoreInjectable from "./page-filters/store.injectable";
+import { createSearchMatcher } from "./search-matcher";
 import itemListLayoutStorageInjectable from "./storage.injectable";
 
 import type { ItemObject, TableCellProps } from "@freelensapp/list-layout";
 import type { IClassName, SingleOrMany, StrictReactNode } from "@freelensapp/utilities";
 
 import type { IComputedValue } from "mobx";
-import type { Primitive } from "type-fest";
 
 import type { SubscribableStore } from "../../kube-watch-api/kube-watch-api";
 import type { StorageLayer } from "../../utils/storage-helper";
@@ -51,10 +51,6 @@ export interface HeaderPlaceholders {
   searchProps?: SearchInputUrlProps;
   filters?: StrictReactNode;
   info?: StrictReactNode;
-}
-
-function normalizeText(value: Primitive) {
-  return String(value).toLowerCase();
 }
 
 export type ItemListStore<I extends ItemObject, PreLoadStores extends boolean> = {
@@ -271,16 +267,9 @@ class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores extends bool
       const search = this.observableProps.pageFiltersStore.getValues(FilterType.SEARCH)[0] || "";
 
       if (search && searchFilters.length) {
-        const searchTexts = [search].map(normalizeText);
+        const matchesSearch = createSearchMatcher(search);
 
-        return items.filter((item) =>
-          searchFilters.some((getTexts) =>
-            [getTexts(item)]
-              .flat()
-              .map(normalizeText)
-              .some((source) => searchTexts.some((search) => source.includes(search))),
-          ),
-        );
+        return items.filter((item) => searchFilters.some((getTexts) => [getTexts(item)].flat().some(matchesSearch)));
       }
 
       return items;
