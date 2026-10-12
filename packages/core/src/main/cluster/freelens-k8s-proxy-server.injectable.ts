@@ -54,9 +54,12 @@ const freelensK8sProxyServerInjectable = getInjectable({
     };
 
     const newApiTarget = async (timeout: number): Promise<ServerOptions> => {
-      const { hostname } = await clusterApiUrl();
+      // The proxy is created and its start begun before anything is awaited,
+      // so a stop() while the API URL is read reaches its exit(), which aborts
+      // the start. Awaited first, they would let the start spawn a process
+      // after the stop.
+      const [{ port, apiPrefix: path }, { hostname }] = await Promise.all([ensureServerHelper(), clusterApiUrl()]);
       const certificate = await di.inject(freelensK8sProxyCertificateInjectable, hostname);
-      const { port, apiPrefix: path } = await ensureServerHelper();
 
       return {
         // http-proxy-3 prepends the `pathname` of the target and ignores a

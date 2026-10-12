@@ -29,6 +29,7 @@ describe("freelens-k8s-proxy server", () => {
   let spawnMock: Mock;
   let processes: FakeProxyProcess[];
   let freelensK8sProxyServer: FreelensK8sProxyServer;
+  let clusterApiUrl: () => Promise<URL>;
 
   const portOf = async (isLongRunningRequest?: boolean) => {
     const { target } = await freelensK8sProxyServer.getApiTarget(isLongRunningRequest);
@@ -57,7 +58,8 @@ describe("freelens-k8s-proxy server", () => {
     di.override(spawnInjectable, () => spawnMock as any);
     di.override(waitUntilPortIsUsedInjectable, () => async () => {});
     di.override(broadcastMessageInjectable, () => vi.fn());
-    di.override(clusterApiUrlInjectable, () => async () => new URL("https://192.168.64.3:8443"));
+    clusterApiUrl = async () => new URL("https://192.168.64.3:8443");
+    di.override(clusterApiUrlInjectable, () => () => clusterApiUrl());
     di.override(freelensK8sProxyCertificateInjectable, () =>
       Promise.resolve({ cert: "some-cert", private: "some-private-key", public: "some-public-key" }),
     );
@@ -129,6 +131,23 @@ describe("freelens-k8s-proxy server", () => {
     expect(processes[0].kill).toHaveBeenCalled();
     expect(await portOf()).toBe("9002");
     expect(spawnMock).toHaveBeenCalledTimes(2);
+  });
+
+  it("spawns no proxy for a short request stopped while the API URL is pending", async () => {
+    const pendingApiUrls: ((url: URL) => void)[] = [];
+
+    clusterApiUrl = () => new Promise((resolve) => pendingApiUrls.push(resolve));
+
+    const target = freelensK8sProxyServer.getApiTarget();
+
+    freelensK8sProxyServer.stop();
+
+    for (const resolve of pendingApiUrls) {
+      resolve(new URL("https://192.168.64.3:8443"));
+    }
+
+    await expect(target).rejects.toThrow("freelens-k8s-proxy was stopped before it was ready");
+    expect(spawnMock).not.toHaveBeenCalled();
   });
 
   it("starts a new proxy on restart() and gives short requests its target", async () => {
