@@ -779,13 +779,27 @@ checked against different React types.
 ## C12. HTTP
 
 **Guarantee.** Extensions get HTTP **from the host**, not from a bundled client:
-`Main.Util.fetch` and `Renderer.Util.fetch`.
+`Main.Util.fetch` and `Renderer.Util.fetch` for HTTP outside the cluster, and
+`K8sApi.forCluster` and `K8sApi.KubeJsonApi.forCluster` for a catalog cluster,
+in main as in the renderer.
 
-**Surface.** Two symbols, deliberately, because the implementations genuinely
-differ per process — one name would suggest an equivalence that does not hold.
-`Main.Util.fetch` applies the user's `httpsProxy` preference, their
+**Surface.** Two `fetch` symbols, deliberately, because the implementations
+genuinely differ per process — one name would suggest an equivalence that does
+not hold. `Main.Util.fetch` applies the user's `httpsProxy` preference, their
 `caCertificates` and `allowUntrustedCAs` settings and the Freelens proxy;
 `Renderer.Util.fetch` is Chromium's `fetch` reached through the host.
+
+`Util.fetch` cannot talk to a cluster's API server on its own: it carries no
+client certificate or cluster CA from a kubeconfig, runs no `exec` credential
+plugin and refreshes no OIDC token, and the proxy it applies is the app-wide
+`httpsProxy` rather than the cluster's own proxy setting. A catalog cluster is
+reached through `forCluster` instead: `K8sApi.forCluster(cluster, Kind)` for a
+`KubeApi` of one kind, and `K8sApi.KubeJsonApi.forCluster(clusterId)` for
+requests by path. Both send the request through the Freelens proxy to the
+cluster's own proxy, which authenticates with the cluster's kubeconfig and
+applies the cluster's proxy setting. A spawned `kubectl` or `helm` reaches the
+cluster through the environment of
+[C15](#c15-the-hosts-kubectl-helm-and-terminal-environment).
 
 Request and response types are **structural**, so neither `undici` nor a DOM
 type is imposed on an extension.
@@ -793,6 +807,13 @@ type is imposed on an extension.
 **Failure mode.** `globalThis.fetch` in main exists but knows nothing about the
 user's proxy or custom CAs, so an extension using it simply fails on corporate
 networks. `res instanceof Response` is not a reliable check in main.
+
+A client of a catalog cluster built from its `kubeConfigPath` (a bundled
+Kubernetes client, or `fetch` to the API server with the kubeconfig's TLS
+settings) works on a plain network, and ignores the cluster's proxy setting and
+everything else the Freelens proxy does for the cluster, so it fails only on
+the networks that need them. So does a `kubectl` or `helm` given the raw
+kubeconfig.
 
 ---
 
