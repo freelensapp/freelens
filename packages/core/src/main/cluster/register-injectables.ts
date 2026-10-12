@@ -9,7 +9,9 @@
 import clustersThatAreBeingDeletedInjectable from "./are-being-deleted.injectable";
 import broadcastConnectionUpdateInjectable from "./broadcast-connection-update.injectable";
 import clusterConnectionInjectable from "./cluster-connection.injectable";
+import disconnectClustersRemovedFromCatalogInjectable from "./disconnect-clusters-removed-from-catalog.injectable";
 import freelensK8sProxyServerInjectable from "./freelens-k8s-proxy-server.injectable";
+import freelensK8sProxyServersInjectable from "./freelens-k8s-proxy-servers.injectable";
 import freelensProxyClusterUrlInjectable from "./freelens-proxy-cluster-url.injectable";
 import initializeClusterManagerInjectable from "./initialize-manager.injectable";
 import loadProxyKubeconfigInjectable from "./load-proxy-kubeconfig.injectable";
@@ -20,7 +22,10 @@ import requestApiResourcesInjectable from "./request-api-resources.injectable";
 import requestCoreApiVersionsInjectable from "./request-core-api-versions.injectable";
 import requestKubeApiResourcesForInjectable from "./request-kube-api-resources-for.injectable";
 import requestNonCoreApiVersionsInjectable from "./request-non-core-api-versions.injectable";
+import startDisconnectingClustersRemovedFromCatalogInjectable from "./start-disconnecting-clusters-removed-from-catalog.injectable";
 import stopAllClusterConnectionsOnQuitInjectable from "./stop-cluster-connections-on-quit.injectable";
+import stopDisconnectingClustersRemovedFromCatalogInjectable from "./stop-disconnecting-clusters-removed-from-catalog.injectable";
+import stopFreelensK8sProxiesOnQuitInjectable from "./stop-freelens-k8s-proxies-on-quit.injectable";
 import updateEntityMetadataInjectable from "./update-entity-metadata.injectable";
 import updateEntitySpecInjectable from "./update-entity-spec.injectable";
 import clusterVisibilityHandlerInjectable from "./visibility-handler.injectable";
@@ -55,7 +60,17 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
+    di.register(disconnectClustersRemovedFromCatalogInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
     di.register(freelensK8sProxyServerInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(freelensK8sProxyServersInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
@@ -100,7 +115,22 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
+    di.register(startDisconnectingClustersRemovedFromCatalogInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
     di.register(stopAllClusterConnectionsOnQuitInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(stopDisconnectingClustersRemovedFromCatalogInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(stopFreelensK8sProxiesOnQuitInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
