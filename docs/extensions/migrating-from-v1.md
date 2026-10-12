@@ -1184,8 +1184,10 @@ await api.del("/api/v1/namespaces/default/configmaps/example");
 
 The patch types are `application/json-patch+json`,
 `application/merge-patch+json` and `application/strategic-merge-patch+json`,
-and `application/apply-patch+yaml` for server-side apply. Without the header
-the request goes out as `application/json`, which the API server refuses for a
+and `application/apply-patch+yaml` for server-side apply, which the API server
+also refuses without a `fieldManager` query parameter
+(`{ data, query: { fieldManager: "my-extension" } }`). Without the header the
+request goes out as `application/json`, which the API server refuses for a
 patch.
 
 **Header names in `reqInit` must be lowercase.** `reqInit` is merged into the
@@ -1240,7 +1242,10 @@ function describeError(error: unknown): string {
 ```
 
 The methods of a `KubeApi` from `K8sApi.forCluster` make their requests through
-the same client and reject with the same shapes.
+the same client and reject with the same shapes, or with an `Error` of their
+own: when API discovery finds no version of the resource the cluster serves,
+or when a response is a list where one object was expected, or the other way
+round.
 
 **A cluster that is not connected.** The Freelens proxy does not look at the
 cluster's state. For a cluster in the catalog it starts the cluster's own proxy
