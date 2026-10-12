@@ -345,6 +345,11 @@ class ClusterConnection {
 
   disconnect() {
     if (this.cluster.disconnected.get()) {
+      // A request through freelens-proxy and a user of the proxy kubeconfig
+      // start the proxy whether the cluster is connected or not, so a
+      // disconnected cluster can still hold a running one.
+      this.dependencies.freelensK8sProxyServer?.stop();
+
       return this.dependencies.logger.debug("[CLUSTER]: already disconnected", { id: this.cluster.id });
     }
 

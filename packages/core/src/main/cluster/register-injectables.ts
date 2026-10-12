@@ -9,6 +9,7 @@
 import clustersThatAreBeingDeletedInjectable from "./are-being-deleted.injectable";
 import broadcastConnectionUpdateInjectable from "./broadcast-connection-update.injectable";
 import clusterConnectionInjectable from "./cluster-connection.injectable";
+import disconnectClustersRemovedFromCatalogInjectable from "./disconnect-clusters-removed-from-catalog.injectable";
 import freelensK8sProxyServerInjectable from "./freelens-k8s-proxy-server.injectable";
 import freelensProxyClusterUrlInjectable from "./freelens-proxy-cluster-url.injectable";
 import initializeClusterManagerInjectable from "./initialize-manager.injectable";
@@ -51,6 +52,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(clustersThatAreBeingDeletedInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(disconnectClustersRemovedFromCatalogInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
