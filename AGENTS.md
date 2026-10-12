@@ -620,13 +620,15 @@ of the sections below therefore needs a matching change to the `SKILL.md` files
 under `skills/` in that repository:
 
 - in `api.md`, the contracts C1 to C15 by number as a range, and C6
-  (registration) and C9 (routing) on their own;
+  (registration), C9 (routing), C12 (HTTP) and C15 (the host's kubectl, helm
+  and terminal environment) on their own;
 - in `migrating-from-v1.md`, these headings:
   - "Step one: bump `engines.freelens`"
   - "`package.json` for an extension"
   - "Source layout: one tsconfig per runtime environment"
   - "MobX 7 and mobx-react 10 (standard decorators only)"
   - "Registering things: declarative fields"
+  - "Reaching a catalog cluster"
   - "v1→v2 rename table"
   - "Node and Electron in the renderer"
   - "Styling and CSS"
