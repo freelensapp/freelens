@@ -165,6 +165,27 @@ describe("kubectlStatusOptionsFor", () => {
     }
   });
 
+  it("shows its own download line with the percentage and sizes right after the download phase", () => {
+    vi.useFakeTimers();
+
+    try {
+      const options = kubectlStatusOptionsFor("1.33.4", terminalStatusReporterFor(websocket));
+
+      options.onPhase?.("Downloading kubectl v1.33.4 ...");
+      options.onDownloadProgress?.({ transferred: 0, total: 61_970_432 });
+      vi.advanceTimersByTime(1000);
+      options.onDownloadProgress?.({ transferred: 28_732_620, total: 61_970_432 });
+
+      expect(messages()).toEqual([
+        "Downloading kubectl v1.33.4 ...",
+        "Downloading kubectl v1.33.4    0%  0.0B / 59.1MiB",
+        "Downloading kubectl v1.33.4   46%  27.4MiB / 59.1MiB",
+      ]);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it("forwards a problem as an error frame", () => {
     const { onProblem } = kubectlStatusOptionsFor("1.33.4", terminalStatusReporterFor(websocket));
 

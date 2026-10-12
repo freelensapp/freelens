@@ -95,6 +95,7 @@ describe("technical unit tests for local shell sessions", () => {
               }
 
               if (kubectlDownloads) {
+                opts?.onPhase?.("Downloading kubectl v1.33.4 ...");
                 opts?.onDownloadProgress?.({ transferred: 61_970_432, total: 61_970_432 });
                 opts?.onPhase?.("Verifying kubectl v1.33.4 ...");
               }
@@ -200,12 +201,13 @@ describe("technical unit tests for local shell sessions", () => {
         expect(statusMessages()).toEqual([
           { message: "Starting cluster proxy ...", level: "info" },
           { message: "Checking kubectl v1.33.4 ...", level: "info" },
+          { message: "Downloading kubectl v1.33.4 ...", level: "info" },
           { message: "Downloading kubectl v1.33.4  100%  59.1MiB / 59.1MiB", level: "info" },
           { message: "Verifying kubectl v1.33.4 ...", level: "info" },
           { message: "Resolving shell environment ...", level: "info" },
           { message: "Starting shell ...", level: "info" },
         ]);
-        expect(framesWhenSpawned).toBe(6);
+        expect(framesWhenSpawned).toBe(7);
       });
 
       it("reports a kubectl problem as a sticky error, and still opens the shell", async () => {

@@ -7,6 +7,7 @@
 import http2 from "node:http2";
 import net from "node:net";
 import { apiKubePrefix, apiPrefix } from "../../common/vars";
+import { respondJson, respondText } from "../utils/http-responses";
 import { getBoolean } from "../utils/parse-query";
 import { abortWhenClientCloses, isClientGone } from "./abort-when-client-closes";
 import type http from "node:http";
@@ -52,6 +53,8 @@ interface Dependencies {
  * An upgrade is always an HTTP/1.1 request: HTTP/2 has no upgrade.
  */
 type UpgradeRequest = ProxyApiRequestArgs["req"];
+
+const messageOf = (error: unknown) => (error instanceof Error ? error.message : String(error));
 
 const watchParam = "watch";
 const followParam = "follow";
@@ -180,7 +183,10 @@ export class FreelensProxy {
         }
 
         return this.dependencies.kubeApiUpgradeRequest({ req, socket, head, cluster });
-      })().catch((error) => this.dependencies.logger.error("[FREELENS-PROXY]: failed to handle proxy upgrade", error));
+      })().catch((error) => {
+        this.dependencies.logger.error("[FREELENS-PROXY]: failed to handle proxy upgrade", error);
+        this.rejectUpgrade(socket, error);
+      });
     });
   }
 
@@ -349,7 +355,27 @@ export class FreelensProxy {
       req.url = req.url.replace(apiKubePrefix, "");
 
       const freelensK8sProxyServer = this.dependencies.getFreelensK8sProxyServer(cluster);
-      const proxyTarget = await freelensK8sProxyServer.getApiTarget(isLongRunningRequest(req.url));
+      let proxyTarget: ServerOptions | undefined;
+
+      try {
+        proxyTarget = await freelensK8sProxyServer.getApiTarget(isLongRunningRequest(req.url));
+      } catch (error) {
+        const message = `Failed to start the proxy of cluster ${cluster.id}: ${messageOf(error)}`;
+
+        this.dependencies.logger.error(`[FREELENS-PROXY]: ${message}`, { url: req.url });
+
+        // A Kubernetes Status, which is what a client of the Kubernetes API
+        // reads the reason of a failed request from
+        return this.respondWithError(res, 503, {
+          kind: "Status",
+          apiVersion: "v1",
+          metadata: {},
+          status: "Failure",
+          message,
+          reason: "ServiceUnavailable",
+          code: 503,
+        });
+      }
 
       if (proxyTarget) {
         return this.proxyWeb(req, res, proxyTarget);
@@ -357,7 +383,65 @@ export class FreelensProxy {
     }
 
     res.setHeader("Content-Security-Policy", this.dependencies.contentSecurityPolicy);
-    await this.dependencies.router.route(cluster, req, res);
+
+    try {
+      await this.dependencies.router.route(cluster, req, res);
+    } catch (error) {
+      this.dependencies.logger.error("[FREELENS-PROXY]: failed to route request", { url: req.url, error });
+      this.respondWithError(res, 500, `Oops, something went wrong.\n${error}`);
+    }
+  }
+
+  /**
+   * Answers an upgrade that failed before anything was written for it, such
+   * as one whose cluster proxy could not be started, and closes its socket
+   * either way: nothing else would.
+   */
+  protected rejectUpgrade(socket: net.Socket, error: unknown) {
+    if (socket.destroyed) {
+      return;
+    }
+
+    if (!socket.writable || socket.bytesWritten > 0) {
+      socket.destroy();
+
+      return;
+    }
+
+    const body = `${messageOf(error)}\n`;
+
+    socket.end(
+      [
+        "HTTP/1.1 503 Service Unavailable",
+        "Content-Type: text/plain; charset=utf-8",
+        `Content-Length: ${Buffer.byteLength(body)}`,
+        "Connection: close",
+        "",
+        body,
+      ].join("\r\n"),
+    );
+  }
+
+  /**
+   * Answers a request that failed before anything was written for it, and
+   * ends one that has already started its response.
+   */
+  protected respondWithError(res: ServerResponse, status: number, body: object | string) {
+    if (isClientGone(res) || res.writableEnded) {
+      return;
+    }
+
+    try {
+      if (res.headersSent) {
+        res.end();
+      } else if (typeof body === "string") {
+        respondText(res, body, status);
+      } else {
+        respondJson(res, body, status);
+      }
+    } catch (error) {
+      this.dependencies.logger.error(`[FREELENS-PROXY]: Failed to write headers: `, error);
+    }
   }
 
   protected proxyWeb(req: ServerIncomingMessage, res: ServerResponse, target: ServerOptions) {
