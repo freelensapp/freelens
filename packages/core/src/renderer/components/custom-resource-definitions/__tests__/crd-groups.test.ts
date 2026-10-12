@@ -600,6 +600,7 @@ Kubernetes:
       navigateToCustomResources: () => {},
       customResourcesRoute: {},
       pathParameters: { get: () => ({}) },
+      customResourcesPresentedByExtensions: { get: () => new Set() },
     };
 
     it("should give CRDs sharing a plural name distinct ids within the same group", () => {

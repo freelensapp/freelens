@@ -16,13 +16,50 @@ import { shouldShowResourceInjectionToken } from "../../../features/cluster/show
 import userPreferencesStateInjectable from "../../../features/user-preferences/common/state.injectable";
 import routeIsActiveInjectable from "../../routes/route-is-active.injectable";
 import routePathParametersInjectable from "../../routes/route-path-parameters.injectable";
+import discoveredCustomResourcesInjectable, {
+  inPreferredVersions,
+} from "../custom-resources/discovered-custom-resources.injectable";
 import customResourcesSidebarItemInjectable from "../custom-resources/sidebar-item.injectable";
+import { getCustomResourceKey } from "./custom-resource-registration";
+import customResourcesPresentedByExtensionsInjectable from "./custom-resources-presented-by-extensions.injectable";
 import customResourceDefinitionsInjectable from "./definitions.injectable";
 
 import type { SidebarItemRegistration } from "@freelensapp/cluster-sidebar";
 import type { CustomResourceDefinition } from "@freelensapp/kube-object";
 
+import type { KubeApiResource } from "../../../common/rbac";
+
 export const sideBarItemCustomResourcePrefix = "sidebar-item-custom-resource-group";
+
+// The grouping/tree-building below only ever reads these three accessors off a
+// definition, so it (and the discovered-resources fallback) can share the same
+// pipeline as plain `CustomResourceDefinition` instances, without depending on
+// the full kube-object class.
+interface CrdLike {
+  getGroup(): string;
+  getPluralName(): string;
+  getResourceKind(): string;
+}
+
+// The custom resources of the cluster, from its CRD definitions, or from its
+// discovery when the definitions can't be listed (see discoveredCustomResourcesInjectable):
+// discovery only reports group/apiName/kind, so it is adapted to `CrdLike` here
+// rather than threading a second, narrower shape through the whole tree pipeline.
+function getCustomResources(
+  customResourceDefinitions: CustomResourceDefinition[],
+  discoveredCustomResources: KubeApiResource[],
+): CrdLike[] {
+  if (discoveredCustomResources.length === 0) {
+    return customResourceDefinitions;
+  }
+  return inPreferredVersions(discoveredCustomResources).map(
+    ({ group, apiName, kind }): CrdLike => ({
+      getGroup: () => group,
+      getPluralName: () => apiName,
+      getResourceKind: () => kind,
+    }),
+  );
+}
 
 // A "-" in a group name would otherwise be indistinguishable from the "-" used
 // to join path segments below (nested groups ["Cluster","API"] and a flat group
@@ -247,7 +284,7 @@ function findGroupPath(crdName: string, config: ParsedConfig | null): GroupPath 
 
 interface CrdTreeNode {
   name: string;
-  crds: CustomResourceDefinition[];
+  crds: CrdLike[];
   children: Map<string, CrdTreeNode>;
   order: number;
 }
@@ -274,12 +311,12 @@ function getNodeOrder(config: ParsedConfig | null, path: string[]): number {
 }
 
 function organizeCrdsIntoTree(
-  crds: Iterable<CustomResourceDefinition>,
+  crds: Iterable<CrdLike>,
   configYaml: string,
-): { root: CrdTreeNode; config: ParsedConfig | null; ungrouped: CustomResourceDefinition[] } {
+): { root: CrdTreeNode; config: ParsedConfig | null; ungrouped: CrdLike[] } {
   const config = parseGroupConfig(configYaml);
   const root = createCrdTreeNode("root", 0);
-  const ungrouped: CustomResourceDefinition[] = [];
+  const ungrouped: CrdLike[] = [];
   for (const crd of crds) {
     try {
       const fullName = `${crd.getPluralName()}.${crd.getGroup()}`;
@@ -317,6 +354,7 @@ interface SidebarItemDependencies {
   navigateToCustomResources: any;
   customResourcesRoute: any;
   pathParameters: any;
+  customResourcesPresentedByExtensions: any;
 }
 
 function createCrdSidebarItem({
@@ -327,10 +365,11 @@ function createCrdSidebarItem({
   navigateToCustomResources,
   customResourcesRoute,
   pathParameters,
+  customResourcesPresentedByExtensions,
 }: SidebarItemDependencies & {
   id: string;
   parentId: string;
-  definition: CustomResourceDefinition;
+  definition: CrdLike;
   itemIndex: number;
 }): any {
   const parameters = {
@@ -351,6 +390,15 @@ function createCrdSidebarItem({
         group: definition.getGroup(),
         apiName: definition.getPluralName(),
       }),
+      // An enabled extension that registered the resource in its
+      // `customResources` lists it under its own entry. The item stays
+      // registered, so the command palette and a favorite of it still
+      // reach the host's list.
+      isHiddenInTree: computed(() =>
+        customResourcesPresentedByExtensions
+          .get()
+          .has(getCustomResourceKey(definition.getGroup(), definition.getPluralName())),
+      ),
       orderNumber: itemIndex,
     }),
     injectionToken: sidebarItemInjectionToken,
@@ -432,7 +480,7 @@ function generateSidebarItemsRecursive(
 // total number of top-level config entries (visible and hidden), which is
 // always strictly greater than any configured group's own `order`.
 function generateApiGroupSidebarItems(
-  definitions: CustomResourceDefinition[],
+  definitions: CrdLike[],
   options: SidebarItemDependencies,
   orderNumberOffset: number,
 ): any[] {
@@ -474,17 +522,26 @@ const customResourceDefinitionGroupsSidebarItemsComputedInjectable = getInjectab
   id: "custom-resource-definition-groups-sidebar-items-computed",
   instantiate: (di) => {
     const customResourceDefinitions = di.inject(customResourceDefinitionsInjectable);
+    const discoveredCustomResources = di.inject(discoveredCustomResourcesInjectable);
     const navigateToCustomResources = di.inject(navigateToCustomResourcesInjectable);
     const customResourcesRoute = di.inject(customResourcesRouteInjectable);
     const pathParameters = di.inject(routePathParametersInjectable, customResourcesRoute);
+    const customResourcesPresentedByExtensions = di.inject(customResourcesPresentedByExtensionsInjectable);
     const state = di.inject(userPreferencesStateInjectable);
 
     return computed(() => {
       try {
-        const crdList = customResourceDefinitions.get();
-        const options = { navigateToCustomResources, customResourcesRoute, pathParameters };
-        // Without a grouping configuration nothing matches, every CRD ends up in
-        // `ungrouped` and the sidebar is exactly the one built before this feature.
+        // Falls back to discovery when the definitions can't be listed (see
+        // discoveredCustomResourcesInjectable); otherwise every CRD ends up in
+        // `ungrouped` without a grouping configuration and the sidebar is exactly
+        // the one built before this feature.
+        const crdList = getCustomResources(customResourceDefinitions.get(), discoveredCustomResources.get());
+        const options = {
+          navigateToCustomResources,
+          customResourcesRoute,
+          pathParameters,
+          customResourcesPresentedByExtensions,
+        };
         const { root, config, ungrouped } = organizeCrdsIntoTree(crdList, state.crdGroup ?? "");
         const topLevelGroupCount = (config?.nodes.length ?? 0) + (config?.hiddenNodes?.length ?? 0);
         // Root-level groups and ungrouped API-group headers share `parentId` with
