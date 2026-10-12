@@ -609,6 +609,9 @@ export class Kubectl {
     await ensureDir(this.dependencies.getDirnameOfPath(this.path), 0o755);
 
     this.dependencies.logger.info(`Downloading kubectl ${this.kubectlVersion} from ${this.url} to ${this.path}`);
+    // The progress carries no version, so the phase is what tells a caller
+    // which kubectl is being downloaded.
+    opts?.onPhase?.(`Downloading kubectl v${this.kubectlVersion} ...`);
 
     const response = await this.dependencies.downloadBinary(this.url, {
       onProgress: opts?.onDownloadProgress,

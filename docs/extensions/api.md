@@ -928,7 +928,13 @@ terminal and an extension, from two extensions or from two Freelens processes,
 wait for one preparation: the kubectl is downloaded once, and every call
 resolves with its outcome, the version-matched kubectl or, when the
 preparation fails, the bundled one with the problem reported to each caller.
-A call that waits for another Freelens process says so through `onPhase`.
+
+`onPhase` reports these phases, each with a message that names the kubectl
+version, which the progress does not carry:
+
+- waiting for another Freelens process that prepares the same kubectl;
+- downloading it, before the first `onDownloadProgress`;
+- verifying the download, before the downloaded binary first runs.
 
 **For a cluster, the cluster is connected.** The files `KUBECONFIG` and
 `KUBECACHEDIR` name exist only while it is: a disconnect removes them, and the

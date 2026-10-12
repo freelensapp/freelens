@@ -25,7 +25,11 @@ export interface KubectlDownloadProgress {
  * extension's choice.
  */
 export interface KubectlDownloadOptions {
-  /** A phase that is about to begin and may take a while, such as verifying the download. */
+  /**
+   * A phase that is about to begin and may take a while: waiting for another
+   * Freelens process, downloading, or verifying the download. The message
+   * names the kubectl version.
+   */
   onPhase?: (message: string) => void;
   /** The download progress, called as the bytes arrive. */
   onDownloadProgress?: (progress: KubectlDownloadProgress) => void;
