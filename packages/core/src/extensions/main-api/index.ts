@@ -11,4 +11,5 @@ export * as K8s from "./k8s";
 export * as K8sApi from "./k8s-api";
 export * as Navigation from "./navigation";
 export * as Power from "./power";
+export * as Shell from "./shell";
 export { Util } from "./utils";

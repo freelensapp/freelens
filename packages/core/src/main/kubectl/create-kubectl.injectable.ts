@@ -12,7 +12,6 @@ import unlinkInjectable from "../../common/fs/unlink.injectable";
 import getBasenameOfPathInjectable from "../../common/path/get-basename.injectable";
 import getDirnameOfPathInjectable from "../../common/path/get-dirname.injectable";
 import joinPathsInjectable from "../../common/path/join-paths.injectable";
-import baseBundledBinariesDirectoryInjectable from "../../common/vars/base-bundled-binaries-dir.injectable";
 import bundledKubectlVersionInjectable from "../../common/vars/bundled-kubectl-version.injectable";
 import normalizedPlatformInjectable from "../../common/vars/normalized-platform.injectable";
 import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
@@ -39,7 +38,6 @@ const createKubectlInjectable = getInjectable({
       normalizedDownloadPlatform: di.inject(normalizedPlatformInjectable),
       kubectlBinaryName: di.inject(kubectlBinaryNameInjectable),
       bundledKubectlBinaryPath: di.inject(bundledKubectlBinaryPathInjectable),
-      baseBundledBinariesDirectory: di.inject(baseBundledBinariesDirectoryInjectable),
       bundledKubectlVersion: di.inject(bundledKubectlVersionInjectable),
       kubectlVersionMap: di.inject(kubectlVersionMapInjectable),
       getKubectlChecksum: di.inject(kubectlChecksumsInjectable),

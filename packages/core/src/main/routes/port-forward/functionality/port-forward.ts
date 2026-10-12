@@ -27,7 +27,8 @@ export interface PortForwardArgs {
 
 export interface PortForwardDependencies {
   readonly logger: Logger;
-  getKubectlBinPath: (bundled: boolean) => Promise<string>;
+  /** The bundled kubectl, which port forwarding always runs. */
+  getKubectlBinPath: () => Promise<string>;
   getPortFromStream: GetPortFromStream;
 }
 
@@ -69,7 +70,7 @@ export class PortForward {
   }
 
   public async start() {
-    const kubectlBin = await this.dependencies.getKubectlBinPath(true);
+    const kubectlBin = await this.dependencies.getKubectlBinPath();
     const { kubeconfigPath, cacheDirectoryPath } = this.proxyKubeconfig;
     const commandArgs = [
       "--kubeconfig",

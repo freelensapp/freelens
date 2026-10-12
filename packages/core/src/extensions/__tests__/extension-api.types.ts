@@ -59,6 +59,8 @@ export type MainExtension = Main.LensExtension;
 export type MainFetch = typeof Main.Util.fetch;
 export type MainNavigate = typeof Main.Navigation.navigate;
 export type MainPowerEventListener = Main.Power.PowerEventListener;
+export type MainShellGetEnvironment = typeof Main.Shell.getEnvironment;
+export type MainShellKubectlDownloadOptions = Main.Shell.KubectlDownloadOptions;
 export type MainKubeObject = Main.K8sApi.KubeObject;
 export type MainKubeObjectStore = Main.K8sApi.KubeObjectStore<Main.K8sApi.KubeObject>;
 

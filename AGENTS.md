@@ -619,7 +619,7 @@ documents on `main` and cite their sections by name. Renaming or removing one
 of the sections below therefore needs a matching change to the `SKILL.md` files
 under `skills/` in that repository:
 
-- in `api.md`, the contracts C1 to C14 by number as a range, and C6
+- in `api.md`, the contracts C1 to C15 by number as a range, and C6
   (registration) and C9 (routing) on their own;
 - in `migrating-from-v1.md`, these headings:
   - "Step one: bump `engines.freelens`"
