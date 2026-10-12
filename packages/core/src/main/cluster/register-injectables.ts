@@ -22,7 +22,9 @@ import requestApiResourcesInjectable from "./request-api-resources.injectable";
 import requestCoreApiVersionsInjectable from "./request-core-api-versions.injectable";
 import requestKubeApiResourcesForInjectable from "./request-kube-api-resources-for.injectable";
 import requestNonCoreApiVersionsInjectable from "./request-non-core-api-versions.injectable";
+import startDisconnectingClustersRemovedFromCatalogInjectable from "./start-disconnecting-clusters-removed-from-catalog.injectable";
 import stopAllClusterConnectionsOnQuitInjectable from "./stop-cluster-connections-on-quit.injectable";
+import stopDisconnectingClustersRemovedFromCatalogInjectable from "./stop-disconnecting-clusters-removed-from-catalog.injectable";
 import stopFreelensK8sProxiesOnQuitInjectable from "./stop-freelens-k8s-proxies-on-quit.injectable";
 import updateEntityMetadataInjectable from "./update-entity-metadata.injectable";
 import updateEntitySpecInjectable from "./update-entity-spec.injectable";
@@ -113,7 +115,17 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
+    di.register(startDisconnectingClustersRemovedFromCatalogInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
     di.register(stopAllClusterConnectionsOnQuitInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(stopDisconnectingClustersRemovedFromCatalogInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

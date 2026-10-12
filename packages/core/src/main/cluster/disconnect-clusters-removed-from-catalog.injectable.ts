@@ -3,8 +3,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { onLoadOfApplicationInjectionToken } from "@freelensapp/application";
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { getStartableStoppable } from "@freelensapp/startable-stoppable";
 import { getInjectable } from "@ogre-tools/injectable";
 import { reaction } from "mobx";
 import { isKubernetesCluster } from "../../common/catalog-entities/kubernetes-cluster";
@@ -23,12 +23,12 @@ import removeProxyKubeconfigInjectable from "./remove-proxy-kubeconfig.injectabl
  */
 const disconnectClustersRemovedFromCatalogInjectable = getInjectable({
   id: "disconnect-clusters-removed-from-catalog",
-  instantiate: (di) => ({
-    run: () => {
-      const catalogEntityRegistry = di.inject(catalogEntityRegistryInjectable);
-      const getClusterById = di.inject(getClusterByIdInjectable);
-      const logger = di.inject(loggerInjectionToken);
+  instantiate: (di) => {
+    const catalogEntityRegistry = di.inject(catalogEntityRegistryInjectable);
+    const getClusterById = di.inject(getClusterByIdInjectable);
+    const logger = di.inject(loggerInjectionToken);
 
+    return getStartableStoppable("disconnect-clusters-removed-from-catalog", () =>
       reaction(
         () =>
           new Set(catalogEntityRegistry.filterItemsByPredicate(isKubernetesCluster).map((entity) => entity.getId())),
@@ -50,10 +50,9 @@ const disconnectClustersRemovedFromCatalogInjectable = getInjectable({
             void di.inject(removeProxyKubeconfigInjectable, cluster)();
           }
         },
-      );
-    },
-  }),
-  injectionToken: onLoadOfApplicationInjectionToken,
+      ),
+    );
+  },
 });
 
 export default disconnectClustersRemovedFromCatalogInjectable;
