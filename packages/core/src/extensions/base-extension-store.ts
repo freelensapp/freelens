@@ -13,7 +13,7 @@ import createPersistentStorageInjectable, {
 } from "../features/persistent-storage/common/create.injectable";
 import { getDiForExtensionApi } from "./extension-api-di";
 
-import type { Options } from "conf";
+import type Conf from "conf";
 
 import type { Migrations } from "../features/persistent-storage/common/migrations.injectable";
 import type { PersistentStorageParams } from "./common-api/stores";
@@ -21,7 +21,11 @@ import type { LensExtension } from "./lens-extension";
 
 export interface ExtensionStoreParams<T extends object>
   extends Omit<PersistentStorageParams<T>, "migrations" | "cwd" | "fromStore" | "toJSON"> {
-  migrations?: Options<T & Record<string, unknown>>["migrations"];
+  /**
+   * conf's migrations, keyed by version. The store is typed by the model
+   * itself, as `defaults` is, so that the model may be an `interface`.
+   */
+  migrations?: Record<string, (store: Conf<T>) => void>;
   cwd?: string;
 }
 

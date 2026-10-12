@@ -1788,8 +1788,17 @@ What a reload is, so that what you have to write is clear:
   leaves behind — a listener on a host object, a timer, an element appended to
   the document — has to be released in `onDeactivate` or in the extension's
   disposers, or it survives the reload and accumulates.
-- One rebuild is **one reload**, however many entry points it writes, and the
-  host waits for a half-written bundle to settle before importing it.
+- One rebuild is **one reload**, including a build with one bundler run per
+  entry point, which writes `main` and `renderer` seconds apart. The rule: a
+  rebuild starts with the first write to an entry point after the previous
+  reload. Once every entry point your manifest names has been written since
+  then, the extension reloads 300 ms after the last write. Until then the host
+  waits for the others, and reloads with what it has 5 seconds after the first
+  write, or 300 ms after the last one if that is later. So a build which writes both entry points within 5
+  seconds reloads once, and a rebuild which writes only one of two — a watch
+  run of one entry point, say — reloads 5 seconds after that write. A build
+  whose runs are further apart than that reloads once per run. In every case
+  the host waits for a half-written bundle to settle before importing it.
 - Your **stylesheet is re-linked** and the previous one is removed, so your CSS
   does not stack up across reloads.
 
