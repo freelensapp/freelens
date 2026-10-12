@@ -8,6 +8,7 @@ import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import clusterApiUrlInjectable from "../../features/cluster/connections/main/api-url.injectable";
 import createFreelensK8sProxyInjectable from "../freelens-k8s-proxy/create-freelens-k8s-proxy.injectable";
 import freelensK8sProxyCertificateInjectable from "../freelens-k8s-proxy/freelens-k8s-proxy-certificate.injectable";
+import freelensK8sProxyServersInjectable from "./freelens-k8s-proxy-servers.injectable";
 
 import type { ServerOptions } from "http-proxy-3";
 
@@ -78,7 +79,7 @@ const freelensK8sProxyServerInjectable = getInjectable({
       apiTarget = undefined;
     };
 
-    return {
+    const freelensK8sProxyServer: FreelensK8sProxyServer = {
       getApiTarget: async (isLongRunningRequest = false) => {
         if (isLongRunningRequest) {
           return newApiTarget(fourHoursInMs);
@@ -106,6 +107,10 @@ const freelensK8sProxyServerInjectable = getInjectable({
       },
       stop: stopServer,
     };
+
+    di.inject(freelensK8sProxyServersInjectable).add(freelensK8sProxyServer);
+
+    return freelensK8sProxyServer;
   },
   lifecycle: lifecycleEnum.keyedSingleton({
     getInstanceKey: (di, cluster: Cluster) => cluster.id,

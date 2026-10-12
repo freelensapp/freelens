@@ -11,16 +11,19 @@ import directoryForUserDataInjectable from "../../common/app-paths/directory-for
 import broadcastMessageInjectable from "../../common/ipc/broadcast-message.injectable";
 import clusterApiUrlInjectable from "../../features/cluster/connections/main/api-url.injectable";
 import addClusterInjectable from "../../features/cluster/storage/common/add.injectable";
+import clustersStateInjectable from "../../features/cluster/storage/common/state.injectable";
 import catalogEntityRegistryInjectable from "../catalog/entity-registry.injectable";
 import spawnInjectable from "../child-process/spawn.injectable";
 import freelensK8sProxyCertificateInjectable from "../freelens-k8s-proxy/freelens-k8s-proxy-certificate.injectable";
 import waitUntilPortIsUsedInjectable from "../freelens-k8s-proxy/wait-until-port-is-used/wait-until-port-is-used.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import kubeconfigManagerInjectable from "../kubeconfig-manager/kubeconfig-manager.injectable";
+import { onQuitOfBackEndInjectionToken } from "../start-main-application/runnable-tokens/phases";
 import clusterConnectionInjectable from "./cluster-connection.injectable";
 import disconnectClustersRemovedFromCatalogInjectable from "./disconnect-clusters-removed-from-catalog.injectable";
 import freelensK8sProxyServerInjectable from "./freelens-k8s-proxy-server.injectable";
 import { catalogEntityFromCluster } from "./manager";
+import stopFreelensK8sProxiesOnQuitInjectable from "./stop-freelens-k8s-proxies-on-quit.injectable";
 import type { ChildProcess } from "node:child_process";
 
 import type { DiContainer } from "@ogre-tools/injectable";
@@ -37,7 +40,7 @@ interface FakeProxyProcess extends EventEmitter {
   kill: Mock;
 }
 
-describe("freelens-k8s-proxy of a removed cluster", () => {
+describe("freelens-k8s-proxy of a removed cluster and on quit", () => {
   let di: DiContainer;
   let processes: Map<string, FakeProxyProcess>;
   let catalogSource: IObservableArray<CatalogEntity>;
@@ -163,5 +166,33 @@ describe("freelens-k8s-proxy of a removed cluster", () => {
 
     expect(processes.get("some-context")?.kill).toHaveBeenCalled();
     expect(processes.get("other-context")?.kill).not.toHaveBeenCalled();
+  });
+
+  describe("on quit", () => {
+    it("runs the stop of the proxies on quit of the back end", () => {
+      expect(di.injectMany(onQuitOfBackEndInjectionToken)).toContain(di.inject(stopFreelensK8sProxiesOnQuitInjectable));
+    });
+
+    it("stops the proxy of every cluster", async () => {
+      await di.inject(stopFreelensK8sProxiesOnQuitInjectable).run();
+
+      expect(processes.get("some-context")?.kill).toHaveBeenCalled();
+      expect(processes.get("other-context")?.kill).toHaveBeenCalled();
+    });
+
+    it("stops the proxy of a cluster that left the catalog and the storage", async () => {
+      // Without its cluster in the storage, nothing but the quit reaches the proxy
+      runInAction(() => {
+        di.inject(clustersStateInjectable).clear();
+        catalogSource.clear();
+      });
+
+      expect(processes.get("some-context")?.kill).not.toHaveBeenCalled();
+
+      await di.inject(stopFreelensK8sProxiesOnQuitInjectable).run();
+
+      expect(processes.get("some-context")?.kill).toHaveBeenCalled();
+      expect(processes.get("other-context")?.kill).toHaveBeenCalled();
+    });
   });
 });
