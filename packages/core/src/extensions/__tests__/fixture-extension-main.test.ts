@@ -8,13 +8,16 @@
 // runs the host's kubectl through `Main.Shell`, the way an extension does. The
 // kubectl is a script that prints the environment it got, so what is asserted
 // is what a spawned process actually receives, through the bundle, the global
-// and the host's DI container.
+// and the host's DI container. It also evaluates the bundle in plain Node, the
+// way Freelens loads it, which the module runner of Vitest does not reproduce.
 
+import { execFile } from "node:child_process";
 import { existsSync } from "node:fs";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { promisify } from "node:util";
 import { computed } from "mobx";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
@@ -47,15 +50,49 @@ const fixtureMainBundlePath = path.resolve(
   "../../../../fixture-extension/dist/main.js",
 );
 
-const importFixtureMainBundle = async (): Promise<FixtureMainBundle> => {
+const assertFixtureMainBundleBuilt = () => {
   if (!existsSync(fixtureMainBundlePath)) {
     throw new Error(
       `The contract fixture is not built. Run \`pnpm --filter @freelensapp/fixture-extension build\` (or \`pnpm build\`) before this suite; expected ${fixtureMainBundlePath}`,
     );
   }
+};
+
+const importFixtureMainBundle = async (): Promise<FixtureMainBundle> => {
+  assertFixtureMainBundleBuilt();
 
   return (await import(/* @vite-ignore */ pathToFileURL(fixtureMainBundlePath).href)) as FixtureMainBundle;
 };
+
+// Evaluates the bundle passed as the first argument in an ES module with
+// stand-ins for the members of the API global its top level reaches, and
+// prints its `endOfLine` export as JSON.
+const evaluateInPlainNode = `
+class Stub {}
+globalThis.FreelensExtensionApi = { Common: {}, Main: { Ipc: Stub, LensExtension: Stub }, Renderer: {} };
+const bundle = await import(process.argv[1]);
+process.stdout.write(JSON.stringify(bundle.endOfLine));
+`;
+
+describe("the built fixture extension's main bundle", () => {
+  // Vitest's module runner gives every module it loads a `require`, so the
+  // suite below, which imports the bundle through it, would pass on either
+  // Rolldown platform. Freelens loads `dist/main.js` as an ES module, which
+  // has no `require`, so only a separate Node process shows what Freelens
+  // sees.
+  it("evaluates in plain Node, where its bundled CommonJS require()s a builtin", async () => {
+    assertFixtureMainBundleBuilt();
+
+    const { stdout } = await promisify(execFile)(process.execPath, [
+      "--input-type=module",
+      "--eval",
+      evaluateInPlainNode,
+      pathToFileURL(fixtureMainBundlePath).href,
+    ]);
+
+    expect(JSON.parse(stdout)).toBe(os.EOL);
+  });
+});
 
 describe.skipIf(process.platform === "win32")("Main.Shell, from the built fixture extension", () => {
   let di: DiContainer;

@@ -37,7 +37,7 @@ proves nothing about how extensions are actually loaded.
 | Level | Where | What it can catch |
 | --- | --- | --- |
 | Types | `pnpm --filter @freelensapp/fixture-extension type:check`, run by its `build` | a re-export that disappeared from the published surface, including one that exists as a value but is not nameable as a type; a tsconfig that lets one runtime environment's APIs into another's code |
-| Unit | `packages/core/src/extensions/__tests__/fixture-extension.test.tsx` and `fixture-extension-main.test.ts` | instance identity of React and mobx, the registrators, the lifecycle, `Util.fetch` reaching the host's DI; in main, the host's kubectl and its environment reaching a spawned process through `Main.Shell` |
+| Unit | `packages/core/src/extensions/__tests__/fixture-extension.test.tsx` and `fixture-extension-main.test.ts` | instance identity of React and mobx, the registrators, the lifecycle, `Util.fetch` reaching the host's DI; in main, the host's kubectl and its environment reaching a spawned process through `Main.Shell`, and `dist/main.js` evaluating in plain Node with a bundled CommonJS `require()` in it |
 | Integration | `freelens/integration/__tests__/extensions.tests.ts`, against the `dist/` of the `pnpm build` that the packaged application needs anyway | the packaged application installing this directory in place, accepting its `engines.freelens`, and rendering its hooked status bar item with the React it publishes |
 
 ### How the type level is wired
@@ -143,7 +143,13 @@ The main entry point, [`src/main/index.ts`](./src/main/index.ts), built to
 with `Main.Ipc` handlers and a Node builtin, and
 [`src/main/host-kubectl.ts`](./src/main/host-kubectl.ts), which runs the host's
 kubectl with `node:child_process`, its path and its `env` both from
-`Main.Shell`, with a cluster and without one. Both entry points import
+`Main.Shell`, with a cluster and without one, and
+[`src/main/bundled-commonjs.cjs`](./src/main/bundled-commonjs.cjs), a CommonJS
+module that `require()`s a builtin, as a bundled package does. Its `require()`
+works only in a main bundle built for Rolldown's `node` platform, and the unit
+test evaluates `dist/main.js` in a plain Node process to prove it: Vitest's
+module runner, which the rest of the unit level loads the bundle through, gives
+every module a `require` of its own. Both entry points import
 [`src/common/host-info.ts`](./src/common/host-info.ts), which uses only globals
 both runtimes have.
 
