@@ -524,12 +524,14 @@ jobs:
             --allowedTools "Read" "Glob" "Grep" "Write"
           prompt: |-
             Based on the following request from a GitHub comment, write a PowerShell
-            script named verify.ps1 that accomplishes the task on a Windows runner.
+            script that accomplishes the task on a Windows runner, and save it at
+            exactly this path: ${{ github.workspace }}/verify.ps1
 
-            The repository's default branch is checked out in the current
-            directory. Read the sources the request refers to, so that the script
-            uses the real file paths, package versions and options instead of
-            guessing them, but do not modify anything: write only verify.ps1. On
+            The repository's default branch is checked out in
+            ${{ github.workspace }}. Read the sources the request refers to, so
+            that the script uses the real file paths, package versions and options
+            instead of guessing them, but do not modify anything: write only
+            verify.ps1. On
             the Windows runner, verify.ps1 runs from the root of the same checkout
             with Node from .nvmrc, pnpm, the installed dependencies and the
             Electron binary already in place, so it can use the workspace packages
@@ -546,11 +548,23 @@ jobs:
 
             ${{ needs.parse.outputs.text }}
 
+      # The action reports success whether or not the script was written, and
+      # upload-artifact only warns about a missing file, so check it here, where
+      # the cause is, and put the script in the log for whoever reads the run.
+      - name: Show PowerShell script
+        run: |
+          if [ ! -s verify.ps1 ]; then
+            echo "::error::Claude did not write verify.ps1 in the workspace"
+            exit 1
+          fi
+          cat verify.ps1
+
       - name: Upload PowerShell script
         uses: actions/upload-artifact@v7
         with:
           name: ps-script
           path: verify.ps1
+          if-no-files-found: error
 
   run-windows:
     needs: [parse, prepare-windows]
