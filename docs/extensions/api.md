@@ -341,6 +341,52 @@ add the member to the omit list and a line to the migration guide.
 at runtime in a renderer without Node — a `ReferenceError` for a global such as
 `Buffer` — and not at compile time.
 
+### `Catalog.getAllClusters()` and `getClusterById()` are observable
+
+`Main.Catalog` and `Renderer.Catalog` both have `getAllClusters()` and
+`getClusterById(id)`, which answer with `Common.Clusters.ClusterInfo` objects.
+**Both are observable through the host's mobx**
+([C3](#c3-host-provided-singletons)), in both processes. Called inside a
+`reaction`, an `autorun`, a `computed` or an `observer` component, they make it
+run again when a cluster is added or removed and when a field of a cluster
+changes, its `status` among them. This is how an extension follows a cluster
+connecting or disconnecting: there is no event for it.
+
+```ts
+import { Common, Main } from "@freelensapp/extensions";
+import { reaction } from "mobx";
+
+const { ClusterConnectionStatus } = Common.Clusters;
+
+const dispose = reaction(
+  () => Main.Catalog.getClusterById(clusterId)?.status,
+  (status) => {
+    if (status === ClusterConnectionStatus.CONNECTED) {
+      // ask Main.Shell.getEnvironment(clusterId) again, start what needs it
+    } else {
+      // stop what runs with the cluster's environment
+    }
+  },
+);
+
+// in onDeactivate()
+dispose();
+```
+
+The functions are what is observable, not the objects they return: a
+`ClusterInfo` is a snapshot, and a later change gives new objects. Call the
+function inside the reaction, rather than keeping an object and reading its
+`status` later. A reaction is the extension's to dispose of, in `onDeactivate`
+at the latest.
+
+`packages/core/src/extensions/__tests__/catalog-clusters-observable-main.test.ts`
+and `catalog-clusters-observable-renderer.test.ts` run a `reaction` on each
+function through the API and change a cluster's status the way the host does.
+
+**Failure mode.** A reaction made with the extension's own copy of mobx rather
+than the host's fails silently, as [C3](#c3-host-provided-singletons)
+describes: it does not fire where it should, and nothing reports it.
+
 ---
 
 ## C6. Registration and the extension instance
@@ -969,7 +1015,11 @@ version, which the progress does not carry:
 **For a cluster, the cluster is connected.** The files `KUBECONFIG` and
 `KUBECACHEDIR` name exist only while it is: a disconnect removes them, and the
 environment stops working until it is asked for again after the cluster
-reconnects. Only reaching the cluster through Freelens is promised, not the
+reconnects. An extension that keeps something running with the environment
+learns of the disconnect and of the reconnect from a mobx `reaction` on
+`Main.Catalog.getClusterById(clusterId)?.status`, which
+[C5](#cataloggetallclusters-and-getclusterbyid-are-observable) makes part of
+the contract. Only reaching the cluster through Freelens is promised, not the
 server address the kubeconfig names or the content of the file.
 
 **Two kubectl functions, two meanings.** `Common.App.Preferences.getKubectlPath()`

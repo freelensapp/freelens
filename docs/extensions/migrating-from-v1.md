@@ -1275,7 +1275,10 @@ if (cluster?.status !== Common.Clusters.ClusterConnectionStatus.CONNECTED) {
 }
 ```
 
-The same state is the `status.phase` of the cluster's catalog entity.
+The same state is the `status.phase` of the cluster's catalog entity. To follow
+it as it changes, run a mobx `reaction` on the call: `getClusterById()` and
+`getAllClusters()` are observable through the host's mobx, in both processes
+([C5](./api.md#cataloggetallclusters-and-getclusterbyid-are-observable)).
 
 ## `K8sApi.forRemoteCluster` removed
 
