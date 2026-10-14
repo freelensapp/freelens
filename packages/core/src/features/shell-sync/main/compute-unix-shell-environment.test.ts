@@ -8,6 +8,7 @@ import EventEmitter from "node:events";
 import { flushPromises } from "@freelensapp/test-utils";
 import MemoryStream from "memorystream";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import killProcessGroupInjectable from "../../../main/child-process/kill-process-group.injectable";
 import spawnInjectable from "../../../main/child-process/spawn.injectable";
 import randomUUIDInjectable from "../../../main/crypto/random-uuid.injectable";
 import { getDiForUnitTesting } from "../../../main/getDiForUnitTesting";
@@ -19,6 +20,7 @@ import type { ChildProcessWithoutNullStreams } from "node:child_process";
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { MockedFunction } from "vitest";
 
+import type { KillProcessGroup } from "../../../main/child-process/kill-process-group.injectable";
 import type { Spawn } from "../../../main/child-process/spawn.injectable";
 import type { ComputeUnixShellEnvironment } from "./compute-unix-shell-environment.injectable";
 
@@ -36,6 +38,7 @@ describe("computeUnixShellEnvironment technical tests", () => {
   let di: DiContainer;
   let computeUnixShellEnvironment: ComputeUnixShellEnvironment;
   let spawnMock: MockedFunction<Spawn>;
+  let killProcessGroupMock: MockedFunction<KillProcessGroup>;
   let shellProcessFake: ChildProcessWithoutNullStreams;
   let stdinValue: string;
   let shellStdin: MemoryStream;
@@ -72,10 +75,13 @@ describe("computeUnixShellEnvironment technical tests", () => {
         signalCode: null,
         spawnargs,
         spawnfile,
+        pid: 12345,
         [Symbol.dispose]: vi.fn(),
       }));
     });
     di.override(spawnInjectable, () => spawnMock);
+    killProcessGroupMock = vi.fn();
+    di.override(killProcessGroupInjectable, () => killProcessGroupMock);
     di.override(randomUUIDInjectable, () => () => "dead-foo-bar-foo-beef");
 
     di.override(processEnvInjectable, () => ({
@@ -425,6 +431,130 @@ describe("computeUnixShellEnvironment technical tests", () => {
           });
         });
       });
+    });
+  });
+
+  describe.each(["/bin/csh", "/bin/zsh", "/usr/local/bin/fish", "/usr/local/bin/pwsh"])(
+    "when shell %s is aborted",
+    (shellPath) => {
+      const timeoutError = `timeout: ${JSON.stringify({ stdout: "", stderr: "" }, null, 4)}`;
+      let controller: AbortController;
+
+      beforeEach(async () => {
+        controller = new AbortController();
+
+        unixShellEnv = computeUnixShellEnvironment(shellPath, { signal: controller.signal });
+        await flushPromises();
+      });
+
+      it("should spawn the shell detached and without a signal", () => {
+        expect(spawnMock).toBeCalledWith(shellPath, expect.any(Array), expect.objectContaining({ detached: true }));
+        expect(spawnMock.mock.calls[0][2]).not.toHaveProperty("signal");
+      });
+
+      describe("when the signal is aborted", () => {
+        beforeEach(() => {
+          controller.abort();
+        });
+
+        it("should resolve with a timeout", async () => {
+          await expect(unixShellEnv).resolves.toEqual({
+            callWasSuccessful: false,
+            error: timeoutError,
+          });
+        });
+
+        it("should kill the process group of the shell", () => {
+          expect(killProcessGroupMock).toHaveBeenCalledExactlyOnceWith(12345);
+        });
+
+        describe("when the killed process closes", () => {
+          beforeEach(() => {
+            shellProcessFake.emit("close", null, "SIGKILL");
+          });
+
+          it("should still resolve with a timeout", async () => {
+            await expect(unixShellEnv).resolves.toEqual({
+              callWasSuccessful: false,
+              error: timeoutError,
+            });
+          });
+        });
+      });
+
+      describe("when the process closes and then the signal is aborted", () => {
+        beforeEach(() => {
+          shellProcessFake.emit("close", 1, null);
+          controller.abort();
+        });
+
+        it("should not kill anything", () => {
+          expect(killProcessGroupMock).not.toHaveBeenCalled();
+        });
+
+        it("should resolve with the result of the close", async () => {
+          await expect(unixShellEnv).resolves.toEqual({
+            callWasSuccessful: false,
+            error:
+              'Shell did not exit successfully: {\n    "code": 1,\n    "signal": null,\n    "stdout": "",\n    "stderr": ""\n}',
+          });
+        });
+      });
+
+      describe("when the process fails to spawn and then the signal is aborted", () => {
+        beforeEach(() => {
+          shellProcessFake.emit("error", new Error("some-error"));
+          controller.abort();
+        });
+
+        it("should not kill anything", () => {
+          expect(killProcessGroupMock).not.toHaveBeenCalled();
+        });
+      });
+    },
+  );
+
+  describe("when the signal is already aborted", () => {
+    beforeEach(async () => {
+      unixShellEnv = computeUnixShellEnvironment("/bin/zsh", { signal: AbortSignal.abort() });
+      await flushPromises();
+    });
+
+    it("should resolve with a timeout", async () => {
+      await expect(unixShellEnv).resolves.toEqual({
+        callWasSuccessful: false,
+        error: `timeout: ${JSON.stringify({ stdout: "", stderr: "" }, null, 4)}`,
+      });
+    });
+
+    it("should kill the process group of the shell", () => {
+      expect(killProcessGroupMock).toHaveBeenCalledExactlyOnceWith(12345);
+    });
+
+    it("should not send the command", () => {
+      expect(stdinValue).toBe("");
+    });
+  });
+
+  describe("when the shell has no pid and the signal is aborted", () => {
+    beforeEach(async () => {
+      const controller = new AbortController();
+
+      unixShellEnv = computeUnixShellEnvironment("/bin/zsh", { signal: controller.signal });
+      await flushPromises();
+      Object.assign(shellProcessFake, { pid: undefined });
+      controller.abort();
+    });
+
+    it("should resolve with a timeout", async () => {
+      await expect(unixShellEnv).resolves.toEqual({
+        callWasSuccessful: false,
+        error: `timeout: ${JSON.stringify({ stdout: "", stderr: "" }, null, 4)}`,
+      });
+    });
+
+    it("should not kill anything", () => {
+      expect(killProcessGroupMock).not.toHaveBeenCalled();
     });
   });
 

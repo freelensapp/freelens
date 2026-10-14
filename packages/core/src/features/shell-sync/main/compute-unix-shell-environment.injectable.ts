@@ -8,6 +8,7 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { object } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import getBasenameOfPathInjectable from "../../../common/path/get-basename.injectable";
+import killProcessGroupInjectable from "../../../main/child-process/kill-process-group.injectable";
 import spawnInjectable from "../../../main/child-process/spawn.injectable";
 import randomUUIDInjectable from "../../../main/crypto/random-uuid.injectable";
 import processEnvInjectable from "./env.injectable";
@@ -66,6 +67,7 @@ const computeUnixShellEnvironmentInjectable = getInjectable({
 
     const getBasenameOfPath = di.inject(getBasenameOfPathInjectable);
     const spawn = di.inject(spawnInjectable);
+    const killProcessGroup = di.inject(killProcessGroupInjectable);
     const logger = di.inject(loggerInjectionToken);
     const randomUUID = di.inject(randomUUIDInjectable);
     const processExecPath = di.inject(processExecPathInjectable);
@@ -116,8 +118,17 @@ const computeUnixShellEnvironmentInjectable = getInjectable({
       logger.info(`[UNIX-SHELL-ENV]: running against ${shellPath}`, { command, shellArgs });
 
       return new Promise((resolve) => {
+        // `detached: true` runs the shell in a new session (`setsid()`), which does two things:
+        //
+        // - The shell has no controlling terminal. When Freelens is started from a terminal, an
+        //   interactive shell would otherwise take over that terminal, putting itself in its
+        //   foreground and reading commands from it instead of from stdin, so it would hang.
+        // - The shell and everything its rc files start share a process group of their own,
+        //   which the abort handler below kills as a whole.
+        //
+        // The abort is not passed to `spawn` as `signal`: Node would send `SIGTERM` to the
+        // shell alone, which an interactive shell ignores.
         const shellProcess = spawn(shellPath, shellArgs, {
-          signal: opts.signal,
           detached: true,
           env,
         });
@@ -137,20 +148,34 @@ const computeUnixShellEnvironmentInjectable = getInjectable({
         shellProcess.stdout.on("data", (b) => stdout.push(b));
         shellProcess.stderr.on("data", (b) => stderr.push(b));
 
-        shellProcess.on("error", (error) => {
-          if (opts.signal.aborted) {
-            resolve({
-              callWasSuccessful: false,
-              error: `timeout: ${getErrorContext()}`,
-            });
-          } else {
-            resolve({
-              callWasSuccessful: false,
-              error: `Failed to spawn ${shellPath}: ${getErrorContext({ error: String(error) })}`,
-            });
+        const onAbort = () => {
+          resolve({
+            callWasSuccessful: false,
+            error: `timeout: ${getErrorContext()}`,
+          });
+
+          if (shellProcess.pid === undefined) {
+            return;
           }
+
+          try {
+            killProcessGroup(shellProcess.pid);
+          } catch (error) {
+            logger.warn(`[UNIX-SHELL-ENV]: failed to kill the process group of ${shellPath}`, { error });
+          }
+        };
+        const stopWatchingAbort = () => opts.signal.removeEventListener("abort", onAbort);
+
+        shellProcess.on("error", (error) => {
+          stopWatchingAbort();
+          resolve({
+            callWasSuccessful: false,
+            error: `Failed to spawn ${shellPath}: ${getErrorContext({ error: String(error) })}`,
+          });
         });
         shellProcess.on("close", (code, signal) => {
+          stopWatchingAbort();
+
           if (code || signal) {
             return resolve({
               callWasSuccessful: false,
@@ -187,6 +212,13 @@ const computeUnixShellEnvironmentInjectable = getInjectable({
           }
         });
 
+        if (opts.signal.aborted) {
+          onAbort();
+
+          return;
+        }
+
+        opts.signal.addEventListener("abort", onAbort, { once: true });
         shellProcess.stdin.end(command);
       });
     };
