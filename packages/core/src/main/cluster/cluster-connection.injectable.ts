@@ -115,6 +115,12 @@ class ClusterConnection {
 
   protected activated = false;
 
+  /**
+   * The activation in progress. Concurrent calls join it, or wait for it when
+   * forced, so that two of them never restart freelens-k8s-proxy at once.
+   */
+  private activation: Promise<void> | undefined;
+
   /** Consecutive authentication failures of the automatic refresh, see maxAutoAuthRetries. */
   private consecutiveAuthFailures = 0;
 
@@ -266,11 +272,36 @@ class ClusterConnection {
   /**
    * @param force force activation
    */
-  async activate(force = false) {
+  activate(force = false): Promise<void> {
     if (this.activated && !force) {
-      return;
+      return Promise.resolve();
     }
 
+    const inFlight = this.activation;
+
+    if (inFlight && !force) {
+      return inFlight;
+    }
+
+    // A forced activation starts only once the one in flight has settled: its
+    // reconnect would otherwise restart the proxy the other one waits for.
+    const activation = (async () => {
+      await inFlight?.catch(() => {});
+      await this.runActivation();
+    })();
+    const clear = () => {
+      if (this.activation === activation) {
+        this.activation = undefined;
+      }
+    };
+
+    this.activation = activation;
+    activation.then(clear, clear);
+
+    return activation;
+  }
+
+  private async runActivation() {
     this.dependencies.logger.info(`[CLUSTER]: activate`, this.cluster.getMeta());
 
     if (!this.eventsDisposer.length) {
