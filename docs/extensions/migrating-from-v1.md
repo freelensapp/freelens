@@ -605,7 +605,11 @@ Each entry point bundles its own copy of `src/common/`. Build the renderer for
 the browser and the main entry for Node, keeping the builtins external in main
 only, as
 [Node and Electron in the renderer](#node-and-electron-in-the-renderer)
-describes.
+describes. With Vite 8 or Rolldown, building main for Node means
+`platform: "node"` (`build.rolldownOptions.platform` in Vite) in the main run
+only; the renderer run stays on `browser`, the default of a Vite build. A main
+bundle with CommonJS in it throws when Freelens loads it otherwise, and the
+build and the type check do not notice.
 
 ### What `common` may use
 
@@ -1614,6 +1618,36 @@ with it. Build the renderer entry for the browser and treat every builtin the
 bundler still finds as an import to replace from the table above. The **main**
 build keeps the builtins external, as before.
 
+**Build the main entry for Node.** A bundled CommonJS package — LangChain, the
+MCP SDK and `@kubernetes/client-node` are among them — `require()`s the
+builtins, and an ES module has no `require`. What the bundler puts in place of
+that call depends on the platform it builds for. Rolldown, and Vite 8 with it,
+turns it into a `__require` shim for the `browser` platform, the default of a
+Vite build, and the shim throws as soon as Freelens evaluates `dist/main.js`:
+
+```text
+Error: Calling `require` for "node:assert" in an environment that doesn't expose the `require` function.
+```
+
+For the `node` platform it defines `__require` with
+`createRequire(import.meta.url)`, and the bundle loads. So the main run sets
+the platform, and the renderer run keeps `browser`:
+
+```js
+// vite.config.mjs, the main run
+build: {
+  rolldownOptions: {
+    external: [/^node:/],
+    platform: "node",
+  },
+},
+```
+
+The build and the type check pass on either platform, and a test that imports
+the bundle through Vitest passes too, because Vitest's module runner gives every
+module a `require`. Only evaluating `dist/main.js` in plain Node, or loading the
+extension in Freelens, shows the error.
+
 Reaching for `globalThis.require` instead works for now, and is exactly the
 dependency that isolating the renderer will break. The host logs a deprecation
 warning the first time your renderer code calls it for each module id, naming
@@ -2084,6 +2118,10 @@ restarted once.
       [Node and Electron in the renderer](#node-and-electron-in-the-renderer),
       or into main behind `Ipc`, and stop marking the builtins external in the
       renderer build.
+- [ ] Build the main entry for Node (`platform: "node"` with Vite 8 or
+      Rolldown), so that a bundled CommonJS package can `require()` the
+      builtins (see
+      [Node and Electron in the renderer](#node-and-electron-in-the-renderer)).
 - [ ] Move mobx decorators to standard decorators: drop
       `experimentalDecorators`, write `@observable accessor`, replace the
       namespaced annotations and `comparer.*` with their named exports,
