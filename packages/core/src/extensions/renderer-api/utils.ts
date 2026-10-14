@@ -4,6 +4,7 @@
  */
 
 import browserFetchInjectable from "../../renderer/fetch/browser-fetch.injectable";
+import { asStandardFetch } from "../common-api/standard-fetch";
 import { Util as CommonUtil } from "../common-api/utils";
 import { asLazyInjectedFunctionForExtensionApi } from "../extension-api-di";
 
@@ -27,6 +28,16 @@ const Util = {
    * The main-process counterpart is `Main.Util.fetch`.
    */
   fetch: asLazyInjectedFunctionForExtensionApi(browserFetchInjectable),
+
+  /**
+   * `fetch` of this namespace, typed as the standard `fetch`, for a bundled
+   * library that takes a `fetch` option, such as an SDK or an MCP transport.
+   *
+   * It takes a URL, as a string or a `URL`, and an init, which it passes on
+   * as it is apart from `dispatcher`. A `Request` as the input is refused: the
+   * call rejects with a `TypeError`. The response is Chromium's `Response`.
+   */
+  standardFetch: asStandardFetch(asLazyInjectedFunctionForExtensionApi(browserFetchInjectable)),
 };
 
 export { Util };

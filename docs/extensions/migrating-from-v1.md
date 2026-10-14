@@ -1093,8 +1093,8 @@ Two consequences for your code:
   where a `FetchResponse` is expected is fine, and reading the members above is
   fine. Assigning it to a variable annotated `Response` is not, because
   `FetchResponse` is the wider type. `blob()`, `formData()`, `clone()`, `url`,
-  `redirected` and `type` are not part of the contract; if you need one, reach
-  for your own client for that call.
+  `redirected` and `type` are not part of the contract; if you need one in your
+  own code, call `Util.standardFetch` for that request, as below.
 - **The fetch types add no `lib.dom` requirement.** They name only
   `AbortSignal`, `ReadableStream`, `URL` and `Uint8Array`, all of which
   `@types/node` declares as well. (The published surface as a whole still needs
@@ -1104,6 +1104,35 @@ Two consequences for your code:
 Request bodies are `string | Uint8Array | ArrayBuffer | ReadableStream<Uint8Array>`.
 `Blob`, `FormData` and `URLSearchParams` are not accepted; encode to a string
 (`params.toString()`, `JSON.stringify(...)`) or a `Uint8Array` first.
+
+**For a bundled library, pass `Util.standardFetch`.** A library that takes a
+`fetch` option — the OpenAI SDK under `@langchain/openai`, the HTTP transports
+of the MCP SDK — types it with the standard `fetch`, and `Util.fetch` does not
+fit it in either direction. Do not bundle a client of your own for it, and do
+not leave the library on its default `fetch`: either would ignore the user's
+proxy and CA settings, the reason C12 asks for the host's client. Pass
+`Main.Util.standardFetch` or `Renderer.Util.standardFetch` instead. It is the
+`fetch` of the same namespace, typed as the standard `fetch` of the environment
+you compile in, so it fits with no assertion:
+
+```ts
+import { Main } from "@freelensapp/extensions";
+import { ChatOpenAI } from "@langchain/openai";
+
+const model = new ChatOpenAI({
+  apiKey,
+  configuration: { fetch: Main.Util.standardFetch },
+});
+```
+
+It takes a URL, as a string or a `URL`, and an init, which it passes on as it
+is, a `FormData` or `URLSearchParams` body included; only `dispatcher` is
+dropped, because in main it would replace the one that applies the user's
+proxy and CA settings. A `Request` as the input is refused, and the call
+rejects with a `TypeError`, because its method, headers and body would be
+lost. The response is the implementation's own full `Response` (see
+[C12](./api.md#c12-http)). If you wrote an adapter of your own around
+`Util.fetch` with an assertion for this, it can go.
 
 ### `dispatcher` is gone from `reqInit`
 
@@ -2097,8 +2126,9 @@ restarted once.
       [`K8sApi.forRemoteCluster` removed](#k8sapiforremotecluster-removed)).
 - [ ] For HTTP to anything other than the cluster, replace any bundled HTTP
       client, and any `globalThis.fetch` in main, with `Main.Util.fetch` /
-      `Renderer.Util.fetch` — the host's client is the one that honours the
-      user's proxy and CA settings (see
+      `Renderer.Util.fetch`, and give a bundled library that takes a `fetch`
+      option `Util.standardFetch` — the host's client is the one that honours
+      the user's proxy and CA settings (see
       [HTTP: `Main.Util.fetch` and `Renderer.Util.fetch`](#http-mainutilfetch-and-rendererutilfetch)).
 - [ ] Replace any client of a catalog cluster built from its `kubeConfigPath`
       — a bundled Kubernetes client, a `fetch` to the API server — with

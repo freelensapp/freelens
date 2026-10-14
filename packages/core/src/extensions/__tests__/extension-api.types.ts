@@ -57,6 +57,7 @@ export type CommonCustomResourceRegistration = Common.Types.CustomResourceRegist
 
 export type MainExtension = Main.LensExtension;
 export type MainFetch = typeof Main.Util.fetch;
+export type MainStandardFetch = typeof Main.Util.standardFetch;
 export type MainNavigate = typeof Main.Navigation.navigate;
 export type MainPowerEventListener = Main.Power.PowerEventListener;
 export type MainShellGetEnvironment = typeof Main.Shell.getEnvironment;
@@ -79,6 +80,7 @@ export type MainKubeObjectStatus = Main.K8sApi.KubeObjectStatus;
 
 export type RendererExtension = Renderer.LensExtension;
 export type RendererFetch = typeof Renderer.Util.fetch;
+export type RendererStandardFetch = typeof Renderer.Util.standardFetch;
 export type RendererNavigate = typeof Renderer.Navigation.navigate;
 export type RendererDetailsUrl = typeof Renderer.Navigation.getDetailsUrl;
 export type RendererActiveTheme = typeof Renderer.Theme.activeTheme;

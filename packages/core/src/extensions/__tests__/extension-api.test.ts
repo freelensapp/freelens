@@ -78,8 +78,9 @@ const mainAnchors: Record<string, readonly string[]> = {
   Power: ["onResume", "onShutdown", "onSuspend"],
   Shell: ["getEnvironment", "getHelmPath", "getKubectlPath"],
   // `fetch` is the whole of C12: an extension that loses it has no HTTP that
-  // honours the user's proxy and CA settings.
-  Util: ["bytesToUnits", "fetch"],
+  // honours the user's proxy and CA settings. `standardFetch` is the same
+  // client for a bundled library that takes a standard `fetch`.
+  Util: ["bytesToUnits", "fetch", "standardFetch"],
 };
 
 const rendererAnchors: Record<string, readonly string[]> = {
@@ -107,7 +108,7 @@ const rendererAnchors: Record<string, readonly string[]> = {
   ],
   Navigation: ["getDetailsUrl", "getMaybeDetailsUrl", "navigate"],
   Theme: ["activeTheme"],
-  Util: ["bytesToUnits", "cssNames", "fetch", "stopPropagation"],
+  Util: ["bytesToUnits", "cssNames", "fetch", "standardFetch", "stopPropagation"],
 };
 
 interface SubNamespaceReport {

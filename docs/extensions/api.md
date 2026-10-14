@@ -327,7 +327,8 @@ are the `format` vocabulary for the CRD schema and are frozen with it under
   imports ([C11](#c11-third-party-bundled-libraries)).
 
 `Main.Util` and `Renderer.Util` spread `Common.Util`, so an omitted member is
-gone from all three; each adds its own `fetch` ([C12](#c12-http)).
+gone from all three; each adds its own `fetch` and `standardFetch`
+([C12](#c12-http)).
 `Common.Util.getAppVersion` is the one member the host defines itself.
 
 **Whoever adds an export to the package** is therefore adding API, and checks
@@ -842,7 +843,9 @@ in main as in the renderer.
 genuinely differ per process — one name would suggest an equivalence that does
 not hold. `Main.Util.fetch` applies the user's `httpsProxy` preference, their
 `caCertificates` and `allowUntrustedCAs` settings and the Freelens proxy;
-`Renderer.Util.fetch` is Chromium's `fetch` reached through the host.
+`Renderer.Util.fetch` is Chromium's `fetch` reached through the host. Each has
+a `standardFetch` next to it, the same client typed for a bundled library, as
+described below.
 
 `Util.fetch` cannot talk to a cluster's API server on its own: it carries no
 client certificate or cluster CA from a kubeconfig, runs no `exec` credential
@@ -859,9 +862,42 @@ cluster through the environment of
 Request and response types are **structural**, so neither `undici` nor a DOM
 type is imposed on an extension.
 
+**A bundled library gets the same client through `Util.standardFetch`.** A
+library that takes a `fetch` option, such as an SDK or the HTTP transport of an
+MCP client, types it with the standard `fetch`, which the structural `fetch`
+does not fit in either direction. `Main.Util.standardFetch` and
+`Renderer.Util.standardFetch` are the `fetch` of the same namespace, typed as
+`typeof fetch`: the standard `fetch` of the environment the extension compiles
+in, the one `@types/node` declares in main and the DOM's in the renderer. Pass
+it as the option, and the library's requests go through the host's client:
+
+```ts
+const transport = new StreamableHTTPClientTransport(new URL(serverUrl), {
+  fetch: Main.Util.standardFetch,
+});
+```
+
+What it may assume and what it may not:
+
+- **The input is a URL**, as a string or a `URL`. A `Request` is refused, since
+  its method, headers and body would be lost: the call rejects with a
+  `TypeError`. A library that passes a URL and an init, as the common ones do,
+  is unaffected.
+- **The init is passed on as it is**, the members the structural
+  `FetchRequestInit` does not name included, such as a `URLSearchParams` or
+  `FormData` body or `redirect`. The exception is `dispatcher`, which is not a
+  field of the standard and which in main would replace the dispatcher that
+  applies the user's proxy and CA settings: it is dropped.
+- **The response is the implementation's own `Response`**, handed over as it
+  is: undici's in main and Chromium's in the renderer. Both have every member
+  of the standard `Response`. In main it is not an instance of the global
+  `Response`, as with `Util.fetch`.
+
 **Failure mode.** `globalThis.fetch` in main exists but knows nothing about the
 user's proxy or custom CAs, so an extension using it simply fails on corporate
-networks. `res instanceof Response` is not a reliable check in main.
+networks. A bundled library left to its own default `fetch`, or given a client
+of the extension's own, fails the same way. `res instanceof Response` is not a
+reliable check in main.
 
 A client of a catalog cluster built from its `kubeConfigPath` (a bundled
 Kubernetes client, or `fetch` to the API server with the kubeconfig's TLS

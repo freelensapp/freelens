@@ -34,6 +34,12 @@ export type FixtureAppPreferenceRegistration = Common.Types.AppPreferenceRegistr
 export type FixtureProtocolHandlerRegistration = Common.Types.ProtocolHandlerRegistration;
 export type FixtureCustomResourceRegistration = Common.Types.CustomResourceRegistration;
 
+// The `fetch` option of a bundled library, typed with the environment's own
+// standard `fetch` types, the way the MCP SDK types its transports'.
+// `Util.standardFetch` has to fit it without an assertion, in all three
+// programs: `@types/node`'s types in main, the DOM's in the renderer.
+type LibraryFetchOption = (url: string | URL, init?: RequestInit) => Promise<Response>;
+
 // A store model declared as an `interface` has no implicit index signature, and
 // the store's params have to take it anyway: as `defaults`, exactly as declared,
 // and as the model of the store a migration is given.
@@ -58,6 +64,9 @@ export type StoreMigrationHasOnlyTheKeysOfTheModel = Holds<string extends keyof 
 
 export type FixtureMainExtension = Main.LensExtension;
 export type FixtureMainFetch = typeof Main.Util.fetch;
+export type MainStandardFetchFitsALibrary = Holds<
+  typeof Main.Util.standardFetch extends LibraryFetchOption ? true : false
+>;
 export type FixtureMainNavigate = typeof Main.Navigation.navigate;
 export type FixturePowerEventListener = Main.Power.PowerEventListener;
 export type FixtureShellDownloadOptions = Main.Shell.KubectlDownloadOptions;
@@ -78,6 +87,9 @@ export type FixtureMainPersistentVolumeClaimsApi = Main.K8sApi.PersistentVolumeC
 
 export type FixtureRendererExtensionType = Renderer.LensExtension;
 export type FixtureRendererFetch = typeof Renderer.Util.fetch;
+export type RendererStandardFetchFitsALibrary = Holds<
+  typeof Renderer.Util.standardFetch extends LibraryFetchOption ? true : false
+>;
 export type FixtureRendererNavigate = typeof Renderer.Navigation.navigate;
 export type FixtureIconProps = Renderer.Component.IconProps;
 
