@@ -513,9 +513,13 @@ jobs:
 
       # The script is written here, on Linux, and only executed on Windows, so
       # this job gets read access to the sources but no tool that runs them.
+      # Its full output is shown: with only these tools over a public checkout
+      # it holds nothing secret, and a run that ends without verify.ps1 can
+      # only be diagnosed from what Claude did.
       - uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          show_full_output: true
           claude_args: |-
             --model "${{ needs.parse.outputs.model }}"
             ${{ needs.parse.outputs.effort-arg }}
