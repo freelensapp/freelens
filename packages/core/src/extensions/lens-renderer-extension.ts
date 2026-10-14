@@ -145,6 +145,9 @@ export class LensRendererExtension extends LensExtension {
    * preference items registered by this extension through `appPreferences`.
    * It always navigates to this extension's preferences, never to the
    * generic preferences or to another extension's preferences.
+   *
+   * It works from any frame: called in a cluster frame, it navigates the root
+   * frame, where the preferences live.
    */
   navigateToPreferences() {
     this.dependencies.navigateToPreferences(this.sanitizedExtensionId);

@@ -1547,6 +1547,7 @@ the renderer:
 | `crypto.X509Certificate` | main plus `Ipc`; there is no web equivalent |
 | `http` / `https` | `fetch` |
 | `electron` `ipcRenderer` | `Renderer.Ipc` |
+| `ipcRenderer` on a host channel, to open your preferences (`"ipc:broadcast-main"` with `"renderer:navigate"`, for one) | `navigateToPreferences()` on your `LensRendererExtension` instance |
 | `os` platform checks | `Common.App.isMac` / `isWindows` / `isLinux` |
 | `process.env` | read it in main and pass it over `Ipc` |
 | `Buffer` | `Uint8Array`, `TextEncoder` / `TextDecoder` |
@@ -1557,6 +1558,14 @@ broadcast's arguments, but that first parameter is typed `unknown` now: only
 the arguments after it are guaranteed, so a `(_event, ...args) => …` listener
 keeps compiling and one that reads `event.sender` stops. `Main.Ipc` is
 unchanged, since main has Electron.
+
+`Renderer.Ipc` reaches your own main entry and nothing of the host's: the
+host prefixes every channel it names with one derived from your extension's
+id. A v1 extension that sent on
+one of the host's own channels to open its preferences, from a cluster frame
+in particular, calls `navigateToPreferences()` on its `LensRendererExtension`
+instance instead. It opens this extension's preferences tab from any frame (see
+[Routing](#routing-react-router-re-exports-removed)).
 
 A SHA-256 in the renderer, for example, becomes a call to `Util.sha256Hex`,
 which every one of `Common.Util`, `Main.Util` and `Renderer.Util` carries. It
@@ -1674,7 +1683,7 @@ If your extension used them, migrate one of two ways:
 - **Preferred — use the host's navigation.** Register pages with
   the declarative `globalPages` / `clusterPages` fields on your
   `LensRendererExtension` subclass — there is no `Renderer.Registrations` — and
-  replace react-router `Link` / `Redirect` / `Route` with one of the two ways
+  replace react-router `Link` / `Redirect` / `Route` with one of the three ways
   the API navigates:
   - **`navigate(pageId?, params?)` on your `LensRendererExtension` instance**,
     for your own pages. It finds the page by the `id` of its registration, the
@@ -1685,6 +1694,14 @@ If your extension used them, migrate one of two ways:
     registration (`Page: () => <MyPage extension={this} />`, see
     [Registering things](#registering-things-declarative-fields)). A `pageId`
     that matches no registration does nothing, without an error.
+  - **`navigateToPreferences()` on your `LensRendererExtension` instance**,
+    for your preferences tab, the one that holds the items of your
+    `appPreferences`. It works from any frame, a cluster frame included,
+    where neither of the other two reaches the preferences. It replaces a v1
+    extension's message on one of the host's IPC channels, such as
+    `ipcRenderer.invoke("ipc:broadcast-main", "renderer:navigate", …)`, which
+    `Renderer.Ipc` cannot send (see
+    [Node and Electron in the renderer](#node-and-electron-in-the-renderer)).
   - **`Renderer.Navigation.navigate(location)`** for any other location, given
     as a path string or a `{ pathname, search, hash }` object. **The pathname
     must be absolute.** `navigate` hands it to the browser history unchanged,
@@ -1692,7 +1709,9 @@ If your extension used them, migrate one of two ways:
     call such as `navigate({ pathname: "my-kind" })` reaches the right page only
     from a page at the right depth, and a wrong one from anywhere else, without
     an error. The host logs a warning that names the location, so look for one
-    in the DevTools console after the first run.
+    in the DevTools console after the first run. It pushes onto the history of
+    the frame it runs in, so from a cluster frame it does not reach the
+    preferences, which live in the root frame.
 
   `navigateToRoute`, which the declaration shows among the `dependencies` of
   `LensRendererExtension`, is not one of them: `dependencies` is the host's

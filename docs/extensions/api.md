@@ -471,7 +471,10 @@ is no field for the application menu or the tray: both are the host's own.
 `LensExtension` (both processes): `protocolHandlers`; the read-only `id`,
 `manifest`, `manifestPath`, `name`, `version`, `description`, `storeName`,
 `sanitizedExtensionId`, `isEnabled`; `getExtensionFileFolder()`; and the author
-hooks `onActivate()` / `onDeactivate()`.
+hooks `onActivate()` / `onDeactivate()`. `LensRendererExtension` adds the two
+methods that navigate: `navigate()` to the extension's own pages and
+`navigateToPreferences()` to its preferences tab, both described in
+[C9](#c9-routing).
 
 Two of these matter more than they look:
 
@@ -581,7 +584,7 @@ dialect is supported** — `/:param?` optionals and inline `/:param(regex)`
 patterns — by the in-house `matchPath`, so existing path strings need no
 rewriting.
 
-Two calls navigate:
+Three calls navigate:
 
 - **`LensRendererExtension#navigate(pageId?, params?)`** goes to one of the
   extension's own pages, found by the `id` of its registration; no `pageId`
@@ -589,10 +592,16 @@ Two calls navigate:
   parameters, keyed by the names the registration's `params` declares; another
   key rejects the returned promise. A `pageId` that matches no registration
   does nothing.
+- **`LensRendererExtension#navigateToPreferences()`** opens the application
+  preferences on this extension's own tab, the one that holds the items of its
+  `appPreferences`, from any frame, the cluster frame included. It takes no
+  argument, so it reaches neither the host's tabs nor another extension's.
 - **`Renderer.Navigation.navigate(location)`** goes to any location, a path
   string or a `{ pathname, search, hash }` object, whose **pathname is
-  absolute**. The location is pushed onto the browser history as given, and the
-  browser resolves a relative pathname against the current URL.
+  absolute**. The location is pushed onto the browser history of the frame the
+  call runs in, as given, and the browser resolves a relative pathname against
+  the current URL. The preferences live in the root frame, so from a cluster
+  frame this call does not reach them; `navigateToPreferences()` does.
 
 The `dependencies` of `LensRendererExtension`, which the declaration shows
 because they are `protected`, are the host's injection bag
