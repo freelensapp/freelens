@@ -39,7 +39,8 @@
 #      to diagnose the failure and fix any stalled tracking comment (feedback only)
 #
 #   Windows path (Claude Code action does not support Windows natively):
-#   2. prepare-windows – Claude writes a PowerShell script, uploads as artifact
+#   2. prepare-windows – Claude reads the sources and writes a PowerShell script,
+#      uploads as artifact
 #   3. run-windows – executes the script on the selected Windows runner
 #   4. analyze-windows – Claude reads the output and posts a summary comment
 
@@ -497,7 +498,7 @@ jobs:
     needs: parse
     if: always() && needs.parse.result == 'success' && needs.parse.outputs.is-windows == 'true'
     runs-on: ubuntu-24.04-arm
-    timeout-minutes: 10
+    timeout-minutes: 15
 
     permissions:
       contents: read
@@ -510,6 +511,8 @@ jobs:
         with:
           fetch-depth: 0
 
+      # The script is written here, on Linux, and only executed on Windows, so
+      # this job gets read access to the sources but no tool that runs them.
       - uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
@@ -518,10 +521,21 @@ jobs:
             ${{ needs.parse.outputs.effort-arg }}
             --fallback-model claude-opus-5
             --max-turns 50
-            --allowedTools "Write"
+            --allowedTools "Read" "Glob" "Grep" "Write"
           prompt: |-
             Based on the following request from a GitHub comment, write a PowerShell
             script named verify.ps1 that accomplishes the task on a Windows runner.
+
+            The repository's default branch is checked out in the current
+            directory. Read the sources the request refers to, so that the script
+            uses the real file paths, package versions and options instead of
+            guessing them, but do not modify anything: write only verify.ps1. On
+            the Windows runner, verify.ps1 runs from the root of the same checkout
+            with Node from .nvmrc, pnpm, the installed dependencies and the
+            Electron binary already in place, so it can use the workspace packages
+            directly and build the project with the repository's own commands
+            (pnpm build, pnpm build:app:dir) when the request needs that. Building
+            takes several minutes; the whole job has 60 minutes.
 
             The script must be self-contained and idempotent.
             After completing the work, save a JSON summary to result.json with the
@@ -542,7 +556,7 @@ jobs:
     needs: [parse, prepare-windows]
     if: always() && needs.prepare-windows.result == 'success'
     runs-on: ${{ needs.parse.outputs.runs-on }}
-    timeout-minutes: 30
+    timeout-minutes: 60
 
     permissions:
       contents: read
@@ -553,6 +567,40 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
+
+      # The script may build or run the project, so the runner gets the same
+      # toolchain as the integration tests. Building is left to the script.
+      - name: Setup node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Setup pnpm
+        run: corepack enable
+
+      - name: Install pnpm dependencies
+        id: install-pnpm
+        shell: bash
+        run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+        continue-on-error: true
+
+      - name: Install pnpm dependencies (retry)
+        if: steps.install-pnpm.outcome == 'failure'
+        shell: bash
+        run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
+        env:
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+
+      - name: Put $HOME in env
+        run: echo "HOME=$HOME" | Out-File -FilePath $env:GITHUB_ENV -Append
+
+      - name: Install Electron binary
+        shell: bash
+        working-directory: freelens
+        run: node "$(node -p "require.resolve('electron/install.js')")"
 
       - name: Download PowerShell script
         uses: actions/download-artifact@v8
@@ -602,12 +650,24 @@ jobs:
             --model "${{ needs.parse.outputs.model }}"
             --fallback-model claude-opus-5
             --max-turns 30
-            --allowedTools "Read" "Grep" "Bash(gh:*)" "Bash(jq:*)" "Bash(cat:*)"
+            --allowedTools "Read" "Glob" "Grep" "Bash(gh:*)" "Bash(jq:*)" "Bash(cat:*)"
           prompt: |-
             Read the file result.json (output from a test executed on a Windows
-            runner). Write a short summary as a GitHub comment on the PR or issue
-            that triggered this workflow. Include: whether it succeeded, the exit
-            code, and any suspicious output in stdout/stderr.
+            runner) and post a GitHub comment on the PR or issue that triggered
+            this workflow.
+
+            The comment answers the request below. Report what it asks for, keep
+            any table from the summary as it is, and add only the observations
+            from stdout and stderr that matter to the request. State whether the
+            run succeeded and its exit code, and say plainly when something the
+            request asked for is missing from the output. The default branch is
+            checked out in the current directory; read the sources when the
+            output needs explaining. Never write the Claude handle literally in
+            the comment: write it as `@<!-- -->claude`.
+
+            Request:
+
+            ${{ needs.parse.outputs.text }}
 
             Use the GitHub CLI (gh) to post the comment. The trigger event is
             ${{ github.event_name }}.
