@@ -6,13 +6,14 @@
 import type { Fetch, FetchRequestInit } from "@freelensapp/json-api";
 
 /**
- * The standard `fetch` of the environment an extension's main code compiles
- * in: the one `@types/node` declares. Naming the global rather than that
- * declaration imposes `@types/node` on no consumer of the published API.
+ * The type of `Main.Util.fetch`: the standard `fetch` of the environment an
+ * extension's main code compiles in, the one `@types/node` declares. Naming the
+ * global rather than that declaration imposes `@types/node` on no consumer of
+ * the published API.
  */
-export type StandardFetch = typeof globalThis.fetch;
+export type HostFetch = typeof globalThis.fetch;
 
-type StandardInput = string | URL | Request;
+type HostFetchInput = string | URL | Request;
 
 // The init as the host's client takes it. `duplex` is required by undici for
 // a streaming body, and `dispatcher` is what an extension's init must not set.
@@ -21,7 +22,7 @@ type HostInit = RequestInit & { duplex?: "half"; dispatcher?: unknown };
 // Checked by shape rather than with `instanceof`: the `Request` an extension or
 // a library creates is the one of Node's built-in undici, which the undici
 // package the host's client runs on does not recognise as its own.
-const isRequest = (input: StandardInput): input is Request =>
+const isRequest = (input: HostFetchInput): input is Request =>
   typeof input === "object" &&
   !(input instanceof URL) &&
   typeof (input as Request).url === "string" &&
@@ -67,7 +68,7 @@ const definedMembersOf = (init: RequestInit | undefined): HostInit =>
  * once, here.
  */
 export const asHostFetch =
-  (fetch: Fetch): StandardFetch =>
+  (fetch: Fetch): HostFetch =>
   (input, init) => {
     const [url, requestInit] = isRequest(input) ? [input.url, initOfRequest(input)] : [input, {}];
     const { dispatcher: _dispatcher, ...merged }: HostInit = { ...requestInit, ...definedMembersOf(init) };

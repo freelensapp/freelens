@@ -25,9 +25,11 @@ import type { DiContainer } from "@ogre-tools/injectable";
 import type { Dispatcher } from "undici";
 import type { Mock } from "vitest";
 
+import type { HostFetch } from "../main-api/host-fetch";
+
 describe("asHostFetch", () => {
   let proxyFetch: Mock<Fetch>;
-  let hostFetch: typeof globalThis.fetch;
+  let hostFetch: HostFetch;
   const response = new Response("some-body", { status: 201 });
 
   beforeEach(() => {
