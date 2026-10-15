@@ -527,7 +527,7 @@ describe("technical unit tests for local shell sessions", () => {
     it("spawns the shell on node-pty's bundled ConPTY DLL, without the stale winpty switch", async () => {
       const { options } = await openWithShell("powershell.exe", "win32");
 
-      expect(options.useConptyDll).toBe(true);
+      expect(options).toHaveProperty("useConptyDll", true);
       expect(options).not.toHaveProperty("useConpty");
     });
   });

@@ -210,7 +210,7 @@ describe("technical unit tests for standalone shell sessions", () => {
 
     const { options } = spawnedWith();
 
-    expect(options.useConptyDll).toBe(true);
+    expect(options).toHaveProperty("useConptyDll", true);
     expect(options).not.toHaveProperty("useConpty");
   });
 });
