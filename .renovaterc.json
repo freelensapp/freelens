@@ -17,6 +17,10 @@
     "rangeStrategy": "bump",
     "minimumReleaseAge": "0 days"
   },
+  "group": {
+    "description": "A group is titled like a single update, \"Update dependency <group> to <version>\", rather than \"Update <group> to <version>\".",
+    "commitMessageTopic": "dependency {{{groupName}}}"
+  },
   "rebaseWhen": "conflicted",
   "internalChecksFilter": "strict",
   "ignoreDeps": ["node", "ubuntu"],
@@ -74,6 +78,12 @@
       "matchDepNames": ["@types/node", "@kubernetes/client-node>@types/node"],
       "matchUpdateTypes": ["major", "minor"],
       "enabled": false
+    },
+    {
+      "description": "One PR for @types/node and its override for @kubernetes/client-node, which must stay on the same version.",
+      "groupName": "@types/node",
+      "groupSlug": "types-node",
+      "matchDepNames": ["@types/node", "@kubernetes/client-node>@types/node"]
     },
     {
       "description": "Packages that misuse semver.",
