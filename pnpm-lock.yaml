@@ -821,6 +821,9 @@ importers:
       playwright:
         specifier: 'catalog:'
         version: 1.64.0
+      react-dom:
+        specifier: 'catalog:'
+        version: 19.3.0(react@19.3.0)
       sass-embedded:
         specifier: 'catalog:'
         version: 1.105.1
