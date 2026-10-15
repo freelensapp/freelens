@@ -180,8 +180,8 @@ catalogs:
       specifier: 3.2.2
       version: 3.2.2
     '@electron/notarize':
-      specifier: 3.1.1
-      version: 3.1.1
+      specifier: 3.1.2
+      version: 3.1.2
     '@hapi/call':
       specifier: 9.0.1
       version: 9.0.1
@@ -740,7 +740,7 @@ importers:
     devDependencies:
       '@electron/notarize':
         specifier: 'catalog:'
-        version: 3.1.1(supports-color@8.1.1)
+        version: 3.1.2(supports-color@8.1.1)
       '@freelensapp/animate':
         specifier: workspace:^
         version: link:../packages/ui-components/animate
@@ -2848,8 +2848,8 @@ packages:
     resolution: {integrity: sha512-jNT8nwH1f9X5GEITXaQ8IF/KdskvIkOFfB2CvwumsveVidzpSc+mvhhTMdAGSYF3O+Nq49lJ7y+ssODRXu06+A==}
     engines: {node: '>= 10.0.0'}
 
-  '@electron/notarize@3.1.1':
-    resolution: {integrity: sha512-uQQSlOiJnqRkTL1wlEBAxe90nVN/Fc/hEmk0bqpKk8nKjV1if/tXLHKUPePtv9Xsx90PtZU8aidx5lAiOpjkQQ==}
+  '@electron/notarize@3.1.2':
+    resolution: {integrity: sha512-S/EH6W/GTe3XiD4oYHW+6xuUWZWjc9F5gayMrNdmRLv7qG9KRYmYE26+RDgC1hYUZVY3qLpa1VftxuL+sL5VQg==}
     engines: {node: '>= 22.12.0'}
 
   '@electron/osx-sign@1.3.3':
@@ -7709,7 +7709,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@electron/notarize@3.1.1(supports-color@8.1.1)':
+  '@electron/notarize@3.1.2(supports-color@8.1.1)':
     dependencies:
       debug: 4.4.3(supports-color@8.1.1)
       promise-retry: 2.0.1
