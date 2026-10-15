@@ -390,7 +390,7 @@ jobs:
             --model "${{ needs.parse.outputs.model }}"
             ${{ needs.parse.outputs.effort-arg }}
             --fallback-model claude-opus-5
-            --max-turns 200
+            --max-turns 400
             --allowedTools "Read" "Write" "Edit" "Glob" "Grep" "Task" "WebSearch" "WebFetch" "BashOutput" "KillShell" "Bash(trunk:*)" "Bash(bash:*)" "Bash(pnpm:*)" "Bash(npx:*)" "Bash(node:*)" "Bash(git:*)" "Bash(gh:*)" "Bash(yq:*)" "Bash(jq:*)" "Bash(grep:*)" "Bash(rg:*)" "Bash(sed:*)" "Bash(awk:*)" "Bash(cut:*)" "Bash(tr:*)" "Bash(sort:*)" "Bash(uniq:*)" "Bash(cat:*)" "Bash(head:*)" "Bash(tail:*)" "Bash(wc:*)" "Bash(find:*)" "Bash(xargs:*)" "Bash(ls:*)" "Bash(tree:*)" "Bash(mkdir:*)" "Bash(touch:*)" "Bash(cp:*)" "Bash(mv:*)" "Bash(rm:*)" "Bash(tee:*)" "Bash(echo:*)"
             --append-system-prompt-file /tmp/AGENTS.md
 
