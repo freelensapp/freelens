@@ -605,7 +605,11 @@ Each entry point bundles its own copy of `src/common/`. Build the renderer for
 the browser and the main entry for Node, keeping the builtins external in main
 only, as
 [Node and Electron in the renderer](#node-and-electron-in-the-renderer)
-describes.
+describes. With Vite 8 or Rolldown, building main for Node means
+`platform: "node"` (`build.rolldownOptions.platform` in Vite) in the main run
+only; the renderer run stays on `browser`, the default of a Vite build. A main
+bundle with CommonJS in it throws when Freelens loads it otherwise, and the
+build and the type check do not notice.
 
 ### What `common` may use
 
@@ -714,8 +718,8 @@ This is what each namespace provides in v2:
 
 | Namespace | Members |
 | --- | --- |
-| `Common` | `App`, `Catalog`, `Clusters`, `EventBus`, `LensExtension`, `Proxy`, `Store`, `Types`, `Util`, `logger`; types `InstalledExtension`, `LensExtensionManifest`, `Logger`, `PackageJson` |
-| `Main` | `Catalog`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Power`, `Util` |
+| `Common` | `App`, `Catalog`, `Clusters`, `EventBus`, `Proxy`, `Store`, `Types`, `Util`, `logger`; types `InstalledExtension`, `LensExtension`, `LensExtensionManifest`, `Logger`, `PackageJson` |
+| `Main` | `Catalog`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Power`, `Shell`, `Util` |
 | `Renderer` | `Catalog`, `Component`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Theme`, `Util` |
 
 **If a symbol is not reachable through one of those, it is not reachable at
@@ -1022,46 +1026,69 @@ Two members are worth knowing before you need them:
   and version changes — unlike your install directory, which deliberately does
   not.
 
-## HTTP: `Main.Util.fetch` and `Renderer.Util.fetch`
+## HTTP: `Main.Util.fetch` and the renderer's `fetch`
 
-In v2 the host provides the HTTP client, one symbol per process:
+In v2 the host provides the HTTP client of the main process, and in the
+renderer the global `fetch` is the client:
 
-| Symbol | Process | What answers the call |
+| Process | Client | What answers the call |
 | --- | --- | --- |
-| `Main.Util.fetch` | main | the same client the app uses for its own binary and JSON downloads and its metrics requests |
-| `Renderer.Util.fetch` | renderer | Chromium's `fetch`, reached through the host |
+| main | `Main.Util.fetch` | the same client the app uses for its own binary and JSON downloads and its metrics requests |
+| renderer | the global `fetch` | Chromium's `fetch`, with the window session's settings |
 
-Both take the same arguments as the standard `fetch`, and both are additions to
-`Common.Util` — `Main.Util` and `Renderer.Util` carry everything `Common.Util`
-does, plus `fetch`.
+`Main.Util.fetch` is an addition to `Common.Util` — `Main.Util` carries
+everything `Common.Util` does, plus `fetch`. It is typed as the standard
+`fetch`, the one `@types/node` declares, so it takes what Node's global `fetch`
+takes, a `Request` included, and answers with a `Response`. `Renderer.Util` has
+no `fetch`: the global is already the client the host uses in the renderer.
 
 **In main, prefer `Main.Util.fetch` over `globalThis.fetch`.** The global exists
 there, but it knows nothing about the user's `httpsProxy` preference, their
 `caCertificates` / `allowUntrustedCAs` settings, or the Freelens proxy. The
 host-provided client honours all three, so an extension that uses it works in
 the corporate-proxy and custom-CA setups where the global would simply fail —
-without the extension having to implement any of it. Neither `fetch` is the way
+without the extension having to implement any of it. Neither client is the way
 to a catalog cluster's API server; see
 [Reaching a catalog cluster](#reaching-a-catalog-cluster).
 
-In the renderer, `Renderer.Util.fetch` is today Chromium's `fetch` and needs
-none of that: requests to the cluster go to the frame's own origin, whose
-certificate the window's session already trusts. It is nonetheless a symbol of
-its own rather than a documented alias for the global. The renderer session
-takes the *system* proxy while only main honours the `httpsProxy` preference;
-if that asymmetry is ever fixed, extensions on the symbol get the fix and
-extensions on the global do not.
+**In the renderer, use the global `fetch`.** It is Chromium's, and needs none of
+that: requests to the cluster go to the frame's own origin, whose certificate
+the window's session already trusts. The renderer session takes the *system*
+proxy, while only main honours the `httpsProxy` preference, so a request that
+has to follow that preference belongs in main, reached over `Renderer.Ipc` /
+`Main.Ipc`.
 
-There are deliberately **two** symbols and not one `Common.Util.fetch`. The
-implementations differ, and one name would suggest an equivalence that does not
-hold.
+**For a bundled library in main, pass `Main.Util.fetch`.** A library that takes
+a `fetch` option — the OpenAI SDK under `@langchain/openai`, the HTTP transports
+of the MCP SDK — types it with the standard `fetch`, which `Main.Util.fetch` is,
+so it fits with no assertion. Do not bundle a client of your own for it, and do
+not leave the library on its default `fetch` in main: either would ignore the
+user's proxy and CA settings, the reason C12 asks for the host's client.
+
+```ts
+import { Main } from "@freelensapp/extensions";
+import { ChatOpenAI } from "@langchain/openai";
+
+const model = new ChatOpenAI({
+  apiKey,
+  configuration: { fetch: Main.Util.fetch },
+});
+```
+
+A `Request` the library builds is passed on as its URL and an init made of its
+method, headers, body, signal and `redirect`; an init given with it applies on
+top. `dispatcher` is dropped from the init, because the host's client sends
+every request through the dispatcher that applies the user's proxy and CA
+settings. The response is undici's `Response`, so `instanceof Response` is not
+a reliable check on it (see [C12](./api.md#c12-http)). If you wrote an adapter
+of your own around `Main.Util.fetch` for this, it can go. In the renderer a
+library's default `fetch` is the global one, which is the right client there.
 
 ### The request and response types are structural
 
 `FetchRequestInit` and `FetchResponse` — the types that reach you through
-`K8sApi.KubeJsonApi` and `KubeApi.list()`'s `reqInit`, as well as through
-`Util.fetch` — describe HTTP structurally rather than by naming a runtime's
-classes:
+`K8sApi.KubeJsonApi` and `KubeApi.list()`'s `reqInit` — describe HTTP
+structurally rather than by naming a runtime's classes:
 
 ```ts
 interface FetchResponse {
@@ -1076,30 +1103,37 @@ interface FetchResponse {
 }
 ```
 
-This is what the two processes actually have in common. The renderer really
-returns Chromium's `Response` and main really returns undici's — structurally
-compatible classes, but distinct ones — so a contract that named either would
-be describing one process and quietly misdescribing the other. It also means
-`res instanceof Response` is not a reliable check in main; test `res.ok` or
-`res.status` instead.
+This is what the two processes actually have in common. The host's HTTP in the
+renderer really returns Chromium's `Response` and in main really returns
+undici's — structurally compatible classes, but distinct ones — so a contract
+that named either would be describing one process and quietly misdescribing the
+other. It also means `res instanceof Response` is not a reliable check in main;
+test `res.ok` or `res.status` instead.
+
+`Main.Util.fetch` is not one of these types: it is the standard `fetch`, and
+its response a `Response`.
 
 Two consequences for your code:
 
-- **`await fetch(...)` is a `FetchResponse`, not a `Response`.** Passing it
-  where a `FetchResponse` is expected is fine, and reading the members above is
-  fine. Assigning it to a variable annotated `Response` is not, because
+- **A `FetchResponse` is not a `Response`.** Passing it where a
+  `FetchResponse` is expected is fine, and reading the members above is fine.
+  Assigning it to a variable annotated `Response` is not, because
   `FetchResponse` is the wider type. `blob()`, `formData()`, `clone()`, `url`,
-  `redirected` and `type` are not part of the contract; if you need one, reach
-  for your own client for that call.
+  `redirected` and `type` are not part of the contract; if you need one, make
+  that request with `Main.Util.fetch` in main or the global `fetch` in the
+  renderer.
 - **The fetch types add no `lib.dom` requirement.** They name only
   `AbortSignal`, `ReadableStream`, `URL` and `Uint8Array`, all of which
-  `@types/node` declares as well. (The published surface as a whole still needs
-  the DOM lib — its React component types do — see
+  `@types/node` declares as well, and `Main.Util.fetch` is typed as the global
+  `fetch` both declare. (The published surface as a whole still needs the DOM lib — its
+  React component types do — see
   [`tsconfig.json` for an extension](#tsconfigjson-for-an-extension).)
 
-Request bodies are `string | Uint8Array | ArrayBuffer | ReadableStream<Uint8Array>`.
-`Blob`, `FormData` and `URLSearchParams` are not accepted; encode to a string
+Request bodies in `reqInit` are
+`string | Uint8Array | ArrayBuffer | ReadableStream<Uint8Array>`. `Blob`,
+`FormData` and `URLSearchParams` are not accepted there; encode to a string
 (`params.toString()`, `JSON.stringify(...)`) or a `Uint8Array` first.
+`Main.Util.fetch` takes every body the standard `fetch` takes.
 
 ### `dispatcher` is gone from `reqInit`
 
@@ -1107,13 +1141,15 @@ Request bodies are `string | Uint8Array | ArrayBuffer | ReadableStream<Uint8Arra
 extension to depend on `undici` in order to fill a slot it had no way to make
 use of, so the slot is gone and `undici` is no longer among the type
 dependencies `@freelensapp/extensions` declares. The capability it gestured at —
-HTTP that respects the user's proxy and CA settings — is `Main.Util.fetch`.
+HTTP that respects the user's proxy and CA settings — is `Main.Util.fetch`,
+which sends every request through the host's dispatcher and drops one given in
+its init.
 
 ### Reaching a catalog cluster
 
-`Util.fetch` is for HTTP outside the cluster. It cannot talk to a cluster's API
-server on its own: `reqInit` has no slot for the kubeconfig's client
-certificate or cluster CA, it runs no `exec` credential plugin
+`Main.Util.fetch` is for HTTP outside the cluster. It cannot talk to a cluster's
+API server on its own: it carries no client certificate or cluster CA from a
+kubeconfig, it runs no `exec` credential plugin
 (`gke-gcloud-auth-plugin`, `aws`, `kubelogin`) and refreshes no OIDC token, and
 the proxy it applies is the app-wide `httpsProxy` preference, while a cluster
 has a proxy setting of its own.
@@ -1271,7 +1307,10 @@ if (cluster?.status !== Common.Clusters.ClusterConnectionStatus.CONNECTED) {
 }
 ```
 
-The same state is the `status.phase` of the cluster's catalog entity.
+The same state is the `status.phase` of the cluster's catalog entity. To follow
+it as it changes, run a mobx `reaction` on the call: `getClusterById()` and
+`getAllClusters()` are observable through the host's mobx, in both processes
+([C5](./api.md#cataloggetallclusters-and-getclusterbyid-are-observable)).
 
 ## `K8sApi.forRemoteCluster` removed
 
@@ -1297,7 +1336,7 @@ If your extension needs to reach a cluster that is not in the catalog, talk to
 its API server directly — the `KubeApi` machinery does not buy you anything
 there once it no longer owns the TLS setup.
 
-From the main process, use [`Main.Util.fetch`](#http-mainutilfetch-and-rendererutilfetch)
+From the main process, use [`Main.Util.fetch`](#http-mainutilfetch-and-the-renderers-fetch)
 rather than bundling an HTTP client: it already honours the user's `httpsProxy`
 preference and their `caCertificates` / `allowUntrustedCAs` settings, which is
 most of what a remote API server needs and all of what a corporate network
@@ -1490,8 +1529,8 @@ lean on them in the renderer has a replacement already:
   `globalThis.FreelensExtensionApi`, not from `require()`;
 - your dependencies are bundled, and there is no `node_modules` next to a
   renderer entry point to resolve anything from;
-- HTTP is Chromium's `fetch`, as
-  [`Renderer.Util.fetch`](#http-mainutilfetch-and-rendererutilfetch);
+- HTTP is the global `fetch`, Chromium's (see
+  [HTTP](#http-mainutilfetch-and-the-renderers-fetch));
 - running programs belongs to main.
 
 **The general rule: do Node work in your main entry point and talk to it over
@@ -1543,6 +1582,7 @@ the renderer:
 | `crypto.X509Certificate` | main plus `Ipc`; there is no web equivalent |
 | `http` / `https` | `fetch` |
 | `electron` `ipcRenderer` | `Renderer.Ipc` |
+| `ipcRenderer` on a host channel, to open your preferences (`"ipc:broadcast-main"` with `"renderer:navigate"`, for one) | `navigateToPreferences()` on your `LensRendererExtension` instance |
 | `os` platform checks | `Common.App.isMac` / `isWindows` / `isLinux` |
 | `process.env` | read it in main and pass it over `Ipc` |
 | `Buffer` | `Uint8Array`, `TextEncoder` / `TextDecoder` |
@@ -1553,6 +1593,14 @@ broadcast's arguments, but that first parameter is typed `unknown` now: only
 the arguments after it are guaranteed, so a `(_event, ...args) => …` listener
 keeps compiling and one that reads `event.sender` stops. `Main.Ipc` is
 unchanged, since main has Electron.
+
+`Renderer.Ipc` reaches your own main entry and nothing of the host's: the
+host prefixes every channel it names with one derived from your extension's
+id. A v1 extension that sent on
+one of the host's own channels to open its preferences, from a cluster frame
+in particular, calls `navigateToPreferences()` on its `LensRendererExtension`
+instance instead. It opens this extension's preferences tab from any frame (see
+[Routing](#routing-react-router-re-exports-removed)).
 
 A SHA-256 in the renderer, for example, becomes a call to `Util.sha256Hex`,
 which every one of `Common.Util`, `Main.Util` and `Renderer.Util` carries. It
@@ -1614,6 +1662,36 @@ with it. Build the renderer entry for the browser and treat every builtin the
 bundler still finds as an import to replace from the table above. The **main**
 build keeps the builtins external, as before.
 
+**Build the main entry for Node.** A bundled CommonJS package — LangChain, the
+MCP SDK and `@kubernetes/client-node` are among them — `require()`s the
+builtins, and an ES module has no `require`. What the bundler puts in place of
+that call depends on the platform it builds for. Rolldown, and Vite 8 with it,
+turns it into a `__require` shim for the `browser` platform, the default of a
+Vite build, and the shim throws as soon as Freelens evaluates `dist/main.js`:
+
+```text
+Error: Calling `require` for "node:assert" in an environment that doesn't expose the `require` function.
+```
+
+For the `node` platform it defines `__require` with
+`createRequire(import.meta.url)`, and the bundle loads. So the main run sets
+the platform, and the renderer run keeps `browser`:
+
+```js
+// vite.config.mjs, the main run
+build: {
+  rolldownOptions: {
+    external: [/^node:/],
+    platform: "node",
+  },
+},
+```
+
+The build and the type check pass on either platform, and a test that imports
+the bundle through Vitest passes too, because Vitest's module runner gives every
+module a `require`. Only evaluating `dist/main.js` in plain Node, or loading the
+extension in Freelens, shows the error.
+
 Reaching for `globalThis.require` instead works for now, and is exactly the
 dependency that isolating the renderer will break. The host logs a deprecation
 warning the first time your renderer code calls it for each module id, naming
@@ -1640,7 +1718,7 @@ If your extension used them, migrate one of two ways:
 - **Preferred — use the host's navigation.** Register pages with
   the declarative `globalPages` / `clusterPages` fields on your
   `LensRendererExtension` subclass — there is no `Renderer.Registrations` — and
-  replace react-router `Link` / `Redirect` / `Route` with one of the two ways
+  replace react-router `Link` / `Redirect` / `Route` with one of the three ways
   the API navigates:
   - **`navigate(pageId?, params?)` on your `LensRendererExtension` instance**,
     for your own pages. It finds the page by the `id` of its registration, the
@@ -1651,6 +1729,14 @@ If your extension used them, migrate one of two ways:
     registration (`Page: () => <MyPage extension={this} />`, see
     [Registering things](#registering-things-declarative-fields)). A `pageId`
     that matches no registration does nothing, without an error.
+  - **`navigateToPreferences()` on your `LensRendererExtension` instance**,
+    for your preferences tab, the one that holds the items of your
+    `appPreferences`. It works from any frame, a cluster frame included,
+    where neither of the other two reaches the preferences. It replaces a v1
+    extension's message on one of the host's IPC channels, such as
+    `ipcRenderer.invoke("ipc:broadcast-main", "renderer:navigate", …)`, which
+    `Renderer.Ipc` cannot send (see
+    [Node and Electron in the renderer](#node-and-electron-in-the-renderer)).
   - **`Renderer.Navigation.navigate(location)`** for any other location, given
     as a path string or a `{ pathname, search, hash }` object. **The pathname
     must be absolute.** `navigate` hands it to the browser history unchanged,
@@ -1658,7 +1744,9 @@ If your extension used them, migrate one of two ways:
     call such as `navigate({ pathname: "my-kind" })` reaches the right page only
     from a page at the right depth, and a wrong one from anywhere else, without
     an error. The host logs a warning that names the location, so look for one
-    in the DevTools console after the first run.
+    in the DevTools console after the first run. It pushes onto the history of
+    the frame it runs in, so from a cluster frame it does not reach the
+    preferences, which live in the root frame.
 
   `navigateToRoute`, which the declaration shows among the `dependencies` of
   `LensRendererExtension`, is not one of them: `dependencies` is the host's
@@ -2040,10 +2128,11 @@ restarted once.
       server — it was removed (see
       [`K8sApi.forRemoteCluster` removed](#k8sapiforremotecluster-removed)).
 - [ ] For HTTP to anything other than the cluster, replace any bundled HTTP
-      client, and any `globalThis.fetch` in main, with `Main.Util.fetch` /
-      `Renderer.Util.fetch` — the host's client is the one that honours the
-      user's proxy and CA settings (see
-      [HTTP: `Main.Util.fetch` and `Renderer.Util.fetch`](#http-mainutilfetch-and-rendererutilfetch)).
+      client, and any `globalThis.fetch` in main, with `Main.Util.fetch`, and
+      give it to a bundled library in main that takes a `fetch` option — the
+      host's client is the one that honours the user's proxy and CA settings.
+      In the renderer, use the global `fetch` (see
+      [HTTP: `Main.Util.fetch` and the renderer's `fetch`](#http-mainutilfetch-and-the-renderers-fetch)).
 - [ ] Replace any client of a catalog cluster built from its `kubeConfigPath`
       — a bundled Kubernetes client, a `fetch` to the API server — with
       `K8sApi.forCluster` / `K8sApi.KubeJsonApi.forCluster`, and run a spawned
@@ -2054,9 +2143,10 @@ restarted once.
 - [ ] Drop any `undici` dependency added for the `dispatcher` field of
       `reqInit` — the field is gone and `undici` is no longer a declared type
       dependency of `@freelensapp/extensions`.
-- [ ] Re-check anything annotated `Response` or `RequestInit` from the DOM: the
-      shared fetch types are structural now, so `const r: Response = await
-      fetch(...)` no longer compiles.
+- [ ] Re-check anything annotated `Response` or `RequestInit` from the DOM
+      around `K8sApi.KubeJsonApi` and `reqInit`: the host's fetch types are
+      structural now, so `const r: Response = await api.getResponse(...)` no
+      longer compiles.
 - [ ] Replace any `react-router` / `react-router-dom` usage imported via the
       Freelens bundle, a `Link` with `Renderer.Component.MaybeLink` — the
       `ReactRouter*` re-exports were removed (see
@@ -2084,6 +2174,10 @@ restarted once.
       [Node and Electron in the renderer](#node-and-electron-in-the-renderer),
       or into main behind `Ipc`, and stop marking the builtins external in the
       renderer build.
+- [ ] Build the main entry for Node (`platform: "node"` with Vite 8 or
+      Rolldown), so that a bundled CommonJS package can `require()` the
+      builtins (see
+      [Node and Electron in the renderer](#node-and-electron-in-the-renderer)).
 - [ ] Move mobx decorators to standard decorators: drop
       `experimentalDecorators`, write `@observable accessor`, replace the
       namespaced annotations and `comparer.*` with their named exports,

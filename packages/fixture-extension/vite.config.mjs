@@ -84,6 +84,7 @@ const entryPoints = {
     // First of the two runs in `build`, so it clears the output directory.
     emptyOutDir: true,
     external: [],
+    platform: /** @type {const} */ ("browser"),
   },
   main: {
     entry: "src/main/index.ts",
@@ -92,6 +93,12 @@ const entryPoints = {
     // `src/renderer/tsconfig.json` has no Node types, so an import of one
     // there fails the type check before it could reach a bundle.
     external: [/^node:/],
+    // Bundled CommonJS packages `require()` the builtins. For the browser
+    // platform Rolldown turns such a call into a shim that throws in an ES
+    // module, where there is no `require`, as soon as Freelens evaluates
+    // `dist/main.js`, while the build and the type check pass; for Node it
+    // creates one with `createRequire(import.meta.url)`.
+    platform: /** @type {const} */ ("node"),
   },
 };
 
@@ -113,8 +120,9 @@ export default defineConfig(({ mode }) => {
         formats: ["es"],
         fileName: () => `${name}.js`,
       },
-      rollupOptions: {
+      rolldownOptions: {
         external: entryPoint.external,
+        platform: entryPoint.platform,
       },
     },
   };

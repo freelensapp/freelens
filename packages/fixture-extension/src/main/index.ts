@@ -8,17 +8,22 @@
 // environment — `Main.LensExtension`, `Main.Ipc` and a Node builtin all
 // compile under `src/main/tsconfig.json`, which has `@types/node` and no DOM —
 // and that the bundle builds with the builtins left external. `runHostKubectl`
-// runs the host's kubectl through `Main.Shell`, and is exported for the unit
-// test that loads this bundle.
+// runs the host's kubectl through `Main.Shell`, and `probeHostFetch` sends a
+// request through a library given `Main.Util.fetch`; both are exported for the
+// unit test that loads this bundle. `endOfLine` comes from a bundled CommonJS
+// module that `require()`s a builtin, and is exported for the unit test that
+// evaluates this bundle in plain Node.
 
 import os from "node:os";
 import { Main } from "@freelensapp/extensions";
 import { createRequestId, getProbeHost, HOST_INFO_CHANNEL, HOST_KUBECTL_CHANNEL } from "../common/host-info";
+import { endOfLine } from "./bundled-commonjs.cjs";
+import { probeHostFetch } from "./host-fetch";
 import { runHostKubectl } from "./host-kubectl";
 
 import type { HostInfo } from "../common/host-info";
 
-export { runHostKubectl };
+export { endOfLine, probeHostFetch, runHostKubectl };
 
 class FixtureIpc extends Main.Ipc {}
 
