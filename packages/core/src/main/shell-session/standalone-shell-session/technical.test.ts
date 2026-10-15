@@ -3,6 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { loggerInjectionToken } from "@freelensapp/logger";
 import { computed } from "mobx";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForTempInjectable from "../../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
@@ -25,9 +26,11 @@ import createKubectlInjectable from "../../kubectl/create-kubectl.injectable";
 import spawnPtyInjectable from "../spawn-pty.injectable";
 import openStandaloneShellSessionInjectable from "./open.injectable";
 
+import type { Logger } from "@freelensapp/logger";
+
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { IPty } from "node-pty";
-import type { MockedFunction } from "vitest";
+import type { Mock, MockedFunction } from "vitest";
 import type WebSocket from "ws";
 
 import type { TerminalMessage } from "../../../common/terminal/channels";
@@ -44,6 +47,9 @@ describe("technical unit tests for standalone shell sessions", () => {
   let createKubectl: MockedFunction<() => unknown>;
   let ensurePath: MockedFunction<() => Promise<string>>;
   let ensurePaths: MockedFunction<() => Promise<ProxyKubeconfigPaths>>;
+  let logger: Record<"debug" | "info" | "warn" | "error" | "silly", Mock>;
+  let shellPid: number;
+  let emitShellData: (data: string) => void;
 
   const websocket = () => {
     const socket = {
@@ -119,15 +125,29 @@ describe("technical unit tests for standalone shell sessions", () => {
       () => ({ ensurePath, ensurePaths }) as Partial<KubeconfigManager> as KubeconfigManager,
     );
 
+    logger = { debug: vi.fn(), info: vi.fn(), warn: vi.fn(), error: vi.fn(), silly: vi.fn() };
+    di.override(loggerInjectionToken, () => logger as unknown as Logger);
+
+    shellPid = 12343;
+
+    const dataListeners = new Set<(data: string) => void>();
+
+    emitShellData = (data) => [...dataListeners].forEach((listener) => listener(data));
     spawnPtyMock = vi.fn(
       () =>
         ({
           cols: 80,
           rows: 40,
-          pid: 12343,
+          get pid() {
+            return shellPid;
+          },
           handleFlowControl: false,
           kill: vi.fn(),
-          onData: vi.fn(),
+          onData: vi.fn((listener: (data: string) => void) => {
+            dataListeners.add(listener);
+
+            return { dispose: () => void dataListeners.delete(listener) };
+          }),
           onExit: vi.fn(),
           pause: vi.fn(),
           process: "my-pty",
@@ -212,5 +232,34 @@ describe("technical unit tests for standalone shell sessions", () => {
 
     expect(options).toHaveProperty("useConptyDll", true);
     expect(options).not.toHaveProperty("useConpty");
+  });
+
+  describe("logging the PID of the shell", () => {
+    const pidLogLines = () =>
+      logger.info.mock.calls.map(([message]) => String(message)).filter((message) => message.includes("PID="));
+
+    it("logs it at once when node-pty knows it at spawn", async () => {
+      await openStandaloneShellSession({ tabId: "my-tab-id", websocket: websocket() });
+
+      expect(pidLogLines()).toEqual(["[SHELL-SESSION]: PTY for standalone:my-tab-id is started with PID=12343"]);
+    });
+
+    /**
+     * On Windows node-pty reports 0 until ConPTY has connected, which happens
+     * before the shell's first output.
+     */
+    it("waits for the first output when node-pty reports 0 at spawn, and then logs it once", async () => {
+      shellPid = 0;
+
+      await openStandaloneShellSession({ tabId: "my-tab-id", websocket: websocket() });
+
+      expect(pidLogLines()).toEqual([]);
+
+      shellPid = 4321;
+      emitShellData("PS C:\\> ");
+      emitShellData("more output");
+
+      expect(pidLogLines()).toEqual(["[SHELL-SESSION]: PTY for standalone:my-tab-id is started with PID=4321"]);
+    });
   });
 });

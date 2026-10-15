@@ -189,9 +189,21 @@ export abstract class ShellSession {
       }),
     );
 
-    this.dependencies.logger.info(
-      `[SHELL-SESSION]: PTY for ${this.terminalId} is ${resume ? "resumed" : "started"} with PID=${shellProcess.pid}`,
-    );
+    const logPid = () =>
+      this.dependencies.logger.info(
+        `[SHELL-SESSION]: PTY for ${this.terminalId} is ${resume ? "resumed" : "started"} with PID=${shellProcess.pid}`,
+      );
+
+    if (shellProcess.pid > 0) {
+      logPid();
+    } else {
+      // On Windows node-pty learns the shell's pid only once ConPTY has
+      // connected, which happens before the first output arrives.
+      const firstData = shellProcess.onData(() => {
+        firstData.dispose();
+        logPid();
+      });
+    }
 
     return { shellProcess, resume };
   }
