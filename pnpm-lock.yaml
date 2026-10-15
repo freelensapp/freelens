@@ -321,8 +321,8 @@ catalogs:
       specifier: 6.0.2
       version: 6.0.2
     conf:
-      specifier: 15.1.0
-      version: 15.1.0
+      specifier: 16.0.0
+      version: 16.0.0
     cronstrue:
       specifier: 3.32.0
       version: 3.32.0
@@ -535,8 +535,8 @@ catalogs:
       specifier: ^4.5.1
       version: 4.5.1
     conf:
-      specifier: ^15.1.0
-      version: 15.1.0
+      specifier: ^16.0.0
+      version: 16.0.0
     es-toolkit:
       specifier: ^1.52.0
       version: 1.52.0
@@ -669,7 +669,7 @@ importers:
         version: 5.0.0
       conf:
         specifier: 'catalog:'
-        version: 15.1.0
+        version: 16.0.0
       electron-window-state:
         specifier: 'catalog:'
         version: 5.0.3
@@ -1087,7 +1087,7 @@ importers:
         version: 5.0.3
       conf:
         specifier: 'catalog:'
-        version: 15.1.0
+        version: 16.0.0
       cronstrue:
         specifier: 'catalog:'
         version: 3.32.0
@@ -1356,7 +1356,7 @@ importers:
         version: 4.5.1
       conf:
         specifier: catalog:extensions
-        version: 15.1.0
+        version: 16.0.0
       electron:
         specifier: '>=43.0.0'
         version: 43.7.11(supports-color@8.1.1)
@@ -4957,9 +4957,9 @@ packages:
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
 
-  conf@15.1.0:
-    resolution: {integrity: sha512-Uy5YN9KEu0WWDaZAVJ5FAmZoaJt9rdK6kH+utItPyGsCqCgaTKkrmZx3zoE0/3q6S3bcp3Ihkk+ZqPxWxFK5og==}
-    engines: {node: '>=20'}
+  conf@16.0.0:
+    resolution: {integrity: sha512-CwqpY9jSpU6uYeObCwfRGqiEsd/DnU7rruwiFNapZPsOB8p2U65p+MzccEsdvg+KLis1Y1d1Mo3rKkTTzWONSA==}
+    engines: {node: '>=22'}
 
   convert-source-map@1.9.0:
     resolution: {integrity: sha512-ASFBup0Mz1uyiIjANan1jzLQami9z1PoYSZCiiYW2FczPbenXc45FZdBZLzOT+r6+iciuEModtmCti+hjaAk0A==}
@@ -5102,8 +5102,8 @@ packages:
   dompurify@3.4.17:
     resolution: {integrity: sha512-B/pSlYVHQ58kqISD/yDjuJ1yfzI34m1gF4lAod2bwSRhiN4K5Cl3H8Af7hqB2PmTL911tdEudnnXn5FnhRoz0w==}
 
-  dot-prop@10.1.0:
-    resolution: {integrity: sha512-MVUtAugQMOff5RnBy2d9N31iG0lNwg1qAoAOn7pOK5wf94WIaE3My2p3uwTQuvS2AcqchkcR3bHByjaM0mmi7Q==}
+  dot-prop@10.2.0:
+    resolution: {integrity: sha512-BTJ9aZYL3vCfZlZOBLy9v8TUqWGQ0pzFnygKwFZt5udj6viBoFIBviKPUoZLDCPn1FoXffv6McQFDenrm5Krfw==}
     engines: {node: '>=20'}
 
   dotenv-expand@11.0.7:
@@ -5203,6 +5203,10 @@ packages:
   env-paths@3.0.0:
     resolution: {integrity: sha512-dtJUTepzMW3Lm/NPxRf3wP4642UWhjL2sQxc+ym2YMj1m/H2zDNQOlezafzkHwn6sMstjHTwG6iQQsctDW/b1A==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+
+  env-paths@4.0.0:
+    resolution: {integrity: sha512-pxP8eL2SwwaTRi/KHYwLYXinDs7gL3jxFcBYmEdYfZmZXbaVDvdppd0XBU8qVz03rDfKZMXg1omHCbsJjZrMsw==}
+    engines: {node: '>=20'}
 
   err-code@2.0.3:
     resolution: {integrity: sha512-2bmlRpNKBxT/CRmPOlyISQpNj+qSeYvcym/uT0Jx2bMOlKLtSy1ZmLuVxSEKKyor/N5yhvp/ZiG1oE3DEYMSFA==}
@@ -5596,6 +5600,10 @@ packages:
 
   is-potential-custom-element-name@1.0.1:
     resolution: {integrity: sha512-bCYeRA2rVibKZd+s2625gGnGF/t7DSqDs4dP7CrLA1m7jKWz6pps0LpYLJN8Q64HtmPKJ1hrN3nzPNKFEKOUiQ==}
+
+  is-safe-filename@0.1.1:
+    resolution: {integrity: sha512-4SrR7AdnY11LHfDKTZY1u6Ga3RuxZdl3YKWWShO5iyuG5h8QS4GD2tOb04peBJ5I7pXbR+CGBNEhTcwK+FzN3g==}
+    engines: {node: '>=20'}
 
   is-stream@2.0.1:
     resolution: {integrity: sha512-hFoiJiTl63nn+kstHGBtewWSKnQLpyb155KHheA1l39uvtO9nWIop1p3udqPcUd/xbF1VLMO4n7OI6p7RbngDg==}
@@ -9524,14 +9532,14 @@ snapshots:
 
   concat-map@0.0.1: {}
 
-  conf@15.1.0:
+  conf@16.0.0:
     dependencies:
       ajv: 8.20.0
       ajv-formats: 3.0.1
       atomically: 2.1.1
       debounce-fn: 6.0.0
-      dot-prop: 10.1.0
-      env-paths: 3.0.0
+      dot-prop: 10.2.0
+      env-paths: 4.0.0
       json-schema-typed: 8.0.2
       semver: 7.8.5
       uint8array-extras: 1.5.0
@@ -9677,7 +9685,7 @@ snapshots:
     optionalDependencies:
       '@types/trusted-types': 2.0.7
 
-  dot-prop@10.1.0:
+  dot-prop@10.2.0:
     dependencies:
       type-fest: 5.10.0
 
@@ -9810,6 +9818,10 @@ snapshots:
   env-paths@2.2.1: {}
 
   env-paths@3.0.0: {}
+
+  env-paths@4.0.0:
+    dependencies:
+      is-safe-filename: 0.1.1
 
   err-code@2.0.3: {}
 
@@ -10251,6 +10263,8 @@ snapshots:
     optional: true
 
   is-potential-custom-element-name@1.0.1: {}
+
+  is-safe-filename@0.1.1: {}
 
   is-stream@2.0.1: {}
 
