@@ -835,6 +835,24 @@ local checkout are lost. To make the work resumable in a follow-up session:
    long commands a foreground timeout (up to ten minutes) instead, and
    commit and push what is done before starting a long validation.
 
+### Force-Pushing a Rewritten Branch
+
+When you are asked to rebase a pull request branch, or to rewrite its
+history in another way (amend, squash, drop a commit), push the result with:
+
+```bash
+git push --force-with-lease origin HEAD
+```
+
+The push wrapper the action names in its instructions, `git-push.sh`, accepts
+no flags, so it cannot do this; `git` itself is allowed in this workflow.
+Do not fall back to merging `main` into the branch instead: a merge commit is
+not what was asked for.
+
+Force-push only the pull request branch the run was invoked on, and only when
+the request calls for a rewrite. Never force-push `main` or any other branch,
+and never rewrite a history you were not asked to.
+
 ### Modifying GitHub Actions Workflows
 
 Claude cannot push changes to files under `.github/workflows/` directly,
