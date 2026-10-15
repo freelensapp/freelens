@@ -180,8 +180,12 @@ export abstract class ShellSession {
         cwd,
         env,
         name: "xterm-256color",
-        // TODO: Something else is broken here so we need to force the use of winPty on windows
-        useConpty: false,
+        // Windows only: run on node-pty's bundled, Microsoft-signed conpty.dll
+        // and OpenConsole.exe rather than the system ConPTY. With the system
+        // one, kill() forks the Electron binary as Node to attach to the
+        // shell's console and list its processes, which endpoint protection
+        // heuristics flag (#2729).
+        useConptyDll: true,
       }),
     );
 

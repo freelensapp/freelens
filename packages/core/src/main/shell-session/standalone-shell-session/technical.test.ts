@@ -64,7 +64,7 @@ describe("technical unit tests for standalone shell sessions", () => {
 
     const [file, args, options] = call;
 
-    return { file, args, env: options.env ?? {} };
+    return { file, args, options, env: options.env ?? {} };
   };
 
   beforeEach(() => {
@@ -203,5 +203,14 @@ describe("technical unit tests for standalone shell sessions", () => {
     expect(args).toEqual(["--login"]);
     expect(env.ZDOTDIR).toBeUndefined();
     expect(env.OLD_ZDOTDIR).toBeUndefined();
+  });
+
+  it("spawns the shell on node-pty's bundled ConPTY DLL, without the stale winpty switch", async () => {
+    await openStandaloneShellSession({ tabId: "my-tab-id", websocket: websocket() });
+
+    const { options } = spawnedWith();
+
+    expect(options.useConptyDll).toBe(true);
+    expect(options).not.toHaveProperty("useConpty");
   });
 });
