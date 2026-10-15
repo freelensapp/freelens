@@ -8,8 +8,10 @@
 // runs the host's kubectl through `Main.Shell`, the way an extension does. The
 // kubectl is a script that prints the environment it got, so what is asserted
 // is what a spawned process actually receives, through the bundle, the global
-// and the host's DI container. It also evaluates the bundle in plain Node, the
-// way Freelens loads it, which the module runner of Vitest does not reproduce.
+// and the host's DI container. It sends a request through a library the bundle
+// gives `Main.Util.fetch` as its `fetch` option. It also evaluates the bundle
+// in plain Node, the way Freelens loads it, which the module runner of Vitest
+// does not reproduce.
 
 import { execFile } from "node:child_process";
 import { existsSync } from "node:fs";
@@ -29,6 +31,7 @@ import getClusterByIdInjectable from "../../features/cluster/storage/common/get-
 import computeShellEnvironmentInjectable from "../../features/shell-sync/main/compute-shell-environment.injectable";
 import userShellSettingInjectable from "../../features/user-preferences/common/shell-setting.injectable";
 import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
+import proxyFetchInjectable from "../../main/fetch/proxy-fetch.injectable";
 import { getDiForUnitTesting } from "../../main/getDiForUnitTesting";
 import kubeconfigManagerInjectable from "../../main/kubeconfig-manager/kubeconfig-manager.injectable";
 import createKubectlInjectable from "../../main/kubectl/create-kubectl.injectable";
@@ -36,12 +39,16 @@ import { mainExtensionApiSingletons } from "../api-globals/main-singletons";
 import * as Common from "../common-api";
 import * as Main from "../main-api";
 
+import type { Fetch } from "@freelensapp/json-api";
+
 import type { DiContainer } from "@ogre-tools/injectable";
+import type { Mock } from "vitest";
 
 import type { KubeconfigManager } from "../../main/kubeconfig-manager/kubeconfig-manager";
 import type { Kubectl } from "../../main/kubectl/kubectl";
 
 interface FixtureMainBundle {
+  probeHostFetch: () => Promise<number>;
   runHostKubectl: (clusterId?: string) => Promise<{ kubectlPath: string; stdout: string }>;
 }
 
@@ -91,6 +98,38 @@ describe("the built fixture extension's main bundle", () => {
     ]);
 
     expect(JSON.parse(stdout)).toBe(os.EOL);
+  });
+});
+
+describe("Main.Util.fetch, from the built fixture extension", () => {
+  let proxyFetch: Mock<Fetch>;
+
+  beforeEach(() => {
+    const di = getDiForUnitTesting();
+
+    proxyFetch = vi.fn<Fetch>(async () => new Response(null, { status: 204 }));
+    di.override(proxyFetchInjectable, () => proxyFetch);
+
+    Object.assign(globalThis, { FreelensExtensionApi: { Common, Main, ...mainExtensionApiSingletons } });
+  });
+
+  afterEach(() => {
+    Object.assign(globalThis, { FreelensExtensionApi: undefined });
+  });
+
+  // The bundle hands `Main.Util.fetch` to a library as its `fetch` option, and
+  // the library sends a `Request` of its own making.
+  it("sends the Request of a library given it as its fetch option through the host's client, whole", async () => {
+    const fixture = await importFixtureMainBundle();
+
+    await expect(fixture.probeHostFetch()).resolves.toBe(204);
+    expect(proxyFetch).toHaveBeenCalledOnce();
+
+    const [url, init] = proxyFetch.mock.calls[0];
+
+    expect(url).toBe("https://fixture.invalid/contract-probe");
+    expect(init).toMatchObject({ method: "POST", headers: [["content-type", "application/json"]] });
+    expect(await new Response(init?.body as ReadableStream<Uint8Array>).text()).toBe('{"probe":true}');
   });
 });
 

@@ -4,42 +4,35 @@
  */
 
 import proxyFetchInjectable from "../../main/fetch/proxy-fetch.injectable";
-import { asStandardFetch } from "../common-api/standard-fetch";
 import { Util as CommonUtil } from "../common-api/utils";
 import { asLazyInjectedFunctionForExtensionApi } from "../extension-api-di";
+import { asStandardFetch } from "./standard-fetch";
 
 const Util = {
   ...CommonUtil,
 
   /**
-   * HTTP from the main process, as the application itself makes it.
+   * HTTP from the main process, as the application itself makes it, typed as
+   * the standard `fetch`.
    *
    * `globalThis.fetch` exists here too, but it knows nothing about the
    * `httpsProxy` preference, `caCertificates` / `allowUntrustedCAs`, or
    * freelens-proxy — all three of which this client already honours. An extension
-   * reaching a cluster or an external service from main should use this rather
-   * than bundle an HTTP client of its own.
+   * reaching an external service from main should use this rather than bundle
+   * an HTTP client of its own, and pass it as the `fetch` option of a bundled
+   * library that takes one, such as an SDK or an MCP transport.
    *
-   * The renderer counterpart is `Renderer.Util.fetch`. They are separate
-   * symbols because the implementations differ, and naming them separately is
-   * the point: one `Common.Util.fetch` would restate an equivalence that does
-   * not hold.
-   */
-  fetch: asLazyInjectedFunctionForExtensionApi(proxyFetchInjectable),
-
-  /**
-   * `fetch` of this namespace, typed as the standard `fetch`, for a bundled
-   * library that takes a `fetch` option, such as an SDK or an MCP transport.
-   * Passing it keeps the library on the host's client, with the user's proxy
-   * and certificate settings, where the library's own default would ignore
-   * them.
-   *
-   * It takes a URL, as a string or a `URL`, and an init, which it passes on
-   * as it is apart from `dispatcher`. A `Request` as the input is refused: the
-   * call rejects with a `TypeError`. The response is undici's `Response`, so
+   * A `Request` input is translated into a URL and an init, since the host's
+   * client does not take the `Request` of Node's built-in undici. `dispatcher`
+   * is dropped from the init: the host's applies the user's settings and is not
+   * the extension's to replace. The response is undici's `Response`, so
    * `instanceof Response` is not a reliable check on it.
+   *
+   * There is no renderer counterpart: the global `fetch` of the renderer is
+   * Chromium's, with the window session's settings, which is the client the
+   * host uses there too.
    */
-  standardFetch: asStandardFetch(asLazyInjectedFunctionForExtensionApi(proxyFetchInjectable)),
+  fetch: asStandardFetch(asLazyInjectedFunctionForExtensionApi(proxyFetchInjectable)),
 };
 
 export { Util };

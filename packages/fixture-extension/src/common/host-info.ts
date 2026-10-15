@@ -9,7 +9,7 @@
 // include this directory, so a Node API fails the renderer program and a DOM
 // API fails the main one.
 
-/** The URL the renderer probes on activation. Never actually requested: the host DI serves it. */
+/** The URL main probes through `Main.Util.fetch`. Never actually requested: the host DI serves it. */
 export const FIXTURE_PROBE_URL = "https://fixture.invalid/contract-probe";
 
 /** The `Main.Ipc` / `Renderer.Ipc` channel main answers on, in one place so both ends agree on it. */

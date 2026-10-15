@@ -34,6 +34,8 @@ import type { ComponentClass, FunctionComponent } from "react";
 
 import type { Common, Main, Renderer } from "../extension-api";
 
+type Holds<T extends true> = T;
+
 // --- Common ------------------------------------------------------------------
 
 export type CommonManifest = Common.LensExtensionManifest;
@@ -57,7 +59,9 @@ export type CommonCustomResourceRegistration = Common.Types.CustomResourceRegist
 
 export type MainExtension = Main.LensExtension;
 export type MainFetch = typeof Main.Util.fetch;
-export type MainStandardFetch = typeof Main.Util.standardFetch;
+// The standard `fetch`, so that a bundled library's `fetch` option takes it
+// without an assertion (C12).
+export type MainFetchIsTheStandardOne = Holds<MainFetch extends typeof globalThis.fetch ? true : false>;
 export type MainNavigate = typeof Main.Navigation.navigate;
 export type MainPowerEventListener = Main.Power.PowerEventListener;
 export type MainShellGetEnvironment = typeof Main.Shell.getEnvironment;
@@ -79,8 +83,9 @@ export type MainKubeObjectStatus = Main.K8sApi.KubeObjectStatus;
 // --- Renderer ----------------------------------------------------------------
 
 export type RendererExtension = Renderer.LensExtension;
+// The renderer's HTTP client is its global `fetch` (C12).
+// @ts-expect-error `Renderer.Util` has no `fetch`
 export type RendererFetch = typeof Renderer.Util.fetch;
-export type RendererStandardFetch = typeof Renderer.Util.standardFetch;
 export type RendererNavigate = typeof Renderer.Navigation.navigate;
 export type RendererDetailsUrl = typeof Renderer.Navigation.getDetailsUrl;
 export type RendererActiveTheme = typeof Renderer.Theme.activeTheme;

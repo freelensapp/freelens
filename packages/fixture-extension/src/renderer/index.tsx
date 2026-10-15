@@ -14,8 +14,8 @@
 //     under two mobx instances
 //  3. one declarative registration, which only appears if the registrators and
 //     the extension lifecycle both work
-//  4. one `Util.fetch` call, which only resolves if the host's DI container is
-//     reachable through the API namespace
+//  4. one `Common.Util.getAppVersion()` call, which only answers if the host's
+//     DI container is reachable through the API namespace
 //  5. one detail and one menu registration made with `Renderer.K8sApi.detailsFor`
 //     and `menuItemFor` for a model that narrows its `kind` and `apiVersion`,
 //     which only construct if the helpers exist at runtime as the declaration
@@ -30,7 +30,7 @@
 import { Common, Renderer } from "@freelensapp/extensions";
 import { computed, observable, runInAction } from "mobx";
 import { Component, useCallback, useMemo, useState } from "react";
-import { FIXTURE_PROBE_URL } from "../common/host-info";
+import { getProbeHost } from "../common/host-info";
 import { FixtureExample } from "./fixture-example";
 
 /**
@@ -74,7 +74,7 @@ export const setStatusBarItemVisible = (value: boolean) => {
 };
 
 /** What `onActivate` recorded, observable so a host reaction can await it. */
-export const activationRecord = observable.box<{ appVersion: string; probeStatus: number } | undefined>(undefined);
+export const activationRecord = observable.box<{ appVersion: string; probeHost: string } | undefined>(undefined);
 
 /**
  * A component with hooks. Under two React instances every hook here throws
@@ -134,20 +134,13 @@ export default class FixtureRendererExtension extends Renderer.LensExtension {
   /** The host reads the group and plural from the class's `crd`. */
   customResources = [FixtureExample];
 
-  protected async onActivate(): Promise<void> {
-    const response = await Renderer.Util.fetch(FIXTURE_PROBE_URL);
-
+  /** `getProbeHost` lives in `src/common/`, so the renderer bundle carries code shared with main. */
+  protected onActivate(): void {
     runInAction(() => {
       activationRecord.set({
         appVersion: Common.Util.getAppVersion(),
-        probeStatus: response.status,
+        probeHost: getProbeHost(),
       });
     });
   }
 }
-
-/**
- * Re-exported for the harness, which asserts the probe went to this URL. It
- * lives in `src/common/` so the renderer bundle carries code shared with main.
- */
-export { FIXTURE_PROBE_URL };

@@ -1028,44 +1028,67 @@ Two members are worth knowing before you need them:
 
 ## HTTP: `Main.Util.fetch` and `Renderer.Util.fetch`
 
-In v2 the host provides the HTTP client, one symbol per process:
+In v2 the host provides the HTTP client of the main process, and in the
+renderer the global `fetch` is the client:
 
-| Symbol | Process | What answers the call |
+| Process | Client | What answers the call |
 | --- | --- | --- |
-| `Main.Util.fetch` | main | the same client the app uses for its own binary and JSON downloads and its metrics requests |
-| `Renderer.Util.fetch` | renderer | Chromium's `fetch`, reached through the host |
+| main | `Main.Util.fetch` | the same client the app uses for its own binary and JSON downloads and its metrics requests |
+| renderer | the global `fetch` | Chromium's `fetch`, with the window session's settings |
 
-Both take the same arguments as the standard `fetch`, and both are additions to
-`Common.Util` — `Main.Util` and `Renderer.Util` carry everything `Common.Util`
-does, plus `fetch`.
+`Main.Util.fetch` is an addition to `Common.Util` — `Main.Util` carries
+everything `Common.Util` does, plus `fetch`. It is typed as the standard
+`fetch`, the one `@types/node` declares, so it takes what Node's global `fetch`
+takes, a `Request` included, and answers with a `Response`. `Renderer.Util` has
+no `fetch`: the global is already the client the host uses in the renderer.
 
 **In main, prefer `Main.Util.fetch` over `globalThis.fetch`.** The global exists
 there, but it knows nothing about the user's `httpsProxy` preference, their
 `caCertificates` / `allowUntrustedCAs` settings, or the Freelens proxy. The
 host-provided client honours all three, so an extension that uses it works in
 the corporate-proxy and custom-CA setups where the global would simply fail —
-without the extension having to implement any of it. Neither `fetch` is the way
+without the extension having to implement any of it. Neither client is the way
 to a catalog cluster's API server; see
 [Reaching a catalog cluster](#reaching-a-catalog-cluster).
 
-In the renderer, `Renderer.Util.fetch` is today Chromium's `fetch` and needs
-none of that: requests to the cluster go to the frame's own origin, whose
-certificate the window's session already trusts. It is nonetheless a symbol of
-its own rather than a documented alias for the global. The renderer session
-takes the *system* proxy while only main honours the `httpsProxy` preference;
-if that asymmetry is ever fixed, extensions on the symbol get the fix and
-extensions on the global do not.
+**In the renderer, use the global `fetch`.** It is Chromium's, and needs none of
+that: requests to the cluster go to the frame's own origin, whose certificate
+the window's session already trusts. The renderer session takes the *system*
+proxy, while only main honours the `httpsProxy` preference, so a request that
+has to follow that preference belongs in main, reached over `Renderer.Ipc` /
+`Main.Ipc`.
 
-There are deliberately **two** symbols and not one `Common.Util.fetch`. The
-implementations differ, and one name would suggest an equivalence that does not
-hold.
+**For a bundled library in main, pass `Main.Util.fetch`.** A library that takes
+a `fetch` option — the OpenAI SDK under `@langchain/openai`, the HTTP transports
+of the MCP SDK — types it with the standard `fetch`, which `Main.Util.fetch` is,
+so it fits with no assertion. Do not bundle a client of your own for it, and do
+not leave the library on its default `fetch` in main: either would ignore the
+user's proxy and CA settings, the reason C12 asks for the host's client.
+
+```ts
+import { Main } from "@freelensapp/extensions";
+import { ChatOpenAI } from "@langchain/openai";
+
+const model = new ChatOpenAI({
+  apiKey,
+  configuration: { fetch: Main.Util.fetch },
+});
+```
+
+A `Request` the library builds is passed on as its URL and an init made of its
+method, headers, body, signal and `redirect`; an init given with it applies on
+top. `dispatcher` is dropped from the init, because the host's client sends
+every request through the dispatcher that applies the user's proxy and CA
+settings. The response is undici's `Response`, so `instanceof Response` is not
+a reliable check on it (see [C12](./api.md#c12-http)). If you wrote an adapter
+of your own around `Main.Util.fetch` for this, it can go. In the renderer a
+library's default `fetch` is the global one, which is the right client there.
 
 ### The request and response types are structural
 
 `FetchRequestInit` and `FetchResponse` — the types that reach you through
-`K8sApi.KubeJsonApi` and `KubeApi.list()`'s `reqInit`, as well as through
-`Util.fetch` — describe HTTP structurally rather than by naming a runtime's
-classes:
+`K8sApi.KubeJsonApi` and `KubeApi.list()`'s `reqInit` — describe HTTP
+structurally rather than by naming a runtime's classes:
 
 ```ts
 interface FetchResponse {
@@ -1080,59 +1103,37 @@ interface FetchResponse {
 }
 ```
 
-This is what the two processes actually have in common. The renderer really
-returns Chromium's `Response` and main really returns undici's — structurally
-compatible classes, but distinct ones — so a contract that named either would
-be describing one process and quietly misdescribing the other. It also means
-`res instanceof Response` is not a reliable check in main; test `res.ok` or
-`res.status` instead.
+This is what the two processes actually have in common. The host's HTTP in the
+renderer really returns Chromium's `Response` and in main really returns
+undici's — structurally compatible classes, but distinct ones — so a contract
+that named either would be describing one process and quietly misdescribing the
+other. It also means `res instanceof Response` is not a reliable check in main;
+test `res.ok` or `res.status` instead.
+
+`Main.Util.fetch` is not one of these types: it is the standard `fetch`, and
+its response a `Response`.
 
 Two consequences for your code:
 
-- **`await fetch(...)` is a `FetchResponse`, not a `Response`.** Passing it
-  where a `FetchResponse` is expected is fine, and reading the members above is
-  fine. Assigning it to a variable annotated `Response` is not, because
+- **A `FetchResponse` is not a `Response`.** Passing it where a
+  `FetchResponse` is expected is fine, and reading the members above is fine.
+  Assigning it to a variable annotated `Response` is not, because
   `FetchResponse` is the wider type. `blob()`, `formData()`, `clone()`, `url`,
-  `redirected` and `type` are not part of the contract; if you need one in your
-  own code, call `Util.standardFetch` for that request, as below.
+  `redirected` and `type` are not part of the contract; if you need one, make
+  that request with `Main.Util.fetch` in main or the global `fetch` in the
+  renderer.
 - **The fetch types add no `lib.dom` requirement.** They name only
   `AbortSignal`, `ReadableStream`, `URL` and `Uint8Array`, all of which
-  `@types/node` declares as well. (The published surface as a whole still needs
-  the DOM lib — its React component types do — see
+  `@types/node` declares as well, and `Main.Util.fetch` is typed as the global
+  `fetch` both declare. (The published surface as a whole still needs the DOM lib — its
+  React component types do — see
   [`tsconfig.json` for an extension](#tsconfigjson-for-an-extension).)
 
-Request bodies are `string | Uint8Array | ArrayBuffer | ReadableStream<Uint8Array>`.
-`Blob`, `FormData` and `URLSearchParams` are not accepted; encode to a string
+Request bodies in `reqInit` are
+`string | Uint8Array | ArrayBuffer | ReadableStream<Uint8Array>`. `Blob`,
+`FormData` and `URLSearchParams` are not accepted there; encode to a string
 (`params.toString()`, `JSON.stringify(...)`) or a `Uint8Array` first.
-
-**For a bundled library, pass `Util.standardFetch`.** A library that takes a
-`fetch` option — the OpenAI SDK under `@langchain/openai`, the HTTP transports
-of the MCP SDK — types it with the standard `fetch`, and `Util.fetch` does not
-fit it in either direction. Do not bundle a client of your own for it, and do
-not leave the library on its default `fetch`: either would ignore the user's
-proxy and CA settings, the reason C12 asks for the host's client. Pass
-`Main.Util.standardFetch` or `Renderer.Util.standardFetch` instead. It is the
-`fetch` of the same namespace, typed as the standard `fetch` of the environment
-you compile in, so it fits with no assertion:
-
-```ts
-import { Main } from "@freelensapp/extensions";
-import { ChatOpenAI } from "@langchain/openai";
-
-const model = new ChatOpenAI({
-  apiKey,
-  configuration: { fetch: Main.Util.standardFetch },
-});
-```
-
-It takes a URL, as a string or a `URL`, and an init, which it passes on as it
-is, a `FormData` or `URLSearchParams` body included; only `dispatcher` is
-dropped, because in main it would replace the one that applies the user's
-proxy and CA settings. A `Request` as the input is refused, and the call
-rejects with a `TypeError`, because its method, headers and body would be
-lost. The response is the implementation's own full `Response` (see
-[C12](./api.md#c12-http)). If you wrote an adapter of your own around
-`Util.fetch` with an assertion for this, it can go.
+`Main.Util.fetch` takes every body the standard `fetch` takes.
 
 ### `dispatcher` is gone from `reqInit`
 
@@ -1140,13 +1141,15 @@ lost. The response is the implementation's own full `Response` (see
 extension to depend on `undici` in order to fill a slot it had no way to make
 use of, so the slot is gone and `undici` is no longer among the type
 dependencies `@freelensapp/extensions` declares. The capability it gestured at —
-HTTP that respects the user's proxy and CA settings — is `Main.Util.fetch`.
+HTTP that respects the user's proxy and CA settings — is `Main.Util.fetch`,
+which sends every request through the host's dispatcher and drops one given in
+its init.
 
 ### Reaching a catalog cluster
 
-`Util.fetch` is for HTTP outside the cluster. It cannot talk to a cluster's API
-server on its own: `reqInit` has no slot for the kubeconfig's client
-certificate or cluster CA, it runs no `exec` credential plugin
+`Main.Util.fetch` is for HTTP outside the cluster. It cannot talk to a cluster's
+API server on its own: it carries no client certificate or cluster CA from a
+kubeconfig, it runs no `exec` credential plugin
 (`gke-gcloud-auth-plugin`, `aws`, `kubelogin`) and refreshes no OIDC token, and
 the proxy it applies is the app-wide `httpsProxy` preference, while a cluster
 has a proxy setting of its own.
@@ -1526,8 +1529,8 @@ lean on them in the renderer has a replacement already:
   `globalThis.FreelensExtensionApi`, not from `require()`;
 - your dependencies are bundled, and there is no `node_modules` next to a
   renderer entry point to resolve anything from;
-- HTTP is Chromium's `fetch`, as
-  [`Renderer.Util.fetch`](#http-mainutilfetch-and-rendererutilfetch);
+- HTTP is the global `fetch`, Chromium's (see
+  [HTTP](#http-mainutilfetch-and-rendererutilfetch));
 - running programs belongs to main.
 
 **The general rule: do Node work in your main entry point and talk to it over
@@ -2125,10 +2128,10 @@ restarted once.
       server — it was removed (see
       [`K8sApi.forRemoteCluster` removed](#k8sapiforremotecluster-removed)).
 - [ ] For HTTP to anything other than the cluster, replace any bundled HTTP
-      client, and any `globalThis.fetch` in main, with `Main.Util.fetch` /
-      `Renderer.Util.fetch`, and give a bundled library that takes a `fetch`
-      option `Util.standardFetch` — the host's client is the one that honours
-      the user's proxy and CA settings (see
+      client, and any `globalThis.fetch` in main, with `Main.Util.fetch`, and
+      give it to a bundled library in main that takes a `fetch` option — the
+      host's client is the one that honours the user's proxy and CA settings.
+      In the renderer, use the global `fetch` (see
       [HTTP: `Main.Util.fetch` and `Renderer.Util.fetch`](#http-mainutilfetch-and-rendererutilfetch)).
 - [ ] Replace any client of a catalog cluster built from its `kubeConfigPath`
       — a bundled Kubernetes client, a `fetch` to the API server — with
@@ -2140,9 +2143,10 @@ restarted once.
 - [ ] Drop any `undici` dependency added for the `dispatcher` field of
       `reqInit` — the field is gone and `undici` is no longer a declared type
       dependency of `@freelensapp/extensions`.
-- [ ] Re-check anything annotated `Response` or `RequestInit` from the DOM: the
-      shared fetch types are structural now, so `const r: Response = await
-      fetch(...)` no longer compiles.
+- [ ] Re-check anything annotated `Response` or `RequestInit` from the DOM
+      around `K8sApi.KubeJsonApi` and `reqInit`: the host's fetch types are
+      structural now, so `const r: Response = await api.getResponse(...)` no
+      longer compiles.
 - [ ] Replace any `react-router` / `react-router-dom` usage imported via the
       Freelens bundle, a `Link` with `Renderer.Component.MaybeLink` — the
       `ReactRouter*` re-exports were removed (see
