@@ -326,7 +326,7 @@ describe("technical unit tests for local shell sessions", () => {
 
       const [file, args, options] = call;
 
-      return { file, args, env: options.env ?? {} };
+      return { file, args, options, env: options.env ?? {} };
     };
 
     beforeEach(() => {
@@ -517,6 +517,18 @@ describe("technical unit tests for local shell sessions", () => {
         "-command",
         `& {$Env:PATH="/some-kubectl-binary-dir;$Env:PATH;/some-bundled-binaries-directory"}`,
       ]);
+    });
+
+    /**
+     * node-pty 1.2 has no winpty and ignores `useConpty`. Without the bundled
+     * DLL it runs on the system ConPTY, whose kill() forks the Electron binary
+     * as Node to list the processes attached to the shell's console.
+     */
+    it("spawns the shell on node-pty's bundled ConPTY DLL, without the stale winpty switch", async () => {
+      const { options } = await openWithShell("powershell.exe", "win32");
+
+      expect(options).toHaveProperty("useConptyDll", true);
+      expect(options).not.toHaveProperty("useConpty");
     });
   });
 });

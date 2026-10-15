@@ -435,14 +435,39 @@ jobs:
           esac
           ws='${{ github.workspace }}'
           dir="freelens/dist/$unpacked"
+          # node-pty's bundled ConPTY (conpty.dll and the OpenConsole.exe it
+          # starts for every terminal) comes signed by Microsoft. Keep that
+          # signature instead of replacing it with ours: a binary with a
+          # Microsoft name and another publisher's signature is itself
+          # something endpoint protection heuristics look for.
+          conpty="$dir/resources/app.asar.unpacked/node_modules/node-pty/prebuilds/win32-${{ matrix.arch }}/conpty"
+          keep=()
           list="$RUNNER_TEMP/sign-files.txt"
           : > "$list"
           while IFS= read -r -d '' f; do
+            if [[ "$f" == "$conpty/"* ]]; then
+              keep+=("$f")
+              continue
+            fi
             if file -b "$f" | grep -q 'PE32'; then
               rel="${f#./}"
               printf '%s\\%s\n' "$ws" "${rel//\//\\}" >> "$list"
             fi
           done < <(find "$dir" -type f \( -iname '*.dll' -o -iname '*.exe' -o -iname '*.node' \) -print0)
+          # Terminals do not start without them, and an unsigned one must not
+          # ship just because it was left out of the list above.
+          if [[ ${#keep[@]} -ne 2 ]]; then
+            echo "Expected conpty.dll and OpenConsole.exe under ${conpty}, found ${#keep[@]} file(s)" >&2
+            exit 1
+          fi
+          for f in "${keep[@]}"; do
+            signer=$(SIGNED_FILE="$f" pwsh -NoProfile -Command '$s = Get-AuthenticodeSignature -LiteralPath $env:SIGNED_FILE; if ($s.Status -eq "Valid") { $s.SignerCertificate.Subject }')
+            if [[ "$signer" != *"O=Microsoft Corporation"* ]]; then
+              echo "${f} is not validly signed by Microsoft (signer: ${signer:-none})" >&2
+              exit 1
+            fi
+            echo "Keeping the Microsoft signature of ${f}"
+          done
           if [[ ! -s "$list" ]]; then
             echo "No Windows PE binaries found under ${dir} to sign" >&2
             exit 1
