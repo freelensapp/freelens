@@ -3,7 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import userPreferencesStateInjectable from "../../../../../features/user-preferences/common/state.injectable";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
 import { maxCombinedLogsPods } from "../merge-pod-logs";
@@ -16,9 +16,16 @@ describe("LogTabViewModel", () => {
   let userPreferencesState: UserPreferencesState;
 
   beforeEach(() => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date("2026-10-03T09:55:41.123Z"));
+
     const di = getDiForUnitTesting();
 
     userPreferencesState = di.inject(userPreferencesStateInjectable);
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   it("updates the saved log viewer preferences and the current tab data", () => {
@@ -64,7 +71,7 @@ describe("LogTabViewModel", () => {
 
       model.downloadLogs();
 
-      expect(downloadLogs).toHaveBeenCalledWith("dockerExporter.log", [coloredLine]);
+      expect(downloadLogs).toHaveBeenCalledWith("dockerExporter-2026-10-03T09-55-41-123Z.log", [coloredLine]);
     });
   });
 
@@ -117,7 +124,7 @@ describe("LogTabViewModel", () => {
 
       model.downloadLogs();
 
-      expect(downloadLogs).toHaveBeenCalledWith("super-deployment.log", [
+      expect(downloadLogs).toHaveBeenCalledWith("super-deployment-2026-10-03T09-55-41-123Z.log", [
         "2026-01-01T00:00:00Z [deploymentPod1] hello",
       ]);
     });

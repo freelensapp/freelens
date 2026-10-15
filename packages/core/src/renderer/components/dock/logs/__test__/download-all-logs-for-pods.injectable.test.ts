@@ -4,6 +4,7 @@
  */
 
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";
 import openSaveFileDialogInjectable from "../../../../utils/save-file.injectable";
 import callForLogsInjectable from "../call-for-logs.injectable";
@@ -26,6 +27,9 @@ describe("download all logs of the pods of a combined tab", () => {
   let downloadAllLogsForPods: DownloadAllLogsForPods;
 
   beforeEach(() => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date("2026-10-03T09:55:41.123Z"));
+
     const di = getDiForUnitTesting();
     const logsOfPods = new Map([
       ["pod-a", "2026-01-01T00:00:01.000000000Z a1\n2026-01-01T00:00:03.000000000Z a2\n"],
@@ -42,11 +46,15 @@ describe("download all logs of the pods of a combined tab", () => {
     downloadAllLogsForPods = di.inject(downloadAllLogsForPodsInjectable);
   });
 
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it("saves the lines in chronological order, tagged with the pod and without color codes", async () => {
     await downloadAllLogsForPods("super-deployment", pods, { ...query, timestamps: true });
 
     expect(openSaveFileDialog).toHaveBeenCalledWith(
-      "super-deployment.log",
+      "super-deployment-2026-10-03T09-55-41-123Z.log",
       [
         "2026-01-01T00:00:01.000000000Z [pod-a] a1",
         "2026-01-01T00:00:02.000000000Z [pod-b] b1",
@@ -62,7 +70,7 @@ describe("download all logs of the pods of a combined tab", () => {
     expect(callForLogs).toHaveBeenCalledWith(pods[0], { ...query, timestamps: true });
     expect(callForLogs).toHaveBeenCalledWith(pods[1], { ...query, timestamps: true });
     expect(openSaveFileDialog).toHaveBeenCalledWith(
-      "super-deployment.log",
+      "super-deployment-2026-10-03T09-55-41-123Z.log",
       ["[pod-a] a1", "[pod-b] b1", "[pod-a] a2"].join("\n"),
       "text/plain",
     );
@@ -80,7 +88,7 @@ describe("download all logs of the pods of a combined tab", () => {
     await downloadAllLogsForPods("super-deployment", pods, { ...query, timestamps: true });
 
     expect(openSaveFileDialog).toHaveBeenCalledWith(
-      "super-deployment.log",
+      "super-deployment-2026-10-03T09-55-41-123Z.log",
       "2026-01-01T00:00:02.000000000Z [pod-b] b1",
       "text/plain",
     );
