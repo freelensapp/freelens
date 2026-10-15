@@ -522,8 +522,8 @@ catalogs:
       specifier: 4.0.0
       version: 4.0.0
     zod:
-      specifier: 4.6.5
-      version: 4.6.5
+      specifier: 4.6.7
+      version: 4.6.7
   extensions:
     '@types/react':
       specifier: ^19.3.0
@@ -735,7 +735,7 @@ importers:
         version: 8.22.0
       zod:
         specifier: 'catalog:'
-        version: 4.6.5
+        version: 4.6.7
     devDependencies:
       '@electron/notarize':
         specifier: 'catalog:'
@@ -1195,7 +1195,7 @@ importers:
         version: 8.22.0
       zod:
         specifier: 'catalog:'
-        version: 4.6.5
+        version: 4.6.7
     devDependencies:
       '@async-fn/vitest':
         specifier: 'catalog:'
@@ -1325,7 +1325,7 @@ importers:
         version: 4.0.0
       zod:
         specifier: 'catalog:'
-        version: 4.6.5
+        version: 4.6.7
     devDependencies:
       '@types/cli-progress':
         specifier: 'catalog:'
@@ -7371,8 +7371,8 @@ packages:
     resolution: {integrity: sha512-XrBh9ZiQK5mJVRxZBAvD6LwRyAYrK3MFtH3+onyuxFL5hFD44EC3QOmIC1FjTj6H2MMwq46/NAI+NZxLZPZgxg==}
     engines: {node: '>=14.18.0'}
 
-  zod@4.6.5:
-    resolution: {integrity: sha512-v5l/aFXZQeai4awLbOpSoHecE9UiMrnfx75tEXLjNonXVARxQ5mOeipTjROUchszUNCqnE+hqAMujRsRHsut2Q==}
+  zod@4.6.7:
+    resolution: {integrity: sha512-g8W2D2kU6a8untc053fX1uVBKzM7yqAxW/3zwk83+6RyF2+SKOuV+c0wBDhUwzV1PaGapmZH+rmcUzPf+3CGwg==}
 
 snapshots:
 
@@ -8671,7 +8671,7 @@ snapshots:
       multimatch: 8.0.0
       remove-markdown: 0.5.5
       spdx-license-list: 6.12.0
-      zod: 4.6.5
+      zod: 4.6.7
 
   '@rolldown/binding-android-arm-eabi@1.2.13':
     optional: true
@@ -11979,4 +11979,4 @@ snapshots:
       '@yuku-toolchain/types': 0.19.0
       yuku-core: 0.19.0
 
-  zod@4.6.5: {}
+  zod@4.6.7: {}
