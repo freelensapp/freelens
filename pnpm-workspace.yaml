@@ -8,8 +8,8 @@ packages:
 # every update anyway, so ranges bought us no flexibility.
 catalog:
   # React family (singletons)
-  react: 19.3.0
-  react-dom: 19.3.0
+  react: 19.3.1
+  react-dom: 19.3.1
   '@types/react': 19.3.0
   '@types/react-dom': 19.3.0
   # MobX family (singletons)
@@ -156,8 +156,8 @@ catalogs:
     mobx: ^7.0.6
     mobx-react: ^10.0.2
     monaco-editor: ^0.57.0
-    react: ^19.3.0
-    react-dom: ^19.3.0
+    react: ^19.3.1
+    react-dom: ^19.3.1
     react-select: ^5.10.2
     rfc6902: ^5.3.0
     type-fest: ^5.10.0
