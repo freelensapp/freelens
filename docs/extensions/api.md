@@ -320,8 +320,8 @@ are the `format` vocabulary for the CRD schema and are frozen with it under
   ([C4](#c4-module-format-and-loading)). Such a member goes on the omit list in
   `packages/core/src/extensions/common-api/utils.ts`, which destructures it out
   of the spread so that its name and types do not reach the bundled
-  declarations either. Keeping them out also takes the pnpm patch of
-  `rolldown-plugin-dts`: unpatched, the plugin keeps every member of
+  declarations either. Keeping them out also takes `rolldown-plugin-dts`
+  0.28.8 or newer: an older one keeps every member of
   `@freelensapp/utilities` in the bundle, because `utils.ts` reaches them
   through `import * as utilities`, and `build:dist` fails on their Node
   imports ([C11](#c11-third-party-bundled-libraries)).
@@ -776,8 +776,8 @@ declaration names Node's global types. Renderer code gets no guarantee of Node
 ([C4](#c4-module-format-and-loading)), and an author's renderer config has no
 Node types to resolve them against. The same config enforces it: `build:dist`
 fails and lists every Node reference of the bundle. The likely cause of one is
-the pnpm patch of `rolldown-plugin-dts` (`patchedDependencies` in
-`pnpm-workspace.yaml`) no longer applying, which brings back the Node-bound
+`rolldown-plugin-dts` no longer tree-shaking a namespace import that a
+declaration names only by qualified name, which brings back the Node-bound
 members `Common.Util` leaves out
 ([C5](#util-is-freelensapputilities-minus-the-node-bound-members)) with their
 `node:` imports. `@types/node` is therefore not a dependency of the package: an

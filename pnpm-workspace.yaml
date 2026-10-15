@@ -211,12 +211,6 @@ peerDependencyRules:
 patchedDependencies:
   '@async-fn/vitest': patches/@async-fn__vitest.patch
   '@xterm/xterm@6.0.0': patches/@xterm__xterm@6.0.0.patch
-  # Keeps a namespace import whose members a declaration names only by
-  # qualified name (`typeof utilities.X`, `utilities.Y`) from pulling the whole
-  # namespace object, and every member of the module, into the extension API
-  # declaration. Without it the members `common-api/utils.ts` omits from `Util`
-  # come back, with their `node:` imports.
-  rolldown-plugin-dts@0.28.6: patches/rolldown-plugin-dts@0.28.6.patch
 
 shellEmulator: true
 

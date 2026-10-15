@@ -663,15 +663,15 @@ runtime namespace object does not have. The fixture extension's
 type-and-value pairs of `K8sApi`, `type X` and `const X` of the same name, as
 types, so its type check fails if one loses its type meaning in the bundle.
 
-The bundle also depends on a pnpm patch of `rolldown-plugin-dts`
-(`patchedDependencies` in `pnpm-workspace.yaml`). Without it, a namespace
-import whose members a declaration names only by qualified name, such as
-`import * as utilities` in `common-api/utils.ts`, keeps every member of the
-module in the bundle. That includes the Node-bound members `Common.Util`
-leaves out, with their `node:` imports. `build:dist` of
-`@freelensapp/extensions` fails when the bundle imports a Node builtin or
-references Node's types, and names the patch as the likely cause, so a patch
-that stops applying fails the build rather than reaching an extension.
+The bundle also depends on `rolldown-plugin-dts` 0.28.8 or newer, which
+tree-shakes a namespace import whose members a declaration names only by
+qualified name, such as `import * as utilities` in `common-api/utils.ts`. An
+older version keeps every member of the module in the bundle. That includes
+the Node-bound members `Common.Util` leaves out, with their `node:` imports.
+`build:dist` of `@freelensapp/extensions` fails when the bundle imports a Node
+builtin or references Node's types, and names that tree-shaking as the likely
+cause, so a regression in the plugin fails the build rather than reaching an
+extension.
 
 ## Best Practices
 
