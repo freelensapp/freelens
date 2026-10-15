@@ -1821,6 +1821,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 33px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -2835,6 +2836,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 33px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -3903,6 +3905,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 33px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -5007,6 +5010,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 33px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -6268,6 +6272,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 33px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -7531,6 +7536,7 @@ exports[`New Upgrade Helm Chart Dock Tab > given a namespace is selected > when 
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 33px; width: 100%; z-index: -1;"
                       />
                     </div>
