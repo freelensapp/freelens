@@ -1498,6 +1498,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 66px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -2363,6 +2364,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 66px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -3285,6 +3287,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 66px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -4356,6 +4359,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 66px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -5437,6 +5441,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 66px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -6508,6 +6513,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 66px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -7583,6 +7589,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 66px; width: 100%; z-index: -1;"
                       />
                     </div>
@@ -8664,6 +8671,7 @@ exports[`opening dock tab for installing helm chart > given application is start
                       </div>
                       <div
                         aria-hidden="true"
+                        data-react-window-sizer=""
                         style="height: 66px; width: 100%; z-index: -1;"
                       />
                     </div>
