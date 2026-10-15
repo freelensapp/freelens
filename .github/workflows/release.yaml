@@ -221,6 +221,23 @@ jobs:
           electron_config_cache: ${{ env.electron_cache_dir }}
         run: node "$(node -p "require.resolve('electron/install.js')")"
 
+      # Without known checksums, @electron/get downloads SHASUMS256.txt from
+      # GitHub on every build, bypassing its cache, even when the Electron zip
+      # is cached, so an outage of GitHub fails the packaging. electron-builder
+      # takes them from SHASUMS256.txt-<version> at the root of that cache
+      # instead, and the electron package ships the same checksums, which the
+      # lockfile has verified.
+      - name: Seed Electron checksums
+        shell: bash
+        working-directory: freelens
+        run: |-
+          mkdir -p "$electron_cache_dir"
+          node -e '
+            const checksums = require("electron/checksums.json");
+            const lines = Object.entries(checksums).map(([file, sha256]) => `${sha256} *${file}\n`);
+            require("node:fs").writeFileSync(process.argv[1], lines.join(""));
+          ' "$electron_cache_dir/SHASUMS256.txt-$electron_version"
+
       - name: Build packages
         if: runner.os != 'Windows'
         run: pnpm --color=always --stream build

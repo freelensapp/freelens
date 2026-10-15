@@ -223,9 +223,15 @@ import { describe, expect, it, vi } from "vitest";
 `globals: true` stays on in the Vitest configs, because React Testing Library
 registers its automatic cleanup only when the hooks exist as globals; it has no
 effect on type checking. An override in `biome.jsonc` sets
-`noRestrictedImports` on `vitest` for every file and lifts it for tests and
-test support, so production code in any package fails `biome check` when it
-imports Vitest. A new kind of test-support path needs adding to that override.
+`noRestrictedImports` for every file on the test-only modules: `vitest`,
+`react-dom/test-utils`, `@testing-library/*` and the `act` named import of
+`react`. A second override lifts it for tests and test support, so production
+code in any package fails `biome check` when it imports one of them. The React
+helpers matter most, because nothing else catches them: they type-check, build
+and pass the unit tests, but `act` delegates to `React.act`, which the
+production build of React leaves out, so the call throws only in a packaged
+application. A new kind of test-support path, or a new test-support package
+built on Testing Library, needs adding to the second override.
 
 Common code uses only what both environments have: `globalThis.crypto`,
 `TextEncoder`, `URL`, `AbortController`, `structuredClone`, timers. Write
