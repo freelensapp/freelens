@@ -38,10 +38,11 @@ jobs:
     if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
 
     runs-on: ubuntu-24.04-arm
+    # GH_TOKEN, which edits the discussion, is a secret of this environment.
+    environment: automated
 
     permissions:
       contents: read
-      discussions: write
 
     env:
       # Renovate keeps this version up to date via the inline datasource hint
@@ -51,7 +52,7 @@ jobs:
       # where this is consumed rather than kept here (it would not survive).
       GRYPE_VERSION: 0.120.1 # datasource=github-releases depName=anchore/grype
       DISCUSSION_NUMBER: 2339
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
     steps:
       # Only needed for mise.toml and mise.lock: every step below works on
@@ -340,22 +341,4 @@ jobs:
           echo "runtime vulnerabilities: $count"
 
       - name: Update discussion
-        run: |-
-          set -eo pipefail
-          discussion_id=$(gh api graphql -f query='
-            query($owner:String!,$repo:String!,$num:Int!){
-              repository(owner:$owner,name:$repo){
-                discussion(number:$num){ id }
-              }
-            }' -f owner="${{ github.repository_owner }}" -f repo="${{ github.event.repository.name }}" -F num="$DISCUSSION_NUMBER" \
-            --jq '.data.repository.discussion.id')
-          if [[ -z "$discussion_id" || "$discussion_id" == "null" ]]; then
-            echo "Discussion #$DISCUSSION_NUMBER not found" >&2
-            exit 1
-          fi
-          gh api graphql -f query='
-            mutation($id:ID!,$body:String!){
-              updateDiscussion(input:{discussionId:$id, body:$body}){
-                discussion{ id }
-              }
-            }' -f id="$discussion_id" -F body=@body.md
+        run: gh discussion edit "$DISCUSSION_NUMBER" --repo "$GITHUB_REPOSITORY" --body-file body.md
