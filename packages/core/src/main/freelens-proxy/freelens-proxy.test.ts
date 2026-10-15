@@ -9,11 +9,13 @@ import http2 from "node:http2";
 import https from "node:https";
 import tls from "node:tls";
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { Agent, fetch as undiciFetch } from "undici";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import freelensProxyCertificateInjectable from "../../common/certificate/freelens-proxy-certificate.injectable";
 import { nodeEnvInjectionToken } from "../../common/vars/node-env-injection-token";
+import getClusterByIdInjectable from "../../features/cluster/storage/common/get-by-id.injectable";
 import freelensK8sProxyServerInjectable from "../cluster/freelens-k8s-proxy-server.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import routerInjectable from "../router/router.injectable";
@@ -584,6 +586,124 @@ describe("Freelens proxy kube api requests", () => {
 
     expect(stream.rstCode).toBe(http2.constants.NGHTTP2_CANCEL);
     expect(session.closed || session.destroyed).toBe(false);
+  });
+});
+
+describe("Freelens proxy redirects of the kube api", () => {
+  let proxy: { listen: () => Promise<void>; close: () => Promise<void> | undefined };
+  let port: number;
+  let target: http.Server;
+  let targetReceived: string[];
+  const sessions: http2.ClientHttp2Session[] = [];
+  const apiPrefix = "/some-api-prefix";
+  const cluster = { id: "some-cluster-id" } as Cluster;
+  const rendererHost = () => `some-cluster-id.renderer.freelens.app:${port}`;
+
+  const headersOfHttp1 = (path: string, headers: http.OutgoingHttpHeaders) =>
+    new Promise<{ statusCode?: number; location?: string }>((resolve, reject) => {
+      https
+        .get({ host: "127.0.0.1", port, path, agent: false, rejectUnauthorized: false, headers }, (res) => {
+          res.resume();
+          resolve({ statusCode: res.statusCode, location: res.headers.location });
+        })
+        .on("error", reject);
+    });
+
+  beforeEach(async () => {
+    const di = getDiForUnitTesting();
+
+    targetReceived = [];
+    // freelens-k8s-proxy, with an API server that answers /api with a
+    // redirect to /api/, as one serving only the subtree does
+    target = http.createServer((req, res) => {
+      targetReceived.push(req.url ?? "");
+
+      if (req.url === `${apiPrefix}/api`) {
+        res.writeHead(301, { location: "/api/" }).end();
+      } else if (req.url === `${apiPrefix}/api/`) {
+        res.writeHead(200, { "content-type": "application/json" }).end('{"kind":"APIVersions"}');
+      } else if (req.url === `${apiPrefix}/elsewhere`) {
+        res.writeHead(302, { location: "https://some-login-page/sign-in" }).end();
+      } else {
+        res.writeHead(404).end();
+      }
+    });
+    target.listen(0, "127.0.0.1");
+    await once(target, "listening");
+
+    const { port: targetPort } = target.address() as net.AddressInfo;
+
+    overrideEnvironment(di);
+    di.override(getClusterByIdInjectable, () => (id) => (id === cluster.id ? cluster : undefined));
+    di.override(shellApiRequestInjectable, () => vi.fn());
+    di.override(kubeApiUpgradeRequestInjectable, () => vi.fn());
+    di.override(
+      freelensK8sProxyServerInjectable,
+      () =>
+        ({
+          getApiTarget: async () => ({
+            target: new URL(`http://127.0.0.1:${targetPort}${apiPrefix}`),
+            changeOrigin: true,
+            headers: { Host: "some-api-server" },
+          }),
+          apiUrl: new URL("https://some-api-server:6443"),
+        }) as unknown as FreelensK8sProxyServer,
+    );
+
+    proxy = di.inject(freelensProxyInjectable);
+
+    await proxy.listen();
+    port = di.inject(freelensProxyPortInjectable).get();
+  });
+
+  afterEach(async () => {
+    for (const session of sessions) {
+      session.destroy();
+    }
+
+    sessions.length = 0;
+    await proxy.close();
+    target.closeAllConnections();
+    target.close();
+  });
+
+  it("keeps a redirect on the route of the cluster for a renderer over HTTP/1.1", async () => {
+    const response = await headersOfHttp1("/api-kube/api", { host: rendererHost() });
+
+    expect(response).toEqual({ statusCode: 301, location: "/api-kube/api/" });
+  });
+
+  it("keeps a redirect on the route of the cluster for a renderer over HTTP/2", async () => {
+    const session = await connectHttp2(port);
+
+    sessions.push(session);
+
+    const stream = session.request({ ":path": "/api-kube/api", ":authority": rendererHost() });
+    const [headers] = (await once(stream, "response")) as [http2.IncomingHttpHeaders];
+
+    stream.resume();
+    expect(headers[":status"]).toBe(301);
+    expect(headers.location).toBe("/api-kube/api/");
+  });
+
+  it("keeps a redirect on the route of the cluster for the main process, which follows it to the cluster", async () => {
+    const dispatcher = new Agent({ connect: { rejectUnauthorized: false } });
+
+    try {
+      const response = await undiciFetch(`https://127.0.0.1:${port}/some-cluster-id/api`, { dispatcher });
+
+      expect(response.status).toBe(200);
+      expect(await response.json()).toEqual({ kind: "APIVersions" });
+      expect(targetReceived).toEqual([`${apiPrefix}/api`, `${apiPrefix}/api/`]);
+    } finally {
+      await dispatcher.close();
+    }
+  });
+
+  it("passes a redirect to another host on as it is", async () => {
+    const response = await headersOfHttp1("/api-kube/elsewhere", { host: rendererHost() });
+
+    expect(response).toEqual({ statusCode: 302, location: "https://some-login-page/sign-in" });
   });
 });
 

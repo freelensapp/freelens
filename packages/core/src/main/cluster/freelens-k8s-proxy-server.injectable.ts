@@ -21,6 +21,12 @@ export interface FreelensK8sProxyServer {
   restart(): Promise<void>;
   ensureRunning(): Promise<void>;
   stop(): void;
+
+  /**
+   * The URL of the API server that the last target forwards to, as the
+   * kubeconfig gives it: `undefined` until a target has been made.
+   */
+  readonly apiUrl?: URL;
 }
 
 const fourHoursInMs = 4 * 60 * 60 * 1000;
@@ -34,6 +40,7 @@ const freelensK8sProxyServerInjectable = getInjectable({
 
     let freelensK8sProxy: FreelensK8sProxy | undefined = undefined;
     let apiTarget: ServerOptions | undefined = undefined;
+    let apiUrl: URL | undefined = undefined;
 
     const ensureServerHelper = async (): Promise<FreelensK8sProxy> => {
       if (!freelensK8sProxy) {
@@ -58,8 +65,11 @@ const freelensK8sProxyServerInjectable = getInjectable({
       // so a stop() while the API URL is read reaches its exit(), which aborts
       // the start. Awaited first, they would let the start spawn a process
       // after the stop.
-      const [{ port, apiPrefix: path }, { hostname }] = await Promise.all([ensureServerHelper(), clusterApiUrl()]);
+      const [{ port, apiPrefix: path }, url] = await Promise.all([ensureServerHelper(), clusterApiUrl()]);
+      const { hostname } = url;
       const certificate = await di.inject(freelensK8sProxyCertificateInjectable, hostname);
+
+      apiUrl = url;
 
       return {
         // http-proxy-3 prepends the `pathname` of the target and ignores a
@@ -83,6 +93,9 @@ const freelensK8sProxyServerInjectable = getInjectable({
     };
 
     const freelensK8sProxyServer: FreelensK8sProxyServer = {
+      get apiUrl() {
+        return apiUrl;
+      },
       getApiTarget: async (isLongRunningRequest = false) => {
         if (isLongRunningRequest) {
           return newApiTarget(fourHoursInMs);
