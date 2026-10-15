@@ -6,6 +6,7 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import { registerInjectables as registerAccentColorInjectables } from "./accent-color/register-injectables";
 import applicationPreferencePageInjectable from "./application-preference-page.injectable";
 import applicationPreferenceTabInjectable from "./application-preference-tab.injectable";
 import { registerInjectables as registerExtensionInstallRegistryInjectables } from "./extension-install-registry/register-injectables";
@@ -26,6 +27,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(applicationPreferenceTabInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerAccentColorInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }
