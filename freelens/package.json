@@ -133,6 +133,7 @@
     "electron-builder-squirrel-windows": "catalog:",
     "electron-vite": "catalog:",
     "playwright": "catalog:",
+    "react-dom": "catalog:",
     "sass-embedded": "catalog:",
     "typescript": "catalog:",
     "vite": "catalog:",
