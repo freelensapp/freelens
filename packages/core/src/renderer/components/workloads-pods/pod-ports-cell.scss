@@ -1,0 +1,41 @@
+/*
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Copyright (c) OpenLens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+.PodPortsCell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  .PodPortsCell__visible,
+  .PodPortsCell__item {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__more,
+  &__toggle {
+    cursor: pointer;
+    color: var(--primary);
+    background: none;
+    border: none;
+    padding: 0;
+    text-decoration: underline;
+  }
+
+  &.none {
+    opacity: 0.6;
+  }
+
+  &.expanded {
+    flex-direction: column;
+    align-items: flex-start;
+
+    .PodPortsCell__item {
+      margin-bottom: 0.25rem;
+    }
+  }
+}
