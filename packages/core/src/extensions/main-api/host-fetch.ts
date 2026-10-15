@@ -66,7 +66,7 @@ const definedMembersOf = (init: RequestInit | undefined): HostInit =>
  * The response is undici's full `Response`, handed over as it is and asserted
  * once, here.
  */
-export const asStandardFetch =
+export const asHostFetch =
   (fetch: Fetch): StandardFetch =>
   (input, init) => {
     const [url, requestInit] = isRequest(input) ? [input.url, initOfRequest(input)] : [input, {}];

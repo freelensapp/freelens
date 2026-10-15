@@ -6,7 +6,7 @@
 import proxyFetchInjectable from "../../main/fetch/proxy-fetch.injectable";
 import { Util as CommonUtil } from "../common-api/utils";
 import { asLazyInjectedFunctionForExtensionApi } from "../extension-api-di";
-import { asStandardFetch } from "./standard-fetch";
+import { asHostFetch } from "./host-fetch";
 
 const Util = {
   ...CommonUtil,
@@ -32,7 +32,7 @@ const Util = {
    * Chromium's, with the window session's settings, which is the client the
    * host uses there too.
    */
-  fetch: asStandardFetch(asLazyInjectedFunctionForExtensionApi(proxyFetchInjectable)),
+  fetch: asHostFetch(asLazyInjectedFunctionForExtensionApi(proxyFetchInjectable)),
 };
 
 export { Util };

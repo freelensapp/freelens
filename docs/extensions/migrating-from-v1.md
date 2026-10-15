@@ -1026,7 +1026,7 @@ Two members are worth knowing before you need them:
   and version changes — unlike your install directory, which deliberately does
   not.
 
-## HTTP: `Main.Util.fetch` and `Renderer.Util.fetch`
+## HTTP: `Main.Util.fetch` and the renderer's `fetch`
 
 In v2 the host provides the HTTP client of the main process, and in the
 renderer the global `fetch` is the client:
@@ -1336,7 +1336,7 @@ If your extension needs to reach a cluster that is not in the catalog, talk to
 its API server directly — the `KubeApi` machinery does not buy you anything
 there once it no longer owns the TLS setup.
 
-From the main process, use [`Main.Util.fetch`](#http-mainutilfetch-and-rendererutilfetch)
+From the main process, use [`Main.Util.fetch`](#http-mainutilfetch-and-the-renderers-fetch)
 rather than bundling an HTTP client: it already honours the user's `httpsProxy`
 preference and their `caCertificates` / `allowUntrustedCAs` settings, which is
 most of what a remote API server needs and all of what a corporate network
@@ -1530,7 +1530,7 @@ lean on them in the renderer has a replacement already:
 - your dependencies are bundled, and there is no `node_modules` next to a
   renderer entry point to resolve anything from;
 - HTTP is the global `fetch`, Chromium's (see
-  [HTTP](#http-mainutilfetch-and-rendererutilfetch));
+  [HTTP](#http-mainutilfetch-and-the-renderers-fetch));
 - running programs belongs to main.
 
 **The general rule: do Node work in your main entry point and talk to it over
@@ -2132,7 +2132,7 @@ restarted once.
       give it to a bundled library in main that takes a `fetch` option — the
       host's client is the one that honours the user's proxy and CA settings.
       In the renderer, use the global `fetch` (see
-      [HTTP: `Main.Util.fetch` and `Renderer.Util.fetch`](#http-mainutilfetch-and-rendererutilfetch)).
+      [HTTP: `Main.Util.fetch` and the renderer's `fetch`](#http-mainutilfetch-and-the-renderers-fetch)).
 - [ ] Replace any client of a catalog cluster built from its `kubeConfigPath`
       — a bundled Kubernetes client, a `fetch` to the API server — with
       `K8sApi.forCluster` / `K8sApi.KubeJsonApi.forCluster`, and run a spawned

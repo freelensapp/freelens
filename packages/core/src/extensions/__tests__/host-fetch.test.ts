@@ -15,7 +15,7 @@ import httpsAgentInjectable from "../../main/fetch/https-agent.injectable";
 import proxyFetchInjectable from "../../main/fetch/proxy-fetch.injectable";
 import { getDiForUnitTesting } from "../../main/getDiForUnitTesting";
 import * as Main from "../main-api";
-import { asStandardFetch } from "../main-api/standard-fetch";
+import { asHostFetch } from "../main-api/host-fetch";
 import type { IncomingHttpHeaders, Server } from "node:http";
 import type { AddressInfo } from "node:net";
 
@@ -25,45 +25,45 @@ import type { DiContainer } from "@ogre-tools/injectable";
 import type { Dispatcher } from "undici";
 import type { Mock } from "vitest";
 
-describe("asStandardFetch", () => {
-  let hostFetch: Mock<Fetch>;
-  let standardFetch: typeof globalThis.fetch;
+describe("asHostFetch", () => {
+  let proxyFetch: Mock<Fetch>;
+  let hostFetch: typeof globalThis.fetch;
   const response = new Response("some-body", { status: 201 });
 
   beforeEach(() => {
-    hostFetch = vi.fn<Fetch>(async () => response);
-    standardFetch = asStandardFetch(hostFetch);
+    proxyFetch = vi.fn<Fetch>(async () => response);
+    hostFetch = asHostFetch(proxyFetch);
   });
 
   it("passes a string URL and the init to the host's fetch, and hands its response over as it is", async () => {
     const init = { method: "POST", headers: { "content-type": "text/plain" }, body: "some-request" };
 
-    await expect(standardFetch("https://some.invalid/path", init)).resolves.toBe(response);
-    expect(hostFetch).toHaveBeenCalledWith("https://some.invalid/path", init);
+    await expect(hostFetch("https://some.invalid/path", init)).resolves.toBe(response);
+    expect(proxyFetch).toHaveBeenCalledWith("https://some.invalid/path", init);
   });
 
   it("passes a URL object as it is", async () => {
     const url = new URL("https://some.invalid/path");
 
-    await standardFetch(url);
+    await hostFetch(url);
 
-    expect(hostFetch).toHaveBeenCalledWith(url, {});
+    expect(proxyFetch).toHaveBeenCalledWith(url, {});
   });
 
   it("passes the fields of the init the structural contract does not name", async () => {
     const body = new URLSearchParams({ some: "value" });
 
-    await standardFetch("https://some.invalid/path", { method: "POST", body, redirect: "manual" });
+    await hostFetch("https://some.invalid/path", { method: "POST", body, redirect: "manual" });
 
-    expect(hostFetch).toHaveBeenCalledWith("https://some.invalid/path", { method: "POST", body, redirect: "manual" });
+    expect(proxyFetch).toHaveBeenCalledWith("https://some.invalid/path", { method: "POST", body, redirect: "manual" });
   });
 
   it("drops a dispatcher, which would replace the host's", async () => {
     const init = { method: "GET", dispatcher: { some: "dispatcher" } } as RequestInit;
 
-    await standardFetch("https://some.invalid/path", init);
+    await hostFetch("https://some.invalid/path", init);
 
-    expect(hostFetch).toHaveBeenCalledWith("https://some.invalid/path", { method: "GET" });
+    expect(proxyFetch).toHaveBeenCalledWith("https://some.invalid/path", { method: "GET" });
   });
 
   it("passes a Request as its URL and an init built from it", async () => {
@@ -74,9 +74,9 @@ describe("asStandardFetch", () => {
       redirect: "error",
     });
 
-    await standardFetch(request);
+    await hostFetch(request);
 
-    expect(hostFetch).toHaveBeenCalledWith("https://some.invalid/path", {
+    expect(proxyFetch).toHaveBeenCalledWith("https://some.invalid/path", {
       method: "PUT",
       headers: [
         ["content-type", "text/plain;charset=UTF-8"],
@@ -92,9 +92,9 @@ describe("asStandardFetch", () => {
   it("applies the init on top of a Request, member by member, skipping undefined ones", async () => {
     const request = new Request("https://some.invalid/path", { method: "POST", headers: { "x-some": "value" } });
 
-    await standardFetch(request, { method: "PATCH", headers: undefined, body: "other-request" });
+    await hostFetch(request, { method: "PATCH", headers: undefined, body: "other-request" });
 
-    expect(hostFetch).toHaveBeenCalledWith(
+    expect(proxyFetch).toHaveBeenCalledWith(
       "https://some.invalid/path",
       expect.objectContaining({ method: "PATCH", headers: [["x-some", "value"]], body: "other-request" }),
     );
