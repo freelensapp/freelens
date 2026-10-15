@@ -7,6 +7,7 @@
 import asyncFn from "@async-fn/vitest";
 import { PodApi } from "@freelensapp/kube-api";
 import { podApiInjectable } from "@freelensapp/kube-api-specifics";
+import { beforeEach, describe, expect, it } from "vitest";
 import setupAutoRegistrationInjectable from "../../../renderer/before-frame-starts/runnables/setup-auto-registration.injectable";
 import hostedClusterInjectable from "../../../renderer/cluster-frame-context/hosted-cluster.injectable";
 import { getDiForUnitTesting } from "../../../renderer/getDiForUnitTesting";

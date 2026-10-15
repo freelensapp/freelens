@@ -6,6 +6,7 @@
 
 import { KubeObject } from "@freelensapp/kube-object";
 import { noop, WrappedAbortController } from "@freelensapp/utilities";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { KubeObjectStore } from "../kube-object.store";
 
 import type { FetchRequestInit as RequestInit } from "@freelensapp/json-api";

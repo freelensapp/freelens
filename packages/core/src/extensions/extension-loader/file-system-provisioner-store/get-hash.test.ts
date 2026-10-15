@@ -3,6 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { describe, expect, it } from "vitest";
 import { getDiForUnitTesting } from "../../../main/getDiForUnitTesting";
 import getHashInjectable from "./get-hash.injectable";
 

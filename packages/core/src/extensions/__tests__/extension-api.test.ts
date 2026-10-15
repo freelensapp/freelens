@@ -4,6 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { describe, expect, it } from "vitest";
+
 // The runtime half of the extension-API surface check.
 //
 // **What it checks.** That `@freelensapp/extensions` exports `Common`, `Main`
@@ -48,7 +50,7 @@
 import * as extensions from "../extension-api";
 
 const commonNames = ["App", "Catalog", "Clusters", "EventBus", "Proxy", "Store", "Types", "Util", "logger"];
-const mainNames = ["Catalog", "Ipc", "K8s", "K8sApi", "LensExtension", "Navigation", "Power", "Util"];
+const mainNames = ["Catalog", "Ipc", "K8s", "K8sApi", "LensExtension", "Navigation", "Power", "Shell", "Util"];
 const rendererNames = ["Catalog", "Component", "Ipc", "K8s", "K8sApi", "LensExtension", "Navigation", "Theme", "Util"];
 
 const commonAnchors: Record<string, readonly string[]> = {
@@ -74,6 +76,7 @@ const mainAnchors: Record<string, readonly string[]> = {
   K8sApi: ["KubeApi", "KubeObject", "KubeObjectStore", "LensExtensionKubeObject", "apiManager"],
   Navigation: ["navigate"],
   Power: ["onResume", "onShutdown", "onSuspend"],
+  Shell: ["getEnvironment", "getHelmPath", "getKubectlPath"],
   // `fetch` is the whole of C12: an extension that loses it has no HTTP that
   // honours the user's proxy and CA settings.
   Util: ["bytesToUnits", "fetch"],
@@ -104,7 +107,7 @@ const rendererAnchors: Record<string, readonly string[]> = {
   ],
   Navigation: ["getDetailsUrl", "getMaybeDetailsUrl", "navigate"],
   Theme: ["activeTheme"],
-  Util: ["bytesToUnits", "cssNames", "fetch", "stopPropagation"],
+  Util: ["bytesToUnits", "cssNames", "stopPropagation"],
 };
 
 interface SubNamespaceReport {

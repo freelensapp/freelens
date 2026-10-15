@@ -201,6 +201,7 @@ export class Cluster {
       isAdmin: this.isAdmin.get(),
       allowedNamespaces: this.allowedNamespaces.toJSON(),
       resourcesToShow: this.resourcesToShow.toJSON(),
+      knownResources: toJS(this.knownResources),
       isGlobalWatchEnabled: this.isGlobalWatchEnabled.get(),
     };
   }
@@ -213,6 +214,7 @@ export class Cluster {
       this.accessible.set(state.accessible);
       this.allowedNamespaces.replace(state.allowedNamespaces);
       this.resourcesToShow.replace(state.resourcesToShow);
+      this.knownResources.replace(state.knownResources);
       this.disconnected.set(state.disconnected);
       this.isAdmin.set(state.isAdmin);
       this.isGlobalWatchEnabled.set(state.isGlobalWatchEnabled);

@@ -8,6 +8,7 @@ import { TextDecoder as TextDecoderNode, TextEncoder } from "node:util";
 import { enableMapSet, setAutoFreeze } from "immer";
 import { configure } from "mobx";
 import { fetch as undiciFetch } from "undici";
+import { vi } from "vitest";
 
 import type * as K8slensTooltip from "@freelensapp/tooltip";
 

@@ -7,6 +7,7 @@
 import { noop } from "@freelensapp/utilities";
 import { runInAction } from "mobx";
 import * as uuid from "uuid";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import broadcastMessageInjectable from "../../../common/ipc/broadcast-message.injectable";
 import {

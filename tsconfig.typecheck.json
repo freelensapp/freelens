@@ -50,7 +50,7 @@
       "@freelensapp/tooltip": ["./packages/ui-components/tooltip/src/index.ts"],
       "@freelensapp/utilities": ["./packages/utility-features/utilities/index.ts"]
     },
-    "types": ["node", "vitest/globals"]
+    "types": ["node"]
   },
   "include": [
     "packages/**/*.ts",

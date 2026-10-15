@@ -138,6 +138,7 @@ export const storageClassStore = asLazyInjectedForExtensionApi(storageClassStore
 export const vpaStore = asLazyInjectedForExtensionApi(verticalPodAutoscalerStoreInjectable);
 
 export * from "../common-api/k8s-api";
+export { detailsFor, menuItemFor } from "./kube-object-registrations";
 
 // Type aliases instead of `export type { … } from "@freelensapp/kube-api"`:
 // rolldown-plugin-dts declares a class re-exported type-only inside a namespace

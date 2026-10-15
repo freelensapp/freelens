@@ -7,6 +7,7 @@
 import asyncFn from "@async-fn/vitest";
 import { Deployment, Pod } from "@freelensapp/kube-object";
 import { flushPromises } from "@freelensapp/test-utils";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { DeploymentApi, NamespaceApi, PodApi } from "./endpoints";
 import { KubeJsonApi } from "./kube-json-api";
 import { createMockResponseFromStream, createMockResponseFromString, MockResponseStream } from "./mock-responses";

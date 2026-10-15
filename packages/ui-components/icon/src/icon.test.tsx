@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import "@testing-library/jest-dom/vitest";
 import { registerFeature } from "@freelensapp/feature-core";
 import { loggerFeature, loggerInjectionToken } from "@freelensapp/logger";

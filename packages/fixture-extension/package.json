@@ -25,9 +25,10 @@
   "scripts": {
     "build": "pnpm type:check && vite build && vite build --mode main",
     "clean:dist": "pnpm dlx rimraf@6.1.3 dist",
-    "type:check": "pnpm type:check:sources && pnpm type:check:environments",
+    "type:check": "pnpm type:check:sources && pnpm type:check:tooling && pnpm type:check:environments",
     "type:check:environments": "tsc -p environment-tests/tsconfig.main.json && tsc -p environment-tests/tsconfig.renderer.json && tsc -p environment-tests",
-    "type:check:sources": "tsc -p src/main && tsc -p src/renderer && tsc -p src/common"
+    "type:check:sources": "tsc -p src/main && tsc -p src/renderer && tsc -p src/common",
+    "type:check:tooling": "tsc -p tsconfig.json"
   },
   "devDependencies": {
     "@freelensapp/extensions": "workspace:^",

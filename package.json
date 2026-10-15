@@ -20,7 +20,7 @@
   ],
   "scripts": {
     "asar": "pnpm dlx @electron/asar@4.3.1",
-    "biome": "pnpm dlx @biomejs/biome@2.5.4",
+    "biome": "pnpm dlx @biomejs/biome@2.5.15",
     "biome:check": "pnpm biome check",
     "biome:fix": "pnpm biome check --fix",
     "biome:migrate": "pnpm biome migrate --write",
@@ -46,13 +46,13 @@
     "update-kubectl-checksums": "pnpm -r update-kubectl-checksums",
     "dev": "turbo run dev --parallel --",
     "fmt": "pnpm trunk fmt",
-    "knip": "pnpm dlx knip@6.24.0 --dependencies --no-gitignore --no-config-hints",
+    "knip": "pnpm dlx knip@6.41.0 --dependencies --no-gitignore --no-config-hints",
     "knip:check": "pnpm \"/^knip:(development|production)\\$/\"",
-    "knip:development": "pnpm knip",
+    "knip:development": "pnpm knip --files",
     "knip:production": "pnpm knip --production --strict",
     "lint": "pnpm trunk check",
     "lint:fix": "pnpm trunk check --fix",
-    "prettier": "pnpm dlx prettier@3.8.5",
+    "prettier": "pnpm dlx prettier@3.9.10",
     "prettier:check": "pnpm prettier --check .",
     "prettier:fix": "pnpm prettier --write .",
     "start": "cd freelens && pnpm start",
@@ -81,9 +81,10 @@
     "pnpm": "catalog:",
     "turbo": "catalog:",
     "typescript": "catalog:",
+    "vite": "catalog:",
     "vitest": "catalog:"
   },
-  "packageManager": "pnpm@12.8.1+sha512.f64ba907507f5ceafe06c8d38e6052d0179444580ec1279ddd5bfc11cb48aa8a2644b66598e07e761da84872a9fc57d5f902b87fa49d024198d558612aabbe45",
+  "packageManager": "pnpm@12.11.2+sha512.25a51652a196785af5f28bda6dfe8dc582ebefa4ac1d180221ce1390231c5fb76637822ea4b6e4633ce74acdcb0a77f725af11bad38177fdeddaee818a955cb9",
   "engines": {
     "node": ">=24.0.0"
   }

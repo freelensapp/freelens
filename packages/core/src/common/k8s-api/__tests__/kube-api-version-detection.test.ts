@@ -15,6 +15,7 @@ import {
   logWarningInjectionToken,
 } from "@freelensapp/logger";
 import { flushPromises } from "@freelensapp/test-utils";
+import { beforeEach, describe, expect, it } from "vitest";
 import setupAutoRegistrationInjectable from "../../../renderer/before-frame-starts/runnables/setup-auto-registration.injectable";
 import hostedClusterInjectable from "../../../renderer/cluster-frame-context/hosted-cluster.injectable";
 import { getDiForUnitTesting } from "../../../renderer/getDiForUnitTesting";

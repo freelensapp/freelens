@@ -5,8 +5,9 @@
  */
 
 import { loggerInjectionToken } from "@freelensapp/logger";
-import { backoffCaller, byOrderNumber, withConcurrencyLimit } from "@freelensapp/utilities";
+import { backoffCaller, byOrderNumber } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
+import { limitAsync } from "es-toolkit";
 import { apiVersionsRequesterInjectionToken } from "./api-versions-requester";
 import broadcastConnectionUpdateInjectable from "./broadcast-connection-update.injectable";
 import requestKubeApiResourcesForInjectable from "./request-kube-api-resources-for.injectable";
@@ -15,13 +16,9 @@ import type { AsyncResult } from "@freelensapp/utilities";
 
 import type { Cluster } from "../../common/cluster/cluster";
 import type { KubeApiResource } from "../../common/rbac";
+import type { KubeResourceListGroup } from "./api-versions-requester";
 
 export type RequestApiResources = (cluster: Cluster) => AsyncResult<KubeApiResource[], Error>;
-
-export interface KubeResourceListGroup {
-  group: string;
-  path: string;
-}
 
 const requestApiResourcesInjectable = getInjectable({
   id: "request-api-resources",
@@ -33,7 +30,7 @@ const requestApiResourcesInjectable = getInjectable({
     return async (...args) => {
       const [cluster] = args;
       const broadcastConnectionUpdate = di.inject(broadcastConnectionUpdateInjectable, cluster);
-      const requestKubeApiResources = withConcurrencyLimit(5)(requestKubeApiResourcesFor(cluster));
+      const requestKubeApiResources = limitAsync(requestKubeApiResourcesFor(cluster), 5);
 
       const groupLists: KubeResourceListGroup[] = [];
 

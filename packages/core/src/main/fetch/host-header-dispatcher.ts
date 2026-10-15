@@ -12,8 +12,8 @@ import type { Dispatcher } from "undici";
 import type { MainFetchRequestInit } from "./main-fetch-request-init";
 
 /**
- * lens-proxy routes to a cluster on the `Host` header while the socket is
- * opened to `https://127.0.0.1:<lensProxyPort>`, so that header is load-bearing
+ * freelens-proxy routes to a cluster on the `Host` header while the socket is
+ * opened to `https://127.0.0.1:<freelensProxyPort>`, so that header is load-bearing
  * for every request main makes through the proxy.
  *
  * `fetch` cannot carry it: `host` is a forbidden header name, and undici's
@@ -23,7 +23,7 @@ import type { MainFetchRequestInit } from "./main-fetch-request-init";
  * the request headers and re-adding it from a dispatcher interceptor.
  *
  * The renderer needs none of this: its requests go to the frame's own origin,
- * which already is the host lens-proxy routes on, so Chromium sends the right
+ * which already is the host freelens-proxy routes on, so Chromium sends the right
  * `Host` by itself.
  */
 
@@ -128,7 +128,7 @@ const composeWithHost = (dispatcher: Dispatcher, host: string): Dispatcher => {
  * Rewrites a `RequestInit` so that a `Host` header in it survives `fetch`.
  *
  * Returns `init` untouched when it carries no `Host` header, which is every
- * request that does not go through lens-proxy.
+ * request that does not go through freelens-proxy.
  */
 export const withHostHeaderPreserved = <T extends MainFetchRequestInit>(init: T | undefined): T | undefined => {
   if (!init) {

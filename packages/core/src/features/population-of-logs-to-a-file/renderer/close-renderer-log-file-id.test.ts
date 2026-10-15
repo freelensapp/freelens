@@ -6,6 +6,7 @@
 
 import { winstonLoggerInjectable } from "@freelensapp/logger";
 import { sendMessageToChannelInjectionToken } from "@freelensapp/messaging";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../../../renderer/getDiForUnitTesting";
 import closeRendererLogFileInjectable from "./close-renderer-log-file.injectable";
 import ipcLogTransportInjectable from "./ipc-transport.injectable";

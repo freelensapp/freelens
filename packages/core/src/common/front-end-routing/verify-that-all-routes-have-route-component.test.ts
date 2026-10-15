@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { describe, expect, it } from "vitest";
 import { getDiForUnitTesting } from "../../renderer/getDiForUnitTesting";
 import { routeSpecificComponentInjectionToken } from "../../renderer/routes/route-specific-component-injection-token";
 import { frontEndRouteInjectionToken } from "./front-end-route-injection-token";

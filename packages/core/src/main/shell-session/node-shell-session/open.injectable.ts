@@ -11,13 +11,12 @@ import statInjectable from "../../../common/fs/stat.injectable";
 import createKubeApiInjectable from "../../../common/k8s-api/create-kube-api.injectable";
 import createKubeJsonApiForClusterInjectable from "../../../common/k8s-api/create-kube-json-api-for-cluster.injectable";
 import appNameInjectable from "../../../common/vars/app-name.injectable";
-import defaultShellInjectable from "../../../common/vars/default-shell.injectable";
 import isMacInjectable from "../../../common/vars/is-mac.injectable";
 import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
-import computeShellEnvironmentInjectable from "../../../features/shell-sync/main/compute-shell-environment.injectable";
-import userShellSettingInjectable from "../../../features/user-preferences/common/shell-setting.injectable";
 import { buildVersionInitializable } from "../../../features/vars/build-version/common/token";
 import loadProxyKubeconfigInjectable from "../../cluster/load-proxy-kubeconfig.injectable";
+import computeUserShellEnvironmentInjectable from "../../kube-tools/compute-user-shell-environment.injectable";
+import resolveKubeToolsInjectable from "../../kube-tools/resolve-kube-tools.injectable";
 import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
 import createKubectlInjectable from "../../kubectl/create-kubectl.injectable";
 import shellSessionProcessesInjectable from "../processes.injectable";
@@ -44,21 +43,20 @@ const openNodeShellSessionInjectable = getInjectable({
   id: "open-node-shell-session",
   instantiate: (di): OpenNodeShellSession => {
     const createKubectl = di.inject(createKubectlInjectable);
+    const resolveKubeTools = di.inject(resolveKubeToolsInjectable);
     const dependencies: Omit<
       NodeShellSessionDependencies,
-      "proxyKubeconfigPath" | "loadProxyKubeconfig" | "directoryContainingKubectl"
+      "proxyKubeconfigPath" | "proxyCacheDirectoryPath" | "loadProxyKubeconfig" | "kubeTools"
     > = {
       isMac: di.inject(isMacInjectable),
       isWindows: di.inject(isWindowsInjectable),
-      defaultShell: di.inject(defaultShellInjectable),
       logger: di.inject(loggerInjectionToken),
-      userShellSetting: di.inject(userShellSettingInjectable),
       appName: di.inject(appNameInjectable),
       buildVersion: di.inject(buildVersionInitializable.stateToken),
       shellSessionEnvs: di.inject(shellSessionEnvsInjectable),
       shellSessionProcesses: di.inject(shellSessionProcessesInjectable),
       createKubeJsonApiForCluster: di.inject(createKubeJsonApiForClusterInjectable),
-      computeShellEnvironment: di.inject(computeShellEnvironmentInjectable),
+      computeUserShellEnvironment: di.inject(computeUserShellEnvironmentInjectable),
       spawnPty: di.inject(spawnPtyInjectable),
       emitAppEvent: di.inject(emitAppEventInjectable),
       stat: di.inject(statInjectable),
@@ -72,20 +70,22 @@ const openNodeShellSessionInjectable = getInjectable({
       const status = terminalStatusReporterFor(args.websocket);
 
       status.info("Starting cluster proxy ...");
-      const proxyKubeconfigPath = await kubeconfigManager.ensurePath();
+      const { kubeconfigPath: proxyKubeconfigPath, cacheDirectoryPath: proxyCacheDirectoryPath } =
+        await kubeconfigManager.ensurePaths();
 
       const kubectlStatus = kubectlStatusOptionsFor(kubectl.kubectlVersion, status);
 
       status.info(`Checking kubectl v${kubectl.kubectlVersion} ...`);
 
-      const directoryContainingKubectl = await kubectl.binDir(kubectlStatus).finally(() => kubectlStatus.done());
+      const kubeTools = await resolveKubeTools.forCluster(kubectl, kubectlStatus).finally(() => kubectlStatus.done());
 
       const session = new NodeShellSession(
         {
           ...dependencies,
           loadProxyKubeconfig,
           proxyKubeconfigPath,
-          directoryContainingKubectl,
+          proxyCacheDirectoryPath,
+          kubeTools,
         },
         { kubectl, ...args },
       );

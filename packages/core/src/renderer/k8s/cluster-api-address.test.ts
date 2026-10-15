@@ -3,6 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { describe, expect, it } from "vitest";
 import { clusterApiAddressInjectionToken } from "../../common/k8s-api/cluster-api-address-injection-token";
 import windowLocationInjectable from "../../common/k8s-api/window-location.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
@@ -19,7 +20,7 @@ describe("cluster-api-address in the renderer", () => {
     return di.inject(clusterApiAddressInjectionToken)(clusterId);
   };
 
-  // lens-proxy routes on the request's host, and Chromium drops a `Host`
+  // freelens-proxy routes on the request's host, and Chromium drops a `Host`
   // header, so the cluster has to be named in the URL. Getting this wrong does
   // not fail loudly: the request lands on the frame's own origin and silently
   // answers for the wrong cluster.

@@ -37,7 +37,7 @@ proves nothing about how extensions are actually loaded.
 | Level | Where | What it can catch |
 | --- | --- | --- |
 | Types | `pnpm --filter @freelensapp/fixture-extension type:check`, run by its `build` | a re-export that disappeared from the published surface, including one that exists as a value but is not nameable as a type; a tsconfig that lets one runtime environment's APIs into another's code |
-| Unit | `packages/core/src/extensions/__tests__/fixture-extension.test.tsx` | instance identity of React and mobx, the registrators, the lifecycle, `Util.fetch` reaching the host's DI |
+| Unit | `packages/core/src/extensions/__tests__/fixture-extension.test.tsx` and `fixture-extension-main.test.ts` | instance identity of React and mobx, the registrators, the lifecycle, `Common.Util` reaching the host's DI; in main, the host's kubectl and its environment reaching a spawned process through `Main.Shell`, a library's `Request` reaching the host's client through `Main.Util.fetch` given as its `fetch` option, and `dist/main.js` evaluating in plain Node with a bundled CommonJS `require()` in it |
 | Integration | `freelens/integration/__tests__/extensions.tests.ts`, against the `dist/` of the `pnpm build` that the packaged application needs anyway | the packaged application installing this directory in place, accepting its `engines.freelens`, and rendering its hooked status bar item with the React it publishes |
 
 ### How the type level is wired
@@ -56,13 +56,19 @@ where that layout is proven:
 `type:check` compiles all three. Common code is therefore checked three
 times: by the main program, which has no DOM, by the renderer program, which has
 no Node, and by its own config, which is what an editor uses for a file in
-`src/common/`.
+`src/common/`. It also compiles [`vite.config.mjs`](./vite.config.mjs) with the
+root `tsconfig.json`, which has `checkJs` and Node, so the build configuration
+is type-checked through its JSDoc types like the sources.
 
 A config that compiles is not yet a config that separates anything, so
 `type:check` also compiles the files in [`environment-tests/`](./environment-tests)
 with the same settings. Each line there that must not compile carries a
 `@ts-expect-error`, which inverts the check: a config that starts accepting the
-line fails with an unused directive.
+line fails with an unused directive. Each of those configs extends a source
+config and keeps its `include`, so the probes are compiled together with the
+sources and with every declaration the sources reach. Compiled alone they would
+miss a third-party declaration with `/// <reference types="node" />` or
+`/// <reference lib="dom" />`, which enters a program only through an import.
 
 | Config | Compiles | Settings of |
 | --- | --- | --- |
@@ -112,8 +118,8 @@ onto this package would close a cycle in the turbo task graph
 ## What it contains
 
 The renderer entry point, [`src/renderer/index.tsx`](./src/renderer/index.tsx),
-built to `dist/renderer.js`, holds four things, chosen because each of them
-breaks without a compile error:
+built to `dist/renderer.js`, holds these, chosen because each of them breaks
+without a compile error:
 
 1. a component with hooks — two React instances throw `invalid hook call`
 2. an observable it creates and the host reacts to — two copies of mobx share
@@ -121,12 +127,32 @@ breaks without a compile error:
    identity is therefore asserted as well as behaviour
 3. one declarative registration (`statusBarItems`), which reaches the host only
    if the registrators and the extension lifecycle both work
-4. one `Renderer.Util.fetch` call, which resolves only through the host's DI
-   container
+4. one `Common.Util.getAppVersion()` call, which answers only through the
+   host's DI container
+5. one `kubeObjectDetailItems` and one `kubeObjectMenuItems` registration made
+   with `Renderer.K8sApi.detailsFor` and `menuItemFor`, which construct only if
+   the helpers exist at runtime as the declaration says they do, for a model
+   class, [`src/renderer/fixture-example.ts`](./src/renderer/fixture-example.ts),
+   that narrows its `kind` and `apiVersion` to literals with `declare`, which
+   has to leave the fields the host assigns in place
+6. one `customResources` registration of the same model class, which reaches
+   the host only if its registrator can read the class's `crd` off the bundle
 
 The main entry point, [`src/main/index.ts`](./src/main/index.ts), built to
 `dist/main.js`, is a skeleton for the main-side contract: a `Main.LensExtension`
-with a `Main.Ipc` handler and a Node builtin. Both entry points import
+with `Main.Ipc` handlers and a Node builtin, and
+[`src/main/host-kubectl.ts`](./src/main/host-kubectl.ts), which runs the host's
+kubectl with `node:child_process`, its path and its `env` both from
+`Main.Shell`, with a cluster and without one,
+[`src/main/host-fetch.ts`](./src/main/host-fetch.ts), which gives
+`Main.Util.fetch` to a stand-in library as its `fetch` option, typed with the
+standard `fetch`, and sends a `Request` through it, and
+[`src/main/bundled-commonjs.cjs`](./src/main/bundled-commonjs.cjs), a CommonJS
+module that `require()`s a builtin, as a bundled package does. Its `require()`
+works only in a main bundle built for Rolldown's `node` platform, and the unit
+test evaluates `dist/main.js` in a plain Node process to prove it: Vitest's
+module runner, which the rest of the unit level loads the bundle through, gives
+every module a `require` of its own. Both entry points import
 [`src/common/host-info.ts`](./src/common/host-info.ts), which uses only globals
 both runtimes have.
 
@@ -136,3 +162,8 @@ in real signatures, and [`src/common/v1-renames.ts`](./src/common/v1-renames.ts)
 which names the v2 side of every "Renamed or moved" row of the v1→v2 rename
 table in [`docs/extensions/migrating-from-v1.md`](../../docs/extensions/migrating-from-v1.md#v1v2-rename-table),
 with the v1 path next to each. A row added to that table gets a line there.
+[`src/renderer/registration-pairings.ts`](./src/renderer/registration-pairings.ts)
+holds the pairings of a model class and a component written for another kind,
+or for another version of the same kind, that `detailsFor` and `menuItemFor`
+must reject, each under a `@ts-expect-error`, and names the API and store types
+of the narrowed model.

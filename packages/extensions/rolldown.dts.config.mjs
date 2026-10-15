@@ -27,10 +27,11 @@
 // builtin (`node:fs`, or a bare `fs`) or a `/// <reference types="node" />`,
 // which is how a declaration names Node's global types. Renderer code gets no
 // guarantee of Node, so the API declaration must not reference it. When this
-// fails, the likely cause is the pnpm patch of `rolldown-plugin-dts` no longer
-// applying: unpatched, the plugin keeps every member of `@freelensapp/utilities`
-// in the bundle, the Node-bound ones `Common.Util` leaves out included,
-// together with their `node:` imports.
+// fails, the likely cause is `rolldown-plugin-dts` no longer tree-shaking a
+// namespace import that a declaration names only by qualified name, which it
+// does from 0.28.8: without that, it keeps every member of
+// `@freelensapp/utilities` in the bundle, the Node-bound ones `Common.Util`
+// leaves out included, together with their `node:` imports.
 
 import { readFileSync } from "node:fs";
 import { isBuiltin } from "node:module";
@@ -178,9 +179,9 @@ const declaredExternals = {
       this.error(
         "the API declaration must not depend on Node, but it references:\n" +
           builtins.map((specifier) => `  ${specifier}`).join("\n") +
-          "\nA likely cause is the pnpm patch of rolldown-plugin-dts (patchedDependencies in" +
-          " pnpm-workspace.yaml) no longer applying, which lets the Node-bound members of" +
-          " @freelensapp/utilities that Common.Util leaves out into the bundle.",
+          "\nA likely cause is rolldown-plugin-dts no longer tree-shaking a namespace import" +
+          " referenced only by qualified name (fixed in 0.28.8), which lets the Node-bound" +
+          " members of @freelensapp/utilities that Common.Util leaves out into the bundle.",
       );
     }
 

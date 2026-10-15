@@ -5,22 +5,21 @@
  */
 
 import os from "node:os";
-import path from "node:path";
 import { getOrInsertWith } from "@freelensapp/utilities";
 import { TerminalChannels, type TerminalMessage } from "../../common/terminal/channels";
-import { clearKubeconfigEnvVars } from "../utils/clear-kube-env-vars";
+import { composeKubeToolsEnvironment } from "../kube-tools/kube-tools";
 import { type TerminalStatusReporter, terminalStatusReporterFor } from "./send-terminal-status";
 
 import type { Logger } from "@freelensapp/logger";
 
-import type { IComputedValue } from "mobx";
 import type * as pty from "node-pty";
 import type WebSocket from "ws";
 
 import type { EmitAppEvent } from "../../common/app-event-bus/emit-event.injectable";
 import type { Cluster } from "../../common/cluster/cluster";
 import type { Stat } from "../../common/fs/stat.injectable";
-import type { ComputeShellEnvironment } from "../../features/shell-sync/main/compute-shell-environment.injectable";
+import type { ComputeUserShellEnvironment } from "../kube-tools/compute-user-shell-environment.injectable";
+import type { KubeTools } from "../kube-tools/kube-tools";
 import type { Kubectl } from "../kubectl/kubectl";
 import type { ShellSessionProcesses } from "./processes.injectable";
 import type { ShellSessionEnvs } from "./shell-envs.injectable";
@@ -113,11 +112,14 @@ export enum WebSocketCloseEvent {
 export interface ShellSessionDependencies {
   readonly isWindows: boolean;
   readonly isMac: boolean;
-  readonly defaultShell: string;
   readonly logger: Logger;
-  readonly userShellSetting: IComputedValue<string | null>;
   readonly appName: string;
   readonly buildVersion: string;
+  /**
+   * The kubectl and helm the session runs, and the directories of Freelens'
+   * own binaries it puts on `PATH` around the user's own.
+   */
+  readonly kubeTools: KubeTools;
   /**
    * The kubeconfig pointing at the cluster's proxy. A session without a
    * cluster has none, and then the shell keeps whatever `KUBECONFIG` the user
@@ -125,19 +127,14 @@ export interface ShellSessionDependencies {
    */
   readonly proxyKubeconfigPath?: string;
   /**
-   * The directory holding the kubectl matched to the cluster's version. A
-   * session without a cluster has none: it runs the user's own tools, and its
-   * fallbacks are appended to `PATH` through {@link pathSuffixEntries}.
+   * The cache directory of {@link proxyKubeconfigPath}, exported as
+   * `KUBECACHEDIR` so that kubectl and helm keep their cache for the proxy out
+   * of `~/.kube/cache`. Set exactly when the proxy kubeconfig is.
    */
-  readonly directoryContainingKubectl?: string;
-  /**
-   * Directories appended *after* the shell's own `PATH`, so that anything the
-   * user already has installed keeps winning. Empty for a cluster session.
-   */
-  readonly pathSuffixEntries?: string[];
+  readonly proxyCacheDirectoryPath?: string;
   readonly shellSessionEnvs: ShellSessionEnvs;
   readonly shellSessionProcesses: ShellSessionProcesses;
-  computeShellEnvironment: ComputeShellEnvironment;
+  computeUserShellEnvironment: ComputeUserShellEnvironment;
   spawnPty: SpawnPty;
   emitAppEvent: EmitAppEvent;
   stat: Stat;
@@ -183,14 +180,30 @@ export abstract class ShellSession {
         cwd,
         env,
         name: "xterm-256color",
-        // TODO: Something else is broken here so we need to force the use of winPty on windows
-        useConpty: false,
+        // Windows only: run on node-pty's bundled, Microsoft-signed conpty.dll
+        // and OpenConsole.exe rather than the system ConPTY. With the system
+        // one, kill() forks the Electron binary as Node to attach to the
+        // shell's console and list its processes, which endpoint protection
+        // heuristics flag (#2729).
+        useConptyDll: true,
       }),
     );
 
-    this.dependencies.logger.info(
-      `[SHELL-SESSION]: PTY for ${this.terminalId} is ${resume ? "resumed" : "started"} with PID=${shellProcess.pid}`,
-    );
+    const logPid = () =>
+      this.dependencies.logger.info(
+        `[SHELL-SESSION]: PTY for ${this.terminalId} is ${resume ? "resumed" : "started"} with PID=${shellProcess.pid}`,
+      );
+
+    if (shellProcess.pid > 0) {
+      logPid();
+    } else {
+      // On Windows node-pty learns the shell's pid only once ConPTY has
+      // connected, which happens before the first output arrives.
+      const firstData = shellProcess.onData(() => {
+        firstData.dispose();
+        logPid();
+      });
+    }
 
     return { shellProcess, resume };
   }
@@ -351,14 +364,6 @@ export abstract class ShellSession {
     this.dependencies.emitAppEvent({ name: this.ShellType, action: "open" });
   }
 
-  /**
-   * Extra directories put in front of the shell's own `PATH`, right after the
-   * directory containing kubectl. Only used by a session that has one.
-   */
-  protected getPathEntries(): string[] {
-    return [];
-  }
-
   protected async getCachedShellEnv() {
     const cacheKey = this.cluster?.id ?? standaloneSessionId;
 
@@ -384,84 +389,44 @@ export abstract class ShellSession {
    * refresh of a warm cache must stay silent.
    */
   protected async getShellEnv({ reportStatus = false } = {}) {
-    const shell = this.dependencies.userShellSetting.get() || this.dependencies.defaultShell;
-
     if (reportStatus) {
       this.status.info("Resolving shell environment ...");
     }
 
-    const result = await this.dependencies.computeShellEnvironment(shell);
-    const rawEnv = (() => {
-      if (result.callWasSuccessful) {
-        return result.response ?? process.env;
-      }
+    const { shell, environment, error } = await this.dependencies.computeUserShellEnvironment();
 
-      if (reportStatus) {
-        // The fallback to `process.env` is silent otherwise, and the abort
-        // message in particular is already written for a user to read.
-        this.status.error(result.error);
-      }
-
-      return process.env;
-    })();
-
-    const { directoryContainingKubectl, proxyKubeconfigPath, pathSuffixEntries = [] } = this.dependencies;
-    const copiedEnv: Partial<Record<string, string>> = JSON.parse(JSON.stringify(rawEnv));
-    /**
-     * The user's own kubeconfig is the whole point of a session without a
-     * cluster, so it is only cleared when there is a proxy kubeconfig to put
-     * in its place.
-     */
-    const env = proxyKubeconfigPath === undefined ? copiedEnv : clearKubeconfigEnvVars(copiedEnv);
-    /**
-     * Only a cluster session puts anything in front of the user's `PATH`: it
-     * must run the kubectl matched to its cluster. A session without one
-     * appends its fallbacks instead, so a `kubectl` the user already has keeps
-     * winning.
-     */
-    const pathPrefixEntries =
-      directoryContainingKubectl === undefined ? [] : [directoryContainingKubectl, ...this.getPathEntries()];
-    const pathStr = [...pathPrefixEntries, env.PATH, ...pathSuffixEntries].join(path.delimiter);
-
-    delete env.DEBUG; // don't pass DEBUG into shells
-
-    if (this.dependencies.isWindows) {
-      env.PTYSHELL = shell || "powershell.exe";
-      env.PATH = pathStr;
-      env.LENS_SESSION = "true";
-      env.WSLENV = [env.WSLENV, "KUBECONFIG/up:LENS_SESSION/u"].filter(Boolean).join(":");
-    } else if (shell !== undefined) {
-      env.PTYSHELL = shell;
-      env.PATH = pathStr;
-    } else {
-      env.PTYSHELL = ""; // blank runs the system default shell
+    if (error !== undefined && reportStatus) {
+      // The fallback to `process.env` is silent otherwise, and the abort
+      // message in particular is already written for a user to read.
+      this.status.error(error);
     }
 
-    /**
-     * Redirecting `ZDOTDIR` re-implements the user's own zsh startup, which is
-     * only acceptable because a cluster session has to re-prepend its kubectl
-     * directory from inside the shell. Without one, zsh reads its own files.
-     */
-    if (directoryContainingKubectl !== undefined && path.basename(env.PTYSHELL ?? "") === "zsh") {
-      env.OLD_ZDOTDIR = env.ZDOTDIR || env.HOME;
-      env.ZDOTDIR = directoryContainingKubectl;
-      env.DISABLE_AUTO_UPDATE = "true";
+    const { kubeTools, proxyKubeconfigPath, proxyCacheDirectoryPath, isWindows } = this.dependencies;
+    const env = composeKubeToolsEnvironment({
+      baseEnvironment: environment,
+      tools: kubeTools,
+      clusterAccess:
+        proxyKubeconfigPath === undefined || proxyCacheDirectoryPath === undefined
+          ? undefined
+          : {
+              kubeconfigPath: proxyKubeconfigPath,
+              cacheDirectoryPath: proxyCacheDirectoryPath,
+              httpsProxy: this.cluster?.preferences.httpsProxy,
+            },
+      isWindows,
+    });
+
+    if (isWindows) {
+      env.PTYSHELL = shell || "powershell.exe";
+      env.LENS_SESSION = "true";
+      env.WSLENV = [env.WSLENV, "KUBECONFIG/up:KUBECACHEDIR/up:LENS_SESSION/u"].filter(Boolean).join(":");
+    } else {
+      env.PTYSHELL = shell;
     }
 
     env.PTYPID = process.pid.toString();
-
-    if (proxyKubeconfigPath !== undefined) {
-      env.KUBECONFIG = proxyKubeconfigPath;
-    }
-
     env.TERM_PROGRAM = this.dependencies.appName;
     env.TERM_PROGRAM_VERSION = this.dependencies.buildVersion;
-
-    if (this.cluster?.preferences.httpsProxy) {
-      env.HTTPS_PROXY = this.cluster.preferences.httpsProxy;
-    }
-
-    env.NO_PROXY = ["localhost", "127.0.0.1", env.NO_PROXY].filter(Boolean).join();
 
     return env;
   }

@@ -42,7 +42,7 @@ const require = createRequire(import.meta.url);
 const root = dirname(fileURLToPath(import.meta.url));
 const buildDir = resolve(root, "static", "build"); // == webpack vars.buildDir
 
-// Dev-server port for `electron-vite dev`. The lens proxy's dev static-file
+// Dev-server port for `electron-vite dev`. The Freelens proxy's dev static-file
 // route (packages/core/src/main/routes/files/development.injectable.ts)
 // proxies renderer requests here, exactly as it did to the webpack dev server
 // before; both sides read the same environment variable.
@@ -303,7 +303,7 @@ function runtimeRequireExternalsPlugin() {
 
 // Set the renderer's public base path for the packaged build.
 //
-// The packaged app loads the renderer from the lens proxy web root
+// The packaged app loads the renderer from the Freelens proxy web root
 // (https://renderer.freelens.app:<port>/), while the built assets live under
 // static/build/. So the production HTML must reference assets with an absolute
 // "/build/" prefix — exactly what webpack's publicPath "/build/" produced. The
@@ -372,7 +372,7 @@ export default defineConfig({
     ],
     server: {
       // Same serving architecture as the webpack dev server it replaces: the
-      // app window always loads through the lens proxy, which forwards to
+      // app window always loads through the Freelens proxy, which forwards to
       // this port (see development.injectable.ts). HMR websockets bypass the
       // proxy and connect straight to 127.0.0.1, like webpack's
       // client.webSocketURL did.

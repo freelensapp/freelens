@@ -7,15 +7,16 @@
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
-import lensProxyCertificateInjectable from "../../common/certificate/lens-proxy-certificate.injectable";
+import freelensProxyCertificateInjectable from "../../common/certificate/freelens-proxy-certificate.injectable";
 import loadKubeconfigInjectable from "../../common/cluster/load-kubeconfig.injectable";
+import ensureDirInjectable from "../../common/fs/ensure-dir.injectable";
 import pathExistsInjectable from "../../common/fs/path-exists.injectable";
 import removePathInjectable from "../../common/fs/remove.injectable";
 import writeFileInjectable from "../../common/fs/write-file.injectable";
 import getDirnameOfPathInjectable from "../../common/path/get-dirname.injectable";
 import joinPathsInjectable from "../../common/path/join-paths.injectable";
-import kubeAuthProxyUrlInjectable from "../cluster/auth-proxy-url.injectable";
-import kubeAuthProxyServerInjectable from "../cluster/kube-auth-proxy-server.injectable";
+import freelensK8sProxyServerInjectable from "../cluster/freelens-k8s-proxy-server.injectable";
+import freelensProxyClusterUrlInjectable from "../cluster/freelens-proxy-cluster-url.injectable";
 import { KubeconfigManager } from "./kubeconfig-manager";
 
 import type { Cluster } from "../../common/cluster/cluster";
@@ -33,10 +34,11 @@ const kubeconfigManagerInjectable = getInjectable({
         removePath: di.inject(removePathInjectable),
         pathExists: di.inject(pathExistsInjectable),
         writeFile: di.inject(writeFileInjectable),
-        certificate: di.inject(lensProxyCertificateInjectable).get(),
+        ensureDirectory: di.inject(ensureDirInjectable),
+        certificate: di.inject(freelensProxyCertificateInjectable).get(),
         loadKubeconfig: di.inject(loadKubeconfigInjectable, cluster),
-        kubeAuthProxyServer: di.inject(kubeAuthProxyServerInjectable, cluster),
-        kubeAuthProxyUrl: di.inject(kubeAuthProxyUrlInjectable, cluster),
+        freelensK8sProxyServer: di.inject(freelensK8sProxyServerInjectable, cluster),
+        freelensProxyClusterUrl: di.inject(freelensProxyClusterUrlInjectable, cluster),
       },
       cluster,
     ),

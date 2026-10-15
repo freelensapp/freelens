@@ -104,6 +104,7 @@ export class KubeObjectStore<
   public readonly bufferSize: number;
 
   private readonly loadedNamespaces = observable.box<string[]>();
+  private readonly watchingController = new AbortController();
 
   constructor(
     protected readonly dependencies: KubeObjectStoreDependencies,
@@ -494,13 +495,28 @@ export class KubeObjectStore<
     );
   }
 
+  /**
+   * Ends every watch of the store and refuses new ones, for a store whose API
+   * is gone: a watch of a resource the cluster no longer serves only fails.
+   */
+  stopWatching(): void {
+    this.watchingController.abort();
+  }
+
   subscribe({ onLoadFailure, abortController = new AbortController() }: KubeObjectStoreSubscribeParams = {}): Disposer {
-    if (abortController.signal.aborted) {
+    if (abortController.signal.aborted || this.watchingController.signal.aborted) {
       // The subscriber went away before it subscribed, e.g. a view that
-      // unmounted while its list was loading. A watch started now would
-      // outlive it.
+      // unmounted while its list was loading, or the store stopped watching.
+      // A watch started now would outlive it.
       return noop;
     }
+
+    // The listener goes when the subscriber's watch ends, so that a store that
+    // keeps watching does not collect one for every subscription it had.
+    this.watchingController.signal.addEventListener("abort", () => abortController.abort(), {
+      once: true,
+      signal: abortController.signal,
+    });
 
     if (this.api.isNamespaced) {
       void (async () => {

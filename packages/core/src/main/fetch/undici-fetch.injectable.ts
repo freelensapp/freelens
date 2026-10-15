@@ -13,7 +13,7 @@ import type { Fetch } from "@freelensapp/json-api";
 import type { RequestInit as UndiciRequestInit, Response as UndiciResponse } from "undici";
 
 /**
- * The main process reaches lens-proxy over a socket to 127.0.0.1 and routes to
+ * The main process reaches freelens-proxy over a socket to 127.0.0.1 and routes to
  * a cluster with a `Host` header, which `fetch` would drop — see
  * {@link withHostHeaderPreserved}.
  *

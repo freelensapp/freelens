@@ -52,7 +52,6 @@
     "packages/core/src/common/path/join-paths.injectable.ts",
     "packages/core/src/common/path/parse.injectable.ts",
     "packages/core/src/common/path/separator.injectable.ts",
-    "packages/core/src/common/utils/generate-new-id-for.ts",
     "packages/core/src/common/utils/platform-specific-version.injectable.ts",
     "packages/core/src/common/utils/random-bytes.injectable.ts",
     "packages/core/src/common/utils/reactive-now/reactive-now.ts",

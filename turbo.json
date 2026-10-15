@@ -1,5 +1,6 @@
 {
   "$schema": "https://turbo.build/schema.json",
+  "agentGuidance": false,
   "globalDependencies": ["tsconfig*.json", "packages/infrastructure/typescript/config/*.json"],
   "globalPassThroughEnv": [
     "APPLEID",

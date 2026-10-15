@@ -54,10 +54,10 @@
     "test:integration": "vitest run --config vitest.integration.config.ts"
   },
   "config": {
-    "bundledHelmVersion": "4.3.0",
+    "bundledHelmVersion": "4.3.1",
     "bundledKubectlVersion": "1.37.1",
     "contentSecurityPolicy": "script-src 'unsafe-eval' 'self' freelens-extension:; frame-src https://*.renderer.freelens.app:*/; img-src * data:",
-    "k8sProxyVersion": "1.8.3",
+    "k8sProxyVersion": "1.9.1",
     "welcomeRoute": "/welcome"
   },
   "dependencies": {
@@ -91,16 +91,15 @@
     "mobx": "catalog:",
     "undici": "catalog:",
     "node-pty": "catalog:",
-    "p-limit": "catalog:",
     "proper-lockfile": "catalog:",
     "react": "catalog:",
     "selfsigned": "catalog:",
-    "semver": "catalog:",
     "tar": "catalog:",
     "tcp-port-used": "catalog:",
     "tempy": "catalog:",
     "triple-beam": "catalog:",
     "uuid": "catalog:",
+    "verkit": "catalog:",
     "winston": "catalog:",
     "ws": "catalog:",
     "zod": "catalog:"
@@ -134,6 +133,7 @@
     "electron-builder-squirrel-windows": "catalog:",
     "electron-vite": "catalog:",
     "playwright": "catalog:",
+    "react-dom": "catalog:",
     "sass-embedded": "catalog:",
     "typescript": "catalog:",
     "vite": "catalog:",

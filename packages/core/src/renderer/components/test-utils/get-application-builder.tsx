@@ -22,6 +22,7 @@ import { act, fireEvent, queryByText } from "@testing-library/react";
 import { action, computed, observable, runInAction } from "mobx";
 import React from "react";
 import { openMenu } from "react-select-event";
+import { vi } from "vitest";
 import { Cluster } from "../../../common/cluster/cluster";
 import { navigateToRouteInjectionToken } from "../../../common/front-end-routing/navigate-to-route-injection-token";
 import navigateToHelmChartsInjectable from "../../../common/front-end-routing/routes/cluster/helm/charts/navigate-to-helm-charts.injectable";
@@ -39,8 +40,8 @@ import selectedNamespacesStorageInjectable from "../../../features/namespace-fil
 import navigateToPreferencesInjectable from "../../../features/preferences/common/navigate-to-preferences.injectable";
 import { catalogEntityFromCluster } from "../../../main/cluster/manager";
 import shouldStartHiddenInjectable from "../../../main/electron-app/features/should-start-hidden.injectable";
+import freelensProxyPortInjectable from "../../../main/freelens-proxy/freelens-proxy-port.injectable";
 import { getDiForUnitTesting as getMainDi } from "../../../main/getDiForUnitTesting";
-import lensProxyPortInjectable from "../../../main/lens-proxy/lens-proxy-port.injectable";
 import { applicationWindowInjectionToken } from "../../../main/start-main-application/lens-window/application-window/application-window-injection-token";
 import createApplicationWindowInjectable from "../../../main/start-main-application/lens-window/application-window/create-application-window.injectable";
 import createElectronWindowInjectable from "../../../main/start-main-application/lens-window/application-window/create-electron-window.injectable";
@@ -313,7 +314,7 @@ export const getApplicationBuilder = () => {
   const startApp = async ({ shouldStartHidden }: { shouldStartHidden: boolean }) => {
     const startApplication = mainDi.inject(startApplicationInjectionToken);
 
-    mainDi.inject(lensProxyPortInjectable).set(42);
+    mainDi.inject(freelensProxyPortInjectable).set(42);
 
     for (const callback of beforeApplicationStartCallbacks) {
       await callback({ mainDi });

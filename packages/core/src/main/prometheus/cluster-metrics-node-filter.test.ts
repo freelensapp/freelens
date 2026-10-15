@@ -8,6 +8,7 @@ import lensPrometheusProviderInjectable from "@freelensapp/prometheus/src/lens-p
 import operatorPrometheusProviderInjectable from "@freelensapp/prometheus/src/operator-provider.injectable";
 import stacklightPrometheusProviderInjectable from "@freelensapp/prometheus/src/stacklight-provider.injectable";
 import { createContainer } from "@ogre-tools/injectable";
+import { beforeEach, describe, expect, it } from "vitest";
 
 import type { PrometheusProvider } from "@freelensapp/prometheus";
 

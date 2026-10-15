@@ -14,7 +14,13 @@ import { sanitizeExtensionName } from "../../../../extensions/lens-extension";
 import installedExtensionsStateInjectable from "../../installer/common/installed-extensions-state.injectable";
 import { parseVersionDirectoryName } from "../../installer/common/version-directory";
 import { isDevelopmentBuildSegment } from "../common/build-segment";
-import { contentTypeForFile, parseExtensionFileUrl } from "../common/scheme";
+import {
+  contentTypeForFile,
+  extensionFileAbsentStatus,
+  extensionFilePresentStatus,
+  isExtensionFileProbe,
+  parseExtensionFileUrl,
+} from "../common/scheme";
 
 export type ServeExtensionFile = (request: Request) => Promise<Response>;
 
@@ -62,6 +68,12 @@ const serveExtensionFileInjectable = getInjectable({
         return refuse(400);
       }
 
+      // A probe gets the answer the file would get, without the error status
+      // the renderer console would report for an optional file it was only
+      // asking about. A 400 or 403 stays one: those are not a missing file.
+      const isProbe = isExtensionFileProbe(request.url);
+      const notFound = () => refuse(isProbe ? extensionFileAbsentStatus : 404);
+
       const entry = Array.from(installedExtensions.values()).find(
         ({ name }) => sanitizeExtensionName(name) === parsed.sanitizedName,
       );
@@ -69,7 +81,7 @@ const serveExtensionFileInjectable = getInjectable({
       if (!entry) {
         logger.debug(`${logModule}: no extension installed as ${parsed.sanitizedName}`);
 
-        return refuse(404);
+        return notFound();
       }
 
       const liveSegment = getBasenameOfPath(entry.path);
@@ -85,7 +97,7 @@ const serveExtensionFileInjectable = getInjectable({
       if (!isLiveBuild) {
         logger.debug(`${logModule}: ${parsed.buildSegment} is not the live build of ${entry.name}`);
 
-        return refuse(404);
+        return notFound();
       }
 
       const requestedPath = joinPaths(entry.path, ...parsed.fileSegments);
@@ -100,7 +112,13 @@ const serveExtensionFileInjectable = getInjectable({
           return refuse(403);
         }
 
+        // Read for a probe too, so that it answers "present" exactly when the
+        // request for the file would succeed, a directory included.
         const contents = await readFileBuffer(file);
+
+        if (isProbe) {
+          return new Response(null, { status: extensionFilePresentStatus });
+        }
 
         return new Response(new Uint8Array(contents), {
           headers: { "content-type": contentTypeForFile(getBasenameOfPath(file)) },
@@ -108,7 +126,7 @@ const serveExtensionFileInjectable = getInjectable({
       } catch (error) {
         logger.debug(`${logModule}: cannot serve ${requestedPath}: ${error}`);
 
-        return refuse(404);
+        return notFound();
       }
     };
   },

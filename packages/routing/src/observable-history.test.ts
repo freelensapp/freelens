@@ -4,6 +4,7 @@
  */
 
 import { autorun, runInAction } from "mobx";
+import { describe, expect, it } from "vitest";
 import { createObservableHistory } from "./observable-history";
 import { searchParamsOptions } from "./search-params";
 import { createMemoryHistory } from "./vendor/history";

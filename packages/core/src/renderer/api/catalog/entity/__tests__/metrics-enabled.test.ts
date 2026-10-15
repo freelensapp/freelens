@@ -5,6 +5,7 @@
  */
 
 import { observable } from "mobx";
+import { beforeEach, describe, expect, it } from "vitest";
 import { Cluster } from "../../../../../common/cluster/cluster";
 import { ClusterMetricsResourceType } from "../../../../../common/cluster-types";
 import { getDiForUnitTesting } from "../../../../getDiForUnitTesting";

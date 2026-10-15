@@ -4,6 +4,7 @@
  */
 
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { beforeEach, describe, expect, it } from "vitest";
 import { TerminalChannels } from "../../../common/terminal/channels";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import defaultWebsocketApiParamsInjectable from "../default-websocket-api-params.injectable";

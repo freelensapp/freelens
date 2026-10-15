@@ -4,6 +4,7 @@
  */
 
 import { getRandomIdInjectionToken } from "@freelensapp/random";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { getDiForUnitTesting as getMainDiForUnitTesting } from "../../main/getDiForUnitTesting";
 import { getDiForUnitTesting as getRendererDiForUnitTesting } from "../../renderer/getDiForUnitTesting";

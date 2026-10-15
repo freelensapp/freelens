@@ -22,7 +22,7 @@ apt install libnss3
 
 Use [NVM](https://github.com/nvm-sh/nvm) or
 [mise-en-place](https://mise.jdx.dev/) or
-[windows-nvm](https://github.com/coreybutler/nvm-windows) to install the
+[windows-nvm](https://github.com/nvm-windows/nvm) to install the
 required Node.js version.
 
 From the root of this repository:
@@ -156,7 +156,7 @@ pnpm dev         # Starts the app through electron-vite dev
 ```
 
 The renderer is served by the Vite dev server (port 9191, overridable with
-`FREELENS_DEV_SERVER_PORT`) through the lens proxy; the main process is
+`FREELENS_DEV_SERVER_PORT`) through the Freelens proxy; the main process is
 rebuilt on change. If dev mode misbehaves, the packaged-app workflow
 `pnpm build && pnpm build:app:dir && pnpm start` always works.
 

@@ -5,6 +5,7 @@
  */
 
 import { MESSAGE } from "triple-beam";
+import { describe, expect, it } from "vitest";
 import { deserializeLogFromIpc } from "./ipc-logging-listener.injectable";
 
 describe("Ipc log deserialization", () => {

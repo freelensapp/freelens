@@ -8,7 +8,7 @@ import { EventEmitter } from "node:events";
 import { isErrnoException } from "@freelensapp/utilities";
 import { ipcRenderer } from "electron";
 import { observable, reaction, when } from "mobx";
-import { rcompare, valid } from "semver";
+import * as verkit from "verkit";
 import { broadcastMessage, ipcMainHandle, ipcRendererOn } from "../../common/ipc";
 import { extensionDiscoveryStateChannel } from "../../common/ipc/extension-handling";
 import { toJS } from "../../common/utils";
@@ -68,11 +68,37 @@ const logModule = "[EXTENSION-DISCOVERY]";
 const rescanDebounce = 300;
 
 /**
- * How long to wait after a write to one of a development extension's entry
- * points before reloading it. A bundler writes the main and the renderer entry
- * separately, and one rebuild has to be one reload.
+ * How long to wait after the last write to one of a development extension's
+ * entry points before reloading it, once the rebuild is complete. One rebuild
+ * has to be one reload, and a bundler writes the main and the renderer entry
+ * separately -- with one run per entry point, as the documented build does,
+ * several seconds apart.
+ *
+ * The rule: a rebuild starts with the first write to an entry point after the
+ * previous reload. When every entry point the manifest names has been written
+ * since then, the extension reloads `rebuildDebounce` after the last write.
+ * Until then it waits for the others, and reloads once `rebuildPairingWindow`
+ * has passed since the first write -- or `rebuildDebounce` after the last
+ * write, whichever is later. So a manifest with one entry point reloads after
+ * `rebuildDebounce`, a build which writes both entry points within the window
+ * reloads once, and a rebuild which writes only one of two reloads after the
+ * window.
  */
 const rebuildDebounce = 300;
+
+/**
+ * How long a rebuild which has written some of the entry points the manifest
+ * names waits for the rest. See `rebuildDebounce` for the rule.
+ */
+const rebuildPairingWindow = 5_000;
+
+interface PendingRebuild {
+  timer: ReturnType<typeof setTimeout>;
+  /** The entry points written since the rebuild started. */
+  readonly written: Set<string>;
+  /** When the rebuild stops waiting for the entry points not written yet. */
+  readonly windowEnds: number;
+}
 
 interface ExtensionDiscoveryChannelMessage {
   isLoaded: boolean;
@@ -225,7 +251,7 @@ export class ExtensionDiscovery {
   }
 
   private readonly rebuildWatchers = new Map<LensExtensionId, { watcher: Watcher<false>; entryPoints: string }>();
-  private readonly rebuildTimers = new Map<LensExtensionId, ReturnType<typeof setTimeout>>();
+  private readonly pendingRebuilds = new Map<LensExtensionId, PendingRebuild>();
 
   /**
    * Watch the entry points of every development install, so that rebuilding one
@@ -290,6 +316,7 @@ export class ExtensionDiscovery {
   private watchForRebuilds(extensionId: LensExtensionId, entryPoints: string[]): void {
     this.dependencies.logger.info(`${logModule} watching ${entryPoints.join(", ")} for rebuilds of ${extensionId}`);
 
+    const entryPointCount = new Set(entryPoints).size;
     const watcher = this.dependencies
       .watch(entryPoints, {
         depth: 0,
@@ -302,18 +329,18 @@ export class ExtensionDiscovery {
       })
       // A bundler which replaces the file rather than rewriting it takes the
       // watched path away and puts it back, so both events mean "rebuilt".
-      .on("add", () => this.scheduleRebuild(extensionId))
-      .on("change", () => this.scheduleRebuild(extensionId));
+      .on("add", (entryPoint) => this.scheduleRebuild(extensionId, entryPoint, entryPointCount))
+      .on("change", (entryPoint) => this.scheduleRebuild(extensionId, entryPoint, entryPointCount));
 
     this.rebuildWatchers.set(extensionId, { watcher, entryPoints: entryPoints.join("\u0000") });
   }
 
   private stopWatchingForRebuilds(extensionId: LensExtensionId): void {
-    const timer = this.rebuildTimers.get(extensionId);
+    const pending = this.pendingRebuilds.get(extensionId);
 
-    if (timer) {
-      clearTimeout(timer);
-      this.rebuildTimers.delete(extensionId);
+    if (pending) {
+      clearTimeout(pending.timer);
+      this.pendingRebuilds.delete(extensionId);
     }
 
     const watched = this.rebuildWatchers.get(extensionId);
@@ -329,28 +356,39 @@ export class ExtensionDiscovery {
     });
   }
 
-  private scheduleRebuild(extensionId: LensExtensionId): void {
-    const timer = this.rebuildTimers.get(extensionId);
+  /**
+   * Reload an extension once per rebuild, by the rule stated at
+   * `rebuildDebounce`.
+   */
+  private scheduleRebuild(extensionId: LensExtensionId, entryPoint: string, entryPointCount: number): void {
+    const now = Date.now();
+    const pending = this.pendingRebuilds.get(extensionId);
 
-    if (timer) {
-      clearTimeout(timer);
+    if (pending) {
+      clearTimeout(pending.timer);
     }
 
-    this.rebuildTimers.set(
-      extensionId,
-      setTimeout(() => {
-        this.rebuildTimers.delete(extensionId);
+    const written = pending?.written ?? new Set<string>();
+    const windowEnds = pending?.windowEnds ?? now + rebuildPairingWindow;
 
-        const extension = this.extensions.get(extensionId);
+    written.add(entryPoint);
 
-        if (!extension) {
-          return;
-        }
+    const delay = written.size >= entryPointCount ? rebuildDebounce : Math.max(rebuildDebounce, windowEnds - now);
 
-        this.dependencies.logger.info(`${logModule} ${extension.manifest.name} was rebuilt`);
-        this.events.emit("rebuild", extension);
-      }, rebuildDebounce),
-    );
+    const timer = setTimeout(() => {
+      this.pendingRebuilds.delete(extensionId);
+
+      const extension = this.extensions.get(extensionId);
+
+      if (!extension) {
+        return;
+      }
+
+      this.dependencies.logger.info(`${logModule} ${extension.manifest.name} was rebuilt`);
+      this.events.emit("rebuild", extension);
+    }, delay);
+
+    this.pendingRebuilds.set(extensionId, { timer, written, windowEnds });
   }
 
   /**
@@ -634,7 +672,7 @@ export class ExtensionDiscovery {
     const versionOf = (build: string): string | undefined => {
       const version = parseVersionDirectoryName(this.dependencies.getBasenameOfPath(build))?.version;
 
-      return version && valid(version) ? version : undefined;
+      return version && verkit.normalize(version) ? version : undefined;
     };
 
     return [...builds].sort((left, right) => {
@@ -642,7 +680,7 @@ export class ExtensionDiscovery {
       const rightVersion = versionOf(right);
 
       if (leftVersion && rightVersion && leftVersion !== rightVersion) {
-        return rcompare(leftVersion, rightVersion);
+        return verkit.compareReversed(leftVersion, rightVersion);
       }
 
       if (Boolean(leftVersion) !== Boolean(rightVersion)) {

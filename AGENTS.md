@@ -23,6 +23,7 @@ Never read, display, reference, or include the contents of the following files i
 
 - `.env`
 - `.env.*`
+- `.envrc`
 - `.npmrc`
 - `*.jks`
 - `*.keystore`
@@ -30,6 +31,13 @@ Never read, display, reference, or include the contents of the following files i
 - `*.pfx`
 - `*.pem`
 - `*.key`
+
+The same list is git-ignored in `.gitignore` and enforced for Claude Code by
+the `permissions.deny` rules in `.claude/settings.json`, which block reading
+and editing these files. Change all three together. The rules are native
+permissions rather than a hook on purpose: a hook runs a process in the
+working tree, which may be an untrusted pull request, and an interpreter such
+as `python3 -c` imports modules from that tree before the hook's own code.
 
 ## Session and temporary files
 
@@ -174,7 +182,7 @@ environment does not have fails the check before it fails at runtime:
 
 | Program                   | Environment                     | Checks                                  |
 | ------------------------- | ------------------------------- | --------------------------------------- |
-| `tsconfig.typecheck.json` | DOM, Node and Vitest globals    | every file, tests and unclassified ones |
+| `tsconfig.typecheck.json` | DOM and Node                    | every file, tests and unclassified ones |
 | `tsconfig.main.json`      | Node, no DOM                    | main and common files                   |
 | `tsconfig.renderer.json`  | DOM, no Node                    | renderer and common files               |
 
@@ -202,6 +210,22 @@ all three extension API namespaces on purpose.
 Tests and test support (`*.test.ts(x)`, `__tests__/`, `test-utils/`,
 `*.global-override-for-injectable.ts`, `getDiForUnitTesting`, …) are kept out
 of both programs, because Vitest runs them with DOM and Node alike.
+
+No tsconfig declares the Vitest globals. TypeScript has no per-file globals,
+and tests share a program with the sources next to them, so declaring
+`describe` or `vi` for the tests would declare them for production code too.
+Test code imports what it uses instead:
+
+```ts
+import { describe, expect, it, vi } from "vitest";
+```
+
+`globals: true` stays on in the Vitest configs, because React Testing Library
+registers its automatic cleanup only when the hooks exist as globals; it has no
+effect on type checking. An override in `biome.jsonc` sets
+`noRestrictedImports` on `vitest` for every file and lifts it for tests and
+test support, so production code in any package fails `biome check` when it
+imports Vitest. A new kind of test-support path needs adding to that override.
 
 Common code uses only what both environments have: `globalThis.crypto`,
 `TextEncoder`, `URL`, `AbortController`, `structuredClone`, timers. Write
@@ -269,6 +293,51 @@ which turns the rule off for them. Every one of them is also on the renderer
 legacy list, and `scripts/type-check-environments.mjs` fails when an exempted
 file is not, so the exemptions can only shrink with that list: remove a file
 from both when you move its Node import out.
+
+Every path in the `includes` of a `biome.jsonc` override starts with `**/`,
+negated ones included (`!**/packages/core/src/...`). Trunk Check, which is what
+runs Biome in CI, runs it from a sandbox outside the repository with
+`--config-path` pointing back at `biome.jsonc`, and there a pattern anchored at
+the repository root matches no file, so the override silently does nothing.
+A plain `biome check` from the repository root matches both forms, so only
+`trunk check` shows the difference. `scripts/type-check-environments.mjs`
+checks every path of every override and fails on one that is neither `**` nor
+starts with `**/` or `!**/`.
+
+## Knip
+
+`pnpm knip:check` runs knip in two passes, both for dependencies. CI runs it
+after `pnpm build`, so run a build first.
+
+- The development pass, `pnpm knip:development`, also reports **unused
+  files**: a module, barrel or stylesheet that no entry reaches. Stylesheets
+  count, because the `project` globs of the packages with styles include
+  `scss` and `css`, and knip follows both the side-effect imports in
+  TypeScript and `@use` in SCSS.
+- The production pass, `pnpm knip:production`, runs with `--production
+  --strict` over the entries marked with `!` in `knip.jsonc`, the code that
+  reaches the bundles. In it only `dependencies` count. It does not check
+  files: from the `!` entries alone, the test support and the development
+  scripts count as unused.
+
+When the file check reports a file, remove it rather than ignore it. Before
+you do, check that nothing reaches it in a way knip cannot see, and that
+`pnpm type:check` and the tests still pass without it. A file that is reached
+that way, through a config path built at runtime, a `tsconfig.json` `include`
+or a `meta.load-css()`, gets an entry in `knip.jsonc` instead, with a comment
+saying how it is reached. A `register-injectables.ts` that nothing imports is
+the generator's output and gets an ignore: removing it only makes
+`pnpm build:di` write it again.
+
+Both passes run with `--no-gitignore`, because the dependency check reads the
+bundled `freelens/static/build/main.js` to find the packages the main bundle
+leaves external. The file check therefore also sees build output and local
+files; `knip.jsonc` ignores the build output nothing imports and the local
+artifacts of the MCP servers and of coverage. One config serves both passes,
+so `--no-config-hints` hides the hints about entries only one pass needs.
+
+The check leaves out unused exports and types, and knip cannot report the
+unused classes inside a stylesheet.
 
 ## Dependency Injection System
 
@@ -390,6 +459,13 @@ and coverage is not uniform below that floor's neighbours: v1.22.17 has no
 `windows/arm64` build, so the generator logs an unpublished variant and carries
 on rather than failing. `.github/workflows/kubectl-checksums-check.yaml`
 verifies added pins and asserts that no existing digest changed.
+
+### Development Tools (mise)
+
+The development tools (`cosign`, `node`, `yq`) are declared in `mise.toml` and
+pinned with their checksums in `mise.lock`. The lock uses lockfile format
+version 3 (`lockfile_version = 3`), which **needs mise 2026.9.16 or newer**: an
+older mise rejects the lock, so `mise install` fails until mise is upgraded.
 
 ## Common Development Tasks
 
@@ -537,6 +613,30 @@ depends on the question:
 - [`docs/extensions/migrating-from-v1.md`](./docs/extensions/migrating-from-v1.md) — the
   author-facing **porting guide** from v1.
 
+The agent skills of freelensapp/freelens-example-extension,
+`create-freelens-extension` and `port-freelens-extension-to-v2`, link to these
+documents on `main` and cite their sections by name. Renaming or removing one
+of the sections below therefore needs a matching change to the `SKILL.md` files
+under `skills/` in that repository:
+
+- in `api.md`, the contracts C1 to C15 by number as a range, and C6
+  (registration), C9 (routing), C12 (HTTP) and C15 (the host's kubectl, helm
+  and terminal environment) on their own;
+- in `migrating-from-v1.md`, these headings:
+  - "Step one: bump `engines.freelens`"
+  - "`package.json` for an extension"
+  - "Source layout: one tsconfig per runtime environment"
+  - "MobX 7 and mobx-react 10 (standard decorators only)"
+  - "Registering things: declarative fields"
+  - "Reaching a catalog cluster"
+  - "v1→v2 rename table"
+  - "Node and Electron in the renderer"
+  - "Styling and CSS"
+  - "The development loop"
+  - "Checklist", and the two items at its end that it marks as failing
+    silently;
+- `binaries.md` as a whole document, by its file name.
+
 Three traps worth carrying without looking them up. The API surface is only what
 the `Common` / `Main` / `Renderer` namespaces re-export — every other
 `@freelensapp/*` package is private and inlined into the published declaration,
@@ -563,15 +663,15 @@ runtime namespace object does not have. The fixture extension's
 type-and-value pairs of `K8sApi`, `type X` and `const X` of the same name, as
 types, so its type check fails if one loses its type meaning in the bundle.
 
-The bundle also depends on a pnpm patch of `rolldown-plugin-dts`
-(`patchedDependencies` in `pnpm-workspace.yaml`). Without it, a namespace
-import whose members a declaration names only by qualified name, such as
-`import * as utilities` in `common-api/utils.ts`, keeps every member of the
-module in the bundle. That includes the Node-bound members `Common.Util`
-leaves out, with their `node:` imports. `build:dist` of
-`@freelensapp/extensions` fails when the bundle imports a Node builtin or
-references Node's types, and names the patch as the likely cause, so a patch
-that stops applying fails the build rather than reaching an extension.
+The bundle also depends on `rolldown-plugin-dts` 0.28.8 or newer, which
+tree-shakes a namespace import whose members a declaration names only by
+qualified name, such as `import * as utilities` in `common-api/utils.ts`. An
+older version keeps every member of the module in the bundle. That includes
+the Node-bound members `Common.Util` leaves out, with their `node:` imports.
+`build:dist` of `@freelensapp/extensions` fails when the bundle imports a Node
+builtin or references Node's types, and names that tree-shaking as the likely
+cause, so a regression in the plugin fails the build rather than reaching an
+extension.
 
 ## Best Practices
 
@@ -735,6 +835,24 @@ local checkout are lost. To make the work resumable in a follow-up session:
    long commands a foreground timeout (up to ten minutes) instead, and
    commit and push what is done before starting a long validation.
 
+### Force-Pushing a Rewritten Branch
+
+When you are asked to rebase a pull request branch, or to rewrite its
+history in another way (amend, squash, drop a commit), push the result with:
+
+```bash
+git push --force-with-lease origin HEAD
+```
+
+The push wrapper the action names in its instructions, `git-push.sh`, accepts
+no flags, so it cannot do this; `git` itself is allowed in this workflow.
+Do not fall back to merging `main` into the branch instead: a merge commit is
+not what was asked for.
+
+Force-push only the pull request branch the run was invoked on, and only when
+the request calls for a rewrite. Never force-push `main` or any other branch,
+and never rewrite a history you were not asked to.
+
 ### Modifying GitHub Actions Workflows
 
 Claude cannot push changes to files under `.github/workflows/` directly,
@@ -792,39 +910,42 @@ When creating a PR, use the following title conventions:
 - **All other PRs** — do **not** use any prefix (no `fix:`, `feat:`, `chore:`,
   etc.). Use plain, descriptive titles.
 
-### Pushing Changes from Fork PRs
+### Fork PRs: Review Only
 
-When you have commits ready to push but the PR originates from a fork
-(different owner than `freelensapp`), you cannot push to the fork's
-repository. Instead:
+A PR from a fork (different owner than `freelensapp`) gets a review and
+nothing else: no commits, no pushes, no branches. Its code is untrusted, and
+the head of a fork PR can change between the moment a maintainer looks at it
+and the moment the workflow checks it out, so nothing taken from the checkout
+may reach `freelensapp/freelens`.
 
-1. Create a new branch on `freelensapp/freelens` with the prefix `claude/`
-   followed by the original branch name, and push it to `origin`, which is
-   always `freelensapp/freelens`:
-   ```bash
-   git checkout -b claude/<original-branch-name>
-   git push --force-with-lease origin claude/<original-branch-name>
-   ```
+When a fork PR needs changes, a maintainer first copies the exact commit they
+reviewed to a branch in this repository. From then on it is a
+same-repository PR, which gets the full setup and the normal workflow. The
+copy is made either locally (`gh pr checkout <N>`, then push the branch) or
+by the Claude Task workflow, following "Copying a Fork PR" below.
 
-2. Open a new PR from that branch. The new PR MUST use the **exact same
-   title** as the original PR — copy it verbatim, do not rewrite, improve,
-   or add any prefix. The description MUST reference the original PR
-   (e.g. "Fixes #NNN, supersedes #NNN").
+### Copying a Fork PR
 
-3. Post a comment on the original PR:
-   - Explain that the fix has been implemented in a new PR
-   - Include a link to the new PR
-   - Mention that the original PR can be closed
+This applies to a Claude Task run whose prompt asks to copy a fork PR and
+names the PR number and the full commit SHA to copy. It is a git-only task:
+do not check out, read, build or run any of the PR's files, and do not
+describe its changes, because they are untrusted input.
 
-4. Close the original PR.
+1. `git fetch origin refs/pull/<N>/head`.
+2. Verify that `FETCH_HEAD` equals the given SHA. If it does not, or no full
+   SHA was given, stop and report the actual head without pushing anything.
+3. `git push origin <sha>:refs/heads/claude/pr-<N>`.
+4. Open a PR from `claude/pr-<N>` to `main`. It MUST use the **exact same
+   title** as the original PR, copied verbatim with no prefix, and its body
+   is `Copy of #<N> at <sha>.` followed by the usual footer.
+5. Comment on the original PR with a link to the new one.
 
 ### Closing PRs
 
 Claude may only close a PR when ALL of the following are true:
 
 1. The PR was created by Claude from a `claude/` branch, OR the PR is the
-   original fork PR that Claude's `claude/` branch supersedes (see
-   "Pushing Changes from Fork PRs" above).
+   original fork PR that a copy supersedes (see "Copying a Fork PR" above).
 2. The close reason is explicitly explained in a comment on the PR.
 
 Claude MUST NOT close any PR that does not meet these conditions — even if
@@ -869,16 +990,14 @@ is actually there before relying on it, and never report a check as passing
 when it did not run — say that it was unavailable instead.
 
 The `origin` remote is always `freelensapp/freelens`, for fork PRs too: their
-commits are checked out through the pull ref. Pushing a new branch there makes
-the resulting PR internal, so CI workflows run on it automatically.
+commits are checked out through the pull ref.
 
 A PR from a fork runs in review mode, because its code is untrusted and the
 job holds write tokens. None of the setup above runs, and the tools that
-execute the repository's code (`pnpm`, `node`, `npx`, `bash`, `trunk`) are not
-available, so review the code and edit files by reading them, and say that no
-check ran. A branch moved to `origin` this way is a same-repository PR from
-then on, and later runs on it get the full setup and execute its code; the
-maintainer who asks for the move vouches for that code.
+execute the repository's code (`pnpm`, `node`, `npx`, `bash`, `trunk`), edit
+files or commit and push are not available. Review the code by reading it,
+and say that no check ran. See "Fork PRs: Review Only" for how a fork PR that
+needs changes is handled.
 
 The following CLI tools are explicitly allowed in the workflow:
 

@@ -1,3 +1,4 @@
+import { describe, expect, it } from "vitest";
 import { EventEmitter } from "./event-emitter";
 
 describe("EventEmitter", () => {

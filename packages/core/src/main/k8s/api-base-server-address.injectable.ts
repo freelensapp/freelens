@@ -6,14 +6,14 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { apiBaseServerAddressInjectionToken } from "../../common/k8s-api/api-base-configs";
-import lensProxyPortInjectable from "../lens-proxy/lens-proxy-port.injectable";
+import freelensProxyPortInjectable from "../freelens-proxy/freelens-proxy-port.injectable";
 
 const apiBaseServerAddressInjectable = getInjectable({
   id: "api-base-server-address",
   instantiate: (di) => {
-    const lensProxyPort = di.inject(lensProxyPortInjectable);
+    const freelensProxyPort = di.inject(freelensProxyPortInjectable);
 
-    return `https://127.0.0.1:${lensProxyPort.get()}`;
+    return `https://127.0.0.1:${freelensProxyPort.get()}`;
   },
   injectionToken: apiBaseServerAddressInjectionToken,
 });

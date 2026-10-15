@@ -2,7 +2,7 @@
   "name": "@freelensapp/semver",
   "version": "2.0.0-0",
   "private": true,
-  "description": "CLI over semver package for picking parts of a version",
+  "description": "CLI over verkit package for picking parts of a version",
   "homepage": "https://freelens.app",
   "bugs": {
     "url": "https://github.com/freelensapp/freelens/issues"
@@ -24,12 +24,11 @@
   },
   "dependencies": {
     "command-line-args": "catalog:",
-    "semver": "catalog:"
+    "verkit": "catalog:"
   },
   "devDependencies": {
     "@types/command-line-args": "catalog:",
     "@types/node": "catalog:",
-    "@types/semver": "catalog:",
     "typescript": "catalog:"
   }
 }

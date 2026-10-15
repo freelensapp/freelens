@@ -5,6 +5,7 @@
  */
 
 import assert from "node:assert";
+import { describe, expect, it } from "vitest";
 import { Pod, type PodContainerStatus } from "./pod";
 
 import type { Container } from "../types/container";

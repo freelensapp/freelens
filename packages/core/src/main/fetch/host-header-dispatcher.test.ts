@@ -5,6 +5,7 @@
 
 import { createServer, type Server } from "node:http";
 import { fetch as undiciFetch } from "undici";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { withHostHeaderPreserved } from "./host-header-dispatcher";
 import type { AddressInfo } from "node:net";
 
@@ -40,7 +41,7 @@ describe("withHostHeaderPreserved", () => {
     return receivedHost;
   };
 
-  // lens-proxy routes to a cluster on this header, so losing it breaks every
+  // freelens-proxy routes to a cluster on this header, so losing it breaks every
   // cluster view. undici's `fetch` drops it on its own: it is a forbidden
   // header name.
   it("sends a Host header given as a record", async () => {

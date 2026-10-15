@@ -48,4 +48,3 @@ export * from "./src/typed-event-emitter";
 export * from "./src/types";
 export * from "./src/union-env-path";
 export * from "./src/wait";
-export * from "./src/with-concurrency-limit";

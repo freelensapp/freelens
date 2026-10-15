@@ -4,6 +4,7 @@
  */
 
 import { ValidatingAdmissionPolicyBinding } from "@freelensapp/kube-object";
+import { beforeEach, describe, expect, it } from "vitest";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import { renderFor } from "../test-utils/renderFor";
 import { ValidatingAdmissionPolicyBindingDetails } from "./validating-admission-policy-bindings-details";

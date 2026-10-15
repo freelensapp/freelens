@@ -4,6 +4,7 @@
  */
 
 import { showErrorNotificationInjectable } from "@freelensapp/notifications";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import statInjectable from "../../../common/fs/stat.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import installFromDirectoryInjectable from "./attempt-install/install-from-directory.injectable";

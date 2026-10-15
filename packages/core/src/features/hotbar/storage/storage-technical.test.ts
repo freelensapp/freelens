@@ -6,6 +6,7 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { computed } from "mobx";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { anyObject } from "vitest-mock-extended";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import hasCategoryForEntityInjectable from "../../../common/catalog/has-category-for-entity.injectable";

@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import requestQuitOfAppInjectable from "../../main/electron-app/features/require-quit.injectable";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import { testUsingFakeTime } from "../../test-utils/use-fake-time";

@@ -6,6 +6,7 @@
 import { Pod, Secret, SecretType } from "@freelensapp/kube-object";
 import { base64 } from "@freelensapp/utilities";
 import { act } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import configMapStoreInjectable from "../../config-maps/store.injectable";
 import secretStoreInjectable from "../../config-secrets/store.injectable";

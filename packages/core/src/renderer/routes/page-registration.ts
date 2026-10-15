@@ -22,7 +22,12 @@ export interface PageRegistration {
 }
 
 export interface PageComponents {
-  Page: React.ComponentType<any>;
+  /**
+   * Rendered with {@link PageComponentProps} and nothing else. A page that needs
+   * anything more, such as the extension instance, gets it from the
+   * registration: `Page: () => <MyPage extension={this} />`.
+   */
+  Page: React.ComponentType<PageComponentProps>;
 }
 
 export interface PageTarget {
@@ -35,8 +40,16 @@ export interface PageParams<V = any> {
   [paramName: string]: V;
 }
 
-export interface PageComponentProps<P extends PageParams = {}> {
-  params?: {
+/**
+ * The props the host renders a page component with: one `PageParam` for each
+ * entry of {@link PageRegistration.params}, under the same name.
+ *
+ * `PageComponents.Page` takes the default form: the host knows the names of the
+ * parameters only at runtime, so a component typed with named parameters in `P`
+ * is not assignable to it.
+ */
+export interface PageComponentProps<P extends PageParams = PageParams> {
+  params: {
     [N in keyof P]: PageParam<P[N]>;
   };
 }

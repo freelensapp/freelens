@@ -21,7 +21,7 @@ export interface EventStoreDependencies extends KubeObjectStoreDependencies {
 }
 
 export class EventStore extends KubeObjectStore<KubeEvent, KubeEventApi> {
-  public declare readonly limit: number;
+  declare public readonly limit: number;
 
   constructor(
     protected readonly dependencies: EventStoreDependencies,

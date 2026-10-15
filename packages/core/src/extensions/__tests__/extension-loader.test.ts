@@ -6,6 +6,7 @@
 
 import { delay } from "@freelensapp/utilities";
 import { runInAction } from "mobx";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import enabledExtensionsStateInjectable from "../../features/extensions/enabled/common/state.injectable";
 import { getDiForUnitTesting } from "../../renderer/getDiForUnitTesting";

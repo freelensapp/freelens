@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/electron-userland/electron-builder/refs/heads/master/packages/app-builder-lib/scheme.json
 
-electronVersion: 43.7.7 # datasource=npm depName=electron
+electronVersion: 43.7.11 # datasource=npm depName=electron
 
 ## node-pty is our only native module and it is a N-API (node-addon-api)
 ## addon, so its bundled prebuilt binaries are ABI-stable and load as-is on
@@ -36,8 +36,16 @@ files:
   ## app.asar.unpacked afterwards) keeps the app.asar header consistent with the
   ## files actually present. ${platform} expands to darwin/linux/win32 and ${arch}
   ## to x64/arm64, matching node-pty's prebuild directory names (e.g. darwin-arm64).
+  ## ${platform} is the platform of the build host (process.platform), not the
+  ## target, so each platform has to be packed on its own OS.
   - "!node_modules/node-pty/prebuilds/!(${platform}-${arch})"
   - "!node_modules/node-pty/prebuilds/!(${platform}-${arch})/**"
+  ## On Windows, conpty.node loads the bundled ConPTY (conpty.dll, which starts
+  ## OpenConsole.exe) from conpty/ next to itself, which the globs above keep as
+  ## prebuilds/win32-<arch>/conpty/. third_party/ holds the same files for every
+  ## Windows arch, only for node-pty's install script to copy into a local
+  ## build/, so it is never loaded at runtime.
+  - "!node_modules/node-pty/third_party"
 
 ## Notarization
 afterSign: build/notarize.cjs

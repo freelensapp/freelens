@@ -4,6 +4,7 @@
  */
 
 import { createHash } from "node:crypto";
+import { describe, expect, it } from "vitest";
 import { computeTarballDigest, parseChecksumSidecar, verifySha256, verifySubresourceIntegrity } from "./checksums";
 
 const data = Buffer.from("a tarball, for the purposes of this test");

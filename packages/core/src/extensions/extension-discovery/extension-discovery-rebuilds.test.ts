@@ -4,6 +4,7 @@
  */
 
 import { runInAction } from "mobx";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import ensureDirInjectable from "../../common/fs/ensure-dir.injectable";
 import pathExistsInjectable from "../../common/fs/path-exists.injectable";
@@ -153,16 +154,22 @@ describe("reloading a development extension when it is rebuilt", () => {
     ]);
   });
 
-  it("emits a rebuild when an entry point is rewritten", () => {
-    watcherOf(`${developmentPath}/dist/main.js`)?.emit("change", `${developmentPath}/dist/main.js`);
+  it("emits a rebuild when every entry point is rewritten", () => {
+    const watcher = watcherOf(`${developmentPath}/dist/main.js`);
+
+    watcher?.emit("change", `${developmentPath}/dist/main.js`);
+    watcher?.emit("change", `${developmentPath}/dist/renderer.js`);
 
     vi.advanceTimersByTime(300);
 
     expect(rebuilt.map(({ id }) => id)).toEqual(["dev-extension"]);
   });
 
-  it("emits a rebuild when an entry point is replaced rather than rewritten", () => {
-    watcherOf(`${developmentPath}/dist/main.js`)?.emit("add", `${developmentPath}/dist/main.js`);
+  it("emits a rebuild when every entry point is replaced rather than rewritten", () => {
+    const watcher = watcherOf(`${developmentPath}/dist/main.js`);
+
+    watcher?.emit("add", `${developmentPath}/dist/main.js`);
+    watcher?.emit("add", `${developmentPath}/dist/renderer.js`);
 
     vi.advanceTimersByTime(300);
 
@@ -178,6 +185,80 @@ describe("reloading a development extension when it is rebuilt", () => {
     vi.advanceTimersByTime(300);
 
     expect(rebuilt).toHaveLength(1);
+  });
+
+  it("emits one rebuild for a build with one run per entry point, which writes them seconds apart", () => {
+    const watcher = watcherOf(`${developmentPath}/dist/main.js`);
+
+    watcher?.emit("change", `${developmentPath}/dist/renderer.js`);
+    vi.advanceTimersByTime(4_000);
+
+    expect(rebuilt).toHaveLength(0);
+
+    watcher?.emit("change", `${developmentPath}/dist/main.js`);
+    vi.advanceTimersByTime(299);
+
+    expect(rebuilt).toHaveLength(0);
+
+    vi.advanceTimersByTime(1);
+
+    expect(rebuilt.map(({ id }) => id)).toEqual(["dev-extension"]);
+
+    vi.advanceTimersByTime(10_000);
+
+    expect(rebuilt).toHaveLength(1);
+  });
+
+  it("emits one rebuild when one entry point is written more than once while waiting for the other", () => {
+    const watcher = watcherOf(`${developmentPath}/dist/main.js`);
+
+    watcher?.emit("change", `${developmentPath}/dist/renderer.js`);
+    vi.advanceTimersByTime(1_000);
+    watcher?.emit("change", `${developmentPath}/dist/renderer.js`);
+    vi.advanceTimersByTime(1_000);
+    watcher?.emit("change", `${developmentPath}/dist/main.js`);
+    vi.advanceTimersByTime(10_000);
+
+    expect(rebuilt).toHaveLength(1);
+  });
+
+  it("emits a rebuild which writes only one of the entry points once the window for the other has passed", () => {
+    watcherOf(`${developmentPath}/dist/main.js`)?.emit("change", `${developmentPath}/dist/renderer.js`);
+
+    vi.advanceTimersByTime(4_999);
+
+    expect(rebuilt).toHaveLength(0);
+
+    vi.advanceTimersByTime(1);
+
+    expect(rebuilt.map(({ id }) => id)).toEqual(["dev-extension"]);
+  });
+
+  it("does not extend the window for the other entry point when the same one is written again", () => {
+    const watcher = watcherOf(`${developmentPath}/dist/main.js`);
+
+    watcher?.emit("change", `${developmentPath}/dist/renderer.js`);
+    vi.advanceTimersByTime(3_000);
+    watcher?.emit("change", `${developmentPath}/dist/renderer.js`);
+    vi.advanceTimersByTime(2_000);
+
+    expect(rebuilt).toHaveLength(1);
+  });
+
+  it("starts a new rebuild with a write after the previous reload", () => {
+    const watcher = watcherOf(`${developmentPath}/dist/main.js`);
+
+    watcher?.emit("change", `${developmentPath}/dist/main.js`);
+    watcher?.emit("change", `${developmentPath}/dist/renderer.js`);
+    vi.advanceTimersByTime(300);
+    watcher?.emit("change", `${developmentPath}/dist/main.js`);
+    vi.advanceTimersByTime(300);
+
+    expect(rebuilt).toHaveLength(1);
+
+    vi.advanceTimersByTime(4_700);
+
+    expect(rebuilt).toHaveLength(2);
   });
 
   it("does not watch a managed install, whose content cannot change without a new install", () => {
@@ -199,7 +280,7 @@ describe("reloading a development extension when it is rebuilt", () => {
     watcherOf(`${developmentPath}/dist/main.js`)?.emit("change", `${developmentPath}/dist/main.js`);
 
     await extensionDiscovery.stopWatchingExtensions();
-    vi.advanceTimersByTime(300);
+    vi.advanceTimersByTime(5_000);
 
     expect(rebuilt).toHaveLength(0);
   });

@@ -5,6 +5,7 @@
 
 import { Pod } from "@freelensapp/kube-object";
 import { computed, observable } from "mobx";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { maxConcurrentLogRequests, podLogColors, stripAnsiColors } from "../merge-pod-logs";
 import { LogStore } from "../store";
 import { dockerPod } from "./pod.mock";

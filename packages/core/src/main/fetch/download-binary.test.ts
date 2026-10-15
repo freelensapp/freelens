@@ -3,6 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import downloadBinaryInjectable from "./download-binary.injectable";
 import proxyFetchInjectable from "./proxy-fetch.injectable";

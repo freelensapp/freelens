@@ -171,7 +171,7 @@ async function verifyPgpOverFile(filePath: string, signatureUrl: string): Promis
 
 /** SHA-256 of one entry inside a gzipped tarball. */
 async function digestOfTarEntry(tarPath: string, entryName: string): Promise<string> {
-  const extracting = extract({ allowUnknownFormat: false });
+  const extracting = extract();
   let digest: string | undefined;
 
   extracting.on("entry", (headers, stream, next) => {
@@ -183,7 +183,7 @@ async function digestOfTarEntry(tarPath: string, entryName: string): Promise<str
 
     const hash = createHash("sha256");
 
-    stream.on("data", (chunk: Buffer) => hash.update(chunk));
+    stream.on("data", (chunk) => hash.update(chunk as Buffer));
     stream.once("end", () => {
       digest = hash.digest("hex");
       next();

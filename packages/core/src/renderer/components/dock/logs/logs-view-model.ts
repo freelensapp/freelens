@@ -8,6 +8,7 @@ import assert from "node:assert";
 import { isDefined } from "@freelensapp/utilities";
 import { computed } from "mobx";
 import { defaultLogViewerPreferences } from "../../../../features/user-preferences/common/preferences-helpers";
+import { getTimestampedLogFilename } from "./get-timestamped-log-filename";
 import { maxCombinedLogsPods, stripAnsiColors } from "./merge-pod-logs";
 
 import type { ResourceDescriptor } from "@freelensapp/kube-api";
@@ -180,7 +181,7 @@ export class LogTabViewModel {
       const logs: string[] = tabData.showTimestamps ? this.logs.get() : this.logsWithoutTimestamps.get();
 
       // The colors of the pod tags are for the screen: the file keeps the tags.
-      this.dependencies.downloadLogs(`${fileName}.log`, isMerged ? logs.map(stripAnsiColors) : logs);
+      this.dependencies.downloadLogs(getTimestampedLogFilename(fileName), isMerged ? logs.map(stripAnsiColors) : logs);
     }
   };
 

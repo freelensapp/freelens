@@ -81,7 +81,7 @@ class NonInjectedCustomResourceDetails extends React.Component<CustomResourceDet
       props: { object, crd, logger },
     } = this;
 
-    if (!object || !crd) {
+    if (!object) {
       return null;
     }
 
@@ -91,16 +91,18 @@ class NonInjectedCustomResourceDetails extends React.Component<CustomResourceDet
       return null;
     }
 
-    if (!(crd instanceof CustomResourceDefinition)) {
+    if (crd && !(crd instanceof CustomResourceDefinition)) {
       logger.error("[CrdResourceDetails]: passed crd that is not an instanceof CustomResourceDefinition", crd);
 
       return null;
     }
 
-    const extraColumns = crd.getPrinterColumns();
+    // Without a definition, as for a user who may not list them, there are no
+    // printer columns to show.
+    const extraColumns = crd?.getPrinterColumns() ?? [];
 
     return (
-      <div className={cssNames("CustomResourceDetails", crd.getResourceKind())}>
+      <div className={cssNames("CustomResourceDetails", crd?.getResourceKind() ?? object.kind)}>
         {this.renderAdditionalColumns(object, extraColumns)}
         <KubeObjectConditionsDrawer object={object} />
       </div>

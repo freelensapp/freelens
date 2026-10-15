@@ -338,8 +338,11 @@ export class NonInjectedItemListLayoutContent<
     const isColumnShown = ({ id: columnId, showWithColumn }: TableCellProps) =>
       !isConfigurable || !tableId || !isTableColumnHidden(tableId, columnId, showWithColumn);
 
+    // The key matters for a non-virtual list, where <Table> renders these rows
+    // as a list; the virtual one wraps each in a keyed <div> (getRow).
     return (
       <TableRow
+        key={item.getId()}
         nowrap
         searchItem={item}
         sortItem={item}

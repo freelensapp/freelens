@@ -6,6 +6,7 @@
 
 import asyncFn, { type AsyncFnMock } from "@async-fn/vitest";
 import { flushPromises } from "@freelensapp/test-utils";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import askUserForFilePathsInjectable from "../../main/ipc/ask-user-for-file-paths.injectable";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import openPathPickingDialogInjectable from "./renderer/pick-paths.injectable";

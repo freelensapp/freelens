@@ -5,6 +5,7 @@
  */
 
 import { cloneDeep } from "es-toolkit";
+import { describe, expect, it } from "vitest";
 import { getSorted } from "../sorting";
 
 describe("Table tests", () => {

@@ -234,9 +234,7 @@ class BinaryDownloader {
  */
 class HelmDownloader extends BinaryDownloader {
   protected override getTransformStreams(file: WriteStream) {
-    const extracting = extract({
-      allowUnknownFormat: false,
-    });
+    const extracting = extract();
 
     extracting.on("entry", (headers, stream, next) => {
       if (headers.name.endsWith(this.artifact.binaryName)) {
