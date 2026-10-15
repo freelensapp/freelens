@@ -118,7 +118,7 @@ catalog:
   openpgp: 6.3.2
   proper-lockfile: 4.1.2
   react-select: 5.10.2
-  react-window: 2.3.3
+  react-window: 2.3.4
   rfc6902: 5.3.0
   selfsigned: 5.5.0
   sharp: 0.35.5
