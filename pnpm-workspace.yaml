@@ -58,7 +58,7 @@ catalog:
   '@electron/notarize': 3.1.2
   electron-devtools-installer: 4.0.0
   # Types and utilities
-  '@types/node': 24.19.1
+  '@types/node': 24.19.2
   '@types/cli-progress': 3.11.6
   '@types/command-line-args': 5.2.3
   '@types/fs-extra': 11.0.4
@@ -180,7 +180,7 @@ overrides:
   # resolved peer. The app targets the Node version of .nvmrc, so keep the
   # whole tree on one copy, at the catalog's version. Renovate updates the two
   # together.
-  '@kubernetes/client-node>@types/node': 24.19.1
+  '@kubernetes/client-node>@types/node': 24.19.2
   form-data: ^4.0.6
   # Nothing depends on http-proxy today: this override is a guard, not dead
   # code. The original package is abandoned with a known CVE, so a dependency
