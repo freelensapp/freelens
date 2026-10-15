@@ -878,10 +878,13 @@ What it takes and what it answers with:
   made of its `method`, `headers`, `body`, `signal` and `redirect`, with
   `duplex: "half"` when it has a body. An init given alongside it applies on
   top, member by member, as with the standard `fetch`.
-- **The init is passed on as it is**, a `URLSearchParams` or `FormData` body
-  included, except for `dispatcher`, which is dropped: the host's client sends
-  every request through the dispatcher that applies the user's proxy and CA
-  settings, and an extension's init does not replace it.
+- **The init is passed on as it is**, a `URLSearchParams` or `Blob` body
+  included, with two exceptions. A `FormData` body is encoded as multipart
+  before it is passed on, with its boundary in the content type, because the
+  host's client does not recognise Node's global `FormData`. `dispatcher` is
+  dropped: the host's client sends every request through the dispatcher that
+  applies the user's proxy and CA settings, and an extension's init does not
+  replace it.
 - **The response is undici's `Response`**, with every member of the standard
   one. It is not an instance of Node's global `Response`.
 

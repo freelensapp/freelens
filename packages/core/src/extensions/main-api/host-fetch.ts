@@ -50,6 +50,25 @@ const initOfRequest = (request: Request): HostInit => {
 const definedMembersOf = (init: RequestInit | undefined): HostInit =>
   Object.fromEntries(Object.entries(init ?? {}).filter(([, value]) => value !== undefined));
 
+const isFormData = (body: unknown): body is FormData => Object.prototype.toString.call(body) === "[object FormData]";
+
+// A `FormData` of Node's built-in undici is not recognised by the undici
+// package either, and unlike a `Request` it does not fail: it is sent as the
+// text "[object FormData]". So it is encoded here, as multipart, by the global
+// `Response` of the same undici, and its boundary goes into the content type.
+const withFormDataEncoded = (init: HostInit): HostInit => {
+  if (!isFormData(init.body)) {
+    return init;
+  }
+
+  const encoded = new Response(init.body);
+  const headers = new Headers(init.headers);
+
+  headers.set("content-type", encoded.headers.get("content-type") ?? "multipart/form-data");
+
+  return { ...init, body: encoded.body, headers: [...headers], duplex: "half" };
+};
+
 /**
  * The host's `fetch` of the main process, typed as the standard one.
  *
@@ -58,7 +77,9 @@ const definedMembersOf = (init: RequestInit | undefined): HostInit =>
  * `Request` input is translated here: its URL is passed as the input, and its
  * `method`, `headers`, `body`, `signal` and `redirect` as the init, with
  * `duplex: "half"` when it has a body. The caller's init applies on top, member
- * by member, as it does for the standard `fetch`.
+ * by member, as it does for the standard `fetch`. A `FormData` body, which the
+ * undici package would send as the text "[object FormData]", is encoded here
+ * as multipart.
  *
  * `dispatcher` is dropped from the caller's init. The host's client sends the
  * request through the dispatcher that applies the user's proxy and certificate
@@ -73,5 +94,5 @@ export const asHostFetch =
     const [url, requestInit] = isRequest(input) ? [input.url, initOfRequest(input)] : [input, {}];
     const { dispatcher: _dispatcher, ...merged }: HostInit = { ...requestInit, ...definedMembersOf(init) };
 
-    return fetch(url, merged as FetchRequestInit) as Promise<unknown> as Promise<Response>;
+    return fetch(url, withFormDataEncoded(merged) as FetchRequestInit) as Promise<unknown> as Promise<Response>;
   };

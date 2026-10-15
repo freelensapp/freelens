@@ -1,12 +1,19 @@
 /**
  * Copyright (c) Freelens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
+ *
+ * @vitest-environment node
  */
 
 // `Main.Util.fetch` is the host's client typed as the standard `fetch`, for an
 // extension and for a bundled library that takes a `fetch` option (C12 in
 // docs/extensions/api.md). It has to reach the host's client, take what the
-// standard takes, a `Request` included, and keep the host's dispatcher.
+// standard takes, a `Request` and a `FormData` included, and keep the host's
+// dispatcher.
+//
+// It runs in the node environment rather than core's default jsdom: the
+// globals an extension's main code hands over, `Request` and `FormData`, are
+// Node's there, while jsdom would replace `FormData` with its own.
 
 import { createServer } from "node:http";
 import { Agent } from "undici";
@@ -162,6 +169,22 @@ describe("Main.Util.fetch, against a server", () => {
       body: '{"some":"value"}',
     });
     expect(dispatchedThrough).toEqual(["host"]);
+  });
+
+  // The undici package does not recognise the global FormData either, and
+  // without encoding it sends the text "[object FormData]" as text/plain.
+  it("sends a global FormData body as multipart, keeping the other headers", async () => {
+    const form = new FormData();
+
+    form.append("some-field", "some-value");
+
+    await Main.Util.fetch(url, { method: "POST", headers: { "x-some": "value" }, body: form });
+
+    expect(received?.method).toBe("POST");
+    expect(received?.headers["content-type"]).toMatch(/^multipart\/form-data; boundary=/);
+    expect(received?.headers["x-some"]).toBe("value");
+    expect(received?.body).toContain('name="some-field"');
+    expect(received?.body).toContain("some-value");
   });
 
   it("sends the request through the host's dispatcher, not through one in the extension's init", async () => {
