@@ -132,7 +132,7 @@
                 },
                 "patterns": [
                   {
-                    "group": ["@testing-library/*"],
+                    "group": ["@testing-library/**"],
                     "message": "Testing Library is for test code only: the act of @testing-library/react delegates to React.act, which the production build of React does not have, so the call throws in a packaged application"
                   }
                 ]
