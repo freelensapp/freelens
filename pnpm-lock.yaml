@@ -327,8 +327,8 @@ catalogs:
       specifier: 3.32.0
       version: 3.32.0
     dompurify:
-      specifier: 3.4.16
-      version: 3.4.16
+      specifier: 3.4.17
+      version: 3.4.17
     electron:
       specifier: 43.7.9
       version: 43.7.9
@@ -1094,7 +1094,7 @@ importers:
         version: 3.32.0
       dompurify:
         specifier: 'catalog:'
-        version: 3.4.16
+        version: 3.4.17
       electron-devtools-installer:
         specifier: 'catalog:'
         version: 4.0.0
@@ -5190,8 +5190,8 @@ packages:
   dompurify@3.4.15:
     resolution: {integrity: sha512-EUBjM+B+lkDE41iE82DDSCfkoPGfXx8IxFxPMjNzm/Uk4xDet77rTN9wqlxlVg71kK7XGuUMv6wUxJUwwv+Xyw==}
 
-  dompurify@3.4.16:
-    resolution: {integrity: sha512-sqo+pNp3qRhCIpbgRi1y8Tgk27Bo2Ry7w0dC1NBeNTdZChWjz9Xb/KOoZbRP/R6pQZ80Qw8YhXw13hWWBbMRnQ==}
+  dompurify@3.4.17:
+    resolution: {integrity: sha512-B/pSlYVHQ58kqISD/yDjuJ1yfzI34m1gF4lAod2bwSRhiN4K5Cl3H8Af7hqB2PmTL911tdEudnnXn5FnhRoz0w==}
 
   dot-prop@10.1.0:
     resolution: {integrity: sha512-MVUtAugQMOff5RnBy2d9N31iG0lNwg1qAoAOn7pOK5wf94WIaE3My2p3uwTQuvS2AcqchkcR3bHByjaM0mmi7Q==}
@@ -9801,7 +9801,7 @@ snapshots:
     optionalDependencies:
       '@types/trusted-types': 2.0.7
 
-  dompurify@3.4.16:
+  dompurify@3.4.17:
     optionalDependencies:
       '@types/trusted-types': 2.0.7
 
