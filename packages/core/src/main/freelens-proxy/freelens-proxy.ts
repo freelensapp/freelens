@@ -10,6 +10,7 @@ import { apiKubePrefix, apiPrefix } from "../../common/vars";
 import { respondJson, respondText } from "../utils/http-responses";
 import { getBoolean } from "../utils/parse-query";
 import { abortWhenClientCloses, isClientGone } from "./abort-when-client-closes";
+import { toClusterRoute } from "./cluster-route-redirect";
 import type http from "node:http";
 
 import type { Logger } from "@freelensapp/logger";
@@ -22,6 +23,7 @@ import type { SelfSignedCert } from "../../common/certificate/certificate";
 import type { Cluster } from "../../common/cluster/cluster";
 import type { FreelensK8sProxyServer } from "../cluster/freelens-k8s-proxy-server.injectable";
 import type { Router } from "../router/router";
+import type { ClusterRouteRedirect } from "./cluster-route-redirect";
 import type { ProxyApiRequestArgs, ShellApiRequestArgs } from "./proxy-functions";
 
 /**
@@ -121,6 +123,12 @@ export class FreelensProxy {
    */
   protected readonly sessions = new Set<http2.ServerHttp2Session>();
   protected readonly sockets = new Set<net.Socket>();
+
+  /**
+   * What a redirect of the API server needs to be kept on the route of its
+   * cluster, for every kube api request on its way to the cluster.
+   */
+  protected readonly clusterRoutes = new WeakMap<object, Omit<ClusterRouteRedirect, "location">>();
 
   constructor(private readonly dependencies: Dependencies) {
     this.configureProxy(dependencies.proxy);
@@ -301,7 +309,9 @@ export class FreelensProxy {
   protected configureProxy(proxy: ProxyServer): ProxyServer {
     abortWhenClientCloses(proxy);
 
-    proxy.on("proxyRes", (proxyRes, _req, res) => {
+    proxy.on("proxyRes", (proxyRes, req, res) => {
+      this.keepRedirectOnClusterRoute(proxyRes, req);
+
       proxyRes.on("aborted", () => {
         // happens when proxy target aborts connection
         res.end();
@@ -347,7 +357,30 @@ export class FreelensProxy {
     return proxy;
   }
 
+  /**
+   * http-proxy-3 writes the headers of the response right after `proxyRes`,
+   * so a `Location` changed here is the one the client gets.
+   */
+  protected keepRedirectOnClusterRoute(proxyRes: http.IncomingMessage, req: object) {
+    const route = this.clusterRoutes.get(req);
+    const { statusCode = 0 } = proxyRes;
+    const { location } = proxyRes.headers;
+
+    if (!route || !location || statusCode < 300 || statusCode >= 400) {
+      return;
+    }
+
+    const clusterLocation = toClusterRoute({ ...route, location });
+
+    if (clusterLocation) {
+      proxyRes.headers.location = clusterLocation;
+    }
+  }
+
   protected async handleRequest(req: ServerIncomingMessage, res: ServerResponse) {
+    // The route of the cluster as the client asked for it: the lookup points a
+    // request of the main process at the kube api.
+    const requestedUrl = req.url;
     const cluster = this.dependencies.getClusterForRequest(req);
 
     if (cluster && req.url.startsWith(apiKubePrefix)) {
@@ -378,6 +411,16 @@ export class FreelensProxy {
       }
 
       if (proxyTarget) {
+        const { apiUrl } = freelensK8sProxyServer;
+
+        if (apiUrl) {
+          this.clusterRoutes.set(req, {
+            requestPath: req.url,
+            apiUrl,
+            routePrefix: requestedUrl.startsWith(apiKubePrefix) ? apiKubePrefix : `/${cluster.id}`,
+          });
+        }
+
         return this.proxyWeb(req, res, proxyTarget);
       }
     }

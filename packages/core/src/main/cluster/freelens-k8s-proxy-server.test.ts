@@ -81,6 +81,17 @@ describe("freelens-k8s-proxy server", () => {
     expect(spawnMock).toHaveBeenCalledTimes(1);
   });
 
+  it("gives the URL of the API server that its last target forwards to", async () => {
+    expect(freelensK8sProxyServer.apiUrl).toBeUndefined();
+
+    await freelensK8sProxyServer.getApiTarget();
+    expect(freelensK8sProxyServer.apiUrl?.href).toBe("https://192.168.64.3:8443/");
+
+    clusterApiUrl = async () => new URL("https://some-rancher/k8s/clusters/local");
+    await freelensK8sProxyServer.getApiTarget(true);
+    expect(freelensK8sProxyServer.apiUrl?.href).toBe("https://some-rancher/k8s/clusters/local");
+  });
+
   it("starts one proxy for concurrent short requests", async () => {
     const ports = await Promise.all([portOf(), portOf(), portOf()]);
 
