@@ -489,8 +489,8 @@ catalogs:
       specifier: 7.0.2
       version: 7.0.2
     undici:
-      specifier: 8.12.1
-      version: 8.12.1
+      specifier: 8.12.2
+      version: 8.12.2
     uuid:
       specifier: 14.0.3
       version: 14.0.3
@@ -720,7 +720,7 @@ importers:
         version: 1.4.1
       undici:
         specifier: 'catalog:'
-        version: 8.12.1
+        version: 8.12.2
       uuid:
         specifier: 'catalog:'
         version: 14.0.3
@@ -1180,7 +1180,7 @@ importers:
         version: 1.4.1
       undici:
         specifier: 'catalog:'
-        version: 8.12.1
+        version: 8.12.2
       uuid:
         specifier: 'catalog:'
         version: 14.0.3
@@ -1322,7 +1322,7 @@ importers:
         version: 3.2.2
       undici:
         specifier: 'catalog:'
-        version: 8.12.1
+        version: 8.12.2
       yauzl-promise:
         specifier: 'catalog:'
         version: 4.0.0
@@ -1519,7 +1519,7 @@ importers:
         version: 7.0.2
       undici:
         specifier: 'catalog:'
-        version: 8.12.1
+        version: 8.12.2
       verkit:
         specifier: 'catalog:'
         version: 0.5.0
@@ -7073,6 +7073,10 @@ packages:
     resolution: {integrity: sha512-usz3OVQBeh1LxNn0DzU0voLXMgn5CU/WUdpBsY6Ti5afNao+vTkmn4H/NxoXolc10cOqe2+YIG0Hspq2rsl64w==}
     engines: {node: '>=22.19.0'}
 
+  undici@8.12.2:
+    resolution: {integrity: sha512-XtuDWVdqTLr3NAxm2ly9/hU6kUsJOgGh1RASzMBbsw6aWCOaQzHdW+QQDfdERjfJ2V5vL5pRPa4RetO9UfivDg==}
+    engines: {node: '>=22.19.0'}
+
   unique-string@3.0.0:
     resolution: {integrity: sha512-VGXBUVwxKMBUznyffQweQABPRRW1vHZAbadFZud4pLFAqRGvv/96vafgjWFqzourzr8YonlQiPgH0YCJfawoGQ==}
     engines: {node: '>=12'}
@@ -8228,7 +8232,7 @@ snapshots:
       socks-proxy-agent: 10.1.0(supports-color@8.1.1)
       stream-buffers: 3.0.3
       tar-fs: 3.1.3
-      undici: 8.12.1
+      undici: 8.12.2
       ws: 8.22.0
     transitivePeerDependencies:
       - bare-abort-controller
@@ -11730,6 +11734,8 @@ snapshots:
     optional: true
 
   undici@8.12.1: {}
+
+  undici@8.12.2: {}
 
   unique-string@3.0.0:
     dependencies:
