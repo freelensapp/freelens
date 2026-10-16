@@ -630,9 +630,9 @@ files under `skills/` in that repository, and to that template when its pin
 moves to a commit with the change:
 
 - in `api.md`, the contracts C1 to C15 by number as a range, and C3
-  (host-provided modules), C6 (registration), C9 (routing), C10 (the
-  stylesheet next to the renderer entry), C12 (HTTP) and C15 (the host's
-  kubectl, helm and terminal environment) on their own;
+  (host-provided singletons), C6 (registration), C9 (routing), C10 (styling
+  and CSS), C12 (HTTP) and C15 (the host's kubectl, helm and terminal
+  environment) on their own;
 - in `migrating-from-v1.md`, these headings:
   - "Step one: bump `engines.freelens`"
   - "`package.json` for an extension"
