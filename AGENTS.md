@@ -621,13 +621,17 @@ depends on the question:
 
 The agent skills of freelensapp/freelens-example-extension,
 `create-freelens-extension` and `port-freelens-extension-to-v2`, link to these
-documents on `main` and cite their sections by name. Renaming or removing one
-of the sections below therefore needs a matching change to the `SKILL.md` files
-under `skills/` in that repository:
+documents on `main` and cite their sections by name, and so does the template
+of the v2 migration issue that a port copies,
+`skills/port-freelens-extension-to-v2/references/migration-issue.md`.
+Renaming or removing one of the sections below therefore needs a matching
+change to the `SKILL.md` files under `skills/` in that repository and to that
+template:
 
-- in `api.md`, the contracts C1 to C15 by number as a range, and C6
-  (registration), C9 (routing), C12 (HTTP) and C15 (the host's kubectl, helm
-  and terminal environment) on their own;
+- in `api.md`, the contracts C1 to C15 by number as a range, and C3
+  (host-provided modules), C6 (registration), C9 (routing), C10 (the
+  stylesheet next to the renderer entry), C12 (HTTP) and C15 (the host's
+  kubectl, helm and terminal environment) on their own;
 - in `migrating-from-v1.md`, these headings:
   - "Step one: bump `engines.freelens`"
   - "`package.json` for an extension"
@@ -641,7 +645,9 @@ under `skills/` in that repository:
   - "The development loop"
   - "Checklist", and the two items at its end that it marks as failing
     silently;
-- `binaries.md` as a whole document, by its file name.
+- `binaries.md` as a whole document, by its file name;
+- in this file, the heading "Modifying GitHub Actions Workflows", which the
+  template cites.
 
 Three traps worth carrying without looking them up. The API surface is only what
 the `Common` / `Main` / `Renderer` namespaces re-export — every other
