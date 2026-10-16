@@ -7,7 +7,7 @@
 // Base class for building all kubernetes apis
 
 import assert from "node:assert";
-import { stringify } from "node:querystring";
+import { stringifyQuery } from "@freelensapp/json-api";
 import {
   isJsonApiData,
   isJsonApiDataList,
@@ -20,7 +20,7 @@ import { matches, merge } from "es-toolkit/compat";
 import { observable } from "mobx";
 import { createKubeApiURL, parseKubeApi } from "./kube-api-parse";
 
-import type { FetchRequestInit as RequestInit, FetchResponse as Response } from "@freelensapp/json-api";
+import type { QueryParams, FetchRequestInit as RequestInit, FetchResponse as Response } from "@freelensapp/json-api";
 import type {
   KubeJsonApiData,
   KubeJsonApiDataFor,
@@ -522,7 +522,9 @@ export class KubeApi<
       namespace: this.isNamespaced ? (namespace ?? "default") : undefined,
     });
 
-    return resourcePath + (query ? `?${stringify(this.normalizeQuery(query))}` : "");
+    const queryString = query ? stringifyQuery(this.normalizeQuery(query) as QueryParams) : "";
+
+    return resourcePath + (queryString ? `?${queryString}` : "");
   }
 
   /**

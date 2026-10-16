@@ -81,6 +81,21 @@ export type QueryParam =
   | readonly boolean[];
 export type QueryParams = Partial<Record<string, QueryParam | undefined>>;
 
+/**
+ * Serializes query parameters, leaving out the ones that are `undefined` or `null`.
+ *
+ * `stringify` of `node:querystring` writes those as an empty value (`previous=`), and the
+ * Kubernetes API server reads an empty boolean parameter as `true`, so an optional field left
+ * unset would turn its option on.
+ */
+export function stringifyQuery(query: QueryParams): string {
+  const defined = Object.fromEntries(
+    Object.entries(query).filter(([, value]) => value !== undefined && value !== null),
+  );
+
+  return stringify(defined as QueryParams);
+}
+
 export type ParamsAndQuery<Params, Query> =
   ValueOf<Query> extends QueryParam ? Params & { query?: Query } : Params & { query?: undefined };
 
@@ -146,10 +161,9 @@ export class JsonApi<Data = JsonApiData, Params extends JsonApiParams<Data> = Js
     // pools on its own, so neither client needs one per request.
     const reqInit = merge({ method: "get" }, this.reqInit, await this.getRequestOptions(), init);
     const { query } = params ?? {};
+    const queryString = query ? stringifyQuery(query as unknown as QueryParams) : "";
 
-    if (query && Object.keys(query).length > 0) {
-      const queryString = stringify(query as unknown as QueryParams);
-
+    if (queryString) {
       reqUrl += (reqUrl.includes("?") ? "&" : "?") + queryString;
     }
 
@@ -209,9 +223,9 @@ export class JsonApi<Data = JsonApiData, Params extends JsonApiParams<Data> = Js
       reqInit.body = JSON.stringify(data);
     }
 
-    if (query && Object.keys(query).length > 0) {
-      const queryString = stringify(query as unknown as QueryParams);
+    const queryString = query ? stringifyQuery(query as unknown as QueryParams) : "";
 
+    if (queryString) {
       reqUrl += (reqUrl.includes("?") ? "&" : "?") + queryString;
     }
     const infoLog: JsonApiLog = {
