@@ -2042,7 +2042,10 @@ What a reload is, so that what you have to write is clear:
   the new build imported and `onActivate` called again. Anything your extension
   leaves behind — a listener on a host object, a timer, an element appended to
   the document — has to be released in `onDeactivate` or in the extension's
-  disposers, or it survives the reload and accumulates.
+  disposers, or it survives the reload and accumulates. Your cluster pages go
+  out with the rest, so a reload closes the one that is open: the cluster frame
+  falls back to the Cluster page, and you open yours again from the sidebar to
+  see the new build.
 - One rebuild is **one reload**, including a build with one bundler run per
   entry point, which writes `main` and `renderer` seconds apart. The rule: a
   rebuild starts with the first write to an entry point after the previous

@@ -159,7 +159,9 @@ class NonInjectedDrawer extends React.Component<DrawerProps & Dependencies & typ
       return;
     }
     const clickedElem = evt.target as HTMLElement;
-    const isOutsideAnyDrawer = !clickedElem.closest(".Drawer");
+    // A click that re-rendered its target before reaching window, such as one
+    // opening details, leaves it detached, so where it was is no longer known.
+    const isOutsideAnyDrawer = clickedElem.isConnected && !clickedElem.closest(".Drawer");
 
     if (isOutsideAnyDrawer) {
       close();
