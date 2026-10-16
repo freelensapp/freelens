@@ -437,6 +437,77 @@ describe("KubeApi", () => {
         });
       });
     });
+
+    describe("when deleting with finalizers", () => {
+      const podUrl = "http://127.0.0.1:9999/api-kube/api/v1/namespaces/default/pods/foo";
+      let deleteRequest: Promise<KubeJsonApiData>;
+
+      beforeEach(async () => {
+        deleteRequest = api.deleteWithFinalizers({ name: "foo", namespace: "default" });
+
+        // This is required for how JS promises work
+        await flushPromises();
+      });
+
+      it("clears the finalizers with a JSON merge patch", () => {
+        expect(fetchMock.mock.lastCall).toMatchObject([
+          podUrl,
+          {
+            headers: {
+              "content-type": "application/merge-patch+json",
+            },
+            method: "patch",
+            body: JSON.stringify({ metadata: { finalizers: [] } }),
+          },
+        ]);
+      });
+
+      describe("when the patch request resolves", () => {
+        beforeEach(async () => {
+          await fetchMock.resolveSpecific(
+            [podUrl],
+            createMockResponseFromString(
+              podUrl,
+              JSON.stringify({
+                apiVersion: "v1",
+                kind: "Pod",
+                metadata: {
+                  name: "foo",
+                  namespace: "default",
+                  resourceVersion: "1",
+                  uid: "12345",
+                  finalizers: [],
+                },
+              }),
+            ),
+          );
+        });
+
+        it("force deletes the pod", () => {
+          expect(fetchMock.mock.lastCall).toMatchObject([
+            `${podUrl}?propagationPolicy=Background`,
+            {
+              method: "delete",
+              body: JSON.stringify({
+                kind: "DeleteOptions",
+                apiVersion: "v1",
+                gracePeriodSeconds: 0,
+                propagationPolicy: "Background",
+              }),
+            },
+          ]);
+        });
+
+        it("resolves the call", async () => {
+          await fetchMock.resolveSpecific(
+            [`${podUrl}?propagationPolicy=Background`],
+            createMockResponseFromString(`${podUrl}?propagationPolicy=Background`, "{}"),
+          );
+
+          expect(await deleteRequest).toBeDefined();
+        });
+      });
+    });
   });
 
   describe("deleting namespaces (cluster scoped resource)", () => {
