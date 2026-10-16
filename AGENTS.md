@@ -621,12 +621,13 @@ depends on the question:
 
 The agent skills of freelensapp/freelens-example-extension,
 `create-freelens-extension` and `port-freelens-extension-to-v2`, link to these
-documents on `main` and cite their sections by name, and so does the template
-of the v2 migration issue that a port copies,
-`skills/port-freelens-extension-to-v2/references/migration-issue.md`.
-Renaming or removing one of the sections below therefore needs a matching
-change to the `SKILL.md` files under `skills/` in that repository and to that
-template:
+documents on `main` and cite their sections by name. So does the template of
+the v2 migration issue that a port copies,
+`skills/port-freelens-extension-to-v2/references/migration-issue.md`, except
+that its links are pinned to a commit of this repository. Renaming or removing
+one of the sections below therefore needs a matching change to the `SKILL.md`
+files under `skills/` in that repository, and to that template when its pin
+moves to a commit with the change:
 
 - in `api.md`, the contracts C1 to C15 by number as a range, and C3
   (host-provided modules), C6 (registration), C9 (routing), C10 (the
