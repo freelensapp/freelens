@@ -8,6 +8,10 @@ import { getDiForExtensionApi } from "./extension-api-di";
 
 import type { Inject } from "@ogre-tools/injectable";
 
+// A class cannot be called without `new`, so binding it in a plain function
+// would break `new api.objectConstructor(...)`, and it needs no `this` anyway.
+const isClass = (value: Function) => /^class[\s{]/.test(Function.prototype.toString.call(value));
+
 /**
  * Exposes an injectable to the extension API as a lazy singleton: the proxy
  * is created at module load time, but the instance is injected from the DI
@@ -39,7 +43,7 @@ export const asLazyInjectedForExtensionApi = ((injectable: any, instantiationPar
 
         const propertyValue = instance[propertyName] ?? target[propertyName];
 
-        if (typeof propertyValue === "function") {
+        if (typeof propertyValue === "function" && !isClass(propertyValue)) {
           return function (...args: unknown[]) {
             return propertyValue.apply(instance, args) as unknown;
           };
