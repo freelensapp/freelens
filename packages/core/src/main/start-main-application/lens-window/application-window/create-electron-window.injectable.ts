@@ -14,6 +14,7 @@ import openLinkInBrowserInjectable from "../../../../common/utils/open-link-in-b
 import isLinuxInjectable from "../../../../common/vars/is-linux.injectable";
 import lensResourcesDirInjectable from "../../../../common/vars/lens-resources-dir.injectable";
 import applicationWindowStateInjectable from "./application-window-state.injectable";
+import { logFailedLoad } from "./log-failed-load";
 import sessionCertificateVerifierInjectable from "./session-certificate-verifier.injectable";
 
 import type { RequireExactlyOne } from "type-fest";
@@ -127,11 +128,8 @@ const createElectronWindowInjectable = getInjectable({
         .webContents.on("dom-ready", () => {
           configuration.onDomReady?.();
         })
-        .on("did-fail-load", (_event, code, desc) => {
-          logger.error(`[CREATE-ELECTRON-WINDOW]: Failed to load window "${configuration.id}"`, {
-            code,
-            desc,
-          });
+        .on("did-fail-load", (_event, code, desc, url, isMainFrame) => {
+          logFailedLoad(logger, configuration.id, { code, desc, url, isMainFrame });
         })
         .on("did-finish-load", () => {
           logger.info(`[CREATE-ELECTRON-WINDOW]: Window "${configuration.id}" loaded`);
