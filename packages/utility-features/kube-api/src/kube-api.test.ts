@@ -123,6 +123,20 @@ describe("KubeApi", () => {
       await fetchMock.resolve(createMockResponseFromString(url, "{}"));
       await request;
     });
+
+    it("adds no question mark to a listing URL when every value is undefined", () => {
+      const api = new PodApi({
+        logDebug: vi.fn(),
+        logError: vi.fn(),
+        logInfo: vi.fn(),
+        logWarn: vi.fn(),
+        maybeKubeApi: kubeJsonApi,
+      });
+
+      expect(api.getUrl({ namespace: "default" }, { resourceVersion: undefined })).toBe(
+        "/api/v1/namespaces/default/pods",
+      );
+    });
   });
 
   describe("patching deployments", () => {

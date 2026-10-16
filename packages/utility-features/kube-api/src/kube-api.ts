@@ -522,7 +522,9 @@ export class KubeApi<
       namespace: this.isNamespaced ? (namespace ?? "default") : undefined,
     });
 
-    return resourcePath + (query ? `?${stringifyQuery(this.normalizeQuery(query) as QueryParams)}` : "");
+    const queryString = query ? stringifyQuery(this.normalizeQuery(query) as QueryParams) : "";
+
+    return resourcePath + (queryString ? `?${queryString}` : "");
   }
 
   /**
