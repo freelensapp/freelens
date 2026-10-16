@@ -76,6 +76,53 @@ describe("KubeApi", () => {
       await fetchMock.resolve(createMockResponseFromString(url, "log line"));
       expect(await logs).toBe("log line");
     });
+
+    it("leaves undefined and null query values out of the URL", async () => {
+      const api = new PodApi({
+        logDebug: vi.fn(),
+        logError: vi.fn(),
+        logInfo: vi.fn(),
+        logWarn: vi.fn(),
+        maybeKubeApi: kubeJsonApi,
+      });
+      const logs = api.getLogs(
+        { name: "test", namespace: "default" },
+        { container: "app", tailLines: 1000, timestamps: undefined, previous: null as never },
+      );
+      await flushPromises();
+
+      const url = "http://127.0.0.1:9999/api-kube/api/v1/namespaces/default/pods/test/log?container=app&tailLines=1000";
+      expect(fetchMock.mock.lastCall?.[0]).toBe(url);
+
+      await fetchMock.resolve(createMockResponseFromString(url, "log line"));
+      expect(await logs).toBe("log line");
+    });
+  });
+
+  describe("query parameters", () => {
+    it("keeps false and zero values", async () => {
+      const request = kubeJsonApi.getResponse("/api/v1/pods", {
+        query: { watch: false, limit: 0, labelSelector: undefined },
+      });
+      await flushPromises();
+
+      const url = "http://127.0.0.1:9999/api-kube/api/v1/pods?watch=false&limit=0";
+      expect(fetchMock.mock.lastCall?.[0]).toBe(url);
+
+      await fetchMock.resolve(createMockResponseFromString(url, "{}"));
+      await request;
+    });
+
+    it("adds no query string when every value is undefined", async () => {
+      const request = kubeJsonApi.get("/api/v1/pods", { query: { watch: undefined } });
+      await flushPromises();
+
+      const url = "http://127.0.0.1:9999/api-kube/api/v1/pods";
+      expect(fetchMock.mock.lastCall?.[0]).toBe(url);
+
+      await fetchMock.resolve(createMockResponseFromString(url, "{}"));
+      await request;
+    });
   });
 
   describe("patching deployments", () => {
@@ -524,7 +571,7 @@ describe("KubeApi", () => {
 
       it("requests the watch", () => {
         expect(fetchMock.mock.lastCall).toMatchObject([
-          "http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&resourceVersion=&timeoutSeconds=600",
+          "http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&timeoutSeconds=600",
           {
             headers: {
               "content-type": "application/json",
@@ -539,8 +586,7 @@ describe("KubeApi", () => {
           await fetchMock.resolveSpecific(
             ([url, init]) => {
               const isMatch =
-                url ===
-                "http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&resourceVersion=&timeoutSeconds=600";
+                url === "http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&timeoutSeconds=600";
 
               if (isMatch) {
                 init?.signal?.addEventListener("abort", () => {
@@ -551,7 +597,7 @@ describe("KubeApi", () => {
               return isMatch;
             },
             createMockResponseFromStream(
-              "http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&resourceVersion=&timeoutSeconds=600",
+              "http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&timeoutSeconds=600",
               stream,
             ),
           );
@@ -631,7 +677,7 @@ describe("KubeApi", () => {
 
       it("requests the watch", () => {
         expect(fetchMock.mock.lastCall).toMatchObject([
-          "http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&resourceVersion=&timeoutSeconds=600",
+          "http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&timeoutSeconds=600",
           {
             headers: {
               "content-type": "application/json",
@@ -646,8 +692,7 @@ describe("KubeApi", () => {
           await fetchMock.resolveSpecific(
             ([url, init]) => {
               const isMatch =
-                url ===
-                "http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&resourceVersion=&timeoutSeconds=600";
+                url === "http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&timeoutSeconds=600";
 
               if (isMatch) {
                 init?.signal?.addEventListener("abort", () => {
@@ -658,7 +703,7 @@ describe("KubeApi", () => {
               return isMatch;
             },
             createMockResponseFromStream(
-              "http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&resourceVersion=&timeoutSeconds=600",
+              "http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&timeoutSeconds=600",
               stream,
             ),
           );
@@ -737,7 +782,7 @@ describe("KubeApi", () => {
 
       it("requests the watch", () => {
         expect(fetchMock.mock.lastCall).toMatchObject([
-          "http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&resourceVersion=&timeoutSeconds=60",
+          "http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&timeoutSeconds=60",
           {
             headers: {
               "content-type": "application/json",
@@ -752,8 +797,7 @@ describe("KubeApi", () => {
           await fetchMock.resolveSpecific(
             ([url, init]) => {
               const isMatch =
-                url ===
-                "http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&resourceVersion=&timeoutSeconds=60";
+                url === "http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&timeoutSeconds=60";
 
               if (isMatch) {
                 init?.signal?.addEventListener("abort", () => {
@@ -764,7 +808,7 @@ describe("KubeApi", () => {
               return isMatch;
             },
             createMockResponseFromStream(
-              "http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&resourceVersion=&timeoutSeconds=60",
+              "http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&timeoutSeconds=60",
               stream,
             ),
           );
@@ -830,7 +874,7 @@ describe("KubeApi", () => {
 
             it("requests a new watch", () => {
               expect(fetchMock.mock.lastCall).toMatchObject([
-                "http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&resourceVersion=&timeoutSeconds=60",
+                "http://127.0.0.1:9999/api-kube/api/v1/namespaces/kube-system/pods?watch=1&timeoutSeconds=60",
                 {
                   headers: {
                     "content-type": "application/json",
