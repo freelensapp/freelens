@@ -26,8 +26,8 @@ catalog:
   '@ogre-tools/test-utils': 27.0.0
   # Testing stack
   '@async-fn/vitest': 1.8.0
-  '@vitest/coverage-v8': 5.0.4
-  vitest: 5.0.4
+  '@vitest/coverage-v8': 5.0.5
+  vitest: 5.0.5
   '@testing-library/dom': 10.4.2
   '@testing-library/jest-dom': 7.0.1
   '@testing-library/react': 16.3.3
