@@ -11,6 +11,7 @@ import { asLazyInjectedForExtensionApi } from "../extension-api-di";
 export { App } from "./app";
 export * as Catalog from "./catalog";
 export * as Clusters from "./cluster-types";
+export { Credentials } from "./credentials";
 export * as EventBus from "./event-bus";
 export * as Proxy from "./proxy";
 export * as Store from "./stores";
@@ -33,5 +34,7 @@ export type PackageJson = import("type-fest").PackageJson;
 // `Common.LensExtension` is not one at runtime, so `new` and `instanceof` on it
 // would compile and throw. A type alias stays a type in the declaration.
 export type LensExtension = import("../lens-extension").LensExtension;
+
+export type CredentialsApi = import("../../features/credentials/common/types").Credentials;
 
 export const logger = asLazyInjectedForExtensionApi(loggerInjectionToken);

@@ -248,7 +248,7 @@ is not reachable (see [C1](#c1-packaging-and-publication)).
 
 | Namespace | Members |
 | --- | --- |
-| `Common` | `App`, `Catalog`, `Clusters`, `EventBus`, `Proxy`, `Store`, `Types`, `Util`, `logger`; types `InstalledExtension`, `LensExtension`, `LensExtensionManifest`, `Logger`, `PackageJson` |
+| `Common` | `App`, `Catalog`, `Clusters`, `Credentials`, `EventBus`, `Proxy`, `Store`, `Types`, `Util`, `logger`; types `CredentialsApi`, `InstalledExtension`, `LensExtension`, `LensExtensionManifest`, `Logger`, `PackageJson` |
 | `Main` | `Catalog`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Power`, `Shell`, `Util` |
 | `Renderer` | `Catalog`, `Component`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Theme`, `Util` |
 
@@ -277,6 +277,26 @@ kube-api option and descriptor types that appear in exported signatures —
 `PropagationPolicy`, `ResourceDescriptor`, `IKubeWatchEvent` — are exported
 alongside `parseKubeApi` and `createKubeApiURL`, so they are nameable and not
 merely callable.
+
+### `Credentials` stores encrypted extension secrets
+
+**Guarantee.** Small string credentials are encrypted through the operating
+system secret store and persisted by the main process. Both processes expose
+the same promise-based API, scoped by the extension's package name. Scopes are
+not an extension security sandbox: the request channel cannot authenticate
+the calling extension.
+
+**Surface.** `Common.Credentials.get(extensionId, key)`,
+`set(extensionId, key, value)`, `delete(extensionId, key)` and
+`list(extensionId)`, typed by `Common.CredentialsApi`. Missing keys return
+`undefined`; listing returns sorted keys, never values. The `core` scope is
+reserved.
+
+**Failure mode.** Operations reject when the OS secret store is unavailable,
+including Linux's unprotected `basic_text` backend, or when validation or
+storage fails. There is no plaintext fallback or automatic migration of
+existing stores. See [Extension credentials](./credentials.md) for usage,
+storage guarantees and security limits.
 
 ### `K8sApi` exports all of `@freelensapp/kube-object`
 
