@@ -203,6 +203,22 @@ jobs:
           restore-keys: |
             ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-builder-
 
+      # The bundled kubectl, helm and freelens-k8s-proxy get a cache of their
+      # own: the Turborepo cache misses whenever freelens/package.json changes,
+      # which would download them again. ensure-binaries hashes every file and
+      # skips the ones that match their pin in binaries.lock.json, so a cache
+      # restored from an older lock only fetches what changed, and a tampered
+      # cache gets downloaded again rather than packaged. Saved right after
+      # the build, so a step failing later does not lose the download.
+      - name: Restore bundled binaries cache
+        id: binaries-cache-restore
+        uses: actions/cache/restore@v6
+        with:
+          path: freelens/binaries
+          key: ${{ runner.os }}-${{ runner.arch }}-binaries-${{ hashFiles('freelens/binaries.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ runner.arch }}-binaries-
+
       - name: Install pnpm dependencies
         id: install-pnpm
         shell: bash
@@ -268,6 +284,13 @@ jobs:
       - name: Build extra resources (retry 2)
         if: steps.build-resources-2.outcome == 'failure'
         run: pnpm --color=always build:resources
+
+      - name: Save bundled binaries cache
+        if: steps.binaries-cache-restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: freelens/binaries
+          key: ${{ steps.binaries-cache-restore.outputs.cache-primary-key }}
 
       - name: Build Electron app (macOS)
         id: build-macos

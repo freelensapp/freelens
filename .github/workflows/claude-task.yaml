@@ -104,6 +104,20 @@ jobs:
           restore-keys: |
             ${{ env.RUNS_ON }}-turborepo-
 
+      # The bundled kubectl, helm and freelens-k8s-proxy get a cache of their
+      # own: the Turborepo cache misses whenever freelens/package.json changes,
+      # which would download them again. ensure-binaries hashes every file and
+      # skips the ones that match their pin in binaries.lock.json, so a cache
+      # restored from an older lock only fetches what changed, and a tampered
+      # cache gets downloaded again rather than packaged.
+      - name: Use bundled binaries cache
+        uses: actions/cache@v6
+        with:
+          path: freelens/binaries
+          key: ${{ runner.os }}-${{ runner.arch }}-binaries-${{ hashFiles('freelens/binaries.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ runner.arch }}-binaries-
+
       - name: Install pnpm dependencies
         id: install-pnpm
         run: pnpm install --color=always --prefer-offline --frozen-lockfile
