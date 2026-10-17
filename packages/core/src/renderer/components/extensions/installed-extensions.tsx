@@ -120,15 +120,23 @@ const NonInjectedInstalledExtensions = observer(
           <div>
             <div>{extension.manifest.version}</div>
             {!extension.isManaged ? (
-              <div className={styles.extensionProvenance} title={`Loaded in place from ${extension.absolutePath}`}>
-                in place, unverified
+              <div className={styles.extensionProvenance} title={`Loaded from ${extension.absolutePath}`}>
+                development
+              </div>
+            ) : extension.isVerified ? (
+              <div
+                className={cssNames(styles.extensionProvenance, styles.verified)}
+                title="Its checksum was verified when this was installed"
+              >
+                verified
               </div>
             ) : (
-              !extension.isVerified && (
-                <div className={styles.extensionProvenance} title="No checksum was available when this was installed">
-                  unverified
-                </div>
-              )
+              <div
+                className={cssNames(styles.extensionProvenance, styles.unverified)}
+                title="No checksum was available when this was installed"
+              >
+                unverified
+              </div>
             )}
           </div>
         ),
