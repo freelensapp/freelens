@@ -115,7 +115,7 @@ class BinaryDownloader {
   }
 
   async ensureBinary(): Promise<Outcome> {
-    if (process.env.LENS_SKIP_DOWNLOAD_BINARIES === "true") {
+    if (process.env.FREELENS_SKIP_DOWNLOAD_BINARIES === "true") {
       return "skipped";
     }
 

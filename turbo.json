@@ -32,7 +32,8 @@
       "outputs": ["dist/**"]
     },
     "build:binaries": {
-      "cache": false
+      "cache": false,
+      "passThroughEnv": ["FREELENS_SKIP_DOWNLOAD_BINARIES"]
     },
     "build:dev": {
       "dependsOn": ["^build:dev"],
