@@ -77,6 +77,9 @@ async function digestOfFile(file: string): Promise<string> {
   return hash.digest("hex");
 }
 
+/** What {@link BinaryDownloader.ensureBinary} did, reported once the bars are gone. */
+type Outcome = "skipped" | "up to date" | "downloaded";
+
 class BinaryDownloader {
   protected readonly bar: SingleBar;
   protected readonly target: string;
@@ -111,9 +114,9 @@ class BinaryDownloader {
     }
   }
 
-  async ensureBinary(): Promise<void> {
+  async ensureBinary(): Promise<Outcome> {
     if (process.env.LENS_SKIP_DOWNLOAD_BINARIES === "true") {
-      return;
+      return "skipped";
     }
 
     const bar = this.bar;
@@ -128,7 +131,7 @@ class BinaryDownloader {
     if (await this.isUpToDate()) {
       bar.setTotal(1);
       bar.increment(1); // already downloaded, mark as finished
-      return;
+      return "up to date";
     }
 
     const controller = new AbortController();
@@ -230,6 +233,8 @@ class BinaryDownloader {
       await unlink(this.target).catch(() => {});
       throw error;
     }
+
+    return "downloaded";
   }
 }
 
@@ -321,6 +326,17 @@ const settledResults = await Promise.allSettled(
 );
 
 multiBar.stop();
+
+// The bars end at 100% either way, so say which binaries were fetched.
+downloaders.forEach((downloader, index) => {
+  const result = settledResults[index];
+  const { binaryName, platform, arch } = downloader.artifact;
+
+  if (result?.status === "fulfilled") {
+    console.log(`${binaryName} for ${platform}/${arch}: ${result.value}`);
+  }
+});
+
 const errorResults = settledResults.filter((res) => res.status === "rejected");
 
 if (errorResults.length > 0) {
