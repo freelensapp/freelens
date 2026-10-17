@@ -16,6 +16,10 @@ export class ClusterRoleBindingStore extends KubeObjectStore<
   ClusterRoleBindingApi,
   ClusterRoleBindingData
 > {
+  protected getWatchSortKey(item: ClusterRoleBinding) {
+    return [item.kind, item.getName()];
+  }
+
   protected sortItems(items: ClusterRoleBinding[]) {
     return super.sortItems(items, [
       (clusterRoleBinding) => clusterRoleBinding.kind,

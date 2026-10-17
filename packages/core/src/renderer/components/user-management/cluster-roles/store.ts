@@ -10,6 +10,10 @@ import type { ClusterRoleApi } from "@freelensapp/kube-api";
 import type { ClusterRole, ClusterRoleData } from "@freelensapp/kube-object";
 
 export class ClusterRoleStore extends KubeObjectStore<ClusterRole, ClusterRoleApi, ClusterRoleData> {
+  protected getWatchSortKey(item: ClusterRole) {
+    return [item.kind, item.getName()];
+  }
+
   protected sortItems(items: ClusterRole[]) {
     return super.sortItems(items, [(clusterRole) => clusterRole.kind, (clusterRole) => clusterRole.getName()]);
   }

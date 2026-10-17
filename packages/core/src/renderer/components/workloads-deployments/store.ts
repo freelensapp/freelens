@@ -33,6 +33,10 @@ export class DeploymentStore extends KubeObjectStore<Deployment, DeploymentApi> 
     super(dependencies, api, opts);
   }
 
+  protected getWatchSortKey(item: Deployment) {
+    return item.getReplicas();
+  }
+
   protected sortItems(items: Deployment[]) {
     return super.sortItems(items, [(item) => item.getReplicas()], "desc");
   }
