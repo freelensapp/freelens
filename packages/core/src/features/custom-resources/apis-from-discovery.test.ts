@@ -3,6 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { act } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { customResourceDefinitionApiInjectionToken } from "../../common/k8s-api/api-manager/crd-api-token";
 import apiManagerInjectable from "../../common/k8s-api/api-manager/manager.injectable";
@@ -53,6 +54,11 @@ describe("APIs of custom resources from the discovery of the cluster", () => {
   let apiManager: ApiManager;
   let customResourceDefinitionStore: CustomResourceDefinitionStore;
 
+  // The application is rendered, so these change state its components observe.
+  // Outside act() React flushes the passive effects of the re-render on a timer,
+  // which can fire after the test file has torn down jsdom.
+  const loadAllDefinitions = () => act(() => customResourceDefinitionStore.loadAll());
+
   const getCustomResourceApiBases = () =>
     windowDi
       .injectMany(customResourceDefinitionApiInjectionToken)
@@ -75,7 +81,9 @@ describe("APIs of custom resources from the discovery of the cluster", () => {
       throw new Error("Expected a hosted cluster in the cluster frame");
     }
 
-    hostedCluster.knownResources.replace(discoveredResources);
+    act(() => {
+      hostedCluster.knownResources.replace(discoveredResources);
+    });
   });
 
   describe("when the list of definitions is refused", () => {
@@ -85,7 +93,7 @@ describe("APIs of custom resources from the discovery of the cluster", () => {
         new Error("customresourcedefinitions.apiextensions.k8s.io is forbidden"),
       );
 
-      await customResourceDefinitionStore.loadAll();
+      await loadAllDefinitions();
     });
 
     it("has failed loading the definitions", () => {
@@ -112,7 +120,7 @@ describe("APIs of custom resources from the discovery of the cluster", () => {
       beforeEach(async () => {
         vi.mocked(customResourceDefinitionStore.api.list).mockResolvedValue([]);
 
-        await customResourceDefinitionStore.loadAll();
+        await loadAllDefinitions();
       });
 
       it("removes the APIs created from discovery", () => {
@@ -125,7 +133,7 @@ describe("APIs of custom resources from the discovery of the cluster", () => {
     beforeEach(async () => {
       vi.spyOn(customResourceDefinitionStore.api, "list").mockResolvedValue([]);
 
-      await customResourceDefinitionStore.loadAll();
+      await loadAllDefinitions();
     });
 
     it("has loaded the definitions", () => {
