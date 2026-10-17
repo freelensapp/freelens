@@ -78,12 +78,12 @@ pnpm build
 
 ### Bundled binaries
 
-`pnpm build:resources:client` downloads `freelens-k8s-proxy`, `kubectl` and
-`helm`. Their versions live in the `config` block of `freelens/package.json`,
-and their exact digests are pinned in `freelens/binaries.lock.json`. The build
-verifies every download against that lock rather than against a checksum served
-by the same host as the artifact, so bumping a version without regenerating the
-lock fails the build:
+`pnpm build:binaries` in `freelens/` downloads `freelens-k8s-proxy`, `kubectl`
+and `helm`. Their versions live in the `config` block of
+`freelens/package.json`, and their exact digests are pinned in
+`freelens/binaries.lock.json`. The build verifies every download against that
+lock rather than against a checksum served by the same host as the artifact, so
+bumping a version without regenerating the lock fails the build:
 
 ```sh
 pnpm update-binaries-lock

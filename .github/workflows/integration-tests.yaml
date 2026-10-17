@@ -165,6 +165,17 @@ jobs:
           restore-keys: |
             ${{ matrix.runs-on }}-${{ matrix.arch }}-turborepo-
 
+      # Turborepo does not cache the binaries, see "Bundled Binary Versions"
+      # in AGENTS.md. Saved right after the build.
+      - name: Restore bundled binaries cache
+        id: binaries-cache-restore
+        uses: actions/cache/restore@v6
+        with:
+          path: freelens/binaries
+          key: ${{ runner.os }}-${{ runner.arch }}-binaries-${{ hashFiles('freelens/binaries.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ runner.arch }}-binaries-
+
       # Cache the .deb archives and package lists that `playwright install-deps`
       # downloads through apt, so re-runs reuse them instead of re-downloading.
       # apt is pointed at this project-local directory via a global config file
@@ -290,6 +301,13 @@ jobs:
       - name: Build extra resources (retry 2)
         if: steps.build-resources-2.outcome == 'failure'
         run: pnpm --color=always build:resources
+
+      - name: Save bundled binaries cache
+        if: steps.binaries-cache-restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: freelens/binaries
+          key: ${{ steps.binaries-cache-restore.outputs.cache-primary-key }}
 
       - name: Get electron-builder path
         shell: bash

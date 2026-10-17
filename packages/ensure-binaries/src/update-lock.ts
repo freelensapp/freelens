@@ -7,16 +7,26 @@
 
 import path from "node:path";
 import arg from "arg";
-import { artifactKey, describeAllArtifacts, readToolVersions, type ToolName, toolNames } from "./artifacts.js";
+import {
+  artifactKey,
+  describeAllArtifacts,
+  isArchived,
+  readToolVersions,
+  type ToolName,
+  toolNames,
+} from "./artifacts.js";
 import { type BinariesLock, readLock, writeLock } from "./lock.js";
 import { mapWithConcurrency, pinArtifact } from "./pin.js";
+import { digestOfTarEntry } from "./verify.js";
 
 /**
  * Regenerates the committed lock file pinning every bundled binary.
  *
  * Each of the eighteen artifacts goes through the shared pinning flow in
  * `pin.ts` - vendor checksum, download, hash, publisher signature - and the
- * lock is only written when every one of them matched.
+ * lock is only written when every one of them matched. An archived artifact
+ * also gets the digest of the binary extracted from it, taken from the same
+ * verified download, so that the build can check the stored binary itself.
  */
 
 const options = arg({
@@ -56,12 +66,19 @@ for (const tool of toolNames) {
 }
 
 const settled = await Promise.allSettled([
-  mapWithConcurrency(wanted, 4, async (artifact) => ({
-    artifact,
-    sha256: await pinArtifact(artifact).catch((error) => {
+  mapWithConcurrency(wanted, 4, async (artifact) => {
+    const extracted: { binarySha256?: string } = {};
+
+    const sha256 = await pinArtifact(artifact, undefined, async (artifactPath) => {
+      if (isArchived(artifact)) {
+        extracted.binarySha256 = await digestOfTarEntry(artifactPath, artifact.binaryName);
+      }
+    }).catch((error) => {
       throw new Error(`Failed to pin ${artifact.tool} for ${artifactKey(artifact)}: ${error}`);
-    }),
-  })),
+    });
+
+    return { artifact, sha256, binarySha256: extracted.binarySha256 };
+  }),
 ]);
 
 const [result] = settled;
@@ -87,7 +104,10 @@ for (const tool of toolNames) {
   lock[tool] = {
     version: versions[tool],
     artifacts: Object.fromEntries(
-      pinned.map(({ artifact, sha256 }) => [artifactKey(artifact), { url: artifact.url, sha256 }]),
+      pinned.map(({ artifact, sha256, binarySha256 }) => [
+        artifactKey(artifact),
+        { url: artifact.url, sha256, ...(binarySha256 && { binarySha256 }) },
+      ]),
     ),
   };
 }

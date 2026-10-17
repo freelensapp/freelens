@@ -144,17 +144,29 @@ jobs:
             exit 0
           fi
 
+          # One row per pinned digest, binarySha256 included.
           flatten() {
             yq -pj -ot '
               [
                 to_entries[] as $tool
-                | $tool.value.artifacts | to_entries[]
-                | {
-                    "tool": $tool.key,
-                    "version": $tool.value.version,
-                    "platform": .key,
-                    "sha256": .value.sha256
-                  }
+                | $tool.value.artifacts | to_entries[] as $artifact
+                | (
+                    {
+                      "tool": $tool.key,
+                      "version": $tool.value.version,
+                      "platform": $artifact.key,
+                      "sha256": $artifact.value.sha256
+                    },
+                    (
+                      $artifact.value | select(has("binarySha256"))
+                      | {
+                          "tool": $tool.key,
+                          "version": $tool.value.version,
+                          "platform": $artifact.key + " binary",
+                          "sha256": .binarySha256
+                        }
+                    )
+                  )
               ]
             ' "$1" | tail -n +2 | sort
           }

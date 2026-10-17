@@ -104,6 +104,16 @@ jobs:
           restore-keys: |
             ${{ env.RUNS_ON }}-turborepo-
 
+      # Turborepo does not cache the binaries, see "Bundled Binary Versions"
+      # in AGENTS.md.
+      - name: Use bundled binaries cache
+        uses: actions/cache@v6
+        with:
+          path: freelens/binaries
+          key: ${{ runner.os }}-${{ runner.arch }}-binaries-${{ hashFiles('freelens/binaries.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ runner.arch }}-binaries-
+
       - name: Install pnpm dependencies
         id: install-pnpm
         run: pnpm install --color=always --prefer-offline --frozen-lockfile
