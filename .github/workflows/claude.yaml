@@ -366,13 +366,16 @@ jobs:
         continue-on-error: true
 
       # mise with the cosign and yq that mise.lock pins, for `mise lock` and the
-      # lock generators. node stays with setup-node. Never fails the job.
+      # lock generators. node stays with setup-node. No cache: installing takes
+      # seconds, and a hanging cache lookup once held the job for 25 minutes.
       - name: Set up mise
         if: needs.parse.outputs.is-fork != 'true'
         uses: jdx/mise-action@v5
         with:
           version: 2026.10.11 # datasource=github-releases depName=jdx/mise
           install_args: cosign yq
+          cache: false
+        timeout-minutes: 5
         continue-on-error: true
 
       # Fetched by URL from the base repository, so the system prompt never
