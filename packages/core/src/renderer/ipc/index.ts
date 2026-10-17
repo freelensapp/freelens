@@ -5,7 +5,11 @@
  */
 
 import { clusterSetFrameIdHandler, clusterStates } from "../../common/ipc/cluster";
-import { extensionDiscoveryStateChannel, extensionLoaderFromMainChannel } from "../../common/ipc/extension-handling";
+import {
+  extensionDiscoveryStateChannel,
+  extensionLoaderFromMainChannel,
+  extensionLoaderSetIsEnabledChannel,
+} from "../../common/ipc/extension-handling";
 import {
   type WindowAction,
   windowActionHandleChannel,
@@ -66,4 +70,8 @@ export function requestInitialExtensionDiscovery(): Promise<{ isLoaded: boolean 
 
 export function requestExtensionLoaderInitialState(): Promise<[LensExtensionId, InstalledExtension][]> {
   return requestMain(extensionLoaderFromMainChannel);
+}
+
+export function requestExtensionLoaderSetIsEnabled(extensionId: LensExtensionId, isEnabled: boolean): Promise<void> {
+  return requestMain(extensionLoaderSetIsEnabledChannel, extensionId, isEnabled);
 }

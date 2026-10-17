@@ -129,7 +129,7 @@ const installFromDirectoryInjectable = getInjectable({
 
           await when(() => extensionLoader.userExtensions.get().has(id), { timeout: 10_000 });
 
-          extensionLoader.setIsEnabled(id, true);
+          await extensionLoader.setIsEnabled(id, true);
 
           showInfoNotification(
             <p>

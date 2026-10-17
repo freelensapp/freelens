@@ -5,7 +5,10 @@
 
 import { observable, runInAction } from "mobx";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { extensionLoaderFromMainChannel } from "../../common/ipc/extension-handling";
+import {
+  extensionLoaderFromMainChannel,
+  extensionLoaderSetIsEnabledChannel,
+} from "../../common/ipc/extension-handling";
 import { ExtensionLoader } from "../extension-loader/extension-loader";
 
 import type { Logger } from "@freelensapp/logger";
@@ -34,7 +37,7 @@ const ipc = vi.hoisted(() => {
     deliver: () => void;
   }
 
-  const serialise = <T>(value: T): T => JSON.parse(JSON.stringify(value));
+  const serialise = <T>(value: T): T => (value === undefined ? value : JSON.parse(JSON.stringify(value)));
 
   const state = {
     current: "main",
@@ -42,6 +45,13 @@ const ipc = vi.hoisted(() => {
     mainListeners: new Map<string, Listener[]>(),
     rendererListeners: new Map<string, Map<string, Listener[]>>(),
     queue: [] as Message[],
+    // Every message ever sent, delivered or not.
+    sent: [] as Omit<Message, "deliver">[],
+  };
+
+  const send = (message: Message) => {
+    state.queue.push(message);
+    state.sent.push({ from: message.from, to: message.to, channel: message.channel });
   };
 
   const runAs = <T>(process: string, fn: () => T): T => {
@@ -84,7 +94,7 @@ const ipc = vi.hoisted(() => {
           continue;
         }
 
-        state.queue.push({
+        send({
           from,
           to,
           channel,
@@ -97,7 +107,7 @@ const ipc = vi.hoisted(() => {
         });
       }
     } else {
-      state.queue.push({
+      send({
         from,
         to: "main",
         channel,
@@ -113,7 +123,7 @@ const ipc = vi.hoisted(() => {
     const args = serialise(rawArgs);
 
     return new Promise((resolve, reject) => {
-      state.queue.push({
+      send({
         from: state.current,
         to: "main",
         channel,
@@ -162,6 +172,7 @@ const ipc = vi.hoisted(() => {
       state.mainListeners.clear();
       state.rendererListeners.clear();
       state.queue.length = 0;
+      state.sent.length = 0;
     },
   };
 });
@@ -193,6 +204,8 @@ vi.mock("../../renderer/ipc", async (importOriginal) => ({
 
       return Promise.resolve(JSON.parse(JSON.stringify(handler?.({}) ?? [])));
     }),
+  requestExtensionLoaderSetIsEnabled: (extensionId: string, isEnabled: boolean) =>
+    ipc.requestMain(extensionLoaderSetIsEnabledChannel, extensionId, isEnabled),
 }));
 
 const extensionId: LensExtensionId = "@freelensapp/example-extension";
@@ -334,6 +347,27 @@ describe("ExtensionLoader keeps isEnabled consistent between main and the render
       "cluster-frame": true,
     });
     expect(persistedByMain.at(-1)).toBe(true);
+  });
+
+  it("has the renderer frames send main their requests and never its own state", async () => {
+    ipc.runAs("main", () => {
+      runInAction(() => loaders.main.addExtension(discoveredExtension(false)));
+    });
+    settle();
+
+    const enabling = ipc.runAs("root-frame", () => loaders["root-frame"].setIsEnabled(extensionId, true));
+
+    settle();
+    await enabling;
+
+    expect(ipc.state.sent.filter(({ from }) => from !== "main")).toEqual([
+      { from: "root-frame", to: "main", channel: extensionLoaderSetIsEnabledChannel },
+    ]);
+    expect(isEnabledEverywhere()).toEqual({
+      main: true,
+      "root-frame": true,
+      "cluster-frame": true,
+    });
   });
 
   it("ends on the last choice when the root frame toggles an extension twice in a row", async () => {
