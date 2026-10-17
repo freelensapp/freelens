@@ -7,7 +7,17 @@
 export const extensionDiscoveryStateChannel = "extension-discovery:state";
 export const bundledExtensionsLoaded = "extension-loader:bundled-extensions-loaded";
 export const extensionLoaderFromMainChannel = "extension-loader:main:state";
-export const extensionLoaderFromRendererChannel = "extension-loader:renderer:state";
+
+/**
+ * A renderer asking main to enable or disable one extension, which main
+ * answers once it has. Main is the only process which changes `isEnabled`, and
+ * a renderer gets the change with the next state main broadcasts. A renderer
+ * which changed its own copy instead would have to send it back, and every
+ * frame would then also send back each state it received: with more than one
+ * frame, stale copies of the state overtake newer ones and the processes go on
+ * correcting each other without end.
+ */
+export const extensionLoaderSetIsEnabledChannel = "extension-loader:set-is-enabled";
 
 /**
  * One reload of one development extension, carrying the extension's id and the

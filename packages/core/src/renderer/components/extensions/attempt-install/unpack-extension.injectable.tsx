@@ -134,9 +134,9 @@ const unpackExtensionInjectable = getInjectable({
 
         // wait for the loader has actually install it
         await when(() => extensionLoader.userExtensions.get().has(id), { timeout: 10000 })
-          .then(() => {
+          .then(async () => {
             // Enable installed extensions by default.
-            extensionLoader.setIsEnabled(id, true);
+            await extensionLoader.setIsEnabled(id, true);
 
             showSuccessNotification(
               <p>

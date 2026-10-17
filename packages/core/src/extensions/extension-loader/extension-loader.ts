@@ -8,14 +8,14 @@ import assert from "node:assert";
 import { pathToFileURL } from "node:url";
 import { EventEmitter } from "@freelensapp/event-emitter";
 import { isDefined, iter } from "@freelensapp/utilities";
-import { ipcMain, ipcRenderer } from "electron";
+import { ipcMain } from "electron";
 import { isEqual } from "es-toolkit";
 import { action, computed, observable, reaction, runInAction, toJS, when } from "mobx";
-import { broadcastMessage, ipcMainHandle, ipcMainOn, ipcRendererOn } from "../../common/ipc";
+import { broadcastMessage, ipcMainHandle, ipcRendererOn } from "../../common/ipc";
 import {
   extensionLoaderFromMainChannel,
-  extensionLoaderFromRendererChannel,
   extensionLoaderReloadDevelopmentChannel,
+  extensionLoaderSetIsEnabledChannel,
 } from "../../common/ipc/extension-handling";
 import { developmentBuildSegment } from "../../features/extensions/loader/common/build-segment";
 import {
@@ -24,7 +24,7 @@ import {
   extensionFileUrl,
   toFileSegments,
 } from "../../features/extensions/loader/common/scheme";
-import { requestExtensionLoaderInitialState } from "../../renderer/ipc";
+import { requestExtensionLoaderInitialState, requestExtensionLoaderSetIsEnabled } from "../../renderer/ipc";
 import { sanitizeExtensionName } from "../lens-extension";
 
 import type { Fetch } from "@freelensapp/json-api";
@@ -199,22 +199,6 @@ export class ExtensionLoader {
     }
 
     await when(() => this.isLoaded.get());
-
-    // broadcasting extensions between main/renderer processes
-    reaction(
-      () => this.toJSON(),
-      () => this.broadcastExtensions(),
-      {
-        fireImmediately: true,
-      },
-    );
-
-    reaction(
-      () => this.storeState.get(),
-      (state) => {
-        this.dependencies.updateExtensionsState(state);
-      },
-    );
   }
 
   initExtensions(extensions: Map<LensExtensionId, InstalledExtension>) {
@@ -270,12 +254,26 @@ export class ExtensionLoader {
     }
   }
 
-  setIsEnabled(lensExtensionId: LensExtensionId, isEnabled: boolean) {
+  /**
+   * Enable or disable an extension.
+   *
+   * Main is the only process which changes `isEnabled`, and the only one which
+   * writes it to the enabled-extensions state. A renderer asks main, and its
+   * own copy changes when main broadcasts the result; the promise settles once
+   * main has applied the change. See `extensionLoaderSetIsEnabledChannel`.
+   */
+  async setIsEnabled(lensExtensionId: LensExtensionId, isEnabled: boolean): Promise<void> {
+    if (!ipcMain) {
+      return requestExtensionLoaderSetIsEnabled(lensExtensionId, isEnabled);
+    }
+
     const extension = this.extensions.get(lensExtensionId);
 
     assert(extension, `Extension "${lensExtensionId}" must be registered before it can be enabled.`);
 
-    extension.isEnabled = isEnabled;
+    runInAction(() => {
+      extension.isEnabled = isEnabled;
+    });
   }
 
   protected async initMain() {
@@ -287,9 +285,27 @@ export class ExtensionLoader {
 
     ipcMainHandle(extensionLoaderFromMainChannel, () => [...this.toJSON()]);
 
-    ipcMainOn(extensionLoaderFromRendererChannel, (event, extensions: [LensExtensionId, InstalledExtension][]) => {
-      this.syncExtensions(extensions);
-    });
+    ipcMainHandle(extensionLoaderSetIsEnabledChannel, (event, lensExtensionId: LensExtensionId, isEnabled: boolean) =>
+      this.setIsEnabled(lensExtensionId, isEnabled),
+    );
+
+    // Main holds the state and the renderers follow it. A renderer applies
+    // what it receives and sends nothing back, so nothing it sends can
+    // overtake a newer state.
+    reaction(
+      () => this.toJSON(),
+      () => this.broadcastExtensions(),
+      {
+        fireImmediately: true,
+      },
+    );
+
+    reaction(
+      () => this.storeState.get(),
+      (state) => {
+        this.dependencies.updateExtensionsState(state);
+      },
+    );
   }
 
   protected async initRenderer() {
@@ -499,9 +515,7 @@ export class ExtensionLoader {
   }
 
   broadcastExtensions() {
-    const channel = ipcRenderer ? extensionLoaderFromRendererChannel : extensionLoaderFromMainChannel;
-
-    broadcastMessage(channel, Array.from(this.extensions));
+    broadcastMessage(extensionLoaderFromMainChannel, Array.from(this.extensions));
   }
 
   syncExtensions(extensions: [LensExtensionId, InstalledExtension][]) {

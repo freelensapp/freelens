@@ -5,6 +5,7 @@
  */
 
 import { Icon } from "@freelensapp/icon";
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { Spinner } from "@freelensapp/spinner";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
@@ -18,8 +19,11 @@ import { SortableTable } from "../table/sortable-table";
 import confirmUninstallExtensionInjectable from "./confirm-uninstall-extension.injectable";
 import disableExtensionInjectable from "./disable-extension.injectable";
 import enableExtensionInjectable from "./enable-extension.injectable";
+import { getMessageFromError } from "./get-message-from-error/get-message-from-error";
 import styles from "./installed-extensions.module.scss";
 import userExtensionsInjectable from "./user-extensions/user-extensions.injectable";
+
+import type { ShowNotification } from "@freelensapp/notifications";
 
 import type { IComputedValue } from "mobx";
 
@@ -40,6 +44,7 @@ interface Dependencies {
   enableExtension: EnableExtension;
   disableExtension: DisableExtension;
   confirmUninstallExtension: ConfirmUninstallExtension;
+  showErrorNotification: ShowNotification;
 }
 
 function getStatus(extension: InstalledExtension) {
@@ -58,6 +63,7 @@ const NonInjectedInstalledExtensions = observer(
     confirmUninstallExtension,
     enableExtension,
     disableExtension,
+    showErrorNotification,
   }: Dependencies & InstalledExtensionsProps) => {
     const [search, setSearch] = useState("");
 
@@ -156,7 +162,16 @@ const NonInjectedInstalledExtensions = observer(
             <div className="flex justify-end">
               <MenuActions id={`menu-actions-for-installed-extensions-for-${id}`} usePortal toolbar={false}>
                 {isCompatible && (
-                  <MenuItem disabled={isUninstalling} onClick={() => toggleExtension(id)}>
+                  <MenuItem
+                    disabled={isUninstalling}
+                    onClick={() =>
+                      toggleExtension(id).catch((error) =>
+                        showErrorNotification(
+                          `Failed to ${isEnabled ? "disable" : "enable"} ${extension.manifest.name}: ${getMessageFromError(error)}`,
+                        ),
+                      )
+                    }
+                  >
                     <Icon material={isEnabled ? "unpublished" : "check_circle"} />
                     <span className="title" aria-disabled={isUninstalling}>
                       {isEnabled ? "Disable" : "Enabled"}
@@ -205,6 +220,7 @@ export const InstalledExtensions = withInjectables<Dependencies, InstalledExtens
       enableExtension: di.inject(enableExtensionInjectable),
       disableExtension: di.inject(disableExtensionInjectable),
       confirmUninstallExtension: di.inject(confirmUninstallExtensionInjectable),
+      showErrorNotification: di.inject(showErrorNotificationInjectable),
     }),
   },
 );
