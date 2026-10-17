@@ -108,7 +108,7 @@ catalog:
   handlebars: 4.7.10
   http-proxy-3: 2.0.1
   immer: 11.1.21
-  joi: 18.2.9
+  joi: 18.3.0
   js-yaml: 5.5.0
   logform: 2.7.0
   marked: 18.1.1
