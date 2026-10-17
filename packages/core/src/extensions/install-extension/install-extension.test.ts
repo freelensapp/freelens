@@ -38,9 +38,9 @@ describe("install-extension", () => {
     installExtension = di.inject(installExtensionInjectable);
   });
 
-  it("bootstraps package.json before installing an extension", async () => {
+  it("bootstraps a missing package.json and installs all extensions in one call", async () => {
     await installExtension({
-      name: "/tmp/my-extension",
+      paths: ["/tmp/my-extension", "/tmp/other-extension"],
       packageJsonPath: "/some-directory-for-user-data/package.json",
     });
 
@@ -49,6 +49,7 @@ describe("install-extension", () => {
     expect(writeJsonSyncMock).toHaveBeenCalledWith("/some-directory-for-user-data/package.json", {
       private: true,
     });
+    expect(forkPnpmMock).toHaveBeenCalledTimes(1);
     expect(forkPnpmMock).toHaveBeenCalledWith(
       "install",
       "--prefer-offline",
@@ -56,6 +57,43 @@ describe("install-extension", () => {
       "--force",
       "--save-optional",
       "/tmp/my-extension",
+      "/tmp/other-extension",
     );
+  });
+
+  it("bootstraps an empty package.json before installing extensions", async () => {
+    pathExistsMock.mockResolvedValue(true);
+    statMock.mockResolvedValue({ size: 0 });
+
+    await installExtension({
+      paths: ["/tmp/my-extension", "/tmp/other-extension"],
+      packageJsonPath: "/some-directory-for-user-data/package.json",
+    });
+
+    expect(statMock).toHaveBeenCalledWith("/some-directory-for-user-data/package.json");
+    expect(writeJsonSyncMock).toHaveBeenCalledWith("/some-directory-for-user-data/package.json", { private: true });
+    expect(forkPnpmMock).toHaveBeenCalledTimes(1);
+    expect(forkPnpmMock).toHaveBeenCalledWith(
+      "install",
+      "--prefer-offline",
+      "--prod",
+      "--force",
+      "--save-optional",
+      "/tmp/my-extension",
+      "/tmp/other-extension",
+    );
+  });
+
+  it("preserves a nonempty package.json", async () => {
+    pathExistsMock.mockResolvedValue(true);
+    statMock.mockResolvedValue({ size: 20 });
+
+    await installExtension({
+      paths: ["/tmp/my-extension"],
+      packageJsonPath: "/some-directory-for-user-data/package.json",
+    });
+
+    expect(writeJsonSyncMock).not.toHaveBeenCalled();
+    expect(forkPnpmMock).toHaveBeenCalledTimes(1);
   });
 });
