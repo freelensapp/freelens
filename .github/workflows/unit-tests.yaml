@@ -75,13 +75,8 @@ jobs:
           restore-keys: |
             ubuntu-24.04-arm-arm64-turborepo-
 
-      # The bundled kubectl, helm and freelens-k8s-proxy get a cache of their
-      # own: the Turborepo cache misses whenever freelens/package.json changes,
-      # which would download them again. ensure-binaries hashes every file and
-      # skips the ones that match their pin in binaries.lock.json, so a cache
-      # restored from an older lock only fetches what changed, and a tampered
-      # cache gets downloaded again rather than packaged. Saved right after
-      # the build, so a step failing later does not lose the download.
+      # Own cache, since the Turborepo one misses on every change of
+      # freelens/package.json. Saved right after the build.
       - name: Restore bundled binaries cache
         id: binaries-cache-restore
         uses: actions/cache/restore@v6

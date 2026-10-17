@@ -144,8 +144,7 @@ jobs:
             exit 0
           fi
 
-          # One row per pinned digest. An archived artifact has a second one, for
-          # the binary extracted from it, which must not change silently either.
+          # One row per pinned digest, binarySha256 included.
           flatten() {
             yq -pj -ot '
               [

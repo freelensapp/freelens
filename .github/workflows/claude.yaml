@@ -330,12 +330,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-${{ runner.arch }}-turborepo-
 
-      # The bundled kubectl, helm and freelens-k8s-proxy get a cache of their
-      # own: the Turborepo cache misses whenever freelens/package.json changes,
-      # which would download them again. ensure-binaries hashes every file and
-      # skips the ones that match their pin in binaries.lock.json, so a cache
-      # restored from an older lock only fetches what changed, and a tampered
-      # cache gets downloaded again rather than packaged.
+      # Own cache, since the Turborepo one misses on every change of
+      # freelens/package.json.
       - name: Use bundled binaries cache
         if: needs.parse.outputs.is-fork != 'true'
         uses: actions/cache@v6
