@@ -121,7 +121,7 @@ const NonInjectedInstalledExtensions = observer(
             <div>{extension.manifest.version}</div>
             {!extension.isManaged ? (
               <div className={styles.extensionProvenance} title={`Loaded from ${extension.absolutePath}`}>
-                development, unverified
+                development
               </div>
             ) : extension.isVerified ? (
               <div
