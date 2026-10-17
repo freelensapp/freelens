@@ -371,7 +371,7 @@ jobs:
         if: needs.parse.outputs.is-fork != 'true'
         uses: jdx/mise-action@v5
         with:
-          version: 2026.10.11 # datasource=github-releases depName=jdx/mise
+          version: 2026.10.12 # datasource=github-releases depName=jdx/mise
           install_args: cosign yq
         continue-on-error: true
 
