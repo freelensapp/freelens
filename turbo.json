@@ -32,6 +32,7 @@
       "outputs": ["dist/**"]
     },
     "build:binaries": {
+      "dependsOn": ["@freelensapp/ensure-binaries#build"],
       "cache": false,
       "passThroughEnv": ["FREELENS_SKIP_DOWNLOAD_BINARIES"]
     },
@@ -41,7 +42,11 @@
       "outputs": ["dist/**", "static/build/**"]
     },
     "build:resources": {
-      "dependsOn": ["^build:resources"],
+      "dependsOn": [
+        "^build:resources",
+        "@freelensapp/generate-license#build",
+        "@freelensapp/generate-tray-icons#build"
+      ],
       "env": ["CC", "CXX", "NODE_ENV"],
       "inputs": ["package.json", "**/logo-lens.svg"],
       "outputs": ["static/build/license.txt", "static/build/tray/**"]
