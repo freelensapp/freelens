@@ -203,8 +203,8 @@ jobs:
           restore-keys: |
             ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-builder-
 
-      # Own cache, since the Turborepo one misses on every change of
-      # freelens/package.json. Saved right after the build.
+      # Turborepo does not cache the binaries, see "Bundled Binary Versions"
+      # in AGENTS.md. Saved right after the build.
       - name: Restore bundled binaries cache
         id: binaries-cache-restore
         uses: actions/cache/restore@v6
