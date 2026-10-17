@@ -425,6 +425,13 @@ and only then writes the lock. `cosign` comes from mise (`mise install`), and
 calls per hour with the rest of your IP. Use `--only <tool>` to refresh a single
 tool while iterating.
 
+helm is downloaded as a tarball, so its `sha256` pins the archive and a second
+digest, `binarySha256`, pins the binary extracted from it. The build hashes
+every file already in `freelens/binaries/` against the lock on each run and
+downloads it again on a mismatch; it keeps no record of what it verified
+before. That is what makes the directory safe to restore from a CI cache:
+whoever could write a binary into the cache could write such a record too.
+
 `.github/workflows/binaries-lock-check.yaml` enforces both that the lock is
 current and that no digest changed while its version stood still. On a
 Renovate branch a stale lock does not fail the check: Renovate bumps the
