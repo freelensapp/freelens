@@ -484,6 +484,10 @@ pinned with their checksums in `mise.lock`. The lock uses lockfile format
 version 3 (`lockfile_version = 3`), which **needs mise 2026.9.16 or newer**: an
 older mise rejects the lock, so `mise install` fails until mise is upgraded.
 
+After changing a version in `mise.toml`, regenerate the lock with `mise lock`,
+which refreshes every tool on every platform in the file. `mise install`
+re-locks only the platform it runs on and leaves the others stale.
+
 ## Common Development Tasks
 
 ### Adding a New Feature
@@ -1003,10 +1007,11 @@ than guessing.
 ### Development Environment
 
 The GitHub Actions runner has a full Node.js + pnpm environment available, and
-the workflow attempts to install the dependencies (`pnpm install`) and the
-`trunk` CLI before starting Claude. The build step is skipped to save CI
-resources, but you can run build commands when needed for advanced tasks
-(e.g. type-checking, running tests).
+the workflow attempts to install the dependencies (`pnpm install`), the
+`trunk` CLI and mise, with the `cosign` and `yq` that `mise.lock` pins, before
+starting Claude. The build step is skipped to save CI resources, but you can
+run build commands when needed for advanced tasks (e.g. type-checking, running
+tests).
 
 Every one of those setup steps is `continue-on-error`, so any of them may have
 failed and left its tool or `node_modules` missing. Verify that what you need
@@ -1018,10 +1023,10 @@ commits are checked out through the pull ref.
 
 A PR from a fork runs in review mode, because its code is untrusted and the
 job holds write tokens. None of the setup above runs, and the tools that
-execute the repository's code (`pnpm`, `node`, `npx`, `bash`, `trunk`), edit
-files or commit and push are not available. Review the code by reading it,
-and say that no check ran. See "Fork PRs: Review Only" for how a fork PR that
-needs changes is handled.
+execute the repository's code (`pnpm`, `node`, `npx`, `bash`, `trunk`,
+`mise`), edit files or commit and push are not available. Review the code by
+reading it, and say that no check ran. See "Fork PRs: Review Only" for how a
+fork PR that needs changes is handled.
 
 The following CLI tools are explicitly allowed in the workflow:
 
@@ -1030,6 +1035,8 @@ The following CLI tools are explicitly allowed in the workflow:
   committing, and pushing
 - `gh` (all subcommands) — for managing pull requests
 - `trunk` — for linting and formatting every non-TypeScript file type
+- `mise` — for regenerating `mise.lock` (`mise lock`) after a version bump in
+  `mise.toml`
 - `bash` — for syntax-checking shell scripts (`bash -n <script>`)
 - `npx`, `node` — for running Node.js tools and scripts inline
 - `yq`, `jq` — for YAML and JSON processing
