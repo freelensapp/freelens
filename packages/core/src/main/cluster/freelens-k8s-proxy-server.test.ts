@@ -195,6 +195,17 @@ describe("freelens-k8s-proxy server", () => {
       expect(ports).toEqual(["9002", "9002", "9002"]);
       expect(spawnMock).toHaveBeenCalledTimes(2);
     });
+
+    it.each([
+      ["ensureRunning()", () => freelensK8sProxyServer.ensureRunning()],
+      ["ensureFreelensK8sProxyUrl()", () => freelensK8sProxyServer.ensureFreelensK8sProxyUrl()],
+    ])("gives the next short request the target of a proxy that %s has started", async (_name, startProxy) => {
+      await startProxy();
+
+      expect(await portOf()).toBe("9002");
+      expect(await portOf()).toBe("9002");
+      expect(spawnMock).toHaveBeenCalledTimes(2);
+    });
   });
 
   it("starts a new proxy for a short request after stop()", async () => {
