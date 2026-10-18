@@ -13,6 +13,7 @@ import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
 import type { KubeEventApi } from "@freelensapp/kube-api";
 import type { KubeEvent, KubeObject } from "@freelensapp/kube-object";
 
+import type { ItemSorting } from "../../../common/item.store";
 import type { KubeObjectStoreDependencies, KubeObjectStoreOptions } from "../../../common/k8s-api/kube-object.store";
 import type { GetPodById } from "../workloads-pods/get-pod-by-id.injectable";
 
@@ -36,19 +37,12 @@ export class EventStore extends KubeObjectStore<KubeEvent, KubeEventApi> {
     return super.bindWatchEventsUpdater(5000);
   }
 
-  protected getWatchSortKey(item: KubeEvent) {
-    return item.metadata.creationTimestamp ? -item.getCreationTimestamp() : undefined;
-  }
-
-  protected sortItems(items: KubeEvent[]) {
-    return super.sortItems(
-      items,
-      [
-        (event) => -event.getCreationTimestamp(), // keep events order as timeline ("fresh" on top)
-      ],
-      "asc",
-    );
-  }
+  protected readonly sorting: ItemSorting<KubeEvent> = {
+    by: [
+      (event) => -event.getCreationTimestamp(), // keep events order as timeline ("fresh" on top)
+    ],
+    order: "asc",
+  };
 
   @computed get eventsByObjectId(): Map<string, KubeEvent[]> {
     const map = new Map<string, KubeEvent[]>();

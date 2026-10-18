@@ -11,6 +11,7 @@ import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
 import type { CustomResourceDefinitionApi } from "@freelensapp/kube-api";
 import type { CustomResourceDefinition, KubeObject } from "@freelensapp/kube-object";
 
+import type { ItemSorting } from "../../../common/item.store";
 import type { KubeObjectStoreDependencies, KubeObjectStoreOptions } from "../../../common/k8s-api/kube-object.store";
 
 export class CustomResourceDefinitionStore extends KubeObjectStore<
@@ -26,13 +27,9 @@ export class CustomResourceDefinitionStore extends KubeObjectStore<
     autoBind(this);
   }
 
-  protected getWatchSortKey(item: CustomResourceDefinition) {
-    return [item.getGroup(), item.getName()];
-  }
-
-  protected sortItems(items: CustomResourceDefinition[]) {
-    return super.sortItems(items, [(crd) => crd.getGroup(), (crd) => crd.getName()]);
-  }
+  protected readonly sorting: ItemSorting<CustomResourceDefinition> = {
+    by: [(crd) => crd.getGroup(), (crd) => crd.getName()],
+  };
 
   @computed get groups() {
     const groups: Record<string, CustomResourceDefinition[]> = {};
