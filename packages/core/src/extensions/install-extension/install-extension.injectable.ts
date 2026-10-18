@@ -12,7 +12,7 @@ import statInjectable from "../../common/fs/stat.injectable";
 import writeJsonSyncInjectable from "../../common/fs/write-json-sync.injectable";
 import forkPnpmInjectable from "./fork-pnpm.injectable";
 
-export type InstallExtension = (params: { name: string; packageJsonPath: string }) => Promise<void>;
+export type InstallExtension = (params: { paths: string[]; packageJsonPath: string }) => Promise<void>;
 
 const installExtensionInjectable = getInjectable({
   id: "install-extension",
@@ -26,18 +26,22 @@ const installExtensionInjectable = getInjectable({
 
     const installLock = new AwaitLock();
 
-    return async ({ name, packageJsonPath }) => {
+    return async ({ paths, packageJsonPath }) => {
+      if (paths.length === 0) {
+        return;
+      }
+
       await installLock.acquireAsync();
 
       try {
-        logger.info(`installing package for extension "${name}"`);
+        logger.info(`installing packages for extensions: ${paths.join(", ")}`);
         if (!(await pathExists(packageJsonPath))) {
           writeJsonSync(packageJsonPath, { private: true });
         } else if ((await stat(packageJsonPath)).size === 0) {
           writeJsonSync(packageJsonPath, { private: true });
         }
-        await forkPnpm("install", "--prefer-offline", "--prod", "--force", "--save-optional", name);
-        logger.info(`installed package for extension "${name}"`);
+        await forkPnpm("install", "--prefer-offline", "--prod", "--force", "--save-optional", ...paths);
+        logger.info(`installed packages for extensions: ${paths.join(", ")}`);
       } catch (error) {
         logger.error(`pnpm failed: ${error}`);
       } finally {

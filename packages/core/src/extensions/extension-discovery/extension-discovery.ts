@@ -225,9 +225,11 @@ export class ExtensionDiscovery {
         const extension = await this.loadExtensionFromFolder(absPath);
 
         if (extension) {
-          // Install dependencies for the new extension
+          // Include existing extensions so pnpm keeps their installed links.
           await this.dependencies.installExtension({
-            name: extension.absolutePath,
+            paths: [
+              ...new Set([...this.extensions.values()].map((ext) => ext.absolutePath).concat(extension.absolutePath)),
+            ],
             packageJsonPath: this.packageJsonPath,
           });
 
@@ -357,6 +359,32 @@ export class ExtensionDiscovery {
     await this.dependencies.ensureDirectory(this.localFolderPath);
 
     const extensions = await this.ensureExtensions();
+    const installed = await Promise.all(
+      [...extensions.values()].map((extension) =>
+        this.dependencies.pathExists(this.getInstalledPath(extension.manifest.name)),
+      ),
+    );
+
+    if (installed.some((exists) => !exists)) {
+      this.dependencies.logger.info(`${logModule} reconciling installed extension links`);
+      await this.dependencies.installExtension({
+        paths: [...extensions.values()].map((extension) => extension.absolutePath),
+        packageJsonPath: this.packageJsonPath,
+      });
+
+      // The installer logs its own failure; an extension that is still not
+      // linked loads the way it did before and is reported here instead of
+      // failing discovery for every other extension.
+      for (const extension of extensions.values()) {
+        if (!(await this.dependencies.pathExists(this.getInstalledPath(extension.manifest.name)))) {
+          this.dependencies.logger.warn(
+            `${logModule} ${extension.manifest.name} is still not linked under ${this.nodeModulesPath}`,
+          );
+        }
+      }
+    } else {
+      this.dependencies.logger.info(`${logModule} extension links are already installed`);
+    }
 
     this.isLoaded = true;
 
