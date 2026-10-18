@@ -8,6 +8,7 @@ import { clusterSetFrameIdHandler, clusterStates } from "../../common/ipc/cluste
 import {
   extensionDiscoveryStateChannel,
   extensionLoaderFromMainChannel,
+  extensionLoaderLoadFailuresFromMainChannel,
   extensionLoaderSetIsEnabledChannel,
 } from "../../common/ipc/extension-handling";
 import {
@@ -23,6 +24,7 @@ import ipcRendererInjectable from "../utils/channel/ipc-renderer.injectable";
 import type { Location } from "@freelensapp/routing";
 
 import type { ClusterId, ClusterState } from "../../common/cluster-types";
+import type { ExtensionLoadFailure } from "../../extensions/extension-loader/load-failure";
 import type { InstalledExtension, LensExtensionId } from "../../extensions/installed-extension";
 
 function requestMain(channel: string, ...args: any[]) {
@@ -70,6 +72,10 @@ export function requestInitialExtensionDiscovery(): Promise<{ isLoaded: boolean 
 
 export function requestExtensionLoaderInitialState(): Promise<[LensExtensionId, InstalledExtension][]> {
   return requestMain(extensionLoaderFromMainChannel);
+}
+
+export function requestExtensionLoaderMainLoadFailures(): Promise<[LensExtensionId, ExtensionLoadFailure][]> {
+  return requestMain(extensionLoaderLoadFailuresFromMainChannel);
 }
 
 export function requestExtensionLoaderSetIsEnabled(extensionId: LensExtensionId, isEnabled: boolean): Promise<void> {

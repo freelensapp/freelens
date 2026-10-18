@@ -7,13 +7,19 @@ import { observable, runInAction } from "mobx";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   extensionLoaderFromMainChannel,
+  extensionLoaderLoadFailuresFromMainChannel,
   extensionLoaderSetIsEnabledChannel,
 } from "../../common/ipc/extension-handling";
 import { ExtensionLoader } from "../extension-loader/extension-loader";
 
 import type { Logger } from "@freelensapp/logger";
 
-import type { InstalledExtension, LensExtensionId, LensExtensionInstance } from "../installed-extension";
+import type {
+  InstalledExtension,
+  LensExtensionConstructor,
+  LensExtensionId,
+  LensExtensionInstance,
+} from "../installed-extension";
 
 type Process = "main" | "root-frame" | "cluster-frame";
 
@@ -201,6 +207,12 @@ vi.mock("../../renderer/ipc", async (importOriginal) => ({
   requestExtensionLoaderInitialState: () =>
     ipc.runAs("main", () => {
       const handler = ipc.state.mainHandlers.get(extensionLoaderFromMainChannel);
+
+      return Promise.resolve(JSON.parse(JSON.stringify(handler?.({}) ?? [])));
+    }),
+  requestExtensionLoaderMainLoadFailures: () =>
+    ipc.runAs("main", () => {
+      const handler = ipc.state.mainHandlers.get(extensionLoaderLoadFailuresFromMainChannel);
 
       return Promise.resolve(JSON.parse(JSON.stringify(handler?.({}) ?? [])));
     }),
@@ -393,5 +405,78 @@ describe("ExtensionLoader keeps isEnabled consistent between main and the render
       "cluster-frame": true,
     });
     expect(persistedByMain.at(-1)).toBe(true);
+  });
+});
+
+describe("ExtensionLoader brings main's load failures to the renderer frames", () => {
+  let main: ExtensionLoader;
+
+  const settle = () => {
+    while (ipc.state.queue.length > 0) {
+      ipc.state.queue.shift()?.deliver();
+    }
+  };
+
+  const startFrame = async (process: Exclude<Process, "main">) => {
+    const loader = createLoader(process, []);
+
+    await ipc.runAs(process, () => loader.init());
+    settle();
+
+    return loader;
+  };
+
+  const installInMain = () =>
+    ipc.runAs("main", () => {
+      runInAction(() => main.addExtension(discoveredExtension(true)));
+    });
+
+  const mainFailure = {
+    process: "main",
+    stage: "import",
+    message: "Cannot find module 'dist/main.js'",
+  };
+
+  beforeEach(async () => {
+    ipc.reset();
+
+    main = createLoader("main", []);
+
+    // Main's entry point fails to import. The frames have no renderer entry
+    // point, so nothing fails in them.
+    vi.spyOn(
+      main as unknown as { requireExtension: () => Promise<LensExtensionConstructor | null> },
+      "requireExtension",
+    ).mockRejectedValue(new Error(mainFailure.message));
+
+    await ipc.runAs("main", () => main.init());
+  });
+
+  it("gives a frame which starts after the failure main's failure with the initial state", async () => {
+    installInMain();
+    await vi.waitFor(() => expect(main.getLoadFailures(extensionId)).toEqual([mainFailure]));
+
+    const rootFrame = await startFrame("root-frame");
+
+    await vi.waitFor(() => expect(rootFrame.getLoadFailures(extensionId)).toEqual([mainFailure]));
+  });
+
+  it("broadcasts main's failure to a frame which is already up, and its clearing when it is disabled", async () => {
+    const rootFrame = await startFrame("root-frame");
+
+    installInMain();
+    await vi.waitFor(() => expect(main.getLoadFailures(extensionId)).toEqual([mainFailure]));
+    settle();
+
+    expect(rootFrame.getLoadFailures(extensionId)).toEqual([mainFailure]);
+
+    const disabling = ipc.runAs("root-frame", () => rootFrame.setIsEnabled(extensionId, false));
+
+    settle();
+    await disabling;
+    settle();
+
+    expect(main.getLoadFailures(extensionId)).toEqual([]);
+    expect(rootFrame.getLoadFailures(extensionId)).toEqual([]);
   });
 });
