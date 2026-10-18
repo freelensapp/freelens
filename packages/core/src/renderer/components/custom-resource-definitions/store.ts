@@ -26,6 +26,10 @@ export class CustomResourceDefinitionStore extends KubeObjectStore<
     autoBind(this);
   }
 
+  protected getWatchSortKey(item: CustomResourceDefinition) {
+    return [item.getGroup(), item.getName()];
+  }
+
   protected sortItems(items: CustomResourceDefinition[]) {
     return super.sortItems(items, [(crd) => crd.getGroup(), (crd) => crd.getName()]);
   }

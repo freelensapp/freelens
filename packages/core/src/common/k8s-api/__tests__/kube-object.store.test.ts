@@ -6,19 +6,21 @@
 
 import { KubeObject } from "@freelensapp/kube-object";
 import { noop, WrappedAbortController } from "@freelensapp/utilities";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { observe } from "mobx";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { KubeObjectStore } from "../kube-object.store";
 
 import type { FetchRequestInit as RequestInit } from "@freelensapp/json-api";
 import type { KubeApi, KubeApiWatchOptions } from "@freelensapp/kube-api";
 import type { KubeJsonApiDataFor } from "@freelensapp/kube-object";
 
-import type { KubeObjectStoreLoadingParams } from "../kube-object.store";
+import type { KubeObjectStoreLoadingParams, KubeObjectStoreOptions } from "../kube-object.store";
 
 class FakeKubeObjectStore extends KubeObjectStore<KubeObject> {
   constructor(
     private readonly _loadItems: (params: KubeObjectStoreLoadingParams) => KubeObject[],
     api: Partial<KubeApi<KubeObject>>,
+    opts?: KubeObjectStoreOptions,
   ) {
     super(
       {
@@ -38,6 +40,7 @@ class FakeKubeObjectStore extends KubeObjectStore<KubeObject> {
         },
       },
       api as KubeApi<KubeObject>,
+      opts,
     );
   }
 
@@ -478,6 +481,201 @@ describe("KubeObjectStore", () => {
 
     expect(onLoadFailure).toHaveBeenCalledTimes(1);
     expect(onLoadFailure.mock.calls[0][0].message).toContain("Failed to load");
+  });
+
+  describe("updateFromEventsBuffer", () => {
+    const data = (uid: string, resourceVersion = "1", name = uid): KubeJsonApiDataFor<KubeObject> => ({
+      apiVersion: "v1",
+      kind: "Test",
+      metadata: { uid, name, resourceVersion, selfLink: `/test/${uid}` },
+    });
+    let store: FakeKubeObjectStore;
+    let itemsChanged = vi.fn<() => void>();
+    let stopObserving: () => void;
+
+    beforeEach(() => {
+      vi.useFakeTimers();
+      store = new FakeKubeObjectStore(() => [], { objectConstructor: KubeObject });
+      store.items.replace(["a", "b", "c", "d"].map((uid) => new KubeObject(data(uid))));
+      itemsChanged = vi.fn<() => void>();
+      stopObserving = observe(store.items, itemsChanged);
+    });
+
+    afterEach(() => {
+      stopObserving();
+      vi.clearAllTimers();
+      vi.useRealTimers();
+      vi.restoreAllMocks();
+    });
+
+    it("replaces a modified middle item without moving it", () => {
+      const before = store.getItems();
+
+      store["eventsBuffer"].push({ type: "MODIFIED", object: { ...data("b", "2"), status: { ready: true } } });
+      store["updateFromEventsBuffer"]();
+
+      expect(store.items.map((item) => item.getId())).toEqual(["a", "b", "c", "d"]);
+      expect(store.items[1]).not.toBe(before[1]);
+      expect(store.items[1]).toBeInstanceOf(KubeObject);
+      expect(store.items[1].status).toEqual({ ready: true });
+      expect(store.items[0]).toBe(before[0]);
+      expect(store.items[2]).toBe(before[2]);
+      expect(store.items[3]).toBe(before[3]);
+    });
+
+    it.each(["ADDED", "MODIFIED"] as const)(
+      "keeps the object and does not publish a same-version %s replay",
+      (type) => {
+        const before = store.items[1];
+        const construct = vi.spyOn(store.api, "objectConstructor");
+
+        store["eventsBuffer"].push({ type, object: data("b") });
+        store["updateFromEventsBuffer"]();
+
+        expect(store.items[1]).toBe(before);
+        expect(construct).not.toHaveBeenCalled();
+        expect(itemsChanged).not.toHaveBeenCalled();
+        expect(store["eventsBuffer"]).toHaveLength(0);
+      },
+    );
+
+    it("does not treat empty resource versions as a replay", () => {
+      const before = new KubeObject(data("b", ""));
+
+      store.items.replace([before]);
+      store["eventsBuffer"].push({ type: "MODIFIED", object: data("b", "") });
+      store["updateFromEventsBuffer"]();
+
+      expect(store.items[0]).not.toBe(before);
+    });
+
+    it("compacts two deletions without holes or sorting", () => {
+      const before = store.getItems();
+      const sort = vi.spyOn(store, "sortItems" as never);
+
+      store["eventsBuffer"].push({ type: "DELETED", object: data("a") }, { type: "DELETED", object: data("c") });
+      store["updateFromEventsBuffer"]();
+
+      expect(store.getItems()).toEqual([before[1], before[3]]);
+      expect(sort).not.toHaveBeenCalled();
+    });
+
+    it("sorts an inserted item into place", () => {
+      const sort = vi.spyOn(store, "sortItems" as never);
+
+      store["eventsBuffer"].push({ type: "ADDED", object: data("aa") });
+      store["updateFromEventsBuffer"]();
+
+      expect(store.items.map((item) => item.getId())).toEqual(["a", "aa", "b", "c", "d"]);
+      expect(sort).toHaveBeenCalledTimes(1);
+    });
+
+    it("does not sort a status-only modification", () => {
+      const sort = vi.spyOn(store, "sortItems" as never);
+
+      store["eventsBuffer"].push({ type: "MODIFIED", object: { ...data("b", "2"), status: { ready: true } } });
+      store["updateFromEventsBuffer"]();
+
+      expect(store.items[1].status).toEqual({ ready: true });
+      expect(sort).not.toHaveBeenCalled();
+    });
+
+    it("sorts when the default sort key changes", () => {
+      const sort = vi.spyOn(store, "sortItems" as never);
+
+      store["eventsBuffer"].push({ type: "MODIFIED", object: data("b", "2", "z") });
+      store["updateFromEventsBuffer"]();
+
+      expect(store.items.map((item) => item.getId())).toEqual(["a", "c", "d", "b"]);
+      expect(sort).toHaveBeenCalledTimes(1);
+    });
+
+    it("ignores ERROR events without publishing items", () => {
+      store["eventsBuffer"].push({ type: "ERROR" });
+      store["updateFromEventsBuffer"]();
+
+      expect(store.items.map((item) => item.getId())).toEqual(["a", "b", "c", "d"]);
+      expect(itemsChanged).not.toHaveBeenCalled();
+    });
+
+    it("warns and skips events without a uid", () => {
+      const warn = vi.spyOn(store["dependencies"].logger, "warn");
+      const event = { type: "MODIFIED" as const, object: data("") };
+
+      store["eventsBuffer"].push(event);
+      store["updateFromEventsBuffer"]();
+
+      expect(warn).toHaveBeenCalledWith("[KUBE-STORE]: watch event did not have defined .metadata.uid, skipping", {
+        event,
+      });
+      expect(itemsChanged).not.toHaveBeenCalled();
+    });
+
+    it("caps the list before sorting", () => {
+      store = new FakeKubeObjectStore(() => [], { objectConstructor: KubeObject }, { bufferSize: 2 });
+      store.items.replace(["b", "c"].map((uid) => new KubeObject(data(uid))));
+      store["eventsBuffer"].push({ type: "ADDED", object: data("a") });
+      store["updateFromEventsBuffer"]();
+
+      expect(store.items.map((item) => item.getId())).toEqual(["a", "c"]);
+    });
+
+    it("handles deletion, reinsertion and repeated updates of a uid in one batch", () => {
+      store["eventsBuffer"].push(
+        { type: "DELETED", object: data("b") },
+        { type: "ADDED", object: data("b", "2") },
+        { type: "MODIFIED", object: data("b", "3") },
+        { type: "DELETED", object: data("a") },
+        { type: "DELETED", object: data("a") },
+        { type: "MODIFIED", object: data("d", "2") },
+      );
+      store["updateFromEventsBuffer"]();
+
+      expect(store.items.map((item) => [item.getId(), item.getResourceVersion()])).toEqual([
+        ["b", "3"],
+        ["c", "1"],
+        ["d", "2"],
+      ]);
+    });
+
+    it("rebuilds the index after items are replaced between flushes", () => {
+      store["eventsBuffer"].push({ type: "MODIFIED", object: data("b", "2") });
+      store["updateFromEventsBuffer"]();
+      store.items.replace([new KubeObject(data("d")), new KubeObject(data("e"))]);
+      store["eventsBuffer"].push({ type: "MODIFIED", object: data("e", "2") });
+      store["updateFromEventsBuffer"]();
+
+      expect(store.items.map((item) => [item.getId(), item.getResourceVersion()])).toEqual([
+        ["d", "1"],
+        ["e", "2"],
+      ]);
+    });
+
+    it("keeps sorting for an inherited custom comparator without a sort key", () => {
+      class CustomSortStore extends FakeKubeObjectStore {
+        protected sortItems(items: KubeObject[]) {
+          return super.sortItems(items, [(item) => item.metadata.labels?.rank]);
+        }
+      }
+      class InheritedSortStore extends CustomSortStore {}
+
+      store = new InheritedSortStore(() => [], { objectConstructor: KubeObject });
+      store.items.replace(
+        ["a", "b"].map(
+          (uid) => new KubeObject({ ...data(uid), metadata: { ...data(uid).metadata, labels: { rank: uid } } }),
+        ),
+      );
+      const sort = vi.spyOn(store, "sortItems" as never);
+
+      store["eventsBuffer"].push({
+        type: "MODIFIED",
+        object: { ...data("a", "2"), metadata: { ...data("a", "2").metadata, labels: { rank: "z" } } },
+      });
+      store["updateFromEventsBuffer"]();
+
+      expect(store.items.map((item) => item.getId())).toEqual(["b", "a"]);
+      expect(sort).toHaveBeenCalledTimes(1);
+    });
   });
 
   describe("subscribe", () => {

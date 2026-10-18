@@ -36,6 +36,10 @@ export class EventStore extends KubeObjectStore<KubeEvent, KubeEventApi> {
     return super.bindWatchEventsUpdater(5000);
   }
 
+  protected getWatchSortKey(item: KubeEvent) {
+    return item.metadata.creationTimestamp ? -item.getCreationTimestamp() : undefined;
+  }
+
   protected sortItems(items: KubeEvent[]) {
     return super.sortItems(
       items,

@@ -9,6 +9,7 @@ import { parseKubeApi } from "@freelensapp/kube-api";
 import { KubeStatus } from "@freelensapp/kube-object";
 import { includes, isAbortError, noop, object, rejectPromiseBy, waitUntilDefined } from "@freelensapp/utilities";
 import autoBind from "auto-bind";
+import { isEqual } from "es-toolkit";
 import { action, computed, observable, reaction } from "mobx";
 import { ItemStore } from "../item.store";
 
@@ -604,47 +605,80 @@ export class KubeObjectStore<
     startNewWatch();
   }
 
+  /**
+   * The fields used by sortItems. Custom sort overrides must supply their key
+   * to skip sorting safely; unknown extension comparators retain a full sort.
+   */
+  protected getWatchSortKey(item: K): unknown {
+    return Object.getPrototypeOf(this).sortItems === KubeObjectStore.prototype.sortItems
+      ? this.defaultSorting(item)
+      : undefined;
+  }
+
   @action
   protected updateFromEventsBuffer() {
-    const items = this.getItems();
+    const events = this.eventsBuffer.clear();
 
-    for (const event of this.eventsBuffer.clear()) {
-      if (event.type === "ERROR") {
-        continue;
-      }
+    if (!events.length) return;
+
+    // Build once per flush, so direct array writes, reloads and resets cannot
+    // leave a stale index. Tombstones keep later indices valid after a delete.
+    const items: (K | undefined)[] = this.getItems();
+    const indexByUid = new Map(items.map((item, index) => [item!.getId(), index]));
+    let changed = false;
+    let needsSort = false;
+
+    for (const event of events) {
+      if (event.type === "ERROR") continue;
 
       try {
         const { type, object } = event;
+        const uid = object.metadata?.uid;
 
-        if (!object.metadata?.uid) {
+        if (!uid) {
           this.dependencies.logger.warn("[KUBE-STORE]: watch event did not have defined .metadata.uid, skipping", {
             event,
           });
-          // Other parts of the code will break if this happens
           continue;
         }
 
-        const index = items.findIndex((item) => item.getId() === object.metadata.uid);
-        const item = items[index];
+        const index = indexByUid.get(uid);
+        const item = index === undefined ? undefined : items[index];
 
         switch (type) {
           case "ADDED":
-
-          // fallthrough
           case "MODIFIED": {
+            // Kubernetes versions are opaque: equality alone identifies a
+            // replay. Do not construct and bind another copy of the same object.
+            if (
+              item &&
+              object.metadata.resourceVersion &&
+              item.metadata.resourceVersion === object.metadata.resourceVersion
+            ) {
+              break;
+            }
+
             const newItem = new this.api.objectConstructor(object);
 
-            if (!item) {
+            if (index === undefined) {
+              indexByUid.set(uid, items.length);
               items.push(newItem);
+              needsSort = true;
             } else {
+              const previousKey = this.getWatchSortKey(item!);
+
+              needsSort ||= previousKey === undefined || !isEqual(previousKey, this.getWatchSortKey(newItem));
               items[index] = newItem;
             }
 
+            changed = true;
             break;
           }
           case "DELETED":
-            if (item) {
-              items.splice(index, 1);
+            if (index !== undefined) {
+              items[index] = undefined;
+              indexByUid.delete(uid);
+              changed = true;
             }
             break;
         }
@@ -653,7 +687,10 @@ export class KubeObjectStore<
       }
     }
 
-    // update items
-    this.items.replace(this.sortItems(items.slice(-this.bufferSize)));
+    if (changed) {
+      const retained = items.filter((item): item is K => item !== undefined).slice(-this.bufferSize);
+
+      this.items.replace(needsSort ? this.sortItems(retained) : retained);
+    }
   }
 }

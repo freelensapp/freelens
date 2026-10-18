@@ -10,6 +10,10 @@ import type { RoleApi } from "@freelensapp/kube-api";
 import type { Role, RoleData } from "@freelensapp/kube-object";
 
 export class RoleStore extends KubeObjectStore<Role, RoleApi, RoleData> {
+  protected getWatchSortKey(item: Role) {
+    return [item.kind, item.getName()];
+  }
+
   protected sortItems(items: Role[]) {
     return super.sortItems(items, [(role) => role.kind, (role) => role.getName()]);
   }
