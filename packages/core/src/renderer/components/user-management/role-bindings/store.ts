@@ -11,14 +11,12 @@ import { hashSubject } from "../hashers";
 import type { RoleBindingApi } from "@freelensapp/kube-api";
 import type { RoleBinding, RoleBindingData, Subject } from "@freelensapp/kube-object";
 
-export class RoleBindingStore extends KubeObjectStore<RoleBinding, RoleBindingApi, RoleBindingData> {
-  protected getWatchSortKey(item: RoleBinding) {
-    return [item.kind, item.getName()];
-  }
+import type { ItemSorting } from "../../../../common/item.store";
 
-  protected sortItems(items: RoleBinding[]) {
-    return super.sortItems(items, [(roleBinding) => roleBinding.kind, (roleBinding) => roleBinding.getName()]);
-  }
+export class RoleBindingStore extends KubeObjectStore<RoleBinding, RoleBindingApi, RoleBindingData> {
+  protected readonly sorting: ItemSorting<RoleBinding> = {
+    by: [(roleBinding) => roleBinding.kind, (roleBinding) => roleBinding.getName()],
+  };
 
   async updateSubjects(roleBinding: RoleBinding, subjects: Subject[]) {
     return this.update(roleBinding, {

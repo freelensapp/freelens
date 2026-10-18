@@ -3,6 +3,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { readdirSync, readFileSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import {
   ClusterRole,
   ClusterRoleBinding,
@@ -15,6 +18,7 @@ import {
 import { noop } from "@freelensapp/utilities";
 import { describe, expect, it, vi } from "vitest";
 import { mock } from "vitest-mock-extended";
+import { ItemStore } from "../../../common/item.store";
 import { CustomResourceDefinitionStore } from "../custom-resource-definitions/store";
 import { EventStore } from "../events/store";
 import { ClusterRoleBindingStore } from "../user-management/cluster-role-bindings/store";
@@ -61,6 +65,10 @@ const cases = [
 ];
 
 describe.each(cases)("$Store.name watch sorting", ({ Store, ObjectType, extra }) => {
+  it("declares its order instead of overriding sortItems", () => {
+    expect(Store.prototype["sortItems" as never]).toBe(ItemStore.prototype["sortItems" as never]);
+  });
+
   it("sorts only when a field used by the store's comparator changes", () => {
     vi.useFakeTimers();
     try {
@@ -100,5 +108,24 @@ describe.each(cases)("$Store.name watch sorting", ({ Store, ObjectType, extra })
       vi.clearAllTimers();
       vi.useRealTimers();
     }
+  });
+});
+
+// `sortKeyChanged` compares the values `sorting` declares, which is what
+// `sortItems` sorts by unless a store overrides one of them. A core store that
+// overrode `sortItems` would lose the watch optimisation, and one that overrode
+// `sortKeyChanged` could stop re-sorting on watch updates without any test
+// noticing.
+describe("core stores", () => {
+  const sourceRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
+  const isTest = (file: string) => /(^|\/)__tests__\/|\.test\.tsx?$/.test(file);
+  const sources = readdirSync(sourceRoot, { recursive: true, encoding: "utf8" })
+    .map((file) => file.split(path.sep).join("/"))
+    .filter((file) => /\.tsx?$/.test(file) && !isTest(file) && file !== "common/item.store.ts");
+
+  it.each(["sortItems", "sortKeyChanged"])("do not override %s", (method) => {
+    const definition = new RegExp(`^\\s*(?:(?:public|protected|private|override|async)\\s+)*${method}\\s*[<(]`, "m");
+
+    expect(sources.filter((file) => definition.test(readFileSync(path.join(sourceRoot, file), "utf8")))).toEqual([]);
   });
 });

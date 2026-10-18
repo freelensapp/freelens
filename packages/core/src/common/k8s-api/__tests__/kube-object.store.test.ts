@@ -678,6 +678,73 @@ describe("KubeObjectStore", () => {
     });
   });
 
+  describe("patch and update", () => {
+    const data = (uid: string, resourceVersion = "1", name = uid): KubeJsonApiDataFor<KubeObject> => ({
+      apiVersion: "v1",
+      kind: "Test",
+      metadata: { uid, name, resourceVersion, selfLink: `/test/${uid}` },
+    });
+    let returned: KubeJsonApiDataFor<KubeObject>;
+    let store: FakeKubeObjectStore;
+
+    beforeEach(() => {
+      vi.useFakeTimers();
+      store = new FakeKubeObjectStore(() => [], {
+        objectConstructor: KubeObject,
+        patch: async () => new KubeObject(returned),
+        update: async () => new KubeObject(returned),
+      });
+      store.items.replace(["a", "b", "c", "d"].map((uid) => new KubeObject(data(uid))));
+    });
+
+    afterEach(() => {
+      vi.clearAllTimers();
+      vi.useRealTimers();
+      vi.restoreAllMocks();
+    });
+
+    const ids = () => store.items.map((item) => item.getId());
+    const write = {
+      patch: (item: KubeObject) => store.patch(item, []),
+      update: (item: KubeObject) => store.update(item, {}),
+    };
+
+    describe.each(["patch", "update"] as const)("%s", (method) => {
+      it("sorts when the sort key changes, and the list stays sorted through the watch replay", async () => {
+        returned = data("b", "2", "z");
+        await write[method](store.items[1]);
+
+        expect(ids()).toEqual(["a", "c", "d", "b"]);
+
+        store["eventsBuffer"].push({ type: "MODIFIED", object: data("b", "2", "z") });
+        store["updateFromEventsBuffer"]();
+        store["eventsBuffer"].push({ type: "MODIFIED", object: { ...data("b", "3", "z"), status: { ready: true } } });
+        store["updateFromEventsBuffer"]();
+
+        expect(ids()).toEqual(["a", "c", "d", "b"]);
+        expect(store.items[3].getResourceVersion()).toBe("3");
+      });
+
+      it("replaces the item in place without sorting when the sort key does not change", async () => {
+        const sort = vi.spyOn(store, "sortItems" as never);
+
+        returned = { ...data("b", "2"), status: { ready: true } };
+        await write[method](store.items[1]);
+
+        expect(ids()).toEqual(["a", "b", "c", "d"]);
+        expect(store.items[1].status).toEqual({ ready: true });
+        expect(sort).not.toHaveBeenCalled();
+      });
+
+      it("sorts an item that was not in the store into place", async () => {
+        returned = data("bb");
+        await write[method](new KubeObject(data("bb")));
+
+        expect(ids()).toEqual(["a", "b", "bb", "c", "d"]);
+      });
+    });
+  });
+
   describe("subscribe", () => {
     const createWatchedStore = () => {
       const watchSignals: AbortSignal[] = [];

@@ -9,7 +9,6 @@ import { parseKubeApi } from "@freelensapp/kube-api";
 import { KubeStatus } from "@freelensapp/kube-object";
 import { includes, isAbortError, noop, object, rejectPromiseBy, waitUntilDefined } from "@freelensapp/utilities";
 import autoBind from "auto-bind";
-import { isEqual } from "es-toolkit";
 import { action, computed, observable, reaction } from "mobx";
 import { ItemStore } from "../item.store";
 
@@ -404,13 +403,7 @@ export class KubeObjectStore<
   }
 
   private postUpdate(newItem: K): K {
-    const index = this.items.findIndex((item) => item.getId() === newItem.getId());
-
-    if (index < 0) {
-      this.items.push(newItem);
-    } else {
-      this.items[index] = newItem;
-    }
+    this.putItem(newItem);
 
     return newItem;
   }
@@ -605,16 +598,6 @@ export class KubeObjectStore<
     startNewWatch();
   }
 
-  /**
-   * The fields used by sortItems. Custom sort overrides must supply their key
-   * to skip sorting safely; unknown extension comparators retain a full sort.
-   */
-  protected getWatchSortKey(item: K): unknown {
-    return Object.getPrototypeOf(this).sortItems === KubeObjectStore.prototype.sortItems
-      ? this.defaultSorting(item)
-      : undefined;
-  }
-
   @action
   protected updateFromEventsBuffer() {
     const events = this.eventsBuffer.clear();
@@ -665,9 +648,7 @@ export class KubeObjectStore<
               items.push(newItem);
               needsSort = true;
             } else {
-              const previousKey = this.getWatchSortKey(item!);
-
-              needsSort ||= previousKey === undefined || !isEqual(previousKey, this.getWatchSortKey(newItem));
+              needsSort ||= this.sortKeyChanged(item!, newItem);
               items[index] = newItem;
             }
 
