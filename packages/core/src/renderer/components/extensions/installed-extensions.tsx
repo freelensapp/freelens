@@ -13,6 +13,8 @@ import { observer } from "mobx-react";
 import { useState } from "react";
 import extensionDiscoveryInjectable from "../../../extensions/extension-discovery/extension-discovery.injectable";
 import extensionInstallationStateStoreInjectable from "../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
+import extensionLoaderInjectable from "../../../extensions/extension-loader/extension-loader.injectable";
+import { describeExtensionLoadStage } from "../../../extensions/extension-loader/load-failure";
 import { SearchInput } from "../input";
 import { MenuActions, MenuItem } from "../menu";
 import { SortableTable } from "../table/sortable-table";
@@ -29,7 +31,8 @@ import type { IComputedValue } from "mobx";
 
 import type { ExtensionDiscovery } from "../../../extensions/extension-discovery/extension-discovery";
 import type { ExtensionInstallationStateStore } from "../../../extensions/extension-installation-state-store/extension-installation-state-store";
-import type { InstalledExtension } from "../../../extensions/installed-extension";
+import type { ExtensionLoadFailureInProcess } from "../../../extensions/extension-loader/load-failure";
+import type { InstalledExtension, LensExtensionId } from "../../../extensions/installed-extension";
 import type { SortableTableColumn } from "../table/sortable-table";
 import type { ConfirmUninstallExtension } from "./confirm-uninstall-extension.injectable";
 import type { DisableExtension } from "./disable-extension.injectable";
@@ -45,15 +48,28 @@ interface Dependencies {
   disableExtension: DisableExtension;
   confirmUninstallExtension: ConfirmUninstallExtension;
   showErrorNotification: ShowNotification;
+  getLoadFailures: (extensionId: LensExtensionId) => ExtensionLoadFailureInProcess[];
 }
 
-function getStatus(extension: InstalledExtension) {
+function getStatus(extension: InstalledExtension, loadFailures: ExtensionLoadFailureInProcess[]) {
   if (!extension.isCompatible) {
     return "Incompatible";
   }
 
-  return extension.isEnabled ? "Enabled" : "Disabled";
+  if (!extension.isEnabled) {
+    return "Disabled";
+  }
+
+  return loadFailures.length > 0 ? "Failed to load" : "Enabled";
 }
+
+const describeLoadFailures = (loadFailures: ExtensionLoadFailureInProcess[]) =>
+  loadFailures
+    .map(
+      ({ process, stage, message }) =>
+        `Failed in the ${process} process while ${describeExtensionLoadStage(stage)}: ${message}`,
+    )
+    .join("\n");
 
 const NonInjectedInstalledExtensions = observer(
   ({
@@ -64,6 +80,7 @@ const NonInjectedInstalledExtensions = observer(
     enableExtension,
     disableExtension,
     showErrorNotification,
+    getLoadFailures,
   }: Dependencies & InstalledExtensionsProps) => {
     const [search, setSearch] = useState("");
 
@@ -87,9 +104,10 @@ const NonInjectedInstalledExtensions = observer(
       );
     }
 
+    const statusOf = (extension: InstalledExtension) => getStatus(extension, getLoadFailures(extension.id));
     const query = search.toLowerCase();
     const matchedExtensions = extensions.filter((extension) =>
-      [extension.manifest.name, extension.manifest.version, getStatus(extension)].some((field) =>
+      [extension.manifest.name, extension.manifest.version, statusOf(extension)].some((field) =>
         String(field).toLowerCase().includes(query),
       ),
     );
@@ -145,17 +163,25 @@ const NonInjectedInstalledExtensions = observer(
         id: "status",
         title: "Status",
         width: "22%",
-        sortBy: getStatus,
-        renderCell: (extension) => (
-          <div
-            className={cssNames({
-              [styles.enabled]: extension.isEnabled,
-              [styles.invalid]: !extension.isCompatible,
-            })}
-          >
-            {getStatus(extension)}
-          </div>
-        ),
+        sortBy: statusOf,
+        renderCell: (extension) => {
+          // A failure is only reported for an extension the user wants to run:
+          // disabling it is what takes the failure away.
+          const loadFailures = extension.isEnabled ? getLoadFailures(extension.id) : [];
+          const hasFailed = extension.isCompatible && loadFailures.length > 0;
+
+          return (
+            <div
+              className={cssNames({
+                [styles.enabled]: extension.isEnabled && !hasFailed,
+                [styles.invalid]: !extension.isCompatible || hasFailed,
+              })}
+              title={hasFailed ? describeLoadFailures(loadFailures) : undefined}
+            >
+              {getStatus(extension, loadFailures)}
+            </div>
+          );
+        },
       },
       {
         id: "actions",
@@ -220,15 +246,20 @@ const NonInjectedInstalledExtensions = observer(
 export const InstalledExtensions = withInjectables<Dependencies, InstalledExtensionsProps>(
   NonInjectedInstalledExtensions,
   {
-    getProps: (di, props) => ({
-      ...props,
-      extensionDiscovery: di.inject(extensionDiscoveryInjectable),
-      extensionInstallationStateStore: di.inject(extensionInstallationStateStoreInjectable),
-      userExtensions: di.inject(userExtensionsInjectable),
-      enableExtension: di.inject(enableExtensionInjectable),
-      disableExtension: di.inject(disableExtensionInjectable),
-      confirmUninstallExtension: di.inject(confirmUninstallExtensionInjectable),
-      showErrorNotification: di.inject(showErrorNotificationInjectable),
-    }),
+    getProps: (di, props) => {
+      const extensionLoader = di.inject(extensionLoaderInjectable);
+
+      return {
+        ...props,
+        extensionDiscovery: di.inject(extensionDiscoveryInjectable),
+        extensionInstallationStateStore: di.inject(extensionInstallationStateStoreInjectable),
+        userExtensions: di.inject(userExtensionsInjectable),
+        enableExtension: di.inject(enableExtensionInjectable),
+        disableExtension: di.inject(disableExtensionInjectable),
+        confirmUninstallExtension: di.inject(confirmUninstallExtensionInjectable),
+        showErrorNotification: di.inject(showErrorNotificationInjectable),
+        getLoadFailures: (extensionId) => extensionLoader.getLoadFailures(extensionId),
+      };
+    },
   },
 );
