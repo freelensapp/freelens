@@ -4,7 +4,8 @@
  */
 
 import { EventEmitter } from "node:events";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { Agent } from "node:https";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { Cluster } from "../../common/cluster/cluster";
 import broadcastMessageInjectable from "../../common/ipc/broadcast-message.injectable";
 import clusterApiUrlInjectable from "../../features/cluster/connections/main/api-url.injectable";
@@ -71,6 +72,68 @@ describe("freelens-k8s-proxy server", () => {
     });
 
     freelensK8sProxyServer = di.inject(freelensK8sProxyServerInjectable, cluster);
+  });
+
+  afterEach(() => {
+    freelensK8sProxyServer.stop();
+  });
+
+  it.each([false, true])(
+    "shares one keep-alive agent when the first request is long-running: %s",
+    async (longFirst) => {
+      const first = await freelensK8sProxyServer.getApiTarget(longFirst);
+      const second = await freelensK8sProxyServer.getApiTarget(!longFirst);
+      const normal = longFirst ? second : first;
+      const watch = longFirst ? first : second;
+      const agent = normal.agent as Agent;
+
+      expect(agent).toBeInstanceOf(Agent);
+      expect(watch.agent).toBe(agent);
+      expect(agent.options.keepAlive).toBe(true);
+      expect(agent.maxSockets).toBe(Infinity);
+      expect(agent.maxFreeSockets).toBe(16);
+      expect(agent.options.timeout).toBeUndefined();
+      expect(normal).toEqual({
+        agent,
+        target: new URL("https://127.0.0.1:9001/0001020304050607"),
+        ca: "some-cert",
+        changeOrigin: true,
+        timeout: 30_000,
+        secure: true,
+        headers: { Host: "192.168.64.3" },
+      });
+      expect(watch).toEqual({ ...normal, timeout: 4 * 60 * 60 * 1000 });
+      expect(await freelensK8sProxyServer.getApiTarget()).toBe(normal);
+
+      const nextWatch = await freelensK8sProxyServer.getApiTarget(true);
+
+      expect(nextWatch).not.toBe(watch);
+      expect(nextWatch.agent).toBe(agent);
+    },
+  );
+
+  it("destroys the pool on restart and destroys its replacement only once on repeated stop", async () => {
+    const first = await freelensK8sProxyServer.getApiTarget();
+    const destroy = vi.spyOn(first.agent as Agent, "destroy");
+
+    await freelensK8sProxyServer.restart();
+
+    expect(destroy).toHaveBeenCalledTimes(1);
+    expect(processes[0].kill).toHaveBeenCalledTimes(1);
+
+    const next = await freelensK8sProxyServer.getApiTarget();
+
+    expect(next.agent).toBeInstanceOf(Agent);
+    expect(next.agent).not.toBe(first.agent);
+
+    const destroyNext = vi.spyOn(next.agent as Agent, "destroy");
+
+    freelensK8sProxyServer.stop();
+    freelensK8sProxyServer.stop();
+
+    expect(destroyNext).toHaveBeenCalledTimes(1);
+    expect(destroy).toHaveBeenCalledTimes(1);
+    expect(processes[1].kill).toHaveBeenCalledTimes(1);
   });
 
   it("reuses the target of a short request while the proxy runs", async () => {

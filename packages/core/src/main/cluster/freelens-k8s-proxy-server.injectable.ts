@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { Agent } from "node:https";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import clusterApiUrlInjectable from "../../features/cluster/connections/main/api-url.injectable";
 import createFreelensK8sProxyInjectable from "../freelens-k8s-proxy/create-freelens-k8s-proxy.injectable";
@@ -41,6 +42,16 @@ const freelensK8sProxyServerInjectable = getInjectable({
     let freelensK8sProxy: FreelensK8sProxy | undefined = undefined;
     let apiTarget: ServerOptions | undefined = undefined;
     let apiUrl: URL | undefined = undefined;
+    let agent: Agent | undefined;
+
+    const getAgent = () =>
+      (agent ??= new Agent({
+        keepAlive: true,
+        // Watches hold sockets for hours. An unbounded pool keeps ordinary
+        // requests from queuing behind them.
+        maxSockets: Infinity,
+        maxFreeSockets: 16,
+      }));
 
     const ensureServerHelper = async (): Promise<FreelensK8sProxy> => {
       if (!freelensK8sProxy) {
@@ -72,6 +83,7 @@ const freelensK8sProxyServerInjectable = getInjectable({
       apiUrl = url;
 
       return {
+        agent: getAgent(),
         // http-proxy-3 prepends the `pathname` of the target and ignores a
         // `path` field, so the API prefix has to travel in a URL, and the CA,
         // which a URL cannot carry, in the options.
@@ -87,6 +99,9 @@ const freelensK8sProxyServerInjectable = getInjectable({
     };
 
     const stopServer = () => {
+      // Never reuse sockets to a stopped proxy process after a restart.
+      agent?.destroy();
+      agent = undefined;
       freelensK8sProxy?.exit();
       freelensK8sProxy = undefined;
       apiTarget = undefined;
