@@ -403,13 +403,7 @@ export class KubeObjectStore<
   }
 
   private postUpdate(newItem: K): K {
-    const index = this.items.findIndex((item) => item.getId() === newItem.getId());
-
-    if (index < 0) {
-      this.items.push(newItem);
-    } else {
-      this.items[index] = newItem;
-    }
+    this.putItem(newItem);
 
     return newItem;
   }

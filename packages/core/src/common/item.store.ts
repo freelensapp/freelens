@@ -95,6 +95,28 @@ export abstract class ItemStore<Item extends ItemObject> {
     return this.sorting.by.some((sort) => !isEqual(sort(previous), sort(next)));
   }
 
+  /**
+   * Puts `item` in place of the stored item with the same id, or appends it
+   * when there is none, and sorts when it can have moved. `items` has to stay
+   * sorted outside a full sort: the watch flush of `KubeObjectStore` sorts
+   * only when its own events change a sort key.
+   */
+  @action
+  protected putItem(item: Item, sort = true): void {
+    const index = this.getIndexById(item.getId());
+
+    if (sort && (index < 0 || this.sortKeyChanged(this.items[index], item))) {
+      const items = this.getItems();
+
+      items.splice(index < 0 ? items.length : index, 1, item);
+      this.items.replace(this.sortItems(items));
+    } else if (index < 0) {
+      this.items.push(item);
+    } else {
+      this.items[index] = item;
+    }
+  }
+
   protected async createItem(...args: any[]): Promise<any>;
   @action
   protected async createItem(request: () => Promise<Item>) {
@@ -148,18 +170,7 @@ export abstract class ItemStore<Item extends ItemObject> {
     const item = await Promise.resolve(request()).catch(() => null);
 
     if (item) {
-      const existingItem = this.items.find((el) => el.getId() === item.getId());
-
-      if (existingItem) {
-        const index = this.items.findIndex((item) => item === existingItem);
-
-        this.items.splice(index, 1, item);
-      } else {
-        let items = [...this.items, item];
-
-        if (sortItems) items = this.sortItems(items);
-        this.items.replace(items);
-      }
+      this.putItem(item, sortItems);
     }
 
     return item;
@@ -168,9 +179,8 @@ export abstract class ItemStore<Item extends ItemObject> {
   @action
   protected async updateItem(item: Item, request: () => Promise<Item>) {
     const updatedItem = await request();
-    const index = this.items.findIndex((i) => i.getId() === item.getId());
 
-    this.items.splice(index, 1, updatedItem);
+    this.putItem(updatedItem);
 
     return updatedItem;
   }
