@@ -35,14 +35,24 @@ backported fixes, so the supported version is always the latest one.
 
 ## Known vulnerabilities in dependencies
 
-The `main` branch is scanned automatically for known vulnerabilities in the
-packaged application: its Node dependencies and the bundled `kubectl` and
-`helm` binaries. The results are published, and kept up to date, in the
-[Security scan for main branch](https://github.com/freelensapp/freelens/discussions/2243)
-discussion.
+Both the latest release and the `main` branch are scanned automatically for
+known vulnerabilities in what the packaged application contains: its Node
+dependencies and the bundled `kubectl` and `helm` binaries. The reports are
+published, and kept up to date, in the
+[Security scans](https://github.com/freelensapp/freelens/discussions/categories/security-scans)
+discussion category: one discussion for the latest release, refreshed every
+night and after each release, and one for `main`, refreshed with its builds.
 
-An advisory listed there is already known, so there is no need to report it
-privately. Report it privately if you find that Freelens makes it
+What the scans read is public too, so you can check a build yourself:
+
+- every release carries, as release assets, an SBOM for each platform
+  (`Freelens-<version>-<os>-<arch>-sbom.*`) and the list of the Node packages
+  that reach the application (`Freelens-<version>-prod-packages.json`),
+- every build of `main` publishes an SBOM and the package list for each
+  platform its integration tests run on, as artifacts of that run.
+
+An advisory listed in a report is already known, so there is no need to
+report it privately. Report it privately if you find that Freelens makes it
 exploitable, for example that a vulnerable code path is reachable through
 something Freelens does, since that is not public yet.
 
