@@ -653,13 +653,20 @@ jobs:
           # per-architecture SBOMs differ (bundled kubectl/helm/proxy CLIs and
           # their Go modules, native npm build variants), so scan them all and
           # merge the runs into one: slurp the SARIFs into an array, union the
-          # rules by id and concatenate + de-duplicate the results (grype gives
-          # SBOM findings an empty location, so identical cross-arch findings
-          # collapse cleanly). Then set each result's artifact location from the
-          # finding's <name>@<version>: the pnpm-store path for npm packages, the
-          # SBOM location for non-npm ones, and a synthetic
-          # "sbom/<package>@<version>" as a last resort. Done after the dedup so
-          # empty locations collapse first.
+          # rules by id and concatenate the results. Then set each result's
+          # artifact location from the finding's <name>@<version>: the
+          # pnpm-store path for npm packages, the SBOM location for non-npm
+          # ones, and a synthetic "sbom/<package>@<version>" as a last resort.
+          #
+          # Finally keep one result per rule and <name>@<version>, the same
+          # key the JSON report below dedupes by, so code scanning lists what
+          # the scan report discussion lists. Comparing whole results is not
+          # enough: grype writes the path it found the package at into the
+          # message, so one bundled CLI yields a result per architecture and
+          # per copy (freelens/binaries and the packaged freelens/dist), all
+          # with the location set above, and each one became an alert of its
+          # own. The result kept is the one whose message names that location,
+          # so its alert carries on; any other one when none does.
           yq ea -pj -oj -I0 '[.]' sarifs/*.sarif |
             yq -pj -oj '
                 (load("prod-set.json")) as $prod |
@@ -678,12 +685,18 @@ jobs:
                       },
                       "results": (
                         [$x[].runs[0].results[]] |
-                        unique |
                         map(
                           ((.message.text | capture("package: (?<n>.+?), version (?<v>.*?) was found at:")) // {"n": "unknown", "v": "unknown"}) as $p |
                           ($p.n + "@" + $p.v) as $key |
-                          .locations[0].physicalLocation.artifactLocation.uri = ($prod[$key] // $paths[$key] // ("sbom/" + $key))
-                        )
+                          ((.message.text | capture("was found at: (?<f>.*)$") | .f) // "") as $found |
+                          .locations[0].physicalLocation.artifactLocation.uri = ($prod[$key] // $paths[$key] // ("sbom/" + $key)) |
+                          .dedup = {"key": (.ruleId + "|" + $key), "found": $found}
+                        ) |
+                        group_by(.dedup.key) |
+                        map(
+                          (map(select(("/" + .locations[0].physicalLocation.artifactLocation.uri) == .dedup.found)) + .) | .[0]
+                        ) |
+                        map(del(.dedup))
                       )
                     }
                   ]
