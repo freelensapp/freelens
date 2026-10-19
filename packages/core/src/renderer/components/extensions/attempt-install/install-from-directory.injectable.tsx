@@ -17,6 +17,7 @@ import activateInstalledBuildInjectable from "../../../../features/extensions/in
 import { manifestFilename, validateExtensionManifest } from "../../../../features/extensions/installer/common/manifest";
 import confirmInjectable from "../../confirm-dialog/confirm.injectable";
 import { getMessageFromError } from "../get-message-from-error/get-message-from-error";
+import { disabledForReinstallNote } from "./disabled-for-reinstall";
 
 export type InstallFromDirectory = (directory: string) => Promise<void>;
 
@@ -81,36 +82,50 @@ const installFromDirectoryInjectable = getInjectable({
         }
 
         const installedExtension = extensionLoader.getExtensionById(id);
+        const isLoadedFromHere =
+          installedExtension?.isManaged === false && installedExtension.absolutePath === directory;
 
-        if (installedExtension?.isEnabled) {
-          return void showErrorNotification(
-            <div className="flex flex-col gap-2">
-              <b>Extension is active:</b>
-              <p>
-                <em>{`${manifest.name}@${installedExtension.manifest.version}`}</em>
-                {" is installed and active."}
-              </p>
-              <p>{"Disable or uninstall it first, then register this directory."}</p>
-            </div>,
+        // Registering it again would change nothing: the directory is already
+        // what runs, and a rebuild in it is reloaded on its own.
+        if (installedExtension?.isEnabled && isLoadedFromHere) {
+          return void showInfoNotification(
+            <p>
+              {"Extension "}
+              <b>{extensionDisplayName(manifest.name, installedExtension.manifest.version)}</b>
+              {" is already loaded from "}
+              <code>{directory}</code>
+              {", and is reloaded whenever it is rebuilt there."}
+            </p>,
           );
         }
+
+        const replaced = installedExtension && !isLoadedFromHere ? installedExtension : undefined;
+        const isReplacingActive = replaced?.isEnabled ?? false;
 
         const proceed = await confirm({
           message: (
             <div className="flex flex-col gap-2">
               <p>
-                {"Load the extension "}
-                <b>{displayName}</b>
+                {isReplacingActive ? "Reinstall " : "Load the extension "}
+                <b>{isReplacingActive ? manifest.name : displayName}</b>
                 {" from "}
                 <code>{directory}</code>?
               </p>
               <p>
                 {"It stays where it is and is loaded from there, so it is not verified and changes with the directory."}
               </p>
+              {replaced && (
+                <p>
+                  <b>Warning:</b>
+                  {isReplacingActive
+                    ? ` ${manifest.name}@${replaced.manifest.version} is active and will be disabled and replaced by ${displayName}.`
+                    : ` ${manifest.name}@${replaced.manifest.version} will be replaced by this installation.`}
+                </p>
+              )}
             </div>
           ),
           labelCancel: "Cancel",
-          labelOk: "Install",
+          labelOk: isReplacingActive ? "Reinstall" : "Install",
         });
 
         if (!proceed) {
@@ -119,7 +134,24 @@ const installFromDirectoryInjectable = getInjectable({
 
         installStateStore.setInstalling(id);
 
+        // Read again: the extension may have been enabled or disabled while
+        // the dialog was open.
+        const installedNow = extensionLoader.getExtensionById(id);
+        const disabledVersion = installedNow?.isEnabled ? installedNow.manifest.version : undefined;
+
         try {
+          // The build which ran has to be gone from both processes before
+          // `activateInstalledBuild` records this directory in its place,
+          // which removes the directory of a managed build. See
+          // `attemptInstall`.
+          if (installedNow) {
+            if (disabledVersion) {
+              await extensionLoader.setIsEnabled(id, false);
+            }
+
+            await extensionLoader.whenTornDown(id);
+          }
+
           await activateInstalledBuild({
             name: id,
             path: directory,
@@ -144,12 +176,15 @@ const installFromDirectoryInjectable = getInjectable({
 
           logger.info(`[EXTENSION-INSTALL]: registering ${directory} has failed: ${message}`, { error });
           showErrorNotification(
-            <p>
-              {"Installing extension "}
-              <b>{displayName}</b>
-              {" has failed: "}
-              <em>{message}</em>
-            </p>,
+            <div className="flex flex-col gap-2">
+              <p>
+                {"Installing extension "}
+                <b>{displayName}</b>
+                {" has failed: "}
+                <em>{message}</em>
+              </p>
+              {disabledVersion && <p>{disabledForReinstallNote(manifest.name, disabledVersion)}</p>}
+            </div>,
           );
         } finally {
           installStateStore.clearInstalling(id);
