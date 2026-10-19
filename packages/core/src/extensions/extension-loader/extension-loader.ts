@@ -7,7 +7,7 @@
 import assert from "node:assert";
 import { pathToFileURL } from "node:url";
 import { EventEmitter } from "@freelensapp/event-emitter";
-import { isDefined, iter } from "@freelensapp/utilities";
+import { isDefined, iter, noop } from "@freelensapp/utilities";
 import { ipcMain } from "electron";
 import { isEqual } from "es-toolkit";
 import { action, compareStructural, computed, observable, reaction, runInAction, toJS, when } from "mobx";
@@ -17,6 +17,7 @@ import {
   extensionLoaderLoadFailuresFromMainChannel,
   extensionLoaderReloadDevelopmentChannel,
   extensionLoaderSetIsEnabledChannel,
+  extensionLoaderTornDownChannel,
 } from "../../common/ipc/extension-handling";
 import { developmentBuildSegment } from "../../features/extensions/loader/common/build-segment";
 import {
@@ -29,6 +30,7 @@ import {
   requestExtensionLoaderInitialState,
   requestExtensionLoaderMainLoadFailures,
   requestExtensionLoaderSetIsEnabled,
+  requestExtensionLoaderTornDown,
 } from "../../renderer/ipc";
 import { sanitizeExtensionName } from "../lens-extension";
 import { extensionLoadFailureMessageOf } from "./load-failure";
@@ -54,6 +56,12 @@ import type { Extension } from "./extension/extension.injectable";
 import type { ExtensionLoadFailure, ExtensionLoadFailureInProcess, ExtensionLoadStage } from "./load-failure";
 
 const logModule = "[EXTENSIONS-LOADER]";
+
+/**
+ * How long `whenTornDown` waits for one process, which is mostly how long an
+ * extension's `onDeactivate` may take.
+ */
+const tearDownTimeout = 10_000;
 
 /**
  * How Node will load an entry point: as an ES module, or through `require`.
@@ -157,8 +165,15 @@ export class ExtensionLoader {
   // Extensions whose entry point is being imported right now. `import()` is
   // asynchronous, so the check against `extensionInstances` no longer runs in
   // the same tick as the write to it, and a second reaction firing meanwhile
-  // would otherwise load the same extension twice.
-  private readonly extensionsBeingLoaded = new Set<LensExtensionId>();
+  // would otherwise load the same extension twice. Observable, because a load
+  // in flight is one `whenTornDown` has to wait out.
+  private readonly extensionsBeingLoaded = observable.set<LensExtensionId>();
+
+  // The `disable()` of each instance which was taken out and whose
+  // `onDeactivate` and disposers are still running. `removeInstance` drops the
+  // instance at once and does not wait for them, so without this the loader
+  // would have no state that says when an extension has finished going away.
+  private readonly teardowns = observable.map<LensExtensionId, Promise<void>>(undefined, { deep: false });
 
   /**
    * The extensions whose code failed to load in this process, and the step it
@@ -318,7 +333,7 @@ export class ExtensionLoader {
     }
 
     try {
-      instance.disable();
+      this.trackTeardown(lensExtensionId, instance.disable());
 
       const extension = this.dependencies.getExtension(instance);
 
@@ -329,6 +344,75 @@ export class ExtensionLoader {
       this.nonInstancesByName.delete(instance.name);
     } catch (error) {
       this.dependencies.logger.error(`${logModule}: deactivation extension error`, { lensExtensionId, error });
+    }
+  }
+
+  private trackTeardown(lensExtensionId: LensExtensionId, disabling: Promise<void> | void) {
+    const teardown = Promise.resolve(disabling).catch(noop);
+
+    runInAction(() => {
+      this.teardowns.set(lensExtensionId, teardown);
+    });
+
+    void teardown.then(() => {
+      // Only its own entry: a later teardown of the same extension replaced it.
+      if (this.teardowns.get(lensExtensionId) === teardown) {
+        runInAction(() => {
+          this.teardowns.delete(lensExtensionId);
+        });
+      }
+    });
+  }
+
+  /**
+   * Whether nothing of the extension is running in this process any more: it
+   * is not enabled here, it has no instance, nothing is importing it and its
+   * `onDeactivate` and disposers have returned.
+   */
+  private isTornDownHere(lensExtensionId: LensExtensionId): boolean {
+    return (
+      !this.extensions.get(lensExtensionId)?.isEnabled &&
+      !this.dependencies.extensionInstances.has(lensExtensionId) &&
+      !this.extensionsBeingLoaded.has(lensExtensionId) &&
+      !this.teardowns.has(lensExtensionId)
+    );
+  }
+
+  private async whenTornDownHere(lensExtensionId: LensExtensionId): Promise<void> {
+    try {
+      await when(() => this.isTornDownHere(lensExtensionId), { timeout: tearDownTimeout });
+    } catch {
+      throw new Error(
+        `the ${this.dependencies.extensionEntryPointName} process did not finish tearing it down within ${tearDownTimeout / 1000} seconds`,
+      );
+    }
+  }
+
+  /**
+   * Resolve once the extension is disabled and torn down in this process and,
+   * from a renderer, in main as well; reject when either does not get there in
+   * time.
+   *
+   * This is what to wait on before touching the files of a build that was
+   * running. `setIsEnabled(id, false)` settles once main has changed the flag,
+   * and the loaders react to that asynchronously: an `onDeactivate` may still
+   * be running, or an import still be reading the build, after it has
+   * settled. Only main's and this frame's loaders are waited on; any other
+   * frame tears down from the same broadcast, in parallel.
+   */
+  async whenTornDown(lensExtensionId: LensExtensionId): Promise<void> {
+    if (ipcMain) {
+      return this.whenTornDownHere(lensExtensionId);
+    }
+
+    const results = await Promise.allSettled([
+      this.whenTornDownHere(lensExtensionId),
+      requestExtensionLoaderTornDown(lensExtensionId),
+    ]);
+    const failure = results.find((result) => result.status === "rejected");
+
+    if (failure) {
+      throw failure.reason;
     }
   }
 
@@ -376,6 +460,10 @@ export class ExtensionLoader {
     );
 
     ipcMainHandle(extensionLoaderLoadFailuresFromMainChannel, () => this.loadFailuresState());
+
+    ipcMainHandle(extensionLoaderTornDownChannel, (event, lensExtensionId: LensExtensionId) =>
+      this.whenTornDown(lensExtensionId),
+    );
 
     reaction(
       () => this.loadFailuresState(),
@@ -693,7 +781,9 @@ export class ExtensionLoader {
         this.loadFailures.has(extId);
 
       if (installedExtension.isCompatible && installedExtension.isEnabled && !alreadyInit) {
-        this.extensionsBeingLoaded.add(extId);
+        runInAction(() => {
+          this.extensionsBeingLoaded.add(extId);
+        });
 
         try {
           let LensExtensionClass: LensExtensionConstructor | null;
@@ -745,7 +835,9 @@ export class ExtensionLoader {
           this.dependencies.logger.error(`${logModule}: error loading extension`, { ext: installedExtension, err });
           this.recordLoadFailure(extId, "instantiate", err);
         } finally {
-          this.extensionsBeingLoaded.delete(extId);
+          runInAction(() => {
+            this.extensionsBeingLoaded.delete(extId);
+          });
         }
       } else if (!installedExtension.isEnabled && alreadyInit) {
         this.removeInstance(extId);
