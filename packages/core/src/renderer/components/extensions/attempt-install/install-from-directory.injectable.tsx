@@ -17,7 +17,7 @@ import activateInstalledBuildInjectable from "../../../../features/extensions/in
 import { manifestFilename, validateExtensionManifest } from "../../../../features/extensions/installer/common/manifest";
 import confirmInjectable from "../../confirm-dialog/confirm.injectable";
 import { getMessageFromError } from "../get-message-from-error/get-message-from-error";
-import { disabledForReinstallNote } from "./disabled-for-reinstall";
+import { disabledForReinstallNote, installFailureSubject } from "./disabled-for-reinstall";
 
 export type InstallFromDirectory = (directory: string) => Promise<void>;
 
@@ -100,14 +100,32 @@ const installFromDirectoryInjectable = getInjectable({
         }
 
         const replaced = installedExtension && !isLoadedFromHere ? installedExtension : undefined;
-        const isReplacingActive = replaced?.isEnabled ?? false;
+        const enabledVersion = replaced?.isEnabled ? replaced.manifest.version : undefined;
+        // "Reinstall" says the same version is installed again.
+        const isSameVersion = enabledVersion === manifest.version;
 
         const proceed = await confirm({
           message: (
             <div className="flex flex-col gap-2">
               <p>
-                {isReplacingActive ? "Reinstall " : "Load the extension "}
-                <b>{isReplacingActive ? manifest.name : displayName}</b>
+                {!enabledVersion ? (
+                  <>
+                    {"Load the extension "}
+                    <b>{displayName}</b>
+                  </>
+                ) : isSameVersion ? (
+                  <>
+                    {"Reinstall "}
+                    <b>{manifest.name}</b>
+                  </>
+                ) : (
+                  <>
+                    {"Replace "}
+                    <b>{extensionDisplayName(manifest.name, enabledVersion)}</b>
+                    {" with "}
+                    <b>{displayName}</b>
+                  </>
+                )}
                 {" from "}
                 <code>{directory}</code>?
               </p>
@@ -117,15 +135,15 @@ const installFromDirectoryInjectable = getInjectable({
               {replaced && (
                 <p>
                   <b>Warning:</b>
-                  {isReplacingActive
-                    ? ` ${manifest.name}@${replaced.manifest.version} is active and will be disabled and replaced by ${displayName}.`
+                  {enabledVersion
+                    ? ` ${manifest.name}@${enabledVersion} is enabled and will be disabled and replaced by ${displayName}.`
                     : ` ${manifest.name}@${replaced.manifest.version} will be replaced by this installation.`}
                 </p>
               )}
             </div>
           ),
           labelCancel: "Cancel",
-          labelOk: isReplacingActive ? "Reinstall" : "Install",
+          labelOk: !enabledVersion ? "Install" : isSameVersion ? "Reinstall" : "Replace",
         });
 
         if (!proceed) {
@@ -178,8 +196,7 @@ const installFromDirectoryInjectable = getInjectable({
           showErrorNotification(
             <div className="flex flex-col gap-2">
               <p>
-                {"Installing extension "}
-                <b>{displayName}</b>
+                {installFailureSubject(manifest.name, manifest.version, disabledVersion)}
                 {" has failed: "}
                 <em>{message}</em>
               </p>

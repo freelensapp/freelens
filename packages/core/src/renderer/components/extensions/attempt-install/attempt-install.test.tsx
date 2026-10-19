@@ -8,6 +8,7 @@ import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForUserDataInjectable from "../../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import extensionLoaderInjectable from "../../../../extensions/extension-loader/extension-loader.injectable";
+import { textOf } from "../../../../test-utils/text-of";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import confirmInjectable from "../../confirm-dialog/confirm.injectable";
 import attemptInstallInjectable from "./attempt-install.injectable";
@@ -113,12 +114,11 @@ describe("attemptInstall of an extension which is already installed", () => {
     checksum: { kind: "sha256", value: digestOf(tarball) },
   };
 
-  const installedExtension = (isEnabled: boolean): InstalledExtension => ({
+  const installedExtension = (isEnabled: boolean, version = "2.0.0-1"): InstalledExtension => ({
     id: extensionId,
-    absolutePath: "/some-directory-for-user-data/extensions/freelensapp--example-extension/2.0.0-1-0f1e2d3c",
-    manifestPath:
-      "/some-directory-for-user-data/extensions/freelensapp--example-extension/2.0.0-1-0f1e2d3c/package.json",
-    manifest: { name: extensionId, version: "2.0.0-1", engines: { freelens: "^2.0.0" } },
+    absolutePath: `/some-directory-for-user-data/extensions/freelensapp--example-extension/${version}-0f1e2d3c`,
+    manifestPath: `/some-directory-for-user-data/extensions/freelensapp--example-extension/${version}-0f1e2d3c/package.json`,
+    manifest: { name: extensionId, version, engines: { freelens: "^2.0.0" } },
     isCompatible: true,
     isManaged: true,
     isVerified: true,
@@ -189,7 +189,24 @@ describe("attemptInstall of an extension which is already installed", () => {
       installed = installedExtension(true);
     });
 
-    it("asks to reinstall it rather than refusing", async () => {
+    it("asks to replace it with the other version rather than refusing", async () => {
+      confirmMock.mockResolvedValue(false);
+
+      await install();
+
+      expect(confirmMock).toHaveBeenCalledWith(expect.objectContaining({ labelOk: "Replace", labelCancel: "Cancel" }));
+
+      const [[{ message }]] = confirmMock.mock.calls;
+
+      expect(textOf(message)).toContain(`Replace ${extensionId}@2.0.0-1 with ${extensionId}@2.0.0-2?`);
+      expect(textOf(message)).toContain(
+        `${extensionId}@2.0.0-1 is enabled and will be disabled and replaced by ${extensionId}@2.0.0-2.`,
+      );
+      expect(showErrorNotificationMock).not.toHaveBeenCalled();
+    });
+
+    it("asks to reinstall it when the version is the same", async () => {
+      installed = installedExtension(true, "2.0.0-2");
       confirmMock.mockResolvedValue(false);
 
       await install();
@@ -197,10 +214,14 @@ describe("attemptInstall of an extension which is already installed", () => {
       expect(confirmMock).toHaveBeenCalledWith(
         expect.objectContaining({ labelOk: "Reinstall", labelCancel: "Cancel" }),
       );
+
+      const [[{ message }]] = confirmMock.mock.calls;
+
+      expect(textOf(message)).toContain(`Reinstall ${extensionId}?`);
       expect(showErrorNotificationMock).not.toHaveBeenCalled();
     });
 
-    it("leaves it alone when the reinstall is cancelled", async () => {
+    it("leaves it alone when the replacement is cancelled", async () => {
       confirmMock.mockResolvedValue(false);
 
       await install();
@@ -243,7 +264,24 @@ describe("attemptInstall of an extension which is already installed", () => {
 
       const [[notification]] = showErrorNotificationMock.mock.calls;
 
-      expect(JSON.stringify(notification)).toContain("stays disabled");
+      expect(textOf(notification)).toContain(`Replacing ${extensionId}@2.0.0-1 with ${extensionId}@2.0.0-2 has failed`);
+      expect(textOf(notification)).toContain("stays disabled");
+    });
+
+    it("says that reinstalling has failed when the version is the same", async () => {
+      installed = installedExtension(true, "2.0.0-2");
+
+      const installing = install();
+
+      await vi.waitFor(() => expect(events).toContain("waiting for the teardown"));
+
+      failTearingDown(new Error("the main process did not finish tearing it down within 10 seconds"));
+      await installing;
+
+      const [[notification]] = showErrorNotificationMock.mock.calls;
+
+      expect(textOf(notification)).toContain(`Reinstalling ${extensionId} has failed`);
+      expect(textOf(notification)).toContain("stays disabled");
     });
   });
 

@@ -10,6 +10,7 @@ import directoryForUserDataInjectable from "../../../../common/app-paths/directo
 import readJsonFileInjectable from "../../../../common/fs/read-json-file.injectable";
 import extensionLoaderInjectable from "../../../../extensions/extension-loader/extension-loader.injectable";
 import activateInstalledBuildInjectable from "../../../../features/extensions/installer/common/activate-installed-build.injectable";
+import { textOf } from "../../../../test-utils/text-of";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import confirmInjectable from "../../confirm-dialog/confirm.injectable";
 import installFromDirectoryInjectable from "./install-from-directory.injectable";
@@ -30,11 +31,11 @@ const manifest = {
   engines: { freelens: "^2.0.0" },
 };
 
-const managedInstall = (isEnabled: boolean): InstalledExtension => ({
+const managedInstall = (isEnabled: boolean, version = "2.0.0-2"): InstalledExtension => ({
   id: extensionId,
-  absolutePath: "/some-directory-for-user-data/extensions/freelensapp--example-extension/2.0.0-2-0f1e2d3c",
-  manifestPath: "/some-directory-for-user-data/extensions/freelensapp--example-extension/2.0.0-2-0f1e2d3c/package.json",
-  manifest: { ...manifest, version: "2.0.0-2" },
+  absolutePath: `/some-directory-for-user-data/extensions/freelensapp--example-extension/${version}-0f1e2d3c`,
+  manifestPath: `/some-directory-for-user-data/extensions/freelensapp--example-extension/${version}-0f1e2d3c/package.json`,
+  manifest: { ...manifest, version },
   isCompatible: true,
   isManaged: true,
   isVerified: true,
@@ -59,6 +60,7 @@ describe("installFromDirectory of an extension which is already installed", () =
   let showInfoNotificationMock: Mock;
   let showErrorNotificationMock: Mock;
   let setIsEnabledMock: Mock;
+  let activateInstalledBuildMock: Mock;
   // What happened, in order, across the loader and the installer.
   let events: string[];
   let finishTearingDown: () => void;
@@ -80,11 +82,12 @@ describe("installFromDirectory of an extension which is already installed", () =
     di.override(confirmInjectable, () => confirmMock);
     di.override(showInfoNotificationInjectable, () => showInfoNotificationMock);
     di.override(showErrorNotificationInjectable, () => showErrorNotificationMock);
-    di.override(activateInstalledBuildInjectable, () => async () => {
+    activateInstalledBuildMock = vi.fn(async () => {
       // What removes the directory of the managed build it replaces.
       events.push("activate");
       runInAction(() => installed.set(directoryInstall(false)));
     });
+    di.override(activateInstalledBuildInjectable, () => activateInstalledBuildMock);
     di.override(
       extensionLoaderInjectable,
       () =>
@@ -117,7 +120,27 @@ describe("installFromDirectory of an extension which is already installed", () =
       installed.set(managedInstall(true));
     });
 
-    it("asks to reinstall it from the directory rather than refusing", async () => {
+    it("asks to replace it with the version in the directory rather than refusing", async () => {
+      confirmMock.mockResolvedValue(false);
+
+      await installFromDirectory(directory);
+
+      expect(confirmMock).toHaveBeenCalledWith(expect.objectContaining({ labelOk: "Replace", labelCancel: "Cancel" }));
+
+      const [[{ message }]] = confirmMock.mock.calls;
+
+      expect(textOf(message)).toContain(
+        `Replace ${extensionId}@2.0.0-2 with ${extensionId}@2.0.0-3 from ${directory}?`,
+      );
+      expect(textOf(message)).toContain(
+        `${extensionId}@2.0.0-2 is enabled and will be disabled and replaced by ${extensionId}@2.0.0-3.`,
+      );
+      expect(showErrorNotificationMock).not.toHaveBeenCalled();
+      expect(events).toEqual([]);
+    });
+
+    it("asks to reinstall it from the directory when the version is the same", async () => {
+      installed.set(managedInstall(true, manifest.version));
       confirmMock.mockResolvedValue(false);
 
       await installFromDirectory(directory);
@@ -125,8 +148,30 @@ describe("installFromDirectory of an extension which is already installed", () =
       expect(confirmMock).toHaveBeenCalledWith(
         expect.objectContaining({ labelOk: "Reinstall", labelCancel: "Cancel" }),
       );
-      expect(showErrorNotificationMock).not.toHaveBeenCalled();
-      expect(events).toEqual([]);
+
+      const [[{ message }]] = confirmMock.mock.calls;
+
+      expect(textOf(message)).toContain(`Reinstall ${extensionId} from ${directory}?`);
+    });
+
+    it("says that replacing it has failed, and that it stays disabled", async () => {
+      activateInstalledBuildMock.mockRejectedValue(new Error("the directory cannot be recorded"));
+
+      const installing = installFromDirectory(directory);
+
+      await vi.waitFor(() => expect(events).toContain("waiting for the teardown"));
+
+      finishTearingDown();
+      await installing;
+
+      expect(showErrorNotificationMock).toHaveBeenCalledTimes(1);
+
+      const [[notification]] = showErrorNotificationMock.mock.calls;
+
+      expect(textOf(notification)).toContain(
+        `Replacing ${extensionId}@2.0.0-2 with ${extensionId}@2.0.0-3 has failed: the directory cannot be recorded`,
+      );
+      expect(textOf(notification)).toContain("stays disabled");
     });
 
     it("disables it and replaces it only once it is torn down, then enables the directory", async () => {

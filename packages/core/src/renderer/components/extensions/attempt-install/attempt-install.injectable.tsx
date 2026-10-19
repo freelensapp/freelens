@@ -16,7 +16,7 @@ import { verifyInstallChecksum } from "../../../../features/extensions/installer
 import confirmInjectable from "../../confirm-dialog/confirm.injectable";
 import { getMessageFromError } from "../get-message-from-error/get-message-from-error";
 import createTempFilesAndValidateInjectable from "./create-temp-files-and-validate.injectable";
-import { disabledForReinstallNote } from "./disabled-for-reinstall";
+import { disabledForReinstallNote, installFailureSubject } from "./disabled-for-reinstall";
 import getExtensionDestFolderInjectable from "./get-extension-dest-folder.injectable";
 import unpackExtensionInjectable from "./unpack-extension.injectable";
 
@@ -165,14 +165,32 @@ const attemptInstall =
 
     const { version: oldVersion } = installedExtension.manifest;
     const extensionFolder = getExtensionDestFolder(name);
-    const isActive = installedExtension.isEnabled;
+    const isEnabled = installedExtension.isEnabled;
+    // "Reinstall" says the same version is installed again.
+    const isSameVersion = oldVersion === version;
 
     const proceed = await confirm({
       message: (
         <div className="flex flex-col gap-2">
           <p>
-            {isActive ? "Reinstall " : "Install extension "}
-            <b>{isActive ? name : `${name}@${version}`}</b>?
+            {!isEnabled ? (
+              <>
+                {"Install extension "}
+                <b>{`${name}@${version}`}</b>?
+              </>
+            ) : isSameVersion ? (
+              <>
+                {"Reinstall "}
+                <b>{name}</b>?
+              </>
+            ) : (
+              <>
+                {"Replace "}
+                <b>{`${name}@${oldVersion}`}</b>
+                {" with "}
+                <b>{`${name}@${version}`}</b>?
+              </>
+            )}
           </p>
           <p>
             {"Description: "}
@@ -180,14 +198,14 @@ const attemptInstall =
           </p>
           <div className="remove-folder-warning" onClick={() => shell.openPath(extensionFolder)}>
             <b>Warning:</b>
-            {isActive
-              ? ` ${name}@${oldVersion} is active and will be disabled and replaced by ${name}@${version}.`
+            {isEnabled
+              ? ` ${name}@${oldVersion} is enabled and will be disabled and replaced by ${name}@${version}.`
               : ` ${name}@${oldVersion} will be replaced by this installation.`}
           </div>
         </div>
       ),
       labelCancel: "Cancel",
-      labelOk: isActive ? "Reinstall" : "Install",
+      labelOk: !isEnabled ? "Install" : isSameVersion ? "Reinstall" : "Replace",
     });
 
     if (!proceed) {
@@ -220,8 +238,7 @@ const attemptInstall =
       return void showErrorNotification(
         <div className="flex flex-col gap-2">
           <p>
-            {"Reinstalling "}
-            <b>{name}</b>
+            {installFailureSubject(name, version, disabling ? oldVersion : undefined)}
             {" has failed: "}
             <em>{message}</em>
           </p>

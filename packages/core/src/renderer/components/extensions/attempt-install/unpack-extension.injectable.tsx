@@ -24,7 +24,7 @@ import { computeTarballDigest, shortenDigest } from "../../../../features/extens
 import extensionsRootInjectable from "../../../../features/extensions/installer/common/extensions-root.injectable";
 import { versionDirectoryName } from "../../../../features/extensions/installer/common/version-directory";
 import { getMessageFromError } from "../get-message-from-error/get-message-from-error";
-import { disabledForReinstallNote } from "./disabled-for-reinstall";
+import { disabledForReinstallNote, installFailureSubject } from "./disabled-for-reinstall";
 
 import type { Disposer } from "@freelensapp/utilities";
 
@@ -67,16 +67,15 @@ const unpackExtensionInjectable = getInjectable({
     const showSuccessNotification = di.inject(showSuccessNotificationInjectable);
     const showErrorNotification = di.inject(showErrorNotificationInjectable);
 
-    const displayErrorMessage = (message: string, displayName: string, disabledNote?: string) => {
+    const displayErrorMessage = (message: string, name: string, version: string, disabledVersion?: string) => {
       showErrorNotification(
         <div className="flex flex-col gap-2">
           <p>
-            {"Installing extension "}
-            <b>{displayName}</b>
+            {installFailureSubject(name, version, disabledVersion)}
             {" has failed: "}
             <em>{message}</em>
           </p>
-          {disabledNote && <p>{disabledNote}</p>}
+          {disabledVersion && <p>{disabledForReinstallNote(name, disabledVersion)}</p>}
         </div>,
       );
     };
@@ -96,7 +95,6 @@ const unpackExtensionInjectable = getInjectable({
       disposeDownloading?.();
 
       const displayName = extensionDisplayName(name, version);
-      const disabledNote = disabledVersion ? disabledForReinstallNote(name, disabledVersion) : undefined;
       // The identity of this build: over the archive bytes, not over the
       // extracted tree, whose hash depends on extraction order and filesystem.
       const digest = computeTarballDigest(data);
@@ -166,13 +164,13 @@ const unpackExtensionInjectable = getInjectable({
           .catch((error) => {
             // There was an error during plugin installation
             logger.info(`[EXTENSION-INSTALLATION]: installing ${request.fileName} has failed due a timeout`, { error });
-            displayErrorMessage("There was an error during the installation", displayName, disabledNote);
+            displayErrorMessage("There was an error during the installation", name, version, disabledVersion);
           });
       } catch (error) {
         const message = getMessageFromError(error);
 
         logger.info(`[EXTENSION-INSTALLATION]: installing ${request.fileName} has failed: ${message}`, { error });
-        displayErrorMessage(message, displayName, disabledNote);
+        displayErrorMessage(message, name, version, disabledVersion);
       } finally {
         // Remove install state once finished
         extensionInstallationStateStore.clearInstalling(id);
