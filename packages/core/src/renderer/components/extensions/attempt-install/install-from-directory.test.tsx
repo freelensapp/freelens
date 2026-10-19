@@ -139,19 +139,38 @@ describe("installFromDirectory of an extension which is already installed", () =
       expect(events).toEqual([]);
     });
 
-    it("asks to reinstall it from the directory when the version is the same", async () => {
+    it("asks to replace it with the directory even when the version is the same", async () => {
       installed.set(managedInstall(true, manifest.version));
       confirmMock.mockResolvedValue(false);
 
       await installFromDirectory(directory);
 
-      expect(confirmMock).toHaveBeenCalledWith(
-        expect.objectContaining({ labelOk: "Reinstall", labelCancel: "Cancel" }),
-      );
+      expect(confirmMock).toHaveBeenCalledWith(expect.objectContaining({ labelOk: "Replace", labelCancel: "Cancel" }));
 
       const [[{ message }]] = confirmMock.mock.calls;
 
-      expect(textOf(message)).toContain(`Reinstall ${extensionId} from ${directory}?`);
+      expect(textOf(message)).toContain(
+        `Replace ${extensionId}@2.0.0-3 with ${extensionId}@2.0.0-3 from ${directory}?`,
+      );
+    });
+
+    it("names the directory it replaces when another directory is enabled", async () => {
+      installed.set({
+        ...directoryInstall(true),
+        absolutePath: "/some-other-directory",
+        manifestPath: "/some-other-directory/package.json",
+      });
+      confirmMock.mockResolvedValue(false);
+
+      await installFromDirectory(directory);
+
+      expect(confirmMock).toHaveBeenCalledWith(expect.objectContaining({ labelOk: "Replace", labelCancel: "Cancel" }));
+
+      const [[{ message }]] = confirmMock.mock.calls;
+
+      expect(textOf(message)).toContain(
+        `Replace ${extensionId}@2.0.0-3 from /some-other-directory with ${extensionId}@2.0.0-3 from ${directory}?`,
+      );
     });
 
     it("says that replacing it has failed, and that it stays disabled", async () => {

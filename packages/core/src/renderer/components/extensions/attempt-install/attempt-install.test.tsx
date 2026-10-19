@@ -218,7 +218,32 @@ describe("attemptInstall of an extension which is already installed", () => {
       const [[{ message }]] = confirmMock.mock.calls;
 
       expect(textOf(message)).toContain(`Reinstall ${extensionId}?`);
+      expect(textOf(message)).toContain(`${extensionId}@2.0.0-2 is enabled and will be disabled and installed again.`);
       expect(showErrorNotificationMock).not.toHaveBeenCalled();
+    });
+
+    it("asks to replace a directory registered in development even when the version is the same", async () => {
+      installed = {
+        ...installedExtension(true, "2.0.0-2"),
+        absolutePath: "/some-directory",
+        manifestPath: "/some-directory/package.json",
+        isManaged: false,
+        isVerified: false,
+      };
+      confirmMock.mockResolvedValue(false);
+
+      await install();
+
+      expect(confirmMock).toHaveBeenCalledWith(expect.objectContaining({ labelOk: "Replace", labelCancel: "Cancel" }));
+
+      const [[{ message }]] = confirmMock.mock.calls;
+
+      expect(textOf(message)).toContain(
+        `Replace ${extensionId}@2.0.0-2 from /some-directory with ${extensionId}@2.0.0-2?`,
+      );
+      expect(textOf(message)).toContain(
+        `${extensionId}@2.0.0-2 is enabled and will be disabled and replaced by ${extensionId}@2.0.0-2.`,
+      );
     });
 
     it("leaves it alone when the replacement is cancelled", async () => {
@@ -247,6 +272,7 @@ describe("attemptInstall of an extension which is already installed", () => {
       expect(events).toEqual(["set-is-enabled false", "waiting for the teardown", "torn down", "unpack"]);
       expect(unpackExtensionMock).toHaveBeenCalledWith(validatedRequest, expect.any(Function), {
         disabledVersion: "2.0.0-1",
+        isReinstall: false,
       });
     });
 

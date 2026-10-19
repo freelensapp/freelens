@@ -13,10 +13,12 @@ export const disabledForReinstallNote = (name: string, disabledVersion: string) 
 
 /**
  * What an error says has failed: installing, or, over an enabled extension
- * which was disabled for it, reinstalling the same version or replacing it
- * with another one.
+ * which was disabled for it, reinstalling the same build or replacing it with
+ * another one. Only the caller knows which of the two it was: the same version
+ * from another source, a directory in place of a managed install or the other
+ * way round, is a replacement.
  */
-export const installFailureSubject = (name: string, version: string, disabledVersion?: string) => {
+export const installFailureSubject = (name: string, version: string, disabledVersion?: string, isReinstall = false) => {
   if (!disabledVersion) {
     return (
       <>
@@ -26,7 +28,7 @@ export const installFailureSubject = (name: string, version: string, disabledVer
     );
   }
 
-  if (disabledVersion === version) {
+  if (isReinstall) {
     return (
       <>
         {"Reinstalling "}

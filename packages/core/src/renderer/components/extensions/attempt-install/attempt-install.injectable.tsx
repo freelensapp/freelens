@@ -166,8 +166,10 @@ const attemptInstall =
     const { version: oldVersion } = installedExtension.manifest;
     const extensionFolder = getExtensionDestFolder(name);
     const isEnabled = installedExtension.isEnabled;
-    // "Reinstall" says the same version is installed again.
-    const isSameVersion = oldVersion === version;
+    // "Reinstall" says the same build is installed again: the same version,
+    // and a package in place of a package. A package in place of a directory
+    // registered in development is a replacement, whatever the versions say.
+    const isReinstall = oldVersion === version && installedExtension.isManaged;
 
     const proceed = await confirm({
       message: (
@@ -178,7 +180,7 @@ const attemptInstall =
                 {"Install extension "}
                 <b>{`${name}@${version}`}</b>?
               </>
-            ) : isSameVersion ? (
+            ) : isReinstall ? (
               <>
                 {"Reinstall "}
                 <b>{name}</b>?
@@ -187,6 +189,12 @@ const attemptInstall =
               <>
                 {"Replace "}
                 <b>{`${name}@${oldVersion}`}</b>
+                {!installedExtension.isManaged && (
+                  <>
+                    {" from "}
+                    <code>{installedExtension.absolutePath}</code>
+                  </>
+                )}
                 {" with "}
                 <b>{`${name}@${version}`}</b>?
               </>
@@ -198,14 +206,16 @@ const attemptInstall =
           </p>
           <div className="remove-folder-warning" onClick={() => shell.openPath(extensionFolder)}>
             <b>Warning:</b>
-            {isEnabled
-              ? ` ${name}@${oldVersion} is enabled and will be disabled and replaced by ${name}@${version}.`
-              : ` ${name}@${oldVersion} will be replaced by this installation.`}
+            {!isEnabled
+              ? ` ${name}@${oldVersion} will be replaced by this installation.`
+              : isReinstall
+                ? ` ${name}@${oldVersion} is enabled and will be disabled and installed again.`
+                : ` ${name}@${oldVersion} is enabled and will be disabled and replaced by ${name}@${version}.`}
           </div>
         </div>
       ),
       labelCancel: "Cancel",
-      labelOk: !isEnabled ? "Install" : isSameVersion ? "Reinstall" : "Replace",
+      labelOk: !isEnabled ? "Install" : isReinstall ? "Reinstall" : "Replace",
     });
 
     if (!proceed) {
@@ -238,7 +248,7 @@ const attemptInstall =
       return void showErrorNotification(
         <div className="flex flex-col gap-2">
           <p>
-            {installFailureSubject(name, version, disabling ? oldVersion : undefined)}
+            {installFailureSubject(name, version, disabling ? oldVersion : undefined, isReinstall)}
             {" has failed: "}
             <em>{message}</em>
           </p>
@@ -247,7 +257,11 @@ const attemptInstall =
       );
     }
 
-    await unpackExtension(validatedRequest, dispose, disabling ? { disabledVersion: oldVersion } : undefined);
+    await unpackExtension(
+      validatedRequest,
+      dispose,
+      disabling ? { disabledVersion: oldVersion, isReinstall } : undefined,
+    );
   };
 
 const attemptInstallInjectable = getInjectable({

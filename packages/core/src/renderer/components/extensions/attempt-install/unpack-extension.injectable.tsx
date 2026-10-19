@@ -36,6 +36,11 @@ export interface UnpackExtensionOptions {
    * way for this install. A failure says that it stays disabled.
    */
   disabledVersion?: string;
+  /**
+   * Whether this install is the same build again, the same version from the
+   * same kind of source, rather than a replacement of it.
+   */
+  isReinstall?: boolean;
 }
 
 export type UnpackExtension = (
@@ -67,11 +72,16 @@ const unpackExtensionInjectable = getInjectable({
     const showSuccessNotification = di.inject(showSuccessNotificationInjectable);
     const showErrorNotification = di.inject(showErrorNotificationInjectable);
 
-    const displayErrorMessage = (message: string, name: string, version: string, disabledVersion?: string) => {
+    const displayErrorMessage = (
+      message: string,
+      name: string,
+      version: string,
+      { disabledVersion, isReinstall }: UnpackExtensionOptions,
+    ) => {
       showErrorNotification(
         <div className="flex flex-col gap-2">
           <p>
-            {installFailureSubject(name, version, disabledVersion)}
+            {installFailureSubject(name, version, disabledVersion, isReinstall)}
             {" has failed: "}
             <em>{message}</em>
           </p>
@@ -80,7 +90,7 @@ const unpackExtensionInjectable = getInjectable({
       );
     };
 
-    return async (request, disposeDownloading, { disabledVersion } = {}) => {
+    return async (request, disposeDownloading, options = {}) => {
       const {
         id,
         fileName,
@@ -164,13 +174,13 @@ const unpackExtensionInjectable = getInjectable({
           .catch((error) => {
             // There was an error during plugin installation
             logger.info(`[EXTENSION-INSTALLATION]: installing ${request.fileName} has failed due a timeout`, { error });
-            displayErrorMessage("There was an error during the installation", name, version, disabledVersion);
+            displayErrorMessage("There was an error during the installation", name, version, options);
           });
       } catch (error) {
         const message = getMessageFromError(error);
 
         logger.info(`[EXTENSION-INSTALLATION]: installing ${request.fileName} has failed: ${message}`, { error });
-        displayErrorMessage(message, name, version, disabledVersion);
+        displayErrorMessage(message, name, version, options);
       } finally {
         // Remove install state once finished
         extensionInstallationStateStore.clearInstalling(id);

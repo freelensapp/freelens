@@ -100,9 +100,10 @@ const installFromDirectoryInjectable = getInjectable({
         }
 
         const replaced = installedExtension && !isLoadedFromHere ? installedExtension : undefined;
+        // A directory in place of what is enabled is always a replacement, even
+        // of the same version: the build is not the same, and neither is its
+        // verification. The directory already loaded is handled above.
         const enabledVersion = replaced?.isEnabled ? replaced.manifest.version : undefined;
-        // "Reinstall" says the same version is installed again.
-        const isSameVersion = enabledVersion === manifest.version;
 
         const proceed = await confirm({
           message: (
@@ -113,15 +114,16 @@ const installFromDirectoryInjectable = getInjectable({
                     {"Load the extension "}
                     <b>{displayName}</b>
                   </>
-                ) : isSameVersion ? (
-                  <>
-                    {"Reinstall "}
-                    <b>{manifest.name}</b>
-                  </>
                 ) : (
                   <>
                     {"Replace "}
                     <b>{extensionDisplayName(manifest.name, enabledVersion)}</b>
+                    {replaced?.isManaged === false && (
+                      <>
+                        {" from "}
+                        <code>{replaced.absolutePath}</code>
+                      </>
+                    )}
                     {" with "}
                     <b>{displayName}</b>
                   </>
@@ -143,7 +145,7 @@ const installFromDirectoryInjectable = getInjectable({
             </div>
           ),
           labelCancel: "Cancel",
-          labelOk: !enabledVersion ? "Install" : isSameVersion ? "Reinstall" : "Replace",
+          labelOk: enabledVersion ? "Replace" : "Install",
         });
 
         if (!proceed) {
