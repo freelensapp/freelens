@@ -4,9 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { Button } from "@freelensapp/button";
 import { loggerInjectionToken } from "@freelensapp/logger";
-import { showErrorNotificationInjectable, showInfoNotificationInjectable } from "@freelensapp/notifications";
+import { showErrorNotificationInjectable } from "@freelensapp/notifications";
 import { disposer } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { shell } from "electron";
@@ -14,7 +13,10 @@ import { ExtensionInstallationState } from "../../../../extensions/extension-ins
 import extensionInstallationStateStoreInjectable from "../../../../extensions/extension-installation-state-store/extension-installation-state-store.injectable";
 import extensionLoaderInjectable from "../../../../extensions/extension-loader/extension-loader.injectable";
 import { verifyInstallChecksum } from "../../../../features/extensions/installer/common/checksums";
+import confirmInjectable from "../../confirm-dialog/confirm.injectable";
+import { getMessageFromError } from "../get-message-from-error/get-message-from-error";
 import createTempFilesAndValidateInjectable from "./create-temp-files-and-validate.injectable";
+import { disabledForReinstallNote } from "./disabled-for-reinstall";
 import getExtensionDestFolderInjectable from "./get-extension-dest-folder.injectable";
 import unpackExtensionInjectable from "./unpack-extension.injectable";
 
@@ -26,6 +28,7 @@ import type { ExtensionInstallationStateStore } from "../../../../extensions/ext
 import type { ExtensionLoader } from "../../../../extensions/extension-loader";
 import type { InstallChecksum } from "../../../../features/extensions/installer/common/checksums";
 import type { InstalledExtensionSource } from "../../../../features/extensions/installer/common/installed-extensions";
+import type { Confirm } from "../../confirm-dialog/confirm.injectable";
 import type { CreateTempFilesAndValidate } from "./create-temp-files-and-validate.injectable";
 import type { GetExtensionDestFolder } from "./get-extension-dest-folder.injectable";
 import type { UnpackExtension } from "./unpack-extension.injectable";
@@ -51,8 +54,8 @@ interface Dependencies {
   createTempFilesAndValidate: CreateTempFilesAndValidate;
   getExtensionDestFolder: GetExtensionDestFolder;
   installStateStore: ExtensionInstallationStateStore;
+  confirm: Confirm;
   showErrorNotification: ShowNotification;
-  showInfoNotification: ShowNotification;
   logger: Logger;
 }
 
@@ -98,8 +101,8 @@ const attemptInstall =
     createTempFilesAndValidate,
     getExtensionDestFolder,
     installStateStore,
+    confirm,
     showErrorNotification,
-    showInfoNotification,
     logger,
   }: Dependencies): AttemptInstall =>
   async (request, cleanup) => {
@@ -154,64 +157,80 @@ const attemptInstall =
       );
     }
 
-    const extensionFolder = getExtensionDestFolder(name);
     const installedExtension = extensionLoader.getExtensionById(validatedRequest.id);
 
-    // Only one version of an extension is active at a time, and a version which
-    // is already running cannot be swapped underneath itself: its module graph
-    // stays in the realm it was loaded into for the life of the process.
-    if (installedExtension?.isEnabled) {
+    if (!installedExtension) {
+      return unpackExtension(validatedRequest, dispose);
+    }
+
+    const { version: oldVersion } = installedExtension.manifest;
+    const extensionFolder = getExtensionDestFolder(name);
+    const isActive = installedExtension.isEnabled;
+
+    const proceed = await confirm({
+      message: (
+        <div className="flex flex-col gap-2">
+          <p>
+            {isActive ? "Reinstall " : "Install extension "}
+            <b>{isActive ? name : `${name}@${version}`}</b>?
+          </p>
+          <p>
+            {"Description: "}
+            <em>{description}</em>
+          </p>
+          <div className="remove-folder-warning" onClick={() => shell.openPath(extensionFolder)}>
+            <b>Warning:</b>
+            {isActive
+              ? ` ${name}@${oldVersion} is active and will be disabled and replaced by ${name}@${version}.`
+              : ` ${name}@${oldVersion} will be replaced by this installation.`}
+          </div>
+        </div>
+      ),
+      labelCancel: "Cancel",
+      labelOk: isActive ? "Reinstall" : "Install",
+    });
+
+    if (!proceed) {
+      return dispose();
+    }
+
+    // The running build has to be gone from both processes before
+    // `unpackExtension` touches the build directory: reinstalling the identical
+    // tarball removes the very directory it was loaded from, and a new version
+    // removes it once it is recorded. Its module graph stays in memory, as it
+    // does after a development reload, and a new build is imported from its own
+    // `<version>-<digest8>` path. The teardown is awaited for a disabled
+    // extension too, whose `onDeactivate` may still be running.
+    const disabling = extensionLoader.getExtensionById(validatedRequest.id)?.isEnabled ?? false;
+
+    try {
+      if (disabling) {
+        await extensionLoader.setIsEnabled(validatedRequest.id, false);
+      }
+
+      await extensionLoader.whenTornDown(validatedRequest.id);
+    } catch (error) {
+      const message = getMessageFromError(error);
+
+      logger.warn(`[EXTENSION-INSTALLATION]: cannot tear ${name}@${oldVersion} down to replace it: ${message}`, {
+        error,
+      });
       dispose();
 
       return void showErrorNotification(
         <div className="flex flex-col gap-2">
-          <b>Extension is active:</b>
           <p>
-            <em>{`${name}@${installedExtension.manifest.version}`}</em>
-            {" is installed and active."}
+            {"Reinstalling "}
+            <b>{name}</b>
+            {" has failed: "}
+            <em>{message}</em>
           </p>
-          <p>{"Disable or uninstall it first, then install this version."}</p>
+          {disabling && <p>{disabledForReinstallNote(name, oldVersion)}</p>}
         </div>,
       );
     }
 
-    if (installedExtension) {
-      const { version: oldVersion } = installedExtension.manifest;
-
-      // confirm replacing the installed version, which is not active
-      const removeNotification = showInfoNotification(
-        <div className="InstallingExtensionNotification flex gap-2 items-center">
-          <div className="flex flex-col gap-2">
-            <p>
-              {"Install extension "}
-              <b>{`${name}@${version}`}</b>?
-            </p>
-            <p>
-              {"Description: "}
-              <em>{description}</em>
-            </p>
-            <div className="remove-folder-warning" onClick={() => shell.openPath(extensionFolder)}>
-              <b>Warning:</b>
-              {` ${name}@${oldVersion} will be replaced by this installation.`}
-            </div>
-          </div>
-          <Button
-            autoFocus
-            label="Install"
-            onClick={async () => {
-              removeNotification();
-
-              await unpackExtension(validatedRequest, dispose);
-            }}
-          />
-        </div>,
-        {
-          onClose: dispose,
-        },
-      );
-    } else {
-      await unpackExtension(validatedRequest, dispose);
-    }
+    await unpackExtension(validatedRequest, dispose, disabling ? { disabledVersion: oldVersion } : undefined);
   };
 
 const attemptInstallInjectable = getInjectable({
@@ -223,8 +242,8 @@ const attemptInstallInjectable = getInjectable({
       createTempFilesAndValidate: di.inject(createTempFilesAndValidateInjectable),
       getExtensionDestFolder: di.inject(getExtensionDestFolderInjectable),
       installStateStore: di.inject(extensionInstallationStateStoreInjectable),
+      confirm: di.inject(confirmInjectable),
       showErrorNotification: di.inject(showErrorNotificationInjectable),
-      showInfoNotification: di.inject(showInfoNotificationInjectable),
       logger: di.inject(loggerInjectionToken),
     }),
 });
