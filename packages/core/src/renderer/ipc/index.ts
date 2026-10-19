@@ -10,6 +10,7 @@ import {
   extensionLoaderFromMainChannel,
   extensionLoaderLoadFailuresFromMainChannel,
   extensionLoaderSetIsEnabledChannel,
+  extensionLoaderTornDownChannel,
 } from "../../common/ipc/extension-handling";
 import {
   type WindowAction,
@@ -80,4 +81,8 @@ export function requestExtensionLoaderMainLoadFailures(): Promise<[LensExtension
 
 export function requestExtensionLoaderSetIsEnabled(extensionId: LensExtensionId, isEnabled: boolean): Promise<void> {
   return requestMain(extensionLoaderSetIsEnabledChannel, extensionId, isEnabled);
+}
+
+export function requestExtensionLoaderTornDown(extensionId: LensExtensionId): Promise<void> {
+  return requestMain(extensionLoaderTornDownChannel, extensionId);
 }

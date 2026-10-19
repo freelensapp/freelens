@@ -9,6 +9,7 @@ import {
   extensionLoaderFromMainChannel,
   extensionLoaderLoadFailuresFromMainChannel,
   extensionLoaderSetIsEnabledChannel,
+  extensionLoaderTornDownChannel,
 } from "../../common/ipc/extension-handling";
 import { ExtensionLoader } from "../extension-loader/extension-loader";
 
@@ -218,6 +219,7 @@ vi.mock("../../renderer/ipc", async (importOriginal) => ({
     }),
   requestExtensionLoaderSetIsEnabled: (extensionId: string, isEnabled: boolean) =>
     ipc.requestMain(extensionLoaderSetIsEnabledChannel, extensionId, isEnabled),
+  requestExtensionLoaderTornDown: (extensionId: string) => ipc.requestMain(extensionLoaderTornDownChannel, extensionId),
 }));
 
 const extensionId: LensExtensionId = "@freelensapp/example-extension";
@@ -478,5 +480,142 @@ describe("ExtensionLoader brings main's load failures to the renderer frames", (
 
     expect(main.getLoadFailures(extensionId)).toEqual([]);
     expect(rootFrame.getLoadFailures(extensionId)).toEqual([]);
+  });
+});
+
+describe("ExtensionLoader tells when an extension is torn down in main and in the renderer", () => {
+  let main: ExtensionLoader;
+  let rootFrame: ExtensionLoader;
+  // What lets the `onDeactivate` of the instance in each process return, when
+  // the test chooses.
+  let finishDeactivating: Record<"main" | "root-frame", () => void>;
+
+  const settle = () => {
+    while (ipc.state.queue.length > 0) {
+      ipc.state.queue.shift()?.deliver();
+    }
+  };
+
+  const loadsAnInstance = (loader: ExtensionLoader, process: "main" | "root-frame") => {
+    const deactivated = new Promise<void>((resolve) => {
+      finishDeactivating[process] = resolve;
+    });
+
+    class SomeExtension {
+      readonly id: LensExtensionId;
+      readonly name: string;
+
+      constructor(extension: InstalledExtension) {
+        this.id = extension.id;
+        this.name = extension.manifest.name;
+      }
+
+      activate = async () => {};
+      enable = async () => {};
+      disable = () => deactivated;
+    }
+
+    vi.spyOn(
+      loader as unknown as { requireExtension: () => Promise<LensExtensionConstructor | null> },
+      "requireExtension",
+    ).mockResolvedValue(SomeExtension as unknown as LensExtensionConstructor);
+  };
+
+  const hasSettled = async (promise: Promise<unknown>) => {
+    let settled = false;
+
+    void promise.then(
+      () => {
+        settled = true;
+      },
+      () => {
+        settled = true;
+      },
+    );
+
+    // Long enough for every answer already on its way to arrive.
+    await new Promise((resolve) => setTimeout(resolve, 0));
+
+    return settled;
+  };
+
+  const disableFromTheRootFrame = async () => {
+    const disabling = ipc.runAs("root-frame", () => rootFrame.setIsEnabled(extensionId, false));
+
+    settle();
+    await disabling;
+  };
+
+  beforeEach(async () => {
+    ipc.reset();
+    finishDeactivating = { main: () => {}, "root-frame": () => {} };
+
+    main = createLoader("main", []);
+    rootFrame = createLoader("root-frame", []);
+    loadsAnInstance(main, "main");
+    loadsAnInstance(rootFrame, "root-frame");
+
+    await ipc.runAs("main", () => main.init());
+    await ipc.runAs("root-frame", async () => {
+      await rootFrame.init();
+      await rootFrame.autoInitExtensions();
+    });
+    settle();
+
+    ipc.runAs("main", () => {
+      runInAction(() => main.addExtension(discoveredExtension(true)));
+    });
+    settle();
+
+    await vi.waitFor(() => {
+      expect(main.getInstanceById(extensionId)).toBeDefined();
+      expect(rootFrame.getInstanceById(extensionId)).toBeDefined();
+    });
+  });
+
+  it("does not resolve while the extension is enabled", async () => {
+    const tornDown = ipc.runAs("root-frame", () => rootFrame.whenTornDown(extensionId));
+
+    settle();
+
+    expect(await hasSettled(tornDown)).toBe(false);
+  });
+
+  it("resolves once the onDeactivate of both processes has returned, not when the disable has", async () => {
+    await disableFromTheRootFrame();
+
+    // Both processes have taken the instance out already, and the teardown is
+    // still running in both.
+    expect(main.getInstanceById(extensionId)).toBeUndefined();
+    expect(rootFrame.getInstanceById(extensionId)).toBeUndefined();
+
+    const tornDown = ipc.runAs("root-frame", () => rootFrame.whenTornDown(extensionId));
+
+    settle();
+
+    expect(await hasSettled(tornDown)).toBe(false);
+
+    finishDeactivating.main();
+
+    expect(await hasSettled(tornDown)).toBe(false);
+
+    finishDeactivating["root-frame"]();
+
+    await expect(tornDown).resolves.toBeUndefined();
+  });
+
+  it("waits for main when the renderer has finished first", async () => {
+    await disableFromTheRootFrame();
+
+    const tornDown = ipc.runAs("root-frame", () => rootFrame.whenTornDown(extensionId));
+
+    settle();
+    finishDeactivating["root-frame"]();
+
+    expect(await hasSettled(tornDown)).toBe(false);
+
+    finishDeactivating.main();
+
+    await expect(tornDown).resolves.toBeUndefined();
   });
 });

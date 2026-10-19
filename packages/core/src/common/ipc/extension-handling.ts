@@ -34,3 +34,11 @@ export const extensionLoaderReloadDevelopmentChannel = "extension-loader:reload-
  * from its own, so neither process's failures can overwrite the other's.
  */
 export const extensionLoaderLoadFailuresFromMainChannel = "extension-loader:main:load-failures";
+
+/**
+ * A renderer asking main to answer once one extension is disabled and torn
+ * down there: no instance, no load in flight and no `onDeactivate` still
+ * running. Main answers out of its own loader state, which a renderer has no
+ * copy of, and rejects when the teardown does not finish in time.
+ */
+export const extensionLoaderTornDownChannel = "extension-loader:torn-down";
