@@ -15,6 +15,8 @@ import { sortBy } from "es-toolkit/compat";
 import { observable, reaction } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
+import { resolveCustomColumnPriorities } from "../../../features/custom-table-columns/common/resolve-custom-column-priorities";
+import customListLayoutColumnsInjectable from "../../../features/custom-table-columns/renderer/custom-list-layout-columns.injectable";
 import clusterFrameContextForNamespacedResourcesInjectable from "../../cluster-frame-context/for-namespaced-resources.injectable";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import { ResourceKindMap, ResourceNames } from "../../utils/rbac";
@@ -27,9 +29,16 @@ import { NamespaceSelectFilter } from "../namespaces/namespace-select-filter";
 
 import type { KubeApi } from "@freelensapp/kube-api";
 import type { KubeJsonApiDataFor, KubeObject } from "@freelensapp/kube-object";
-import type { GeneralKubeObjectListLayoutColumn, SpecificKubeListLayoutColumn } from "@freelensapp/list-layout";
+import type {
+  GeneralKubeObjectListLayoutColumn,
+  SpecificKubeListLayoutColumn,
+  TableCellProps,
+} from "@freelensapp/list-layout";
 import type { Disposer } from "@freelensapp/utilities";
 
+import type { IComputedValue } from "mobx";
+
+import type { CustomKubeObjectListLayoutColumn } from "../../../features/custom-table-columns/renderer/custom-list-layout-columns.injectable";
 import type { ClusterContext } from "../../cluster-frame-context/cluster-frame-context";
 import type { SubscribableStore, SubscribeStores } from "../../kube-watch-api/kube-watch-api";
 import type { PageParam } from "../../navigation/page-param";
@@ -67,11 +76,36 @@ interface Dependencies {
   kubeSelectedUrlParam: PageParam<string>;
   toggleKubeDetailsPane: ToggleKubeDetailsPane;
   generalColumns: GeneralKubeObjectListLayoutColumn[];
+  customColumns: IComputedValue<CustomKubeObjectListLayoutColumn[]>;
 }
 
-const matchesApiFor = (api: SubscribableStore["api"]) => (column: GeneralKubeObjectListLayoutColumn) =>
-  column.kind === api.kind &&
-  (isString(api.apiVersionWithGroup) ? [column.apiVersion].flat().includes(api.apiVersionWithGroup) : true);
+const matchesApiFor =
+  (api: SubscribableStore["api"]) => (column: Pick<GeneralKubeObjectListLayoutColumn, "kind" | "apiVersion">) =>
+    column.kind === api.kind &&
+    (isString(api.apiVersionWithGroup) ? [column.apiVersion].flat().includes(api.apiVersionWithGroup) : true);
+
+/**
+ * The priority of every column of this list that a custom column may be anchored to, both the ones
+ * passed as plain headers and the ones contributed as column definitions.
+ */
+const getColumnPriorities = (
+  headers: { priority: number; header: TableCellProps | undefined | null }[],
+  columns: { id: string; priority: number }[],
+) => {
+  const priorities = new Map<string, number>();
+
+  for (const { priority, header } of headers) {
+    if (header?.id) {
+      priorities.set(header.id, priority);
+    }
+  }
+
+  for (const { id, priority } of columns) {
+    priorities.set(id, priority);
+  }
+
+  return priorities;
+};
 
 const getLoadErrorMessage = (error: unknown): string => {
   if (error instanceof Error) {
@@ -182,12 +216,21 @@ class NonInjectedKubeObjectListLayout<
       renderTableHeader,
       columns,
       generalColumns,
+      customColumns,
       sortingCallbacks = {},
       customizeTableRowProps,
       ...layoutProps
     } = this.props;
     const resourceName = this.props.resourceName || ResourceNames[ResourceKindMap[store.api.kind]] || store.api.kind;
-    const targetColumns = [...(columns ?? []), ...generalColumns.filter(matchesApiFor(store.api))];
+    const headerColumns = (renderTableHeader || []).map((header, index) => ({ priority: 20 - index, header }));
+    const definedColumns = [...(columns ?? []), ...generalColumns.filter(matchesApiFor(store.api))];
+    const targetColumns = [
+      ...definedColumns,
+      ...resolveCustomColumnPriorities(
+        getColumnPriorities(headerColumns, definedColumns),
+        customColumns.get().filter(matchesApiFor(store.api)),
+      ),
+    ];
 
     void dependentStores;
 
@@ -197,10 +240,7 @@ class NonInjectedKubeObjectListLayout<
       }
     });
 
-    const headers = sortBy(
-      [...(renderTableHeader || []).map((header, index) => ({ priority: 20 - index, header })), ...targetColumns],
-      (v) => -v.priority,
-    ).map((col) => col.header);
+    const headers = sortBy([...headerColumns, ...targetColumns], (v) => -v.priority).map((col) => col.header);
 
     const getTableRowCustomizations = (item: K) => {
       const id = `menu-actions-for-kube-object-menu-for-${item.getId()}`;
@@ -312,6 +352,7 @@ export const KubeObjectListLayout = withInjectables<
     kubeSelectedUrlParam: di.inject(kubeSelectedUrlParamInjectable),
     toggleKubeDetailsPane: di.inject(toggleKubeDetailsPaneInjectable),
     generalColumns: di.injectMany(kubeObjectListLayoutColumnInjectionToken),
+    customColumns: di.inject(customListLayoutColumnsInjectable),
   }),
 }) as <K extends KubeObject, A extends KubeApi<K, D>, D extends KubeJsonApiDataFor<K> = KubeJsonApiDataFor<K>>(
   props: KubeObjectListLayoutProps<K, A, D>,

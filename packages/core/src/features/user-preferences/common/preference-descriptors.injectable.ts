@@ -5,11 +5,13 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
+import { uniqBy } from "es-toolkit";
 import { merge } from "es-toolkit/compat";
 import { observable } from "mobx";
 import kubeDirectoryPathInjectable from "../../../common/os/kube-directory-path.injectable";
 import { defaultColorThemePreference } from "../../../common/vars";
 import currentTimezoneInjectable from "../../../common/vars/current-timezone.injectable";
+import { isCustomTableColumn } from "../../custom-table-columns/common/custom-table-column";
 import {
   ClusterPageMenuOrder,
   defaultEditorConfig,
@@ -21,8 +23,9 @@ import {
   packageMirrors,
 } from "./preferences-helpers";
 
-import type { ObservableMap } from "mobx";
+import type { IObservableArray, ObservableMap } from "mobx";
 
+import type { CustomTableColumn } from "../../custom-table-columns/common/custom-table-column";
 import type {
   EditorConfiguration,
   ExtensionRegistry,
@@ -60,6 +63,7 @@ export type PreferenceDescriptors = {
   readonly logViewerPreferences: PreferenceDescription<Partial<LogViewerPreferences>, LogViewerPreferences>;
   readonly terminalCopyOnSelect: PreferenceDescription<boolean>;
   readonly hiddenTableColumns: PreferenceDescription<[string, string[]][], Map<string, Set<string>>>;
+  readonly customTableColumns: PreferenceDescription<CustomTableColumn[], IObservableArray<CustomTableColumn>>;
   readonly syncKubeconfigEntries: PreferenceDescription<
     KubeconfigSyncEntry[],
     ObservableMap<string, KubeconfigSyncValue>
@@ -183,6 +187,13 @@ const userPreferenceDescriptorsInjectable = getInjectable({
 
           return res.length ? res : undefined;
         },
+      }),
+      customTableColumns: getPreferenceDescriptor<CustomTableColumn[], IObservableArray<CustomTableColumn>>({
+        // A broken entry, from a hand edit or from a downgrade, must not take down every list that
+        // would have rendered it, so unusable entries are dropped on load. A repeated id would
+        // render the column twice and toggle both at once, so the first one wins.
+        fromStore: (val = []) => observable.array(uniqBy(val.filter(isCustomTableColumn), (column) => column.id)),
+        toStore: (val) => (val.length ? val.map((column) => ({ ...column })) : undefined),
       }),
       syncKubeconfigEntries: (() => {
         const map = observable.map<string, KubeconfigSyncValue>();

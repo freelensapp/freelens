@@ -165,25 +165,72 @@ export function formatJSONValue(value: unknown): string {
   return String(value);
 }
 
+interface CompiledJsonPath {
+  query: string;
+  isSlice: boolean;
+}
+
 /**
- * This function is a safer version of `JSONPath.value(obj, path)` with untrusted jsonpath strings
+ * Parsing an expression is the expensive part of `safeJSONPathValue`, and the same handful of
+ * expressions are evaluated once per row of a list. Keep the compiled form around so that cost is
+ * paid once per expression instead of once per cell.
+ *
+ * A failed parse is cached as `null` so a malformed expression warns once rather than once per row.
  */
-export function safeJSONPathValue(obj: object, path: string): unknown {
+const compiledJsonPaths = new Map<string, CompiledJsonPath | null>();
+
+const maxCompiledJsonPaths = 500;
+
+function compileJsonPath(path: string): CompiledJsonPath | null {
+  const cached = compiledJsonPaths.get(path);
+
+  if (cached !== undefined) {
+    return cached;
+  }
+
+  let compiled: CompiledJsonPath | null = null;
+
   try {
     const parsedPath = JSONPath.parse(convertKubectlJsonPathToNodeJsonPath(path));
     const isSlice = parsedPath.some(
       (exp: any) => exp.expression.type === "slice" || exp.expression.type === "wildcard",
     );
-    const value = JSONPath.query(obj, JSONPath.stringify(parsedPath), isSlice ? Infinity : 1);
 
-    if (isSlice) {
+    compiled = { query: JSONPath.stringify(parsedPath), isSlice };
+  } catch (error) {
+    console.warn("[JSON-PATH]: failed to parse jsonpath", error);
+  }
+
+  if (compiledJsonPaths.size >= maxCompiledJsonPaths) {
+    compiledJsonPaths.clear();
+  }
+
+  compiledJsonPaths.set(path, compiled);
+
+  return compiled;
+}
+
+/**
+ * This function is a safer version of `JSONPath.value(obj, path)` with untrusted jsonpath strings
+ */
+export function safeJSONPathValue(obj: object, path: string): unknown {
+  const compiled = compileJsonPath(path);
+
+  if (!compiled) {
+    return undefined;
+  }
+
+  try {
+    const value = JSONPath.query(obj, compiled.query, compiled.isSlice ? Infinity : 1);
+
+    if (compiled.isSlice) {
       return value;
     }
 
     return value[0];
   } catch (error) {
     // something failed
-    console.warn("[JSON-PATH]: failed to parse jsonpath", error);
+    console.warn("[JSON-PATH]: failed to evaluate jsonpath", error);
 
     return undefined;
   }
