@@ -9,7 +9,6 @@ import { namedCaptures } from "./named-captures";
 
 const slashDashSearch = /[/\\-]/g;
 const pathByBareDots = /(?<=\w)\./;
-const textBeforeFirstSquare = /^.*(?=\[)/g;
 const backSlash = /\\/g;
 const kubectlOptionPrefix = /^\$?\.?(?<pathExpression>.*)/;
 const sliceVersion = /\[]/g;
@@ -42,11 +41,9 @@ export function convertKubectlJsonPathToNodeJsonPath(jsonPath: string) {
 
   let { pathExpression } = captures;
 
-  if (pathExpression.match(slashDashSearch)) {
-    const [first, ...rest] = pathExpression.split(pathByBareDots);
-
-    pathExpression = `${convertToIndexNotation(first, true)}${rest.map((value) => convertToIndexNotation(value)).join("")}`;
-  }
+  pathExpression = splitOffBracketedSegments(pathExpression)
+    .map((segment, index) => (segment.bracketed ? segment.text : convertBareSegment(segment.text, index === 0)))
+    .join("");
 
   pathExpression = pathExpression.replace(trailingDotDot, "");
   pathExpression = pathExpression.replace(tripleDotName, "..$<trailing>");
@@ -59,27 +56,97 @@ export function convertKubectlJsonPathToNodeJsonPath(jsonPath: string) {
   return `${start}${pathExpression.replace(backSlash, "").replace(sliceVersion, "[0]")}`;
 }
 
-function convertToIndexNotation(key: string, firstItem = false) {
-  if (key.match(slashDashSearch)) {
-    if (key.includes("[")) {
-      // handle cases where key contains [...]
-      const keyToConvert = key.match(textBeforeFirstSquare); // get the text from the key before '['
+interface PathSegment {
+  text: string;
+  bracketed: boolean;
+}
 
-      if (keyToConvert && keyToConvert[0].match(slashDashSearch)) {
-        // check if that part contains illegal characters
-        return key.replace(keyToConvert[0], `['${keyToConvert[0]}']`); // surround key with '[' and ']'
-      } else {
-        return `.${key}`; // otherwise return as is with leading '.'
+/**
+ * Splits a path into the parts written in bracket notation and the parts written in dot notation.
+ *
+ * What is already inside brackets is a key, not a path, so it must survive untouched: a label key
+ * such as `['kops.k8s.io/instancegroup']` holds both dots and a slash, and treating either as
+ * something to convert would take the expression apart in the middle of the key.
+ */
+function splitOffBracketedSegments(pathExpression: string): PathSegment[] {
+  const segments: PathSegment[] = [];
+  let bare = "";
+  let index = 0;
+
+  while (index < pathExpression.length) {
+    if (pathExpression[index] !== "[") {
+      bare += pathExpression[index];
+      index += 1;
+      continue;
+    }
+
+    if (bare) {
+      segments.push({ text: bare, bracketed: false });
+      bare = "";
+    }
+
+    let bracketed = "";
+    let quote: string | undefined;
+    let escaped = false;
+
+    while (index < pathExpression.length) {
+      const char = pathExpression[index];
+
+      bracketed += char;
+      index += 1;
+
+      if (escaped) {
+        escaped = false;
+      } else if (char === "\\") {
+        escaped = true;
+      } else if (quote) {
+        if (char === quote) {
+          quote = undefined;
+        }
+      } else if (char === "'" || char === '"') {
+        quote = char;
+      } else if (char === "]") {
+        break;
       }
     }
 
-    return `['${key}']`;
-  } else {
-    // no illegal characters found, do not touch
-    const prefix = firstItem ? "" : ".";
-
-    return `${prefix}${key}`;
+    segments.push({ text: bracketed, bracketed: true });
   }
+
+  if (bare) {
+    segments.push({ text: bare, bracketed: false });
+  }
+
+  return segments;
+}
+
+/**
+ * Converts the keys of a dot notation part of a path to bracket notation, but only the keys that
+ * hold a character which dot notation cannot express.
+ */
+function convertBareSegment(segment: string, isStartOfPath: boolean) {
+  if (!segment.match(slashDashSearch)) {
+    return segment;
+  }
+
+  const startsWithDot = segment.startsWith(".");
+  const [first, ...rest] = (startsWithDot ? segment.slice(1) : segment).split(pathByBareDots);
+  const converted = `${convertToIndexNotation(first, isStartOfPath && !startsWithDot)}${rest
+    .map((value) => convertToIndexNotation(value))
+    .join("")}`;
+
+  return converted;
+}
+
+function convertToIndexNotation(key: string, firstItem = false) {
+  if (key.match(slashDashSearch)) {
+    return `['${key}']`;
+  }
+
+  // no illegal characters found, do not touch
+  const prefix = firstItem ? "" : ".";
+
+  return `${prefix}${key}`;
 }
 
 export function formatJSONValue(value: unknown): string {
