@@ -11,7 +11,7 @@ import {
 } from "@freelensapp/routing";
 import { createContainer, getInjectable } from "@ogre-tools/injectable";
 import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
-import { DiContextProvider } from "@ogre-tools/injectable-react";
+import { DiContextProvider, withInjectables } from "@ogre-tools/injectable-react";
 import { act, render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { observable, runInAction } from "mobx";
@@ -20,6 +20,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ErrorBoundary } from "./error-boundary";
 
 import type { HistoryAdapter, ObservableHistory } from "@freelensapp/routing";
+import type { StrictReactNode } from "@freelensapp/utilities";
 
 import type { RenderResult } from "@testing-library/react";
 import type { ComponentType } from "react";
@@ -35,6 +36,18 @@ const Page = ({ path }: { path: string }) => {
 
   return <p>{`Page at ${path}`}</p>;
 };
+
+interface LayoutProps {
+  resetKey?: string;
+  children?: StrictReactNode;
+}
+
+// A layout behind `withInjectables`, like the main layout, between the parent that picks the page and the boundary.
+// It passes its props on one render late, so the boundary first renders the old page again on every navigation.
+const Layout = withInjectables<{}, LayoutProps>(
+  observer(({ resetKey, children }: LayoutProps) => <ErrorBoundary resetKey={resetKey}>{children}</ErrorBoundary>),
+  { getProps: (_di, props) => props },
+);
 
 // Builds the component that renders the boundary, from the history of the test.
 type ParentFor = (history: ObservableHistory<unknown>) => ComponentType;
@@ -67,13 +80,17 @@ function setupWith(adapter: HistoryAdapter, Parent: ParentFor = routesFor) {
   return { history, result };
 }
 
-// The parent picks the page for the location, like the routes around the boundary of the main layout.
+// The parent picks the page for the location and keys its crash by the path, like the layout of the cluster frame.
 const routesFor = (history: ObservableHistory<unknown>) =>
-  observer(() => (
-    <ErrorBoundary>
-      <Page path={history.location.pathname} />
-    </ErrorBoundary>
-  ));
+  observer(() => {
+    const path = history.location.pathname;
+
+    return (
+      <Layout resetKey={path}>
+        <Page path={path} />
+      </Layout>
+    );
+  });
 
 describe("<ErrorBoundary>", () => {
   beforeEach(() => {
@@ -109,8 +126,8 @@ describe("<ErrorBoundary>", () => {
     expect(result.getByText("App crash at")).toBeInTheDocument();
   });
 
-  // The browser history of the app moves back asynchronously, on the popstate event, so the boundary must not render
-  // the broken page again in between and catch its error a second time.
+  // The browser history of the app moves back asynchronously, on the popstate event, so Back first renders the broken
+  // page again on its own path, which throws again, and then the key of the previous path clears the crash.
   it("goes back to the previous page with the Back button", async () => {
     const user = userEvent.setup();
 
@@ -134,26 +151,23 @@ describe("<ErrorBoundary>", () => {
     expect(result.getByText("App crash at")).toBeInTheDocument();
   });
 
-  // The retry of Back can run before the parent passes the children of the new location. The page that threw
-  // throws again then, on the new path, and the children of the new location must still clear the error.
-  it("renders the previous page when the parent passes it after the retry of Back", async () => {
+  // The crash follows the key the parent passes with the children, not the history: a parent that passes the page of
+  // the new location only later still gets it rendered.
+  it("renders the page the parent passes after Back, with its key", async () => {
     const user = userEvent.setup();
     const shownPath = observable.box("/broken");
 
     const { history, result } = setup(["/pods", "/broken"], () =>
       observer(() => (
-        <ErrorBoundary>
+        <Layout resetKey={shownPath.get()}>
           <Page path={shownPath.get()} />
-        </ErrorBoundary>
+        </Layout>
       )),
     );
-
-    const caughtBefore = vi.mocked(console.error).mock.calls.length;
 
     await user.click(result.getByText("Back"));
 
     expect(history.location.pathname).toBe("/pods");
-    await waitFor(() => expect(vi.mocked(console.error).mock.calls.length).toBeGreaterThan(caughtBefore));
     expect(result.getByText("App crash at")).toBeInTheDocument();
 
     act(() => runInAction(() => shownPath.set("/pods")));
@@ -162,8 +176,8 @@ describe("<ErrorBoundary>", () => {
     expect(result.getByText("Page at /pods")).toBeInTheDocument();
   });
 
-  // The root frame and the cluster frame render their boundary once and never again on navigation, so Back renders
-  // the children again itself, which is a working retry for an error that has gone away.
+  // The root frame and the cluster frame render their boundary once, with no key, and never again on navigation, so
+  // Back renders the children again itself, which is a working retry for an error that has gone away.
   it("renders the children again after Back when the parent does not re-render on navigation", async () => {
     const user = userEvent.setup();
     let failing = true;
@@ -187,11 +201,11 @@ describe("<ErrorBoundary>", () => {
     failing = false;
     await user.click(result.getByText("Back"));
 
-    await waitFor(() => expect(result.getByText("Flaky content")).toBeInTheDocument());
+    expect(result.getByText("Flaky content")).toBeInTheDocument();
     expect(history.location.pathname).toBe("/pods");
   });
 
-  // The dock passes the content of another tab without a navigation: it renders once Back has moved the history.
+  // The dock passes the content of another tab without a navigation and with no key: Back renders it.
   it("renders the children the parent passed without a navigation after Back", async () => {
     const user = userEvent.setup();
     const tab = observable.box("broken");
@@ -218,6 +232,6 @@ describe("<ErrorBoundary>", () => {
 
     await user.click(result.getByText("Back"));
 
-    await waitFor(() => expect(result.getByText("Tab logs")).toBeInTheDocument());
+    expect(result.getByText("Tab logs")).toBeInTheDocument();
   });
 });
