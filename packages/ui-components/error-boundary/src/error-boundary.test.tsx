@@ -14,21 +14,36 @@ import { registerMobX } from "@ogre-tools/injectable-extension-for-mobx";
 import { DiContextProvider } from "@ogre-tools/injectable-react";
 import { act, render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { observable, runInAction } from "mobx";
 import { observer } from "mobx-react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ErrorBoundary } from "./error-boundary";
 
-import type { HistoryAdapter } from "@freelensapp/routing";
+import type { HistoryAdapter, ObservableHistory } from "@freelensapp/routing";
 
 import type { RenderResult } from "@testing-library/react";
+import type { ComponentType } from "react";
 
 import "@testing-library/jest-dom/vitest";
 
-function setup(initialEntries: string[]) {
-  return setupWith(createMemoryHistory({ initialEntries, initialIndex: initialEntries.length - 1 }));
+// A page that throws while it renders for /broken, as a page of an extension can. It reads the path from its props,
+// not from the history, so an element of the old location keeps throwing if it is rendered again.
+const Page = ({ path }: { path: string }) => {
+  if (path === "/broken") {
+    throw new Error("Page failed");
+  }
+
+  return <p>{`Page at ${path}`}</p>;
+};
+
+// Builds the component that renders the boundary, from the history of the test.
+type ParentFor = (history: ObservableHistory<unknown>) => ComponentType;
+
+function setup(initialEntries: string[], Parent?: ParentFor) {
+  return setupWith(createMemoryHistory({ initialEntries, initialIndex: initialEntries.length - 1 }), Parent);
 }
 
-function setupWith(adapter: HistoryAdapter) {
+function setupWith(adapter: HistoryAdapter, Parent: ParentFor = routesFor) {
   const di = createContainer("error-boundary-test");
 
   registerMobX(di);
@@ -41,32 +56,24 @@ function setupWith(adapter: HistoryAdapter) {
   );
 
   const history = di.inject(observableHistoryInjectionToken);
-
-  // A page that throws while it renders for /broken, as a page of an extension can. It reads the path from its
-  // props, not from the history, so an element of the old location keeps throwing if it is rendered again.
-  const Page = ({ path }: { path: string }) => {
-    if (path === "/broken") {
-      throw new Error("Page failed");
-    }
-
-    return <p>{`Page at ${path}`}</p>;
-  };
-
-  // The parent picks the page for the location, like the routes around a boundary of the app.
-  const Routes = observer(() => (
-    <ErrorBoundary>
-      <Page path={history.location.pathname} />
-    </ErrorBoundary>
-  ));
+  const Component = Parent(history);
 
   const result: RenderResult = render(
     <DiContextProvider value={di}>
-      <Routes />
+      <Component />
     </DiContextProvider>,
   );
 
   return { history, result };
 }
+
+// The parent picks the page for the location, like the routes around the boundary of the main layout.
+const routesFor = (history: ObservableHistory<unknown>) =>
+  observer(() => (
+    <ErrorBoundary>
+      <Page path={history.location.pathname} />
+    </ErrorBoundary>
+  ));
 
 describe("<ErrorBoundary>", () => {
   beforeEach(() => {
@@ -125,5 +132,92 @@ describe("<ErrorBoundary>", () => {
     act(() => history.push("/broken"));
 
     expect(result.getByText("App crash at")).toBeInTheDocument();
+  });
+
+  // The retry of Back can run before the parent passes the children of the new location. The page that threw
+  // throws again then, on the new path, and the children of the new location must still clear the error.
+  it("renders the previous page when the parent passes it after the retry of Back", async () => {
+    const user = userEvent.setup();
+    const shownPath = observable.box("/broken");
+
+    const { history, result } = setup(["/pods", "/broken"], () =>
+      observer(() => (
+        <ErrorBoundary>
+          <Page path={shownPath.get()} />
+        </ErrorBoundary>
+      )),
+    );
+
+    const caughtBefore = vi.mocked(console.error).mock.calls.length;
+
+    await user.click(result.getByText("Back"));
+
+    expect(history.location.pathname).toBe("/pods");
+    await waitFor(() => expect(vi.mocked(console.error).mock.calls.length).toBeGreaterThan(caughtBefore));
+    expect(result.getByText("App crash at")).toBeInTheDocument();
+
+    act(() => runInAction(() => shownPath.set("/pods")));
+
+    expect(result.queryByText("App crash at")).not.toBeInTheDocument();
+    expect(result.getByText("Page at /pods")).toBeInTheDocument();
+  });
+
+  // The root frame and the cluster frame render their boundary once and never again on navigation, so Back renders
+  // the children again itself, which is a working retry for an error that has gone away.
+  it("renders the children again after Back when the parent does not re-render on navigation", async () => {
+    const user = userEvent.setup();
+    let failing = true;
+
+    const Flaky = () => {
+      if (failing) {
+        throw new Error("Flaky failed");
+      }
+
+      return <p>Flaky content</p>;
+    };
+
+    const { history, result } = setup(["/pods", "/cluster"], () => () => (
+      <ErrorBoundary>
+        <Flaky />
+      </ErrorBoundary>
+    ));
+
+    expect(result.getByText("App crash at")).toBeInTheDocument();
+
+    failing = false;
+    await user.click(result.getByText("Back"));
+
+    await waitFor(() => expect(result.getByText("Flaky content")).toBeInTheDocument());
+    expect(history.location.pathname).toBe("/pods");
+  });
+
+  // The dock passes the content of another tab without a navigation: it renders once Back has moved the history.
+  it("renders the children the parent passed without a navigation after Back", async () => {
+    const user = userEvent.setup();
+    const tab = observable.box("broken");
+
+    const Tab = ({ name }: { name: string }) => {
+      if (name === "broken") {
+        throw new Error("Tab failed");
+      }
+
+      return <p>{`Tab ${name}`}</p>;
+    };
+
+    const { result } = setup(["/pods", "/cluster"], () =>
+      observer(() => (
+        <ErrorBoundary>
+          <Tab name={tab.get()} />
+        </ErrorBoundary>
+      )),
+    );
+
+    act(() => runInAction(() => tab.set("logs")));
+
+    expect(result.getByText("App crash at")).toBeInTheDocument();
+
+    await user.click(result.getByText("Back"));
+
+    await waitFor(() => expect(result.getByText("Tab logs")).toBeInTheDocument());
   });
 });

@@ -9,6 +9,7 @@ import "./error-boundary.scss";
 import { Button } from "@freelensapp/button";
 import { observableHistoryInjectionToken } from "@freelensapp/routing";
 import { withInjectables } from "@ogre-tools/injectable-react";
+import { when } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 
@@ -28,7 +29,7 @@ interface State {
   errorInfo?: ErrorInfo;
   /**
    * The path the error was thrown on, and the children that threw it. The error belongs to that page: once the
-   * location moves to another path and the parent passes other children, they render.
+   * location moves to another path and the parent passes other children, they render. The retry of Back keeps both.
    */
   pathname?: string;
   children?: StrictReactNode;
@@ -60,17 +61,57 @@ class NonInjectedErrorBoundary extends React.Component<ErrorBoundaryProps & Depe
     return null;
   };
 
+  private disposeBackRetry?: () => void;
+
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    this.setState({
+    const { children, observableHistory } = this.props;
+
+    // When the retry of Back renders the children that threw once more, and they throw again, the error keeps the
+    // path they first threw on. Otherwise a retry that runs on the new path before the parent passes the children of
+    // the new location would record the new path, and those children would never clear the error.
+    this.setState((state) => ({
       error,
       errorInfo,
-      pathname: this.props.observableHistory.location.pathname,
-      children: this.props.children,
-    });
+      pathname: (state.children === children ? state.pathname : undefined) ?? observableHistory.location.pathname,
+      children,
+    }));
   }
 
+  componentWillUnmount() {
+    this.disposeBackRetry?.();
+  }
+
+  // Back goes back, and once the history has moved, renders the children again if the error is still on screen. A
+  // parent that follows the location has passed the children of the new location by then, and they have cleared the
+  // error; a parent that does not re-render on navigation (the root frame, the cluster frame, the dock) has not, and
+  // the retry is what renders its children again. The retry waits for a task, so that the parent re-renders first.
   back = () => {
-    this.props.observableHistory.goBack();
+    const { observableHistory } = this.props;
+    const { error } = this.state;
+    const location = observableHistory.location;
+
+    this.disposeBackRetry?.();
+
+    let timeout: ReturnType<typeof setTimeout> | undefined;
+    const disposeWhen = when(
+      () => observableHistory.location !== location,
+      () => {
+        timeout = setTimeout(() => {
+          this.disposeBackRetry = undefined;
+
+          if (this.state.error === error) {
+            this.setState({ error: undefined, errorInfo: undefined });
+          }
+        });
+      },
+    );
+
+    this.disposeBackRetry = () => {
+      disposeWhen();
+      clearTimeout(timeout);
+    };
+
+    observableHistory.goBack();
   };
 
   render() {
