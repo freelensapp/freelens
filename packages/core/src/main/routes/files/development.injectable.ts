@@ -5,6 +5,7 @@
  */
 
 import assert from "node:assert";
+import { Agent } from "node:http";
 import path from "node:path";
 import { prefixedLoggerInjectable } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
@@ -28,7 +29,11 @@ const devStaticFileRouteHandlerInjectable = getInjectable({
 
     assert(Number.isInteger(devServerPort), "FREELENS_DEV_SERVER_PORT environment variable must only be an integer");
 
-    const proxy = createProxyServer();
+    // The renderer loads hundreds of modules at once over HTTP/2, and without
+    // an agent every one of them opens its own connection to the dev server.
+    // Windows client editions keep about 200 connections waiting to be
+    // accepted and refuse the rest, so the pool is bounded and reused.
+    const proxy = createProxyServer({ agent: new Agent({ keepAlive: true, maxSockets: 32 }) });
     const proxyTarget = `http://127.0.0.1:${devServerPort}`;
 
     abortWhenClientCloses(proxy);
