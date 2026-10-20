@@ -211,6 +211,14 @@ function compileJsonPath(path: string): CompiledJsonPath | null {
 }
 
 /**
+ * Whether an expression can be evaluated at all, for telling someone that what they typed is not a
+ * path before it is saved and renders an empty cell on every row.
+ */
+export function isValidJSONPath(path: string): boolean {
+  return compileJsonPath(path) !== null;
+}
+
+/**
  * This function is a safer version of `JSONPath.value(obj, path)` with untrusted jsonpath strings
  */
 export function safeJSONPathValue(obj: object, path: string): unknown {

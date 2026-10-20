@@ -5,7 +5,7 @@
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { convertKubectlJsonPathToNodeJsonPath, safeJSONPathValue } from "./jsonPath";
+import { convertKubectlJsonPathToNodeJsonPath, isValidJSONPath, safeJSONPathValue } from "./jsonPath";
 
 describe("convertKubectlJsonPathToNodeJsonPath", () => {
   it("should convert \\. to use indexed notation", () => {
@@ -209,5 +209,21 @@ describe("safeJSONPathValue", () => {
     );
 
     expect(res).toBe("bat");
+  });
+});
+
+describe("isValidJSONPath", () => {
+  it.each([
+    ".metadata.name",
+    ".metadata.labels['kops.k8s.io/instancegroup']",
+    ".status.containerStatuses[0].lastState.terminated.reason",
+    ".spec.containers[*].image",
+    ".status.conditions[?(@.type=='Ready')].status",
+  ])("accepts %s", (path) => {
+    expect(isValidJSONPath(path)).toBe(true);
+  });
+
+  it.each([".metadata[", ".metadata.labels['unclosed", "[?(@.type=="])("rejects %s", (path) => {
+    expect(isValidJSONPath(path)).toBe(false);
   });
 });
