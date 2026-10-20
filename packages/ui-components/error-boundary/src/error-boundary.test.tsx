@@ -151,6 +151,36 @@ describe("<ErrorBoundary>", () => {
     expect(result.getByText("App crash at")).toBeInTheDocument();
   });
 
+  // A page that serves every path of one route, like the Helm releases, wraps its content in a boundary of its own, as
+  // the second `TabLayout` does. That boundary catches the crash, so the outer one has nothing to clear, and only the
+  // key the page passes with its content renders the content again.
+  it("renders the content of a page with a boundary of its own again after a change of path within its route", () => {
+    const { history, result } = setup(["/releases/broken"], (history) => {
+      const Releases = observer(() => {
+        const name = history.location.pathname.replace("/releases", "");
+
+        return (
+          <Layout resetKey={name}>
+            <Page path={name} />
+          </Layout>
+        );
+      });
+
+      return observer(() => (
+        <Layout resetKey={history.location.pathname}>
+          <Releases />
+        </Layout>
+      ));
+    });
+
+    expect(result.getByText("App crash at")).toBeInTheDocument();
+
+    act(() => history.push("/releases/nginx"));
+
+    expect(result.queryByText("App crash at")).not.toBeInTheDocument();
+    expect(result.getByText("Page at /nginx")).toBeInTheDocument();
+  });
+
   // The crash follows the key the parent passes with the children, not the history: a parent that passes the page of
   // the new location only later still gets it rendered.
   it("renders the page the parent passes after Back, with its key", async () => {
