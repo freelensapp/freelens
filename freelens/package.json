@@ -36,7 +36,7 @@
     "preupdate-binaries-lock": "pnpm --filter @freelensapp/ensure-binaries build",
     "update-binaries-lock": "update-binaries-lock --package package.json",
     "predev": "install-electron",
-    "dev": "ELECTRON_RUN_AS_NODE= NODE_ENV=development electron-vite dev --watch --inspect --remoteDebuggingPort 9223",
+    "dev": "NODE_ENV=development electron-vite dev --watch --inspect --remoteDebuggingPort 9223",
     "start": "pnpm dlx run-script-os@1.1.6 --",
     "start:darwin": "pnpm start:darwin:${npm_config_arch:-$(uname -m)}",
     "start:darwin:arm64": "./dist/mac-arm64/Freelens.app/Contents/MacOS/Freelens",

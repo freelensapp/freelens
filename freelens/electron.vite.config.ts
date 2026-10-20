@@ -48,6 +48,13 @@ const buildDir = resolve(root, "static", "build"); // == webpack vars.buildDir
 // before; both sides read the same environment variable.
 const devServerPort = Number(process.env.FREELENS_DEV_SERVER_PORT) || 9191;
 
+// `electron-vite dev` starts Electron with this process's environment. When the
+// shell runs inside an Electron app such as VS Code, it carries
+// ELECTRON_RUN_AS_NODE, and Electron then starts as plain Node with no `app`.
+// The variable has to be removed rather than emptied: on Windows Electron
+// treats an empty value as set.
+delete process.env.ELECTRON_RUN_AS_NODE;
+
 // Resolve NODE_ENV the same way the old webpack `mode` did
 // (isDevelopment = process.env.NODE_ENV === "development"): anything other than
 // an explicit "development" is a production build. `pnpm build:dev` sets
