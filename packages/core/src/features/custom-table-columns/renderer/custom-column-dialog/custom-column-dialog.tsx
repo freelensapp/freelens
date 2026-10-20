@@ -3,12 +3,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { Button } from "@freelensapp/button";
 import { Icon } from "@freelensapp/icon";
-import { formatJSONValue, isValidJSONPath, safeJSONPathValue } from "@freelensapp/utilities";
+import { cssNames, formatJSONValue, isValidJSONPath, safeJSONPathValue } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
-import { action, computed, makeObservable, observable } from "mobx";
+import { action, computed, observable } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { Dialog } from "../../../../renderer/components/dialog";
@@ -16,6 +15,7 @@ import { Input } from "../../../../renderer/components/input";
 import { inputValidator } from "../../../../renderer/components/input/input_validators";
 import { SubTitle } from "../../../../renderer/components/layout/sub-title";
 import { Select } from "../../../../renderer/components/select";
+import { Wizard, WizardStep } from "../../../../renderer/components/wizard";
 import addCustomTableColumnInjectable from "../../common/add-custom-table-column.injectable";
 import customTableColumnsInjectable from "../../common/custom-table-columns.injectable";
 import removeCustomTableColumnInjectable from "../../common/remove-custom-table-column.injectable";
@@ -32,9 +32,15 @@ import type { UpdateCustomTableColumn } from "../../common/update-custom-table-c
 import type { CustomColumnDialogParams } from "./state.injectable";
 
 /**
- * How many rows of the list the preview evaluates the expression against.
+ * How many rows the preview shows.
  */
 const previewSize = 5;
+
+/**
+ * How far into the list the preview looks for items the expression produces a value for. Bounded
+ * because this runs on every keystroke, and a list can hold thousands of items.
+ */
+const previewScanLimit = 200;
 
 const atTheEnd = "";
 
@@ -42,6 +48,17 @@ const jsonPathValidator = inputValidator({
   message: () => "Not a valid JSONPath expression",
   validate: (value) => value.length === 0 || isValidJSONPath(value),
 });
+
+interface PreviewRow {
+  id: string;
+  name: string;
+  value: string;
+}
+
+interface Preview {
+  rows: PreviewRow[];
+  caption: string;
+}
 
 interface Dependencies {
   state: IObservableValue<CustomColumnDialogParams | undefined>;
@@ -53,14 +70,19 @@ interface Dependencies {
 
 @observer
 class NonInjectedCustomColumnDialog extends React.Component<Dependencies> {
-  @observable editingId: string | undefined;
-  @observable title = "";
-  @observable jsonPath = "";
-  @observable after = atTheEnd;
+  @observable accessor editingId: string | undefined;
+  @observable accessor title = "";
+  @observable accessor jsonPath = "";
+  @observable accessor after = atTheEnd;
+
+  /**
+   * The preview rows the reader has opened up, by item id. A value is shown on one line so that
+   * five of them stay readable, which is not enough for a long one.
+   */
+  readonly expandedRows = observable.set<string>();
 
   constructor(props: Dependencies) {
     super(props);
-    makeObservable(this);
     autoBindReact(this);
   }
 
@@ -97,6 +119,63 @@ class NonInjectedCustomColumnDialog extends React.Component<Dependencies> {
     this.title = "";
     this.jsonPath = "";
     this.after = atTheEnd;
+    this.expandedRows.clear();
+  }
+
+  @action
+  toggleRow(id: string) {
+    if (!this.expandedRows.delete(id)) {
+      this.expandedRows.add(id);
+    }
+  }
+
+  /**
+   * The rows to preview against.
+   *
+   * An expression is usually written for a value only some of the items carry, and the first few
+   * items of the list are rarely those. So the items the expression produces a value for are
+   * preferred, and the rest of the room is filled with items it does not, which is what tells the
+   * reader the expression is matching something rather than everything.
+   */
+  getPreview(params: CustomColumnDialogParams): Preview {
+    const items = params.getPreviewItems();
+    const expression = this.jsonPath.trim();
+
+    // The caption is always there, even before there is anything to count, so that typing the first
+    // character of an expression does not add a line and push the dialog open.
+    if (expression.length === 0) {
+      const rows = items.slice(0, previewSize);
+
+      return {
+        rows: rows.map((item) => ({ id: item.getId(), name: item.getName(), value: "" })),
+        caption: `${rows.length} of ${items.length} ${items.length === 1 ? "item" : "items"}`,
+      };
+    }
+
+    const scanned = items.slice(0, previewScanLimit);
+    const withValue: PreviewRow[] = [];
+    const withoutValue: PreviewRow[] = [];
+
+    for (const item of scanned) {
+      const row = {
+        id: item.getId(),
+        name: item.getName(),
+        value: formatJSONValue(safeJSONPathValue(item, expression)),
+      };
+
+      if (row.value) {
+        withValue.push(row);
+      } else if (withoutValue.length < previewSize) {
+        withoutValue.push(row);
+      }
+    }
+
+    const scannedNote = items.length > scanned.length ? `the first ${scanned.length}` : `${scanned.length}`;
+
+    return {
+      rows: [...withValue, ...withoutValue].slice(0, previewSize),
+      caption: `${withValue.length} of ${scannedNote} items have a value`,
+    };
   }
 
   @action
@@ -150,34 +229,46 @@ class NonInjectedCustomColumnDialog extends React.Component<Dependencies> {
       return null;
     }
 
-    const expression = this.jsonPath.trim();
-    const items = params.getPreviewItems().slice(0, previewSize);
+    const hasExpression = this.jsonPath.trim().length > 0;
+    const { rows, caption } = this.getPreview(params);
 
-    if (items.length === 0) {
+    if (rows.length === 0) {
       return <div className={styles.previewEmpty}>This list has no items to preview against.</div>;
     }
 
-    if (expression.length === 0) {
-      return <div className={styles.previewEmpty}>Type an expression to see what it produces.</div>;
-    }
-
+    // The number of rows does not change with the expression, so the dialog does not resize under
+    // the pointer while it is being typed. An opened row grows inside the scrolling box instead.
     return (
-      <div className={styles.preview} data-testid="custom-column-preview">
-        {items.map((item) => {
-          const value = formatJSONValue(safeJSONPathValue(item, expression));
+      <>
+        <div className={styles.preview} data-testid="custom-column-preview">
+          {rows.map((row) => {
+            const expanded = this.expandedRows.has(row.id);
 
-          return (
-            <div className={styles.previewRow} key={item.getId()}>
-              <div className={styles.previewName} title={item.getName()}>
-                {item.getName()}
+            return (
+              <div
+                className={cssNames(styles.previewRow, { [styles.previewRowExpanded]: expanded })}
+                key={row.id}
+                role="button"
+                tabIndex={0}
+                title={expanded ? undefined : "Click to read in full"}
+                onClick={() => this.toggleRow(row.id)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    this.toggleRow(row.id);
+                  }
+                }}
+              >
+                <div className={styles.previewName}>{row.name}</div>
+                <div className={row.value ? styles.previewValue : styles.previewEmpty}>
+                  {row.value || (hasExpression ? "no value" : "waiting for an expression")}
+                </div>
               </div>
-              <div className={value ? styles.previewValue : styles.previewEmpty} title={value}>
-                {value || "no value"}
-              </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+        <div className={styles.previewCaption}>{caption}</div>
+      </>
     );
   }
 
@@ -195,7 +286,10 @@ class NonInjectedCustomColumnDialog extends React.Component<Dependencies> {
           {columns.map((column) => (
             <div className={styles.existing} key={column.id}>
               <div className={styles.existingTitle}>
-                {column.title} <span className={styles.existingPath}>{column.jsonPath}</span>
+                <span className={styles.existingName}>{column.title}</span>
+                <span className={styles.existingPath} title={column.jsonPath}>
+                  {column.jsonPath}
+                </span>
               </div>
               <div className="flex gap-2 items-center">
                 <Icon
@@ -239,60 +333,58 @@ class NonInjectedCustomColumnDialog extends React.Component<Dependencies> {
         onClose={this.reset}
         data-testid="custom-column-dialog"
       >
-        <div className="flex flex-col gap-4 p-6">
-          <h5>{this.editingId ? "Edit column" : `Add a column to ${params?.kind ?? "this list"}`}</h5>
+        <Wizard
+          header={<h5>{this.editingId ? "Edit column" : `Add a column to ${params?.kind ?? "this list"}`}</h5>}
+          done={this.close}
+        >
+          <WizardStep
+            contentClass="flex gap-4 flex-col"
+            nextLabel={this.editingId ? "Save" : "Add"}
+            next={this.save}
+            disabledNext={!this.canSave}
+            testIdForNext="save-custom-column"
+          >
+            <div>
+              <SubTitle title="Name" />
+              <Input
+                autoFocus
+                required
+                placeholder="Instance type"
+                value={this.title}
+                onChange={(value) => (this.title = value)}
+              />
+            </div>
 
-          <div>
-            <SubTitle title="Name" />
-            <Input
-              autoFocus
-              required
-              placeholder="Instance type"
-              value={this.title}
-              onChange={(value) => (this.title = value)}
-            />
-          </div>
+            <div>
+              <SubTitle title="JSONPath" />
+              <Input
+                required
+                placeholder=".metadata.labels['node.kubernetes.io/instance-type']"
+                value={this.jsonPath}
+                validators={jsonPathValidator}
+                onChange={(value) => (this.jsonPath = value)}
+              />
+            </div>
 
-          <div>
-            <SubTitle title="JSONPath" />
-            <Input
-              required
-              placeholder=".metadata.labels['node.kubernetes.io/instance-type']"
-              value={this.jsonPath}
-              validators={jsonPathValidator}
-              onChange={(value) => (this.jsonPath = value)}
-            />
-          </div>
+            <div>
+              <SubTitle title="Position" />
+              <Select
+                id="custom-column-position-select"
+                options={anchorOptions}
+                value={this.after}
+                isSearchable={false}
+                onChange={(option) => (this.after = option?.value ?? atTheEnd)}
+              />
+            </div>
 
-          <div>
-            <SubTitle title="Position" />
-            <Select
-              id="custom-column-position-select"
-              options={anchorOptions}
-              value={this.after}
-              isSearchable={false}
-              onChange={(option) => (this.after = option?.value ?? atTheEnd)}
-            />
-          </div>
+            <div>
+              <SubTitle title="Preview" />
+              {this.renderPreview()}
+            </div>
 
-          <div>
-            <SubTitle title="Preview" />
-            {this.renderPreview()}
-          </div>
-
-          {this.renderExistingColumns()}
-
-          <div className="flex gap-2 justify-end">
-            <Button plain label="Cancel" onClick={this.close} />
-            <Button
-              primary
-              label={this.editingId ? "Save" : "Add"}
-              disabled={!this.canSave}
-              data-testid="save-custom-column"
-              onClick={this.save}
-            />
-          </div>
-        </div>
+            {this.renderExistingColumns()}
+          </WizardStep>
+        </Wizard>
       </Dialog>
     );
   }

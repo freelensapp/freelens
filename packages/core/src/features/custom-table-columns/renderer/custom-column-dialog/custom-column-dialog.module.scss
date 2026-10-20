@@ -4,15 +4,27 @@
  */
 
 .dialog {
-  :global(.box) {
-    width: 640px;
+  :global(.Wizard) {
+    --wizard-width: 640px;
+    --wizard-content-max-height: 60vh;
+
+    // Tighter than the wizard default of three paddings. This is a form of five sections rather
+    // than the single field the other dialogs ask for, so the default leaves a header band and
+    // gutters out of proportion with what they hold.
+    --wizard-spacing: calc(var(--padding) * 2);
+
     max-width: 90vw;
+  }
+
+  // The band already provides the spacing around the title.
+  :global(.Wizard) > :global(.header) h5 {
+    padding: 0;
   }
 }
 
 .preview {
   border: 1px solid var(--borderFaintColor);
-  border-radius: 4px;
+  border-radius: var(--border-radius);
   max-height: 180px;
   overflow: auto;
 }
@@ -23,9 +35,26 @@
   gap: var(--padding);
   padding: calc(var(--padding) / 2) var(--padding);
   border-bottom: 1px solid var(--borderFaintColor);
+  cursor: pointer;
 
   &:last-child {
     border-bottom: none;
+  }
+
+  &:hover,
+  &:focus-visible {
+    background-color: var(--layoutTabsBackground);
+  }
+}
+
+// An opened row reads in full. It grows inside the scrolling box above, so the dialog itself does
+// not move.
+.previewRowExpanded {
+  .previewName,
+  .previewValue {
+    overflow: visible;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 }
 
@@ -47,22 +76,44 @@
   font-style: italic;
 }
 
+.previewCaption {
+  color: var(--textColorSecondary);
+  font-size: smaller;
+  padding-top: calc(var(--padding) / 2);
+}
+
 .existing {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--padding);
   padding: calc(var(--padding) / 2) 0;
+  border-bottom: 1px solid var(--borderFaintColor);
+
+  &:last-child {
+    border-bottom: none;
+  }
 }
 
+// Both of these shrink rather than widen the dialog: a flex item defaults to its content width,
+// which would let a long expression push the dialog wider than its own width.
 .existingTitle {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  gap: calc(var(--padding) / 2);
+  align-items: baseline;
+}
+
+.existingName {
+  flex-shrink: 0;
 }
 
 .existingPath {
   color: var(--textColorSecondary);
   font-family: var(--font-monospace);
   font-size: smaller;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
