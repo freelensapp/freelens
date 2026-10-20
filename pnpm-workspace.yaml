@@ -129,7 +129,7 @@ catalog:
   tcp-port-used: 1.0.3
   tempy: 3.2.0
   triple-beam: 1.4.1
-  undici: 8.12.2
+  undici: 8.12.3
   uuid: 14.0.3
   verkit: 0.5.0
   winston: 3.19.0
