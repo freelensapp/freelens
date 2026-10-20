@@ -1,0 +1,68 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+.dialog {
+  :global(.box) {
+    width: 640px;
+    max-width: 90vw;
+  }
+}
+
+.preview {
+  border: 1px solid var(--borderFaintColor);
+  border-radius: 4px;
+  max-height: 180px;
+  overflow: auto;
+}
+
+.previewRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--padding);
+  padding: calc(var(--padding) / 2) var(--padding);
+  border-bottom: 1px solid var(--borderFaintColor);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.previewName {
+  color: var(--textColorSecondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.previewValue {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.previewEmpty {
+  color: var(--textColorSecondary);
+  font-style: italic;
+}
+
+.existing {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--padding);
+  padding: calc(var(--padding) / 2) 0;
+}
+
+.existingTitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.existingPath {
+  color: var(--textColorSecondary);
+  font-family: var(--font-monospace);
+  font-size: smaller;
+}

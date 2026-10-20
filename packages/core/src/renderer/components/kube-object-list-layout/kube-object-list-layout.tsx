@@ -16,6 +16,7 @@ import { observable, reaction } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { resolveCustomColumnPriorities } from "../../../features/custom-table-columns/common/resolve-custom-column-priorities";
+import openCustomColumnDialogInjectable from "../../../features/custom-table-columns/renderer/custom-column-dialog/open.injectable";
 import customListLayoutColumnsInjectable from "../../../features/custom-table-columns/renderer/custom-list-layout-columns.injectable";
 import clusterFrameContextForNamespacedResourcesInjectable from "../../cluster-frame-context/for-namespaced-resources.injectable";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
@@ -24,7 +25,7 @@ import { ItemListLayout } from "../item-object-list/list-layout";
 import kubeSelectedUrlParamInjectable from "../kube-detail-params/kube-selected-url.injectable";
 import toggleKubeDetailsPaneInjectable from "../kube-detail-params/toggle-details.injectable";
 import { KubeObjectMenu } from "../kube-object-menu";
-import { MenuControls } from "../menu";
+import { MenuControls, MenuItem } from "../menu";
 import { NamespaceSelectFilter } from "../namespaces/namespace-select-filter";
 
 import type { KubeApi } from "@freelensapp/kube-api";
@@ -38,6 +39,7 @@ import type { Disposer } from "@freelensapp/utilities";
 
 import type { IComputedValue } from "mobx";
 
+import type { OpenCustomColumnDialog } from "../../../features/custom-table-columns/renderer/custom-column-dialog/open.injectable";
 import type { CustomKubeObjectListLayoutColumn } from "../../../features/custom-table-columns/renderer/custom-list-layout-columns.injectable";
 import type { ClusterContext } from "../../cluster-frame-context/cluster-frame-context";
 import type { SubscribableStore, SubscribeStores } from "../../kube-watch-api/kube-watch-api";
@@ -77,6 +79,7 @@ interface Dependencies {
   toggleKubeDetailsPane: ToggleKubeDetailsPane;
   generalColumns: GeneralKubeObjectListLayoutColumn[];
   customColumns: IComputedValue<CustomKubeObjectListLayoutColumn[]>;
+  openCustomColumnDialog: OpenCustomColumnDialog;
 }
 
 const matchesApiFor =
@@ -217,6 +220,7 @@ class NonInjectedKubeObjectListLayout<
       columns,
       generalColumns,
       customColumns,
+      openCustomColumnDialog,
       sortingCallbacks = {},
       customizeTableRowProps,
       ...layoutProps
@@ -241,6 +245,32 @@ class NonInjectedKubeObjectListLayout<
     });
 
     const headers = sortBy([...headerColumns, ...targetColumns], (v) => -v.priority).map((col) => col.header);
+    const { apiVersionWithGroup } = store.api;
+    // A column is defined for a kind and an api version, so without one there is nothing to offer.
+    const renderColumnMenuFooter = isString(apiVersionWithGroup)
+      ? () => (
+          <MenuItem
+            data-testid="add-custom-column-menu-item"
+            onClick={() =>
+              openCustomColumnDialog({
+                kind: store.api.kind,
+                apiVersion: apiVersionWithGroup,
+                anchors: headers
+                  .filter(isDefined)
+                  .filter((header): header is typeof header & { id: string } => isString(header.id))
+                  .map((header) => ({
+                    id: header.id,
+                    title: isString(header.title) ? header.title : header.id,
+                  })),
+                getPreviewItems: () => items ?? store.contextItems,
+              })
+            }
+          >
+            <Icon material="add" small />
+            <span>Add column...</span>
+          </MenuItem>
+        )
+      : undefined;
 
     const getTableRowCustomizations = (item: K) => {
       const id = `menu-actions-for-kube-object-menu-for-${item.getId()}`;
@@ -331,6 +361,7 @@ class NonInjectedKubeObjectListLayout<
         }
         spinnerTestId="kube-object-list-layout-spinner"
         {...layoutProps}
+        renderColumnMenuFooter={layoutProps.renderColumnMenuFooter ?? renderColumnMenuFooter}
         customizeTableRowProps={getTableRowCustomizations}
       />
     );
@@ -353,6 +384,7 @@ export const KubeObjectListLayout = withInjectables<
     toggleKubeDetailsPane: di.inject(toggleKubeDetailsPaneInjectable),
     generalColumns: di.injectMany(kubeObjectListLayoutColumnInjectionToken),
     customColumns: di.inject(customListLayoutColumnsInjectable),
+    openCustomColumnDialog: di.inject(openCustomColumnDialogInjectable),
   }),
 }) as <K extends KubeObject, A extends KubeApi<K, D>, D extends KubeJsonApiDataFor<K> = KubeJsonApiDataFor<K>>(
   props: KubeObjectListLayoutProps<K, A, D>,
