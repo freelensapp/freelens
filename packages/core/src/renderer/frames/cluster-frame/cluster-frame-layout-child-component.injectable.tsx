@@ -32,8 +32,9 @@ const NonInjectedClusterFrameLayout = observer((props: Dependencies) => {
   const starting = props.startUrl.get();
   const current = props.currentPath.get();
 
+  // The path keys the crash of the page, so that another page, or the same page for another path, renders again.
   return (
-    <MainLayout sidebar={<Sidebar />} footer={<Dock />}>
+    <MainLayout sidebar={<Sidebar />} footer={<Dock />} resetKey={current}>
       {Component ? (
         <Component />
       ) : // NOTE: this check is to prevent an infinite loop

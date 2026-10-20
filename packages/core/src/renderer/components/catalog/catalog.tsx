@@ -319,8 +319,12 @@ class NonInjectedCatalog extends React.Component<Dependencies> {
   render() {
     const activeCategory = this.props.catalogEntityStore.activeCategory.get();
 
+    // The views follow the active tab, so the tab keys their crash: another tab renders again.
     return (
-      <MainLayout sidebar={<CatalogMenu activeTab={this.activeTab} onItemClick={this.onTabChange} />}>
+      <MainLayout
+        sidebar={<CatalogMenu activeTab={this.activeTab} onItemClick={this.onTabChange} />}
+        resetKey={this.activeTab}
+      >
         <div className={styles.views}>{this.renderViews(activeCategory)}</div>
         {activeCategory ? (
           <RenderDelay>
