@@ -15,7 +15,6 @@ catalog:
   # MobX family (singletons)
   mobx: 7.0.6
   mobx-react: 10.0.2
-  mobx-react-lite: 5.1.0
   # TypeScript
   typescript: 7.0.2
   # Dependency injection (Ogre Tools)
@@ -186,14 +185,19 @@ overrides:
   # code. The original package is abandoned with a known CVE, so a dependency
   # that starts to pull it in gets the maintained rewrite the app uses instead.
   http-proxy: npm:http-proxy-3@^2.0.1
-  mobx-react: ^10.0.2
+  # @ogre-tools/injectable-react peers mobx-react ^9. Left alone, pnpm
+  # auto-installs a second mobx-react 9 for every package that lacks a direct
+  # mobx-react, and the MobX family must stay a singleton. Pointing the
+  # override at the catalog rewrites that peer to the pinned version, without
+  # resolving to anything newer than the pin.
+  mobx-react: 'catalog:'
   tmp@^0.2.0: ^0.2.7
 
 peerDependencyRules:
-  # These rules silence peers that still ask for mobx 6 / mobx-react 9 and have
-  # no release for mobx 7. Each package they cover must stay safe on mobx 7:
-  # - @ogre-tools/injectable-react (mobx ^6, mobx-react ^9) imports neither
-  #   mobx nor mobx-react, in its build or in its typings;
+  # These rules silence peers that still ask for mobx 6 and have no release
+  # for mobx 7. Each package they cover must stay safe on mobx 7:
+  # - @ogre-tools/injectable-react (mobx ^6) imports neither mobx nor
+  #   mobx-react, in its build or in its typings;
   # - @ogre-tools/injectable-extension-for-mobx (mobx ^6) uses only `computed`,
   #   `createAtom` and `runInAction`, and types with `IComputedValue` only,
   #   all of which mobx 7 keeps unchanged;
@@ -206,7 +210,6 @@ peerDependencyRules:
   # Check any new package these rules start to cover the same way.
   allowedVersions:
     mobx: '7'
-    mobx-react: '10'
 
 patchedDependencies:
   '@async-fn/vitest': patches/@async-fn__vitest.patch
