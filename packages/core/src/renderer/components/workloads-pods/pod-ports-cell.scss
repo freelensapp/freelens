@@ -5,37 +5,13 @@
  */
 
 .PodPortsCell {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-
-  .PodPortsCell__visible,
-  .PodPortsCell__item {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  &__more,
-  &__toggle {
-    cursor: pointer;
-    color: var(--primary);
-    background: none;
-    border: none;
-    padding: 0;
-    text-decoration: underline;
-  }
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 
   &.none {
     opacity: 0.6;
-  }
-
-  &.expanded {
-    flex-direction: column;
-    align-items: flex-start;
-
-    .PodPortsCell__item {
-      margin-bottom: 0.25rem;
-    }
   }
 }

@@ -6,14 +6,17 @@
 
 import "./pod-ports-cell.scss";
 
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { WithTooltip } from "../with-tooltip";
 
-import type { Pod, ContainerPort } from "@freelensapp/kube-object";
+import type { ContainerPort, Pod } from "@freelensapp/kube-object";
 
 export interface PodPortsCellProps {
   pod: Pod;
-  maxVisible?: number; // default 2
+}
+
+export function getPodContainerPorts(pod: Pod): ContainerPort[] {
+  return pod.getContainers().flatMap((container) => container.ports ?? []);
 }
 
 /**
@@ -21,72 +24,25 @@ export interface PodPortsCellProps {
  * Examples: "80/TCP", "http:8080/TCP"
  */
 function formatPort(port: ContainerPort) {
-  const proto = port.protocol ?? "TCP";
   const name = port.name ? `${port.name}:` : "";
-  return `${name}${port.containerPort}/${proto}`;
+  const protocol = port.protocol ?? "TCP";
+
+  return `${name}${port.containerPort}/${protocol}`;
 }
 
-export const PodPortsCell = ({ pod, maxVisible = 2 }: PodPortsCellProps) => {
-  const [expanded, setExpanded] = useState(false);
+export const PodPortsCell = ({ pod }: PodPortsCellProps) => {
+  const ports = useMemo(() => getPodContainerPorts(pod), [pod]);
 
-  // Collect ports from regular containers. Keeps the original order.
-  const ports = useMemo(() => {
-    const containers = pod.getContainers() ?? [];
-    const items: ContainerPort[] = [];
-
-    for (const c of containers) {
-      if (c.ports && c.ports.length) {
-        items.push(...c.ports);
-      }
-    }
-
-    return items;
-  }, [pod]);
-
-  if (!ports || ports.length === 0) {
+  if (ports.length === 0) {
     return <span className="PodPortsCell none">-</span>;
   }
 
-  const formatted = ports.map(formatPort);
-
-  if (expanded) {
-    return (
-      <div className="PodPortsCell expanded">
-        {formatted.map((p, i) => (
-          <WithTooltip key={i}>
-            <span className="PodPortsCell__item">{p}</span>
-          </WithTooltip>
-        ))}
-        {formatted.length > maxVisible && (
-          <button
-            className="PodPortsCell__toggle"
-            onClick={() => setExpanded(false)}
-            aria-label="Show less ports"
-            type="button"
-          >
-            show less
-          </button>
-        )}
-      </div>
-    );
-  }
-
-  const visible = formatted.slice(0, maxVisible).join(", ");
-  const hasMore = formatted.length > maxVisible;
+  const label = ports.map((port) => port.containerPort).join(", ");
+  const tooltip = ports.map(formatPort).join(", ");
 
   return (
     <div className="PodPortsCell">
-      <span className="PodPortsCell__visible">{visible}</span>
-      {hasMore && (
-        <button
-          className="PodPortsCell__more"
-          onClick={() => setExpanded(true)}
-          aria-label="Show more ports"
-          type="button"
-        >
-          ...
-        </button>
-      )}
+      <WithTooltip tooltip={tooltip}>{label}</WithTooltip>
     </div>
   );
 };
