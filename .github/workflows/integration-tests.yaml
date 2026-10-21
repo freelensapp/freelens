@@ -29,15 +29,17 @@ jobs:
   test-integration:
     name: integration tests on ${{ matrix.runs-on }}
 
+    # Ubuntu stays on the image the release builds on, so the tests run the
+    # app where it is built, with the system packages it is built against.
     strategy:
       fail-fast: false
       matrix:
         include:
-          # - runs-on: ubuntu-26.04
+          # - runs-on: ubuntu-24.04
           #   os: linux
           #   arch: x64
 
-          - runs-on: ubuntu-26.04-arm
+          - runs-on: ubuntu-24.04-arm
             os: linux
             arch: arm64
 
