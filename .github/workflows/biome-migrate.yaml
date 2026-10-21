@@ -24,8 +24,9 @@ jobs:
   biome-migrate:
     name: biome migrate
 
-    # Only branches of this repository qualify, never a fork's.
-    if: startsWith(github.head_ref, 'renovate/') && github.event.pull_request.head.repo.full_name == github.repository
+    # Only branches of this repository qualify, never a fork's, and the job
+    # never runs on a fork: it has no GH_TOKEN secret, so it could only fail.
+    if: github.repository_owner == 'freelensapp' && startsWith(github.head_ref, 'renovate/') && github.event.pull_request.head.repo.full_name == github.repository
 
     runs-on: ubuntu-24.04-arm
     environment: automated

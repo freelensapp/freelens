@@ -26,9 +26,10 @@ jobs:
     env:
       DO_NOT_TRACK: "1"
 
-    if: >
-      (startsWith(github.event.issue.title, 'Automated npm version') && github.event.issue.state == 'closed' && github.event.comment.body == '/tag' && contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)) || (startsWith(github.event.pull_request.title, 'Automated
-      npm version') && github.event.pull_request.merged)
+    # Never on a fork: it has no GH_TOKEN secret, so the job could only fail.
+    if: >-
+      github.repository_owner == 'freelensapp' && ((startsWith(github.event.issue.title, 'Automated npm version') && github.event.issue.state == 'closed' && github.event.comment.body == '/tag' && contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)) || (startsWith(github.event.pull_request.title,
+      'Automated npm version') && github.event.pull_request.merged))
     steps:
       # author_association in the job condition is only a cheap pre-filter:
       # MEMBER and COLLABORATOR do not imply write access. The permission API

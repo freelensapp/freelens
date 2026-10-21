@@ -14,6 +14,10 @@ jobs:
   make-draft-release:
     name: make draft release
 
+    # Never on a fork: it has none of the signing and publishing secrets. Every
+    # other job needs this one, so they are all skipped with it.
+    if: github.repository_owner == 'freelensapp'
+
     permissions: write-all
 
     runs-on: ubuntu-24.04-arm

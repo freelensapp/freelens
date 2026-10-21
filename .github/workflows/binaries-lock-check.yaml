@@ -230,7 +230,8 @@ jobs:
     name: Commit the regenerated binaries.lock.json
 
     needs: check
-    if: needs.check.outputs.stale == 'true'
+    # Never on a fork: it has no GH_TOKEN secret, so the job could only fail.
+    if: github.repository_owner == 'freelensapp' && needs.check.outputs.stale == 'true'
 
     runs-on: ubuntu-24.04-arm
     environment: automated
