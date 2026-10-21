@@ -29,6 +29,8 @@ jobs:
   test-integration:
     name: integration tests on ${{ matrix.runs-on }}
 
+    # Ubuntu stays on the image the release builds on, so the tests run the
+    # app where it is built, with the system packages it is built against.
     strategy:
       fail-fast: false
       matrix:
@@ -41,11 +43,11 @@ jobs:
             os: linux
             arch: arm64
 
-          - runs-on: macos-15
+          - runs-on: macos-26 # datasource=github-runners
             os: macos
             arch: arm64
 
-          # - runs-on: macos-15-intel
+          # - runs-on: macos-26-intel
           #   os: macos
           #   arch: x64
 
@@ -53,7 +55,7 @@ jobs:
           #   os: windows
           #   arch: arm64
 
-          - runs-on: windows-2025
+          - runs-on: windows-2025 # datasource=github-runners
             os: windows
             arch: x64
 
@@ -500,7 +502,7 @@ jobs:
     needs:
       - test-integration
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
 
     permissions:
       actions: read
@@ -750,7 +752,7 @@ jobs:
     needs:
       - security-scan
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     # GH_TOKEN, which edits the discussion, is a secret of this environment.
     environment: automated
 

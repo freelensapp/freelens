@@ -20,7 +20,7 @@ jobs:
 
     permissions: write-all
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     timeout-minutes: 360
 
     steps:
@@ -53,6 +53,10 @@ jobs:
     needs:
       - make-draft-release
 
+    # Renovate bumps the macOS and Windows runners with a
+    # "datasource=github-runners" hint (see .renovaterc.json). Ubuntu has none:
+    # it stays on the oldest image for binary compatibility with older
+    # distributions.
     strategy:
       fail-fast: false
       matrix:
@@ -67,22 +71,22 @@ jobs:
             arch: arm64
             concurrency: linux-arm64
 
-          - runs-on: macos-15
+          - runs-on: macos-26 # datasource=github-runners
             os: macos
             arch: arm64
             concurrency: macos-arm64
 
-          - runs-on: macos-15-intel
+          - runs-on: macos-26-intel # datasource=github-runners
             os: macos
             arch: x64
             concurrency: macos-x64
 
-          - runs-on: windows-11-arm
+          - runs-on: windows-11-arm # datasource=github-runners
             os: windows
             arch: arm64
             concurrency: windows-arm64
 
-          - runs-on: windows-2025
+          - runs-on: windows-2025 # datasource=github-runners
             os: windows
             arch: x64
             concurrency: windows-x64
@@ -334,6 +338,71 @@ jobs:
           CSC_INSTALLER_LINK: ${{ secrets.CSC_INSTALLER_LINK }}
           CSC_INSTALLER_KEY_PASSWORD: ${{ secrets.CSC_INSTALLER_KEY_PASSWORD }}
           DEBUG: electron-builder,electron-builder:*
+
+      # Guards the oldest macOS the build runs on, which the runner image does
+      # not decide: LSMinimumSystemVersion comes from Electron, and minos is
+      # set per binary by whoever built it (Electron, the node-pty prebuilds,
+      # the Go toolchain of kubectl, helm and freelens-k8s-proxy). Fails when
+      # either goes above MACOS_MIN_VERSION, and warns about a binary that
+      # needs a newer macOS than the app declares: such an app installs and
+      # starts there, then fails when it runs that binary.
+      - name: Verify minimum macOS version (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          set -eo pipefail
+          shopt -s nullglob
+          # 1.2.0 -> 1.2, so that sort -V does not order 12 below 12.0
+          norm() {
+            local v=$1
+            while [[ $v == *.0 ]]; do v=${v%.0}; done
+            echo "$v"
+          }
+          newer() {
+            local a b
+            a=$(norm "$1")
+            b=$(norm "$2")
+            [[ $a != "$b" && $(printf '%s\n' "$a" "$b" | sort -V | tail -n1) == "$a" ]]
+          }
+          apps=(freelens/dist/mac*/*.app)
+          if [[ ${#apps[@]} -eq 0 ]]; then
+            echo "No .app under freelens/dist" >&2
+            exit 1
+          fi
+          status=0
+          for app in "${apps[@]}"; do
+            lsmin=$(plutil -extract LSMinimumSystemVersion raw "$app/Contents/Info.plist")
+            echo "$app: LSMinimumSystemVersion $lsmin"
+            if newer "$lsmin" "$MACOS_MIN_VERSION"; then
+              echo "::error::$app declares macOS $lsmin, newer than $MACOS_MIN_VERSION"
+              status=1
+            fi
+            echo "::group::minos of the binaries in $app"
+            while IFS= read -r -d '' f; do
+              file -b "$f" | grep -q '^Mach-O' || continue
+              # The highest minimum of all architectures, from LC_BUILD_VERSION
+              # or, in older binaries, LC_VERSION_MIN_MACOSX.
+              minos=$(vtool -show-build "$f" |
+                perl -ne '$c = $1 if /^\s*cmd (\S+)/; print "$1\n" if ($c eq "LC_BUILD_VERSION" && /^\s*minos (\S+)/) || ($c eq "LC_VERSION_MIN_MACOSX" && /^\s*version (\S+)/)' |
+                sort -V | tail -n1)
+              echo "${minos:-none} ${f#"$app"/}"
+              if [[ -z $minos ]]; then
+                echo "::error::${f#"$app"/} has no minimum macOS version"
+                status=1
+              elif newer "$minos" "$MACOS_MIN_VERSION"; then
+                echo "::error::${f#"$app"/} needs macOS $minos, newer than $MACOS_MIN_VERSION"
+                status=1
+              elif newer "$minos" "$lsmin"; then
+                echo "::warning::${f#"$app"/} needs macOS $minos, newer than the $lsmin the app declares"
+              fi
+            done < <(find "$app" -type f -print0)
+            echo "::endgroup::"
+          done
+          exit $status
+        env:
+          # helm and freelens-k8s-proxy already need 13.0 while Electron
+          # declares 12.0, hence the warning above.
+          MACOS_MIN_VERSION: "13.0"
 
       - name: Notarize PKG (macOS)
         id: notarize-pkg
@@ -817,7 +886,7 @@ jobs:
       - make-draft-release
       - build-app
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
 
     permissions:
       actions: read
@@ -895,7 +964,7 @@ jobs:
       - build-app
       - publish-runtime-package-list
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
 
     permissions:
       actions: read
@@ -954,7 +1023,7 @@ jobs:
       - publish-runtime-package-list
       - attest-artifacts
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
 
     steps:
       - name: Checkout
@@ -977,7 +1046,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - runs-on: ubuntu-24.04-arm
+          - runs-on: ubuntu-26.04-arm
             arch: arm64
 
     runs-on: ${{ matrix.runs-on }}
@@ -1077,7 +1146,7 @@ jobs:
       - make-draft-release
       - publish-github-release
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     environment: apt-signing
 
     steps:

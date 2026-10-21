@@ -30,7 +30,7 @@
 #     maintainer (see "Fork PRs: Review Only" in AGENTS.md).
 #
 # Jobs:
-#   1. parse – always ubuntu-24.04-arm, parses [model:xxx], [effort:xxx] and [runs-on:xxx]
+#   1. parse – always ubuntu-26.04-arm, parses [model:xxx], [effort:xxx] and [runs-on:xxx]
 #      from the trigger text and detects whether the pull request is from a fork
 #
 #   Linux / macOS path:
@@ -70,7 +70,7 @@ jobs:
         github.event.review.author_association ||
         github.event.issue.author_association)
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     timeout-minutes: 2
 
     outputs:
@@ -111,7 +111,7 @@ jobs:
         run: |
           DEFAULT_MODEL="claude-opus-5-5[1m]"
           DEFAULT_EFFORT="high"
-          DEFAULT_RUNS_ON="ubuntu-24.04-arm"
+          DEFAULT_RUNS_ON="ubuntu-26.04-arm"
           # ISSUE_BODY is set only for the issues event, where the issue
           # author is the collaborator who passed the trigger check.
           TEXT="${COMMENT_BODY}${REVIEW_BODY}${ISSUE_BODY}"
@@ -192,10 +192,12 @@ jobs:
           RUNS_ON_ALIAS="${RUNS_ON_ALIAS:-}"
 
           case "$RUNS_ON_ALIAS" in
-            ubuntu-24.04|ubuntu|linux|linux-x64)        RUNS_ON="ubuntu-24.04" ;;
-            ubuntu-24.04-arm|ubuntu-arm|linux-arm|linux-arm64) RUNS_ON="ubuntu-24.04-arm" ;;
-            macos-15|macos|macos-arm64)                  RUNS_ON="macos-15" ;;
-            macos-15-intel|macos-intel|macos-x64)        RUNS_ON="macos-15-intel" ;;
+            ubuntu-24.04)                               RUNS_ON="ubuntu-24.04" ;;
+            ubuntu-24.04-arm)                           RUNS_ON="ubuntu-24.04-arm" ;;
+            ubuntu-26.04|ubuntu|linux|linux-x64)        RUNS_ON="ubuntu-26.04" ;;
+            ubuntu-26.04-arm|ubuntu-arm|linux-arm|linux-arm64) RUNS_ON="ubuntu-26.04-arm" ;;
+            macos-26|macos|macos-arm64)                  RUNS_ON="macos-26" ;;
+            macos-26-intel|macos-intel|macos-x64)        RUNS_ON="macos-26-intel" ;;
             windows-11-arm|windows-arm|windows-arm64)    RUNS_ON="windows-11-arm" ;;
             windows-2025|windows|windows-x64)            RUNS_ON="windows-2025" ;;
             "")                                          RUNS_ON="$DEFAULT_RUNS_ON" ;;
@@ -455,7 +457,7 @@ jobs:
     if: >-
       always() && needs.parse.result == 'success' && needs.parse.outputs.is-windows != 'true' && (needs.claude.result == 'failure' || needs.claude.result == 'cancelled')
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     timeout-minutes: 15
 
     permissions:
@@ -521,7 +523,7 @@ jobs:
   prepare-windows:
     needs: parse
     if: always() && needs.parse.result == 'success' && needs.parse.outputs.is-windows == 'true'
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     timeout-minutes: 15
 
     permissions:
@@ -664,7 +666,7 @@ jobs:
   analyze-windows:
     needs: [parse, run-windows]
     if: always() && needs.run-windows.result != 'skipped'
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     timeout-minutes: 10
 
     permissions:
