@@ -136,13 +136,10 @@ describe("TerminalApi messages sent before the shell is ready", () => {
   });
   const ping: TerminalMessage = { type: TerminalChannels.PING };
 
-  beforeEach(async () => {
-    FakeWebSocket.instances.length = 0;
-    vi.stubGlobal("WebSocket", FakeWebSocket);
-
+  const createApi = () => {
     const di = getDiForUnitTesting();
 
-    api = new TerminalApi(
+    return new TerminalApi(
       {
         defaultParams: di.inject(defaultWebsocketApiParamsInjectable),
         logger: di.inject(loggerInjectionToken),
@@ -150,6 +147,13 @@ describe("TerminalApi messages sent before the shell is ready", () => {
       },
       { id: "some-tab-id" },
     );
+  };
+
+  beforeEach(async () => {
+    FakeWebSocket.instances.length = 0;
+    vi.stubGlobal("WebSocket", FakeWebSocket);
+
+    api = createApi();
 
     await api.connect();
     FakeWebSocket.instances[0].serverOpen();
@@ -222,6 +226,45 @@ describe("TerminalApi messages sent before the shell is ready", () => {
 
     expect(api.isReady).toBe(true);
     expect(oldSocket.sent).toEqual([resize(120, 80)]);
-    expect(newSocket.sent).toEqual([stdin("ls\r")]);
+    expect(newSocket.sent).toEqual([stdin("ls\r"), resize(120, 80)]);
+  });
+
+  it("sends the last reported size, not the placeholder, to the session of a reconnect", async () => {
+    const [oldSocket] = FakeWebSocket.instances;
+
+    oldSocket.serverSend({ type: TerminalChannels.STDOUT, data: "$ " });
+    api.sendTerminalSize(100, 40);
+    oldSocket.serverClose();
+
+    await api.connect();
+
+    const newSocket = FakeWebSocket.instances[1];
+
+    newSocket.serverOpen();
+    newSocket.serverSend({ type: TerminalChannels.CONNECTED });
+
+    expect(oldSocket.sent).toEqual([resize(120, 80), resize(100, 40)]);
+    expect(newSocket.sent).toEqual([resize(100, 40)]);
+  });
+
+  it("does not let the placeholder override a size reported before the socket opens", async () => {
+    const earlyApi = createApi();
+
+    try {
+      await earlyApi.connect();
+
+      const socket = FakeWebSocket.instances[1];
+
+      earlyApi.sendTerminalSize(100, 40);
+      socket.serverOpen();
+      socket.serverSend({ type: TerminalChannels.STDOUT, data: "$ " });
+
+      const resizes = socket.sent.filter(({ type }) => type === TerminalChannels.RESIZE);
+
+      expect(resizes.at(-1)).toEqual(resize(100, 40));
+      expect(resizes).not.toContainEqual(resize(120, 80));
+    } finally {
+      earlyApi.destroy();
+    }
   });
 });

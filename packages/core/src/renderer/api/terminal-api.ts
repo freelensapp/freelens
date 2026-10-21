@@ -197,9 +197,12 @@ export class TerminalApi extends WebSocketApi<TerminalEvents> {
   }
 
   protected _onOpen(evt: Event) {
-    // Client should send terminal size in special channel 4,
-    // But this size will be changed by terminal.fit()
-    this.sendTerminalSize(120, 80);
+    // The session on the other end knows no size yet: send the last one the
+    // terminal reported, or a placeholder until fit() reports one.
+    const { width, height } = this.size ?? { width: 120, height: 80 };
+
+    this.size = undefined;
+    this.sendTerminalSize(width, height);
     super._onOpen(evt);
   }
 
