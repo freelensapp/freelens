@@ -21,7 +21,7 @@ import type { SetRequired } from "type-fest";
 import type { EmitAppEvent } from "../../common/app-event-bus/emit-event.injectable";
 import type { SelfSignedCert } from "../../common/certificate/certificate";
 import type { Cluster } from "../../common/cluster/cluster";
-import type { FreelensK8sProxyServer } from "../cluster/freelens-k8s-proxy-server.injectable";
+import type { FreelensK8sProxyManager } from "../cluster/freelens-k8s-proxy-manager.injectable";
 import type { Router } from "../router/router";
 import type { ClusterRouteRedirect } from "./cluster-route-redirect";
 import type { ProxyApiRequestArgs, ShellApiRequestArgs } from "./proxy-functions";
@@ -42,7 +42,7 @@ interface Dependencies {
   shellApiRequest: FreelensProxyShellApiRequest;
   kubeApiUpgradeRequest: FreelensProxyApiRequest;
   emitAppEvent: EmitAppEvent;
-  getFreelensK8sProxyServer: (cluster: Cluster) => FreelensK8sProxyServer;
+  getFreelensK8sProxyManager: (cluster: Cluster) => FreelensK8sProxyManager;
   readonly router: Router;
   readonly proxy: ProxyServer;
   readonly freelensProxyPort: { set: (portNumber: number) => void };
@@ -387,11 +387,11 @@ export class FreelensProxy {
       delete req.headers.authorization;
       req.url = req.url.replace(apiKubePrefix, "");
 
-      const freelensK8sProxyServer = this.dependencies.getFreelensK8sProxyServer(cluster);
+      const freelensK8sProxyManager = this.dependencies.getFreelensK8sProxyManager(cluster);
       let proxyTarget: ServerOptions | undefined;
 
       try {
-        proxyTarget = await freelensK8sProxyServer.getApiTarget(isLongRunningRequest(req.url));
+        proxyTarget = await freelensK8sProxyManager.getApiTarget(isLongRunningRequest(req.url));
       } catch (error) {
         const message = `Failed to start the proxy of cluster ${cluster.id}: ${messageOf(error)}`;
 
@@ -411,7 +411,7 @@ export class FreelensProxy {
       }
 
       if (proxyTarget) {
-        const { apiUrl } = freelensK8sProxyServer;
+        const { apiUrl } = freelensK8sProxyManager;
 
         if (apiUrl) {
           this.clusterRoutes.set(req, {

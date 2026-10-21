@@ -16,7 +16,7 @@ import directoryForUserDataInjectable from "../../common/app-paths/directory-for
 import freelensProxyCertificateInjectable from "../../common/certificate/freelens-proxy-certificate.injectable";
 import { nodeEnvInjectionToken } from "../../common/vars/node-env-injection-token";
 import getClusterByIdInjectable from "../../features/cluster/storage/common/get-by-id.injectable";
-import freelensK8sProxyServerInjectable from "../cluster/freelens-k8s-proxy-server.injectable";
+import freelensK8sProxyManagerInjectable from "../cluster/freelens-k8s-proxy-manager.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import routerInjectable from "../router/router.injectable";
 import freelensProxyInjectable from "./freelens-proxy.injectable";
@@ -30,7 +30,7 @@ import type { DiContainer } from "@ogre-tools/injectable";
 import type { Mock } from "vitest";
 
 import type { Cluster } from "../../common/cluster/cluster";
-import type { FreelensK8sProxyServer } from "../cluster/freelens-k8s-proxy-server.injectable";
+import type { FreelensK8sProxyManager } from "../cluster/freelens-k8s-proxy-manager.injectable";
 import type { Router } from "../router/router";
 import type { ServerIncomingMessage, ServerResponse } from "./freelens-proxy";
 
@@ -482,7 +482,7 @@ describe("Freelens proxy kube api requests", () => {
     di.override(shellApiRequestInjectable, () => vi.fn());
     di.override(kubeApiUpgradeRequestInjectable, () => vi.fn());
     di.override(
-      freelensK8sProxyServerInjectable,
+      freelensK8sProxyManagerInjectable,
       () =>
         ({
           getApiTarget: async () => ({
@@ -491,7 +491,7 @@ describe("Freelens proxy kube api requests", () => {
             timeout,
             headers: { Host: "some-cluster-host" },
           }),
-        }) as unknown as FreelensK8sProxyServer,
+        }) as unknown as FreelensK8sProxyManager,
     );
 
     proxy = di.inject(freelensProxyInjectable);
@@ -638,7 +638,7 @@ describe("Freelens proxy redirects of the kube api", () => {
     di.override(shellApiRequestInjectable, () => vi.fn());
     di.override(kubeApiUpgradeRequestInjectable, () => vi.fn());
     di.override(
-      freelensK8sProxyServerInjectable,
+      freelensK8sProxyManagerInjectable,
       () =>
         ({
           getApiTarget: async () => ({
@@ -647,7 +647,7 @@ describe("Freelens proxy redirects of the kube api", () => {
             headers: { Host: "some-api-server" },
           }),
           apiUrl: new URL("https://some-api-server:6443"),
-        }) as unknown as FreelensK8sProxyServer,
+        }) as unknown as FreelensK8sProxyManager,
     );
 
     proxy = di.inject(freelensProxyInjectable);
@@ -736,7 +736,7 @@ describe("Freelens proxy kube api requests to a refused target", () => {
     di.override(getClusterForRequestInjectable, () => () => ({ id: "some-cluster-id" }) as Cluster);
     di.override(shellApiRequestInjectable, () => vi.fn());
     di.override(kubeApiUpgradeRequestInjectable, () => vi.fn());
-    di.override(freelensK8sProxyServerInjectable, () => ({ getApiTarget }) as unknown as FreelensK8sProxyServer);
+    di.override(freelensK8sProxyManagerInjectable, () => ({ getApiTarget }) as unknown as FreelensK8sProxyManager);
     di.override(routerInjectable, () => ({ route }) as unknown as Router);
 
     proxy = di.inject(freelensProxyInjectable);
@@ -805,13 +805,13 @@ describe("Freelens proxy kube api requests whose cluster proxy cannot start", ()
     di.override(shellApiRequestInjectable, () => vi.fn());
     di.override(kubeApiUpgradeRequestInjectable, () => vi.fn());
     di.override(
-      freelensK8sProxyServerInjectable,
+      freelensK8sProxyManagerInjectable,
       () =>
         ({
           getApiTarget: async () => {
             throw new Error(reason);
           },
-        }) as unknown as FreelensK8sProxyServer,
+        }) as unknown as FreelensK8sProxyManager,
     );
     di.override(routerInjectable, () => ({ route }) as unknown as Router);
     di.override(loggerInjectionToken, () => ({
