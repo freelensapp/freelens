@@ -35,10 +35,12 @@ on:
         description: Runner to use
         required: true
         type: choice
-        default: ubuntu-24.04-arm
+        default: ubuntu-26.04-arm
         options:
           - ubuntu-24.04
           - ubuntu-24.04-arm
+          - ubuntu-26.04
+          - ubuntu-26.04-arm
           - macos-26
           - macos-26-intel
       create-pr:

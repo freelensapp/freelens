@@ -23,7 +23,7 @@ jobs:
   check:
     name: Check binaries.lock.json
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     timeout-minutes: 30
 
     outputs:
@@ -233,7 +233,7 @@ jobs:
     # Never on a fork: it has no GH_TOKEN secret, so the job could only fail.
     if: github.repository_owner == 'freelensapp' && needs.check.outputs.stale == 'true'
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     environment: automated
     timeout-minutes: 10
 

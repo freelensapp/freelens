@@ -20,7 +20,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - runs-on: ubuntu-24.04-arm
+          - runs-on: ubuntu-26.04-arm
             arch: arm64
 
     runs-on: ${{ matrix.runs-on }}

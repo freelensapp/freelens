@@ -20,7 +20,7 @@ jobs:
 
     permissions: write-all
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     timeout-minutes: 360
 
     steps:
@@ -886,7 +886,7 @@ jobs:
       - make-draft-release
       - build-app
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
 
     permissions:
       actions: read
@@ -964,7 +964,7 @@ jobs:
       - build-app
       - publish-runtime-package-list
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
 
     permissions:
       actions: read
@@ -1023,7 +1023,7 @@ jobs:
       - publish-runtime-package-list
       - attest-artifacts
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
 
     steps:
       - name: Checkout
@@ -1046,7 +1046,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - runs-on: ubuntu-24.04-arm
+          - runs-on: ubuntu-26.04-arm
             arch: arm64
 
     runs-on: ${{ matrix.runs-on }}
@@ -1146,7 +1146,7 @@ jobs:
       - make-draft-release
       - publish-github-release
 
-    runs-on: ubuntu-24.04-arm
+    runs-on: ubuntu-26.04-arm
     environment: apt-signing
 
     steps:
