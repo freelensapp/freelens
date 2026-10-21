@@ -9,7 +9,7 @@ import net from "node:net";
 import { apiKubePrefix, apiPrefix } from "../../common/vars";
 import { respondJson, respondText } from "../utils/http-responses";
 import { getBoolean } from "../utils/parse-query";
-import { abortWhenClientCloses, isClientGone } from "./abort-when-client-closes";
+import { abortFetchWhenClientCloses, abortWhenClientCloses, isClientGone } from "./abort-when-client-closes";
 import { toClusterRoute } from "./cluster-route-redirect";
 import type http from "node:http";
 
@@ -57,6 +57,13 @@ interface Dependencies {
 type UpgradeRequest = ProxyApiRequestArgs["req"];
 
 const messageOf = (error: unknown) => (error instanceof Error ? error.message : String(error));
+
+/**
+ * An error of `fetch` says only `fetch failed`, and keeps what failed, such as
+ * `connect ECONNREFUSED`, in its `cause`.
+ */
+const describeError = (error: Error) =>
+  error.cause === undefined ? String(error) : `${error} (${messageOf(error.cause)})`;
 
 const watchParam = "watch";
 const followParam = "follow";
@@ -309,13 +316,20 @@ export class FreelensProxy {
   protected configureProxy(proxy: ProxyServer): ProxyServer {
     abortWhenClientCloses(proxy);
 
+    /**
+     * On the fetch path of http-proxy-3, `proxyRes` is no stream, only an
+     * object with the status and the headers of the response, emitted before
+     * the proxy writes them.
+     */
     proxy.on("proxyRes", (proxyRes, req, res) => {
       this.keepRedirectOnClusterRoute(proxyRes, req);
 
-      proxyRes.on("aborted", () => {
-        // happens when proxy target aborts connection
-        res.end();
-      });
+      if (typeof proxyRes.on === "function") {
+        proxyRes.on("aborted", () => {
+          // happens when proxy target aborts connection
+          res.end();
+        });
+      }
 
       /**
        * The response headers are only sent with the first byte of the body,
@@ -338,7 +352,21 @@ export class FreelensProxy {
         return;
       }
 
-      this.dependencies.logger.error(`[FREELENS-PROXY]: http proxy errored for cluster: ${error}`, { url: req.url });
+      // The target cut off a response whose headers have gone out already,
+      // as freelens-k8s-proxy does to its watches when it exits. The client
+      // sees its response end, and restarts a watch.
+      if (res.headersSent) {
+        this.dependencies.logger.debug(`[FREELENS-PROXY]: target ended the response early: ${describeError(error)}`, {
+          url: req.url,
+        });
+        res.end();
+
+        return;
+      }
+
+      this.dependencies.logger.error(`[FREELENS-PROXY]: http proxy errored for cluster: ${describeError(error)}`, {
+        url: req.url,
+      });
 
       if (target) {
         this.dependencies.logger.debug(`Failed proxy to target: ${JSON.stringify(target, null, 2)}`);
@@ -348,7 +376,7 @@ export class FreelensProxy {
       // again (a watch that fails is restarted by its store), so a retry would
       // only delay the error it handles anyway.
       try {
-        res.writeHead(500).end(`Oops, something went wrong.\n${error}`);
+        res.writeHead(500).end(`Oops, something went wrong.\n${describeError(error)}`);
       } catch (e) {
         this.dependencies.logger.error(`[FREELENS-PROXY]: Failed to write headers: `, e);
       }
@@ -500,6 +528,21 @@ export class FreelensProxy {
 
       stream.setTimeout(timeout, () => stream.close(http2.constants.NGHTTP2_CANCEL));
       target = options;
+    }
+
+    if (target.fetchOptions) {
+      const { onBeforeRequest } = target.fetchOptions;
+
+      target = {
+        ...target,
+        fetchOptions: {
+          ...target.fetchOptions,
+          onBeforeRequest: async (requestOptions, req, res, options) => {
+            abortFetchWhenClientCloses(requestOptions, res);
+            await onBeforeRequest?.(requestOptions, req, res, options);
+          },
+        },
+      };
     }
 
     // http-proxy-3 proxies an HTTP/2 request as well, but its types only name
