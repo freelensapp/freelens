@@ -136,7 +136,19 @@ export class TerminalApi extends WebSocketApi<TerminalEvents> {
   }
 
   sendMessage(message: TerminalMessage) {
-    return this.send(JSON.stringify(message));
+    const command = JSON.stringify(message);
+
+    /**
+     * The session reads the websocket only once its shell process exists,
+     * which can be long after the socket opens (kubectl download, node shell
+     * pod), and drops whatever arrives before. Hold everything but pings until
+     * then; `onReady` flushes it.
+     */
+    if (!this.isReady && message.type !== TerminalChannels.PING) {
+      this.pendingCommands.push(command);
+    } else {
+      this.send(command);
+    }
   }
 
   sendTerminalSize(cols: number, rows: number) {
@@ -185,9 +197,12 @@ export class TerminalApi extends WebSocketApi<TerminalEvents> {
   }
 
   protected _onOpen(evt: Event) {
-    // Client should send terminal size in special channel 4,
-    // But this size will be changed by terminal.fit()
-    this.sendTerminalSize(120, 80);
+    // The session on the other end knows no size yet: send the last one the
+    // terminal reported, or a placeholder until fit() reports one.
+    const { width, height } = this.size ?? { width: 120, height: 80 };
+
+    this.size = undefined;
+    this.sendTerminalSize(width, height);
     super._onOpen(evt);
   }
 
