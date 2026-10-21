@@ -136,7 +136,19 @@ export class TerminalApi extends WebSocketApi<TerminalEvents> {
   }
 
   sendMessage(message: TerminalMessage) {
-    return this.send(JSON.stringify(message));
+    const command = JSON.stringify(message);
+
+    /**
+     * The session reads the websocket only once its shell process exists,
+     * which can be long after the socket opens (kubectl download, node shell
+     * pod), and drops whatever arrives before. Hold everything but pings until
+     * then; `onReady` flushes it.
+     */
+    if (!this.isReady && message.type !== TerminalChannels.PING) {
+      this.pendingCommands.push(command);
+    } else {
+      this.send(command);
+    }
   }
 
   sendTerminalSize(cols: number, rows: number) {
