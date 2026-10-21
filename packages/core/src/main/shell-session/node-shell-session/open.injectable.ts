@@ -23,6 +23,7 @@ import shellSessionProcessesInjectable from "../processes.injectable";
 import { kubectlStatusOptionsFor, terminalStatusReporterFor } from "../send-terminal-status";
 import shellSessionEnvsInjectable from "../shell-envs.injectable";
 import spawnPtyInjectable from "../spawn-pty.injectable";
+import { closedDuring, websocketClosedSignal } from "../websocket-closed";
 import { NodeShellSession } from "./node-shell-session";
 
 import type WebSocket from "ws";
@@ -64,6 +65,10 @@ const openNodeShellSessionInjectable = getInjectable({
     };
 
     return async (args) => {
+      // Before the first await, so that a tab closed during any of them is seen.
+      const signal = websocketClosedSignal(args.websocket);
+      const closed = (stage: string) =>
+        closedDuring(signal, dependencies.logger, `${args.cluster.id}:${args.tabId}`, stage);
       const kubectl = createKubectl(args.cluster.version.get());
       const kubeconfigManager = di.inject(kubeconfigManagerInjectable, args.cluster);
       const loadProxyKubeconfig = di.inject(loadProxyKubeconfigInjectable, args.cluster);
@@ -73,11 +78,19 @@ const openNodeShellSessionInjectable = getInjectable({
       const { kubeconfigPath: proxyKubeconfigPath, cacheDirectoryPath: proxyCacheDirectoryPath } =
         await kubeconfigManager.ensurePaths();
 
+      if (closed("starting the cluster proxy")) {
+        return;
+      }
+
       const kubectlStatus = kubectlStatusOptionsFor(kubectl.kubectlVersion, status);
 
       status.info(`Checking kubectl v${kubectl.kubectlVersion} ...`);
 
       const kubeTools = await resolveKubeTools.forCluster(kubectl, kubectlStatus).finally(() => kubectlStatus.done());
+
+      if (closed(`checking kubectl v${kubectl.kubectlVersion}`)) {
+        return;
+      }
 
       const session = new NodeShellSession(
         {
@@ -87,7 +100,7 @@ const openNodeShellSessionInjectable = getInjectable({
           proxyCacheDirectoryPath,
           kubeTools,
         },
-        { kubectl, ...args },
+        { kubectl, ...args, signal },
       );
 
       return session.open();

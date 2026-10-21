@@ -20,6 +20,7 @@ import shellSessionProcessesInjectable from "../processes.injectable";
 import modifyTerminalShellEnvInjectable from "../shell-env-modifier/modify-terminal-shell-env.injectable";
 import shellSessionEnvsInjectable from "../shell-envs.injectable";
 import spawnPtyInjectable from "../spawn-pty.injectable";
+import { websocketClosedSignal } from "../websocket-closed";
 
 import type WebSocket from "ws";
 
@@ -67,7 +68,10 @@ const openStandaloneShellSessionInjectable = getInjectable({
     return (args) => {
       // Resolved per session, so that a terminal opened after the user changed
       // a preference gets the binary it now names.
-      const session = new LocalShellSession({ ...dependencies, kubeTools: resolveKubeTools.withoutCluster() }, args);
+      const session = new LocalShellSession(
+        { ...dependencies, kubeTools: resolveKubeTools.withoutCluster() },
+        { ...args, signal: websocketClosedSignal(args.websocket) },
+      );
 
       return session.open();
     };

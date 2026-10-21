@@ -23,6 +23,7 @@ import { kubectlStatusOptionsFor, messageOfError, terminalStatusReporterFor } fr
 import modifyTerminalShellEnvInjectable from "../shell-env-modifier/modify-terminal-shell-env.injectable";
 import shellSessionEnvsInjectable from "../shell-envs.injectable";
 import spawnPtyInjectable from "../spawn-pty.injectable";
+import { closedDuring, websocketClosedSignal } from "../websocket-closed";
 import { LocalShellSession } from "./local-shell-session";
 
 import type WebSocket from "ws";
@@ -66,6 +67,9 @@ const openLocalShellSessionInjectable = getInjectable({
     };
 
     return async (args) => {
+      // Before the first await, so that a tab closed during any of them is seen.
+      const signal = websocketClosedSignal(args.websocket);
+      const closed = (stage: string) => closedDuring(signal, logger, `${args.cluster.id}:${args.tabId}`, stage);
       const kubectl = createKubectl(args.cluster.version.get());
       const kubeconfigManager = di.inject(kubeconfigManagerInjectable, args.cluster);
       // The websocket is already upgraded and writable here, long before the
@@ -76,11 +80,20 @@ const openLocalShellSessionInjectable = getInjectable({
       const { kubeconfigPath: proxyKubeconfigPath, cacheDirectoryPath: proxyCacheDirectoryPath } =
         await kubeconfigManager.ensurePaths();
 
+      if (closed("starting the cluster proxy")) {
+        return;
+      }
+
       const kubectlStatus = kubectlStatusOptionsFor(kubectl.kubectlVersion, status);
 
       status.info(`Checking kubectl v${kubectl.kubectlVersion} ...`);
 
       const kubeTools = await resolveKubeTools.forCluster(kubectl, kubectlStatus).finally(() => kubectlStatus.done());
+
+      if (closed(`checking kubectl v${kubectl.kubectlVersion}`)) {
+        return;
+      }
+
       const shellInitDirectory = await kubectl.writeInitScripts(kubeTools).catch((error) => {
         logger.error("[LOCAL-SHELL]: failed to write the shell init scripts", error);
         status.error(
@@ -91,6 +104,10 @@ const openLocalShellSessionInjectable = getInjectable({
         return undefined;
       });
 
+      if (closed("writing the shell init scripts")) {
+        return;
+      }
+
       const session = new LocalShellSession(
         {
           ...dependencies,
@@ -99,7 +116,7 @@ const openLocalShellSessionInjectable = getInjectable({
           proxyCacheDirectoryPath,
           shellInitDirectory,
         },
-        { kubectl, ...args },
+        { kubectl, ...args, signal },
       );
 
       return session.open();

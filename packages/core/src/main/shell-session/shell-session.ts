@@ -9,6 +9,7 @@ import { getOrInsertWith } from "@freelensapp/utilities";
 import { TerminalChannels, type TerminalMessage } from "../../common/terminal/channels";
 import { composeKubeToolsEnvironment } from "../kube-tools/kube-tools";
 import { type TerminalStatusReporter, terminalStatusReporterFor } from "./send-terminal-status";
+import { closedDuring } from "./websocket-closed";
 
 import type { Logger } from "@freelensapp/logger";
 
@@ -143,6 +144,11 @@ export interface ShellSessionDependencies {
 export interface ShellSessionArgs {
   kubectl?: Kubectl;
   websocket: WebSocket;
+  /**
+   * Aborted once {@link websocket} closes, taken when the socket was handed
+   * over: by the time the session exists, its `close` event may have fired.
+   */
+  signal: AbortSignal;
   cluster?: Cluster;
   tabId: string;
 }
@@ -161,6 +167,7 @@ export abstract class ShellSession {
   protected readonly terminalId: string;
   protected readonly kubectl?: Kubectl;
   protected readonly websocket: WebSocket;
+  protected readonly signal: AbortSignal;
   protected readonly cluster?: Cluster;
   protected readonly status: TerminalStatusReporter;
 
@@ -210,13 +217,21 @@ export abstract class ShellSession {
 
   constructor(
     protected readonly dependencies: ShellSessionDependencies,
-    { kubectl, websocket, cluster, tabId: terminalId }: ShellSessionArgs,
+    { kubectl, websocket, signal, cluster, tabId: terminalId }: ShellSessionArgs,
   ) {
     this.kubectl = kubectl;
     this.websocket = websocket;
+    this.signal = signal;
     this.cluster = cluster;
     this.status = terminalStatusReporterFor(websocket);
     this.terminalId = `${cluster?.id ?? standaloneSessionId}:${terminalId}`;
+  }
+
+  /**
+   * Whether the start stops here because the terminal has closed.
+   */
+  protected closedDuring(stage: string): boolean {
+    return closedDuring(this.signal, this.dependencies.logger, this.terminalId, stage);
   }
 
   protected send(message: TerminalMessage): void {
@@ -259,6 +274,12 @@ export abstract class ShellSession {
 
   protected async openShellProcess(shell: string, args: string[], env: Record<string, string | undefined>) {
     const cwd = await this.getCwd(env);
+
+    // The `close` handler below would be attached to a socket that has already
+    // closed, and nothing else would ever kill the PTY.
+    if (this.closedDuring("preparing the shell")) {
+      return;
+    }
 
     this.status.info("Starting shell ...");
 
