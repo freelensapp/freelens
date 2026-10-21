@@ -35,7 +35,9 @@ jobs:
   scan:
     name: scan the last release
 
-    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    # A fork lacks the secrets of the automated environment, and usually the
+    # releases and the discussion, so the job only fails there.
+    if: github.repository == 'freelensapp/freelens' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
 
     runs-on: ubuntu-24.04-arm
     # GH_TOKEN, which edits the discussion, is a secret of this environment.

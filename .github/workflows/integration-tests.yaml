@@ -744,7 +744,8 @@ jobs:
     # table and replaces the tracking discussion's body with it, so the
     # discussion always reflects the latest main-branch scan. Runs for the
     # real branch build (push/dispatch/schedule on main) only, never for PRs.
-    if: github.ref_name == 'main' && github.event_name != 'pull_request'
+    # Never on a fork either, which lacks the discussion and the GH_TOKEN secret.
+    if: github.repository == 'freelensapp/freelens' && github.ref_name == 'main' && github.event_name != 'pull_request'
 
     needs:
       - security-scan
