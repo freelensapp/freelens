@@ -71,12 +71,12 @@ jobs:
             arch: arm64
             concurrency: linux-arm64
 
-          - runs-on: macos-15 # datasource=github-runners
+          - runs-on: macos-26 # datasource=github-runners
             os: macos
             arch: arm64
             concurrency: macos-arm64
 
-          - runs-on: macos-15-intel # datasource=github-runners
+          - runs-on: macos-26-intel # datasource=github-runners
             os: macos
             arch: x64
             concurrency: macos-x64

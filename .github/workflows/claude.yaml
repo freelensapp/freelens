@@ -194,8 +194,8 @@ jobs:
           case "$RUNS_ON_ALIAS" in
             ubuntu-24.04|ubuntu|linux|linux-x64)        RUNS_ON="ubuntu-24.04" ;;
             ubuntu-24.04-arm|ubuntu-arm|linux-arm|linux-arm64) RUNS_ON="ubuntu-24.04-arm" ;;
-            macos-15|macos|macos-arm64)                  RUNS_ON="macos-15" ;;
-            macos-15-intel|macos-intel|macos-x64)        RUNS_ON="macos-15-intel" ;;
+            macos-26|macos|macos-arm64)                  RUNS_ON="macos-26" ;;
+            macos-26-intel|macos-intel|macos-x64)        RUNS_ON="macos-26-intel" ;;
             windows-11-arm|windows-arm|windows-arm64)    RUNS_ON="windows-11-arm" ;;
             windows-2025|windows|windows-x64)            RUNS_ON="windows-2025" ;;
             "")                                          RUNS_ON="$DEFAULT_RUNS_ON" ;;
