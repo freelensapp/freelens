@@ -35,8 +35,7 @@ jobs:
   scan:
     name: scan the last release
 
-    # A fork lacks the secrets of the automated environment, and usually the
-    # releases and the discussion, so the job only fails there.
+    # Never on a fork: it has no GH_TOKEN secret, so the job could only fail.
     if: github.repository == 'freelensapp/freelens' && (github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success')
 
     runs-on: ubuntu-24.04-arm
