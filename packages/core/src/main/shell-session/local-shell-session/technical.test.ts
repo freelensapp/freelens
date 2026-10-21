@@ -4,6 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { EventEmitter } from "node:events";
 import { computed } from "mobx";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForTempInjectable from "../../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
@@ -25,6 +26,7 @@ import freelensProxyPortInjectable from "../../freelens-proxy/freelens-proxy-por
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
 import createKubectlInjectable from "../../kubectl/create-kubectl.injectable";
+import shellSessionProcessesInjectable from "../processes.injectable";
 import spawnPtyInjectable from "../spawn-pty.injectable";
 import openLocalShellSessionInjectable from "./open.injectable";
 
@@ -529,6 +531,107 @@ describe("technical unit tests for local shell sessions", () => {
 
       expect(options).toHaveProperty("useConptyDll", true);
       expect(options).not.toHaveProperty("useConpty");
+    });
+
+    /**
+     * The websocket emits `close` once, and the shell starts only after a
+     * series of awaits: a tab closed during any of them must leave no PTY
+     * behind, because nothing would ever kill it.
+     */
+    describe("when the terminal closes while the session starts", () => {
+      type Stage = "proxy" | "kubectl" | "init-scripts" | "shell-environment" | "cwd";
+
+      let closeDuring: Stage | undefined;
+      let closableWebsocket: EventEmitter & { readyState: number };
+
+      const reach = (stage: Stage) => {
+        if (closeDuring === stage) {
+          closableWebsocket.readyState = 3;
+          closableWebsocket.emit("close", 1000);
+        }
+      };
+
+      const open = () =>
+        di.inject(openLocalShellSessionInjectable)({
+          cluster: new Cluster({
+            contextName: "some-context-name",
+            id: "some-cluster-id",
+            kubeConfigPath: "/some-kube-config-path",
+          }),
+          tabId: "my-tab-id",
+          websocket: closableWebsocket as unknown as WebSocket,
+        });
+
+      beforeEach(() => {
+        closeDuring = undefined;
+        closableWebsocket = Object.assign(new EventEmitter(), { send: vi.fn(), readyState: 1, OPEN: 1 });
+
+        di.override(platformInjectable, () => "linux");
+        di.override(userShellSettingInjectable, () => computed(() => "/bin/bash"));
+        di.override(
+          kubeconfigManagerInjectable,
+          () =>
+            ({
+              ensurePaths: async () => {
+                reach("proxy");
+
+                return {
+                  kubeconfigPath: "/some-proxy-kubeconfig-file",
+                  cacheDirectoryPath: "/some-proxy-kubeconfig-cache-directory",
+                };
+              },
+            }) as Partial<KubeconfigManager> as KubeconfigManager,
+        );
+        di.override(
+          createKubectlInjectable,
+          () => () =>
+            ({
+              kubectlVersion: "1.33.4",
+              getPath: async () => {
+                reach("kubectl");
+
+                return kubectlPath;
+              },
+              getVersionMatchedPath: () => "/some-kubectl-binary-dir/kubectl",
+              writeInitScripts: async () => {
+                reach("init-scripts");
+
+                return "/some-kubectl-binary-dir";
+              },
+            }) as Partial<Kubectl> as Kubectl,
+        );
+        di.override(computeShellEnvironmentInjectable, () => async () => {
+          reach("shell-environment");
+
+          return {
+            callWasSuccessful: true as const,
+            response: { PATH: "/usr/bin", HOME: "/home/some-user" },
+          };
+        });
+        di.override(statInjectable, () => async () => {
+          reach("cwd");
+
+          throw new Error("no such directory");
+        });
+      });
+
+      it("starts the shell when the terminal stays open", async () => {
+        await open();
+
+        expect(spawnPtyMock).toHaveBeenCalledOnce();
+      });
+
+      it.each<Stage>(["proxy", "kubectl", "init-scripts", "shell-environment", "cwd"])(
+        "spawns no PTY when it closes during the %s stage",
+        async (stage) => {
+          closeDuring = stage;
+
+          await open();
+
+          expect(spawnPtyMock).not.toHaveBeenCalled();
+          expect(di.inject(shellSessionProcessesInjectable).size).toBe(0);
+        },
+      );
     });
   });
 });
