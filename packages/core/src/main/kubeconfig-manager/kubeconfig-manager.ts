@@ -20,13 +20,13 @@ import type { RemovePath } from "../../common/fs/remove.injectable";
 import type { WriteFile } from "../../common/fs/write-file.injectable";
 import type { GetDirnameOfPath } from "../../common/path/get-dirname.injectable";
 import type { JoinPaths } from "../../common/path/join-paths.injectable";
-import type { FreelensK8sProxyServer } from "../cluster/freelens-k8s-proxy-server.injectable";
+import type { FreelensK8sProxyManager } from "../cluster/freelens-k8s-proxy-manager.injectable";
 
 interface KubeconfigManagerDependencies {
   readonly directoryForTemp: string;
   readonly logger: Logger;
   readonly certificate: SelfSignedCert;
-  readonly freelensK8sProxyServer: FreelensK8sProxyServer;
+  readonly freelensK8sProxyManager: FreelensK8sProxyManager;
   readonly freelensProxyClusterUrl: string;
   joinPaths: JoinPaths;
   getDirnameOfPath: GetDirnameOfPath;
@@ -125,7 +125,7 @@ export class KubeconfigManager {
 
   protected async ensureFile() {
     try {
-      await this.dependencies.freelensK8sProxyServer.ensureRunning();
+      await this.dependencies.freelensK8sProxyManager.ensureRunning();
 
       const kubeconfigPath = await this.createProxyKubeconfig();
 

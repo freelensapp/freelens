@@ -19,7 +19,7 @@ import removePathInjectable from "../../common/fs/remove.injectable";
 import writeFileInjectable from "../../common/fs/write-file.injectable";
 import writeJsonSyncInjectable from "../../common/fs/write-json-sync.injectable";
 import normalizedPlatformInjectable from "../../common/vars/normalized-platform.injectable";
-import freelensK8sProxyServerInjectable from "../cluster/freelens-k8s-proxy-server.injectable";
+import freelensK8sProxyManagerInjectable from "../cluster/freelens-k8s-proxy-manager.injectable";
 import freelensProxyPortInjectable from "../freelens-proxy/freelens-proxy-port.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import kubeconfigManagerInjectable from "../kubeconfig-manager/kubeconfig-manager.injectable";
@@ -95,7 +95,7 @@ describe("kubeconfig manager tests", () => {
 
     ensureServerMock = asyncFn();
 
-    di.override(freelensK8sProxyServerInjectable, () => ({
+    di.override(freelensK8sProxyManagerInjectable, () => ({
       restart: vi.fn(),
       stop: vi.fn(),
       getApiTarget: vi.fn(),

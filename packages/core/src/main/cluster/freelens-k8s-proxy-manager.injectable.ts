@@ -9,14 +9,14 @@ import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
 import clusterApiUrlInjectable from "../../features/cluster/connections/main/api-url.injectable";
 import createFreelensK8sProxyInjectable from "../freelens-k8s-proxy/create-freelens-k8s-proxy.injectable";
 import freelensK8sProxyCertificateInjectable from "../freelens-k8s-proxy/freelens-k8s-proxy-certificate.injectable";
-import freelensK8sProxyServersInjectable from "./freelens-k8s-proxy-servers.injectable";
+import freelensK8sProxyManagersInjectable from "./freelens-k8s-proxy-managers.injectable";
 
 import type { ServerOptions } from "http-proxy-3";
 
 import type { Cluster } from "../../common/cluster/cluster";
 import type { FreelensK8sProxy } from "../freelens-k8s-proxy/create-freelens-k8s-proxy.injectable";
 
-export interface FreelensK8sProxyServer {
+export interface FreelensK8sProxyManager {
   getApiTarget(isLongRunningRequest?: boolean): Promise<ServerOptions>;
   ensureFreelensK8sProxyUrl(): Promise<string>;
   restart(): Promise<void>;
@@ -41,9 +41,9 @@ interface ApiTarget {
 const fourHoursInMs = 4 * 60 * 60 * 1000;
 const thirtySecondsInMs = 30 * 1000;
 
-const freelensK8sProxyServerInjectable = getInjectable({
-  id: "freelens-k8s-proxy-server",
-  instantiate: (di, cluster): FreelensK8sProxyServer => {
+const freelensK8sProxyManagerInjectable = getInjectable({
+  id: "freelens-k8s-proxy-manager",
+  instantiate: (di, cluster): FreelensK8sProxyManager => {
     const clusterApiUrl = di.inject(clusterApiUrlInjectable, cluster);
     const createFreelensK8sProxy = di.inject(createFreelensK8sProxyInjectable, cluster);
 
@@ -123,7 +123,7 @@ const freelensK8sProxyServerInjectable = getInjectable({
       apiTarget = undefined;
     };
 
-    const freelensK8sProxyServer: FreelensK8sProxyServer = {
+    const freelensK8sProxyManager: FreelensK8sProxyManager = {
       get apiUrl() {
         return apiUrl;
       },
@@ -157,13 +157,13 @@ const freelensK8sProxyServerInjectable = getInjectable({
       stop: stopServer,
     };
 
-    di.inject(freelensK8sProxyServersInjectable).add(freelensK8sProxyServer);
+    di.inject(freelensK8sProxyManagersInjectable).add(freelensK8sProxyManager);
 
-    return freelensK8sProxyServer;
+    return freelensK8sProxyManager;
   },
   lifecycle: lifecycleEnum.keyedSingleton({
     getInstanceKey: (di, cluster: Cluster) => cluster.id,
   }),
 });
 
-export default freelensK8sProxyServerInjectable;
+export default freelensK8sProxyManagerInjectable;
