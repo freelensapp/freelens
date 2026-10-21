@@ -11,7 +11,10 @@ import {
   actionForToggleDevTools,
   actionForToggleFullScreen,
   actionForZoomIn,
+  actionForZoomInWithEqualsSign,
+  actionForZoomInWithNumpadPlus,
   actionForZoomOut,
+  actionForZoomOutWithNumpadMinus,
 } from "./operation-system-actions.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
@@ -38,7 +41,22 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
+    di.register(actionForZoomInWithEqualsSign);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(actionForZoomInWithNumpadPlus);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
     di.register(actionForZoomOut);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(actionForZoomOutWithNumpadMinus);
   } catch (e) {
     /* Ignore duplicate registration */
   }
