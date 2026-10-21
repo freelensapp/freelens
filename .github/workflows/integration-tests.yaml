@@ -41,7 +41,7 @@ jobs:
             os: linux
             arch: arm64
 
-          - runs-on: macos-15
+          - runs-on: macos-15 # datasource=github-runners
             os: macos
             arch: arm64
 
@@ -53,7 +53,7 @@ jobs:
           #   os: windows
           #   arch: arm64
 
-          - runs-on: windows-2025
+          - runs-on: windows-2025 # datasource=github-runners
             os: windows
             arch: x64
 

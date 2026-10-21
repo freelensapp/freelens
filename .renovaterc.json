@@ -148,6 +148,16 @@
         "(\\s+|.*?@)(?<currentValue>\\S+?)!?\\s*#\\s*datasource=(?<datasource>\\S+)\\s+depName=(?<depName>\\S+)(\\s+versioning=(?<versioning>\\S+))?(\\s+registryUrl=(?<registryUrl>\\S+))?\\s*\\n"
       ],
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
+    },
+    {
+      "description": "GitHub-hosted runners in a build matrix, marked with a datasource=github-runners hint. The github-actions manager reads only a literal runs-on of a job, not ${{ matrix.runs-on }}. The value is split like that manager splits it (macos-15 into depName macos and version 15), with docker versioning so that a suffix such as -intel or -arm is kept. The hint carries no depName, which keeps the generic hint regex from matching the same line.",
+      "customType": "regex",
+      "managerFilePatterns": ["/^\\.github/workflows/.*\\.ya?ml$/"],
+      "matchStrings": [
+        "runs-on:\\s+(?<depName>[a-z]+)-(?<currentValue>\\S+)\\s*#\\s*datasource=(?<datasource>github-runners)\\s*\\n"
+      ],
+      "versioningTemplate": "docker",
+      "depTypeTemplate": "github-runner"
     }
   ]
 }
