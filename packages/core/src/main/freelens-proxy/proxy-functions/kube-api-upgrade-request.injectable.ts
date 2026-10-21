@@ -32,6 +32,14 @@ const kubeApiUpgradeRequestInjectable = getInjectable({
 
       const proxyUrl = (await freelensK8sProxyManager.ensureFreelensK8sProxyUrl()) + req.url.replace(apiKubePrefix, "");
       const pUrl = url.parse(proxyUrl);
+      /**
+       * No `ALPNProtocols`, and above all no `h2` among them: exec, attach
+       * and port-forward take over the HTTP/1.1 connection, and the request
+       * written below is an HTTP/1.1 one. freelens-k8s-proxy offers `h2`
+       * first, so a connection that offered it would be HTTP/2, and the proxy
+       * would answer this request line with the preface of an HTTP/2
+       * connection. Without ALPN the proxy stays on HTTP/1.1.
+       */
       const connectOpts: ConnectionOptions = {
         port: pUrl.port ? parseInt(pUrl.port) : undefined,
         host: pUrl.hostname ?? undefined,
