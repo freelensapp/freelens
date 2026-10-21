@@ -57,7 +57,34 @@ When a tool insists on writing inside the repo, keep it out of git:
 Never `git add -A` / `git add .` blindly: review `git status` first and stage
 only the files your change actually touches, never these artifacts.
 
-## Copyright Headers
+### Running a scratch script with the project's toolchain
+
+mise picks the pinned Node from the `mise.toml` of the current directory, so a
+script outside the repository runs on whatever Node is global unless mise is
+pointed at the repository. `mise -C <repo>` (`--cd`) does that by changing the
+working directory before it runs the command, which also moves where relative
+paths resolve: `mise -C <repo> exec -- node spike.mjs`, run from the script's
+directory, looks for `<repo>/spike.mjs` and fails with `Cannot find module`.
+Run from the repository and pass the script by its absolute path instead:
+
+```sh
+cd <repo> && mise exec -- node "$TMPDIR/spike/spike.mjs"
+```
+
+The same applies to every relative argument of the command, input and output
+files included.
+
+A script outside the tree does not resolve the project's dependencies either:
+Node looks for `node_modules` next to the script, not in the working
+directory. Resolve them from the package that declares them, so the script
+gets the versions the application uses:
+
+```js
+import { createRequire } from "node:module";
+
+const require = createRequire("<repo>/packages/core/package.json");
+const { Agent, fetch } = require("undici");
+```
 
 Source files carry one of two header variants. Which one a file gets depends
 on whether it continues code from the original OpenLens fork, not on what its
