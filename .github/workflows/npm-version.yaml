@@ -19,6 +19,9 @@ jobs:
   npm-version:
     name: npm version
 
+    # Never on a fork: it has no GH_TOKEN secret, so the job could only fail.
+    if: github.repository_owner == 'freelensapp'
+
     strategy:
       fail-fast: false
       matrix:

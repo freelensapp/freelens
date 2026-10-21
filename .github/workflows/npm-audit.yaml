@@ -28,8 +28,9 @@ jobs:
     environment: automated
     timeout-minutes: 10
 
+    # Never on a fork: it has no GH_TOKEN secret, so the job could only fail.
     if: >-
-      github.event_name != 'issue_comment' || (startsWith(github.event.issue.title, 'Automated npm audit') && contains(github.event.comment.body, '/rerun') && contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association))
+      github.repository_owner == 'freelensapp' && (github.event_name != 'issue_comment' || (startsWith(github.event.issue.title, 'Automated npm audit') && contains(github.event.comment.body, '/rerun') && contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)))
 
     env:
       DO_NOT_TRACK: "1"
