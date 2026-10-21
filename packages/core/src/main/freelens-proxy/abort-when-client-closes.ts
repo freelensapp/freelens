@@ -17,7 +17,8 @@ export const isClientGone = (res: ServerResponse) =>
 
 /**
  * Aborts the request to the target once the client has gone away before its
- * response was ended.
+ * response was ended, on the native path of http-proxy-3, which the
+ * development route takes.
  *
  * http-proxy-3 does that itself only while `res.writableFinished` is false.
  * For an HTTP/2 response that is the stream's, which a stream the client

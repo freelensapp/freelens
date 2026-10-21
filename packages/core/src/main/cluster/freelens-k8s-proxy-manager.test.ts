@@ -4,7 +4,7 @@
  */
 
 import { EventEmitter } from "node:events";
-import { Agent } from "node:https";
+import { fetch as undiciFetch } from "undici";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { Cluster } from "../../common/cluster/cluster";
 import broadcastMessageInjectable from "../../common/ipc/broadcast-message.injectable";
@@ -14,11 +14,20 @@ import freelensK8sProxyCertificateInjectable from "../freelens-k8s-proxy/freelen
 import waitUntilPortIsUsedInjectable from "../freelens-k8s-proxy/wait-until-port-is-used/wait-until-port-is-used.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import freelensK8sProxyManagerInjectable from "./freelens-k8s-proxy-manager.injectable";
+import { createFreelensK8sProxyAgent } from "./freelens-k8s-proxy-target";
 import type { ChildProcess } from "node:child_process";
 
+import type { ServerOptions } from "http-proxy-3";
+import type { Agent, Dispatcher } from "undici";
 import type { Mock } from "vitest";
 
 import type { FreelensK8sProxyManager } from "./freelens-k8s-proxy-manager.injectable";
+
+vi.mock("./freelens-k8s-proxy-target", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("./freelens-k8s-proxy-target")>();
+
+  return { ...actual, createFreelensK8sProxyAgent: vi.fn(actual.createFreelensK8sProxyAgent) };
+});
 
 interface FakeProxyProcess extends EventEmitter {
   stdout: EventEmitter;
@@ -26,11 +35,20 @@ interface FakeProxyProcess extends EventEmitter {
   kill: Mock;
 }
 
+const dispatcherOf = (options: ServerOptions) =>
+  (options.fetchOptions?.requestOptions as { dispatcher?: Dispatcher } | undefined)?.dispatcher;
+
 describe("freelens-k8s-proxy manager", () => {
   let spawnMock: Mock;
   let processes: FakeProxyProcess[];
   let freelensK8sProxyManager: FreelensK8sProxyManager;
   let clusterApiUrl: () => Promise<URL>;
+  const createAgent = vi.mocked(createFreelensK8sProxyAgent);
+
+  /**
+   * The pool that the `index`th call created.
+   */
+  const agentAt = (index: number) => createAgent.mock.results[index].value as Agent;
 
   const portOf = async (isLongRunningRequest?: boolean) => {
     const { target } = await freelensK8sProxyManager.getApiTarget(isLongRunningRequest);
@@ -40,6 +58,8 @@ describe("freelens-k8s-proxy manager", () => {
 
   beforeEach(() => {
     const di = getDiForUnitTesting();
+
+    createAgent.mockClear();
 
     processes = [];
     spawnMock = vi.fn(() => {
@@ -79,28 +99,22 @@ describe("freelens-k8s-proxy manager", () => {
   });
 
   it.each([false, true])(
-    "shares one keep-alive agent when the first request is long-running: %s",
+    "shares one pool, which trusts the certificate of the proxy, when the first request is long-running: %s",
     async (longFirst) => {
       const first = await freelensK8sProxyManager.getApiTarget(longFirst);
       const second = await freelensK8sProxyManager.getApiTarget(!longFirst);
       const normal = longFirst ? second : first;
       const watch = longFirst ? first : second;
-      const agent = normal.agent as Agent;
+      const dispatcher = dispatcherOf(normal);
 
-      expect(agent).toBeInstanceOf(Agent);
-      expect(watch.agent).toBe(agent);
-      expect(agent.options.keepAlive).toBe(true);
-      expect(agent.maxSockets).toBe(Infinity);
-      expect(agent.maxFreeSockets).toBe(16);
-      expect(agent.options.timeout).toBeUndefined();
+      expect(createAgent).toHaveBeenCalledTimes(1);
+      expect(createAgent).toHaveBeenCalledWith("some-cert");
+      expect(dispatcher).toBeDefined();
       expect(normal).toEqual({
-        agent,
         target: new URL("https://127.0.0.1:9001/0001020304050607"),
-        ca: "some-cert",
-        changeOrigin: true,
         timeout: 30_000,
-        secure: true,
-        headers: { Host: "192.168.64.3" },
+        fetch: undiciFetch,
+        fetchOptions: { requestOptions: { dispatcher, redirect: "manual" } },
       });
       expect(watch).toEqual({ ...normal, timeout: 4 * 60 * 60 * 1000 });
       expect(await freelensK8sProxyManager.getApiTarget()).toBe(normal);
@@ -108,32 +122,48 @@ describe("freelens-k8s-proxy manager", () => {
       const nextWatch = await freelensK8sProxyManager.getApiTarget(true);
 
       expect(nextWatch).not.toBe(watch);
-      expect(nextWatch.agent).toBe(agent);
+      expect(dispatcherOf(nextWatch)).toBe(dispatcher);
+      expect(createAgent).toHaveBeenCalledTimes(1);
     },
   );
 
-  it("destroys the pool on restart and destroys its replacement only once on repeated stop", async () => {
+  it("destroys the pool on restart, gives the new proxy a new dispatcher, and destroys it only once on repeated stop", async () => {
     const first = await freelensK8sProxyManager.getApiTarget();
-    const destroy = vi.spyOn(first.agent as Agent, "destroy");
 
     await freelensK8sProxyManager.restart();
 
-    expect(destroy).toHaveBeenCalledTimes(1);
+    expect(agentAt(0).destroyed).toBe(true);
     expect(processes[0].kill).toHaveBeenCalledTimes(1);
 
     const next = await freelensK8sProxyManager.getApiTarget();
 
-    expect(next.agent).toBeInstanceOf(Agent);
-    expect(next.agent).not.toBe(first.agent);
-
-    const destroyNext = vi.spyOn(next.agent as Agent, "destroy");
+    expect(createAgent).toHaveBeenCalledTimes(2);
+    expect(agentAt(1).destroyed).toBe(false);
+    expect(dispatcherOf(next)).toBeDefined();
+    expect(dispatcherOf(next)).not.toBe(dispatcherOf(first));
 
     freelensK8sProxyManager.stop();
+
+    expect(agentAt(1).destroyed).toBe(true);
+
+    // undici's destroy() calls itself once more, so the spy goes on after the
+    // first stop
+    const destroyAgain = vi.spyOn(agentAt(1), "destroy");
+
     freelensK8sProxyManager.stop();
 
-    expect(destroyNext).toHaveBeenCalledTimes(1);
-    expect(destroy).toHaveBeenCalledTimes(1);
+    expect(destroyAgain).not.toHaveBeenCalled();
     expect(processes[1].kill).toHaveBeenCalledTimes(1);
+  });
+
+  it("lets no request out through the dispatcher of a stopped proxy", async () => {
+    const dispatcher = dispatcherOf(await freelensK8sProxyManager.getApiTarget());
+
+    await freelensK8sProxyManager.restart();
+
+    await expect(undiciFetch("https://127.0.0.1:9001/0001020304050607/api", { dispatcher })).rejects.toMatchObject({
+      cause: { code: "UND_ERR_DESTROYED" },
+    });
   });
 
   it("reuses the target of a short request while the proxy runs", async () => {
@@ -147,12 +177,18 @@ describe("freelens-k8s-proxy manager", () => {
   it("gives the URL of the API server that its last target forwards to", async () => {
     expect(freelensK8sProxyManager.apiUrl).toBeUndefined();
 
-    await freelensK8sProxyManager.getApiTarget();
+    const first = await freelensK8sProxyManager.getApiTarget();
+
     expect(freelensK8sProxyManager.apiUrl?.href).toBe("https://192.168.64.3:8443/");
 
     clusterApiUrl = async () => new URL("https://some-rancher/k8s/clusters/local");
-    await freelensK8sProxyManager.getApiTarget(true);
+
+    const next = await freelensK8sProxyManager.getApiTarget(true);
+
     expect(freelensK8sProxyManager.apiUrl?.href).toBe("https://some-rancher/k8s/clusters/local");
+    // A dispatcher for the new host, on the pool of the same proxy process
+    expect(dispatcherOf(next)).not.toBe(dispatcherOf(first));
+    expect(createAgent).toHaveBeenCalledTimes(1);
   });
 
   it("starts one proxy for concurrent short requests", async () => {

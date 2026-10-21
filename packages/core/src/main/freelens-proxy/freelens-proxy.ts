@@ -9,7 +9,7 @@ import net from "node:net";
 import { apiKubePrefix, apiPrefix } from "../../common/vars";
 import { respondJson, respondText } from "../utils/http-responses";
 import { getBoolean } from "../utils/parse-query";
-import { abortFetchWhenClientCloses, abortWhenClientCloses, isClientGone } from "./abort-when-client-closes";
+import { abortFetchWhenClientCloses, isClientGone } from "./abort-when-client-closes";
 import { toClusterRoute } from "./cluster-route-redirect";
 import type http from "node:http";
 
@@ -314,22 +314,14 @@ export class FreelensProxy {
   }
 
   protected configureProxy(proxy: ProxyServer): ProxyServer {
-    abortWhenClientCloses(proxy);
-
     /**
-     * On the fetch path of http-proxy-3, `proxyRes` is no stream, only an
-     * object with the status and the headers of the response, emitted before
-     * the proxy writes them.
+     * The kube api requests take the fetch path of http-proxy-3, where
+     * `proxyRes` is no stream, only an object with the status and the headers
+     * of the response, emitted before the proxy writes them. A target that
+     * cuts off its response reaches the `error` handler.
      */
     proxy.on("proxyRes", (proxyRes, req, res) => {
       this.keepRedirectOnClusterRoute(proxyRes, req);
-
-      if (typeof proxyRes.on === "function") {
-        proxyRes.on("aborted", () => {
-          // happens when proxy target aborts connection
-          res.end();
-        });
-      }
 
       /**
        * The response headers are only sent with the first byte of the body,
@@ -530,20 +522,20 @@ export class FreelensProxy {
       target = options;
     }
 
-    if (target.fetchOptions) {
-      const { onBeforeRequest } = target.fetchOptions;
+    // Setting `fetchOptions` also keeps the request on the fetch path, the only
+    // one whose abort is wired up here
+    const onBeforeRequest = target.fetchOptions?.onBeforeRequest;
 
-      target = {
-        ...target,
-        fetchOptions: {
-          ...target.fetchOptions,
-          onBeforeRequest: async (requestOptions, req, res, options) => {
-            abortFetchWhenClientCloses(requestOptions, res);
-            await onBeforeRequest?.(requestOptions, req, res, options);
-          },
+    target = {
+      ...target,
+      fetchOptions: {
+        ...target.fetchOptions,
+        onBeforeRequest: async (requestOptions, req, res, options) => {
+          abortFetchWhenClientCloses(requestOptions, res);
+          await onBeforeRequest?.(requestOptions, req, res, options);
         },
-      };
-    }
+      },
+    };
 
     // http-proxy-3 proxies an HTTP/2 request as well, but its types only name
     // the `http` objects
