@@ -100,16 +100,30 @@ const forwardTo =
     dispatch({ ...options, headers: forwardedHeaders(options.headers, host) }, handler);
 
 /**
+ * The options of the connection pool to one freelens-k8s-proxy process.
+ *
+ * undici ends a response that has sent nothing for `bodyTimeout`, 300 seconds
+ * by default, and the native path had no such limit. A watch is quiet for as
+ * long as nothing changes: the renderer asks for 600 seconds and for no
+ * bookmarks, and a `logs --follow` or `kubectl get --watch` from a terminal
+ * waits for as long as the user does. The limit is off, so the only one is
+ * the timeout that freelens-proxy sets on the incoming request, which counts
+ * inactivity as well: 30 seconds for a request, four hours for a watch or a
+ * follow.
+ */
+export const freelensK8sProxyAgentOptions = (ca: string): Agent.Options => ({
+  connect: { ca },
+  bodyTimeout: 0,
+  h2Options: { maxConcurrentStreams },
+});
+
+/**
  * The connection pool to one freelens-k8s-proxy process, which trusts the
  * certificate it serves. undici negotiates HTTP/2 with it through ALPN, so all
  * requests of a cluster, its watches included, share one connection, and
  * falls back to HTTP/1.1 against a proxy that does not offer HTTP/2.
  */
-export const createFreelensK8sProxyAgent = (ca: string) =>
-  new Agent({
-    connect: { ca },
-    h2Options: { maxConcurrentStreams },
-  });
+export const createFreelensK8sProxyAgent = (ca: string) => new Agent(freelensK8sProxyAgentOptions(ca));
 
 /**
  * A dispatcher that sends the requests through `agent` as requests for

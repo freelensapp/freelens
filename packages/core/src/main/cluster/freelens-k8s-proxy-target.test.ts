@@ -9,7 +9,12 @@ import https from "node:https";
 import { fetch as undiciFetch } from "undici";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { testCertificate } from "../../test-utils/test-certificate";
-import { apiTargetOptions, createFreelensK8sProxyAgent, dispatcherFor } from "./freelens-k8s-proxy-target";
+import {
+  apiTargetOptions,
+  createFreelensK8sProxyAgent,
+  dispatcherFor,
+  freelensK8sProxyAgentOptions,
+} from "./freelens-k8s-proxy-target";
 import type http from "node:http";
 import type net from "node:net";
 
@@ -53,6 +58,14 @@ describe("the target options of freelens-k8s-proxy", () => {
 
   afterEach(async () => {
     await agent.destroy();
+  });
+
+  it("keeps a response open for as long as it is quiet, leaving the timeout to freelens-proxy", () => {
+    expect(freelensK8sProxyAgentOptions("some-cert")).toEqual({
+      connect: { ca: "some-cert" },
+      bodyTimeout: 0,
+      h2Options: { maxConcurrentStreams: 1000 },
+    });
   });
 
   it("forwards with undici's own fetch, and passes redirects to the client", () => {
