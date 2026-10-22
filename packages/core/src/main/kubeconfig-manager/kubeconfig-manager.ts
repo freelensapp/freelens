@@ -28,6 +28,7 @@ interface KubeconfigManagerDependencies {
   readonly certificate: SelfSignedCert;
   readonly freelensK8sProxyManager: FreelensK8sProxyManager;
   readonly freelensProxyClusterUrl: string;
+  readonly freelensK8sProxyPath: string;
   joinPaths: JoinPaths;
   getDirnameOfPath: GetDirnameOfPath;
   pathExists: PathExists;
@@ -159,7 +160,21 @@ export class KubeconfigManager {
           caData: Buffer.from(this.dependencies.certificate.cert).toString("base64"),
         },
       ],
-      users: [{ name: "proxy", username: "lens", password: "fake" }],
+      // The token is not in the file: the credential plugin of
+      // freelens-k8s-proxy reads it from FREELENS_PROXY_TOKEN, which Freelens
+      // sets in the environment of every tool it runs against the proxy. A
+      // request without it gets 403.
+      users: [
+        {
+          name: "proxy",
+          exec: {
+            apiVersion: "client.authentication.k8s.io/v1",
+            command: this.dependencies.freelensK8sProxyPath,
+            args: ["credential"],
+            interactiveMode: "Never",
+          },
+        },
+      ],
       contexts: [
         {
           user: "proxy",

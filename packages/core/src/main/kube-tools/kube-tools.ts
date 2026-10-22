@@ -3,6 +3,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { freelensProxyTokenEnvVar } from "../freelens-proxy/freelens-proxy-token";
 import { clearKubeconfigEnvVars } from "../utils/clear-kube-env-vars";
 
 import type { EnvironmentVariables } from "../../features/shell-sync/main/compute-shell-environment.injectable";
@@ -49,6 +50,12 @@ export interface KubeToolsClusterAccess {
   readonly cacheDirectoryPath: string;
   /** The cluster's proxy preference, exported as `HTTPS_PROXY` when set. */
   readonly httpsProxy?: string;
+  /**
+   * The freelens-proxy token, exported as `FREELENS_PROXY_TOKEN`. The
+   * `credential` plugin of the proxy kubeconfig reads it, so a tool reaches the
+   * cluster through the proxy. Only here, where the kubeconfig is the proxy's.
+   */
+  readonly token: string;
 }
 
 export interface ComposeKubeToolsEnvironmentArgs {
@@ -98,6 +105,7 @@ export const composeKubeToolsEnvironment = ({
   if (clusterAccess !== undefined) {
     env.KUBECONFIG = clusterAccess.kubeconfigPath;
     env.KUBECACHEDIR = clusterAccess.cacheDirectoryPath;
+    env[freelensProxyTokenEnvVar] = clusterAccess.token;
 
     if (clusterAccess.httpsProxy) {
       env.HTTPS_PROXY = clusterAccess.httpsProxy;

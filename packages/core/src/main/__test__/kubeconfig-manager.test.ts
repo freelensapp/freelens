@@ -20,6 +20,7 @@ import writeFileInjectable from "../../common/fs/write-file.injectable";
 import writeJsonSyncInjectable from "../../common/fs/write-json-sync.injectable";
 import normalizedPlatformInjectable from "../../common/vars/normalized-platform.injectable";
 import freelensK8sProxyManagerInjectable from "../cluster/freelens-k8s-proxy-manager.injectable";
+import freeLensK8sProxyPathInjectable from "../freelens-k8s-proxy/freelens-k8s-proxy-path.injectable";
 import freelensProxyPortInjectable from "../freelens-proxy/freelens-proxy-port.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import kubeconfigManagerInjectable from "../kubeconfig-manager/kubeconfig-manager.injectable";
@@ -71,6 +72,7 @@ describe("kubeconfig manager tests", () => {
       throw new Error("tried call writeJsonSync without override");
     });
     di.inject(freelensProxyPortInjectable).set(9191);
+    di.override(freeLensK8sProxyPathInjectable, () => "/some-bin/freelens-k8s-proxy");
 
     readFileMock = asyncFn();
     di.override(readFileInjectable, () => readFileMock);
@@ -185,7 +187,7 @@ describe("kubeconfig manager tests", () => {
           beforeEach(async () => {
             await writeFileMock.resolveSpecific([
               "/some-directory-for-temp/kubeconfig-foo",
-              "apiVersion: v1\nclusters:\n- cluster:\n    certificate-authority-data: PGNhLWRhdGE+\n    insecure-skip-tls-verify: false\n    server: https://127.0.0.1:9191/foo\n  name: kind-kind\ncontexts:\n- context:\n    cluster: kind-kind\n    user: proxy\n  name: kind-kind\ncurrent-context: kind-kind\nkind: Config\npreferences: {}\nusers:\n- name: proxy\n  user:\n    password: fake\n    username: lens\n",
+              "apiVersion: v1\nclusters:\n- cluster:\n    certificate-authority-data: PGNhLWRhdGE+\n    insecure-skip-tls-verify: false\n    server: https://127.0.0.1:9191/foo\n  name: kind-kind\ncontexts:\n- context:\n    cluster: kind-kind\n    user: proxy\n  name: kind-kind\ncurrent-context: kind-kind\nkind: Config\npreferences: {}\nusers:\n- name: proxy\n  user:\n    exec:\n      apiVersion: client.authentication.k8s.io/v1\n      args:\n      - credential\n      command: /some-bin/freelens-k8s-proxy\n      interactiveMode: Never\n",
             ]);
           });
 
@@ -359,7 +361,7 @@ describe("kubeconfig manager tests", () => {
                     beforeEach(async () => {
                       await writeFileMock.resolveSpecific([
                         "/some-directory-for-temp/kubeconfig-foo",
-                        "apiVersion: v1\nclusters:\n- cluster:\n    certificate-authority-data: PGNhLWRhdGE+\n    insecure-skip-tls-verify: false\n    server: https://127.0.0.1:9191/foo\n  name: kind-kind\ncontexts:\n- context:\n    cluster: kind-kind\n    user: proxy\n  name: kind-kind\ncurrent-context: kind-kind\nkind: Config\npreferences: {}\nusers:\n- name: proxy\n  user:\n    password: fake\n    username: lens\n",
+                        "apiVersion: v1\nclusters:\n- cluster:\n    certificate-authority-data: PGNhLWRhdGE+\n    insecure-skip-tls-verify: false\n    server: https://127.0.0.1:9191/foo\n  name: kind-kind\ncontexts:\n- context:\n    cluster: kind-kind\n    user: proxy\n  name: kind-kind\ncurrent-context: kind-kind\nkind: Config\npreferences: {}\nusers:\n- name: proxy\n  user:\n    exec:\n      apiVersion: client.authentication.k8s.io/v1\n      args:\n      - credential\n      command: /some-bin/freelens-k8s-proxy\n      interactiveMode: Never\n",
                       ]);
                     });
 

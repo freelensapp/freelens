@@ -45,6 +45,7 @@ describe("ResourceApplier", () => {
         execFile: execFileMock as unknown as ExecFile,
         joinPaths: (...paths) => paths.join("/"),
         createKubectl: () => kubectl,
+        withFreelensProxyTokenEnv: (env) => env,
         proxyKubeconfigManager,
         logger: { debug: vi.fn(), error: vi.fn(), info: vi.fn(), silly: vi.fn(), warn: vi.fn() } as Logger,
       },

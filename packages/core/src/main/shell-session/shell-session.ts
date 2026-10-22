@@ -133,6 +133,12 @@ export interface ShellSessionDependencies {
    * of `~/.kube/cache`. Set exactly when the proxy kubeconfig is.
    */
   readonly proxyCacheDirectoryPath?: string;
+  /**
+   * The freelens-proxy token, exported as `FREELENS_PROXY_TOKEN` when the proxy
+   * kubeconfig is set, so that kubectl and helm in the terminal reach the
+   * cluster through the proxy.
+   */
+  readonly freelensProxyToken: string;
   readonly shellSessionEnvs: ShellSessionEnvs;
   readonly shellSessionProcesses: ShellSessionProcesses;
   computeUserShellEnvironment: ComputeUserShellEnvironment;
@@ -422,7 +428,8 @@ export abstract class ShellSession {
       this.status.error(error);
     }
 
-    const { kubeTools, proxyKubeconfigPath, proxyCacheDirectoryPath, isWindows } = this.dependencies;
+    const { kubeTools, proxyKubeconfigPath, proxyCacheDirectoryPath, freelensProxyToken, isWindows } =
+      this.dependencies;
     const env = composeKubeToolsEnvironment({
       baseEnvironment: environment,
       tools: kubeTools,
@@ -433,6 +440,7 @@ export abstract class ShellSession {
               kubeconfigPath: proxyKubeconfigPath,
               cacheDirectoryPath: proxyCacheDirectoryPath,
               httpsProxy: this.cluster?.preferences.httpsProxy,
+              token: freelensProxyToken,
             },
       isWindows,
     });

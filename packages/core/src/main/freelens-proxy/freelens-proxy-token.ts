@@ -13,6 +13,14 @@ import type { IncomingHttpHeaders } from "node:http";
  */
 export const freelensProxyTokenCookie = "freelens_proxy_token";
 
+/**
+ * The environment variable the `credential` subcommand of freelens-k8s-proxy
+ * reads, named in the `exec` user of the proxy kubeconfig. Freelens sets it on
+ * every kubectl, helm and terminal it starts against the proxy, so each sends
+ * the token as `Authorization: Bearer` without the kubeconfig holding it.
+ */
+export const freelensProxyTokenEnvVar = "FREELENS_PROXY_TOKEN";
+
 const bearerPrefix = "Bearer ";
 
 function bearerToken(headers: IncomingHttpHeaders): string | undefined {
