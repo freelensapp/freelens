@@ -440,6 +440,20 @@ export class FreelensProxy {
       stripToken(req.headers);
       req.url = req.url.replace(apiKubePrefix, "");
 
+      // A cluster the user has not connected gets no proxy process started for
+      // it: a request for one fails instead.
+      if (cluster.disconnected.get()) {
+        return this.respondWithError(res, 503, {
+          kind: "Status",
+          apiVersion: "v1",
+          metadata: {},
+          status: "Failure",
+          message: `Cluster ${cluster.id} is not connected`,
+          reason: "ServiceUnavailable",
+          code: 503,
+        });
+      }
+
       const freelensK8sProxyManager = this.dependencies.getFreelensK8sProxyManager(cluster);
       let proxyTarget: ServerOptions | undefined;
 

@@ -427,6 +427,7 @@ describe("Freelens proxy kube api requests", () => {
   let timeout: number | undefined;
   let agent: Agent;
   let logError: Mock;
+  let clusterDisconnected: boolean;
   const sessions: http2.ClientHttp2Session[] = [];
 
   const apiPrefix = "/some-api-prefix";
@@ -500,9 +501,13 @@ describe("Freelens proxy kube api requests", () => {
 
     agent = createFreelensK8sProxyAgent(testCertificate.cert);
     logError = vi.fn();
+    clusterDisconnected = false;
 
     overrideEnvironment(di);
-    di.override(getClusterForRequestInjectable, () => () => ({ id: "some-cluster-id" }) as Cluster);
+    di.override(
+      getClusterForRequestInjectable,
+      () => () => ({ id: "some-cluster-id", disconnected: { get: () => clusterDisconnected } }) as unknown as Cluster,
+    );
     di.override(shellApiRequestInjectable, () => vi.fn());
     di.override(kubeApiUpgradeRequestInjectable, () => vi.fn());
     di.override(
@@ -562,6 +567,16 @@ describe("Freelens proxy kube api requests", () => {
       statusCode: 403,
       body: "Forbidden",
     });
+    expect(targetReceived).toEqual([]);
+  });
+
+  it("answers 503 for a cluster the user has not connected, without starting its proxy", async () => {
+    clusterDisconnected = true;
+
+    const response = await getHttp1(port, "/api-kube/api/v1/pods");
+
+    expect(response.statusCode).toBe(503);
+    expect(JSON.parse(response.body)).toMatchObject({ kind: "Status", reason: "ServiceUnavailable", code: 503 });
     expect(targetReceived).toEqual([]);
   });
 
@@ -774,7 +789,7 @@ describe("Freelens proxy redirects of the kube api", () => {
   let agent: Agent;
   const sessions: http2.ClientHttp2Session[] = [];
   const apiPrefix = "/some-api-prefix";
-  const cluster = { id: "some-cluster-id" } as Cluster;
+  const cluster = { id: "some-cluster-id", disconnected: { get: () => false } } as unknown as Cluster;
   const rendererHost = () => `some-cluster-id.renderer.freelens.app:${port}`;
 
   const headersOfHttp1 = (path: string, headers: http.OutgoingHttpHeaders) =>
@@ -931,7 +946,10 @@ describe("Freelens proxy kube api requests to a refused target", () => {
     });
 
     overrideEnvironment(di);
-    di.override(getClusterForRequestInjectable, () => () => ({ id: "some-cluster-id" }) as Cluster);
+    di.override(
+      getClusterForRequestInjectable,
+      () => () => ({ id: "some-cluster-id", disconnected: { get: () => false } }) as unknown as Cluster,
+    );
     di.override(shellApiRequestInjectable, () => vi.fn());
     di.override(kubeApiUpgradeRequestInjectable, () => vi.fn());
     di.override(freelensK8sProxyManagerInjectable, () => ({ getApiTarget }) as unknown as FreelensK8sProxyManager);
@@ -1001,7 +1019,10 @@ describe("Freelens proxy kube api requests whose cluster proxy cannot start", ()
     logError = vi.fn();
 
     overrideEnvironment(di);
-    di.override(getClusterForRequestInjectable, () => () => ({ id: "some-cluster-id" }) as Cluster);
+    di.override(
+      getClusterForRequestInjectable,
+      () => () => ({ id: "some-cluster-id", disconnected: { get: () => false } }) as unknown as Cluster,
+    );
     di.override(shellApiRequestInjectable, () => vi.fn());
     di.override(kubeApiUpgradeRequestInjectable, () => vi.fn());
     di.override(
@@ -1078,7 +1099,7 @@ describe("Freelens proxy upgrade requests", () => {
     overrideEnvironment(di);
 
     proxyToken = di.inject(freelensProxyTokenInjectable).value;
-    cluster = { id: "some-cluster-id" } as Cluster;
+    cluster = { id: "some-cluster-id", disconnected: { get: () => false } } as unknown as Cluster;
     shellApiRequest = vi.fn();
     kubeApiUpgradeRequest = vi.fn();
     socket = { destroy: vi.fn(), end: vi.fn(), destroyed: false, writable: true, bytesWritten: 0 };
