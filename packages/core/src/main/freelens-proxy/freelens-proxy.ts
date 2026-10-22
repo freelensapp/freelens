@@ -123,17 +123,18 @@ const maxConcurrentStreams = 1000;
 const maxSessionMemory = 100;
 
 /**
- * nghttp2 guards against the rapid reset attack (CVE-2023-44487) by allowing a
- * client a burst of 1000 stream resets, refilled at 33 per second, and ends the
- * session with `GOAWAY(INTERNAL_ERROR)` past that, which fails every stream
- * still open on it. Chromium resets streams in that number on its own: on a
- * reload it cancels each module it already has in its cache once the headers
- * have arrived, and switching views cancels watches and lists. The server
- * listens on the loopback only, and its clients are Freelens itself, so the
- * limit protects nothing here and is set far beyond what Chromium reaches.
+ * nghttp2 guards against the rapid reset attack (CVE-2023-44487) by ending a
+ * session with `GOAWAY(INTERNAL_ERROR)` once a client resets more streams than
+ * a burst refilled at a steady rate; its defaults are a burst of 1000 at 33 per
+ * second. Chromium resets streams in numbers of its own: on a reload it cancels
+ * each module it has in its cache once the headers have arrived, and switching
+ * views cancels the watches and lists of the previous one. The burst and rate
+ * are set well above what a reload reaches — a reload measures in the tens to a
+ * few hundred, and the test covers a burst past a thousand — while still an
+ * order of magnitude below a flood, so the guard holds.
  */
-const streamResetBurst = 100_000;
-const streamResetRate = 10_000;
+const streamResetBurst = 10_000;
+const streamResetRate = 1_000;
 
 export class FreelensProxy {
   protected readonly proxyServer: http2.Http2SecureServer;
