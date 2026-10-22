@@ -107,4 +107,43 @@ describe("kube api upgrade requests", () => {
 
     expect(response.toString()).toBe("HTTP/1.1 101 Switching Protocols\r\n\r\n");
   });
+
+  it("does not carry the proxy token to the cluster, whatever the header case", async () => {
+    await kubeApiUpgradeRequest({
+      req: {
+        method: "GET",
+        url: "/api-kube/api/v1/namespaces/default/pods/some-pod/exec",
+        httpVersion: "1.1",
+        rawHeaders: [
+          "Host",
+          "127.0.0.1",
+          "cookie",
+          "freelens_proxy_token=some-secret",
+          "Authorization",
+          "Bearer some-secret",
+          "Connection",
+          "Upgrade",
+          "Upgrade",
+          "SPDY/3.1",
+        ],
+      } as ProxyApiRequestArgs["req"],
+      socket: client as unknown as net.Socket,
+      head: Buffer.from([]),
+      cluster,
+    });
+
+    const connection = await targetConnection;
+    let request = "";
+
+    while (!request.includes("\r\n\r\n")) {
+      const [chunk] = (await once(connection, "data")) as [Buffer];
+
+      request += chunk.toString();
+    }
+
+    expect(request).not.toMatch(/freelens_proxy_token|some-secret/);
+    expect(request.toLowerCase()).not.toMatch(/\r\ncookie:/);
+    expect(request.toLowerCase()).not.toMatch(/\r\nauthorization:/);
+    expect(request).toContain("Connection: Upgrade");
+  });
 });

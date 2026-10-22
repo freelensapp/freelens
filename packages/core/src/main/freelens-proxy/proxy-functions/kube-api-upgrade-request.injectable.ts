@@ -16,7 +16,10 @@ import type { ConnectionOptions } from "node:tls";
 
 import type { FreelensProxyApiRequest } from "../freelens-proxy";
 
-const skipRawHeaders = new Set(["Host", "Authorization"]);
+// Matched case-insensitively below. `authorization` and `cookie` carry the
+// freelens-proxy token, which must not travel to the cluster; `host` is set
+// from the cluster's API URL instead.
+const skipRawHeaders = new Set(["host", "authorization", "cookie"]);
 
 const kubeApiUpgradeRequestInjectable = getInjectable({
   id: "kube-api-upgrade-request",
@@ -52,7 +55,7 @@ const kubeApiUpgradeRequestInjectable = getInjectable({
         proxySocket.write(`Host: ${clusterApiUrl.host}\r\n`);
 
         for (const [key, value] of chunk(req.rawHeaders, 2)) {
-          if (skipRawHeaders.has(key)) {
+          if (skipRawHeaders.has(key.toLowerCase())) {
             continue;
           }
 
