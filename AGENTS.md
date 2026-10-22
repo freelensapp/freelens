@@ -543,7 +543,13 @@ re-locks only the platform it runs on and leaves the others stale.
 
 **Common Errors:**
 - `Tried to register same injectable multiple times` - See DI section above
-- `Tried to inject non-registered injectable` - Check registration files were generated
+- `Tried to inject non-registered injectable` - Check registration files were
+  generated. In a unit test, a newly added `*.injectable.ts` can report this
+  even when the file exists and `pnpm build:di` ran: `getDiForUnitTesting`
+  registers through `import.meta.glob(..., { eager: true })`, and
+  `node_modules/.vitest-cache` keeps the glob expanded over the files that
+  existed when it was first cached. Clear it (`rm -rf node_modules/.vitest-cache`)
+  and re-run.
 - Permission errors on macOS - Expected during development
 
 ### Working with the bundler (electron-vite)
