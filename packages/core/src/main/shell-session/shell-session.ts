@@ -7,6 +7,7 @@
 import os from "node:os";
 import { getOrInsertWith } from "@freelensapp/utilities";
 import { TerminalChannels, type TerminalMessage } from "../../common/terminal/channels";
+import { freelensProxyTokenEnvVar } from "../freelens-proxy/freelens-proxy-token";
 import { composeKubeToolsEnvironment } from "../kube-tools/kube-tools";
 import { type TerminalStatusReporter, terminalStatusReporterFor } from "./send-terminal-status";
 import { closedDuring } from "./websocket-closed";
@@ -448,7 +449,11 @@ export abstract class ShellSession {
     if (isWindows) {
       env.PTYSHELL = shell || "powershell.exe";
       env.LENS_SESSION = "true";
-      env.WSLENV = [env.WSLENV, "KUBECONFIG/up:KUBECACHEDIR/up:LENS_SESSION/u"].filter(Boolean).join(":");
+      // The token has no flag: it has to travel both ways, into WSL and back
+      // out to the Windows credential helper that a kubectl in WSL runs.
+      env.WSLENV = [env.WSLENV, `KUBECONFIG/up:KUBECACHEDIR/up:LENS_SESSION/u:${freelensProxyTokenEnvVar}`]
+        .filter(Boolean)
+        .join(":");
     } else {
       env.PTYSHELL = shell;
     }
