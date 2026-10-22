@@ -23,7 +23,11 @@ import type { JoinPaths } from "../../common/path/join-paths.injectable";
 import type { FreelensK8sProxyManager } from "../cluster/freelens-k8s-proxy-manager.injectable";
 
 interface KubeconfigManagerDependencies {
-  readonly directoryForTemp: string;
+  /**
+   * The per-user data directory, where the proxy kubeconfig lives: a location
+   * other users cannot reach, rather than a shared temp directory.
+   */
+  readonly directoryForUserData: string;
   readonly logger: Logger;
   readonly certificate: SelfSignedCert;
   readonly freelensK8sProxyManager: FreelensK8sProxyManager;
@@ -112,8 +116,13 @@ export class KubeconfigManager {
     await Promise.all([this.removeBestEffort(kubeconfigPath), this.removeBestEffort(cacheDirectoryPath)]);
   }
 
+  /** The per-user directory the proxy kubeconfig and its cache live in. */
+  protected get directoryForProxyKubeconfig(): string {
+    return this.dependencies.joinPaths(this.dependencies.directoryForUserData, "proxy-kubeconfigs");
+  }
+
   protected get cacheDirectoryPath(): string {
-    return this.dependencies.joinPaths(this.dependencies.directoryForTemp, `kubecache-${this.cluster.id}`);
+    return this.dependencies.joinPaths(this.directoryForProxyKubeconfig, `kubecache-${this.cluster.id}`);
   }
 
   protected async removeBestEffort(path: string): Promise<void> {
@@ -127,6 +136,9 @@ export class KubeconfigManager {
   protected async ensureFile() {
     try {
       await this.dependencies.freelensK8sProxyManager.ensureRunning();
+
+      // The directory exists before the kubeconfig is written into it.
+      await this.dependencies.ensureDirectory(this.directoryForProxyKubeconfig);
 
       const kubeconfigPath = await this.createProxyKubeconfig();
 
@@ -148,7 +160,7 @@ export class KubeconfigManager {
       preferences: { defaultNamespace },
     } = this.cluster;
     const contextName = this.cluster.contextName.get();
-    const tempFile = this.dependencies.joinPaths(this.dependencies.directoryForTemp, `kubeconfig-${id}`);
+    const tempFile = this.dependencies.joinPaths(this.directoryForProxyKubeconfig, `kubeconfig-${id}`);
     const kubeConfig = await this.dependencies.loadKubeconfig();
     const proxyConfig: PartialDeep<KubeConfig> = {
       currentContext: contextName,

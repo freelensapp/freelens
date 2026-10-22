@@ -6,7 +6,7 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
+import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import freelensProxyCertificateInjectable from "../../common/certificate/freelens-proxy-certificate.injectable";
 import loadKubeconfigInjectable from "../../common/cluster/load-kubeconfig.injectable";
 import ensureDirInjectable from "../../common/fs/ensure-dir.injectable";
@@ -28,7 +28,7 @@ const kubeconfigManagerInjectable = getInjectable({
   instantiate: (di, cluster) =>
     new KubeconfigManager(
       {
-        directoryForTemp: di.inject(directoryForTempInjectable),
+        directoryForUserData: di.inject(directoryForUserDataInjectable),
         logger: di.inject(loggerInjectionToken),
         joinPaths: di.inject(joinPathsInjectable),
         getDirnameOfPath: di.inject(getDirnameOfPathInjectable),
