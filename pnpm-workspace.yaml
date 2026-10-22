@@ -45,7 +45,7 @@ catalog:
   electron-builder-squirrel-windows: 26.18.0
   electron-vite: 6.0.0
   playwright: 1.64.1
-  pnpm: 12.14.0
+  pnpm: 12.15.0
   rolldown: 1.2.14
   rolldown-plugin-dts: 0.28.8
   sass-embedded: 1.105.2
