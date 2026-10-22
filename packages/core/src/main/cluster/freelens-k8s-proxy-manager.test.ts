@@ -186,8 +186,8 @@ describe("freelens-k8s-proxy manager", () => {
     const next = await freelensK8sProxyManager.getApiTarget(true);
 
     expect(freelensK8sProxyManager.apiUrl?.href).toBe("https://some-rancher/k8s/clusters/local");
-    // A dispatcher for the new host, on the pool of the same proxy process
-    expect(dispatcherOf(next)).not.toBe(dispatcherOf(first));
+    // The same proxy process, so the same dispatcher, whatever the host
+    expect(dispatcherOf(next)).toBe(dispatcherOf(first));
     expect(createAgent).toHaveBeenCalledTimes(1);
   });
 

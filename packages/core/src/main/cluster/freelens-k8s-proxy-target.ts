@@ -24,7 +24,9 @@ const maxConcurrentStreams = 1000;
  *   request (RFC 9110, section 7.6.1), which undici refuses to send anyway;
  * - `expect`, which freelens-proxy has already answered, and which undici
  *   does not support;
- * - `host`, which is set below;
+ * - `host`. freelens-k8s-proxy replaces it with the host of the API server
+ *   (the proxy handler of kubectl sets `UseLocationHost`), so undici sends
+ *   the host of the proxy instead;
  * - `accept-encoding`. `fetch` decodes a compressed response, but leaves its
  *   `content-encoding` and `content-length` on the headers, which http-proxy-3
  *   then sends to the client with the decoded body. A request without the
@@ -62,7 +64,7 @@ const entriesOf = (headers: DispatchHeaders): [string, unknown][] => {
   return Object.entries(headers);
 };
 
-const forwardedHeaders = (headers: DispatchHeaders, host: string) => {
+const forwardedHeaders = (headers: DispatchHeaders) => {
   const entries = entriesOf(headers);
   // A `Connection` header can name further headers that are only meant for
   // the connection it came over
@@ -84,20 +86,15 @@ const forwardedHeaders = (headers: DispatchHeaders, host: string) => {
     forwarded[name] = value as string | string[];
   }
 
-  forwarded.host = host;
-
   return forwarded;
 };
 
 /**
- * `fetch` drops a `Host` header, as a browser does, so it is set here, below
- * `fetch`, where undici sends it as `:authority` over HTTP/2.
+ * Leaves the headers that are not forwarded out, below `fetch`, which sets a
+ * few of them itself.
  */
-const forwardTo =
-  (host: string): Dispatcher.DispatcherComposeInterceptor =>
-  (dispatch) =>
-  (options, handler) =>
-    dispatch({ ...options, headers: forwardedHeaders(options.headers, host) }, handler);
+const forward: Dispatcher.DispatcherComposeInterceptor = (dispatch) => (options, handler) =>
+  dispatch({ ...options, headers: forwardedHeaders(options.headers) }, handler);
 
 /**
  * The options of the connection pool to one freelens-k8s-proxy process.
@@ -126,10 +123,10 @@ export const freelensK8sProxyAgentOptions = (ca: string): Agent.Options => ({
 export const createFreelensK8sProxyAgent = (ca: string) => new Agent(freelensK8sProxyAgentOptions(ca));
 
 /**
- * A dispatcher that sends the requests through `agent` as requests for
- * `host`, the API server behind the proxy.
+ * A dispatcher that sends the requests through `agent` without the headers
+ * that are not forwarded.
  */
-export const dispatcherFor = (agent: Dispatcher, host: string) => agent.compose(forwardTo(host));
+export const dispatcherFor = (agent: Dispatcher) => agent.compose(forward);
 
 interface ApiTargetOptions {
   /**
@@ -149,9 +146,8 @@ interface ApiTargetOptions {
  * certificate. It has to be undici's own `fetch`, as the copy of undici
  * embedded in Node rejects the dispatchers of the `undici` package.
  *
- * `changeOrigin` and a `Host` in `headers` are left out: `fetch` would drop
- * the `host` they set, and `new Headers()` in http-proxy-3 would join their
- * two values first.
+ * `changeOrigin` and a `Host` in `headers` are left out: freelens-k8s-proxy
+ * does not use the host of a request, and `fetch` would drop it anyway.
  */
 export const apiTargetOptions = ({ target, dispatcher, timeout }: ApiTargetOptions): ServerOptions => ({
   // http-proxy-3 prepends the `pathname` of the target and ignores a `path`

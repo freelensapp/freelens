@@ -413,13 +413,6 @@ describe("Freelens proxy kube api requests", () => {
 
   const apiPrefix = "/some-api-prefix";
 
-  /**
-   * undici checks the certificate of the target against the host a request
-   * is for, which is why the certificate of freelens-k8s-proxy is made for the
-   * host of its API server. This is a host the test certificate is made for.
-   */
-  const clusterHost = "some-cluster-host.renderer.freelens.app";
-
   const connectSession = async () => {
     const session = await connectHttp2(port);
 
@@ -501,7 +494,7 @@ describe("Freelens proxy kube api requests", () => {
           getApiTarget: async () =>
             apiTargetOptions({
               target: new URL(`https://127.0.0.1:${targetPort}${apiPrefix}`),
-              dispatcher: dispatcherFor(agent, clusterHost),
+              dispatcher: dispatcherFor(agent),
               timeout,
             }),
         }) as unknown as FreelensK8sProxyManager,
@@ -542,22 +535,32 @@ describe("Freelens proxy kube api requests", () => {
    */
   const afterTheAbort = () => new Promise((resolve) => setTimeout(resolve, 50));
 
-  it("forwards the request below the path of the target over HTTP/2, with the host of the cluster", async () => {
+  it("forwards the request below the path of the target over HTTP/2, as a request for the target", async () => {
     const response = await getHttp1(port, "/api-kube/api/v1/pods", { authorization: "some-token" });
 
     expect(response).toEqual({ statusCode: 200, body: "some-body" });
     expect(targetReceived).toEqual([
-      { url: `${apiPrefix}/api/v1/pods`, host: clusterHost, authorization: undefined, httpVersion: "2.0" },
+      {
+        url: `${apiPrefix}/api/v1/pods`,
+        host: `127.0.0.1:${(target.address() as net.AddressInfo).port}`,
+        authorization: undefined,
+        httpVersion: "2.0",
+      },
     ]);
   });
 
-  it("forwards an HTTP/2 request below the path of the target, with the host of the cluster", async () => {
+  it("forwards an HTTP/2 request below the path of the target, as a request for the target", async () => {
     const session = await connectSession();
     const response = await getHttp2(session, "/api-kube/api/v1/pods", { authorization: "some-token" });
 
     expect(response).toEqual({ statusCode: 200, body: "some-body" });
     expect(targetReceived).toEqual([
-      { url: `${apiPrefix}/api/v1/pods`, host: clusterHost, authorization: undefined, httpVersion: "2.0" },
+      {
+        url: `${apiPrefix}/api/v1/pods`,
+        host: `127.0.0.1:${(target.address() as net.AddressInfo).port}`,
+        authorization: undefined,
+        httpVersion: "2.0",
+      },
     ]);
   });
 
@@ -754,7 +757,7 @@ describe("Freelens proxy redirects of the kube api", () => {
           getApiTarget: async () =>
             apiTargetOptions({
               target: new URL(`http://127.0.0.1:${targetPort}${apiPrefix}`),
-              dispatcher: dispatcherFor(agent, "some-api-server"),
+              dispatcher: dispatcherFor(agent),
             }),
           apiUrl: new URL("https://some-api-server:6443"),
         }) as unknown as FreelensK8sProxyManager,
@@ -843,7 +846,7 @@ describe("Freelens proxy kube api requests to a refused target", () => {
     getApiTarget = vi.fn(async () =>
       apiTargetOptions({
         target: new URL(`http://127.0.0.1:${refusedPort}/some-api-prefix`),
-        dispatcher: dispatcherFor(agent, "some-cluster-host"),
+        dispatcher: dispatcherFor(agent),
       }),
     );
     route = vi.fn(async (_cluster: Cluster | undefined, _req: ServerIncomingMessage, res: ServerResponse) => {

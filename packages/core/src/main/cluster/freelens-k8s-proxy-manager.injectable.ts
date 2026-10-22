@@ -52,21 +52,17 @@ const freelensK8sProxyManagerInjectable = getInjectable({
     let apiTarget: ApiTarget | undefined = undefined;
     let apiUrl: URL | undefined = undefined;
     let agent: Agent | undefined;
-    let dispatcher: { host: string; dispatcher: Dispatcher } | undefined;
+    let dispatcher: Dispatcher | undefined;
 
     /**
      * One pool for every request to the proxy process, created with the
      * certificate of its first target, which is the one the process serves.
-     * The dispatcher on top of it only adds the host of the API server.
      */
-    const getDispatcher = (ca: string, host: string) => {
+    const getDispatcher = (ca: string) => {
       agent ??= createFreelensK8sProxyAgent(ca);
+      dispatcher ??= dispatcherFor(agent);
 
-      if (dispatcher?.host !== host) {
-        dispatcher = { host, dispatcher: dispatcherFor(agent, host) };
-      }
-
-      return dispatcher.dispatcher;
+      return dispatcher;
     };
 
     const ensureServerHelper = async (): Promise<FreelensK8sProxy> => {
@@ -102,7 +98,7 @@ const freelensK8sProxyManagerInjectable = getInjectable({
         port,
         options: apiTargetOptions({
           target: new URL(`https://127.0.0.1:${port}${path}`),
-          dispatcher: getDispatcher(certificate.cert, hostname),
+          dispatcher: getDispatcher(certificate.cert),
           timeout,
         }),
       };

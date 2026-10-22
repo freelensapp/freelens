@@ -20,13 +20,6 @@ import type net from "node:net";
 
 import type { Agent, Dispatcher } from "undici";
 
-/**
- * undici checks the certificate of the target against the host a request is
- * for, as freelens-k8s-proxy is given a certificate for the host of its API
- * server. This is a host the test certificate is made for.
- */
-const apiServerHost = "some-api-server.renderer.freelens.app";
-
 interface Received {
   httpVersion: string;
   headers: http.IncomingHttpHeaders;
@@ -52,7 +45,7 @@ describe("the target options of freelens-k8s-proxy", () => {
 
   beforeEach(() => {
     agent = createFreelensK8sProxyAgent(testCertificate.cert);
-    dispatcher = dispatcherFor(agent, apiServerHost);
+    dispatcher = dispatcherFor(agent);
     received = [];
   });
 
@@ -108,15 +101,30 @@ describe("the target options of freelens-k8s-proxy", () => {
       server.close();
     });
 
-    it("talks HTTP/2 to it, for the host of the API server", async () => {
+    it("talks HTTP/2 to it, as to the host of the proxy", async () => {
       const response = await undiciFetch(`${origin}/some-path`, { dispatcher });
 
       expect(await response.text()).toBe("some-body");
       expect(received).toEqual([
         expect.objectContaining({
           httpVersion: "2.0",
-          headers: expect.objectContaining({ ":authority": apiServerHost }),
+          headers: expect.objectContaining({ ":authority": new URL(origin).host }),
         }),
+      ]);
+    });
+
+    it("does not forward a host given below fetch, which drops it itself", async () => {
+      const { body } = await dispatcher.request({
+        origin,
+        path: "/some-path",
+        method: "GET",
+        headers: { host: "some-api-server" },
+      });
+
+      await body.text();
+
+      expect(received).toEqual([
+        expect.objectContaining({ headers: expect.objectContaining({ ":authority": new URL(origin).host }) }),
       ]);
     });
 
@@ -190,12 +198,15 @@ describe("the target options of freelens-k8s-proxy", () => {
       server.close();
     });
 
-    it("falls back to HTTP/1.1, for the host of the API server", async () => {
+    it("falls back to HTTP/1.1, as to the host of the proxy", async () => {
       const response = await undiciFetch(`${origin}/some-path`, { dispatcher });
 
       expect(await response.text()).toBe("some-body");
       expect(received).toEqual([
-        expect.objectContaining({ httpVersion: "1.1", headers: expect.objectContaining({ host: apiServerHost }) }),
+        expect.objectContaining({
+          httpVersion: "1.1",
+          headers: expect.objectContaining({ host: new URL(origin).host }),
+        }),
       ]);
     });
   });
