@@ -47,4 +47,13 @@ describe("withBearerToken", () => {
 
     expect(received).toBe("Bearer some-token");
   });
+
+  it("replaces an authorization header already present, not appends a second", async () => {
+    await undiciFetch(url, {
+      dispatcher: agent.compose(withBearerToken("some-token")),
+      headers: { authorization: "Bearer other-token" },
+    });
+
+    expect(received).toBe("Bearer some-token");
+  });
 });

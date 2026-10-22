@@ -36,6 +36,47 @@ export const getFreelensProxyAgent = (ca: string | undefined): Dispatcher => {
   return agent;
 };
 
+type DispatchHeaders = Dispatcher.DispatchOptions["headers"];
+
+const isAuthorization = (name: unknown) => String(name).toLowerCase() === "authorization";
+
+/**
+ * Returns the headers with `Authorization` set to the bearer token, replacing
+ * any already there, and keeping the header shape (flat array, iterable of
+ * pairs, or object) undici was given.
+ */
+const withAuthorization = (headers: DispatchHeaders, token: string): DispatchHeaders => {
+  const authorization = `Bearer ${token}`;
+
+  if (!headers) {
+    return { authorization };
+  }
+
+  if (Array.isArray(headers)) {
+    const kept: string[] = [];
+
+    for (let i = 0; i < headers.length; i += 2) {
+      if (!isAuthorization(headers[i])) {
+        kept.push(headers[i], headers[i + 1]);
+      }
+    }
+
+    kept.push("authorization", authorization);
+
+    return kept;
+  }
+
+  if (Symbol.iterator in headers) {
+    const kept = [...(headers as Iterable<[string, unknown]>)].filter(([name]) => !isAuthorization(name));
+
+    return [...kept, ["authorization", authorization]] as unknown as DispatchHeaders;
+  }
+
+  const kept = Object.fromEntries(Object.entries(headers).filter(([name]) => !isAuthorization(name)));
+
+  return { ...kept, authorization };
+};
+
 /**
  * Adds `Authorization: Bearer <token>` to every request, so that the main
  * process carries the freelens-proxy token the way a terminal, kubectl and helm
@@ -45,12 +86,4 @@ export const withBearerToken =
   (token: string): Dispatcher.DispatcherComposeInterceptor =>
   (dispatch) =>
   (options, handler) =>
-    dispatch(
-      {
-        ...options,
-        headers: Array.isArray(options.headers)
-          ? [...options.headers, "authorization", `Bearer ${token}`]
-          : { ...(options.headers as Record<string, unknown>), authorization: `Bearer ${token}` },
-      },
-      handler,
-    );
+    dispatch({ ...options, headers: withAuthorization(options.headers, token) }, handler);
