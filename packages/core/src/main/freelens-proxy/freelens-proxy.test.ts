@@ -504,10 +504,20 @@ describe("Freelens proxy kube api requests", () => {
     clusterDisconnected = false;
 
     overrideEnvironment(di);
-    di.override(
-      getClusterForRequestInjectable,
-      () => () => ({ id: "some-cluster-id", disconnected: { get: () => clusterDisconnected } }) as unknown as Cluster,
-    );
+    // As the real lookup does: the `/<clusterId>/…` path of kubectl and helm is
+    // rewritten to `/api-kube/…`, and a request already on `/api-kube` (a
+    // cluster frame) keeps it. Anything else reaches no cluster.
+    di.override(getClusterForRequestInjectable, () => (req) => {
+      if (req.url?.startsWith("/some-cluster-id/")) {
+        req.url = req.url.replace("/some-cluster-id", "/api-kube");
+      }
+
+      if (req.url?.startsWith("/api-kube")) {
+        return { id: "some-cluster-id", disconnected: { get: () => clusterDisconnected } } as unknown as Cluster;
+      }
+
+      return undefined;
+    });
     di.override(shellApiRequestInjectable, () => vi.fn());
     di.override(kubeApiUpgradeRequestInjectable, () => vi.fn());
     di.override(
@@ -562,12 +572,20 @@ describe("Freelens proxy kube api requests", () => {
   it.each([
     ["a kube api request", "/api-kube/api/v1/pods"],
     ["a request to the local router api", "/api/v2/releases"],
+    ["the /<clusterId>/ path of kubectl and helm", "/some-cluster-id/api/v1/pods"],
   ])("answers 403 without a valid token, for %s", async (_name, path) => {
     expect(await getHttp1(port, path, { authorization: "Bearer not-the-token" })).toEqual({
       statusCode: 403,
       body: "Forbidden",
     });
     expect(targetReceived).toEqual([]);
+  });
+
+  it("forwards the /<clusterId>/ path of kubectl and helm with a valid token", async () => {
+    const response = await getHttp1(port, "/some-cluster-id/api/v1/pods");
+
+    expect(response).toEqual({ statusCode: 200, body: "some-body" });
+    expect(targetReceived).toHaveLength(1);
   });
 
   it("answers 503 for a cluster the user has not connected, without starting its proxy", async () => {
@@ -908,7 +926,10 @@ describe("Freelens proxy redirects of the kube api", () => {
     const dispatcher = new Agent({ connect: { rejectUnauthorized: false } });
 
     try {
-      const response = await undiciFetch(`https://127.0.0.1:${port}/some-cluster-id/api`, { dispatcher });
+      const response = await undiciFetch(`https://127.0.0.1:${port}/some-cluster-id/api`, {
+        dispatcher,
+        headers: { authorization: `Bearer ${proxyToken}` },
+      });
 
       expect(response.status).toBe(200);
       expect(await response.json()).toEqual({ kind: "APIVersions" });

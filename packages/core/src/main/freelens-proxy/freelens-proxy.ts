@@ -429,10 +429,16 @@ export class FreelensProxy {
   }
 
   protected async handleRequest(req: ServerIncomingMessage, res: ServerResponse) {
-    // Requires the token on every route to the kube api or the local router
-    // api, before the cluster is resolved. The renderer and `/version` are
-    // served without a token. The host and origin are checked first, behind
-    // the token.
+    // The route of the cluster as the client asked for it: the lookup points a
+    // request of the main process at the kube api, and rewrites the path a
+    // kubectl or helm client uses (`/<clusterId>/…`) to `/api-kube/…`.
+    const requestedUrl = req.url;
+    const cluster = this.dependencies.getClusterForRequest(req);
+
+    // Requires the token on the kube api and the local router api, on the URL
+    // as the lookup has rewritten it, so the `/<clusterId>/…` path of kubectl
+    // and helm is covered. The renderer and `/version` are served without a
+    // token. The host and origin are checked first, behind the token.
     if (requiresToken(req.url)) {
       if (!hasAllowedHost(req.headers) || !hasAllowedOrigin(req.headers)) {
         this.dependencies.logger.warn(`[FREELENS-PROXY]: rejected a request from a foreign host or origin`, {
@@ -448,11 +454,6 @@ export class FreelensProxy {
         return this.respondWithError(res, 403, "Forbidden");
       }
     }
-
-    // The route of the cluster as the client asked for it: the lookup points a
-    // request of the main process at the kube api.
-    const requestedUrl = req.url;
-    const cluster = this.dependencies.getClusterForRequest(req);
 
     if (cluster && req.url.startsWith(apiKubePrefix)) {
       stripToken(req.headers);
