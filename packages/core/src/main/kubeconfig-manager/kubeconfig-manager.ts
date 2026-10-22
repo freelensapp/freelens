@@ -137,8 +137,9 @@ export class KubeconfigManager {
     try {
       await this.dependencies.freelensK8sProxyManager.ensureRunning();
 
-      // The directory exists before the kubeconfig is written into it.
-      await this.dependencies.ensureDirectory(this.directoryForProxyKubeconfig);
+      // The directory exists before the kubeconfig is written into it, and is
+      // created private so other users cannot reach the files in it.
+      await this.dependencies.ensureDirectory(this.directoryForProxyKubeconfig, { mode: 0o700 });
 
       const kubeconfigPath = await this.createProxyKubeconfig();
 

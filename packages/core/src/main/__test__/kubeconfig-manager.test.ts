@@ -194,7 +194,9 @@ describe("kubeconfig manager tests", () => {
           });
 
           it("should create the cache directory next to the kubeconfig", () => {
-            expect(ensureDirMock).toHaveBeenCalledWith("/some-directory-for-user-data/proxy-kubeconfigs");
+            expect(ensureDirMock).toHaveBeenCalledWith("/some-directory-for-user-data/proxy-kubeconfigs", {
+              mode: 0o700,
+            });
             expect(ensureDirMock).toHaveBeenCalledWith("/some-directory-for-user-data/proxy-kubeconfigs/kubecache-foo");
           });
 
