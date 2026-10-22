@@ -10,6 +10,7 @@ import { apiKubePrefix, apiPrefix } from "../../common/vars";
 import { respondJson, respondText } from "../utils/http-responses";
 import { getBoolean } from "../utils/parse-query";
 import { abortFetchWhenClientCloses, isClientGone } from "./abort-when-client-closes";
+import { hasAllowedHost, hasAllowedOrigin } from "./allowed-request";
 import { toClusterRoute } from "./cluster-route-redirect";
 import { stripToken, tokenFromHeaders } from "./freelens-proxy-token";
 import type http from "node:http";
@@ -191,8 +192,13 @@ export class FreelensProxy {
 
     this.proxyServer.on("upgrade", (req: UpgradeRequest, socket: net.Socket, head: Buffer) => {
       // An upgrade reaches a shell or the kube api, so it carries the token
-      // like any other request. Refused before the cluster is looked up.
-      if (!this.dependencies.token.matches(tokenFromHeaders(req.headers))) {
+      // like any other request, behind the same host and origin layers.
+      // Refused before the cluster is looked up.
+      if (
+        !hasAllowedHost(req.headers) ||
+        !hasAllowedOrigin(req.headers) ||
+        !this.dependencies.token.matches(tokenFromHeaders(req.headers))
+      ) {
         this.dependencies.logger.warn(`[FREELENS-PROXY]: rejected an upgrade without a valid token`, { url: req.url });
         this.rejectUpgradeForbidden(socket);
 
@@ -424,11 +430,22 @@ export class FreelensProxy {
   protected async handleRequest(req: ServerIncomingMessage, res: ServerResponse) {
     // Requires the token on every route to the kube api or the local router
     // api, before the cluster is resolved. The renderer and `/version` are
-    // served without a token.
-    if (requiresToken(req.url) && !this.dependencies.token.matches(tokenFromHeaders(req.headers))) {
-      this.dependencies.logger.warn(`[FREELENS-PROXY]: rejected a request without a valid token`, { url: req.url });
+    // served without a token. The host and origin are checked first, behind
+    // the token.
+    if (requiresToken(req.url)) {
+      if (!hasAllowedHost(req.headers) || !hasAllowedOrigin(req.headers)) {
+        this.dependencies.logger.warn(`[FREELENS-PROXY]: rejected a request from a foreign host or origin`, {
+          url: req.url,
+        });
 
-      return this.respondWithError(res, 403, "Forbidden");
+        return this.respondWithError(res, 403, "Forbidden");
+      }
+
+      if (!this.dependencies.token.matches(tokenFromHeaders(req.headers))) {
+        this.dependencies.logger.warn(`[FREELENS-PROXY]: rejected a request without a valid token`, { url: req.url });
+
+        return this.respondWithError(res, 403, "Forbidden");
+      }
     }
 
     // The route of the cluster as the client asked for it: the lookup points a

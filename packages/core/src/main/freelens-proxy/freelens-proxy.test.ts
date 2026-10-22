@@ -580,6 +580,18 @@ describe("Freelens proxy kube api requests", () => {
     expect(targetReceived).toEqual([]);
   });
 
+  it("answers 403 for a foreign host, even with a valid token", async () => {
+    expect((await getHttp1(port, "/api-kube/api/v1/pods", { host: "evil.example.com" })).statusCode).toBe(403);
+    expect(targetReceived).toEqual([]);
+  });
+
+  it("answers 403 for a foreign origin, even with a valid token", async () => {
+    expect((await getHttp1(port, "/api-kube/api/v1/pods", { origin: "https://evil.example.com" })).statusCode).toBe(
+      403,
+    );
+    expect(targetReceived).toEqual([]);
+  });
+
   it("forwards the request below the path of the target over HTTP/2, as a request for the target", async () => {
     const response = await getHttp1(port, "/api-kube/api/v1/pods");
 
@@ -1084,7 +1096,10 @@ describe("Freelens proxy upgrade requests", () => {
   let kubeApiUpgradeRequest: Mock;
   let socket: { destroy: Mock; end: Mock; destroyed: boolean; writable: boolean; bytesWritten: number };
 
-  const upgrade = (url: string, headers: http.IncomingHttpHeaders = { authorization: `Bearer ${proxyToken}` }) => {
+  const upgrade = (
+    url: string,
+    headers: http.IncomingHttpHeaders = { host: "127.0.0.1", authorization: `Bearer ${proxyToken}` },
+  ) => {
     const proxy = di.inject(freelensProxyInjectable);
     // The upgrade handler is what is under test, and it runs long before the
     // server is listening.
@@ -1176,7 +1191,7 @@ describe("Freelens proxy upgrade requests", () => {
       ["an internal upgrade", "/api?id=some-tab-id"],
       ["a kube api upgrade", "/api-kube/api/v1/namespaces/default/pods/some-pod/exec"],
     ])("answers 403 and closes the socket, for %s", (_name, url) => {
-      upgrade(url, { authorization: "Bearer not-the-token" });
+      upgrade(url, { host: "127.0.0.1", authorization: "Bearer not-the-token" });
 
       const [response] = socket.end.mock.calls[0] as [string];
 
