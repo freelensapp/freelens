@@ -11,7 +11,7 @@ import execFileInjectable from "../../common/fs/exec-file.injectable";
 import removePathInjectable from "../../common/fs/remove.injectable";
 import writeFileInjectable from "../../common/fs/write-file.injectable";
 import joinPathsInjectable from "../../common/path/join-paths.injectable";
-import withFreelensProxyTokenEnvInjectable from "../freelens-proxy/with-freelens-proxy-token-env.injectable";
+import withFreelensProxyCredentialEnvInjectable from "../freelens-proxy/with-freelens-proxy-credential-env.injectable";
 import kubeconfigManagerInjectable from "../kubeconfig-manager/kubeconfig-manager.injectable";
 import createKubectlInjectable from "../kubectl/create-kubectl.injectable";
 import { ResourceApplier } from "./resource-applier";
@@ -30,7 +30,7 @@ const resourceApplierInjectable = getInjectable({
         logger: di.inject(loggerInjectionToken),
         writeFile: di.inject(writeFileInjectable),
         createKubectl: di.inject(createKubectlInjectable),
-        withFreelensProxyTokenEnv: di.inject(withFreelensProxyTokenEnvInjectable),
+        withFreelensProxyCredentialEnv: di.inject(withFreelensProxyCredentialEnvInjectable),
         proxyKubeconfigManager: di.inject(kubeconfigManagerInjectable, cluster),
       },
       cluster,

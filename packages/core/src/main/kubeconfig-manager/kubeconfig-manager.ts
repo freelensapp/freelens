@@ -32,7 +32,8 @@ interface KubeconfigManagerDependencies {
   readonly certificate: SelfSignedCert;
   readonly freelensK8sProxyManager: FreelensK8sProxyManager;
   readonly freelensProxyClusterUrl: string;
-  readonly freelensK8sProxyPath: string;
+  /** The `command` of the credential plugin, a path or a name found on `PATH`. */
+  readonly freelensK8sProxyCredentialCommand: string;
   joinPaths: JoinPaths;
   getDirnameOfPath: GetDirnameOfPath;
   pathExists: PathExists;
@@ -182,7 +183,7 @@ export class KubeconfigManager {
           name: "proxy",
           exec: {
             apiVersion: "client.authentication.k8s.io/v1",
-            command: this.dependencies.freelensK8sProxyPath,
+            command: this.dependencies.freelensK8sProxyCredentialCommand,
             args: ["credential"],
             interactiveMode: "Never",
           },

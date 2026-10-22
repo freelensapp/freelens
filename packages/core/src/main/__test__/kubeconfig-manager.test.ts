@@ -19,7 +19,7 @@ import writeFileInjectable from "../../common/fs/write-file.injectable";
 import writeJsonSyncInjectable from "../../common/fs/write-json-sync.injectable";
 import normalizedPlatformInjectable from "../../common/vars/normalized-platform.injectable";
 import freelensK8sProxyManagerInjectable from "../cluster/freelens-k8s-proxy-manager.injectable";
-import freeLensK8sProxyPathInjectable from "../freelens-k8s-proxy/freelens-k8s-proxy-path.injectable";
+import freelensK8sProxyCredentialCommandInjectable from "../freelens-k8s-proxy/freelens-k8s-proxy-credential-command.injectable";
 import freelensProxyPortInjectable from "../freelens-proxy/freelens-proxy-port.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import kubeconfigManagerInjectable from "../kubeconfig-manager/kubeconfig-manager.injectable";
@@ -70,7 +70,7 @@ describe("kubeconfig manager tests", () => {
       throw new Error("tried call writeJsonSync without override");
     });
     di.inject(freelensProxyPortInjectable).set(9191);
-    di.override(freeLensK8sProxyPathInjectable, () => "/some-bin/freelens-k8s-proxy");
+    di.override(freelensK8sProxyCredentialCommandInjectable, () => "/some-bin/freelens-k8s-proxy");
 
     readFileMock = asyncFn();
     di.override(readFileInjectable, () => readFileMock);

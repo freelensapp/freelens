@@ -6,7 +6,7 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import execFileInjectable from "../../../common/fs/exec-file.injectable";
-import withFreelensProxyTokenEnvInjectable from "../../freelens-proxy/with-freelens-proxy-token-env.injectable";
+import withFreelensProxyCredentialEnvInjectable from "../../freelens-proxy/with-freelens-proxy-credential-env.injectable";
 import helmBinaryPathInjectable from "../helm-binary-path.injectable";
 import execHelmEnvInjectable from "./exec-env.injectable";
 import type { ExecFileException } from "node:child_process";
@@ -50,14 +50,14 @@ const execHelmInjectable = getInjectable({
     const execFile = di.inject(execFileInjectable);
     const execHelmEnv = di.inject(execHelmEnvInjectable);
     const helmBinaryPath = di.inject(helmBinaryPathInjectable);
-    const withFreelensProxyTokenEnv = di.inject(withFreelensProxyTokenEnvInjectable);
+    const withFreelensProxyCredentialEnv = di.inject(withFreelensProxyCredentialEnvInjectable);
 
     return async (args, { env, throughProxy = false } = {}) => {
       const callEnv = { ...execHelmEnv.get(), ...env };
 
       return execFile(helmBinaryPath, args, {
         maxBuffer: 32 * 1024 * 1024 * 1024, // 32 MiB
-        env: throughProxy ? withFreelensProxyTokenEnv(callEnv) : callEnv,
+        env: throughProxy ? withFreelensProxyCredentialEnv(callEnv) : callEnv,
       });
     };
   },

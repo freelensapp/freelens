@@ -6,7 +6,7 @@
 
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import withFreelensProxyTokenEnvInjectable from "../../../freelens-proxy/with-freelens-proxy-token-env.injectable";
+import withFreelensProxyCredentialEnvInjectable from "../../../freelens-proxy/with-freelens-proxy-credential-env.injectable";
 import bundledKubectlInjectable from "../../../kubectl/bundled-kubectl.injectable";
 import getPortFromStreamInjectable from "../../../utils/get-port-from-stream.injectable";
 import { PortForward } from "./port-forward";
@@ -25,7 +25,7 @@ const createPortForwardInjectable = getInjectable({
       getKubectlBinPath: async () => bundledKubectl.getBundledPath(),
       getPortFromStream: di.inject(getPortFromStreamInjectable),
       logger: di.inject(loggerInjectionToken),
-      withFreelensProxyTokenEnv: di.inject(withFreelensProxyTokenEnvInjectable),
+      withFreelensProxyCredentialEnv: di.inject(withFreelensProxyCredentialEnvInjectable),
     };
 
     return (proxyKubeconfig, args) => new PortForward(dependencies, proxyKubeconfig, args);

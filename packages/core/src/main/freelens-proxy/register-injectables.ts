@@ -13,7 +13,7 @@ import freelensProxyPortInjectable from "./freelens-proxy-port.injectable";
 import freelensProxyTokenInjectable from "./freelens-proxy-token.injectable";
 import getClusterForRequestInjectable from "./get-cluster-for-request.injectable";
 import { registerInjectables as registerProxyFunctionsInjectables } from "./proxy-functions/register-injectables";
-import withFreelensProxyTokenEnvInjectable from "./with-freelens-proxy-token-env.injectable";
+import withFreelensProxyCredentialEnvInjectable from "./with-freelens-proxy-credential-env.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
@@ -49,7 +49,7 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
-    di.register(withFreelensProxyTokenEnvInjectable);
+    di.register(withFreelensProxyCredentialEnvInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

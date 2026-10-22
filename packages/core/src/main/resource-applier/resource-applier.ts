@@ -20,7 +20,7 @@ import type { ExecFile } from "../../common/fs/exec-file.injectable";
 import type { RemovePath } from "../../common/fs/remove.injectable";
 import type { WriteFile } from "../../common/fs/write-file.injectable";
 import type { JoinPaths } from "../../common/path/join-paths.injectable";
-import type { WithFreelensProxyTokenEnv } from "../freelens-proxy/with-freelens-proxy-token-env.injectable";
+import type { WithFreelensProxyCredentialEnv } from "../freelens-proxy/with-freelens-proxy-credential-env.injectable";
 import type { KubeconfigManager, ProxyKubeconfigPaths } from "../kubeconfig-manager/kubeconfig-manager";
 import type { CreateKubectl } from "../kubectl/create-kubectl.injectable";
 
@@ -31,7 +31,7 @@ export interface ResourceApplierDependencies {
   execFile: ExecFile;
   joinPaths: JoinPaths;
   createKubectl: CreateKubectl;
-  withFreelensProxyTokenEnv: WithFreelensProxyTokenEnv;
+  withFreelensProxyCredentialEnv: WithFreelensProxyCredentialEnv;
   readonly proxyKubeconfigManager: KubeconfigManager;
   readonly logger: Logger;
 }
@@ -59,7 +59,7 @@ export class ResourceApplier {
   }
 
   private getExecEnv({ cacheDirectoryPath }: ProxyKubeconfigPaths): NodeJS.ProcessEnv {
-    return this.dependencies.withFreelensProxyTokenEnv({ ...process.env, KUBECACHEDIR: cacheDirectoryPath });
+    return this.dependencies.withFreelensProxyCredentialEnv({ ...process.env, KUBECACHEDIR: cacheDirectoryPath });
   }
 
   /**

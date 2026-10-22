@@ -38,7 +38,7 @@ describe("PortForward", () => {
         logger: { debug: vi.fn(), error: vi.fn(), info: vi.fn(), silly: vi.fn(), warn: vi.fn() } as Logger,
         getKubectlBinPath: async () => "/some-kubectl",
         getPortFromStream: async () => 12345,
-        withFreelensProxyTokenEnv: (env) => env,
+        withFreelensProxyCredentialEnv: (env) => env,
       },
       {
         kubeconfigPath: "/some-directory-for-temp/kubeconfig-some-cluster-id",

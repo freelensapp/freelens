@@ -68,6 +68,32 @@ export interface ComposeKubeToolsEnvironmentArgs {
 }
 
 /**
+ * Puts `prefix` in front of the `PATH` of `env` and `suffix` after it, in place.
+ *
+ * Windows spells the variable `Path` and reads its name case-insensitively,
+ * but a copy of `process.env` is a plain object: `env.PATH` would read
+ * nothing, and a second key would only shadow the first. So the variable
+ * ends up under exactly one key, `PATH`, on every platform.
+ */
+export const surroundPath = (
+  env: Partial<Record<string, string>>,
+  prefix: readonly string[],
+  suffix: readonly string[],
+  isWindows: boolean,
+): void => {
+  const pathKeys = isWindows ? Object.keys(env).filter((key) => key.toUpperCase() === "PATH") : ["PATH"];
+  const userPath = env[pathKeys.find((key) => key === "PATH") ?? pathKeys[0] ?? "PATH"];
+
+  for (const key of pathKeys) {
+    delete env[key];
+  }
+
+  env.PATH = [...prefix, userPath, ...suffix]
+    .filter((entry) => entry !== undefined && entry !== "")
+    .join(isWindows ? ";" : ":");
+};
+
+/**
  * The environment Freelens runs kubectl and helm with, the terminal's included
  * before it adds what only a terminal needs.
  *
@@ -85,20 +111,8 @@ export const composeKubeToolsEnvironment = ({
 }: ComposeKubeToolsEnvironmentArgs): EnvironmentVariables => {
   const copiedEnvironment: EnvironmentVariables = { ...baseEnvironment };
   const env = clusterAccess === undefined ? copiedEnvironment : clearKubeconfigEnvVars(copiedEnvironment);
-  // Windows spells the variable `Path` and reads its name case-insensitively,
-  // but a copy of `process.env` is a plain object: `env.PATH` would read
-  // nothing, and a second key would only shadow the first. So the variable
-  // ends up under exactly one key, `PATH`, on every platform.
-  const pathKeys = isWindows ? Object.keys(env).filter((key) => key.toUpperCase() === "PATH") : ["PATH"];
-  const userPath = env[pathKeys.find((key) => key === "PATH") ?? pathKeys[0] ?? "PATH"];
 
-  for (const key of pathKeys) {
-    delete env[key];
-  }
-
-  env.PATH = [...tools.pathPrefix, userPath, ...tools.pathSuffix]
-    .filter((entry) => entry !== undefined && entry !== "")
-    .join(isWindows ? ";" : ":");
+  surroundPath(env, tools.pathPrefix, tools.pathSuffix, isWindows);
 
   delete env.DEBUG; // don't pass DEBUG into shells
 
