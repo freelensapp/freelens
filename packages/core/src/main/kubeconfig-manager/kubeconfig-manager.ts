@@ -188,9 +188,9 @@ export class KubeconfigManager {
     const configYaml = dumpConfigYaml(proxyConfig);
 
     await this.dependencies.writeFile(tempFile, configYaml, { mode: 0o600 });
-    this.dependencies.logger.debug(
-      `[KUBECONFIG-MANAGER]: Created temp kubeconfig "${contextName}" at "${tempFile}": \n${configYaml}`,
-    );
+    // Only the path is logged, not the kubeconfig itself, which goes into
+    // main.log that users attach to bug reports.
+    this.dependencies.logger.debug(`[KUBECONFIG-MANAGER]: Created temp kubeconfig "${contextName}" at "${tempFile}"`);
 
     return tempFile;
   }
