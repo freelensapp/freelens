@@ -195,11 +195,16 @@ export class FreelensProxy {
       // An upgrade reaches a shell or the kube api, so it carries the token
       // like any other request, behind the same host and origin layers.
       // Refused before the cluster is looked up.
-      if (
-        !hasAllowedHost(req.headers) ||
-        !hasAllowedOrigin(req.headers) ||
-        !this.dependencies.token.matches(tokenFromHeaders(req.headers))
-      ) {
+      if (!hasAllowedHost(req.headers) || !hasAllowedOrigin(req.headers)) {
+        this.dependencies.logger.warn(`[FREELENS-PROXY]: rejected an upgrade from a foreign host or origin`, {
+          url: req.url,
+        });
+        this.rejectUpgradeForbidden(socket);
+
+        return;
+      }
+
+      if (!this.dependencies.token.matches(tokenFromHeaders(req.headers))) {
         this.dependencies.logger.warn(`[FREELENS-PROXY]: rejected an upgrade without a valid token`, { url: req.url });
         this.rejectUpgradeForbidden(socket);
 
