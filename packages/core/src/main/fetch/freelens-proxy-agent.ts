@@ -35,3 +35,22 @@ export const getFreelensProxyAgent = (ca: string | undefined): Dispatcher => {
 
   return agent;
 };
+
+/**
+ * Adds `Authorization: Bearer <token>` to every request, so that the main
+ * process carries the freelens-proxy token the way a terminal, kubectl and helm
+ * do. The cluster frames carry it as a cookie instead.
+ */
+export const withBearerToken =
+  (token: string): Dispatcher.DispatcherComposeInterceptor =>
+  (dispatch) =>
+  (options, handler) =>
+    dispatch(
+      {
+        ...options,
+        headers: Array.isArray(options.headers)
+          ? [...options.headers, "authorization", `Bearer ${token}`]
+          : { ...(options.headers as Record<string, unknown>), authorization: `Bearer ${token}` },
+      },
+      handler,
+    );
