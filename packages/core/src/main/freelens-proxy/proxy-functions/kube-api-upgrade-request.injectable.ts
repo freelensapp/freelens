@@ -16,7 +16,10 @@ import type { ConnectionOptions } from "node:tls";
 
 import type { FreelensProxyApiRequest } from "../freelens-proxy";
 
-const skipRawHeaders = new Set(["Host", "Authorization"]);
+// Matched case-insensitively below. `authorization` and `cookie` carry the
+// freelens-proxy token, which must not travel to the cluster; `host` is set
+// from the cluster's API URL instead.
+const skipRawHeaders = new Set(["host", "authorization", "cookie"]);
 
 const kubeApiUpgradeRequestInjectable = getInjectable({
   id: "kube-api-upgrade-request",
@@ -32,6 +35,14 @@ const kubeApiUpgradeRequestInjectable = getInjectable({
 
       const proxyUrl = (await freelensK8sProxyManager.ensureFreelensK8sProxyUrl()) + req.url.replace(apiKubePrefix, "");
       const pUrl = url.parse(proxyUrl);
+      /**
+       * No `ALPNProtocols`, and above all no `h2` among them: exec, attach
+       * and port-forward take over the HTTP/1.1 connection, and the request
+       * written below is an HTTP/1.1 one. freelens-k8s-proxy offers `h2`
+       * first, so a connection that offered it would be HTTP/2, and the proxy
+       * would answer this request line with the preface of an HTTP/2
+       * connection. Without ALPN the proxy stays on HTTP/1.1.
+       */
       const connectOpts: ConnectionOptions = {
         port: pUrl.port ? parseInt(pUrl.port) : undefined,
         host: pUrl.hostname ?? undefined,
@@ -44,7 +55,7 @@ const kubeApiUpgradeRequestInjectable = getInjectable({
         proxySocket.write(`Host: ${clusterApiUrl.host}\r\n`);
 
         for (const [key, value] of chunk(req.rawHeaders, 2)) {
-          if (skipRawHeaders.has(key)) {
+          if (skipRawHeaders.has(key.toLowerCase())) {
             continue;
           }
 

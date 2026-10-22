@@ -15,6 +15,7 @@ import isMacInjectable from "../../../common/vars/is-mac.injectable";
 import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
 import { buildVersionInitializable } from "../../../features/vars/build-version/common/token";
 import loadProxyKubeconfigInjectable from "../../cluster/load-proxy-kubeconfig.injectable";
+import freelensProxyTokenInjectable from "../../freelens-proxy/freelens-proxy-token.injectable";
 import computeUserShellEnvironmentInjectable from "../../kube-tools/compute-user-shell-environment.injectable";
 import resolveKubeToolsInjectable from "../../kube-tools/resolve-kube-tools.injectable";
 import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
@@ -62,6 +63,7 @@ const openNodeShellSessionInjectable = getInjectable({
       emitAppEvent: di.inject(emitAppEventInjectable),
       stat: di.inject(statInjectable),
       createKubeApi: di.inject(createKubeApiInjectable),
+      freelensProxyToken: di.inject(freelensProxyTokenInjectable).value,
     };
 
     return async (args) => {

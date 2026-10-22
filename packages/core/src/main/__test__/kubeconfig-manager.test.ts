@@ -7,7 +7,6 @@
 import asyncFn from "@async-fn/vitest";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import directoryForTempInjectable from "../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../common/cluster/cluster";
 import ensureDirInjectable from "../../common/fs/ensure-dir.injectable";
@@ -20,6 +19,7 @@ import writeFileInjectable from "../../common/fs/write-file.injectable";
 import writeJsonSyncInjectable from "../../common/fs/write-json-sync.injectable";
 import normalizedPlatformInjectable from "../../common/vars/normalized-platform.injectable";
 import freelensK8sProxyManagerInjectable from "../cluster/freelens-k8s-proxy-manager.injectable";
+import freelensK8sProxyCredentialCommandInjectable from "../freelens-k8s-proxy/freelens-k8s-proxy-credential-command.injectable";
 import freelensProxyPortInjectable from "../freelens-proxy/freelens-proxy-port.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import kubeconfigManagerInjectable from "../kubeconfig-manager/kubeconfig-manager.injectable";
@@ -56,7 +56,6 @@ describe("kubeconfig manager tests", () => {
   beforeEach(async () => {
     di = getDiForUnitTesting();
 
-    di.override(directoryForTempInjectable, () => "/some-directory-for-temp");
     di.override(directoryForUserDataInjectable, () => "/some-directory-for-user-data");
     di.override(kubectlBinaryNameInjectable, () => "kubectl");
     di.override(kubectlDownloadingNormalizedArchInjectable, () => "amd64");
@@ -71,6 +70,7 @@ describe("kubeconfig manager tests", () => {
       throw new Error("tried call writeJsonSync without override");
     });
     di.inject(freelensProxyPortInjectable).set(9191);
+    di.override(freelensK8sProxyCredentialCommandInjectable, () => "/some-bin/freelens-k8s-proxy");
 
     readFileMock = asyncFn();
     di.override(readFileInjectable, () => readFileMock);
@@ -184,27 +184,33 @@ describe("kubeconfig manager tests", () => {
         describe("when writing out new proxy kubeconfig resolves", () => {
           beforeEach(async () => {
             await writeFileMock.resolveSpecific([
-              "/some-directory-for-temp/kubeconfig-foo",
-              "apiVersion: v1\nclusters:\n- cluster:\n    certificate-authority-data: PGNhLWRhdGE+\n    insecure-skip-tls-verify: false\n    server: https://127.0.0.1:9191/foo\n  name: kind-kind\ncontexts:\n- context:\n    cluster: kind-kind\n    user: proxy\n  name: kind-kind\ncurrent-context: kind-kind\nkind: Config\npreferences: {}\nusers:\n- name: proxy\n  user:\n    password: fake\n    username: lens\n",
+              "/some-directory-for-user-data/proxy-kubeconfigs/kubeconfig-foo",
+              "apiVersion: v1\nclusters:\n- cluster:\n    certificate-authority-data: PGNhLWRhdGE+\n    insecure-skip-tls-verify: false\n    server: https://127.0.0.1:9191/foo\n  name: kind-kind\ncontexts:\n- context:\n    cluster: kind-kind\n    user: proxy\n  name: kind-kind\ncurrent-context: kind-kind\nkind: Config\npreferences: {}\nusers:\n- name: proxy\n  user:\n    exec:\n      apiVersion: client.authentication.k8s.io/v1\n      args:\n      - credential\n      command: /some-bin/freelens-k8s-proxy\n      interactiveMode: Never\n",
             ]);
           });
 
           it("should allow getPath to resolve with the path to the kubeconfig", async () => {
-            expect(await getPathPromise).toBe("/some-directory-for-temp/kubeconfig-foo");
+            expect(await getPathPromise).toBe("/some-directory-for-user-data/proxy-kubeconfigs/kubeconfig-foo");
           });
 
           it("should create the cache directory next to the kubeconfig", () => {
-            expect(ensureDirMock).toHaveBeenCalledExactlyOnceWith("/some-directory-for-temp/kubecache-foo");
+            expect(ensureDirMock).toHaveBeenCalledWith("/some-directory-for-user-data/proxy-kubeconfigs", {
+              mode: 0o700,
+            });
+            expect(ensureDirMock).toHaveBeenCalledWith("/some-directory-for-user-data/proxy-kubeconfigs/kubecache-foo");
           });
 
           it("should allow ensurePaths to resolve with the kubeconfig and its cache directory", async () => {
             const pathsPromise = kubeConfManager.ensurePaths();
 
-            await pathExistsMock.resolveSpecific(["/some-directory-for-temp/kubeconfig-foo"], true);
+            await pathExistsMock.resolveSpecific(
+              ["/some-directory-for-user-data/proxy-kubeconfigs/kubeconfig-foo"],
+              true,
+            );
 
             expect(await pathsPromise).toEqual({
-              kubeconfigPath: "/some-directory-for-temp/kubeconfig-foo",
-              cacheDirectoryPath: "/some-directory-for-temp/kubecache-foo",
+              kubeconfigPath: "/some-directory-for-user-data/proxy-kubeconfigs/kubeconfig-foo",
+              cacheDirectoryPath: "/some-directory-for-user-data/proxy-kubeconfigs/kubecache-foo",
             });
           });
 
@@ -217,14 +223,20 @@ describe("kubeconfig manager tests", () => {
 
             it("should remove the kubeconfig and the cache directory without waiting for either", () => {
               expect(deleteFileMock).toHaveBeenCalledTimes(2);
-              expect(deleteFileMock).toHaveBeenCalledWith("/some-directory-for-temp/kubeconfig-foo");
-              expect(deleteFileMock).toHaveBeenCalledWith("/some-directory-for-temp/kubecache-foo");
+              expect(deleteFileMock).toHaveBeenCalledWith(
+                "/some-directory-for-user-data/proxy-kubeconfigs/kubeconfig-foo",
+              );
+              expect(deleteFileMock).toHaveBeenCalledWith(
+                "/some-directory-for-user-data/proxy-kubeconfigs/kubecache-foo",
+              );
             });
 
             describe("when both removals resolve", () => {
               beforeEach(async () => {
-                await deleteFileMock.resolveSpecific(["/some-directory-for-temp/kubeconfig-foo"]);
-                await deleteFileMock.resolveSpecific(["/some-directory-for-temp/kubecache-foo"]);
+                await deleteFileMock.resolveSpecific([
+                  "/some-directory-for-user-data/proxy-kubeconfigs/kubeconfig-foo",
+                ]);
+                await deleteFileMock.resolveSpecific(["/some-directory-for-user-data/proxy-kubeconfigs/kubecache-foo"]);
               });
 
               it("should allow clear to resolve", async () => {
@@ -243,8 +255,8 @@ describe("kubeconfig manager tests", () => {
             });
 
             describe.each(["EBUSY", "EPERM"])("when a removal rejects with %s", (code) => {
-              const kubeconfig = "/some-directory-for-temp/kubeconfig-foo";
-              const cacheDirectory = "/some-directory-for-temp/kubecache-foo";
+              const kubeconfig = "/some-directory-for-user-data/proxy-kubeconfigs/kubeconfig-foo";
+              const cacheDirectory = "/some-directory-for-user-data/proxy-kubeconfigs/kubecache-foo";
 
               describe.each([
                 { failing: "the kubeconfig", rejected: [kubeconfig] },
@@ -299,17 +311,23 @@ describe("kubeconfig manager tests", () => {
 
             describe("when pathExists resoves to true", () => {
               beforeEach(async () => {
-                await pathExistsMock.resolveSpecific(["/some-directory-for-temp/kubeconfig-foo"], true);
+                await pathExistsMock.resolveSpecific(
+                  ["/some-directory-for-user-data/proxy-kubeconfigs/kubeconfig-foo"],
+                  true,
+                );
               });
 
               it("always getPath to resolve with path", async () => {
-                expect(await getPathPromise).toBe("/some-directory-for-temp/kubeconfig-foo");
+                expect(await getPathPromise).toBe("/some-directory-for-user-data/proxy-kubeconfigs/kubeconfig-foo");
               });
             });
 
             describe("when pathExists resoves to false", () => {
               beforeEach(async () => {
-                await pathExistsMock.resolveSpecific(["/some-directory-for-temp/kubeconfig-foo"], false);
+                await pathExistsMock.resolveSpecific(
+                  ["/some-directory-for-user-data/proxy-kubeconfigs/kubeconfig-foo"],
+                  false,
+                );
               });
 
               it("should call ensureServer on the cluster context", () => {
@@ -358,13 +376,15 @@ describe("kubeconfig manager tests", () => {
                   describe("when writing out new proxy kubeconfig resolves", () => {
                     beforeEach(async () => {
                       await writeFileMock.resolveSpecific([
-                        "/some-directory-for-temp/kubeconfig-foo",
-                        "apiVersion: v1\nclusters:\n- cluster:\n    certificate-authority-data: PGNhLWRhdGE+\n    insecure-skip-tls-verify: false\n    server: https://127.0.0.1:9191/foo\n  name: kind-kind\ncontexts:\n- context:\n    cluster: kind-kind\n    user: proxy\n  name: kind-kind\ncurrent-context: kind-kind\nkind: Config\npreferences: {}\nusers:\n- name: proxy\n  user:\n    password: fake\n    username: lens\n",
+                        "/some-directory-for-user-data/proxy-kubeconfigs/kubeconfig-foo",
+                        "apiVersion: v1\nclusters:\n- cluster:\n    certificate-authority-data: PGNhLWRhdGE+\n    insecure-skip-tls-verify: false\n    server: https://127.0.0.1:9191/foo\n  name: kind-kind\ncontexts:\n- context:\n    cluster: kind-kind\n    user: proxy\n  name: kind-kind\ncurrent-context: kind-kind\nkind: Config\npreferences: {}\nusers:\n- name: proxy\n  user:\n    exec:\n      apiVersion: client.authentication.k8s.io/v1\n      args:\n      - credential\n      command: /some-bin/freelens-k8s-proxy\n      interactiveMode: Never\n",
                       ]);
                     });
 
                     it("should allow getPath to resolve with the path to the kubeconfig", async () => {
-                      expect(await getPathPromise).toBe("/some-directory-for-temp/kubeconfig-foo");
+                      expect(await getPathPromise).toBe(
+                        "/some-directory-for-user-data/proxy-kubeconfigs/kubeconfig-foo",
+                      );
                     });
                   });
                 });

@@ -7,7 +7,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import fsInjectable from "./fs.injectable";
 
-export type EnsureDirectory = (dirPath: string) => Promise<void>;
+export type EnsureDirectory = (dirPath: string, options?: { mode?: number }) => Promise<void>;
 
 const ensureDirInjectable = getInjectable({
   id: "ensure-dir",

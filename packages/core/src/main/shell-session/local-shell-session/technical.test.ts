@@ -487,6 +487,13 @@ describe("technical unit tests for local shell sessions", () => {
       expect((env.WSLENV ?? "").split(":")).toContain("KUBECACHEDIR/up");
     });
 
+    it("passes FREELENS_PROXY_TOKEN on to WSL and back out of it, with no flag", async () => {
+      const { env } = await openWithShell("powershell.exe", "win32");
+
+      expect(env.FREELENS_PROXY_TOKEN).toBeTruthy();
+      expect((env.WSLENV ?? "").split(":")).toContain("FREELENS_PROXY_TOKEN");
+    });
+
     it("starts bash with the init file that re-prepends the kubectl directory", async () => {
       const { args } = await openWithShell("/bin/bash");
 

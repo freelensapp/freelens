@@ -13,6 +13,7 @@ import appNameInjectable from "../../../common/vars/app-name.injectable";
 import isMacInjectable from "../../../common/vars/is-mac.injectable";
 import isWindowsInjectable from "../../../common/vars/is-windows.injectable";
 import { buildVersionInitializable } from "../../../features/vars/build-version/common/token";
+import freelensProxyTokenInjectable from "../../freelens-proxy/freelens-proxy-token.injectable";
 import computeUserShellEnvironmentInjectable from "../../kube-tools/compute-user-shell-environment.injectable";
 import resolveKubeToolsInjectable from "../../kube-tools/resolve-kube-tools.injectable";
 import { LocalShellSession } from "../local-shell-session/local-shell-session";
@@ -63,6 +64,7 @@ const openStandaloneShellSessionInjectable = getInjectable({
       computeUserShellEnvironment: di.inject(computeUserShellEnvironmentInjectable),
       spawnPty: di.inject(spawnPtyInjectable),
       stat: di.inject(statInjectable),
+      freelensProxyToken: di.inject(freelensProxyTokenInjectable).value,
     };
 
     return (args) => {

@@ -7,6 +7,7 @@
 import os from "node:os";
 import { getOrInsertWith } from "@freelensapp/utilities";
 import { TerminalChannels, type TerminalMessage } from "../../common/terminal/channels";
+import { freelensProxyTokenEnvVar } from "../freelens-proxy/freelens-proxy-token";
 import { composeKubeToolsEnvironment } from "../kube-tools/kube-tools";
 import { type TerminalStatusReporter, terminalStatusReporterFor } from "./send-terminal-status";
 import { closedDuring } from "./websocket-closed";
@@ -133,6 +134,12 @@ export interface ShellSessionDependencies {
    * of `~/.kube/cache`. Set exactly when the proxy kubeconfig is.
    */
   readonly proxyCacheDirectoryPath?: string;
+  /**
+   * The freelens-proxy token, exported as `FREELENS_PROXY_TOKEN` when the proxy
+   * kubeconfig is set, so that kubectl and helm in the terminal reach the
+   * cluster through the proxy.
+   */
+  readonly freelensProxyToken: string;
   readonly shellSessionEnvs: ShellSessionEnvs;
   readonly shellSessionProcesses: ShellSessionProcesses;
   computeUserShellEnvironment: ComputeUserShellEnvironment;
@@ -422,7 +429,8 @@ export abstract class ShellSession {
       this.status.error(error);
     }
 
-    const { kubeTools, proxyKubeconfigPath, proxyCacheDirectoryPath, isWindows } = this.dependencies;
+    const { kubeTools, proxyKubeconfigPath, proxyCacheDirectoryPath, freelensProxyToken, isWindows } =
+      this.dependencies;
     const env = composeKubeToolsEnvironment({
       baseEnvironment: environment,
       tools: kubeTools,
@@ -433,6 +441,7 @@ export abstract class ShellSession {
               kubeconfigPath: proxyKubeconfigPath,
               cacheDirectoryPath: proxyCacheDirectoryPath,
               httpsProxy: this.cluster?.preferences.httpsProxy,
+              token: freelensProxyToken,
             },
       isWindows,
     });
@@ -440,7 +449,11 @@ export abstract class ShellSession {
     if (isWindows) {
       env.PTYSHELL = shell || "powershell.exe";
       env.LENS_SESSION = "true";
-      env.WSLENV = [env.WSLENV, "KUBECONFIG/up:KUBECACHEDIR/up:LENS_SESSION/u"].filter(Boolean).join(":");
+      // The token has no flag: it has to travel both ways, into WSL and back
+      // out to the Windows credential helper that a kubectl in WSL runs.
+      env.WSLENV = [env.WSLENV, `KUBECONFIG/up:KUBECACHEDIR/up:LENS_SESSION/u:${freelensProxyTokenEnvVar}`]
+        .filter(Boolean)
+        .join(":");
     } else {
       env.PTYSHELL = shell;
     }

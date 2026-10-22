@@ -9,8 +9,10 @@ import net from "node:net";
 import { apiKubePrefix, apiPrefix } from "../../common/vars";
 import { respondJson, respondText } from "../utils/http-responses";
 import { getBoolean } from "../utils/parse-query";
-import { abortWhenClientCloses, isClientGone } from "./abort-when-client-closes";
+import { abortFetchWhenClientCloses, isClientGone } from "./abort-when-client-closes";
+import { hasAllowedHost, hasAllowedOrigin } from "./allowed-request";
 import { toClusterRoute } from "./cluster-route-redirect";
+import { stripToken, tokenFromHeaders } from "./freelens-proxy-token";
 import type http from "node:http";
 
 import type { Logger } from "@freelensapp/logger";
@@ -24,6 +26,7 @@ import type { Cluster } from "../../common/cluster/cluster";
 import type { FreelensK8sProxyManager } from "../cluster/freelens-k8s-proxy-manager.injectable";
 import type { Router } from "../router/router";
 import type { ClusterRouteRedirect } from "./cluster-route-redirect";
+import type { FreelensProxyToken } from "./freelens-proxy-token.injectable";
 import type { ProxyApiRequestArgs, ShellApiRequestArgs } from "./proxy-functions";
 
 /**
@@ -49,6 +52,7 @@ interface Dependencies {
   readonly contentSecurityPolicy: string;
   readonly logger: Logger;
   readonly certificate: SelfSignedCert;
+  readonly token: FreelensProxyToken;
 }
 
 /**
@@ -58,6 +62,13 @@ type UpgradeRequest = ProxyApiRequestArgs["req"];
 
 const messageOf = (error: unknown) => (error instanceof Error ? error.message : String(error));
 
+/**
+ * An error of `fetch` says only `fetch failed`, and keeps what failed, such as
+ * `connect ECONNREFUSED`, in its `cause`.
+ */
+const describeError = (error: Error) =>
+  error.cause === undefined ? String(error) : `${error} (${messageOf(error.cause)})`;
+
 const watchParam = "watch";
 const followParam = "follow";
 
@@ -65,6 +76,18 @@ export function isLongRunningRequest(reqUrl: string) {
   const url = new URL(reqUrl, "http://localhost");
 
   return getBoolean(url.searchParams, watchParam) || getBoolean(url.searchParams, followParam);
+}
+
+/**
+ * Whether a request reaches a cluster or the main process's own API and so has
+ * to carry the token: the kube api (`/api-kube`), the local router api
+ * (`/api`, which serves helm, the service-account kubeconfig, port-forward,
+ * metrics and the resource applier), and the internal upgrade (`/api?…`).
+ * `apiKubePrefix` begins with `apiPrefix`, so the one test covers both. Serving
+ * the renderer and `/version` need no token, so the window loads without one.
+ */
+export function requiresToken(reqUrl: string) {
+  return reqUrl.startsWith(apiPrefix);
 }
 
 /**
@@ -100,17 +123,18 @@ const maxConcurrentStreams = 1000;
 const maxSessionMemory = 100;
 
 /**
- * nghttp2 guards against the rapid reset attack (CVE-2023-44487) by allowing a
- * client a burst of 1000 stream resets, refilled at 33 per second, and ends the
- * session with `GOAWAY(INTERNAL_ERROR)` past that, which fails every stream
- * still open on it. Chromium resets streams in that number on its own: on a
- * reload it cancels each module it already has in its cache once the headers
- * have arrived, and switching views cancels watches and lists. The server
- * listens on the loopback only, and its clients are Freelens itself, so the
- * limit protects nothing here and is set far beyond what Chromium reaches.
+ * nghttp2 guards against the rapid reset attack (CVE-2023-44487) by ending a
+ * session with `GOAWAY(INTERNAL_ERROR)` once a client resets more streams than
+ * a burst refilled at a steady rate; its defaults are a burst of 1000 at 33 per
+ * second. Chromium resets streams in numbers of its own: on a reload it cancels
+ * each module it has in its cache once the headers have arrived, and switching
+ * views cancels the watches and lists of the previous one. The burst and rate
+ * are set well above what a reload reaches — a reload measures in the tens to a
+ * few hundred, and the test covers a burst past a thousand — while still an
+ * order of magnitude below a flood, so the guard holds.
  */
-const streamResetBurst = 100_000;
-const streamResetRate = 10_000;
+const streamResetBurst = 10_000;
+const streamResetRate = 1_000;
 
 export class FreelensProxy {
   protected readonly proxyServer: http2.Http2SecureServer;
@@ -168,6 +192,25 @@ export class FreelensProxy {
     });
 
     this.proxyServer.on("upgrade", (req: UpgradeRequest, socket: net.Socket, head: Buffer) => {
+      // An upgrade reaches a shell or the kube api, so it carries the token
+      // like any other request, behind the same host and origin layers.
+      // Refused before the cluster is looked up.
+      if (!hasAllowedHost(req.headers) || !hasAllowedOrigin(req.headers)) {
+        this.dependencies.logger.warn(`[FREELENS-PROXY]: rejected an upgrade from a foreign host or origin`, {
+          url: req.url,
+        });
+        this.rejectUpgradeForbidden(socket);
+
+        return;
+      }
+
+      if (!this.dependencies.token.matches(tokenFromHeaders(req.headers))) {
+        this.dependencies.logger.warn(`[FREELENS-PROXY]: rejected an upgrade without a valid token`, { url: req.url });
+        this.rejectUpgradeForbidden(socket);
+
+        return;
+      }
+
       /**
        * Decided before the cluster is looked up: an internal upgrade is a
        * shell request, and a shell can be opened outside of any cluster
@@ -307,15 +350,14 @@ export class FreelensProxy {
   }
 
   protected configureProxy(proxy: ProxyServer): ProxyServer {
-    abortWhenClientCloses(proxy);
-
+    /**
+     * The kube api requests take the fetch path of http-proxy-3, where
+     * `proxyRes` is no stream, only an object with the status and the headers
+     * of the response, emitted before the proxy writes them. A target that
+     * cuts off its response reaches the `error` handler.
+     */
     proxy.on("proxyRes", (proxyRes, req, res) => {
       this.keepRedirectOnClusterRoute(proxyRes, req);
-
-      proxyRes.on("aborted", () => {
-        // happens when proxy target aborts connection
-        res.end();
-      });
 
       /**
        * The response headers are only sent with the first byte of the body,
@@ -338,7 +380,21 @@ export class FreelensProxy {
         return;
       }
 
-      this.dependencies.logger.error(`[FREELENS-PROXY]: http proxy errored for cluster: ${error}`, { url: req.url });
+      // The target cut off a response whose headers have gone out already,
+      // as freelens-k8s-proxy does to its watches when it exits. The client
+      // sees its response end, and restarts a watch.
+      if (res.headersSent) {
+        this.dependencies.logger.debug(`[FREELENS-PROXY]: target ended the response early: ${describeError(error)}`, {
+          url: req.url,
+        });
+        res.end();
+
+        return;
+      }
+
+      this.dependencies.logger.error(`[FREELENS-PROXY]: http proxy errored for cluster: ${describeError(error)}`, {
+        url: req.url,
+      });
 
       if (target) {
         this.dependencies.logger.debug(`Failed proxy to target: ${JSON.stringify(target, null, 2)}`);
@@ -348,7 +404,7 @@ export class FreelensProxy {
       // again (a watch that fails is restarted by its store), so a retry would
       // only delay the error it handles anyway.
       try {
-        res.writeHead(500).end(`Oops, something went wrong.\n${error}`);
+        res.writeHead(500).end(`Oops, something went wrong.\n${describeError(error)}`);
       } catch (e) {
         this.dependencies.logger.error(`[FREELENS-PROXY]: Failed to write headers: `, e);
       }
@@ -379,13 +435,48 @@ export class FreelensProxy {
 
   protected async handleRequest(req: ServerIncomingMessage, res: ServerResponse) {
     // The route of the cluster as the client asked for it: the lookup points a
-    // request of the main process at the kube api.
+    // request of the main process at the kube api, and rewrites the path a
+    // kubectl or helm client uses (`/<clusterId>/…`) to `/api-kube/…`.
     const requestedUrl = req.url;
     const cluster = this.dependencies.getClusterForRequest(req);
 
+    // Requires the token on the kube api and the local router api, on the URL
+    // as the lookup has rewritten it, so the `/<clusterId>/…` path of kubectl
+    // and helm is covered. The renderer and `/version` are served without a
+    // token. The host and origin are checked first, behind the token.
+    if (requiresToken(req.url)) {
+      if (!hasAllowedHost(req.headers) || !hasAllowedOrigin(req.headers)) {
+        this.dependencies.logger.warn(`[FREELENS-PROXY]: rejected a request from a foreign host or origin`, {
+          url: req.url,
+        });
+
+        return this.respondWithError(res, 403, "Forbidden");
+      }
+
+      if (!this.dependencies.token.matches(tokenFromHeaders(req.headers))) {
+        this.dependencies.logger.warn(`[FREELENS-PROXY]: rejected a request without a valid token`, { url: req.url });
+
+        return this.respondWithError(res, 403, "Forbidden");
+      }
+    }
+
     if (cluster && req.url.startsWith(apiKubePrefix)) {
-      delete req.headers.authorization;
+      stripToken(req.headers);
       req.url = req.url.replace(apiKubePrefix, "");
+
+      // A cluster the user has not connected gets no proxy process started for
+      // it: a request for one fails instead.
+      if (cluster.disconnected.get()) {
+        return this.respondWithError(res, 503, {
+          kind: "Status",
+          apiVersion: "v1",
+          metadata: {},
+          status: "Failure",
+          message: `Cluster ${cluster.id} is not connected`,
+          reason: "ServiceUnavailable",
+          code: 503,
+        });
+      }
 
       const freelensK8sProxyManager = this.dependencies.getFreelensK8sProxyManager(cluster);
       let proxyTarget: ServerOptions | undefined;
@@ -466,6 +557,29 @@ export class FreelensProxy {
   }
 
   /**
+   * Refuses an upgrade that carries no valid token, before anything of it is
+   * read, and closes its socket.
+   */
+  protected rejectUpgradeForbidden(socket: net.Socket) {
+    if (socket.destroyed) {
+      return;
+    }
+
+    const body = "Forbidden\n";
+
+    socket.end(
+      [
+        "HTTP/1.1 403 Forbidden",
+        "Content-Type: text/plain; charset=utf-8",
+        `Content-Length: ${Buffer.byteLength(body)}`,
+        "Connection: close",
+        "",
+        body,
+      ].join("\r\n"),
+    );
+  }
+
+  /**
    * Answers a request that failed before anything was written for it, and
    * ends one that has already started its response.
    */
@@ -501,6 +615,21 @@ export class FreelensProxy {
       stream.setTimeout(timeout, () => stream.close(http2.constants.NGHTTP2_CANCEL));
       target = options;
     }
+
+    // Setting `fetchOptions` also keeps the request on the fetch path, the only
+    // one whose abort is wired up here
+    const onBeforeRequest = target.fetchOptions?.onBeforeRequest;
+
+    target = {
+      ...target,
+      fetchOptions: {
+        ...target.fetchOptions,
+        onBeforeRequest: async (requestOptions, req, res, options) => {
+          abortFetchWhenClientCloses(requestOptions, res);
+          await onBeforeRequest?.(requestOptions, req, res, options);
+        },
+      },
+    };
 
     // http-proxy-3 proxies an HTTP/2 request as well, but its types only name
     // the `http` objects

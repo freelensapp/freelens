@@ -16,6 +16,7 @@ import lensResourcesDirInjectable from "../../../../common/vars/lens-resources-d
 import applicationWindowStateInjectable from "./application-window-state.injectable";
 import { logFailedLoad } from "./log-failed-load";
 import sessionCertificateVerifierInjectable from "./session-certificate-verifier.injectable";
+import setFreelensProxyTokenCookieInjectable from "./set-freelens-proxy-token-cookie.injectable";
 
 import type { RequireExactlyOne } from "type-fest";
 
@@ -62,6 +63,7 @@ const createElectronWindowInjectable = getInjectable({
     const applicationInformation = di.inject(applicationInformationToken);
     const pathExistsSync = di.inject(pathExistsSyncInjectable);
     const sessionCertificateVerifier = di.inject(sessionCertificateVerifierInjectable);
+    const setFreelensProxyTokenCookie = di.inject(setFreelensProxyTokenCookieInjectable);
 
     return (configuration) => {
       const applicationWindowState = di.inject(applicationWindowStateInjectable, {
@@ -157,6 +159,10 @@ const createElectronWindowInjectable = getInjectable({
 
         loadUrl: async (url) => {
           logger.info(`[CREATE-ELECTRON-WINDOW]: Loading content for window "${configuration.id}" from url: ${url}...`);
+
+          // Before the window makes its first request to freelens-proxy, so the
+          // root frame and the cluster frames carry the token.
+          await setFreelensProxyTokenCookie(browserWindow.webContents.session);
 
           // Retry logic for handling firewall/proxy delays and connection issues
           const maxAttempts = 3;

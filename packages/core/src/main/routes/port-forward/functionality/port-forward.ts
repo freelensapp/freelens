@@ -10,6 +10,7 @@ import type { ChildProcessWithoutNullStreams } from "node:child_process";
 
 import type { Logger } from "@freelensapp/logger";
 
+import type { WithFreelensProxyCredentialEnv } from "../../../freelens-proxy/with-freelens-proxy-credential-env.injectable";
 import type { ProxyKubeconfigPaths } from "../../../kubeconfig-manager/kubeconfig-manager";
 import type { GetPortFromStream } from "../../../utils/get-port-from-stream.injectable";
 
@@ -30,6 +31,7 @@ export interface PortForwardDependencies {
   /** The bundled kubectl, which port forwarding always runs. */
   getKubectlBinPath: () => Promise<string>;
   getPortFromStream: GetPortFromStream;
+  withFreelensProxyCredentialEnv: WithFreelensProxyCredentialEnv;
 }
 
 export class PortForward {
@@ -87,7 +89,7 @@ export class PortForward {
     ];
 
     this.process = spawn(kubectlBin, commandArgs, {
-      env: { ...process.env, KUBECACHEDIR: cacheDirectoryPath },
+      env: this.dependencies.withFreelensProxyCredentialEnv({ ...process.env, KUBECACHEDIR: cacheDirectoryPath }),
     });
     PortForward.portForwards.push(this);
     this.process.on("exit", () => {
