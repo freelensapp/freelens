@@ -110,7 +110,7 @@ describe("freelens-k8s-proxy of a removed cluster and on quit", () => {
           });
           const port = nextPort++;
 
-          processes.set(options.env.KUBECONFIG_CONTEXT as string, proxyProcess);
+          processes.set(options.env.FREELENS_PROXY_CONTEXT as string, proxyProcess);
           queueMicrotask(() => proxyProcess.stdout.emit("data", `Starting to serve on 127.0.0.1:${port}`));
 
           return proxyProcess as unknown as ChildProcess;

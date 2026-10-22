@@ -116,6 +116,21 @@ describe("starting freelens-k8s-proxy", () => {
     expect(spawnMock).toHaveBeenCalledTimes(1);
   });
 
+  it("starts the proxy subcommand, with the cluster and the certificate in its environment", async () => {
+    await freelensK8sProxy.run();
+
+    expect(spawnMock).toHaveBeenCalledWith(expect.any(String), ["proxy"], {
+      env: {
+        KUBECONFIG: "/some/kube-config",
+        FREELENS_PROXY_CONTEXT: "some-context-name",
+        FREELENS_PROXY_API_PREFIX: freelensK8sProxy.apiPrefix,
+        FREELENS_PROXY_CERT: "some-cert",
+        FREELENS_PROXY_KEY: "some-private-key",
+      },
+      cwd: "/some",
+    });
+  });
+
   describe("when the proxy exits before it prints its port", () => {
     beforeEach(() => {
       behaviours = [exitsWithBrokenKubeconfig, exitsWithBrokenKubeconfig];
