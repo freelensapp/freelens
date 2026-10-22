@@ -23,6 +23,7 @@ import { getDiForUnitTesting } from "../getDiForUnitTesting";
 import routerInjectable from "../router/router.injectable";
 import freelensProxyInjectable from "./freelens-proxy.injectable";
 import freelensProxyPortInjectable from "./freelens-proxy-port.injectable";
+import freelensProxyTokenInjectable from "./freelens-proxy-token.injectable";
 import getClusterForRequestInjectable from "./get-cluster-for-request.injectable";
 import kubeApiUpgradeRequestInjectable from "./proxy-functions/kube-api-upgrade-request.injectable";
 import shellApiRequestInjectable from "./proxy-functions/shell-api-request.injectable";
@@ -72,22 +73,37 @@ const untilClosed = (emitter: NodeJS.EventEmitter) =>
     emitter.once("close", () => resolve());
   });
 
+/**
+ * The token the proxy expects, set by each describe from its own container.
+ * The helpers add it as the bearer token unless a test sets `authorization`
+ * itself, so the requests of the tests reach the guarded routes.
+ */
+let proxyToken = "";
+
+const withAuth = (headers: http.OutgoingHttpHeaders): http.OutgoingHttpHeaders => ({
+  ...(proxyToken ? { authorization: `Bearer ${proxyToken}` } : {}),
+  ...headers,
+});
+
 const getHttp1 = (port: number, path: string, headers: http.OutgoingHttpHeaders = {}) =>
   new Promise<{ statusCode?: number; body: string }>((resolve, reject) => {
     https
-      .get({ host: "127.0.0.1", port, path, agent: false, rejectUnauthorized: false, headers }, (res) => {
-        let body = "";
+      .get(
+        { host: "127.0.0.1", port, path, agent: false, rejectUnauthorized: false, headers: withAuth(headers) },
+        (res) => {
+          let body = "";
 
-        res.setEncoding("utf8");
-        res.on("data", (chunk: string) => (body += chunk));
-        res.on("end", () => resolve({ statusCode: res.statusCode, body }));
-      })
+          res.setEncoding("utf8");
+          res.on("data", (chunk: string) => (body += chunk));
+          res.on("end", () => resolve({ statusCode: res.statusCode, body }));
+        },
+      )
       .on("error", reject);
   });
 
 const getHttp2 = (session: http2.ClientHttp2Session, path: string, headers: http2.OutgoingHttpHeaders = {}) =>
   new Promise<{ statusCode?: number; body: string }>((resolve, reject) => {
-    const stream = session.request({ ":path": path, ...headers });
+    const stream = session.request({ ":path": path, ...withAuth(headers) });
     let statusCode: number | undefined;
     let body = "";
 
@@ -189,6 +205,7 @@ describe("closing the Freelens proxy", () => {
     );
 
     proxy = di.inject(freelensProxyInjectable);
+    proxyToken = di.inject(freelensProxyTokenInjectable).value;
 
     await proxy.listen();
     port = di.inject(freelensProxyPortInjectable).get();
@@ -282,7 +299,7 @@ describe("closing the Freelens proxy", () => {
     const socketClosed = once(socket, "close");
 
     socket.write(
-      "GET /api?id=some-tab-id HTTP/1.1\r\nHost: 127.0.0.1\r\nConnection: Upgrade\r\nUpgrade: websocket\r\n\r\n",
+      `GET /api?id=some-tab-id HTTP/1.1\r\nHost: 127.0.0.1\r\nAuthorization: Bearer ${proxyToken}\r\nConnection: Upgrade\r\nUpgrade: websocket\r\n\r\n`,
     );
     await upgradeReachedTheShell;
 
@@ -331,6 +348,7 @@ describe("Freelens proxy protocols", () => {
     );
 
     proxy = di.inject(freelensProxyInjectable);
+    proxyToken = di.inject(freelensProxyTokenInjectable).value;
 
     await proxy.listen();
     port = di.inject(freelensProxyPortInjectable).get();
@@ -508,6 +526,7 @@ describe("Freelens proxy kube api requests", () => {
     }));
 
     proxy = di.inject(freelensProxyInjectable);
+    proxyToken = di.inject(freelensProxyTokenInjectable).value;
 
     await proxy.listen();
     port = di.inject(freelensProxyPortInjectable).get();
@@ -535,8 +554,19 @@ describe("Freelens proxy kube api requests", () => {
    */
   const afterTheAbort = () => new Promise((resolve) => setTimeout(resolve, 50));
 
+  it.each([
+    ["a kube api request", "/api-kube/api/v1/pods"],
+    ["a request to the local router api", "/api/v2/releases"],
+  ])("answers 403 without a valid token, for %s", async (_name, path) => {
+    expect(await getHttp1(port, path, { authorization: "Bearer not-the-token" })).toEqual({
+      statusCode: 403,
+      body: "Forbidden",
+    });
+    expect(targetReceived).toEqual([]);
+  });
+
   it("forwards the request below the path of the target over HTTP/2, as a request for the target", async () => {
-    const response = await getHttp1(port, "/api-kube/api/v1/pods", { authorization: "some-token" });
+    const response = await getHttp1(port, "/api-kube/api/v1/pods");
 
     expect(response).toEqual({ statusCode: 200, body: "some-body" });
     expect(targetReceived).toEqual([
@@ -551,7 +581,7 @@ describe("Freelens proxy kube api requests", () => {
 
   it("forwards an HTTP/2 request below the path of the target, as a request for the target", async () => {
     const session = await connectSession();
-    const response = await getHttp2(session, "/api-kube/api/v1/pods", { authorization: "some-token" });
+    const response = await getHttp2(session, "/api-kube/api/v1/pods");
 
     expect(response).toEqual({ statusCode: 200, body: "some-body" });
     expect(targetReceived).toEqual([
@@ -567,7 +597,14 @@ describe("Freelens proxy kube api requests", () => {
   it("forwards the chunked body of an HTTP/1.1 request", async () => {
     const response = await new Promise<{ statusCode?: number; body: string }>((resolve, reject) => {
       const req = https.request(
-        { host: "127.0.0.1", port, path: "/api-kube/api/v1/pods", method: "POST", rejectUnauthorized: false },
+        {
+          host: "127.0.0.1",
+          port,
+          path: "/api-kube/api/v1/pods",
+          method: "POST",
+          rejectUnauthorized: false,
+          headers: { authorization: `Bearer ${proxyToken}` },
+        },
         (res) => {
           let body = "";
 
@@ -589,7 +626,9 @@ describe("Freelens proxy kube api requests", () => {
   it("sends the requests of a cluster over one connection to the target", async () => {
     const session = await connectSession();
 
-    session.request({ ":path": "/api-kube/api/v1/pods?watch=true" }).on("error", () => {});
+    session
+      .request({ ":path": "/api-kube/api/v1/pods?watch=true", authorization: `Bearer ${proxyToken}` })
+      .on("error", () => {});
     await watchReceived;
     await Promise.all(Array.from({ length: 10 }, () => getHttp2(session, "/api-kube/api/v1/pods")));
 
@@ -605,7 +644,16 @@ describe("Freelens proxy kube api requests", () => {
   it("sends the headers of a watch over HTTP/1.1 before its first event", async () => {
     const response = new Promise<http.IncomingMessage>((resolve, reject) => {
       https
-        .get({ host: "127.0.0.1", port, path: "/api-kube/api/v1/pods?watch=true", rejectUnauthorized: false }, resolve)
+        .get(
+          {
+            host: "127.0.0.1",
+            port,
+            path: "/api-kube/api/v1/pods?watch=true",
+            rejectUnauthorized: false,
+            headers: { authorization: `Bearer ${proxyToken}` },
+          },
+          resolve,
+        )
         .on("error", reject);
     });
 
@@ -618,7 +666,10 @@ describe("Freelens proxy kube api requests", () => {
 
   it("sends the headers of a watch over HTTP/2 before its first event", async () => {
     const session = await connectSession();
-    const stream = session.request({ ":path": "/api-kube/api/v1/pods?watch=true" });
+    const stream = session.request({
+      ":path": "/api-kube/api/v1/pods?watch=true",
+      authorization: `Bearer ${proxyToken}`,
+    });
     const [headers] = (await once(stream, "response")) as [http2.IncomingHttpHeaders];
 
     expect(headers[":status"]).toBe(200);
@@ -627,7 +678,10 @@ describe("Freelens proxy kube api requests", () => {
 
   it("ends the request to the target when the client cancels its HTTP/2 stream, and not its connection", async () => {
     const session = await connectSession();
-    const stream = session.request({ ":path": "/api-kube/api/v1/pods?watch=true" });
+    const stream = session.request({
+      ":path": "/api-kube/api/v1/pods?watch=true",
+      authorization: `Bearer ${proxyToken}`,
+    });
 
     stream.on("error", () => {});
 
@@ -646,7 +700,16 @@ describe("Freelens proxy kube api requests", () => {
   it("ends the request to the target when the client closes its HTTP/1.1 connection", async () => {
     const response = new Promise<http.IncomingMessage>((resolve, reject) => {
       https
-        .get({ host: "127.0.0.1", port, path: "/api-kube/api/v1/pods?watch=true", rejectUnauthorized: false }, resolve)
+        .get(
+          {
+            host: "127.0.0.1",
+            port,
+            path: "/api-kube/api/v1/pods?watch=true",
+            rejectUnauthorized: false,
+            headers: { authorization: `Bearer ${proxyToken}` },
+          },
+          resolve,
+        )
         .on("error", reject);
     });
 
@@ -660,7 +723,10 @@ describe("Freelens proxy kube api requests", () => {
 
   it("keeps the errors of cancelled requests out of the log", async () => {
     const session = await connectSession();
-    const stream = session.request({ ":path": "/api-kube/api/v1/pods?watch=true" });
+    const stream = session.request({
+      ":path": "/api-kube/api/v1/pods?watch=true",
+      authorization: `Bearer ${proxyToken}`,
+    });
 
     stream.on("error", () => {});
 
@@ -678,7 +744,10 @@ describe("Freelens proxy kube api requests", () => {
     timeout = 100;
 
     const session = await connectSession();
-    const stream = session.request({ ":path": "/api-kube/api/v1/pods?watch=true" });
+    const stream = session.request({
+      ":path": "/api-kube/api/v1/pods?watch=true",
+      authorization: `Bearer ${proxyToken}`,
+    });
 
     stream.on("error", () => {});
 
@@ -711,10 +780,13 @@ describe("Freelens proxy redirects of the kube api", () => {
   const headersOfHttp1 = (path: string, headers: http.OutgoingHttpHeaders) =>
     new Promise<{ statusCode?: number; location?: string }>((resolve, reject) => {
       https
-        .get({ host: "127.0.0.1", port, path, agent: false, rejectUnauthorized: false, headers }, (res) => {
-          res.resume();
-          resolve({ statusCode: res.statusCode, location: res.headers.location });
-        })
+        .get(
+          { host: "127.0.0.1", port, path, agent: false, rejectUnauthorized: false, headers: withAuth(headers) },
+          (res) => {
+            res.resume();
+            resolve({ statusCode: res.statusCode, location: res.headers.location });
+          },
+        )
         .on("error", reject);
     });
 
@@ -764,6 +836,7 @@ describe("Freelens proxy redirects of the kube api", () => {
     );
 
     proxy = di.inject(freelensProxyInjectable);
+    proxyToken = di.inject(freelensProxyTokenInjectable).value;
 
     await proxy.listen();
     port = di.inject(freelensProxyPortInjectable).get();
@@ -792,7 +865,11 @@ describe("Freelens proxy redirects of the kube api", () => {
 
     sessions.push(session);
 
-    const stream = session.request({ ":path": "/api-kube/api", ":authority": rendererHost() });
+    const stream = session.request({
+      ":path": "/api-kube/api",
+      ":authority": rendererHost(),
+      authorization: `Bearer ${proxyToken}`,
+    });
     const [headers] = (await once(stream, "response")) as [http2.IncomingHttpHeaders];
 
     stream.resume();
@@ -861,6 +938,7 @@ describe("Freelens proxy kube api requests to a refused target", () => {
     di.override(routerInjectable, () => ({ route }) as unknown as Router);
 
     proxy = di.inject(freelensProxyInjectable);
+    proxyToken = di.inject(freelensProxyTokenInjectable).value;
 
     await proxy.listen();
     port = di.inject(freelensProxyPortInjectable).get();
@@ -945,6 +1023,7 @@ describe("Freelens proxy kube api requests whose cluster proxy cannot start", ()
     }));
 
     proxy = di.inject(freelensProxyInjectable);
+    proxyToken = di.inject(freelensProxyTokenInjectable).value;
 
     await proxy.listen();
     port = di.inject(freelensProxyPortInjectable).get();
@@ -984,13 +1063,13 @@ describe("Freelens proxy upgrade requests", () => {
   let kubeApiUpgradeRequest: Mock;
   let socket: { destroy: Mock; end: Mock; destroyed: boolean; writable: boolean; bytesWritten: number };
 
-  const upgrade = (url: string) => {
+  const upgrade = (url: string, headers: http.IncomingHttpHeaders = { authorization: `Bearer ${proxyToken}` }) => {
     const proxy = di.inject(freelensProxyInjectable);
     // The upgrade handler is what is under test, and it runs long before the
     // server is listening.
     const server = (proxy as unknown as { proxyServer: NodeJS.EventEmitter }).proxyServer;
 
-    server.emit("upgrade", { url, method: "GET", headers: {} } as ServerIncomingMessage, socket, Buffer.from([]));
+    server.emit("upgrade", { url, method: "GET", headers } as ServerIncomingMessage, socket, Buffer.from([]));
   };
 
   beforeEach(() => {
@@ -998,6 +1077,7 @@ describe("Freelens proxy upgrade requests", () => {
 
     overrideEnvironment(di);
 
+    proxyToken = di.inject(freelensProxyTokenInjectable).value;
     cluster = { id: "some-cluster-id" } as Cluster;
     shellApiRequest = vi.fn();
     kubeApiUpgradeRequest = vi.fn();
@@ -1069,6 +1149,21 @@ describe("Freelens proxy upgrade requests", () => {
       expect(shellApiRequest).not.toHaveBeenCalled();
     });
   });
+
+  describe("without a valid token", () => {
+    it.each([
+      ["an internal upgrade", "/api?id=some-tab-id"],
+      ["a kube api upgrade", "/api-kube/api/v1/namespaces/default/pods/some-pod/exec"],
+    ])("answers 403 and closes the socket, for %s", (_name, url) => {
+      upgrade(url, { authorization: "Bearer not-the-token" });
+
+      const [response] = socket.end.mock.calls[0] as [string];
+
+      expect(response).toMatch(/^HTTP\/1\.1 403 Forbidden\r\n/);
+      expect(shellApiRequest).not.toHaveBeenCalled();
+      expect(kubeApiUpgradeRequest).not.toHaveBeenCalled();
+    });
+  });
 });
 
 describe("Freelens proxy development static files", () => {
@@ -1131,6 +1226,7 @@ describe("Freelens proxy development static files", () => {
     di.override(kubeApiUpgradeRequestInjectable, () => vi.fn());
 
     proxy = di.inject(freelensProxyInjectable);
+    proxyToken = di.inject(freelensProxyTokenInjectable).value;
 
     await proxy.listen();
     port = di.inject(freelensProxyPortInjectable).get();

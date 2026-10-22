@@ -11,6 +11,7 @@ import { respondJson, respondText } from "../utils/http-responses";
 import { getBoolean } from "../utils/parse-query";
 import { abortFetchWhenClientCloses, isClientGone } from "./abort-when-client-closes";
 import { toClusterRoute } from "./cluster-route-redirect";
+import { stripToken, tokenFromHeaders } from "./freelens-proxy-token";
 import type http from "node:http";
 
 import type { Logger } from "@freelensapp/logger";
@@ -24,6 +25,7 @@ import type { Cluster } from "../../common/cluster/cluster";
 import type { FreelensK8sProxyManager } from "../cluster/freelens-k8s-proxy-manager.injectable";
 import type { Router } from "../router/router";
 import type { ClusterRouteRedirect } from "./cluster-route-redirect";
+import type { FreelensProxyToken } from "./freelens-proxy-token.injectable";
 import type { ProxyApiRequestArgs, ShellApiRequestArgs } from "./proxy-functions";
 
 /**
@@ -49,6 +51,7 @@ interface Dependencies {
   readonly contentSecurityPolicy: string;
   readonly logger: Logger;
   readonly certificate: SelfSignedCert;
+  readonly token: FreelensProxyToken;
 }
 
 /**
@@ -72,6 +75,18 @@ export function isLongRunningRequest(reqUrl: string) {
   const url = new URL(reqUrl, "http://localhost");
 
   return getBoolean(url.searchParams, watchParam) || getBoolean(url.searchParams, followParam);
+}
+
+/**
+ * Whether a request reaches a cluster or the main process's own API and so has
+ * to carry the token: the kube api (`/api-kube`), the local router api
+ * (`/api`, which serves helm, the service-account kubeconfig, port-forward,
+ * metrics and the resource applier), and the internal upgrade (`/api?…`).
+ * `apiKubePrefix` begins with `apiPrefix`, so the one test covers both. Serving
+ * the renderer and `/version` need no token, so the window loads without one.
+ */
+export function requiresToken(reqUrl: string) {
+  return reqUrl.startsWith(apiPrefix);
 }
 
 /**
@@ -175,6 +190,15 @@ export class FreelensProxy {
     });
 
     this.proxyServer.on("upgrade", (req: UpgradeRequest, socket: net.Socket, head: Buffer) => {
+      // An upgrade reaches a shell or the kube api, so it carries the token
+      // like any other request. Refused before the cluster is looked up.
+      if (!this.dependencies.token.matches(tokenFromHeaders(req.headers))) {
+        this.dependencies.logger.warn(`[FREELENS-PROXY]: rejected an upgrade without a valid token`, { url: req.url });
+        this.rejectUpgradeForbidden(socket);
+
+        return;
+      }
+
       /**
        * Decided before the cluster is looked up: an internal upgrade is a
        * shell request, and a shell can be opened outside of any cluster
@@ -398,13 +422,22 @@ export class FreelensProxy {
   }
 
   protected async handleRequest(req: ServerIncomingMessage, res: ServerResponse) {
+    // Requires the token on every route to the kube api or the local router
+    // api, before the cluster is resolved. The renderer and `/version` are
+    // served without a token.
+    if (requiresToken(req.url) && !this.dependencies.token.matches(tokenFromHeaders(req.headers))) {
+      this.dependencies.logger.warn(`[FREELENS-PROXY]: rejected a request without a valid token`, { url: req.url });
+
+      return this.respondWithError(res, 403, "Forbidden");
+    }
+
     // The route of the cluster as the client asked for it: the lookup points a
     // request of the main process at the kube api.
     const requestedUrl = req.url;
     const cluster = this.dependencies.getClusterForRequest(req);
 
     if (cluster && req.url.startsWith(apiKubePrefix)) {
-      delete req.headers.authorization;
+      stripToken(req.headers);
       req.url = req.url.replace(apiKubePrefix, "");
 
       const freelensK8sProxyManager = this.dependencies.getFreelensK8sProxyManager(cluster);
@@ -476,6 +509,29 @@ export class FreelensProxy {
     socket.end(
       [
         "HTTP/1.1 503 Service Unavailable",
+        "Content-Type: text/plain; charset=utf-8",
+        `Content-Length: ${Buffer.byteLength(body)}`,
+        "Connection: close",
+        "",
+        body,
+      ].join("\r\n"),
+    );
+  }
+
+  /**
+   * Refuses an upgrade that carries no valid token, before anything of it is
+   * read, and closes its socket.
+   */
+  protected rejectUpgradeForbidden(socket: net.Socket) {
+    if (socket.destroyed) {
+      return;
+    }
+
+    const body = "Forbidden\n";
+
+    socket.end(
+      [
+        "HTTP/1.1 403 Forbidden",
         "Content-Type: text/plain; charset=utf-8",
         `Content-Length: ${Buffer.byteLength(body)}`,
         "Connection: close",
