@@ -422,7 +422,7 @@ describe("Freelens proxy kube api requests", () => {
   let port: number;
   let target: http2.Http2SecureServer;
   let targetSessions: http2.ServerHttp2Session[];
-  let targetReceived: { url?: string; host?: string; authorization?: string; httpVersion: string }[];
+  let targetReceived: { url?: string; host?: string; authorization?: string; origin?: string; httpVersion: string }[];
   let watchReceived: Promise<http2.Http2ServerRequest>;
   let timeout: number | undefined;
   let agent: Agent;
@@ -458,6 +458,7 @@ describe("Freelens proxy kube api requests", () => {
           url: req.url,
           host: req.headers[":authority"] ?? req.headers.host,
           authorization: req.headers.authorization,
+          origin: req.headers.origin,
           httpVersion: req.httpVersion,
         });
 
@@ -608,6 +609,16 @@ describe("Freelens proxy kube api requests", () => {
       403,
     );
     expect(targetReceived).toEqual([]);
+  });
+
+  it("does not forward the origin of a frame to the cluster", async () => {
+    const response = await getHttp1(port, "/api-kube/api/v1/pods", {
+      origin: "https://some-cluster-id.renderer.freelens.app",
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(targetReceived).toHaveLength(1);
+    expect(targetReceived[0].origin).toBeUndefined();
   });
 
   it("forwards the request below the path of the target over HTTP/2, as a request for the target", async () => {

@@ -18,8 +18,9 @@ import type { FreelensProxyApiRequest } from "../freelens-proxy";
 
 // Matched case-insensitively below. `authorization` and `cookie` carry the
 // freelens-proxy token, which must not travel to the cluster; `host` is set
-// from the cluster's API URL instead.
-const skipRawHeaders = new Set(["host", "authorization", "cookie"]);
+// from the cluster's API URL instead; `origin` is the frame's, which a cluster
+// behind a gateway such as the GitLab agent server refuses.
+const skipRawHeaders = new Set(["host", "authorization", "cookie", "origin"]);
 
 const kubeApiUpgradeRequestInjectable = getInjectable({
   id: "kube-api-upgrade-request",
