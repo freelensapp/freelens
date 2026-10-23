@@ -17,6 +17,7 @@ import { buildVersionInitializable } from "../../../features/vars/build-version/
 import loadProxyKubeconfigInjectable from "../../cluster/load-proxy-kubeconfig.injectable";
 import freelensProxyTokenInjectable from "../../freelens-proxy/freelens-proxy-token.injectable";
 import computeUserShellEnvironmentInjectable from "../../kube-tools/compute-user-shell-environment.injectable";
+import getUserShellInjectable from "../../kube-tools/get-user-shell.injectable";
 import resolveKubeToolsInjectable from "../../kube-tools/resolve-kube-tools.injectable";
 import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
 import createKubectlInjectable from "../../kubectl/create-kubectl.injectable";
@@ -59,6 +60,7 @@ const openNodeShellSessionInjectable = getInjectable({
       shellSessionProcesses: di.inject(shellSessionProcessesInjectable),
       createKubeJsonApiForCluster: di.inject(createKubeJsonApiForClusterInjectable),
       computeUserShellEnvironment: di.inject(computeUserShellEnvironmentInjectable),
+      getUserShell: di.inject(getUserShellInjectable),
       spawnPty: di.inject(spawnPtyInjectable),
       emitAppEvent: di.inject(emitAppEventInjectable),
       stat: di.inject(statInjectable),
