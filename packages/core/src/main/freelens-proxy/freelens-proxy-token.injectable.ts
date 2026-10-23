@@ -23,8 +23,11 @@ export interface FreelensProxyToken {
  * The token required on requests to freelens-proxy. Every client carries it the
  * way it can: a terminal, kubectl and helm through the environment of the proxy
  * kubeconfig's exec plugin, the cluster frames as a cookie, and the main process
- * as a header. The handler checks it before it resolves the cluster, and strips
- * it before forwarding.
+ * as a header. The handler checks it before anything reaches a cluster: for a
+ * request after the cluster lookup, which only rewrites the `/<clusterId>/…`
+ * path of kubectl and helm, so the check covers that path too, but before the
+ * cluster's proxy starts; for an upgrade before the lookup. It strips the token
+ * before forwarding.
  */
 const freelensProxyTokenInjectable = getInjectable({
   id: "freelens-proxy-token",
