@@ -21,6 +21,7 @@ import { LineProgress } from "../line-progress";
 import { Table, TableCell, TableHead, TableRow } from "../table";
 import { WithTooltip } from "../with-tooltip";
 import podStoreInjectable from "./store.injectable";
+import { PodPortsCell } from "./pod-ports-cell";
 
 import type { KubeObject, Pod } from "@freelensapp/kube-object";
 
@@ -155,6 +156,9 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
         <TableCell className="ready">
           {`${pod.getRunningContainers().length} / ${pod.getContainers().length}`}
         </TableCell>
+        <TableCell className="ports">
+          <PodPortsCell pod={pod} />
+        </TableCell>
         <TableCell className="cpu">{this.renderCpuUsage(`cpu-${pod.getId()}`, metrics.cpu)}</TableCell>
         <TableCell className="memory">{this.renderMemoryUsage(`memory-${pod.getId()}`, metrics.memory)}</TableCell>
         <TableCell className={cssNames("status", kebabCase(pod.getStatusMessage()))}>
@@ -220,6 +224,7 @@ class NonInjectedPodDetailsList extends React.Component<PodDetailsListProps & De
               Namespace
             </TableCell>
             <TableCell className="ready">Ready</TableCell>
+            <TableCell className="ports">Ports</TableCell>
             <TableCell className="cpu" sortBy={sortBy.cpu}>
               CPU
             </TableCell>
