@@ -203,6 +203,22 @@ scoop install freelens
 
 Scoop uses MSI package to install the application.
 
+#### WSL
+
+The terminal can run a WSL shell: set the shell to `wsl.exe` in the terminal
+preferences. The `kubectl` and `helm` commands of the WSL distribution then
+use the cluster opened in Freelens.
+
+WSL 2 requires the mirrored networking mode. Add it to the
+`%UserProfile%\.wslconfig` file:
+
+```ini
+[wsl2]
+networkingMode=mirrored
+```
+
+Then restart WSL with `wsl --shutdown`.
+
 ## Development
 
 Visit the [Development](DEVELOPMENT.md) document to see how to build the
