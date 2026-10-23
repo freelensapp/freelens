@@ -184,7 +184,7 @@ overrides:
   # Nothing depends on http-proxy today: this override is a guard, not dead
   # code. The original package is abandoned with a known CVE, so a dependency
   # that starts to pull it in gets the maintained rewrite the app uses instead.
-  http-proxy: npm:http-proxy-3@^2.0.1
+  http-proxy: npm:http-proxy-3@^2.0.2
   # @ogre-tools/injectable-react peers mobx-react ^9. Left alone, pnpm
   # auto-installs a second mobx-react 9 for every package that lacks a direct
   # mobx-react, and the MobX family must stay a singleton. Pointing the
