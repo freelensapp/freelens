@@ -1,0 +1,163 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+// Rendered only under the v2 interface (themes with `uiV2`), so the --v2-* properties are set.
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  padding: 4px 20px 20px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+  padding: 16px 18px;
+  border: 1px solid var(--borderColor);
+  border-radius: 12px;
+  background: var(--v2-raised);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 150ms,
+    background-color 150ms;
+
+  &:hover {
+    border-color: color-mix(in srgb, var(--v2-accent) 50%, var(--borderColor));
+    background: color-mix(in srgb, var(--v2-accent) 4%, var(--v2-raised));
+
+    .chevron {
+      color: var(--v2-accent);
+      transform: translateX(2px);
+    }
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--v2-focus-ring);
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--textColorPrimary);
+}
+
+.chevron {
+  color: var(--textColorDimmed);
+  transition:
+    color 150ms,
+    transform 150ms;
+}
+
+.summary {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+}
+
+.total {
+  font-size: 30px;
+  line-height: 34px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--v2-text-strong);
+}
+
+.health {
+  font-size: 12.5px;
+  color: var(--textColorTertiary);
+}
+
+.problem {
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--v2-err-tint);
+  color: var(--colorError);
+  font-size: 11.5px;
+  font-weight: 500;
+}
+
+.bar {
+  display: flex;
+  gap: 2px;
+  height: 8px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--v2-selected);
+}
+
+.segment {
+  min-width: 3px;
+  height: 100%;
+
+  // Healthy is the normal case: keep it quiet so pending/failed slices stand out.
+  &[data-healthy] {
+    opacity: 0.55;
+  }
+}
+
+.legend {
+  display: flex;
+  flex-direction: column;
+}
+
+.legendRow {
+  display: grid;
+  grid-template-columns: 8px minmax(0, 1fr) auto 36px;
+  align-items: center;
+  column-gap: 8px;
+  min-height: 22px;
+  font-size: 12.5px;
+
+  &[data-problem] {
+    .label,
+    .count {
+      color: var(--colorError);
+    }
+  }
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--textColorSecondary);
+}
+
+.count {
+  font-weight: 500;
+  color: var(--textColorAccent);
+}
+
+.percent {
+  text-align: right;
+  font-size: 11px;
+  color: var(--textColorTertiary);
+}
+
+.empty {
+  font-size: 12.5px;
+  color: var(--textColorDimmed);
+}
