@@ -1,0 +1,366 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+// v2 interface, active only while a theme that declares `uiV2` is applied (body.ui-v2,
+// see themes/apply-lens-theme.injectable.ts). Colors come from the theme tokens and the
+// --v2-* properties set from `uiV2`. Components styled with CSS Modules carry their own
+// `:global(body.ui-v2)` block next to their classic styles.
+
+body.ui-v2 {
+  --font-main: "Inter", "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial,
+    sans-serif;
+  --border-radius: 6px;
+
+  font-family: var(--font-main);
+  font-variant-numeric: tabular-nums;
+
+  // ---------------------------------------------------------------- tabs
+  .Tab {
+    --line-color-active: var(--v2-accent);
+
+    color: var(--textColorSecondary);
+
+    &:not(.disabled):after {
+      height: 2px;
+    }
+
+    &.active {
+      color: var(--v2-text-strong);
+      font-weight: 500;
+    }
+  }
+
+  .TabLayout > .Tabs {
+    height: 40px;
+    padding: 0 12px;
+    border-bottom: 1px solid var(--borderFaintColor);
+
+    .Tab {
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+    }
+  }
+
+  // ---------------------------------------------------------------- lists and tables
+  .ItemListLayout {
+    background: var(--mainBackground);
+
+    > .header {
+      padding: 16px 20px;
+
+      .title {
+        color: var(--v2-text-strong);
+        font-size: 18px;
+        font-weight: 600;
+      }
+    }
+
+    > .items {
+      margin: 0 20px 16px;
+      border: 1px solid var(--borderColor);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--contentColor);
+
+      .resize-guide {
+        background-color: var(--v2-accent);
+      }
+    }
+  }
+
+  .TableHead {
+    background-color: var(--v2-raised);
+    border-bottom-color: var(--borderColor);
+    color: var(--v2-header-text);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+
+    .TableCell .sortIcon {
+      background: var(--v2-raised);
+    }
+  }
+
+  .TableRow {
+    box-sizing: border-box;
+    border-bottom: 1px solid var(--v2-row-border);
+  }
+
+  .Table.selectable {
+    .TableRow {
+      &:hover {
+        background-color: var(--v2-control) !important;
+      }
+
+      &.selected {
+        background-color: var(--v2-accent-tint) !important;
+        color: var(--v2-text-strong);
+
+        &:before {
+          width: 2px;
+          background: var(--v2-accent);
+        }
+      }
+    }
+  }
+
+  .TableCell {
+    a {
+      color: var(--v2-accent-text);
+
+      &:hover {
+        color: var(--v2-text-strong);
+      }
+    }
+
+    &.name {
+      color: var(--textColorAccent);
+      font-weight: 500;
+    }
+
+    .resize-handle:hover::after {
+      background: var(--v2-accent);
+    }
+  }
+
+  // Pod and workload status: a colored dot before the colored label.
+  .TableCell.status {
+    gap: 6px;
+
+    &:before {
+      content: "";
+      flex-shrink: 0;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+  }
+
+  .TableHead .TableCell.status:before {
+    content: none;
+  }
+
+  // Deployments: ready meter and condition pills.
+  .Deployments .TableCell {
+    &.ready {
+      flex-grow: 0.6;
+    }
+
+    &.conditions .condition {
+      padding: 1px 8px;
+      border-radius: 999px;
+      background: color-mix(in srgb, currentColor 14%, transparent);
+      font-size: 12px;
+      font-weight: 500;
+    }
+  }
+
+  .ReadyReplicas {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    .meter {
+      position: relative;
+      width: 40px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--v2-selected);
+      overflow: hidden;
+
+      > span {
+        position: absolute;
+        inset: 0 auto 0 0;
+        border-radius: 999px;
+        background: var(--colorOk);
+      }
+    }
+
+    &[data-state="warn"] {
+      color: var(--colorWarning);
+
+      .meter > span {
+        background: var(--colorWarning);
+      }
+    }
+
+    &[data-state="idle"] {
+      color: var(--textColorDimmed);
+    }
+  }
+
+  // ---------------------------------------------------------------- drawer
+  .Drawer {
+    --icon-focus-color: var(--v2-accent);
+
+    border-left: 1px solid var(--borderColor);
+    box-shadow: -16px 0 40px rgb(0 0 0 / 0.35);
+
+    .drawer-title {
+      background: var(--contentColor);
+      color: var(--v2-text-strong);
+      border-bottom: 1px solid var(--borderColor);
+      padding: 12px 16px 12px 20px;
+      min-height: 60px;
+      gap: 8px;
+
+      .drawer-title-text {
+        font-size: 16px;
+        font-weight: 600;
+        min-width: 0;
+      }
+
+      .drawer-title-kind {
+        flex-shrink: 0;
+        height: 22px;
+        display: inline-flex;
+        align-items: center;
+        padding: 0 8px;
+        border-radius: 6px;
+        background: var(--v2-selected);
+        color: var(--textColorSecondary);
+        font-size: 11.5px;
+        font-weight: 500;
+      }
+
+      .drawer-title-name {
+        min-width: 0;
+        overflow-wrap: anywhere;
+      }
+
+      > .Icon,
+      .drawer-title-text .Icon {
+        color: var(--textColorSecondary);
+        border-radius: 8px;
+      }
+
+      // Toolbar actions become labeled buttons; the titles are already in the markup.
+      .MenuActions.toolbar {
+        --flex-gap: 6px;
+
+        .title {
+          display: inline;
+        }
+
+        > .MenuItem {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          width: auto;
+          height: 30px;
+          padding: 0 10px !important;
+          border: 1px solid var(--borderColor) !important;
+          border-radius: 8px;
+          background: var(--v2-control) !important;
+          color: var(--textColorPrimary);
+          font-size: 12.5px;
+          font-weight: 500;
+
+          &:hover {
+            color: var(--v2-text-strong);
+            border-color: var(--textColorDimmed) !important;
+          }
+
+          .Icon {
+            width: 15px;
+            height: 15px;
+            font-size: 15px;
+            color: inherit;
+            box-shadow: none;
+            background: none;
+          }
+
+          &:has([data-icon-name="delete"]) {
+            color: var(--colorError);
+            border-color: color-mix(in srgb, var(--colorError) 40%, transparent) !important;
+            background: transparent !important;
+          }
+        }
+      }
+    }
+
+    .drawer-content {
+      padding: 20px;
+    }
+  }
+
+  .DrawerTitle {
+    background: transparent;
+    border-bottom: 1px solid var(--borderColor);
+    color: var(--v2-header-text);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .DrawerItem {
+    padding: 10px 0;
+    border-bottom-color: var(--v2-row-border);
+
+    > .value a {
+      color: var(--v2-accent-text);
+    }
+
+    // Labels, annotations, selectors: monospace chips. Conditions keep their status colors.
+    &.labelsOnly:not(.conditions) > .value > div {
+      border: 1px solid var(--borderColor);
+      border-radius: 6px;
+      background: var(--v2-control);
+      color: var(--textColorAccent);
+      font-family: "JetBrains Mono", "Cascadia Mono", Consolas, ui-monospace, monospace;
+      font-size: 11.5px;
+      padding: 3px 8px;
+    }
+  }
+
+  // ---------------------------------------------------------------- controls
+  .Button {
+    border-radius: 8px;
+    font-weight: 500;
+
+    &:not(.primary, .accent, .light, .plain, .outlined) {
+      background: var(--v2-control);
+      color: var(--v2-text-strong);
+      box-shadow: inset 0 0 0 1px var(--borderColor);
+    }
+
+    &.primary {
+      background: var(--v2-accent);
+      color: var(--v2-on-accent);
+    }
+
+    &:focus-visible {
+      box-shadow: 0 0 0 3px var(--v2-focus-ring);
+    }
+  }
+
+  .Menu {
+    border: 1px solid var(--borderColor);
+    border-radius: 10px;
+    box-shadow: 0 12px 32px rgb(0 0 0 / 0.3);
+    overflow: hidden;
+  }
+
+  .Tooltip {
+    border: 1px solid var(--borderColor);
+    border-radius: 8px;
+  }
+
+  .Input .input-area:focus-within,
+  .Select__control--is-focused {
+    border-color: var(--v2-accent) !important;
+    box-shadow: 0 0 0 3px var(--v2-focus-ring) !important;
+  }
+
+  // ---------------------------------------------------------------- hotbar
+  .HotbarMenu .HotbarItems .HotbarCell {
+    border-radius: 10px;
+    background: var(--v2-control);
+  }
+}
