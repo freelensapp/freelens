@@ -43,8 +43,10 @@
 // v2 interface (themes with `uiV2`, see ../ui-v2.scss): rounder tiles, accent ring on the active entity.
 :global(body.ui-v2) {
   .HotbarIcon {
-    --iconActiveShadow: 0 0 0 2px var(--clusterMenuBackground), 0 0 0 4px var(--v2-accent);
-    --iconHoverShadow: 0 0 0 2px var(--clusterMenuBackground), 0 0 0 4px var(--borderColor);
+    --iconActiveShadow:
+      0 0 0 2px var(--clusterMenuBackground), 0 0 0 4px var(--v2-accent);
+    --iconHoverShadow:
+      0 0 0 2px var(--clusterMenuBackground), 0 0 0 4px var(--borderColor);
 
     border-radius: 10px;
   }

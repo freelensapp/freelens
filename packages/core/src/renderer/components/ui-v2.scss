@@ -9,8 +9,9 @@
 // `:global(body.ui-v2)` block next to their classic styles.
 
 body.ui-v2 {
-  --font-main: "Inter", "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial,
-    sans-serif;
+  --font-main:
+    "Inter", "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system,
+    "Helvetica Neue", Arial, sans-serif;
   --border-radius: 6px;
 
   font-family: var(--font-main);
@@ -277,7 +278,11 @@ body.ui-v2 {
 
           &:has([data-icon-name="delete"]) {
             color: var(--colorError);
-            border-color: color-mix(in srgb, var(--colorError) 40%, transparent) !important;
+            border-color: color-mix(
+              in srgb,
+              var(--colorError) 40%,
+              transparent
+            ) !important;
             background: transparent !important;
           }
         }
@@ -313,7 +318,8 @@ body.ui-v2 {
       border-radius: 6px;
       background: var(--v2-control);
       color: var(--textColorAccent);
-      font-family: "JetBrains Mono", "Cascadia Mono", Consolas, ui-monospace, monospace;
+      font-family:
+        "JetBrains Mono", "Cascadia Mono", Consolas, ui-monospace, monospace;
       font-size: 11.5px;
       padding: 3px 8px;
     }
