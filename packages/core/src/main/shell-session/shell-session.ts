@@ -21,6 +21,7 @@ import type { EmitAppEvent } from "../../common/app-event-bus/emit-event.injecta
 import type { Cluster } from "../../common/cluster/cluster";
 import type { Stat } from "../../common/fs/stat.injectable";
 import type { ComputeUserShellEnvironment } from "../kube-tools/compute-user-shell-environment.injectable";
+import type { GetUserShell } from "../kube-tools/get-user-shell.injectable";
 import type { KubeTools } from "../kube-tools/kube-tools";
 import type { Kubectl } from "../kubectl/kubectl";
 import type { ShellSessionProcesses } from "./processes.injectable";
@@ -143,6 +144,7 @@ export interface ShellSessionDependencies {
   readonly shellSessionEnvs: ShellSessionEnvs;
   readonly shellSessionProcesses: ShellSessionProcesses;
   computeUserShellEnvironment: ComputeUserShellEnvironment;
+  getUserShell: GetUserShell;
   spawnPty: SpawnPty;
   emitAppEvent: EmitAppEvent;
   stat: Stat;
@@ -166,6 +168,11 @@ export interface ShellSessionArgs {
  * collide with one.
  */
 export const standaloneSessionId = "standalone";
+
+export interface ShellEnvOptions {
+  readonly shell?: string;
+  readonly reportStatus?: boolean;
+}
 
 export abstract class ShellSession {
   abstract readonly ShellType: string;
@@ -393,17 +400,21 @@ export abstract class ShellSession {
   }
 
   protected async getCachedShellEnv() {
-    const cacheKey = this.cluster?.id ?? standaloneSessionId;
+    // Keyed by the shell too: the environment carries the shell to start as
+    // `PTYSHELL`, and is the one of that shell, so a changed shell setting
+    // must not start the next terminal with the environment of the old one.
+    const shell = this.dependencies.getUserShell();
+    const cacheKey = `${this.cluster?.id ?? standaloneSessionId}:${shell}`;
 
     let env = this.dependencies.shellSessionEnvs.get(cacheKey);
 
     if (!env) {
-      env = await this.getShellEnv({ reportStatus: true });
+      env = await this.getShellEnv({ shell, reportStatus: true });
       this.dependencies.shellSessionEnvs.set(cacheKey, env);
     } else {
       // refresh env in the background, silently: the shell is already running
       // and its prompt must not be written over
-      this.getShellEnv().then((shellEnv: any) => {
+      this.getShellEnv({ shell }).then((shellEnv: any) => {
         this.dependencies.shellSessionEnvs.set(cacheKey, shellEnv);
       });
     }
@@ -412,16 +423,17 @@ export abstract class ShellSession {
   }
 
   /**
+   * @param shell the shell to start, by default the one the user setting gives now.
    * @param reportStatus whether the terminal is still waiting for this, and so
    * should be told about it. Defaults to `false` because the background
    * refresh of a warm cache must stay silent.
    */
-  protected async getShellEnv({ reportStatus = false } = {}) {
+  protected async getShellEnv({ shell: requestedShell, reportStatus = false }: ShellEnvOptions = {}) {
     if (reportStatus) {
       this.status.info("Resolving shell environment ...");
     }
 
-    const { shell, environment, error } = await this.dependencies.computeUserShellEnvironment();
+    const { shell, environment, error } = await this.dependencies.computeUserShellEnvironment(requestedShell);
 
     if (error !== undefined && reportStatus) {
       // The fallback to `process.env` is silent otherwise, and the abort
