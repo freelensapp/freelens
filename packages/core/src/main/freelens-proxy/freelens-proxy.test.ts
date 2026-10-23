@@ -8,6 +8,7 @@ import http from "node:http";
 import http2 from "node:http2";
 import https from "node:https";
 import tls from "node:tls";
+import { brotliCompressSync } from "node:zlib";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { Agent, fetch as undiciFetch } from "undici";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -474,6 +475,12 @@ describe("Freelens proxy kube api requests", () => {
           return;
         }
 
+        if (req.url.endsWith("/brotli")) {
+          res.writeHead(200, { "content-encoding": "br" }).end(brotliCompressSync("some-brotli-body"));
+
+          return;
+        }
+
         if (req.url.endsWith("/aborted")) {
           res.writeHead(200).write("some-partial-body");
           setTimeout(() => req.stream.close(http2.constants.NGHTTP2_INTERNAL_ERROR), 10);
@@ -762,6 +769,15 @@ describe("Freelens proxy kube api requests", () => {
 
     expect(session.closed || session.destroyed).toBe(false);
     expect(await getHttp2(session, "/api-kube/api/v1/pods")).toEqual({ statusCode: 200, body: "some-body" });
+  });
+
+  it("refuses a response of the target encoded with Brotli, without decoding it (CVE-2026-111497)", async () => {
+    const session = await connectSession();
+    const response = await getHttp2(session, "/api-kube/api/v1/brotli");
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body).not.toContain("some-brotli-body");
+    expect(response.body).toContain("CVE-2026-111497");
   });
 
   it("ends the response when the target aborts its own", async () => {
