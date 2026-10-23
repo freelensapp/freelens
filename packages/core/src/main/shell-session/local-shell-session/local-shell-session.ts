@@ -9,7 +9,7 @@ import { ShellSession } from "../shell-session";
 import type { GetBasenameOfPath } from "../../../common/path/get-basename.injectable";
 import type { JoinPaths } from "../../../common/path/join-paths.injectable";
 import type { ModifyTerminalShellEnv } from "../shell-env-modifier/modify-terminal-shell-env.injectable";
-import type { ShellSessionArgs, ShellSessionDependencies } from "../shell-session";
+import type { ShellEnvOptions, ShellSessionArgs, ShellSessionDependencies } from "../shell-session";
 
 export interface LocalShellSessionDependencies extends ShellSessionDependencies {
   /**
@@ -46,7 +46,7 @@ export class LocalShellSession extends ShellSession {
       .toLowerCase();
   }
 
-  protected async getShellEnv(options?: { reportStatus?: boolean }) {
+  protected async getShellEnv(options?: ShellEnvOptions) {
     const env = await super.getShellEnv(options);
     const { shellInitDirectory } = this.dependencies;
 
