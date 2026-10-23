@@ -7,6 +7,7 @@
  */
 
 import { registerInjectables as registerClusterInjectables } from "./cluster/register-injectables";
+import { registerInjectables as registerCustomTableColumnsInjectables } from "./custom-table-columns/register-injectables";
 import { registerInjectables as registerExtensionsInjectables } from "./extensions/register-injectables";
 import { registerInjectables as registerFavoritesInjectables } from "./favorites/register-injectables";
 import { registerInjectables as registerHotbarInjectables } from "./hotbar/register-injectables";
@@ -22,6 +23,11 @@ import type { DiContainerForInjection } from "@ogre-tools/injectable";
 export function registerInjectables(di: DiContainerForInjection): void {
   try {
     registerClusterInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerCustomTableColumnsInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }
