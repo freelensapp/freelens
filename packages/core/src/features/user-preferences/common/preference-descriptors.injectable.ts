@@ -65,6 +65,7 @@ export type PreferenceDescriptors = {
     ObservableMap<string, KubeconfigSyncValue>
   >;
   readonly editorConfiguration: PreferenceDescription<Partial<EditorConfiguration>, EditorConfiguration>;
+  readonly crdGroup: PreferenceDescription<string | undefined>;
   readonly terminalConfig: PreferenceDescription<Partial<TerminalConfig>, TerminalConfig>;
   readonly extensionRegistryUrl: PreferenceDescription<StoredExtensionRegistry, ExtensionRegistry>;
   readonly clusterPageMenuOrder: PreferenceDescription<ClusterPageMenuOrder | undefined>;
@@ -214,6 +215,10 @@ const userPreferenceDescriptorsInjectable = getInjectable({
       editorConfiguration: getPreferenceDescriptor<Partial<EditorConfiguration>, EditorConfiguration>({
         fromStore: (val) => merge(defaultEditorConfig, val),
         toStore: (val) => val,
+      }),
+      crdGroup: getPreferenceDescriptor<string | undefined>({
+        fromStore: (val) => val,
+        toStore: (val) => val || undefined,
       }),
       terminalConfig: getPreferenceDescriptor<Partial<TerminalConfig>, TerminalConfig>({
         fromStore: (val) => merge(defaultTerminalConfig, val),
