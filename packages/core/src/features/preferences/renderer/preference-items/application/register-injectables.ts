@@ -8,6 +8,7 @@
 
 import applicationPreferencePageInjectable from "./application-preference-page.injectable";
 import applicationPreferenceTabInjectable from "./application-preference-tab.injectable";
+import { registerInjectables as registerCustomResourceDomainGroupingInjectables } from "./custom-resource-domain-grouping/register-injectables";
 import { registerInjectables as registerExtensionInstallRegistryInjectables } from "./extension-install-registry/register-injectables";
 import { registerInjectables as registerHotbarAutoHideInjectables } from "./hotbar-auto-hide/register-injectables";
 import { registerInjectables as registerMenuBarInjectables } from "./menu-bar/register-injectables";
@@ -26,6 +27,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(applicationPreferenceTabInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerCustomResourceDomainGroupingInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }
