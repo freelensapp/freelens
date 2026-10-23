@@ -109,6 +109,12 @@ export type ItemListLayoutProps<Item extends ItemObject, PreLoadStores extends b
   isSelectable?: boolean; // show checkbox in rows for selecting items
   isConfigurable?: boolean;
   defaultHiddenTableColumns?: string[];
+
+  /**
+   * Rendered at the end of the column visibility menu, for actions that belong to the columns of
+   * this list rather than to their visibility.
+   */
+  renderColumnMenuFooter?: () => StrictReactNode;
   copyClassNameFromHeadCells?: boolean;
   sortingCallbacks?: TableSortCallbacks<Item>;
   tableProps?: Partial<TableProps<Item>>; // low-level table configuration
@@ -331,6 +337,7 @@ export class NonInjectedItemListLayout<I extends ItemObject, PreLoadStores exten
           getIsReady={() => this.isReady}
           isSelectable={this.props.isSelectable}
           isConfigurable={this.props.isConfigurable}
+          renderColumnMenuFooter={this.props.renderColumnMenuFooter}
           copyClassNameFromHeadCells={this.props.copyClassNameFromHeadCells}
           sortingCallbacks={this.props.sortingCallbacks}
           tableProps={this.props.tableProps}

@@ -9,7 +9,6 @@ import { namedCaptures } from "./named-captures";
 
 const slashDashSearch = /[/\\-]/g;
 const pathByBareDots = /(?<=\w)\./;
-const textBeforeFirstSquare = /^.*(?=\[)/g;
 const backSlash = /\\/g;
 const kubectlOptionPrefix = /^\$?\.?(?<pathExpression>.*)/;
 const sliceVersion = /\[]/g;
@@ -42,11 +41,9 @@ export function convertKubectlJsonPathToNodeJsonPath(jsonPath: string) {
 
   let { pathExpression } = captures;
 
-  if (pathExpression.match(slashDashSearch)) {
-    const [first, ...rest] = pathExpression.split(pathByBareDots);
-
-    pathExpression = `${convertToIndexNotation(first, true)}${rest.map((value) => convertToIndexNotation(value)).join("")}`;
-  }
+  pathExpression = splitOffBracketedSegments(pathExpression)
+    .map((segment, index) => (segment.bracketed ? segment.text : convertBareSegment(segment.text, index === 0)))
+    .join("");
 
   pathExpression = pathExpression.replace(trailingDotDot, "");
   pathExpression = pathExpression.replace(tripleDotName, "..$<trailing>");
@@ -59,27 +56,97 @@ export function convertKubectlJsonPathToNodeJsonPath(jsonPath: string) {
   return `${start}${pathExpression.replace(backSlash, "").replace(sliceVersion, "[0]")}`;
 }
 
-function convertToIndexNotation(key: string, firstItem = false) {
-  if (key.match(slashDashSearch)) {
-    if (key.includes("[")) {
-      // handle cases where key contains [...]
-      const keyToConvert = key.match(textBeforeFirstSquare); // get the text from the key before '['
+interface PathSegment {
+  text: string;
+  bracketed: boolean;
+}
 
-      if (keyToConvert && keyToConvert[0].match(slashDashSearch)) {
-        // check if that part contains illegal characters
-        return key.replace(keyToConvert[0], `['${keyToConvert[0]}']`); // surround key with '[' and ']'
-      } else {
-        return `.${key}`; // otherwise return as is with leading '.'
+/**
+ * Splits a path into the parts written in bracket notation and the parts written in dot notation.
+ *
+ * What is already inside brackets is a key, not a path, so it must survive untouched: a label key
+ * such as `['kops.k8s.io/instancegroup']` holds both dots and a slash, and treating either as
+ * something to convert would take the expression apart in the middle of the key.
+ */
+function splitOffBracketedSegments(pathExpression: string): PathSegment[] {
+  const segments: PathSegment[] = [];
+  let bare = "";
+  let index = 0;
+
+  while (index < pathExpression.length) {
+    if (pathExpression[index] !== "[") {
+      bare += pathExpression[index];
+      index += 1;
+      continue;
+    }
+
+    if (bare) {
+      segments.push({ text: bare, bracketed: false });
+      bare = "";
+    }
+
+    let bracketed = "";
+    let quote: string | undefined;
+    let escaped = false;
+
+    while (index < pathExpression.length) {
+      const char = pathExpression[index];
+
+      bracketed += char;
+      index += 1;
+
+      if (escaped) {
+        escaped = false;
+      } else if (char === "\\") {
+        escaped = true;
+      } else if (quote) {
+        if (char === quote) {
+          quote = undefined;
+        }
+      } else if (char === "'" || char === '"') {
+        quote = char;
+      } else if (char === "]") {
+        break;
       }
     }
 
-    return `['${key}']`;
-  } else {
-    // no illegal characters found, do not touch
-    const prefix = firstItem ? "" : ".";
-
-    return `${prefix}${key}`;
+    segments.push({ text: bracketed, bracketed: true });
   }
+
+  if (bare) {
+    segments.push({ text: bare, bracketed: false });
+  }
+
+  return segments;
+}
+
+/**
+ * Converts the keys of a dot notation part of a path to bracket notation, but only the keys that
+ * hold a character which dot notation cannot express.
+ */
+function convertBareSegment(segment: string, isStartOfPath: boolean) {
+  if (!segment.match(slashDashSearch)) {
+    return segment;
+  }
+
+  const startsWithDot = segment.startsWith(".");
+  const [first, ...rest] = (startsWithDot ? segment.slice(1) : segment).split(pathByBareDots);
+  const converted = `${convertToIndexNotation(first, isStartOfPath && !startsWithDot)}${rest
+    .map((value) => convertToIndexNotation(value))
+    .join("")}`;
+
+  return converted;
+}
+
+function convertToIndexNotation(key: string, firstItem = false) {
+  if (key.match(slashDashSearch)) {
+    return `['${key}']`;
+  }
+
+  // no illegal characters found, do not touch
+  const prefix = firstItem ? "" : ".";
+
+  return `${prefix}${key}`;
 }
 
 export function formatJSONValue(value: unknown): string {
@@ -98,25 +165,80 @@ export function formatJSONValue(value: unknown): string {
   return String(value);
 }
 
+interface CompiledJsonPath {
+  query: string;
+  isSlice: boolean;
+}
+
 /**
- * This function is a safer version of `JSONPath.value(obj, path)` with untrusted jsonpath strings
+ * Parsing an expression is the expensive part of `safeJSONPathValue`, and the same handful of
+ * expressions are evaluated once per row of a list. Keep the compiled form around so that cost is
+ * paid once per expression instead of once per cell.
+ *
+ * A failed parse is cached as `null` so a malformed expression warns once rather than once per row.
  */
-export function safeJSONPathValue(obj: object, path: string): unknown {
+const compiledJsonPaths = new Map<string, CompiledJsonPath | null>();
+
+const maxCompiledJsonPaths = 500;
+
+function compileJsonPath(path: string): CompiledJsonPath | null {
+  const cached = compiledJsonPaths.get(path);
+
+  if (cached !== undefined) {
+    return cached;
+  }
+
+  let compiled: CompiledJsonPath | null = null;
+
   try {
     const parsedPath = JSONPath.parse(convertKubectlJsonPathToNodeJsonPath(path));
     const isSlice = parsedPath.some(
       (exp: any) => exp.expression.type === "slice" || exp.expression.type === "wildcard",
     );
-    const value = JSONPath.query(obj, JSONPath.stringify(parsedPath), isSlice ? Infinity : 1);
 
-    if (isSlice) {
+    compiled = { query: JSONPath.stringify(parsedPath), isSlice };
+  } catch (error) {
+    console.warn("[JSON-PATH]: failed to parse jsonpath", error);
+  }
+
+  if (compiledJsonPaths.size >= maxCompiledJsonPaths) {
+    compiledJsonPaths.clear();
+  }
+
+  compiledJsonPaths.set(path, compiled);
+
+  return compiled;
+}
+
+/**
+ * Whether an expression can be evaluated at all, for telling someone that what they typed is not a
+ * path before it is saved and renders an empty cell on every row.
+ */
+export function isValidJSONPath(path: string): boolean {
+  return compileJsonPath(path) !== null;
+}
+
+/**
+ * This function is a safer version of `JSONPath.value(obj, path)` with untrusted jsonpath strings
+ */
+export function safeJSONPathValue(obj: object, path: string): unknown {
+  const compiled = compileJsonPath(path);
+
+  if (!compiled) {
+    return undefined;
+  }
+
+  try {
+    const value = JSONPath.query(obj, compiled.query, compiled.isSlice ? Infinity : 1);
+
+    if (compiled.isSlice) {
       return value;
     }
 
     return value[0];
   } catch (error) {
     // something failed
-    console.warn("[JSON-PATH]: failed to parse jsonpath", error);
+    console.warn("[JSON-PATH]: failed to evaluate jsonpath", error);
 
     return undefined;
   }

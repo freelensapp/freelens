@@ -80,6 +80,7 @@ describe("<PodDisruptionBudgets />", () => {
           has: () => false,
         }),
       } as any,
+      customTableColumns: [] as any,
     }));
   });
 
