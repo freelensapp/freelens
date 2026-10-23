@@ -159,8 +159,15 @@ mac:
       to: ./${arch}/helm
   publish: null
 
+dmg:
+  icon: build/installerIcon.icns
+
 pkg:
   license: static/build/license.txt
+  background:
+    file: build/installerBackground.png
+    alignment: bottomleft
+    scaling: none
 
 ## For Windows targets
 win:
@@ -182,6 +189,7 @@ msi:
 
 nsis:
   include: build/installer.nsh
+  installerIcon: build/installerIcon.ico
   oneClick: false
   allowElevation: true
   createStartMenuShortcut: true
