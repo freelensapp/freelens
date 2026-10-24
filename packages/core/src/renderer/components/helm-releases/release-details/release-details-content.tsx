@@ -155,7 +155,7 @@ const ReleaseValues = observer(({ releaseId, configuration, onlyUserSuppliedValu
 
         <MonacoEditor
           id={`helm-release-configuration-${releaseId}`}
-          style={{ height: 288 }}
+          style={{ minHeight: 228 }}
           value={configuration.nonSavedValue.get()}
           onChange={configuration.onChange}
         />
