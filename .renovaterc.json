@@ -88,6 +88,12 @@
       "matchDepNames": ["@types/node", "@kubernetes/client-node>@types/node"]
     },
     {
+      "description": "One PR for http-proxy-3 and the override that points http-proxy at it, which are the same package and must stay on the same version.",
+      "groupName": "http-proxy-3",
+      "groupSlug": "http-proxy-3",
+      "matchDepNames": ["http-proxy-3", "http-proxy"]
+    },
+    {
       "description": "Packages that misuse semver.",
       "matchDepNames": ["node-pty"],
       "versioning": "deb",
