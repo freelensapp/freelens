@@ -131,7 +131,7 @@ trunk check
 pnpm trunk:check
 ```
 
-For main project TypeScript and HTML files, you can run Biome directly:
+For main project TypeScript, HTML, CSS and SCSS files, you can run Biome directly:
 
 ```sh
 biome check

@@ -743,7 +743,7 @@ extension.
 5. **Follow existing patterns** - grep for similar implementations
 6. **Test changes** before committing
 7. **Run validation after file changes (especially before commit):** run `trunk check` (or `pnpm trunk check` if `trunk` is not installed locally)
-8. **For main project TypeScript and HTML files:** run `pnpm biome check` (`--write` to apply the fixes). Biome is not a dependency of the project: the `biome` script of the root `package.json` runs the pinned version through `pnpm dlx`. A bare `biome` or `pnpm exec biome` runs whatever `biome` is on `PATH`, such as a Homebrew one, whose version may format differently and rewrite code the change does not touch.
+8. **For main project TypeScript, HTML, CSS and SCSS files:** run `pnpm biome check` (`--write` to apply the fixes). Biome is not a dependency of the project: the `biome` script of the root `package.json` runs the pinned version through `pnpm dlx`. A bare `biome` or `pnpm exec biome` runs whatever `biome` is on `PATH`, such as a Homebrew one, whose version may format differently and rewrite code the change does not touch.
 9. **For other file types:** use `trunk check` (or `pnpm trunk check` if `trunk` is not installed locally)
 10. **Do not use Antropic Fable for coding tasks** — Fable may be used only for planning,
     analysis, and thinking through problems. When writing or editing code,
@@ -1084,8 +1084,8 @@ The following CLI tools are explicitly allowed in the workflow:
 Before committing any changes, apply the same validation rules as human
 developers:
 
-- Run `pnpm biome check --write` to auto-format TypeScript/JavaScript and
-  HTML files (or `pnpm biome check` to check without writing).
+- Run `pnpm biome check --write` to auto-format TypeScript/JavaScript, HTML,
+  CSS and SCSS files (or `pnpm biome check` to check without writing).
 - Run `trunk check` to validate all other file types. The workflow puts the
   CLI on `PATH`, so call it directly; `pnpm trunk check` works too but
   re-downloads the launcher and its linters. It only inspects changed files by

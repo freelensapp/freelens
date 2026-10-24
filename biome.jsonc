@@ -25,6 +25,13 @@
       }
     }
   },
+  "css": {
+    "parser": {
+      // The core stylesheets use Tailwind v4 at-rules: @apply, @config,
+      // @custom-variant and @reference.
+      "tailwindDirectives": true
+    }
+  },
   "files": {
     // Markdown is left to markdownlint and YAML to yamlfmt and yamllint.
     "includes": [

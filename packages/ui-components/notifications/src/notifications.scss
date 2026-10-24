@@ -64,14 +64,7 @@ $top-offset: 120px;
       }
     }
 
-    @each $status,
-      $color
-        in (
-          ok: var(--colorOk),
-          error: var(--colorError),
-          info: var(--colorInfo)
-        )
-    {
+    @each $status, $color in (ok: var(--colorOk), error: var(--colorError), info: var(--colorInfo)) {
       &.#{$status} {
         background: $color;
         color: $color-white;

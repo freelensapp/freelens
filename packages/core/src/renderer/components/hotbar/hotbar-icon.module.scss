@@ -6,9 +6,11 @@
 
 .HotbarIcon {
   --corner: 0px 0px 0px 1px var(--clusterMenuBackground);
+  // biome-ignore format: Biome does not indent the continuation lines of a custom property
   --iconActiveShadow:
     var(--corner), var(--corner), 0 0 0px 3px var(--clusterMenuBackground),
     0 0 0px 6px var(--textColorAccent);
+  // biome-ignore format: Biome does not indent the continuation lines of a custom property
   --iconHoverShadow:
     0 0 0px 3px var(--clusterMenuBackground),
     0 0 0px 6px var(--clusterMenuCellOutline);
