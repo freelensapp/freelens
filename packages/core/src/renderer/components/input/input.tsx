@@ -7,18 +7,18 @@
 import "./input.scss";
 
 import { Icon } from "@freelensapp/icon";
-import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
 import { Tooltip } from "@freelensapp/tooltip";
 import { cssNames, debouncePromise, isPromiseSettledFulfilled } from "@freelensapp/utilities";
 import autoBindReact from "auto-bind/react";
 import { debounce, uniqueId } from "es-toolkit/compat";
 import React from "react";
 import * as uuid from "uuid";
-import createStorageInjectable from "../../utils/create-storage/create-storage.injectable";
 import * as Validators from "./input_validators";
 
 import type { TooltipProps } from "@freelensapp/tooltip";
 import type { SingleOrMany, StrictReactNode } from "@freelensapp/utilities";
+
+import type { CreateStorage } from "../../utils/create-storage/create-storage.injectable";
 
 import type { DOMAttributes, InputHTMLAttributes, TextareaHTMLAttributes } from "react";
 
@@ -96,6 +96,7 @@ export type InputProps = Omit<InputElementProps, "onChange" | "onSubmit"> & {
   validators?: SingleOrMany<InputValidator>;
   blurOnEnter?: boolean;
   searchHistory?: SearchHistoryConfig;
+  createStorage?: CreateStorage;
   onChange?(value: string, evt: React.ChangeEvent<InputElement>): void;
   onSubmit?(value: string, evt: React.KeyboardEvent<InputElement>): void;
 };
@@ -136,10 +137,8 @@ let inputHistoryStorage:
     }
   | undefined;
 
-const getInputHistoryStorage = () => {
+const getInputHistoryStorage = (createStorage: CreateStorage) => {
   if (!inputHistoryStorage) {
-    const di = getLegacyGlobalDiForExtensionApi();
-    const createStorage = di.inject(createStorageInjectable);
     const storage = createStorage<PersistedInputHistoryStore>(persistedInputHistoryStorageKey, {
       history: {},
     });
@@ -243,13 +242,23 @@ export class Input extends React.Component<InputProps, State> {
   }
 
   private getStoredSearchHistory(): PersistedInputHistoryStore {
-    const store = getInputHistoryStorage().get();
+    const { createStorage } = this.props;
 
-    return store;
+    if (!createStorage) {
+      return { history: {} };
+    }
+
+    return getInputHistoryStorage(createStorage).get();
   }
 
   private saveStoredSearchHistory(state: PersistedInputHistoryStore) {
-    getInputHistoryStorage().set(state);
+    const { createStorage } = this.props;
+
+    if (!createStorage) {
+      return;
+    }
+
+    getInputHistoryStorage(createStorage).set(state);
   }
 
   private getHistoryEntry(config: EnabledSearchHistoryConfig) {
@@ -763,6 +772,7 @@ export class Input extends React.Component<InputProps, State> {
       trim,
       blurOnEnter,
       searchHistory: _searchHistory, // excluded from passing to input-element
+      createStorage: _createStorage, // excluded from passing to input-element
       ...inputProps
     } = this.props;
     const { focused, dirty, valid, validating, errors } = this.state;
