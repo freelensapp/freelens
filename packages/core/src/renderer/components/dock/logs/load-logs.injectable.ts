@@ -14,11 +14,7 @@ import type { IComputedValue } from "mobx";
 import type { LogTabData } from "./tab-store";
 
 export interface LoadLogs {
-  (
-    tabId: string,
-    pod: IComputedValue<Pod | undefined>,
-    logTabData: IComputedValue<LogTabData | undefined>,
-  ): Promise<void>;
+  (tabId: string, pods: IComputedValue<Pod[]>, logTabData: IComputedValue<LogTabData | undefined>): Promise<void>;
 }
 
 const loadLogsInjectable = getInjectable({
@@ -27,7 +23,7 @@ const loadLogsInjectable = getInjectable({
   instantiate: (di): LoadLogs => {
     const logStore = di.inject(logStoreInjectable);
 
-    return (tabId, pod, logTabData) => logStore.load(tabId, pod, logTabData);
+    return (tabId, pods, logTabData) => logStore.load(tabId, pods, logTabData);
   },
 });
 
