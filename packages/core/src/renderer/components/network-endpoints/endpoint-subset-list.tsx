@@ -6,11 +6,12 @@
 
 import "./endpoint-subset-list.scss";
 
+import { Link } from "@freelensapp/routing";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
+import { observableRef } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
-import { Link } from "react-router-dom";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";
 import { Table, TableCell, TableHead, TableRow } from "../table";
@@ -32,19 +33,31 @@ interface Dependencies {
 
 @observer
 class NonInjectedEndpointSubsetList extends React.Component<EndpointSubsetListProps & Dependencies> {
+  // mobx-react 9 forbids reading this.props inside a derivation. getAddressTableRow and
+  // getNotReadyAddressTableRow are invoked from the Table row renderer (a derivation
+  // other than this component's own render), so they (and renderAddressTableRow they
+  // call) read props from this observable snapshot, refreshed on every update, instead
+  // of this.props.
+  @observableRef private accessor observableProps: Readonly<EndpointSubsetListProps & Dependencies>;
+
   constructor(props: EndpointSubsetListProps & Dependencies) {
     super(props);
+    this.observableProps = props;
     autoBindReact(this);
   }
 
+  componentDidUpdate() {
+    this.observableProps = this.props;
+  }
+
   getAddressTableRow(ip: string) {
-    const address = this.props.subset.addresses.find((address) => address.ip == ip);
+    const address = this.observableProps.subset.addresses.find((address) => address.ip == ip);
 
     return this.renderAddressTableRow(address);
   }
 
   getNotReadyAddressTableRow(ip: string) {
-    const address = this.props.subset.notReadyAddresses.find((address) => address.ip == ip);
+    const address = this.observableProps.subset.notReadyAddresses.find((address) => address.ip == ip);
 
     return this.renderAddressTableRow(address);
   }
@@ -52,14 +65,14 @@ class NonInjectedEndpointSubsetList extends React.Component<EndpointSubsetListPr
   renderAddressTable(addresses: EndpointAddress[], virtual: boolean) {
     return (
       <div>
-        <div className="title flex gaps">Addresses</div>
+        <div className="title flex gap-2">Addresses</div>
         <Table
           items={addresses}
           selectable={false}
           virtual={virtual}
           scrollable={false}
           getTableRow={this.getAddressTableRow}
-          className="box grow"
+          className="grow shrink-0 basis-0"
         >
           <TableHead>
             <TableCell className="ip">IP</TableCell>
@@ -77,7 +90,7 @@ class NonInjectedEndpointSubsetList extends React.Component<EndpointSubsetListPr
       return undefined;
     }
 
-    const { endpoint, getDetailsUrl, apiManager } = this.props;
+    const { endpoint, getDetailsUrl, apiManager } = this.observableProps;
 
     return (
       <TableRow key={address.ip} nowrap>
@@ -102,17 +115,17 @@ class NonInjectedEndpointSubsetList extends React.Component<EndpointSubsetListPr
     const notReadyAddressesVirtual = notReadyAddresses.length > 100;
 
     return (
-      <div className="EndpointSubsetList flex column">
+      <div className="EndpointSubsetList flex flex-col">
         {addresses.length > 0 && (
           <div>
-            <div className="title flex gaps">Addresses</div>
+            <div className="title flex gap-2">Addresses</div>
             <Table
               items={addresses}
               selectable={false}
               virtual={addressesVirtual}
               scrollable={false}
               getTableRow={this.getAddressTableRow}
-              className="box grow"
+              className="grow shrink-0 basis-0"
             >
               <TableHead>
                 <TableCell className="ip">IP</TableCell>
@@ -126,14 +139,14 @@ class NonInjectedEndpointSubsetList extends React.Component<EndpointSubsetListPr
 
         {notReadyAddresses.length > 0 && (
           <div>
-            <div className="title flex gaps">Not Ready Addresses</div>
+            <div className="title flex gap-2">Not Ready Addresses</div>
             <Table
               items={notReadyAddresses}
               selectable
               virtual={notReadyAddressesVirtual}
               scrollable={false}
               getTableRow={this.getNotReadyAddressTableRow}
-              className="box grow"
+              className="grow shrink-0 basis-0"
             >
               <TableHead>
                 <TableCell className="ip">IP</TableCell>
@@ -146,15 +159,17 @@ class NonInjectedEndpointSubsetList extends React.Component<EndpointSubsetListPr
           </div>
         )}
 
-        <div className="title flex gaps">Ports</div>
-        <Table selectable={false} virtual={false} scrollable={false} className="box grow">
+        <div className="title flex gap-2">Ports</div>
+        <Table selectable={false} virtual={false} scrollable={false} className="grow shrink-0 basis-0">
           <TableHead>
             <TableCell className="port">Port</TableCell>
             <TableCell className="name">Name</TableCell>
             <TableCell className="protocol">Protocol</TableCell>
           </TableHead>
           {ports.map((port) => (
-            <TableRow key={port.port} nowrap>
+            // The same port number may be exposed under several protocols, so the number
+            // alone is not a unique key.
+            <TableRow key={`${port.port}-${port.protocol}`} nowrap>
               <TableCell className="name">{port.port}</TableCell>
               <TableCell className="name">{port.name}</TableCell>
               <TableCell className="node">{port.protocol}</TableCell>

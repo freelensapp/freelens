@@ -5,18 +5,36 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { withTimeout } from "../../common/fetch/timeout-controller";
+import { withStallTimeout, withTimeout } from "../../common/fetch/timeout-controller";
 import proxyFetchInjectable from "./proxy-fetch.injectable";
 
+import type { FetchRequestInit, FetchResponse } from "@freelensapp/json-api";
 import type { AsyncResult } from "@freelensapp/utilities";
 
-import type { NodeFetchRequestInit, NodeFetchResponse } from "../../common/fetch/node-fetch.injectable";
-
+/**
+ * The payload of {@link downloadBinaryChannel}, so it must stay serializable.
+ */
 export interface DownloadBinaryOptions {
   timeout?: number;
 }
 
-export type DownloadBinary = (url: string, opts?: DownloadBinaryOptions) => AsyncResult<Buffer, string>;
+export interface DownloadProgress {
+  transferred: number;
+  /** the value of the `content-length` header, when the server sent one */
+  total?: number;
+}
+
+/**
+ * The options only a caller within the same process can pass, because they are
+ * not serializable.
+ */
+export interface DownloadBinaryLocalOptions extends DownloadBinaryOptions {
+  onProgress?: (progress: DownloadProgress) => void;
+  /** abort when no bytes arrive for this long (headers included) */
+  stallTimeout?: number;
+}
+
+export type DownloadBinary = (url: string, opts?: DownloadBinaryLocalOptions) => AsyncResult<Buffer, string>;
 
 const downloadBinaryInjectable = getInjectable({
   id: "download-binary",
@@ -24,40 +42,91 @@ const downloadBinaryInjectable = getInjectable({
     const fetch = di.inject(proxyFetchInjectable);
 
     return async (url, opts) => {
-      let result: NodeFetchResponse;
-      const fetchOpts = {} as NodeFetchRequestInit;
+      let result: FetchResponse;
+      const fetchOpts = {} as FetchRequestInit;
+      const stall = opts?.stallTimeout ? withStallTimeout(opts.stallTimeout) : undefined;
+      const signals = [opts?.timeout ? withTimeout(opts.timeout).signal : undefined, stall?.controller.signal].filter(
+        (signal) => signal !== undefined,
+      );
 
-      if (opts?.timeout) {
-        const controller = withTimeout(opts.timeout);
-        fetchOpts.signal = controller.signal;
+      if (signals.length > 0) {
+        fetchOpts.signal = signals.length === 1 ? signals[0] : AbortSignal.any(signals);
       }
 
       try {
-        result = await fetch(url, fetchOpts);
-      } catch (error) {
-        return {
-          callWasSuccessful: false,
-          error: String(error),
-        };
-      }
+        try {
+          result = await fetch(url, fetchOpts);
+        } catch (error) {
+          return {
+            callWasSuccessful: false,
+            error: String(error),
+          };
+        }
 
-      if (result.status < 200 || 300 <= result.status) {
-        return {
-          callWasSuccessful: false,
-          error: result.statusText,
-        };
-      }
+        if (result.status < 200 || 300 <= result.status) {
+          return {
+            callWasSuccessful: false,
+            error: result.statusText,
+          };
+        }
 
-      try {
+        const { onProgress } = opts ?? {};
+
+        // The body is streamed either to report progress or to re-arm the
+        // stall timer on every chunk; `arrayBuffer()` would expose neither.
+        if ((!onProgress && !stall) || !result.body) {
+          try {
+            return {
+              callWasSuccessful: true,
+              response: Buffer.from(await result.arrayBuffer()),
+            };
+          } catch (error) {
+            return {
+              callWasSuccessful: false,
+              error: String(error),
+            };
+          }
+        }
+
+        const contentLength = Number(result.headers.get("content-length"));
+        const total = Number.isFinite(contentLength) && contentLength > 0 ? contentLength : undefined;
+        const chunks: Buffer[] = [];
+        let transferred = 0;
+
+        // Reported as soon as the headers land, so that the indicator appears
+        // before the first chunk does.
+        onProgress?.({ transferred, total });
+
+        try {
+          const reader = result.body.getReader();
+
+          for (;;) {
+            const { done, value } = await reader.read();
+
+            if (done) {
+              break;
+            }
+
+            const buffer = Buffer.from(value);
+
+            chunks.push(buffer);
+            transferred += buffer.length;
+            stall?.progressed();
+            onProgress?.({ transferred, total });
+          }
+        } catch (error) {
+          return {
+            callWasSuccessful: false,
+            error: String(error),
+          };
+        }
+
         return {
           callWasSuccessful: true,
-          response: Buffer.from(await result.arrayBuffer()),
+          response: Buffer.concat(chunks),
         };
-      } catch (error) {
-        return {
-          callWasSuccessful: false,
-          error: String(error),
-        };
+      } finally {
+        stall?.done();
       }
     };
   },

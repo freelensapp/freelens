@@ -1,24 +1,26 @@
 import { registerFeature } from "@freelensapp/feature-core";
 import { type EnlistMessageChannelListener, enlistMessageChannelListenerInjectionToken } from "@freelensapp/messaging";
 import { createContainer } from "@ogre-tools/injectable";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { messagingFeatureForMain } from "../feature";
 import ipcMainInjectable from "../ipc-main/ipc-main.injectable";
 
 import type { IpcMain, IpcMainEvent } from "electron";
+import type { Mock } from "vitest";
 
 describe("enlist message channel listener in main", () => {
   let enlistMessageChannelListener: EnlistMessageChannelListener;
   let ipcMainStub: IpcMain;
-  let onMock: jest.Mock;
-  let offMock: jest.Mock;
+  let onMock: Mock;
+  let offMock: Mock;
 
   beforeEach(() => {
     const di = createContainer("irrelevant");
 
     registerFeature(di, messagingFeatureForMain);
 
-    onMock = jest.fn();
-    offMock = jest.fn();
+    onMock = vi.fn();
+    offMock = vi.fn();
 
     ipcMainStub = {
       on: onMock,
@@ -31,11 +33,11 @@ describe("enlist message channel listener in main", () => {
   });
 
   describe("when called", () => {
-    let handlerMock: jest.Mock;
+    let handlerMock: Mock;
     let disposer: () => void;
 
     beforeEach(() => {
-      handlerMock = jest.fn();
+      handlerMock = vi.fn();
 
       disposer = enlistMessageChannelListener({
         id: "some-listener",

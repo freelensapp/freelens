@@ -6,6 +6,11 @@
 
 $color-white: rgb(255, 255, 255);
 
+// Below the close button of settings-like pages (Extensions, Preferences),
+// which sits 60px from the top and is followed by its "ESC" label, so a
+// notification that does not hide on its own never covers it.
+$top-offset: 120px;
+
 @mixin hidden-scrollbar {
   overflow: auto;
   // Chrome, Safari
@@ -19,11 +24,14 @@ $color-white: rgb(255, 255, 255);
 .Notifications {
   @include hidden-scrollbar;
 
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
   position: absolute;
   right: 0;
-  top: 0;
+  top: $top-offset;
   padding: 8px * 2;
-  max-height: 100vh;
+  max-height: calc(100vh - #{$top-offset});
   z-index: 100000;
   height: min-content !important;
 
@@ -32,6 +40,7 @@ $color-white: rgb(255, 255, 255);
   }
 
   .notification {
+    display: flex;
     flex: 0 0;
     padding: 8px * 1.5;
     border-radius: 3px;
@@ -44,6 +53,7 @@ $color-white: rgb(255, 255, 255);
     }
 
     > .message {
+      flex: 1 0;
       white-space: pre-line;
       padding-left: 8px;
       padding-right: 8px * 2;
@@ -69,7 +79,7 @@ $color-white: rgb(255, 255, 255);
       }
     }
 
-    .box.close-icon {
+    .close-icon {
       padding: 2px;
     }
   }

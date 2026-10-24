@@ -9,7 +9,7 @@ import "./deployment-details.scss";
 import { Deployment } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import { Badge } from "../badge";
@@ -40,8 +40,14 @@ interface Dependencies {
 
 @observer
 class NonInjectedDeploymentDetails extends React.Component<DeploymentDetailsProps & Dependencies> {
+  private readonly disposers: (() => void)[] = [];
+
   componentDidMount() {
-    disposeOnUnmount(this, [this.props.subscribeStores([this.props.replicaSetStore])]);
+    this.disposers.push(this.props.subscribeStores([this.props.replicaSetStore]));
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   render() {

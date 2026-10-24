@@ -5,7 +5,7 @@
  */
 
 // Convert object's keys to camelCase format
-import { camelCase } from "lodash";
+import { camelCase } from "es-toolkit";
 import { object } from "./object";
 import { isObject, isString } from "./type-narrowing";
 

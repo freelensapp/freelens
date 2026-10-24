@@ -6,18 +6,16 @@
 
 import { Icon } from "@freelensapp/icon";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { matches } from "lodash/fp";
 import { observer } from "mobx-react";
-import React from "react";
 import { Select } from "../../../../../../renderer/components/select";
 import activeHelmRepositoriesInjectable from "../active-helm-repositories.injectable";
 import publicHelmRepositoriesInjectable from "./public-helm-repositories/public-helm-repositories.injectable";
 import selectHelmRepositoryInjectable from "./select-helm-repository/select-helm-repository.injectable";
 
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import type { SingleValue } from "react-select";
 
 import type { HelmRepo } from "../../../../../../common/helm/helm-repo";
+import type { IAsyncComputed } from "../../../../../../common/utils/async-computed";
 import type { SelectOption } from "../../../../../../renderer/components/select";
 
 interface Dependencies {
@@ -36,7 +34,9 @@ const NonInjectedAddingOfPublicHelmRepository = observer(
     const repositoryOptions = dereferencesPublicRepositories.map((repository) => ({
       value: repository,
       label: repository.name,
-      isSelected: !!dereferencesActiveRepositories.find(matches({ name: repository.name })),
+      isSelected: !!dereferencesActiveRepositories.find(
+        (activeRepository) => activeRepository.name === repository.name,
+      ),
     }));
 
     return (
@@ -50,7 +50,7 @@ const NonInjectedAddingOfPublicHelmRepository = observer(
         value={dereferencesPublicRepositories}
         formatOptionLabel={formatOptionLabel}
         controlShouldRenderValue={false}
-        className="box grow"
+        className="grow shrink-0 basis-0"
         themeName="lens"
       />
     );
@@ -70,8 +70,8 @@ export const AddingOfPublicHelmRepository = withInjectables<Dependencies>(
 );
 
 const formatOptionLabel = ({ value, isSelected }: SelectOption<HelmRepo>) => (
-  <div className="flex gaps">
+  <div className="flex gap-2">
     <span>{value.name}</span>
-    {isSelected && <Icon small material="check" className="box right" />}
+    {isSelected && <Icon small material="check" className="ml-auto mr-0" />}
   </div>
 );

@@ -6,11 +6,13 @@
 
 import { isObject } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import yaml from "js-yaml";
-import execHelmInjectable from "../../../exec-helm/exec-helm.injectable";
+import * as yaml from "js-yaml";
+import execHelmInjectable, { proxyKubeconfigHelmOptions } from "../../../exec-helm/exec-helm.injectable";
 
 import type { KubeJsonApiData, KubeJsonApiDataList } from "@freelensapp/kube-object";
 import type { AsyncResult } from "@freelensapp/utilities";
+
+import type { ProxyKubeconfigPaths } from "../../../../kubeconfig-manager/kubeconfig-manager";
 
 const requestHelmManifestInjectable = getInjectable({
   id: "request-helm-manifest",
@@ -21,17 +23,12 @@ const requestHelmManifestInjectable = getInjectable({
     return async (
       name: string,
       namespace: string,
-      kubeconfigPath: string,
+      kubeconfig: ProxyKubeconfigPaths,
     ): AsyncResult<(KubeJsonApiData | KubeJsonApiDataList)[]> => {
-      const result = await execHelm([
-        "get",
-        "manifest",
-        name,
-        "--namespace",
-        namespace,
-        "--kubeconfig",
-        kubeconfigPath,
-      ]);
+      const result = await execHelm(
+        ["get", "manifest", name, "--namespace", namespace, "--kubeconfig", kubeconfig.kubeconfigPath],
+        proxyKubeconfigHelmOptions(kubeconfig),
+      );
 
       if (!result.callWasSuccessful) {
         return { callWasSuccessful: false, error: result.error.message };

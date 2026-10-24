@@ -11,7 +11,7 @@ import { type PortStatus, Service } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { formatDuration } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observer } from "mobx-react";
 import React from "react";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import portForwardStoreInjectable from "../../port-forward/port-forward-store/port-forward-store.injectable";
@@ -51,10 +51,16 @@ function getExternalProtocol(service: Service): string | undefined {
 
 @observer
 class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & Dependencies> {
+  private readonly disposers: (() => void)[] = [];
+
   componentDidMount() {
     const { subscribeStores, endpointSliceStore, portForwardStore } = this.props;
 
-    disposeOnUnmount(this, [subscribeStores([endpointSliceStore], {}), portForwardStore.watch()]);
+    this.disposers.push(subscribeStores([endpointSliceStore], {}), portForwardStore.watch());
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   render() {
@@ -149,7 +155,7 @@ class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & De
               loadBalancerStatus.ingress?.map((lb) => {
                 return (
                   <>
-                    <div className="title flex gaps">
+                    <div className="title flex gap-2">
                       <Icon small material="list" />
                     </div>
                     <DrawerItem name="Hostname" hidden={!lb.hostname}>
@@ -172,7 +178,7 @@ class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & De
                         }}
                         sortByDefault={{ sortBy: "port", orderBy: "asc" }}
                         sortSyncWithUrl={false}
-                        className="box grow LoadBalancerStatusPorts"
+                        className="grow shrink-0 basis-0 LoadBalancerStatusPorts"
                       >
                         <TableHead flat sticky={false}>
                           <TableCell className="port" sortBy="port">
@@ -258,7 +264,7 @@ class NonInjectedServiceDetails extends React.Component<ServiceDetailsProps & De
             <DrawerTitle>Conditions</DrawerTitle>
             {loadBalancerStatus?.conditions?.map((condition, idx) => (
               <div className="condition" key={idx}>
-                <div className="title flex gaps">
+                <div className="title flex gap-2">
                   <Icon small material="list" />
                 </div>
                 <DrawerItem name="Last Transition Time">{condition.lastTransitionTime}</DrawerItem>

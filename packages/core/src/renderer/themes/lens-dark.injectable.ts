@@ -7,9 +7,13 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { lensThemeDeclarationInjectionToken } from "./declaration";
 
+import type { Injectable } from "@ogre-tools/injectable";
+import type { ReadonlyDeep } from "type-fest";
+
 import type { LensTheme } from "./lens-theme";
 
-const lensDarkThemeInjectable = getInjectable({
+// Annotated for declaration emit; see ./declaration.ts.
+const lensDarkThemeInjectable: Injectable<LensTheme, ReadonlyDeep<LensTheme>> = getInjectable({
   id: "lens-dark-theme",
   instantiate: () => {
     const theme: LensTheme = {
@@ -91,9 +95,9 @@ const lensDarkThemeInjectable = getInjectable({
         logsForeground: "#ffffff",
         logRowHoverBackground: "#35373a",
         dialogTextColor: "#87909c",
-        dialogBackground: "#ffffff",
+        dialogBackground: "#262b2f",
         dialogHeaderBackground: "#36393e",
-        dialogFooterBackground: "#f4f4f4",
+        dialogFooterBackground: "#2e3136",
         drawerTogglerBackground: "#2f343a",
         drawerTitleText: "#ffffff",
         drawerSubtitleBackground: "#373a3e",

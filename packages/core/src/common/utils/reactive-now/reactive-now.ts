@@ -24,7 +24,7 @@ export function reactiveNow(interval?: number | "frame") {
   }
 
   // Note: This is the kludge until https://github.com/mobxjs/mobx-utils/issues/306 is fixed
-  const synchronizationIsEnabled = !process.env.JEST_WORKER_ID;
+  const synchronizationIsEnabled = !process.env.JEST_WORKER_ID && !process.env.VITEST_WORKER_ID;
 
   if (!tickers[interval] || !synchronizationIsEnabled) {
     if (typeof interval === "number") tickers[interval] = createIntervalTicker(interval);

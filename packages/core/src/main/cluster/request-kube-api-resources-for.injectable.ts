@@ -7,8 +7,9 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import k8sRequestInjectable from "../k8s-request.injectable";
 
-import type { V1APIResourceList } from "@freelensapp/kubernetes-client-node";
 import type { AsyncResult } from "@freelensapp/utilities";
+
+import type { V1APIResourceList } from "@kubernetes/client-node";
 
 import type { Cluster } from "../../common/cluster/cluster";
 import type { KubeApiResource } from "../../common/rbac";
@@ -24,7 +25,7 @@ const requestKubeApiResourcesForInjectable = getInjectable({
     const k8sRequest = di.inject(k8sRequestInjectable);
 
     return (cluster) =>
-      async ({ group, path }) => {
+      async ({ group, version, path }) => {
         try {
           const { resources } = (await k8sRequest(cluster, path)) as V1APIResourceList;
 
@@ -34,6 +35,7 @@ const requestKubeApiResourcesForInjectable = getInjectable({
               apiName: resource.name,
               kind: resource.kind,
               group,
+              version,
               namespaced: resource.namespaced,
             })),
           };

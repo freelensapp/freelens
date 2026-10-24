@@ -4,26 +4,28 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import focusWindowInjectable from "../../renderer/navigation/focus-window.injectable";
 
 import type { RenderResult } from "@testing-library/react";
+import type { Mock } from "vitest";
 
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 // TODO: Make components free of side effects by making them deterministic
-jest.mock("../../renderer/components/input/input");
+vi.mock("../../renderer/components/input/input");
 
 describe("extensions - navigation using application menu", () => {
   let builder: ApplicationBuilder;
   let rendered: RenderResult;
-  let focusWindowMock: jest.Mock;
+  let focusWindowMock: Mock;
 
   beforeEach(async () => {
     builder = getApplicationBuilder();
 
     builder.beforeWindowStart(({ windowDi }) => {
-      focusWindowMock = jest.fn();
+      focusWindowMock = vi.fn();
 
       windowDi.override(focusWindowInjectable, () => focusWindowMock);
     });
@@ -42,8 +44,8 @@ describe("extensions - navigation using application menu", () => {
   });
 
   describe("when navigating to extensions using application menu", () => {
-    beforeEach(() => {
-      builder.applicationMenu.click("root", "mac", "navigate-to-extensions");
+    beforeEach(async () => {
+      await builder.applicationMenu.click("root", "mac", "navigate-to-extensions");
     });
 
     it("focuses the window", () => {

@@ -11,8 +11,7 @@ import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di"
 import { Tooltip } from "@freelensapp/tooltip";
 import { cssNames, debouncePromise, isPromiseSettledFulfilled } from "@freelensapp/utilities";
 import autoBindReact from "auto-bind/react";
-import { debounce } from "lodash";
-import uniqueId from "lodash/uniqueId";
+import { debounce, uniqueId } from "es-toolkit/compat";
 import React from "react";
 import * as uuid from "uuid";
 import createStorageInjectable from "../../utils/create-storage/create-storage.injectable";
@@ -780,7 +779,7 @@ export class Input extends React.Component<InputProps, State> {
 
     // prepare input props
     Object.assign(inputProps, {
-      className: "input box grow",
+      className: "input grow",
       onFocus: this.onFocus,
       onBlur: this.onBlur,
       onChange: this.onChange,
@@ -792,7 +791,7 @@ export class Input extends React.Component<InputProps, State> {
     });
     const showErrors = errors.length > 0 && !valid && dirty;
     const errorsInfo = (
-      <div className="errors box grow">
+      <div className="errors grow">
         {errors.map((error, i) => (
           <p key={i}>{error}</p>
         ))}
@@ -807,7 +806,7 @@ export class Input extends React.Component<InputProps, State> {
       tooltipProps.className = cssNames("InputTooltipError", tooltipProps.className);
       tooltipError = (
         <Tooltip targetId={componentId!} {...tooltipProps}>
-          <div className="flex gaps align-center">
+          <div className="flex items-center gap-2">
             <Icon material="error_outline" />
             {errorsInfo}
           </div>
@@ -818,17 +817,17 @@ export class Input extends React.Component<InputProps, State> {
     return (
       <div id={componentId} className={className}>
         {tooltipError}
-        <label className="input-area flex gaps align-center" id="">
+        <label className="input-area flex items-center gap-2" id="">
           {this.renderIcon(iconLeft)}
           {multiLine ? <textarea {...(inputProps as object)} /> : <input {...(inputProps as object)} />}
           {this.renderIcon(iconRight)}
           {contentRight}
         </label>
         {this.renderSearchHistory()}
-        <div className="input-info flex gaps">
+        <div className="input-info flex gap-2">
           {!showErrorsAsTooltip && showErrors && errorsInfo}
           {this.showMaxLenIndicator && (
-            <div className="maxLengthIndicator box right">
+            <div className="maxLengthIndicator">
               {this.getValue().length}
               {" / "}
               {maxLength}

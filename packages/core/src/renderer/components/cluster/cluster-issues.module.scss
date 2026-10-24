@@ -23,6 +23,15 @@
     }
   }
 
+  /* The virtualized table fills this panel with height: 100%, so the flex
+     items above it must be able to shrink below their content. Without this
+     the table grows to the height of every issue and pushes the overview
+     page instead of scrolling inside the panel. */
+  :global(.Table),
+  :global(.VirtualList) {
+    min-height: 0;
+  }
+
   .SubHeader {
     padding-top: 0;
     padding-bottom: 0;

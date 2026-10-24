@@ -4,20 +4,18 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { stringify } from "node:querystring";
 import { EventEmitter } from "@freelensapp/event-emitter";
 import { isObject, isString, json } from "@freelensapp/utilities";
-import { Agent as HttpAgent } from "http";
-import { Agent as HttpsAgent } from "https";
-import { merge } from "lodash";
-import { stringify } from "querystring";
+import { merge } from "es-toolkit/compat";
 
 import type { Logger } from "@freelensapp/logger";
-import type Fetch from "@freelensapp/node-fetch";
-import type { RequestInit, Response } from "@freelensapp/node-fetch";
 import type { Defaulted } from "@freelensapp/utilities";
 
 import type { Patch } from "rfc6902";
 import type { PartialDeep, ValueOf } from "type-fest";
+
+import type { Fetch, FetchRequestInit as RequestInit, FetchResponse as Response } from "./fetch";
 
 export interface JsonApiData {}
 
@@ -72,9 +70,6 @@ export interface JsonApiConfig {
   getRequestOptions?: GetRequestOptions;
 }
 
-const httpAgent = new HttpAgent({ keepAlive: true });
-const httpsAgent = new HttpsAgent({ keepAlive: true });
-
 export type QueryParam =
   | string
   | number
@@ -86,11 +81,26 @@ export type QueryParam =
   | readonly boolean[];
 export type QueryParams = Partial<Record<string, QueryParam | undefined>>;
 
+/**
+ * Serializes query parameters, leaving out the ones that are `undefined` or `null`.
+ *
+ * `stringify` of `node:querystring` writes those as an empty value (`previous=`), and the
+ * Kubernetes API server reads an empty boolean parameter as `true`, so an optional field left
+ * unset would turn its option on.
+ */
+export function stringifyQuery(query: QueryParams): string {
+  const defined = Object.fromEntries(
+    Object.entries(query).filter(([, value]) => value !== undefined && value !== null),
+  );
+
+  return stringify(defined as QueryParams);
+}
+
 export type ParamsAndQuery<Params, Query> =
   ValueOf<Query> extends QueryParam ? Params & { query?: Query } : Params & { query?: undefined };
 
 export interface JsonApiDependencies {
-  fetch: typeof Fetch;
+  fetch: Fetch;
   readonly logger: Logger;
 }
 
@@ -147,20 +157,13 @@ export class JsonApi<Data = JsonApiData, Params extends JsonApiParams<Data> = Js
     init: RequestInit = {},
   ): Promise<Response> {
     let reqUrl = `${this.config.serverAddress}${this.config.apiBase}${path}`;
-    const reqInit = merge(
-      {
-        method: "get",
-        agent: reqUrl.startsWith("https:") ? httpsAgent : httpAgent,
-      },
-      this.reqInit,
-      await this.getRequestOptions(),
-      init,
-    );
+    // No keep-alive agent is supplied: undici pools per dispatcher and Chromium
+    // pools on its own, so neither client needs one per request.
+    const reqInit = merge({ method: "get" }, this.reqInit, await this.getRequestOptions(), init);
     const { query } = params ?? {};
+    const queryString = query ? stringifyQuery(query as unknown as QueryParams) : "";
 
-    if (query && Object.keys(query).length > 0) {
-      const queryString = stringify(query as unknown as QueryParams);
-
+    if (queryString) {
       reqUrl += (reqUrl.includes("?") ? "&" : "?") + queryString;
     }
 
@@ -220,9 +223,9 @@ export class JsonApi<Data = JsonApiData, Params extends JsonApiParams<Data> = Js
       reqInit.body = JSON.stringify(data);
     }
 
-    if (query && Object.keys(query).length > 0) {
-      const queryString = stringify(query as unknown as QueryParams);
+    const queryString = query ? stringifyQuery(query as unknown as QueryParams) : "";
 
+    if (queryString) {
       reqUrl += (reqUrl.includes("?") ? "&" : "?") + queryString;
     }
     const infoLog: JsonApiLog = {

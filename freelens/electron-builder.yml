@@ -1,8 +1,10 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/electron-userland/electron-builder/refs/heads/master/packages/app-builder-lib/scheme.json
 
-electronVersion: 39.8.9 # datasource=npm depName=electron
+electronVersion: 43.8.3 # datasource=npm depName=electron
 
-## Run `pnpm electron-rebuild` instead
+## node-pty is our only native module and it is a N-API (node-addon-api)
+## addon, so its bundled prebuilt binaries are ABI-stable and load as-is on
+## every Electron version we ship. No native rebuild is needed at pack time.
 npmRebuild: false
 
 ## There is no support in app for autoupdates yet
@@ -13,13 +15,40 @@ publish: []
 ## Files in app.asar
 files:
   - static
-  - "!node_modules/@freelensapp/*/src"
-  - "!node_modules/@freelensapp/core/build"
-  - "!node_modules/@freelensapp/core/static/build/library/fonts"
+  ## Workspace packages are bundled from TypeScript source into
+  ## static/build by electron-vite and never required at runtime
+  - "!node_modules/@freelensapp/**"
   - "!node_modules/electron"
+  ## Source maps and TS build info are only useful when debugging local builds
+  - "!**/*.map"
+  - "!**/*.tsbuildinfo"
+  ## Monaco is bundled into the renderer by Vite and never required at runtime
+  - "!node_modules/monaco-editor/**"
+  ## node-pty ships vendor-provided prebuilt binaries under prebuilds/ that we
+  ## load as-is (see npmRebuild above). A local build/ directory would only ever
+  ## contain unsigned binaries that some antivirus engines flag as false
+  ## positives (see issue #2021), so exclude it: node-pty's loader then falls
+  ## back to the vendor prebuilds at runtime (lib/utils.js checks build/Release
+  ## first, then prebuilds/<platform>-<arch>).
+  - "!node_modules/node-pty/build"
+  ## Native binaries for other platforms/arches are never loaded at runtime, so
+  ## exclude them at pack time. Doing this here (instead of deleting them from
+  ## app.asar.unpacked afterwards) keeps the app.asar header consistent with the
+  ## files actually present. ${platform} expands to darwin/linux/win32 and ${arch}
+  ## to x64/arm64, matching node-pty's prebuild directory names (e.g. darwin-arm64).
+  ## ${platform} is the platform of the build host (process.platform), not the
+  ## target, so each platform has to be packed on its own OS.
+  - "!node_modules/node-pty/prebuilds/!(${platform}-${arch})"
+  - "!node_modules/node-pty/prebuilds/!(${platform}-${arch})/**"
+  ## On Windows, conpty.node loads the bundled ConPTY (conpty.dll, which starts
+  ## OpenConsole.exe) from conpty/ next to itself, which the globs above keep as
+  ## prebuilds/win32-<arch>/conpty/. third_party/ holds the same files for every
+  ## Windows arch, only for node-pty's install script to copy into a local
+  ## build/, so it is never loaded at runtime.
+  - "!node_modules/node-pty/third_party"
 
 ## Notarization
-afterSign: build/notarize.js
+afterSign: build/notarize.cjs
 
 ## Used to register the app as a handler for the freelens:// protocol
 protocols:
@@ -130,8 +159,15 @@ mac:
       to: ./${arch}/helm
   publish: null
 
+dmg:
+  icon: build/installerIcon.icns
+
 pkg:
   license: static/build/license.txt
+  background:
+    file: build/installerBackground.png
+    alignment: bottomleft
+    scaling: none
 
 ## For Windows targets
 win:
@@ -153,6 +189,7 @@ msi:
 
 nsis:
   include: build/installer.nsh
+  installerIcon: build/installerIcon.ico
   oneClick: false
   allowElevation: true
   createStartMenuShortcut: true

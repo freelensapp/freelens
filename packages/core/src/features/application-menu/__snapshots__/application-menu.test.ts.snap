@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`application-menu, given platform is 'darwin' given enough time passes populates application menu 1`] = `
+exports[`application-menu, given platform is 'darwin' > given enough time passes > populates application menu 1`] = `
 "[
   'root',
   'root -> mac',
@@ -47,12 +47,12 @@ exports[`application-menu, given platform is 'darwin' given enough time passes p
   'root -> help',
   'root -> help -> navigate-to-welcome',
   'root -> help -> open-documentation',
-  'root -> help -> open-support',
-  'root -> help -> open-licenses'
+  'root -> help -> open-licenses',
+  'root -> help -> open-support'
 ]"
 `;
 
-exports[`application-menu, given platform is 'linux' given enough time passes populates application menu 1`] = `
+exports[`application-menu, given platform is 'linux' > given enough time passes > populates application menu 1`] = `
 "[
   'root',
   'root -> file',
@@ -87,13 +87,13 @@ exports[`application-menu, given platform is 'linux' given enough time passes po
   'root -> help',
   'root -> help -> navigate-to-welcome',
   'root -> help -> open-documentation',
-  'root -> help -> open-support',
   'root -> help -> open-licenses',
+  'root -> help -> open-support',
   'root -> help -> about'
 ]"
 `;
 
-exports[`application-menu, given platform is 'win32' given enough time passes populates application menu 1`] = `
+exports[`application-menu, given platform is 'win32' > given enough time passes > populates application menu 1`] = `
 "[
   'root',
   'root -> file',
@@ -128,8 +128,8 @@ exports[`application-menu, given platform is 'win32' given enough time passes po
   'root -> help',
   'root -> help -> navigate-to-welcome',
   'root -> help -> open-documentation',
-  'root -> help -> open-support',
   'root -> help -> open-licenses',
+  'root -> help -> open-support',
   'root -> help -> about'
 ]"
 `;

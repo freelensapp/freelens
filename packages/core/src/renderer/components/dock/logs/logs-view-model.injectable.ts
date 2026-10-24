@@ -5,6 +5,7 @@
  */
 
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
+import userPreferencesStateInjectable from "../../../../features/user-preferences/common/state.injectable";
 import searchStoreInjectable from "../../../search-store/search-store.injectable";
 import getPodByIdInjectable from "../../workloads-pods/get-pod-by-id.injectable";
 import getPodsByOwnerIdInjectable from "../../workloads-pods/get-pods-by-owner-id.injectable";
@@ -48,6 +49,7 @@ const logsViewModelInjectable = getInjectable({
       downloadLogs: di.inject(downloadLogsInjectable),
       downloadAllLogs: di.inject(downloadAllLogsInjectable),
       searchStore: di.inject(searchStoreInjectable),
+      userPreferencesState: di.inject(userPreferencesStateInjectable),
     }),
 
   lifecycle: lifecycleEnum.keyedSingleton({

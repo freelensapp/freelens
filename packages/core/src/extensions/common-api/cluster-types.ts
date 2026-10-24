@@ -45,7 +45,10 @@ export interface ClusterMetadata {
  *
  * @example
  * ```typescript
- * const clusters = Clusters.getAll();
+ * import { Renderer } from "@freelensapp/extensions";
+ *
+ * // Main.Catalog.getAllClusters() in the main process
+ * const clusters = Renderer.Catalog.getAllClusters();
  * for (const cluster of clusters) {
  *   console.log(`${cluster.name}: ${cluster.status}`);
  * }

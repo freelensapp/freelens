@@ -6,7 +6,7 @@
 
 import { getOrInsert, getOrInsertMap } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import { orderBy } from "lodash";
+import { orderBy } from "es-toolkit/compat";
 import { computed } from "mobx";
 import rendererExtensionsInjectable from "../../../extensions/renderer-extensions.injectable";
 

@@ -7,7 +7,6 @@
 @use "../vars" as *;
 
 .WorkloadsOverview {
-  --flex-gap: #{$padding * 2};
   min-height: 100%;
 
   .header {

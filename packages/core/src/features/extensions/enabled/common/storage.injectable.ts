@@ -14,8 +14,7 @@ import { enabledExtensionsMigrationDeclarationInjectionToken } from "../main/mig
 import enabledExtensionsStateInjectable from "./state.injectable";
 import { enabledExtensionsPersistentStorageVersionInitializable } from "./storage-version";
 
-import type { LensExtensionId } from "@freelensapp/legacy-extensions";
-
+import type { LensExtensionId } from "../../../../extensions/installed-extension";
 import type { LensExtensionState } from "./state.injectable";
 
 const stateModel = z.object({

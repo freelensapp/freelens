@@ -16,7 +16,15 @@ export type UserPreferencesState = {
 
 const userPreferencesStateInjectable = getInjectable({
   id: "user-preferences-state",
-  instantiate: () => observable.object({} as UserPreferencesState),
+  instantiate: () =>
+    observable.object({
+      // Collection-typed fields are read by component lifecycle hooks (e.g.
+      // ItemListLayout.componentDidMount reads hiddenTableColumns.get(...))
+      // before the persistent store's fromStore() action has populated them.
+      // Default them to empty observable collections so a not-yet-loaded store
+      // cannot crash those views; fromStore() reassigns the fields on load.
+      hiddenTableColumns: observable.map<string, Set<string>>(),
+    } as unknown as UserPreferencesState),
 });
 
 export default userPreferencesStateInjectable;

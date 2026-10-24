@@ -21,5 +21,7 @@ MD033:
     - source
 # Emphasis used instead of a header
 MD036: false
+# First line in a file should be a top-level heading
+MD041: false
 # Table column style
 MD060: false

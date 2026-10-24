@@ -1,0 +1,45 @@
+.table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border-top: thin solid var(--hrColor);
+}
+
+.th {
+  height: 33px;
+  padding: 7px var(--padding) 0;
+  border-bottom: thin solid var(--hrColor);
+  color: var(--textColorAccent);
+  font-weight: bold;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.td {
+  padding: calc(var(--margin) * 1.6) var(--padding);
+  vertical-align: middle;
+}
+
+/* Keeps the outermost cells clear of the table edge, the way the row margin
+   used to. */
+.th:first-child,
+.td:first-child {
+  padding-left: calc(var(--margin) + var(--padding));
+}
+
+.th:last-child,
+.td:last-child {
+  padding-right: calc(var(--margin) + var(--padding));
+}
+
+.sortButton {
+  display: flex;
+  align-items: center;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+.inactiveSortIcon {
+  opacity: 0.3;
+}

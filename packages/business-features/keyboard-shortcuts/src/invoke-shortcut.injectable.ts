@@ -1,6 +1,4 @@
-import { pipeline } from "@ogre-tools/fp";
 import { getInjectable } from "@ogre-tools/injectable";
-import { filter, isString } from "lodash/fp";
 import { Binding, KeyboardShortcut, keyboardShortcutInjectionToken } from "./keyboard-shortcut-injection-token";
 import platformInjectable from "./platform.injectable";
 
@@ -23,7 +21,7 @@ const toShortcutsWithMatchingScope = (shortcut: KeyboardShortcut) => {
 };
 
 const toBindingWithDefaults = (binding: Binding) =>
-  isString(binding)
+  typeof binding === "string"
     ? {
         code: binding,
         shift: false,
@@ -70,11 +68,9 @@ const invokeShortcutInjectable = getInjectable({
     const platform = di.inject(platformInjectable);
 
     return (event) => {
-      const shortcutsToInvoke = pipeline(
-        getShortcuts(),
-        filter(toShortcutsWithMatchingBinding(event, platform)),
-        filter(toShortcutsWithMatchingScope),
-      );
+      const shortcutsToInvoke = getShortcuts()
+        .filter(toShortcutsWithMatchingBinding(event, platform))
+        .filter(toShortcutsWithMatchingScope);
 
       if (shortcutsToInvoke.length) {
         shortcutsToInvoke.forEach((shortcut) => shortcut.invoke());

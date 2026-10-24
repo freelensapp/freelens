@@ -12,6 +12,7 @@ import { registerInjectables as registerClusterInjectables } from "./cluster/reg
 import { registerInjectables as registerClusterViewInjectables } from "./cluster-view/register-injectables";
 import { registerInjectables as registerEntitySettingsInjectables } from "./entity-settings/register-injectables";
 import { registerInjectables as registerExtensionsInjectables } from "./extensions/register-injectables";
+import { registerInjectables as registerTerminalInjectables } from "./terminal/register-injectables";
 import { registerInjectables as registerWelcomeInjectables } from "./welcome/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
@@ -44,6 +45,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     registerExtensionsInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerTerminalInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }

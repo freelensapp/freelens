@@ -4,10 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { matchPath } from "@freelensapp/routing";
 import { getInjectable } from "@ogre-tools/injectable";
-import { matches } from "lodash/fp";
 import { computed } from "mobx";
-import { matchPath } from "react-router";
 import currentPathInjectable from "./current-path.injectable";
 import routesInjectable from "./routes.injectable";
 
@@ -32,7 +31,7 @@ const matchingRouteInjectable = getInjectable({
         };
       });
 
-      return matchedRoutes.find(matches({ isMatching: true }));
+      return matchedRoutes.find((matchedRoute) => matchedRoute.isMatching);
     });
   },
 });

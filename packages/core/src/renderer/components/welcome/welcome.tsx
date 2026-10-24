@@ -9,7 +9,7 @@ import "./welcome.scss";
 import { Icon } from "@freelensapp/icon";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { forumsUrl } from "../../../common/vars";
 import productNameInjectable from "../../../common/vars/product-name.injectable";
 import newVersionNotificationInjectable from "./new-version-notification.injectable";
@@ -33,7 +33,7 @@ const NonInjectedWelcome = observer(({ welcomeMenuItems, productName, newVersion
   }, []);
 
   return (
-    <div className="flex justify-center Welcome align-center" data-testid="welcome-page">
+    <div className="flex justify-center Welcome items-center" data-testid="welcome-page">
       <div style={{ width: `${defaultWidth}px` }} data-testid="welcome-banner-container">
         <Icon svg="logo-lens" className="logo" welcomeLogo={true} data-testid="no-welcome-banners-icon" />
 
@@ -56,9 +56,9 @@ const NonInjectedWelcome = observer(({ welcomeMenuItems, productName, newVersion
             <ul className="block" style={{ width: `${defaultWidth}px` }} data-testid="welcome-menu-container">
               {welcomeMenuItems.get().map((item, index) => (
                 <li key={index} className="flex grid-12" onClick={() => item.click()}>
-                  <Icon material={item.icon} className="box col-1" />
-                  <a className="box col-10">{typeof item.title === "string" ? item.title : item.title()}</a>
-                  <Icon material="navigate_next" className="box col-1" />
+                  <Icon material={item.icon} className="col-1" />
+                  <a className="col-10">{typeof item.title === "string" ? item.title : item.title()}</a>
+                  <Icon material="navigate_next" className="col-1" />
                 </li>
               ))}
             </ul>

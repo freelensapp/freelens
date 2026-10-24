@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/application",
-  "version": "1.9.1-0",
-  "private": false,
+  "version": "2.0.0-0",
+  "private": true,
   "description": "Package for creating Freelens applications",
   "homepage": "https://freelens.app",
   "bugs": {
@@ -12,42 +12,29 @@
     "url": "git+https://github.com/freelensapp/freelens.git"
   },
   "license": "MIT",
+  "type": "module",
   "author": {
     "name": "Freelens Authors",
     "email": "freelens@freelens.app"
   },
-  "type": "commonjs",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "main": "./index.ts",
+  "types": "./index.ts",
   "scripts": {
-    "build": "lens-webpack-build",
-    "clean": "pnpm dlx rimraf@6.1.3 dist",
-    "clean:node_modules": "pnpm dlx rimraf@6.1.3 node_modules",
-    "test:unit": "jest --coverage --runInBand"
+    "clean:dist": "pnpm dlx rimraf@6.1.3 dist",
+    "test:unit": "vitest run -c ../../../../vitest.config.ts --project @freelensapp/application"
   },
   "dependencies": {
     "@freelensapp/feature-core": "workspace:^",
     "@freelensapp/run-many": "workspace:^",
-    "@ogre-tools/fp": "^17.11.1",
-    "@ogre-tools/injectable": "^17.11.1"
+    "@ogre-tools/fp": "catalog:",
+    "@ogre-tools/injectable": "catalog:"
   },
   "devDependencies": {
-    "@async-fn/jest": "^1.7.0",
-    "@freelensapp/jest": "workspace:^",
+    "@async-fn/vitest": "catalog:",
     "@freelensapp/test-utils": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
-    "@freelensapp/webpack": "workspace:^",
-    "@types/webpack-env": "^1.18.8",
-    "identity-obj-proxy": "^3.0.0",
-    "jest": "^29.7.0",
-    "lodash": "^4.18.1",
-    "ts-jest": "^29.4.9",
-    "ts-loader": "^9.5.7",
-    "typescript": "^5.9.3",
-    "webpack": "^5.106.2"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "publishConfig": {
     "access": "public",

@@ -1,10 +1,10 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Showing correct entity settings renders 1`] = `
+exports[`Showing correct entity settings > renders 1`] = `
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -76,7 +76,7 @@ exports[`Showing correct entity settings renders 1`] = `
           id="lens-views"
         />
         <div
-          class="flex justify-center Welcome align-center"
+          class="flex justify-center Welcome items-center"
           data-testid="welcome-page"
         >
           <div
@@ -103,9 +103,9 @@ exports[`Showing correct entity settings renders 1`] = `
     
                     <style>
                       
-      .cls-1 {
-        fill: none !important;
-      }
+    .cls-1 {
+      fill: none !important;
+    }
     
                     </style>
                     
@@ -204,7 +204,7 @@ exports[`Showing correct entity settings renders 1`] = `
                     class="flex grid-12"
                   >
                     <i
-                      class="Icon box col-1 material focusable"
+                      class="Icon col-1 material focusable"
                     >
                       <span
                         class="icon"
@@ -214,12 +214,41 @@ exports[`Showing correct entity settings renders 1`] = `
                       </span>
                     </i>
                     <a
-                      class="box col-10"
+                      class="col-10"
                     >
                       Browse Clusters in Catalog
                     </a>
                     <i
-                      class="Icon box col-1 material focusable"
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="navigate_next"
+                      >
+                        navigate_next
+                      </span>
+                    </i>
+                  </li>
+                  <li
+                    class="flex grid-12"
+                  >
+                    <i
+                      class="Icon col-1 material focusable"
+                    >
+                      <span
+                        class="icon"
+                        data-icon-name="terminal"
+                      >
+                        terminal
+                      </span>
+                    </i>
+                    <a
+                      class="col-10"
+                    >
+                      Open a Terminal
+                    </a>
+                    <i
+                      class="Icon col-1 material focusable"
                     >
                       <span
                         class="icon"
@@ -236,17 +265,47 @@ exports[`Showing correct entity settings renders 1`] = `
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col"
         >
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="0"
           >
             <div
-              style="z-index: 12; position: absolute;"
+              aria-describedby="DndDescribedBy-0"
+              aria-disabled="false"
+              aria-roledescription="draggable"
+              role="button"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
+              tabindex="0"
+            >
+              <div
+                class="HotbarIcon contextMenuAvailable"
+              >
+                <div
+                  class="Avatar rounded disabled avatar"
+                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                  style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
+                >
+                  WP
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="HotbarCell animateDown"
+            index="1"
+          >
+            <div
+              aria-describedby="DndDescribedBy-0"
+              aria-disabled="false"
+              aria-roledescription="draggable"
+              role="button"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
+              tabindex="0"
             >
               <div
                 class="HotbarIcon contextMenuAvailable"
@@ -254,7 +313,7 @@ exports[`Showing correct entity settings renders 1`] = `
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                  style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
                 >
                   Ca
                 </div>
@@ -262,48 +321,61 @@ exports[`Showing correct entity settings renders 1`] = `
             </div>
           </div>
           <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="2"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="3"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="4"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="5"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="6"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="7"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="8"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="9"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="10"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="11"
+          />
+          <div
+            id="DndDescribedBy-0"
+            style="display: none;"
+          >
+            
+    To pick up a draggable item, press the space bar.
+    While dragging, use the arrow keys to move the item.
+    Press space again to drop the item in its new position, or press escape to cancel.
+  
+          </div>
+          <div
+            aria-atomic="true"
+            aria-live="assertive"
+            id="DndLiveRegion-0"
+            role="status"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -362,11 +434,11 @@ exports[`Showing correct entity settings renders 1`] = `
 </body>
 `;
 
-exports[`Showing correct entity settings when navigating to local cluster entity settings renders 1`] = `
+exports[`Showing correct entity settings > when navigating to local cluster entity settings > renders 1`] = `
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -453,7 +525,7 @@ exports[`Showing correct entity settings when navigating to local cluster entity
               >
                 <div
                   class="Avatar rounded settingsAvatar"
-                  style="width: 40px; height: 40px; background: rgb(83, 137, 8);"
+                  style="width: 40px; height: 40px; background: rgb(28, 110, 70);"
                 >
                   slk
                 </div>
@@ -464,7 +536,7 @@ exports[`Showing correct entity settings when navigating to local cluster entity
                 </div>
               </div>
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <hr />
                 <div
@@ -473,7 +545,7 @@ exports[`Showing correct entity settings when navigating to local cluster entity
                   Settings
                 </div>
                 <div
-                  class="Tab flex gaps align-center active"
+                  class="Tab flex gap-2 items-center active"
                   data-testid="general-tab"
                   role="tab"
                   tabindex="0"
@@ -485,7 +557,7 @@ exports[`Showing correct entity settings when navigating to local cluster entity
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-testid="proxy-tab"
                   role="tab"
                   tabindex="0"
@@ -497,7 +569,7 @@ exports[`Showing correct entity settings when navigating to local cluster entity
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-testid="terminal-tab"
                   role="tab"
                   tabindex="0"
@@ -509,7 +581,7 @@ exports[`Showing correct entity settings when navigating to local cluster entity
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-testid="namespace-tab"
                   role="tab"
                   tabindex="0"
@@ -521,7 +593,7 @@ exports[`Showing correct entity settings when navigating to local cluster entity
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-testid="metrics-tab"
                   role="tab"
                   tabindex="0"
@@ -533,7 +605,7 @@ exports[`Showing correct entity settings when navigating to local cluster entity
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-testid="node-shell-tab"
                   role="tab"
                   tabindex="0"
@@ -599,17 +671,47 @@ exports[`Showing correct entity settings when navigating to local cluster entity
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col"
         >
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="0"
           >
             <div
-              style="z-index: 12; position: absolute;"
+              aria-describedby="DndDescribedBy-11"
+              aria-disabled="false"
+              aria-roledescription="draggable"
+              role="button"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
+              tabindex="0"
+            >
+              <div
+                class="HotbarIcon contextMenuAvailable"
+              >
+                <div
+                  class="Avatar rounded disabled avatar"
+                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                  style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
+                >
+                  WP
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="HotbarCell animateDown"
+            index="1"
+          >
+            <div
+              aria-describedby="DndDescribedBy-11"
+              aria-disabled="false"
+              aria-roledescription="draggable"
+              role="button"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
+              tabindex="0"
             >
               <div
                 class="HotbarIcon contextMenuAvailable"
@@ -617,7 +719,7 @@ exports[`Showing correct entity settings when navigating to local cluster entity
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                  style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
                 >
                   Ca
                 </div>
@@ -625,48 +727,61 @@ exports[`Showing correct entity settings when navigating to local cluster entity
             </div>
           </div>
           <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="2"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="3"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="4"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="5"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="6"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="7"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="8"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="9"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="10"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="11"
+          />
+          <div
+            id="DndDescribedBy-11"
+            style="display: none;"
+          >
+            
+    To pick up a draggable item, press the space bar.
+    While dragging, use the arrow keys to move the item.
+    Press space again to drop the item in its new position, or press escape to cancel.
+  
+          </div>
+          <div
+            aria-atomic="true"
+            aria-live="assertive"
+            id="DndLiveRegion-11"
+            role="status"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -725,11 +840,11 @@ exports[`Showing correct entity settings when navigating to local cluster entity
 </body>
 `;
 
-exports[`Showing correct entity settings when navigating to non-local cluster entity settings renders 1`] = `
+exports[`Showing correct entity settings > when navigating to non-local cluster entity settings > renders 1`] = `
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -816,7 +931,7 @@ exports[`Showing correct entity settings when navigating to non-local cluster en
               >
                 <div
                   class="Avatar rounded settingsAvatar"
-                  style="width: 40px; height: 40px; background: rgb(9, 124, 92);"
+                  style="width: 40px; height: 40px; background: rgb(110, 28, 69);"
                 >
                   skc
                 </div>
@@ -827,7 +942,7 @@ exports[`Showing correct entity settings when navigating to non-local cluster en
                 </div>
               </div>
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               >
                 <hr />
                 <div
@@ -836,7 +951,7 @@ exports[`Showing correct entity settings when navigating to non-local cluster en
                   Settings
                 </div>
                 <div
-                  class="Tab flex gaps align-center active"
+                  class="Tab flex gap-2 items-center active"
                   data-testid="proxy-tab"
                   role="tab"
                   tabindex="0"
@@ -848,7 +963,7 @@ exports[`Showing correct entity settings when navigating to non-local cluster en
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-testid="terminal-tab"
                   role="tab"
                   tabindex="0"
@@ -860,7 +975,7 @@ exports[`Showing correct entity settings when navigating to non-local cluster en
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-testid="namespace-tab"
                   role="tab"
                   tabindex="0"
@@ -872,7 +987,7 @@ exports[`Showing correct entity settings when navigating to non-local cluster en
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-testid="metrics-tab"
                   role="tab"
                   tabindex="0"
@@ -884,7 +999,7 @@ exports[`Showing correct entity settings when navigating to non-local cluster en
                   </div>
                 </div>
                 <div
-                  class="Tab flex gaps align-center"
+                  class="Tab flex gap-2 items-center"
                   data-testid="node-shell-tab"
                   role="tab"
                   tabindex="0"
@@ -924,18 +1039,18 @@ exports[`Showing correct entity settings when navigating to non-local cluster en
                       class="Input theme round black"
                     >
                       <label
-                        class="input-area flex gaps align-center"
+                        class="input-area flex items-center gap-2"
                         id=""
                       >
                         <input
-                          class="input box grow"
+                          class="input grow"
                           placeholder="http://<address>:<port>"
                           spellcheck="false"
                           value=""
                         />
                       </label>
                       <div
-                        class="input-info flex gaps"
+                        class="input-info flex gap-2"
                       />
                     </div>
                     <small
@@ -983,17 +1098,47 @@ exports[`Showing correct entity settings when navigating to non-local cluster en
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col"
         >
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="0"
           >
             <div
-              style="z-index: 12; position: absolute;"
+              aria-describedby="DndDescribedBy-2"
+              aria-disabled="false"
+              aria-roledescription="draggable"
+              role="button"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
+              tabindex="0"
+            >
+              <div
+                class="HotbarIcon contextMenuAvailable"
+              >
+                <div
+                  class="Avatar rounded disabled avatar"
+                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                  style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
+                >
+                  WP
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="HotbarCell animateDown"
+            index="1"
+          >
+            <div
+              aria-describedby="DndDescribedBy-2"
+              aria-disabled="false"
+              aria-roledescription="draggable"
+              role="button"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
+              tabindex="0"
             >
               <div
                 class="HotbarIcon contextMenuAvailable"
@@ -1001,7 +1146,7 @@ exports[`Showing correct entity settings when navigating to non-local cluster en
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                  style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
                 >
                   Ca
                 </div>
@@ -1009,48 +1154,61 @@ exports[`Showing correct entity settings when navigating to non-local cluster en
             </div>
           </div>
           <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="2"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="3"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="4"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="5"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="6"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="7"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="8"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="9"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="10"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="11"
+          />
+          <div
+            id="DndDescribedBy-2"
+            style="display: none;"
+          >
+            
+    To pick up a draggable item, press the space bar.
+    While dragging, use the arrow keys to move the item.
+    Press space again to drop the item in its new position, or press escape to cancel.
+  
+          </div>
+          <div
+            aria-atomic="true"
+            aria-live="assertive"
+            id="DndLiveRegion-2"
+            role="status"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div
@@ -1109,11 +1267,11 @@ exports[`Showing correct entity settings when navigating to non-local cluster en
 </body>
 `;
 
-exports[`Showing correct entity settings when navigating to weblink entity settings renders 1`] = `
+exports[`Showing correct entity settings > when navigating to weblink entity settings > renders 1`] = `
 <body>
   <div>
     <div
-      class="Notifications flex column align-flex-end"
+      class="Notifications"
     />
     <div
       class="ClusterManager"
@@ -1200,7 +1358,7 @@ exports[`Showing correct entity settings when navigating to weblink entity setti
               >
                 <div
                   class="Avatar rounded settingsAvatar"
-                  style="width: 40px; height: 40px; background: rgb(53, 8, 142);"
+                  style="width: 40px; height: 40px; background: rgb(67, 110, 28);"
                 >
                   sw
                 </div>
@@ -1211,7 +1369,7 @@ exports[`Showing correct entity settings when navigating to weblink entity setti
                 </div>
               </div>
               <div
-                class="Tabs flex column"
+                class="Tabs flex flex-col"
               />
             </div>
           </nav>
@@ -1268,17 +1426,47 @@ exports[`Showing correct entity settings when navigating to weblink entity setti
         </div>
       </main>
       <div
-        class="HotbarMenu flex column"
+        class="HotbarMenu flex flex-col"
       >
         <div
-          class="HotbarItems flex column gaps"
+          class="HotbarItems flex flex-col"
         >
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="0"
           >
             <div
-              style="z-index: 12; position: absolute;"
+              aria-describedby="DndDescribedBy-20"
+              aria-disabled="false"
+              aria-roledescription="draggable"
+              role="button"
+              style="z-index: 12; position: absolute; opacity: 1; pointer-events: auto;"
+              tabindex="0"
+            >
+              <div
+                class="HotbarIcon contextMenuAvailable"
+              >
+                <div
+                  class="Avatar rounded disabled avatar"
+                  id="hotbarIcon-hotbar-icon-welcome-page-entity"
+                  style="width: 40px; height: 40px; background: rgb(110, 77, 28);"
+                >
+                  WP
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="HotbarCell animateDown"
+            index="1"
+          >
+            <div
+              aria-describedby="DndDescribedBy-20"
+              aria-disabled="false"
+              aria-roledescription="draggable"
+              role="button"
+              style="z-index: 11; position: absolute; opacity: 1; pointer-events: auto;"
+              tabindex="0"
             >
               <div
                 class="HotbarIcon contextMenuAvailable"
@@ -1286,7 +1474,7 @@ exports[`Showing correct entity settings when navigating to weblink entity setti
                 <div
                   class="Avatar rounded disabled avatar"
                   id="hotbarIcon-hotbar-icon-catalog-entity"
-                  style="width: 40px; height: 40px; background: rgb(5, 1, 130);"
+                  style="width: 40px; height: 40px; background: rgb(36, 110, 28);"
                 >
                   Ca
                 </div>
@@ -1294,48 +1482,61 @@ exports[`Showing correct entity settings when navigating to weblink entity setti
             </div>
           </div>
           <div
-            class="HotbarCell isDraggingOwner animateDown"
-            index="1"
-          />
-          <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="2"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="3"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="4"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="5"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="6"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="7"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="8"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="9"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="10"
           />
           <div
-            class="HotbarCell isDraggingOwner animateDown"
+            class="HotbarCell animateDown"
             index="11"
+          />
+          <div
+            id="DndDescribedBy-20"
+            style="display: none;"
+          >
+            
+    To pick up a draggable item, press the space bar.
+    While dragging, use the arrow keys to move the item.
+    Press space again to drop the item in its new position, or press escape to cancel.
+  
+          </div>
+          <div
+            aria-atomic="true"
+            aria-live="assertive"
+            id="DndLiveRegion-20"
+            role="status"
+            style="position: fixed; top: 0px; left: 0px; width: 1px; height: 1px; margin: -1px; border: 0px; padding: 0px; overflow: hidden; clip: rect(0px); clip-path: inset(100%); white-space: nowrap;"
           />
         </div>
         <div

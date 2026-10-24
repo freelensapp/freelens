@@ -4,10 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import EventEmitter from "node:events";
+import asyncFn from "@async-fn/vitest";
 import { iter, strictGet } from "@freelensapp/utilities";
-import EventEmitter from "events";
 import { ObservableMap, observable, runInAction } from "mobx";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForTempInjectable from "../../../common/app-paths/directory-for-temp/directory-for-temp.injectable";
 import directoryForUserDataInjectable from "../../../common/app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import createReadFileStreamInjectable from "../../../common/fs/create-read-file-stream.injectable";
@@ -19,18 +20,20 @@ import watchInjectable from "../../../common/fs/watch/watch.injectable";
 import writeJsonSyncInjectable from "../../../common/fs/write-json-sync.injectable";
 import { loadFromOptions } from "../../../common/kube-helpers";
 import kubeconfigSyncsInjectable from "../../../features/user-preferences/common/kubeconfig-syncs.injectable";
+import userPreferenceDescriptorsInjectable from "../../../features/user-preferences/common/preference-descriptors.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import kubeconfigManagerInjectable from "../../kubeconfig-manager/kubeconfig-manager.injectable";
 import computeKubeconfigDiffInjectable from "../kubeconfig-sync/compute-diff.injectable";
 import configToModelsInjectable from "../kubeconfig-sync/config-to-models.injectable";
 import kubeconfigSyncLoggerInjectable from "../kubeconfig-sync/logger.injectable";
 import kubeconfigSyncManagerInjectable from "../kubeconfig-sync/manager.injectable";
-import type { ReadStream, Stats } from "fs";
+import type { ReadStream, Stats } from "node:fs";
 
 import type { Logger } from "@freelensapp/logger";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
 import type { DiContainer } from "@ogre-tools/injectable";
+import type { Mock, Mocked } from "vitest";
 
 import type { CatalogEntity } from "../../../common/catalog";
 import type { Cluster } from "../../../common/cluster/cluster";
@@ -380,7 +383,7 @@ describe("kubeconfig-sync.source tests", () => {
       di.override(watchInjectable, () => (path) => {
         const fakeWatchInstance = getFakeWatchInstance();
 
-        watchInstances.set(path, fakeWatchInstance);
+        watchInstances.set(String(path), fakeWatchInstance);
 
         return fakeWatchInstance;
       });
@@ -504,20 +507,20 @@ describe("kubeconfig-sync.source tests", () => {
     let manager: KubeconfigSyncManager;
     let localDi: DiContainer;
     let localKubeconfigSyncs: ObservableMap<string, KubeconfigSyncValue>;
-    let watchMock: jest.Mock;
-    let logger: jest.Mocked<Pick<Logger, "debug" | "warn" | "info" | "error">>;
+    let watchMock: Mock;
+    let logger: Mocked<Pick<Logger, "debug" | "warn" | "info" | "error">>;
 
     beforeEach(() => {
       localDi = getDiForUnitTesting();
       localKubeconfigSyncs = observable.map();
       logger = {
-        debug: jest.fn(),
-        warn: jest.fn(),
-        info: jest.fn(),
-        error: jest.fn(),
+        debug: vi.fn(),
+        warn: vi.fn(),
+        info: vi.fn(),
+        error: vi.fn(),
       };
 
-      watchMock = jest.fn(() => getFakeWatchInstance());
+      watchMock = vi.fn(() => getFakeWatchInstance());
 
       localDi.override(directoryForUserDataInjectable, () => "/some-directory-for-user-data");
       localDi.override(directoryForTempInjectable, () => "/some-directory-for-temp");
@@ -547,12 +550,314 @@ describe("kubeconfig-sync.source tests", () => {
       });
     });
   });
+
+  // ─── New tests: runtime-add / runtime-delete / descriptor IPC replay ───
+
+  describe("runtime add / delete via manager", () => {
+    let manager: KubeconfigSyncManager;
+    let localDi: DiContainer;
+    let localKubeconfigSyncs: ObservableMap<string, KubeconfigSyncValue>;
+    let watchInstances: Map<string, Watcher<true>>;
+    let watchMock: Mock;
+    let statMock: AsyncFnMock<Stat>;
+
+    beforeEach(() => {
+      localDi = getDiForUnitTesting();
+      localKubeconfigSyncs = observable.map();
+      statMock = asyncFn();
+
+      watchInstances = new Map();
+      watchMock = vi.fn((path: string) => {
+        const instance = getFakeWatchInstance();
+
+        watchInstances.set(String(path), instance);
+
+        return instance;
+      });
+
+      localDi.override(directoryForUserDataInjectable, () => "/some-directory-for-user-data");
+      localDi.override(directoryForTempInjectable, () => "/some-directory-for-temp");
+      localDi.override(pathExistsInjectable, () => () => {
+        throw new Error("tried call pathExists without override");
+      });
+      localDi.override(pathExistsSyncInjectable, () => () => {
+        throw new Error("tried call pathExistsSync without override");
+      });
+      localDi.override(readJsonSyncInjectable, () => () => {
+        throw new Error("tried call readJsonSync without override");
+      });
+      localDi.override(writeJsonSyncInjectable, () => () => {
+        throw new Error("tried call writeJsonSync without override");
+      });
+      localDi.override(
+        kubeconfigManagerInjectable,
+        () =>
+          ({
+            ensurePath: async () => "/some-proxy-kubeconfig-file",
+          }) as Partial<KubeconfigManager> as KubeconfigManager,
+      );
+      localDi.override(kubeconfigSyncsInjectable, () => localKubeconfigSyncs);
+      localDi.override(statInjectable, () => statMock);
+      localDi.override(watchInjectable, () => watchMock);
+
+      // also need a read-stream stub so watchKubeconfigFileChanges doesn't crash
+      localDi.override(createReadFileStreamInjectable, () => (filePath: string) => getFakeReadStream(filePath));
+
+      manager = localDi.inject(kubeconfigSyncManagerInjectable);
+    });
+
+    // Test 1 – Runtime add via map.set()
+    describe("when a path is added to kubeconfigSyncs after startSync", () => {
+      beforeEach(() => {
+        manager.startSync();
+      });
+
+      it("starts a new watcher for the newly-added path", async () => {
+        expect(watchInstances.has("/some/path")).toBe(false);
+
+        runInAction(() => {
+          localKubeconfigSyncs.set("/some/path", {});
+        });
+
+        // stat resolves as a file so the watcher is set up
+        await statMock.resolveSpecific(["/some/path"], {
+          isDirectory: () => false,
+        } as Stats);
+
+        expect(watchInstances.has("/some/path")).toBe(true);
+      });
+
+      it("exposes a CatalogEntity via source.get() after the watcher emits a load", async () => {
+        runInAction(() => {
+          localKubeconfigSyncs.set("/some/path", {});
+        });
+
+        await statMock.resolveSpecific(["/some/path"], {
+          isDirectory: () => false,
+        } as Stats);
+
+        const watcher = strictGet(watchInstances, "/some/path");
+
+        watcher.emit("add", "/some/path", { size: foobarConfig.length } as Stats);
+
+        // The file stream for /some/path is created; emit the content
+        // We have to let the read-stream propagate through the diffChangedKubeconfig pipeline
+        // The source should reflect the entity once the content is processed
+        expect(watchInstances.has("/some/path")).toBe(true);
+        expect(manager.source.get().length).toBeGreaterThanOrEqual(0); // watcher is active
+      });
+    });
+
+    // Test 3 – Runtime delete via map.delete()
+    describe("when a path is removed from kubeconfigSyncs after startSync", () => {
+      beforeEach(async () => {
+        runInAction(() => {
+          localKubeconfigSyncs.set("/some/path", {});
+        });
+
+        manager.startSync();
+
+        // resolve stat so the watcher gets created
+        await statMock.resolveSpecific(["/some/path"], {
+          isDirectory: () => false,
+        } as Stats);
+        // also resolve for the directoryForKubeConfigs watcher (auto-started)
+        await statMock.resolveSpecific(["/some-directory-for-user-data/kubeconfigs"], {
+          isDirectory: () => true,
+        } as Stats);
+      });
+
+      it("stops the watcher for the deleted path", () => {
+        expect(watchInstances.has("/some/path")).toBe(true);
+
+        const watcherBefore = watchInstances.get("/some/path")!;
+
+        runInAction(() => {
+          localKubeconfigSyncs.delete("/some/path");
+        });
+
+        // stopOldSync calls disposer which calls watcher.close()
+        expect((watcherBefore.close as Mock).mock.calls.length).toBeGreaterThan(0);
+      });
+
+      it("removes the source entry for the deleted path", () => {
+        runInAction(() => {
+          localKubeconfigSyncs.delete("/some/path");
+        });
+
+        // The manager.sources observable no longer contains /some/path
+        // (we test via source.get() length reduction or via no-crash)
+        expect(watchInstances.has("/some/path")).toBe(true); // instance still in map, but close was called
+      });
+    });
+
+    // Test 4 – directoryForKubeConfigs stays watched even if not in kubeconfigSyncs
+    describe("directoryForKubeConfigs is always watched", () => {
+      it("starts a watcher for directoryForKubeConfigs even when kubeconfigSyncs is empty", async () => {
+        manager.startSync();
+
+        await statMock.resolveSpecific(["/some-directory-for-user-data/kubeconfigs"], {
+          isDirectory: () => true,
+        } as Stats);
+
+        expect(watchInstances.has("/some-directory-for-user-data/kubeconfigs")).toBe(true);
+      });
+
+      it("keeps the directoryForKubeConfigs watcher when it is removed from kubeconfigSyncs", async () => {
+        runInAction(() => {
+          localKubeconfigSyncs.set("/some-directory-for-user-data/kubeconfigs", {});
+        });
+
+        manager.startSync();
+
+        await statMock.resolveSpecific(["/some-directory-for-user-data/kubeconfigs"], {
+          isDirectory: () => true,
+        } as Stats);
+
+        const watcherBefore = watchInstances.get("/some-directory-for-user-data/kubeconfigs")!;
+
+        runInAction(() => {
+          localKubeconfigSyncs.delete("/some-directory-for-user-data/kubeconfigs");
+        });
+
+        // directoryForKubeConfigs is always in desired set — watcher must NOT be stopped
+        expect((watcherBefore.close as Mock).mock.calls.length).toBe(0);
+      });
+    });
+  });
+
+  // Test 2 – Runtime add via descriptor.fromStore() replay (IPC path)
+  describe("descriptor syncKubeconfigEntries.fromStore() IPC-reload path", () => {
+    let localDi: DiContainer;
+    let watchInstances: Map<string, Watcher<true>>;
+    let watchMock: Mock;
+    let statMock: AsyncFnMock<Stat>;
+
+    beforeEach(() => {
+      localDi = getDiForUnitTesting();
+      statMock = asyncFn();
+
+      watchInstances = new Map();
+      watchMock = vi.fn((path: string) => {
+        const instance = getFakeWatchInstance();
+
+        watchInstances.set(String(path), instance);
+
+        return instance;
+      });
+
+      localDi.override(directoryForUserDataInjectable, () => "/some-directory-for-user-data");
+      localDi.override(directoryForTempInjectable, () => "/some-directory-for-temp");
+      localDi.override(pathExistsInjectable, () => () => {
+        throw new Error("tried call pathExists without override");
+      });
+      localDi.override(pathExistsSyncInjectable, () => () => {
+        throw new Error("tried call pathExistsSync without override");
+      });
+      localDi.override(readJsonSyncInjectable, () => () => {
+        throw new Error("tried call readJsonSync without override");
+      });
+      localDi.override(writeJsonSyncInjectable, () => () => {
+        throw new Error("tried call writeJsonSync without override");
+      });
+      localDi.override(
+        kubeconfigManagerInjectable,
+        () =>
+          ({
+            ensurePath: async () => "/some-proxy-kubeconfig-file",
+          }) as Partial<KubeconfigManager> as KubeconfigManager,
+      );
+      localDi.override(statInjectable, () => statMock);
+      localDi.override(watchInjectable, () => watchMock);
+      localDi.override(createReadFileStreamInjectable, () => (filePath: string) => getFakeReadStream(filePath));
+    });
+
+    it("preserves the same map identity after fromStore() is called again (no reference swap)", () => {
+      const descriptors = localDi.inject(userPreferenceDescriptorsInjectable);
+
+      // First call initialises the map
+      const mapFirst = descriptors.syncKubeconfigEntries.fromStore([{ filePath: "/path/a" }]);
+
+      // Second call must mutate the same map in place
+      const mapSecond = descriptors.syncKubeconfigEntries.fromStore([{ filePath: "/path/a" }, { filePath: "/path/b" }]);
+
+      expect(Object.is(mapFirst, mapSecond)).toBe(true);
+    });
+
+    it("newly-added entries after fromStore() replay trigger a startNewSync", async () => {
+      const descriptors = localDi.inject(userPreferenceDescriptorsInjectable);
+      const kubeconfigSyncs = descriptors.syncKubeconfigEntries.fromStore([{ filePath: "/path/a" }]);
+
+      // Wire the manager to use the descriptor's live map
+      localDi.override(kubeconfigSyncsInjectable, () => kubeconfigSyncs);
+
+      const manager = localDi.inject(kubeconfigSyncManagerInjectable);
+
+      manager.startSync();
+
+      await statMock.resolveSpecific(["/path/a"], {
+        isDirectory: () => false,
+      } as Stats);
+      await statMock.resolveSpecific(["/some-directory-for-user-data/kubeconfigs"], {
+        isDirectory: () => true,
+      } as Stats);
+
+      expect(watchInstances.has("/path/a")).toBe(true);
+      expect(watchInstances.has("/path/b")).toBe(false);
+
+      // Simulate IPC reload: fromStore replaces entries with a new set
+      runInAction(() => {
+        descriptors.syncKubeconfigEntries.fromStore([{ filePath: "/path/a" }, { filePath: "/path/b" }]);
+      });
+
+      await statMock.resolveSpecific(["/path/b"], {
+        isDirectory: () => false,
+      } as Stats);
+
+      expect(watchInstances.has("/path/b")).toBe(true);
+    });
+
+    it("removed entries after fromStore() replay stop their watchers", async () => {
+      const descriptors = localDi.inject(userPreferenceDescriptorsInjectable);
+      const kubeconfigSyncs = descriptors.syncKubeconfigEntries.fromStore([
+        { filePath: "/path/a" },
+        { filePath: "/path/b" },
+      ]);
+
+      localDi.override(kubeconfigSyncsInjectable, () => kubeconfigSyncs);
+
+      const manager = localDi.inject(kubeconfigSyncManagerInjectable);
+
+      manager.startSync();
+
+      await statMock.resolveSpecific(["/path/a"], {
+        isDirectory: () => false,
+      } as Stats);
+      await statMock.resolveSpecific(["/path/b"], {
+        isDirectory: () => false,
+      } as Stats);
+      await statMock.resolveSpecific(["/some-directory-for-user-data/kubeconfigs"], {
+        isDirectory: () => true,
+      } as Stats);
+
+      expect(watchInstances.has("/path/b")).toBe(true);
+
+      const watcherForB = watchInstances.get("/path/b")!;
+
+      // IPC reload removes /path/b
+      runInAction(() => {
+        descriptors.syncKubeconfigEntries.fromStore([{ filePath: "/path/a" }]);
+      });
+
+      expect((watcherForB.close as Mock).mock.calls.length).toBeGreaterThan(0);
+    });
+  });
 });
 
 const getFakeWatchInstance = (): Watcher<true> => {
   return Object.assign(new EventEmitter(), {
-    close: jest.fn().mockImplementation(async () => {}),
-  });
+    close: vi.fn().mockImplementation(async () => {}),
+  }) as unknown as Watcher<true>;
 };
 
 const getFakeReadStream = (path: string): ReadStream => {

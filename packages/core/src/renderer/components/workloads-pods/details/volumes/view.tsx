@@ -6,7 +6,6 @@
 
 import { Icon } from "@freelensapp/icon";
 import { observer } from "mobx-react";
-import React from "react";
 import { DrawerTitle } from "../../../drawer";
 import { VolumeVariant } from "./variant";
 
@@ -28,7 +27,7 @@ export const PodVolumes = observer(({ pod }: PodVolumesProps) => {
       <DrawerTitle>Volumes</DrawerTitle>
       {volumes.map((volume) => (
         <div key={volume.name} className="volume">
-          <div className="title flex gaps">
+          <div className="title flex gap-2">
             <Icon small material="storage" />
             <span>{volume.name}</span>
           </div>

@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "moduleResolution": "Bundler",
+    "module": "ESNext",
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "noEmitOnError": true,
+    "declarationMap": false,
+    "sourceMap": false,
+    "noUnusedLocals": false,
+    "skipLibCheck": true,
+    "rootDir": "../..",
+    "outDir": "dist-types"
+  },
+  "include": ["src/**/*", "../core/types/*.d.ts"]
+}

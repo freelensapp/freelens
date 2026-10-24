@@ -5,7 +5,7 @@
  */
 
 import { iter } from "@freelensapp/utilities";
-import { action, computed, type IComputedValue, type IObservableArray, makeObservable, observable } from "mobx";
+import { action, computed, type IComputedValue, type IObservableArray, observable } from "mobx";
 
 import type { CatalogEntity } from "../../common/catalog";
 import type { HasCategoryForEntity } from "../../common/catalog/has-category-for-entity.injectable";
@@ -17,9 +17,7 @@ interface Dependencies {
 export class CatalogEntityRegistry {
   protected sources = observable.map<string, IComputedValue<CatalogEntity[]>>();
 
-  constructor(protected readonly dependencies: Dependencies) {
-    makeObservable(this);
-  }
+  constructor(protected readonly dependencies: Dependencies) {}
 
   @action addObservableSource(id: string, source: IObservableArray<CatalogEntity>) {
     this.sources.set(

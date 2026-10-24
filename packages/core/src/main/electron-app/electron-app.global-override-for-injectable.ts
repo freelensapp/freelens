@@ -4,10 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import EventEmitter from "node:events";
 import { getGlobalOverride } from "@freelensapp/test-utils";
 import { getOrInsert } from "@freelensapp/utilities";
-import EventEmitter from "events";
-import { kebabCase } from "lodash";
+import { kebabCase } from "es-toolkit";
 import electronAppInjectable from "./electron-app.injectable";
 
 import type { ClientCertRequestParams, ProxyConfig } from "electron";
@@ -103,6 +103,9 @@ export default getGlobalOverride(electronAppInjectable, () => {
     isAccessibilitySupportEnabled(): boolean {
       throw new Error("Method not implemented.");
     }
+    isActive(): boolean {
+      throw new Error("Method not implemented.");
+    }
     isDefaultProtocolClient(protocol: string, path?: string | undefined, args?: string[] | undefined): boolean {
       void protocol;
       void path;
@@ -157,6 +160,10 @@ export default getGlobalOverride(electronAppInjectable, () => {
     }
     setActivationPolicy(policy: "regular" | "accessory" | "prohibited"): void {
       void policy;
+      throw new Error("Method not implemented.");
+    }
+    setDesktopName(name: string): void {
+      void name;
       throw new Error("Method not implemented.");
     }
     setAppLogsPath(path?: string | undefined): void {
@@ -306,6 +313,18 @@ export default getGlobalOverride(electronAppInjectable, () => {
         launchItems: [],
         status: "not-found" as const,
       };
+    }
+
+    toastActivatorCLSID = "";
+
+    setToastActivatorCLSID(clsid: string): void {
+      void clsid;
+      throw new Error("Method not implemented.");
+    }
+
+    configureWebAuthn(options: Electron.ConfigureWebAuthnOptions): void {
+      void options;
+      throw new Error("Method not implemented.");
     }
   })();
 });

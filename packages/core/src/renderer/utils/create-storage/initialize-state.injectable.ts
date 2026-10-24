@@ -7,12 +7,12 @@
 import { beforeApplicationIsLoadingInjectionToken } from "@freelensapp/application";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import AwaitLock from "await-lock";
-import { comparer, reaction, runInAction, toJS } from "mobx";
+import { compareStructural, reaction, runInAction, toJS } from "mobx";
 import directoryForLensLocalStorageInjectable from "../../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
 import readJsonFileInjectable from "../../../common/fs/read-json-file.injectable";
 import writeJsonFileInjectable from "../../../common/fs/write-json-file.injectable";
 import joinPathsInjectable from "../../../common/path/join-paths.injectable";
+import AwaitLock from "../../../common/utils/await-lock";
 import setupAppPathsInjectable from "../../app-paths/setup-app-paths.injectable";
 import hostedClusterIdInjectable from "../../cluster-frame-context/hosted-cluster-id.injectable";
 import { storageHelperLogPrefix } from "../storage-helper";
@@ -51,7 +51,7 @@ const initializeStateInjectable = getInjectable({
 
       reaction(() => toJS(lensLocalStorageState), saveFile, {
         delay: storageSaveDelay, // lazy, avoid excessive writes to fs
-        equals: comparer.structural, // save only when something really changed
+        equals: compareStructural, // save only when something really changed
       });
 
       async function saveFile(state: Record<string, unknown>) {

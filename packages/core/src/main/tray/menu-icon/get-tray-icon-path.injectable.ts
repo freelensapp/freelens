@@ -5,7 +5,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { camelCase, flow, upperFirst } from "lodash/fp";
+import { camelCase, flow, upperFirst } from "es-toolkit";
 import joinPathsInjectable from "../../../common/path/join-paths.injectable";
 import isMacInjectable from "../../../common/vars/is-mac.injectable";
 import staticFilesDirectoryInjectable from "../../../common/vars/static-files-directory.injectable";

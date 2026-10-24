@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`MutatingWebhookConfigsDetails renders 1`] = `
+exports[`MutatingWebhookConfigsDetails > renders 1`] = `
 <body>
   <div>
     <div
@@ -190,7 +190,7 @@ exports[`MutatingWebhookConfigsDetails renders 1`] = `
 </body>
 `;
 
-exports[`MutatingWebhookConfigsDetails renders with no webhooks 1`] = `
+exports[`MutatingWebhookConfigsDetails > renders with no webhooks 1`] = `
 <body>
   <div>
     <div

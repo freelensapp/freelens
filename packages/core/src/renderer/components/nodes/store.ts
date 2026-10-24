@@ -6,8 +6,8 @@
 
 import { cpuUnitsToNumber, unitsToBytes } from "@freelensapp/utilities";
 import autoBind from "auto-bind";
-import { sum } from "lodash";
-import { computed, makeObservable, observable } from "mobx";
+import { sum } from "es-toolkit";
+import { computed, observable } from "mobx";
 import { KubeObjectStore } from "../../../common/k8s-api/kube-object.store";
 
 import type { NodeApi, NodeMetricsApi } from "@freelensapp/kube-api";
@@ -27,7 +27,6 @@ export class NodeStore extends KubeObjectStore<Node, NodeApi> {
   ) {
     super(dependencies, api, opts);
 
-    makeObservable(this);
     autoBind(this);
   }
 

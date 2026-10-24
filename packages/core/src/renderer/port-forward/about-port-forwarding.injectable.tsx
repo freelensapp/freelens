@@ -7,7 +7,6 @@
 import { Button } from "@freelensapp/button";
 import { showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { getInjectable } from "@ogre-tools/injectable";
-import React from "react";
 import navigateToPortForwardsInjectable from "../../common/front-end-routing/routes/cluster/network/port-forwards/navigate-to-port-forwards.injectable";
 
 const aboutPortForwardingInjectable = getInjectable({
@@ -19,10 +18,10 @@ const aboutPortForwardingInjectable = getInjectable({
 
     return () => {
       const removeNotification = showSuccessNotification(
-        <div className="flex column gaps">
+        <div className="flex flex-col gap-2">
           <b>Port Forwarding</b>
           <p>You can manage your port forwards on the Port Forwarding Page.</p>
-          <div className="flex gaps row align-left box grow">
+          <div className="flex gap-2 grow shrink-0 basis-0">
             <Button
               active
               outlined

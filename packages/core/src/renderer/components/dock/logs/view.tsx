@@ -7,7 +7,7 @@
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React, { createRef, useEffect } from "react";
+import { createRef, useEffect } from "react";
 import subscribeStoresInjectable from "../../../kube-watch-api/subscribe-stores.injectable";
 import podStoreInjectable from "../../workloads-pods/store.injectable";
 import { InfoPanel } from "../info-panel";
@@ -74,11 +74,11 @@ const NonInjectedLogsDockTab = observer(
     }
 
     return (
-      <div className={cssNames("PodLogs flex column", className)}>
+      <div className={cssNames("PodLogs flex flex-col", className)}>
         <InfoPanel
           tabId={tab.id}
           controls={
-            <div className="flex gaps">
+            <div className="flex gap-2">
               <LogResourceSelector model={model} />
               <LogSearch model={model} scrollToOverlay={scrollToOverlay} />
             </div>

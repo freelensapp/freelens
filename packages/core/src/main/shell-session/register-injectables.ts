@@ -13,6 +13,7 @@ import shellSessionProcessesInjectable from "./processes.injectable";
 import { registerInjectables as registerShellEnvModifierInjectables } from "./shell-env-modifier/register-injectables";
 import shellSessionEnvsInjectable from "./shell-envs.injectable";
 import spawnPtyInjectable from "./spawn-pty.injectable";
+import { registerInjectables as registerStandaloneShellSessionInjectables } from "./standalone-shell-session/register-injectables";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
@@ -49,6 +50,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     registerShellEnvModifierInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerStandaloneShellSessionInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }

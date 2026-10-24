@@ -5,8 +5,8 @@
  */
 
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import { asyncComputed } from "@ogre-tools/injectable-react";
 import requestHelmChartReadmeInjectable from "../../../../common/k8s-api/endpoints/helm-charts.api/request-readme.injectable";
+import { asyncComputed } from "../../../../common/utils/async-computed";
 import helmChartDetailsVersionSelectionInjectable from "./versions/helm-chart-details-version-selection.injectable";
 
 import type { HelmChart } from "../../../../common/k8s-api/endpoints/helm-charts.api";

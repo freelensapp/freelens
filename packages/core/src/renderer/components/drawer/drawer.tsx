@@ -18,9 +18,8 @@ import { createPortal } from "react-dom";
 import drawerStorageInjectable, { defaultDrawerWidth } from "./drawer-storage/drawer-storage.injectable";
 
 import type { AnimateName } from "@freelensapp/animate";
+import type { History } from "@freelensapp/routing";
 import type { StrictReactNode } from "@freelensapp/utilities";
-
-import type { History } from "history";
 
 import type { StorageLayer } from "../../utils/storage-helper";
 
@@ -160,7 +159,9 @@ class NonInjectedDrawer extends React.Component<DrawerProps & Dependencies & typ
       return;
     }
     const clickedElem = evt.target as HTMLElement;
-    const isOutsideAnyDrawer = !clickedElem.closest(".Drawer");
+    // A click that re-rendered its target before reaching window, such as one
+    // opening details, leaves it detached, so where it was is no longer known.
+    const isOutsideAnyDrawer = clickedElem.isConnected && !clickedElem.closest(".Drawer");
 
     if (isOutsideAnyDrawer) {
       close();
@@ -217,12 +218,14 @@ class NonInjectedDrawer extends React.Component<DrawerProps & Dependencies & typ
         <div
           className={cssNames("Drawer", className, position)}
           style={{ "--size": drawerSize } as React.CSSProperties}
-          ref={(e) => (this.contentElem = e)}
+          ref={(e) => {
+            this.contentElem = e;
+          }}
           data-testid={testId}
         >
-          <div className="drawer-wrapper flex column">
-            <div className="drawer-title flex align-center">
-              <div className="drawer-title-text flex gaps align-center">
+          <div className="drawer-wrapper flex flex-col">
+            <div className="drawer-title flex items-center">
+              <div className="drawer-title-text flex gap-2 items-center">
                 {title}
                 {canCopyTitle && (
                   <Icon material={copyIcon} tooltip={copyTooltip} onClick={() => this.copyTitle(title)} />
@@ -232,9 +235,11 @@ class NonInjectedDrawer extends React.Component<DrawerProps & Dependencies & typ
               <Icon material="close" tooltip="Close" onClick={this.close} data-testid={testIdForClose} />
             </div>
             <div
-              className={cssNames("drawer-content flex column box grow", contentClass)}
+              className={cssNames("drawer-content flex flex-col grow shrink-0 basis-0", contentClass)}
               onScroll={this.saveScrollPos}
-              ref={(e) => (this.scrollElem = e)}
+              ref={(e) => {
+                this.scrollElem = e;
+              }}
             >
               {children}
             </div>

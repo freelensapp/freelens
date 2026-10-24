@@ -5,3 +5,4 @@
  */
 
 export * from "./extension-loader";
+export * from "./load-failure";

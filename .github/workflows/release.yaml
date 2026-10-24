@@ -14,17 +14,29 @@ jobs:
   make-draft-release:
     name: make draft release
 
+    # Never on a fork: it has none of the signing and publishing secrets. Every
+    # other job needs this one, so they are all skipped with it.
+    if: github.repository_owner == 'freelensapp'
+
     permissions: write-all
 
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-26.04-arm
     timeout-minutes: 360
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
+
+      # yq comes from mise so that its version has a single source (mise.toml)
+      # and the download is verified against mise.lock.
+      - name: Set up mise
+        uses: jdx/mise-action@v5
+        with:
+          version: 2026.10.13 # datasource=github-releases depName=jdx/mise
+          install_args: yq
 
       - name: Check if package version matches
-        run: test "${GITHUB_REF_NAME}" = "v$(jq -r .version freelens/package.json)"
+        run: test "${GITHUB_REF_NAME}" = "v$(yq -pj -oy -r .version freelens/package.json)"
 
       - name: Create draft release
         run: |
@@ -41,28 +53,43 @@ jobs:
     needs:
       - make-draft-release
 
+    # Renovate bumps the macOS and Windows runners with a
+    # "datasource=github-runners" hint (see .renovaterc.json). Ubuntu has none:
+    # it stays on the oldest image for binary compatibility with older
+    # distributions.
     strategy:
       fail-fast: false
       matrix:
         include:
-          - runs-on: ubuntu-22.04
+          - runs-on: ubuntu-24.04
+            os: linux
+            arch: x64
+            concurrency: linux-x64
+
+          - runs-on: ubuntu-24.04-arm
+            os: linux
             arch: arm64
             concurrency: linux-arm64
-          - runs-on: ubuntu-22.04
-            arch: x64
-            concurrency: linux-amd64
-          - runs-on: macos-14
+
+          - runs-on: macos-26 # datasource=github-runners
+            os: macos
             arch: arm64
-            concurrency: macos
-          - runs-on: macos-14
+            concurrency: macos-arm64
+
+          - runs-on: macos-26-intel # datasource=github-runners
+            os: macos
             arch: x64
-            concurrency: macos
-          - runs-on: windows-2022
+            concurrency: macos-x64
+
+          - runs-on: windows-11-arm # datasource=github-runners
+            os: windows
             arch: arm64
             concurrency: windows-arm64
-          - runs-on: windows-2022
+
+          - runs-on: windows-2025 # datasource=github-runners
+            os: windows
             arch: x64
-            concurrency: windows-amd64
+            concurrency: windows-x64
 
     runs-on: ${{ matrix.runs-on }}
     environment: signing
@@ -72,47 +99,38 @@ jobs:
 
     env:
       DO_NOT_TRACK: "1"
-      ELECTRON_CACHE: ${{ github.workspace }}/.cache/electron
       ELECTRON_BUILDER_CACHE: ${{ github.workspace }}/.cache/electron-builder
-      ELECTRON_HEADERS_CACHE: ${{ github.workspace }}/.cache/electron-headers
+      # The Syft that creates the SBOMs. anchore/sbom-action@v0 defaults to an
+      # older one, without the Go symbol capture the scan needs (see Create
+      # SBOM for the vulnerability scan). Stored without the leading "v"
+      # because the Renovate manager that bumps it strips the "v" on every
+      # bump; it is re-added where this is consumed.
+      SYFT_VERSION: 1.54.1 # datasource=github-releases depName=anchore/syft
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Install dependencies (Linux)
-        if: runner.os == 'Linux'
-        run: |
-          sudo apt-get -q update
-          sudo apt-get -q install -y --no-install-recommends \
-            gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
+        uses: actions/checkout@v7
 
       - name: Install dependencies (macOS)
         if: runner.os == 'macOS'
-        run: brew install bash coreutils python-setuptools
+        run: brew install bash coreutils
 
       - name: Add coreutils to PATH (macOS)
         if: runner.os == 'macOS'
         run: echo "/usr/local/opt/coreutils/libexec/gnubin" >> $GITHUB_PATH
 
-      - name: Install dependencies (Windows)
-        id: install-deps-windows
-        if: runner.os == 'Windows'
-        shell: bash
-        run: |
-          timeout 300 choco install yq --yes --no-progress
-          yq --version
-        continue-on-error: true
-
-      - name: Install dependencies (Windows) (retry)
-        if: runner.os == 'Windows' && steps.install-deps-windows.outcome == 'failure'
-        shell: bash
-        run: |
-          timeout 300 choco install yq --yes --no-progress
-          yq --version
+      # yq comes from mise so that its version has a single source (mise.toml)
+      # and the download is verified against mise.lock. It also settles the
+      # Windows runners, where winget/choco is not on every image (in particular
+      # the windows-11-arm one) and yq used to be downloaded by hand.
+      - name: Set up mise
+        uses: jdx/mise-action@v5
+        with:
+          version: 2026.10.13 # datasource=github-releases depName=jdx/mise
+          install_args: yq
 
       - name: Setup node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           package-manager-cache: false
@@ -122,50 +140,87 @@ jobs:
 
       - name: Get pnpm cache directory
         shell: bash
-        run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
+        run: |
+          pnpm_cache_dir="$(pnpm store path)"
+          echo "pnpm_cache_dir=${pnpm_cache_dir}" | tee -a "${GITHUB_ENV}"
 
       - name: Use pnpm cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ env.pnpm_cache_dir }}
-          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-node-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
             ${{ matrix.runs-on }}-${{ matrix.arch }}-node-
 
       - name: Disable pre post scripts for pnpm
         shell: bash
-        run: pnpm config set enablePrePostScripts false
+        run: pnpm config set enablePrePostScripts false --location project
 
       - name: Get Electron version
         shell: bash
-        run: echo "electron_version=$(yq -r .importers.freelens.devDependencies.electron.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
+        # pnpm-lock.yaml holds several YAML documents (pnpm 12 puts packageManagerDependencies
+        # in a document of its own), so evaluate them all and take the one that has the importer.
+        # The version carries a peer suffix, e.g. 1.2.3(supports-color@8.1.1), which split drops.
+        run: |
+          electron_version=$(yq ea -r '[.importers.freelens.devDependencies.electron.version | select(. != null)] | .[0] // error("electron not found in pnpm-lock.yaml") | split("(") | .[0]' pnpm-lock.yaml)
+          echo "electron_version=${electron_version}" | tee -a "${GITHUB_ENV}"
 
       - name: Get Electron Builder version
         shell: bash
-        run: echo "electron_builder_version=$(yq -r .importers.freelens.devDependencies.electron-builder.version pnpm-lock.yaml | sed 's/(.*)//')" >> $GITHUB_ENV
+        # Same multi-document lookup as the Electron version above.
+        run: |
+          electron_builder_version=$(yq ea -r '[.importers.freelens.devDependencies.electron-builder.version | select(. != null)] | .[0] // error("electron-builder not found in pnpm-lock.yaml") | split("(") | .[0]' pnpm-lock.yaml)
+          echo "electron_builder_version=${electron_builder_version}" | tee -a "${GITHUB_ENV}"
 
-      - name: Use Electron cache
-        uses: actions/cache@v5
+      # electron-builder's Electron zip downloader doesn't accept a cache
+      # directory override and always writes into the OS-default Electron cache
+      # dir (see freelensapp/freelens#2305). Point both the "Install Electron
+      # binary" step and this cache at that real directory so the two share one
+      # @electron/get cache and electron-builder reuses the pre-downloaded
+      # binary instead of fetching it again.
+      - name: Get Electron cache directory
+        shell: bash
+        run: |
+          case "${{ matrix.os }}" in
+            linux) dir="$HOME/.cache/electron" ;;
+            macos) dir="$HOME/Library/Caches/electron" ;;
+            windows) dir="$LOCALAPPDATA/electron/Cache" ;;
+          esac
+          echo "electron_cache_dir=$dir" | tee -a $GITHUB_ENV
+
+      # Split restore/save (save runs under if: always() after the build steps
+      # below) so a packaging failure that happens after the binaries finish
+      # downloading still saves the cache. The combined actions/cache action
+      # only saves in a post-job step that a failed job skips
+      # (freelensapp/freelens#2303).
+      - name: Restore Electron cache
+        id: electron-cache-restore
+        uses: actions/cache/restore@v6
         with:
-          path: ${{ env.ELECTRON_CACHE }}
+          path: ${{ env.electron_cache_dir }}
           key: ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-${{ env.electron_version }}
           restore-keys: |
             ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-
 
-      - name: Use Electron Builder cache
-        uses: actions/cache@v5
+      - name: Restore Electron Builder cache
+        id: electron-builder-cache-restore
+        uses: actions/cache/restore@v6
         with:
           path: ${{ env.ELECTRON_BUILDER_CACHE }}
           key: ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-builder-${{ env.electron_builder_version }}
           restore-keys: |
             ${{ matrix.runs-on }}-${{ matrix.arch }}-electron-builder-
 
-      - name: Use Electron headers cache
-        id: electron-headers
-        uses: actions/cache@v5
+      # Turborepo does not cache the binaries, see "Bundled Binary Versions"
+      # in AGENTS.md. Saved right after the build.
+      - name: Restore bundled binaries cache
+        id: binaries-cache-restore
+        uses: actions/cache/restore@v6
         with:
-          path: ${{ env.ELECTRON_HEADERS_CACHE }}
-          key: electron-headers-${{ env.electron_version }}
+          path: freelens/binaries
+          key: ${{ runner.os }}-${{ runner.arch }}-binaries-${{ hashFiles('freelens/binaries.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ runner.arch }}-binaries-
 
       - name: Install pnpm dependencies
         id: install-pnpm
@@ -178,35 +233,45 @@ jobs:
         shell: bash
         run: pnpm install --color=always --prefer-offline --frozen-lockfile
 
-      - name: Install Electron headers
-        if: steps.electron-headers.outputs.cache-hit != 'true'
+      - name: Install Electron binary
         shell: bash
-        run: |
-          set -eo pipefail
-          mkdir -p $ELECTRON_HEADERS_CACHE
-          curl -sSfL https://www.electronjs.org/headers/v$electron_version/node-v$electron_version-headers.tar.gz -o $ELECTRON_HEADERS_CACHE/node-v$electron_version-headers.tar.gz
+        working-directory: freelens
+        env:
+          electron_config_cache: ${{ env.electron_cache_dir }}
+        run: node "$(node -p "require.resolve('electron/install.js')")"
 
-      - name: Enable downloading for all architectures (macOS x64, Linux arm64, Windows arm64)
-        if: runner.os == 'macOS' && matrix.arch == 'x64' || runner.os == 'Linux' && matrix.arch == 'arm64' || runner.os == 'Windows' && matrix.arch == 'arm64'
+      # Without known checksums, @electron/get downloads SHASUMS256.txt from
+      # GitHub on every build, bypassing its cache, even when the Electron zip
+      # is cached, so an outage of GitHub fails the packaging. electron-builder
+      # takes them from SHASUMS256.txt-<version> at the root of that cache
+      # instead, and the electron package ships the same checksums, which the
+      # lockfile has verified.
+      - name: Seed Electron checksums
         shell: bash
-        run: |
-          echo "DOWNLOAD_ALL_ARCHITECTURES=true" >> $GITHUB_ENV
+        working-directory: freelens
+        run: |-
+          mkdir -p "$electron_cache_dir"
+          node -e '
+            const checksums = require("electron/checksums.json");
+            const lines = Object.entries(checksums).map(([file, sha256]) => `${sha256} *${file}\n`);
+            require("node:fs").writeFileSync(process.argv[1], lines.join(""));
+          ' "$electron_cache_dir/SHASUMS256.txt-$electron_version"
 
       - name: Build packages
+        if: runner.os != 'Windows'
         run: pnpm --color=always --stream build
 
-      - name: Set cross-complilation environment (Linux arm64)
-        if: runner.os == 'Linux' && matrix.arch == 'arm64'
-        run: |
-          echo "CC=aarch64-linux-gnu-gcc" >> $GITHUB_ENV
-          echo "CXX=aarch64-linux-gnu-g++" >> $GITHUB_ENV
-
-      - name: Rebuild native packages for Electron
-        run: pnpm --color=always electron-rebuild -a ${{ matrix.arch }}
+      # STATUS_DLL_INIT_FAILED (0xC0000142) intermittently crashes turbo's
+      # child build processes on the GitHub-hosted Windows runners when the
+      # build fans out across all packages at once (see issue #105). Cap
+      # turbo's concurrency on Windows to lower the parallelism and memory
+      # pressure that trigger the crash; other platforms keep turbo's default.
+      - name: Build packages (Windows)
+        if: runner.os == 'Windows'
+        shell: bash
+        run: pnpm --color=always --stream build
         env:
-          npm_config_arch: ${{ matrix.arch }}
-          npm_config_target_arch: ${{ matrix.arch }}
-          npm_package_config_node_gyp_tarball: ${{ env.ELECTRON_HEADERS_CACHE }}/node-v${{ env.electron_version }}-headers.tar.gz
+          TURBO_CONCURRENCY: "2"
 
       - name: Build extra resources
         id: build-resources
@@ -223,7 +288,15 @@ jobs:
         if: steps.build-resources-2.outcome == 'failure'
         run: pnpm --color=always build:resources
 
+      - name: Save bundled binaries cache
+        if: steps.binaries-cache-restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: freelens/binaries
+          key: ${{ steps.binaries-cache-restore.outputs.cache-primary-key }}
+
       - name: Build Electron app (macOS)
+        id: build-macos
         if: runner.os == 'macOS'
         run: |
           for var in APPLEID APPLEIDPASS APPLETEAMID CSC_LINK CSC_KEY_PASSWORD CSC_INSTALLER_LINK CSC_INSTALLER_KEY_PASSWORD; do
@@ -241,6 +314,95 @@ jobs:
           CSC_INSTALLER_LINK: ${{ secrets.CSC_INSTALLER_LINK }}
           CSC_INSTALLER_KEY_PASSWORD: ${{ secrets.CSC_INSTALLER_KEY_PASSWORD }}
           DEBUG: electron-builder,electron-builder:*
+        continue-on-error: true
+
+      # Retry once to absorb a transient Electron/toolset download failure
+      # during packaging (see freelensapp/freelens#2303). Rebuilding and
+      # re-signing from scratch is idempotent; notarization happens in the
+      # separate steps below.
+      - name: Build Electron app (macOS) (retry)
+        if: runner.os == 'macOS' && steps.build-macos.outcome == 'failure'
+        run: |
+          for var in APPLEID APPLEIDPASS APPLETEAMID CSC_LINK CSC_KEY_PASSWORD CSC_INSTALLER_LINK CSC_INSTALLER_KEY_PASSWORD; do
+            test -n "${!var}" || unset $var
+          done
+          pnpm --color=always build:app \
+            dmg pkg \
+            --${{ matrix.arch }}
+        env:
+          APPLEID: ${{ secrets.APPLEID }}
+          APPLEIDPASS: ${{ secrets.APPLEIDPASS }}
+          APPLETEAMID: ${{ secrets.APPLETEAMID }}
+          CSC_LINK: ${{ secrets.CSC_LINK }}
+          CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
+          CSC_INSTALLER_LINK: ${{ secrets.CSC_INSTALLER_LINK }}
+          CSC_INSTALLER_KEY_PASSWORD: ${{ secrets.CSC_INSTALLER_KEY_PASSWORD }}
+          DEBUG: electron-builder,electron-builder:*
+
+      # Guards the oldest macOS the build runs on, which the runner image does
+      # not decide: LSMinimumSystemVersion comes from Electron, and minos is
+      # set per binary by whoever built it (Electron, the node-pty prebuilds,
+      # the Go toolchain of kubectl, helm and freelens-k8s-proxy). Fails when
+      # either goes above MACOS_MIN_VERSION, and warns about a binary that
+      # needs a newer macOS than the app declares: such an app installs and
+      # starts there, then fails when it runs that binary.
+      - name: Verify minimum macOS version (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          set -eo pipefail
+          shopt -s nullglob
+          # 1.2.0 -> 1.2, so that sort -V does not order 12 below 12.0
+          norm() {
+            local v=$1
+            while [[ $v == *.0 ]]; do v=${v%.0}; done
+            echo "$v"
+          }
+          newer() {
+            local a b
+            a=$(norm "$1")
+            b=$(norm "$2")
+            [[ $a != "$b" && $(printf '%s\n' "$a" "$b" | sort -V | tail -n1) == "$a" ]]
+          }
+          apps=(freelens/dist/mac*/*.app)
+          if [[ ${#apps[@]} -eq 0 ]]; then
+            echo "No .app under freelens/dist" >&2
+            exit 1
+          fi
+          status=0
+          for app in "${apps[@]}"; do
+            lsmin=$(plutil -extract LSMinimumSystemVersion raw "$app/Contents/Info.plist")
+            echo "$app: LSMinimumSystemVersion $lsmin"
+            if newer "$lsmin" "$MACOS_MIN_VERSION"; then
+              echo "::error::$app declares macOS $lsmin, newer than $MACOS_MIN_VERSION"
+              status=1
+            fi
+            echo "::group::minos of the binaries in $app"
+            while IFS= read -r -d '' f; do
+              file -b "$f" | grep -q '^Mach-O' || continue
+              # The highest minimum of all architectures, from LC_BUILD_VERSION
+              # or, in older binaries, LC_VERSION_MIN_MACOSX.
+              minos=$(vtool -show-build "$f" |
+                perl -ne '$c = $1 if /^\s*cmd (\S+)/; print "$1\n" if ($c eq "LC_BUILD_VERSION" && /^\s*minos (\S+)/) || ($c eq "LC_VERSION_MIN_MACOSX" && /^\s*version (\S+)/)' |
+                sort -V | tail -n1)
+              echo "${minos:-none} ${f#"$app"/}"
+              if [[ -z $minos ]]; then
+                echo "::error::${f#"$app"/} has no minimum macOS version"
+                status=1
+              elif newer "$minos" "$MACOS_MIN_VERSION"; then
+                echo "::error::${f#"$app"/} needs macOS $minos, newer than $MACOS_MIN_VERSION"
+                status=1
+              elif newer "$minos" "$lsmin"; then
+                echo "::warning::${f#"$app"/} needs macOS $minos, newer than the $lsmin the app declares"
+              fi
+            done < <(find "$app" -type f -print0)
+            echo "::endgroup::"
+          done
+          exit $status
+        env:
+          # helm and freelens-k8s-proxy already need 13.0 while Electron
+          # declares 12.0, hence the warning above.
+          MACOS_MIN_VERSION: "13.0"
 
       - name: Notarize PKG (macOS)
         id: notarize-pkg
@@ -306,6 +468,7 @@ jobs:
           APPLETEAMID: ${{ secrets.APPLETEAMID }}
 
       - name: Build Electron app (Linux)
+        id: build-linux
         if: runner.os == 'Linux'
         run: |
           pnpm --color=always build:app \
@@ -313,20 +476,191 @@ jobs:
             --${{ matrix.arch }}
         env:
           DEBUG: electron-builder,electron-builder:*
+        continue-on-error: true
 
-      - name: Build Electron app (Windows)
-        if: runner.os == 'Windows'
-        shell: bash
+      # Retry once to absorb a transient Electron/toolset download failure
+      # during packaging (see freelensapp/freelens#2303).
+      - name: Build Electron app (Linux) (retry)
+        if: runner.os == 'Linux' && steps.build-linux.outcome == 'failure'
         run: |
           pnpm --color=always build:app \
-            msi nsis portable \
+            AppImage deb rpm \
             --${{ matrix.arch }}
         env:
           DEBUG: electron-builder,electron-builder:*
 
+      - name: Build Electron app directory (Windows)
+        id: build-windows-dir
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          pnpm --color=always build:app \
+            dir \
+            --${{ matrix.arch }}
+        env:
+          DEBUG: electron-builder,electron-builder:*
+        continue-on-error: true
+
+      # Retry once to absorb a transient Electron/toolset download failure
+      # during packaging (see freelensapp/freelens#2303).
+      - name: Build Electron app directory (Windows) (retry)
+        if: runner.os == 'Windows' && steps.build-windows-dir.outcome == 'failure'
+        shell: bash
+        run: |
+          pnpm --color=always build:app \
+            dir \
+            --${{ matrix.arch }}
+        env:
+          DEBUG: electron-builder,electron-builder:*
+
+      - name: Verify app.asar
+        shell: bash
+        run: |
+          set -eo pipefail
+          found=0
+          while IFS= read -r asar; do
+            tmpdir=$(mktemp -d)
+            echo "::group::asar extract ${asar}"
+            pnpm dlx @electron/asar extract "${asar}" "${tmpdir}"
+            echo "::endgroup::"
+            rm -rf "${tmpdir}"
+            found=$((found + 1))
+          done < <(find freelens/dist -type f -name app.asar)
+          if [[ "${found}" -eq 0 ]]; then
+            echo "No app.asar found under freelens/dist" >&2
+            exit 1
+          fi
+
+      - name: List unpacked binaries to sign (Windows)
+        id: sign-list
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          set -euo pipefail
+          case "${{ matrix.arch }}" in
+            arm64) unpacked="win-arm64-unpacked" ;;
+            *) unpacked="win-unpacked" ;;
+          esac
+          ws='${{ github.workspace }}'
+          dir="freelens/dist/$unpacked"
+          # node-pty's bundled ConPTY (conpty.dll and the OpenConsole.exe it
+          # starts for every terminal) comes signed by Microsoft. Keep that
+          # signature instead of replacing it with ours: a binary with a
+          # Microsoft name and another publisher's signature is itself
+          # something endpoint protection heuristics look for.
+          conpty="$dir/resources/app.asar.unpacked/node_modules/node-pty/prebuilds/win32-${{ matrix.arch }}/conpty"
+          keep=()
+          list="$RUNNER_TEMP/sign-files.txt"
+          : > "$list"
+          while IFS= read -r -d '' f; do
+            if [[ "$f" == "$conpty/"* ]]; then
+              keep+=("$f")
+              continue
+            fi
+            if file -b "$f" | grep -q 'PE32'; then
+              rel="${f#./}"
+              printf '%s\\%s\n' "$ws" "${rel//\//\\}" >> "$list"
+            fi
+          done < <(find "$dir" -type f \( -iname '*.dll' -o -iname '*.exe' -o -iname '*.node' \) -print0)
+          # Terminals do not start without them, and an unsigned one must not
+          # ship just because it was left out of the list above.
+          if [[ ${#keep[@]} -ne 2 ]]; then
+            echo "Expected conpty.dll and OpenConsole.exe under ${conpty}, found ${#keep[@]} file(s)" >&2
+            exit 1
+          fi
+          for f in "${keep[@]}"; do
+            signer=$(SIGNED_FILE="$f" pwsh -NoProfile -Command '$s = Get-AuthenticodeSignature -LiteralPath $env:SIGNED_FILE; if ($s.Status -eq "Valid") { $s.SignerCertificate.Subject }')
+            if [[ "$signer" != *"O=Microsoft Corporation"* ]]; then
+              echo "${f} is not validly signed by Microsoft (signer: ${signer:-none})" >&2
+              exit 1
+            fi
+            echo "Keeping the Microsoft signature of ${f}"
+          done
+          if [[ ! -s "$list" ]]; then
+            echo "No Windows PE binaries found under ${dir} to sign" >&2
+            exit 1
+          fi
+          echo "Files to sign:"
+          cat "$list"
+          {
+            echo "files<<SIGN_EOF"
+            cat "$list"
+            echo "SIGN_EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Azure Trusted Signing unpacked binaries (Windows)
+        if: runner.os == 'Windows'
+        uses: azure/artifact-signing-action@v2
+        with:
+          azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          endpoint: ${{ vars.AZURE_ENDPOINT }}
+          trusted-signing-account-name: ${{ vars.AZURE_CODE_SIGNING_NAME }}
+          certificate-profile-name: ${{ vars.AZURE_CERT_PROFILE_NAME }}
+          files: ${{ steps.sign-list.outputs.files }}
+
+      - name: Build Electron app installers (Windows)
+        id: build-windows-installers
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          case "${{ matrix.arch }}" in
+            arm64) unpacked="win-arm64-unpacked" ;;
+            *) unpacked="win-unpacked" ;;
+          esac
+          pnpm --color=always build:app \
+            msi nsis portable \
+            --prepackaged "$GITHUB_WORKSPACE/freelens/dist/$unpacked" \
+            --${{ matrix.arch }}
+        env:
+          DEBUG: electron-builder,electron-builder:*
+        continue-on-error: true
+
+      # Retry once to absorb a transient toolset download failure (NSIS,
+      # winCodeSign, ...) during installer packaging (see
+      # freelensapp/freelens#2303). Runs against the already-signed unpacked
+      # dir, so it only re-runs the installer assembly.
+      - name: Build Electron app installers (Windows) (retry)
+        if: runner.os == 'Windows' && steps.build-windows-installers.outcome == 'failure'
+        shell: bash
+        run: |
+          case "${{ matrix.arch }}" in
+            arm64) unpacked="win-arm64-unpacked" ;;
+            *) unpacked="win-unpacked" ;;
+          esac
+          pnpm --color=always build:app \
+            msi nsis portable \
+            --prepackaged "$GITHUB_WORKSPACE/freelens/dist/$unpacked" \
+            --${{ matrix.arch }}
+        env:
+          DEBUG: electron-builder,electron-builder:*
+
+      # Save the Electron and electron-builder caches unconditionally (the
+      # counterpart to the split restore steps above): whatever the build steps
+      # downloaded is cached even when a later packaging/signing step fails, so
+      # a re-run does not re-download the binaries (freelensapp/freelens#2303).
+      # Skip each save on an exact cache hit (the primary key already exists, so
+      # actions/cache/save would only warn "Unable to reserve cache ..."); still
+      # save on a miss or restore-key partial hit, and - thanks to always() -
+      # even when a build step above failed.
+      - name: Save Electron cache
+        if: always() && steps.electron-cache-restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: ${{ env.electron_cache_dir }}
+          key: ${{ steps.electron-cache-restore.outputs.cache-primary-key }}
+
+      - name: Save Electron Builder cache
+        if: always() && steps.electron-builder-cache-restore.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v6
+        with:
+          path: ${{ env.ELECTRON_BUILDER_CACHE }}
+          key: ${{ steps.electron-builder-cache-restore.outputs.cache-primary-key }}
+
       - name: Azure Trusted Signing (Windows)
         if: runner.os == 'Windows'
-        uses: azure/artifact-signing-action@v1
+        uses: azure/artifact-signing-action@v2
         with:
           azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
@@ -394,12 +728,137 @@ jobs:
             popd > /dev/null
           done
 
+      - name: Create SBOM
+        uses: anchore/sbom-action@v0
+        with:
+          # The "v" is added here, not in SYFT_VERSION: the installer resolves
+          # the value as a literal git tag, and a bare version 404s.
+          syft-version: v${{ env.SYFT_VERSION }}
+          format: spdx-json
+          output-file: "freelens/dist/${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-sbom.spdx.json"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          artifact-name: "${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-sbom.spdx.json"
+          upload-release-assets: false
+
+      # The SBOM release-scan.yaml scans, published next to the SPDX one above.
+      # It is syft-json with Go symbol capture, because Grype matches a Go
+      # advisory against the vulnerable functions it names only when the
+      # package carries the symbols compiled into the binary. Without them it
+      # falls back to the whole module and reports advisories for code the
+      # binary never contains. Only syft-json can carry the symbols: SPDX and
+      # CycloneDX have no field for them.
+      #
+      # Created by the same Syft from the same tree as the SPDX SBOM, so the
+      # two describe the same build. Syft does not read SBOM files in a
+      # directory scan unless asked to, so the SPDX SBOM does not show up in
+      # this one.
+      - name: Create SBOM for the vulnerability scan
+        uses: anchore/sbom-action@v0
+        env:
+          SYFT_GOLANG_CAPTURE_SYMBOLS: all
+        with:
+          syft-version: v${{ env.SYFT_VERSION }}
+          format: syft-json
+          output-file: "freelens/dist/${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-sbom.syft.json"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          upload-artifact: false
+          upload-release-assets: false
+
+      - name: Create runtime package list
+        shell: bash
+        run: |
+          set -eo pipefail
+          # Assemble a production-only dependency tree (no devDependencies) from
+          # the already-populated pnpm store, then map each runtime package
+          # <name>@<version> to its path in the pnpm store. publish-runtime-package-list
+          # merges the per-platform lists into the one published with the release:
+          # the SBOM above covers the whole build workspace, so release-scan.yaml
+          # needs the keys as the runtime closure (to drop build-time findings)
+          # and the paths as the reported location for npm findings (grype
+          # otherwise reports them against pnpm-lock.yaml). --legacy is required
+          # because the workspace does not set inject-workspace-packages, and
+          # allow-unused-patches because patchedDependencies also patches
+          # devDependencies, which a production deploy does not install. The
+          # lowercase repo-name prefix keeps this file out of the Freelens*.*
+          # release-upload glob; it travels as a run artifact instead.
+          deploy_dir="$RUNNER_TEMP/freelens-prod"
+          rm -rf "$deploy_dir"
+          pnpm --filter freelens deploy --prod --legacy --ignore-scripts --config.allow-unused-patches=true "$deploy_dir"
+          os="${{ matrix.os }}"
+          arch="${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}"
+          out="freelens/dist/${{ github.event.repository.name }}-${os}-${arch}-prod-packages.json"
+          (
+            cd "$deploy_dir"
+            printf 'key\tvalue\n'
+            for d in node_modules/.pnpm/*/; do
+              d="${d#node_modules/.pnpm/}"
+              d="${d%/}"
+              [ "$d" = "node_modules" ] && continue
+              # dir name is <name>@<version>[_<peer>]; drop the peer suffix and
+              # decode the scoped-package separator (@scope+name -> @scope/name).
+              key="${d%%_*}"
+              key="${key/+//}"
+              printf '%s\t%s\n' "$key" "node_modules/.pnpm/$d/node_modules/${key%@*}"
+            done
+          ) | yq -pt -oj '.[] as $i ireduce ({}; . * {$i.key: $i.value})' > "$out"
+          echo "runtime packages: $(yq -pj -oj 'length' "$out")"
+
+      - name: Upload runtime package list
+        uses: actions/upload-artifact@v7
+        with:
+          name: "${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-prod-packages.json"
+          path: "freelens/dist/${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-prod-packages.json"
+
+      - name: Normalize SBOM filename
+        shell: bash
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          os="${{ matrix.os }}"
+          arch="${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}"
+          for f in freelens/dist/*-sbom.spdx.json freelens/dist/*-sbom.syft.json; do
+            newname="freelens/dist/Freelens-${version}-${os}-${arch}-sbom.${f##*-sbom.}"
+            mv "$f" "$newname"
+            if [ -f "${f}.sha256" ]; then
+              mv "${f}.sha256" "${newname}.sha256"
+            fi
+          done
+
+      - name: Make checksum for SBOM (Linux, Windows)
+        if: runner.os == 'Linux' || runner.os == 'Windows'
+        shell: bash
+        run: |
+          for f in freelens/dist/*-sbom.spdx.json freelens/dist/*-sbom.syft.json; do
+            pushd freelens/dist > /dev/null
+            sha256sum $(basename $f) | tee $(basename $f).sha256
+            popd > /dev/null
+          done
+
+      - name: Make checksum for SBOM (macOS)
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          for f in freelens/dist/*-sbom.spdx.json freelens/dist/*-sbom.syft.json; do
+            pushd freelens/dist > /dev/null
+            shasum -a 256 $(basename $f) | tee $(basename $f).sha256
+            popd > /dev/null
+          done
+
       - name: List files before upload
         shell: bash
         run: |
           for f in freelens/dist/Freelens*.*; do
             echo "$(ls -l "$f")" "|" "$(file -b "$f")"
           done
+
+      # Every artifact this leg publishes has a .sha256 next to it by now, in
+      # sha256sum format and named exactly as the release names it - which is
+      # the subject list attest-artifacts needs. It travels as a run artifact
+      # because the release is still a draft here.
+      - name: Upload checksums
+        uses: actions/upload-artifact@v7
+        with:
+          name: "${{ github.event.repository.name }}-${{ matrix.os }}-${{ matrix.arch == 'x64' && 'amd64' || matrix.arch }}-checksums"
+          path: freelens/dist/Freelens-*.sha256
 
       - name: Upload files
         shell: bash
@@ -408,18 +867,167 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  publish-github-release:
-    name: publish GitHub release
+  publish-runtime-package-list:
+    name: publish runtime package list
 
+    # The runtime package list says which npm packages of the build actually
+    # reach a user's machine. release-scan.yaml needs it to reduce the published
+    # SBOMs - which cover the whole build workspace, devDependencies included -
+    # to what ships.
+    #
+    # One asset, not one per platform: every build resolves the same npm closure
+    # from the same lockfile (on v1.10.3 all six SBOMs carry a byte-identical set
+    # of npm packages), so per-platform copies would be six identical files on
+    # the release page. It is still merged from all six rather than taken from
+    # one of them, so a dependency that some day resolves only on one platform
+    # stays in the set instead of silently dropping out of the scan everywhere
+    # else.
     needs:
       - make-draft-release
       - build-app
 
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-26.04-arm
+
+    permissions:
+      actions: read
+      contents: write
+
+    steps:
+      # Only needed for mise.toml and mise.lock: this job merges the lists with
+      # yq and nothing else here reads the working tree.
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # yq comes from mise so that its version has a single source (mise.toml)
+      # and the download is verified against mise.lock.
+      - name: Set up mise
+        uses: jdx/mise-action@v5
+        with:
+          version: 2026.10.13 # datasource=github-releases depName=jdx/mise
+          install_args: yq
+
+      - name: Download runtime package lists
+        uses: actions/download-artifact@v8
+        with:
+          pattern: "*-prod-packages.json"
+          path: prod
+          merge-multiple: true
+
+      - name: Merge the runtime package lists
+        shell: bash
+        run: |
+          set -eo pipefail
+          shopt -s nullglob
+          out="Freelens-${GITHUB_REF_NAME#v}-prod-packages.json"
+          # Union of the per-platform <name>@<version> -> pnpm-store-path maps,
+          # the same reduce release-scan.yaml applies to what it downloads.
+          yq ea -pj -oj '. as $i ireduce ({}; . * $i)' prod/*-prod-packages.json > "$out"
+          count=$(yq -pj -oj 'length' "$out")
+          if [[ "$count" -eq 0 ]]; then
+            echo "Merged runtime package list is empty - refusing to publish it" >&2
+            exit 1
+          fi
+          sha256sum "$out" | tee "$out.sha256"
+          echo "runtime packages: $count"
+
+      - name: Upload files
+        shell: bash
+        run: |
+          gh release upload ${GITHUB_REF_NAME#sign/} Freelens-*-prod-packages.json*
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Same as in build-app: the checksum of what this job publishes goes to
+      # attest-artifacts as a run artifact, so the list it attests covers every
+      # release asset and not just the ones the matrix produced.
+      - name: Upload checksums
+        uses: actions/upload-artifact@v7
+        with:
+          name: "${{ github.event.repository.name }}-prod-packages-checksums"
+          path: Freelens-*-prod-packages.json.sha256
+
+  attest-artifacts:
+    name: attest build provenance
+
+    # Signs a statement that these exact bytes were built by this workflow, from
+    # this commit, so `gh attestation verify <file> --repo <owner>/<repo>` can
+    # confirm a downloaded installer came from here rather than from someone
+    # who merely renamed a file. publish-github-release waits on it, so the
+    # release is never public without its attestation.
+    #
+    # The subjects come from the .sha256 files the jobs above already produce -
+    # collected as run artifacts, the same way the runtime package lists are -
+    # rather than from the draft release: reading a draft needs a token with
+    # more reach, and the digests are identical either way.
+    needs:
+      - make-draft-release
+      - build-app
+      - publish-runtime-package-list
+
+    runs-on: ubuntu-26.04-arm
+
+    permissions:
+      actions: read
+      attestations: write
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Download checksums
+        uses: actions/download-artifact@v8
+        with:
+          pattern: "*-checksums"
+          path: checksums
+          merge-multiple: true
+
+      - name: Collect attestation subjects
+        run: |
+          set -eo pipefail
+          shopt -s nullglob
+          # Each .sha256 is one sha256sum line naming the asset exactly as the
+          # release names it, which is what `gh attestation verify` matches on.
+          # sort -u only orders them; a duplicate would mean two jobs published
+          # the same asset name.
+          #
+          # The Windows lines read "<digest> *<name>" rather than "<digest>
+          # <name>" because sha256sum there defaults to binary mode. Left as
+          # is on purpose: the action strips a leading '*' or ' ' from the name
+          # itself, and rewriting the digest lines here would only add a way to
+          # get them wrong.
+          cat checksums/*.sha256 | sort -u > attestation-checksums.txt
+          cat attestation-checksums.txt
+          count=$(wc -l < attestation-checksums.txt)
+          if [[ "$count" -eq 0 ]]; then
+            echo "No checksums collected - refusing to attest nothing" >&2
+            exit 1
+          fi
+          echo "subjects: $count"
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@v4
+        with:
+          subject-checksums: attestation-checksums.txt
+
+  publish-github-release:
+    name: publish GitHub release
+
+    # The vulnerability scan is deliberately not a step on the way here: it runs
+    # as the separate Release Scan workflow, triggered by this workflow
+    # completing, and reads the SBOMs and runtime package list from the
+    # published release. Keeping it out of this run means an advisory feed that
+    # is down or rate-limited cannot fail an otherwise correct release, and the
+    # report can be refreshed nightly against the same release afterwards.
+    needs:
+      - make-draft-release
+      - build-app
+      - publish-runtime-package-list
+      - attest-artifacts
+
+    runs-on: ubuntu-26.04-arm
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Publish GitHub release
         run: gh release edit ${GITHUB_REF_NAME} --draft=false
@@ -438,18 +1046,18 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - runs-on: ubuntu-22.04
-            arch: x64
+          - runs-on: ubuntu-26.04-arm
+            arch: arm64
 
     runs-on: ${{ matrix.runs-on }}
     environment: publishing
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Setup node
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version-file: .nvmrc
           package-manager-cache: false
@@ -463,13 +1071,15 @@ jobs:
 
       - name: Get pnpm cache directory
         shell: bash
-        run: echo "pnpm_cache_dir=$(pnpm store path)" >> ${GITHUB_ENV}
+        run: |
+          pnpm_cache_dir="$(pnpm store path)"
+          echo "pnpm_cache_dir=${pnpm_cache_dir}" | tee -a "${GITHUB_ENV}"
 
       - name: Use pnpm cache
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ${{ env.pnpm_cache_dir }}
-          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-node-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ matrix.runs-on }}-${{ matrix.arch }}-node-${{ hashFiles('pnpm-lock.yaml') }}
           restore-keys: |
             ${{ matrix.runs-on }}-${{ matrix.arch }}-node-
 
@@ -536,12 +1146,12 @@ jobs:
       - make-draft-release
       - publish-github-release
 
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04-arm
     environment: apt-signing
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 

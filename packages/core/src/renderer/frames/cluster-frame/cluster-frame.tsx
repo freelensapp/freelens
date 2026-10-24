@@ -7,10 +7,10 @@
 import { ErrorBoundary } from "@freelensapp/error-boundary";
 import { clusterFrameChildComponentInjectionToken } from "@freelensapp/react-application";
 import { disposer } from "@freelensapp/utilities";
-import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
+import { computedInjectManyInjectionToken } from "@ogre-tools/injectable-extension-for-mobx";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { Observer, observer } from "mobx-react";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import namespaceStoreInjectable from "../../components/namespaces/store.injectable";
 import subscribeStoresInjectable from "../../kube-watch-api/subscribe-stores.injectable";
 import watchHistoryStateInjectable from "../../remote-helpers/watch-history-state.injectable";
@@ -45,7 +45,7 @@ const NonInjectedClusterFrame = observer(
 
 export const ClusterFrame = withInjectables<Dependencies>(NonInjectedClusterFrame, {
   getProps: (di) => {
-    const computedInjectMany = di.inject(computedInjectManyInjectable);
+    const computedInjectMany = di.inject(computedInjectManyInjectionToken);
 
     return {
       namespaceStore: di.inject(namespaceStoreInjectable),

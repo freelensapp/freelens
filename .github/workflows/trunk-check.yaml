@@ -16,7 +16,7 @@ jobs:
   trunk:
     name: Trunk Check
 
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-26.04-arm
     timeout-minutes: 15
 
     env:
@@ -24,9 +24,9 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Trunk Check
-        uses: trunk-io/trunk-action@v1
+        uses: trunk-io/trunk-action@v2.0.0
         with:
           check-mode: all

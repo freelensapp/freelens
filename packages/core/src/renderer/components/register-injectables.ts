@@ -24,6 +24,8 @@ import { registerInjectables as registerConfigPriorityClassesInjectables } from 
 import { registerInjectables as registerConfigResourceQuotasInjectables } from "./config-resource-quotas/register-injectables";
 import { registerInjectables as registerConfigRuntimeClassesInjectables } from "./config-runtime-classes/register-injectables";
 import { registerInjectables as registerConfigSecretsInjectables } from "./config-secrets/register-injectables";
+import { registerInjectables as registerConfigValidatingAdmissionPoliciesInjectables } from "./config-validating-admission-policies/register-injectables";
+import { registerInjectables as registerConfigValidatingAdmissionPolicyBindingsInjectables } from "./config-validating-admission-policy-bindings/register-injectables";
 import { registerInjectables as registerConfigValidatingWebhookConfigurationsInjectables } from "./config-validating-webhook-configurations/register-injectables";
 import { registerInjectables as registerConfigVerticalPodAutoscalersInjectables } from "./config-vertical-pod-autoscalers/register-injectables";
 import { registerInjectables as registerConfirmDialogInjectables } from "./confirm-dialog/register-injectables";
@@ -169,6 +171,16 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     registerConfigSecretsInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerConfigValidatingAdmissionPoliciesInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerConfigValidatingAdmissionPolicyBindingsInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }

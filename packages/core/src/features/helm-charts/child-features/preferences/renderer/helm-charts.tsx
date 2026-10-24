@@ -6,7 +6,6 @@
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import { Notice } from "../../../../../renderer/components/extensions/notice";
 import { AddingOfCustomHelmRepositoryDialog } from "./adding-of-custom-helm-repository/adding-of-custom-helm-repository-dialog";
 import { AddingOfCustomHelmRepositoryOpenButton } from "./adding-of-custom-helm-repository/adding-of-custom-helm-repository-open-button";
@@ -38,7 +37,7 @@ const NonInjectedHelmCharts = observer(({ helmRepositoriesErrorState }: Dependen
 
         {state.controlsAreShown && (
           <div data-testid="helm-controls">
-            <div className="flex gaps">
+            <div className="flex gap-2">
               <AddingOfPublicHelmRepository />
 
               <AddingOfCustomHelmRepositoryOpenButton />

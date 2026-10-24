@@ -11,9 +11,8 @@ import { getRandomIdInjectionToken } from "@freelensapp/random";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
-import isString from "lodash/isString";
-import { makeObservable, observable, reaction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observable, reaction } from "mobx";
+import { observer } from "mobx-react";
 import React, { isValidElement } from "react";
 import openConfirmDialogInjectable from "../confirm-dialog/open.injectable";
 import { Menu, MenuItem } from "./menu";
@@ -66,14 +65,15 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
     removeConfirmationMessage: "Remove item?",
   };
 
-  @observable isOpen = !!this.props.toolbar;
-  @observable openedViaCursor = false;
-  @observable cursorPosition: { x: number; y: number } | null = null;
-  @observable contextTarget: HTMLElement | null = null;
+  private readonly disposers: (() => void)[] = [];
+
+  @observable accessor isOpen = !!this.props.toolbar;
+  @observable accessor openedViaCursor = false;
+  @observable accessor cursorPosition: { x: number; y: number } | null = null;
+  @observable accessor contextTarget: HTMLElement | null = null;
 
   constructor(props: MenuActionsProps & Dependencies) {
     super(props);
-    makeObservable(this);
     autoBindReact(this);
   }
 
@@ -83,7 +83,7 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
       close: this.close,
     });
 
-    disposeOnUnmount(this, [
+    this.disposers.push(
       reaction(
         () => this.isOpen,
         (isOpen) => {
@@ -95,7 +95,7 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
           fireImmediately: true,
         },
       ),
-    ]);
+    );
   }
 
   componentWillUnmount(): void {
@@ -103,6 +103,7 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
       open: () => {},
       close: () => {},
     });
+    this.disposers.forEach((dispose) => dispose());
   }
 
   open = (options?: MenuOpenOptions) => {
@@ -154,7 +155,7 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
     const iconProps: IconProps & TooltipDecoratorProps = {
       id: this.props.id,
       interactive: true,
-      material: isString(triggerIcon) ? triggerIcon : undefined,
+      material: typeof triggerIcon === "string" ? triggerIcon : undefined,
       active: isActive,
       ...(typeof triggerIcon === "object" ? triggerIcon : {}),
     };
@@ -195,7 +196,6 @@ class NonInjectedMenuActions extends React.Component<MenuActionsProps & Dependen
           close={this.close}
           className={cssNames("MenuActions flex", className, {
             toolbar,
-            gaps: toolbar, // add spacing for .flex
           })}
           animated={!toolbar}
           usePortal={autoClose}

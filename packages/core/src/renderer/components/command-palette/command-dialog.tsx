@@ -7,7 +7,7 @@
 import { iter } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React, { useState } from "react";
+import { useState } from "react";
 import { broadcastMessage } from "../../../common/ipc";
 import { IpcRendererNavigationEvents } from "../../../common/ipc/navigation-events";
 import activeEntityInjectable from "../../api/catalog/entity/active.injectable";

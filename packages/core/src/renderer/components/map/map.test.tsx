@@ -5,7 +5,7 @@
  */
 
 import { render } from "@testing-library/react";
-import React from "react";
+import { beforeEach, describe, expect, it } from "vitest";
 import { Map } from "./map";
 
 import type { RenderResult } from "@testing-library/react";

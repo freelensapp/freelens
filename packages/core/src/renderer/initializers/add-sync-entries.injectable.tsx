@@ -7,7 +7,6 @@
 import { showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { getInjectable } from "@ogre-tools/injectable";
 import { runInAction } from "mobx";
-import React from "react";
 import navigateToKubernetesPreferencesInjectable from "../../features/preferences/common/navigate-to-kubernetes-preferences.injectable";
 import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
 

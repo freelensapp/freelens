@@ -5,6 +5,7 @@
  */
 
 import { discoverFor } from "@freelensapp/react-testing-library-discovery";
+import { beforeEach, describe, expect, it } from "vitest";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 
 import type { Discover } from "@freelensapp/react-testing-library-discovery";
@@ -36,8 +37,8 @@ describe("preferences - navigation using application menu", () => {
   });
 
   describe("when navigating to preferences using application menu", () => {
-    beforeEach(() => {
-      applicationBuilder.applicationMenu.click("root", "mac", "navigate-to-preferences");
+    beforeEach(async () => {
+      await applicationBuilder.applicationMenu.click("root", "mac", "navigate-to-preferences");
     });
 
     it("renders", () => {

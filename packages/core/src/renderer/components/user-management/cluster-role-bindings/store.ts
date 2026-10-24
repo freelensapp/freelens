@@ -11,17 +11,16 @@ import { hashSubject } from "../hashers";
 import type { ClusterRoleBindingApi } from "@freelensapp/kube-api";
 import type { ClusterRoleBinding, ClusterRoleBindingData, Subject } from "@freelensapp/kube-object";
 
+import type { ItemSorting } from "../../../../common/item.store";
+
 export class ClusterRoleBindingStore extends KubeObjectStore<
   ClusterRoleBinding,
   ClusterRoleBindingApi,
   ClusterRoleBindingData
 > {
-  protected sortItems(items: ClusterRoleBinding[]) {
-    return super.sortItems(items, [
-      (clusterRoleBinding) => clusterRoleBinding.kind,
-      (clusterRoleBinding) => clusterRoleBinding.getName(),
-    ]);
-  }
+  protected readonly sorting: ItemSorting<ClusterRoleBinding> = {
+    by: [(clusterRoleBinding) => clusterRoleBinding.kind, (clusterRoleBinding) => clusterRoleBinding.getName()],
+  };
 
   async updateSubjects(clusterRoleBinding: ClusterRoleBinding, subjects: Subject[]) {
     return this.update(clusterRoleBinding, {

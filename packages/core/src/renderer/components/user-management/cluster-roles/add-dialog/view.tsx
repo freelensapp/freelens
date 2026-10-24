@@ -63,7 +63,7 @@ class NonInjectedAddClusterRoleDialog extends React.Component<AddClusterRoleDial
         close={closeAddClusterRoleDialog}
       >
         <Wizard header={<h5>Create ClusterRole</h5>} done={closeAddClusterRoleDialog}>
-          <WizardStep contentClass="flex gaps column" nextLabel="Create" next={this.createRole}>
+          <WizardStep contentClass="flex gap-2 flex-col" nextLabel="Create" next={this.createRole}>
             <SubTitle title="ClusterRole Name" />
             <Input
               required

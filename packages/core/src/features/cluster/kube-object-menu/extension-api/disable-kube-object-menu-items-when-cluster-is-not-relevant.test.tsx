@@ -4,18 +4,18 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { KubeObject } from "@freelensapp/kube-object";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed, runInAction } from "mobx";
-import React from "react";
+import { beforeEach, describe, expect, it } from "vitest";
 import { frontEndRouteInjectionToken } from "../../../../common/front-end-routing/front-end-route-injection-token";
 import { navigateToRouteInjectionToken } from "../../../../common/front-end-routing/navigate-to-route-injection-token";
 import { KubeObjectMenu } from "../../../../renderer/components/kube-object-menu";
 import { getApplicationBuilder } from "../../../../renderer/components/test-utils/get-application-builder";
 import { routeSpecificComponentInjectionToken } from "../../../../renderer/routes/route-specific-component-injection-token";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
 import type { RenderResult } from "@testing-library/react";
 
 import type { KubernetesCluster } from "../../../../common/catalog-entities";

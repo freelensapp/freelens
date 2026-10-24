@@ -7,14 +7,13 @@
 import "./events.scss";
 
 import { Icon } from "@freelensapp/icon";
+import { Link } from "@freelensapp/routing";
 import { cssNames, stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { orderBy } from "lodash";
-import { computed, makeObservable, observable } from "mobx";
+import { orderBy } from "es-toolkit/compat";
+import { observable, observableRef } from "mobx";
 import { observer } from "mobx-react";
-import moment from "moment-timezone";
 import React from "react";
-import { Link } from "react-router-dom";
 import navigateToEventsInjectable from "../../../common/front-end-routing/routes/cluster/events/navigate-to-events.injectable";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
 import { ReactiveDuration } from "../duration/reactive-duration";
@@ -70,6 +69,13 @@ interface Dependencies {
 class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
   static defaultProps = defaultProps as object;
 
+  // mobx-react 9 forbids reading this.props inside a derivation. customizeHeader,
+  // getItems and the renderTableContents closure are invoked from the
+  // KubeObjectListLayout/Table render (a foreign derivation), so they (and the
+  // items/visibleItems getters they call) read props from this observable
+  // snapshot, refreshed on every update, instead of this.props.
+  @observableRef private accessor observableProps: Readonly<Dependencies & EventsProps>;
+
   readonly sorting = observable.object<TableSortParams>({
     sortBy: columnId.age,
     orderBy: "asc",
@@ -79,18 +85,25 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
     [columnId.namespace]: (event) => event.getNs(),
     [columnId.type]: (event) => event.type,
     [columnId.object]: (event) => event.involvedObject.name,
-    [columnId.count]: (event) => event.count,
+    [columnId.count]: (event) => event.getCount(),
     [columnId.age]: (event) => -event.getCreationTimestamp(),
     [columnId.lastSeen]: (event) => (event.lastTimestamp ? -new Date(event.lastTimestamp).getTime() : 0),
   };
 
   constructor(props: Dependencies & EventsProps) {
     super(props);
-    makeObservable(this);
+    this.observableProps = props;
   }
 
-  @computed get items(): KubeEvent[] {
-    const items = this.props.eventStore.contextItems;
+  componentDidUpdate() {
+    this.observableProps = this.props;
+  }
+
+  // Plain getters (not @computed): they read props, which mobx-react 9
+  // forbids inside a derivation. Read from the observable snapshot, reactivity
+  // is preserved by the observer render reaction.
+  get items(): KubeEvent[] {
+    const items = this.observableProps.eventStore.contextItems;
     const { sortBy, orderBy: order } = this.sorting;
 
     // we must sort items before passing to "KubeObjectListLayout -> Table"
@@ -98,8 +111,8 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
     return orderBy(items, this.sortingCallbacks[sortBy], order);
   }
 
-  @computed get visibleItems(): KubeEvent[] {
-    const { compact, compactLimit } = this.props;
+  get visibleItems(): KubeEvent[] {
+    const { compact, compactLimit } = this.observableProps;
 
     if (compact) {
       return this.items.slice(0, compactLimit);
@@ -109,7 +122,7 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
   }
 
   customizeHeader: HeaderCustomizer = ({ info, title, ...headerPlaceholders }) => {
-    const { compact, eventStore } = this.props;
+    const { compact, eventStore, navigateToEvents } = this.observableProps;
     const { items, visibleItems } = this;
     const allEventsAreShown = visibleItems.length === items.length;
 
@@ -126,7 +139,7 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
             {"("}
             {visibleItems.length}
             {" of "}
-            <a onClick={this.props.navigateToEvents}>{items.length}</a>
+            <a onClick={navigateToEvents}>{items.length}</a>
             {")"}
           </span>
         ),
@@ -195,15 +208,15 @@ class NonInjectedEvents extends React.Component<Dependencies & EventsProps> {
             <NamespaceSelectBadge key="namespace" namespace={event.getNs()} />,
             <Link
               key="link"
-              to={this.props.getDetailsUrl(apiManager.lookupApiLink(involvedObject, event))}
+              to={this.observableProps.getDetailsUrl(apiManager.lookupApiLink(involvedObject, event))}
               onClick={stopPropagation}
             >
               <WithTooltip>{`${involvedObject.kind}: ${involvedObject.name}`}</WithTooltip>
             </Link>,
             <WithTooltip>{event.getSource()}</WithTooltip>,
-            event.count,
+            event.getCount(),
             <KubeObjectAge key="age" object={event} />,
-            <WithTooltip tooltip={event.lastTimestamp ? moment(event.lastTimestamp).toDate() : undefined}>
+            <WithTooltip tooltip={event.lastTimestamp ? new Date(event.lastTimestamp) : undefined}>
               <ReactiveDuration key="last-seen" timestamp={event.lastTimestamp} />
             </WithTooltip>,
           ];

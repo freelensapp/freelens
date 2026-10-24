@@ -5,7 +5,7 @@
  */
 
 import { formatDuration } from "@freelensapp/utilities";
-import { capitalize } from "lodash";
+import { capitalize } from "es-toolkit";
 import { getMillisecondsFromUnixEpoch } from "../../../common/utils/date/get-current-date-time";
 
 import type { HelmRelease } from "../../../common/k8s-api/endpoints/helm-releases.api";

@@ -5,7 +5,8 @@
  */
 
 import { discoverFor } from "@freelensapp/react-testing-library-discovery";
-import React from "react";
+import { act } from "@testing-library/react";
+import { beforeEach, describe, expect, it } from "vitest";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import navigateInjectable from "../../renderer/navigation/navigate.injectable";
 
@@ -85,7 +86,9 @@ describe("preferences: URLs of legacy extensions", () => {
 
     describe("when navigating to specific custom preference tab using magic string URL", () => {
       beforeEach(() => {
-        navigate("/preferences/extension/some-extension/some-preference-tab-id");
+        act(() => {
+          navigate("/preferences/extension/some-extension/some-preference-tab-id");
+        });
       });
 
       it("renders", () => {
@@ -110,7 +113,9 @@ describe("preferences: URLs of legacy extensions", () => {
 
     describe("when navigating to unspecified custom preferences tab using magic string URL", () => {
       beforeEach(() => {
-        navigate("/preferences/extension/some-extension");
+        act(() => {
+          navigate("/preferences/extension/some-extension");
+        });
       });
 
       it("renders", () => {
@@ -170,7 +175,9 @@ describe("preferences: URLs of legacy extensions", () => {
 
     describe("when navigating to the default preference tab using magic string URL", () => {
       beforeEach(() => {
-        navigate("/preferences/extension/some-extension");
+        act(() => {
+          navigate("/preferences/extension/some-extension");
+        });
       });
 
       it("renders", () => {
@@ -266,7 +273,9 @@ describe("preferences: URLs of legacy extensions", () => {
 
     describe("when navigating to specific custom preference tab using magic string URL", () => {
       beforeEach(() => {
-        navigate("/preferences/extension/some-extension/some-preference-tab-id");
+        act(() => {
+          navigate("/preferences/extension/some-extension/some-preference-tab-id");
+        });
       });
 
       it("renders", () => {
@@ -291,7 +300,9 @@ describe("preferences: URLs of legacy extensions", () => {
 
     describe("when navigating to unspecified custom preferences tab using magic string URL", () => {
       beforeEach(() => {
-        navigate("/preferences/extension/some-extension");
+        act(() => {
+          navigate("/preferences/extension/some-extension");
+        });
       });
 
       it("renders", () => {

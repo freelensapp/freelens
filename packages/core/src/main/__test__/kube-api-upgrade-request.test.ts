@@ -1,47 +1,54 @@
 /**
  * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-jest.mock("tls", () => ({
-  connect: jest.fn(),
-}));
+import { describe, expect, it, vi } from "vitest";
 
-import { EventEmitter } from "events";
-import { connect } from "tls";
+vi.mock("node:tls", () => {
+  const connect = vi.fn();
+
+  // Some modules in the graph import tls as a default import, so the mock has
+  // to provide the same surface under both shapes.
+  return { connect, default: { connect } };
+});
+
+import { EventEmitter } from "node:events";
+import { connect } from "node:tls";
 import { Cluster } from "../../common/cluster/cluster";
 import { apiKubePrefix } from "../../common/vars";
 import clusterApiUrlInjectable from "../../features/cluster/connections/main/api-url.injectable";
-import kubeAuthProxyServerInjectable from "../cluster/kube-auth-proxy-server.injectable";
+import freelensK8sProxyManagerInjectable from "../cluster/freelens-k8s-proxy-manager.injectable";
+import freelensK8sProxyCertificateInjectable from "../freelens-k8s-proxy/freelens-k8s-proxy-certificate.injectable";
+import kubeApiUpgradeRequestInjectable from "../freelens-proxy/proxy-functions/kube-api-upgrade-request.injectable";
 import { getDiForUnitTesting } from "../getDiForUnitTesting";
-import kubeAuthProxyCertificateInjectable from "../kube-auth-proxy/kube-auth-proxy-certificate.injectable";
-import kubeApiUpgradeRequestInjectable from "../lens-proxy/proxy-functions/kube-api-upgrade-request.injectable";
+
+import type { MockedFunction } from "vitest";
 
 class MockSocket extends EventEmitter {
   destroyed = false;
   writable = true;
-  write = jest.fn(() => true);
-  end = jest.fn((_: string) => {
+  write = vi.fn(() => true);
+  end = vi.fn((_: string) => {
     this.writable = false;
   });
-  destroy = jest.fn(() => {
+  destroy = vi.fn(() => {
     this.destroyed = true;
     this.writable = false;
   });
-  pause = jest.fn();
-  resume = jest.fn();
-  setKeepAlive = jest.fn();
-  setTimeout = jest.fn();
+  pause = vi.fn();
+  resume = vi.fn();
+  setKeepAlive = vi.fn();
+  setTimeout = vi.fn();
 }
 
 const mockConnectImplementation = (proxySocket: MockSocket) =>
   ((..._args: unknown[]) => proxySocket as never) as unknown as typeof connect;
 
 describe("kube api upgrade request", () => {
-  it("forwards the upgrade request to the auth proxy", async () => {
+  it("forwards the upgrade request to the freelens-k8s-proxy", async () => {
     const di = getDiForUnitTesting();
-    const connectMock = connect as jest.MockedFunction<typeof connect>;
+    const connectMock = connect as MockedFunction<typeof connect>;
     const proxySocket = new MockSocket();
     const socket = new MockSocket();
     const head = Buffer.from("buffered-head");
@@ -52,18 +59,20 @@ describe("kube api upgrade request", () => {
     });
 
     di.override(clusterApiUrlInjectable, () => async () => new URL("https://cluster.example.test"));
-    di.override(kubeAuthProxyServerInjectable, () => ({
-      getApiTarget: jest.fn(),
-      ensureAuthProxyUrl: jest.fn(async () => "https://127.0.0.1:9443/proxy-prefix"),
-      restart: jest.fn(),
-      ensureRunning: jest.fn(),
-      stop: jest.fn(),
+    di.override(freelensK8sProxyManagerInjectable, () => ({
+      getApiTarget: vi.fn(),
+      ensureFreelensK8sProxyUrl: vi.fn(async () => "https://127.0.0.1:9443/proxy-prefix"),
+      restart: vi.fn(),
+      ensureRunning: vi.fn(),
+      stop: vi.fn(),
     }));
-    di.override(kubeAuthProxyCertificateInjectable, () => ({
-      cert: "some-cert",
-      private: "some-key",
-      public: "some-public-key",
-    }));
+    di.override(freelensK8sProxyCertificateInjectable, () =>
+      Promise.resolve({
+        cert: "some-cert",
+        private: "some-key",
+        public: "some-public-key",
+      }),
+    );
 
     connectMock.mockImplementation(mockConnectImplementation(proxySocket));
 
@@ -109,9 +118,9 @@ describe("kube api upgrade request", () => {
     expect(proxySocket.write).toHaveBeenNthCalledWith(6, head);
   });
 
-  it("applies backpressure from the auth proxy socket to the client socket", async () => {
+  it("applies backpressure from the freelens-k8s-proxy socket to the client socket", async () => {
     const di = getDiForUnitTesting();
-    const connectMock = connect as jest.MockedFunction<typeof connect>;
+    const connectMock = connect as MockedFunction<typeof connect>;
     const proxySocket = new MockSocket();
     const socket = new MockSocket();
     const cluster = new Cluster({
@@ -121,18 +130,20 @@ describe("kube api upgrade request", () => {
     });
 
     di.override(clusterApiUrlInjectable, () => async () => new URL("https://cluster.example.test"));
-    di.override(kubeAuthProxyServerInjectable, () => ({
-      getApiTarget: jest.fn(),
-      ensureAuthProxyUrl: jest.fn(async () => "https://127.0.0.1:9443/proxy-prefix"),
-      restart: jest.fn(),
-      ensureRunning: jest.fn(),
-      stop: jest.fn(),
+    di.override(freelensK8sProxyManagerInjectable, () => ({
+      getApiTarget: vi.fn(),
+      ensureFreelensK8sProxyUrl: vi.fn(async () => "https://127.0.0.1:9443/proxy-prefix"),
+      restart: vi.fn(),
+      ensureRunning: vi.fn(),
+      stop: vi.fn(),
     }));
-    di.override(kubeAuthProxyCertificateInjectable, () => ({
-      cert: "some-cert",
-      private: "some-key",
-      public: "some-public-key",
-    }));
+    di.override(freelensK8sProxyCertificateInjectable, () =>
+      Promise.resolve({
+        cert: "some-cert",
+        private: "some-key",
+        public: "some-public-key",
+      }),
+    );
 
     connectMock.mockImplementation(mockConnectImplementation(proxySocket));
 
@@ -164,9 +175,9 @@ describe("kube api upgrade request", () => {
     expect(socket.resume).toHaveBeenCalledTimes(1);
   });
 
-  it("applies backpressure from the client socket to the auth proxy socket", async () => {
+  it("applies backpressure from the client socket to the freelens-k8s-proxy socket", async () => {
     const di = getDiForUnitTesting();
-    const connectMock = connect as jest.MockedFunction<typeof connect>;
+    const connectMock = connect as MockedFunction<typeof connect>;
     const proxySocket = new MockSocket();
     const socket = new MockSocket();
     const cluster = new Cluster({
@@ -176,18 +187,20 @@ describe("kube api upgrade request", () => {
     });
 
     di.override(clusterApiUrlInjectable, () => async () => new URL("https://cluster.example.test"));
-    di.override(kubeAuthProxyServerInjectable, () => ({
-      getApiTarget: jest.fn(),
-      ensureAuthProxyUrl: jest.fn(async () => "https://127.0.0.1:9443/proxy-prefix"),
-      restart: jest.fn(),
-      ensureRunning: jest.fn(),
-      stop: jest.fn(),
+    di.override(freelensK8sProxyManagerInjectable, () => ({
+      getApiTarget: vi.fn(),
+      ensureFreelensK8sProxyUrl: vi.fn(async () => "https://127.0.0.1:9443/proxy-prefix"),
+      restart: vi.fn(),
+      ensureRunning: vi.fn(),
+      stop: vi.fn(),
     }));
-    di.override(kubeAuthProxyCertificateInjectable, () => ({
-      cert: "some-cert",
-      private: "some-key",
-      public: "some-public-key",
-    }));
+    di.override(freelensK8sProxyCertificateInjectable, () =>
+      Promise.resolve({
+        cert: "some-cert",
+        private: "some-key",
+        public: "some-public-key",
+      }),
+    );
 
     connectMock.mockImplementation(mockConnectImplementation(proxySocket));
 
@@ -221,7 +234,7 @@ describe("kube api upgrade request", () => {
 
   it("returns an http error before the upgraded stream starts", async () => {
     const di = getDiForUnitTesting();
-    const connectMock = connect as jest.MockedFunction<typeof connect>;
+    const connectMock = connect as MockedFunction<typeof connect>;
     const proxySocket = new MockSocket();
     const socket = new MockSocket();
     const cluster = new Cluster({
@@ -231,18 +244,20 @@ describe("kube api upgrade request", () => {
     });
 
     di.override(clusterApiUrlInjectable, () => async () => new URL("https://cluster.example.test"));
-    di.override(kubeAuthProxyServerInjectable, () => ({
-      getApiTarget: jest.fn(),
-      ensureAuthProxyUrl: jest.fn(async () => "https://127.0.0.1:9443/proxy-prefix"),
-      restart: jest.fn(),
-      ensureRunning: jest.fn(),
-      stop: jest.fn(),
+    di.override(freelensK8sProxyManagerInjectable, () => ({
+      getApiTarget: vi.fn(),
+      ensureFreelensK8sProxyUrl: vi.fn(async () => "https://127.0.0.1:9443/proxy-prefix"),
+      restart: vi.fn(),
+      ensureRunning: vi.fn(),
+      stop: vi.fn(),
     }));
-    di.override(kubeAuthProxyCertificateInjectable, () => ({
-      cert: "some-cert",
-      private: "some-key",
-      public: "some-public-key",
-    }));
+    di.override(freelensK8sProxyCertificateInjectable, () =>
+      Promise.resolve({
+        cert: "some-cert",
+        private: "some-key",
+        public: "some-public-key",
+      }),
+    );
 
     connectMock.mockImplementation(mockConnectImplementation(proxySocket));
 

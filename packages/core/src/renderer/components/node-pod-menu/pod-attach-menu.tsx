@@ -1,12 +1,11 @@
 /**
  * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import os from "node:os";
 import { Pod } from "@freelensapp/kube-object";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import os from "os";
 import React from "react";
 import { v4 as uuidv4 } from "uuid";
 import { App } from "../../../extensions/common-api";
@@ -46,6 +45,7 @@ const NonInjectedPodAttachMenu: React.FC<PodAttachMenuProps & Dependencies> = (p
 
   const containers = pod.getRunningContainersWithType();
   const statuses = pod.getContainerStatuses();
+  const annotations = pod.getAnnotations(true);
 
   const attachToPod = async (container: Container) => {
     const containerName = container.name;
@@ -80,6 +80,7 @@ const NonInjectedPodAttachMenu: React.FC<PodAttachMenuProps & Dependencies> = (p
       tooltip="Attach to Pod"
       toolbar={toolbar}
       containers={containers}
+      annotations={annotations}
       statuses={statuses}
       onMenuItemClick={attachToPod}
     />

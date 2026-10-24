@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getEnvironmentSpecificLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
+import { getEnvironmentSpecificDiForExtensionApi } from "../../extensions/extension-api-di";
 import removeWeblinkInjectable from "../../features/weblinks/common/remove.injectable";
 import { CatalogCategory, CatalogEntity, categoryVersion } from "../catalog/catalog-entity";
 import productNameInjectable from "../vars/product-name.injectable";
@@ -34,7 +34,7 @@ export class WebLink extends CatalogEntity<CatalogEntityMetadata, WebLinkStatus,
 
   onContextMenuOpen(context: CatalogEntityContextMenuContext) {
     // NOTE: this is safe because `onContextMenuOpen` is only supposed to be called in the renderer
-    const di = getEnvironmentSpecificLegacyGlobalDiForExtensionApi("renderer");
+    const di = getEnvironmentSpecificDiForExtensionApi("renderer");
     const productName = di.inject(productNameInjectable);
     const removeWeblink = di.inject(removeWeblinkInjectable);
 

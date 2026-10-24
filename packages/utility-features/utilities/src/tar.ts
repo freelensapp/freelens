@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import path from "path";
+import path from "node:path";
 // Helper for working with tarball files (.tar, .tgz)
 // Docs: https://github.com/npm/node-tar
 import { list } from "tar";

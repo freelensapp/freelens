@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import os from "node:os";
+import path from "node:path";
 import { getInjectable } from "@ogre-tools/injectable";
-import os from "os";
-import path from "path";
 import appNameInjectable from "../vars/app-name.injectable";
 import userInfoInjectable from "../vars/user-info.injectable";
 

@@ -5,6 +5,7 @@
  */
 
 import { CustomResourceDefinition, KubeObject } from "@freelensapp/kube-object";
+import { beforeEach, describe, expect, it } from "vitest";
 import navigateToCustomResourcesInjectable from "../../common/front-end-routing/routes/cluster/custom-resources/navigate-to-custom-resources.injectable";
 import apiManagerInjectable from "../../common/k8s-api/api-manager/manager.injectable";
 import customResourceDefinitionStoreInjectable from "../../renderer/components/custom-resource-definitions/store.injectable";

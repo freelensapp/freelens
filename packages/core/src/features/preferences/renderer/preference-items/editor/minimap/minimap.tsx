@@ -6,7 +6,6 @@
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import { SubHeader } from "../../../../../../renderer/components/layout/sub-header";
 import { SubTitle } from "../../../../../../renderer/components/layout/sub-title";
 import { Select } from "../../../../../../renderer/components/select";
@@ -28,8 +27,8 @@ const NonInjectedMinimap = observer(({ state: { editorConfiguration } }: Depende
   <section>
     <SubTitle title="Minimap" />
 
-    <div className="flex gaps justify-space-between">
-      <div className="flex gaps align-center">
+    <div className="flex gap-2 justify-between">
+      <div className="flex gap-2 items-center">
         <Switch
           checked={editorConfiguration.minimap.enabled}
           onChange={() => (editorConfiguration.minimap.enabled = !editorConfiguration.minimap.enabled)}
@@ -37,7 +36,7 @@ const NonInjectedMinimap = observer(({ state: { editorConfiguration } }: Depende
           Show minimap
         </Switch>
       </div>
-      <div className="flex gaps align-center">
+      <div className="flex gap-2 items-center">
         <SubHeader compact>Position</SubHeader>
         <Select
           id="minimap-input"

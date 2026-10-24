@@ -5,7 +5,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import yaml from "js-yaml";
+import * as yaml from "js-yaml";
 import readFileInjectable from "./read-file.injectable";
 
 export type ReadYamlFile = (filePath: string) => Promise<unknown>;
@@ -19,7 +19,8 @@ const readYamlFileInjectable = getInjectable({
     return async (filePath: string) => {
       const contents = await readFile(filePath);
 
-      return yaml.load(contents);
+      // js-yaml v5 throws on empty input instead of returning undefined
+      return contents.trim() ? yaml.load(contents) : undefined;
     };
   },
 });

@@ -5,9 +5,7 @@
  */
 
 import { object } from "@freelensapp/utilities";
-import { pipeline } from "@ogre-tools/fp";
 import { getInjectable, lifecycleEnum } from "@ogre-tools/injectable";
-import { map } from "lodash/fp";
 import createPageParamInjectable from "../navigation/create-page-param.injectable";
 
 import type { LensRendererExtension } from "../../extensions/lens-renderer-extension";
@@ -25,17 +23,15 @@ const extensionPageParametersInjectable = getInjectable({
   instantiate: (di, { registration }: ExtensionPageParametersInstantiationParam) => {
     const createPageParam = di.inject(createPageParamInjectable);
 
-    return pipeline(
-      registration.params ?? {},
-      Object.entries,
-      map(([key, value]): [string, PageParamInit<unknown>] => [
-        key,
-        typeof value === "string"
-          ? convertStringToPageParamInit(key, value)
-          : convertPartialPageParamInitToFull(key, value),
-      ]),
-      map(([key, value]) => [key, createPageParam(value)] as const),
-      object.fromEntries,
+    return object.fromEntries(
+      Object.entries(registration.params ?? {})
+        .map(([key, value]): [string, PageParamInit<unknown>] => [
+          key,
+          typeof value === "string"
+            ? convertStringToPageParamInit(key, value)
+            : convertPartialPageParamInitToFull(key, value),
+        ])
+        .map(([key, value]) => [key, createPageParam(value)] as const),
     );
   },
 
@@ -45,7 +41,10 @@ const extensionPageParametersInjectable = getInjectable({
   }),
 });
 
-const convertPartialPageParamInitToFull = <V>(key: string, value: PageParamInit<V>): PageParamInit<V> => ({
+const convertPartialPageParamInitToFull = <V>(
+  key: string,
+  value: Omit<PageParamInit<V>, "name" | "prefix">,
+): PageParamInit<V> => ({
   name: key,
   defaultValue: value.defaultValue,
   stringify: value.stringify,

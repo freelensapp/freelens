@@ -4,9 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { disposer, getOrInsert, noop, WrappedAbortController } from "@freelensapp/utilities";
-import { once } from "lodash";
-import { comparer, reaction } from "mobx";
+import { disposer, getOrInsert, isAbortError, noop, WrappedAbortController } from "@freelensapp/utilities";
+import { once } from "es-toolkit";
+import { compareShallow, reaction } from "mobx";
 
 import type { Logger } from "@freelensapp/logger";
 import type { Disposer } from "@freelensapp/utilities";
@@ -27,6 +27,13 @@ interface SubscribeStoreParams {
   onLoadFailure?: (err: any) => void;
 }
 
+interface WatchStoreParams {
+  store: SubscribableStore;
+  parent?: AbortController;
+  namespaces?: string[];
+  onLoadFailure?: (err: any) => void;
+}
+
 interface WatchCountDependencies {
   readonly logger: Logger;
 }
@@ -39,7 +46,7 @@ class WatchCount {
   public inc(store: SubscribableStore): number {
     const newCount = getOrInsert(this.#data, store, 0) + 1;
 
-    this.dependencies.logger.info(`[KUBE-WATCH-API]: inc() count for ${store.api.apiBase} is now ${newCount}`);
+    this.dependencies.logger.debug(`[KUBE-WATCH-API]: inc() count for ${store.api.apiBase} is now ${newCount}`);
     this.#data.set(store, newCount);
 
     return newCount;
@@ -58,7 +65,7 @@ class WatchCount {
       throw new Error(`Cannot dec count more times than it has been inc: ${store.api.kind}`);
     }
 
-    this.dependencies.logger.info(`[KUBE-WATCH-API]: dec() count for ${store.api.apiBase} is now ${newCount}`);
+    this.dependencies.logger.debug(`[KUBE-WATCH-API]: dec() count for ${store.api.apiBase} is now ${newCount}`);
     this.#data.set(store, newCount);
 
     return newCount;
@@ -99,30 +106,56 @@ export type SubscribeStores = (stores: SubscribableStore[], opts?: KubeWatchSubs
 
 export class KubeWatchApi {
   readonly #watch: WatchCount;
+  readonly #sharedWatches = new Map<SubscribableStore, Disposer>();
 
   constructor(private readonly dependencies: Dependencies) {
     this.#watch = new WatchCount(this.dependencies);
   }
 
   private subscribeStore({ store, parent, namespaces, onLoadFailure }: SubscribeStoreParams): Disposer {
-    const isNamespaceFilterWatch = !namespaces;
-
-    if (isNamespaceFilterWatch && this.#watch.inc(store) > 1) {
-      // don't load or subscribe to a store more than once
-      return () => this.#watch.dec(store);
+    if (namespaces) {
+      // A watch of the given namespaces belongs to this subscription alone
+      return this.watchStore({ store, parent, namespaces, onLoadFailure });
     }
 
-    namespaces ??= this.dependencies.clusterContext.contextNamespaces ?? [];
+    // A watch of the selected namespaces is shared by every subscription of
+    // the store. The first one starts it, and the last one to be disposed,
+    // whichever that is, ends it; no subscription's own controller may.
+    if (this.#watch.inc(store) === 1) {
+      this.#sharedWatches.set(store, this.watchStore({ store, onLoadFailure }));
+    }
 
+    return () => {
+      if (this.#watch.dec(store) === 0) {
+        this.#sharedWatches.get(store)?.();
+        this.#sharedWatches.delete(store);
+      }
+    };
+  }
+
+  /**
+   * Loads the store and then watches it, for the given namespaces or, when
+   * there are none, for the selected ones, following the selection.
+   */
+  private watchStore({ store, parent, namespaces, onLoadFailure }: WatchStoreParams): Disposer {
+    const followsSelection = !namespaces;
     let childController = new WrappedAbortController(parent);
     const unsubscribe = disposer();
 
-    const loadThenSubscribe = async (namespaces: string[] | undefined) => {
+    const loadThenSubscribe = async (namespaces: string[] | undefined, controller: AbortController) => {
       try {
-        await store.loadAll({ namespaces, reqInit: { signal: childController.signal }, onLoadFailure });
-        unsubscribe.push(store.subscribe({ onLoadFailure, abortController: childController }));
+        await store.loadAll({ namespaces, reqInit: { signal: controller.signal }, onLoadFailure });
+
+        // An aborted load resolves too: the subscription has been disposed,
+        // or the namespaces changed and a newer load has taken over. Neither
+        // wants a watch from this one.
+        if (controller.signal.aborted) {
+          return;
+        }
+
+        unsubscribe.push(store.subscribe({ onLoadFailure, abortController: controller }));
       } catch (error) {
-        if (!(error instanceof DOMException)) {
+        if (!isAbortError(error)) {
           this.log(new Error("Loading stores has failed", { cause: error }), {
             meta: { store, namespaces },
           });
@@ -134,10 +167,10 @@ export class KubeWatchApi {
      * We don't want to wait because we want to start reacting to namespace
      * selection changes ASAP
      */
-    loadThenSubscribe(namespaces).catch(noop);
+    loadThenSubscribe(namespaces ?? this.dependencies.clusterContext.contextNamespaces, childController).catch(noop);
 
     const cancelReloading =
-      isNamespaceFilterWatch && store.api.isNamespaced
+      followsSelection && store.api.isNamespaced
         ? reaction(
             // Note: must slice because reaction won't fire if it isn't there
             () =>
@@ -158,21 +191,18 @@ export class KubeWatchApi {
               childController.abort();
               unsubscribe();
               childController = new WrappedAbortController(parent);
-              loadThenSubscribe(namespaces).catch(noop);
+              loadThenSubscribe(namespaces, childController).catch(noop);
             },
             {
-              equals: comparer.shallow,
+              equals: compareShallow,
             },
           )
         : noop; // don't watch namespaces if namespaces were provided
 
     return () => {
-      if (isNamespaceFilterWatch && this.#watch.dec(store) === 0) {
-        // only stop the subcribe if this is the last one
-        cancelReloading();
-        childController.abort();
-        unsubscribe();
-      }
+      cancelReloading();
+      childController.abort();
+      unsubscribe();
     };
   }
 

@@ -5,6 +5,7 @@
  */
 
 import { HorizontalPodAutoscaler } from "@freelensapp/kube-object";
+import { beforeEach, describe, expect, it } from "vitest";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import getHorizontalPodAutoscalerMetrics from "./get-metrics.injectable";
 

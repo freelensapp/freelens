@@ -1,0 +1,274 @@
+name: Binaries Lock Check
+
+# Only on pull requests, never on push: verifying the lock means downloading
+# every bundled binary, so it runs once per change rather than again on merge.
+# These paths are a coarse filter - freelens/package.json changes on every
+# dependency bump - and the first step narrows it down to changes that can
+# actually affect the lock.
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - .github/workflows/binaries-lock-check.yaml
+      - freelens/binaries.lock.json
+      - freelens/package.json
+      - packages/ensure-binaries/**
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Check binaries.lock.json
+
+    runs-on: ubuntu-26.04-arm
+    timeout-minutes: 30
+
+    outputs:
+      stale: ${{ steps.up_to_date.outputs.stale }}
+
+    env:
+      DO_NOT_TRACK: "1"
+      # Renovate bumps a bundled version but cannot regenerate the lock: the
+      # generator downloads and verifies every artifact, which the hosted app
+      # does not run. On its branches a stale lock is therefore committed by the
+      # update job below instead of failing the check. Only branches of this
+      # repository qualify, never a fork's.
+      RENOVATE_PR: ${{ github.event_name == 'pull_request' && startsWith(github.head_ref, 'renovate/') && github.event.pull_request.head.repo.full_name == github.repository }}
+
+    steps:
+      # A Renovate branch is checked out at its head rather than merged with
+      # main, so that a regenerated lock matches the branch it is committed to.
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          ref: ${{ env.RENOVATE_PR == 'true' && github.event.pull_request.head.sha || '' }}
+
+      # Verifying costs a few hundred megabytes of downloads, so establish up
+      # front whether anything that feeds the lock actually moved. This runs
+      # before any tool is installed, so a skipped run is nearly free.
+      - name: Decide whether the binaries need verifying
+        id: decide
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |-
+          set -eo pipefail
+
+          if [ "${{ github.event_name }}" != 'pull_request' ]; then
+            echo "needed=true" | tee -a "$GITHUB_OUTPUT"
+            echo "Manual run, verifying."
+            exit 0
+          fi
+
+          # A bundled version bump shows up as a changed line in the config
+          # block. Every other edit to freelens/package.json - a dependency
+          # bump, a script - leaves the lock valid and must not cost a download.
+          if git diff "$BASE_SHA...HEAD" -- freelens/package.json |
+            grep -qE '^[-+][[:space:]]*"(k8sProxyVersion|bundledKubectlVersion|bundledHelmVersion)"'; then
+            echo "needed=true" | tee -a "$GITHUB_OUTPUT"
+            echo "A bundled version changed, verifying."
+            exit 0
+          fi
+
+          # The lock itself, or the code that writes it.
+          if [ -n "$(git diff --name-only "$BASE_SHA...HEAD" -- \
+            freelens/binaries.lock.json \
+            packages/ensure-binaries \
+            .github/workflows/binaries-lock-check.yaml)" ]; then
+            echo "needed=true" | tee -a "$GITHUB_OUTPUT"
+            echo "The lock or its generator changed, verifying."
+            exit 0
+          fi
+
+          echo "needed=false" | tee -a "$GITHUB_OUTPUT"
+          echo "No bundled version, lock or generator change, nothing to verify."
+
+      - name: Setup node
+        if: steps.decide.outputs.needed == 'true'
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      # yq and cosign come from mise so that their versions have a single
+      # source (mise.toml) and the downloads are verified against mise.lock.
+      # cosign is what checks kubectl's keyless signature; the other two tools
+      # are verified in pure JavaScript.
+      - name: Set up mise
+        if: steps.decide.outputs.needed == 'true'
+        uses: jdx/mise-action@v5
+        with:
+          version: 2026.10.13 # datasource=github-releases depName=jdx/mise
+          install_args: yq cosign
+
+      - name: Setup pnpm
+        if: steps.decide.outputs.needed == 'true'
+        run: corepack enable
+
+      - name: Install pnpm dependencies
+        if: steps.decide.outputs.needed == 'true'
+        run: timeout 300 pnpm install --color=always --prefer-offline --frozen-lockfile
+
+      # Regenerating downloads all eighteen artifacts, checks each against its
+      # publisher's signature and rewrites the lock. Because the generator sorts
+      # its output, an unchanged set of artifacts produces a byte-identical file
+      # and this diff stays empty. A non-empty diff means either the lock was
+      # not regenerated after a version bump, or a published artifact changed.
+      - name: Regenerate the lock
+        if: steps.decide.outputs.needed == 'true'
+        env:
+          # Build provenance is read from the GitHub API, which allows only 60
+          # unauthenticated calls per hour per IP - shared runners exhaust that.
+          GITHUB_TOKEN: ${{ github.token }}
+        run: pnpm --color=always update-binaries-lock
+
+      # The regenerated lock matches what the vendors serve today, but that
+      # cannot tell a legitimate version bump from an artifact swapped behind an
+      # unchanged URL, because both simply produce a new digest. Comparing
+      # against the base commit does: keyed on tool + version + platform, so a
+      # bump or a newly added platform is not flagged, but a digest that moved
+      # while its version stood still is. It runs before the up-to-date check,
+      # so that a lock with a replaced artifact is never committed.
+      - name: Check for replaced artifacts
+        if: steps.decide.outputs.needed == 'true'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |-
+          set -eo pipefail
+
+          if [ -z "$BASE_SHA" ]; then
+            echo "Not a pull request, nothing to compare."
+            exit 0
+          fi
+
+          # One row per pinned digest, binarySha256 included.
+          flatten() {
+            yq -pj -ot '
+              [
+                to_entries[] as $tool
+                | $tool.value.artifacts | to_entries[] as $artifact
+                | (
+                    {
+                      "tool": $tool.key,
+                      "version": $tool.value.version,
+                      "platform": $artifact.key,
+                      "sha256": $artifact.value.sha256
+                    },
+                    (
+                      $artifact.value | select(has("binarySha256"))
+                      | {
+                          "tool": $tool.key,
+                          "version": $tool.value.version,
+                          "platform": $artifact.key + " binary",
+                          "sha256": .binarySha256
+                        }
+                    )
+                  )
+              ]
+            ' "$1" | tail -n +2 | sort
+          }
+
+          if ! git show "$BASE_SHA:freelens/binaries.lock.json" > base.lock.json 2> /dev/null; then
+            echo "No binaries.lock.json on the base commit, nothing to compare."
+            exit 0
+          fi
+
+          flatten base.lock.json > base.tsv
+          flatten freelens/binaries.lock.json > head.tsv
+
+          awk -F'\t' '
+            NR == FNR { base[$1 FS $2 FS $3] = $4; next }
+            ($1 FS $2 FS $3) in base && base[$1 FS $2 FS $3] != $4 {
+              printf "  %s %s (%s)\n    was: %s\n    now: %s\n", $1, $2, $3, base[$1 FS $2 FS $3], $4
+              found = 1
+            }
+            END { exit found ? 1 : 0 }
+          ' base.tsv head.tsv && {
+            echo "No digest changed for an unchanged tool version."
+            exit 0
+          }
+
+          echo "::error::A digest changed without a version change - the artifact behind a pinned URL was replaced." >&2
+          exit 1
+
+      - name: Check the lock is up to date
+        id: up_to_date
+        if: steps.decide.outputs.needed == 'true'
+        run: |-
+          if git diff --exit-code --stat freelens/binaries.lock.json; then
+            echo "freelens/binaries.lock.json is up to date."
+            exit 0
+          fi
+
+          if [ "$RENOVATE_PR" = 'true' ]; then
+            echo "stale=true" | tee -a "$GITHUB_OUTPUT"
+            echo "::notice::freelens/binaries.lock.json is out of date on a Renovate branch; the update job commits the regenerated lock."
+            git --no-pager diff --stat freelens/binaries.lock.json
+            exit 0
+          fi
+
+          echo "::error::freelens/binaries.lock.json is out of date. Run \`pnpm update-binaries-lock\` and commit the result." >&2
+          git --no-pager diff freelens/binaries.lock.json
+          exit 1
+
+      - name: Upload the regenerated lock
+        if: steps.up_to_date.outputs.stale == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: binaries-lock
+          path: freelens/binaries.lock.json
+          retention-days: 1
+
+  # Commits the lock the check job regenerated and verified onto the Renovate
+  # branch. The push uses GH_TOKEN rather than the workflow token, so that it
+  # starts the checks again: the next run regenerates the lock once more and
+  # finds it up to date, and every other workflow runs on the new commit.
+  update:
+    name: Commit the regenerated binaries.lock.json
+
+    needs: check
+    # Never on a fork: it has no GH_TOKEN secret, so the job could only fail.
+    if: github.repository_owner == 'freelensapp' && needs.check.outputs.stale == 'true'
+
+    runs-on: ubuntu-26.04-arm
+    environment: automated
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          token: ${{ secrets.GH_TOKEN }}
+
+      - name: Download the regenerated lock
+        uses: actions/download-artifact@v8
+        with:
+          name: binaries-lock
+          path: freelens
+
+      # The push goes to the commit the check job verified. If the branch moved
+      # meanwhile, the push is rejected as non-fast-forward, and the run on the
+      # newer commit takes over. A run on a commit this job made must never
+      # find the lock stale again; if it does, the generator is not
+      # deterministic, and committing once more would only loop.
+      - name: Refuse to commit the lock twice
+        env:
+          MESSAGE: Regenerate freelens/binaries.lock.json
+        run: |-
+          if [ "$(git log -1 --format=%s)" = "$MESSAGE" ]; then
+            echo "::error::The lock is still out of date after it was regenerated and committed." >&2
+            exit 1
+          fi
+
+      - name: Commit and push to the pull request branch
+        uses: EndBug/add-and-commit@v11
+        with:
+          github_token: ${{ secrets.GH_TOKEN }}
+          default_author: github_actions
+          add: freelens/binaries.lock.json
+          message: Regenerate freelens/binaries.lock.json
+          push: origin HEAD:refs/heads/${{ github.head_ref }}

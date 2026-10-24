@@ -4,11 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { asLegacyGlobalFunctionForExtensionApi } from "@freelensapp/legacy-global-di";
 import {
   type ResolveSystemProxy,
   resolveSystemProxyInjectionToken,
 } from "../../common/utils/resolve-system-proxy/resolve-system-proxy-injection-token";
+import { asLazyInjectedFunctionForExtensionApi } from "../extension-api-di";
 
 export type { ResolveSystemProxy };
 
@@ -17,4 +17,4 @@ export type { ResolveSystemProxy };
  * @param url - The URL for proxy information
  * @returns Promise for proxy information as string
  */
-export const resolveSystemProxy = asLegacyGlobalFunctionForExtensionApi(resolveSystemProxyInjectionToken);
+export const resolveSystemProxy = asLazyInjectedFunctionForExtensionApi(resolveSystemProxyInjectionToken);

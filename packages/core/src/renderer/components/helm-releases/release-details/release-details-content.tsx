@@ -7,13 +7,12 @@
 import "./release-details.scss";
 
 import { Button } from "@freelensapp/button";
+import { Link } from "@freelensapp/routing";
 import { Spinner } from "@freelensapp/spinner";
 import { stopPropagation } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { kebabCase } from "lodash/fp";
+import { kebabCase } from "es-toolkit";
 import { observer } from "mobx-react";
-import React from "react";
-import { Link } from "react-router-dom";
 import { Badge } from "../../badge";
 import { Checkbox } from "../../checkbox";
 import { DrawerItem, DrawerTitle } from "../../drawer";
@@ -48,13 +47,13 @@ const NonInjectedReleaseDetailsContent = observer(({ model }: Dependencies & Rel
   return (
     <div>
       <DrawerItem name="Chart" className="chart">
-        <div className="flex gaps align-center">
+        <div className="flex gap-2 items-center">
           <span>{model.release.chart}</span>
 
           <Button
             primary
             label="Upgrade"
-            className="box right upgrade"
+            className="ml-auto mr-0 upgrade"
             onClick={model.startUpgradeProcess}
             data-testid="helm-release-upgrade-button"
           />
@@ -66,7 +65,7 @@ const NonInjectedReleaseDetailsContent = observer(({ model }: Dependencies & Rel
       <DrawerItem name="Namespace">{model.release.getNs()}</DrawerItem>
 
       <DrawerItem name="Version" onClick={stopPropagation}>
-        <div className="version flex gaps align-center">
+        <div className="version flex gap-2 items-center">
           <span>{model.release.getVersion()}</span>
         </div>
       </DrawerItem>
@@ -145,7 +144,7 @@ const ReleaseValues = observer(({ releaseId, configuration, onlyUserSuppliedValu
     <div className="values">
       <DrawerTitle>Values</DrawerTitle>
 
-      <div className="flex column gaps">
+      <div className="flex flex-col gap-2">
         <Checkbox
           label="User-supplied values only"
           value={onlyUserSuppliedValuesAreShown.value.get()}

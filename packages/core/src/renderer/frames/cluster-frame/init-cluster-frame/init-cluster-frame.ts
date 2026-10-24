@@ -18,7 +18,7 @@ interface Dependencies {
   hostedCluster: Cluster;
   loadExtensions: () => void;
   catalogEntityRegistry: CatalogEntityRegistry;
-  frameRoutingId: number;
+  frameToken: string;
   emitAppEvent: EmitAppEvent;
   logger: Logger;
   showErrorNotification: ShowNotification;
@@ -31,7 +31,7 @@ export const initClusterFrame =
     hostedCluster,
     loadExtensions,
     catalogEntityRegistry,
-    frameRoutingId,
+    frameToken,
     emitAppEvent,
     logger,
     showErrorNotification,
@@ -40,7 +40,7 @@ export const initClusterFrame =
     // TODO: Make catalogEntityRegistry already initialized when passed as dependency
     catalogEntityRegistry.init();
 
-    logger.info(`${logPrefix} Init dashboard, clusterId=${hostedCluster.id}, frameId=${frameRoutingId}`);
+    logger.info(`${logPrefix} Init dashboard, clusterId=${hostedCluster.id}, frameToken=${frameToken}`);
 
     await requestSetClusterFrameId(hostedCluster.id);
     await when(() => hostedCluster.ready.get()); // cluster.activate() is done at this point

@@ -1,10 +1,9 @@
 /**
  * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { requestFromChannelInjectionToken } from "@freelensapp/messaging/dist";
+import { requestFromChannelInjectionToken } from "@freelensapp/messaging";
 import { getInjectable, type Injectable } from "@ogre-tools/injectable";
 import { downloadBinaryChannel } from "../../common/fetch/download-binary-channel";
 

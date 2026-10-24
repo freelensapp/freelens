@@ -8,7 +8,7 @@ import "./tooltip.scss";
 
 import { cssNames } from "@freelensapp/utilities";
 import autoBindReact from "auto-bind/react";
-import { action, makeObservable, observable, runInAction } from "mobx";
+import { action, observable, observableRef, runInAction } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { createPortal } from "react-dom";
@@ -58,17 +58,16 @@ const defaultProps = {
 class DefaultedTooltip extends React.Component<TooltipProps & typeof defaultProps> {
   static defaultProps = defaultProps as object;
 
-  @observable.ref elem: HTMLDivElement | null = null;
+  @observableRef accessor elem: HTMLDivElement | null = null;
 
-  @observable activePosition?: TooltipPosition;
+  @observable accessor activePosition: TooltipPosition | undefined;
 
-  @observable isVisible = false;
+  @observable accessor isVisible = false;
 
-  @observable isContentVisible = false; // animation manager
+  @observable accessor isContentVisible = false; // animation manager
 
   constructor(props: TooltipProps & typeof defaultProps) {
     super(props);
-    makeObservable(this);
     autoBindReact(this);
   }
 
@@ -154,7 +153,9 @@ class DefaultedTooltip extends React.Component<TooltipProps & typeof defaultProp
       <div
         className={className}
         style={style}
-        ref={(elem) => (this.elem = elem)}
+        ref={(elem) => {
+          this.elem = elem;
+        }}
         role="tooltip"
         data-testid={this.props["data-testid"]}
       >

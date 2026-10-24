@@ -11,7 +11,7 @@ import { roleApiInjectable } from "@freelensapp/kube-api-specifics";
 import { showCheckedErrorNotificationInjectable } from "@freelensapp/notifications";
 import { iter, ObservableHashSet } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { action, computed, makeObservable, observable } from "mobx";
+import { action, computed, observable, observableRef } from "mobx";
 import { observer } from "mobx-react";
 import React from "react";
 import { Dialog } from "../../../dialog";
@@ -62,20 +62,22 @@ interface Dependencies {
 class NonInjectedRoleBindingDialog extends React.Component<RoleBindingDialogProps & Dependencies> {
   constructor(props: RoleBindingDialogProps & Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
-  @computed get roleBinding() {
+  // Plain getters (not @computed): they read this.props (directly or via
+  // roleBinding), which mobx-react 9 forbids inside a derivation. Read from
+  // render, reactivity is preserved by the observer render reaction.
+  get roleBinding() {
     return this.props.state.get().roleBinding;
   }
 
-  @computed get isEditing() {
+  get isEditing() {
     return !!this.roleBinding;
   }
 
-  @observable.ref selectedRoleRef: Role | ClusterRole | null | undefined = null;
-  @observable bindingName = "";
-  @observable bindingNamespace: string | null = null;
+  @observableRef accessor selectedRoleRef: Role | ClusterRole | null | undefined = null;
+  @observable accessor bindingName = "";
+  @observable accessor bindingNamespace: string | null = null;
   selectedAccounts = new ObservableHashSet<ServiceAccount>([], (sa) => sa.getId());
   selectedUsers = observable.set<string>([]);
   selectedGroups = observable.set<string>([]);
@@ -98,7 +100,7 @@ class NonInjectedRoleBindingDialog extends React.Component<RoleBindingDialogProp
     return [...serviceAccounts, ...users, ...groups];
   }
 
-  @computed get roleRefOptions(): SelectOption<Role | ClusterRole>[] {
+  get roleRefOptions(): SelectOption<Role | ClusterRole>[] {
     const { roleStore, clusterRoleStore } = this.props;
     const roles = roleStore.items.filter((role) => role.getNs() === this.bindingNamespace);
     const clusterRoles = clusterRoleStore.items;
@@ -109,11 +111,10 @@ class NonInjectedRoleBindingDialog extends React.Component<RoleBindingDialogProp
     }));
   }
 
-  @computed get serviceAccountOptions(): SelectOption<ServiceAccount>[] {
+  get serviceAccountOptions(): SelectOption<ServiceAccount>[] {
     return this.props.serviceAccountStore.items.map((serviceAccount) => ({
       value: serviceAccount,
       label: `${serviceAccount.getName()} (${serviceAccount.getNs()})`,
-      isSelected: this.selectedAccounts.has(serviceAccount),
     }));
   }
 
@@ -158,12 +159,12 @@ class NonInjectedRoleBindingDialog extends React.Component<RoleBindingDialogProp
     const { roleBindingStore, showDetails, showCheckedErrorNotification } = this.props;
     const { selectedRoleRef, bindingNamespace, selectedBindings, roleBinding, bindingName } = this;
 
-    if (!selectedRoleRef || !roleBinding || !bindingNamespace || !bindingName) {
+    if (!selectedRoleRef || !bindingNamespace || !bindingName) {
       return;
     }
 
     try {
-      const newRoleBinding = this.isEditing
+      const newRoleBinding = roleBinding
         ? await roleBindingStore.updateSubjects(roleBinding, selectedBindings)
         : await roleBindingStore.create(
             {
@@ -195,7 +196,7 @@ class NonInjectedRoleBindingDialog extends React.Component<RoleBindingDialogProp
         <SubTitle title="Namespace" />
         <NamespaceSelect
           id="dialog-namespace-input"
-          themeName="light"
+          themeName="lens"
           isDisabled={this.isEditing}
           value={this.bindingNamespace}
           autoFocus={!this.isEditing}
@@ -205,7 +206,7 @@ class NonInjectedRoleBindingDialog extends React.Component<RoleBindingDialogProp
         <SubTitle title="Role Reference" />
         <Select
           id="role-reference-input"
-          themeName="light"
+          themeName="lens"
           placeholder="Select role or cluster role ..."
           isDisabled={this.isEditing}
           options={this.roleRefOptions}
@@ -246,9 +247,10 @@ class NonInjectedRoleBindingDialog extends React.Component<RoleBindingDialogProp
         <Select
           id="service-account-input"
           isMulti
-          themeName="light"
+          themeName="lens"
           placeholder="Select service accounts ..."
           options={this.serviceAccountOptions}
+          value={Array.from(this.selectedAccounts)}
           formatOptionLabel={(option) => (
             <>
               <Icon small material="account_box" /> {option.label}

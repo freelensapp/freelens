@@ -1,0 +1,56 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+import { vi } from "vitest";
+import { defaultLogViewerPreferences } from "../../../../../features/user-preferences/common/preferences-helpers";
+import { SearchStore } from "../../../../search-store/search-store";
+import { LogTabViewModel } from "../logs-view-model";
+import { dockerPod } from "./pod.mock";
+
+import type { UserPreferencesState } from "../../../../../features/user-preferences/common/state.injectable";
+import type { TabId } from "../../dock/store";
+import type { LogTabViewModelDependencies } from "../logs-view-model";
+import type { LogTabData } from "../tab-store";
+
+export function initializeDefaultLogViewerPreferences(userPreferencesState: UserPreferencesState) {
+  userPreferencesState.logViewerPreferences = { ...defaultLogViewerPreferences };
+}
+
+export function getDefaultOnePodLogTabData(overrides: Partial<LogTabData> = {}): LogTabData {
+  return {
+    selectedPodId: dockerPod.getId(),
+    selectedContainer: dockerPod.getContainers()[0].name,
+    namespace: dockerPod.getNs(),
+    showPrevious: false,
+    ...defaultLogViewerPreferences,
+    ...overrides,
+  };
+}
+
+export function createMockLogTabViewModel(
+  tabId: TabId,
+  userPreferencesState: UserPreferencesState,
+  deps: Partial<LogTabViewModelDependencies>,
+) {
+  return new LogTabViewModel(tabId, {
+    getLogs: vi.fn(() => []),
+    getLogsWithoutTimestamps: vi.fn(() => []),
+    getTimestampSplitLogs: vi.fn(() => []),
+    getLogTabData: vi.fn(),
+    setLogTabData: vi.fn(),
+    loadLogs: vi.fn(),
+    reloadLogs: vi.fn(),
+    renameTab: vi.fn(),
+    stopLoadingLogs: vi.fn(),
+    getPodById: vi.fn(),
+    getPodsByOwnerId: vi.fn(),
+    areLogsPresent: vi.fn(() => false),
+    searchStore: new SearchStore(),
+    downloadLogs: vi.fn(),
+    downloadAllLogs: vi.fn(),
+    userPreferencesState,
+    ...deps,
+  });
+}

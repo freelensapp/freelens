@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { getLegacyGlobalDiForExtensionApi } from "@freelensapp/legacy-global-di";
+import { getDiForExtensionApi } from "../../extensions/extension-api-di";
 import {
   requestClusterActivationInjectionToken,
   requestClusterDeactivationInjectionToken,
@@ -12,7 +12,7 @@ import {
 import { CatalogCategory, CatalogEntity, categoryVersion } from "../catalog/catalog-entity";
 import { broadcastMessage } from "../ipc";
 import { IpcRendererNavigationEvents } from "../ipc/navigation-events";
-import KubeClusterCategoryIcon from "./icons/kubernetes.svg";
+import KubeClusterCategoryIcon from "./icons/kubernetes.svg?raw";
 
 import type {
   CatalogCategorySpec,
@@ -85,7 +85,7 @@ export class KubernetesCluster<
   public readonly kind = KubernetesCluster.kind;
 
   async connect(): Promise<void> {
-    const di = getLegacyGlobalDiForExtensionApi();
+    const di = getDiForExtensionApi();
     const requestClusterActivation = di.inject(requestClusterActivationInjectionToken);
 
     await requestClusterActivation({
@@ -94,7 +94,7 @@ export class KubernetesCluster<
   }
 
   async disconnect(): Promise<void> {
-    const di = getLegacyGlobalDiForExtensionApi();
+    const di = getDiForExtensionApi();
     const requestClusterDeactivation = di.inject(requestClusterDeactivationInjectionToken);
 
     await requestClusterDeactivation(this.getId());

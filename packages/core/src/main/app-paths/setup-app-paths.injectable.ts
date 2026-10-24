@@ -5,9 +5,7 @@
  */
 
 import { beforeAnythingInjectionToken } from "@freelensapp/application-for-electron-main";
-import { pipeline } from "@ogre-tools/fp";
 import { getInjectable } from "@ogre-tools/injectable";
-import { fromPairs, map } from "lodash/fp";
 import { pathNames } from "../../common/app-paths/app-path-names";
 import appPathsStateInjectable from "../../common/app-paths/app-paths-state.injectable";
 import joinPathsInjectable from "../../common/path/join-paths.injectable";
@@ -39,11 +37,7 @@ const setupAppPathsInjectable = getInjectable({
       setElectronAppPath("userData", joinPaths(appDataPath, appName));
       setElectronAppPath("sessionData", getElectronAppPath("userData"));
 
-      const appPaths = pipeline(
-        pathNames,
-        map((name) => [name, getElectronAppPath(name)]),
-        fromPairs,
-      ) as AppPaths;
+      const appPaths = Object.fromEntries(pathNames.map((name) => [name, getElectronAppPath(name)])) as AppPaths;
 
       appPathsState.set(appPaths);
 

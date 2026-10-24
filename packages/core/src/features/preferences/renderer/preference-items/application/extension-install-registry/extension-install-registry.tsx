@@ -30,10 +30,6 @@ const extensionInstallRegistryOptions = [
     label: "Default Url",
   },
   {
-    value: "npmrc",
-    label: "Global .npmrc file's Url",
-  },
-  {
     value: "custom",
     label: "Custom Url",
   },
@@ -62,9 +58,7 @@ const NonInjectedExtensionInstallRegistry = observer(({ state }: Dependencies) =
       />
       <p className="mt-4 mb-5 leading-relaxed">
         {"This setting is to change the registry URL for installing extensions by name. "}
-        {`If you are unable to access the default registry (${defaultExtensionRegistryUrl}) you can change it in your `}
-        <b>.npmrc</b>
-        {" file or in the input below."}
+        {`If you are unable to access the default registry (${defaultExtensionRegistryUrl}) you can enter another one below.`}
       </p>
 
       <Input

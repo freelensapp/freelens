@@ -5,22 +5,21 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { dump } from "js-yaml";
-import tempy from "tempy";
+import { temporaryFile } from "tempy";
 import removePathInjectable from "../../common/fs/remove.injectable";
 import writeFileInjectable from "../../common/fs/write-file.injectable";
 import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
-import execHelmInjectable from "./exec-helm/exec-helm.injectable";
+import execHelmInjectable, { proxyKubeconfigHelmOptions } from "./exec-helm/exec-helm.injectable";
 
-import type { JsonValue } from "type-fest";
+import type { ProxyKubeconfigPaths } from "../kubeconfig-manager/kubeconfig-manager";
 
 export interface InstallHelmChartData {
   chart: string;
-  values: JsonValue;
-  name: string;
+  values: string;
+  name?: string;
   namespace: string;
   version: string;
-  kubeconfigPath: string;
+  kubeconfig: ProxyKubeconfigPaths;
   forceConflicts?: boolean;
 }
 
@@ -42,10 +41,10 @@ const installHelmChartInjectable = getInjectable({
     const execHelm = di.inject(execHelmInjectable);
     const state = di.inject(userPreferencesStateInjectable);
 
-    return async ({ chart, kubeconfigPath, name, namespace, values, version, forceConflicts }) => {
-      const valuesFilePath = tempy.file({ name: "values.yaml" });
+    return async ({ chart, kubeconfig, name, namespace, values, version, forceConflicts }) => {
+      const valuesFilePath = temporaryFile({ name: "values.yaml" });
 
-      await writeFile(valuesFilePath, dump(values));
+      await writeFile(valuesFilePath, values);
 
       const args = ["install"];
 
@@ -62,7 +61,7 @@ const installHelmChartInjectable = getInjectable({
         "--namespace",
         namespace,
         "--kubeconfig",
-        kubeconfigPath,
+        kubeconfig.kubeconfigPath,
       );
 
       if (!name) {
@@ -84,7 +83,7 @@ const installHelmChartInjectable = getInjectable({
       }
 
       try {
-        const result = await execHelm(args);
+        const result = await execHelm(args, proxyKubeconfigHelmOptions(kubeconfig));
 
         if (!result.callWasSuccessful) {
           throw result.error;

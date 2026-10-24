@@ -1,7 +1,7 @@
 {
   "name": "@freelensapp/icon",
-  "version": "1.9.1-0",
-  "private": false,
+  "version": "2.0.0-0",
+  "private": true,
   "description": "Highly extendable icon in the Freelens.",
   "homepage": "https://freelens.app",
   "bugs": {
@@ -12,55 +12,42 @@
     "url": "git+https://github.com/freelensapp/freelens.git"
   },
   "license": "MIT",
+  "type": "module",
   "author": {
     "name": "Freelens Authors",
     "email": "freelens@freelens.app"
   },
-  "type": "commonjs",
   "exports": {
-    ".": "./dist/index.js",
-    "./styles": "./dist/index.css",
+    ".": "./index.ts",
+    "./styles": "./src/icon.scss",
     "./icons/*.svg": "./assets/*.svg"
   },
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./index.ts",
+  "types": "./index.ts",
   "files": [
-    "assets",
-    "dist"
+    "assets"
   ],
-  "scripts": {
-    "build": "lens-webpack-build",
-    "build:dev": "lens-webpack-build",
-    "clean:node_modules": "pnpm dlx rimraf@6.1.3 node_modules"
-  },
+  "scripts": {},
   "dependencies": {
     "@freelensapp/logger": "workspace:^",
+    "@freelensapp/routing": "workspace:^",
     "@freelensapp/tooltip": "workspace:^",
     "@freelensapp/utilities": "workspace:^",
-    "@ogre-tools/injectable": "^17.11.1",
-    "@ogre-tools/injectable-react": "^17.11.1",
-    "lodash": "^4.18.1",
-    "mobx": "^6.15.0",
-    "mobx-react": "^7.6.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-router-dom": "^5.3.4"
+    "@ogre-tools/injectable": "catalog:",
+    "@ogre-tools/injectable-react": "catalog:",
+    "mobx": "catalog:",
+    "mobx-react": "catalog:",
+    "react": "catalog:"
   },
   "devDependencies": {
-    "@freelensapp/jest": "workspace:^",
+    "@freelensapp/feature-core": "workspace:^",
+    "@freelensapp/test-utils": "workspace:^",
     "@freelensapp/typescript": "workspace:^",
-    "@freelensapp/webpack": "workspace:^",
-    "@types/history": "^4.7.11",
-    "@types/lodash": "^4.17.24",
-    "@types/react": "^17.0.91",
-    "@types/react-router-dom": "^5.3.3",
-    "css-loader": "^6.11.0",
-    "history": "^4.10.1",
-    "postcss-loader": "^8.2.1",
-    "sass-loader": "^16.0.7",
-    "ts-loader": "^9.5.7",
-    "typescript": "^5.9.3",
-    "webpack": "^5.106.2"
+    "@ogre-tools/injectable-extension-for-mobx": "catalog:",
+    "@testing-library/jest-dom": "catalog:",
+    "@types/react": "catalog:",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   },
   "publishConfig": {
     "access": "public",

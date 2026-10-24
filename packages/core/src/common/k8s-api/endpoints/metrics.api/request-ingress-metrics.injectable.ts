@@ -8,6 +8,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import requestMetricsInjectable from "./request-metrics.injectable";
 
 import type { MetricData } from "../metrics.api";
+import type { RequestMetricsParams } from "./request-metrics.injectable";
 
 export interface IngressMetricData {
   bytesSentSuccess: MetricData;
@@ -16,14 +17,18 @@ export interface IngressMetricData {
   responseDurationSeconds: MetricData;
 }
 
-export type RequestIngressMetrics = (ingress: string, namespace: string) => Promise<IngressMetricData>;
+export type RequestIngressMetrics = (
+  ingress: string,
+  namespace: string,
+  params?: RequestMetricsParams,
+) => Promise<IngressMetricData>;
 
 const requestIngressMetricsInjectable = getInjectable({
   id: "request-ingress-metrics",
   instantiate: (di): RequestIngressMetrics => {
     const requestMetrics = di.inject(requestMetricsInjectable);
 
-    return (ingress, namespace) => {
+    return (ingress, namespace, params = {}) => {
       const opts = { category: "ingress", ingress, namespace };
 
       return requestMetrics(
@@ -35,6 +40,7 @@ const requestIngressMetricsInjectable = getInjectable({
         },
         {
           namespace,
+          ...params,
         },
       );
     };

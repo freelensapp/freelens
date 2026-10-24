@@ -23,10 +23,14 @@ const getDetailsUrlInjectable = getInjectable({
 
       params.set(kubeDetailsUrlParam.name, selfLink);
 
-      if (resetSelected) {
-        params.delete(kubeSelectedUrlParam.name);
+      // `get()` is undefined while nothing is selected, which URLSearchParams
+      // would write as the string "undefined"
+      const selected = resetSelected ? undefined : kubeSelectedUrlParam.get();
+
+      if (selected) {
+        params.set(kubeSelectedUrlParam.name, selected);
       } else {
-        params.set(kubeSelectedUrlParam.name, kubeSelectedUrlParam.get());
+        params.delete(kubeSelectedUrlParam.name);
       }
 
       return `?${params}`;

@@ -4,12 +4,18 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { HorizontalPodAutoscalerApi } from "@freelensapp/kube-api";
 import { ingressApiInjectable, maybeKubeApiInjectable } from "@freelensapp/kube-api-specifics";
 import { Ingress } from "@freelensapp/kube-object";
-import { logErrorInjectionToken, logInfoInjectionToken, logWarningInjectionToken } from "@freelensapp/logger";
+import {
+  logDebugInjectionToken,
+  logErrorInjectionToken,
+  logInfoInjectionToken,
+  logWarningInjectionToken,
+} from "@freelensapp/logger";
 import { flushPromises } from "@freelensapp/test-utils";
+import { beforeEach, describe, expect, it } from "vitest";
 import setupAutoRegistrationInjectable from "../../../renderer/before-frame-starts/runnables/setup-auto-registration.injectable";
 import hostedClusterInjectable from "../../../renderer/cluster-frame-context/hosted-cluster.injectable";
 import { getDiForUnitTesting } from "../../../renderer/getDiForUnitTesting";
@@ -18,19 +24,19 @@ import { createMockResponseFromString } from "../../../test-utils/mock-responses
 import directoryForKubeConfigsInjectable from "../../app-paths/directory-for-kube-configs/directory-for-kube-configs.injectable";
 import directoryForUserDataInjectable from "../../app-paths/directory-for-user-data/directory-for-user-data.injectable";
 import { Cluster } from "../../cluster/cluster";
-import nodeFetchInjectable from "../../fetch/node-fetch.injectable";
+import fetchInjectable from "../../fetch/fetch.injectable";
 import apiManagerInjectable from "../api-manager/manager.injectable";
 
+import type { Fetch } from "@freelensapp/json-api";
 import type { IngressApi } from "@freelensapp/kube-api";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
 import type { DiContainer } from "@ogre-tools/injectable";
 
-import type { NodeFetch } from "../../fetch/node-fetch.injectable";
 import type { ApiManager } from "../api-manager";
 
 describe("KubeApi", () => {
-  let fetchMock: AsyncFnMock<NodeFetch>;
+  let fetchMock: AsyncFnMock<Fetch>;
   let apiManager: ApiManager;
   let di: DiContainer;
 
@@ -39,7 +45,7 @@ describe("KubeApi", () => {
       di = getDiForUnitTesting();
 
       fetchMock = asyncFn();
-      di.override(nodeFetchInjectable, () => fetchMock);
+      di.override(fetchInjectable, () => fetchMock);
 
       di.override(directoryForUserDataInjectable, () => "/some-user-store-path");
       di.override(directoryForKubeConfigsInjectable, () => "/some-kube-configs");
@@ -89,7 +95,7 @@ describe("KubeApi", () => {
 
     it("requests version list from the api group from the initial apiBase", () => {
       expect(fetchMock.mock.lastCall).toMatchObject([
-        "https://127.0.0.1:12345/api-kube/apis/networking.k8s.io",
+        "https://localhost:12345/api-kube/apis/networking.k8s.io",
         {
           headers: {
             "content-type": "application/json",
@@ -102,9 +108,9 @@ describe("KubeApi", () => {
     describe("when the version list from the api group resolves", () => {
       beforeEach(async () => {
         await fetchMock.resolveSpecific(
-          ["https://127.0.0.1:12345/api-kube/apis/networking.k8s.io"],
+          ["https://localhost:12345/api-kube/apis/networking.k8s.io"],
           createMockResponseFromString(
-            "https://127.0.0.1:12345/api-kube/apis/networking.k8s.io",
+            "https://localhost:12345/api-kube/apis/networking.k8s.io",
             JSON.stringify({
               apiVersion: "v1",
               kind: "APIGroup",
@@ -130,7 +136,7 @@ describe("KubeApi", () => {
 
       it("requests resources from the versioned api group from the initial apiBase", () => {
         expect(fetchMock.mock.lastCall).toMatchObject([
-          "https://127.0.0.1:12345/api-kube/apis/networking.k8s.io/v1",
+          "https://localhost:12345/api-kube/apis/networking.k8s.io/v1",
           {
             headers: {
               "content-type": "application/json",
@@ -143,9 +149,9 @@ describe("KubeApi", () => {
       describe("when resource request fulfills with a resource", () => {
         beforeEach(async () => {
           await fetchMock.resolveSpecific(
-            ["https://127.0.0.1:12345/api-kube/apis/networking.k8s.io/v1"],
+            ["https://localhost:12345/api-kube/apis/networking.k8s.io/v1"],
             createMockResponseFromString(
-              "https://127.0.0.1:12345/api-kube/apis/networking.k8s.io/v1",
+              "https://localhost:12345/api-kube/apis/networking.k8s.io/v1",
               JSON.stringify({
                 resources: [
                   {
@@ -159,7 +165,7 @@ describe("KubeApi", () => {
 
         it("makes the request to get the resource", () => {
           expect(fetchMock.mock.lastCall).toMatchObject([
-            "https://127.0.0.1:12345/api-kube/apis/networking.k8s.io/v1/namespaces/default/ingresses/foo",
+            "https://localhost:12345/api-kube/apis/networking.k8s.io/v1/namespaces/default/ingresses/foo",
             {
               headers: {
                 "content-type": "application/json",
@@ -188,9 +194,9 @@ describe("KubeApi", () => {
 
           beforeEach(async () => {
             await fetchMock.resolveSpecific(
-              ["https://127.0.0.1:12345/api-kube/apis/networking.k8s.io/v1/namespaces/default/ingresses/foo"],
+              ["https://localhost:12345/api-kube/apis/networking.k8s.io/v1/namespaces/default/ingresses/foo"],
               createMockResponseFromString(
-                "https://127.0.0.1:12345/api-kube/apis/networking.k8s.io/v1/namespaces/default/ingresses/foo",
+                "https://localhost:12345/api-kube/apis/networking.k8s.io/v1/namespaces/default/ingresses/foo",
                 JSON.stringify({}),
               ),
             );
@@ -216,7 +222,7 @@ describe("KubeApi", () => {
 
             it("makes the request to get the resource", () => {
               expect(fetchMock.mock.lastCall).toMatchObject([
-                "https://127.0.0.1:12345/api-kube/apis/networking.k8s.io/v1/namespaces/default/ingresses/foo1",
+                "https://localhost:12345/api-kube/apis/networking.k8s.io/v1/namespaces/default/ingresses/foo1",
                 {
                   headers: {
                     "content-type": "application/json",
@@ -231,9 +237,9 @@ describe("KubeApi", () => {
 
               beforeEach(async () => {
                 await fetchMock.resolveSpecific(
-                  ["https://127.0.0.1:12345/api-kube/apis/networking.k8s.io/v1/namespaces/default/ingresses/foo1"],
+                  ["https://localhost:12345/api-kube/apis/networking.k8s.io/v1/namespaces/default/ingresses/foo1"],
                   createMockResponseFromString(
-                    "https://127.0.0.1:12345/api-kube/apis/networking.k8s.io/v1/namespaces/default/ingresses/foo1",
+                    "https://localhost:12345/api-kube/apis/networking.k8s.io/v1/namespaces/default/ingresses/foo1",
                     JSON.stringify({}),
                   ),
                 );
@@ -252,9 +258,9 @@ describe("KubeApi", () => {
 
           beforeEach(async () => {
             await fetchMock.resolveSpecific(
-              ["https://127.0.0.1:12345/api-kube/apis/networking.k8s.io/v1/namespaces/default/ingresses/foo"],
+              ["https://localhost:12345/api-kube/apis/networking.k8s.io/v1/namespaces/default/ingresses/foo"],
               createMockResponseFromString(
-                "https://127.0.0.1:12345/api-kube/apis/networking.k8s.io/v1/namespaces/default/ingresses/foo",
+                "https://localhost:12345/api-kube/apis/networking.k8s.io/v1/namespaces/default/ingresses/foo",
                 JSON.stringify({
                   apiVersion: "v1",
                   kind: "Ingress",
@@ -289,7 +295,7 @@ describe("KubeApi", () => {
 
             it("makes the request to get the resource", () => {
               expect(fetchMock.mock.lastCall).toMatchObject([
-                "https://127.0.0.1:12345/api-kube/apis/networking.k8s.io/v1/namespaces/default/ingresses/foo1",
+                "https://localhost:12345/api-kube/apis/networking.k8s.io/v1/namespaces/default/ingresses/foo1",
                 {
                   headers: {
                     "content-type": "application/json",
@@ -304,9 +310,9 @@ describe("KubeApi", () => {
 
               beforeEach(async () => {
                 await fetchMock.resolveSpecific(
-                  ["https://127.0.0.1:12345/api-kube/apis/networking.k8s.io/v1/namespaces/default/ingresses/foo1"],
+                  ["https://localhost:12345/api-kube/apis/networking.k8s.io/v1/namespaces/default/ingresses/foo1"],
                   createMockResponseFromString(
-                    "https://127.0.0.1:12345/api-kube/apis/networking.k8s.io/v1/namespaces/default/ingresses/foo1",
+                    "https://localhost:12345/api-kube/apis/networking.k8s.io/v1/namespaces/default/ingresses/foo1",
                     JSON.stringify({}),
                   ),
                 );
@@ -324,9 +330,9 @@ describe("KubeApi", () => {
       describe("when resource request fulfills with no resource", () => {
         beforeEach(async () => {
           await fetchMock.resolveSpecific(
-            ["https://127.0.0.1:12345/api-kube/apis/networking.k8s.io/v1"],
+            ["https://localhost:12345/api-kube/apis/networking.k8s.io/v1"],
             createMockResponseFromString(
-              "https://127.0.0.1:12345/api-kube/apis/networking.k8s.io/v1",
+              "https://localhost:12345/api-kube/apis/networking.k8s.io/v1",
               JSON.stringify({
                 resources: [],
               }),
@@ -336,7 +342,7 @@ describe("KubeApi", () => {
 
         it("requests resources from the second versioned api group from the initial apiBase", () => {
           expect(fetchMock.mock.lastCall).toMatchObject([
-            "https://127.0.0.1:12345/api-kube/apis/networking.k8s.io/v1beta1",
+            "https://localhost:12345/api-kube/apis/networking.k8s.io/v1beta1",
             {
               headers: {
                 "content-type": "application/json",
@@ -349,9 +355,9 @@ describe("KubeApi", () => {
         describe("when resource request fulfills with a resource", () => {
           beforeEach(async () => {
             await fetchMock.resolveSpecific(
-              ["https://127.0.0.1:12345/api-kube/apis/networking.k8s.io/v1beta1"],
+              ["https://localhost:12345/api-kube/apis/networking.k8s.io/v1beta1"],
               createMockResponseFromString(
-                "https://127.0.0.1:12345/api-kube/apis/networking.k8s.io/v1beta1",
+                "https://localhost:12345/api-kube/apis/networking.k8s.io/v1beta1",
                 JSON.stringify({
                   resources: [
                     {
@@ -365,7 +371,7 @@ describe("KubeApi", () => {
 
           it("makes the request to get the resource", () => {
             expect(fetchMock.mock.lastCall).toMatchObject([
-              "https://127.0.0.1:12345/api-kube/apis/networking.k8s.io/v1beta1/namespaces/default/ingresses/foo",
+              "https://localhost:12345/api-kube/apis/networking.k8s.io/v1beta1/namespaces/default/ingresses/foo",
               {
                 headers: {
                   "content-type": "application/json",
@@ -398,9 +404,9 @@ describe("KubeApi", () => {
 
             beforeEach(async () => {
               await fetchMock.resolveSpecific(
-                ["https://127.0.0.1:12345/api-kube/apis/networking.k8s.io/v1beta1/namespaces/default/ingresses/foo"],
+                ["https://localhost:12345/api-kube/apis/networking.k8s.io/v1beta1/namespaces/default/ingresses/foo"],
                 createMockResponseFromString(
-                  "https://127.0.0.1:12345/api-kube/apis/networking.k8s.io/v1beta1/namespaces/default/ingresses/foo",
+                  "https://localhost:12345/api-kube/apis/networking.k8s.io/v1beta1/namespaces/default/ingresses/foo",
                   JSON.stringify({}),
                 ),
               );
@@ -426,7 +432,7 @@ describe("KubeApi", () => {
 
               it("makes the request to get the resource", () => {
                 expect(fetchMock.mock.lastCall).toMatchObject([
-                  "https://127.0.0.1:12345/api-kube/apis/networking.k8s.io/v1beta1/namespaces/default/ingresses/foo1",
+                  "https://localhost:12345/api-kube/apis/networking.k8s.io/v1beta1/namespaces/default/ingresses/foo1",
                   {
                     headers: {
                       "content-type": "application/json",
@@ -442,10 +448,10 @@ describe("KubeApi", () => {
                 beforeEach(async () => {
                   await fetchMock.resolveSpecific(
                     [
-                      "https://127.0.0.1:12345/api-kube/apis/networking.k8s.io/v1beta1/namespaces/default/ingresses/foo1",
+                      "https://localhost:12345/api-kube/apis/networking.k8s.io/v1beta1/namespaces/default/ingresses/foo1",
                     ],
                     createMockResponseFromString(
-                      "https://127.0.0.1:12345/api-kube/apis/networking.k8s.io/v1beta1/namespaces/default/ingresses/foo1",
+                      "https://localhost:12345/api-kube/apis/networking.k8s.io/v1beta1/namespaces/default/ingresses/foo1",
                       JSON.stringify({}),
                     ),
                   );
@@ -464,9 +470,9 @@ describe("KubeApi", () => {
 
             beforeEach(async () => {
               await fetchMock.resolveSpecific(
-                ["https://127.0.0.1:12345/api-kube/apis/networking.k8s.io/v1beta1/namespaces/default/ingresses/foo"],
+                ["https://localhost:12345/api-kube/apis/networking.k8s.io/v1beta1/namespaces/default/ingresses/foo"],
                 createMockResponseFromString(
-                  "https://127.0.0.1:12345/api-kube/apis/networking.k8s.io/v1beta1/namespaces/default/ingresses/foo",
+                  "https://localhost:12345/api-kube/apis/networking.k8s.io/v1beta1/namespaces/default/ingresses/foo",
                   JSON.stringify({
                     apiVersion: "v1",
                     kind: "Ingress",
@@ -501,7 +507,7 @@ describe("KubeApi", () => {
 
               it("makes the request to get the resource", () => {
                 expect(fetchMock.mock.lastCall).toMatchObject([
-                  "https://127.0.0.1:12345/api-kube/apis/networking.k8s.io/v1beta1/namespaces/default/ingresses/foo1",
+                  "https://localhost:12345/api-kube/apis/networking.k8s.io/v1beta1/namespaces/default/ingresses/foo1",
                   {
                     headers: {
                       "content-type": "application/json",
@@ -517,10 +523,10 @@ describe("KubeApi", () => {
                 beforeEach(async () => {
                   await fetchMock.resolveSpecific(
                     [
-                      "https://127.0.0.1:12345/api-kube/apis/networking.k8s.io/v1beta1/namespaces/default/ingresses/foo1",
+                      "https://localhost:12345/api-kube/apis/networking.k8s.io/v1beta1/namespaces/default/ingresses/foo1",
                     ],
                     createMockResponseFromString(
-                      "https://127.0.0.1:12345/api-kube/apis/networking.k8s.io/v1beta1/namespaces/default/ingresses/foo1",
+                      "https://localhost:12345/api-kube/apis/networking.k8s.io/v1beta1/namespaces/default/ingresses/foo1",
                       JSON.stringify({}),
                     ),
                   );
@@ -540,9 +546,9 @@ describe("KubeApi", () => {
     describe("when the version list from the api group resolves with no versions", () => {
       beforeEach(async () => {
         await fetchMock.resolveSpecific(
-          ["https://127.0.0.1:12345/api-kube/apis/networking.k8s.io"],
+          ["https://localhost:12345/api-kube/apis/networking.k8s.io"],
           createMockResponseFromString(
-            "https://127.0.0.1:12345/api-kube/apis/networking.k8s.io",
+            "https://localhost:12345/api-kube/apis/networking.k8s.io",
             JSON.stringify({
               metadata: {},
               status: "Failure",
@@ -565,7 +571,7 @@ describe("KubeApi", () => {
 
       it("requests the resources from the base api url from the fallback api", () => {
         expect(fetchMock.mock.lastCall).toMatchObject([
-          "https://127.0.0.1:12345/api-kube/apis/extensions",
+          "https://localhost:12345/api-kube/apis/extensions",
           {
             headers: {
               "content-type": "application/json",
@@ -578,9 +584,9 @@ describe("KubeApi", () => {
       describe("when resource request fulfills with a resource", () => {
         beforeEach(async () => {
           await fetchMock.resolveSpecific(
-            ["https://127.0.0.1:12345/api-kube/apis/extensions"],
+            ["https://localhost:12345/api-kube/apis/extensions"],
             createMockResponseFromString(
-              "https://127.0.0.1:12345/api-kube/apis/extensions",
+              "https://localhost:12345/api-kube/apis/extensions",
               JSON.stringify({
                 apiVersion: "v1",
                 kind: "APIGroup",
@@ -602,7 +608,7 @@ describe("KubeApi", () => {
 
         it("requests resource versions from the versioned api group from the fallback apiBase", () => {
           expect(fetchMock.mock.lastCall).toMatchObject([
-            "https://127.0.0.1:12345/api-kube/apis/extensions/v1beta1",
+            "https://localhost:12345/api-kube/apis/extensions/v1beta1",
             {
               headers: {
                 "content-type": "application/json",
@@ -615,9 +621,9 @@ describe("KubeApi", () => {
         describe("when the preferred version request resolves to v1beta1", () => {
           beforeEach(async () => {
             await fetchMock.resolveSpecific(
-              ["https://127.0.0.1:12345/api-kube/apis/extensions/v1beta1"],
+              ["https://localhost:12345/api-kube/apis/extensions/v1beta1"],
               createMockResponseFromString(
-                "https://127.0.0.1:12345/api-kube/apis/extensions",
+                "https://localhost:12345/api-kube/apis/extensions",
                 JSON.stringify({
                   resources: [
                     {
@@ -631,7 +637,7 @@ describe("KubeApi", () => {
 
           it("makes the request to get the resource", () => {
             expect(fetchMock.mock.lastCall).toMatchObject([
-              "https://127.0.0.1:12345/api-kube/apis/extensions/v1beta1/namespaces/default/ingresses/foo",
+              "https://localhost:12345/api-kube/apis/extensions/v1beta1/namespaces/default/ingresses/foo",
               {
                 headers: {
                   "content-type": "application/json",
@@ -660,9 +666,9 @@ describe("KubeApi", () => {
 
             beforeEach(async () => {
               await fetchMock.resolveSpecific(
-                ["https://127.0.0.1:12345/api-kube/apis/extensions/v1beta1/namespaces/default/ingresses/foo"],
+                ["https://localhost:12345/api-kube/apis/extensions/v1beta1/namespaces/default/ingresses/foo"],
                 createMockResponseFromString(
-                  "https://127.0.0.1:12345/api-kube/apis/extensions/v1beta1/namespaces/default/ingresses/foo",
+                  "https://localhost:12345/api-kube/apis/extensions/v1beta1/namespaces/default/ingresses/foo",
                   JSON.stringify({}),
                 ),
               );
@@ -688,7 +694,7 @@ describe("KubeApi", () => {
 
               it("makes the request to get the resource", () => {
                 expect(fetchMock.mock.lastCall).toMatchObject([
-                  "https://127.0.0.1:12345/api-kube/apis/extensions/v1beta1/namespaces/default/ingresses/foo1",
+                  "https://localhost:12345/api-kube/apis/extensions/v1beta1/namespaces/default/ingresses/foo1",
                   {
                     headers: {
                       "content-type": "application/json",
@@ -703,9 +709,9 @@ describe("KubeApi", () => {
 
                 beforeEach(async () => {
                   await fetchMock.resolveSpecific(
-                    ["https://127.0.0.1:12345/api-kube/apis/extensions/v1beta1/namespaces/default/ingresses/foo1"],
+                    ["https://localhost:12345/api-kube/apis/extensions/v1beta1/namespaces/default/ingresses/foo1"],
                     createMockResponseFromString(
-                      "https://127.0.0.1:12345/api-kube/apis/extensions/v1beta1/namespaces/default/ingresses/foo1",
+                      "https://localhost:12345/api-kube/apis/extensions/v1beta1/namespaces/default/ingresses/foo1",
                       JSON.stringify({}),
                     ),
                   );
@@ -724,9 +730,9 @@ describe("KubeApi", () => {
 
             beforeEach(async () => {
               await fetchMock.resolveSpecific(
-                ["https://127.0.0.1:12345/api-kube/apis/extensions/v1beta1/namespaces/default/ingresses/foo"],
+                ["https://localhost:12345/api-kube/apis/extensions/v1beta1/namespaces/default/ingresses/foo"],
                 createMockResponseFromString(
-                  "https://127.0.0.1:12345/api-kube/apis/extensions/v1beta1/namespaces/default/ingresses/foo",
+                  "https://localhost:12345/api-kube/apis/extensions/v1beta1/namespaces/default/ingresses/foo",
                   JSON.stringify({
                     apiVersion: "v1beta1",
                     kind: "Ingress",
@@ -761,7 +767,7 @@ describe("KubeApi", () => {
 
               it("makes the request to get the resource", () => {
                 expect(fetchMock.mock.lastCall).toMatchObject([
-                  "https://127.0.0.1:12345/api-kube/apis/extensions/v1beta1/namespaces/default/ingresses/foo1",
+                  "https://localhost:12345/api-kube/apis/extensions/v1beta1/namespaces/default/ingresses/foo1",
                   {
                     headers: {
                       "content-type": "application/json",
@@ -776,9 +782,9 @@ describe("KubeApi", () => {
 
                 beforeEach(async () => {
                   await fetchMock.resolveSpecific(
-                    ["https://127.0.0.1:12345/api-kube/apis/extensions/v1beta1/namespaces/default/ingresses/foo1"],
+                    ["https://localhost:12345/api-kube/apis/extensions/v1beta1/namespaces/default/ingresses/foo1"],
                     createMockResponseFromString(
-                      "https://127.0.0.1:12345/api-kube/apis/extensions/v1beta1/namespaces/default/ingresses/foo1",
+                      "https://localhost:12345/api-kube/apis/extensions/v1beta1/namespaces/default/ingresses/foo1",
                       JSON.stringify({}),
                     ),
                   );
@@ -802,6 +808,7 @@ describe("KubeApi", () => {
     beforeEach(async () => {
       horizontalPodAutoscalerApi = new HorizontalPodAutoscalerApi(
         {
+          logDebug: di.inject(logDebugInjectionToken),
           logError: di.inject(logErrorInjectionToken),
           logInfo: di.inject(logInfoInjectionToken),
           logWarn: di.inject(logWarningInjectionToken),
@@ -824,7 +831,7 @@ describe("KubeApi", () => {
 
     it("requests version list from the api group from the initial apiBase", () => {
       expect(fetchMock.mock.lastCall).toMatchObject([
-        "https://127.0.0.1:12345/api-kube/apis/autoscaling",
+        "https://localhost:12345/api-kube/apis/autoscaling",
         {
           headers: {
             "content-type": "application/json",
@@ -837,9 +844,9 @@ describe("KubeApi", () => {
     describe("when the version list from the api group resolves with preferredVersion in allowed version", () => {
       beforeEach(async () => {
         await fetchMock.resolveSpecific(
-          ["https://127.0.0.1:12345/api-kube/apis/autoscaling"],
+          ["https://localhost:12345/api-kube/apis/autoscaling"],
           createMockResponseFromString(
-            "https://127.0.0.1:12345/api-kube/apis/autoscaling",
+            "https://localhost:12345/api-kube/apis/autoscaling",
             JSON.stringify({
               apiVersion: "v1",
               kind: "APIGroup",
@@ -865,7 +872,7 @@ describe("KubeApi", () => {
 
       it("requests resources from the preferred version api group from the initial apiBase", () => {
         expect(fetchMock.mock.lastCall).toMatchObject([
-          "https://127.0.0.1:12345/api-kube/apis/autoscaling/v1",
+          "https://localhost:12345/api-kube/apis/autoscaling/v1",
           {
             headers: {
               "content-type": "application/json",
@@ -879,9 +886,9 @@ describe("KubeApi", () => {
     describe("when the version list from the api group resolves with preferredVersion not allowed version", () => {
       beforeEach(async () => {
         await fetchMock.resolveSpecific(
-          ["https://127.0.0.1:12345/api-kube/apis/autoscaling"],
+          ["https://localhost:12345/api-kube/apis/autoscaling"],
           createMockResponseFromString(
-            "https://127.0.0.1:12345/api-kube/apis/autoscaling",
+            "https://localhost:12345/api-kube/apis/autoscaling",
             JSON.stringify({
               apiVersion: "v1",
               kind: "APIGroup",
@@ -911,7 +918,7 @@ describe("KubeApi", () => {
 
       it("requests resources from the non preferred version from the initial apiBase", () => {
         expect(fetchMock.mock.lastCall).toMatchObject([
-          "https://127.0.0.1:12345/api-kube/apis/autoscaling/v2",
+          "https://localhost:12345/api-kube/apis/autoscaling/v2",
           {
             headers: {
               "content-type": "application/json",

@@ -4,11 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { isShownInSidebarTree } from "@freelensapp/cluster-sidebar";
 import { Icon } from "@freelensapp/icon";
+import { NavLink } from "@freelensapp/routing";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import { NavLink } from "react-router-dom";
 import { sideBarItemCustomResourcePrefix } from "../custom-resource-definitions/groups-sidebar-items-computed.injectable";
 import favoritesOverviewSidebarItemInjectable from "../favorites/overview/sidebar-item.injectable";
 import favoritesStoreInjectable, { FavoritesStore } from "../favorites/store.injectable";
@@ -33,7 +34,7 @@ const NonInjectedSidebarItem = observer((props: SidebarItemProps & Dependencies)
   const { item, sidebarStorage, favoritesStore } = props;
   const id = item.id;
   const expanded = sidebarStorage.get().expanded[id] ?? false;
-  const isExpandable = item.children.length > 0 && item.children.some((item) => item.isVisible.get());
+  const isExpandable = item.children.length > 0 && item.children.some(isShownInSidebarTree);
   const isActive = item.isActive.get();
   const isFavorite = favoritesStore.has(id);
 
@@ -65,7 +66,7 @@ const NonInjectedSidebarItem = observer((props: SidebarItemProps & Dependencies)
     );
   };
 
-  if (!item.isVisible.get()) {
+  if (!isShownInSidebarTree(item)) {
     return null;
   }
 

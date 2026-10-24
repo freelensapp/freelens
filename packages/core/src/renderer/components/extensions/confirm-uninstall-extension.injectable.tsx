@@ -5,13 +5,11 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import React from "react";
 import { extensionDisplayName } from "../../../extensions/lens-extension";
 import confirmInjectable from "../confirm-dialog/confirm.injectable";
 import uninstallExtensionInjectable from "./uninstall-extension.injectable";
 
-import type { InstalledExtension, LensExtensionId } from "@freelensapp/legacy-extensions";
-
+import type { InstalledExtension, LensExtensionId } from "../../../extensions/installed-extension";
 import type { Confirm } from "../confirm-dialog/confirm.injectable";
 
 interface Dependencies {

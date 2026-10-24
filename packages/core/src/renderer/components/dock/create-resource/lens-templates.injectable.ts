@@ -14,13 +14,19 @@ const lensCreateResourceTemplatesInjectable = getInjectable({
 
   instantiate: (di): RawTemplates => {
     const parsePath = di.inject(parsePathInjectable);
-    const templatesContext = require.context("@freelensapp/resource-templates/templates", true, /^\.\/.*\.(yaml|yml)$/);
+    // Vite (v2): replaces webpack's require.context over
+    // @freelensapp/resource-templates/templates with a build-time glob.
+    const templates = import.meta.glob("../../../../../../resource-templates/templates/**/*.{yaml,yml}", {
+      query: "?raw",
+      import: "default",
+      eager: true,
+    }) as Record<string, string>;
 
     return {
       label: "lens",
-      options: templatesContext.keys().map((key) => ({
+      options: Object.entries(templates).map(([key, value]) => ({
         label: parsePath(key).name,
-        value: templatesContext(key) as string,
+        value,
       })),
     };
   },

@@ -5,7 +5,6 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import React from "react";
 import catalogCategoryRegistryInjectable from "../../../common/catalog/category-registry.injectable";
 import { WeblinkAddCommand } from "../../components/catalog-entities/weblink-add-command";
 import commandOverlayInjectable from "../../components/command-palette/command-overlay.injectable";

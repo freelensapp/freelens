@@ -6,7 +6,7 @@
 
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import React from "react";
+import { beforeEach, describe, expect, it } from "vitest";
 import { CatalogCategory } from "../../../../common/catalog";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import { type DiRender, renderFor } from "../../test-utils/renderFor";

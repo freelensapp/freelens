@@ -68,8 +68,10 @@ export const backoffCaller = async <T, E>(
     // TODO: Property 'error' does not exist on type '{ callWasSuccessful: true; response?: undefined; }'
     onIntermediateError((result as any).error, attempt + 1);
 
-    await delay(timeout);
-    timeout *= scaleFactor;
+    if (attempt + 1 < maxAttempts) {
+      await delay(timeout);
+      timeout *= scaleFactor;
+    }
   } while (((attempt += 1), attempt < maxAttempts));
 
   return result;

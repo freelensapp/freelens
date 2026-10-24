@@ -7,7 +7,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import { apiKubePrefix } from "../vars";
 import isDebuggingInjectable from "../vars/is-debugging.injectable";
-import { apiBaseHostHeaderInjectionToken, apiBaseServerAddressInjectionToken } from "./api-base-configs";
+import { clusterApiAddressInjectionToken } from "./cluster-api-address-injection-token";
 import createKubeJsonApiInjectable from "./create-kube-json-api.injectable";
 
 import type { KubeJsonApi } from "@freelensapp/kube-api";
@@ -19,20 +19,20 @@ const createKubeJsonApiForClusterInjectable = getInjectable({
   instantiate: (di): CreateKubeJsonApiForCluster => {
     const createKubeJsonApi = di.inject(createKubeJsonApiInjectable);
     const isDebugging = di.inject(isDebuggingInjectable);
+    const clusterApiAddress = di.inject(clusterApiAddressInjectionToken);
 
-    return (clusterId) =>
-      createKubeJsonApi(
+    return (clusterId) => {
+      const { serverAddress, hostHeader } = clusterApiAddress(clusterId);
+
+      return createKubeJsonApi(
         {
-          serverAddress: di.inject(apiBaseServerAddressInjectionToken),
+          serverAddress,
           apiBase: apiKubePrefix,
           debug: isDebugging,
         },
-        {
-          headers: {
-            Host: `${clusterId}.${di.inject(apiBaseHostHeaderInjectionToken)}`,
-          },
-        },
+        hostHeader ? { headers: { Host: hostHeader } } : {},
       );
+    };
   },
 });
 

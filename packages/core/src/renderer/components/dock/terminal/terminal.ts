@@ -4,21 +4,23 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import assert from "node:assert";
 import { disposer } from "@freelensapp/utilities";
 import { FitAddon } from "@xterm/addon-fit";
 import { WebLinksAddon } from "@xterm/addon-web-links";
 import { Terminal as XTerm } from "@xterm/xterm";
-import assert from "assert";
 import { clipboard } from "electron";
-import { once } from "lodash";
-import debounce from "lodash/debounce";
+import { debounce } from "es-toolkit/compat";
 import { reaction } from "mobx";
 import { TerminalChannels } from "../../../../common/terminal/channels";
+import { eraseTerminalLine } from "../../../api/terminal-api";
+import { handleMacNaturalTextEditingKey } from "./terminal-key-mapping";
 
 import type { Logger } from "@freelensapp/logger";
 
 import type { IComputedValue } from "mobx";
 
+import type { TerminalStatusLevel } from "../../../../common/terminal/channels";
 import type { OpenLinkInBrowser } from "../../../../common/utils/open-link-in-browser.injectable";
 import type { TerminalFont } from "../../../../features/terminal/renderer/fonts/token";
 import type { TerminalConfig } from "../../../../features/user-preferences/common/preferences-helpers";
@@ -46,6 +48,12 @@ export class Terminal {
   private readonly fitAddon = new FitAddon();
   private readonly webLinksAddon = new WebLinksAddon((event, link) => this.dependencies.openLinkInBrowser(link));
   private scrollPos = 0;
+  /**
+   * Whether an `error`-level status line was written. Such a line keeps its
+   * place above the prompt, which means the buffer must not be cleared once
+   * the session becomes ready.
+   */
+  private hasStickyStatus = false;
   private readonly disposer = disposer();
   public readonly tabId: TabId;
   protected readonly api: TerminalApi;
@@ -106,13 +114,30 @@ export class Terminal {
 
     // bind events
     const onDataHandler = this.xterm.onData(this.onData);
-    const clearOnce = once(this.onClear);
+    let firstReady = true;
+    const onReady = () => {
+      /**
+       * The transient status line is unterminated, so it must be erased before
+       * the prompt is written over it, and every connection writes one, a
+       * reconnect included. Passing `onClear` as xterm's write callback is
+       * what orders the erase before the clear despite the asynchronous write
+       * queue. The buffer is cleared only on the first connection, so that a
+       * reconnect keeps the history, and reported errors are sticky: they
+       * suppress the clear so that they stay visible above the prompt.
+       */
+      const clear = firstReady && !this.hasStickyStatus;
+
+      firstReady = false;
+      this.xterm.write(eraseTerminalLine, clear ? this.onClear : undefined);
+    };
 
     this.viewport.addEventListener("scroll", this.onScroll);
     this.elem.addEventListener("contextmenu", this.onContextMenu);
-    this.api.once("ready", clearOnce);
-    this.api.once("connected", clearOnce);
+    // `TerminalApi` emits "ready" once per connection, on its first output or
+    // on the "connected" of a resumed session.
+    this.api.on("ready", onReady);
     this.api.on("data", this.onApiData);
+    this.api.on("status", this.onApiStatus);
     window.addEventListener("resize", this.onResize);
 
     this.disposer.push(
@@ -150,6 +175,14 @@ export class Terminal {
   };
 
   onApiData = (data: string) => {
+    this.xterm.write(data);
+  };
+
+  onApiStatus = (data: string, level: TerminalStatusLevel) => {
+    if (level === "error") {
+      this.hasStickyStatus = true;
+    }
+
     this.xterm.write(data);
   };
 
@@ -200,14 +233,14 @@ export class Terminal {
   };
 
   setFontSize = (fontSize: number) => {
-    this.dependencies.logger.info(`[TERMINAL]: set fontSize to ${fontSize}`);
+    this.dependencies.logger.debug(`[TERMINAL]: set fontSize to ${fontSize}`);
 
     this.xterm.options.fontSize = fontSize;
     this.fit();
   };
 
   setFontFamily = (fontFamily: string) => {
-    this.dependencies.logger.info(`[TERMINAL]: set fontFamily to ${fontFamily}`);
+    this.dependencies.logger.debug(`[TERMINAL]: set fontFamily to ${fontFamily}`);
 
     this.xterm.options.fontFamily = fontFamily;
     this.fit();
@@ -218,6 +251,12 @@ export class Terminal {
 
   keyHandler = (evt: KeyboardEvent): boolean => {
     const { code, ctrlKey, metaKey } = evt;
+
+    if (this.dependencies.isMac) {
+      if (!handleMacNaturalTextEditingKey(evt, this.onData)) {
+        return false;
+      }
+    }
 
     // Handle custom hotkey bindings
     if (ctrlKey) {

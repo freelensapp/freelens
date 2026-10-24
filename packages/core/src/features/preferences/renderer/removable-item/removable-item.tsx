@@ -6,7 +6,6 @@
 
 import { Icon } from "@freelensapp/icon";
 import { cssNames } from "@freelensapp/utilities";
-import React from "react";
 import styles from "./removable-item.module.scss";
 
 import type { DOMAttributes } from "react";
@@ -27,7 +26,7 @@ export function RemovableItem({
   ...rest
 }: RemovableItemProps) {
   return (
-    <div className={cssNames(styles.item, "flex gaps align-center justify-space-between", className)} {...rest}>
+    <div className={cssNames(styles.item, "flex gap-2 items-center justify-between", className)} {...rest}>
       {icon && <Icon material={icon} />}
       {children}
       <Icon material="delete" onClick={onRemove} tooltip="Remove" data-testid={testId} />

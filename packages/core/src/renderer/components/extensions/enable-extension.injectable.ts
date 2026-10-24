@@ -7,9 +7,9 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import extensionLoaderInjectable from "../../../extensions/extension-loader/extension-loader.injectable";
 
-import type { LensExtensionId } from "@freelensapp/legacy-extensions";
+import type { LensExtensionId } from "../../../extensions/installed-extension";
 
-export type EnableExtension = (extId: LensExtensionId) => void;
+export type EnableExtension = (extId: LensExtensionId) => Promise<void>;
 
 const enableExtensionInjectable = getInjectable({
   id: "enable-extension",
@@ -17,11 +17,9 @@ const enableExtensionInjectable = getInjectable({
   instantiate: (di): EnableExtension => {
     const extensionLoader = di.inject(extensionLoaderInjectable);
 
-    return (extId) => {
-      const ext = extensionLoader.getExtensionById(extId);
-
-      if (ext && !ext.isBundled) {
-        ext.isEnabled = true;
+    return async (extId) => {
+      if (extensionLoader.getExtensionById(extId)) {
+        await extensionLoader.setIsEnabled(extId, true);
       }
     };
   },

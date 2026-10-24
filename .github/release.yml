@@ -2,7 +2,7 @@ changelog:
   categories:
     - title: Features
       labels:
-        - '*'
+        - "*"
       exclude:
         labels:
           - automated

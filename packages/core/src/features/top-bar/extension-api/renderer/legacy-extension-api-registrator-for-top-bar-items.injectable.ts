@@ -4,9 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { pipeline } from "@ogre-tools/fp";
 import { getInjectable } from "@ogre-tools/injectable";
-import { reject } from "lodash/fp";
 import { computed } from "mobx";
 import { extensionRegistratorInjectionToken } from "../../../../extensions/extension-loader/extension-registrator-injection-token";
 import { topBarItemOnRightSideInjectionToken } from "../../../../renderer/components/layout/top-bar/top-bar-items/top-bar-item-injection-token";
@@ -19,30 +17,25 @@ const legacyExtensionApiRegistratorForTopBarItemsInjectable = getInjectable({
   instantiate: () => (ext) => {
     const extension = ext as LensRendererExtension;
 
-    return pipeline(
-      extension.topBarItems,
+    return extension.topBarItems
+      .filter((registration) => !!registration?.components?.Item)
+      .map((registration, index) => {
+        const id = `extension-top-bar-item-for-${extension.sanitizedExtensionId}-${index}`;
 
-      reject((registration) => !registration?.components?.Item),
+        return getInjectable({
+          id,
 
-      (validTopBarRegistrations) =>
-        validTopBarRegistrations.map((registration, index) => {
-          const id = `extension-top-bar-item-for-${extension.sanitizedExtensionId}-${index}`;
+          injectionToken: topBarItemOnRightSideInjectionToken,
 
-          return getInjectable({
+          instantiate: () => ({
             id,
-
-            injectionToken: topBarItemOnRightSideInjectionToken,
-
-            instantiate: () => ({
-              id,
-              isShown: computed(() => true),
-              // Note: legacy extension-API does not specify order of top-bar items, and therefore an arbitrary number is used. This makes items originating from extension appear in volatile order between each other.
-              orderNumber: 100,
-              Component: registration.components.Item,
-            }),
-          });
-        }),
-    );
+            isShown: computed(() => true),
+            // Note: legacy extension-API does not specify order of top-bar items, and therefore an arbitrary number is used. This makes items originating from extension appear in volatile order between each other.
+            orderNumber: 100,
+            Component: registration.components.Item,
+          }),
+        });
+      });
   },
 
   injectionToken: extensionRegistratorInjectionToken,

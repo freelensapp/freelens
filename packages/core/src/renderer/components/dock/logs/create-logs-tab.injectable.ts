@@ -6,11 +6,14 @@
 
 import { getInjectable } from "@ogre-tools/injectable";
 import { runInAction } from "mobx";
+import { defaultLogViewerPreferences } from "../../../../features/user-preferences/common/preferences-helpers";
+import userPreferencesStateInjectable from "../../../../features/user-preferences/common/state.injectable";
 import createDockTabInjectable from "../dock/create-dock-tab.injectable";
 import { TabKind } from "../dock/store";
 import getRandomIdForPodLogsTabInjectable from "./get-random-id-for-pod-logs-tab.injectable";
 import setLogTabDataInjectable from "./set-log-tab-data.injectable";
 
+import type { UserPreferencesState } from "../../../../features/user-preferences/common/state.injectable";
 import type { DockTab, DockTabCreate, TabId } from "../dock/store";
 import type { LogTabData } from "./tab-store";
 
@@ -21,10 +24,11 @@ interface Dependencies {
   createDockTab: (rawTabDesc: DockTabCreate, addNumber?: boolean) => DockTab;
   setLogTabData: (tabId: string, data: LogTabData) => void;
   getRandomId: () => string;
+  userPreferencesState: UserPreferencesState;
 }
 
 const createLogsTab =
-  ({ createDockTab, setLogTabData, getRandomId }: Dependencies) =>
+  ({ createDockTab, setLogTabData, getRandomId, userPreferencesState }: Dependencies) =>
   (title: string, data: CreateLogsTabData): TabId => {
     const id = `log-tab-${getRandomId()}`;
 
@@ -37,10 +41,15 @@ const createLogsTab =
         },
         false,
       );
+      // Apply saved log preferences first so explicit tab data can override them.
+      // `showPrevious` is intentionally not persisted: it is specific to a single
+      // pod (whether a container has restarted) and must default to false for every
+      // new tab rather than leaking from a previously viewed pod. It is forced to
+      // false after the preferences spread so a stale persisted value (from an
+      // upgraded store) cannot leak back in, while explicit tab data can still set it.
       setLogTabData(id, {
-        showTimestamps: false,
+        ...(userPreferencesState.logViewerPreferences ?? defaultLogViewerPreferences),
         showPrevious: false,
-        showWordWrap: true,
         ...data,
       });
     });
@@ -56,6 +65,7 @@ const createLogsTabInjectable = getInjectable({
       createDockTab: di.inject(createDockTabInjectable),
       setLogTabData: di.inject(setLogTabDataInjectable),
       getRandomId: di.inject(getRandomIdForPodLogsTabInjectable),
+      userPreferencesState: di.inject(userPreferencesStateInjectable),
     }),
 });
 

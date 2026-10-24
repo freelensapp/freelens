@@ -6,7 +6,6 @@
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import computeHotbarDisplayLabelInjectable from "../../../features/hotbar/storage/common/compute-display-label.injectable";
 import hotbarsInjectable from "../../../features/hotbar/storage/common/hotbars.injectable";
 import removeHotbarInjectable from "../../../features/hotbar/storage/common/remove.injectable";
@@ -47,7 +46,7 @@ const NonInjectedHotbarRemoveCommand = observer(
           },
           ok: () => removeHotbar(option.value),
           message: (
-            <div className="confirm flex column gaps">
+            <div className="confirm flex flex-col gap-2">
               <p>
                 Are you sure you want remove hotbar <b>{option.value.name.get()}</b>?
               </p>

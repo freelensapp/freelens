@@ -4,13 +4,13 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { KubeConfig, newClusters, newContexts, newUsers } from "@freelensapp/kubernetes-client-node";
 import { isDefined } from "@freelensapp/utilities";
+import { KubeConfig } from "@kubernetes/client-node";
+import { newClusters, newContexts, newUsers } from "@kubernetes/client-node/dist/config_types.js";
 import Joi from "joi";
-import yaml from "js-yaml";
+import * as yaml from "js-yaml";
 
-import type { Cluster, Context, User } from "@freelensapp/kubernetes-client-node";
-
+import type { Cluster, Context, User } from "@kubernetes/client-node";
 import type { DumpOptions } from "js-yaml";
 import type { PartialDeep } from "type-fest";
 
@@ -53,7 +53,8 @@ interface OptionsResult {
 }
 
 function loadToOptions(rawYaml: string): OptionsResult {
-  const parsed = yaml.load(rawYaml);
+  // js-yaml v5 throws on empty input instead of returning undefined
+  const parsed = rawYaml.trim() ? yaml.load(rawYaml) : undefined;
   const { error } = kubeConfigSchema.validate(parsed, {
     abortEarly: false,
     allowUnknown: true,
@@ -151,10 +152,9 @@ export function splitConfig(kubeConfig: KubeConfig): SplitConfigEntry[] {
 }
 
 export const defaultYamlDumpOptions: DumpOptions = {
-  noArrayIndent: true,
-  noCompatMode: false,
+  seqNoIndent: true,
   noRefs: true,
-  quotingType: '"',
+  quoteStyle: "double",
   sortKeys: true,
 };
 

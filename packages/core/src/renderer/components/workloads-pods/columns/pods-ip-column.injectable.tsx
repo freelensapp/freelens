@@ -6,7 +6,6 @@
 
 import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
 import { getInjectable } from "@ogre-tools/injectable";
-import React from "react";
 import { WithTooltip } from "../../with-tooltip";
 import { COLUMN_PRIORITY } from "./column-priority";
 

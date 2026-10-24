@@ -7,7 +7,7 @@
 import { getStartableStoppable } from "@freelensapp/startable-stoppable";
 import { delay, disposer } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import { random } from "lodash";
+import { random } from "es-toolkit/compat";
 import { reaction, runInAction } from "mobx";
 import { WebLink } from "../../../common/catalog-entities";
 import weblinksInjectable from "../common/weblinks.injectable";

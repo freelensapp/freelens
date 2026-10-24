@@ -1,5 +1,6 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import React from "react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { getDiForUnitTesting } from "../../../getDiForUnitTesting";
 import openConfirmDialogInjectable from "../../confirm-dialog/open.injectable";
 import createTerminalTabInjectable from "../../dock/terminal/create-terminal-tab.injectable";
@@ -9,8 +10,9 @@ import { type DiRender, renderFor } from "../../test-utils/renderFor";
 import { NodeMenu } from "../node-menu";
 
 import type { DiContainer } from "@ogre-tools/injectable";
+import type { Mock } from "vitest";
 
-jest.mock("../../menu", () => ({
+vi.mock("../../menu", () => ({
   __esModule: true,
   MenuItem: ({ onClick, children }: { onClick: () => void; children?: React.ReactNode }) => (
     <div data-testid="menu-item-testid" onClick={onClick}>
@@ -22,18 +24,18 @@ jest.mock("../../menu", () => ({
 describe("pod-node-menu", () => {
   let di: DiContainer;
   let render: DiRender;
-  let createTerminalTabMock: jest.Mock;
-  let openConfirmDialogMock: jest.Mock;
-  let sendCommandMock: jest.Mock;
-  let hideDetailsMock: jest.Mock;
+  let createTerminalTabMock: Mock;
+  let openConfirmDialogMock: Mock;
+  let sendCommandMock: Mock;
+  let hideDetailsMock: Mock;
 
   beforeEach(() => {
     di = getDiForUnitTesting();
 
-    createTerminalTabMock = jest.fn();
-    openConfirmDialogMock = jest.fn((params) => params.ok());
-    sendCommandMock = jest.fn(() => Promise.resolve());
-    hideDetailsMock = jest.fn();
+    createTerminalTabMock = vi.fn();
+    openConfirmDialogMock = vi.fn((params) => params.ok());
+    sendCommandMock = vi.fn(() => Promise.resolve());
+    hideDetailsMock = vi.fn();
 
     di.override(createTerminalTabInjectable, () => createTerminalTabMock);
     di.override(openConfirmDialogInjectable, () => openConfirmDialogMock);

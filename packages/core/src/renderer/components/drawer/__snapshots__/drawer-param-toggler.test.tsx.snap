@@ -1,13 +1,13 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`<DrawerParamToggler /> after clicking the toggle after clicking the toggle again renders 1`] = `
+exports[`<DrawerParamToggler /> > after clicking the toggle > after clicking the toggle again > renders 1`] = `
 <body>
   <div>
     <div
       class="DrawerParamToggler"
     >
       <div
-        class="flex gaps align-center params"
+        class="flex gap-2 items-center params"
       >
         <div
           class="param-label"
@@ -43,14 +43,14 @@ exports[`<DrawerParamToggler /> after clicking the toggle after clicking the tog
 </body>
 `;
 
-exports[`<DrawerParamToggler /> after clicking the toggle renders 1`] = `
+exports[`<DrawerParamToggler /> > after clicking the toggle > renders 1`] = `
 <body>
   <div>
     <div
       class="DrawerParamToggler"
     >
       <div
-        class="flex gaps align-center params"
+        class="flex gap-2 items-center params"
       >
         <div
           class="param-label"
@@ -90,14 +90,14 @@ exports[`<DrawerParamToggler /> after clicking the toggle renders 1`] = `
 </body>
 `;
 
-exports[`<DrawerParamToggler /> renders 1`] = `
+exports[`<DrawerParamToggler /> > renders 1`] = `
 <body>
   <div>
     <div
       class="DrawerParamToggler"
     >
       <div
-        class="flex gaps align-center params"
+        class="flex gap-2 items-center params"
       >
         <div
           class="param-label"

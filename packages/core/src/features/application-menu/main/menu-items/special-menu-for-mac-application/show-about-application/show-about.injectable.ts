@@ -4,10 +4,9 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { loggerInjectionToken } from "@freelensapp/logger/dist";
+import { loggerInjectionToken } from "@freelensapp/logger";
 import { getInjectable } from "@ogre-tools/injectable";
-import * as semver from "semver";
-import getLatestVersionInjectable from "../../../../../../common/utils/get-latest-version.injectable";
+import * as verkit from "verkit";
 import openLinkInBrowserInjectable from "../../../../../../common/utils/open-link-in-browser.injectable";
 import appNameInjectable from "../../../../../../common/vars/app-name.injectable";
 import applicationCopyrightInjectable from "../../../../../../common/vars/application-copyright.injectable";
@@ -15,6 +14,7 @@ import extensionApiVersionInjectable from "../../../../../../common/vars/extensi
 import isWindowsInjectable from "../../../../../../common/vars/is-windows.injectable";
 import productNameInjectable from "../../../../../../common/vars/product-name.injectable";
 import showMessagePopupInjectable from "../../../../../../main/electron-app/features/show-message-popup.injectable";
+import getLatestVersionInjectable from "../../../../../../main/versions/get-latest-version.injectable";
 import { buildVersionInitializable } from "../../../../../vars/build-version/common/token";
 
 const showAboutInjectable = getInjectable({
@@ -50,7 +50,7 @@ const showAboutInjectable = getInjectable({
 
       try {
         const latestVersion = await getLatestVersion("@freelensapp/core");
-        if (latestVersion && semver.gt(latestVersion, buildVersion)) {
+        if (latestVersion && verkit.isGreaterThan(latestVersion, buildVersion)) {
           newVersion = latestVersion;
           appInfo.push("", `Latest version: ${latestVersion}`);
           buttons.push("Open Release Notes");

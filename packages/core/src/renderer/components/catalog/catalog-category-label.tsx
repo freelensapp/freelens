@@ -4,8 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React from "react";
-
 import type { CatalogCategory } from "../../../common/catalog/catalog-entity";
 
 interface CatalogCategoryLabelProps {

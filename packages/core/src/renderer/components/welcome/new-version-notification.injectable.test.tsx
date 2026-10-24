@@ -1,22 +1,22 @@
 /**
  * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import { showInfoNotificationInjectable } from "@freelensapp/notifications";
-import React from "react";
 import { renderToStaticMarkup } from "react-dom/server";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { buildVersionInitializable } from "../../../features/vars/build-version/common/token";
 import getLatestVersionViaChannelInjectable from "../../common/utils/get-latest-version-via-channel.injectable";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
 import newVersionNotificationInjectable from "./new-version-notification.injectable";
 
 import type { DiContainer } from "@ogre-tools/injectable";
+import type { Mock } from "vitest";
 
 describe("new-version-notification.injectable", () => {
   let di: DiContainer;
-  let showInfoMock: jest.Mock;
+  let showInfoMock: Mock;
 
   beforeEach(() => {
     di = getDiForUnitTesting();
@@ -24,7 +24,7 @@ describe("new-version-notification.injectable", () => {
     // Current app version used in comparison
     di.override(buildVersionInitializable.stateToken, () => "1.2.3");
 
-    showInfoMock = jest.fn();
+    showInfoMock = vi.fn();
     di.override(showInfoNotificationInjectable, () => showInfoMock);
   });
 

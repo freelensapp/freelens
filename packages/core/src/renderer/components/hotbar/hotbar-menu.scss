@@ -40,21 +40,27 @@
     box-sizing: content-box;
     margin: 0 auto;
     height: 100%;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
+    // Reserve the scrollbar gutter on both edges so the scrollbar that appears
+    // while scrolling does not shift the centered cells sideways on hover.
+    scrollbar-gutter: stable both-edges;
     padding-bottom: 8px;
 
-    &:hover {
-      overflow: overlay;
+    &::-webkit-scrollbar {
+      width: 0.4em;
+      background: transparent;
+      z-index: 1;
+    }
 
-      &::-webkit-scrollbar {
-        width: 0.4em;
-        background: transparent;
-        z-index: 1;
-      }
+    // The thumb is transparent until the bar is hovered; only its color
+    // changes, never the scrollbar width, so there is no layout shift.
+    &::-webkit-scrollbar-thumb {
+      background: transparent;
+    }
 
-      &::-webkit-scrollbar-thumb {
-        background: var(--borderFaintColor);
-      }
+    &:hover::-webkit-scrollbar-thumb {
+      background: var(--borderFaintColor);
     }
 
     .HotbarCell {

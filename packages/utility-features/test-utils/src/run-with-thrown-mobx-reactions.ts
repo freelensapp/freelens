@@ -1,4 +1,4 @@
-import { noop } from "lodash/fp";
+import { noop } from "es-toolkit";
 import { _resetGlobalState, configure } from "mobx";
 
 export const runWithThrownMobxReactions = (callback: () => void) => {

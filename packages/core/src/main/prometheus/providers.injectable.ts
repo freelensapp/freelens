@@ -6,12 +6,12 @@
 
 import { prometheusProviderInjectionToken } from "@freelensapp/prometheus";
 import { getInjectable } from "@ogre-tools/injectable";
-import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
+import { computedInjectManyInjectionToken } from "@ogre-tools/injectable-extension-for-mobx";
 
 const prometheusProvidersInjectable = getInjectable({
   id: "prometheus-providers",
   instantiate: (di) => {
-    const computedInjectMany = di.inject(computedInjectManyInjectable);
+    const computedInjectMany = di.inject(computedInjectManyInjectionToken);
 
     return computedInjectMany(prometheusProviderInjectionToken);
   },

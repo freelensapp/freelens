@@ -95,7 +95,7 @@ class NonInjectedDockTab extends React.Component<DockTabProps & Dependencies> {
           })}
           onContextMenu={() => this.menuVisible.set(true)}
           label={
-            <div className="flex align-center" onAuxClick={isMiddleClick(close)}>
+            <div className="flex items-center" onAuxClick={isMiddleClick(close)}>
               <span className={styles.title}>{title}</span>
               {moreActions}
               {!pinned && (

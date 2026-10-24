@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { autorun, makeObservable, observable } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { autorun, observable } from "mobx";
+import { observer } from "mobx-react";
 import React from "react";
 import { Input, InputValidators } from "../input";
 import { SubTitle } from "../layout/sub-title";
@@ -18,20 +18,28 @@ export interface ClusterProxySettingProps {
 
 @observer
 export class ClusterProxySetting extends React.Component<ClusterProxySettingProps> {
-  @observable proxy = "";
+  private readonly disposers: (() => void)[] = [];
+
+  @observable accessor proxy = "";
 
   constructor(props: ClusterProxySettingProps) {
     super(props);
-    makeObservable(this);
   }
 
   componentDidMount() {
-    disposeOnUnmount(
-      this,
+    // Capture the cluster before the autorun: mobx-react 9 forbids reading
+    // this.props inside a derivation (the autorun below).
+    const { cluster } = this.props;
+
+    this.disposers.push(
       autorun(() => {
-        this.proxy = this.props.cluster.preferences.httpsProxy || "";
+        this.proxy = cluster.preferences.httpsProxy || "";
       }),
     );
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   save = () => {

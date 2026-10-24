@@ -11,7 +11,7 @@ import { Icon } from "@freelensapp/icon";
 import { cssNames, noop } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import autoBindReact from "auto-bind/react";
-import isEqual from "lodash/isEqual";
+import { isEqual } from "es-toolkit";
 import React, { Fragment } from "react";
 import { createPortal } from "react-dom";
 
@@ -384,7 +384,18 @@ class NonInjectedMenu extends React.Component<MenuProps & Dependencies, State> {
   }
 
   protected bindRef(elem: HTMLUListElement) {
+    const justMounted = !this.elem && !!elem;
+
     this.elem = elem;
+
+    // Under React 18 the portal menu <ul> is mounted through <Animate> a render
+    // cycle after open()/componentDidUpdate already scheduled refreshPosition, so
+    // those ran while this.elem was still null and bailed out — leaving the menu at
+    // its off-screen default position. Re-run positioning once the element actually
+    // mounts so it is anchored to its opener/cursor/target.
+    if (justMounted && this.isOpen && this.props.usePortal) {
+      this.refreshPosition();
+    }
   }
 
   protected bindItemRef(item: MenuItem, index: number) {
@@ -404,7 +415,7 @@ class NonInjectedMenu extends React.Component<MenuProps & Dependencies, State> {
     }
     const menuItems = React.Children.toArray(children).map((item, index) => {
       if (typeof item === "object" && (item as ReactElement).type === MenuItem) {
-        return React.cloneElement(item as ReactElement, {
+        return React.cloneElement(item as ReactElement<any>, {
           ref: (item: MenuItem) => this.bindItemRef(item, index),
         });
       }
@@ -432,7 +443,7 @@ class NonInjectedMenu extends React.Component<MenuProps & Dependencies, State> {
       menu = <Animate enter={this.isOpen}>{menu}</Animate>;
     }
 
-    menu = <MenuContext.Provider value={this}>{menu}</MenuContext.Provider>;
+    menu = <MenuContext value={this}>{menu}</MenuContext>;
 
     if (!usePortal) {
       return menu;
@@ -453,16 +464,19 @@ export const Menu = withInjectables<Dependencies, MenuProps>(NonInjectedMenu, {
 
 export function SubMenu(props: Partial<MenuProps>) {
   const { className, ...menuProps } = props;
+  // Inherit close behavior from the parent menu so that clicking a MenuItem
+  // inside a sub-menu also closes the top-level menu (e.g. MenuActions).
+  const parentMenu = React.useContext(MenuContext);
 
   return (
     <Menu
       className={cssNames("SubMenu", className)}
       isOpen
       open={noop}
-      close={noop}
+      close={parentMenu ? () => parentMenu.close() : noop}
       position={{}} // reset position, must be handled in css
       closeOnClickOutside={false}
-      closeOnClickItem={false}
+      closeOnClickItem={parentMenu?.props.closeOnClickItem ?? false}
       {...menuProps}
     />
   );

@@ -17,6 +17,8 @@ import { registerInjectables as registerFeaturesFeaturesClusterInjectables } fro
 import { registerInjectables as registerFeaturesFeaturesClusterStateSyncMainInjectables } from "./features/cluster/state-sync/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesClusterStorageMainInjectables } from "./features/cluster/storage/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesExtensionsEnabledMainInjectables } from "./features/extensions/enabled/main/register-injectables";
+import { registerInjectables as registerFeaturesFeaturesExtensionsInstallerMainInjectables } from "./features/extensions/installer/main/register-injectables";
+import { registerInjectables as registerFeaturesFeaturesExtensionsLoaderMainInjectables } from "./features/extensions/loader/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesExtensionsInjectables } from "./features/extensions/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesExtensionsStoppingMainInjectables } from "./features/extensions/stopping/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesFavoritesMainInjectables } from "./features/favorites/main/register-injectables";
@@ -25,7 +27,8 @@ import { registerInjectables as registerFeaturesFeaturesFileSystemProvisionerMai
 import { registerInjectables as registerFeaturesFeaturesHelmReleasesMainInjectables } from "./features/helm-releases/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesHotbarInjectables } from "./features/hotbar/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesHotbarStorageMainInjectables } from "./features/hotbar/storage/main/register-injectables";
-import { registerInjectables as registerFeaturesFeaturesLicensesCommonInjectables } from "./features/licenses/common/register-injectables";
+import { registerInjectables as registerFeaturesFeaturesLicensesMainInjectables } from "./features/licenses/main/register-injectables";
+import { registerInjectables as registerFeaturesFeaturesLicensesInjectables } from "./features/licenses/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesPathPickingDialogMainInjectables } from "./features/path-picking-dialog/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesPersistentStorageMainInjectables } from "./features/persistent-storage/main/register-injectables";
 import { registerInjectables as registerFeaturesFeaturesPersistentStorageInjectables } from "./features/persistent-storage/register-injectables";
@@ -59,6 +62,8 @@ export function registerInjectables(di: DiContainerForInjection): void {
   registerFeaturesFeaturesClusterStorageMainInjectables(di);
   registerFeaturesFeaturesExtensionsInjectables(di);
   registerFeaturesFeaturesExtensionsEnabledMainInjectables(di);
+  registerFeaturesFeaturesExtensionsInstallerMainInjectables(di);
+  registerFeaturesFeaturesExtensionsLoaderMainInjectables(di);
   registerFeaturesFeaturesExtensionsStoppingMainInjectables(di);
   registerFeaturesFeaturesFavoritesMainInjectables(di);
   registerFeaturesFeaturesFavoritesInjectables(di);
@@ -66,7 +71,8 @@ export function registerInjectables(di: DiContainerForInjection): void {
   registerFeaturesFeaturesHelmReleasesMainInjectables(di);
   registerFeaturesFeaturesHotbarInjectables(di);
   registerFeaturesFeaturesHotbarStorageMainInjectables(di);
-  registerFeaturesFeaturesLicensesCommonInjectables(di);
+  registerFeaturesFeaturesLicensesMainInjectables(di);
+  registerFeaturesFeaturesLicensesInjectables(di);
   registerFeaturesFeaturesPathPickingDialogMainInjectables(di);
   registerFeaturesFeaturesPersistentStorageMainInjectables(di);
   registerFeaturesFeaturesPersistentStorageInjectables(di);

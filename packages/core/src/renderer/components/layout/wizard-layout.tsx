@@ -30,11 +30,11 @@ export class WizardLayout extends React.Component<WizardLayoutProps> {
 
     return (
       <div {...props} className={cssNames("WizardLayout", { centered }, className)}>
-        {header && <div className={cssNames("head-col flex gaps align-center", headerClass)}>{header}</div>}
-        <div className={cssNames("content-col flex column gaps", contentClass)}>
-          <div className="flex column gaps">{children}</div>
+        {header && <div className={cssNames("head-col flex gap-4 items-center", headerClass)}>{header}</div>}
+        <div className={cssNames("content-col flex flex-col gap-4", contentClass)}>
+          <div className="flex flex-col gap-4">{children}</div>
         </div>
-        {infoPanel && <div className={cssNames("info-col flex column gaps", infoPanelClass)}>{infoPanel}</div>}
+        {infoPanel && <div className={cssNames("info-col flex flex-col gap-4", infoPanelClass)}>{infoPanel}</div>}
       </div>
     );
   }

@@ -4,19 +4,21 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { getPromiseStatus } from "@freelensapp/test-utils";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { withErrorSuppression } from "./with-error-suppression";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
+import type { Mock } from "vitest";
 
 describe("with-error-suppression", () => {
   describe("given decorated sync function", () => {
-    let toBeDecorated: jest.Mock<void, [string, string]>;
+    let toBeDecorated: Mock<(a: string, b: string) => void>;
     let decorated: (a: string, b: string) => void;
 
     beforeEach(() => {
-      toBeDecorated = jest.fn();
+      toBeDecorated = vi.fn();
 
       decorated = withErrorSuppression(toBeDecorated);
     });

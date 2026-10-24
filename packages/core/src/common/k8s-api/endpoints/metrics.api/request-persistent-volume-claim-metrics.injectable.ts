@@ -10,6 +10,7 @@ import requestMetricsInjectable from "./request-metrics.injectable";
 import type { PersistentVolumeClaim } from "@freelensapp/kube-object";
 
 import type { MetricData } from "../metrics.api";
+import type { RequestMetricsParams } from "./request-metrics.injectable";
 
 export interface PersistentVolumeClaimMetricData {
   diskUsage: MetricData;
@@ -18,6 +19,7 @@ export interface PersistentVolumeClaimMetricData {
 
 export type RequestPersistentVolumeClaimMetrics = (
   claim: PersistentVolumeClaim,
+  params?: RequestMetricsParams,
 ) => Promise<PersistentVolumeClaimMetricData>;
 
 const requestPersistentVolumeClaimMetricsInjectable = getInjectable({
@@ -25,7 +27,7 @@ const requestPersistentVolumeClaimMetricsInjectable = getInjectable({
   instantiate: (di): RequestPersistentVolumeClaimMetrics => {
     const requestMetrics = di.inject(requestMetricsInjectable);
 
-    return (claim) => {
+    return (claim, params = {}) => {
       const opts = { category: "pvc", pvc: claim.getName(), namespace: claim.getNs() };
 
       return requestMetrics(
@@ -35,6 +37,7 @@ const requestPersistentVolumeClaimMetricsInjectable = getInjectable({
         },
         {
           namespace: opts.namespace,
+          ...params,
         },
       );
     };

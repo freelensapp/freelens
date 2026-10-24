@@ -7,11 +7,7 @@
 // Plugin for drawing stripe bars on top of any timeseries barchart
 // Based on cover DIV element with repeating-linear-gradient style
 
-import moment from "moment";
-
-import type ChartJS from "chart.js";
-import type { PluginServiceRegistrationOptions } from "chart.js";
-import type { Moment } from "moment";
+import type { Chart, ChartType, Plugin } from "chart.js";
 
 const defaultOptions = {
   stripeColor: "#ffffff08",
@@ -23,29 +19,36 @@ export interface ZebraStripesOptions {
   interval: number;
 }
 
-export class ZebraStripesPlugin implements PluginServiceRegistrationOptions {
-  updated: Moment | null = null;
+declare module "chart.js" {
+  interface PluginOptionsByType<TType extends ChartType> {
+    zebraStripes?: ZebraStripesOptions;
+  }
+}
+
+export class ZebraStripesPlugin implements Plugin<ChartType, ZebraStripesOptions> {
+  readonly id = "zebraStripes";
+  updated: number | null = null;
   options: ZebraStripesOptions;
 
   constructor(options?: Partial<ZebraStripesOptions>) {
     this.options = Object.assign({}, defaultOptions, options);
   }
 
-  getOptions(chart: ChartJS): ZebraStripesOptions | undefined {
-    return chart.options.plugins?.ZebraStripes;
+  getOptions(chart: Chart): Partial<ZebraStripesOptions> | undefined {
+    return chart.options.plugins?.zebraStripes;
   }
 
-  getLastUpdate(chart: ChartJS) {
-    const data = chart.data.datasets?.[0]?.data?.[0] as ChartJS.ChartPoint;
+  getLastUpdate(chart: Chart): number {
+    const data = chart.data.datasets?.[0]?.data?.[0] as { x?: number | string };
 
-    return moment.unix(parseInt(data.x as string));
+    return parseInt(data.x as string);
   }
 
-  getStripesElem(chart: ChartJS) {
+  getStripesElem(chart: Chart) {
     return chart.canvas?.parentElement?.querySelector<HTMLElement>(".zebra-cover");
   }
 
-  removeStripesElem(chart: ChartJS) {
+  removeStripesElem(chart: Chart) {
     const elem = this.getStripesElem(chart);
 
     if (elem) {
@@ -53,10 +56,10 @@ export class ZebraStripesPlugin implements PluginServiceRegistrationOptions {
     }
   }
 
-  updateOptions(chart: ChartJS) {
+  updateOptions(chart: Chart, options?: Partial<ZebraStripesOptions>) {
     this.options = {
       ...defaultOptions,
-      ...this.getOptions(chart),
+      ...(options ?? this.getOptions(chart)),
     };
   }
 
@@ -64,7 +67,7 @@ export class ZebraStripesPlugin implements PluginServiceRegistrationOptions {
     return this.options.interval < 10 ? 0 : 10;
   }
 
-  renderStripes(chart: ChartJS) {
+  renderStripes(chart: Chart) {
     if (!chart.data.datasets?.length) return;
     const { interval, stripeColor } = this.options;
     const { top, left, bottom, right } = chart.chartArea;
@@ -87,28 +90,31 @@ export class ZebraStripesPlugin implements PluginServiceRegistrationOptions {
     chart.canvas?.parentElement?.appendChild(cover);
   }
 
-  afterInit(chart: ChartJS) {
+  afterInit(chart: Chart, _args: unknown, options: ZebraStripesOptions) {
     if (!chart.data.datasets?.length) return;
-    this.updateOptions(chart);
+    this.updateOptions(chart, options);
     this.updated = this.getLastUpdate(chart);
   }
 
-  afterUpdate(chart: ChartJS) {
-    this.updateOptions(chart);
+  afterUpdate(chart: Chart, _args: unknown, options: ZebraStripesOptions) {
+    this.updateOptions(chart, options);
     this.renderStripes(chart);
   }
 
-  resize(chart: ChartJS) {
+  resize(chart: Chart) {
     this.removeStripesElem(chart);
   }
 
-  afterDatasetUpdate(chart: ChartJS): void {
+  afterDatasetUpdate(chart: Chart): void {
     this.updated ??= this.getLastUpdate(chart);
 
     const { interval } = this.options;
     const { left, right } = chart.chartArea;
     const step = (right - left) / interval;
-    const diff = moment(this.updated).diff(this.getLastUpdate(chart), "minutes");
+    // `updated` and `getLastUpdate` both hold the dataset's first x value
+    // (unix seconds, as moment.unix interpreted it); the difference in whole
+    // minutes matches the previous `moment(...).diff(..., "minutes")`.
+    const diff = Math.trunc(((this.updated ?? 0) - this.getLastUpdate(chart)) / 60);
     const minutes = Math.abs(diff);
 
     this.removeStripesElem(chart);

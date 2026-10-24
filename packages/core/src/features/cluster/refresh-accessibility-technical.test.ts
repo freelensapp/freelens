@@ -3,27 +3,30 @@
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
 /**
  * Copyright (c) Freelens Authors. All rights reserved.
  * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
-import { flushPromises } from "@freelensapp/test-utils/dist";
-import { anyObject } from "jest-mock-extended/lib";
+import asyncFn from "@async-fn/vitest";
+import { flushPromises } from "@freelensapp/test-utils";
 import { PartialDeep } from "type-fest";
+import { anyObject } from "vitest-mock-extended";
 import createAuthorizationApiInjectable from "../../common/cluster/create-authorization-api.injectable";
 import createCoreApiInjectable from "../../common/cluster/create-core-api.injectable";
 import writeJsonFileInjectable from "../../common/fs/write-json-file.injectable";
 import broadcastMessageInjectable from "../../common/ipc/broadcast-message.injectable";
 import clusterConnectionInjectable from "../../main/cluster/cluster-connection.injectable";
 import detectClusterMetadataInjectable from "../../main/cluster-detectors/detect-cluster-metadata.injectable";
+import createFreelensK8sProxyInjectable from "../../main/freelens-k8s-proxy/create-freelens-k8s-proxy.injectable";
 import k8sRequestInjectable from "../../main/k8s-request.injectable";
-import createKubeAuthProxyInjectable from "../../main/kube-auth-proxy/create-kube-auth-proxy.injectable";
 import { getApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import addClusterInjectable from "./storage/common/add.injectable";
 
+import type { AsyncFnMock } from "@async-fn/vitest";
 import type {
   AuthorizationV1Api,
   CoreV1Api,
@@ -31,15 +34,13 @@ import type {
   V1APIVersions,
   V1SelfSubjectAccessReview,
   V1SelfSubjectRulesReview,
-} from "@freelensapp/kubernetes-client-node";
-
-import type { AsyncFnMock } from "@async-fn/jest";
+} from "@kubernetes/client-node";
 
 import type { Cluster } from "../../common/cluster/cluster";
 import type { ClusterConnection } from "../../main/cluster/cluster-connection.injectable";
 import type { DetectClusterMetadata } from "../../main/cluster-detectors/detect-cluster-metadata.injectable";
+import type { FreelensK8sProxy } from "../../main/freelens-k8s-proxy/create-freelens-k8s-proxy.injectable";
 import type { K8sRequest } from "../../main/k8s-request.injectable";
-import type { KubeAuthProxy } from "../../main/kube-auth-proxy/create-kube-auth-proxy.injectable";
 import type { ApplicationBuilder } from "../../renderer/components/test-utils/get-application-builder";
 import type { Mocked } from "../../test-utils/mock-interface";
 
@@ -50,7 +51,7 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
   let listNamespaceMock: AsyncFnMock<CoreV1Api["listNamespace"]>;
   let k8sRequestMock: AsyncFnMock<K8sRequest>;
   let detectClusterMetadataMock: AsyncFnMock<DetectClusterMetadata>;
-  let kubeAuthProxyMock: Mocked<KubeAuthProxy>;
+  let freelensK8sProxyMock: Mocked<FreelensK8sProxy>;
 
   beforeEach(async () => {
     builder = getApplicationBuilder();
@@ -59,13 +60,14 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
 
     mainDi.override(broadcastMessageInjectable, () => async () => {});
 
-    kubeAuthProxyMock = {
+    freelensK8sProxyMock = {
       apiPrefix: "/some-api-prefix",
       port: 0,
-      exit: jest.fn(),
+      isRunning: true,
+      exit: vi.fn(),
       run: asyncFn(),
     };
-    mainDi.override(createKubeAuthProxyInjectable, () => () => kubeAuthProxyMock);
+    mainDi.override(createFreelensK8sProxyInjectable, () => () => freelensK8sProxyMock);
 
     detectClusterMetadataMock = asyncFn();
     mainDi.override(detectClusterMetadataInjectable, () => detectClusterMetadataMock);
@@ -142,15 +144,15 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
       refreshPromise = clusterConnection.refreshAccessibilityAndMetadata();
     });
 
-    it("starts kubeAuthProxy", () => {
-      expect(kubeAuthProxyMock.run).toBeCalled();
+    it("starts freelensK8sProxy", () => {
+      expect(freelensK8sProxyMock.run).toBeCalled();
     });
 
     // TODO: Flaky test: sometimes works, sometimes doesn't
-    describe.skip("when kubeAuthProxy has started running and its port is found", () => {
+    describe.skip("when freelensK8sProxy has started running and its port is found", () => {
       beforeEach(async () => {
-        kubeAuthProxyMock.port = 1235;
-        await kubeAuthProxyMock.run.resolve();
+        freelensK8sProxyMock.port = 1235;
+        await freelensK8sProxyMock.run.resolve();
         await flushPromises();
       });
 
@@ -167,7 +169,7 @@ describe("Refresh Cluster Accessibility Technical Tests", () => {
       });
 
       // TODO: fails with `Tried to resolve an asyncFn call that has not been made yet.`
-      xdescribe.each([true, false])("when cluster admin request resolves to %p", (isAdmin) => {
+      describe.skip.each([true, false])("when cluster admin request resolves to %p", (isAdmin) => {
         beforeEach(async () => {
           await createSelfSubjectAccessReviewMock.resolve({
             body: {

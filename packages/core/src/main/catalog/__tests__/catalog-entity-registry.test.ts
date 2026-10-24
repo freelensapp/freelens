@@ -5,6 +5,7 @@
  */
 
 import { observable, reaction } from "mobx";
+import { beforeEach, describe, expect, it } from "vitest";
 import { CatalogEntity } from "../../../common/catalog";
 import { WebLink } from "../../../common/catalog-entities";
 import { getDiForUnitTesting } from "../../getDiForUnitTesting";
@@ -84,18 +85,23 @@ describe("CatalogEntityRegistry", () => {
       expect(entityRegistry.items.length).toEqual(1);
     });
 
-    it("added source change triggers reaction", (done) => {
+    it("added source change triggers reaction", async () => {
       const source = observable.array<WebLink>([]);
 
       entityRegistry.addObservableSource("test", source);
-      reaction(
-        () => entityRegistry.items,
-        () => {
-          done();
-        },
-      );
+
+      const reactionTriggered = new Promise<void>((resolve) => {
+        reaction(
+          () => entityRegistry.items,
+          () => {
+            resolve();
+          },
+        );
+      });
 
       source.push(entity);
+
+      await reactionTriggered;
     });
   });
 

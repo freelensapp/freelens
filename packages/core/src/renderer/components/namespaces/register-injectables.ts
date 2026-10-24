@@ -7,7 +7,6 @@
  */
 
 import { registerInjectables as registerAddDialogInjectables } from "./add-dialog/register-injectables";
-import hierarchicalNamespacesInjectable from "./hierarchical-namespaces.injectable";
 import namespaceMetricsInjectable from "./metrics.injectable";
 import { registerInjectables as registerNamespaceSelectFilterModelInjectables } from "./namespace-select-filter-model/register-injectables";
 import namespacesRouteComponentInjectable from "./namespaces-route-component.injectable";
@@ -20,11 +19,6 @@ import namespaceStoreInjectable from "./store.injectable";
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
-  try {
-    di.register(hierarchicalNamespacesInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
   try {
     di.register(namespaceMetricsInjectable);
   } catch (e) {

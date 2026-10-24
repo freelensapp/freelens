@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { Menu } from "../menu";
 
 import type { StrictReactNode } from "@freelensapp/utilities";

@@ -5,8 +5,8 @@
  */
 
 import { Icon } from "@freelensapp/icon";
-import { makeObservable, observable, reaction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { observable, reaction } from "mobx";
+import { observer } from "mobx-react";
 import React from "react";
 import { Badge } from "../badge/badge";
 import { Notice } from "../extensions/notice";
@@ -19,24 +19,34 @@ export interface ShowMetricsSettingProps {
 
 @observer
 export class ShowMetricsSetting extends React.Component<ShowMetricsSettingProps> {
-  @observable hiddenMetrics = observable.set<string>();
+  private readonly disposers: (() => void)[] = [];
+
+  @observable accessor hiddenMetrics = observable.set<string>();
 
   constructor(props: ShowMetricsSettingProps) {
     super(props);
-    makeObservable(this);
   }
 
   componentDidMount() {
-    this.hiddenMetrics = observable.set<string>(this.props.cluster.preferences.hiddenMetrics ?? []);
+    // Capture props before the reaction: mobx-react 9 forbids reading this.props
+    // inside a derivation. The cluster object is stable and its preferences are
+    // observable, so tracking the captured cluster keeps the reaction reactive.
+    const { cluster } = this.props;
 
-    disposeOnUnmount(this, [
+    this.hiddenMetrics = observable.set<string>(cluster.preferences.hiddenMetrics ?? []);
+
+    this.disposers.push(
       reaction(
-        () => this.props.cluster.preferences.hiddenMetrics,
+        () => cluster.preferences.hiddenMetrics,
         () => {
-          this.hiddenMetrics = observable.set<string>(this.props.cluster.preferences.hiddenMetrics ?? []);
+          this.hiddenMetrics = observable.set<string>(cluster.preferences.hiddenMetrics ?? []);
         },
       ),
-    ]);
+    );
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   removeMetric(metric: string) {
@@ -66,7 +76,7 @@ export class ShowMetricsSetting extends React.Component<ShowMetricsSettingProps>
   render() {
     return (
       <Notice>
-        <div className="MetricsSelect flex wrap gaps leading-relaxed">{this.renderMetrics()}</div>
+        <div className="MetricsSelect flex flex-wrap gap-2 leading-relaxed">{this.renderMetrics()}</div>
       </Notice>
     );
   }

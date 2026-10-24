@@ -17,6 +17,8 @@ import { MenuItem } from "../menu";
 import { MenuActions } from "../menu/menu-actions";
 import { HotbarToggleMenuItem } from "./hotbar-toggle-menu-item";
 
+import type { StrictReactNode } from "@freelensapp/utilities";
+
 import type { VisitEntityContextMenu } from "../../../common/catalog/visit-entity-context-menu.injectable";
 import type { CatalogEntity, CatalogEntityContextMenu } from "../../api/catalog-entity";
 import type { NormalizeCatalogEntityContextMenu } from "../../catalog/normalize-menu-item.injectable";
@@ -46,7 +48,7 @@ class NonInjectedCatalogEntityDrawerMenu<T extends CatalogEntity> extends React.
     });
   }
 
-  getMenuItems(entity: T): React.ReactChild[] {
+  getMenuItems(entity: T): StrictReactNode[] {
     if (!entity) {
       return [];
     }
@@ -106,4 +108,4 @@ export const CatalogEntityDrawerMenu = withInjectables<Dependencies, CatalogEnti
       navigate: di.inject(navigateInjectable),
     }),
   },
-) as <Entity extends CatalogEntity>(props: CatalogEntityDrawerMenuProps<Entity>) => JSX.Element;
+) as <Entity extends CatalogEntity>(props: CatalogEntityDrawerMenuProps<Entity>) => React.JSX.Element;

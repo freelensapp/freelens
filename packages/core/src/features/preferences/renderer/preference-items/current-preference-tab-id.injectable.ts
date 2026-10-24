@@ -8,34 +8,34 @@ import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
 import routePathParametersInjectable from "../../../../renderer/routes/route-path-parameters.injectable";
 import preferencesRouteInjectable from "../../common/preferences-route.injectable";
-import preferencesRouteForLegacyExtensionsInjectable from "../../common/preferences-route-for-legacy-extensions.injectable";
+import preferencesRouteForExtensionsInjectable from "../../common/preferences-route-for-extensions.injectable";
 
 const currentPreferenceTabIdInjectable = getInjectable({
   id: "current-preference-tab-id",
 
   instantiate: (di) => {
     const preferencesRoute = di.inject(preferencesRouteInjectable);
-    const preferencesRouteForLegacyExtensions = di.inject(preferencesRouteForLegacyExtensionsInjectable);
+    const preferencesRouteForExtensions = di.inject(preferencesRouteForExtensionsInjectable);
 
-    const nonLegacyRoutePathParameters = di.inject(routePathParametersInjectable, preferencesRoute);
+    const preferencesRoutePathParameters = di.inject(routePathParametersInjectable, preferencesRoute);
 
-    const legacyRoutePathParameters = di.inject(routePathParametersInjectable, preferencesRouteForLegacyExtensions);
+    const extensionsRoutePathParameters = di.inject(routePathParametersInjectable, preferencesRouteForExtensions);
 
     return computed(() => {
-      const nonLegacyPreferenceTabId = nonLegacyRoutePathParameters.get().preferenceTabId;
+      const preferenceTabId = preferencesRoutePathParameters.get().preferenceTabId;
 
-      if (nonLegacyPreferenceTabId) {
-        return nonLegacyPreferenceTabId;
+      if (preferenceTabId) {
+        return preferenceTabId;
       }
 
-      const legacyParameters = legacyRoutePathParameters.get();
+      const extensionsParameters = extensionsRoutePathParameters.get();
 
-      if (legacyParameters.extensionId) {
-        if (legacyParameters.preferenceTabId) {
-          return `extension-${legacyParameters.extensionId}-${legacyParameters.preferenceTabId}`;
+      if (extensionsParameters.extensionId) {
+        if (extensionsParameters.preferenceTabId) {
+          return `extension-${extensionsParameters.extensionId}-${extensionsParameters.preferenceTabId}`;
         }
 
-        return legacyParameters.extensionId;
+        return extensionsParameters.extensionId;
       }
 
       return "app";

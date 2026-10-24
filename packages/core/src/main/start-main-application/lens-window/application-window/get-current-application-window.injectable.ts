@@ -5,13 +5,12 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { first } from "lodash/fp";
 import { applicationWindowInjectionToken } from "./application-window-injection-token";
 
 const getCurrentApplicationWindowInjectable = getInjectable({
   id: "get-current-application-window",
 
-  instantiate: (di) => () => first(di.injectMany(applicationWindowInjectionToken)),
+  instantiate: (di) => () => di.injectMany(applicationWindowInjectionToken).at(0),
 });
 
 export default getCurrentApplicationWindowInjectable;

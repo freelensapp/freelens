@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import type { ObservableSearchParamsOptions } from "mobx-observable-history";
+import type { ObservableSearchParamsOptions } from "./observable-search-params";
 
 export const searchParamsOptions: ObservableSearchParamsOptions = {
   skipEmpty: true, // skip empty params, e.g. "?x=&y2=" will be "?y=2"

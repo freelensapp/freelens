@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { delay } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
 import { broadcastMessage } from "../../../common/ipc";
 import { bundledExtensionsLoaded } from "../../../common/ipc/extension-handling";
@@ -29,16 +28,7 @@ const initRootFrameInjectable = getInjectable({
       catalogEntityRegistry.init();
 
       try {
-        // maximum time to let bundled extensions finish loading
-        const timeout = delay(10000);
-
-        const loadingExtensions = await loadExtensions();
-
-        const loadingBundledExtensions = loadingExtensions.filter((e) => e.isBundled).map((e) => e.loaded);
-
-        const bundledExtensionsFinished = Promise.all(loadingBundledExtensions);
-
-        await Promise.race([bundledExtensionsFinished, timeout]);
+        await loadExtensions();
       } finally {
         ipcRenderer.send(bundledExtensionsLoaded);
       }

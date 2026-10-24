@@ -5,7 +5,6 @@
  */
 
 import { formatDuration } from "@freelensapp/utilities";
-import moment from "moment";
 import { KubeObject } from "../kube-object";
 
 import type { KubeJsonApiData, KubeObjectMetadata, KubeObjectScope, ObjectReference } from "../api-types";
@@ -116,20 +115,34 @@ export class KubeEvent extends KubeObject<KubeObjectMetadata<KubeObjectScope.Nam
   }
 
   getSource() {
-    if (!this.source?.component) {
-      return "<unknown>";
+    if (this.source?.component) {
+      const { component, host = "" } = this.source;
+
+      return `${component} ${host}`;
     }
 
-    const { component, host = "" } = this.source;
+    // The events.k8s.io/v1 API leaves the legacy `source` empty and reports the
+    // emitter through `reportingComponent` / `reportingInstance` instead.
+    if (this.reportingComponent) {
+      return `${this.reportingComponent} ${this.reportingInstance ?? ""}`.trimEnd();
+    }
 
-    return `${component} ${host}`;
+    return "<unknown>";
+  }
+
+  /**
+   * The repeat count of the event. The events.k8s.io/v1 API leaves the legacy
+   * `count` empty and reports repeats through `series.count` instead.
+   */
+  getCount() {
+    return this.count ?? this.series?.count ?? 0;
   }
 
   /**
    * @deprecated This function is not reactive to changing of time. If rendering use `<ReactiveDuration />` instead
    */
   getFirstSeenTime() {
-    const diff = moment().diff(this.firstTimestamp);
+    const diff = this.firstTimestamp ? Date.now() - new Date(this.firstTimestamp).getTime() : 0;
 
     return formatDuration(diff, true);
   }
@@ -138,7 +151,7 @@ export class KubeEvent extends KubeObject<KubeObjectMetadata<KubeObjectScope.Nam
    * @deprecated This function is not reactive to changing of time. If rendering use `<ReactiveDuration />` instead
    */
   getLastSeenTime() {
-    const diff = moment().diff(this.lastTimestamp);
+    const diff = this.lastTimestamp ? Date.now() - new Date(this.lastTimestamp).getTime() : 0;
 
     return formatDuration(diff, true);
   }

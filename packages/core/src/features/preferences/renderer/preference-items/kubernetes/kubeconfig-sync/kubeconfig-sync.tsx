@@ -8,9 +8,10 @@ import { loggerInjectionToken } from "@freelensapp/logger";
 import { Spinner } from "@freelensapp/spinner";
 import { iter, tuple } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { computed, makeObservable, observable, reaction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { computed, observable, reaction } from "mobx";
+import { observer } from "mobx-react";
 import React from "react";
+import kubeDirectoryPathInjectable from "../../../../../../common/os/kube-directory-path.injectable";
 import isWindowsInjectable from "../../../../../../common/vars/is-windows.injectable";
 import { Notice } from "../../../../../../renderer/components/extensions/notice";
 import { SubTitle } from "../../../../../../renderer/components/layout/sub-title";
@@ -33,6 +34,7 @@ interface Entry extends SyncKind {
 interface Dependencies {
   state: UserPreferencesState;
   isWindows: boolean;
+  kubeDirectoryPath: string;
   logger: Logger;
   discoverAllKubeconfigSyncKinds: DiscoverAllKubeconfigSyncKinds;
   discoverKubeconfigSyncKind: DiscoverKubeconfigSyncKind;
@@ -40,12 +42,12 @@ interface Dependencies {
 
 @observer
 class NonInjectedKubeconfigSync extends React.Component<Dependencies> {
+  private readonly disposers: (() => void)[] = [];
   readonly syncs = observable.map<string, SyncKind>();
-  @observable loaded = false;
+  @observable accessor loaded = false;
 
   constructor(props: Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   async componentDidMount() {
@@ -56,14 +58,18 @@ class NonInjectedKubeconfigSync extends React.Component<Dependencies> {
     this.syncs.replace(mapEntries);
     this.loaded = true;
 
-    disposeOnUnmount(this, [
+    this.disposers.push(
       reaction(
         () => Array.from(this.syncs.entries(), ([filePath, kind]) => tuple.from(filePath, kind)),
         (syncs) => {
           this.props.state.syncKubeconfigEntries.replace(syncs);
         },
       ),
-    ]);
+    );
+  }
+
+  componentWillUnmount() {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   @computed get syncsList(): Entry[] | undefined {
@@ -127,11 +133,12 @@ class NonInjectedKubeconfigSync extends React.Component<Dependencies> {
   renderSyncButtons() {
     if (this.props.isWindows) {
       return (
-        <div className="flex gaps align-center mb-5">
+        <div className="flex gap-2 items-center mb-5">
           <PathPicker
             message="Sync file(s)"
             onPick={this.onPick}
             buttonLabel="Sync"
+            defaultPath={this.props.kubeDirectoryPath}
             properties={["showHiddenFiles", "multiSelections", "openFile"]}
           />
           <span>or</span>
@@ -139,6 +146,7 @@ class NonInjectedKubeconfigSync extends React.Component<Dependencies> {
             message="Sync folder(s)"
             onPick={this.onPick}
             buttonLabel="Sync"
+            defaultPath={this.props.kubeDirectoryPath}
             properties={["showHiddenFiles", "multiSelections", "openDirectory"]}
           />
         </div>
@@ -151,6 +159,7 @@ class NonInjectedKubeconfigSync extends React.Component<Dependencies> {
           message="Sync Files and Folders"
           onPick={this.onPick}
           buttonLabel="Sync"
+          defaultPath={this.props.kubeDirectoryPath}
           properties={["showHiddenFiles", "multiSelections", "openFile", "openDirectory"]}
         />
       </div>
@@ -174,6 +183,7 @@ export const KubeconfigSync = withInjectables<Dependencies>(NonInjectedKubeconfi
   getProps: (di) => ({
     state: di.inject(userPreferencesStateInjectable),
     isWindows: di.inject(isWindowsInjectable),
+    kubeDirectoryPath: di.inject(kubeDirectoryPathInjectable),
     logger: di.inject(loggerInjectionToken),
     discoverAllKubeconfigSyncKinds: di.inject(discoverAllKubeconfigSyncKindsInjectable),
     discoverKubeconfigSyncKind: di.inject(discoverKubeconfigSyncKindInjectable),

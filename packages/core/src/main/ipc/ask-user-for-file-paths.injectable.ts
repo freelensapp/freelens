@@ -5,6 +5,8 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
+import homeDirectoryPathInjectable from "../../common/os/home-directory-path.injectable";
+import getDirnameOfPathInjectable from "../../common/path/get-dirname.injectable";
 import showOpenDialogInjectable from "../electron-app/features/show-open-dialog.injectable";
 import showApplicationWindowInjectable from "../start-main-application/lens-window/show-application-window.injectable";
 
@@ -21,16 +23,31 @@ const askUserForFilePathsInjectable = getInjectable({
   instantiate: (di): AskUserForFilePaths => {
     const showApplicationWindow = di.inject(showApplicationWindowInjectable);
     const showOpenDialog = di.inject(showOpenDialogInjectable);
+    const homeDirectoryPath = di.inject(homeDirectoryPathInjectable);
+    const getDirnameOfPath = di.inject(getDirnameOfPathInjectable);
+
+    // Since Electron 43 a dialog without defaultPath opens in the Downloads
+    // folder, and the OS no longer restores the directory the user last
+    // browsed. Track that directory here instead, for every caller that does
+    // not ask for a specific one.
+    let lastUsedDirectory: string | undefined;
 
     return async (dialogOptions) => {
       await showApplicationWindow();
 
-      const { canceled, filePaths } = await showOpenDialog(dialogOptions);
+      const { canceled, filePaths } = await showOpenDialog({
+        ...dialogOptions,
+        defaultPath: dialogOptions.defaultPath ?? lastUsedDirectory ?? homeDirectoryPath,
+      });
 
       if (canceled) {
         return {
           canceled,
         };
+      }
+
+      if (filePaths.length > 0) {
+        lastUsedDirectory = getDirnameOfPath(filePaths[0]);
       }
 
       return {

@@ -11,8 +11,7 @@ import { Icon } from "@freelensapp/icon";
 import { showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { clipboard } from "electron";
-import { kebabCase } from "lodash/fp";
-import React from "react";
+import { kebabCase } from "es-toolkit";
 import { Dialog } from "../dialog";
 import { Wizard, WizardStep } from "../wizard";
 
@@ -38,7 +37,7 @@ const NonInjectedLogsDialog = (props: LogsDialogProps & Dependencies) => {
         <WizardStep
           scrollable={false}
           customButtons={
-            <div className="buttons flex gaps align-center justify-space-between">
+            <div className="buttons flex gap-2 items-center justify-between">
               <Button
                 plain
                 onClick={() => {

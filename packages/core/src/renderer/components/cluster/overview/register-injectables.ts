@@ -6,6 +6,8 @@
  * This replaces the webpack-based auto-registration system.
  */
 
+import metricsTimeRangeStorageInjectable from "./metrics-time-range-storage.injectable";
+import selectedMetricsTimeRangeInjectable from "./selected-metrics-time-range.injectable";
 import selectedMetricsTypeInjectable from "./selected-metrics-type.injectable";
 import selectedNodeRoleForMetricsInjectable from "./selected-node-role-for-metrics.injectable";
 import clusterOverviewStorageInjectable from "./storage.injectable";
@@ -15,6 +17,16 @@ import type { DiContainerForInjection } from "@ogre-tools/injectable";
 export function registerInjectables(di: DiContainerForInjection): void {
   try {
     di.register(clusterOverviewStorageInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(metricsTimeRangeStorageInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(selectedMetricsTimeRangeInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

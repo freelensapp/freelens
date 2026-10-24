@@ -4,19 +4,17 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { spawn } from "child_process";
+import { spawn } from "node:child_process";
 import * as tcpPortUsed from "tcp-port-used";
-import { TypedRegEx } from "typed-regex";
-import type { ChildProcessWithoutNullStreams } from "child_process";
+import type { ChildProcessWithoutNullStreams } from "node:child_process";
 
 import type { Logger } from "@freelensapp/logger";
 
+import type { WithFreelensProxyCredentialEnv } from "../../../freelens-proxy/with-freelens-proxy-credential-env.injectable";
+import type { ProxyKubeconfigPaths } from "../../../kubeconfig-manager/kubeconfig-manager";
 import type { GetPortFromStream } from "../../../utils/get-port-from-stream.injectable";
 
-const internalPortMatcher = "^forwarding from (?<address>.+) ->";
-const internalPortRegex = Object.assign(TypedRegEx(internalPortMatcher, "i"), {
-  rawMatcher: internalPortMatcher,
-});
+const internalPortRegex = /^forwarding from (?<address>.+) ->/i;
 
 export interface PortForwardArgs {
   clusterId: string;
@@ -30,8 +28,10 @@ export interface PortForwardArgs {
 
 export interface PortForwardDependencies {
   readonly logger: Logger;
-  getKubectlBinPath: (bundled: boolean) => Promise<string>;
+  /** The bundled kubectl, which port forwarding always runs. */
+  getKubectlBinPath: () => Promise<string>;
   getPortFromStream: GetPortFromStream;
+  withFreelensProxyCredentialEnv: WithFreelensProxyCredentialEnv;
 }
 
 export class PortForward {
@@ -59,7 +59,7 @@ export class PortForward {
 
   constructor(
     private dependencies: PortForwardDependencies,
-    public pathToKubeConfig: string,
+    public proxyKubeconfig: ProxyKubeconfigPaths,
     args: PortForwardArgs,
   ) {
     this.clusterId = args.clusterId;
@@ -72,10 +72,13 @@ export class PortForward {
   }
 
   public async start() {
-    const kubectlBin = await this.dependencies.getKubectlBinPath(true);
+    const kubectlBin = await this.dependencies.getKubectlBinPath();
+    const { kubeconfigPath, cacheDirectoryPath } = this.proxyKubeconfig;
     const commandArgs = [
       "--kubeconfig",
-      this.pathToKubeConfig,
+      kubeconfigPath,
+      "--cache-dir",
+      cacheDirectoryPath,
       "port-forward",
       "--address",
       this.address,
@@ -86,7 +89,7 @@ export class PortForward {
     ];
 
     this.process = spawn(kubectlBin, commandArgs, {
-      env: process.env,
+      env: this.dependencies.withFreelensProxyCredentialEnv({ ...process.env, KUBECACHEDIR: cacheDirectoryPath }),
     });
     PortForward.portForwards.push(this);
     this.process.on("exit", () => {

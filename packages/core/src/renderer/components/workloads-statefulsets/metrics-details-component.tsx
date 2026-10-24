@@ -4,35 +4,37 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { type IAsyncComputed, withInjectables } from "@ogre-tools/injectable-react";
-import React from "react";
-import { ResourceMetrics } from "../resource-metrics";
+import { withInjectables } from "@ogre-tools/injectable-react";
+import { observer } from "mobx-react";
+import { TimeRangedResourceMetrics } from "../resource-metrics";
 import { PodCharts, podMetricTabs } from "../workloads-pods/pod-charts";
 import statefulSetMetricsInjectable from "./metrics.injectable";
 
 import type { StatefulSet } from "@freelensapp/kube-object";
 
 import type { StatefulSetPodMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-pod-metrics-for-stateful-sets.injectable";
+import type { IAsyncComputed } from "../../../common/utils/async-computed";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 interface Dependencies {
   metrics: IAsyncComputed<StatefulSetPodMetricData>;
 }
 
-const NonInjectedStatefulSetMetricsDetailsComponent = ({
-  object,
-  metrics,
-}: KubeObjectDetailsProps<StatefulSet> & Dependencies) => (
-  <ResourceMetrics tabs={podMetricTabs} object={object} metrics={metrics}>
-    <PodCharts />
-  </ResourceMetrics>
+const NonInjectedStatefulSetMetricsDetailsComponent = observer(
+  ({ object, metrics }: KubeObjectDetailsProps<StatefulSet> & Dependencies) => (
+    <TimeRangedResourceMetrics tabs={podMetricTabs} object={object} metrics={metrics}>
+      <PodCharts />
+    </TimeRangedResourceMetrics>
+  ),
 );
 
 export const StatefulSetMetricsDetailsComponent = withInjectables<Dependencies, KubeObjectDetailsProps<StatefulSet>>(
   NonInjectedStatefulSetMetricsDetailsComponent,
   {
     getProps: (di, props) => ({
-      metrics: di.inject(statefulSetMetricsInjectable, props.object),
+      metrics: di.inject(statefulSetMetricsInjectable, {
+        statefulSet: props.object,
+      }),
       ...props,
     }),
   },

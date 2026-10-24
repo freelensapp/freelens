@@ -1,0 +1,237 @@
+# Claude Code – on-demand task via workflow_dispatch
+# Location: .github/workflows/claude-task.yaml (default branch)
+# Requires:
+#   - GitHub App "Claude" installed on the repo (https://github.com/apps/claude)
+#   - Secret CLAUDE_CODE_OAUTH_TOKEN (org-level, generated with `claude setup-token`)
+# Only users with write+ permission on the repo can trigger it (checked by GitHub).
+#
+# Claude pushes commits via its own GitHub App token (independent of workflow
+# permissions). It is constrained by its system prompt to only push to branches
+# it creates. For defense in depth, enable branch protection rules on the main
+# branch (require PR + approvals).
+
+name: Claude Task
+
+on:
+  workflow_dispatch:
+    inputs:
+      prompt:
+        description: Task for Claude
+        required: true
+        type: string
+      model:
+        description: Anthropic model to run
+        required: true
+        type: choice
+        default: claude-opus-5-5
+        options:
+          - claude-opus-5-5
+          - claude-opus-5
+          - claude-opus-4-8
+          - claude-sonnet-5
+          - claude-sonnet-4-6
+          - claude-haiku-4-5-20251001
+      runs-on:
+        description: Runner to use
+        required: true
+        type: choice
+        default: ubuntu-26.04-arm
+        options:
+          - ubuntu-24.04
+          - ubuntu-24.04-arm
+          - ubuntu-26.04
+          - ubuntu-26.04-arm
+          - macos-26
+          - macos-26-intel
+      create-pr:
+        description: Create a PR with changes (on a new branch)
+        type: boolean
+        default: false
+
+jobs:
+  claude:
+    runs-on: ${{ github.event.inputs.runs-on }}
+    timeout-minutes: 30
+
+    env:
+      DO_NOT_TRACK: "1"
+      TURBOREPO_CACHE: ${{ github.workspace }}/.turbo
+      RUNS_ON: ${{ github.event.inputs.runs-on }}
+
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+      id-token: write
+      actions: read
+
+    steps:
+      # persist-credentials is off because the action configures git
+      # authentication with its own token, and the checkout token would
+      # otherwise sit in .git/config for every step, install scripts included.
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup node
+        uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Setup pnpm
+        run: corepack enable
+
+      - name: Get pnpm cache directory
+        shell: bash
+        run: |
+          pnpm_cache_dir="$(pnpm store path)"
+          echo "pnpm_cache_dir=${pnpm_cache_dir}" | tee -a "${GITHUB_ENV}"
+
+      - name: Use pnpm cache
+        uses: actions/cache@v6
+        with:
+          path: ${{ env.pnpm_cache_dir }}
+          key: ${{ env.RUNS_ON }}-node-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ env.RUNS_ON }}-node-
+
+      - name: Use Turborepo cache
+        uses: actions/cache@v6
+        with:
+          path: ${{ env.TURBOREPO_CACHE }}
+          key: ${{ env.RUNS_ON }}-turborepo-${{ hashFiles('package.json', 'freelens/package.json', 'packages/**/package.json', 'pnpm-lock.yaml','turbo.json','tsconfig*.json','packages/infrastructure/typescript/config/*.json') }}
+          restore-keys: |
+            ${{ env.RUNS_ON }}-turborepo-
+
+      # Turborepo does not cache the binaries, see "Bundled Binary Versions"
+      # in AGENTS.md.
+      - name: Use bundled binaries cache
+        uses: actions/cache@v6
+        with:
+          path: freelens/binaries
+          key: ${{ runner.os }}-${{ runner.arch }}-binaries-${{ hashFiles('freelens/binaries.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ runner.arch }}-binaries-
+
+      - name: Install pnpm dependencies
+        id: install-pnpm
+        run: pnpm install --color=always --prefer-offline --frozen-lockfile
+        continue-on-error: true
+
+      - name: Install pnpm dependencies (retry)
+        if: steps.install-pnpm.outcome == 'failure'
+        # Best-effort recovery: drop --frozen-lockfile so an out-of-date
+        # pnpm-lock.yaml does not abort the install, and never fail the job on a
+        # broken install — Claude should still run and get a chance to fix it.
+        run: pnpm install --color=always --prefer-offline --no-frozen-lockfile
+        continue-on-error: true
+
+      # Puts the trunk CLI and its managed tools on PATH so Claude can run
+      # `trunk check` directly instead of paying for a `pnpm dlx` launcher
+      # download plus a cold tool fetch inside the session. Never fails the
+      # job.
+      - name: Install trunk
+        uses: trunk-io/trunk-action/install@v2.0.0
+        continue-on-error: true
+
+      # mise with the cosign and yq that mise.lock pins, for `mise lock` and the
+      # lock generators. node stays with setup-node. No cache: installing takes
+      # seconds, and a hanging cache lookup once held the job for 25 minutes.
+      - name: Set up mise
+        uses: jdx/mise-action@v5
+        with:
+          version: 2026.10.13 # datasource=github-releases depName=jdx/mise
+          install_args: cosign yq
+          cache: false
+        timeout-minutes: 5
+        continue-on-error: true
+
+      - name: Prepare prompt
+        id: prompt
+        shell: bash
+        run: |
+          PROMPT=$(printf '%s' "$INPUT_PROMPT" | jq -r '.')
+          if [[ "$CREATE_PR" == "true" ]]; then
+            PROMPT="${PROMPT}
+
+          After making changes, create a new branch (prefix claude/) for the
+          changes, commit, push to origin, and open a pull request. Follow the
+          rules in AGENTS.md (no Conventional Commits prefixes, no emoji)."
+          fi
+          # A random delimiter, so that a line of the prompt cannot close the
+          # block early and write further outputs.
+          DELIMITER="EOF_$(openssl rand -hex 16)"
+          {
+            echo "text<<$DELIMITER"
+            printf '%s\n' "$PROMPT"
+            echo "$DELIMITER"
+          } >> "$GITHUB_OUTPUT"
+        env:
+          INPUT_PROMPT: ${{ toJSON(github.event.inputs.prompt) }}
+          CREATE_PR: ${{ github.event.inputs.create-pr }}
+
+      - name: Parse model
+        id: parse-model
+        shell: bash
+        run: |
+          # The model chosen in the form, unless the prompt overrides it with
+          # a [model:...] marker.
+          DEFAULT_MODEL="${MODEL_INPUT:-claude-opus-5-5}"
+          TEXT="${PROMPT_INPUT}"
+
+          MODEL_ALIAS=$(printf '%s\n' "$TEXT" \
+            | grep -oP '\[model:[^\]]+\]' \
+            | head -1 \
+            | sed 's/\[model://;s/\]//' || true)
+
+          MODEL_ALIAS="${MODEL_ALIAS:-}"
+          case "$MODEL_ALIAS" in
+            fable|fable-5.1|claude-fable-5-1)           MODEL_ID="claude-fable-5-1" ;;
+            fable-5|claude-fable-5)                     MODEL_ID="claude-fable-5" ;;
+            opus|opus-5.5|claude-opus-5-5)              MODEL_ID="claude-opus-5-5" ;;
+            opus-5|claude-opus-5)                       MODEL_ID="claude-opus-5" ;;
+            opus-4|opus-4.8|claude-opus-4-8)            MODEL_ID="claude-opus-4-8" ;;
+            sonnet|sonnet-5|claude-sonnet-5)            MODEL_ID="claude-sonnet-5" ;;
+            sonnet-4|sonnet-4.6|claude-sonnet-4-6)      MODEL_ID="claude-sonnet-4-6" ;;
+            haiku|haiku-4|haiku-4.5)                    MODEL_ID="claude-haiku-4-5-20251001" ;;
+            "")                                          MODEL_ID="$DEFAULT_MODEL" ;;
+            *)
+              # A full model ID outside the alias list passes only when it
+              # cannot carry quotes, spaces or anything else that would
+              # split into extra arguments inside claude_args.
+              if [[ "$MODEL_ALIAS" =~ ^claude-[a-z0-9.-]+(\[1m\])?$ ]]; then
+                MODEL_ID="$MODEL_ALIAS"
+              else
+                echo "Ignoring invalid model: '$MODEL_ALIAS'"
+                MODEL_ALIAS=""
+                MODEL_ID="$DEFAULT_MODEL"
+              fi
+              ;;
+          esac
+
+          echo "Resolved model: '${MODEL_ALIAS:-<none>}' -> $MODEL_ID"
+          echo "model=$MODEL_ID" >> "$GITHUB_OUTPUT"
+        env:
+          PROMPT_INPUT: ${{ github.event.inputs.prompt || '' }}
+          MODEL_INPUT: ${{ github.event.inputs.model || '' }}
+
+      - name: Use the latest AGENTS.md
+        shell: bash
+        run: |
+          git fetch origin main
+          git show origin/main:AGENTS.md > /tmp/AGENTS.md 2>/dev/null || touch /tmp/AGENTS.md
+
+      - name: Run Claude Code
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: ${{ steps.prompt.outputs.text }}
+          claude_args: |-
+            --model "${{ steps.parse-model.outputs.model }}"
+            --fallback-model claude-opus-5
+            --max-turns 100
+            --allowedTools "Read" "Write" "Edit" "Glob" "Grep" "Task" "WebSearch" "WebFetch" "BashOutput" "KillShell" "Bash(trunk:*)" "Bash(mise:*)" "Bash(bash:*)" "Bash(pnpm:*)" "Bash(npx:*)" "Bash(node:*)" "Bash(git:*)" "Bash(gh:*)" "Bash(yq:*)" "Bash(jq:*)" "Bash(grep:*)" "Bash(rg:*)" "Bash(sed:*)" "Bash(awk:*)" "Bash(cut:*)" "Bash(tr:*)" "Bash(sort:*)" "Bash(uniq:*)" "Bash(cat:*)" "Bash(head:*)" "Bash(tail:*)" "Bash(wc:*)" "Bash(find:*)" "Bash(xargs:*)" "Bash(ls:*)" "Bash(tree:*)" "Bash(mkdir:*)" "Bash(touch:*)" "Bash(cp:*)" "Bash(mv:*)" "Bash(rm:*)" "Bash(tee:*)" "Bash(echo:*)"
+            --append-system-prompt-file /tmp/AGENTS.md

@@ -4,12 +4,11 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import path from "node:path";
+import { inspect } from "node:util";
 import { getOrInsertWith, isErrnoException, iter } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import GlobToRegExp from "glob-to-regexp";
 import { computed, observable } from "mobx";
-import path from "path";
-import { inspect } from "util";
 import statInjectable from "../../../common/fs/stat.injectable";
 import watchInjectable from "../../../common/fs/watch/watch.injectable";
 import diffChangedKubeconfigInjectable from "./diff-changed-kubeconfig.injectable";
@@ -26,27 +25,46 @@ import type { Watcher } from "../../../common/fs/watch/watch.injectable";
 export type WatchKubeconfigFileChanges = (filepath: string) => [IComputedValue<CatalogEntity[]>, Disposer];
 
 /**
- * This is the list of globs of which files are ignored when under a folder sync
+ * These file names are ignored outright when under a folder sync
  */
-const ignoreGlobs = [
-  "._*", // macOS specific
-  ".#*", // emacs lock files
+const ignoredFileNames = new Set([
   ".DS_Store", // macOS specific
-  "*.bak", // backup file
-  "*.lock", // kubectl lock files
-  "*.sw[nop]", // vim swap files
-  "*#", // emacs auto save
-  "*~", // backup file
-  "~*", // backup file
+  "Thumbs.db", // windows specific
   "cache", // discovery cache
   "desktop.ini", // windows specific
   "kubectx", // kubectx cache
   "kubens", // kubens cache
-  "Thumbs.db", // windows specific
-].map((rawGlob) => ({
-  rawGlob,
-  matcher: GlobToRegExp(rawGlob, { extended: true }),
-}));
+]);
+
+/**
+ * These file name patterns are ignored when under a folder sync.
+ *
+ * They used to be globs compiled by `glob-to-regexp`. What is matched is always
+ * a basename, so every `*` in the original globs compiled to `.*` and did
+ * nothing but leave one end of the pattern unanchored.
+ */
+const ignoredFileNamePatterns = [
+  /^\._/, // macOS specific
+  /^\.#/, // emacs lock files
+  /^~/, // backup file
+  /\.bak$/, // backup file
+  /\.lock$/, // kubectl lock files
+  /\.sw[nop]$/, // vim swap files
+  /#$/, // emacs auto save
+  /~$/, // backup file
+];
+
+/**
+ * Returns the ignore rule that `fileName` matches, or `undefined` when the file
+ * should be synced.
+ */
+export const matchIgnoredKubeconfigFileName = (fileName: string): string | undefined => {
+  if (ignoredFileNames.has(fileName)) {
+    return fileName;
+  }
+
+  return ignoredFileNamePatterns.find((pattern) => pattern.test(fileName))?.source;
+};
 
 /**
  * This should be much larger than any kubeconfig text file
@@ -56,6 +74,18 @@ const ignoreGlobs = [
  */
 const folderSyncMaxAllowedFileReadSize = 2 * 1024 * 1024; // 2 MiB
 const fileSyncMaxAllowedFileReadSize = 16 * folderSyncMaxAllowedFileReadSize; // 32 MiB
+
+/**
+ * Detects kubeconfig paths that live on a WSL 9p filesystem share, e.g.
+ * `\\wsl.localhost\Ubuntu\...` (Windows 11) or `\\wsl$\Ubuntu\...` (Windows 10).
+ *
+ * Native filesystem change notifications (`FindFirstChangeNotification`) do not
+ * work over the 9p protocol, so the watcher never fires and new clusters only
+ * appear after a restart. Enabling polling is the recommended workaround.
+ *
+ * @see https://github.com/freelensapp/freelens/issues/2020
+ */
+export const isWslPath = (filePath: string): boolean => /^\\\\wsl(\.localhost|\$)\\/i.test(filePath);
 
 const watchKubeconfigFileChangesInjectable = getInjectable({
   id: "watch-kubeconfig-file-changes",
@@ -86,7 +116,10 @@ const watchKubeconfigFileChangesInjectable = getInjectable({
             followSymlinks: true,
             depth: isFolderSync ? 0 : 1, // DIRs works with 0 but files need 1 (bug: https://github.com/paulmillr/chokidar/issues/1095)
             ignorePermissionErrors: true,
-            usePolling: false,
+            // WSL 9p shares do not emit native filesystem change events, so fall
+            // back to polling for kubeconfigs stored under `\\wsl.localhost\` or
+            // `\\wsl$\` (https://github.com/freelensapp/freelens/issues/2020).
+            usePolling: isWslPath(filePath),
             awaitWriteFinish: {
               pollInterval: 100,
               stabilityThreshold: 1000,
@@ -119,14 +152,10 @@ const watchKubeconfigFileChangesInjectable = getInjectable({
             })
             .on("add", (childFilePath, stats): void => {
               if (isFolderSync) {
-                const fileName = path.basename(childFilePath);
+                const ignoreRule = matchIgnoredKubeconfigFileName(path.basename(childFilePath));
 
-                for (const ignoreGlob of ignoreGlobs) {
-                  if (ignoreGlob.matcher.test(fileName)) {
-                    return void logger.info(
-                      `ignoring ${inspect(childFilePath)} due to ignore glob: ${ignoreGlob.rawGlob}`,
-                    );
-                  }
+                if (ignoreRule) {
+                  return void logger.info(`ignoring ${inspect(childFilePath)} due to ignore rule: ${ignoreRule}`);
                 }
               }
 

@@ -12,7 +12,6 @@ import { Spinner } from "@freelensapp/spinner";
 import { prevDefault } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import { Badge } from "../../badge";
 import { Checkbox } from "../../checkbox";
 import { LogsDialog } from "../../dialog/logs-dialog";
@@ -34,16 +33,23 @@ interface Dependencies {
 }
 
 const NonInjectedInstallChart = observer(({ model: model, tabId }: InstallChartProps & Dependencies) => {
+  // The tab was closed and its store data removed; every field below reads the
+  // chart from the store, which would throw. Render nothing while the view
+  // unmounts (see InstallChartModel.isMissingChart).
+  if (model.isMissingChart) {
+    return null;
+  }
+
   const installed = model.installed.get();
 
   if (installed) {
     return (
-      <div className="InstallChartDone flex column gaps align-center justify-center">
+      <div className="InstallChartDone flex flex-col gap-3 items-center justify-center">
         <p>
           <Icon material="check" big sticker />
         </p>
         <p>Installation complete!</p>
-        <div className="flex gaps align-center">
+        <div className="flex gap-3 items-center">
           <Button
             autoFocus
             primary
@@ -72,11 +78,11 @@ const NonInjectedInstallChart = observer(({ model: model, tabId }: InstallChartP
   const { configuration, version, namespace, customName, errorInConfiguration } = model;
 
   return (
-    <div className="InstallChart flex column">
+    <div className="InstallChart flex flex-col">
       <InfoPanel
         tabId={tabId}
         controls={
-          <div className="install-controls flex gaps align-center">
+          <div className="install-controls flex gap-2 items-center">
             <span>Chart</span>
             <Badge label={model.chartName} title="Repo/Name" />
             <span>Version</span>

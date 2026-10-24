@@ -6,7 +6,7 @@
 
 import { podListLayoutColumnInjectionToken } from "@freelensapp/list-layout";
 import { getInjectable } from "@ogre-tools/injectable";
-import { kebabCase } from "lodash";
+import { kebabCase } from "es-toolkit";
 import { COLUMN_PRIORITY } from "./column-priority";
 
 const columnId = "status";

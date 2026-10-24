@@ -1,0 +1,52 @@
+/**
+ * Copyright (c) Freelens Authors. All rights reserved.
+ * Licensed under MIT License. See LICENSE in root directory for more information.
+ */
+
+.terminalPage {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+
+  // The root frame's `main` also holds `#lens-views`, an absolutely positioned,
+  // opaque overlay at z-index 1 that covers the whole area. Every page rendered
+  // there has to stack above it, the same way `.Welcome` and `.mainLayout` do.
+  // Without this the page renders, but entirely behind that overlay.
+  z-index: 1;
+  background-color: var(--dockInfoBackground);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--padding);
+  padding-right: var(--padding);
+  border-bottom: 1px solid var(--borderFaintColor);
+  background-color: var(--layoutBackground);
+}
+
+.tabs {
+  flex: 1;
+  min-width: 0;
+}
+
+.tabLabel {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--padding) / 2);
+}
+
+.closeTab {
+  opacity: 0.6;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.host {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+}

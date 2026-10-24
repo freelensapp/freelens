@@ -6,7 +6,6 @@
 
 import "./pod-details-tolerations.scss";
 
-import React from "react";
 import { DrawerItem, DrawerParamToggler } from "../drawer";
 import { PodTolerations } from "./pod-tolerations";
 

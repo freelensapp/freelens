@@ -4,7 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import { asyncFn } from "@freelensapp/test-utils";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForLensLocalStorageInjectable from "../../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
 import writeJsonFileInjectable from "../../../common/fs/write-json-file.injectable";
 import { HelmChart } from "../../../common/k8s-api/endpoints/helm-charts.api";
@@ -15,7 +16,8 @@ import { TabKind } from "../../../renderer/components/dock/dock/store";
 import getRandomInstallChartTabIdInjectable from "../../../renderer/components/dock/install-chart/get-random-install-chart-tab-id.injectable";
 import { getApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@freelensapp/test-utils";
+
 import type { RenderResult } from "@testing-library/react";
 
 import type { RequestHelmChartValues } from "../../../common/k8s-api/endpoints/helm-charts.api/request-values.injectable";
@@ -42,10 +44,10 @@ describe("installing helm chart from previously opened tab", () => {
       windowDi.override(directoryForLensLocalStorageInjectable, () => "/some-directory-for-lens-local-storage");
       windowDi.override(requestHelmChartVersionsInjectable, () => requestHelmChartVersionsMock);
       windowDi.override(requestHelmChartValuesInjectable, () => requestHelmChartValuesMock);
-      windowDi.override(requestCreateHelmReleaseInjectable, () => jest.fn());
+      windowDi.override(requestCreateHelmReleaseInjectable, () => vi.fn());
 
       windowDi.override(getRandomInstallChartTabIdInjectable, () =>
-        jest.fn(() => "some-irrelevant-tab-id").mockReturnValueOnce("some-first-tab-id"),
+        vi.fn(() => "some-irrelevant-tab-id").mockReturnValueOnce("some-first-tab-id"),
       );
     });
   });

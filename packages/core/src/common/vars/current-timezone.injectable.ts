@@ -4,12 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { guessUserTimezone } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import moment from "moment-timezone";
 
 const currentTimezoneInjectable = getInjectable({
   id: "current-timezone",
-  instantiate: () => moment.tz.guess(true),
+  instantiate: () => guessUserTimezone(),
   causesSideEffects: true,
 });
 

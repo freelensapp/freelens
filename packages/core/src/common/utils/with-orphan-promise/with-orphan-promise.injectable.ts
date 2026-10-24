@@ -4,7 +4,6 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { pipeline } from "@ogre-tools/fp";
 import { getInjectable } from "@ogre-tools/injectable";
 import withErrorLoggingInjectable from "../with-error-logging/with-error-logging.injectable";
 import { withErrorSuppression } from "../with-error-suppression/with-error-suppression";
@@ -17,10 +16,8 @@ const withOrphanPromiseInjectable = getInjectable({
 
     return <T extends (...args: any[]) => Promise<any>>(toBeDecorated: T) =>
       (...args: Parameters<T>): void => {
-        const decorated = pipeline(
-          toBeDecorated,
-          withErrorLoggingFor(() => "Orphan promise rejection encountered"),
-          withErrorSuppression,
+        const decorated = withErrorSuppression(
+          withErrorLoggingFor(() => "Orphan promise rejection encountered")(toBeDecorated),
         ) as (...args: any[]) => any;
 
         decorated(...args);

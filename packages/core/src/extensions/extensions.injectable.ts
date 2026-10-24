@@ -19,7 +19,7 @@ const extensionsInjectable = getInjectable({
     return computed(() =>
       iter
         .chain(extensionInstances.values())
-        .filter((extension) => extension.isBundled || isExtensionEnabled(extension.id))
+        .filter((extension) => isExtensionEnabled(extension.id))
         .toArray(),
     );
   },

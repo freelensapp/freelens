@@ -7,7 +7,6 @@
 import { Icon } from "@freelensapp/icon";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import { checkThatAllDiscriminablesAreExhausted } from "../../../../common/utils/composable-responsibilities/discriminable/discriminable";
 import { compositeHasDescendant } from "../../../../common/utils/composite/composite-has-descendant/composite-has-descendant";
 import { Map } from "../../../../renderer/components/map/map";
@@ -29,7 +28,7 @@ interface Dependencies {
 }
 
 const NonInjectedPreferencesNavigation = observer(({ composite, navigateToPreferenceTab }: Dependencies) => (
-  <Tabs<string> className="flex column" scrollable={false} onChange={navigateToPreferenceTab}>
+  <Tabs<string> className="flex flex-col" scrollable={false} onChange={navigateToPreferenceTab}>
     {toNavigationHierarchy(composite.get())}
   </Tabs>
 ));

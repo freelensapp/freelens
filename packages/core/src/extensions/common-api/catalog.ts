@@ -4,10 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { asLegacyGlobalForExtensionApi } from "@freelensapp/legacy-global-di";
 import kubernetesClusterCategoryInjectable from "../../common/catalog/categories/kubernetes-cluster.injectable";
-
-import type { KubernetesClusterCategory } from "../../common/catalog-entities/kubernetes-cluster";
+import { asLazyInjectedForExtensionApi } from "../extension-api-di";
 
 export {
   GeneralEntity,
@@ -15,9 +13,13 @@ export {
   WebLink,
 } from "../../common/catalog-entities";
 
-export type { KubernetesClusterCategory };
+// A type alias instead of `export type { KubernetesClusterCategory }`, which
+// rolldown-plugin-dts would declare as a value too, although only the instance,
+// `kubernetesClusterCategory`, exists at runtime.
+export type KubernetesClusterCategory =
+  import("../../common/catalog-entities/kubernetes-cluster").KubernetesClusterCategory;
 
-export const kubernetesClusterCategory = asLegacyGlobalForExtensionApi(kubernetesClusterCategoryInjectable);
+export const kubernetesClusterCategory = asLazyInjectedForExtensionApi(kubernetesClusterCategoryInjectable);
 
 export * from "../../common/catalog/catalog-entity";
 

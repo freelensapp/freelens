@@ -4,9 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { pipeline } from "@ogre-tools/fp";
 import { getInjectable } from "@ogre-tools/injectable";
-import { filter, map } from "lodash/fp";
 import { computed } from "mobx";
 import { getCompositeNormalization } from "../../../../common/utils/composite/get-composite-normalization/get-composite-normalization";
 import currentPreferenceTabIdInjectable from "./current-preference-tab-id.injectable";
@@ -26,12 +24,10 @@ const currentPreferenceTabCompositeInjectable = getInjectable({
     return computed(() => {
       const tabId = currentTabId.get();
 
-      const tabComposites = pipeline(
-        getCompositeNormalization(preferencesComposite.get()),
-        map(([, composite]) => composite),
-        filter(isPreferenceTab),
-        filter(hasMatchingPathId(tabId)),
-      );
+      const tabComposites = getCompositeNormalization(preferencesComposite.get())
+        .map(([, composite]) => composite)
+        .filter(isPreferenceTab)
+        .filter(hasMatchingPathId(tabId));
 
       if (tabComposites.length === 0) {
         return undefined;

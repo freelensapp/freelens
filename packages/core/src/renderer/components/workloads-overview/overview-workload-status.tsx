@@ -8,9 +8,8 @@ import "./overview-workload-status.scss";
 
 import { object } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import capitalize from "lodash/capitalize";
+import { capitalize } from "es-toolkit";
 import { observer } from "mobx-react";
-import React from "react";
 import activeThemeInjectable from "../../themes/active.injectable";
 import { PieChart } from "../chart";
 
@@ -84,7 +83,7 @@ const NonInjectedOverviewWorkloadStatus = observer((props: OverviewWorkloadStatu
 
   return (
     <div className="OverviewWorkloadStatus">
-      <div className="flex column align-center box grow">
+      <div className="flex flex-col items-center grow shrink-0 basis-0">
         <PieChart
           data={chartData}
           options={{

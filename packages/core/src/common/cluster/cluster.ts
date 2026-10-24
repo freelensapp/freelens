@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { pick } from "lodash";
+import { pick } from "es-toolkit/compat";
 import { computed, observable, runInAction, toJS } from "mobx";
 import { ClusterMetadataKey, clusterModelIdChecker, updateClusterModelChecker } from "../cluster-types";
 import { replaceObservableObject } from "../utils/replace-observable-object";
@@ -201,6 +201,7 @@ export class Cluster {
       isAdmin: this.isAdmin.get(),
       allowedNamespaces: this.allowedNamespaces.toJSON(),
       resourcesToShow: this.resourcesToShow.toJSON(),
+      knownResources: toJS(this.knownResources),
       isGlobalWatchEnabled: this.isGlobalWatchEnabled.get(),
     };
   }
@@ -213,6 +214,7 @@ export class Cluster {
       this.accessible.set(state.accessible);
       this.allowedNamespaces.replace(state.allowedNamespaces);
       this.resourcesToShow.replace(state.resourcesToShow);
+      this.knownResources.replace(state.knownResources);
       this.disconnected.set(state.disconnected);
       this.isAdmin.set(state.isAdmin);
       this.isGlobalWatchEnabled.set(state.isGlobalWatchEnabled);

@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import yaml from "js-yaml";
+import * as yaml from "js-yaml";
 
 export interface MonacoValidator {
   (value: string): void;

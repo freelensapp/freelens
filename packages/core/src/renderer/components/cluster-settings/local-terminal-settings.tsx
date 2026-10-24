@@ -10,7 +10,6 @@ import { Spinner } from "@freelensapp/spinner";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { action, runInAction } from "mobx";
 import { observer } from "mobx-react";
-import React from "react";
 import validateDirectoryInjectable from "../../../common/fs/validate-directory.injectable";
 import resolveTildeInjectable from "../../../common/path/resolve-tilde.injectable";
 import isWindowsInjectable from "../../../common/vars/is-windows.injectable";

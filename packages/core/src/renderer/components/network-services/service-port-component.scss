@@ -7,6 +7,9 @@
 @use "../vars" as *;
 
 .ServicePortComponent {
+  display: flex;
+  align-items: center;
+
   &.waiting {
     opacity: 0.5;
     pointer-events: none;
@@ -21,6 +24,9 @@
     color: var(--primary);
     text-decoration: underline;
     padding-right: 1em;
+    // Push the Forward button to the right edge so the buttons line up in a
+    // column across ports regardless of the port text length.
+    margin-right: auto;
   }
 
   .portInput {

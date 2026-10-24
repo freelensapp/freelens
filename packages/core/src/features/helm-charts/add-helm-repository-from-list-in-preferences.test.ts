@@ -4,10 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
+import asyncFn from "@async-fn/vitest";
 import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { type RenderResult, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import execFileInjectable from "../../common/fs/exec-file.injectable";
 import helmBinaryPathInjectable from "../../main/helm/helm-binary-path.injectable";
 import getActiveHelmRepositoriesInjectable from "../../main/helm/repositories/get-active-helm-repositories/get-active-helm-repositories.injectable";
@@ -16,7 +16,8 @@ import requestPublicHelmRepositoriesInjectable from "./child-features/preference
 
 import type { AsyncResult } from "@freelensapp/utilities";
 
-import type { AsyncFnMock } from "@async-fn/jest";
+import type { AsyncFnMock } from "@async-fn/vitest";
+import type { Mock } from "vitest";
 
 import type { ExecFile } from "../../common/fs/exec-file.injectable";
 import type { HelmRepo } from "../../common/helm/helm-repo";
@@ -24,25 +25,25 @@ import type { ApplicationBuilder } from "../../renderer/components/test-utils/ge
 
 describe("add helm repository from list in preferences", () => {
   let builder: ApplicationBuilder;
-  let showSuccessNotificationMock: jest.Mock;
-  let showErrorNotificationMock: jest.Mock;
+  let showSuccessNotificationMock: Mock;
+  let showErrorNotificationMock: Mock;
   let rendered: RenderResult;
   let execFileMock: AsyncFnMock<ExecFile>;
   let getActiveHelmRepositoriesMock: AsyncFnMock<() => AsyncResult<HelmRepo[]>>;
   let callForPublicHelmRepositoriesMock: AsyncFnMock<() => Promise<HelmRepo[]>>;
 
   beforeEach(async () => {
-    builder = getApplicationBuilder(userEvent.setup({ delay: null }));
+    builder = getApplicationBuilder();
 
     execFileMock = asyncFn();
     getActiveHelmRepositoriesMock = asyncFn();
     callForPublicHelmRepositoriesMock = asyncFn();
-    showSuccessNotificationMock = jest.fn();
-    showErrorNotificationMock = jest.fn();
+    showSuccessNotificationMock = vi.fn();
+    showErrorNotificationMock = vi.fn();
 
     builder.beforeApplicationStart(({ mainDi }) => {
       mainDi.override(getActiveHelmRepositoriesInjectable, () => getActiveHelmRepositoriesMock);
-      mainDi.override(execFileInjectable, () => execFileMock);
+      mainDi.override(execFileInjectable, () => execFileMock as unknown as ExecFile);
       mainDi.override(helmBinaryPathInjectable, () => "some-helm-binary-path");
     });
 

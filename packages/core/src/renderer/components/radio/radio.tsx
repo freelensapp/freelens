@@ -26,7 +26,7 @@ interface RadioGroupContext {
   onSelect: (newValue: any) => void;
 }
 
-const radioGroupContext = React.createContext<RadioGroupContext>({
+const RadioGroupContext = React.createContext<RadioGroupContext>({
   disabled: false,
   value: undefined,
   onSelect: noop,
@@ -42,9 +42,7 @@ export function RadioGroup<T>({
 }: RadioGroupProps<T>) {
   return (
     <div className={cssNames("RadioGroup", { buttonsView: asButtons }, className)}>
-      <radioGroupContext.Provider value={{ disabled, onSelect: onChange, value }}>
-        {children}
-      </radioGroupContext.Provider>
+      <RadioGroupContext value={{ disabled, onSelect: onChange, value }}>{children}</RadioGroupContext>
     </div>
   );
 }
@@ -57,13 +55,13 @@ export interface RadioProps<T> {
 }
 
 export function Radio<T>({ className, label, value, disabled = false }: RadioProps<T>) {
-  const ctx = useContext(radioGroupContext);
+  const ctx = useContext(RadioGroupContext);
   const ref = useRef<HTMLLabelElement | null>(null);
   const checked = ctx.value === value;
 
   return (
     <label
-      className={cssNames("Radio flex align-center", className, {
+      className={cssNames("Radio flex items-center", className, {
         checked,
         disabled: disabled || ctx.disabled,
       })}
@@ -78,7 +76,7 @@ export function Radio<T>({ className, label, value, disabled = false }: RadioPro
       ref={ref}
     >
       <input type="radio" checked={checked} onChange={() => ctx.onSelect(value)} disabled={disabled || ctx.disabled} />
-      <i className="tick flex center" />
+      <i className="tick flex items-center justify-center" />
       {label ? <div className="label">{label}</div> : null}
     </label>
   );

@@ -4,7 +4,7 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import { setImmediate } from "timers";
+import { setImmediate } from "node:timers";
 import TransportStream from "winston-transport";
 
 import type { LogEntry } from "winston";

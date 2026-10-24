@@ -1,32 +1,218 @@
-allowBuilds:
-  '@parcel/watcher': true
-  electron: true
-  electron-winstaller: true
-  node-pty: true
-  sharp: true
-
-engineStrict: true
-
-nodeGyp: ../../../../node-gyp/bin/node-gyp.js
-
-overrides:
-  '@types/http-proxy': '-'
-  brace-expansion@^2.0.1: ^2.1.0
-  compression: ^1.8.1
-  form-data: ^4.0.5
-  http-proxy: npm:http-proxy-node16@^1.0.6
-  http-proxy-middleware: ^3.0.5
-  tmp@^0.2.0: ^0.2.5
-
 packages:
   - freelens
   - packages/**
 
-patchedDependencies:
-  '@async-fn/jest': patches/@async-fn__jest.patch
-  circular-dependency-plugin: patches/circular-dependency-plugin.patch
+# Versions here are pinned exactly. Every workspace package resolves its
+# dependencies through this catalog, so the pinned version is what the app is
+# built and tested against. Renovate (rangeStrategy: bump) raises a PR for
+# every update anyway, so ranges bought us no flexibility.
+catalog:
+  # React family (singletons)
+  react: 19.3.1
+  react-dom: 19.3.1
+  '@types/react': 19.3.0
+  '@types/react-dom': 19.3.0
+  # MobX family (singletons)
+  mobx: 7.0.6
+  mobx-react: 10.0.2
+  # TypeScript
+  typescript: 7.0.2
+  # Dependency injection (Ogre Tools)
+  '@ogre-tools/injectable': 27.0.0
+  '@ogre-tools/injectable-extension-for-mobx': 27.0.0
+  '@ogre-tools/injectable-react': 27.0.0
+  '@ogre-tools/fp': 27.0.0
+  '@ogre-tools/test-utils': 27.0.0
+  # Testing stack
+  '@async-fn/vitest': 1.8.0
+  '@vitest/coverage-v8': 5.0.5
+  vitest: 5.0.5
+  '@testing-library/dom': 10.4.2
+  '@testing-library/jest-dom': 7.0.1
+  '@testing-library/react': 16.3.3
+  '@testing-library/user-event': 14.6.8
+  jsdom: 30.1.3
+  memfs: 4.80.0
+  memorystream: 0.3.1
+  mock-http: 1.1.1
+  react-select-event: 5.5.1
+  vitest-canvas-mock: 1.2.0
+  vitest-mock-extended: 5.1.1
+  # Build tooling
+  esbuild: 0.28.2
+  '@vitejs/plugin-react': 6.1.2
+  electron-builder: 26.18.0
+  electron-builder-squirrel-windows: 26.18.0
+  electron-vite: 6.0.0
+  playwright: 1.64.1
+  pnpm: 12.14.0
+  rolldown: 1.2.14
+  rolldown-plugin-dts: 0.28.8
+  sass-embedded: 1.105.2
+  tailwindcss: 4.3.3
+  turbo: 2.11.8
+  vite: 8.3.5
+  # Electron
+  electron: 43.8.3
+  '@electron/notarize': 3.1.2
+  electron-devtools-installer: 4.0.0
+  # Types and utilities
+  '@types/node': 24.19.2
+  '@types/cli-progress': 3.11.6
+  '@types/command-line-args': 5.2.3
+  '@types/fs-extra': 11.0.4
+  '@types/gunzip-maybe': 1.4.3
+  '@types/hapi__call': 9.0.3
+  '@types/hapi__subtext': 7.0.3
+  '@types/jsdom': 30.0.0
+  '@types/memorystream': 0.3.4
+  '@types/proper-lockfile': 4.1.4
+  '@types/tcp-port-used': 1.0.4
+  '@types/triple-beam': 1.3.5
+  '@types/ws': 8.18.2
+  '@types/yauzl-promise': 4.0.1
+  type-fest: 5.10.0
+  # Shared libraries
+  '@astronautlabs/jsonpath': 1.1.2
+  '@dnd-kit/core': 6.3.1
+  '@dnd-kit/sortable': 10.0.0
+  '@dnd-kit/utilities': 3.2.2
+  '@hapi/call': 9.0.1
+  '@hapi/subtext': 8.1.3
+  '@kubernetes/client-node': 2.0.1
+  '@mui/material': 9.5.0
+  '@noble/hashes': 2.4.0
+  '@quantco/pnpm-licenses': 2.4.2
+  '@tailwindcss/postcss': 4.3.3
+  '@xterm/addon-fit': 0.11.0
+  '@xterm/addon-web-links': 0.12.0
+  '@xterm/xterm': 6.0.0
+  ansi_up: 6.0.6
+  arg: 5.0.2
+  auto-bind: 5.0.1
+  chalk: 6.0.1
+  chart.js: 4.5.1
+  chokidar: 5.0.0
+  cli-progress: 3.12.0
+  color: 5.0.3
+  command-line-args: 6.0.2
+  conf: 16.0.0
+  cronstrue: 3.32.0
+  dompurify: 3.4.17
+  electron-window-state: 5.0.3
+  es-toolkit: 1.52.0
+  fast-xml-parser: 5.11.2
+  fs-extra: 11.4.1
+  gunzip-maybe: 1.4.2
+  handlebars: 4.7.10
+  http-proxy-3: 2.0.2
+  immer: 11.1.21
+  joi: 18.3.0
+  js-yaml: 5.5.0
+  logform: 2.7.0
+  marked: 18.1.1
+  mobx-utils: 6.1.1
+  monaco-editor: 0.57.0
+  node-pty: 1.2.0-beta.17
+  openpgp: 6.3.2
+  proper-lockfile: 4.1.2
+  react-select: 5.10.2
+  react-window: 2.3.4
+  rfc6902: 5.3.0
+  selfsigned: 5.5.0
+  sharp: 0.35.5
+  sigstore: 5.0.0
+  spdx-license-list: 6.12.0
+  tar: 7.5.22
+  tar-stream: 3.2.2
+  tcp-port-used: 1.0.3
+  tempy: 3.2.0
+  triple-beam: 1.4.1
+  undici: 8.12.3
+  uuid: 14.0.3
+  verkit: 0.5.0
+  winston: 3.19.0
+  winston-transport: 4.9.0
+  ws: 8.22.0
+  yauzl-promise: 4.0.0
+  zod: 4.6.7
 
-publicHoistPattern:
-  - node-gyp
+catalogs:
+  # Runtime dependencies of the published @freelensapp/extensions package.
+  # pnpm inlines the catalog specifier verbatim into the published
+  # package.json, so these must stay ranges: an exact pin would force every
+  # extension author onto one patch release and can end up with duplicated
+  # react/mobx instances, which breaks the singletons the extension API
+  # relies on. Versions here intentionally duplicate the default catalog and
+  # must be kept in sync with it.
+  extensions:
+    '@types/react': ^19.3.0
+    '@types/react-dom': ^19.3.0
+    chart.js: ^4.5.1
+    conf: ^16.0.0
+    es-toolkit: ^1.52.0
+    immer: ^11.1.21
+    mobx: ^7.0.6
+    mobx-react: ^10.0.2
+    monaco-editor: ^0.57.0
+    react: ^19.3.1
+    react-dom: ^19.3.1
+    react-select: ^5.10.2
+    rfc6902: ^5.3.0
+    type-fest: ^5.10.0
+
+allowBuilds:
+  '@parcel/watcher': true
+  electron: true
+  electron-winstaller: false
+  esbuild: false
+  node-pty: true
+  pnpm: true
+  sharp: true
+
+engineStrict: true
+
+overrides:
+  # @kubernetes/client-node declares @types/node of a newer major than the
+  # catalog's as a runtime dependency. Left alone it installs a second copy of
+  # the Node typings next to the catalog's, which then also becomes vite's
+  # resolved peer. The app targets the Node version of .nvmrc, so keep the
+  # whole tree on one copy, at the catalog's version. Renovate updates the two
+  # together.
+  '@kubernetes/client-node>@types/node': 24.19.2
+  form-data: ^4.0.6
+  # Nothing depends on http-proxy today: this override is a guard, not dead
+  # code. The original package is abandoned with a known CVE, so a dependency
+  # that starts to pull it in gets the maintained rewrite the app uses instead.
+  http-proxy: npm:http-proxy-3@^2.0.2
+  # @ogre-tools/injectable-react peers mobx-react ^9. Left alone, pnpm
+  # auto-installs a second mobx-react 9 for every package that lacks a direct
+  # mobx-react, and the MobX family must stay a singleton. Pointing the
+  # override at the catalog rewrites that peer to the pinned version, without
+  # resolving to anything newer than the pin.
+  mobx-react: 'catalog:'
+  tmp@^0.2.0: ^0.2.7
+
+peerDependencyRules:
+  # These rules silence peers that still ask for mobx 6 and have no release
+  # for mobx 7. Each package they cover must stay safe on mobx 7:
+  # - @ogre-tools/injectable-react (mobx ^6) imports neither mobx nor
+  #   mobx-react, in its build or in its typings;
+  # - @ogre-tools/injectable-extension-for-mobx (mobx ^6) uses only `computed`,
+  #   `createAtom` and `runInAction`, and types with `IComputedValue` only,
+  #   all of which mobx 7 keeps unchanged;
+  # - mobx-utils (mobx ^6) works for `now`, `fromResource` and `fromPromise`.
+  #   Its classes are built with legacy decorators: `createViewModel` and
+  #   `fromStream` throw on mobx 7 (`Reflect.ownKeys called on non-object`
+  #   from `makeObservable(this)`), because the removed `observable.ref` /
+  #   `action.bound` are skipped and leave no annotations behind. Do not use
+  #   `createViewModel`, `fromStream` or `toStream`.
+  # Check any new package these rules start to cover the same way.
+  allowedVersions:
+    mobx: '7'
+
+patchedDependencies:
+  '@async-fn/vitest': patches/@async-fn__vitest.patch
+  '@xterm/xterm@6.0.0': patches/@xterm__xterm@6.0.0.patch
 
 shellEmulator: true

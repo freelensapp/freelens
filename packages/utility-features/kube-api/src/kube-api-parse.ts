@@ -5,7 +5,6 @@
  */
 
 import { pipeline } from "@ogre-tools/fp";
-import { compact, join } from "lodash/fp";
 import { getMatchFor } from "./get-match-for";
 import { prepend } from "./prepend";
 
@@ -42,7 +41,7 @@ const getKubeApiPathMatch = getMatchFor(
 const getParsedPath = (path: string) =>
   pipeline(path, withoutDomainAddressOrParameters, getKubeApiPathMatch, (match) => match?.groups);
 
-const joinTruthy = (delimiter: string) => (toBeJoined: string[]) => pipeline(toBeJoined, compact, join(delimiter));
+const joinTruthy = (delimiter: string) => (toBeJoined: string[]) => toBeJoined.filter(Boolean).join(delimiter);
 
 const getApiBase = (apiOrApis: string, apiGroup: string, apiVersion: string, resource: string) =>
   pipeline([apiOrApis, apiGroup, apiVersion, resource], joinTruthy("/"), prepend("/"));

@@ -7,7 +7,7 @@
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { action } from "mobx";
 import { observer } from "mobx-react";
-import React, { useState } from "react";
+import { useState } from "react";
 import computeHotbarDisplayLabelInjectable from "../../../features/hotbar/storage/common/compute-display-label.injectable";
 import getHotbarByIdInjectable from "../../../features/hotbar/storage/common/get-by-id.injectable";
 import hotbarsInjectable from "../../../features/hotbar/storage/common/hotbars.injectable";

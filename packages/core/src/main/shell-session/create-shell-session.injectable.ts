@@ -7,6 +7,7 @@
 import { getInjectable } from "@ogre-tools/injectable";
 import openLocalShellSessionInjectable from "./local-shell-session/open.injectable";
 import openNodeShellSessionInjectable from "./node-shell-session/open.injectable";
+import openStandaloneShellSessionInjectable from "./standalone-shell-session/open.injectable";
 
 import type WebSocket from "ws";
 
@@ -14,7 +15,10 @@ import type { Cluster } from "../../common/cluster/cluster";
 
 export interface OpenShellSessionArgs {
   websocket: WebSocket;
-  cluster: Cluster;
+  /**
+   * Absent for a terminal opened outside of any cluster session.
+   */
+  cluster?: Cluster;
   tabId: string;
   nodeName?: string;
 }
@@ -27,9 +31,17 @@ const openShellSessionInjectable = getInjectable({
   instantiate: (di): OpenShellSession => {
     const openLocalShellSession = di.inject(openLocalShellSessionInjectable);
     const openNodeShellSession = di.inject(openNodeShellSessionInjectable);
+    const openStandaloneShellSession = di.inject(openStandaloneShellSessionInjectable);
 
-    return ({ nodeName, ...args }) =>
-      nodeName ? openNodeShellSession({ nodeName, ...args }) : openLocalShellSession(args);
+    return ({ cluster, nodeName, ...args }) => {
+      if (!cluster) {
+        return openStandaloneShellSession(args);
+      }
+
+      return nodeName
+        ? openNodeShellSession({ cluster, nodeName, ...args })
+        : openLocalShellSession({ cluster, ...args });
+    };
   },
 });
 

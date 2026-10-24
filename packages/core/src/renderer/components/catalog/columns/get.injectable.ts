@@ -5,7 +5,7 @@
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { orderBy } from "lodash";
+import { orderBy } from "es-toolkit/compat";
 import browseAllColumnsInjectable from "./browse-all.injectable";
 import getColumnsForCategoryInjectable from "./specific-category.injectable";
 

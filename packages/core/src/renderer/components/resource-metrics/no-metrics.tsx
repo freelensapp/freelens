@@ -5,11 +5,10 @@
  */
 
 import { Icon } from "@freelensapp/icon";
-import React from "react";
 
 export function NoMetrics() {
   return (
-    <div className="flex justify-center align-center">
+    <div className="flex justify-center items-center">
       <Icon material="info" />
       &nbsp;Metrics not available at the moment
     </div>

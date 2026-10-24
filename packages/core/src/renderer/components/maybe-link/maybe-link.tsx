@@ -1,5 +1,5 @@
+import { Link } from "@freelensapp/routing";
 import React from "react";
-import { Link } from "react-router-dom";
 
 type MaybeLinkProps = Omit<React.ComponentProps<typeof Link>, "to"> & {
   to?: React.ComponentProps<typeof Link>["to"];

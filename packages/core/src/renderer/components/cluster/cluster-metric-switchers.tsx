@@ -6,8 +6,9 @@
 
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
-import React from "react";
 import { Radio, RadioGroup } from "../radio";
+import styles from "./cluster-metric-switchers.module.css";
+import { MetricsTimeRangeSelector } from "./metrics-time-range-selector";
 import selectedMetricsTypeInjectable from "./overview/selected-metrics-type.injectable";
 import selectedNodeRoleForMetricsInjectable from "./overview/selected-node-role-for-metrics.injectable";
 
@@ -19,13 +20,23 @@ interface Dependencies {
   selectedNodeRoleForMetrics: SelectedNodeRoleForMetrics;
 }
 
+interface ClusterMetricSwitchersProps {
+  hasCPUMetrics: boolean;
+  hasMemoryMetrics: boolean;
+}
+
 const NonInjectedClusterMetricSwitchers = observer(
-  ({ selectedMetricsType, selectedNodeRoleForMetrics }: Dependencies) => (
-    <div className="flex gaps" style={{ marginBottom: "calc(var(--margin) * 2)" }}>
-      <div className="box grow">
+  ({
+    selectedMetricsType,
+    selectedNodeRoleForMetrics,
+    hasCPUMetrics,
+    hasMemoryMetrics,
+  }: Dependencies & ClusterMetricSwitchersProps) => (
+    <div className={`flex gap-2 ${styles.container}`}>
+      <div className="grow shrink-0 basis-0">
         <RadioGroup
           asButtons
-          className="RadioGroup flex gaps"
+          className="RadioGroup flex gap-2"
           value={selectedNodeRoleForMetrics.value.get()}
           onChange={selectedNodeRoleForMetrics.set}
         >
@@ -33,24 +44,31 @@ const NonInjectedClusterMetricSwitchers = observer(
           <Radio label="Worker" value="worker" disabled={!selectedNodeRoleForMetrics.hasWorkerNodes.get()} />
         </RadioGroup>
       </div>
-      <div className="box grow" style={{ textAlign: "right" }}>
+      <div className={styles.timeRangeBox}>
+        <MetricsTimeRangeSelector />
+      </div>
+      <div className={`grow shrink-0 basis-0 ${styles.metricTypeBox}`}>
         <RadioGroup
           asButtons
-          className="RadioGroup flex gaps"
+          className="RadioGroup flex gap-2"
           value={selectedMetricsType.value.get()}
           onChange={selectedMetricsType.set}
         >
-          <Radio label="CPU" value="cpu" disabled={!selectedMetricsType.hasCPUMetrics.get()} />
-          <Radio label="Memory" value="memory" disabled={!selectedMetricsType.hasMemoryMetrics.get()} />
+          <Radio label="CPU" value="cpu" disabled={!hasCPUMetrics} />
+          <Radio label="Memory" value="memory" disabled={!hasMemoryMetrics} />
         </RadioGroup>
       </div>
     </div>
   ),
 );
 
-export const ClusterMetricSwitchers = withInjectables<Dependencies>(NonInjectedClusterMetricSwitchers, {
-  getProps: (di) => ({
-    selectedMetricsType: di.inject(selectedMetricsTypeInjectable),
-    selectedNodeRoleForMetrics: di.inject(selectedNodeRoleForMetricsInjectable),
-  }),
-});
+export const ClusterMetricSwitchers = withInjectables<Dependencies, ClusterMetricSwitchersProps>(
+  NonInjectedClusterMetricSwitchers,
+  {
+    getProps: (di, props) => ({
+      ...props,
+      selectedMetricsType: di.inject(selectedMetricsTypeInjectable),
+      selectedNodeRoleForMetrics: di.inject(selectedNodeRoleForMetricsInjectable),
+    }),
+  },
+);

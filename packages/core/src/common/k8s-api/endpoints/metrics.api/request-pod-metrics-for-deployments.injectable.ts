@@ -10,6 +10,7 @@ import requestMetricsInjectable from "./request-metrics.injectable";
 import type { Deployment } from "@freelensapp/kube-object";
 
 import type { MetricData } from "../metrics.api";
+import type { RequestMetricsParams } from "./request-metrics.injectable";
 
 export interface DeploymentPodMetricData {
   cpuUsage: MetricData;
@@ -25,6 +26,7 @@ export type RequestPodMetricsForDeployments = (
   deployments: Deployment[],
   namespace: string,
   selector?: string,
+  params?: RequestMetricsParams,
 ) => Promise<DeploymentPodMetricData>;
 
 const requestPodMetricsForDeploymentsInjectable = getInjectable({
@@ -32,7 +34,7 @@ const requestPodMetricsForDeploymentsInjectable = getInjectable({
   instantiate: (di): RequestPodMetricsForDeployments => {
     const requestMetrics = di.inject(requestMetricsInjectable);
 
-    return (deployments, namespace, selector = "") => {
+    return (deployments, namespace, selector = "", params) => {
       const podSelector = deployments
         .map((deployment) => `${deployment.getName()}-[[:alnum:]]{9,}-[[:alnum:]]{5}`)
         .join("|");
@@ -50,6 +52,7 @@ const requestPodMetricsForDeploymentsInjectable = getInjectable({
         },
         {
           namespace,
+          ...params,
         },
       );
     };

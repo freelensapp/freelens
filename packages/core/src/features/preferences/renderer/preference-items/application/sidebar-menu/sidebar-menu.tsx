@@ -1,7 +1,7 @@
 import { Button } from "@freelensapp/button";
 import { ShowNotification, showSuccessNotificationInjectable } from "@freelensapp/notifications";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import React, { useState } from "react";
+import { useState } from "react";
 import { SubTitle } from "../../../../../../extensions/renderer-api/components";
 import { resetClusterPageMenuOrderInjectable } from "../../../../../user-preferences/common/cluster-page-menu-order.injectable";
 import styles from "./sidebar-menu.module.scss";

@@ -46,5 +46,7 @@ export * from "./service";
 export * from "./service-account";
 export * from "./stateful-set";
 export * from "./storage-class";
+export * from "./validating-admission-policy";
+export * from "./validating-admission-policy-binding";
 export * from "./validating-webhook-configuration";
 export * from "./vertical-pod-autoscaler";

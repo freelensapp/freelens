@@ -7,38 +7,36 @@
 import "./icon.scss";
 
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { NavLink } from "@freelensapp/routing";
 import { withTooltip } from "@freelensapp/tooltip";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import isNumber from "lodash/isNumber";
 import React, { createRef } from "react";
-import { NavLink } from "react-router-dom";
-import Configuration from "../assets/configuration.svg";
-import Crane from "../assets/crane.svg";
-import Group from "../assets/group.svg";
-import Helm from "../assets/helm.svg";
-import Install from "../assets/install.svg";
-import Kube from "../assets/kube.svg";
-import License from "../assets/license.svg";
-import LogoLens from "../assets/logo-lens.svg";
-import Logout from "../assets/logout.svg";
-import Nodes from "../assets/nodes.svg";
-import Notice from "../assets/notice.svg";
-import PushOff from "../assets/push_off.svg";
-import PushPin from "../assets/push_pin.svg";
-import Spinner from "../assets/spinner.svg";
-import Ssh from "../assets/ssh.svg";
-import Storage from "../assets/storage.svg";
-import Terminal from "../assets/terminal.svg";
-import User from "../assets/user.svg";
-import Users from "../assets/users.svg";
-import Wheel from "../assets/wheel.svg";
-import Workloads from "../assets/workloads.svg";
+import Configuration from "../assets/configuration.svg?raw";
+import Crane from "../assets/crane.svg?raw";
+import Group from "../assets/group.svg?raw";
+import Helm from "../assets/helm.svg?raw";
+import Install from "../assets/install.svg?raw";
+import Kube from "../assets/kube.svg?raw";
+import License from "../assets/license.svg?raw";
+import LogoLens from "../assets/logo-lens.svg?raw";
+import Logout from "../assets/logout.svg?raw";
+import Nodes from "../assets/nodes.svg?raw";
+import Notice from "../assets/notice.svg?raw";
+import PushOff from "../assets/push_off.svg?raw";
+import PushPin from "../assets/push_pin.svg?raw";
+import Spinner from "../assets/spinner.svg?raw";
+import Ssh from "../assets/ssh.svg?raw";
+import Storage from "../assets/storage.svg?raw";
+import Terminal from "../assets/terminal.svg?raw";
+import User from "../assets/user.svg?raw";
+import Users from "../assets/users.svg?raw";
+import Wheel from "../assets/wheel.svg?raw";
+import Workloads from "../assets/workloads.svg?raw";
 
 import type { Logger } from "@freelensapp/logger";
+import type { To } from "@freelensapp/routing";
 import type { StrictReactNode } from "@freelensapp/utilities";
-
-import type { LocationDescriptor } from "history";
 
 const hrefValidation = /https?:\/\//;
 
@@ -108,9 +106,10 @@ export interface BaseIconProps {
   svg?: NamedSvg | string;
 
   /**
-   * render icon as NavLink from react-router-dom
+   * render icon as an in-app navigation link to a path or a location, the same
+   * value that `Renderer.Navigation.navigate` takes
    */
-  link?: LocationDescriptor;
+  link?: To;
 
   /**
    * render icon as hyperlink
@@ -242,7 +241,7 @@ const RawIcon = (props: IconProps & Dependencies) => {
     tabIndex: isInteractive && focusable && !disabled ? 0 : undefined,
     style: size
       ? ({
-          "--size": size + (isNumber(size) ? "px" : ""),
+          "--size": size + (typeof size === "number" ? "px" : ""),
         } as React.CSSProperties)
       : undefined,
     ...elemProps,

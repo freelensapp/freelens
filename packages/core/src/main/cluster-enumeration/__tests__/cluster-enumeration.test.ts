@@ -4,6 +4,7 @@
  */
 
 import { observable, reaction } from "mobx";
+import { beforeEach, describe, expect, it } from "vitest";
 import { KubernetesCluster, LensKubernetesClusterStatus } from "../../../common/catalog-entities/kubernetes-cluster";
 import { ClusterConnectionStatus } from "../../../extensions/common-api/cluster-types";
 import { createTestCluster } from "../../../features/cluster/enumeration/common/test-utils";
@@ -67,22 +68,26 @@ describe("ClusterEnumeration", () => {
       expect(ids).toContain("cluster-3");
     });
 
-    it("updates reactively when clusters change", (done) => {
+    it("updates reactively when clusters change", async () => {
       const source = observable.array<KubernetesCluster>([]);
       entityRegistry.addObservableSource("test-clusters", source);
 
       expect(clusterEnumeration.clusters.length).toBe(0);
 
-      reaction(
-        () => clusterEnumeration.clusters.length,
-        (length) => {
-          if (length === 1) {
-            done();
-          }
-        },
-      );
+      const clusterAppeared = new Promise<void>((resolve) => {
+        reaction(
+          () => clusterEnumeration.clusters.length,
+          (length) => {
+            if (length === 1) {
+              resolve();
+            }
+          },
+        );
+      });
 
       source.push(createTestCluster({ id: "new-cluster", name: "New Cluster" }));
+
+      await clusterAppeared;
     });
   });
 

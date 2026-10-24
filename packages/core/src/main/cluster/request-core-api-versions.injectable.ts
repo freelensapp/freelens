@@ -8,7 +8,7 @@ import { getInjectable } from "@ogre-tools/injectable";
 import k8sRequestInjectable from "../k8s-request.injectable";
 import { apiVersionsRequesterInjectionToken } from "./api-versions-requester";
 
-import type { V1APIVersions } from "@freelensapp/kubernetes-client-node";
+import type { V1APIVersions } from "@kubernetes/client-node";
 
 const requestCoreApiVersionsInjectable = getInjectable({
   id: "request-core-api-versions",
@@ -24,6 +24,7 @@ const requestCoreApiVersionsInjectable = getInjectable({
             callWasSuccessful: true,
             response: versions.map((version) => ({
               group: "",
+              version,
               path: `/api/${version}`,
             })),
           };

@@ -10,7 +10,6 @@ import directoryForExtensionDataInjectable from "./directory-for-extension-data.
 import ensureHashedDirectoryForExtensionInjectable from "./ensure-hashed-directory-for-extension.injectable";
 import fileSystemProvisionerStoreInjectable from "./file-system-provisioner-store.injectable";
 import getHashInjectable from "./get-hash.injectable";
-import getPathToLegacyPackageJson from "./get-path-to-legacy-package-json.injectable";
 import { registeredExtensionsInjectable } from "./registered-extensions.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
@@ -33,11 +32,6 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(getHashInjectable);
-  } catch (e) {
-    /* Ignore duplicate registration */
-  }
-  try {
-    di.register(getPathToLegacyPackageJson);
   } catch (e) {
     /* Ignore duplicate registration */
   }

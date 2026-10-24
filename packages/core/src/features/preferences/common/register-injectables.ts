@@ -14,7 +14,7 @@ import navigateToProxyPreferencesInjectable from "./navigate-to-proxy-preference
 import navigateToTerminalPreferencesInjectable from "./navigate-to-terminal-preferences.injectable";
 import preferencesCatalogEntityInjectable from "./preferences-catalog-entity.injectable";
 import preferencesRouteInjectable from "./preferences-route.injectable";
-import preferencesRouteForLegacyExtensionsInjectable from "./preferences-route-for-legacy-extensions.injectable";
+import preferencesRouteForExtensionsInjectable from "./preferences-route-for-extensions.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
@@ -55,7 +55,7 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
-    di.register(preferencesRouteForLegacyExtensionsInjectable);
+    di.register(preferencesRouteForExtensionsInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

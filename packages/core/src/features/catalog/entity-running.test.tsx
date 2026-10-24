@@ -4,8 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn, { type AsyncFnMock } from "@async-fn/jest";
+import asyncFn, { type AsyncFnMock } from "@async-fn/vitest";
 import { flushPromises } from "@freelensapp/test-utils";
+import { act, fireEvent } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import appEventBusInjectable from "../../common/app-event-bus/app-event-bus.injectable";
 import { CatalogCategory, CatalogEntity, categoryVersion } from "../../common/catalog";
 import catalogCategoryRegistryInjectable from "../../common/catalog/category-registry.injectable";
@@ -16,6 +18,7 @@ import { advanceFakeTime, testUsingFakeTime } from "../../test-utils/use-fake-ti
 
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
+import type { MockedFunction } from "vitest";
 
 import type { AppEvent } from "../../common/app-event-bus/event-bus";
 import type { CatalogEntityActionContext } from "../../common/catalog";
@@ -82,15 +85,15 @@ describe("entity running technical tests", () => {
   let builder: ApplicationBuilder;
   let windowDi: DiContainer;
   let rendered: RenderResult;
-  let appEventListener: jest.MockedFunction<(event: AppEvent) => void>;
-  let onRun: jest.MockedFunction<(context: CatalogEntityActionContext) => void | Promise<void>>;
+  let appEventListener: MockedFunction<(event: AppEvent) => void>;
+  let onRun: MockedFunction<(context: CatalogEntityActionContext) => void | Promise<void>>;
   let catalogEntityRegistry: CatalogEntityRegistry;
 
   beforeEach(async () => {
     builder = getApplicationBuilder();
 
     builder.afterWindowStart(({ windowDi }) => {
-      onRun = jest.fn();
+      onRun = vi.fn();
 
       const catalogCategoryRegistery = windowDi.inject(catalogCategoryRegistryInjectable);
 
@@ -102,7 +105,7 @@ describe("entity running technical tests", () => {
 
       catalogEntityRegistry.updateItems([catalogEntityItem]);
 
-      appEventListener = jest.fn();
+      appEventListener = vi.fn();
       windowDi.inject(appEventBusInjectable).addListener(appEventListener);
     });
 
@@ -115,7 +118,9 @@ describe("entity running technical tests", () => {
     beforeEach(() => {
       const navigateToCatalog = windowDi.inject(navigateToCatalogInjectable);
 
-      navigateToCatalog();
+      act(() => {
+        navigateToCatalog();
+      });
     });
 
     it("renders", () => {
@@ -124,9 +129,9 @@ describe("entity running technical tests", () => {
 
     describe("when details panel is opened", () => {
       beforeEach(() => {
-        rendered.getByTestId("icon-for-menu-actions-for-catalog-for-a_catalogEntity_uid").click();
+        fireEvent.click(rendered.getByTestId("icon-for-menu-actions-for-catalog-for-a_catalogEntity_uid"));
         advanceFakeTime(500);
-        rendered.getByTestId("open-details-menu-item-for-a_catalogEntity_uid").click();
+        fireEvent.click(rendered.getByTestId("open-details-menu-item-for-a_catalogEntity_uid"));
         advanceFakeTime(500);
       });
 
@@ -140,7 +145,7 @@ describe("entity running technical tests", () => {
         beforeEach(() => {
           onBeforeRunMock = asyncFn();
           catalogEntityRegistry.addOnBeforeRun(onBeforeRunMock);
-          rendered.getByTestId("detail-panel-hot-bar-icon").click();
+          fireEvent.click(rendered.getByTestId("detail-panel-hot-bar-icon"));
         });
 
         it("calls on before run event", () => {
@@ -165,11 +170,11 @@ describe("entity running technical tests", () => {
       });
 
       it("onBeforeRun prevents event => onRun wont be triggered", async () => {
-        const onBeforeRunMock = jest.fn((event) => event.preventDefault());
+        const onBeforeRunMock = vi.fn((event) => event.preventDefault());
 
         catalogEntityRegistry.addOnBeforeRun(onBeforeRunMock);
 
-        rendered.getByTestId("detail-panel-hot-bar-icon").click();
+        fireEvent.click(rendered.getByTestId("detail-panel-hot-bar-icon"));
 
         await flushPromises();
 
@@ -181,25 +186,29 @@ describe("entity running technical tests", () => {
           throw new Error("some error");
         });
 
-        rendered.getByTestId("detail-panel-hot-bar-icon").click();
+        fireEvent.click(rendered.getByTestId("detail-panel-hot-bar-icon"));
 
         await flushPromises();
 
         expect(onRun).toHaveBeenCalled();
       });
 
-      it("addOnRunHook return a promise and does not prevent run event => onRun()", (done) => {
-        onRun.mockImplementation(() => done());
+      it("addOnRunHook return a promise and does not prevent run event => onRun()", async () => {
+        const onRunCalled = new Promise<void>((resolve) => {
+          onRun.mockImplementation(() => resolve());
+        });
 
         catalogEntityRegistry.addOnBeforeRun(async () => {});
 
-        rendered.getByTestId("detail-panel-hot-bar-icon").click();
+        fireEvent.click(rendered.getByTestId("detail-panel-hot-bar-icon"));
+
+        await onRunCalled;
       });
 
       it("addOnRunHook return a promise and prevents event wont be triggered", async () => {
         catalogEntityRegistry.addOnBeforeRun(async (event) => event.preventDefault());
 
-        rendered.getByTestId("detail-panel-hot-bar-icon").click();
+        fireEvent.click(rendered.getByTestId("detail-panel-hot-bar-icon"));
 
         expect(onRun).not.toHaveBeenCalled();
       });
@@ -209,7 +218,7 @@ describe("entity running technical tests", () => {
 
         catalogEntityRegistry.addOnBeforeRun(onBeforeRunMock);
 
-        rendered.getByTestId("detail-panel-hot-bar-icon").click();
+        fireEvent.click(rendered.getByTestId("detail-panel-hot-bar-icon"));
 
         await onBeforeRunMock.reject();
 
@@ -224,7 +233,7 @@ describe("entity running technical tests", () => {
       });
 
       it("emits catalog change AppEvent when changing the category", () => {
-        rendered.getByText("Web Links").click();
+        fireEvent.click(rendered.getByText("Web Links"));
 
         expect(appEventListener).toHaveBeenCalledWith({
           action: "change-category",

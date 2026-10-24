@@ -10,7 +10,14 @@ import terminalThemePreferenceInjectable from "../../features/user-preferences/c
 import activeThemeInjectable from "./active.injectable";
 import lensThemesInjectable from "./themes.injectable";
 
-const xtermColorThemeInjectable = getInjectable({
+import type { Injectable } from "@ogre-tools/injectable";
+import type { IComputedValue } from "mobx";
+import type { ReadonlyDeep } from "type-fest";
+
+import type { LensTheme } from "./lens-theme";
+
+// Annotated for declaration emit; see ./declaration.ts.
+const xtermColorThemeInjectable: Injectable<IComputedValue<ReadonlyDeep<LensTheme["terminalColors"]>>> = getInjectable({
   id: "terminal-colors",
   instantiate: (di) => {
     const activeTheme = di.inject(activeThemeInjectable);

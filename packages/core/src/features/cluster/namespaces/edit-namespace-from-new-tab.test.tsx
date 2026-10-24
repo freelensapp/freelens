@@ -4,12 +4,12 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import asyncFn from "@async-fn/jest";
 import { JsonApiErrorParsed } from "@freelensapp/json-api";
 import { Namespace } from "@freelensapp/kube-object";
 import { showErrorNotificationInjectable, showSuccessNotificationInjectable } from "@freelensapp/notifications";
-import { fireEvent } from "@testing-library/react";
-import React from "react";
+import { asyncFn } from "@freelensapp/test-utils";
+import { act, fireEvent } from "@testing-library/react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import directoryForLensLocalStorageInjectable from "../../../common/directory-for-lens-local-storage/directory-for-lens-local-storage.injectable";
 import navigateToNamespacesInjectable from "../../../common/front-end-routing/routes/cluster/namespaces/navigate-to-namespaces.injectable";
 import readJsonFileInjectable from "../../../common/fs/read-json-file.injectable";
@@ -23,10 +23,11 @@ import apiKubePatchInjectable from "../../../renderer/k8s/api-kube-patch.injecta
 
 import type { BaseKubeJsonApiObjectMetadata, KubeJsonApiData, KubeObjectScope } from "@freelensapp/kube-object";
 import type { ShowNotification } from "@freelensapp/notifications";
+import type { AsyncFnMock } from "@freelensapp/test-utils";
 
-import type { AsyncFnMock } from "@async-fn/jest";
 import type { DiContainer } from "@ogre-tools/injectable";
 import type { RenderResult } from "@testing-library/react";
+import type { MockedFunction } from "vitest";
 
 import type { ApplicationBuilder } from "../../../renderer/components/test-utils/get-application-builder";
 import type { ApiKubeGet } from "../../../renderer/k8s/api-kube-get.injectable";
@@ -36,8 +37,8 @@ describe("cluster/namespaces - edit namespace from new tab", () => {
   let builder: ApplicationBuilder;
   let apiKubePatchMock: AsyncFnMock<ApiKubePatch>;
   let apiKubeGetMock: AsyncFnMock<ApiKubeGet>;
-  let showSuccessNotificationMock: jest.MockedFunction<ShowNotification>;
-  let showErrorNotificationMock: jest.MockedFunction<ShowNotification>;
+  let showSuccessNotificationMock: MockedFunction<ShowNotification>;
+  let showErrorNotificationMock: MockedFunction<ShowNotification>;
 
   beforeEach(() => {
     builder = getApplicationBuilder();
@@ -49,24 +50,24 @@ describe("cluster/namespaces - edit namespace from new tab", () => {
 
       windowDi.override(hostedClusterIdInjectable, () => "some-cluster-id");
 
-      showSuccessNotificationMock = jest.fn();
+      showSuccessNotificationMock = vi.fn();
       windowDi.override(showSuccessNotificationInjectable, () => showSuccessNotificationMock);
 
-      showErrorNotificationMock = jest.fn();
+      showErrorNotificationMock = vi.fn();
       windowDi.override(showErrorNotificationInjectable, () => showErrorNotificationMock);
 
       windowDi.override(getRandomIdForEditResourceTabInjectable, () =>
-        jest
+        vi
           .fn(() => "some-irrelevant-random-id")
           .mockReturnValueOnce("some-first-tab-id")
           .mockReturnValueOnce("some-second-tab-id"),
       );
 
       apiKubePatchMock = asyncFn();
-      windowDi.override(apiKubePatchInjectable, () => apiKubePatchMock);
+      windowDi.override(apiKubePatchInjectable, () => apiKubePatchMock as unknown as ApiKubePatch);
 
       apiKubeGetMock = asyncFn();
-      windowDi.override(apiKubeGetInjectable, () => apiKubeGetMock);
+      windowDi.override(apiKubeGetInjectable, () => apiKubeGetMock as unknown as ApiKubeGet);
     });
 
     builder.afterWindowStart(() => {
@@ -89,47 +90,56 @@ describe("cluster/namespaces - edit namespace from new tab", () => {
       const navigateToNamespaces = windowDi.inject(navigateToNamespacesInjectable);
       const dockStore = windowDi.inject(dockStoreInjectable);
 
-      navigateToNamespaces();
+      act(() => {
+        navigateToNamespaces();
+      });
 
       // TODO: Make TerminalWindow unit testable to allow realistic behaviour
-      dockStore.closeTab("terminal");
+      act(() => {
+        dockStore.closeTab("terminal");
+      });
     });
 
     // TODO: Implement skipped tests when loading of resources can be tested
-    xit("renders", () => {
+    it.skip("renders", () => {
       expect(rendered.baseElement).toMatchSnapshot();
     });
 
-    xit("calls for namespaces", () => {});
+    it.skip("calls for namespaces", () => {});
 
-    xit("shows spinner", () => {});
+    it.skip("shows spinner", () => {});
 
     describe("when namespaces resolve", () => {
       beforeEach(() => {});
 
-      xit("renders", () => {
+      it.skip("renders", () => {
         expect(rendered.baseElement).toMatchSnapshot();
       });
 
-      xit("does not show spinner anymore", () => {});
+      it.skip("does not show spinner anymore", () => {});
 
       describe("when clicking the context menu for a namespace", () => {
         beforeEach(() => {});
 
-        xit("renders", () => {
+        it.skip("renders", () => {
           expect(rendered.baseElement).toMatchSnapshot();
         });
 
-        xit("does not show edit resource tab yet", () => {});
+        it.skip("does not show edit resource tab yet", () => {});
 
         describe("when clicking to edit namespace", () => {
-          beforeEach(() => {
+          beforeEach(async () => {
             // TODO: Make implementation match the description (tests above)
             const namespaceStub = new Namespace(someNamespaceDataStub);
 
             const createEditResourceTab = windowDi.inject(createEditResourceTabInjectable);
 
-            createEditResourceTab(namespaceStub);
+            // React 19 flushes passive effects only at act() boundaries, so wrap
+            // the tab creation to let the effect that calls apiKubeGet run before
+            // the nested cases resolve/reject that mock.
+            await act(async () => {
+              createEditResourceTab(namespaceStub);
+            });
           });
 
           it("renders", () => {
@@ -685,7 +695,7 @@ metadata:
             });
 
             describe("given clicking the context menu for second namespace, when clicking to edit namespace", () => {
-              beforeEach(() => {
+              beforeEach(async () => {
                 apiKubeGetMock.mockClear();
 
                 // TODO: Make implementation match the description
@@ -693,7 +703,12 @@ metadata:
 
                 const createEditResourceTab = windowDi.inject(createEditResourceTabInjectable);
 
-                createEditResourceTab(namespaceStub);
+                // React 19 flushes passive effects only at act() boundaries, so wrap
+                // the tab creation to let the effect that calls apiKubeGet run before
+                // the nested cases resolve/reject that mock.
+                await act(async () => {
+                  createEditResourceTab(namespaceStub);
+                });
               });
 
               it("renders", () => {
@@ -781,12 +796,17 @@ metadata:
                 });
 
                 describe("when clicking dock tab for the first namespace", () => {
-                  beforeEach(() => {
+                  beforeEach(async () => {
                     apiKubeGetMock.mockClear();
 
                     const tab = rendered.getByTestId("dock-tab-for-some-first-tab-id");
 
-                    fireEvent.click(tab);
+                    // React 19 flushes passive effects only at act() boundaries;
+                    // switching tabs re-runs the async withInjectables getProps for
+                    // the newly-shown tab, so let that resolve inside act().
+                    await act(async () => {
+                      fireEvent.click(tab);
+                    });
                   });
 
                   it("renders", () => {

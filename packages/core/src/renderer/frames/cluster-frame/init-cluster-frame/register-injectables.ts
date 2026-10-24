@@ -6,7 +6,7 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import { registerInjectables as registerFrameRoutingIdInjectables } from "./frame-routing-id/register-injectables";
+import { registerInjectables as registerFrameTokenInjectables } from "./frame-token/register-injectables";
 import initClusterFrameInjectable from "./init-cluster-frame.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
@@ -18,7 +18,7 @@ export function registerInjectables(di: DiContainerForInjection): void {
     /* Ignore duplicate registration */
   }
   try {
-    registerFrameRoutingIdInjectables(di);
+    registerFrameTokenInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }

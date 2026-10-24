@@ -5,3 +5,4 @@
  */
 
 export * from "./resource-metrics";
+export * from "./time-ranged-resource-metrics";

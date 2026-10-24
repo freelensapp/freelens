@@ -1,6 +1,5 @@
 /**
  * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
@@ -8,10 +7,10 @@ import "./endpoint-slice-details.scss";
 
 import { EndpointSlice } from "@freelensapp/kube-object";
 import { loggerInjectionToken } from "@freelensapp/logger";
+import { Link } from "@freelensapp/routing";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import { observer } from "mobx-react";
 import React from "react";
-import { Link } from "react-router-dom";
 import { ApiManager } from "../../../common/k8s-api/api-manager";
 import apiManagerInjectable from "../../../common/k8s-api/api-manager/manager.injectable";
 import { Badge } from "../badge";
@@ -58,8 +57,13 @@ class NonInjectedEndpointSliceDetails extends React.Component<EndpointSliceDetai
           <DrawerTitle>Endpoints</DrawerTitle>
           {endpointSlice.endpoints && endpointSlice.endpoints.length > 0 && (
             <>
-              <div className="title flex gaps">Addresses</div>
-              <Table items={endpointSlice.endpoints} selectable={false} scrollable={false} className="box grow">
+              <div className="title flex gap-2">Addresses</div>
+              <Table
+                items={endpointSlice.endpoints}
+                selectable={false}
+                scrollable={false}
+                className="grow shrink-0 basis-0"
+              >
                 <TableHead>
                   <TableCell className="ip">IP</TableCell>
                   <TableCell className="host">Hostname</TableCell>
@@ -114,15 +118,17 @@ class NonInjectedEndpointSliceDetails extends React.Component<EndpointSliceDetai
 
           {endpointSlice.ports && endpointSlice.ports.length > 0 && (
             <>
-              <div className="title flex gaps">Ports</div>
-              <Table selectable={false} virtual={false} scrollable={false} className="box grow">
+              <div className="title flex gap-2">Ports</div>
+              <Table selectable={false} virtual={false} scrollable={false} className="grow shrink-0 basis-0">
                 <TableHead>
                   <TableCell className="port">Port</TableCell>
                   <TableCell className="name">Name</TableCell>
                   <TableCell className="protocol">Protocol</TableCell>
                 </TableHead>
                 {endpointSlice.ports?.map((port) => (
-                  <TableRow key={port.port} nowrap>
+                  // The same port number may be exposed under several protocols, so the
+                  // number alone is not a unique key.
+                  <TableRow key={`${port.port}-${port.protocol}`} nowrap>
                     <TableCell className="name">{port.port}</TableCell>
                     <TableCell className="name">{port.name}</TableCell>
                     <TableCell className="node">{port.protocol}</TableCell>

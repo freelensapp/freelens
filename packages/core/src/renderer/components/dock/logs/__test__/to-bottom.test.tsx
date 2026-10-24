@@ -4,8 +4,8 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
-import React from "react";
-import "@testing-library/jest-dom";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import "@testing-library/jest-dom/vitest";
 
 import { noop } from "@freelensapp/utilities";
 import { fireEvent } from "@testing-library/react";
@@ -43,7 +43,7 @@ describe("<ToBottom/>", () => {
   });
 
   it("fires an onclick event", () => {
-    const callback = jest.fn();
+    const callback = vi.fn();
     const { getByText } = render(<ToBottom onClick={callback} />);
 
     fireEvent.click(getByText("To bottom"));

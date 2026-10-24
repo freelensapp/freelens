@@ -7,9 +7,9 @@
 import { Icon } from "@freelensapp/icon";
 import { storesAndApisCanBeCreatedInjectionToken } from "@freelensapp/kube-api-specifics";
 import { withInjectables } from "@ogre-tools/injectable-react";
-import debounce from "lodash/debounce";
-import { comparer, makeObservable, observable, reaction } from "mobx";
-import { disposeOnUnmount, observer } from "mobx-react";
+import { debounce } from "es-toolkit/compat";
+import { compareStructural, observable, reaction } from "mobx";
+import { observer } from "mobx-react";
 import React from "react";
 import namespaceStoreInjectable from "../namespaces/store.injectable";
 import persistentSearchStoreInjectable from "./persistent-search-store.injectable";
@@ -31,9 +31,11 @@ interface Dependencies {
 
 @observer
 class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & Dependencies> {
-  @observable inputVal = ""; // fix: use empty string on init to avoid react warnings
-  @observable private lastNamespaceKey = "";
-  @observable private lastPlaceholder = "";
+  private readonly disposers: (() => void)[] = [];
+
+  @observable accessor inputVal = ""; // fix: use empty string on init to avoid react warnings
+  @observable private accessor lastNamespaceKey = "";
+  @observable private accessor lastPlaceholder = "";
   private userTyping = false;
 
   readonly updateUrl = debounce((val: string) => this.props.searchUrlParam.set(val), 250);
@@ -69,14 +71,36 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
   }
 
   componentDidMount(): void {
-    const { searchUrlParam, persistentSearchStore, placeholder } = this.props;
+    const { searchUrlParam, persistentSearchStore, namespaceStore, placeholder } = this.props;
+
+    // Capture props into local closures for the reactions below: mobx-react 9
+    // forbids reading this.props inside a derivation, and the reaction data
+    // functions call getStorageKey/getCurrentNamespaceKey (which read this.props).
+    const getCurrentNamespaceKey = (): string => {
+      if (!namespaceStore) {
+        return "global";
+      }
+
+      const namespaces = Array.from(namespaceStore.contextNamespaces).sort();
+
+      return namespaces.length > 0 ? namespaces.join(",") : "all-namespaces";
+    };
+    const getStorageKey = (): string => {
+      if (persistentSearchStore.isEnabled) {
+        return "global:linked";
+      }
+
+      const namespaceKey = getCurrentNamespaceKey();
+      const placeholderKey = placeholder || "default";
+      return `${namespaceKey}:${placeholderKey}`;
+    };
 
     // Initialize lastNamespaceKey and lastPlaceholder
-    this.lastNamespaceKey = this.getCurrentNamespaceKey();
+    this.lastNamespaceKey = getCurrentNamespaceKey();
     this.lastPlaceholder = placeholder || "default";
 
     // On first mount, load the stored value and sync to URL
-    const storageKey = this.getStorageKey();
+    const storageKey = getStorageKey();
     const storedValue = persistentSearchStore.getValue(storageKey);
 
     if (storedValue) {
@@ -91,14 +115,14 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
     }
 
     // Sync inputVal with either persistent store or URL param
-    disposeOnUnmount(this, [
+    this.disposers.push(
       reaction(
         () => ({
           isEnabled: persistentSearchStore.isEnabled,
-          storageKey: this.getStorageKey(),
-          persistedValue: persistentSearchStore.getValue(this.getStorageKey()),
+          storageKey: getStorageKey(),
+          persistedValue: persistentSearchStore.getValue(getStorageKey()),
           urlValue: searchUrlParam.get(),
-          namespaceKey: this.getCurrentNamespaceKey(),
+          namespaceKey: getCurrentNamespaceKey(),
           placeholderKey: placeholder || "default",
         }),
         ({ isEnabled, storageKey, persistedValue, urlValue, namespaceKey, placeholderKey }) => {
@@ -135,16 +159,16 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
           this.lastNamespaceKey = namespaceKey;
           this.lastPlaceholder = placeholderKey;
         },
-        { equals: comparer.structural },
+        { equals: compareStructural },
       ),
-    ]);
+    );
 
     // When persistence is enabled and there's a persistent value, sync it to URL
-    disposeOnUnmount(this, [
+    this.disposers.push(
       reaction(
         () => ({
           isEnabled: persistentSearchStore.isEnabled,
-          storageKey: this.getStorageKey(),
+          storageKey: getStorageKey(),
         }),
         ({ isEnabled, storageKey }) => {
           if (isEnabled) {
@@ -154,9 +178,13 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
             searchUrlParam.set(persistedValue);
           }
         },
-        { fireImmediately: true, equals: comparer.structural },
+        { fireImmediately: true, equals: compareStructural },
       ),
-    ]);
+    );
+  }
+
+  componentWillUnmount(): void {
+    this.disposers.forEach((dispose) => dispose());
   }
 
   setValue = (value: string) => {
@@ -207,7 +235,6 @@ class NonInjectedSearchInputUrl extends React.Component<SearchInputUrlProps & De
 
   constructor(props: SearchInputUrlProps & Dependencies) {
     super(props);
-    makeObservable(this);
   }
 
   render() {

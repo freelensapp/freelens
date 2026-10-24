@@ -7,9 +7,9 @@
 import "./helm-charts.scss";
 
 import { withInjectables } from "@ogre-tools/injectable-react";
-import { noop } from "lodash";
+import { noop } from "es-toolkit";
 import { observer } from "mobx-react";
-import React, { Component } from "react";
+import { Component } from "react";
 import navigateToHelmChartsInjectable from "../../../common/front-end-routing/routes/cluster/helm/charts/navigate-to-helm-charts.injectable";
 import { ItemListLayout } from "../item-object-list/list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
@@ -20,11 +20,11 @@ import selectedHelmChartInjectable from "./helm-charts/selected-helm-chart.injec
 import helmChartsRouteParametersInjectable from "./helm-charts-route-parameters.injectable";
 import { HelmChartIcon } from "./icon";
 
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
 import type { IComputedValue } from "mobx";
 
 import type { NavigateToHelmCharts } from "../../../common/front-end-routing/routes/cluster/helm/charts/navigate-to-helm-charts.injectable";
 import type { HelmChart } from "../../../common/k8s-api/endpoints/helm-charts.api";
+import type { IAsyncComputed } from "../../../common/utils/async-computed";
 
 enum columnId {
   name = "name",
@@ -70,11 +70,13 @@ class NonInjectedHelmCharts extends Component<Dependencies> {
   };
 
   render() {
-    const { charts } = this.props;
+    const { charts, routeParameters } = this.props;
     const selectedChart = this.props.selectedChart.get();
 
+    // One page serves every path of the route, so the path parameters key the crash of its content: another path
+    // renders it again.
     return (
-      <SiblingsInTabLayout>
+      <SiblingsInTabLayout resetKey={[routeParameters.repo.get(), routeParameters.chartName.get()].join("/")}>
         <div data-testid="page-for-helm-charts" style={{ display: "none" }} />
 
         <ItemListLayout<HelmChart, false>
@@ -95,7 +97,10 @@ class NonInjectedHelmCharts extends Component<Dependencies> {
             removeSelectedItems: async () => {},
           }}
           preloadStores={false}
-          getItems={() => this.props.charts.value.get()}
+          // Read the captured `charts`, not this.props: ItemListLayout invokes
+          // getItems from within its own derivation, where mobx-react 9 forbids
+          // reading this.props.
+          getItems={() => charts.value.get()}
           isSelectable={false}
           sortingCallbacks={{
             [columnId.name]: (chart) => chart.getName(),

@@ -1,12 +1,12 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`react-application renders 1`] = `
+exports[`react-application > renders 1`] = `
 <body>
   <div />
 </body>
 `;
 
-exports[`react-application when content is registered and enabled renders 1`] = `
+exports[`react-application > when content is registered and enabled > renders 1`] = `
 <body>
   <div>
     <div
@@ -18,13 +18,13 @@ exports[`react-application when content is registered and enabled renders 1`] = 
 </body>
 `;
 
-exports[`react-application when content is registered and enabled when content is disabled renders 1`] = `
+exports[`react-application > when content is registered and enabled > when content is disabled > renders 1`] = `
 <body>
   <div />
 </body>
 `;
 
-exports[`react-application when content is registered and enabled when higher order component is registered renders 1`] = `
+exports[`react-application > when content is registered and enabled > when higher order component is registered > renders 1`] = `
 <body>
   <div>
     <div

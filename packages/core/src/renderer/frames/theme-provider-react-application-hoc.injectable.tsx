@@ -7,7 +7,6 @@
 import { reactApplicationHigherOrderComponentInjectionToken } from "@freelensapp/react-application";
 import { StyledEngineProvider, ThemeProvider } from "@mui/material";
 import { getInjectable } from "@ogre-tools/injectable";
-import React from "react";
 import { defaultMuiBaseTheme } from "../mui-base-theme";
 
 const themeProviderReactApplicationHocInjectable = getInjectable({

@@ -1,6 +1,6 @@
-*.d.ts
 *.gz
 *.lock
+!mise.lock
 *.log
 *.map
 *.out
@@ -18,7 +18,25 @@ icon.iconset/
 .pnpm/
 .turbo/
 
+# Runtime artifacts (screenshots, databases, keys, snapshots) written by
+# optional local AI-agent / MCP tooling, see DEVELOPMENT.md and AGENTS.md.
+# Anchored to the repo root so they do not also match source directories such
+# as packages/core/src/renderer/components/dock/logs/.
+/.playwright-mcp/
+/logs/
+
+# Credentials and keys. Keep in sync with the Security section of AGENTS.md
+# and the permissions.deny rules in .claude/settings.json.
+.env
+.env.*
+.envrc
 .npmrc
+*.jks
+*.keystore
+*.p12
+*.pfx
+*.pem
+*.key
 
 .DS_Store
 .idea/

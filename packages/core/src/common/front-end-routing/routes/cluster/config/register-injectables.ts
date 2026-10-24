@@ -16,6 +16,8 @@ import { registerInjectables as registerPriorityClassesInjectables } from "./pri
 import { registerInjectables as registerResourceQuotasInjectables } from "./resource-quotas/register-injectables";
 import { registerInjectables as registerRuntimeClassesInjectables } from "./runtime-classes/register-injectables";
 import { registerInjectables as registerSecretsInjectables } from "./secrets/register-injectables";
+import { registerInjectables as registerValidatingAdmissionPoliciesInjectables } from "./validating-admission-policies/register-injectables";
+import { registerInjectables as registerValidatingAdmissionPolicyBindingsInjectables } from "./validating-admission-policy-bindings/register-injectables";
 import { registerInjectables as registerValidatingWebhookConfigurationsInjectables } from "./validating-webhook-configurations/register-injectables";
 import { registerInjectables as registerVerticalPodAutoscalersInjectables } from "./vertical-pod-autoscalers/register-injectables";
 
@@ -69,6 +71,16 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     registerSecretsInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerValidatingAdmissionPoliciesInjectables(di);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    registerValidatingAdmissionPolicyBindingsInjectables(di);
   } catch (e) {
     /* Ignore duplicate registration */
   }

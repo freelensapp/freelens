@@ -5,33 +5,36 @@
  */
 
 import { withInjectables } from "@ogre-tools/injectable-react";
-import React from "react";
-import { ResourceMetrics } from "../resource-metrics";
+import { observer } from "mobx-react";
+import { TimeRangedResourceMetrics } from "../resource-metrics";
 import nodeMetricsInjectable from "./metrics.injectable";
 import { NodeCharts } from "./node-charts";
 
 import type { Node } from "@freelensapp/kube-object";
 
-import type { IAsyncComputed } from "@ogre-tools/injectable-react";
-
 import type { ClusterMetricData } from "../../../common/k8s-api/endpoints/metrics.api/request-cluster-metrics-by-node-names.injectable";
+import type { IAsyncComputed } from "../../../common/utils/async-computed";
 import type { KubeObjectDetailsProps } from "../kube-object-details";
 
 interface Dependencies {
-  metrics: IAsyncComputed<ClusterMetricData>;
+  metrics: IAsyncComputed<Partial<ClusterMetricData>>;
 }
 
-const NonInjectedNodeMetricsDetailsComponent = ({ object, metrics }: KubeObjectDetailsProps<Node> & Dependencies) => (
-  <ResourceMetrics tabs={["CPU", "Memory", "Disk", "Pods"]} object={object} metrics={metrics}>
-    <NodeCharts />
-  </ResourceMetrics>
+const NonInjectedNodeMetricsDetailsComponent = observer(
+  ({ object, metrics }: KubeObjectDetailsProps<Node> & Dependencies) => (
+    <TimeRangedResourceMetrics tabs={["CPU", "Memory", "Disk", "Pods"]} object={object} metrics={metrics}>
+      <NodeCharts />
+    </TimeRangedResourceMetrics>
+  ),
 );
 
 export const NodeMetricsDetailsComponent = withInjectables<Dependencies, KubeObjectDetailsProps<Node>>(
   NonInjectedNodeMetricsDetailsComponent,
   {
     getProps: (di, props) => ({
-      metrics: di.inject(nodeMetricsInjectable, props.object),
+      metrics: di.inject(nodeMetricsInjectable, {
+        node: props.object,
+      }),
       ...props,
     }),
   },

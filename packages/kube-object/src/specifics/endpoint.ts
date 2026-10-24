@@ -22,7 +22,21 @@ export function formatEndpointSubset(subset: EndpointSubset): string {
     return "";
   }
 
-  return addresses.map((address) => ports.map((port) => `${address.ip}:${port.port}`).join(", ")).join(", ");
+  return addresses
+    .map((address) =>
+      ports
+        .map((port) => {
+          // IPv6 addresses contain `:`s and to keep separation with the actual port
+          // it's supposed to be formatted `[IP]:PORT` when together in a tuple with a port
+          if (address.ip.indexOf(":") !== -1) {
+            return `[${address.ip}]:${port.port}`;
+          }
+
+          return `${address.ip}:${port.port}`;
+        })
+        .join(", "),
+    )
+    .join(", ");
 }
 
 export interface ForZone {

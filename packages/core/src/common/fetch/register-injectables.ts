@@ -6,13 +6,13 @@
  * This replaces the webpack-based auto-registration system.
  */
 
-import nodeFetchInjectable from "./node-fetch.injectable";
+import fetchInjectable from "./fetch.injectable";
 
 import type { DiContainerForInjection } from "@ogre-tools/injectable";
 
 export function registerInjectables(di: DiContainerForInjection): void {
   try {
-    di.register(nodeFetchInjectable);
+    di.register(fetchInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }

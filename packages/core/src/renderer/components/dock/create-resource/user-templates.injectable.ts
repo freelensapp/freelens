@@ -4,10 +4,10 @@
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
+import { readFile } from "node:fs/promises";
 import { prefixedLoggerInjectable } from "@freelensapp/logger";
 import { delay, getOrInsert, isErrnoException } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import { readFile } from "fs/promises";
 import { computed, observable } from "mobx";
 import watchInjectable from "../../../../common/fs/watch/watch.injectable";
 import homeDirectoryPathInjectable from "../../../../common/os/home-directory-path.injectable";
@@ -32,7 +32,7 @@ const userCreateResourceTemplatesInjectable = getInjectable({
     const parsePath = di.inject(parsePathInjectable);
 
     const userTemplatesFolder = joinPaths(homeDirectoryPath, ".freelens", "templates");
-    const groupTemplates = (templates: Map<string, string>): RawTemplates[] => {
+    const groupTemplates = (templates: ReadonlyMap<string, string>): RawTemplates[] => {
       const res = new Map<string, RawTemplate[]>();
 
       for (const [filePath, value] of templates) {

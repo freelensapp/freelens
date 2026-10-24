@@ -7,10 +7,10 @@
 import "./port-forward-details.scss";
 
 import { podApiInjectable, serviceApiInjectable } from "@freelensapp/kube-api-specifics";
+import { Link } from "@freelensapp/routing";
 import { cssNames } from "@freelensapp/utilities";
 import { withInjectables } from "@ogre-tools/injectable-react";
 import React from "react";
-import { Link } from "react-router-dom";
 import { portForwardAddress } from "../../port-forward";
 import { Drawer, DrawerItem } from "../drawer";
 import getDetailsUrlInjectable from "../kube-detail-params/get-details-url.injectable";

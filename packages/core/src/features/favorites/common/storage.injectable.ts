@@ -1,11 +1,10 @@
 /**
  * Copyright (c) Freelens Authors. All rights reserved.
- * Copyright (c) OpenLens Authors. All rights reserved.
  * Licensed under MIT License. See LICENSE in root directory for more information.
  */
 
 import { getInjectable } from "@ogre-tools/injectable";
-import { action, comparer } from "mobx";
+import { action, compareStructural } from "mobx";
 import storeMigrationVersionInjectable from "../../../common/vars/store-migration-version.injectable";
 import createPersistentStorageInjectable from "../../persistent-storage/common/create.injectable";
 import persistentStorageMigrationsInjectable from "../../persistent-storage/common/migrations.injectable";
@@ -37,7 +36,7 @@ const favoritesPersistentStorageInjectable = getInjectable({
       projectVersion: di.inject(storeMigrationVersionInjectable),
       migrations: di.inject(persistentStorageMigrationsInjectable, favoritesStoreMigrationInjectionToken),
       syncOptions: {
-        equals: comparer.structural,
+        equals: compareStructural,
       },
       fromStore: action((data) => {
         state.set({

@@ -8,7 +8,6 @@ import { ErrorBoundary } from "@freelensapp/error-boundary";
 import { rootFrameChildComponentInjectionToken } from "@freelensapp/react-application";
 import { getInjectable } from "@ogre-tools/injectable";
 import { computed } from "mobx";
-import React from "react";
 import { ClusterManager } from "./cluster-manager";
 
 const clusterManagerRootFrameChildComponentInjectable = getInjectable({

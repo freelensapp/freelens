@@ -6,7 +6,7 @@
 
 import { byOrderNumber } from "@freelensapp/utilities";
 import { getInjectable } from "@ogre-tools/injectable";
-import { computedInjectManyInjectable } from "@ogre-tools/injectable-extension-for-mobx";
+import { computedInjectManyInjectionToken } from "@ogre-tools/injectable-extension-for-mobx";
 import { computed } from "mobx";
 import logErrorInjectable from "../../../../common/log-error.injectable";
 import { isShown } from "../../../../common/utils/composable-responsibilities/showable/showable";
@@ -21,7 +21,7 @@ const preferencesCompositeInjectable = getInjectable({
   id: "preferences-composite",
 
   instantiate: (di) => {
-    const computedInjectMany = di.inject(computedInjectManyInjectable);
+    const computedInjectMany = di.inject(computedInjectManyInjectionToken);
     const preferenceItems = computedInjectMany(preferenceItemInjectionToken);
     const logError = di.inject(logErrorInjectable);
 

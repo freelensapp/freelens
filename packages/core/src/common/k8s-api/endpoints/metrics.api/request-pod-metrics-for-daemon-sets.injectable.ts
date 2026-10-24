@@ -10,6 +10,7 @@ import requestMetricsInjectable from "./request-metrics.injectable";
 import type { DaemonSet } from "@freelensapp/kube-object";
 
 import type { MetricData } from "../metrics.api";
+import type { RequestMetricsParams } from "./request-metrics.injectable";
 
 export interface DaemonSetPodMetricData {
   cpuUsage: MetricData;
@@ -25,6 +26,7 @@ export type RequestPodMetricsForDaemonSets = (
   daemonsets: DaemonSet[],
   namespace: string,
   selector?: string,
+  params?: RequestMetricsParams,
 ) => Promise<DaemonSetPodMetricData>;
 
 const requestPodMetricsForDaemonSetsInjectable = getInjectable({
@@ -32,7 +34,7 @@ const requestPodMetricsForDaemonSetsInjectable = getInjectable({
   instantiate: (di): RequestPodMetricsForDaemonSets => {
     const requestMetrics = di.inject(requestMetricsInjectable);
 
-    return (daemonSets, namespace, selector = "") => {
+    return (daemonSets, namespace, selector = "", params) => {
       const podSelector = daemonSets.map((daemonSet) => `${daemonSet.getName()}-[[:alnum:]]{5}`).join("|");
       const opts = { category: "pods", pods: podSelector, namespace, selector };
 
@@ -48,6 +50,7 @@ const requestPodMetricsForDaemonSetsInjectable = getInjectable({
         },
         {
           namespace,
+          ...params,
         },
       );
     };
