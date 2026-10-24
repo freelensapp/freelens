@@ -18,10 +18,9 @@ import * as Validators from "./input_validators";
 import type { TooltipProps } from "@freelensapp/tooltip";
 import type { SingleOrMany, StrictReactNode } from "@freelensapp/utilities";
 
-import type { CreateStorage } from "../../utils/create-storage/create-storage.injectable";
-
 import type { DOMAttributes, InputHTMLAttributes, TextareaHTMLAttributes } from "react";
 
+import type { CreateStorage } from "../../utils/create-storage/create-storage.injectable";
 import type { InputValidation, InputValidationResult, InputValidator, SyncValidationMessage } from "./input_validators";
 
 const {
