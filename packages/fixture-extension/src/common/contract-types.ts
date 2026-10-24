@@ -24,6 +24,7 @@ import type { Common, Main, Renderer } from "@freelensapp/extensions";
 export type FixtureManifest = Common.LensExtensionManifest;
 export type FixturePackageJson = Common.PackageJson;
 export type FixtureLogger = Common.Logger;
+export type FixtureCredentialsApi = Common.CredentialsApi;
 export type FixtureInstalledExtension = Common.InstalledExtension;
 export type FixtureCluster = Common.Catalog.KubernetesCluster;
 export type FixtureClusterConnectionStatus = Common.Clusters.ClusterConnectionStatus;
