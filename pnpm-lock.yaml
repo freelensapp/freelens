@@ -369,8 +369,8 @@ catalogs:
       specifier: 2.0.2
       version: 2.0.2
     immer:
-      specifier: 11.1.21
-      version: 11.1.21
+      specifier: 11.2.9
+      version: 11.2.9
     joi:
       specifier: 18.3.0
       version: 18.3.0
@@ -538,8 +538,8 @@ catalogs:
       specifier: ^1.52.0
       version: 1.52.0
     immer:
-      specifier: ^11.1.21
-      version: 11.1.21
+      specifier: ^11.2.9
+      version: 11.2.9
     mobx:
       specifier: ^7.0.6
       version: 7.0.6
@@ -681,7 +681,7 @@ importers:
         version: 2.0.2(supports-color@8.1.1)
       immer:
         specifier: 'catalog:'
-        version: 11.1.21
+        version: 11.2.9
       joi:
         specifier: 'catalog:'
         version: 18.3.0
@@ -1114,7 +1114,7 @@ importers:
         version: 2.0.2(supports-color@8.1.1)
       immer:
         specifier: 'catalog:'
-        version: 11.1.21
+        version: 11.2.9
       joi:
         specifier: 'catalog:'
         version: 18.3.0
@@ -1362,7 +1362,7 @@ importers:
         version: 1.52.0
       immer:
         specifier: catalog:extensions
-        version: 11.1.21
+        version: 11.2.9
       mobx:
         specifier: catalog:extensions
         version: 7.0.6
@@ -5553,8 +5553,8 @@ packages:
   immediate@3.0.6:
     resolution: {integrity: sha512-XXOFtyqDjNDAQxVfYxuF7g9Il/IbWmmlQg2MYKOH8ExIT1qg6xc4zyS3HaEEATgs1btfzxq15ciUiY7gjSXRGQ==}
 
-  immer@11.1.21:
-    resolution: {integrity: sha512-bZSadeCPGdaY5/qRLgr6mDSH1ra21rD3rqpiWk7+QTr4ayYPTE9qZYdLh/NdPhMe0wSrTvHD/Lk8q5EwhUs0aw==}
+  immer@11.2.9:
+    resolution: {integrity: sha512-IQ4UEtXjZjyefyWjtLEDXUSrF6T2hwjKPi6BIJl3bY/2XXW24d6cNGdXJSBOA/+KNnuiXkZY6DR0C3efolhitA==}
 
   immutable@5.1.5:
     resolution: {integrity: sha512-t7xcm2siw+hlUM68I+UEOK+z84RzmN59as9DZ7P1l0994DKUWV7UXBMQZVxaoMSRQ+PBZbHCOoBt7a2wxOMt+A==}
@@ -10226,7 +10226,7 @@ snapshots:
 
   immediate@3.0.6: {}
 
-  immer@11.1.21: {}
+  immer@11.2.9: {}
 
   immutable@5.1.5: {}
 
