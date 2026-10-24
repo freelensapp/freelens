@@ -366,8 +366,8 @@ catalogs:
       specifier: 4.7.10
       version: 4.7.10
     http-proxy-3:
-      specifier: 2.0.1
-      version: 2.0.1
+      specifier: 2.0.2
+      version: 2.0.2
     immer:
       specifier: 11.1.21
       version: 11.1.21
@@ -405,8 +405,8 @@ catalogs:
       specifier: 0.57.0
       version: 0.57.0
     node-pty:
-      specifier: 1.2.0-beta.15
-      version: 1.2.0-beta.15
+      specifier: 1.2.0-beta.17
+      version: 1.2.0-beta.17
     openpgp:
       specifier: 6.3.2
       version: 6.3.2
@@ -565,7 +565,7 @@ catalogs:
 overrides:
   '@kubernetes/client-node>@types/node': 24.19.2
   form-data: ^4.0.6
-  http-proxy: npm:http-proxy-3@^2.0.1
+  http-proxy: npm:http-proxy-3@^2.0.2
   mobx-react: 10.0.2
   tmp@^0.2.0: ^0.2.7
 
@@ -678,7 +678,7 @@ importers:
         version: 4.7.10
       http-proxy-3:
         specifier: 'catalog:'
-        version: 2.0.1(supports-color@8.1.1)
+        version: 2.0.2(supports-color@8.1.1)
       immer:
         specifier: 'catalog:'
         version: 11.1.21
@@ -693,7 +693,7 @@ importers:
         version: 7.0.6
       node-pty:
         specifier: 'catalog:'
-        version: 1.2.0-beta.15
+        version: 1.2.0-beta.17
       proper-lockfile:
         specifier: 'catalog:'
         version: 4.1.2
@@ -1111,7 +1111,7 @@ importers:
         version: 4.7.10
       http-proxy-3:
         specifier: 'catalog:'
-        version: 2.0.1(supports-color@8.1.1)
+        version: 2.0.2(supports-color@8.1.1)
       immer:
         specifier: 'catalog:'
         version: 11.1.21
@@ -1138,7 +1138,7 @@ importers:
         version: 0.57.0
       node-pty:
         specifier: 'catalog:'
-        version: 1.2.0-beta.15
+        version: 1.2.0-beta.17
       proper-lockfile:
         specifier: 'catalog:'
         version: 4.1.2
@@ -5358,8 +5358,8 @@ packages:
   fn.name@1.1.0:
     resolution: {integrity: sha512-GRnmB5gPyJpAhTQdSZTSp9uaPSvl09KoYcMQtsB9rQoOmzs9dH6ffeccH+Z+cv6P68Hu5bC6JjRh4Ah/mHSNRw==}
 
-  follow-redirects@1.16.0:
-    resolution: {integrity: sha512-y5rN/uOsadFT/JfYwhxRS5R7Qce+g3zG97+JrtFZlC9klX/W5hD7iiLzScI4nZqUS7DNUdhPgw4xI8W2LuXlUw==}
+  follow-redirects@1.16.1:
+    resolution: {integrity: sha512-FNvFGzoMLWmE6Yj9spb/zjd7yiNCHiAW9/Tg9CXrQ8wuu32HtlJOwWO11OJafl5FfY3DxTdQ0vj42zU1kvv5jg==}
     engines: {node: '>=4.0'}
     peerDependencies:
       debug: '*'
@@ -5509,8 +5509,8 @@ packages:
   http-cache-semantics@4.1.1:
     resolution: {integrity: sha512-er295DKPVsV82j5kw1Gjt+ADA/XYHsajl82cGNQG2eyoPkvgUhX+nDIyelzhIWbbsXP39EHcI6l5tYs2FYqYXQ==}
 
-  http-proxy-3@2.0.1:
-    resolution: {integrity: sha512-CK9FEsoFko6wv5Y5+YvO6A0KANMZEXh7SvHjbne6zzQpih6qhTmA3xgS/5/QFlIF2HIFH5vZhtvk1Fk2udIsDw==}
+  http-proxy-3@2.0.2:
+    resolution: {integrity: sha512-JUeHVBJl3JhVvnXBi3JEcXpQaeAteidEwdeMQlp32d2o76/6trHtIz/rByB7DHsDOtUqG4QPZlW6zV9nIGjgkg==}
     engines: {node: '>=22'}
 
   http-proxy-agent@7.0.2:
@@ -6180,8 +6180,8 @@ packages:
   node-int64@0.4.0:
     resolution: {integrity: sha512-O5lz91xSOeoXP6DulyHfllpq+Eg00MWitZIbtPfoSEvqIHdl5gfcY6hYzDWnj0qD5tz52PI08u9qUvSVeUBeHw==}
 
-  node-pty@1.2.0-beta.15:
-    resolution: {integrity: sha512-vORSzHXi4Ofl7HemVWpuudLqCPdaQb4LfpRCUpE5HPxhp4JYscl8zZwxh11p26v2wvW24WMwnMfLjhRLixrfxA==}
+  node-pty@1.2.0-beta.17:
+    resolution: {integrity: sha512-GapdTQQjXyS9ICBgsnBG27Ltfkh3hzTbFcC8r1MxRLsTVyA/3/8z1Vu+DJSNWhtKjwfTjoSPyCN6hQ/fwxlh9A==}
 
   node-releases@2.0.27:
     resolution: {integrity: sha512-nmh3lCkYZ3grZvqcCH+fjmQ7X+H0OeZgP40OierEaAptX4XofMh5kwNbWh7lBduUzCcV/8kZ+NDLCwm2iorIlA==}
@@ -9977,7 +9977,7 @@ snapshots:
 
   fn.name@1.1.0: {}
 
-  follow-redirects@1.16.0(debug@4.4.3(supports-color@8.1.1)):
+  follow-redirects@1.16.1(debug@4.4.3(supports-color@8.1.1)):
     optionalDependencies:
       debug: 4.4.3(supports-color@8.1.1)
 
@@ -10165,10 +10165,10 @@ snapshots:
 
   http-cache-semantics@4.1.1: {}
 
-  http-proxy-3@2.0.1(supports-color@8.1.1):
+  http-proxy-3@2.0.2(supports-color@8.1.1):
     dependencies:
       debug: 4.4.3(supports-color@8.1.1)
-      follow-redirects: 1.16.0(debug@4.4.3(supports-color@8.1.1))
+      follow-redirects: 1.16.1(debug@4.4.3(supports-color@8.1.1))
     transitivePeerDependencies:
       - supports-color
 
@@ -10815,7 +10815,7 @@ snapshots:
 
   node-int64@0.4.0: {}
 
-  node-pty@1.2.0-beta.15:
+  node-pty@1.2.0-beta.17:
     dependencies:
       node-addon-api: 7.1.1
 

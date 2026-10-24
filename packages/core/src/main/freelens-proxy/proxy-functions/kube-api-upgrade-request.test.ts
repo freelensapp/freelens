@@ -108,7 +108,7 @@ describe("kube api upgrade requests", () => {
     expect(response.toString()).toBe("HTTP/1.1 101 Switching Protocols\r\n\r\n");
   });
 
-  it("does not carry the proxy token to the cluster, whatever the header case", async () => {
+  it("does not carry the proxy token or the frame origin to the cluster, whatever the header case", async () => {
     await kubeApiUpgradeRequest({
       req: {
         method: "GET",
@@ -121,6 +121,8 @@ describe("kube api upgrade requests", () => {
           "freelens_proxy_token=some-secret",
           "Authorization",
           "Bearer some-secret",
+          "Origin",
+          "https://some-cluster-id.renderer.freelens.app",
           "Connection",
           "Upgrade",
           "Upgrade",
@@ -144,6 +146,7 @@ describe("kube api upgrade requests", () => {
     expect(request).not.toMatch(/freelens_proxy_token|some-secret/);
     expect(request.toLowerCase()).not.toMatch(/\r\ncookie:/);
     expect(request.toLowerCase()).not.toMatch(/\r\nauthorization:/);
+    expect(request.toLowerCase()).not.toMatch(/\r\norigin:/);
     expect(request).toContain("Connection: Upgrade");
   });
 });

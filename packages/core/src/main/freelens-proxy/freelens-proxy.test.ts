@@ -8,6 +8,7 @@ import http from "node:http";
 import http2 from "node:http2";
 import https from "node:https";
 import tls from "node:tls";
+import { brotliCompressSync } from "node:zlib";
 import { loggerInjectionToken } from "@freelensapp/logger";
 import { Agent, fetch as undiciFetch } from "undici";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -422,8 +423,9 @@ describe("Freelens proxy kube api requests", () => {
   let port: number;
   let target: http2.Http2SecureServer;
   let targetSessions: http2.ServerHttp2Session[];
-  let targetReceived: { url?: string; host?: string; authorization?: string; httpVersion: string }[];
+  let targetReceived: { url?: string; host?: string; authorization?: string; origin?: string; httpVersion: string }[];
   let watchReceived: Promise<http2.Http2ServerRequest>;
+  let pendingReceived: Promise<http2.Http2ServerRequest>;
   let timeout: number | undefined;
   let agent: Agent;
   let logError: Mock;
@@ -444,11 +446,15 @@ describe("Freelens proxy kube api requests", () => {
     const di = getDiForUnitTesting();
 
     let receiveWatch: (req: http2.Http2ServerRequest) => void;
+    let receivePending: (req: http2.Http2ServerRequest) => void;
 
     targetReceived = [];
     targetSessions = [];
     watchReceived = new Promise((resolve) => {
       receiveWatch = resolve;
+    });
+    pendingReceived = new Promise((resolve) => {
+      receivePending = resolve;
     });
     timeout = undefined;
     target = http2.createSecureServer(
@@ -458,8 +464,22 @@ describe("Freelens proxy kube api requests", () => {
           url: req.url,
           host: req.headers[":authority"] ?? req.headers.host,
           authorization: req.headers.authorization,
+          origin: req.headers.origin,
           httpVersion: req.httpVersion,
         });
+
+        // A request the target has not answered yet, not even with its headers.
+        if (req.url.endsWith("/pending")) {
+          receivePending(req);
+
+          return;
+        }
+
+        if (req.url.endsWith("/brotli")) {
+          res.writeHead(200, { "content-encoding": "br" }).end(brotliCompressSync("some-brotli-body"));
+
+          return;
+        }
 
         if (req.url.endsWith("/aborted")) {
           res.writeHead(200).write("some-partial-body");
@@ -610,6 +630,16 @@ describe("Freelens proxy kube api requests", () => {
     expect(targetReceived).toEqual([]);
   });
 
+  it("does not forward the origin of a frame to the cluster", async () => {
+    const response = await getHttp1(port, "/api-kube/api/v1/pods", {
+      origin: "https://some-cluster-id.renderer.freelens.app",
+    });
+
+    expect(response.statusCode).toBe(200);
+    expect(targetReceived).toHaveLength(1);
+    expect(targetReceived[0].origin).toBeUndefined();
+  });
+
   it("forwards the request below the path of the target over HTTP/2, as a request for the target", async () => {
     const response = await getHttp1(port, "/api-kube/api/v1/pods");
 
@@ -678,6 +708,76 @@ describe("Freelens proxy kube api requests", () => {
     await Promise.all(Array.from({ length: 10 }, () => getHttp2(session, "/api-kube/api/v1/pods")));
 
     expect(targetSessions).toHaveLength(1);
+  });
+
+  it("keeps a watch open across a graceful GOAWAY of the target, and sends the next request over a new connection", async () => {
+    const session = await connectSession();
+    const watch = session.request({
+      ":path": "/api-kube/api/v1/pods?watch=true",
+      authorization: `Bearer ${proxyToken}`,
+    });
+
+    watch.on("error", () => {});
+    watch.setEncoding("utf8");
+
+    const req = await watchReceived;
+
+    // As freelens-k8s-proxy does when it shuts down or closes an idle
+    // connection: the streams it has already taken are still served.
+    targetSessions[0].goaway(http2.constants.NGHTTP2_NO_ERROR);
+
+    expect(await getHttp2(session, "/api-kube/api/v1/pods")).toEqual({ statusCode: 200, body: "some-body" });
+    expect(targetSessions).toHaveLength(2);
+
+    const event = once(watch, "data");
+
+    req.stream.write('{"type":"ADDED"}\n');
+
+    expect(await event).toEqual(['{"type":"ADDED"}\n']);
+  });
+
+  it.each([
+    ["drops its connection", (session: http2.ServerHttp2Session) => session.destroy()],
+    [
+      "sends a GOAWAY with an error",
+      (session: http2.ServerHttp2Session) => session.goaway(http2.constants.NGHTTP2_INTERNAL_ERROR),
+    ],
+  ])("answers a request in flight with 500 when the target %s, and serves the next one", async (_name, fail) => {
+    const session = await connectSession();
+    const pending = getHttp2(session, "/api-kube/api/v1/pending");
+
+    await pendingReceived;
+    fail(targetSessions[0]);
+
+    expect((await pending).statusCode).toBe(500);
+    expect(await getHttp2(session, "/api-kube/api/v1/pods")).toEqual({ statusCode: 200, body: "some-body" });
+    expect(session.closed || session.destroyed).toBe(false);
+  });
+
+  it("ends a watch when the target drops its connection, and not the session of the client", async () => {
+    const session = await connectSession();
+    const watch = session.request({
+      ":path": "/api-kube/api/v1/pods?watch=true",
+      authorization: `Bearer ${proxyToken}`,
+    });
+    const watchClosed = untilClosed(watch);
+
+    watch.resume();
+    await once(watch, "response");
+    targetSessions[0].destroy();
+    await watchClosed;
+
+    expect(session.closed || session.destroyed).toBe(false);
+    expect(await getHttp2(session, "/api-kube/api/v1/pods")).toEqual({ statusCode: 200, body: "some-body" });
+  });
+
+  it("refuses a response of the target encoded with Brotli, without decoding it (CVE-2026-111497)", async () => {
+    const session = await connectSession();
+    const response = await getHttp2(session, "/api-kube/api/v1/brotli");
+
+    expect(response.statusCode).toBe(500);
+    expect(response.body).not.toContain("some-brotli-body");
+    expect(response.body).toContain("CVE-2026-111497");
   });
 
   it("ends the response when the target aborts its own", async () => {

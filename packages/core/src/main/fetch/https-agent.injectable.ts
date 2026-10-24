@@ -7,6 +7,7 @@ import { getInjectable, type Injectable } from "@ogre-tools/injectable";
 import { Agent, ProxyAgent } from "undici";
 import caCertificatesInjectable from "../../common/certificate/ca-certificates.injectable";
 import userPreferencesStateInjectable from "../../features/user-preferences/common/state.injectable";
+import { refuseBrotli } from "./refuse-brotli";
 
 import type { Dispatcher } from "undici";
 
@@ -35,9 +36,10 @@ const httpsAgentInjectable: Injectable<HttpsAgent, unknown, void> = getInjectabl
 
         current = {
           key,
-          dispatcher: httpsProxy
+          dispatcher: (httpsProxy
             ? new ProxyAgent({ uri: httpsProxy, connect, proxyTls: connect })
-            : new Agent({ connect }),
+            : new Agent({ connect })
+          ).compose(refuseBrotli),
         };
       }
 

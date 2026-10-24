@@ -462,6 +462,11 @@ export class FreelensProxy {
 
     if (cluster && req.url.startsWith(apiKubePrefix)) {
       stripToken(req.headers);
+      // The `Origin` a frame's browser adds is checked above and means nothing
+      // to the cluster, which is not the origin of the page. A cluster behind a
+      // gateway such as the GitLab agent server refuses an origin it does not
+      // know, so it is not forwarded.
+      delete req.headers.origin;
       req.url = req.url.replace(apiKubePrefix, "");
 
       // A cluster the user has not connected gets no proxy process started for
