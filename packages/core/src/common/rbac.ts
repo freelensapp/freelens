@@ -42,6 +42,8 @@ export type KubeResource =
   | "rolebindings"
   | "clusterrolebindings"
   | "serviceaccounts"
+  | "mutatingadmissionpolicies"
+  | "mutatingadmissionpolicybindings"
   | "mutatingwebhookconfigurations"
   | "validatingadmissionpolicies"
   | "validatingadmissionpolicybindings"
@@ -154,6 +156,16 @@ export const apiResourceRecord: Record<KubeResource, KubeApiResourceData> = {
     kind: "Lease",
     group: "",
     namespaced: true,
+  },
+  mutatingadmissionpolicies: {
+    kind: "MutatingAdmissionPolicy",
+    group: "admissionregistration.k8s.io",
+    namespaced: false,
+  },
+  mutatingadmissionpolicybindings: {
+    kind: "MutatingAdmissionPolicyBinding",
+    group: "admissionregistration.k8s.io",
+    namespaced: false,
   },
   mutatingwebhookconfigurations: {
     kind: "MutatingWebhookConfiguration",
