@@ -76,7 +76,7 @@ exports[`preferences - navigation to proxy preferences > given in preferences, w
         id="lens-views"
       />
       <div
-        class="SettingLayout showNavigation Preferences"
+        class="SettingLayout showNavigation withCloseButton Preferences"
       >
         <nav
           class="sidebarRegion"
@@ -866,7 +866,7 @@ exports[`preferences - navigation to proxy preferences > given in preferences, w
         id="lens-views"
       />
       <div
-        class="SettingLayout showNavigation Preferences"
+        class="SettingLayout showNavigation withCloseButton Preferences"
       >
         <nav
           class="sidebarRegion"

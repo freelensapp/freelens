@@ -77,7 +77,7 @@ exports[`preferences: extension adding preference tabs > given in preferences, w
           id="lens-views"
         />
         <div
-          class="SettingLayout showNavigation Preferences"
+          class="SettingLayout showNavigation withCloseButton Preferences"
         >
           <nav
             class="sidebarRegion"
