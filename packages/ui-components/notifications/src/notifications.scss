@@ -6,11 +6,6 @@
 
 $color-white: rgb(255, 255, 255);
 
-// Below the close button of settings-like pages (Extensions, Preferences),
-// which sits 60px from the top and is followed by its "ESC" label, so a
-// notification that does not hide on its own never covers it.
-$top-offset: 120px;
-
 @mixin hidden-scrollbar {
   overflow: auto;
   // Chrome, Safari
@@ -29,9 +24,9 @@ $top-offset: 120px;
   align-items: flex-end;
   position: absolute;
   right: 0;
-  top: $top-offset;
+  top: 0;
   padding: 8px * 2;
-  max-height: calc(100vh - #{$top-offset});
+  max-height: 100vh;
   z-index: 100000;
   height: min-content !important;
 
