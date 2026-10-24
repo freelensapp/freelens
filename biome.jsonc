@@ -26,7 +26,16 @@
     }
   },
   "files": {
-    "includes": ["**", "!**/.trunk/**", "!**/build/**", "!**/dist/**", "**/build/*.{js,cjs,mjs}"]
+    // Markdown is left to markdownlint and YAML to yamlfmt and yamllint.
+    "includes": [
+      "**",
+      "!**/.trunk/**",
+      "!**/build/**",
+      "!**/dist/**",
+      "**/build/*.{js,cjs,mjs}",
+      "!**/*.md",
+      "!**/*.{yaml,yml}"
+    ]
   },
   "formatter": {
     "attributePosition": "auto",
