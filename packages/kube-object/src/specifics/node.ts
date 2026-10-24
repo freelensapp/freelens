@@ -45,6 +45,30 @@ const masterNodeLabels = ["master", "control-plane"];
  */
 const nodeRoleLabelKeyMatcher = /^.*node-role.kubernetes.io\/+(?<role>.+)$/;
 
+/**
+ * Node condition types that mean a problem when their status is `"True"`.
+ *
+ * This is an allowlist of known-bad conditions rather than a blocklist of good
+ * ones, because custom conditions have no common polarity: some are positive
+ * when `"True"` (k3s sets `EtcdIsVoter` on every healthy etcd voting member).
+ * Covers the kubelet's built-in negative conditions and the ones that
+ * node-problem-detector reports.
+ */
+const nodeProblemConditions = [
+  // kubelet built-in conditions
+  "MemoryPressure",
+  "DiskPressure",
+  "PIDPressure",
+  "NetworkUnavailable",
+  // node-problem-detector conditions
+  "KernelDeadlock",
+  "ReadonlyFilesystem",
+  "FrequentKubeletRestart",
+  "FrequentDockerRestart",
+  "FrequentContainerdRestart",
+  "CorruptDockerOverlay2",
+];
+
 export interface NodeSpec {
   podCIDR?: string;
   podCIDRs?: string[];
@@ -227,10 +251,8 @@ export class Node extends KubeObject<ClusterScopedMetadata, NodeStatus, NodeSpec
   }
 
   getWarningConditions() {
-    const goodConditions = ["Ready", "HostUpgrades", "SchedulingDisabled"];
-
     return this.getActiveConditions().filter((condition) => {
-      return !goodConditions.includes(condition.type);
+      return nodeProblemConditions.includes(condition.type);
     });
   }
 
