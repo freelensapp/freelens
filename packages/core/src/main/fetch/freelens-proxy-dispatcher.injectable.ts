@@ -8,6 +8,7 @@ import freelensProxyCertificateInjectable from "../../common/certificate/freelen
 import { freelensProxyDispatcherInjectionToken } from "../../common/fetch/freelens-proxy-dispatcher-injection-token";
 import freelensProxyTokenInjectable from "../freelens-proxy/freelens-proxy-token.injectable";
 import { getFreelensProxyAgent, withBearerToken } from "./freelens-proxy-agent";
+import { refuseBrotli } from "./refuse-brotli";
 
 import type { Dispatcher } from "undici";
 
@@ -21,7 +22,10 @@ const freelensProxyDispatcherInjectable = getInjectable({
     let dispatcher: Dispatcher | undefined;
 
     return () =>
-      (dispatcher ??= getFreelensProxyAgent(freelensProxyCertificate.get().cert).compose(withBearerToken(token.value)));
+      (dispatcher ??= getFreelensProxyAgent(freelensProxyCertificate.get().cert).compose(
+        withBearerToken(token.value),
+        refuseBrotli,
+      ));
   },
   injectionToken: freelensProxyDispatcherInjectionToken,
 });
