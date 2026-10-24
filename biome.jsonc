@@ -38,7 +38,10 @@
     }
   },
   "files": {
-    // Markdown is left to markdownlint and YAML to yamlfmt and yamllint.
+    // Markdown is left to markdownlint. The Kubernetes manifests of the
+    // resource templates keep their sequences unindented, which Biome cannot
+    // do, so yamlfmt formats them with the .yamlfmt.yaml of their directory.
+    // pnpm writes its own lockfile and workspace file.
     "includes": [
       "**",
       "!**/.trunk/**",
@@ -46,7 +49,9 @@
       "!**/dist/**",
       "**/build/*.{js,cjs,mjs}",
       "!**/*.md",
-      "!**/*.{yaml,yml}"
+      "!**/packages/resource-templates/templates/**",
+      "!**/pnpm-lock.yaml",
+      "!**/pnpm-workspace.yaml"
     ]
   },
   "formatter": {
@@ -357,5 +362,12 @@
     "clientKind": "git",
     "enabled": true,
     "useIgnoreFile": true
+  },
+  "yaml": {
+    "formatter": {
+      // Flow sequences stay [a, b], as yamlfmt left them; the global
+      // bracketSpacing is meant for JavaScript objects.
+      "bracketSpacing": false
+    }
   }
 }

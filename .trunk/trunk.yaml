@@ -83,6 +83,7 @@ lint:
         - json
         - sass
         - typescript
+        - yaml
       commands:
         - output: regex
           success_codes:
@@ -130,6 +131,19 @@ lint:
     - svgo
     - trufflehog
   ignore:
+    # Biome formats YAML, except the Kubernetes manifests of the resource
+    # templates, whose sequences stay unindented as kubectl writes them. Biome
+    # cannot do that, so yamlfmt formats only those, with the .yamlfmt.yaml of
+    # their directory.
+    - linters:
+        - yamlfmt
+      paths:
+        - "**"
+        - "!packages/resource-templates/templates/**"
+    - linters:
+        - biome
+      paths:
+        - packages/resource-templates/templates/**
     # Vitest/testing-library snapshots are generated artifacts whose DOM
     # serializer emits whitespace-only lines (e.g. indented empty elements and
     # inline SVG <style> blocks). git-diff-check only flags such lines when they

@@ -8,8 +8,8 @@ on:
     branches:
       - main
     paths:
-      - '**/package.json'
-      - '**/pnpm-lock.yaml'
+      - "**/package.json"
+      - "**/pnpm-lock.yaml"
   schedule:
     - cron: 46 6 * * *
   workflow_dispatch: {}
