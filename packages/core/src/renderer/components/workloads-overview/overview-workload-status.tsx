@@ -36,7 +36,7 @@ interface Dependencies {
   activeTheme: IComputedValue<LensTheme>;
 }
 
-const statusBackgroundColorMapping = {
+export const statusBackgroundColorMapping = {
   running: "colorOk",
   scheduled: "colorOk",
   pending: "colorWarning",

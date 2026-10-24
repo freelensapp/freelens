@@ -34,6 +34,45 @@ interface Dependencies {
   activeTheme: IComputedValue<LensTheme>;
 }
 
+// v2 interface (themes with `uiV2`): smooth lines in the theme's colors. The two legacy series colors
+// shared by the metric charts follow the theme; series-specific colors are kept so they stay distinct.
+// Datasets with a `borderDash` are reference lines (requests, allocatable): thin, unfilled, no points.
+const legacySeriesColor = (color: unknown, theme: LensTheme): unknown => {
+  if (typeof color !== "string" || !theme.uiV2) {
+    return color;
+  }
+
+  switch (color.toLowerCase()) {
+    case "#00a7a0":
+      return theme.uiV2.accent;
+    case "#c93dce":
+      return theme.colors.magenta;
+    default:
+      return color;
+  }
+};
+
+const toV2LineDataset = <T extends Record<string, unknown>>(dataset: T, theme: LensTheme): T => {
+  const color = legacySeriesColor(dataset.borderColor, theme);
+  const isReference = Array.isArray(dataset.borderDash);
+  const fillColor = typeof color === "string" ? Color(color).alpha(0.12).string() : undefined;
+
+  return {
+    ...dataset,
+    type: ChartKind.LINE,
+    stepped: false,
+    tension: 0.3,
+    borderColor: color,
+    borderWidth: isReference ? 1.5 : 2,
+    backgroundColor: isReference ? "transparent" : fillColor,
+    fill: !isReference,
+    pointRadius: 0,
+    pointHoverRadius: isReference ? 0 : 3,
+    barPercentage: undefined,
+    categoryPercentage: undefined,
+  };
+};
+
 const ONE_HOUR_SECONDS = 60 * 60;
 const ONE_DAY_SECONDS = 24 * ONE_HOUR_SECONDS;
 const FOUR_DAYS_SECONDS = 4 * ONE_DAY_SECONDS;
@@ -142,7 +181,8 @@ const NonInjectedBarChart = observer(
     options: customOptions,
     ...settings
   }: Dependencies & BarChartProps) => {
-    const { textColorPrimary, borderFaintColor, chartStripesColor } = activeTheme.get().colors;
+    const theme = activeTheme.get();
+    const { textColorPrimary, borderFaintColor, chartStripesColor } = theme.colors;
     const { datasets: rawDatasets = [], ...rest } = data;
     const timeRangeSeconds = maxTime && minTime ? maxTime - minTime : 3600;
     const timeUnit = getBarChartTimeUnit(timeRangeSeconds);
@@ -165,7 +205,8 @@ const NonInjectedBarChart = observer(
         fill: useSteppedStyle,
         backgroundColor: useSteppedStyle ? getBarColor({ dataset: item } as never) : undefined,
         ...item,
-      }));
+      }))
+      .map((dataset) => (theme.uiV2 ? toV2LineDataset(dataset, theme) : dataset));
 
     plugins ??= [
       new ZebraStripesPlugin({

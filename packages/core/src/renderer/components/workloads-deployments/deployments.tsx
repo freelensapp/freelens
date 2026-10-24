@@ -16,6 +16,7 @@ import { KubeObjectListLayout } from "../kube-object-list-layout";
 import { SiblingsInTabLayout } from "../layout/siblings-in-tab-layout";
 import { NamespaceSelectBadge } from "../namespaces/namespace-select-badge";
 import { WithTooltip } from "../with-tooltip";
+import { ReadyReplicas } from "./ready-replicas";
 import deploymentStoreInjectable from "./store.injectable";
 
 import type { Deployment } from "@freelensapp/kube-object";
@@ -99,7 +100,11 @@ class NonInjectedDeployments extends React.Component<Dependencies> {
             <WithTooltip>{deployment.getName()}</WithTooltip>,
             <NamespaceSelectBadge key="namespace" namespace={deployment.getNs()} />,
             getReplicas(deployment),
-            deployment.status?.readyReplicas || 0,
+            <ReadyReplicas
+              key="ready"
+              ready={deployment.status?.readyReplicas || 0}
+              desired={deployment.getReplicas()}
+            />,
             deployment.getReplicas(),
             deployment.status?.updatedReplicas || 0,
             deployment.status?.availableReplicas || 0,

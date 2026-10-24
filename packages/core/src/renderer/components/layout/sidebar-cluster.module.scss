@@ -95,3 +95,32 @@
     width: 0;
   }
 }
+
+// v2 interface (themes with `uiV2`, see ../ui-v2.scss)
+:global(body.ui-v2) {
+  .SidebarCluster {
+    min-height: 56px;
+    box-sizing: border-box;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--borderFaintColor);
+
+    &:hover {
+      background: var(--sidebarItemHoverBackground);
+    }
+
+    .dropdown {
+      border-radius: 6px;
+      color: var(--textColorDimmed);
+    }
+  }
+
+  .clusterName {
+    font-weight: 600;
+    color: var(--v2-text-strong);
+  }
+
+  .avatar {
+    border-radius: 8px;
+    margin-right: 10px;
+  }
+}
