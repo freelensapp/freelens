@@ -3592,15 +3592,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="install-controls flex gap-2 items-center"
                   >
                     <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
-                    <span>
                       Version
                     </span>
                     <div
@@ -4817,15 +4808,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="install-controls flex gap-2 items-center"
                   >
                     <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
-                    <span>
                       Version
                     </span>
                     <div
@@ -6011,15 +5993,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="install-controls flex gap-2 items-center"
                   >
                     <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
-                    <span>
                       Version
                     </span>
                     <div
@@ -7200,15 +7173,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="install-controls flex gap-2 items-center"
                   >
                     <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
-                    <span>
                       Version
                     </span>
                     <div
@@ -8388,15 +8352,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   <div
                     class="install-controls flex gap-2 items-center"
                   >
-                    <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
                     <span>
                       Version
                     </span>
@@ -9599,15 +9554,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   <div
                     class="install-controls flex gap-2 items-center"
                   >
-                    <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
                     <span>
                       Version
                     </span>
@@ -10825,15 +10771,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="install-controls flex gap-2 items-center"
                   >
                     <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
-                    <span>
                       Version
                     </span>
                     <div
@@ -12013,15 +11950,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   <div
                     class="install-controls flex gap-2 items-center"
                   >
-                    <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
                     <span>
                       Version
                     </span>
@@ -16330,15 +16258,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="install-controls flex gap-2 items-center"
                   >
                     <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
-                    <span>
                       Version
                     </span>
                     <div
@@ -18792,15 +18711,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="install-controls flex gap-2 items-center"
                   >
                     <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-other-name
-                    </div>
-                    <span>
                       Version
                     </span>
                     <div
@@ -20035,15 +19945,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="install-controls flex gap-2 items-center"
                   >
                     <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
-                    <span>
                       Version
                     </span>
                     <div
@@ -21224,15 +21125,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                     class="install-controls flex gap-2 items-center"
                   >
                     <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
-                    <span>
                       Version
                     </span>
                     <div
@@ -22412,15 +22304,6 @@ exports[`installing helm chart from new tab > given tab for installing chart was
                   <div
                     class="install-controls flex gap-2 items-center"
                   >
-                    <span>
-                      Chart
-                    </span>
-                    <div
-                      class="badge"
-                      title="Repo/Name"
-                    >
-                      some-repository/some-name
-                    </div>
                     <span>
                       Version
                     </span>
