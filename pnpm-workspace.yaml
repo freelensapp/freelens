@@ -113,7 +113,7 @@ catalog:
   marked: 18.1.1
   mobx-utils: 6.1.1
   monaco-editor: 0.57.0
-  node-pty: 1.2.0-beta.17
+  node-pty: 1.2.0-beta.18
   openpgp: 6.3.2
   proper-lockfile: 4.1.2
   react-select: 5.10.2
