@@ -26,6 +26,11 @@
     }
   },
   "css": {
+    "formatter": {
+      // Biome does not indent the continuation lines of a custom property
+      // value, so a long one reads better on a single line.
+      "lineWidth": 130
+    },
     "parser": {
       // The core stylesheets use Tailwind v4 at-rules: @apply, @config,
       // @custom-variant and @reference.
