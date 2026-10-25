@@ -58,7 +58,6 @@ lint:
           formatter: true
           batch: true
           in_place: true
-
     # See https://github.com/trunk-io/plugins/pull/1063
     # parse_regex is matched against the whole output of a batch, so `^`
     # needs `(?m)` to match at every line; without it Trunk reports only the
