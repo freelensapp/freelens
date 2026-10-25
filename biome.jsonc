@@ -38,18 +38,17 @@
     }
   },
   "files": {
-    // Markdown is left to markdownlint. The Kubernetes manifests of the
-    // resource templates keep their sequences unindented, which Biome cannot
-    // do, so yamlfmt formats them with the .yamlfmt.yaml of their directory.
-    // pnpm writes its own lockfile and workspace file, and Trunk rewrites its
-    // own .trunk/trunk.yaml on every trunk upgrade.
+    // The Kubernetes manifests of the resource templates keep their sequences
+    // unindented, which Biome cannot do, so yamlfmt formats them with the
+    // .yamlfmt.yaml of their directory. pnpm writes its own lockfile and
+    // workspace file, and Trunk rewrites its own .trunk/trunk.yaml on every
+    // trunk upgrade.
     "includes": [
       "**",
       "!**/.trunk/**",
       "!**/build/**",
       "!**/dist/**",
       "**/build/*.{js,cjs,mjs}",
-      "!**/*.md",
       "!**/packages/resource-templates/templates/**",
       "!**/pnpm-lock.yaml",
       "!**/pnpm-workspace.yaml"
@@ -103,6 +102,12 @@
         // should be error later
         "noUnusedVariables": "off",
         "useExhaustiveDependencies": "off"
+      },
+      "nursery": {
+        // Markdown
+        "useConsistentHeadingLevel": "error",
+        "useFencedCodeLanguage": "error",
+        "useSingleTopLevelHeading": "error"
       },
       "preset": "none",
       "style": {
