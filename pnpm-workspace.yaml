@@ -191,6 +191,14 @@ overrides:
   # override at the catalog rewrites that peer to the pinned version, without
   # resolving to anything newer than the pin.
   mobx-react: 'catalog:'
+  # monaco-editor pins dompurify 3.4.15, which GHSA-cg2g-xh64-v4q7 affects, and
+  # also vendors a copy of it that its sanitizer imports instead of the
+  # package. The patch of patchedDependencies points that import at the
+  # package, and this override puts the package on the catalog's version, so
+  # the renderer bundles one DOMPurify, the fixed one. Remove both when a
+  # monaco-editor release ships DOMPurify 3.4.17 or newer; the patch is keyed
+  # by the exact version, so a monaco-editor bump reports it as unused.
+  monaco-editor>dompurify: 'catalog:'
   tmp@^0.2.0: ^0.2.7
 
 peerDependencyRules:
@@ -214,5 +222,6 @@ peerDependencyRules:
 patchedDependencies:
   '@async-fn/vitest': patches/@async-fn__vitest.patch
   '@xterm/xterm@6.0.0': patches/@xterm__xterm@6.0.0.patch
+  monaco-editor@0.57.0: patches/monaco-editor@0.57.0.patch
 
 shellEmulator: true
