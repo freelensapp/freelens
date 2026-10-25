@@ -6,9 +6,6 @@ base repository, next to `AGENTS.md`, and append both to the agent's system
 prompt, so neither comes from the tree under review. A local session does not
 load this file; `AGENTS.md` applies to both.
 
-When operating via the `claude.yaml` workflow (i.e., invoked from a PR comment,
-issue, or review), follow these rules:
-
 ## Code Review
 
 When reviewing code and proposing fixes:
