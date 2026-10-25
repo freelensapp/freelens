@@ -27,7 +27,7 @@
 #     write token and an OIDC token, and anything the fork runs here could
 #     take them. Nothing is edited, committed or pushed either: a fork pull
 #     request that needs changes is first copied to a branch here by a
-#     maintainer (see "Fork PRs: Review Only" in AGENTS.md).
+#     maintainer (see "Fork PRs: Review Only" in .github/claude/ci-agent.md).
 #
 # Jobs:
 #   1. parse – always ubuntu-26.04-arm, parses [model:xxx], [effort:xxx] and [runs-on:xxx]
@@ -292,7 +292,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      # Everything from here to the AGENTS.md step runs code from the checked
+      # Everything from here to the agent rules step runs code from the checked
       # out tree (.nvmrc, packageManager, .pnpmfile.cjs, lifecycle scripts,
       # .trunk/trunk.yaml), so it is skipped for a fork pull request.
 
@@ -381,14 +381,20 @@ jobs:
         continue-on-error: true
 
       # Fetched by URL from the base repository, so the system prompt never
-      # comes from the tree under review.
-      - name: Use the latest AGENTS.md
+      # comes from the tree under review. AGENTS.md holds the rules for every
+      # agent, .github/claude/ci-agent.md the ones for this workflow only. A
+      # missing file fails the step rather than running without those rules.
+      - name: Use the latest agent rules
         shell: bash
         run: |
           git fetch --no-tags "${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}.git" main
-          git show FETCH_HEAD:AGENTS.md > /tmp/AGENTS.md 2>/dev/null || touch /tmp/AGENTS.md
+          {
+            git show FETCH_HEAD:AGENTS.md
+            echo
+            git show FETCH_HEAD:.github/claude/ci-agent.md
+          } > /tmp/agent-rules.md
           if [ "$IS_FORK" = "true" ]; then
-            cat >> /tmp/AGENTS.md <<'EOF'
+            cat >> /tmp/agent-rules.md <<'EOF'
 
           ## Review Mode: Pull Request from a Fork
 
@@ -418,7 +424,7 @@ jobs:
             --fallback-model claude-opus-5
             --max-turns 400
             --allowedTools "Read" "Write" "Edit" "Glob" "Grep" "Task" "WebSearch" "WebFetch" "BashOutput" "KillShell" "Bash(trunk:*)" "Bash(mise:*)" "Bash(bash:*)" "Bash(pnpm:*)" "Bash(npx:*)" "Bash(node:*)" "Bash(git:*)" "Bash(gh:*)" "Bash(yq:*)" "Bash(jq:*)" "Bash(grep:*)" "Bash(rg:*)" "Bash(sed:*)" "Bash(awk:*)" "Bash(cut:*)" "Bash(tr:*)" "Bash(sort:*)" "Bash(uniq:*)" "Bash(cat:*)" "Bash(head:*)" "Bash(tail:*)" "Bash(wc:*)" "Bash(find:*)" "Bash(xargs:*)" "Bash(ls:*)" "Bash(tree:*)" "Bash(mkdir:*)" "Bash(touch:*)" "Bash(cp:*)" "Bash(mv:*)" "Bash(rm:*)" "Bash(tee:*)" "Bash(echo:*)"
-            --append-system-prompt-file /tmp/AGENTS.md
+            --append-system-prompt-file /tmp/agent-rules.md
 
       # Review mode for a fork pull request. --setting-sources user keeps
       # Claude Code from loading .claude/settings.json (hooks, permissions)
@@ -446,7 +452,7 @@ jobs:
             --setting-sources user
             --allowedTools "Read" "Glob" "Grep" "Task" "mcp__github_inline_comment__create_inline_comment" "Bash(git diff:*)" "Bash(git log:*)" "Bash(git show:*)" "Bash(git status:*)" "Bash(gh pr view:*)" "Bash(gh pr diff:*)" "Bash(jq:*)" "Bash(cut:*)" "Bash(tr:*)" "Bash(sort:*)" "Bash(uniq:*)" "Bash(cat:*)" "Bash(head:*)" "Bash(tail:*)" "Bash(wc:*)" "Bash(ls:*)" "Bash(tree:*)"
             --disallowedTools "Edit" "Write" "MultiEdit" "NotebookEdit" "Bash(git add:*)" "Bash(git commit:*)" "Bash(git rm:*)" "Bash(git push:*)" "Bash(*git-push.sh*)" "Bash(mkdir:*)" "Bash(touch:*)" "Bash(cp:*)" "Bash(mv:*)" "Bash(rm:*)" "Bash(rmdir:*)" "Bash(sed:*)"
-            --append-system-prompt-file /tmp/AGENTS.md
+            --append-system-prompt-file /tmp/agent-rules.md
 
   # ── Last resort: if the main claude job failed or timed out, re-run Claude to
   #    analyze WHY it failed and update the PR/issue. Feedback only — it must not

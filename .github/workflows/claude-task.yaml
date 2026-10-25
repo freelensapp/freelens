@@ -159,7 +159,8 @@ jobs:
 
           After making changes, create a new branch (prefix claude/) for the
           changes, commit, push to origin, and open a pull request. Follow the
-          rules in AGENTS.md (no Conventional Commits prefixes, no emoji)."
+          rules in .github/claude/ci-agent.md (no Conventional Commits
+          prefixes, no emoji)."
           fi
           # A random delimiter, so that a line of the prompt cannot close the
           # block early and write further outputs.
@@ -218,11 +219,18 @@ jobs:
           PROMPT_INPUT: ${{ github.event.inputs.prompt || '' }}
           MODEL_INPUT: ${{ github.event.inputs.model || '' }}
 
-      - name: Use the latest AGENTS.md
+      # AGENTS.md holds the rules for every agent, .github/claude/ci-agent.md
+      # the ones for the workflow agents only. A missing file fails the step
+      # rather than running without those rules.
+      - name: Use the latest agent rules
         shell: bash
         run: |
           git fetch origin main
-          git show origin/main:AGENTS.md > /tmp/AGENTS.md 2>/dev/null || touch /tmp/AGENTS.md
+          {
+            git show origin/main:AGENTS.md
+            echo
+            git show origin/main:.github/claude/ci-agent.md
+          } > /tmp/agent-rules.md
 
       - name: Run Claude Code
         uses: anthropics/claude-code-action@v1
@@ -234,4 +242,4 @@ jobs:
             --fallback-model claude-opus-5
             --max-turns 100
             --allowedTools "Read" "Write" "Edit" "Glob" "Grep" "Task" "WebSearch" "WebFetch" "BashOutput" "KillShell" "Bash(trunk:*)" "Bash(mise:*)" "Bash(bash:*)" "Bash(pnpm:*)" "Bash(npx:*)" "Bash(node:*)" "Bash(git:*)" "Bash(gh:*)" "Bash(yq:*)" "Bash(jq:*)" "Bash(grep:*)" "Bash(rg:*)" "Bash(sed:*)" "Bash(awk:*)" "Bash(cut:*)" "Bash(tr:*)" "Bash(sort:*)" "Bash(uniq:*)" "Bash(cat:*)" "Bash(head:*)" "Bash(tail:*)" "Bash(wc:*)" "Bash(find:*)" "Bash(xargs:*)" "Bash(ls:*)" "Bash(tree:*)" "Bash(mkdir:*)" "Bash(touch:*)" "Bash(cp:*)" "Bash(mv:*)" "Bash(rm:*)" "Bash(tee:*)" "Bash(echo:*)"
-            --append-system-prompt-file /tmp/AGENTS.md
+            --append-system-prompt-file /tmp/agent-rules.md
