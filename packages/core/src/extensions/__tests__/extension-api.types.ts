@@ -41,6 +41,7 @@ type Holds<T extends true> = T;
 export type CommonManifest = Common.LensExtensionManifest;
 export type CommonPackageJson = Common.PackageJson;
 export type CommonLogger = Common.Logger;
+export type CommonCredentialsApi = Common.CredentialsApi;
 export type CommonInstalledExtension = Common.InstalledExtension;
 export type CommonCluster = Common.Catalog.KubernetesCluster;
 export type CommonCatalogEntity = Common.Catalog.CatalogEntity;

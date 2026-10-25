@@ -53,6 +53,7 @@ v2 without a line of code being written.
 
 ## What changed, and why
 
+- **Encrypted credentials.** Use [`Common.Credentials`](./credentials.md) for small secrets in either process; existing plain stores are not migrated automatically.
 - **ESM-first.** The application main process, renderer, and the extension API
   are all ES modules. A **main** entry may be authored as ESM or CommonJS —
   both are accepted, and both load from a real file path. A **renderer** entry
@@ -718,7 +719,7 @@ This is what each namespace provides in v2:
 
 | Namespace | Members |
 | --- | --- |
-| `Common` | `App`, `Catalog`, `Clusters`, `EventBus`, `Proxy`, `Store`, `Types`, `Util`, `logger`; types `InstalledExtension`, `LensExtension`, `LensExtensionManifest`, `Logger`, `PackageJson` |
+| `Common` | `App`, `Catalog`, `Clusters`, `Credentials`, `EventBus`, `Proxy`, `Store`, `Types`, `Util`, `logger`; types `CredentialsApi`, `InstalledExtension`, `LensExtension`, `LensExtensionManifest`, `Logger`, `PackageJson` |
 | `Main` | `Catalog`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Power`, `Shell`, `Util` |
 | `Renderer` | `Catalog`, `Component`, `Ipc`, `K8s`, `K8sApi`, `LensExtension`, `Navigation`, `Theme`, `Util` |
 
