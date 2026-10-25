@@ -91,7 +91,7 @@ catalog:
   arg: 5.0.2
   auto-bind: 5.0.1
   chalk: 6.0.1
-  chart.js: 4.5.1
+  chart.js: 4.6.1
   chokidar: 5.0.0
   cli-progress: 3.12.0
   color: 5.0.3
@@ -148,7 +148,7 @@ catalogs:
   extensions:
     '@types/react': ^19.3.0
     '@types/react-dom': ^19.3.0
-    chart.js: ^4.5.1
+    chart.js: ^4.6.1
     conf: ^16.0.0
     es-toolkit: ^1.52.0
     immer: ^11.1.21
