@@ -400,8 +400,8 @@ jobs:
           done
           exit $status
         env:
-          # helm and freelens-k8s-proxy already need 13.0 while Electron
-          # declares 12.0, hence the warning above.
+          # Electron declares 13.0, and helm and freelens-k8s-proxy need the
+          # same.
           MACOS_MIN_VERSION: "13.0"
 
       - name: Notarize PKG (macOS)

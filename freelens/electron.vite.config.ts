@@ -159,7 +159,6 @@ const nodeBuiltins = new Set([...builtinModules, ...builtinModules.map((m) => `n
 // vite-plugin-electron-renderer did.
 const electronApiNames = [
   // Renderer-process modules
-  "clipboard",
   "contextBridge",
   "crashReporter",
   "ipcRenderer",
@@ -174,6 +173,7 @@ const electronApiNames = [
   "BaseWindow",
   "BrowserView",
   "BrowserWindow",
+  "clipboard",
   "contentTracing",
   "desktopCapturer",
   "dialog",
