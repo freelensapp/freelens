@@ -21,7 +21,7 @@
 [![Trunk Check](https://github.com/freelensapp/freelens/actions/workflows/trunk-check.yaml/badge.svg?branch=main)](https://github.com/freelensapp/freelens/actions/workflows/trunk-check.yaml)
 
 
-<img alt="Freelens logo" src="docs/images/logo.svg" width="76" align="left">
+<img alt="Freelens logo" src="docs/images/logo.svg" width="110" align="left">
 
 [Freelens](https://freelens.app) is a free and open-source user interface
 designed for managing Kubernetes clusters. It provides a standalone
