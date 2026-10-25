@@ -21,6 +21,8 @@
 [![Trunk Check](https://github.com/freelensapp/freelens/actions/workflows/trunk-check.yaml/badge.svg?branch=main)](https://github.com/freelensapp/freelens/actions/workflows/trunk-check.yaml)
 
 
+<img alt="Freelens logo" src="docs/images/logo.svg" width="76" align="left">
+
 [Freelens](https://freelens.app) is a free and open-source user interface
 designed for managing Kubernetes clusters. It provides a standalone
 application compatible with macOS, Windows, and Linux operating systems,
@@ -28,7 +30,13 @@ making it accessible to a wide range of users. The application aims to
 simplify the complexities of Kubernetes management by offering an intuitive
 and user-friendly interface.
 
-![Screenshot](freelens/build/screenshots/main.png)
+<br clear="left">
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/images/macos-pods-dark.jpg">
+  <source media="(prefers-color-scheme: light)" srcset="docs/images/macos-pods-light.jpg">
+  <img alt="Screenshot" src="docs/images/macos-pods-light.jpg">
+</picture>
 
 ## Requirements
 
