@@ -243,3 +243,9 @@ jobs:
             --max-turns 100
             --allowedTools "Read" "Write" "Edit" "Glob" "Grep" "Task" "WebSearch" "WebFetch" "BashOutput" "KillShell" "Bash(trunk:*)" "Bash(mise:*)" "Bash(bash:*)" "Bash(pnpm:*)" "Bash(npx:*)" "Bash(node:*)" "Bash(git:*)" "Bash(gh:*)" "Bash(yq:*)" "Bash(jq:*)" "Bash(grep:*)" "Bash(rg:*)" "Bash(sed:*)" "Bash(awk:*)" "Bash(cut:*)" "Bash(tr:*)" "Bash(sort:*)" "Bash(uniq:*)" "Bash(cat:*)" "Bash(head:*)" "Bash(tail:*)" "Bash(wc:*)" "Bash(find:*)" "Bash(xargs:*)" "Bash(ls:*)" "Bash(tree:*)" "Bash(mkdir:*)" "Bash(touch:*)" "Bash(cp:*)" "Bash(mv:*)" "Bash(rm:*)" "Bash(tee:*)" "Bash(echo:*)"
             --append-system-prompt-file /tmp/agent-rules.md
+        # The agent rules come from main through the system prompt, so the
+        # CLAUDE.md of the checkout, which imports AGENTS.md, would only load
+        # them a second time. The variable skips every CLAUDE.md, and AGENTS.md
+        # is not read in its place, while .claude/settings.json still applies.
+        env:
+          CLAUDE_CODE_DISABLE_CLAUDE_MDS: "1"
