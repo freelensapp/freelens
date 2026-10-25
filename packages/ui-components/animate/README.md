@@ -1,6 +1,6 @@
 # @freelensapp/animate
 
-This package contains stuff related to creating Lens-applications. 
+This package contains stuff related to creating Lens-applications.
 
 ## Usage
 

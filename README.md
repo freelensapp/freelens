@@ -1,7 +1,5 @@
 # Freelens
 
-<!-- markdownlint-disable MD013 -->
-
 [![Home](https://img.shields.io/badge/%F0%9F%8F%A0-freelens.app-02a7a0)](https://freelens.app)
 [![GitHub](https://img.shields.io/github/stars/freelensapp/freelens?style=flat&label=GitHub%20%E2%AD%90&logo=github)](https://github.com/freelensapp/freelens)
 [![Discord](https://img.shields.io/badge/dynamic/json?color=blue&label=Discord&style=flat&query=approximate_member_count&url=https%3A%2F%2Fdiscordapp.com%2Fapi%2Finvites%2F%2FNjKZERK95Y%3Fwith_counts%3Dtrue&logo=discord)](https://discord.gg/NjKZERK95Y)
@@ -13,8 +11,7 @@
 [![release](https://img.shields.io/github/v/release/freelensapp/freelens?display_name=tag&sort=semver)](https://github.com/freelensapp/freelens/releases/latest)
 [![Homebrew Cask Version](https://img.shields.io/homebrew/cask/v/freelens?label=homebrew)](https://formulae.brew.sh/cask/freelens#default)
 [![WinGet Package Version](https://img.shields.io/winget/v/Freelensapp.Freelens)](https://winstall.app/apps/Freelensapp.Freelens)
-[![Scoop Package Version](https://img.shields.io/scoop/v/freelens?bucket=extras
-)](https://scoop.sh/#/apps?q=freelens&s=1&d=0)
+[![Scoop Package Version](https://img.shields.io/scoop/v/freelens?bucket=extras)](https://scoop.sh/#/apps?q=freelens&s=1&d=0)
 [![Flathub Version](https://img.shields.io/flathub/v/app.freelens.Freelens)](https://flathub.org/apps/app.freelens.Freelens)
 [![Snap Store Version](https://img.shields.io/snapcraft/v/freelens/latest/stable)](https://snapcraft.io/freelens)
 [![AUR Version](https://img.shields.io/aur/version/freelens-bin)](https://aur.archlinux.org/packages/freelens-bin)
@@ -23,7 +20,6 @@
 [![Integration tests](https://github.com/freelensapp/freelens/actions/workflows/integration-tests.yaml/badge.svg?branch=main)](https://github.com/freelensapp/freelens/actions/workflows/integration-tests.yaml)
 [![Trunk Check](https://github.com/freelensapp/freelens/actions/workflows/trunk-check.yaml/badge.svg?branch=main)](https://github.com/freelensapp/freelens/actions/workflows/trunk-check.yaml)
 
-<!-- markdownlint-enable MD013 -->
 
 [Freelens](https://freelens.app) is a free and open-source user interface
 designed for managing Kubernetes clusters. It provides a standalone
@@ -87,11 +83,9 @@ sudo apt install libfuse2 zlib1g-dev
 
 Run the application with additional arguments:
 
-<!-- markdownlint-disable MD013 -->
 ```sh
 ./Freelens*.AppImage --no-sandbox --ozone-platform-hint=auto --enable-features=WebRTCPipeWireCapturer --enable-features=WaylandWindowDecorations --disable-gpu-compositing
 ```
-<!-- markdownlint-enable MD013 -->
 
 #### Flatpak
 
@@ -131,7 +125,6 @@ snap install freelens --classic
 
 Run the following commands:
 
-<!-- markdownlint-disable MD013 -->
 
 ```sh
 curl -L https://raw.githubusercontent.com/freelensapp/freelens/refs/heads/main/freelens/build/apt/freelens.asc | sudo tee /etc/apt/keyrings/freelens.asc
@@ -288,24 +281,24 @@ Each member of the core team is focused on specific roles. You can contact us
 at any time according to them.
 
 - [Roberto Bandini](https://www.linkedin.com/in/bandiniroberto/) - [@robertobandini](https://github.com/robertobandini) - Founder<br/>
-General organization management, relationships, product management, community, marketing, extensions ecosystem (review, catalog, strategy and development)
+  General organization management, relationships, product management, community, marketing, extensions ecosystem (review, catalog, strategy and development)
 - [Piotr Roszatycki](https://www.linkedin.com/in/piotr.roszatycki) - [@dex4er](https://github.com/dex4er) - Maintainer<br/>
-Development direction, architecture and release management, extensions development
+  Development direction, architecture and release management, extensions development
 - [Mario Offertucci](https://www.linkedin.com/in/mario-offertucci-703113b6/) - [@mariomamo](https://github.com/mariomamo) - Maintainer<br/>
-UI, docs, extensions development
+  UI, docs, extensions development
 - [Leopoldo Capuano](https://www.linkedin.com/in/leo-capuano/) - [@leo-capvano](https://github.com/leo-capvano) - Maintainer<br/>
-GenAI solutions, extensions development
+  GenAI solutions, extensions development
 
 ### Release Engineering Team
 
 This team is responsible for driving Freelens releases forward, reviewing PRs, and making decisions about the architecture and technical roadmap under the supervision of the core team.
 
 - [Piotr Roszatycki](https://www.linkedin.com/in/piotr.roszatycki) - [@dex4er](https://github.com/dex4er) - Maintainer<br/>
-Release Engineering Team Lead
+  Release Engineering Team Lead
 - [Omar Alani](https://www.linkedin.com/in/omarluq/) - [@omarluq](https://github.com/omarluq) - Maintainer<br/>
-Release Engineering Team Member
+  Release Engineering Team Member
 - [Matías Roje](https://www.linkedin.com/in/matias-roje-carrasco/) - [@MatiasRoje](https://github.com/MatiasRoje) - Maintainer<br/>
-Release Engineering Team Member
+  Release Engineering Team Member
 
 The project is growing very quickly and everyone is welcome!
 

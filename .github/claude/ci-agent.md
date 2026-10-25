@@ -24,6 +24,7 @@ When reviewing code and proposing fixes:
    ```
 
    You can generate this from the terminal with:
+
    ```bash
    git diff -u -- path/to/file
    ```
@@ -55,9 +56,9 @@ When reviewing code and proposing fixes:
    - Use GitHub's `suggestion` block for small targeted fixes so the PR
      author can accept the change with a single click:
 
-     ````suggestion
+     ```suggestion
      <same unified-diff format as shown above>
-     ````
+     ```
 
    - For larger multi-file changes, use `diff -u` blocks in a regular
      comment instead, with the proposed commit subject shown first
