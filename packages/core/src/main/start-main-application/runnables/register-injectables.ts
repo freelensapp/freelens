@@ -7,6 +7,7 @@
  */
 
 import cleanUpShellSessionsInjectable from "./clean-up-shell-sessions.injectable";
+import clearHttpCacheInjectable from "./clear-http-cache.injectable";
 import emitCloseToEventBusInjectable from "./emit-close-to-event-bus.injectable";
 import emitServiceStartToEventBusInjectable from "./emit-service-start-to-event-bus.injectable";
 import { registerInjectables as registerFlagRendererInjectables } from "./flag-renderer/register-injectables";
@@ -30,6 +31,11 @@ import type { DiContainerForInjection } from "@ogre-tools/injectable";
 export function registerInjectables(di: DiContainerForInjection): void {
   try {
     di.register(cleanUpShellSessionsInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(clearHttpCacheInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
