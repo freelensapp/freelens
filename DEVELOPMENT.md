@@ -173,6 +173,31 @@ package. If it fails, `pnpm dev` stops before starting the app:
   (`~/.cache/electron`, `~/Library/Caches/electron` or
   `%LOCALAPPDATA%\electron\Cache`) and retry.
 
+### Kubeconfig syncs of the dev profile
+
+`pnpm dev` runs the app in development mode, with its own `FreelensDev`
+profile in the application data directory (`~/.config/FreelensDev`,
+`~/Library/Application Support/FreelensDev` or `%APPDATA%\FreelensDev`), or
+in `$FREELENS_INTEGRATION_TESTING_DIR/FreelensDev` when that variable points
+into the system temporary directory. Unlike a production
+profile, a dev profile starts with no kubeconfig sync: it does not read your
+`~/.kube`, so the catalog shows none of your real clusters until you add them.
+
+To work with your own clusters, add `~/.kube` (or any other file or folder)
+once in Preferences > Kubernetes > Kubeconfig Syncs. To start a fresh profile
+with it already in place, preseed `lens-user-store.json` in the profile
+directory:
+
+```json
+{
+  "preferences": {
+    "syncKubeconfigEntries": [{ "filePath": "/home/me/.kube" }]
+  }
+}
+```
+
+The `filePath` must be absolute; `~` is not expanded.
+
 ### Inspecting the running dev app from an AI agent (optional)
 
 The `pnpm dev` script launches Electron with `--remoteDebuggingPort 9223`, so
