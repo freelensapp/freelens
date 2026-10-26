@@ -91,6 +91,13 @@ export function requiresToken(reqUrl: string) {
 }
 
 /**
+ * API responses are not meant to be reused, so the client is told not to
+ * store them. The Kubernetes API server answers with `no-cache, private`,
+ * which is weaker, so the proxy replaces it.
+ */
+const noStore = "no-store";
+
+/**
  * This is the list of ports that chrome considers unsafe to allow HTTP
  * connections to. Because they are the standard ports for processes that are
  * too forgiving in the connection types they accept.
@@ -358,6 +365,7 @@ export class FreelensProxy {
      */
     proxy.on("proxyRes", (proxyRes, req, res) => {
       this.keepRedirectOnClusterRoute(proxyRes, req);
+      proxyRes.headers["cache-control"] = noStore;
 
       /**
        * The response headers are only sent with the first byte of the body,
@@ -445,6 +453,10 @@ export class FreelensProxy {
     // and helm is covered. The renderer and `/version` are served without a
     // token. The host and origin are checked first, behind the token.
     if (requiresToken(req.url)) {
+      // An API response, whatever answers it. The renderer's own files may
+      // still be cached.
+      res.setHeader("Cache-Control", noStore);
+
       if (!hasAllowedHost(req.headers) || !hasAllowedOrigin(req.headers)) {
         this.dependencies.logger.warn(`[FREELENS-PROXY]: rejected a request from a foreign host or origin`, {
           url: req.url,

@@ -115,6 +115,27 @@ const getHttp2 = (session: http2.ClientHttp2Session, path: string, headers: http
     stream.on("error", reject);
   });
 
+const getHeadersHttp1 = (port: number, path: string) =>
+  new Promise<http.IncomingHttpHeaders>((resolve, reject) => {
+    https
+      .get({ host: "127.0.0.1", port, path, agent: false, rejectUnauthorized: false, headers: withAuth({}) }, (res) => {
+        res.resume();
+        res.on("end", () => resolve(res.headers));
+      })
+      .on("error", reject);
+  });
+
+const getHeadersHttp2 = (session: http2.ClientHttp2Session, path: string) =>
+  new Promise<http2.IncomingHttpHeaders>((resolve, reject) => {
+    const stream = session.request({ ":path": path, ...withAuth({}) });
+    let headers: http2.IncomingHttpHeaders = {};
+
+    stream.on("response", (responseHeaders) => (headers = responseHeaders));
+    stream.resume();
+    stream.on("end", () => resolve(headers));
+    stream.on("error", reject);
+  });
+
 describe("closing the Freelens proxy", () => {
   let di: DiContainer;
   let proxy: { listen: () => Promise<void>; close: () => Promise<void> | undefined };
@@ -412,6 +433,14 @@ describe("Freelens proxy protocols", () => {
   it("answers a request over HTTP/1.1 from a client that does not offer HTTP/2", async () => {
     expect(await getHttp1(port, "/some-path")).toEqual({ statusCode: 200, body: "some-response-over-1.1" });
   });
+
+  it("tells the client not to store a response of the local router api", async () => {
+    expect((await getHeadersHttp1(port, "/api/v2/releases"))["cache-control"]).toBe("no-store");
+  });
+
+  it("leaves the caching of the renderer's files to the client", async () => {
+    expect((await getHeadersHttp1(port, "/some-path"))["cache-control"]).toBeUndefined();
+  });
 });
 
 /**
@@ -471,6 +500,14 @@ describe("Freelens proxy kube api requests", () => {
         // A request the target has not answered yet, not even with its headers.
         if (req.url.endsWith("/pending")) {
           receivePending(req);
+
+          return;
+        }
+
+        // As the Kubernetes API server answers, which lets a client store the
+        // response as long as it checks it before using it again.
+        if (req.url.endsWith("/no-cache")) {
+          res.writeHead(200, { "cache-control": "no-cache, private" }).end("some-body");
 
           return;
         }
@@ -599,6 +636,26 @@ describe("Freelens proxy kube api requests", () => {
       body: "Forbidden",
     });
     expect(targetReceived).toEqual([]);
+  });
+
+  it("tells the client not to store a kube api response over HTTP/1.1, whatever the cluster says", async () => {
+    expect((await getHeadersHttp1(port, "/api-kube/api/v1/pods/no-cache"))["cache-control"]).toBe("no-store");
+  });
+
+  it("tells the client not to store a kube api response over HTTP/2, whatever the cluster says", async () => {
+    const session = await connectSession();
+
+    expect((await getHeadersHttp2(session, "/api-kube/api/v1/pods/no-cache"))["cache-control"]).toBe("no-store");
+  });
+
+  it("tells the client not to store a kube api response that says nothing of caching", async () => {
+    expect((await getHeadersHttp1(port, "/api-kube/api/v1/pods"))["cache-control"]).toBe("no-store");
+  });
+
+  it("tells the client not to store a refused kube api request", async () => {
+    clusterDisconnected = true;
+
+    expect((await getHeadersHttp1(port, "/api-kube/api/v1/pods"))["cache-control"]).toBe("no-store");
   });
 
   it("forwards the /<clusterId>/ path of kubectl and helm with a valid token", async () => {
