@@ -43,26 +43,10 @@ jobs:
             os: linux
             arch: arm64
 
-          - runs-on: macos-26 # datasource=github-runners
-            os: macos
-            arch: arm64
-
-          # - runs-on: macos-26-intel
-          #   os: macos
-          #   arch: x64
-
-          # - runs-on: windows-11-arm
-          #   os: windows
-          #   arch: arm64
-
-          - runs-on: windows-2025 # datasource=github-runners
-            os: windows
-            arch: x64
-
     runs-on: ${{ matrix.runs-on }}
     timeout-minutes: 60
 
-    env:
+    env: &test-integration-env
       DO_NOT_TRACK: "1"
       TURBOREPO_CACHE: ${{ github.workspace }}/.turbo
       # The Syft that creates the SBOM. anchore/sbom-action@v0 defaults to an
@@ -71,7 +55,7 @@ jobs:
       # GRYPE_VERSION in security-scan.
       SYFT_VERSION: 1.55.0 # datasource=github-releases depName=anchore/syft
 
-    steps:
+    steps: &test-integration-steps
       - name: Checkout
         uses: actions/checkout@v7
 
@@ -494,17 +478,57 @@ jobs:
         env:
           DEBUG: pw:browser
 
+  # The same job on macOS and Windows, where the tests fail more often without
+  # a change being at fault. A pull request runs them on Linux only; every
+  # other event runs them here as well. A separate job, because a matrix
+  # entry cannot be left out by event: `include` adds back what `exclude`
+  # removed. Its checks are not required for that reason. The name names no
+  # matrix value: a skipped job shows its name unevaluated, and GitHub appends
+  # the values of the matrix to a name without them.
+  test-integration-macos-windows:
+    name: integration tests on macOS and Windows
+
+    if: github.event_name != 'pull_request'
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runs-on: macos-26 # datasource=github-runners
+            os: macos
+            arch: arm64
+
+          # - runs-on: macos-26-intel
+          #   os: macos
+          #   arch: x64
+
+          # - runs-on: windows-11-arm
+          #   os: windows
+          #   arch: arm64
+
+          - runs-on: windows-2025 # datasource=github-runners
+            os: windows
+            arch: x64
+
+    runs-on: ${{ matrix.runs-on }}
+    timeout-minutes: 60
+
+    env: *test-integration-env
+
+    steps: *test-integration-steps
+
   security-scan:
     name: security scan
 
     # Combines the per-arch SBOMs and runtime package lists produced by the
-    # test-integration matrix (both pulled as run artifacts) and scans only the
+    # test-integration jobs (both pulled as run artifacts) and scans only the
     # runtime dependency closure. Runs for the real branch build
     # (push/dispatch/schedule on main) only, never for PRs.
     if: github.ref_name == 'main' && github.event_name != 'pull_request'
 
     needs:
       - test-integration
+      - test-integration-macos-windows
 
     runs-on: ubuntu-26.04-arm
 
@@ -563,13 +587,13 @@ jobs:
           grype="${{ steps.grype.outputs.cmd }}"
           mkdir -p sarifs jsons
           shopt -s nullglob
-          # Merge the per-arch runtime package maps (from test-integration) into
-          # one <name>@<version> -> pnpm-store-path object. Only runtime findings
-          # are reported: npm packages in this map, plus non-npm packages (Go
-          # modules, native binaries) shipped under freelens/dist or
-          # freelens/binaries. This drops build-time dev tools (esbuild,
-          # typescript, ...) and the Go binaries bundled with them, which never
-          # reach users.
+          # Merge the per-arch runtime package maps (from the test-integration
+          # jobs) into one <name>@<version> -> pnpm-store-path object. Only
+          # runtime findings are reported: npm packages in this map, plus
+          # non-npm packages (Go modules, native binaries) shipped under
+          # freelens/dist or freelens/binaries. This drops build-time dev tools
+          # (esbuild, typescript, ...) and the Go binaries bundled with them,
+          # which never reach users.
           yq ea -pj -oj '. as $i ireduce ({}; . * $i)' prod/*-prod-packages.json > prod-set.json
           if [[ "$(yq -pj -oj 'length' prod-set.json)" -eq 0 ]]; then
             echo "Runtime package set is empty - refusing to scan (every npm finding would be dropped)" >&2
