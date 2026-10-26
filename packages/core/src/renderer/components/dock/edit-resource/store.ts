@@ -23,6 +23,14 @@ export class EditResourceTabStore extends DockTabStore<EditingResource> {
     });
   }
 
+  /**
+   * A tab fetches its resource again whenever it opens, so the YAML of the
+   * cluster is not kept, and a draft only while it has changes not saved yet.
+   */
+  protected finalizeDataForSave({ draft, firstDraft, ...data }: EditingResource): EditingResource {
+    return draft !== undefined && draft !== firstDraft ? { ...data, draft } : data;
+  }
+
   getTabIdByResource(object: KubeObject): string | undefined {
     return this.findTabIdFromData(({ resource }) => object.selfLink === resource);
   }
