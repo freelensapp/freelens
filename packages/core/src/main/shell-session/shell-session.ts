@@ -169,6 +169,13 @@ export interface ShellSessionArgs {
  */
 export const standaloneSessionId = "standalone";
 
+/**
+ * The last output of each PTY, sent again to a renderer that reconnects to it,
+ * as after a reload, so that its terminal does not start out empty. It lives
+ * as long as the PTY and is never written anywhere.
+ */
+const lastOutputs = new WeakMap<pty.IPty, string>();
+
 export interface ShellEnvOptions {
   readonly shell?: string;
   readonly reportStatus?: boolean;
@@ -301,10 +308,19 @@ export abstract class ShellSession {
 
     if (resume) {
       this.send({ type: TerminalChannels.CONNECTED });
+
+      const lastOutput = lastOutputs.get(shellProcess);
+
+      if (lastOutput) {
+        this.send({ type: TerminalChannels.STDOUT, data: lastOutput });
+      }
     }
 
     this.running = true;
-    shellProcess.onData((data) => this.send({ type: TerminalChannels.STDOUT, data }));
+    shellProcess.onData((data) => {
+      lastOutputs.set(shellProcess, data);
+      this.send({ type: TerminalChannels.STDOUT, data });
+    });
     shellProcess.onExit(({ exitCode }) => {
       this.dependencies.logger.info(
         `[SHELL-SESSION]: shell has exited for ${this.terminalId} closed with exitcode=${exitCode}`,

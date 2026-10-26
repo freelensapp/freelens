@@ -8,6 +8,7 @@
 
 import cleanUpShellSessionsInjectable from "./clean-up-shell-sessions.injectable";
 import clearHttpCacheInjectable from "./clear-http-cache.injectable";
+import clearLocalStorageInjectable from "./clear-local-storage.injectable";
 import emitCloseToEventBusInjectable from "./emit-close-to-event-bus.injectable";
 import emitServiceStartToEventBusInjectable from "./emit-service-start-to-event-bus.injectable";
 import { registerInjectables as registerFlagRendererInjectables } from "./flag-renderer/register-injectables";
@@ -36,6 +37,11 @@ export function registerInjectables(di: DiContainerForInjection): void {
   }
   try {
     di.register(clearHttpCacheInjectable);
+  } catch (e) {
+    /* Ignore duplicate registration */
+  }
+  try {
+    di.register(clearLocalStorageInjectable);
   } catch (e) {
     /* Ignore duplicate registration */
   }
