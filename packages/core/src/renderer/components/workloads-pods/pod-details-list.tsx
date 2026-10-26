@@ -20,8 +20,8 @@ import { LinkToNamespace, LinkToNode, LinkToPod } from "../kube-object-link";
 import { LineProgress } from "../line-progress";
 import { Table, TableCell, TableHead, TableRow } from "../table";
 import { WithTooltip } from "../with-tooltip";
-import podStoreInjectable from "./store.injectable";
 import { PodPortsCell } from "./pod-ports-cell";
+import podStoreInjectable from "./store.injectable";
 
 import type { KubeObject, Pod } from "@freelensapp/kube-object";
 

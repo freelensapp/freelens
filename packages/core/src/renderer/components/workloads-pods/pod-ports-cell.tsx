@@ -6,7 +6,7 @@
 
 import "./pod-ports-cell.scss";
 
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { WithTooltip } from "../with-tooltip";
 
 import type { ContainerPort, Pod } from "@freelensapp/kube-object";
