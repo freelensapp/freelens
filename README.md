@@ -263,19 +263,17 @@ Anyone is welcome to request to be added to the official list by opening a dedic
 Anyone is welcome to collaborate to advance the Freelens project. Read
 [CONTRIBUTING.md](CONTRIBUTING.md) to see how you can help.
 
-<a href="https://www.star-history.com/#freelensapp/freelens&Date">
-  <picture>
-    <source
-      media="(prefers-color-scheme: dark)"
-      srcset="https://api.star-history.com/svg?repos=freelensapp/freelens&type=Date&theme=dark"
-    >
-    <source
-      media="(prefers-color-scheme: light)"
-      srcset="https://api.star-history.com/svg?repos=freelensapp/freelens&type=Date"
-    >
-    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=freelensapp/freelens&type=Date">
-  </picture>
-</a>
+<picture>
+  <source
+    media="(prefers-color-scheme: dark)"
+    srcset="https://api.star-history.com/svg?repos=freelensapp/freelens&type=Date&theme=dark"
+  >
+  <source
+    media="(prefers-color-scheme: light)"
+    srcset="https://api.star-history.com/svg?repos=freelensapp/freelens&type=Date"
+  >
+  <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=freelensapp/freelens&type=Date">
+</picture>
 
 ## Expenses and Donations
 
